@@ -29,7 +29,6 @@ import bottle
 from bottle import route, run, static_file, redirect, request, response, hook
 
 import libexec.auth
-import cauth
 
 ## Hack: Prevent "ExtractionError: Can't extract file(s) to egg cache" when 2 process extract egg at the same time ...
 try:
