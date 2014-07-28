@@ -1,0 +1,20 @@
+
+<td>
+	{{input type="checkbox" checked=isSelected class="toggle"}}
+</td>
+
+{{#each attr in parentController.shown_columns}}
+		{{#if attr.options.show}}
+			<td>{{component-renderer attr=attr record=this}}</td>
+		{{/if}}
+{{/each}}
+
+{{#if parentController.item_actions}}
+	<td>
+		{{set 'minified' true}}
+
+		{{#each item_action in parentController.item_actions}}
+			{{partial item_action}}
+		{{/each}}
+	</td>
+{{/if}}
