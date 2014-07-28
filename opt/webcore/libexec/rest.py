@@ -261,7 +261,7 @@ def rest_get(namespace, ctype=None, _id=None, params=None):
 	if ids:
 		try:
 			records = storage.get(ids, account=account)
-			if isinstance(records,crecord):
+			if isinstance(records,Record):
 				records = [records]
 				total = 1
 			elif isinstance(records,list):
@@ -464,7 +464,7 @@ def rest_post(namespace, ctype, _id=None):
 				pass
 
 		else:
-			raw_record = crecord(_id=_id, type=str(ctype)).dump()
+			raw_record = Record(_id=_id, _type=str(ctype)).dump()
 			logger.debug(' + raw_record: %s' % raw_record)
 
 			#logger.debug(' + _id: %s (%s)' % (raw_record['_id'], type(raw_record['_id'])))
@@ -472,7 +472,7 @@ def rest_post(namespace, ctype, _id=None):
 			for key in dict(data).keys():
 				raw_record[key] = data[key]
 
-			record = crecord(raw_record=raw_record)
+			record = Record(raw_record=raw_record)
 			logger.debug(' + dump record: %s' % record.dump())
 
 			record.chown(account.user)
