@@ -27,7 +27,7 @@ from bottle import get
 #group_managing_access = ['']
 #########################################################################
 
-logger = logging.getLogger("ui_topology")
+logger = getLogger("ui_topology")
 
 import sys, os
 operators_path=os.path.expanduser('~/opt/amqp2engines/engines/topology')
@@ -35,16 +35,16 @@ sys.path.append(operators_path)
 
 @get('/topology/getOperators')
 def get_operators():
-	operators = []
+    operators = []
 
-	for opfile in os.listdir(operators_path):
-		try:
-			operator = opfile.split('.')
-			if operator[1] == 'py':
-				module = __import__(operator[0])
-				operators.append(module.options)
-				del sys.modules[operator[0]]
-		except Exception, err:
-			logger.warning("Impossible to parse '%s' (%s)" % (opfile, err))
-        
-	return { 'total':len(operators), 'success':True ,'data': operators }
+    for opfile in os.listdir(operators_path):
+        try:
+            operator = opfile.split('.')
+            if operator[1] == 'py':
+                module = __import__(operator[0])
+                operators.append(module.options)
+                del sys.modules[operator[0]]
+        except Exception, err:
+            logger.warning("Impossible to parse '%s' (%s)" % (opfile, err))
+
+    return { 'total':len(operators), 'success':True ,'data': operators }
