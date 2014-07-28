@@ -27,7 +27,7 @@ from bottle import get
 #group_managing_access = ['']
 #########################################################################
 
-logger = logging.getLogger("ui_topology")
+logger = getLogger("ui_topology")
 
 import sys, os
 operators_path=os.path.expanduser('~/opt/amqp2engines/engines/topology')

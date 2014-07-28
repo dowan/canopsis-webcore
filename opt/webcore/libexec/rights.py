@@ -31,14 +31,14 @@ from canopsis.old.record import Record
 from libexec.auth import get_account
 
 
-logger = logging.getLogger("rights")
+logger = getLogger("rights")
 
 #########################################################################
 
 @put('/rights/:namespace/:crecord_id')
 def change_rights(namespace,crecord_id=None):
 	account = get_account()
-	storage = get_storage(namespace=namespace, account=account, logging_level=logging.DEBUG)
+	storage = get_storage(namespace=namespace, account=account, logging_level=DEBUG)
 	
 	#get put data
 	aaa_owner = request.params.get('aaa_owner', default=None)
