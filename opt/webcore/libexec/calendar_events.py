@@ -19,16 +19,12 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-import sys
-import os
 import logging
 import json
-import gevent
 from datetime import datetime
 from dateutil.rrule import *
 from time import mktime as mktime
 
-import bottle
 from bottle import route, get, delete, put, request
 from bottle import HTTPError, post, static_file, response
 

@@ -19,32 +19,20 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-import sys
-import os
+
 import logging
 import json
-import gevent
 
-import bottle
-from bottle import route, get, delete, put, request
-from bottle import HTTPError, post, static_file, response
-
-# GridFS
-from pymongo import Connection
-import gridfs
+from bottle import get, delete, put, request, HTTPError, post, response
 
 # Canopsis
-from caccount import caccount
-from cstorage import cstorage
-from cstorage import get_storage
-from crecord import crecord
+from canopsis.old.storage import get_storage
 
-from cfile import cfile
-from cfile import get_cfile
-from cfile import namespace
+from canopsis.old.file import File, get_cfile, namespace
 
 # Import protection function
 from libexec.auth import get_account
+
 
 logger = logging.getLogger('Files')
 

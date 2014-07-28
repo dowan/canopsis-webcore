@@ -19,24 +19,21 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-import sys
-import os
 import logging
 import json
-import bottle
 
-from bottle import route, get, put, delete, post
-from bottle import request, HTTPError, response, redirect
+from bottle import request, HTTPError, response, redirect, get, put, delete, \
+    post
 
 # Canopsis
-from caccount import caccount
-from cstorage import cstorage
-from cstorage import get_storage
-from crecord import crecord
-from cgroup import cgroup
+from canopsis.old.account import Account
+from canopsis.old.storage import get_storage
+from canopsis.old.record import Record
+from canopsis.old.group import Group
 
 #import protection function
-from libexec.auth import get_account, delete_session, reload_account, check_group_rights
+from libexec.auth import get_account, delete_session, reload_account, \
+    check_group_rights
 
 
 logger = logging.getLogger('Account')
@@ -45,7 +42,7 @@ logger.setLevel(logging.INFO)
 #group who have right to access 
 group_managing_access = ['group.CPS_account_admin']
 
-root_account = caccount(user="root", group="root")
+root_account = Account(user="root", group="root")
 #########################################################################
 
 #### GET Me
@@ -97,7 +94,7 @@ def account_get_avatar(_id=None):
 
 	logger.debug('getAvatar of: %s' % _id)
 
-	record = storage.get(_id, account=caccount(user="root", group="root"))
+	record = storage.get(_id, account=Account(user="root", group="root"))
 	
 	if not record or not record.data.get('avatar_id', None):
 		redirect("/static/canopsis/widgets/stream/logo/ui.png")
@@ -143,7 +140,7 @@ def account_getAuthKey(dest_account):
 	_id = 'account.%s' % dest_account
 	
 	try:
-		aim_account = caccount(storage.get(_id,account=account))
+		aim_account = Account(storage.get(_id,account=account))
 		
 		return {'total':1,'success':True,'data':{'authkey':aim_account.get_authkey()}}
 	except Exception,err:
@@ -164,7 +161,7 @@ def account_newAuthKey(dest_account):
 	_id = 'account.%s' % dest_account
 	
 	try:
-		aim_account = caccount(storage.get(_id,account=account))
+		aim_account = Account(storage.get(_id,account=account))
 	except:
 		logger.debug('aimed account not found')
 		return HTTPError(404, 'Wrong account name or no enough rights')
@@ -315,7 +312,7 @@ def account_update(_id=None):
 			return HTTPError(400, "No id recieved")
 		
 		try:
-			record = caccount(storage.get(_id ,account=account))
+			record = Account(storage.get(_id ,account=account))
 			logger.debug('Update account %s' % _id)
 		except:
 			logger.debug('Account %s not found' % _id)
@@ -440,7 +437,7 @@ def add_account_to_group(group_id=None,account_id=None):
 		
 	try:
 		account_record = storage.get(account_id, account=session_account)
-		account = caccount(account_record)
+		account = Account(account_record)
 		group_record = storage.get(group_id, account=session_account)
 		group = cgroup(group_record)
 		
@@ -478,7 +475,7 @@ def remove_account_from_group(group_id=None,account_id=None):
 		
 	try:
 		account_record = storage.get(account_id,account=session_account)
-		account = caccount(account_record)
+		account = Account(account_record)
 		group_record = storage.get(group_id,account=session_account)
 		group = cgroup(group_record)
 		
@@ -501,7 +498,7 @@ def remove_account_from_group(group_id=None,account_id=None):
 
 def create_account(data):
 	logger.debug(' + New account')
-	new_account = caccount(
+	new_account = Account(
 		user=data['user'],
 		group=data.get('aaa_group', None),
 		lastname=data['lastname'],

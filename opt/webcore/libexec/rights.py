@@ -18,19 +18,18 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-import sys, os, logging, json
+from logging import getLogger, DEBUG
+from json import loads
 
-import bottle
-from bottle import route, get, put, delete, request, HTTPError, post
+from bottle import put, request, HTTPError
 
 ## Canopsis
-from caccount import caccount
-from cstorage import cstorage
-from cstorage import get_storage
-from crecord import crecord
+from canopsis.old.storage import get_storage
+from canopsis.old.record import Record
 
 #import protection function
 from libexec.auth import get_account
+
 
 logger = logging.getLogger("rights")
 

@@ -18,25 +18,24 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-import sys, os, logging, json
+import logging
+import json
 
-import bottle
-from bottle import route, get, put, delete, request, HTTPError, post, response, FormsDict
-from datetime import *
+from bottle import get, put, delete, request, HTTPError, post, \
+    response, FormsDict
 ## Canopsis
-from caccount import caccount
-from cstorage import cstorage
-from cstorage import get_storage
-from crecord import crecord
+from canopsis.old.account import Account
+from canopsis.old.storage import get_storage
+from canopsis.old.record import Record
 import base64
-from ctools import clean_mfilter
+from canopsis.old.tools import clean_mfilter
 
 #import protection function
-from libexec.auth import get_account ,check_group_rights
+from libexec.auth import get_account, check_group_rights
 
 logger = logging.getLogger("rest")
 logger.setLevel('DEBUG')
-db = get_storage(account=caccount(user='root', group='root'))
+db = get_storage(account=Account(user='root', group='root'))
 
 ctype_to_group_access = {
 							'schedule' : 'group.CPS_schedule_admin',

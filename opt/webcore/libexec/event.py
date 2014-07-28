@@ -22,20 +22,13 @@ import logging
 import json
 import time
 
-import bottle
-from bottle import route, get, put, delete, request, HTTPError, post, response
+from bottle import put, request, HTTPError, post
 
 ## Canopsis
-from caccount import caccount
-from cstorage import cstorage
-from cstorage import get_storage
-from crecord import crecord
-from camqp import camqp
-import cevent
+from canopsis.old.rabbitmq import Amqp
+import canopsis.old.event as cevent
 import requests
 
-#import protection function
-from libexec.auth import get_account, check_group_rights, check_authkey
 
 logger = logging.getLogger('Event')
 logger.setLevel(logging.INFO)

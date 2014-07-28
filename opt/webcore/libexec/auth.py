@@ -18,24 +18,20 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-import sys, os, logging, json
-import bottle, logging, hashlib, json
-from bottle import error, route, get, request, response, post, HTTPError, redirect
-
-from beaker.middleware import SessionMiddleware
+import bottle
+import logging
+from bottle import get, request, response, post, HTTPError, redirect
 
 ## Canopsis
-from caccount import caccount
-from cstorage import cstorage
-from cstorage import get_storage
-from crecord import crecord
+from canopsis.old.account import Account
+from canopsis.old.storage import get_storage
 
 logger = logging.getLogger("auth")
 logger.setLevel(logging.INFO)
 
 #session variable
 session_accounts = {
-	'anonymous': caccount()
+	'anonymous': Account()
 }
 
 # List of plugins to skip
@@ -85,7 +81,7 @@ def auth():
 
 	## Local
 	try:
-		account = caccount(storage.get(_id, account=caccount(user=login)))
+		account = Account(storage.get(_id, account=Account(user=login)))
 	except Exception, err:
 		logger.error(err)
 
@@ -195,7 +191,7 @@ def get_account(_id=None):
 	
 	try:
 		storage = get_storage(namespace='object')
-		account = caccount(storage.get(_id, account=caccount(user='root')))
+		account = Account(storage.get(_id, account=Account(user='root')))
 	except Exception as err:
 		logger.debug("  + Failed: %s" % err)
 		return session_accounts['anonymous']
@@ -215,7 +211,7 @@ def reload_account(_id):
 		logger.error('Impossible to load record: %s' % err)
 		return False
 
-	account = caccount(record)
+	account = Account(record)
 
 	if not account:
 		logger.error('Impossible to load account')
@@ -236,13 +232,13 @@ def check_authkey(key, account=None):
 	
 	logger.debug("Search authkey: '%s'" % key)
 
-	record = storage.find_one(mfilter=mfilter, account=caccount(user='root'))
+	record = storage.find_one(mfilter=mfilter, account=Account(user='root'))
 
 	if not record:
 		return None
 
 	logger.debug(" + Done")
-	key_account = caccount(record)
+	key_account = Account(record)
 
 	if account and account._id != key_account._id:
 		logger.debug(" + Account missmatch")

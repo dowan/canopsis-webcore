@@ -18,34 +18,24 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-import sys, os, logging, json, subprocess
-import gevent
+import logging
+import json
 
-import bottle
-from bottle import route, get, delete, request, HTTPError, post, static_file, response
+from bottle import request, post, response
 
-from urllib import quote
-from pymongo import Connection
-import gridfs
-
-import time
+from time import timezone
 from datetime import datetime
 
 ## Canopsis
-from caccount import caccount
-from cstorage import cstorage
-from cstorage import get_storage
-from crecord import crecord
-from cfile import cfile
+from canopsis.old.storage import Storage
+from canopsis.old.file import File
 
 import task_mail
 import task_reporting
 
 #import protection function
 from libexec.auth import get_account
-from libexec.account import check_group_rights
 
-import time
 
 logger = logging.getLogger('Reporting')
 logger.setLevel('DEBUG')

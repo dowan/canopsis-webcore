@@ -22,12 +22,10 @@ import logging
 
 from bottle import get, post, request, HTTPError
 
-from caccount import caccount
-from cstorage import get_storage
+from canopsis.old.storage import get_storage
 
 from libexec.auth import get_account
 
-from bson import json_util
 import json
 
 

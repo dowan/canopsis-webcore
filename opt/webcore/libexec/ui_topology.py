@@ -17,13 +17,12 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
-import sys, os, logging, json
+import sys
+from os import listdir
+from os.path import expanduser
+from logging import getLogger
 
-import bottle
-from bottle import route, get, put, delete, request, HTTPError, post, response
-
-#import protection function
-from libexec.auth import get_account
+from bottle import get
 
 #group_managing_access = ['']
 #########################################################################

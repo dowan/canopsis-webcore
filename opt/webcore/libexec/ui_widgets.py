@@ -18,15 +18,15 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-import sys, os, logging, json
+import os
+import logging
+import json
 import re
 
-import bottle
-from bottle import route, get, put, delete, request, HTTPError, response
+from bottle import get, request, response
 
 ## Canopsis
-from cstorage import get_storage
-from libexec.auth import get_account, auth_backends
+from libexec.auth import auth_backends
 
 logger = logging.getLogger("ui-widgets")
 

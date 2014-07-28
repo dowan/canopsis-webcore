@@ -18,30 +18,29 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-import sys, os, logging, json, time
+import logging
+import json
+import time
 from datetime import datetime
-import re
 
-import bottle
 from bottle import route, get, post, put, delete, request, HTTPError, response
 
 #import protection function
 from libexec.auth import get_account
 
 # Modules
-from cstorage import get_storage
+from canopsis.old.storage import get_storage
 
-from ctools import parse_perfdata, clean_mfilter
-from ctools import cleanTimestamp
-from ctools import internal_metrics
+from canopsis.old.tools import clean_mfilter
 
-import pyperfstore2
-import pyperfstore2.utils
+from canopsis.perfdata.manager import PerfData
+from canopsis.timeserie import TimeSerie
+from canopsis.timeserie.timewindow import TimeWindow, Period
+from canopsis.storage.periodic import PeriodicStorage
 
-from cstorage import get_storage
-from caccount import caccount
+from canopsis.old.account import Account
 
-storage = get_storage(namespace='object', account=caccount(user="root", group="root"))
+storage = get_storage(namespace='object', account=Account(user="root", group="root"))
 
 
 manager = None

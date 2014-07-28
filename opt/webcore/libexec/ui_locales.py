@@ -18,14 +18,18 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-import sys, os, logging, json
-import re
+from os import listdir
+from os.path import expanduser, exists
 
-import polib
+from logging import getLogger
+from json import dumps
+from re import compile as re_compile, MULTILINE
 
-import bottle
-from bottle import route, get, put, delete, request, HTTPError, response
+from polib import pofile
 
+from bottle import route, response
+
+logger = getLogger("ui_locales")
 from libexec.auth import auth_backends
 
 logger = logging.getLogger("ui_locales")
