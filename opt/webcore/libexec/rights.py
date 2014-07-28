@@ -37,43 +37,42 @@ logger = getLogger("rights")
 
 @put('/rights/:namespace/:crecord_id')
 def change_rights(namespace,crecord_id=None):
-	account = get_account()
-	storage = get_storage(namespace=namespace, account=account, logging_level=DEBUG)
+    account = get_account()
+    storage = get_storage(namespace=namespace, account=account, logging_level=DEBUG)
+    #get put data
+    aaa_owner = request.params.get('aaa_owner', default=None)
+    aaa_group = request.params.get('aaa_group', default=None)
+    aaa_access_owner = request.params.get('aaa_access_owner', default=None)
+    aaa_access_group = request.params.get('aaa_access_group', default=None)
+    aaa_access_other = request.params.get('aaa_access_other', default=None)
 
-	#get put data
-	aaa_owner = request.params.get('aaa_owner', default=None)
-	aaa_group = request.params.get('aaa_group', default=None)
-	aaa_access_owner = request.params.get('aaa_access_owner', default=None)
-	aaa_access_group = request.params.get('aaa_access_group', default=None)
-	aaa_access_other = request.params.get('aaa_access_other', default=None)
 
+    if(crecord_id != None):
+        record = storage.get(crecord_id, account=account)
 
-	if(crecord_id != None):
-		record = storage.get(crecord_id, account=account)
+    if isinstance(record, crecord):
+        logger.debug('record found, changing rights/owner')
+        #change owner and group
+        if aaa_owner is not None:
+            record.chown(aaa_owner)
+        if aaa_group is not None:
+            record.chgrp(aaa_group)
 
-	if isinstance(record, crecord):
-		logger.debug('record found, changing rights/owner')
-		#change owner and group
-		if aaa_owner is not None:
-			record.chown(aaa_owner)
-		if aaa_group is not None:
-			record.chgrp(aaa_group)
+        #change rights
+        if aaa_access_owner is not None:
+            record.access_owner = json.loads(aaa_access_owner)
+        if aaa_access_group is not None:
+            record.access_group = json.loads(aaa_access_group)
+        if aaa_access_other is not None:
+            record.access_other = json.loads(aaa_access_other)
 
-		#change rights
-		if aaa_access_owner is not None:
-			record.access_owner = json.loads(aaa_access_owner)
-		if aaa_access_group is not None:
-			record.access_group = json.loads(aaa_access_group)
-		if aaa_access_other is not None:
-			record.access_other = json.loads(aaa_access_other)
+        #logger.debug(json.dumps(record.dump(json=True), sort_keys=True, indent=4))
+        try:
+            storage.put(record,account=account)
+        except:
+            logger.error('Access denied')
+            return HTTPError(403, "Access denied")
 
-		#logger.debug(json.dumps(record.dump(json=True), sort_keys=True, indent=4))
-		try:
-			storage.put(record,account=account)
-		except:
-			logger.error('Access denied')
-			return HTTPError(403, "Access denied")
-
-	else:
-		logger.warning('The record doesn\'t exist')
+    else:
+        logger.warning('The record doesn\'t exist')
 

@@ -18,13 +18,16 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-import bottle
-import logging
-from bottle import get, request, response, post, HTTPError, redirect
+import sys, os, logging, json
+import bottle, logging, hashlib, json
+from bottle import error, route, get, request, response, post, HTTPError, redirect
+
+from beaker.middleware import SessionMiddleware
 
 ## Canopsis
 from canopsis.old.account import Account
 from canopsis.old.storage import get_storage
+from canopsis.old.record import Record
 
 logger = logging.getLogger("auth")
 logger.setLevel(logging.INFO)
