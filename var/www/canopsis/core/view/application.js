@@ -135,6 +135,8 @@ define([
 
 			//Fix the fixed layout sidebar scroll bug
 			fix_sidebar();
+			console.log("sidebar", $(".sidebar"));
+			$(".sidebar").tree();
 		}
 	});
 
