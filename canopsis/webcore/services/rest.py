@@ -31,7 +31,7 @@ import base64
 from canopsis.old.tools import clean_mfilter
 
 #import protection function
-from libexec.auth import get_account, check_group_rights
+from canopsis.webcore.services.auth import get_account, check_group_rights
 
 logger = logging.getLogger("rest")
 logger.setLevel('DEBUG')

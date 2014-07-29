@@ -26,7 +26,7 @@ import re
 from bottle import get, request, response
 
 ## Canopsis
-from libexec.auth import auth_backends
+from canopsis.webcore.services.auth import auth_backends
 
 logger = logging.getLogger("ui-widgets")
 

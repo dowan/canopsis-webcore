@@ -18,10 +18,12 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-import sys, os, logging, json
-import bottle, logging, hashlib, json
-from bottle import error, route, get, request, response, post, HTTPError, redirect
+import logging
+import json
+import sys
+import os
 
+from bottle import error, route, get, request, response, post, HTTPError, redirect
 from beaker.middleware import SessionMiddleware
 
 ## Canopsis
@@ -126,12 +128,12 @@ def auth():
 def doauth():
 	# When we arrive here, the Bottle plugins in charge of authentication have
 	# initialized the session, we just need to redirect to the index.
-	bottle.redirect('/static/canopsis/index.html')
+	redirect('/static/canopsis/index.html')
 
 @get('/logged_in')
 def logged_in():
 	# Route used when came back from CAS or any other external backend
-	bottle.redirect('/static/canopsis/index.html')
+	redirect('/static/canopsis/index.html')
 
 @get('/autoLogin/:key', skip=auth_backends)
 def autoLogin(key=None):
@@ -155,7 +157,7 @@ def autoLogin(key=None):
 @get('/logout', skip=auth_backends_logout)
 @get('/disconnect', skip=auth_backends_logout)
 def disconnect():
-	s = bottle.request.environ.get('beaker.session')
+	s = request.environ.get('beaker.session')
 	user = s.get('account_user', None)
 
 	if not user:
@@ -164,14 +166,14 @@ def disconnect():
 	logger.debug("Disconnect '%s'" % user)
 	delete_session()
 
-	bottle.redirect('/')
+	redirect('/')
 	# return {'total': 0, 'success': True, 'data': []}
 
 #find the account in memory, or try to find it from database, if not in db log anon
 def get_account(_id=None):
 	logger.debug("Get Account:")
 
-	s = bottle.request.environ.get('beaker.session')
+	s = request.environ.get('beaker.session')
 
 	if not _id:
 		_id = s.get('account_id', None)
@@ -274,7 +276,7 @@ def check_group_rights(account, group_id):
 def create_session(account):
 	session_accounts[account._id] = account
 
-	s = bottle.request.environ.get('beaker.session')
+	s = request.environ.get('beaker.session')
 	s['account_id'] = account._id
 	s['account_user'] = account.user
 	s['account_group'] = account.group
@@ -304,5 +306,5 @@ def delete_session(_id=None):
 			pass
 
 	if account._id in ids:
-		s = bottle.request.environ.get('beaker.session')
+		s = request.environ.get('beaker.session')
 		s.delete()

@@ -34,7 +34,7 @@ import task_mail
 import task_reporting
 
 #import protection function
-from libexec.auth import get_account
+from canopsis.webcore.services.auth import get_account
 import time
 
 

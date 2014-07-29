@@ -27,7 +27,7 @@ from datetime import datetime
 from bottle import route, get, post, put, delete, request, HTTPError, response
 
 #import protection function
-from libexec.auth import get_account
+from canopsis.webcore.services.auth import get_account
 
 # Modules
 from canopsis.old.storage import get_storage
