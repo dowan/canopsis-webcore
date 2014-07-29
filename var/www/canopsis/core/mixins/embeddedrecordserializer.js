@@ -55,7 +55,7 @@ define([
 					return payload;
 				}
 				if(Application[item.xtype.capitalize()] === undefined) {
-					this.addMessage(payload, 'bad xtype for widget');
+					this.addMessage(payload, 'bad xtype for widget :' + item.xtype);
 					return payload;
 				}
 
