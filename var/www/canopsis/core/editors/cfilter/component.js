@@ -32,6 +32,8 @@ define([
 				this.set('cfilter_serialized', '{}');
 			}
 
+			set(this, 'onlyAllowRegisteredIndexes', get(Canopsis.conf.frontendConfig, 'cfilter_allow_only_optimized_filters'));
+
 			this._super.apply(this, arguments);
 		},
 
@@ -157,7 +159,9 @@ define([
 		],
 
 		orButtonHidden: false,
-		onlyAllowRegisteredIndexes: Ember.computed.alias('Canopsis.conf.frontendConfig.cfilter_allow_only_optimized_filters'),
+
+		//initialized in this class' constructor
+		onlyAllowRegisteredIndexes: true,
 
 		serializeCfilter: function() {
 			var clauses = this.get('clauses');
@@ -344,7 +348,12 @@ define([
 		},
 
 		getIndexesForNewAndClause: function(currentClause) {
+			console.group('getIndexesForNewAndClause useIndexesOptions : ', get(this, 'onlyAllowRegisteredIndexes'), currentClause);
+
 			if(get(this, 'onlyAllowRegisteredIndexes') === true) {
+
+				console.group('getIndexesForNewAndClause', currentClause);
+
 				var indexesTreeCursor = this.get('indexesTree');
 
 				for (var i = 0; i < currentClause.and.length; i++) {
@@ -368,14 +377,20 @@ define([
 					}
 				}
 
+				console.groupEnd();
 				return available_indexes;
 			}
+
+			console.log('no index available because "use indexes" option is disabled');
+			console.groupEnd();
 		},
 
 		pushEmptyClause: function(currentClause) {
-			console.log('pushEmptyClause');
+			console.group('pushEmptyAndClause');
 
 			var keys = this.getIndexesForNewAndClause(currentClause);
+
+			console.log('available_indexes', keys);
 
 			var field = {
 				keyId: this.get('cfilterEditId') + '-keys-' + (currentClause.and.length + 1),
@@ -402,6 +417,8 @@ define([
 			if (get(this, 'onlyAllowRegisteredIndexes') === false || field.options.available_indexes.length > 0) {
 				currentClause.and.pushObject(Ember.Object.create(field));
 			}
+
+			console.groupEnd('pushEmptyClause');
 		},
 
 		actions: {
@@ -424,7 +441,7 @@ define([
 
 			addOrClause: function() {
 				var clauses = this.get('clauses');
-				console.log('Add OR clause', clauses);
+				console.group('Add OR clause', clauses);
 
 				var currentClauseIndex = this.get('currentClauseIndex');
 				var currentClause;
@@ -445,6 +462,8 @@ define([
 
 				this.send('addAndClause');
 				this.send('activate', currentClause);
+
+				console.groupEnd();
 			},
 
 			activate: function(clause) {
