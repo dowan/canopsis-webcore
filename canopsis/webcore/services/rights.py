@@ -28,7 +28,7 @@ from canopsis.old.storage import get_storage
 from canopsis.old.record import Record
 
 #import protection function
-from libexec.auth import get_account
+from canopsis.webcore.services.auth import get_account
 
 
 logger = getLogger("rights")

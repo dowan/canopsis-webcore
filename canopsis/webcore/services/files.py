@@ -31,7 +31,7 @@ from canopsis.old.storage import get_storage
 from canopsis.old.file import File, get_cfile, namespace
 
 # Import protection function
-from libexec.auth import get_account
+from canopsis.webcore.services.auth import get_account
 
 
 logger = logging.getLogger('Files')

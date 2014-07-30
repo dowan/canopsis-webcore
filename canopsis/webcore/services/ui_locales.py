@@ -29,10 +29,10 @@ from polib import pofile
 
 from bottle import route, response
 
-logger = getLogger("ui_locales")
-from libexec.auth import auth_backends
+from canopsis.webcore.services.auth import auth_backends
 
-logger = logging.getLogger("ui_locales")
+logger = getLogger("ui_locales")
+
 
 #########################################################################
 base_path = os.path.expanduser("~/var/www/canopsis/")

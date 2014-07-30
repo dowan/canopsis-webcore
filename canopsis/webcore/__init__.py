@@ -1,7 +1,5 @@
-#!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
-
-# --------------------------------
+#--------------------------------
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
 #
 # This file is part of Canopsis.
@@ -20,32 +18,4 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-import sys
-import os
-import json
-
-basepath = os.path.expanduser('~canopsis/var/www/canopsis')
-
-def get_file_list(path):
-	filelist = os.listdir(path)
-	information = []
-
-	for filename in filelist:
-		filepath = '{0}/{1}'.format(path, filename)
-
-		if os.path.isdir(filepath):
-			information.append({
-				'name': filename,
-				'files': get_file_list(filepath),
-				'type': 'dir'
-			})
-		else:
-			information.append({'name': filename})
-
-	return information
-
-
-if __name__=="__main__":
-	with open(basepath + '/core/files/files.json', 'w') as f:
-		f.write(json.dumps(get_file_list(basepath), indent=4))
-
+__version__ = '0.8'

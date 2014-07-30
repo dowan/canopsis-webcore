@@ -29,15 +29,14 @@ from bottle import get
 
 logger = getLogger("ui_topology")
 
-import sys, os
-operators_path=os.path.expanduser('~/opt/amqp2engines/engines/topology')
+operators_path = expanduser('~/opt/amqp2engines/engines/topology')
 sys.path.append(operators_path)
 
 @get('/topology/getOperators')
 def get_operators():
     operators = []
 
-    for opfile in os.listdir(operators_path):
+    for opfile in listdir(operators_path):
         try:
             operator = opfile.split('.')
             if operator[1] == 'py':

@@ -30,7 +30,7 @@ from bottle import HTTPError, post, static_file, response
 
 logger = logging.getLogger('calendar')
 
-from libexec.rest import *
+from canopsis.webcore.services.rest import rest_get
 
 namespace = "events"
 #########################################################################

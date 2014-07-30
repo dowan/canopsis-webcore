@@ -32,8 +32,8 @@ from canopsis.old.record import Record
 from canopsis.old.group import Group
 
 #import protection function
-from libexec.auth import get_account, delete_session, reload_account, \
-    check_group_rights
+from canopsis.webcore.services.auth import get_account, delete_session, \
+    reload_account, check_group_rights
 
 
 logger = logging.getLogger('Account')

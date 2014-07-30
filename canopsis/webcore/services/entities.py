@@ -24,7 +24,7 @@ from bottle import get, post, request, HTTPError
 
 from canopsis.old.storage import get_storage
 
-from libexec.auth import get_account
+from canopsis.webcore.services.auth import get_account
 
 import json
 
