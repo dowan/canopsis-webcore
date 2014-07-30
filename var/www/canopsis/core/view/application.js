@@ -71,13 +71,13 @@ define([
 			 */
 			//TODO uncomment while ready
 
-			 /*
+
 			$(".navbar .menu").slimscroll({
 				height: "200px",
 				alwaysVisible: false,
 				size: "3px"
 			}).css("width", "100%");
-			*/
+
 			/*
 			 * INITIALIZE BUTTON TOGGLE
 			 * ------------------------
@@ -100,7 +100,7 @@ define([
 
 			/* Sidebar tree view */
 			//TODO uncomment while ready
-			//$(".sidebar .treeview").tree();
+			$(".sidebar .treeview").tree();
 
 			/* 
 			 * Make sure that the sidebar is streched full height
@@ -135,6 +135,7 @@ define([
 
 			//Fix the fixed layout sidebar scroll bug
 			fix_sidebar();
+			console.log("sidebar", $(".sidebar"));
 		}
 	});
 
