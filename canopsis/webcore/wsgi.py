@@ -53,7 +53,7 @@ config_filename = os.path.expanduser('~/etc/webserver.conf')
 config = ConfigParser.RawConfigParser()
 config.read(config_filename)
 
-#put config in builtins to make it readable from modules in libexec
+#put config in builtins to make it readable from modules in canopsis.webcore.services
 __builtins__["config"] = config
 
 webservices = []
@@ -130,7 +130,7 @@ def load_webservices():
         modname = 'canopsis.webcore.services.{0}'.format(webservice)
 
         try:
-            mod = import_module(modname, modpath)
+            mod = import_module(modname)
 
             if hasattr(mod, 'logger'):
                 mod.logger.setLevel(logging_level)
@@ -206,7 +206,7 @@ if config.has_option('auth', 'providers'):
         else:
             bottle.install(mod.get_backend())
 
-bottle.install(libexec.auth.EnsureAuthenticated())
+bottle.install(auth.EnsureAuthenticated())
 
 ## Session system with beaker
 session_opts = {
@@ -230,8 +230,8 @@ def index(lang='en'):
 def index_debug(lang='en'):
     return static_file('canopsis/index.debug.html', root=root_directory)
 
-@route('/:lang/static/:path#.+#', skip=libexec.auth.auth_backends)
-@route('/static/:path#.+#', skip=libexec.auth.auth_backends)
+@route('/:lang/static/:path#.+#', skip=auth.auth_backends)
+@route('/static/:path#.+#', skip=auth.auth_backends)
 def server_static(path, lang='en'):
     key = request.params.get('authkey', default=None)
     if key:
@@ -239,16 +239,16 @@ def server_static(path, lang='en'):
 
     return static_file(path, root=root_directory)
 
-@route('/favicon.ico',skip=[libexec.auth.auth_backends])
+@route('/favicon.ico',skip=[auth.auth_backends])
 def favicon():
     return
 
-@route('/', skip=libexec.auth.auth_backends)
-@route('/:key', skip=libexec.auth.auth_backends)
-@route('/:lang/', skip=libexec.auth.auth_backends)
-@route('/:lang/:key', skip=libexec.auth.auth_backends)
-@route('/index.html', skip=libexec.auth.auth_backends)
-@route('/:lang/index.html', skip=libexec.auth.auth_backends)
+@route('/', skip=auth.auth_backends)
+@route('/:key', skip=auth.auth_backends)
+@route('/:lang/', skip=auth.auth_backends)
+@route('/:lang/:key', skip=auth.auth_backends)
+@route('/index.html', skip=auth.auth_backends)
+@route('/:lang/index.html', skip=auth.auth_backends)
 def loginpage(key=None, lang='en'):
     s = request.environ.get('beaker.session')
 
