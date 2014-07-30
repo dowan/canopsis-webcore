@@ -25,6 +25,8 @@ define([
 	'app/lib/utils/widgets',
 	'utils'
 ], function($, Ember, Application, userConfiguration, widgetUtils, utils) {
+	var get = Ember.get,
+		set = Ember.set;
 
 	Application.WidgetController = Ember.ObjectController.extend({
 
@@ -33,9 +35,12 @@ define([
 		init: function () {
 
 			var widgetController = this;
+			console.log('widget init');
+			console.log('viewController', widgetUtils.getParentViewForWidget(this));
+			console.log('viewController', widgetUtils.getParentViewForWidget(this).get('isMainView'));
 
-			console.info("widget init");
-
+			set(this, 'viewController', widgetUtils.getParentViewForWidget(this));
+			set(this, 'isOnMainView', widgetUtils.getParentViewForWidget(this).get('isMainView'));
 			//manage user configuration
 			this.set('userConfiguration', userConfiguration.create({widget: this}));
 
@@ -115,10 +120,7 @@ define([
 				widgetWizard.submit.done(function() {
 					console.log('record going to be saved', widget);
 
-					console.log("getCurrentRouteController", utils.routes.getCurrentRouteController());
-
-					//TODO @gwen detect if record is embedded or not HERE
-					var userview = widgetUtils.getParentViewForWidget(widgetController).get('content');
+					var userview = get(widgetController, 'viewController').get('content');
 					userview.save();
 					console.log("triggering refresh");
 					widgetController.trigger('refresh');
@@ -140,7 +142,7 @@ define([
 					}
 				}
 
-				var userview = widgetUtils.getParentViewForWidget(this).get('content');
+				var userview = get(this, 'viewController').get('content');
 				userview.save();
 
 				console.groupEnd();
@@ -182,7 +184,7 @@ define([
 						console.log('new array', array);
 						Ember.set(this, 'content.items.content', array);
 
-						var userview = widgetUtils.getParentViewForWidget(this).get('content');
+						var userview = get(this, 'viewController').get('content');
 						userview.save();
 					}
 				} catch (e) {

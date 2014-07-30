@@ -34,7 +34,6 @@ var helpers = [
     'percent',
     'renderwidget',
     'stateview',
-    'criticityview',
     'statusview',
     'timestamp',
     'timeSince',

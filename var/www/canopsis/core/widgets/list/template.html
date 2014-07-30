@@ -13,6 +13,9 @@
 			{{#each filter in controller.filters}}
 				<button class="btn btn-default"{{action setFilter filter.filter}}>{{filter.title}}</button>
 			{{/each}}
+			<button type="button" class="btn btn-primary" {{action addUserFilter}} data-col="all">
+				<i class="fa fa-plus"></i> {{tr 'Add'}}
+			</button>
 		</div>
 		<div style="clear:both"></div>
 		<br/>

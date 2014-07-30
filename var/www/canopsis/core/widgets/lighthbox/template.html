@@ -1,13 +1,15 @@
 {{#if Canopsis.editMode}}
-	<button type="button" class="btn btn-info btn-sm" {{action 'insertWidget' controller}} >{{glyphicon "plus-sign"}} Insert widget</button>
-	<div>
-		{{#each item in controller.items}}
-			<div {{bind-attr class="controller.section"}} >
-				{{widgetslot item=item}}
-			</div>
-		{{/each}}
-		<div style="clear:both"></div>
-	</div>
+	{{#if controller.isOnMainView}}
+		<button type="button" class="btn btn-info btn-sm" {{action 'insertWidget' controller}} >{{glyphicon "plus-sign"}} Insert widget</button>
+		<div>
+			{{#each item in controller.items}}
+				<div {{bind-attr class="controller.section"}} >
+					{{widgetslot item=item}}
+				</div>
+			{{/each}}
+			<div style="clear:both"></div>
+		</div>
+	{{/if}}
 {{else}}
 	<div>
 		{{#each item in controller.items}}

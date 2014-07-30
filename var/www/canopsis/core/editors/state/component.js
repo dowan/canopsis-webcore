@@ -29,19 +29,19 @@ define([
 			this._super();
 		},
 
-		isOk:function () {
+		isInfo:function () {
 			return this.get('content') === 0;
 		}.property('content'),
 
-		isWarning:function () {
+		isMinor:function () {
 			return this.get('content') === 1;
 		}.property('content'),
 
-		isError:function () {
+		isMajor:function () {
 			return this.get('content') === 2;
 		}.property('content'),
 
-		isUnknown:function () {
+		isCritical:function () {
 			return this.get('content') === 3;
 		}.property('content'),
 
