@@ -28,7 +28,6 @@ from canopsis.old.account import Account
 from canopsis.old.storage import get_storage
 from canopsis.old.record import Record
 import base64
-from canopsis.old.tools import clean_mfilter
 
 #import protection function
 from canopsis.webcore.services.auth import get_account, check_group_rights
@@ -280,9 +279,6 @@ def rest_get(namespace, ctype=None, _id=None, params=None):
 			mfilter['_id'] = { '$regex' : '.*'+search+'.*', '$options': 'i' }
 
 		logger.debug(" + mfilter: "+str(mfilter))
-
-		#clean mfilter
-		mfilter = clean_mfilter(mfilter)
 
 		records, total = storage.find(mfilter, sort=msort, limit=limit, offset=start, account=account, with_total=True, namespace=namespace)
 

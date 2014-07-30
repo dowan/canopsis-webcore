@@ -32,8 +32,6 @@ from canopsis.webcore.services.auth import get_account
 # Modules
 from canopsis.old.storage import get_storage
 
-from canopsis.old.tools import clean_mfilter
-
 from canopsis.perfdata.manager import PerfData
 from canopsis.timeserie import TimeSerie
 from canopsis.timeserie.timewindow import TimeWindow, Period
@@ -284,7 +282,6 @@ def perfstore_get_all_metrics(limit=20, start=0, search=None, filter=None, sort=
 
     logger.debug(" + mfilter: {0}".format(mfilter))
 
-    mfilter = clean_mfilter(mfilter)
     mfilter['type'] = 'metric'
     data = manager.entities.find(mfilter, limit=limit, skip=start, data=False, sort=msort)
 
@@ -455,8 +452,6 @@ def perfstore_perftop(start=None, stop=None):
     logger.debug(" + export csv:  %s" % export_csv)
     logger.debug(" + export fields: %s" % str(export_fields))
 
-    mfilter =  clean_mfilter(mfilter)
-
     # find the right type entity
     entities = manager.entities.find(mfilter, limit=1, projection={'nodeid'})
     entities.hint([('type', 1), ('component', 1), ('resource', 1), ('name', 1)])
@@ -515,9 +510,6 @@ def perfstore_perftop(start=None, stop=None):
 
             if expand:
                 metric_limit = 1
-
-            #clean mfilter
-            mfilter =  clean_mfilter(mfilter)
 
             metrics = manager.get_meta(data_id=entity['nodeid'], limit=limit)
 
