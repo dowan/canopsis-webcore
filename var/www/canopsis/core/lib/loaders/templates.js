@@ -34,22 +34,22 @@ var templates = [
     { name: 'listline' },
     { name: 'widgetslot-default' },
     { name: 'widgetslot-grey' },
-    { name: 'actionbutton-edit', classes: ["action"], icon : "pencil" , label : "Edit"},
-    { name: 'actionbutton-ack', classes: ["action", "toolbar"], icon : "ok" , label : "Ack"},
-    { name: 'actionbutton-cancel', classes: ["action", "toolbar"], icon : "ban-circle" , label : "Cancel"},
-    { name: 'actionbutton-remove', classes: ["action"], icon : "trash", label : "Remove"},
+    { name: 'actionbutton-edit', classes: ["action"], icon : "pencil" , label : "Edit" },
+    { name: 'actionbutton-ack', classes: ["action", "toolbar"], icon : "ok" , label : "Ack" },
+    { name: 'actionbutton-cancel', classes: ["action", "toolbar"], icon : "ban-circle" , label : "Cancel" },
+    { name: 'actionbutton-remove', classes: ["action"], icon : "trash", label : "Remove" },
     { name: 'actionbutton-show', classes: ["action"], icon : "eye-open" ,label : "Show" },
-    { name: 'actionbutton-info', classes: ["action"], icon : "info-sign" ,label : "Info"},
+    { name: 'actionbutton-info', classes: ["action"], icon : "info-sign" ,label : "Info" },
     { name: 'actionbutton-create', classes: ["action", "toolbar"], icon : "plus-sign" , label : "Create" },
     { name: 'actionbutton-removeselection', classes: ["action", "toolbar"], icon : "trash"  , label : "Remove-selection" },
     { name: 'actionbutton-history', classes: ["action", "toolbar"],icon : "time"  , label : "History" },
-    { name: 'formbutton-submit', classes: ["formbutton"]   },
-    { name: 'titlebarbutton-moveup', classes: ["formbutton"]  },
-    { name: 'titlebarbutton-movedown', classes: ["formbutton"]  },
-    { name: 'titlebarbutton-moveleft', classes: ["formbutton"]  },
+    { name: 'formbutton-submit', classes: ["formbutton"] },
+    { name: 'titlebarbutton-moveup', classes: ["formbutton"] },
+    { name: 'titlebarbutton-movedown', classes: ["formbutton"] },
+    { name: 'titlebarbutton-moveleft', classes: ["formbutton"] },
     { name: 'titlebarbutton-moveright', classes: ["formbutton"] },
-    { name: 'titlebarbutton-minimize', classes: ["formbutton"]   },
-    { name: 'formbutton-cancel', classes: ["formbutton"]  }
+    { name: 'titlebarbutton-minimize', classes: ["formbutton"] },
+    { name: 'formbutton-cancel', classes: ["formbutton"] }
 ];
 
 var deps = ['ember'];

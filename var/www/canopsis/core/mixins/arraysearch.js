@@ -37,6 +37,8 @@ define([
 		actions: {
 			searchItems: function(findOptions) {
 
+				console.log('searchItems', findOptions);
+
 				set(this, 'findOptions', findOptions);
 
 				if (this.currentPage !== undefined) {
@@ -45,6 +47,44 @@ define([
 
 				this.refreshContent();
 			}
+		},
+
+		computeFilterPartForCriterion: function(searchPhrase) {
+			console.log("search", this.get("searchableAttributes"));
+			var searchableAttributes = get(this, 'searchableAttributes');
+
+			//TODO these checks should be asserts
+			if (searchableAttributes === undefined) {
+					console.warn("searchableAttributes not defined in controller, but searchItems still called. Trying to recompute searchableAttributes.", this);
+
+					this.searchableAttributesUpdate();
+
+					searchableAttributes = get(this, 'searchableAttributes');
+
+					console.log('new searchableAttributes', searchableAttributes);
+					if(searchableAttributes === undefined) {
+							console.warn("searchableAttributes not defined in controller, but searchItems still called. Doing nothing.", this);
+							return;
+					}
+
+			}
+			if (typeof searchableAttributes !== "object") {
+					console.warn("searchableAttributes should be an array.", this);
+					return;
+			}
+			if (searchableAttributes.length === 0) {
+					console.warn("Asking for a search on records with no searchableAttributes. Doing nothing.", this);
+					return;
+			}
+
+			var filter_orArray = [];
+			for (var i = 0; i < searchableAttributes.length; i++) {
+					var filter_orArrayItem = {};
+					filter_orArrayItem[searchableAttributes[i]] = {"$regex": searchPhrase, "$options": "i"};
+					filter_orArray.push(filter_orArrayItem);
+			}
+
+			return JSON.stringify({"$or": filter_orArray });
 		},
 
 		searchableAttributesUpdate: function(){

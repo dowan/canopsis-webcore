@@ -72,11 +72,11 @@ define([
 			//TODO uncomment while ready
 
 
-			$(".navbar .menu").slimscroll({
-				height: "200px",
-				alwaysVisible: false,
-				size: "3px"
-			}).css("width", "100%");
+			// $(".navbar .menu").slimscroll({
+			// 	height: "200px",
+			// 	alwaysVisible: false,
+			// 	size: "3px"
+			// }).css("width", "100%");
 
 			/*
 			 * INITIALIZE BUTTON TOGGLE

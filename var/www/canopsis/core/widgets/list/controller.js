@@ -69,7 +69,8 @@ define([
 
 			widgetData: [],
 
-			findOptions: {},
+			findOptions : {},
+
 			loaded: false,
 
 			itemsPerPagePropositions : [5, 10, 20, 50],
@@ -97,7 +98,7 @@ define([
 
 			actions: {
 				setFilter: function (filter) {
-					this.findOptions.filter = filter;
+					set(this, 'findParams_cfilterFilterPart', filter);
 
 					if (this.currentPage !== undefined) {
 						this.set("currentPage", 1);
@@ -230,13 +231,15 @@ define([
 					return;
 				}
 
+				var findParams = this.computeFindParams();
+
 				console.tags.add('data');
-				console.log("find items of type", itemType, "with options", this.get('findOptions'));
+				console.log("find items of type", itemType, "with options", findParams);
 				console.tags.remove('data');
 
-				this.get("widgetDataStore").findQuery(itemType, this.findOptions).then(function(queryResults) {
+				this.get("widgetDataStore").findQuery(itemType, findParams).then(function(queryResults) {
 					console.tags.add('data');
-					console.log("got results in widgetDataStore", itemType, "with options", me.get('findOptions'));
+					console.log("got results in widgetDataStore", itemType, "with options", findParams);
 					console.tags.remove('data');
 
 					//retreive the metas of the records
@@ -301,8 +304,53 @@ define([
 			}.property('attributesKeysDict', 'attributesKeys', 'sorted_columns'),
 
 			searchFieldValueChanged: function () {
-				console.log('searchFieldValueChanged');
-			}.observes('searchFieldValue')
+				console.log('searchFieldValueChanged', get(this, 'searchCriterion'), get(this, 'searchFieldValue'));
+
+				var searchCriterion = get(this, 'searchFieldValue');
+				var filter = {};
+
+				if(searchCriterion !== null && searchCriterion !== undefined) {
+					var searchFilterPart = this.computeFilterPartForCriterion(searchCriterion);
+					console.log('searchFilterPart', searchFilterPart);
+					filter = searchFilterPart;
+				}
+
+				set(this, 'findParams_searchFilterPart', filter);
+				this.refreshContent();
+			}.observes('searchFieldValue'),
+
+			computeFindParams: function(){
+				var searchFilterPart = get(this, 'findParams_searchFilterPart');
+				var cfilterFilterPart = get(this, 'findParams_cfilterFilterPart');
+
+				var filter;
+
+				function isDefined(filterPart) {
+					if(filterPart === {} || filterPart === null || filterPart === undefined)
+						return false;
+
+					return true;
+				}
+
+				if(isDefined(searchFilterPart)) {
+					filter = searchFilterPart;
+
+					if(isDefined(cfilterFilterPart)) {
+						console.log('combine cfilter & search filterParts');
+
+						filter = JSON.stringify({ '$and': [
+							JSON.parse(searchFilterPart),
+							JSON.parse(cfilterFilterPart)
+						]});
+					}
+				}
+				else if(isDefined(cfilterFilterPart)) {
+					filter = cfilterFilterPart;
+				}
+
+				return {filter: filter};
+			}
+
 	}, listOptions);
 
 	return widget;
