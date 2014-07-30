@@ -26,7 +26,6 @@ var renderersTemplates = [
     'tags',
     'color',
     'state',
-    'criticity',
     'status',
     'timestamp',
     'percent',

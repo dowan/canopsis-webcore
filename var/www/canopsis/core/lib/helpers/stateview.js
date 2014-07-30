@@ -20,11 +20,16 @@
 define(['ember'], function(Ember) {
 
 	Ember.Handlebars.helper('stateview', function(state) {
-	    var state_template;
-	    var colors = ['green', 'orange', 'red', 'purple'];
-	    var texts = ['Info', 'Warning', 'Critical', 'Unknown'];
 
-	    state_template = '<span class="badge bg-%@">%@</span>'.fmt(colors[state], _(texts[state]));
+		var statelist = {
+			0: {color: 'green', text: 'Info'},
+			1: {color: 'yellow', text: 'Minor'},
+			2: {color: 'orange', text: 'Major'},
+			3: {color: 'red', text: 'Critical'},
+		};
+
+		var stateSelection = statelist[state];
+	    var state_template = '<span class="badge bg-%@">%@</span>'.fmt(stateSelection.color, _(stateSelection.text));
 
 	    return new Ember.Handlebars.SafeString(state_template);
 	});
