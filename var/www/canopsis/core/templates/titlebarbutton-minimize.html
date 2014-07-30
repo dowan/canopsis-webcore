@@ -1,9 +1,13 @@
-{{log "------------------ minimize"}}
-{{log this}}
-{{log view}}
 <button type="button" class="btn btn-info btn-sm pull-right" {{action 'minimize' this target=view}} >
-	{{glyphicon "minus"}}
-	{{#unless minified}}
-		Minimize
-	{{/unless}}
+	{{#if view.minimized}}
+		{{glyphicon "plus"}}
+		{{#unless minified}}
+			Maximize
+		{{/unless}}
+	{{else}}
+		{{glyphicon "minus"}}
+		{{#unless minified}}
+			Minimize
+		{{/unless}}
+	{{/if}}
 </button>
