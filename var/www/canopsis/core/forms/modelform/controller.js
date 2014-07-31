@@ -25,6 +25,8 @@ define([
 	'app/mixins/validation',
 	'app/lib/loaders/schema-manager'
 ], function(Ember, Application, FormFactory, InspectableitemMixin, ValidationMixin) {
+	var set = Ember.set,
+		get = Ember.get;
 
 	var formOptions = {
 		mixins: [
@@ -35,13 +37,24 @@ define([
 
 	FormFactory('modelform', {
 
-  		validationFields: Ember.computed(function() {return Ember.A();}),
-  		ArrayFields: Ember.A(),
+		validationFields: Ember.computed(function() {return Ember.A();}),
+		ArrayFields: Ember.A(),
 
-  		onePageDisplay: function () {
-  			//TODO search this value into schema
-  			return false;
-  		}.property(),
+		categories: function(){
+			var res = get(this, 'categorized_attributes');
+			if(res instanceof Array) {
+				set(res[0], 'isDefault', true);
+				return res;
+			}
+			else {
+				return [];
+			}
+		}.property('categorized_attributes'),
+
+		onePageDisplay: function () {
+			//TODO search this value into schema
+			return false;
+		}.property(),
 
 		inspectedDataItem: function() {
 			return this.get('formContext');
