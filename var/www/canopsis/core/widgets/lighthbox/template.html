@@ -3,7 +3,7 @@
 		<button type="button" class="btn btn-info btn-sm" {{action 'insertWidget' controller}} >{{glyphicon "plus-sign"}} Insert widget</button>
 		<div>
 			{{#each item in controller.items}}
-				<div {{bind-attr class="controller.section"}} >
+				<div {{bind-attr class="controller.itemCssClass"}} >
 					{{widgetslot item=item}}
 				</div>
 			{{/each}}
@@ -11,12 +11,13 @@
 		</div>
 	{{/if}}
 {{else}}
-	<div>
-		{{#each item in controller.items}}
-			<div {{bind-attr class="controller.section"}} >
+	{{#each item in controller.items}}
+		{{#if controller.itemTagName}}
+			{{#view Ember.View tagName=controller.itemTagName classNames=controller.itemCssClassArray}}
 				{{widgethelper widget=item.widget target=controller}}
-			</div>
-		{{/each}}
-		<div style="clear:both"></div>
-	</div>
+			{{/view}}
+		{{else}}
+			{{widgethelper widget=item.widget target=controller}}
+		{{/if}}
+	{{/each}}
 {{/if}}

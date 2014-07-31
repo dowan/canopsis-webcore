@@ -24,7 +24,7 @@ define(['ember'], function(Ember) {
 	var icon = ["eye", "pencil"];
 	var result = "";
 
-	var icon_tag = ' <button type="button" class="btn btn-%@ unclickable"><span class="fa fa-%@" style="color:white"></span></button>';
+	var icon_tag = ' <span class="label label-%@"><span class="fa fa-%@" style="color:white"></span></span>';
 
 	rightsTocheck.forEach(function(elem, i)
 	{

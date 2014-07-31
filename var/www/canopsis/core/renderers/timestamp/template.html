@@ -1,7 +1,9 @@
 {{#group}}
-	{{timestamp value attr}}
-	{{#if attr.options.canDisplayAgo}}
+	{{#unless attr.options.hideDate}}
+		{{timestamp value attr}}
 		<br>
+	{{/unless}}
+	{{#if attr.options.canDisplayAgo}}
 			<small class="text-muted">
 				{{glyphicon "time"}}
 				{{timeSince value}}

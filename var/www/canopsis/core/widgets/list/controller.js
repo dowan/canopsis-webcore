@@ -33,6 +33,7 @@ define([
 	'app/adapters/userview',
 	'canopsis/core/lib/wrappers/ember-cloaking',
 	'app/view/listline',
+	'app/lib/wrappers/datatables'
 ], function(Ember, DS, WidgetFactory, PaginationMixin, InspectableArrayMixin,
 		ArraySearchMixin, SortableArrayMixin, HistoryMixin, SendEventMixin, utils) {
 
@@ -88,7 +89,9 @@ define([
 			//pagination
 			paginationMixinFindOptions: Ember.computed.alias("findOptions"),
 
-			onReload: function () {
+			onReload: function (element) {
+				$('.dataTable').dataTable();
+				console.log('datatables woz here');
 				this._super();
 			},
 

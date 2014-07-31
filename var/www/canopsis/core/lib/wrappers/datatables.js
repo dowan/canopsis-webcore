@@ -18,25 +18,10 @@
 */
 
 define([
-	'app/application',
-	'app/lib/factories/widget',
-	'app/widgets/canvas/controller'
-], function(Application, WidgetFactory) {
+	'app/lib/factories/wrapper',
+	'jquery',
+	'webcore-libs/datatables/media/js/jquery.dataTables.min'
+], function(Wrapper, $) {
 
-	var widget = WidgetFactory('lighthbox', {
-		partials: {
-			titlebarsbuttons : ["titlebarbutton-moveright", "titlebarbutton-moveleft"]
-		},
-		itemCssClassArray: function() {
-			var itemCssClass = this.get('content.itemCssClass');
-			if(itemCssClass !== undefined && itemCssClass !== null)
-				return itemCssClass.split(',');
-			else {
-				console.log('empty itemCssClassArray for lighthbox');
-				return [];
-			}
-		}.property('content.itemCssClass')
-	}, {subclass: Application.CanvasController});
-
-	return widget;
+	return Wrapper("datatables", $.fn.dataTable, arguments, "1.10");
 });

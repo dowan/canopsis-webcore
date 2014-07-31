@@ -34,6 +34,7 @@ define([
 		errorMessages : Ember.A(),
 
 		init: function() {
+			console.log('widget view init', this.widget.get("xtype"), this.widget, get(this, 'widget.tagName'));
 			set(this, 'target', get(this, 'controller'));
 
 			this._super();
@@ -42,6 +43,16 @@ define([
 			} else {
 				console.error("no correct widget found for view", this);
 				this.errorMessages.pushObject('No correct widget found');
+			}
+			if(get(this, 'widget.tagName')) {
+				console.log('custom tagName', get(this, 'widget.tagName'));
+				set(this, 'tagName', get(this, 'widget.tagName'));
+			}
+
+			var cssClasses = get(this, 'widget.cssClass');
+			if(cssClasses) {
+				console.log('custom tagName', get(this, 'widget.tagName'));
+				set(this, 'classNames', cssClasses.split(','));
 			}
 		},
 
@@ -105,7 +116,7 @@ define([
 
 			this.registerHooks();
 			var result = this._super.apply(this, arguments);
-			this.get('controller').onReload();
+			this.get('controller').onReload(this.$);
 			//TODO put this somewhere on list widget
 			// this.$('input').iCheck({checkboxClass: 'icheckbox_minimal-grey', radioClass: 'iradio_minimal-grey'});
 
