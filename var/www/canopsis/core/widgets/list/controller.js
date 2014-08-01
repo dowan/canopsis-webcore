@@ -58,6 +58,16 @@ define([
 
 		didInsertElement: function() {
 			console.log('did insert list', this.$);
+
+			//FIXME problem with selectAll
+			// this.$('input').iCheck({
+			// 	checkboxClass: 'icheckbox_minimal-grey',
+			// 	radioClass: 'iradio_minimal-grey'
+			// });
+
+			//FIXME datatables not working atm
+			// this.$('table').dataTable();
+
 			this.$('table').contextMenu({
 				menuSelector: "#contextMenu",
 				menuSelected: function (invokedOn, selectedMenu) {
@@ -105,9 +115,10 @@ define([
 			itemsPerPagePropositions : [5, 10, 20, 50],
 
 			isAllSelectedChanged: function(){
-				console.log('isAllSelected');
+				console.log('toggle isAllSelected');
 				this.get('widgetData').content.setEach('isSelected', get(this, 'isAllSelected'));
 			}.observes('isAllSelected'),
+
 			//Mixin aliases
 			//history
 			historyMixinFindOptions: Ember.computed.alias("findOptions.useLogCollection"),
@@ -333,7 +344,7 @@ define([
 
 			}.property('attributesKeysDict', 'attributesKeys', 'sorted_columns'),
 
-			searchFieldValueChanged: function () {
+			searchCriterionChanged: function () {
 				console.log('searchFieldValueChanged', get(this, 'searchCriterion'), get(this, 'searchFieldValue'));
 
 				var searchCriterion = get(this, 'searchFieldValue');
@@ -347,7 +358,7 @@ define([
 
 				set(this, 'findParams_searchFilterPart', filter);
 				this.refreshContent();
-			}.observes('searchFieldValue'),
+			}.observes('searchCriterion'),
 
 			computeFindParams: function(){
 				console.group('computeFindParams');
