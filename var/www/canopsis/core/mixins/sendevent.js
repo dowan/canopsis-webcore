@@ -49,7 +49,7 @@ define([
 				source_type : crecord.get('source_type'),
 				component : crecord.get('component'),
 				resource : crecord.get('resource'),
-				state : 0,
+				state : crecord.get('state'),
 				state_type : crecord.get('state_type'),
 				crecord_type: event_type,
 			};
@@ -70,6 +70,9 @@ define([
 			if (event_type === this.TYPE_ACK) {
 				//ref rk is required by ack engine
 				record.ref_rk = crecord.get('id');
+
+				//ack is cool
+				record.state = 0;
 				//recomputing id with ack event type
 				record.id = [
 					record.connector,
@@ -107,7 +110,7 @@ define([
 						record.rollback();
 						record.unloadRecord();
 						setTimeout(function() {
-							console.log('refreshing list content')
+							console.log('refreshing list content');
 							listController.refreshContent();
 						},500);
 					}
@@ -120,27 +123,28 @@ define([
 			//from selected crecords, filters crecords that can be processed for current event type
 
 			var selectedRecords = [];
+			var i;
 			//businbess rules describing how events are filtered depending on their types.
 			//rules are the same as the ack template ones.
 			if (event_type === this.TYPE_ACK) {
-				for(var i=0; i<crecords.length; i++) {
-					if (crecords[i].get('state') && !crecords[i].get('ack.pending')) {
+				for(i=0; i<crecords.length; i++) {
+					if (crecords[i].get('state') && !crecords[i].get('ack.isAck') && !crecords[i].get('ack.isCancel')) {
 						selectedRecords.push(crecords[i]);
 					}
 				}
 			}
 
 			if (event_type === this.TYPE_CANCEL) {
-				for(var i=0; i<crecords.length; i++) {
-					if (crecords[i].get('state') && !crecords[i].get('cancel.cancel')) {
+				for(i=0; i<crecords.length; i++) {
+					if (crecords[i].get('state') && !crecords[i].get('ack.isAck')) {
 						selectedRecords.push(crecords[i]);
 					}
 				}
 			}
 
 			if (event_type === this.TYPE_UNCANCEL) {
-				for(var i=0; i<crecords.length; i++) {
-					if (crecords[i].get('cancel.cancel')) {
+				for(i=0; i<crecords.length; i++) {
+					if (crecords[i].get('ack.isCancel')) {
 						selectedRecords.push(crecords[i]);
 					}
 				}

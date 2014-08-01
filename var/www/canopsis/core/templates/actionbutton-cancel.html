@@ -1,15 +1,31 @@
 {{#unless controller.findOptions.useLogCollection}}
-	{{#if this.cancel.cancel}}
-		<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Undo cancel this event">
-			<button type="button" class="btn btn-default" {{action 'sendEvent' 'uncancel' this}} >
-				{{glyphicon "share-alt"}}
-			</button>
-		</a>
-	{{else}}
-		{{#if this.state}}
+	{{#if minified}}
+		{{#if this.ack.isCancel}}
+			<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Undo cancel this event">
+				<button type="button" class="btn btn-default" {{action 'sendEvent' 'uncancel' this}} >
+					{{glyphicon "share-alt"}}
+				</button>
+			</a>
+		{{/if}}
+		{{#if this.ack.isAck}}
 			<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Cancel this alert">
 				<button type="button" class="btn btn-default" {{action 'sendEvent' 'cancel' this}} >
 					{{glyphicon "ban-circle"}}
+				</button>
+			</a>
+		{{/if}}
+	{{else}}
+			{{#if this.ack.isCancel}}
+			<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Undo cancel this event">
+				<button type="button" class="btn btn-default" {{action 'sendEvent' 'uncancel'}} >
+					Undo cancel {{glyphicon "share-alt"}}
+				</button>
+			</a>
+		{{/if}}
+		{{#if this.ack.isAck}}
+			<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Cancel this alert">
+				<button type="button" class="btn btn-default" {{action 'sendEvent' 'cancel'}} >
+					Cancel {{glyphicon "ban-circle"}}
 				</button>
 			</a>
 		{{/if}}
