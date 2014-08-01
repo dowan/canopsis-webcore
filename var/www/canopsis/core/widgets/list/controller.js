@@ -75,10 +75,6 @@ define([
 			loaded: false,
 
 			itemsPerPagePropositions : [5, 10, 20, 50],
-			userDefinedItemsPerPageChanged : function() {
-				this.set('itemsPerPage', this.get('userDefinedItemsPerPage'));
-				this.refreshContent();
-			}.observes('userDefinedItemsPerPage'),
 
 			//Mixin aliases
 			//history
@@ -322,6 +318,8 @@ define([
 			}.observes('searchFieldValue'),
 
 			computeFindParams: function(){
+				console.group('computeFindParams');
+
 				var searchFilterPart = get(this, 'findParams_searchFilterPart');
 				var cfilterFilterPart = get(this, 'findParams_cfilterFilterPart');
 
@@ -350,7 +348,33 @@ define([
 					filter = cfilterFilterPart;
 				}
 
-				return {filter: filter};
+				var params = {};
+
+				params.filter = filter;
+
+				params.limit = this.get('itemsPerPage');
+				params.start = this.get('paginationFirstItemIndex') - 1;
+
+				var sortedAttribute = this.get('sortedAttribute');
+
+				console.log('sortedAttribute', sortedAttribute);
+
+				if(isDefined(sortedAttribute)) {
+
+					var direction = "ASC";
+
+					if(sortedAttribute.headerClassName === "sorting_desc") {
+						direction = "DESC";
+					}
+
+					params.sort = [{ property : sortedAttribute.field, direction: direction }];
+					console.log('params.sort', params.sort);
+					params.sort = JSON.stringify(params.sort);
+				}
+
+				console.groupEnd();
+
+				return params;
 			}
 
 	}, listOptions);
