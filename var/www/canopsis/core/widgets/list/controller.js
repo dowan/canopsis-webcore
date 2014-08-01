@@ -292,6 +292,7 @@ define([
 					console.log('no shown columns set, displaying everything');
 					shown_columns = this.get('attributesKeys');
 				}
+
 				var selected_columns = [];
 				for(var column=0; column < shown_columns.length; column++) {
 

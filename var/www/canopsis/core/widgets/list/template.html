@@ -38,37 +38,17 @@
 				<tr>
 					<th>{{tr 'Check'}}</th>
 					{{#each attr in controller.shown_columns}}
-						{{#if Canopsis.editMode}}
-							<th>
-								<button class="btn btn-xs btn-default"{{action moveColumn attr 'left'}}>{{glyphicon "chevron-left"}}</button>
-								{{#if attr.options.label}}
-									{{tr attr.options.label}}
-								{{else}}
-									{{tr attr.field}}
-								{{/if}}
-								<button {{bind-attr class=":btn :btn-xs attr.options.show:btn-primary:btn-default"}} {{action switchColumnDisplay attr}}>
-										{{#if attr.options.show}}
-											{{glyphicon "eye-open"}}
-										{{else}}
-											{{glyphicon "eye-close"}}
-										{{/if}}
-								</button>
-								<button class="btn btn-xs btn-default"{{action moveColumn attr 'right'}}>{{glyphicon "chevron-right"}}</button>
-							</th>
-						{{else}}
-							{{#group}}
-								{{#if attr.options.show}}
-									<th {{bind-attr class="attr.headerClassName"}} {{action sort attr}}>
-										{{#if attr.options.label}}
-											{{tr attr.options.label}}
-										{{else}}
-											{{tr attr.field}}
-										{{/if}}
-									</th>
-								{{/if}}
-							{{/group}}
-						{{/if}}
-
+						{{#group}}
+							{{#if attr.options.show}}
+								<th {{bind-attr class="attr.headerClassName"}} {{action sort attr}}>
+									{{#if attr.options.label}}
+										{{tr attr.options.label}}
+									{{else}}
+										{{tr attr.field}}
+									{{/if}}
+								</th>
+							{{/if}}
+						{{/group}}
 					{{/each}}
 					{{#if controller.item_actions}}
 						<th>Actions</th>
