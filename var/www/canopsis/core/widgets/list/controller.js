@@ -90,8 +90,6 @@ define([
 			paginationMixinFindOptions: Ember.computed.alias("findOptions"),
 
 			onReload: function (element) {
-				$('.dataTable').dataTable();
-				console.log('datatables woz here');
 				this._super();
 			},
 
@@ -278,11 +276,11 @@ define([
 				}
 
 				var shown_columns = [];
-				if (this.get('sorted_columns') !== undefined && this.get('sorted_columns').length > 0) {
+				if (this.get('displayed_columns') !== undefined && this.get('displayed_columns').length > 0) {
 
 					var attributesKeysDict = this.get('attributesKeysDict');
 
-					var sorted_columns = this.get('sorted_columns');
+					var sorted_columns = this.get('displayed_columns');
 
 					for (var i = 0; i < sorted_columns.length; i++) {
 						if (attributesKeysDict[sorted_columns[i]] !== undefined) {
