@@ -17,17 +17,17 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-	'ember',
-	'app/application',
-	'jsonselect'
-], function(Ember, Application, JSONSelect) {
+define(['ember'], function(Ember) {
 
-	Application.ListlineView = Ember.View.extend({
-		tagName:'tr',
-		templateName: 'listline',
-		classNames: ['listline']
-	});
+	var domUtils = {
+		getViewFromJqueryElement: function($el, className) {
+			if(className) {
+				return Ember.View.views[$el.closest('.ember-view .' + className).attr('id')];
+			} else {
+				return Ember.View.views[$el.closest('.ember-view').attr('id')];
+			}
+		}
+	};
 
-	return Application.ListlineView;
+	return domUtils;
 });

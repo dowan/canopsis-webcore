@@ -40,6 +40,7 @@ define([
 			this._super();
 			if (!! get(this, 'widget')) {
 				this.setupController(this.widget);
+				this.applyViewMixins();
 			} else {
 				console.error("no correct widget found for view", this);
 				this.errorMessages.pushObject('No correct widget found');
@@ -54,6 +55,20 @@ define([
 				console.log('custom tagName', get(this, 'widget.tagName'));
 				set(this, 'classNames', cssClasses.split(','));
 			}
+		},
+
+		applyViewMixins: function(){
+			var controller = get(this, 'controller');
+			console.group('apply widget view mixins');
+			if(controller.viewMixins !== undefined) {
+				for (var i = 0, mixinsLength = controller.viewMixins.length; i < mixinsLength; i++) {
+					var mixinToApply = controller.viewMixins[i];
+
+					console.log('mixinToApply', mixinToApply);
+					mixinToApply.apply(this);
+				}
+			}
+			console.groupEnd();
 		},
 
 		setupController: function(widget) {

@@ -28,14 +28,16 @@ define([
 	'app/mixins/history',
 	'app/mixins/sendevent',
 	'utils',
+	'app/lib/utils/dom',
 	'app/lib/loaders/schema-manager',
 	'app/adapters/event',
 	'app/adapters/userview',
 	'canopsis/core/lib/wrappers/ember-cloaking',
 	'app/view/listline',
-	'app/lib/wrappers/datatables'
+	'app/lib/wrappers/datatables',
+	'app/lib/wrappers/bootstrap-contextmenu'
 ], function(Ember, DS, WidgetFactory, PaginationMixin, InspectableArrayMixin,
-		ArraySearchMixin, SortableArrayMixin, HistoryMixin, SendEventMixin, utils) {
+		ArraySearchMixin, SortableArrayMixin, HistoryMixin, SendEventMixin, utils, domUtils) {
 
 	var get = Ember.get,
 		set = Ember.set;
@@ -48,11 +50,37 @@ define([
 			PaginationMixin,
 			HistoryMixin,
 			SendEventMixin
-	]};
+		]
+	};
+
+	var ListViewMixin = Ember.Mixin.create({
+		classNames: ['list'],
+
+		didInsertElement: function() {
+			console.log('did insert list', this.$);
+			this.$('table').contextMenu({
+				menuSelector: "#contextMenu",
+				menuSelected: function (invokedOn, selectedMenu) {
+					var msg = "You selected the menu item '" + selectedMenu.text() +
+						"' on the value '" + invokedOn.text() + "'";
+
+					var targetView = domUtils.getViewFromJqueryElement(invokedOn, 'listline');
+					var lineModelInstance = get(targetView, 'controller.content');
+
+					console.info(msg, lineModelInstance);
+					get(targetView, 'controller').send(selectedMenu.attr('data-action'), lineModelInstance);
+				}
+			});
+			this._super.apply(this, arguments);
+		}
+	});
 
 	var widget = WidgetFactory('list',
 		{
 			needs: ['login'],
+			viewMixins: [
+				ListViewMixin
+			],
 
 			init: function() {
 				this._super();

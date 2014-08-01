@@ -16,18 +16,12 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
-
 define([
-	'ember',
-	'app/application',
-	'jsonselect'
-], function(Ember, Application, JSONSelect) {
+	'jquery',
+	'app/lib/factories/wrapper',
+	'webcore-libs/bootstrap-contextmenu/bootstrap-contextmenu'
+], function($, Wrapper) {
 
-	Application.ListlineView = Ember.View.extend({
-		tagName:'tr',
-		templateName: 'listline',
-		classNames: ['listline']
-	});
+	return Wrapper("bootstrap-contextmenu", undefined, arguments, undefined);
 
-	return Application.ListlineView;
 });

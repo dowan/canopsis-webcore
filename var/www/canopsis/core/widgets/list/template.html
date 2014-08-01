@@ -1,4 +1,21 @@
 {{#if controller.loaded}}
+	<div id="contextMenu" class="dropdown clearfix">
+		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
+			<li class="submenudropdown text-muted">Action</li>
+			<li><a data-action="edit" class='context_ack'><i class="fa fa-check"></i> Acquitter</a></li>
+			<li><a class='context_ackticket'><i class="fa fa-ticket"></i> Déclarer un incident</a></li>
+			<li><a class='context_ackticketnum'><i class="fa fa-pencil"></i> Saisir un numéro de ticket</a></li>
+			<li><a class='context_cancel'><i class="fa fa-ban"></i> Annuler</a></li>
+			<li><a data-action="removeRecord" class='context_delete'><i class="fa fa-trash-o"></i> Supprimer</a></li>
+			<li class="submenudropdown text-muted"><hr/>Prise en main a distante</li>
+			<li><a class=''><i class="fa fa-caret-right"></i> Telnet</a></li>
+			<li><a class=''><i class="fa fa-caret-right"></i> ssh RDP</a></li>
+			<li><a class=''><i class="fa fa-caret-right"></i> VNC</a></li>
+			<li class="submenudropdown text-muted"><hr/>Divers</li>
+			<li><a class=''><i class="fa fa-caret-right"></i> Ping</a></li>
+		</ul>
+	</div>
+
 	<div class="btn-toolbar canopsis-toolbar" role="toolbar">
 		<div class="pull-left">
 			{{#if controller.toolbar}}
@@ -87,9 +104,9 @@
 		</div>
 		<div class="pull-right">
 			{{#group}}
-				<button type="button" class="btn btn-small btn-default" {{action prevPage}}>{{glyphicon 'chevron-left'}}</button>
+				<button type="button" class="btn btn-small btn-default" {{action prevPage}}>← Previous</button>
 					Page {{controller.currentPage}} / {{controller.totalPages}}
-				<button type="button" class="btn btn-small btn-default" {{action nextPage}}>{{glyphicon 'chevron-right'}}</button>
+				<button type="button" class="btn btn-small btn-default" {{action nextPage}}>Next → </button>
 			{{/group}}
 		</div>
 	</div>
