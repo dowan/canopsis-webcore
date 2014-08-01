@@ -53,7 +53,9 @@
 		<table {{bind-attr id="controller.id"}} class="table table-striped table-bordered table-hover dataTable">
 			<thead>
 				<tr>
-					<th>{{tr 'Check'}}</th>
+					<th>
+						{{input type="checkbox" checked=controller.isAllSelected class="toggle"}}
+					</th>
 					{{#each attr in controller.shown_columns}}
 						{{#group}}
 							{{#if attr.options.show}}

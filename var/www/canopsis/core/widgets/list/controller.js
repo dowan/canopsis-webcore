@@ -104,6 +104,10 @@ define([
 
 			itemsPerPagePropositions : [5, 10, 20, 50],
 
+			isAllSelectedChanged: function(){
+				console.log('isAllSelected');
+				this.get('widgetData').content.setEach('isSelected', get(this, 'isAllSelected'));
+			}.observes('isAllSelected'),
 			//Mixin aliases
 			//history
 			historyMixinFindOptions: Ember.computed.alias("findOptions.useLogCollection"),
