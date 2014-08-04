@@ -20,6 +20,7 @@ define([
 	'app/adapters/cancel',
 	'app/adapters/entity',
 	'app/adapters/metric',
+	'app/adapters/connector',
 	'app/serializers/application',
 	'bootstrap',
 	'colorpicker',
@@ -67,8 +68,12 @@ define([
 	Canopsis.commit = commit;
 	Canopsis.editMode = false;
 
+
+
 	Canopsis.conf = canopsisConfiguration;
 	console.log('Canopsis configuration', Canopsis.conf);
+	//TEMP
+	Application.connector = [ { name : "nagios" }, { name : "shinken" } , { name : "schneider" } , { name : "collectd" }];
 
 	Application.manifest = routes;
 	routesLoader.initializeRoutes(

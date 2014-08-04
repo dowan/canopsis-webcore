@@ -34,4 +34,12 @@ define(['ember' , "app/application"], function(Ember , Application) {
 
 		return new Ember.Handlebars.SafeString(logoPath);
 	});
+
+	Ember.Handlebars.helper('logo2', function( imageName) {
+
+		var  logoPath = Canopsis.Application.images[imageName];
+
+		return new Ember.Handlebars.SafeString(logoPath);
+	});
+
 });

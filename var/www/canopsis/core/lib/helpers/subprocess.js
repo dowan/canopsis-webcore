@@ -1,4 +1,4 @@
-/*
+	/*
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
 #
 # This file is part of Canopsis.
@@ -18,25 +18,23 @@
 */
 
 define([
-	'ember',
-	'app/application'
-], function(Ember) {
+    'ember',
+    'utils',
+], function(Ember, utils) {
 
-	var inflexions = [
-		['nagios' , 'nagios'],
-		['curve', 'curves']
-	];
+	Ember.Handlebars.helper('subprocess', function(current) {
+		var returnValue = '';
+		var badgeClass = ["badge alert-danger" , "badge alert-success"];
+		for ( var f = 0 ; f < current.length; f++){
+			var value = current[f];
+			for( var i in value ){
+				if ( value.hasOwnProperty( i ) ) {
+					returnValue += '<div><span class="' + badgeClass[value[i]] + '">'+ i + '</span></div><br>';
+				}
+			}
+		}
 
-	var inflectionsManager = {
-		all: []
-	};
+		return new Ember.Handlebars.SafeString( returnValue );
 
-	console.log(Ember);
-
-	for (var i = 0; i < inflexions.length; i++) {
-		inflectionsManager.all.push(inflexions[i][0] + ' -> ' + inflexions[i][1]);
-		Ember.Inflector.inflector.irregular(inflexions[i][0], inflexions[i][1]);
-	};
-
-	return inflectionsManager;
+	});
 });

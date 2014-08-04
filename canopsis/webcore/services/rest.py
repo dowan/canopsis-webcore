@@ -21,6 +21,7 @@
 import logging
 import json
 
+
 from bottle import get, put, delete, request, HTTPError, post, \
     response, FormsDict
 ## Canopsis
@@ -166,8 +167,9 @@ def rest_trees_get(rk=None):
 def rest_get(namespace, ctype=None, _id=None, params=None):
 	#get the session (security)
 	account = get_account()
-	logger.info('params')
-	logger.info(dict(params))
+	logger.debug('params')
+
+	logger.debug(dict(params))
 	limit		= int(params.get('limit', default=20))
 	start		= int(params.get('start', default=0))
 	groups		= params.get('groups', default=None)
@@ -178,6 +180,7 @@ def rest_get(namespace, ctype=None, _id=None, params=None):
 	onlyWritable	= params.get('onlyWritable', default=False)
 	noInternal	= params.get('noInternal', default=False)
 	ids			= params.get('ids', default=[])
+	multi			= params.get('multi', default=None)
 
 	get_id			= request.params.get('_id', default=None)
 
@@ -212,6 +215,7 @@ def rest_get(namespace, ctype=None, _id=None, params=None):
 
 
 	logger.debug("GET:")
+
 	logger.debug(" + User: "+str(account.user))
 	logger.debug(" + Group(s): "+str(account.groups))
 	logger.debug(" + namespace: "+str(namespace))
@@ -227,6 +231,9 @@ def rest_get(namespace, ctype=None, _id=None, params=None):
 	logger.debug(" + Search: "+str(search))
 	logger.debug(" + filter: "+str(filter))
 	logger.debug(" + query: "+str(query))
+	logger.debug(" + multi: "+str(multi))
+
+
 
 	storage = get_storage(namespace=namespace, logging_level=logger.level)
 
@@ -241,11 +248,16 @@ def rest_get(namespace, ctype=None, _id=None, params=None):
 		mfilter = filter
 
 	records = []
-	if ctype:
-		if mfilter:
-			mfilter['crecord_type'] = ctype
-		else:
-			mfilter = {'crecord_type': ctype}
+	if multi:
+		test = multi.split(',')
+		mfilter["crecord_type"] = { '$in': test }
+
+	else :
+		if ctype:
+			if mfilter:
+				mfilter['crecord_type'] = ctype
+			else:
+				mfilter = {'crecord_type': ctype}
 
 	if query:
 		if mfilter:
@@ -268,7 +280,7 @@ def rest_get(namespace, ctype=None, _id=None, params=None):
 			else:
 				total = 0
 		except Exception, err:
-			logger.info('Error: %s' % err)
+			logger.debug('Error: %s' % err)
 			total = 0
 
 		if total == 0:
@@ -279,8 +291,12 @@ def rest_get(namespace, ctype=None, _id=None, params=None):
 			mfilter['_id'] = { '$regex' : '.*'+search+'.*', '$options': 'i' }
 
 		logger.debug(" + mfilter: "+str(mfilter))
+		logger.debug(" + mfilter: "+str(mfilter))
 
-		records, total = storage.find(mfilter, sort=msort, limit=limit, offset=start, account=account, with_total=True, namespace=namespace)
+		#clean mfilter
+		mfilter = clean_mfilter(mfilter)
+
+		records, total = storage.find( mfilter, sort=msort, limit=limit, offset=start, account=account, with_total=True, namespace=namespace)
 
 	output = []
 
@@ -409,7 +425,7 @@ def rest_post(namespace, ctype, _id=None):
 		items = [items]
 
 	for data in items:
-		data['crecord_type'] = ctype
+	##	data['crecord_type'] = ctype
 
 		if not _id:
 			_id = data.get('_id', None)

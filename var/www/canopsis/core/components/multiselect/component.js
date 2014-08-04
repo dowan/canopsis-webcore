@@ -82,12 +82,19 @@ define([
 		},
 
 		filter: function( ToFilterWith , proprietyName , isON , fieldToFilter ) {
-			var tabFiltered = this.get( proprietyName ).filter( function ( content ) {
-				var toTestWith = ( fieldToFilter )? content[fieldToFilter] : content ;
-				var keep = ToFilterWith.contains( toTestWith );
-		    	return (isON)? keep : !keep;
-		    });
-		    return tabFiltered;
+			var arrayTofilter = this.get( proprietyName );
+			if ( Ember.isArray( arrayTofilter ) && Ember.isArray( ToFilterWith ) ){
+				var tabFiltered = arrayTofilter.filter( function ( content ) {
+					var toTestWith = ( fieldToFilter )? content[fieldToFilter] : content ;
+					var keep = ToFilterWith.contains( toTestWith );
+			    	return (isON)? keep : !keep;
+			    });
+			   // return tabFiltered;
+			}
+			else {
+				console.warn( proprietyName +" on "+ this + " is not an array : " );
+			}
+			return tabFiltered || [];
 		},
 
 		convertDictToArray:function(item) {

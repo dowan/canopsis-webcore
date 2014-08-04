@@ -49,7 +49,9 @@ var helpers = [
     'tooltip',
     'json2html',
     'ack',
-    'logo'
+    'logo',
+    'subprocess',
+    'conf'
 ];
 
 var deps = ['app/application', 'app/lib/wrappers/swag'];

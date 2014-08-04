@@ -20,23 +20,28 @@
 define([
 	'ember',
 	'app/application'
-], function(Ember) {
+], function(Ember, Application) {
+// TODO: just make a function from this
+	Application.Tags_optionFilterMixin = Ember.Mixin.create({
 
-	var inflexions = [
-		['nagios' , 'nagios'],
-		['curve', 'curves']
-	];
+		onInit : function ( contentREF , _self ){
 
-	var inflectionsManager = {
-		all: []
-	};
+			//debugger;
+			var formController  =  Canopsis.formwrapperController.form;
+            if ( formController ){
+            	var data = formController.formContext.__proto__;
+				for ( var attr in data ){
+					if ( data.hasOwnProperty( attr ) ){
+						if( attr.indexOf("_opt_") > -1){
+							var nameMixin = { name : attr.slice(5) };
+							contentREF.push(nameMixin);
+						}
+					}
+				}
+			}
+			_self.set("select", 0 );
+		}
+	});
 
-	console.log(Ember);
-
-	for (var i = 0; i < inflexions.length; i++) {
-		inflectionsManager.all.push(inflexions[i][0] + ' -> ' + inflexions[i][1]);
-		Ember.Inflector.inflector.irregular(inflexions[i][0], inflexions[i][1]);
-	};
-
-	return inflectionsManager;
+	return Application.Tags_optionFilterMixin;
 });

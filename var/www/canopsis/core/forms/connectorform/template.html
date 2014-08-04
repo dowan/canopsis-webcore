@@ -1,0 +1,3 @@
+{{#each widget in Canopsis.formwrapperController.form.availableConnectors}}
+	<button type="button" class="btn btn-default" {{action 'selectConnector' widget}} > <img alt="Source" src={{ unbound logo2 widget.name}} ></button>
+{{/each}}

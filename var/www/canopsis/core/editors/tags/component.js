@@ -83,6 +83,9 @@ define([
 
 		//TODO : some part are redundant with ArrayMixin
 		onUpdate: function() {
+			//debugger;
+			var formController  =  Canopsis.formwrapperController.form;
+
 			var selection = this.get("value");
 			var value = [];
 			if (selection) {
@@ -94,13 +97,15 @@ define([
 					while (valueRef.length > 0) {
 						valueRef.pop();
 					}
-					for (var key in value) {
-						valueRef[key] = value[key] ;
+					for (var i = 0 ; i < value.length ; i++) {
+						valueRef.push( value[i] ) ;
 					}
 					this.set("valueRef", valueRef);
 				}
 				else {
 					//On creation form or on error
+					this.set("valueRef", value);
+
 					console.warn("valueRef isn't defined on  tags/view.js");
 				}
 			}

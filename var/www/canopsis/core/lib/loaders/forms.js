@@ -23,7 +23,8 @@
 var formsTemplates = [
 	'modelform',
 	'widgetform',
-	'arrayitemform'
+	'arrayitemform',
+	'connectorform'
 ];
 
 var deps = ['ember'];

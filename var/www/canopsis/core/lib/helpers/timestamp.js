@@ -19,9 +19,12 @@
 
 define(['ember', 'utils'], function(Ember, utils) {
 
-    Ember.Handlebars.helper('timestamp', function(value, attr) {
+    Ember.Handlebars.helper('timestamp', function(value, attr , record) {
 
-    	var time = utils.dates.timestamp2String(value, attr.options.format);
+    	value = record.timeStampState || value;
+    	var time ="";
+    	if(value)
+    		 time = utils.dates.timestamp2String(value, attr.options.format);
 
 		return new Ember.Handlebars.SafeString(time);
     });

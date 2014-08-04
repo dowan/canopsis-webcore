@@ -36,7 +36,10 @@ var renderersTemplates = [
     'cfilter',
     'object',
     'cfilterwithproperties',
-    'source'
+    'source',
+    'stateConnector',
+    'subprocess',
+    'conf'
 ];
 
 var deps = ['ember'];

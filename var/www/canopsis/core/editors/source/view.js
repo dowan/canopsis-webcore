@@ -17,26 +17,19 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+
 define([
-	'ember',
-	'app/application'
-], function(Ember) {
+	'app/lib/loaders/factories'
+], function(factories) {
 
-	var inflexions = [
-		['nagios' , 'nagios'],
-		['curve', 'curves']
-	];
+	var simplelist2 = factories.Editor("simplelist", {
 
-	var inflectionsManager = {
-		all: []
-	};
+		init: function() {
+			this._super();
+			console.log("simple list init");
+		}
 
-	console.log(Ember);
+	});
 
-	for (var i = 0; i < inflexions.length; i++) {
-		inflectionsManager.all.push(inflexions[i][0] + ' -> ' + inflexions[i][1]);
-		Ember.Inflector.inflector.irregular(inflexions[i][0], inflexions[i][1]);
-	};
-
-	return inflectionsManager;
+	return simplelist2;
 });
