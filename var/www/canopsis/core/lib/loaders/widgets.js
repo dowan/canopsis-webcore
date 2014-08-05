@@ -28,6 +28,7 @@ var widgetsTemplates = [
 	{ name:'vbox', url:'app/widgets/vbox', hasJSPart: true },
 	{ name:'tabmanager', url:'app/widgets/tabmanager', hasJSPart: true },
 	{ name:'uiactionbutton', url:'app/widgets/uiactionbutton', hasJSPart: true },
+	{ name:'uimaindropdown', url:'app/widgets/uimaindropdown', hasJSPart: true },
 	{ name:'multicrecordlist', url:'app/widgets/multicrecordlist', hasJSPart: true }
 ];
 

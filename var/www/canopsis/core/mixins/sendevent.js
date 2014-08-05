@@ -29,7 +29,6 @@ define([
 
 	Application.sendEventMixin = Ember.Mixin.create({
 
-
 		TYPE_ACK: 'ack',
 		TYPE_CANCEL: 'cancel',
 		TYPE_UNCANCEL: 'uncancel',
@@ -185,7 +184,11 @@ define([
 				//generating form from record model
 				var recordWizard = utils.forms.showNew('modelform', record, {
 					title: 'Add event type : ' + event_type,
-					override_labels: {output: 'comment'}
+					override_labels: {output: 'comment'},
+					onePageDisplay: true,
+					partials: {
+						buttons: ["formbutton-cancel", "formbutton-ack", "formbutton-ackandproblem"]
+					},
 				});
 
 				//submit form and it s callback

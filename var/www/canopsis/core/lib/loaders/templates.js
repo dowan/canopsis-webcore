@@ -51,13 +51,16 @@ var templates = [
     { name: 'actionbutton-create', classes: ["action", "toolbar"], icon : "plus-sign" , label : "Create" },
     { name: 'actionbutton-removeselection', classes: ["action", "toolbar"], icon : "trash"  , label : "Remove-selection" },
     { name: 'actionbutton-history', classes: ["action", "toolbar"],icon : "time"  , label : "History" },
+
     { name: 'formbutton-submit', classes: ["formbutton"] },
+    { name: 'formbutton-cancel', classes: ["formbutton"] },
+    { name: 'formbutton-ack', classes: ["formbutton"] },
+    { name: 'formbutton-ackandproblem', classes: ["formbutton"] },
     { name: 'titlebarbutton-moveup', classes: ["formbutton"] },
     { name: 'titlebarbutton-movedown', classes: ["formbutton"] },
     { name: 'titlebarbutton-moveleft', classes: ["formbutton"] },
     { name: 'titlebarbutton-moveright', classes: ["formbutton"] },
-    { name: 'titlebarbutton-minimize', classes: ["formbutton"] },
-    { name: 'formbutton-cancel', classes: ["formbutton"] }
+    { name: 'titlebarbutton-minimize', classes: ["formbutton"] }
 ];
 
 var deps = ['ember'];
