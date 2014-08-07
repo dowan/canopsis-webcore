@@ -20,28 +20,24 @@
 define([
 	'app/application',
 	'app/adapters/application',
-	'app/serializers/event',
+	'app/serializers/eventlog',
 ], function(Application, ApplicationAdapter) {
 	var adapter = ApplicationAdapter.extend({
 
 		buildURL: function(type, id) {
 			void(id);
-			return "/event";
+
+			return "/rest/events_log";
 		},
 
 		findQuery: function(store, type, query) {
-			var noAckSearch = false;
-			if (query && query.noAckSearch) {
-				noAckSearch = true;
-				delete query.noAckSearch;
-			}
-			var url = "/rest/events";
+			var url = "/rest/events_log";
 
 			return this.ajax(url, 'GET', { data: query });
 		}
 	});
 
-	Application.EventAdapter = adapter;
+	Application.EventlogAdapter = adapter;
 
 	return adapter;
 });

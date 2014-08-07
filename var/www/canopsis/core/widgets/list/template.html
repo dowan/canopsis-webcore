@@ -18,9 +18,9 @@
 
 	<div class="btn-toolbar canopsis-toolbar" role="toolbar">
 		<div class="pull-left">
-			{{#if controller.toolbar}}
+			{{#if controller.selection_toolbar}}
 				{{tr 'For the selection'}} :
-				{{#each toolitem in controller.toolbar}}
+				{{#each toolitem in controller.selection_toolbar}}
 					{{partial toolitem}}
 				{{/each}}
 			{{/if}}
@@ -33,6 +33,11 @@
 			<button type="button" class="btn btn-primary" {{action addUserFilter}} data-col="all">
 				<i class="fa fa-plus"></i> {{tr 'Add'}}
 			</button>
+		</div>
+		<div class="pull-right btn-group" data-toggle="btn-toggle">
+			{{#each toolitem in controller.actions_toolbar}}
+				{{partial toolitem}}
+			{{/each}}
 		</div>
 		<div style="clear:both"></div>
 		<br/>
@@ -54,7 +59,7 @@
 			<thead>
 				<tr>
 					<th>
-						{{input type="checkbox" checked=controller.isAllSelected class="toggle"}}
+						{{component-checkbox checked=controller.isAllSelected class="toggle"}}
 					</th>
 					{{#each attr in controller.shown_columns}}
 						{{#group}}
@@ -100,9 +105,9 @@
 		</div>
 		<div style="clear:both"></div>
 		<div class="pull-left">
-			{{#if controller.toolbar}}
+			{{#if controller.selection_toolbar}}
 				{{tr 'For the selection'}} :
-				{{#each toolitem in controller.toolbar}}
+				{{#each toolitem in controller.selection_toolbar}}
 					{{partial toolitem}}
 				{{/each}}
 			{{/if}}

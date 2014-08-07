@@ -18,30 +18,26 @@
 */
 
 define([
+	'ember-data',
 	'app/application',
-	'app/adapters/application',
-	'app/serializers/event',
-], function(Application, ApplicationAdapter) {
-	var adapter = ApplicationAdapter.extend({
+	'app/serializers/application'
+], function(DS, Application, ApplicationSerializer) {
 
-		buildURL: function(type, id) {
-			void(id);
-			return "/event";
-		},
+	var serializerClass = ApplicationSerializer.extend({
+		extractRelationships: function(payload, item, type){
+			console.log('extractRelationships', arguments);
 
-		findQuery: function(store, type, query) {
-			var noAckSearch = false;
-			if (query && query.noAckSearch) {
-				noAckSearch = true;
-				delete query.noAckSearch;
+			void(payload);
+			void(type);
+
+			console.log('item.ack', item.ack);
+			if(item.ack === 1 || item.ack === true) {
+				item.ack = item.rk;
 			}
-			var url = "/rest/events";
-
-			return this.ajax(url, 'GET', { data: query });
 		}
 	});
 
-	Application.EventAdapter = adapter;
+	Application.EventlogSerializer = serializerClass;
 
-	return adapter;
+	return serializerClass;
 });

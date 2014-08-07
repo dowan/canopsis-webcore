@@ -30,7 +30,17 @@ define([
 	    	'<i>'+_('Commentaire') +' :</i> : <br/>' + value.comment].join('');
 
 		var guid = utils.hash.generate_GUID();
-		var ack  = '<span id="'+ guid +'" class="badge bg-maroon" data-html="true" title="" data-original-title="' + tooltipHtml + '"><i class="fa fa-check"></i></span>';
+
+		var ackColor;
+		if(value.isCancel) {
+			ackColor = "";
+		} else {
+			ackColor = " bg-maroon";
+		}
+		var ack  = '<span id="'+ guid +'" class="badge' + ackColor + '" data-html="true" title="" data-original-title="' + tooltipHtml + '"><i class="fa fa-check"></i></span>';
+
+		console.error('ack helper', value);
+		    // ack += '<span id="'+ guid +'_ticket" class="badge bg-maroon" data-html="true" title="" data-original-title="' + tooltipHtml + '"><i class="fa fa-ticket"></i></span>';
 
 		//Triggers tooltip display once loaded /!\ hack
 		setTimeout(function () {

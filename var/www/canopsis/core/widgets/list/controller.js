@@ -59,12 +59,6 @@ define([
 		didInsertElement: function() {
 			console.log('did insert list', this.$);
 
-			//FIXME problem with selectAll
-			// this.$('input').iCheck({
-			// 	checkboxClass: 'icheckbox_minimal-grey',
-			// 	radioClass: 'iradio_minimal-grey'
-			// });
-
 			//FIXME datatables not working atm
 			// this.$('table').dataTable();
 
@@ -93,6 +87,7 @@ define([
 			],
 
 			init: function() {
+				set(this, 'findParams_cfilterFilterPart', get(this, 'default_filter'));
 				this._super();
 			},
 

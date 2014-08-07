@@ -23,6 +23,8 @@ define([
 	'utils'
 ], function(Ember, Application, utils) {
 
+	var set = Ember.set;
+
 	/**
 	  Implements methods to send event to api from widget list
 	*/
@@ -30,11 +32,15 @@ define([
 	Application.sendEventMixin = Ember.Mixin.create({
 
 		TYPE_ACK: 'ack',
+		TYPE_INCIDENT: 'incident',
 		TYPE_CANCEL: 'cancel',
+		TYPE_RECOVERY: 'recovery',
 		TYPE_UNCANCEL: 'uncancel',
 
 		getDataFromRecord: function (event_type, crecord) {
 			//gets the controller instance for login to access some of it s values
+			console.log("getDataFromRecord", crecord);
+
 			var login = this.get('controllers.login');
 
 			//record instanciation depending on crecord type
@@ -54,6 +60,10 @@ define([
 			};
 
 			//business code taking care of different event types to send information
+			if(event_type === this.TYPE_RECOVERY) {
+				set(crecord, 'state', 0);
+				return crecord;
+			}
 			if (event_type === this.TYPE_CANCEL) {
 				//event cancellation
 				record.cancel = true;
@@ -69,7 +79,7 @@ define([
 			if (event_type === this.TYPE_ACK) {
 				//ref rk is required by ack engine
 				record.ref_rk = crecord.get('id');
-
+				record.cancel = false;
 				//ack is cool
 				record.state = 0;
 				//recomputing id with ack event type
@@ -86,7 +96,6 @@ define([
 
 
 		submitEvents: function (crecords, record, event_type) {
-			var controller = this;
 			//ajax logic, send single or multiple events
 			var post_events = [];
 			for(var i=0; i<crecords.length; i++) {
@@ -95,6 +104,10 @@ define([
 				var post_event = this.getDataFromRecord(event_type, crecords[i]);
 				post_event.author = record.get('author');
 				post_event.output = record.get('output');
+
+				if(!! record.get('ticket')) {
+					post_event.ticket = record.get('ticket');
+				}
 
 				post_events.push(post_event);
 			}
@@ -153,12 +166,11 @@ define([
 		},
 
 		actions: {
-
 			sendEvent: function(event_type, crecord) {
 				//Gets information from record and then send event accordingly depending on event type
 				this.stopRefresh();
 
-				var controller = this;
+				var sendEventMixin = this;
 
 				var crecords = [];
 				var display_crecord = crecord;
@@ -179,38 +191,64 @@ define([
 
 				display_crecord = this.getDataFromRecord(event_type, crecord);
 
-				var record = this.get("widgetDataStore").createRecord(event_type, display_crecord);
+				var record;
+				if(event_type !== this.TYPE_RECOVERY) {
+					record = this.get("widgetDataStore").createRecord(event_type, display_crecord);
+				} else {
+					record = crecord;
+				}
 
-				//generating form from record model
-				var recordWizard = utils.forms.showNew('modelform', record, {
-					title: 'Add event type : ' + event_type,
-					override_labels: {output: 'comment'},
-					onePageDisplay: true,
-					partials: {
-						buttons: ["formbutton-cancel", "formbutton-ack", "formbutton-ackandproblem"]
-					},
-				});
+				var formButtons;
+				if(event_type === this.TYPE_RECOVERY) {
+					var recordToSend = record;
+					this.submitEvents([recordToSend], record, event_type);
+				} else if (event_type === this.TYPE_CANCEL) {
+						console.log('record going to be saved', record);
 
-				//submit form and it s callback
-				recordWizard.submit.then(function(form) {
-					console.log('record going to be saved', record, form);
+						//generated data by user form fill
+						utils.notification.info(event_type + ' ' +_('event sent'));
+						//UI repaint taking care of new sent values
+						this.submitEvents(crecords, record, event_type);
+				} else {
+					if (event_type === this.TYPE_ACK) {
+						formButtons = ["formbutton-cancel", "formbutton-ack", "formbutton-ackandproblem"];
+					} else if (event_type === this.TYPE_UNCANCEL) {
+						formButtons = ["formbutton-cancel", "formbutton-submit"];
+					} else if (event_type === this.TYPE_INCIDENT) {
+						formButtons = ["formbutton-cancel", "formbutton-incident"];
+					}
 
-					//generated data by user form fill
-					record = form.get('formContext');
+					//generating form from record model
+					var recordWizard = utils.forms.showNew('modelform', record, {
+						title: 'Add event type : ' + event_type,
+						override_labels: {output: 'comment'},
+						onePageDisplay: true,
+						partials: {
+							buttons: formButtons
+						},
+					});
 
-					utils.notification.info(event_type + ' ' +_('event sent'));
-					//UI repaint taking care of new sent values
-					controller.submitEvents(crecords, record, event_type);
+					//submit form and it s callback
+					recordWizard.submit.then(function(form) {
+						console.log('record going to be saved', record, form);
 
-				}).fail(function () {
-					utils.notification.warning(_('Unable to send event'));
-					record.rollback();
-					record.unloadRecord();
-				}).then(function () {
-					controller.startRefresh();
-					record.rollback();
-					record.unloadRecord();
-				});
+						//generated data by user form fill
+						record = form.get('formContext');
+
+						utils.notification.info(event_type + ' ' +_('event sent'));
+						//UI repaint taking care of new sent values
+						sendEventMixin.submitEvents(crecords, record, event_type);
+
+					}).fail(function () {
+						utils.notification.warning(_('Unable to send event'));
+						record.rollback();
+						record.unloadRecord();
+					}).then(function () {
+						sendEventMixin.startRefresh();
+						record.rollback();
+						record.unloadRecord();
+					});
+				}
 
 			},
 

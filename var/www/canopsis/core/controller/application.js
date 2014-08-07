@@ -132,7 +132,7 @@ define([
 				console.log("add", type);
 
 				var record = Canopsis.utils.data.getStore().createRecord(type, {
-					crecord_type: type
+					crecord_type: type.underscore()
 				});
 				console.log('temp record', record);
 

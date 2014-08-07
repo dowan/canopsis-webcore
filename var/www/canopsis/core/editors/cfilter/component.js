@@ -138,7 +138,7 @@ define([
 			},
 			{
 				label: "!=",
-				value: '$neq'
+				value: '$ne'
 			},
 			{
 				label: "<",
