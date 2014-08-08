@@ -24,7 +24,8 @@ var formsTemplates = [
 	'modelform',
 	'widgetform',
 	'arrayitemform',
-	'connectorform'
+	'connectorform',
+	"confirmform"
 ];
 
 var deps = ['ember'];

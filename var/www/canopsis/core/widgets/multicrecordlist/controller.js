@@ -198,15 +198,16 @@ define([
 				},
 
 
-				ajaxCall :function(action , record ){
+				ajaxCall :function(action , record  , params){
 					// action must be take in count here
-					debugger;
+					params = params || "";
+					breakPoint("ajaxCall");
 					//cat/connectors/:ctype/:action/:id
 					var ctype = record.get("crecord_type");
 					var id = record.get("id_connector");
-					var url = "cat/connectors/" + ctype + "/" + action + "/" + id;
+					var url = "cat/connectors/" + ctype + "/" + action + "/" + id + "?" +params;
 					$.ajax({ url: "index.html",
-  							 context: this
+  							 context: this,
 					})
 					.done( function (reponse) {
 						var callbackName = "";
@@ -230,7 +231,7 @@ define([
 						        break;
 						    case "getconf":
 						        callbackName = "setReceivedConf";
-						        tesData = { port:"122",host:"rabbitmq-vip" };
+						        tesData = { port:"333",host:"rabbitmq-vip", name:"name" };
 
 						        break;
 
@@ -243,19 +244,28 @@ define([
 				},
 
 				setReceivedConf: function( reponse , record  , tesData){
-					debugger;
+					var id = record._data._id;
+					var name = record.get("_opt_name");
+					var test = record.store.getById("Nagios" , id);
 
+					breakPoint("setReceivedConf");
+					var listController = this;
+					var newRecord = {};
 					for ( var conf in tesData ){
 						if ( tesData.hasOwnProperty( conf )){
 							var nameVar = "_opt_"+conf;
 							var current = tesData[ conf ];
-							record.set( nameVar , current );
+							newRecord[nameVar] =  current;
+							//record.set( nameVar , current );
 						}
 					}
-					record.save();
-					this.trigger('refresh');
+					var recordWizard = ctools.forms.showNew('confirmform', record , { title : " confirmation "  , newRecord : newRecord , OLD : "BDD" , NEW : "Connector"});
+					recordWizard.submit.then(function(conf) {
+						breakPoint("setReceivedConf");
 
-					console.log("failed");
+						record.save();
+						listController.trigger('refresh');
+					});
 				},
 
 
@@ -270,14 +280,46 @@ define([
 					record.set('subprocess', subprocess);
 					record.set('connection', true);
 					record._data.subprocess = subprocess;
-					debugger;
+					breakPoint("getState");
+
 					record.save();
 					this.trigger('refresh');
 
 					console.log("failed");
 				},
+				setConf: function( record ){
+					var conf ="";
+					// Could be unnecessary
+					conf = utils.filterObject.getFieldsByPrefix( "_opt_" , record , function( attr , result ){
+						result+= "&" + attr + "=" + record.get(attr);
+						return result;
+					}, conf);
+					conf = conf.slice(0);
+					debugger;
+					this.send("ajaxCall", "setConf" , record , conf);
+
+				},
+/*
+				setConf: function( record ){
+					var listController = this;
+				//	this.send("ajaxCall", "getconf" , record);
+					var MYsubmit = $.Deferred();
+					record.MYsubmit = MYsubmit;
+					breakPoint("multicrecordList.editConf");
+					this.send("ajaxCall", action , record);
 
 
+					record.MYsubmit.then(function(conf) {
+						breakPoint( "multicrecordList.editConf");
+
+						record.save();
+						var formwrapper = Canopsis.formwrapperController;
+						formwrapper.trigger("hide");
+						listController.trigger('refresh');
+						listController.send("ajaxCall", "setConf" , record);
+					});
+				},
+*/
 				edit: function (record) {
 
 /*				   function convertDictToArray (item) {
@@ -336,7 +378,6 @@ define([
 					}
 					*/
 					var listController = this;
-
 					var recordWizard = utils.forms.showNew('modelform', record, { title: "Edit " + record.get('crecord_type') });
 					var actualRecord = record;
 

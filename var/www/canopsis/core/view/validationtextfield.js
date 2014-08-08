@@ -12,7 +12,14 @@
     Application.ValidationTextField = Ember.TextField.extend({
         attr : "",
         formController : null,
-
+        init: function(){
+         // debugger;
+          var model =  this.attr.model;
+          var type =  model.options["input_type"]|| model.type;
+          type = ( type === "string" )? "text" : type;
+          this.type = type;
+          this._super()
+        },
 
         registerFieldWithController: function() {
             var formController  =  Canopsis.formwrapperController.form;
@@ -38,14 +45,14 @@
               var valideStruct =  Ember.validators.validate(attr);
               console.log("valideStruct",valideStruct);
 
-              $().closest('div').next(".help-block").remove();
+              this.$().closest('div').next(".help-block").remove();
 
               if (!valideStruct.valid) {
 
-                $().closest('div').addClass('has-error').after("<span class='help-block'>"+ valideStruct.error + "</span>");
+                this.$().closest('div').addClass('has-error').after("<span class='help-block'>"+ valideStruct.error + "</span>");
               } else {
 
-                $().closest('div').removeClass("has-error");
+                this.$().closest('div').removeClass("has-error");
               }
 
               return valideStruct.valid;

@@ -17,27 +17,22 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
+define(['ember' , 'utils'], function(Ember , utils) {
 
 	Ember.Handlebars.helper('conf', function( controller ) {
-		var record = this.record;
-		var data = record.content._data;
+
+		breakPoint ("helper.conf");
+		var options_filter =  this.record.get("options_filter");
+		var options = utils.filterObject.getFieldsByPrefix( "_opt_" , this.record.content , function( attr , result ,record ){
+			var field = attr.slice(5);
+			if ( options_filter.contains ( field )){
+				var value = record.get( attr );
+				var option = Ember.Object.create({ value : value , field : field });
+				result.pushObject( option );
+			}
+		});
 
 		var returnValue = "";
-		var options = [];
-		//debugger;
-		for ( var attr in data ){
-			if ( data.hasOwnProperty( attr ) ){
-				if( attr.indexOf("_opt_") > -1){
-					var field = attr.slice(5);
-					if ( data.options_filter.contains ( field )){
-						var value = record.get( attr );
-						var option = Ember.Object.create({ value : value , field : field });
-						options.pushObject( option );
-					}
-				}
-			}
-		}
 		options.forEach(function(x){
 		    var start 	= "<div>";
 		    var end 	= "</div>";

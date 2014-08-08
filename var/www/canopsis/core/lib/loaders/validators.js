@@ -24,7 +24,8 @@ var validatorsArray = [
 	'mail',
 	'rights',
 	'required',
-	'validate'
+	'validate',
+	"number",
 ];
 
 var deps = ['ember'];

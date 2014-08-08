@@ -38,6 +38,7 @@ define([
 		validation: function() {
 			console.log("Enter validation MIXIN");
 			var validationFields = this.get("validationFields");
+			var isValid = true;
 			if (validationFields) {
 				for (var z = 0; z < validationFields.length; z++) {
 					console.log("validate on : ", validationFields[z]);
@@ -45,12 +46,12 @@ define([
 					if (validationFields[z].validate() !== true) {
 						console.log("Can't validate on attr ",validationFields[z]);
 						// for now just stop and return (fields error messages have been updated)
-						return false ;
+						isValid =  false ;
 					}
 				}
 			}
 
-			return true;
+			return isValid;
 		}
 	});
 	return Application.ValidationMixin;

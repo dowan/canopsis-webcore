@@ -1,0 +1,12 @@
+<div class="table-responsive">
+<table class="table table-bordered">
+		<TR>
+			<TH>Champ</TH><TH> {{OLD}} </TH><TH> {{NEW}} </TH>
+		</TR>
+		{{#each attr in Canopsis.formwrapperController.form.attrs}}
+			<TR>
+				<TH> {{attr.fieldName}}  </TH><TD>  {{attr.value}} </TD><TD> {{attr.NEWvalue}} </TD>
+			</TR>
+	 	{{/each}}
+	 </table>
+</div>

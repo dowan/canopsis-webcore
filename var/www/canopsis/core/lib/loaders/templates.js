@@ -38,8 +38,8 @@ var templates = [
     { name: 'connectorbutton-start', classes: ["action" , "toolbar"], icon : "play" , label : "Start"},
     { name: 'connectorbutton-stop', classes: ["action" , "toolbar"], icon : "off" , label : "Stop"},
     { name: 'connectorbutton-edit', classes: ["action" , "toolbar"], icon : "pencil" , label : "Edit-Conf"},
-    { name: 'connectorbutton-getconf', classes: ["action" , "toolbar"], icon : "pencil" , label : "GET-Conf"},
-    { name: 'connectorbutton-setconf', classes: ["action" , "toolbar"], icon : "download_alt" , label : "SET-Conf"},
+    { name: 'connectorbutton-getconf', classes: ["action" , "toolbar"], icon : "download" , label : "GET-Conf"},
+    { name: 'connectorbutton-setconf', classes: ["action" , "toolbar"], icon : "upload" , label : "SET-Conf"},
     { name: 'connectorbutton-getstate', classes: ["action" , "toolbar"], icon : "transfert" , label : "GET-state"},
 
     { name: 'actionbutton-edit', classes: ["action"], icon : "pencil" , label : "Edit"},
