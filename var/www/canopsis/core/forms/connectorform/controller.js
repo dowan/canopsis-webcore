@@ -60,7 +60,7 @@ define([
 					});
 					console.log('temp record', record);
 
-					var recordWizard =	utils.forms.showNew('modelform', record , { title : recordType + " connector" });
+					var recordWizard =	utils.forms.showNew('modelform', record , { title : recordType + " connector" , isOnCreate : true });
 
 					/*var recordTosave = widgetDataStore.createRecord("connector", {
 						crecord_type: "connector"

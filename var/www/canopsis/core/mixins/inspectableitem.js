@@ -61,10 +61,11 @@ define([
 
 		//getting attributes (keys and values as seen on the form)
 		categorized_attributes: function() {
-			console.log("recompute categorized_attributes", this.get('inspectedDataItem'));
-			if (this.get('inspectedDataItem') !== undefined) {
-				console.log("inspectedDataItem attributes", this.get('inspectedDataItem').get('attributes'));
+			var inspectedDataItem =  this.get('inspectedDataItem');
 
+			console.log("recompute categorized_attributes", inspectedDataItem );
+			if (inspectedDataItem !== undefined) {
+				console.log("inspectedDataItem attributes", inspectedDataItem.get('attributes'));
 				var me = this;
 
 				if (this.get('inspectedItemType') !== undefined) {
@@ -105,6 +106,7 @@ define([
 
 					var modelAttributes = Ember.get(referenceModel, 'attributes');
 
+					debugger;
 					for (var i = 0; referenceModel.proto().categories &&
 					     i < referenceModel.proto().categories.length; i++) {
 						var category = referenceModel.proto().categories[i];
@@ -162,12 +164,15 @@ define([
 								model: modelAttributes.get(key),
 								editor: editorName
 							};
-
+/*
 							if (me.get('inspectedDataItem') !== undefined) {
 								createdCategory.keys[j].value = me.get('inspectedDataItem').get(key);
 							} else {
 								createdCategory.keys[j].value = undefined;
-							}
+							}*/
+							//  inspectedDataItem already getted 3 times and will always be set here (l65)
+							//debugger;
+							createdCategory.keys[j].value = (!this.isOnCreate)? inspectedDataItem.get(key) : attr.options["default"];
 
 							console.log("category key ", category.keys[j].value);
 						}
