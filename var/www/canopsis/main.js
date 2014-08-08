@@ -17,6 +17,8 @@ define([
 	'app/routes/services',
 	'app/adapters/application',
 	'app/adapters/ack',
+	'app/adapters/event',
+	'app/adapters/eventlog',
 	'app/adapters/cancel',
 	'app/adapters/entity',
 	'app/adapters/metric',

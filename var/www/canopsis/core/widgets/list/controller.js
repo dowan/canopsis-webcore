@@ -59,12 +59,6 @@ define([
 		didInsertElement: function() {
 			console.log('did insert list', this.$);
 
-			//FIXME problem with selectAll
-			// this.$('input').iCheck({
-			// 	checkboxClass: 'icheckbox_minimal-grey',
-			// 	radioClass: 'iradio_minimal-grey'
-			// });
-
 			//FIXME datatables not working atm
 			// this.$('table').dataTable();
 
@@ -93,6 +87,7 @@ define([
 			],
 
 			init: function() {
+				set(this, 'findParams_cfilterFilterPart', get(this, 'default_filter'));
 				this._super();
 			},
 
@@ -137,6 +132,14 @@ define([
 			},
 
 			actions: {
+				//TODO refactor buttons as components
+				info: function() {
+					var url = get(Canopsis.conf.frontendConfig, "list_info_button_pattern");
+					console.log('info', url);
+					//TODO make url macro parsing (with handlebars?)
+					window.open(url,'_blank');
+				},
+
 				setFilter: function (filter) {
 					set(this, 'findParams_cfilterFilterPart', filter);
 

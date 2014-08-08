@@ -294,7 +294,7 @@ def rest_get(namespace, ctype=None, _id=None, params=None):
 		logger.debug(" + mfilter: "+str(mfilter))
 
 		#clean mfilter
-		mfilter = clean_mfilter(mfilter)
+		#mfilter = clean_mfilter(mfilter)
 
 		records, total = storage.find( mfilter, sort=msort, limit=limit, offset=start, account=account, with_total=True, namespace=namespace)
 

@@ -1,7 +1,7 @@
 {{#unless controller.findOptions.useLogCollection}}
 	{{#if minified}}
 		{{#if this.ack.isCancel}}
-			<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Undo cancel this event">
+			<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Uncancel">
 				<button type="button" class="btn btn-default" {{action 'sendEvent' 'uncancel' this}} >
 					{{glyphicon "share-alt"}}
 				</button>
@@ -16,7 +16,7 @@
 		{{/if}}
 	{{else}}
 			{{#if this.ack.isCancel}}
-			<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Undo cancel this event">
+			<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Uncancel">
 				<button type="button" class="btn btn-default" {{action 'sendEvent' 'uncancel'}} >
 					Undo cancel {{glyphicon "share-alt"}}
 				</button>

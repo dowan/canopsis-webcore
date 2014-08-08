@@ -17,31 +17,20 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-	'app/application',
-	'app/adapters/application',
-	'app/serializers/event',
-], function(Application, ApplicationAdapter) {
-	var adapter = ApplicationAdapter.extend({
+define(['moment', 'ember'], function(moment, Ember) {
 
-		buildURL: function(type, id) {
-			void(id);
-			return "/event";
-		},
-
-		findQuery: function(store, type, query) {
-			var noAckSearch = false;
-			if (query && query.noAckSearch) {
-				noAckSearch = true;
-				delete query.noAckSearch;
-			}
-			var url = "/rest/events";
-
-			return this.ajax(url, 'GET', { data: query });
+	Ember.Handlebars.helper('criticityhelper', function(value) {
+		if (value === 0) {
+			return new Ember.Handlebars.SafeString('<span class="badge bg-green">Info</span>');
+		} else if (value === 1) {
+			return new Ember.Handlebars.SafeString('<span class="badge bg-yellow">Mineure</span>');
+		} else if (value === 2) {
+			return new Ember.Handlebars.SafeString('<span class="badge bg-orange">Majeure</span>');
+		} else if (value === 3) {
+			return new Ember.Handlebars.SafeString('<span class="badge bg-red">Critique</span>');
+		} else if (value === 4) {
+			return new Ember.Handlebars.SafeString('<span class="badge">Unknown</span>');
 		}
 	});
 
-	Application.EventAdapter = adapter;
-
-	return adapter;
 });

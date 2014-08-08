@@ -21,10 +21,10 @@ define(['ember' , "app/application"], function(Ember , Application) {
 
 	Application.images = [];
 	var folderPath = "/static/canopsis/media/images/";
-	Application.images["nagios"] 	= folderPath + 'nagioslogo.png';
-	Application.images["shinken"] 	= folderPath + 'shinkenlogo.png';
-	Application.images["schneider"] = folderPath + 'schneiderlogo.png';
-	Application.images["collectd"] 	= folderPath + 'collectd.jpg';
+	Application.images.nagios    = folderPath + 'nagioslogo.png';
+	Application.images.shinken   = folderPath + 'shinkenlogo.png';
+	Application.images.schneider = folderPath + 'schneiderlogo.png';
+	Application.images.collectd  = folderPath + 'collectd.jpg';
 
 	Ember.Handlebars.helper('logo', function(controller) {
 
@@ -32,7 +32,9 @@ define(['ember' , "app/application"], function(Ember , Application) {
 		var  value = controller.record.content._data[field];
 		var  logoPath = Canopsis.Application.images[value];
 
-		return new Ember.Handlebars.SafeString(logoPath);
+		if(logoPath !== undefined) {
+			return new Ember.Handlebars.SafeString('<img alt="Source" src="'+ logoPath + '"/>');
+		}
 	});
 
 	Ember.Handlebars.helper('logo2', function( imageName) {

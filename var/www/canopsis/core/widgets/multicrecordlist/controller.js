@@ -295,7 +295,6 @@ define([
 						return result;
 					}, conf);
 					conf = conf.slice(0);
-					debugger;
 					this.send("ajaxCall", "setConf" , record , conf);
 
 				},

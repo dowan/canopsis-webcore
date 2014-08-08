@@ -14,45 +14,75 @@
 
 			{{#if Canopsis.controller.onePageDisplay}}
 				<center><h4>{{category.title}}</h4></center>
+
+				{{#each attr in category.keys}}
+					{{#if attr.model.options.readOnly}}
+						<div>
+							<span class="label" style="color:black">
+								<b>
+									{{#if attr.model.options.label}}
+										{{attr.model.options.label}}
+									{{else}}
+										{{attr.field}}
+									{{/if}}
+								</b>
+							</span>
+							{{component-renderer attr=attr record=controller.formContext}}
+						</div>
+					{{else}}
+						{{#unless attr.model.options.hiddenInForm}}
+							 <div>
+								<span class="label" style="color:black">
+									{{#if attr.model.options.label}}
+										{{attr.model.options.label}}
+									{{else}}
+										{{attr.field}}
+									{{/if}}
+								</span>
+								{{component-editor attr=attr form=this}}
+							 </div>
+						{{/unless}}
+					{{/if}}
+				{{/each}}
+
+				<hr/>
 			{{else}}
 				{{#if category.isDefault}}
 					<div class="tab-pane active" id="{{unbound category.title}}">
 				{{else}}
 					<div class="tab-pane" id="{{unbound category.title}}">
 				{{/if}}
-			{{/if}}
-			{{#each attr in category.keys}}
-				{{#if attr.model.options.readOnly}}
-					<div>
-						<span class="label" style="color:black">
-							<b>
-								{{#if attr.model.options.label}}
-									{{attr.model.options.label}}
-								{{else}}
-									{{attr.field}}
-								{{/if}}
-							</b>
-						</span>
-						{{component-renderer attr=attr record=controller.formContext}}
-					</div>
-				{{else}}
-					{{#unless attr.model.options.hiddenInForm}}
-						 <div>
+
+				{{#each attr in category.keys}}
+					{{#if attr.model.options.readOnly}}
+						<div>
 							<span class="label" style="color:black">
-								{{#if attr.model.options.label}}
-									{{attr.model.options.label}}
-								{{else}}
-									{{attr.field}}
-								{{/if}}
+								<b>
+									{{#if attr.model.options.label}}
+										{{attr.model.options.label}}
+									{{else}}
+										{{attr.field}}
+									{{/if}}
+								</b>
 							</span>
-							{{component-editor attr=attr form=this}}
-						 </div>
-					{{/unless}}
-				{{/if}}
-			{{/each}}
-			{{#if controller.onePageDisplay}}
-				<hr/>
-			{{ else }}
+							{{component-renderer attr=attr record=controller.formContext}}
+						</div>
+					{{else}}
+						{{#unless attr.model.options.hiddenInForm}}
+							 <div>
+								<span class="label" style="color:black">
+									{{#if attr.model.options.label}}
+										{{attr.model.options.label}}
+									{{else}}
+										{{attr.field}}
+									{{/if}}
+								</span>
+								{{component-editor attr=attr form=this}}
+							 </div>
+						{{/unless}}
+					{{/if}}
+				{{/each}}
+
 				</div>
 			{{/if}}
 		{{/each}}

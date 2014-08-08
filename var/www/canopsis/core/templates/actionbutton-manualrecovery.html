@@ -1,0 +1,8 @@
+{{#if this.state}}
+	<button type="button" class="btn btn-default tooltiptable hint--rounded hint--top" data-hint="Manual recovery" {{action 'sendEvent' 'recovery' this}} >
+		<i class="fa fa-eraser"></i>
+		{{#unless minified}}
+			{{tr 'Manual recovery'}}
+		{{/unless}}
+	</button>
+{{/if}}
