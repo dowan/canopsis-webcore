@@ -120,7 +120,6 @@ define([
 				recordWizard.submit.done(function() {
 					console.log("userview.save()");
 					console.log(userview.save());
-					userview.save().then(transitionToView);
 				});
 			},
 

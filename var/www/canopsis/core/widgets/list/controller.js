@@ -133,11 +133,15 @@ define([
 
 			actions: {
 				//TODO refactor buttons as components
-				info: function() {
-					var url = get(Canopsis.conf.frontendConfig, "list_info_button_pattern");
-					console.log('info', url);
-					//TODO make url macro parsing (with handlebars?)
-					window.open(url,'_blank');
+				info: function(record) {
+					var list_info_button_pattern = get(Canopsis.conf.frontendConfig, "list_info_button_pattern");
+
+					var template = list_info_button_pattern;
+					var context = record._data;
+					var compiledUrl = Handlebars.compile(template)(context); 
+
+					console.log('info', compiledUrl, record._data);
+					window.open(compiledUrl, '_blank');
 				},
 
 				setFilter: function (filter) {
