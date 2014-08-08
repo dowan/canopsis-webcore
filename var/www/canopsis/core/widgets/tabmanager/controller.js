@@ -27,9 +27,11 @@ define([
 
 	var widget = WidgetFactory('tabmanager', {
 		init: function() {
-			console.log('init tabs', get(this, 'items.content')[0].get('widget'));
-			this.send('selectTab', get(this, 'items.content')[0].get('widget'));
-			set(get(this, 'items.content')[0], 'tabSelected', true);
+			if(get(this, 'items.content').length >= 0 && !Ember.isEmpty(get(this, 'items.content')[0])) {
+				console.log('init tabs', get(this, 'items.content')[0].get('widget'));
+				this.send('selectTab', get(this, 'items.content')[0].get('widget'));
+				set(get(this, 'items.content')[0], 'tabSelected', true);
+			}
 
 			this._super.apply(this, arguments);
 		},

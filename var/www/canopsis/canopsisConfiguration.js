@@ -13,5 +13,13 @@ define([], function () {
 		TRANSLATE: false
 	};
 
+	if(canopsisConfiguration.DEBUG === false) {
+		console.log = function() {};
+		console.warn = function() {};
+		console.debug = function() {};
+		console.group = function() {};
+		console.groupEnd = function() {};
+	}
+
 	return canopsisConfiguration;
 });
