@@ -132,6 +132,14 @@ define([
 			},
 
 			actions: {
+				//TODO refactor buttons as components
+				info: function() {
+					var url = get(Canopsis.conf.frontendConfig, "list_info_button_pattern");
+					console.log('info', url);
+					//TODO make url macro parsing (with handlebars?)
+					window.open(url,'_blank');
+				},
+
 				setFilter: function (filter) {
 					set(this, 'findParams_cfilterFilterPart', filter);
 
