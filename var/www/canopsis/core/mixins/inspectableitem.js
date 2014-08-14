@@ -163,13 +163,12 @@ define([
 								model: modelAttributes.get(key),
 								editor: editorName
 							};
-/*
+							/*
 							if (me.get('inspectedDataItem') !== undefined) {
 								createdCategory.keys[j].value = me.get('inspectedDataItem').get(key);
 							} else {
 								createdCategory.keys[j].value = undefined;
 							}*/
-							//  inspectedDataItem already getted 3 times and will always be set here (l65)
 							//debugger;
 							createdCategory.keys[j].value = (!this.isOnCreate)? inspectedDataItem.get(key) : attr.options["default"];
 
