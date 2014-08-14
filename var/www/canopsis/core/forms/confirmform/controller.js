@@ -30,28 +30,36 @@ define([
 	};
 	FormFactory('confirmform', {
 		validationFields: Ember.computed(function() {return Ember.A();}),
-
+		testi: Ember.computed(function() {return this.get("testou");}),
+		testou:"start",
 		title: "confirmform",
+
+		init: function(){
+			this._super();
+		//	this.set("testi", "start");
+		},
 		attrs: function() {
 			breakPoint( "confirmform.makeObject");
+			//debugger;
+			if( this.get("testi") === "start"){
+				var attrs = utils.filterObject.getFieldsByPrefix( "_opt_" , this.formContext , function( attr , result , record , model , _self ){
+					var newRecord = _self.newRecord;
 
-			var attrs = utils.filterObject.getFieldsByPrefix( "_opt_" , this.formContext , function( attr , result , record , model , _self ){
-				var newRecord = _self.newRecord;
+					var fieldName = attr.slice(5);
+					var field = model[attr];
+					var modelMeta = field._meta;
+					var NEWvalue = newRecord[attr];
 
-				var fieldName = attr.slice(5);
-				var field = model[attr];
-				var modelMeta = field._meta;
-				var NEWvalue = newRecord[attr];
+					var value = record.get(attr);
+					var attr = Ember.Object.create({ value : value , fieldName : fieldName  , model: modelMeta , field: attr , NEWvalue : NEWvalue });
+					result.pushObject( attr );
+				} , null , this );
 
-				var value = record.get(attr);
-				var attr = Ember.Object.create({ value : value , fieldName : fieldName  , model: modelMeta , field: attr , NEWvalue : NEWvalue });
-				result.pushObject( attr );
-			} , null , this );
+				this.set("attrs" , attrs);
+			}
+			return attrs || "";
 
-			this.set("attrs" , attrs);
-			return attrs;
-
-		}.property('Canopsis.formwrapperController.form.formContext._data'),
+		}.property('testi'),
 
 		actions: {
 			show: function() {
@@ -76,6 +84,9 @@ define([
 				}
 				breakPoint( "confirmForm.submit");
 				//fc.MYsubmit.resolve( this.newRecord );
+				//debugger;
+				this.set("testou" , "");
+				this.set("testi" , "");
 				this._super(this.get('formContext'));
 			}
 		},

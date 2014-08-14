@@ -62,7 +62,7 @@ define([
 		//getting attributes (keys and values as seen on the form)
 		categorized_attributes: function() {
 			var inspectedDataItem =  this.get('inspectedDataItem');
-
+			//debugger;
 			console.log("recompute categorized_attributes", inspectedDataItem );
 			if (inspectedDataItem !== undefined) {
 				console.log("inspectedDataItem attributes", inspectedDataItem.get('attributes'));
@@ -106,7 +106,6 @@ define([
 
 					var modelAttributes = Ember.get(referenceModel, 'attributes');
 
-					debugger;
 					for (var i = 0; referenceModel.proto().categories &&
 					     i < referenceModel.proto().categories.length; i++) {
 						var category = referenceModel.proto().categories[i];

@@ -50,21 +50,15 @@ define([
 
 			selectConnector: function (recordType) {
 					console.log("add", recordType);
-			//	var widgetChooserForm = Canopsis.utils.forms.showNew('widgetform', this);
 
 					var recordType = recordType.name;
 					var widgetDataStore = this.get("formContext.widgetDataStore");
-
 					var record = widgetDataStore.createRecord(recordType, {
 						crecord_type: recordType
 					});
 					console.log('temp record', record);
 
-					var recordWizard =	utils.forms.showNew('modelform', record , { title : recordType + " connector" , isOnCreate : true });
-
-					/*var recordTosave = widgetDataStore.createRecord("connector", {
-						crecord_type: "connector"
-					});*/
+					var recordWizard =	utils.forms.showNew('modelform', record , { title : recordType + " connector" , isOnCreate : true , modelname:recordType });
 
 					var listController = Canopsis.Application.listController;
 
@@ -72,9 +66,6 @@ define([
 						console.log('record going to be saved', record, form);
 						record = form.get('formContext');
 						Ember.set(  record , "connector_type" , recordType );
-
-
-						//recordTosave.save();
 						record.save();
 						listController.trigger('refresh');
 

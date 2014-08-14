@@ -21,9 +21,10 @@ define(['app/application'], function(Application) {
 
 	var filterObjectUtils = {
 		getFieldsByPrefix: function( prefix , record, callback , contentREF , _self  ) {
+			//debugger;
 			var resultISString =  typeof (contentREF) === "string" ;
 			var result = ( resultISString )? contentREF :  contentREF || Ember.A();
-			var ctype = record.get("crecord_type");
+			var ctype = record.get("crecord_type") || record.get("connector_type");
 			var Stringtype = ctype.charAt(0).toUpperCase() + ctype.slice(1);
 			var model = Canopsis.Application.allModels[Stringtype];
 

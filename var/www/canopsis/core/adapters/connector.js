@@ -17,36 +17,30 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-//TODO: Use EntityAdapter to retrieve ACK
 
 define([
 	'app/application',
-	'app/adapters/application',
-	'app/serializers/ack'
-], function(Application, ApplicationAdapter) {
-	var adapter = ApplicationAdapter.extend({
+	'app/adapters/entity',
+], function(Application, EntityAdapter) {
+	var adapter = EntityAdapter.extend({
 
-
-		find: function(store, type, id) {
-			console.log('find', arguments);
-			return this.findQuery (store, type, { filter: { rk: id, solved : false }, sort: {timestamp:1}, limit:1 });
+		buildURL: function(type, id) {
+			return ("/rest/entities/" + type + (!!id ? "/" + id : ""));
 		},
 
-		findQuery: function(store, type, query) {
-			var toADD = "";
-			var first = "";
-			query["multi"] = ["nagios" , "connector","shinken", "collectd", "schneider"];
-			for ( var item in query ){
-				if ( query.hasOwnProperty(item)) {
-					toADD += first + item + "=" + query[item];
-					first="&";
-				}
-			}
-			return this.ajax('/rest/object/connector?'+toADD, 'GET');
+		createRecord: function(store, type, record) {
+			var data = {};
+			var id = "connector." + record.get("connector_type") +"."+ record.get("hostname");
+			record.set( "_id" , id );
+			var serializer = store.serializerFor(type.typeKey);
+
+			data = serializer.serializeIntoHash(data, type, record, "POST", { includeId: true });
+
+			return this.ajax(this.buildURL(type.typeKey, record.id), "POST", { data: data });
 		}
 	});
-
 	Application.ConnectorAdapter = adapter;
+	Application.NagiosAdapter = adapter;
 
 	return adapter;
 });

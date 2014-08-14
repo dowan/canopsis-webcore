@@ -315,6 +315,7 @@ define([
 			}.property('attributesKeys'),
 
 			shown_columns: function() {
+			//	debugger;
 				console.log("compute shown_columns", this.get('sorted_columns'), this.get('attributesKeys'), this.get('sortedAttribute'));
 				if (this.get('user_show_columns') !== undefined) {
 					console.log('user columns selected', this.get('user_show_columns'));
@@ -322,12 +323,13 @@ define([
 				}
 
 				var shown_columns = [];
-				if (this.get('displayed_columns') !== undefined && this.get('displayed_columns').length > 0) {
+				var displayed_columns = this.get('displayed_columns') || this.get('content._data.displayed_columns') ;
+				if (displayed_columns !== undefined && displayed_columns.length > 0) {
 
 					var attributesKeysDict = this.get('attributesKeysDict');
 
-					var sorted_columns = this.get('displayed_columns');
-
+					//var sorted_columns = this.get('displayed_columns');
+					var sorted_columns = displayed_columns;
 					for (var i = 0; i < sorted_columns.length; i++) {
 						if (attributesKeysDict[sorted_columns[i]] !== undefined) {
 							attributesKeysDict[sorted_columns[i]].options.show = true;

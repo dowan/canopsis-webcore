@@ -20,10 +20,11 @@
 define([
 	'ember',
 	'ember-data',
-	'app/application'
-], function(Ember, DS, Application) {
+	'app/application',
+	'app/adapters/application'
+], function(Ember, DS, Application, ApplicationAdapter ) {
 
-	Application.EntityAdapter = DS.RESTAdapter.extend({
+	Application.EntityAdapter = ApplicationAdapter.extend({
 		gen_resolve: function(callback) {
 			return function(data) {
 				for (var i = 0; i < data.data.length; i++) {
@@ -45,7 +46,7 @@ define([
 		buildURL: function(type, id) {
 			return '/entities/' + type + (id ? ('/' + id) : '');
 		},
-
+/*
 		createRecord: function() {
 			Canopsis.utils.notification.error('Impossible to create entity');
 		},
@@ -57,7 +58,7 @@ define([
 		deleteRecord: function() {
 			Canopsis.utils.notification.error('Impossible to delete entity');
 		},
-
+*/
 		find: function(store, model, id) {
 			void(store);
 			var me = this;
@@ -132,14 +133,7 @@ define([
 				var funcres = me.gen_resolve(resolve);
 				var funcrej = me.gen_reject(reject);
 
-				if('filter' in query) {
-					query.filter.type = model.typeKey;
-					query.filter = JSON.stringify(query.filter);
-				}
-				else {
-					query.filter = JSON.stringify({'type': model.typeKey});
-				}
-
+				query.filter = JSON.stringify({'type': model.typeKey});
 				console.log('findQuery: ', query);
 
 				$.post('/entities/', query).then(funcres, funcrej);

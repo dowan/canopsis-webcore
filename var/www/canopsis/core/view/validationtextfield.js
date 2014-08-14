@@ -17,7 +17,7 @@
           var model =  this.attr.model;
           var type =  model.options["input_type"]|| model.type;
           type = ( type === "string" )? "text" : type;
-          this.type = type;
+         // this.type = type;
           this._super()
         },
 

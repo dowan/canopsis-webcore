@@ -3,8 +3,8 @@ define([
 
   function numberValidator(attr, valideStruct)
   {
-    //debugger;
-    if (!isNaN( attr.value ) &&  attr.value != ""  )
+  //  debugger;
+    if ( Ember.isEmpty(attr.value) || !isNaN( attr.value )  )
       {
           valideStruct.valid = true ;
       }
