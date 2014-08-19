@@ -35,6 +35,8 @@ define([
 	Application.WidgetSerializer = serializerClass;
 	Application.WidgetwrapperSerializer = serializerClass;
 	Application.ListSerializer = serializerClass;
+	Application.MulticrecordlistSerializer = serializerClass;
+
 	Application.VboxSerializer = serializerClass;
 	Application.LighthboxSerializer = serializerClass;
 	Application.HboxSerializer = serializerClass;

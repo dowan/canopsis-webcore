@@ -1,6 +1,6 @@
 
 <td>
-	{{input type="checkbox" checked=isSelected class="toggle"}}
+	{{component-checkbox checked=isSelected class="toggle"}}
 </td>
 
 {{#each attr in parentController.shown_columns}}
@@ -11,10 +11,12 @@
 
 {{#if parentController.item_actions}}
 	<td>
-		{{set 'minified' true}}
+		<div style="display:flex">
+			{{set 'minified' true}}
 
-		{{#each item_action in parentController.item_actions}}
-			{{partial item_action}}
-		{{/each}}
+			{{#each item_action in parentController.item_actions}}
+				{{partial item_action}}
+			{{/each}}
+		</div>
 	</td>
 {{/if}}

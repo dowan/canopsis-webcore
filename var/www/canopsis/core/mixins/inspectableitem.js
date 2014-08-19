@@ -61,10 +61,11 @@ define([
 
 		//getting attributes (keys and values as seen on the form)
 		categorized_attributes: function() {
-			console.log("recompute categorized_attributes", this.get('inspectedDataItem'));
-			if (this.get('inspectedDataItem') !== undefined) {
-				console.log("inspectedDataItem attributes", this.get('inspectedDataItem').get('attributes'));
-
+			var inspectedDataItem =  this.get('inspectedDataItem');
+			//debugger;
+			console.log("recompute categorized_attributes", inspectedDataItem );
+			if (inspectedDataItem !== undefined) {
+				console.log("inspectedDataItem attributes", inspectedDataItem.get('attributes'));
 				var me = this;
 
 				if (this.get('inspectedItemType') !== undefined) {
@@ -162,12 +163,14 @@ define([
 								model: modelAttributes.get(key),
 								editor: editorName
 							};
-
+							/*
 							if (me.get('inspectedDataItem') !== undefined) {
 								createdCategory.keys[j].value = me.get('inspectedDataItem').get(key);
 							} else {
 								createdCategory.keys[j].value = undefined;
-							}
+							}*/
+							//debugger;
+							createdCategory.keys[j].value = (!this.isOnCreate)? inspectedDataItem.get(key) : attr.options["default"];
 
 							console.log("category key ", category.keys[j].value);
 						}

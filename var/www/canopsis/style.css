@@ -229,3 +229,15 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
 	max-height: 200px;
 	overflow: auto;
 }
+
+table.dataTable {
+	border-collapse: collapse;
+}
+
+table.dataTable>thead>tr>th {
+	border-bottom: 2px solid #ddd;
+}
+
+.label .glyphicon {
+	top: 2px;
+}

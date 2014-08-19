@@ -34,15 +34,41 @@ define([
 		errorMessages : Ember.A(),
 
 		init: function() {
+			console.log('widget view init', this.widget.get("xtype"), this.widget, get(this, 'widget.tagName'));
 			set(this, 'target', get(this, 'controller'));
 
 			this._super();
 			if (!! get(this, 'widget')) {
 				this.setupController(this.widget);
+				this.applyViewMixins();
 			} else {
 				console.error("no correct widget found for view", this);
 				this.errorMessages.pushObject('No correct widget found');
 			}
+			if(get(this, 'widget.tagName')) {
+				console.log('custom tagName', get(this, 'widget.tagName'));
+				set(this, 'tagName', get(this, 'widget.tagName'));
+			}
+
+			var cssClasses = get(this, 'widget.cssClass');
+			if(cssClasses) {
+				console.log('custom tagName', get(this, 'widget.tagName'));
+				set(this, 'classNames', cssClasses.split(','));
+			}
+		},
+
+		applyViewMixins: function(){
+			var controller = get(this, 'controller');
+			console.group('apply widget view mixins');
+			if(controller.viewMixins !== undefined) {
+				for (var i = 0, mixinsLength = controller.viewMixins.length; i < mixinsLength; i++) {
+					var mixinToApply = controller.viewMixins[i];
+
+					console.log('mixinToApply', mixinToApply);
+					mixinToApply.apply(this);
+				}
+			}
+			console.groupEnd();
 		},
 
 		setupController: function(widget) {
@@ -105,7 +131,7 @@ define([
 
 			this.registerHooks();
 			var result = this._super.apply(this, arguments);
-			this.get('controller').onReload();
+			this.get('controller').onReload(this.$);
 			//TODO put this somewhere on list widget
 			// this.$('input').iCheck({checkboxClass: 'icheckbox_minimal-grey', radioClass: 'iradio_minimal-grey'});
 

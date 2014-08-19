@@ -1,4 +1,4 @@
-<button type="button" {{bind-attr class=":btn :btn-default findOptions.useLogCollection:active"}} {{action 'history'}} >
+<button type="button" class="btn btn-default" {{action 'showView' 'view.event-history'}}>
 	{{glyphicon "time"}}
 	{{#unless minified}}
 		History

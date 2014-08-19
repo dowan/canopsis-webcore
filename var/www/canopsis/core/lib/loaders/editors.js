@@ -44,7 +44,8 @@ var editorsTemplates = [
 	{ name: 'criticity', js: 'w' },
 	{ name: 'actionfilter', js: 'w' },
 	{ name: 'simplelist', js: 'v' },
-	{ name: 'jobeditor', js: 'w' }
+	{ name: 'jobeditor', js: 'w' },
+	{ name: 'source', js: 'v' }
 ];
 
 var deps = ['ember'];

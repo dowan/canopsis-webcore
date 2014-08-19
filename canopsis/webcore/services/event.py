@@ -50,7 +50,7 @@ print enable_crossdomain_send_events
 
 ## load functions
 def load_amqp(host="localhost"):
-	amqp = camqp(logging_name="Event-amqp", host=host)
+	amqp = Amqp(logging_name="Event-amqp", host=host)
 	amqp.start()
 	return amqp
 
@@ -156,8 +156,7 @@ def send_event(event, host):
 		tags = event.get('tags', None),
 		ticket = event.get('ticket', None),
 		ref_rk = event.get('ref_rk', None),
-		cancel = event.get('cancel', None),
-		author = event.get('author', None),
+		author = event.get('author', None)
 	)
 
 	logger.debug('Event crafted {}'.format(forged_event))

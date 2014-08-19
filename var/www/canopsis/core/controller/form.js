@@ -22,8 +22,8 @@ define([
 	'ember',
 	'app/application',
 	'app/controller/form',
-	'app/lib/loaders/schema-manager'
-], function($, Ember, Application) {
+	'app/lib/loaders/schema-manager',
+], function($, Ember, Application ) {
 	var eventedController = Ember.Controller.extend(Ember.Evented);
 	/*
 		Default is to display all fields of a given model if they are referenced into category list (in model)
@@ -49,8 +49,16 @@ define([
 				}
 				else {
 					console.log("resolve modelform submit");
-					this.submit.resolve(this, arguments);
-					this.get('formwrapper').trigger("hide");
+					if ( this.confirmation ){
+						breakPoint("form.submit");
+
+						var record = this.formContext;
+						ctools.forms.showNew('confirmform', record , { title : " confirmation "  , newRecord : arguments[0]});
+					}
+					else {
+						this.submit.resolve(this, arguments);
+						this.get('formwrapper').trigger("hide");
+					}
 				}
 			},
 

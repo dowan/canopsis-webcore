@@ -28,13 +28,16 @@ define([
 	'app/mixins/history',
 	'app/mixins/sendevent',
 	'utils',
+	'app/lib/utils/dom',
 	'app/lib/loaders/schema-manager',
 	'app/adapters/event',
 	'app/adapters/userview',
 	'canopsis/core/lib/wrappers/ember-cloaking',
 	'app/view/listline',
+	'app/lib/wrappers/datatables',
+	'app/lib/wrappers/bootstrap-contextmenu'
 ], function(Ember, DS, WidgetFactory, PaginationMixin, InspectableArrayMixin,
-		ArraySearchMixin, SortableArrayMixin, HistoryMixin, SendEventMixin, utils) {
+		ArraySearchMixin, SortableArrayMixin, HistoryMixin, SendEventMixin, utils, domUtils) {
 
 	var get = Ember.get,
 		set = Ember.set;
@@ -47,13 +50,44 @@ define([
 			PaginationMixin,
 			HistoryMixin,
 			SendEventMixin
-	]};
+		]
+	};
+
+	var ListViewMixin = Ember.Mixin.create({
+		classNames: ['list'],
+
+		didInsertElement: function() {
+			console.log('did insert list', this.$);
+
+			//FIXME datatables not working atm
+			// this.$('table').dataTable();
+
+			this.$('table').contextMenu({
+				menuSelector: "#contextMenu",
+				menuSelected: function (invokedOn, selectedMenu) {
+					var msg = "You selected the menu item '" + selectedMenu.text() +
+						"' on the value '" + invokedOn.text() + "'";
+
+					var targetView = domUtils.getViewFromJqueryElement(invokedOn, 'listline');
+					var lineModelInstance = get(targetView, 'controller.content');
+
+					console.info(msg, lineModelInstance);
+					get(targetView, 'controller').send(selectedMenu.attr('data-action'), lineModelInstance);
+				}
+			});
+			this._super.apply(this, arguments);
+		}
+	});
 
 	var widget = WidgetFactory('list',
 		{
 			needs: ['login'],
+			viewMixins: [
+				ListViewMixin
+			],
 
 			init: function() {
+				set(this, 'findParams_cfilterFilterPart', get(this, 'default_filter'));
 				this._super();
 			},
 
@@ -74,10 +108,11 @@ define([
 			loaded: false,
 
 			itemsPerPagePropositions : [5, 10, 20, 50],
-			userDefinedItemsPerPageChanged : function() {
-				this.set('itemsPerPage', this.get('userDefinedItemsPerPage'));
-				this.refreshContent();
-			}.observes('userDefinedItemsPerPage'),
+
+			isAllSelectedChanged: function(){
+				console.log('toggle isAllSelected');
+				this.get('widgetData').content.setEach('isSelected', get(this, 'isAllSelected'));
+			}.observes('isAllSelected'),
 
 			//Mixin aliases
 			//history
@@ -88,7 +123,7 @@ define([
 			//pagination
 			paginationMixinFindOptions: Ember.computed.alias("findOptions"),
 
-			onReload: function () {
+			onReload: function (element) {
 				this._super();
 			},
 
@@ -97,6 +132,18 @@ define([
 			},
 
 			actions: {
+				//TODO refactor buttons as components
+				info: function(record) {
+					var list_info_button_pattern = get(Canopsis.conf.frontendConfig, "list_info_button_pattern");
+
+					var template = list_info_button_pattern;
+					var context = record._data;
+					var compiledUrl = Handlebars.compile(template)(context); 
+
+					console.log('info', compiledUrl, record._data);
+					window.open(compiledUrl, '_blank');
+				},
+
 				setFilter: function (filter) {
 					set(this, 'findParams_cfilterFilterPart', filter);
 
@@ -268,6 +315,7 @@ define([
 			}.property('attributesKeys'),
 
 			shown_columns: function() {
+			//	debugger;
 				console.log("compute shown_columns", this.get('sorted_columns'), this.get('attributesKeys'), this.get('sortedAttribute'));
 				if (this.get('user_show_columns') !== undefined) {
 					console.log('user columns selected', this.get('user_show_columns'));
@@ -275,12 +323,13 @@ define([
 				}
 
 				var shown_columns = [];
-				if (this.get('sorted_columns') !== undefined && this.get('sorted_columns').length > 0) {
+				var displayed_columns = this.get('displayed_columns') || this.get('content._data.displayed_columns') ;
+				if (displayed_columns !== undefined && displayed_columns.length > 0) {
 
 					var attributesKeysDict = this.get('attributesKeysDict');
 
-					var sorted_columns = this.get('sorted_columns');
-
+					//var sorted_columns = this.get('displayed_columns');
+					var sorted_columns = displayed_columns;
 					for (var i = 0; i < sorted_columns.length; i++) {
 						if (attributesKeysDict[sorted_columns[i]] !== undefined) {
 							attributesKeysDict[sorted_columns[i]].options.show = true;
@@ -291,6 +340,7 @@ define([
 					console.log('no shown columns set, displaying everything');
 					shown_columns = this.get('attributesKeys');
 				}
+
 				var selected_columns = [];
 				for(var column=0; column < shown_columns.length; column++) {
 
@@ -303,7 +353,7 @@ define([
 
 			}.property('attributesKeysDict', 'attributesKeys', 'sorted_columns'),
 
-			searchFieldValueChanged: function () {
+			searchCriterionChanged: function () {
 				console.log('searchFieldValueChanged', get(this, 'searchCriterion'), get(this, 'searchFieldValue'));
 
 				var searchCriterion = get(this, 'searchFieldValue');
@@ -317,9 +367,11 @@ define([
 
 				set(this, 'findParams_searchFilterPart', filter);
 				this.refreshContent();
-			}.observes('searchFieldValue'),
+			}.observes('searchCriterion'),
 
 			computeFindParams: function(){
+				console.group('computeFindParams');
+
 				var searchFilterPart = get(this, 'findParams_searchFilterPart');
 				var cfilterFilterPart = get(this, 'findParams_cfilterFilterPart');
 
@@ -348,7 +400,33 @@ define([
 					filter = cfilterFilterPart;
 				}
 
-				return {filter: filter};
+				var params = {};
+
+				params.filter = filter;
+
+				params.limit = this.get('itemsPerPage');
+				params.start = this.get('paginationFirstItemIndex') - 1;
+
+				var sortedAttribute = this.get('sortedAttribute');
+
+				console.log('sortedAttribute', sortedAttribute);
+
+				if(isDefined(sortedAttribute)) {
+
+					var direction = "ASC";
+
+					if(sortedAttribute.headerClassName === "sorting_desc") {
+						direction = "DESC";
+					}
+
+					params.sort = [{ property : sortedAttribute.field, direction: direction }];
+					console.log('params.sort', params.sort);
+					params.sort = JSON.stringify(params.sort);
+				}
+
+				console.groupEnd();
+
+				return params;
 			}
 
 	}, listOptions);

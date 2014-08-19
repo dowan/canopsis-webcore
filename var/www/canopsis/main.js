@@ -17,9 +17,12 @@ define([
 	'app/routes/services',
 	'app/adapters/application',
 	'app/adapters/ack',
+	'app/adapters/event',
+	'app/adapters/eventlog',
 	'app/adapters/cancel',
 	'app/adapters/entity',
 	'app/adapters/metric',
+	'app/adapters/connector',
 	'app/serializers/application',
 	'bootstrap',
 	'colorpicker',
@@ -67,8 +70,28 @@ define([
 	Canopsis.commit = commit;
 	Canopsis.editMode = false;
 
+	window.debugName = [ "ajaxCall",
+						// "confirmForm.submit"
+						//"confirmform.makeObject",
+						//"connectorform.availableConnectors"
+						//"connectorform.submit"
+						//"multicrecordList.editConf"
+						//"setReceivedConf",
+						//"confirmForm.submit"
+						//"helper.conf"
+						 ];
+	window.breakPoint = function( caller){
+		//var caller = arguments.callee.caller.name;
+		if( window.debugName.contains( caller ))
+			debugger;
+	};
+
+
+
 	Canopsis.conf = canopsisConfiguration;
 	console.log('Canopsis configuration', Canopsis.conf);
+	//TEMP
+	Application.connector = [ { name : "nagios" }, { name : "shinken" } , { name : "schneider" } , { name : "collectd" }];
 
 	Application.manifest = routes;
 	routesLoader.initializeRoutes(

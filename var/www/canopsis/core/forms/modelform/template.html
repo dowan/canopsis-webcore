@@ -1,54 +1,88 @@
 
 <p>
-	{{#unless Canopsis.formwrapperController.form.onePageDisplay}}
+	{{#unless controller.onePageDisplay}}
 		<ul class="nav nav-tabs">
-			{{#each category in Canopsis.formwrapperController.form.categorized_attributes}}
-				<li><a href="#{{unbound category.title}}" data-toggle="tab">{{unbound category.title}}</a></li>
+			{{#each category in controller.categories}}
+				<li {{bind-attr class="category.isDefault:active"}}><a href="#{{unbound category.title}}" data-toggle="tab">{{unbound category.title}}</a></li>
 			{{/each}}
 		</ul>
 	{{/unless}}
 
 	<!-- Tab panes -->
 	<div class="tab-content">
-		{{#each category in Canopsis.formwrapperController.form.categorized_attributes}}
+		{{#each category in controller.categories}}
 
-			{{#if Canopsis.formwrapperController.form.onePageDisplay}}
+			{{#if Canopsis.controller.onePageDisplay}}
 				<center><h4>{{category.title}}</h4></center>
-			{{else}}
-				<div class="tab-pane" id="{{unbound category.title}}">
-			{{/if}}
-			{{#each attr in category.keys}}
-				{{#if attr.model.options.readOnly}}
-					<div>
-						<span class="label" style="color:black">
-							<b>
-								{{#if attr.model.options.label}}
-									{{attr.model.options.label}}
-								{{else}}
-									{{attr.field}}
-								{{/if}}
-							</b>
-						</span>
-						{{component-renderer attr=attr record=Canopsis.formwrapperController.form.formContext}}
-					</div>
-				{{else}}
-					{{#unless attr.model.options.hiddenInForm}}
-						 <div>
+
+				{{#each attr in category.keys}}
+					{{#if attr.model.options.readOnly}}
+						<div>
 							<span class="label" style="color:black">
-								{{#if attr.model.options.label}}
-									{{attr.model.options.label}}
-								{{else}}
-									{{attr.field}}
-								{{/if}}
+								<b>
+									{{#if attr.model.options.label}}
+										{{attr.model.options.label}}
+									{{else}}
+										{{attr.field}}
+									{{/if}}
+								</b>
 							</span>
-							{{component-editor attr=attr form=this}}
-						 </div>
-					{{/unless}}
-				{{/if}}
-			{{/each}}
-			{{#if Canopsis.formwrapperController.form.onePageDisplay}}
+							{{component-renderer attr=attr record=controller.formContext}}
+						</div>
+					{{else}}
+						{{#unless attr.model.options.hiddenInForm}}
+							 <div>
+								<span class="label" style="color:black">
+									{{#if attr.model.options.label}}
+										{{attr.model.options.label}}
+									{{else}}
+										{{attr.field}}
+									{{/if}}
+								</span>
+								{{component-editor attr=attr form=this}}
+							 </div>
+						{{/unless}}
+					{{/if}}
+				{{/each}}
+
 				<hr/>
-			{{ else }}
+			{{else}}
+				{{#if category.isDefault}}
+					<div class="tab-pane active" id="{{unbound category.title}}">
+				{{else}}
+					<div class="tab-pane" id="{{unbound category.title}}">
+				{{/if}}
+
+				{{#each attr in category.keys}}
+					{{#if attr.model.options.readOnly}}
+						<div>
+							<span class="label" style="color:black">
+								<b>
+									{{#if attr.model.options.label}}
+										{{attr.model.options.label}}
+									{{else}}
+										{{attr.field}}
+									{{/if}}
+								</b>
+							</span>
+							{{component-renderer attr=attr record=controller.formContext}}
+						</div>
+					{{else}}
+						{{#unless attr.model.options.hiddenInForm}}
+							 <div>
+								<span class="label" style="color:black">
+									{{#if attr.model.options.label}}
+										{{attr.model.options.label}}
+									{{else}}
+										{{attr.field}}
+									{{/if}}
+								</span>
+								{{component-editor attr=attr form=this}}
+							 </div>
+						{{/unless}}
+					{{/if}}
+				{{/each}}
+
 				</div>
 			{{/if}}
 		{{/each}}

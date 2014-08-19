@@ -1,9 +1,26 @@
 {{#if controller.loaded}}
+	<div id="contextMenu" class="dropdown clearfix">
+		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
+			<li class="submenudropdown text-muted">Action</li>
+			<li><a data-action="edit" class='context_ack'><i class="fa fa-check"></i> Acquitter</a></li>
+			<li><a class='context_ackticket'><i class="fa fa-ticket"></i> Déclarer un incident</a></li>
+			<li><a class='context_ackticketnum'><i class="fa fa-pencil"></i> Saisir un numéro de ticket</a></li>
+			<li><a class='context_cancel'><i class="fa fa-ban"></i> Annuler</a></li>
+			<li><a data-action="removeRecord" class='context_delete'><i class="fa fa-trash-o"></i> Supprimer</a></li>
+			<li class="submenudropdown text-muted"><hr/>Prise en main a distante</li>
+			<li><a class=''><i class="fa fa-caret-right"></i> Telnet</a></li>
+			<li><a class=''><i class="fa fa-caret-right"></i> ssh RDP</a></li>
+			<li><a class=''><i class="fa fa-caret-right"></i> VNC</a></li>
+			<li class="submenudropdown text-muted"><hr/>Divers</li>
+			<li><a class=''><i class="fa fa-caret-right"></i> Ping</a></li>
+		</ul>
+	</div>
+
 	<div class="btn-toolbar canopsis-toolbar" role="toolbar">
 		<div class="pull-left">
-			{{#if controller.toolbar}}
+			{{#if controller.selection_toolbar}}
 				{{tr 'For the selection'}} :
-				{{#each toolitem in controller.toolbar}}
+				{{#each toolitem in controller.selection_toolbar}}
 					{{partial toolitem}}
 				{{/each}}
 			{{/if}}
@@ -17,6 +34,11 @@
 				<i class="fa fa-plus"></i> {{tr 'Add'}}
 			</button>
 		</div>
+		<div class="pull-right btn-group" data-toggle="btn-toggle">
+			{{#each toolitem in controller.actions_toolbar}}
+				{{partial toolitem}}
+			{{/each}}
+		</div>
 		<div style="clear:both"></div>
 		<br/>
 		<div class="pull-right">
@@ -26,7 +48,7 @@
 		<div class="pull-left dataTables_filter">
 			{{view Ember.Select
 				content=controller.itemsPerPagePropositions
-				value=controller.userDefinedItemsPerPage
+				value=controller.itemsPerPage
 				class="inlineInput"
 			}}
 			{{tr 'records per page'}}
@@ -36,39 +58,21 @@
 		<table {{bind-attr id="controller.id"}} class="table table-striped table-bordered table-hover dataTable">
 			<thead>
 				<tr>
-					<th>Check</th>
+					<th>
+						{{component-checkbox checked=controller.isAllSelected class="toggle"}}
+					</th>
 					{{#each attr in controller.shown_columns}}
-						{{#if Canopsis.editMode}}
-							<th>
-								<button class="btn btn-xs btn-default"{{action moveColumn attr 'left'}}>{{glyphicon "chevron-left"}}</button>
-								{{#if attr.options.label}}
-									{{attr.options.label}}
-								{{else}}
-									{{attr.field}}
-								{{/if}}
-								<button {{bind-attr class=":btn :btn-xs attr.options.show:btn-primary:btn-default"}} {{action switchColumnDisplay attr}}>
-										{{#if attr.options.show}}
-											{{glyphicon "eye-open"}}
-										{{else}}
-											{{glyphicon "eye-close"}}
-										{{/if}}
-								</button>
-								<button class="btn btn-xs btn-default"{{action moveColumn attr 'right'}}>{{glyphicon "chevron-right"}}</button>
-							</th>
-						{{else}}
-							{{#group}}
-								{{#if attr.options.show}}
-									<th {{bind-attr class="attr.headerClassName"}} {{action sort attr}}>
-										{{#if attr.options.label}}
-											{{attr.options.label}}
-										{{else}}
-											{{attr.field}}
-										{{/if}}
-									</th>
-								{{/if}}
-							{{/group}}
-						{{/if}}
-
+						{{#group}}
+							{{#if attr.options.show}}
+								<th {{bind-attr class="attr.headerClassName"}} {{action sort attr}}>
+									{{#if attr.options.label}}
+										{{tr attr.options.label}}
+									{{else}}
+										{{tr attr.field}}
+									{{/if}}
+								</th>
+							{{/if}}
+						{{/group}}
 					{{/each}}
 					{{#if controller.item_actions}}
 						<th>Actions</th>
@@ -91,6 +95,9 @@
 				</tbody>
 			{{/if}}
 		</table>
+		{{#unless controller.widgetData.content.length}}
+			<div>{{tr 'No matching records found'}}</div>
+		{{/unless}}
 	</div>
 	<div class="btn-toolbar canopsis-toolbar" role="toolbar">
 		<div class="pull-left">
@@ -98,21 +105,22 @@
 		</div>
 		<div style="clear:both"></div>
 		<div class="pull-left">
-			{{#if controller.toolbar}}
+			{{#if controller.selection_toolbar}}
 				{{tr 'For the selection'}} :
-				{{#each toolitem in controller.toolbar}}
+				{{#each toolitem in controller.selection_toolbar}}
 					{{partial toolitem}}
 				{{/each}}
 			{{/if}}
 		</div>
 		<div class="pull-right">
 			{{#group}}
-				<button type="button" class="btn btn-small btn-default" {{action prevPage}}>{{glyphicon 'chevron-left'}}</button>
+				<button type="button" class="btn btn-small btn-default" {{action prevPage}}>← Previous</button>
 					Page {{controller.currentPage}} / {{controller.totalPages}}
-				<button type="button" class="btn btn-small btn-default" {{action nextPage}}>{{glyphicon 'chevron-right'}}</button>
+				<button type="button" class="btn btn-small btn-default" {{action nextPage}}>Next → </button>
 			{{/group}}
 		</div>
 	</div>
 {{else}}
+	<i class="fa fa-refresh fa-spin"></i>
 	Loading ...
 {{/if}}

@@ -20,23 +20,27 @@
 //TODO implement auto check for mvct file existence and require them automatically
 
 var renderersTemplates = [
+    'ack',
+    'actionfilter',
+    'boolean',
+    'cfilter',
+    'cfilterwithproperties',
+    'color',
+    'conf',
+    'crecord-type',
+    'criticity',
     'default',
     'mail',
-    'boolean',
-    'tags',
-    'color',
-    'state',
-    'status',
-    'timestamp',
-    'percent',
-    'ack',
-    'crecord-type',
-    'rights',
-    'actionfilter',
-    'cfilter',
     'object',
-    'cfilterwithproperties',
-    'source'
+    'percent',
+    'rights',
+    'source',
+    'state',
+    'stateConnector',
+    'status',
+    'subprocess',
+    'tags',
+    'timestamp'
 ];
 
 var deps = ['ember'];

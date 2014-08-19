@@ -28,14 +28,16 @@ define(['ember'], function(Ember) {
             # 3 == Bagot
             # 4 == Canceled
 		**/
+
 		var statuses = {
 			0: 'Off',
 			1: 'On going',
 			2: 'Stealthy',
 			3: 'Bagot',
 			4: 'Cancelled',
-		}
-	    return new Ember.Handlebars.SafeString(statuses[status]);
+		};
+
+	    return new Ember.Handlebars.SafeString(_(statuses[status]));
 	});
 
 });

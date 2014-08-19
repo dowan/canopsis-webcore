@@ -25,22 +25,17 @@ define([
 	var adapter = ApplicationAdapter.extend({
 
 		buildURL: function(type, id) {
+			void(id);
 			return "/event";
 		},
 
 		findQuery: function(store, type, query) {
-			if (query && query.useLogCollection !== undefined) {
-				this.set('useLogCollection', query.useLogCollection);
-				delete query.useLogCollection;
-			}
 			var noAckSearch = false;
 			if (query && query.noAckSearch) {
 				noAckSearch = true;
 				delete query.noAckSearch;
 			}
-			var log = this.get('useLogCollection') ? '_log' : '';
-			console.log('LOG', log);
-			var url = "/rest/events" + log;
+			var url = "/rest/events";
 
 			return this.ajax(url, 'GET', { data: query });
 		}

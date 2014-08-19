@@ -120,7 +120,6 @@ define([
 				recordWizard.submit.done(function() {
 					console.log("userview.save()");
 					console.log(userview.save());
-					userview.save().then(transitionToView);
 				});
 			},
 
@@ -132,7 +131,7 @@ define([
 				console.log("add", type);
 
 				var record = Canopsis.utils.data.getStore().createRecord(type, {
-					crecord_type: type
+					crecord_type: type.underscore()
 				});
 				console.log('temp record', record);
 

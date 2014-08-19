@@ -26,6 +26,7 @@ var componentsTemplates = [
 	'renderer',
 	'table',
 	'filterclause',
+	'checkbox',
 	'searchbar'
 ];
 

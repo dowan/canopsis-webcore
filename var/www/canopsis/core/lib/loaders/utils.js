@@ -28,7 +28,8 @@ var utilsFiles = [
 	'i18n',
 	'hash',
 	'dates',
-	'indexes'
+	'indexes',
+	'filterObject'
 ];
 
 var deps = [];

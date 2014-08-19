@@ -1,0 +1,16 @@
+build
+dist
+
+#####################
+# Python files
+#####################
+*.egg
+*.egg-info
+*.pyc
+pyperfstore/*.egg*
+pyperfstore2/*.egg*
+
+#####################
+# Temp files
+#####################
+*~

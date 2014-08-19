@@ -25,6 +25,8 @@ define([
 	'app/mixins/validation',
 	'app/lib/loaders/schema-manager'
 ], function(Ember, Application, FormFactory, InspectableitemMixin, ValidationMixin) {
+	var set = Ember.set,
+		get = Ember.get;
 
 	var formOptions = {
 		mixins: [
@@ -35,13 +37,24 @@ define([
 
 	FormFactory('modelform', {
 
-  		validationFields: Ember.computed(function() {return Ember.A();}),
-  		ArrayFields: Ember.A(),
+		validationFields: Ember.computed(function() {return Ember.A();}),
+		ArrayFields: Ember.A(),
+		categories: function(){
+		//	debugger;
+			var res = get(this, 'categorized_attributes');
+			if(res instanceof Array) {
+				set(res[0], 'isDefault', true);
+				return res;
+			}
+			else {
+				return [];
+			}
+		}.property('categorized_attributes'),
 
-  		onePageDisplay: function () {
-  			//TODO search this value into schema
-  			return false;
-  		}.property(),
+		onePageDisplay: function () {
+			//TODO search this value into schema
+			return false;
+		}.property(),
 
 		inspectedDataItem: function() {
 			return this.get('formContext');
@@ -53,7 +66,7 @@ define([
 			if (this.get('formContext.xtype')) {
 				return this.get('formContext.xtype');
 			} else {
-				return this.get('formContext.crecord_type');
+				return this.get('formContext.crecord_type') || this.get('formContext.connector_type')  ;
 			}
 
 		}.property('formContext'),
@@ -69,6 +82,26 @@ define([
 				var	newRecord = {};
 				var override_inverse = {};
 
+				if( this.isOnCreate && this.modelname){
+					var Stringtype = this.modelname.charAt(0).toUpperCase() + this.modelname.slice(1);
+					var model = Canopsis.Application.allModels[Stringtype];
+					if(model){
+						for ( var fieldName in model){
+							if ( model.hasOwnProperty(fieldName)){
+								var field = model[fieldName];
+								if(  field._meta &&  field._meta.options ){
+									var options = field._meta.options;
+									if( "setOnCreate" in  options){
+										//debugger;
+										var value = options["setOnCreate"];
+										newRecord[fieldName] = value;
+										this.set('formContext.' + fieldName, value);
+									}
+								}
+							}
+						}
+					}
+				}
 				//will execute callback from options if any given
 				var options = this.get('options');
 
@@ -106,7 +139,6 @@ define([
 
 				console.log("this is a widget", this.get('formContext'));
 				this._super(this.get('formContext'));
-
 			}
 		}
 	},

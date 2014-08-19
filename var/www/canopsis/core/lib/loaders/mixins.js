@@ -24,7 +24,8 @@ var mixinsArray = [
 	{ name: 'validation', classes: ["action"]},
     { name: 'modelDict', classes: ["action"]},
     { name: 'mixinArray', classes: ["test"]},
-    { name: 'pagination', classes: ["test"]}
+    { name: 'pagination', classes: ["test"]},
+    { name: 'tags_optionFilter', classes: ["test"]},
 ];
 
 var deps = ['app/application'];
