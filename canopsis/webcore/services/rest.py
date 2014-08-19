@@ -331,57 +331,9 @@ def rest_get(namespace, ctype=None, _id=None, params=None):
 
 				output.append(data)
 
-	post_threatement_get(namespace, ctype, output)
-
 	output={'total': total, 'success': True, 'data': output}
 
 	return output
-
-def post_threatement_get(namespace, ctype, output):
-
-
-	logger.debug('Post threatment on {} : {}'.format(namespace, output))
-	if namespace == 'events':
-		rks = [element['rk']  for element in output]
-		# This filter matches ack that are pending
-		# A pending Ack is an ack that is not solved yet an witch time has not been reseted to -1
-		# Theses rules are defined in Acknowlegement engine
-		ack_filter = json.dumps({
-			'rk': {
-				'$in': rks,
-			},
-			'solved': False,
-			'ackts': {'$gt': -1}
-		})
-
-		logger.debug({'ackfilter': ack_filter})
-		bottleParams = FormsDict({ 'filter': ack_filter})
-		logger.debug({'bottleParams': bottleParams})
-		ack_output = rest_get('ack', None, None, bottleParams)
-		logger.debug(' + Ack query : {}'.format(ack_output))
-
-		ack_dict = {}
-
-		#building a dictionnary to get quick access to information
-		for ack in ack_output['data']:
-			ack_dict[ack['rk']] = ack
-
-		#formatting ack for event purposes
-		for event in output:
-			#if an event matches an ack
-			if event['rk'] in ack_dict:
-				logger.info(' + Rk in ack dict : {}'.format(event['rk']))
-				#keep track of ack status for ui purposes
-				ack = {'pending' : False}
-				#setting other interesting ack values
-				for key in ['comment', 'author', 'rk', 'timestamp', 'ackts']:
-					if key in ack_dict[event['rk']]:
-						ack[key] = ack_dict[event['rk']][key]
-
-				if ack_dict[event['rk']]['solved'] == False:
-					ack['pending'] = True
-				#event ack assignation
-				event['ack'] = ack
 
 
 @get('/rest/:namespace/:ctype/:_id')
