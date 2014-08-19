@@ -1,15 +1,30 @@
 {{#unless controller.findOptions.useLogCollection}}
 	{{#if minified}}
-		{{#unless this.ack.author}}
-			{{#if this.state}}
+		{{#if this.ack.author}}
+			<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Remove Ack on this alert">
+				<button type="button" class="btn btn-default" {{action 'sendEvent' 'ackremove' this}} >
+					{{glyphicon "ban-circle"}}
+				</button>
+			</a>
+		{{else}}
+			{{#if this.status}}
 				<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Acknowledge this alert">
-					<button type="button" class="btn btn-default" {{action 'sendEvent' 'ack' this}} >{{glyphicon "ok"}}</button>
+					<button type="button" class="btn btn-default" {{action 'sendEvent' 'ack' this}} >
+						{{glyphicon "ok"}}
+					</button>
 				</a>
 			{{/if}}
-		{{/unless}}
+		{{/if}}
 	{{else}}
 		<a href="#" class="tooltiptable hint--rounded hint--top" "Acknowlege selected events">
-			<button type="button" class="btn btn-default" {{action 'sendEvent' 'ack'}} >{{glyphicon "ok"}} Acknowlege</button>
+			<button type="button" class="btn btn-default" {{action 'sendEvent' 'ack'}} >
+				{{glyphicon "ok"}} Acknowlege
+			</button>
+		</a>
+		<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Remove Ack on selected alerts">
+			<button type="button" class="btn btn-default" {{action 'sendEvent' 'ackremove'}} >
+				{{glyphicon "ban-circle"}} Remove acks
+			</button>
 		</a>
 	{{/if}}
 {{/unless}}

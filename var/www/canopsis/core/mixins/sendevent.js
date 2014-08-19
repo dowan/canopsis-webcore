@@ -32,6 +32,7 @@ define([
 	Application.sendEventMixin = Ember.Mixin.create({
 
 		TYPE_ACK: 'ack',
+		TYPE_ACK_REMOVE: 'ackremove',
 		TYPE_INCIDENT: 'incident',
 		TYPE_CANCEL: 'cancel',
 		TYPE_RECOVERY: 'recovery',
@@ -65,16 +66,15 @@ define([
 				return crecord;
 			}
 
-			if (event_type === this.TYPE_CANCEL || event_type === this.TYPE_UNCANCEL) {
+			if (event_type === this.TYPE_CANCEL || event_type === this.TYPE_UNCANCEL || event_type === this.TYPE_ACK_REMOVE) {
 				//event cancel or uncancel
 				record.ref_rk = crecord.get('id');
 				record.event_type = event_type;
 			}
 
-			if (event_type === this.TYPE_ACK) {
+			if (event_type === this.TYPE_ACK || event_type === this.TYPE_ACK_REMOVE) {
 				//ref rk is required by ack engine
 				record.ref_rk = crecord.get('id');
-				record.cancel = false;
 				//ack is cool
 				record.state = 0;
 				//recomputing id with ack event type
@@ -197,7 +197,7 @@ define([
 				if(event_type === this.TYPE_RECOVERY) {
 					var recordToSend = record;
 					this.submitEvents([recordToSend], record, event_type);
-				} else if (event_type === this.TYPE_CANCEL) {
+				} else if (event_type === this.TYPE_CANCEL || event_type === this.TYPE_UNCANCEL || event_type === this.TYPE_ACK_REMOVE) {
 						console.log('record going to be saved', record);
 
 						//generated data by user form fill
@@ -207,8 +207,6 @@ define([
 				} else {
 					if (event_type === this.TYPE_ACK) {
 						formButtons = ["formbutton-cancel", "formbutton-ack", "formbutton-ackandproblem"];
-					} else if (event_type === this.TYPE_UNCANCEL) {
-						formButtons = ["formbutton-cancel", "formbutton-submit"];
 					} else if (event_type === this.TYPE_INCIDENT) {
 						formButtons = ["formbutton-cancel", "formbutton-incident"];
 					}
