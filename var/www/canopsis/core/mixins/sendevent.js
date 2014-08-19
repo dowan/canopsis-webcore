@@ -64,16 +64,11 @@ define([
 				set(crecord, 'state', 0);
 				return crecord;
 			}
-			if (event_type === this.TYPE_CANCEL) {
-				//event cancellation
-				record.cancel = true;
-				record.event_type = 'check';
-			}
 
-			if (event_type === this.TYPE_UNCANCEL) {
-				//event cancel cancellation
-				record.cancel = false;
-				record.event_type = 'check';
+			if (event_type === this.TYPE_CANCEL || event_type === this.TYPE_UNCANCEL) {
+				//event cancel or uncancel
+				record.ref_rk = crecord.get('id');
+				record.event_type = event_type;
 			}
 
 			if (event_type === this.TYPE_ACK) {
