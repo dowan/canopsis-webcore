@@ -34,5 +34,5 @@ define([
 		}
 	});
 
-	return Application.FormwrapperView;
+	return Application.FormwrapperController;
 });

@@ -27,7 +27,8 @@ var widgetsTemplates = [
 	{ name:'lighthbox', url:'app/widgets/lighthbox', hasJSPart: true },
 	{ name:'vbox', url:'app/widgets/vbox', hasJSPart: true },
 	{ name:'tabmanager', url:'app/widgets/tabmanager', hasJSPart: true },
-	{ name:'uiactionbutton', url:'app/widgets/uiactionbutton', hasJSPart: true }
+	{ name:'uiactionbutton', url:'app/widgets/uiactionbutton', hasJSPart: true },
+	{ name:'jobmanager', url:'app/widgets/jobmanager', hasJSPart: true }
 ];
 
 var deps = ['ember'];

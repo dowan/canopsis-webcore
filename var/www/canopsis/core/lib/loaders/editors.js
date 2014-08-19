@@ -43,7 +43,8 @@ var editorsTemplates = [
 	{ name: 'state', js: 'w' },
 	{ name: 'criticity', js: 'w' },
 	{ name: 'actionfilter', js: 'w' },
-	{ name: 'simplelist', js: 'v' }
+	{ name: 'simplelist', js: 'v' },
+	{ name: 'jobeditor', js: 'w' }
 ];
 
 var deps = ['ember'];

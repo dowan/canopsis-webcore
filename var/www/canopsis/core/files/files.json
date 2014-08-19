@@ -30,6 +30,6 @@
 		{"name": "event"},
 		{"name": "widget"},
 		{"name": "collectionviewcheckbox"},
-        	{"name": "validationtextfield"}
+        {"name": "validationtextfield"}
 	]
 }]
