@@ -33,7 +33,7 @@ define([
         jobRecord: undefined,
 
         actions: {
-            configureTask: function() {
+            next: function() {
                 console.group('configureTask');
                 var submitArguments = arguments;
 
@@ -55,9 +55,9 @@ define([
         },
 
         partials: {
-            buttons: []
+            buttons: ["formbutton-previous", "formbutton-cancel", "formbutton-next"]
         },
     }, formOptions);
 
-    return Application.JobformController;
+    return Application.TaskformController;
 });

@@ -25,30 +25,15 @@ define([
 	'app/lib/loaders/schema-manager',
 	'app/controller/journal'
 ], function(Ember, Application, FormFactory, formUtils) {
-	var get = Ember.get,
-		set = Ember.set;
 
 	FormFactory('arrayitemform', {
 		needs: ['journal'],
 
 		title: "configure arrayitem",
 
-		init: function() {
-			set(this, 'previousForm', get(this, 'formParent'));
-
-			this._super.apply(this, arguments);
-		},
-
-		actions: {
-			previousForm: function() {
-				console.log('previousForm', get(this, 'previousForm'), this);
-				formUtils.showInstance(get(this, 'previousForm'));
-			}
-		},
-
 		parentContainerWidget: Ember.required(),
 		parentUserview: Ember.required()
 	});
 
-	return Application.WidgetformController;
+	return Application.ArrayitemformController;
 });

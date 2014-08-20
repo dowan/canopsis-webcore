@@ -64,6 +64,8 @@ var templates = [
     { name: 'formbutton-ackandproblem', classes: ["formbutton"] },
     { name: 'formbutton-incident', classes: ["formbutton"] },
     { name: 'formbutton-delete', classes: ["formbutton"] },
+    { name: 'formbutton-previous', classes: ["formbutton"] },
+    { name: 'formbutton-next', classes: ["formbutton"] },
 
     { name: 'titlebarbutton-moveup', classes: ["formbutton"] },
     { name: 'titlebarbutton-movedown', classes: ["formbutton"] },

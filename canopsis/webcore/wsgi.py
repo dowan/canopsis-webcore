@@ -29,6 +29,9 @@ from importlib import import_module
 import bottle
 from bottle import route, run, static_file, redirect, request, response, hook
 
+from canopsis.old.template import Template
+from canopsis.old.storage import get_storage
+from canopsis.old.account import Account
 from canopsis.webcore.services import auth
 
 import gevent
@@ -260,7 +263,22 @@ def loginpage(key=None, lang='en'):
     ticket = request.params.get('ticket', default=None)
 
     if not ticket and not s.get('auth_on', False):
-        return static_file('login/index.html', root=root_directory)
+        st = get_storage('object', account=Account(user='root', group='root'))
+
+        try:
+            record = st.get('cservice.frontend')
+            record = record.dump()
+
+        except KeyError:
+            record = {}
+
+        del st
+
+        with open(os.path.join(root_directory, 'login', 'index.html')) as src:
+            tmplsrc = src.read()
+
+        tmpl = Template(tmplsrc)
+        return tmpl(record)
 
     else:
         redirect('/{0}/static/canopsis/index.html'.format(lang))

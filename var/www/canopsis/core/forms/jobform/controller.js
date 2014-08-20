@@ -67,7 +67,7 @@ define([
         },
 
         partials: {
-            buttons: []
+            buttons: ["formbutton-cancel"]
         },
     });
 
