@@ -79,11 +79,11 @@ define([
 
 			//does user selected selector or topology search
 			if (this.get('selectors')) {
-				filter.crecord_type = 'selector';
+				filter.event_type = 'selector';
 			}
 
 			if (this.get('topologies')) {
-				filter.crecord_type = 'topologies';
+				filter.event_type = 'topologies';
 			}
 
 			if (!filter.resource && !filter.component) {
