@@ -17,9 +17,9 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
+define(['ember', 'utils'], function(Ember, utils) {
 
-	Ember.Handlebars.helper('statusview', function(status) {
+	Ember.Handlebars.helper('statusview', function(status, crecord) {
 		/**
             # status legend:
             # 0 == Ok
@@ -37,7 +37,28 @@ define(['ember'], function(Ember) {
 			4: 'Cancelled',
 		};
 
-	    return new Ember.Handlebars.SafeString(_(statuses[status]));
+		var render = _(statuses[status]);
+
+		if(status === 4) {
+			var value = crecord.get('record.cancel');
+		    var tooltipHtml = [
+		    	'<i>' + _('Date') + '</i> : <br/>',
+		    	utils.dates.timestamp2String(value.timestamp) +' <br/> ',
+		    	value.author +' <br/><br/> ',
+	    		'<i>'+_('Commentaire') +' :</i> : <br/>' + value.comment
+	    	].join('');
+
+			var guid = utils.hash.generate_GUID();
+
+			var render  = '<span id="'+ guid +'" data-html="true" data-original-title="' + tooltipHtml + '">' + render + '</span>';
+
+			//Triggers tooltip display once loaded /!\ hack
+			setTimeout(function () {
+				$('#' + guid).tooltip();
+			}, 1000);
+		}
+
+	    return new Ember.Handlebars.SafeString(render);
 	});
 
 });
