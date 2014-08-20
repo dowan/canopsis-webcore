@@ -52,6 +52,32 @@ define([
 				set(Canopsis, 'conf.frontendConfig', queryResults);
 			});
 
+			console.log('finding authentication backends config')
+
+			headerStore.find('ldapconfig', 'ldap.config').then(function(queryResults) {
+				console.log('ldap config found');
+				set(appController, 'ldapConfig', queryResults);
+				set(Canopsis, 'conf.ldapConfig', queryResults);
+			}, function() {
+				console.log('create base ldap config');
+
+				var record = headerStore.createRecord('ldapconfig', {id: 'ldap.config'});
+				set(appController, 'ldapConfig', record);
+				set(Canopsis, 'conf.ldapConfig', record);
+			});
+
+			headerStore.find('casconfig', 'cas.config').then(function(queryResults) {
+				console.log('cas config found');
+				set(appController, 'casConfig', queryResults);
+				set(Canopsis, 'conf.casConfig', queryResults);
+			}, function() {
+				console.log('create base cas config');
+
+				var record = headerStore.createRecord('casconfig', {id: 'cas.config'});
+				set(appController, 'casConfig', record);
+				set(Canopsis, 'conf.casConfig', record);
+			});
+
 			var footerStore = DS.Store.create({
 				container: get(this, "container")
 			});
@@ -76,6 +102,26 @@ define([
 				var editForm = formUtils.showNew('modelform', frontendConfig, { title: "Edit settings" });
 				editForm.submit.done(function() {
 					frontendConfig.save();
+				});
+			},
+
+			editLdapConfig: function() {
+				console.log('editLdapConfig');
+
+				var ldapConfig = get(this, 'ldapConfig');
+				var editForm = formUtils.showNew('modelform', ldapConfig, { title: 'Edit LDAP configuration' });
+				editForm.submit.done(function() {
+					ldapConfig.save();
+				});
+			},
+
+			editCasConfig: function() {
+				console.log('editCasConfig');
+
+				var casConfig = get(this, 'casConfig');
+				var editForm = formUtils.showNew('modelform', casConfig, { title: 'Edit CAS configuration' });
+				editForm.submit.done(function() {
+					casConfig.save();
 				});
 			},
 

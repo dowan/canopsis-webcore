@@ -126,10 +126,16 @@
 								<li><a href="#"><i class="fa fa-angle-double-right"></i> ACL</a></li>
 							</ul>
 						</li>
-						<li>
+						<li class="treeview">
 							<a href="#">
-								<i class="fa fa-key"></i> <span>Authentification systems</span>
+								<i class="fa fa-key"></i>
+								<span>Authentification systems</span>
+								<i class="fa fa-angle-left pull-right"></i>
 							</a>
+							<ul class="treeview-menu">
+								<li><a {{action 'editLdapConfig'}}><i class="fa fa-angle-double-right"></i> LDAP</a></li>
+								<li><a {{action 'editCasConfig'}}><i class="fa fa-angle-double-right"></i> CAS</a></li>
+							</ul>
 						</li>
 
 						<li class="treeview">
