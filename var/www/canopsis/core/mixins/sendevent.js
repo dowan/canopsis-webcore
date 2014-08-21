@@ -141,9 +141,17 @@ define([
 				}
 			}
 
+			if (event_type === this.TYPE_ACK_REMOVE) {
+				for(i=0; i<crecords.length; i++) {
+					if (crecords[i].get('ack.author') && crecords[i].get('ack.isAck')) {
+						selectedRecords.push(crecords[i]);
+					}
+				}
+			}
+
 			if (event_type === this.TYPE_CANCEL) {
 				for(i=0; i<crecords.length; i++) {
-					if (crecords[i].get('state') && !crecords[i].get('ack.isAck')) {
+					if (crecords[i].get('ack.isAck')) {
 						selectedRecords.push(crecords[i]);
 					}
 				}
@@ -197,7 +205,7 @@ define([
 				if(event_type === this.TYPE_RECOVERY) {
 					var recordToSend = record;
 					this.submitEvents([recordToSend], record, event_type);
-				} else if (event_type === this.TYPE_CANCEL || event_type === this.TYPE_UNCANCEL || event_type === this.TYPE_ACK_REMOVE) {
+				} else if (event_type === this.TYPE_UNCANCEL || event_type === this.TYPE_ACK_REMOVE) {
 						console.log('record going to be saved', record);
 
 						//generated data by user form fill
@@ -209,6 +217,8 @@ define([
 						formButtons = ["formbutton-cancel", "formbutton-ack", "formbutton-ackandproblem"];
 					} else if (event_type === this.TYPE_INCIDENT) {
 						formButtons = ["formbutton-cancel", "formbutton-incident"];
+					} else if (event_type === this.TYPE_CANCEL) {
+						formButtons = ["formbutton-cancel", "formbutton-submit"];
 					}
 
 					//generating form from record model
