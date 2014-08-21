@@ -23,8 +23,9 @@ define([
 	'app/lib/factories/form',
 	'app/mixins/inspectableitem',
 	'app/mixins/validation',
+	'app/lib/utils/slug',
 	'app/lib/loaders/schema-manager'
-], function(Ember, Application, FormFactory, InspectableitemMixin, ValidationMixin) {
+], function(Ember, Application, FormFactory, InspectableitemMixin, ValidationMixin, slugify) {
 	var set = Ember.set,
 		get = Ember.get;
 
@@ -40,9 +41,14 @@ define([
 		validationFields: Ember.computed(function() {return Ember.A();}),
 		ArrayFields: Ember.A(),
 		categories: function(){
-		//	debugger;
 			var res = get(this, 'categorized_attributes');
 			if(res instanceof Array) {
+				for(var i = 0; i < res.length; i++) {
+					var category = res[i];
+
+					category.slug = slugify(category.title);
+				}
+
 				set(res[0], 'isDefault', true);
 				return res;
 			}

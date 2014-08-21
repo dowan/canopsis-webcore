@@ -61,7 +61,12 @@ define([
 			}, function() {
 				console.log('create base ldap config');
 
-				var record = headerStore.createRecord('ldapconfig', {id: 'ldap.config'});
+				var record = headerStore.createRecord('ldapconfig', {
+					crecord_type: 'ldapconfig'
+				});
+
+				record.id = 'ldap.config';
+
 				set(appController, 'ldapConfig', record);
 				set(Canopsis, 'conf.ldapConfig', record);
 			});
@@ -73,7 +78,12 @@ define([
 			}, function() {
 				console.log('create base cas config');
 
-				var record = headerStore.createRecord('casconfig', {id: 'cas.config'});
+				var record = headerStore.createRecord('casconfig', {
+					crecord_type: 'casconfig'
+				});
+
+				record.id = 'cas.config';
+
 				set(appController, 'casConfig', record);
 				set(Canopsis, 'conf.casConfig', record);
 			});
