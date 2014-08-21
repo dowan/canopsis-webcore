@@ -17,20 +17,20 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['moment', 'ember'], function(moment, Ember) {
+define(['ember'], function(Ember) {
+	Ember.Handlebars.helper('criticity', function(value) {
 
-	Ember.Handlebars.helper('criticityhelper', function(value) {
-		if (value === 0) {
-			return new Ember.Handlebars.SafeString('<span class="badge bg-green">Info</span>');
-		} else if (value === 1) {
-			return new Ember.Handlebars.SafeString('<span class="badge bg-yellow">Mineure</span>');
-		} else if (value === 2) {
-			return new Ember.Handlebars.SafeString('<span class="badge bg-orange">Majeure</span>');
-		} else if (value === 3) {
-			return new Ember.Handlebars.SafeString('<span class="badge bg-red">Critique</span>');
-		} else if (value === 4) {
-			return new Ember.Handlebars.SafeString('<span class="badge">Unknown</span>');
+		var span;
+
+		switch(value) {
+			case 0: span = '<span class="badge bg-green">Info</span>'; break;
+			case 1: span = '<span class="badge bg-yellow">Mineure</span>'; break;
+			case 2: span = '<span class="badge bg-orange">Majeure</span>'; break;
+			case 3: span = '<span class="badge bg-red">Critique</span>'; break;
+			case 4: span = '<span class="badge">Unknown</span>'; break;
 		}
+		return new Ember.Handlebars.SafeString(span);
+
 	});
 
 });
