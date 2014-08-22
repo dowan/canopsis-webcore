@@ -37,15 +37,15 @@ define(['ember', 'utils'], function(Ember, utils) {
 			4: 'Cancelled',
 		};
 
-		var render = _(statuses[status]);
+		var render = __(statuses[status]);
 
 		if(status === 4) {
 			var value = crecord.get('record.cancel');
 		    var tooltipHtml = [
-		    	'<i>' + _('Date') + '</i> : <br/>',
+		    	'<i>' + __('Date') + '</i> : <br/>',
 		    	utils.dates.timestamp2String(value.timestamp) +' <br/> ',
 		    	value.author +' <br/><br/> ',
-	    		'<i>'+_('Commentaire') +' :</i> : <br/>' + value.comment
+	    		'<i>'+__('Commentaire') +' :</i> : <br/>' + value.comment
 	    	].join('');
 
 			var guid = utils.hash.generate_GUID();

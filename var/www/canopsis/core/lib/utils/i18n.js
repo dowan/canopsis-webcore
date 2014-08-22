@@ -31,8 +31,11 @@ define([
 			if (i18n.translations[i18n.lang] && i18n.translations[i18n.lang][word]) {
 				return i18n.translations[i18n.lang][word];
 			} else {
+				alert('add')
 				//adding translation to todo list
 				if (typeof(word) === 'string' && !i18n.todo[word]) {
+					alert('yep' + word)
+
 					i18n.todo[word] = 1;
 					i18n.newTranslations = true;
 				}
@@ -73,9 +76,27 @@ define([
 				console.log('initialization case. translation is now ready');
 				i18n.uploadDefinitions();
 			});
+
+			if (conf.DEBUG && conf.TRANSLATE) {
+				$.ajax({
+					url: '/rest/misc/i18n',
+					success: function(data) {
+						if (data.success) {
+							for (var item in data.data[0].todo) {
+								i18n.todo[item] = data.data[0].todo[item];
+							}
+							console.log('Loaded pending translation');
+						}
+					},
+				}).fail(function () {
+					console.warn('Error on load pending translation');
+				});
+			}
 		},
 
 	};
+
+	window.__ = i18n._;
 
 	i18n.downloadDefinitions();
 

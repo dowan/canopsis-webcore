@@ -35,7 +35,7 @@ from canopsis.webcore.services.auth import get_account
 
 import polib
 
-from os.path import expanduser
+from os.path import expanduser, isfile
 
 logger = logging.getLogger('Files')
 
@@ -65,10 +65,14 @@ def load_translations(lang='en'):
 
     lang_file = expanduser('~/locale/{}/ui_lang.po'.format(lang))
     translations = {}
-    try:
-        po = polib.pofile(lang_file)
-    except Exception as e:
-        logger.error('Unable to load po file for language {} : {}'.format(lang, e))
+    if isfile(lang_file):
+        try:
+            po = polib.pofile(lang_file)
+        except Exception as e:
+            logger.error('Unable to load po file for language {} : {}. file location:'.format(lang, e, lang_file))
+            return {'success': False, 'data': {}}
+    else:
+        logger.error('File not found at location: {}'.format(lang_file))
         return {'success': False, 'data': {}}
 
     #When language file is properly loaded

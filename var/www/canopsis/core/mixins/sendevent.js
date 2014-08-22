@@ -69,7 +69,6 @@ define([
 			if (event_type === this.TYPE_CANCEL || event_type === this.TYPE_UNCANCEL || event_type === this.TYPE_ACK_REMOVE) {
 				//event cancel or uncancel
 				record.ref_rk = crecord.get('id');
-				record.event_type = event_type;
 			}
 
 			if (event_type === this.TYPE_ACK || event_type === this.TYPE_ACK_REMOVE) {
@@ -185,7 +184,7 @@ define([
 					crecords = this.filterUsableCrecords(event_type, crecords);
 					console.log('Filtered crecord list', crecords);
 					if (!crecords.length) {
-						utils.notification.info(_('No event matches for operation on ') + event_type);
+						utils.notification.info(__('No event matches for operation on ') + event_type);
 						return;
 					} else {
 						crecord = crecords[0];
@@ -209,7 +208,7 @@ define([
 						console.log('record going to be saved', record);
 
 						//generated data by user form fill
-						utils.notification.info(event_type + ' ' +_('event sent'));
+						utils.notification.info(event_type + ' ' +__('event sent'));
 						//UI repaint taking care of new sent values
 						this.submitEvents(crecords, record, event_type);
 				} else {
@@ -238,12 +237,12 @@ define([
 						//generated data by user form fill
 						record = form.get('formContext');
 
-						utils.notification.info(event_type + ' ' +_('event sent'));
+						utils.notification.info(event_type + ' ' +__('event sent'));
 						//UI repaint taking care of new sent values
 						sendEventMixin.submitEvents(crecords, record, event_type);
 
 					}).fail(function () {
-						utils.notification.warning(_('Unable to send event'));
+						utils.notification.warning(__('Unable to send event'));
 						record.rollback();
 						record.unloadRecord();
 					}).then(function () {

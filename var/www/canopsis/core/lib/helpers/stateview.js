@@ -29,7 +29,7 @@ define(['ember'], function(Ember) {
 		};
 
 		var stateSelection = statelist[state];
-	    var state_template = '<span class="badge bg-%@">%@</span>'.fmt(stateSelection.color, _(stateSelection.text));
+	    var state_template = '<span class="badge bg-%@">%@</span>'.fmt(stateSelection.color, __(stateSelection.text));
 
 	    return new Ember.Handlebars.SafeString(state_template);
 	});

@@ -24,10 +24,10 @@ define([
 
     Ember.Handlebars.helper('ack', function(value) {
 
-	    var tooltipHtml = ['<i>' + _('Date') + '</i> : <br/>',
+	    var tooltipHtml = ['<i>' + __('Date') + '</i> : <br/>',
 	    	utils.dates.timestamp2String(value.timestamp) +' <br/> ',
 	    	value.author +' <br/><br/> ',
-	    	'<i>'+_('Commentaire') +' :</i> : <br/>' + value.comment].join('');
+	    	'<i>'+__('Comment') +' :</i> : <br/>' + value.comment].join('');
 
 		var guid = utils.hash.generate_GUID();
 
