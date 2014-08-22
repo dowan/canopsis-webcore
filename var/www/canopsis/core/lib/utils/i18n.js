@@ -23,7 +23,7 @@ define([
 ], function(conf) {
 
 	var i18n = {
-		lang: 'en',
+		lang: 'fr',
 		todo: {},
 		translations: {},
 		newTranslations: true,
@@ -40,7 +40,7 @@ define([
 				return word;
 			}
 		},
-		todo: {},
+
 		uploadDefinitions: function () {
 
 			$.ajax({
