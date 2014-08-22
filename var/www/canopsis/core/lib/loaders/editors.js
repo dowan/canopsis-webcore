@@ -45,7 +45,8 @@ var editorsTemplates = [
 	{ name: 'actionfilter', js: 'w' },
 	{ name: 'simplelist', js: 'v' },
 	{ name: 'jobeditor', js: 'w' },
-	{ name: 'source', js: 'v' }
+	{ name: 'source', js: 'v' },
+	{ name: 'session', js: 'w' }
 ];
 
 var deps = ['ember'];

@@ -26,6 +26,7 @@ var formsTemplates = [
 	'arrayitemform',
 	'jobform',
 	'taskform',
+	'scheduleform',
 	'connectorform',
 	"confirmform"
 ];

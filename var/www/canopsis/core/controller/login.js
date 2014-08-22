@@ -43,12 +43,29 @@ define([
 				url: '/account/me',
 				data: {limit: 1000},
 				success: function(data) {
-					controller.set('username', data.data[0].user);
-					controller.set('authkey', data.data[0].authkey);
+					var account = data.data[0];
+
+					controller.set('username', account.user);
+					controller.set('group', account.aaa_group.slice('group.'.length));
+
+					var groups = [];
+
+					for(var i = 0; i < account.groups.length; i++) {
+						groups.push(account.groups[i].slice('group.'.length));
+					}
+
+					controller.set('groups', groups);
+					controller.set('mail', account.mail);
+					controller.set('authkey', account.authkey);
+
 					if (utils.session === undefined) {
 						utils.session = {};
 					}
+
 					utils.session.username = controller.get('username');
+					utils.session.group = controller.get('group');
+					utils.session.groups = controller.get('groups');
+					utils.session.mail = controller.get('mail');
 					utils.session.authkey = controller.get('authkey');
 				},
 				async: false

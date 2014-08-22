@@ -28,31 +28,13 @@ define([
         subclass: ModelFormController
     };
 
-    FormFactory('taskform', {
-        title: 'Configure Job settings',
-        jobRecord: undefined,
-
-        actions: {
-            next: function() {
-                console.group('configureTask');
-
-                var formParent = this.get('formParent');
-                formParent.formContext.params = this.formContext;
-                console.log('formContext:', formParent.formContext);
-
-                cutils.forms.showNew('scheduleform', formParent.formContext, {
-                    formParent: this,
-                    title: 'Configure Schedule'
-                });
-
-                console.groupEnd();
-            }
-        },
+    FormFactory('scheduleform', {
+        title: 'Configure Schedule',
 
         partials: {
-            buttons: ["formbutton-cancel", "formbutton-next"]
+            buttons: ["formbutton-previous", "formbutton-cancel", "formbutton-submit"]
         },
     }, formOptions);
 
-    return Application.TaskformController;
+    return Application.ScheduleformController;
 });
