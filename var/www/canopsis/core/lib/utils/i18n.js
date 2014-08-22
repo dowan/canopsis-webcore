@@ -23,19 +23,17 @@ define([
 ], function(conf) {
 
 	var i18n = {
-		lang: 'fr',
-		translations: {
-			todo: {},
-			'fr': {}
-		},
+		lang: 'en',
+		todo: {},
+		translations: {},
 		newTranslations: true,
 		_: function(word) {
 			if (i18n.translations[i18n.lang] && i18n.translations[i18n.lang][word]) {
 				return i18n.translations[i18n.lang][word];
 			} else {
 				//adding translation to todo list
-				if (typeof(word) === 'string' && !i18n.translations.todo[word]) {
-					i18n.translations.todo[word.toLowerCase().trim()] = 1;
+				if (typeof(word) === 'string' && !i18n.todo[word]) {
+					i18n.todo[word] = 1;
 					i18n.newTranslations = true;
 				}
 				//returns original not translated string
@@ -50,7 +48,7 @@ define([
 				type: 'POST',
 				data: JSON.stringify({
 					id: 'translations',
-					translations: i18n.translations,
+					todo: i18n.todo,
 					crecord_type: 'i18n'
 				}),
 				success: function(data) {
@@ -62,11 +60,12 @@ define([
 			});
 		},
 		downloadDefinitions: function () {
+
 			$.ajax({
-				url: '/rest/misc/i18n/translations',
+				url: '/files/i18n/' + i18n.lang,
 				success: function(data) {
 					if (data.success) {
-						i18n.translations = data.data[0].translations;
+						i18n.translations[i18n.lang] = data.data;
 					}
 				},
 				async: false
@@ -78,16 +77,7 @@ define([
 
 	};
 
-	i18n.fields = {
-		ack_this_alert: i18n._('Acknowlege this alert'),
-		cancel_this_alert: i18n._('Cancel this alert'),
-		uncancel_this_alert: i18n._('Undo alert cancellation')
-	};
-
 	i18n.downloadDefinitions();
-
-	window._ = i18n._;
-	window.tr = i18n.fields;
 
 	if (conf.DEBUG && conf.TRANSLATE) {
 		setInterval(function () {
@@ -95,7 +85,6 @@ define([
 				console.log('Uploading new translations');
 				i18n.newTranslations = false;
 				i18n.uploadDefinitions();
-				i18n.downloadDefinitions();
 			}
 
 		}, 10000);
