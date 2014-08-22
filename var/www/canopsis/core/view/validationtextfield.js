@@ -45,14 +45,14 @@
               var valideStruct =  Ember.validators.validate(attr);
               console.log("valideStruct",valideStruct);
 
-              this.$().closest('div').next(".help-block").remove();
+              $().closest('div').next(".help-block").remove();
 
               if (!valideStruct.valid) {
 
-                this.$().closest('div').addClass('has-error').after("<span class='help-block'>"+ valideStruct.error + "</span>");
+                $().closest('div').addClass('has-error').after("<span class='help-block'>"+ valideStruct.error + "</span>");
               } else {
 
-                this.$().closest('div').removeClass("has-error");
+                $().closest('div').removeClass("has-error");
               }
 
               return valideStruct.valid;
