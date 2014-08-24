@@ -29,7 +29,7 @@ var widgetsTemplates = [
 	{ name:'tabmanager', url:'app/widgets/tabmanager', hasJSPart: true },
 	{ name:'uiactionbutton', url:'app/widgets/uiactionbutton', hasJSPart: true },
 	{ name:'uimaindropdown', url:'app/widgets/uimaindropdown', hasJSPart: true },
-	{ name:'multicrecordlist', url:'app/widgets/multicrecordlist', hasJSPart: true , TEMPLATE:'list'},
+//	{ name:'multicrecordlist', url:'app/widgets/multicrecordlist', hasJSPart: true , TEMPLATE:'list'},
 	{ name:'jobmanager', url:'app/widgets/jobmanager', hasJSPart: true, TEMPLATE: 'list' }
 ];
 
