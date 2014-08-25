@@ -62,7 +62,7 @@ define([
 				set(appController, 'frontendConfig', queryResults);
 				set(Canopsis, 'conf.frontendConfig', queryResults);
 			});
-
+/*
 			console.log('finding authentication backends config')
 
 			headerStore.find('ldapconfig', 'ldap.config').then(function(queryResults) {
@@ -99,12 +99,12 @@ define([
 				set(Canopsis, 'conf.casConfig', record);
 			});
 
+*/
 			var footerStore = DS.Store.create({
 				container: get(this, "container")
 			});
 
 			set(this, "footerViewStore", footerStore);
-
 			footerStore.find('userview', 'view.app_footer').then(function(queryResults) {
 				set(appController, 'footerUserview', queryResults);
 			});
@@ -117,6 +117,45 @@ define([
 		}.property('controllers.login.username'),
 
 		actions: {
+
+			showUserProfile: function (){
+
+				var login = this.get('controllers.login');
+
+				var applicationController = this;
+
+				var dataStore = DS.Store.create({
+					container: this.get("container")
+				});
+
+				var record = dataStore.findQuery('useraccount', {
+					filter: JSON.stringify({
+						user: login.get('username')
+					})
+				}).then(function(queryResults) {
+					console.log('query result');
+					var record = queryResults.get('content')[0];
+
+					//generating form from record model
+					var recordWizard = utils.forms.showNew('modelform', record, {
+						title: applicationController.get('username') +' '+__('profile'),
+					});
+
+					//submit form and it s callback
+					recordWizard.submit.then(function(form) {
+						console.log('record going to be saved', record, form);
+
+						//generated data by user form fill
+						record = form.get('formContext');
+
+						record.save();
+						utils.notification.info(__('profile') + ' ' +__('updated'));
+					})
+				});
+
+
+			},
+
 			editConfig: function() {
 				console.log('editConfig', formUtils);
 				var frontendConfig = get(this, 'frontendConfig');

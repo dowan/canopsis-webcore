@@ -81,8 +81,8 @@
 								<!-- Menu Footer-->
 								<li class="user-footer">
 									<div class="pull-left">
-										<a href="userprofile.html" id="userprofil" class="btn btn-default btn-flat">Profile</a>
-										<a href="#" class="btn btn-default btn-flat">About</a>
+										<a {{action 'showUserProfile'}} href="#" id="userprofil" class="btn btn-default btn-flat">Profile</a>
+										<a {{action 'showAbout'}} href="#" class="btn btn-default btn-flat">About</a>
 									</div>
 									<div class="pull-right">
 										<a href="#" {{action 'logout'}} class="btn btn-default btn-flat"><i class="fa fa-power-off"></i></a>
