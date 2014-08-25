@@ -31,10 +31,8 @@ define([
 			if (i18n.translations[i18n.lang] && i18n.translations[i18n.lang][word]) {
 				return i18n.translations[i18n.lang][word];
 			} else {
-				alert('add')
 				//adding translation to todo list
 				if (typeof(word) === 'string' && !i18n.todo[word]) {
-					alert('yep' + word)
 
 					i18n.todo[word] = 1;
 					i18n.newTranslations = true;
