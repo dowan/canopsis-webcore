@@ -27,8 +27,8 @@ var formsTemplates = [
 	'jobform',
 	'taskform',
 	'scheduleform',
-	'connectorform',
-	"confirmform"
+	//'connectorform',
+	//"confirmform"
 ];
 
 var deps = ['ember'];

@@ -156,11 +156,13 @@
 								<i class="fa fa-road"></i> <span>Paths and ports</span>
 							</a>
 						</li>
-						<li>
-							<a {{action 'showView' 'view.connectors'}}>
-								<i class="fa fa-angle-double-right"></i> <span>Connectors</span>
-							</a>
-						</li>
+						{{#each plugin in controller.plugins}}
+							<li>
+								<a {{action plugin.action plugin.param}}>
+									<i {{bind-attr class=plugin.icon}}></i> <span>{{plugin.label}}</span>
+								</a>
+							</li>
+						{{/each}}
 						<li>
 							<a {{action 'editConfig'}}>
 								<i class="fa fa-magic"></i> <span>UI Settings</span><small class="badge pull-right bg-green">new</small>

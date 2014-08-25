@@ -31,6 +31,17 @@ define([
 	Application.ApplicationController = Ember.ObjectController.extend({
 		needs: ['login'],
 
+		plugins:function(){
+			var all_plugins = [];
+			var plugins = Application.plugins ;
+			for ( var pluginName in plugins ){
+				if( plugins.hasOwnProperty(pluginName)){
+					all_plugins.push(plugins[pluginName] );
+				}
+			}
+			return all_plugins;
+		}.property(),
+
 		init: function() {
 			console.log('app init');
 			var appController = this;
