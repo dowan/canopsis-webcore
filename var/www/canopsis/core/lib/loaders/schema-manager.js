@@ -184,7 +184,7 @@ define(schemasDeps, function(DS, Application, utils) {
 
 			var property = schema.properties[name];
 			var propertyType = property.type;
-			delete property.type;
+			//delete property.type;
 
 			console.group('model\'s attributes and relationships');
 
