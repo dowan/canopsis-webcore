@@ -222,7 +222,11 @@ define([
 
 						record.save();
 
-						listController.trigger('refresh');
+						//quite ugly callback
+						setTimeout(function () {
+							listController.refreshContent();
+							console.log('refresh after operation');
+						},500);
 
 						listController.startRefresh();
 					});
@@ -240,7 +244,9 @@ define([
 						record = form.get('formContext');
 
 						record.save();
+
 						listController.trigger('refresh');
+
 					});
 				},
 
