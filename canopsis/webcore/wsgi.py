@@ -59,8 +59,24 @@ config.read(config_filename)
 #put config in builtins to make it readable from modules in canopsis.webcore.services
 __builtins__["config"] = config
 
+## Logger
+logging_level=logging.INFO
+
+logging.basicConfig(format=r"%(asctime)s [%(process)d] [%(name)s] [%(levelname)s] %(message)s", datefmt=r"%Y-%m-%d %H:%M:%S", level=logging_level)
+logger  = logging.getLogger("webserver")
+
+
 webservices = []
+webservice_paths = {}
 webservices_mods = {}
+
+
+for webservice,path in config.items('webservice_paths'):
+    logger.info("webservice_paths : webservice = " + webservice + " path : " + path )
+    if webservice not in webservice_paths:
+        logger.info("webservice_paths : add webservice = " + webservice + " path : " + path )
+        webservice_paths[webservice] = path
+
 
 for webservice,enabled in config.items('webservices'):
     enabled = int(enabled)
@@ -116,21 +132,26 @@ except Exception as err:
     print "Error when reading '%s' (%s)" % (config_filename, err)
 
 ## Logger
-logging_level=logging.INFO
-if debug:
-    logging_level=logging.DEBUG
-    
-logging.basicConfig(format=r"%(asctime)s [%(process)d] [%(name)s] [%(levelname)s] %(message)s", datefmt=r"%Y-%m-%d %H:%M:%S", level=logging_level)
-logger  = logging.getLogger("webserver")
-    
-bottle.debug(debug)
+#logging_level=logging.INFO
+#if debug:
+#    logging_level=logging.DEBUG
+
+#logging.basicConfig(format=r"%(asctime)s [%(process)d] [%(name)s] [%(levelname)s] %(message)s", datefmt=r"%Y-%m-%d %H:%M:%S", level=logging_level)
+#logger  = logging.getLogger("webserver")
+
+#bottle.debug(debug)
 
 ## load and unload webservices
 def load_webservices():
     for webservice in webservices:
         logger.info('Loading webservice: {0}'.format(webservice))
+        if webservice in webservice_paths:
+            path = webservice_paths[webservice]
+            sys.path.insert(0, path)
+            modname = webservice
 
-        modname = 'canopsis.webcore.services.{0}'.format(webservice)
+        else:
+            modname = 'canopsis.webcore.services.{0}'.format(webservice)
 
         try:
             mod = import_module(modname)
