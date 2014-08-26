@@ -22,8 +22,32 @@ define([
 	'app/lib/factories/widget'
 ], function($, WidgetFactory) {
 
-	var widget = WidgetFactory('uiactionbutton',{
+	var get = Ember.get,
+	    set = Ember.set;
+
+	var widget = WidgetFactory('uimaintabcollection',{
+		needs: ['application'],
+
+		currentViewId: Ember.computed.alias('controllers.application.currentViewId'),
 		tagName: 'span',
+
+		preparedTabs: function() {
+			var uimaintabcollectionController = this;
+
+			var res = Ember.A();
+
+			get(this, 'tabs').forEach(function(item, index) {
+				if(item.value === get(uimaintabcollectionController, 'currentViewId')) {
+					item.isActive = true;
+				} else {
+					item.isActive = false;
+				}
+				res.push(item);
+			});
+
+			return res;
+		}.property('tabs', 'currentViewId'),
+
 		actions: {
 			do: function(action, params) {
 				if(params === undefined || params === null){

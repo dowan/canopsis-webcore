@@ -1,0 +1,45 @@
+{{#with controllers.application.currentViewId as currentViewId}}
+	<section class="content-header nav-tabs-custom" style=" padding: 5px 0 0;margin-bottom:0px; ">
+		<ul class="nav nav-tabs">
+			{{#each tab in controller.preparedTabs}}
+				<li {{bind-attr class="tab.isActive:active:"}}>
+					<a {{action "showView" tab.value}}>
+						{{tab.label}}
+					</a>
+				</li>
+			{{/each}}
+
+			<li>
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+					<h4> <i class="fa fa-gear"></i> <span class="caret"></span></h4>
+				</a>
+				<ul class="dropdown-menu">
+					<li role="presentation">
+						<a role="menuitem" tabindex="-1" href="#" {{action 'toggleEditMode'}}>
+							<i class="fa fa-pencil"></i>
+							{{#if Canopsis.editMode}}
+								Sortir du mode édition
+							{{else}}
+								Editer la vue active
+							{{/if}}
+						</a>
+					</li>
+					<li role="presentation"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-clipboard"></i> Exporter la vue active</a></li>
+					<li role="presentation">
+						<a role="menuitem" tabindex="-1" href="#" {{action 'addNewView'}}>
+							<i class="fa fa-plus"></i>
+							Ajouter une vue
+						</a>
+					</li>
+					<li role="presentation" class="divider"></li>
+					<li role="presentation">
+						<a role="menuitem" tabindex="-1" href="#" {{action 'showView' 'view.userviews'}}>
+							<i class="fa fa-wrench"></i> {{tr 'Manage views'}}
+						</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+
+	</section>
+{{/with}}
