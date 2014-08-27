@@ -50,7 +50,7 @@ define([
 
 					var template = filter_pattern;
 					var context = element;
-					var compiledFilterPattern = Handlebars.compile(template)(context); 
+					var compiledFilterPattern = Handlebars.compile(template)(context);
 
 					console.log("compiledFilterPattern", compiledFilterPattern);
 
