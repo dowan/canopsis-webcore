@@ -21,9 +21,16 @@ define([
 	'app/application',
 	'app/routes/authenticated'
 ], function(Application, AuthenticatedRoute) {
+	var set = Ember.set,
+	    get = Ember.get;
 
 	Application.UserviewRoute = AuthenticatedRoute.extend({
+		needs: ['application'],
+
 		setupController: function(controller, model) {
+			console.log('UserviewRoute setupController', model, controller);
+			set(controller, 'controllers.application.currentViewId', get(model, 'id'));
+
 			controller.setProperties( {
 				'content': model,
 				'isMainView': true

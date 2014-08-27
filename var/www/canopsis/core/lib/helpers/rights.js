@@ -18,7 +18,7 @@
 */
 define(['ember'], function(Ember) {
 
-    Ember.Handlebars.helper('rights', function(value) {
+	Ember.Handlebars.helper('rights', function(value) {
 
 	var rightsTocheck = ["r","w"];
 	var icon = ["eye", "pencil"];
@@ -28,12 +28,18 @@ define(['ember'], function(Ember) {
 
 	rightsTocheck.forEach(function(elem, i)
 	{
-	    var color = (value.contains(elem)? "success" : "danger");
+		var color;
 
-	    result += icon_tag.fmt(color, icon[i]);
+		if(!!value && value.contains !== undefined) {
+			color = (value.contains(elem)? "success" : "default");
+		} else {
+			color = "default";
+		}
+
+		result += icon_tag.fmt(color, icon[i]);
 	});
 
 	return new Ember.Handlebars.SafeString(result);
 
-    });
+	});
 });

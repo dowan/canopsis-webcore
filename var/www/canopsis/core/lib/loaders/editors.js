@@ -46,6 +46,7 @@ var editorsTemplates = [
 	{ name: 'simplelist', js: 'v' },
 	{ name: 'jobeditor', js: 'w' },
 	{ name: 'source', js: 'v' },
+	{ name: 'stringpair'},
 	{ name: 'session', js: 'w' }
 ];
 
