@@ -62,7 +62,7 @@ define([
 				set(appController, 'frontendConfig', queryResults);
 				set(Canopsis, 'conf.frontendConfig', queryResults);
 			});
-/*
+
 			console.log('finding authentication backends config')
 
 			headerStore.find('ldapconfig', 'ldap.config').then(function(queryResults) {
@@ -99,7 +99,7 @@ define([
 				set(Canopsis, 'conf.casConfig', record);
 			});
 
-*/
+
 			var footerStore = DS.Store.create({
 				container: get(this, "container")
 			});
