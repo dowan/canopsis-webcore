@@ -28,7 +28,13 @@ define(['ember'], function(Ember) {
 
 	rightsTocheck.forEach(function(elem, i)
 	{
-		var color = (value.contains(elem)? "success" : "default");
+		var color;
+
+		if(!!value && value.contains !== undefined) {
+			color = (value.contains(elem)? "success" : "default");
+		} else {
+			color = "default";
+		}
 
 		result += icon_tag.fmt(color, icon[i]);
 	});

@@ -243,6 +243,7 @@ define([
 
 					}).fail(function () {
 						utils.notification.warning(__('Unable to send event'));
+						sendEventMixin.startRefresh();
 						record.rollback();
 						record.unloadRecord();
 					}).then(function () {
