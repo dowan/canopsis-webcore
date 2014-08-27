@@ -118,59 +118,59 @@ require.config({
 		},
 
 		'flotchart-canvas': {
-			deps: ['jquery', 'fotchart']
+			deps: ['jquery', 'flotchart']
 		},
 
 		'flotchart-categories': {
-			deps: ['jquery', 'fotchart']
+			deps: ['jquery', 'flotchart']
 		},
 
 		'flotchart-crosshair': {
-			deps: ['jquery', 'fotchart']
+			deps: ['jquery', 'flotchart']
 		},
 
 		'flotchart-errorbars': {
-			deps: ['jquery', 'fotchart']
+			deps: ['jquery', 'flotchart']
 		},
 
 		'flotchart-fillbetween': {
-			deps: ['jquery', 'fotchart']
+			deps: ['jquery', 'flotchart']
 		},
 
 		'flotchart-image': {
-			deps: ['jquery', 'fotchart']
+			deps: ['jquery', 'flotchart']
 		},
 
 		'flotchart-navigate': {
-			deps: ['jquery', 'fotchart']
+			deps: ['jquery', 'flotchart']
 		},
 
 		'flotchart-pie': {
-			deps: ['jquery', 'fotchart']
+			deps: ['jquery', 'flotchart']
 		},
 
 		'flotchart-resize': {
-			deps: ['jquery', 'fotchart']
+			deps: ['jquery', 'flotchart']
 		},
 
 		'flotchart-selection': {
-			deps: ['jquery', 'fotchart']
+			deps: ['jquery', 'flotchart']
 		},
 
 		'flotchart-stack': {
-			deps: ['jquery', 'fotchart']
+			deps: ['jquery', 'flotchart']
 		},
 
 		'flotchart-symbol': {
-			deps: ['jquery', 'fotchart']
+			deps: ['jquery', 'flotchart']
 		},
 
 		'flotchart-threshold': {
-			deps: ['jquery', 'fotchart']
+			deps: ['jquery', 'flotchart']
 		},
 
 		'flotchart-time': {
-			deps: ['jquery', 'fotchart']
+			deps: ['jquery', 'flotchart']
 		}
 	}
 });
