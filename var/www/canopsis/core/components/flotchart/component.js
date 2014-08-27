@@ -69,7 +69,7 @@ define([
 
             var series = this.get('series');
             var options = this.get('options');
-
+            console.log('container:', plotcontainer);
             console.log('series:', series);
             console.log('options:', options);
 
