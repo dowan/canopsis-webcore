@@ -62,6 +62,15 @@ def unload():
 group_managing_access = ['group.CPS_perfdata_admin']
 #########################################################################
 
+@get('/test/perfstore')
+def test_perfstore():
+    from canopsis.mongo import Storage
+    
+    st = Storage('')
+
+    return {
+        'connected': st.connected()
+    }
 
 #### POST@
 @post('/{0}/values'.format(SERVICE_NAME))

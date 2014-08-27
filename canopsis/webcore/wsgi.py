@@ -64,18 +64,20 @@ logging_level=logging.INFO
 
 logging.basicConfig(format=r"%(asctime)s [%(process)d] [%(name)s] [%(levelname)s] %(message)s", datefmt=r"%Y-%m-%d %H:%M:%S", level=logging_level)
 logger  = logging.getLogger("webserver")
-
+    
 
 webservices = []
 webservice_paths = {}
 webservices_mods = {}
 
-
-for webservice,path in config.items('webservice_paths'):
-    logger.info("webservice_paths : webservice = " + webservice + " path : " + path )
-    if webservice not in webservice_paths:
-        logger.info("webservice_paths : add webservice = " + webservice + " path : " + path )
-        webservice_paths[webservice] = path
+try:
+    for webservice,path in config.items('webservice_paths'):
+        logger.info("webservice_paths : webservice = " + webservice + " path : " + path )
+        if webservice not in webservice_paths:
+            logger.info("webservice_paths : add webservice = " + webservice + " path : " + path )
+            webservice_paths[webservice] = path
+except : #NoSectionError:
+    logger.info("WARNING : Can't found webservice_paths on webserver.conf " )
 
 
 for webservice,enabled in config.items('webservices'):
@@ -135,10 +137,10 @@ except Exception as err:
 #logging_level=logging.INFO
 #if debug:
 #    logging_level=logging.DEBUG
-
+    
 #logging.basicConfig(format=r"%(asctime)s [%(process)d] [%(name)s] [%(levelname)s] %(message)s", datefmt=r"%Y-%m-%d %H:%M:%S", level=logging_level)
 #logger  = logging.getLogger("webserver")
-
+    
 #bottle.debug(debug)
 
 ## load and unload webservices

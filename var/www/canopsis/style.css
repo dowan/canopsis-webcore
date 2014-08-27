@@ -241,3 +241,8 @@ table.dataTable>thead>tr>th {
 .label .glyphicon {
 	top: 2px;
 }
+
+.flotchart {
+	margin: auto;
+	min-height: 150px;
+}
