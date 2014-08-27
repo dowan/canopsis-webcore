@@ -226,6 +226,7 @@ define([
 				recordWizard.submit.done(function() {
 					console.log("userview.save()");
 					console.log(userview.save());
+					applicationController.transitionToRoute("/userview/" + userview.get('id'));
 				});
 			},
 
