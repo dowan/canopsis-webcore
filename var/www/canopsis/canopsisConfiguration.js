@@ -9,8 +9,8 @@ define([], function () {
 		DEBUG: true,
 		VERBOSE: 1,
 		DISPLAY_SCHAMA_MANAGER: true,
-		REFRESH_ALL_WIDGETS: false,
-		TRANSLATE: false
+		REFRESH_ALL_WIDGETS: true,
+		TRANSLATE: true
 	};
 
 	if(canopsisConfiguration.DEBUG === false) {

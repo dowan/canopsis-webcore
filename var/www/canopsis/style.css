@@ -1,3 +1,11 @@
+.fleft {
+	float: left;
+}
+
+.fright {
+	float: right;
+}
+
 html{
 	overflow: auto;
 }

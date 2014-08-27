@@ -28,7 +28,17 @@
 		<div class="pull-right btn-group" data-toggle="btn-toggle">
 			<button class="btn btn-default"{{action setFilter controller.default_filter}}>All</button>
 			{{#each filter in controller.filters}}
-				<button class="btn btn-default"{{action setFilter filter.filter}}>{{filter.title}}</button>
+
+				{{#if Canopsis.editMode}}
+					<div class="well well-sm btn-group btn-group-xs">
+						<span class="fleft">{{filter.title}}&nbsp;</span>
+						<button class="btn btn-default" title="edit" class="fleft" {{action editFilter filter}}>{{glyphicon 'edit'}}</button>
+						<button class="btn btn-default" title="remove" class="fleft" {{action removeFilter filter}}>{{glyphicon 'remove'}}</button>
+					</div>
+				{{else}}
+					<button class="btn btn-default"{{action setFilter filter.filter}}>{{filter.title}}</button>
+				{{/if}}
+
 			{{/each}}
 			<button type="button" class="btn btn-primary" {{action addUserFilter}} data-col="all">
 				<i class="fa fa-plus"></i> {{tr 'Add'}}
