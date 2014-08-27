@@ -1,9 +1,1 @@
-{{#if attr.value}}
-	{{view Canopsis.Application.ValidationTextField formController=controller name=attr.field value=attr.value attrBinding="attr" class="form-control" placeholder=attr.model.options.placeholder}}
-{{else}}
-	{{#if attr.model.options.defaultValue}}
-		{{view Canopsis.Application.ValidationTextField formController=controller name=attr.field value=attr.model.options.defaultValue attrBinding="attr" class="form-control" placeholder=attr.model.options.placeholder}}
-	{{else}}
-		{{view Canopsis.Application.ValidationTextField formController=controller name=attr.field value=attr.value attrBinding="attr" class="form-control" placeholder=attr.model.options.placeholder}}
-	{{/if}}
-{{/if}}
+{{view Canopsis.Application.ValidationTextField formController=controller name=attr.field value=attr.value attrBinding="attr" class="form-control" placeholder=attr.model.options.placeholder}}
