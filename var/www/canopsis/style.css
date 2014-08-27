@@ -243,6 +243,9 @@ table.dataTable>thead>tr>th {
 }
 
 .flotchart {
+	border: 1px solid black;
+	padding: 5px;
 	margin: auto;
 	min-height: 150px;
+	width: 100%;
 }
