@@ -69,8 +69,12 @@ define([
 
             var series = this.get('series');
             var options = this.get('options');
+<<<<<<< Updated upstream
 
             console.log('container:', plotcontainer, plotcontainer.width(), plotcontainer.parent().width());
+=======
+            console.log('container:', plotcontainer);
+>>>>>>> Stashed changes
             console.log('series:', series);
             console.log('options:', options);
 
