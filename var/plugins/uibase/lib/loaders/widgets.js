@@ -21,8 +21,8 @@
 //TODO implement auto check for mvct file existence and require them automatically
 
 var uibaseWidgetsTemplates = [
-	{ name:'weather', url:'canopsis/uibase/widgets/weather', hasJSPart: true },
-	{ name:'text', url:'canopsis/uibase/widgets/text', hasJSPart: true }
+	{ name:'weather', url:'/plugins/uibase/widgets/weather', hasJSPart: true },
+	{ name:'text', url:'/plugins/uibase/widgets/text', hasJSPart: true }
 ];
 
 var deps = ['ember'];
