@@ -88,7 +88,7 @@ define([
 				ListViewMixin
 			],
 
-			filters: [{filter: '', title :'test filter'}],
+			filters: [],
 
 			init: function() {
 				set(this, 'findParams_cfilterFilterPart', get(this, 'default_filter'));

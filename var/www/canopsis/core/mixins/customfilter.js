@@ -33,7 +33,7 @@ define([
 		actions: {
 			addUserFilter: function () {
 
-/*
+
 				var listController = this;
 
 				var record = Canopsis.utils.data.getStore().createRecord('customfilter', {
@@ -44,14 +44,13 @@ define([
 					title: __('Create a custom filter for current list')
 				});
 
-				recordWizard.submit.done(function() {
-					console.log('plop')
+				recordWizard.submit.then(function(form) {
 					record = form.get('formContext');
-					listController.filters.push(record);
+					listController.get('filters').pushObject(record);
 					console.log('Custom filter created', record, form);
 					utils.notification.info(__('Custom filter created'));
 				});
-*/
+
 
 
 
@@ -59,12 +58,28 @@ define([
 
 			editFilter: function (filter) {
 
-				console.log('edit', filter);
+				var listController = this;
+
+				filter.set('crecord_type', 'customfilter');
+
+				var recordWizard = Canopsis.utils.forms.showNew('modelform', filter, {
+					title: __('Edit filter for current list')
+				});
+
+				recordWizard.submit.then(function(form) {
+					listController.get('filters').removeObject(filter);
+					record = form.get('formContext');
+					listController.get('filters').pushObject(record);
+					console.log('Custom filter created', record, form);
+					utils.notification.info(__('Custom filter created'));
+				});
+
+
 
 			},
 			removeFilter: function (filter) {
-
-				console.log('remove', filter);
+				this.get('filters').removeObject(filter);
+				utils.notification.info(__('Custom filter removed'));
 
 			},
 		}
