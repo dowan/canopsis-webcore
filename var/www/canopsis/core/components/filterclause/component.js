@@ -90,51 +90,53 @@ define([
 				console.log("focusOutInput", arguments);
 			},
 
-			validateClause: function() {
+			validateClause: function(thisElement) {
 				var inputValue = this.get('content.value');
 				var inputKey = this.get('content.key');
+
+				var andClausePart = thisElement.templateData.keywords.andClausePart;
 
 				console.log("focusOutInput", arguments);
 				if (inputValue !== undefined && inputValue !== null && inputValue !== '') {
 					var clauses = this.get('clauses');
 					var currentClauseIndex = this.get('currentClauseIndex');
 
-					if (currentClauseIndex >= 0 && this.keyIsValid(inputKey)) {
+					if (currentClauseIndex >= 0 && this.keyIsValid(inputKey, andClausePart)) {
 						var currentClause = clauses.objectAt(currentClauseIndex);
 						console.log('focusOutInput', currentClause);
 						this.set('content.value', inputValue);
 						this.set('content.finalized', true);
 						this.set('finalized', true);
-						this.set('editionMode', false);
 						this.set('content.filling', false);
 
-						if (this.get('editionMode') === false) {
+						if (this.get('editionMode') === false && this.get('onlyAllowRegisteredIndexes') === false) {
 							this.get('parent').send('addAndClause');
 						}
+
+						this.set('editionMode', false);
 					}
 				}
 			}
 		},
 
-		keyIsValid: function(inputValue) {
+		keyIsValid: function(inputValue, andClausePart) {
 			var currentClauseIndex = this.get('currentClauseIndex');
 
 			var clauses = this.get('clauses');
 			var currentClause = clauses.objectAt(currentClauseIndex);
-			var lastAndOfClause = currentClause.and[currentClause.and.length -1];
 
-			console.log("keyIsValid", inputValue, currentClauseIndex, currentClause, lastAndOfClause);
+			console.log("keyIsValid", inputValue, currentClauseIndex, currentClause, andClausePart);
 
 			if (this.get('onlyAllowRegisteredIndexes') === true) {
 				//detect if inputValue is in available_indexes
 				console.group('onlyAllowRegisteredIndexes check');
-				for (var i = 0; i < lastAndOfClause.options.available_indexes.length; i++) {
-					var currentIndex = lastAndOfClause.options.available_indexes[i];
+				for (var i = 0; i < andClausePart.options.available_indexes.length; i++) {
+					var currentIndex = andClausePart.options.available_indexes[i];
 					console.log('currentIndex', currentIndex);
 
 					if (currentIndex.value === inputValue) {
 						console.log('currentIndex validated', currentIndex, inputValue);
-						lastAndOfClause.set('key', inputValue);
+						andClausePart.set('key', inputValue);
 						return true;
 					}
 				}

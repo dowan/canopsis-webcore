@@ -27,7 +27,8 @@ var componentsTemplates = [
 	'table',
 	'filterclause',
 	'checkbox',
-	'searchbar'
+	'searchbar',
+	'flotchart'
 ];
 
 var deps = ['ember'];

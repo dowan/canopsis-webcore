@@ -55,6 +55,22 @@ define([
 				console.log('custom tagName', get(this, 'widget.tagName'));
 				set(this, 'classNames', cssClasses.split(','));
 			}
+
+			//widget refresh management
+			var widgetController = this.get('controller');
+			console.log('refreshInterval - > ',widgetController.get('refreshInterval'));
+			var interval = setInterval(function () {
+				if (Canopsis.conf.REFRESH_ALL_WIDGETS) {
+					if (get(widgetController,'isRefreshable') && get(widgetController, 'refreshableWidget')) {
+						console.log('refreshing widget ' + widgetController.get('title'));
+						widgetController.refreshContent();
+					}
+				}
+			}, widgetController.get('refreshInterval') * 1000);
+
+			//keep track of this interval
+			this.set('widgetRefreshInterval', interval);
+
 		},
 
 		applyViewMixins: function(){
@@ -83,9 +99,16 @@ define([
 		registerHooks: function() {
 			console.log("registerHooks", this.get("controller"), this.get("controller").on);
 			get(this, "controller").on('refresh', this, this.rerender);
+
+
+
 		},
 
 		unregisterHooks: function() {
+		},
+
+		willDestroyElement: function () {
+			clearInterval(this.get('widgetRefreshInterval'));
 		},
 
 		rerender: function() {

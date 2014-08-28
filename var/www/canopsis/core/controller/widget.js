@@ -47,23 +47,12 @@ define([
 			this.set("container", utils.routes.getCurrentRouteController().container);
 			//TODO put spinner in widget when loading
 
-			this.set('isRefreshable', false);
+			this.set('isRefreshable', true);
 			//TODO load delay from widget configuration
-			this.set('refreshDelay', 10000);
 
-			setInterval(function () {
-				if (Canopsis.conf.REFRESH_ALL_WIDGETS) {
-					var title = widgetController.get('title');
-					if (title === undefined) {
-						title = '';
-					}
-					if (!widgetController.get('isRefreshable')) {
-						console.log('refreshing widget ' + title);
-						widgetController.refreshContent();
-					}
-				}
-			}, widgetController.get('refreshDelay'));
-
+			if (widgetController.get('refreshInterval') <= 10 || Ember.isNone(widgetController.get('refreshInterval'))) {
+				widgetController.set('refreshInterval', 10);
+			}
 
 			this.refreshContent();
 

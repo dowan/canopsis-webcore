@@ -27,6 +27,7 @@ define([
 	'app/mixins/sortablearray',
 	'app/mixins/history',
 	'app/mixins/sendevent',
+	'app/mixins/customfilter',
 	'utils',
 	'app/lib/utils/dom',
 	'app/lib/loaders/schema-manager',
@@ -37,7 +38,7 @@ define([
 	'app/lib/wrappers/datatables',
 	'app/lib/wrappers/bootstrap-contextmenu'
 ], function(Ember, DS, WidgetFactory, PaginationMixin, InspectableArrayMixin,
-		ArraySearchMixin, SortableArrayMixin, HistoryMixin, SendEventMixin, utils, domUtils) {
+		ArraySearchMixin, SortableArrayMixin, HistoryMixin, SendEventMixin, CustomFilterManagerMixin, utils, domUtils) {
 
 	var get = Ember.get,
 		set = Ember.set;
@@ -49,7 +50,8 @@ define([
 			SortableArrayMixin,
 			PaginationMixin,
 			HistoryMixin,
-			SendEventMixin
+			SendEventMixin,
+			CustomFilterManagerMixin
 		]
 	};
 
@@ -85,6 +87,8 @@ define([
 			viewMixins: [
 				ListViewMixin
 			],
+
+			filters: [],
 
 			init: function() {
 				set(this, 'findParams_cfilterFilterPart', get(this, 'default_filter'));

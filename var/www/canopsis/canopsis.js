@@ -35,7 +35,24 @@ require.config({
 		'adminLTE': 'canopsis/core/lib/wrappers/adminLTE',
 		'utils': 'canopsis/core/lib/loaders/utils',
 		'lodash': 'webcore-libs/dev/lodash.compat',
-		'css3-mediaqueries': 'webcore-libs/min/css3-mediaqueries'
+		'css3-mediaqueries': 'webcore-libs/min/css3-mediaqueries',
+
+		'flotchart': 'webcore-libs/flot/jquery.flot',
+		'flotchart-canvas': 'webcore-libs/flot/jquery.flot.canvas',
+		'flotchart-categories': 'webcore-libs/flot/jquery.flot.categories',
+		'flotchart-crosshair': 'webcore-libs/flot/jquery.flot.crosshair',
+		'flotchart-errorbars': 'webcore-libs/flot/jquery.flot.errorbars',
+		'flotchart-fillbetween': 'webcore-libs/flot/jquery.flot.fillbetween',
+		'flotchart-image': 'webcore-libs/flot/jquery.flot.image',
+		'flotchart-navigate': 'webcore-libs/flot/jquery.flot.navigate',
+		'flotchart-pie': 'webcore-libs/flot/jquery.flot.pie',
+		'flotchart-resize': 'webcore-libs/flot/jquery.flot.resize',
+		'flotchart-selection': 'webcore-libs/flot/jquery.flot.selection',
+		'flotchart-stack': 'webcore-libs/flot/jquery.flot.stack',
+		'flotchart-symbol': 'webcore-libs/flot/jquery.flot.symbol',
+		'flotchart-threshold': 'webcore-libs/flot/jquery.flot.threshold',
+		'flotchart-time': 'webcore-libs/flot/jquery.flot.time'
+
 	},
 
 	shim: {
@@ -94,6 +111,66 @@ require.config({
 
 		'timepicker': {
 			deps: ['jquery']
+		},
+
+		'flotchart': {
+			deps: ['jquery'],
+		},
+
+		'flotchart-canvas': {
+			deps: ['jquery', 'flotchart']
+		},
+
+		'flotchart-categories': {
+			deps: ['jquery', 'flotchart']
+		},
+
+		'flotchart-crosshair': {
+			deps: ['jquery', 'flotchart']
+		},
+
+		'flotchart-errorbars': {
+			deps: ['jquery', 'flotchart']
+		},
+
+		'flotchart-fillbetween': {
+			deps: ['jquery', 'flotchart']
+		},
+
+		'flotchart-image': {
+			deps: ['jquery', 'flotchart']
+		},
+
+		'flotchart-navigate': {
+			deps: ['jquery', 'flotchart']
+		},
+
+		'flotchart-pie': {
+			deps: ['jquery', 'flotchart']
+		},
+
+		'flotchart-resize': {
+			deps: ['jquery', 'flotchart']
+		},
+
+		'flotchart-selection': {
+			deps: ['jquery', 'flotchart']
+		},
+
+		'flotchart-stack': {
+			deps: ['jquery', 'flotchart']
+		},
+
+		'flotchart-symbol': {
+			deps: ['jquery', 'flotchart']
+		},
+
+		'flotchart-threshold': {
+			deps: ['jquery', 'flotchart']
+		},
+
+		'flotchart-time': {
+			deps: ['jquery', 'flotchart']
 		}
 	}
 });
