@@ -18,7 +18,7 @@
 */
 
 require([
-	'/plugins/uibase/lib/loaders/widgets'
+	'canopsis/uibase/lib/loaders/widgets'
 ], function() {
 
 });
