@@ -32,38 +32,6 @@ define([
 	Application.ApplicationController = Ember.ObjectController.extend({
 		needs: ['login'],
 
-		test_flotchart_options: {
-			series: {
-				lines: { show: true },
-				points: { show: true }
-			},
-			xaxis: {
-				show: true,
-				ticks: [
-					0, [ Math.PI/2, "PI/2" ], [ Math.PI, "PI" ],
-					[ Math.PI * 3/2, "3 PI/2" ], [ Math.PI * 2, "2 PI" ]
-				]
-			},
-			yaxis: {
-				show: true,
-				ticks: 10,
-				min: -2,
-				max: 2,
-				tickDecimals: 3
-			},
-			grid: {
-				backgroundColor: { colors: [ "#fff", "#eee" ] },
-				borderWidth: {
-					top: 1,
-					right: 1,
-					bottom: 2,
-					left: 2
-				}
-			}
-		},
-
-		test_flotchart_series: [],
-
 		plugins:function(){
 			var all_plugins = [];
 			var plugins = Application.plugins ;
@@ -79,27 +47,6 @@ define([
 			console.group('app init');
 			var appController = this;
 
-			console.log('TEST FLOTCHART SERIES');
-
-			var d1 = [];
-			for (var i = 0; i < Math.PI * 2; i += 0.25) {
-				d1.push([i, Math.sin(i)]);
-			}
-
-			var d2 = [];
-			for (var i = 0; i < Math.PI * 2; i += 0.25) {
-				d2.push([i, Math.cos(i)]);
-			}
-
-			var d3 = [];
-			for (var i = 0; i < Math.PI * 2; i += 0.1) {
-				d3.push([i, Math.tan(i)]);
-			}
-
-			this.test_flotchart_series.push({label: 'sin(x)', data: d1});
-			this.test_flotchart_series.push({label: 'cos(x)', data: d2});
-			this.test_flotchart_series.push({label: 'tan(x)', data: d3});
-
 			var headerStore = DS.Store.create({
 				container: get(this, "container")
 			});
@@ -108,6 +55,16 @@ define([
 
 			headerStore.find('userview', 'view.app_header').then(function(queryResults) {
 				set(appController, 'headerUserview', queryResults);
+			});
+
+			var indexStore = DS.Store.create({
+				container: get(this, "container")
+			});
+
+			set(this, "indexViewStore", indexStore);
+
+			indexStore.find('userview', 'view.app_index').then(function(queryResults) {
+				set(appController, 'indexUserview', queryResults);
 			});
 
 			console.log('finding fconfig');
