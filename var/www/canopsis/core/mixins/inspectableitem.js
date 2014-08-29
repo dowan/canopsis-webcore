@@ -62,7 +62,6 @@ define([
 		//getting attributes (keys and values as seen on the form)
 		categorized_attributes: function() {
 			var inspectedDataItem =  this.get('inspectedDataItem');
-			//debugger;
 			console.log("recompute categorized_attributes", inspectedDataItem );
 			if (inspectedDataItem !== undefined) {
 				console.log("inspectedDataItem attributes", inspectedDataItem.get('attributes'));
@@ -169,7 +168,6 @@ define([
 							} else {
 								createdCategory.keys[j].value = undefined;
 							}*/
-							//debugger;
 							createdCategory.keys[j].value = (!this.isOnCreate)? inspectedDataItem.get(key) : attr.options["default"];
 
 							console.log("category key ", category.keys[j].value);

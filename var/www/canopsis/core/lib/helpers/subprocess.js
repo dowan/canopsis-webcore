@@ -24,7 +24,6 @@ define([
 
 	Ember.Handlebars.helper('subprocess', function(current) {
 		var returnValue = '';
-		//debugger;
 		var badgeClass = ["badge alert-danger" , "badge alert-success"];
 	//	for ( var f = 0 ; f < current.length; f++){
 		for ( var sub in current ){

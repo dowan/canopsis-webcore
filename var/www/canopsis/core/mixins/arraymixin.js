@@ -63,7 +63,6 @@ define([
 		},
 
 		getValue: function() {
-			//debugger;
 			var value = this.get(this.get("valuePath"));
 			var valueRef = this.get(this.get("valueRefPath"));
 
@@ -128,7 +127,6 @@ define([
 
 		//Called by controller when submit
 		onUpdate: function() {
-		//	debugger;
 			var formController  =  Canopsis.formwrapperController.form;
 
 			var value =this.get(this.get("valuePath"));

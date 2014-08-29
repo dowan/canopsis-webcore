@@ -14,7 +14,6 @@ define([
 
 		var validatorName = attr.model.type;
 		var validator = Ember.validators[validatorName];
-	//	debugger;
 		if (validator !== undefined) {
 			console.log("pushed : ", validatorName);
 			validators.push(Ember.validators[validatorName]);

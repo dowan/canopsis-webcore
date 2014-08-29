@@ -21,7 +21,6 @@ define(['app/application'], function(Application) {
 
 	var filterObjectUtils = {
 		getFieldsByPrefix: function( prefix , record, callback , contentREF , _self  ) {
-			//debugger;
 			var resultISString =  typeof (contentREF) === "string" ;
 			var result = ( resultISString )? contentREF :  contentREF || Ember.A();
 			var ctype = record.get("crecord_type") || record.get("connector_type");
