@@ -67,6 +67,5 @@ define(deps, function(Ember) {
 			Ember.TEMPLATES[templateName] = Ember.TEMPLATES[TEMPLATE];
 		}
 	}
-	//debugger;
 });
 

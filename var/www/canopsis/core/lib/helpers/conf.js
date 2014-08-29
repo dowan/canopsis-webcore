@@ -39,7 +39,6 @@ define(['ember' , 'utils'], function(Ember , utils) {
 
 		    returnValue += start + x.field + " : " + x.value + end ;
 		});
-		// debugger;
 		return new Ember.Handlebars.SafeString( returnValue );
 	});
 

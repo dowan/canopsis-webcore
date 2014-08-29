@@ -281,7 +281,6 @@ define([
 			}.property('attributesKeys'),
 
 			shown_columns: function() {
-			//	debugger;
 				console.log("compute shown_columns", this.get('sorted_columns'), this.get('attributesKeys'), this.get('sortedAttribute'));
 				if (this.get('user_show_columns') !== undefined) {
 					console.log('user columns selected', this.get('user_show_columns'));

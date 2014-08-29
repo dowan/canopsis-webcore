@@ -83,7 +83,6 @@ define([
 
 		//TODO : some part are redundant with ArrayMixin
 		onUpdate: function() {
-			//debugger;
 			var formController  =  Canopsis.formwrapperController.form;
 
 			var selection = this.get("value");
