@@ -43,13 +43,27 @@ define([
 		actions: {
 			do: function(action, item) {
 				this.targetObject.send(action, item);
-			},
-
-			selectItem: function(item) {
-				console.log('selectItem', item);
-				set(this, 'selectedValue', item);
 			}
 		},
+
+		selectionChanged: function(){
+			var selectionUnprepared = get(this, 'selectionUnprepared');
+			var res;
+
+			if(get(this, "multiselect")) {
+				res = Ember.A();
+
+				for (var i = 0; i < selectionUnprepared.length; i++) {
+					res.pushObject(get(selectionUnprepared[i], 'name'));
+				}
+			} else {
+				if(Ember.isArray(selectionUnprepared)) {
+					res = get(selectionUnprepared[0], 'name');
+				}
+			}
+
+			set(this, 'selection', res);
+		}.observes('selectionUnprepared'),
 
 		onDataChange: function() {
 			this.refreshContent();
