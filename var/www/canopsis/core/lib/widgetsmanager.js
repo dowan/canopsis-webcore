@@ -20,7 +20,7 @@
 define([], function() {
 
 	var widgetsManager = {
-		all: {}
+		all: []
 	};
 
 	return widgetsManager;
