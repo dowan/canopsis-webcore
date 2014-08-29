@@ -40,17 +40,57 @@ define([
 
 		validationFields: Ember.computed(function() {return Ember.A();}),
 		ArrayFields: Ember.A(),
+
+		filterUserPreferenceCategory: function (category, keyFilters) {
+
+			var keys = category.get('keys');
+			category.set('keys', []);
+
+			for (var i=0; i<keys.length; i++) {
+				console.log('key', keys[i]);
+				if (this.get('userPreferencesOnly')) {
+					//isUserPreference is set to true in the key schema field.
+					if (keys[i].model && keys[i].model.options && keys[i].model.options.isUserPreference) {
+						category.get('keys').push(keys[i]);
+					}
+				} else {
+					//Filter from form parameter
+					if ($.inArray(keys[i].field, keyFilters) !== -1) {
+						category.get('keys').push(keys[i]);
+					}
+				}
+			}
+			return category
+		},
+
 		categories: function(){
 			var res = get(this, 'categorized_attributes');
+			var category_selection = [];
 			if(res instanceof Array) {
 				for(var i = 0; i < res.length; i++) {
 					var category = res[i];
 
 					category.slug = slugify(category.title);
-				}
+					console.log(category);
+					if (this.get('filterFieldByKey') || this.get('userPreferencesOnly')) {
+						//filter on user preferences fields only
+						//if (category)
+						category = this.filterUserPreferenceCategory(category, this.get('filterFieldByKey'))
+						if (category.keys.length) {
+							category_selection.push(res[i]);
+						}
 
-				set(res[0], 'isDefault', true);
-				return res;
+						console.log('category');
+						console.log(category);
+					} else {
+						//select all
+						category_selection.push(res[i]);
+					}
+				}
+				if (category_selection.length) {
+					set(category_selection[0], 'isDefault', true);
+				}
+				return category_selection;
 			}
 			else {
 				return [];
@@ -85,7 +125,6 @@ define([
 
 				console.log("submit action");
 
-				var	newRecord = {};
 				var override_inverse = {};
 
 				if( this.isOnCreate && this.modelname){
@@ -100,7 +139,6 @@ define([
 									if( "setOnCreate" in  options){
 										//debugger;
 										var value = options["setOnCreate"];
-										newRecord[fieldName] = value;
 										this.set('formContext.' + fieldName, value);
 									}
 								}
@@ -120,7 +158,6 @@ define([
 				var	categories = this.get("categorized_attributes");
 
 				console.log("setting fields");
-
 				for (var i = 0; i < categories.length; i++) {
 					var category = categories[i];
 					for (var j = 0; j < category.keys.length; j++) {
@@ -130,7 +167,6 @@ define([
 						if (override_inverse[attr.field]) {
 							field = override_inverse[attr.field];
 						}
-						newRecord[field] = attr.value;
 						this.set('formContext.' + field, attr.value);
 					}
 				}

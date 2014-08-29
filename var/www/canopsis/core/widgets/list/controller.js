@@ -158,50 +158,6 @@ define([
 					this.refreshContent();
 				},
 
-				moveColumn: function (attr, direction) {
-					console.log('moving', attr, direction);
-					var columns = this.get('shown_columns');
-					var col;
-					for (var i=0; i<columns.length; i++) {
-						if (columns[i].field === attr.field) {
-							console.log(attr.field +  ' found at position ' + i);
-							col = i;
-							break;
-						}
-					}
-					if (col !== undefined) {
-						if( !(col === 0 && direction === 'left') && !(col === columns.length && direction === 'right')) {
-							var permutation;
-							if (direction === 'left') {
-								permutation = columns[col - 1];
-								columns[col - 1] = columns[col];
-								columns[col] = permutation;
-							} else {
-								permutation = columns[col + 1];
-								columns[col + 1] = columns[col];
-								columns[col] = permutation;
-							}
-							console.debug('permuting column to ' + direction);
-							this.set('userParams.user_show_columns', columns);
-							this.get('userConfiguration').saveUserConfiguration();
-							this.trigger('refresh');
-						} else {
-							console.debug('impossible action for colums switch');
-						}
-					}
-
-				},
-
-				switchColumnDisplay: function (attr) {
-					console.log('column switch display', attr);
-					console.log('attribute keys', this.get('attributesKeys'));
-					Ember.set(attr, 'options.show', !Ember.get(attr, 'options.show'));
-					var columns = this.get('shown_columns');
-					console.log('Columns on reload', columns);
-					this.set('userParams.user_show_columns', columns);
-					this.get('userConfiguration').saveUserConfiguration();
-				},
-
 				show: function(id) {
 					console.log("Show action", arguments);
 					utils.routes.getCurrentRouteController().send('showView', id);
