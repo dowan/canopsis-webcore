@@ -30,36 +30,15 @@ define([
 
         options: undefined,
         series: undefined,
-/*
+
         onDataUpdate: function() {
             if(this.chart !== undefined) {
                 this.send('renderChart');
             }
         }.observes('series'),
-*/
+
         init: function() {
             this._super(arguments);
-
-            this.series = [];
-
-            var d1 = [];
-            for (var i = 0; i < Math.PI * 2; i += 0.25) {
-                d1.push([i, Math.sin(i)]);
-            }
-
-            var d2 = [];
-            for (var i = 0; i < Math.PI * 2; i += 0.25) {
-                d2.push([i, Math.cos(i)]);
-            }
-
-            var d3 = [];
-            for (var i = 0; i < Math.PI * 2; i += 0.1) {
-                d3.push([i, Math.tan(i)]);
-            }
-
-            this.series.push({label: 'sin(x)', data: d1});
-            this.series.push({label: 'cos(x)', data: d2});
-            this.series.push({label: 'tan(x)', data: d3});
         },
 
         didInsertElement: function() {

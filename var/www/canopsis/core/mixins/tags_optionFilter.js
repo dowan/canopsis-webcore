@@ -26,7 +26,6 @@ define([
 	Application.Tags_optionFilterMixin = Ember.Mixin.create({
 
 		onInit : function ( contentREF , _self ){
-			//debugger;
 			var formController  =  Canopsis.formwrapperController.form;
             if ( formController ){
 				utils.filterObject.getFieldsByPrefix( "_opt_" , formController.formContext , function( attr , result  ){

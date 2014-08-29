@@ -137,7 +137,6 @@ define([
 								if(  field._meta &&  field._meta.options ){
 									var options = field._meta.options;
 									if( "setOnCreate" in  options){
-										//debugger;
 										var value = options["setOnCreate"];
 										this.set('formContext.' + fieldName, value);
 									}

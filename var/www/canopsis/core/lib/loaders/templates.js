@@ -19,6 +19,7 @@
 
 var templates = [
     { name: 'application' },
+    { name: 'index' },
     { name: 'item' },
     { name: 'notifications' },
     { name: 'containerwidget' },

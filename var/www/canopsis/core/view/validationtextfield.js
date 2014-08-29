@@ -13,7 +13,6 @@
         attr : "",
         formController : null,
         init: function(){
-         // debugger;
           var model =  this.attr.model;
 
           if (Ember.isNone(this.get('value')) && !Ember.isNone(this.get('attr.model.options.defaultValue'))) {
