@@ -1,6 +1,38 @@
-<div class="btn-group pull-right">
-	<button type="button" class="btn btn-default active" {{action setListMode}}>{{glyphicon 'list'}}</button>
-	<button type="button" class="btn btn-default" disabled="disabled" {{action setIconMode}}>{{glyphicon 'th-large'}}</button>
+<style type="text/css">
+	.list-group a {
+		display: block;
+		cursor: pointer;
+	}
+
+	.list-group.icon li {
+		float: left;
+		width: 25%;
+		height: 115px;
+		padding: 10px;
+		font-size: 10px;
+		line-height: 1.4;
+		text-align: center;
+		background-color: #F9F9F9;
+		border: 1px solid #FFF;
+	}
+
+	.list-group.icon li span.glyphicon {
+		margin-top: 5px;
+		margin-bottom: 10px;
+		font-size: 24px;
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+	}
+</style>
+
+<div class="btn-group pull-right" style="margin-left:10px">
+	<button type="button" {{bind-attr class=listModeButtonCssClass}} {{action setListMode}}>
+		{{glyphicon 'list'}}
+	</button>
+	<button type="button" {{bind-attr class=iconModeButtonCssClass}} {{action setIconMode}}>
+		{{glyphicon 'th-large'}}
+	</button>
 </div>
 
 <div class="input-group">
@@ -19,10 +51,17 @@
 			</h4>
 		</div>
 		{{#unless allCollapsed}}
-			<ul class="list-group" {{bind-attr id=classAllPanelId}}>
+			<ul {{bind-attr class=listGroupClass}} {{bind-attr id=classAllPanelId}}>
 				{{#each item in allClasses}}
 					<li class="list-group-item">
-						<a {{action selectItem item}} style="cursor:pointer">
+						<a {{action selectItem item}}>
+							{{#if item.icon}}
+								{{glyphicon item.icon}} 
+							{{else}}
+								{{#if defaultIcon}}
+									{{glyphicon defaultIcon}} 
+								{{/if}}
+							{{/if}}
 							{{item.name}}
 						</a>
 					</li>
@@ -40,12 +79,16 @@
 				</h4>
 			</div>
 			{{#unless class.isCollapsed}}
-				<ul class="list-group" {{bind-attr id=class.id}}>
+				<ul {{bind-attr class=listGroupClass}} {{bind-attr id=class.id}}>
 					{{#each item in class.items}}
 						<li class="list-group-item">
 							<a {{action selectItem item}}>
 								{{#if item.icon}}
 									{{glyphicon item.icon}} 
+								{{else}}
+									{{#if defaultIcon}}
+										{{glyphicon defaultIcon}} 
+									{{/if}}
 								{{/if}}
 								{{item.name}}
 							</a>
