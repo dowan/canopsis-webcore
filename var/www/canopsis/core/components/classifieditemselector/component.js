@@ -17,6 +17,9 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+//TODO fuzzy search
+//TODO hover effect
+
 define([
 	'ember',
 	'app/application'
@@ -39,6 +42,8 @@ define([
 				console.log('selectItem', arguments);
 				if(get(this, 'target')) {
 					get(this, 'target').send('selectItem', item.name);
+				} else {
+					console.warn('no target attribute for Classifieditemselector', this);
 				}
 			},
 
@@ -102,13 +107,15 @@ define([
 		allClasses: function(){
 			var searchFilter = get(this, 'searchFilter');
 			if(searchFilter === "") {
-				return get(this, 'content.all');
+				var res = get(this, 'content.all');
 			} else {
-				return get(this, 'content.all').filter(function(item, index, enumerable){
+				var res = get(this, 'content.all').filter(function(item, index, enumerable){
 					var doesItStartsWithSearchFilter = item.name.slice(0, searchFilter.length) == searchFilter;
 					return doesItStartsWithSearchFilter;
 				});
 			}
+			console.log("recompute allClasses", res);
+			return res;
 		}.property('searchFilter'),
 
 		collapsedPanelCssClass: 'list-group collapse',

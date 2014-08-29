@@ -18,19 +18,38 @@
 */
 
 define([
+	'jquery',
 	'ember',
-	'ember-data',
 	'app/application',
-	'app/mixins/pagination'
-], function(Ember, DS, Application, PaginationMixin) {
+	'app/mixins/pagination',
+], function($, Ember, Application, PaginationMixin) {
+	var get = Ember.get,
+		set = Ember.set;
 
-	Application.ComponentTableComponent = Ember.Component.extend({
+	var component = Ember.Component.extend({
 		model: undefined,
 		modelfilter: undefined,
 		data: undefined,
 
-		columns: [],
 		items: [],
+
+		selectedValue: undefined,
+
+		classifiedItems : Ember.Object.create({
+			all: Ember.A(),
+			byClass: Ember.Object.create()
+		}),
+
+		actions: {
+			do: function(action, item) {
+				this.targetObject.send(action, item);
+			},
+
+			selectItem: function(item) {
+				console.log('selectItem', item);
+				set(this, 'selectedValue', item);
+			}
+		},
 
 		onDataChange: function() {
 			this.refreshContent();
@@ -49,16 +68,19 @@ define([
 					container: this.get('container')
 				}));
 			}
+
+			this.refreshContent();
 		},
 
 		didInsertElement: function() {
-			this.refreshContent();
 		},
 
 		refreshContent: function() {
 			this._super(arguments);
 
 			this.findItems();
+
+			var me = this;
 
 			console.log(this.get('widgetDataMetas'));
 		},
@@ -69,46 +91,36 @@ define([
 			var store = this.get('store');
 
 			var query = {
-				start: this.get('paginationMixinFindOptions.start'),
-				limit: this.get('paginationMixinFindOptions.limit')
+				start: 0,
+				limit: 10000
 			};
 
-			if (this.get('model') !== undefined) {
-				if(this.get('modelfilter') !== null) {
-					query.filter = this.get('modelfilter');
+			if(this.get('modelfilter') !== null) {
+				query.filter = this.get('modelfilter');
+			}
+
+			store.findQuery(this.get('model'), query).then(function(result) {
+				me.set('widgetDataMetas', result.meta);
+				var items = result.get('content');
+				me.set('items', result.get('content'));
+
+				me.get("classifiedItems.all", Ember.Object.create({}));
+
+				get(me, "classifiedItems.all").clear();
+
+				for (var i = 0, l = items.length; i < l; i++) {
+					var currentItem = items[i];
+					get(me, "classifiedItems.all").push({ name: currentItem.get('crecord_name') });
 				}
 
-				store.findQuery(this.get('model'), query).then(function(result) {
-					me.set('widgetDataMetas', result.meta);
-					me.set('items', result.get('content'));
+				Ember.run.scheduleOnce('afterRender', {}, function() {me.rerender()});
 
-					me.extractItems(result);
-				});
-			}
-			else {
-				var items = this.get('data').slice(
-					query.start,
-					query.start + query.limit
-				);
-
-				this.set('widgetDataMetas', {total: this.get('data').length});
-				this.set('items', items);
-
-				me.extractItems({
-					meta: this.get('widgetDataMetas'),
-					content: this.get('items')
-				});
-			}
-		},
-
-		actions: {
-			do: function(action, item) {
-				this.targetObject.send(action, item);
-			}
+				me.extractItems(result);
+			});
 		}
 	});
 
-	Application.ComponentTableComponent = Application.ComponentTableComponent.extend(PaginationMixin);
+	Application.ComponentClassifiedcrecordselectorComponent = component.extend(PaginationMixin);
 
-	return Application.ComponentTableComponent;
+	return component;
 });

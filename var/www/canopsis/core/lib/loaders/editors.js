@@ -36,6 +36,7 @@ var editorsTemplates = [
 	{ name: 'rights', js: 'v' },
 	{ name: 'cmetric', js: 'w' },
 	{ name: 'cfilter', js: 'w' },
+	{ name: 'classifiedcrecordselector', js: 'w' },
 	{ name: 'cfilterwithproperties'},
 	{ name: 'templateSelector' , js: "v" },
 	{ name: 'tags' , js: "w" },
