@@ -60,9 +60,10 @@ define([
 
 		Application[widgetControllerName] = options.subclass.extend.apply(options.subclass, extendArguments);
 
-		WidgetsManager.all[widgetName] = Ember.Object.create({
+		WidgetsManager.all.push(Ember.Object.create({
+			name: widgetName,
 			EmberClass: Application[widgetControllerName]
-		});
+		}));
 
 		return Application[widgetControllerName];
 	}

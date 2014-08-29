@@ -81,9 +81,9 @@ for (var i = 0; i < templates.length; i++) {
 }
 
 define(deps, function(Ember) {
-	var templatesLoaded = {};
+	var templatesLoaded = Ember.Object.create();
 	templatesLoaded.all = [];
-	templatesLoaded.byClass = {};
+	templatesLoaded.byClass = Ember.Object.create();
 
 	for (var i = depsSize; i < arguments.length; i++) {
 		var currentTemplate = templates[i - depsSize];

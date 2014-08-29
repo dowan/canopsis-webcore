@@ -17,11 +17,9 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
-
-	var widgetsManager = {
-		all: []
-	};
-
-	return widgetsManager;
+define([
+'text!/plugins/enabled.json',
+], function() {
+	return  arguments ;
 });
+
