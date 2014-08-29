@@ -62,11 +62,23 @@ define([
 
 				var widgetController = this;
 
+				var filterValue;
+				var filterTitle;
+
+				try {
+					//gets data from ember instance if object is ember object
+					filterValue = filter.get('filter');
+					filterTitle = filter.get('title');
+				} catch (err) {
+					//gets data from js object if not ember object
+					filterValue = filter.filter;
+					filterTitle = filter.title;
+				}
 				//rebuild a crecord as data may be simple js object saved to userpreferences
 				var record = Canopsis.utils.data.getStore().createRecord('customfilter', {
 					crecord_type: 'customfilter',
-					filter: filter.filter,
-					title: filter.title
+					filter: filterValue,
+					title: filterTitle,
 				});
 
 

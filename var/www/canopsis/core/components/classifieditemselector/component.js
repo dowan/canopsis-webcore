@@ -27,6 +27,14 @@ define([
 	var component = Ember.Component.extend({
 
 		actions: {
+			setListMode: function() {
+				set(this, 'mode', 'list');
+			},
+
+			setIconMode: function() {
+				set(this, 'mode', 'icon');
+			},
+
 			selectItem: function(item){
 				console.log('selectItem', arguments);
 				if(get(this, 'target')) {
@@ -60,6 +68,28 @@ define([
 		searchFilter: "",
 
 		allCollapsed: true,
+
+		mode: "list",
+
+		defaultIcon: "unchecked",
+
+		iconModeButtonCssClass: function(){
+			if(get(this, 'mode') === 'icon')
+				return "btn btn-default active";
+			else
+				return "btn btn-default";
+		}.property("mode"),
+
+		listModeButtonCssClass: function(){
+			if(get(this, 'mode') === 'list')
+				return "btn btn-default active";
+			else
+				return "btn btn-default";
+		}.property("mode"),
+
+		listGroupClass: function() {
+			return 'list-group ' + get(this, 'mode');
+		}.property('mode'),
 
 		classAllPanelId: function(){
 			return get(this, "elementId") + "_" + "all";

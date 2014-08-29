@@ -19,9 +19,6 @@
 
 define([
 'text!/plugins/enabled.json',
-"text!/plugins/connectors/files/files.json",
-"text!/plugins/connectors/files/routes.json",
-"text!/plugins/connectors/files/manifest.json",
 ], function() {
 	return  arguments ;
 });
