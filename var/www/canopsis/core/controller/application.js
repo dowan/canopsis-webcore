@@ -187,7 +187,7 @@ define([
 						user: login.get('username')
 					})
 				}).then(function(queryResults) {
-					console.log('query result');
+					console.log('query result', queryResults);
 					var record = queryResults.get('content')[0];
 
 					//generating form from record model

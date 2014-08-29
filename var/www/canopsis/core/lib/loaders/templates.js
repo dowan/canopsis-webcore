@@ -53,7 +53,6 @@ var templates = [
     { name: 'actionbutton-removeselection', classes: ["action", "toolbar"], icon : "trash", label : "Remove-selection" },
     { name: 'actionbutton-incident', classes: ["action", "toolbar"],icon : "ticket", label : "Incident" },
     { name: 'actionbutton-ticketnumber', classes: ["action", "toolbar"],icon : "ticket", label : "Ticket nummber" },
-    { name: 'actionbutton-manualrecovery', classes: ["action", "toolbar"],icon : "ticket", label : "Manual recovery" },
 
     { name: 'actionbutton-history', classes: ["action", "toolbar"],icon : "time", label : "History" },
     { name: 'actionbutton-eventnavigation', classes: ["action", "toolbar"],icon : "time", label : "Event navigation" },

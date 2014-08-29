@@ -34,10 +34,12 @@ define(['ember' , "app/application"], function(Ember , Application) {
 
 		if(logoPath !== undefined) {
 			return new Ember.Handlebars.SafeString('<img alt="Source" src="'+ logoPath + '"/>');
+		} else {
+			return new Ember.Handlebars.SafeString(value);
 		}
 	});
 
-	Ember.Handlebars.helper('logo2', function( imageName) {
+	Ember.Handlebars.helper('logofromstring', function(imageName) {
 
 		var  logoPath = Canopsis.Application.images[imageName];
 
