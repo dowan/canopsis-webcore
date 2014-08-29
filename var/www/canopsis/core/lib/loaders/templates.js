@@ -53,7 +53,6 @@ var templates = [
     { name: 'actionbutton-removeselection', classes: ["action", "toolbar"], icon : "trash", label : "Remove-selection" },
     { name: 'actionbutton-incident', classes: ["action", "toolbar"],icon : "ticket", label : "Incident" },
     { name: 'actionbutton-ticketnumber', classes: ["action", "toolbar"],icon : "ticket", label : "Ticket nummber" },
-    { name: 'actionbutton-manualrecovery', classes: ["action", "toolbar"],icon : "ticket", label : "Manual recovery" },
 
     { name: 'actionbutton-history', classes: ["action", "toolbar"],icon : "time", label : "History" },
     { name: 'actionbutton-eventnavigation', classes: ["action", "toolbar"],icon : "time", label : "Event navigation" },
@@ -82,9 +81,9 @@ for (var i = 0; i < templates.length; i++) {
 }
 
 define(deps, function(Ember) {
-	var templatesLoaded = {};
+	var templatesLoaded = Ember.Object.create();
 	templatesLoaded.all = [];
-	templatesLoaded.byClass = {};
+	templatesLoaded.byClass = Ember.Object.create();
 
 	for (var i = depsSize; i < arguments.length; i++) {
 		var currentTemplate = templates[i - depsSize];

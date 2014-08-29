@@ -1,0 +1,58 @@
+<div class="btn-group pull-right">
+	<button type="button" class="btn btn-default active" {{action setListMode}}>{{glyphicon 'list'}}</button>
+	<button type="button" class="btn btn-default" disabled="disabled" {{action setIconMode}}>{{glyphicon 'th-large'}}</button>
+</div>
+
+<div class="input-group">
+	<span class="input-group-addon">{{glyphicon "search"}}</span>
+	{{input type="text" class="form-control" placeholder="Search" value=searchFilter}}
+</div>
+
+
+<div class="panel-group" style= "margin-top:4px">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a {{action collapse "all"}} style="cursor:pointer">
+					All ({{allClasses.length}})
+				</a>
+			</h4>
+		</div>
+		{{#unless allCollapsed}}
+			<ul class="list-group" {{bind-attr id=classAllPanelId}}>
+				{{#each item in allClasses}}
+					<li class="list-group-item">
+						<a {{action selectItem item}} style="cursor:pointer">
+							{{item.name}}
+						</a>
+					</li>
+				{{/each}}
+			</ul>
+		{{/unless}}
+	</div>
+	{{#each class in classesFiltered}}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">
+					<a {{action collapse class}}>
+						{{class.key}} ({{class.items.length}})
+					</a>
+				</h4>
+			</div>
+			{{#unless class.isCollapsed}}
+				<ul class="list-group" {{bind-attr id=class.id}}>
+					{{#each item in class.items}}
+						<li class="list-group-item">
+							<a {{action selectItem item}}>
+								{{#if item.icon}}
+									{{glyphicon item.icon}} 
+								{{/if}}
+								{{item.name}}
+							</a>
+						</li>
+					{{/each}}
+				</ul>
+			{{/unless}}
+		</div>
+	{{/each}}
+</div>

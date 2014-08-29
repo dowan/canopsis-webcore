@@ -26,9 +26,9 @@
 			{{/if}}
 		</div>
 		<div class="pull-right btn-group" data-toggle="btn-toggle">
-			<button class="btn btn-default"{{action setFilter controller.default_filter}}>All</button>
+			<button class="btn btn-default" {{action setFilter controller.default_filter}}>All</button>
 			{{#each filter in controller.filters}}
-				<button type="button" class="btn btn-default active editable" data-col="all" {{action setFilter filter.filter}}>{{filter.title}} 
+				<button type="button" class="btn btn-default editable" data-col="all" {{action setFilter filter.filter}}>{{filter.title}} 
 					<small class="badge bg-blue" {{action editFilter filter}}> <i class="fa fa-wrench"></i></small>
 					<small class="badge bg-orange" {{action removeFilter filter}}> <i class="fa fa-minus"></i></small>
 				</button>

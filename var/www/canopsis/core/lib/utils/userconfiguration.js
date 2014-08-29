@@ -28,8 +28,7 @@ define([
 		needs: ['login'],
 		content: {},
 		init: function () {
-			//not fully ready at the moment
-			//this.loadUserConfiguration();
+			this.loadUserConfiguration();
 		},
 
 		saveUserConfiguration: function (preferences_level) {

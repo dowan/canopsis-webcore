@@ -45,17 +45,20 @@ define([
 			this.set('userConfiguration', userConfiguration.create({widget: this}));
 
 			this.set("container", utils.routes.getCurrentRouteController().container);
-			//TODO put spinner in widget when loading
 
-			this.set('isRefreshable', true);
-			//TODO load delay from widget configuration
+			this.startRefresh();
 
+			//setting default/minimal reload delay for current widget
 			if (widgetController.get('refreshInterval') <= 10 || Ember.isNone(widgetController.get('refreshInterval'))) {
 				widgetController.set('refreshInterval', 10);
 			}
 
 			this.refreshContent();
 
+		},
+
+		getSchema: function() {
+			return Application[this.get('xtype').capitalize()].proto().categories;
 		},
 
 		onReload: function () {
@@ -101,7 +104,7 @@ define([
 			editWidget: function (widget) {
 				console.info("edit widget", widget);
 
-				var widgetWizard = utils.forms.showNew('modelform', widget, { title: "Edit widget" });
+				var widgetWizard = utils.forms.showNew('modelform', widget, { title: __("Edit widget") });
 				console.log("widgetWizard", widgetWizard);
 
 				var widgetController = this;
@@ -135,6 +138,32 @@ define([
 				userview.save();
 
 				console.groupEnd();
+			},
+
+			editWidgetPreferences: function (widget) {
+
+				var widgetController = this;
+
+				var label = "Edit your widget preferences";
+				console.info(label, widget);
+
+				var widgetWizard = utils.forms.showNew('modelform', widget, { 
+					title: __(label),
+					userPreferencesOnly: true
+				});
+				console.log("widgetWizard", widgetWizard);
+
+				var widgetController = this;
+
+				widgetWizard.submit.then(function(form) {
+
+					record = form.get('formContext');
+					console.log('user param record', record);
+					//widgetController.set('userParams.filters', widgetController.get('filters'));
+					//widgetController.get('userConfiguration').saveUserConfiguration();
+
+					widgetController.trigger('refresh');
+				});
 			},
 
 			movedown: function(widgetwrapper) {
