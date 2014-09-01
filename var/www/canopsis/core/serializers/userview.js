@@ -39,6 +39,7 @@ define([
 
 	Application.CanvasSerializer = serializerClass;
 	Application.VboxSerializer = serializerClass;
+	Application.VerticalboxSerializer = serializerClass;
 	Application.LighthboxSerializer = serializerClass;
 	Application.HboxSerializer = serializerClass;
 	Application.TextSerializer = serializerClass;

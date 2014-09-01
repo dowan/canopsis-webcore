@@ -19,7 +19,7 @@
 			{{/each}}
 			{{#if widget.isDirty}}
 				<button type="button" class="btn btn-small btn-danger btn-sm pull-right" {{action 'rollback' widget}}>
-				{{glyphicon "arrow-left"}}
+				<i class="fa fa-undo"></i>
 				</button>
 			{{/if}}
 		{{unset 'minified'}}

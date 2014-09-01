@@ -35,10 +35,21 @@ define([
 
 		selectedValue: undefined,
 
-		classifiedItems : Ember.Object.create({
-			all: Ember.A(),
-			byClass: Ember.Object.create()
-		}),
+		classifiedItems : function(){
+			console.log(">>> recompute classifiedItems", get(this, 'items'));
+			var items = get(this, 'items');
+
+			var res = Ember.Object.create({
+				all: Ember.A()
+			});
+
+			for (var i = 0, l = items.length; i < l; i++) {
+				var currentItem = items[i];
+				res.all.pushObject(Ember.Object.create({ name: currentItem.get('crecord_name') }));
+			}
+
+			return res;
+		}.property('items', 'items.@each'),
 
 		actions: {
 			do: function(action, item) {
@@ -77,11 +88,9 @@ define([
 		init: function() {
 			this._super(arguments);
 
-			if (this.get('model') !== undefined) {
-				this.set('store', DS.Store.create({
-					container: this.get('container')
-				}));
-			}
+			this.set('store_' + get(this, 'elementId'), DS.Store.create({
+				container: this.get('container')
+			}));
 
 			this.refreshContent();
 		},
@@ -102,7 +111,9 @@ define([
 		findItems: function() {
 			var me = this;
 
-			var store = this.get('store');
+			var store = this.get('store_' + get(this, 'elementId'));
+
+			console.log(">>>>>", get(this, 'elementId'), " ", store);
 
 			var query = {
 				start: 0,
@@ -117,15 +128,6 @@ define([
 				me.set('widgetDataMetas', result.meta);
 				var items = result.get('content');
 				me.set('items', result.get('content'));
-
-				me.get("classifiedItems.all", Ember.Object.create({}));
-
-				get(me, "classifiedItems.all").clear();
-
-				for (var i = 0, l = items.length; i < l; i++) {
-					var currentItem = items[i];
-					get(me, "classifiedItems.all").push({ name: currentItem.get('crecord_name') });
-				}
 
 				Ember.run.scheduleOnce('afterRender', {}, function() {me.rerender()});
 
