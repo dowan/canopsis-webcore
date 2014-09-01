@@ -14,9 +14,14 @@
 	</div>
 	<div class="pull-right">
 		{{set 'minified' true}}
-		{{#each button in controller.partials.titlebarsbuttons}}
-			{{partial button}}
-		{{/each}}
+			{{#each button in controller.partials.titlebarsbuttons}}
+				{{partial button}}
+			{{/each}}
+			{{#if widget.isDirty}}
+				<button type="button" class="btn btn-small btn-danger btn-sm pull-right" {{action 'rollback' widget}}>
+				{{glyphicon "arrow-left"}}
+				</button>
+			{{/if}}
 		{{unset 'minified'}}
 	</div>
 	<h3 class="box-title">

@@ -40,7 +40,8 @@ var renderersTemplates = [
     'status',
     'subprocess',
     'tags',
-    'timestamp'
+    'timestamp',
+    'progressbar'
 ];
 
 var deps = ['ember'];
@@ -52,7 +53,7 @@ for (var i = 0; i < renderersTemplates.length; i++) {
 
 define(deps, function(Ember) {
     for (var i = depsSize; i < arguments.length; i++) {
-	var templateName = "renderer-" + renderersTemplates[i - depsSize];
-	Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i]);
+        var templateName = "renderer-" + renderersTemplates[i - depsSize];
+        Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i]);
     }
 });
