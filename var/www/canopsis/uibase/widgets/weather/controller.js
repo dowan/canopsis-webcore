@@ -55,6 +55,7 @@ define([
 					console.log("compiledFilterPattern", compiledFilterPattern);
 
 					list.set("default_filter", compiledFilterPattern);
+					list.set("title", "Info on events : " + element.title);
 				});
 			}
 		},
@@ -136,14 +137,18 @@ define([
 				if (data[i].resource) {
 					resource = ' ' + data[i].resource;
 				}
+
 				//building the data structure for sub parts of the weather
 				sub_weathers.push({
 					rk: data[i].rk,
+					component: data[i].component,
+					resource: data[i].resource,
 					title: data[i].component + resource,
 					custom_class: this.class_background(data[i].state)
 				});
 
 			}
+
 			console.log('weather content', {sub_weathers: sub_weathers, worst_state: worst_state});
 			this.set('sub_weather', sub_weathers);
 			this.set('worst_state', worst_state);

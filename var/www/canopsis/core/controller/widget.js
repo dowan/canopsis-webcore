@@ -101,6 +101,15 @@ define([
 				utils.forms.addRecord(itemType);
 			},
 
+			rollback: function(widget){
+				console.log('rollback changes', arguments);
+				console.log(get(widget, 'isDirty'));
+				console.log(get(widget, 'default_filter'));
+				console.log("widgetrollback", widget.rollback());
+				console.log(get(widget, 'isDirty'));
+				console.log(get(widget, 'default_filter'));
+			},
+
 			editWidget: function (widget) {
 				console.info("edit widget", widget);
 
