@@ -47,6 +47,7 @@ define([
 
                 recordWizard.submit.then(function(form) {
                     var record = form.get('formContext');
+                    console.log('Saving Job:', record);
                     record.save();
 
                     me.trigger('refresh');

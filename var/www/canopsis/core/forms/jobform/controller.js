@@ -21,7 +21,8 @@ define([
     'ember',
     'app/application',
     'app/lib/factories/form',
-    'utils'
+    'utils',
+    'app/serializers/task'
 ], function(Ember, Application, FormFactory, cutils) {
 
     FormFactory('jobform', {
@@ -42,6 +43,14 @@ define([
             return job_types;
         }.property('Canopsis.utils.schemaList'),
 
+        init: function() {
+            this._super(arguments);
+
+            this.set('store', DS.Store.create({
+                container: this.get("container")
+            }));
+        },
+
         actions: {
             selectJob: function(job) {
                 console.group('selectJob', this, job.name);
@@ -54,11 +63,12 @@ define([
                 var model = Application[modelname];
 
                 console.log('Instanciate non-persistent model:', model);
-                var context = model._create(this.get('content'));
-                context.xtype = modelname;
+                var context = this.get('store').createRecord('task', {
+                    xtype: modelname
+                });
 
                 console.log('Show new form with context:', context);
-                cutils.forms.showNew('taskform', context, {
+                var recordWizard = cutils.forms.showNew('taskform', context, {
                     formParent: this
                 });
 

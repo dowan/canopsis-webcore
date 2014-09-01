@@ -33,7 +33,7 @@ define([
 
 		TYPE_ACK: 'ack',
 		TYPE_ACK_REMOVE: 'ackremove',
-		TYPE_INCIDENT: 'incident',
+		TYPE_TICKET: 'declare-ticket',
 		TYPE_CANCEL: 'cancel',
 		TYPE_RECOVERY: 'recovery',
 		TYPE_UNCANCEL: 'uncancel',
@@ -71,12 +71,12 @@ define([
 				record.ref_rk = crecord.get('id');
 			}
 
-			if (event_type === this.TYPE_ACK || event_type === this.TYPE_ACK_REMOVE) {
+			if (event_type === this.TYPE_ACK || event_type === this.TYPE_ACK_REMOVE || event_type === this.TYPE_TICKET) {
 				//ref rk is required by ack engine
 				record.ref_rk = crecord.get('id');
-				//ack is cool
+				//event is cool
 				record.state = 0;
-				//recomputing id with ack event type
+				//recomputing id with event type
 				record.id = [
 					record.connector,
 					record.connector_name,
@@ -84,6 +84,10 @@ define([
 					record.source_type,
 					record.component
 				].join('.');
+
+				if (record.source_type === 'resource') {
+					record.id = [record.id, record.resource].join('.');
+				}
 			}
 			return record;
 		},
@@ -214,7 +218,7 @@ define([
 				} else {
 					if (event_type === this.TYPE_ACK) {
 						formButtons = ["formbutton-cancel", "formbutton-ack", "formbutton-ackandproblem"];
-					} else if (event_type === this.TYPE_INCIDENT) {
+					} else if (event_type === this.TYPE_TICKET) {
 						formButtons = ["formbutton-cancel", "formbutton-incident"];
 					} else if (event_type === this.TYPE_CANCEL) {
 						formButtons = ["formbutton-cancel", "formbutton-submit"];
