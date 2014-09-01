@@ -38,7 +38,7 @@
 	<hr/>
 
 	<ul class="list-group">
-	{{#each action in content}}
+	{{#each action in contentUnprepared}}
 		<li class="list-group-item list-group-item-success">
 			<button class="btn btn-default" {{action deleteAction action}}>{{glyphicon 'minus'}}{{tr 'Remove'}}</button>&nbsp;{{json2html action}}
 		</li>
