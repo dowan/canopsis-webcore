@@ -47,11 +47,11 @@ define([
 			selectItem: function(item) {
 				console.log('selectItem', arguments);
 				if(get(this, 'multiselect') === false) {
-					console.log('replace selection');
+					console.log('>>>>> replace selection');
 
 					set(this, 'selection', [item]);
 				} else {
-					console.log('append to array');
+					console.log('>>>>> append to array');
 
 					if(!Ember.isArray(get(this, 'selection'))) {
 						set(this, 'selection', Ember.A());
@@ -63,6 +63,7 @@ define([
 					if(search.length === 0){
 						get(this, 'selection').pushObject(item);
 					}
+					console.log('>>>>>', get(this, 'selection'));
 				}
 
 				if(get(this, 'target')) {

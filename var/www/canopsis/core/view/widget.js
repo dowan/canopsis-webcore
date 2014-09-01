@@ -34,7 +34,7 @@ define([
 		errorMessages : Ember.A(),
 
 		init: function() {
-			console.log('widget view init', this.widget.get("xtype"), this.widget, get(this, 'widget.tagName'));
+			console.group('widget initialisation :', this.widget.get("xtype"), this.widget, get(this, 'widget.tagName'));
 			set(this, 'target', get(this, 'controller'));
 
 			this._super();
@@ -70,7 +70,7 @@ define([
 
 			//keep track of this interval
 			this.set('widgetRefreshInterval', interval);
-
+			console.groupEnd();
 		},
 
 		applyViewMixins: function(){

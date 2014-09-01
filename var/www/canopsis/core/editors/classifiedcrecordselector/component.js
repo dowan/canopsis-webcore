@@ -63,7 +63,7 @@ define([
 			}
 
 			set(this, 'selection', res);
-		}.observes('selectionUnprepared'),
+		}.observes('selectionUnprepared', 'selectionUnprepared.@each'),
 
 		onDataChange: function() {
 			this.refreshContent();
