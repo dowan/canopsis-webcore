@@ -40,6 +40,7 @@ define([
 		currentClauseIndex: -1,
 
 		cfilter_serialized : Ember.computed.alias('content'),
+		viewTabColumns: [{ name:"component", title:"component"},{ name:"resource", title:"resource"}],
 
 		clauses: function() {
 			var cfilter_serialized = this.get('cfilter_serialized');

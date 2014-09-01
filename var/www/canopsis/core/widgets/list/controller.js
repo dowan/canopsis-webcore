@@ -118,6 +118,12 @@ define([
 				this.get('widgetData').content.setEach('isSelected', get(this, 'isAllSelected'));
 			}.observes('isAllSelected'),
 
+			default_filterChanged: function(){
+				console.log("default_filterChanged observer");
+				set(this, 'findParams_cfilterFilterPart', get(this, 'default_filter'));
+				this.refreshContent();
+			}.observes('default_filter'),
+
 			//Mixin aliases
 			//history
 			historyMixinFindOptions: Ember.computed.alias("findOptions.useLogCollection"),

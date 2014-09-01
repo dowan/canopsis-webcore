@@ -21,6 +21,7 @@ define([
 	'jquery',
 	'app/lib/factories/widget'
 ], function($, WidgetFactory) {
+	var get = Ember.get;
 
 	var widget = WidgetFactory('weather', {
 		init: function() {
@@ -29,6 +30,34 @@ define([
 			this.set('sub_weather', []);
 			this.fetchStates();
 			console.log('Setting up weather widget : ' + this.get('config.title'));
+		},
+
+		actions: {
+			goToInfo: function(element) {
+				console.log("goToInfo", element);
+				var transition = this.transitionToRoute("/userview/" + get(this, 'config.destination_view'));
+
+				var filter_pattern = get(this, 'config.filter_pattern');
+
+				transition.promise.then(function(routeInfos){
+					console.log("transition done", routeInfos);
+					var list = get(routeInfos, 'controller.content.containerwidget');
+					list = get(list, '_data.items')[0];
+					list = get(list, 'widget');
+					console.log(list);
+
+					console.log("filter_pattern", filter_pattern);
+
+					var template = filter_pattern;
+					var context = element;
+					var compiledFilterPattern = Handlebars.compile(template)(context);
+
+					console.log("compiledFilterPattern", compiledFilterPattern);
+
+					list.set("default_filter", compiledFilterPattern);
+					list.set("title", "Info on events : " + element.title);
+				});
+			}
 		},
 
 		//generate and refresh the title
@@ -108,13 +137,18 @@ define([
 				if (data[i].resource) {
 					resource = ' ' + data[i].resource;
 				}
+
 				//building the data structure for sub parts of the weather
 				sub_weathers.push({
+					rk: data[i].rk,
+					component: data[i].component,
+					resource: data[i].resource,
 					title: data[i].component + resource,
 					custom_class: this.class_background(data[i].state)
 				});
 
 			}
+
 			console.log('weather content', {sub_weathers: sub_weathers, worst_state: worst_state});
 			this.set('sub_weather', sub_weathers);
 			this.set('worst_state', worst_state);

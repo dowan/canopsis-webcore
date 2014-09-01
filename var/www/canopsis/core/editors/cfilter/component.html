@@ -85,7 +85,7 @@
 		</div>
 
 		<div class="tab-pane" {{bind-attr id=cfilterViewId}}>
-			VIEW
+			{{component-table model="event" modelfilter=cfilter_serialized columns=viewTabColumns targetObject=this}}
 		</div>
 	</div>
 </fieldset>

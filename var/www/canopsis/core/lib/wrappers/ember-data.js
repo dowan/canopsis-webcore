@@ -51,8 +51,6 @@ define([
 
 	DS.IntegerTransform = DS.Transform.extend({
 		deserialize: function(serialized) {
-			console.log("deserialize integer: ", typeof serialized);
-
 			if (typeof serialized === "number") {
 				return serialized;
 			} else {
@@ -62,10 +60,7 @@ define([
 		},
 
 		serialize: function(deserialized) {
-			console.log("serialize : ",deserialized);
-
 			return Ember.isEmpty(deserialized) ? null : Number(deserialized);
-
 		}
 	});
 

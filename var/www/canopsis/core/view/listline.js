@@ -30,12 +30,9 @@ define([
 
 		init: function() {
 			this._super.apply(this, arguments);
-			console.log('listline init', this);
-			console.log('listline init', this.get('controller'));
 		},
 
 		checkChanged: function() {
-			console.log('checkChanged');
 			var checkbox = this.$('.toggle');
 			if(checkbox !== undefined) {
 				checkbox.iCheck('check');

@@ -28,6 +28,7 @@ var uibaseWidgetsTemplates = [
 var deps = ['ember'];
 var jsDeps = [];
 var depsSize = deps.length;
+
 //generate deps
 for (var i = 0; i < uibaseWidgetsTemplates.length; i++) {
 	deps.push('text!' + uibaseWidgetsTemplates[i].url + '/template.html');

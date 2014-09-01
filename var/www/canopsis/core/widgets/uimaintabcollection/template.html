@@ -1,13 +1,6 @@
 {{#with controllers.application.currentViewId as currentViewId}}
 	<section class="content-header nav-tabs-custom" style=" padding: 5px 0 0;margin-bottom:0px; ">
 		<ul class="nav nav-tabs">
-			{{#each tab in controller.preparedTabs}}
-				<li {{bind-attr class="tab.isActive:active:"}}>
-					<a {{action "showView" tab.value}} style="cursor:pointer">
-						{{tab.label}}
-					</a>
-				</li>
-			{{/each}}
 			<li>
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 					<h4> <i class="fa fa-gear"></i> <span class="caret"></span></h4>
@@ -38,6 +31,13 @@
 					</li>
 				</ul>
 			</li>
+			{{#each tab in controller.preparedTabs}}
+				<li {{bind-attr class="tab.isActive:active:"}}>
+					<a {{action "showView" tab.value}} style="cursor:pointer">
+						{{tab.label}}
+					</a>
+				</li>
+			{{/each}}
 		</ul>
 	</section>
 {{/with}}

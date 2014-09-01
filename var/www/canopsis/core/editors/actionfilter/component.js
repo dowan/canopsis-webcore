@@ -30,8 +30,11 @@ define([
 			//default value on load
 			this.set('selectedAction', 'pass');
 			console.log(' ! --- > content', this.get('content'));
+			//Use a temp variable to avoid content deletion and strange behaviors.
 			if (this.get('content') === undefined) {
-				this.set('content', []);
+				this.set('contentUnprepared', Ember.A());
+			} else {
+				this.set('contentUnprepared', this.get('content'));
 			}
 		},
 
@@ -72,11 +75,14 @@ define([
 				}
 
 				console.log('Adding action', action);
-				this.get('content').pushObject(action);
+				this.get('contentUnprepared').pushObject(action);
+				this.set('content', this.get('contentUnprepared'));
 			},
 			deleteAction: function (action) {
 				console.log('Removing action', action);
-				this.get('content').removeObject(action);
+				this.get('contentUnprepared').removeObject(action);
+				this.set('content', this.get('contentUnprepared'));
+
 
 			}
 		}
