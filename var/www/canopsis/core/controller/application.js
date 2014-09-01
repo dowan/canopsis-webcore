@@ -68,7 +68,7 @@ define([
 			});
 
 			console.log('finding fconfig');
-			headerStore.find('cservice', 'cservice.frontend').then(function(queryResults) {
+			headerStore.find('frontend', 'cservice.frontend').then(function(queryResults) {
 				console.log('fconfig found');
 				set(appController, 'frontendConfig', queryResults);
 				set(Canopsis, 'conf.frontendConfig', queryResults);
@@ -170,7 +170,7 @@ define([
 			editConfig: function() {
 				console.log('editConfig', formUtils);
 				var frontendConfig = get(this, 'frontendConfig');
-				var editForm = formUtils.showNew('modelform', frontendConfig, { title: "Edit settings" });
+				var editForm = formUtils.showNew('modelform', frontendConfig, { title: "Edit settings", inspectedItemType: "frontend" });
 				editForm.submit.done(function() {
 					frontendConfig.save();
 				});
