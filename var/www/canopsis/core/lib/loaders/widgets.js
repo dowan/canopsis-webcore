@@ -25,6 +25,7 @@ var widgetsTemplates = [
 	{ name:'canvas', url:'app/widgets/canvas', hasJSPart: true },
 	{ name:'hbox', url:'app/widgets/hbox', hasJSPart: true },
 	{ name:'vbox', url:'app/widgets/vbox', hasJSPart: true },
+	{ name:'verticalbox', url:'app/widgets/verticalbox', hasJSPart: true },
 	{ name:'lighthbox', url:'app/widgets/lighthbox', hasJSPart: true },
 	{ name:'tabmanager', url:'app/widgets/tabmanager', hasJSPart: true },
 	{ name:'uiactionbutton', url:'app/widgets/uiactionbutton', hasJSPart: true },
