@@ -27,6 +27,8 @@ define([
 ], function(Ember, Application, CrecordController) {
 
 	Application.UserviewController = CrecordController.extend(Ember.Evented, {
+		needs: ['application'],
+
 		actions: {
 			insertWidget: function(containerController) {
 				console.log("insertWidget", containerController);

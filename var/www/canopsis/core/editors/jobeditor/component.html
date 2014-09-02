@@ -1,0 +1,13 @@
+{{view Ember.Select
+    content=job_types
+    optionValuePath="content.value"
+    optionLabelPath="content.name"
+    value=job_type
+    class="form-control"
+}}
+
+<p>
+    <a {{action "configure"}}>
+        {{glyphicon "cog"}}
+    </a>
+</p>

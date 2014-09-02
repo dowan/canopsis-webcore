@@ -21,9 +21,10 @@ define([
 	'jquery',
 	'ember',
 	'app/application',
+	'app/lib/utils/forms',
 	'app/controller/form',
-	'app/lib/loaders/schema-manager'
-], function($, Ember, Application) {
+	'app/lib/loaders/schema-manager',
+], function($, Ember, Application, formUtils) {
 	var eventedController = Ember.Controller.extend(Ember.Evented);
 	/*
 		Default is to display all fields of a given model if they are referenced into category list (in model)
@@ -34,8 +35,22 @@ define([
 			- plain ajax contains information that will be used insted of ember data mechanism
 	*/
 	Application.FormController = eventedController.extend({
+		init: function() {
+			var formParent = this.get('formParent');
+			this.set('previousForm', formParent);
+
+			this._super.apply(this, arguments);
+		},
+
 		submit: $.Deferred(),
 		actions: {
+			previousForm: function() {
+				var previousForm = this.get('previousForm');
+
+				console.log('previousForm', previousForm, this);
+				formUtils.showInstance(previousForm);
+			},
+
 			show: function() {
 				//reset submit defered
 				this.submit = $.Deferred();
@@ -49,8 +64,16 @@ define([
 				}
 				else {
 					console.log("resolve modelform submit");
-					this.submit.resolve(this, arguments);
-					this.get('formwrapper').trigger("hide");
+					if ( this.confirmation ){
+						breakPoint("form.submit");
+
+						var record = this.formContext;
+						ctools.forms.showNew('confirmform', record , { title : " confirmation "  , newRecord : arguments[0]});
+					}
+					else {
+						this.submit.resolve(this, arguments);
+						this.get('formwrapper').trigger("hide");
+					}
 				}
 			},
 

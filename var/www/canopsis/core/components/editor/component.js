@@ -33,10 +33,15 @@ define([
 		},
 
 		editorType: function() {
+			console.group('editorType');
+
 			var type = this.get('content.model.type');
 			var role = this.get('content.model.options.role');
-			console.log('editorType', this.get('content'));
-			console.log('editorType', type, role);
+
+			console.log('content:', this.get('content'));
+			console.log('type:', type);
+			console.log('role:', role);
+
 			var editorName;
 
 			if (role) {
@@ -48,6 +53,8 @@ define([
 			if (Ember.TEMPLATES[editorName] === undefined) {
 				editorName = 'editor-defaultpropertyeditor';
 			}
+
+			console.groupEnd();
 
 			return editorName;
 		}.property('content.type', 'content.role'),

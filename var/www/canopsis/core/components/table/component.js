@@ -73,7 +73,7 @@ define([
 				limit: this.get('paginationMixinFindOptions.limit')
 			};
 
-			if (this.get('model') !== undefined) {			
+			if (this.get('model') !== undefined) {
 				if(this.get('modelfilter') !== null) {
 					query.filter = this.get('modelfilter');
 				}

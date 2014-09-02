@@ -23,6 +23,7 @@ define([
 ], function(Ember) {
 
 	var inflexions = [
+		['nagios' , 'nagios'],
 		['curve', 'curves']
 	];
 
@@ -34,7 +35,7 @@ define([
 
 	for (var i = 0; i < inflexions.length; i++) {
 		inflectionsManager.all.push(inflexions[i][0] + ' -> ' + inflexions[i][1]);
-		Ember.Inflector.inflector.irregular("curve", "curves");
+		Ember.Inflector.inflector.irregular(inflexions[i][0], inflexions[i][1]);
 	};
 
 	return inflectionsManager;

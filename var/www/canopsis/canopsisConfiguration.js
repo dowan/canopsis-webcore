@@ -9,9 +9,17 @@ define([], function () {
 		DEBUG: true,
 		VERBOSE: 1,
 		DISPLAY_SCHAMA_MANAGER: true,
-		REFRESH_ALL_WIDGETS: false,
-		TRANSLATE: false
+		REFRESH_ALL_WIDGETS: true,
+		TRANSLATE: true
 	};
+
+	if(canopsisConfiguration.DEBUG === false) {
+		console.log = function() {};
+		console.warn = function() {};
+		console.debug = function() {};
+		console.group = function() {};
+		console.groupEnd = function() {};
+	}
 
 	return canopsisConfiguration;
 });

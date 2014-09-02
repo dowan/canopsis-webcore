@@ -64,6 +64,11 @@ define([
 		//FIXME when fixing this, be careful to avoid multiple list refreshes
 		userDefinedItemsPerPage: 5,
 
+		itemsPerPageChanged : function() {
+			this.set('currentPage', 1);
+			this.refreshContent();
+		}.observes('itemsPerPage'),
+
 		onCurrentPageChanges: function() {
 			this.refreshContent();
 		}.observes('currentPage'),

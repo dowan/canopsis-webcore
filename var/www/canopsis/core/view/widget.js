@@ -34,12 +34,13 @@ define([
 		errorMessages : Ember.A(),
 
 		init: function() {
-			console.log('widget view init', this.widget.get("xtype"), this.widget, get(this, 'widget.tagName'));
+			console.group('widget initialisation :', this.widget.get("xtype"), this.widget, get(this, 'widget.tagName'));
 			set(this, 'target', get(this, 'controller'));
 
 			this._super();
 			if (!! get(this, 'widget')) {
 				this.setupController(this.widget);
+				this.applyViewMixins();
 			} else {
 				console.error("no correct widget found for view", this);
 				this.errorMessages.pushObject('No correct widget found');
@@ -54,6 +55,36 @@ define([
 				console.log('custom tagName', get(this, 'widget.tagName'));
 				set(this, 'classNames', cssClasses.split(','));
 			}
+
+			//widget refresh management
+			var widgetController = this.get('controller');
+			console.log('refreshInterval - > ',widgetController.get('refreshInterval'));
+			var interval = setInterval(function () {
+				if (Canopsis.conf.REFRESH_ALL_WIDGETS) {
+					if (get(widgetController,'isRefreshable') && get(widgetController, 'refreshableWidget')) {
+						console.log('refreshing widget ' + widgetController.get('title'));
+						widgetController.refreshContent();
+					}
+				}
+			}, widgetController.get('refreshInterval') * 1000);
+
+			//keep track of this interval
+			this.set('widgetRefreshInterval', interval);
+			console.groupEnd();
+		},
+
+		applyViewMixins: function(){
+			var controller = get(this, 'controller');
+			console.group('apply widget view mixins');
+			if(controller.viewMixins !== undefined) {
+				for (var i = 0, mixinsLength = controller.viewMixins.length; i < mixinsLength; i++) {
+					var mixinToApply = controller.viewMixins[i];
+
+					console.log('mixinToApply', mixinToApply);
+					mixinToApply.apply(this);
+				}
+			}
+			console.groupEnd();
 		},
 
 		setupController: function(widget) {
@@ -68,9 +99,16 @@ define([
 		registerHooks: function() {
 			console.log("registerHooks", this.get("controller"), this.get("controller").on);
 			get(this, "controller").on('refresh', this, this.rerender);
+
+
+
 		},
 
 		unregisterHooks: function() {
+		},
+
+		willDestroyElement: function () {
+			clearInterval(this.get('widgetRefreshInterval'));
 		},
 
 		rerender: function() {

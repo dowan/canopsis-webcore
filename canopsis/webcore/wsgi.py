@@ -29,6 +29,9 @@ from importlib import import_module
 import bottle
 from bottle import route, run, static_file, redirect, request, response, hook
 
+from canopsis.old.template import Template
+from canopsis.old.storage import get_storage
+from canopsis.old.account import Account
 from canopsis.webcore.services import auth
 
 import gevent
@@ -56,8 +59,26 @@ config.read(config_filename)
 #put config in builtins to make it readable from modules in canopsis.webcore.services
 __builtins__["config"] = config
 
+## Logger
+logging_level=logging.INFO
+
+logging.basicConfig(format=r"%(asctime)s [%(process)d] [%(name)s] [%(levelname)s] %(message)s", datefmt=r"%Y-%m-%d %H:%M:%S", level=logging_level)
+logger  = logging.getLogger("webserver")
+    
+
 webservices = []
+webservice_paths = {}
 webservices_mods = {}
+
+try:
+    for webservice,path in config.items('webservice_paths'):
+        logger.info("webservice_paths : webservice = " + webservice + " path : " + path )
+        if webservice not in webservice_paths:
+            logger.info("webservice_paths : add webservice = " + webservice + " path : " + path )
+            webservice_paths[webservice] = path
+except : #NoSectionError:
+    logger.info("WARNING : Can't found webservice_paths on webserver.conf " )
+
 
 for webservice,enabled in config.items('webservices'):
     enabled = int(enabled)
@@ -113,21 +134,26 @@ except Exception as err:
     print "Error when reading '%s' (%s)" % (config_filename, err)
 
 ## Logger
-logging_level=logging.INFO
-if debug:
-    logging_level=logging.DEBUG
+#logging_level=logging.INFO
+#if debug:
+#    logging_level=logging.DEBUG
     
-logging.basicConfig(format=r"%(asctime)s [%(process)d] [%(name)s] [%(levelname)s] %(message)s", datefmt=r"%Y-%m-%d %H:%M:%S", level=logging_level)
-logger  = logging.getLogger("webserver")
+#logging.basicConfig(format=r"%(asctime)s [%(process)d] [%(name)s] [%(levelname)s] %(message)s", datefmt=r"%Y-%m-%d %H:%M:%S", level=logging_level)
+#logger  = logging.getLogger("webserver")
     
-bottle.debug(debug)
+#bottle.debug(debug)
 
 ## load and unload webservices
 def load_webservices():
     for webservice in webservices:
         logger.info('Loading webservice: {0}'.format(webservice))
+        if webservice in webservice_paths:
+            path = webservice_paths[webservice]
+            sys.path.insert(0, path)
+            modname = webservice
 
-        modname = 'canopsis.webcore.services.{0}'.format(webservice)
+        else:
+            modname = 'canopsis.webcore.services.{0}'.format(webservice)
 
         try:
             mod = import_module(modname)
@@ -260,7 +286,22 @@ def loginpage(key=None, lang='en'):
     ticket = request.params.get('ticket', default=None)
 
     if not ticket and not s.get('auth_on', False):
-        return static_file('login/index.html', root=root_directory)
+        st = get_storage('object', account=Account(user='root', group='root'))
+
+        try:
+            record = st.get('cservice.frontend')
+            record = record.dump()
+
+        except KeyError:
+            record = {}
+
+        del st
+
+        with open(os.path.join(root_directory, 'login', 'index.html')) as src:
+            tmplsrc = src.read()
+
+        tmpl = Template(tmplsrc)
+        return tmpl(record)
 
     else:
         redirect('/{0}/static/canopsis/index.html'.format(lang))

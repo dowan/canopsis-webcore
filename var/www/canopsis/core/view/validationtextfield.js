@@ -12,7 +12,18 @@
     Application.ValidationTextField = Ember.TextField.extend({
         attr : "",
         formController : null,
+        init: function(){
+          var model =  this.attr.model;
 
+          if (Ember.isNone(this.get('value')) && !Ember.isNone(this.get('attr.model.options.defaultValue'))) {
+              this.set('value', this.get('attr.model.options.defaultValue'));
+          }
+
+          var type =  model.options["input_type"]|| model.type;
+          type = ( type === "string" )? "text" : type;
+         // this.type = type;
+          this._super()
+        },
 
         registerFieldWithController: function() {
             var formController  =  Canopsis.formwrapperController.form;

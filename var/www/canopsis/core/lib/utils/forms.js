@@ -45,6 +45,10 @@ define(['ember', 'app/application'], function(Ember, Application) {
 				options = {};
 			}
 
+			if ( formContext.get && Ember.isNone(formContext.get('crecord_type'))) {
+				console.warn('There is no crecord_type in the given record. Form may not display properly.')
+			}
+
 			console.log("Form generation", formName);
 
 			var formController = this.instantiateForm(formName, formContext, options);

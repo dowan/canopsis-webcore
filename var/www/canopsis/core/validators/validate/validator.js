@@ -8,10 +8,16 @@ define([
 	 * @return validators : array of validators
 	 */
 	function GetValidators(attr) {
-
 		console.log("attr = ", attr);
 		var options = attr.model.options;
 		var validators = [];
+
+		var validatorName = attr.model.type;
+		var validator = Ember.validators[validatorName];
+		if (validator !== undefined) {
+			console.log("pushed : ", validatorName);
+			validators.push(Ember.validators[validatorName]);
+		}
 
 		if (options !== undefined) {
 
@@ -60,7 +66,6 @@ define([
 		var validators = GetValidators(attr);
 
 		for (var i = 0; i < validators.length; i++) {
-
 			validator = validators[i];
 			toReturn = validator(attr, toReturn);
 

@@ -184,7 +184,7 @@ define(schemasDeps, function(DS, Application, utils) {
 
 			var property = schema.properties[name];
 			var propertyType = property.type;
-			delete property.type;
+			//delete property.type;
 
 			console.group('model\'s attributes and relationships');
 
@@ -252,7 +252,7 @@ define(schemasDeps, function(DS, Application, utils) {
 						modelDict[keys] = DS.attr(Application.allModels[parentModelClassName][keys]._meta.type, val);
 					}
 
-				} else if (modelDict[keys] !== undefined) {
+				} else if (modelDict[keys] !== undefined && keys !== "categories") {
 
 					var oldkeys = Application.allModels[parentModelClassName][keys];
 					var newkeys = modelDict[keys];
@@ -262,7 +262,16 @@ define(schemasDeps, function(DS, Application, utils) {
 						var oldkeysAttribute = oldkeys._meta;
 						var newkeysAttribute = newkeys._meta;
 
-						var oldOptions = oldkeysAttribute.options;
+						var oldOptions;
+
+						if(oldkeysAttribute === undefined) {
+							oldOptions = {};
+						} else {
+							oldOptions = oldkeysAttribute.options;
+						}
+
+						console.log("modelDict keys !== undefined : ", parentModelClassName, Application.allModels[parentModelClassName], keys);
+
 						var newOptions = newkeysAttribute.options;
 
 						newOptions = merge(oldOptions, newOptions, schemaName);

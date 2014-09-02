@@ -23,7 +23,8 @@ define([
 	'app/application',
 	'app/routes/application',
 	'utils',
-	'app/lib/utils/forms'
+	'app/lib/utils/forms',
+	'app/components/flotchart/component'
 ], function(Ember, DS, Application, ApplicationRoute, utils, formUtils) {
 	var get = Ember.get,
 		set = Ember.set;
@@ -31,8 +32,19 @@ define([
 	Application.ApplicationController = Ember.ObjectController.extend({
 		needs: ['login'],
 
+		plugins:function(){
+			var all_plugins = [];
+			var plugins = Application.plugins ;
+			for ( var pluginName in plugins ){
+				if( plugins.hasOwnProperty(pluginName)){
+					all_plugins.push(plugins[pluginName] );
+				}
+			}
+			return all_plugins;
+		}.property(),
+
 		init: function() {
-			console.log('app init');
+			console.group('app init');
 			var appController = this;
 
 			var headerStore = DS.Store.create({
@@ -45,11 +57,57 @@ define([
 				set(appController, 'headerUserview', queryResults);
 			});
 
+			var indexStore = DS.Store.create({
+				container: get(this, "container")
+			});
+
+			set(this, "indexViewStore", indexStore);
+
+			indexStore.find('userview', 'view.app_index').then(function(queryResults) {
+				set(appController, 'indexUserview', queryResults);
+			});
+
 			console.log('finding fconfig');
-			headerStore.find('cservice', 'cservice.frontend').then(function(queryResults) {
+			headerStore.find('frontend', 'cservice.frontend').then(function(queryResults) {
 				console.log('fconfig found');
 				set(appController, 'frontendConfig', queryResults);
 				set(Canopsis, 'conf.frontendConfig', queryResults);
+			});
+
+			console.log('finding authentication backends config')
+
+			headerStore.find('ldapconfig', 'ldap.config').then(function(queryResults) {
+				console.log('ldap config found');
+				set(appController, 'ldapConfig', queryResults);
+				set(Canopsis, 'conf.ldapConfig', queryResults);
+			}, function() {
+				console.log('create base ldap config');
+
+				var record = headerStore.createRecord('ldapconfig', {
+					crecord_type: 'ldapconfig'
+				});
+
+				record.id = 'ldap.config';
+
+				set(appController, 'ldapConfig', record);
+				set(Canopsis, 'conf.ldapConfig', record);
+			});
+
+			headerStore.find('casconfig', 'cas.config').then(function(queryResults) {
+				console.log('cas config found');
+				set(appController, 'casConfig', queryResults);
+				set(Canopsis, 'conf.casConfig', queryResults);
+			}, function() {
+				console.log('create base cas config');
+
+				var record = headerStore.createRecord('casconfig', {
+					crecord_type: 'casconfig'
+				});
+
+				record.id = 'cas.config';
+
+				set(appController, 'casConfig', record);
+				set(Canopsis, 'conf.casConfig', record);
 			});
 
 			var footerStore = DS.Store.create({
@@ -57,11 +115,11 @@ define([
 			});
 
 			set(this, "footerViewStore", footerStore);
-
 			footerStore.find('userview', 'view.app_footer').then(function(queryResults) {
 				set(appController, 'footerUserview', queryResults);
 			});
 
+			console.groupEnd();
 			this._super.apply(this, arguments);
 		},
 
@@ -70,12 +128,71 @@ define([
 		}.property('controllers.login.username'),
 
 		actions: {
+
+			showUserProfile: function (){
+
+				var login = this.get('controllers.login');
+
+				var applicationController = this;
+
+				var dataStore = DS.Store.create({
+					container: this.get("container")
+				});
+
+				var record = dataStore.findQuery('useraccount', {
+					filter: JSON.stringify({
+						user: login.get('username')
+					})
+				}).then(function(queryResults) {
+					console.log('query result', queryResults);
+					var record = queryResults.get('content')[0];
+
+					//generating form from record model
+					var recordWizard = utils.forms.showNew('modelform', record, {
+						title: applicationController.get('username') +' '+__('profile'),
+					});
+
+					//submit form and it s callback
+					recordWizard.submit.then(function(form) {
+						console.log('record going to be saved', record, form);
+
+						//generated data by user form fill
+						record = form.get('formContext');
+
+						record.save();
+						utils.notification.info(__('profile') + ' ' +__('updated'));
+					})
+				});
+
+
+			},
+
 			editConfig: function() {
 				console.log('editConfig', formUtils);
 				var frontendConfig = get(this, 'frontendConfig');
-				var editForm = formUtils.showNew('modelform', frontendConfig, { title: "Edit settings" });
+				var editForm = formUtils.showNew('modelform', frontendConfig, { title: "Edit settings", inspectedItemType: "frontend" });
 				editForm.submit.done(function() {
 					frontendConfig.save();
+				});
+			},
+
+			editLdapConfig: function() {
+				console.log('editLdapConfig');
+
+				var ldapConfig = get(this, 'ldapConfig');
+				var editForm = formUtils.showNew('modelform', ldapConfig, { title: 'Edit LDAP configuration' });
+				editForm.submit.done(function() {
+					ldapConfig.save();
+				});
+			},
+
+			editCasConfig: function() {
+				console.log('editCasConfig');
+
+				var casConfig = get(this, 'casConfig');
+				var editForm = formUtils.showNew('modelform', casConfig, { title: 'Edit CAS configuration' });
+				editForm.submit.done(function() {
+					casConfig.save();
 				});
 			},
 
@@ -96,8 +213,8 @@ define([
 
 				var containerwidgetId = utils.hash.generateId('container');
 
-				var containerwidget = Canopsis.utils.data.getStore().createRecord('vbox', {
-					xtype: 'vbox',
+				var containerwidget = Canopsis.utils.data.getStore().createRecord('verticalbox', {
+					xtype: 'verticalbox',
 					id: containerwidgetId
 				});
 
@@ -105,7 +222,7 @@ define([
 					id: utils.hash.generateId('userview'),
 					crecord_type: 'view',
 					containerwidget: containerwidgetId,
-					containerwidgetType: 'vbox'
+					containerwidgetType: 'verticalbox'
 				});
 
 				console.log('temp record', userview);
@@ -120,7 +237,7 @@ define([
 				recordWizard.submit.done(function() {
 					console.log("userview.save()");
 					console.log(userview.save());
-					userview.save().then(transitionToView);
+					applicationController.transitionToRoute("/userview/" + userview.get('id'));
 				});
 			},
 
@@ -132,7 +249,7 @@ define([
 				console.log("add", type);
 
 				var record = Canopsis.utils.data.getStore().createRecord(type, {
-					crecord_type: type
+					crecord_type: type.underscore()
 				});
 				console.log('temp record', record);
 

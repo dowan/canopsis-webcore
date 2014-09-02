@@ -23,9 +23,11 @@ define([
 	'app/application'
 ], function(Ember, DS, Application) {
 
+	Application.entities = ["nagios","shinken"];
 	Application.ApplicationAdapter = DS.RESTAdapter.extend({
 		buildURL: function(type, id) {
-			return ("/rest/object/" + type + (!!id ? "/" + id : ""));
+			var namespace = ( Application.entities.contains(type)   )? "entities" :"object" ;
+			return ("/rest/"+namespace+"/" + type + (!!id ? "/" + id : ""));
 		},
 
 		createRecord: function(store, type, record) {

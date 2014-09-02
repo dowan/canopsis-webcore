@@ -20,23 +20,28 @@
 //TODO implement auto check for mvct file existence and require them automatically
 
 var renderersTemplates = [
+    'ack',
+    'actionfilter',
+    'boolean',
+    'cfilter',
+    'cfilterwithproperties',
+    'color',
+    'conf',
+    'crecord-type',
+    'criticity',
     'default',
     'mail',
-    'boolean',
-    'tags',
-    'color',
-    'state',
-    'status',
-    'timestamp',
-    'percent',
-    'ack',
-    'crecord-type',
-    'rights',
-    'actionfilter',
-    'cfilter',
     'object',
-    'cfilterwithproperties',
-    'source'
+    'percent',
+    'rights',
+    'source',
+    'state',
+    'stateConnector',
+    'status',
+    'subprocess',
+    'tags',
+    'timestamp',
+    'progressbar'
 ];
 
 var deps = ['ember'];
@@ -48,7 +53,7 @@ for (var i = 0; i < renderersTemplates.length; i++) {
 
 define(deps, function(Ember) {
     for (var i = depsSize; i < arguments.length; i++) {
-	var templateName = "renderer-" + renderersTemplates[i - depsSize];
-	Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i]);
+        var templateName = "renderer-" + renderersTemplates[i - depsSize];
+        Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i]);
     }
 });

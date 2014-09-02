@@ -45,28 +45,20 @@ define([
 			this.set('userConfiguration', userConfiguration.create({widget: this}));
 
 			this.set("container", utils.routes.getCurrentRouteController().container);
-			//TODO put spinner in widget when loading
 
-			this.set('isRefreshable', false);
-			//TODO load delay from widget configuration
-			this.set('refreshDelay', 10000);
+			this.startRefresh();
 
-			setInterval(function () {
-				if (Canopsis.conf.REFRESH_ALL_WIDGETS) {
-					var title = widgetController.get('title');
-					if (title === undefined) {
-						title = '';
-					}
-					if (!widgetController.get('isRefreshable')) {
-						console.log('refreshing widget ' + title);
-						widgetController.refreshContent();
-					}
-				}
-			}, widgetController.get('refreshDelay'));
-
+			//setting default/minimal reload delay for current widget
+			if (widgetController.get('refreshInterval') <= 10 || Ember.isNone(widgetController.get('refreshInterval'))) {
+				widgetController.set('refreshInterval', 10);
+			}
 
 			this.refreshContent();
 
+		},
+
+		getSchema: function() {
+			return Application[this.get('xtype').capitalize()].proto().categories;
 		},
 
 		onReload: function () {
@@ -96,6 +88,16 @@ define([
 			this.set('isRefreshable', true);
 		},
 
+		isRollbackable: function() {
+			if(get(this, 'isDirty') && get(this, 'dirtyType') === "updated") {
+				return true;
+			}
+
+			return false;
+
+		}.property('isDirty', 'dirtyType'),
+
+
 		actions: {
 			do: function(action) {
 				var params = [];
@@ -109,10 +111,19 @@ define([
 				utils.forms.addRecord(itemType);
 			},
 
+			rollback: function(widget){
+				console.log('rollback changes', arguments);
+				console.log(get(widget, 'isDirty'));
+				console.log(get(widget, 'default_filter'));
+				console.log("widgetrollback", widget.rollback());
+				console.log(get(widget, 'isDirty'));
+				console.log(get(widget, 'default_filter'));
+			},
+
 			editWidget: function (widget) {
 				console.info("edit widget", widget);
 
-				var widgetWizard = utils.forms.showNew('modelform', widget, { title: "Edit widget" });
+				var widgetWizard = utils.forms.showNew('modelform', widget, { title: __("Edit widget") });
 				console.log("widgetWizard", widgetWizard);
 
 				var widgetController = this;
@@ -146,6 +157,32 @@ define([
 				userview.save();
 
 				console.groupEnd();
+			},
+
+			editWidgetPreferences: function (widget) {
+
+				var widgetController = this;
+
+				var label = "Edit your widget preferences";
+				console.info(label, widget);
+
+				var widgetWizard = utils.forms.showNew('modelform', widget, { 
+					title: __(label),
+					userPreferencesOnly: true
+				});
+				console.log("widgetWizard", widgetWizard);
+
+				var widgetController = this;
+
+				widgetWizard.submit.then(function(form) {
+
+					record = form.get('formContext');
+					console.log('user param record', record);
+					//widgetController.set('userParams.filters', widgetController.get('filters'));
+					//widgetController.get('userConfiguration').saveUserConfiguration();
+
+					widgetController.trigger('refresh');
+				});
 			},
 
 			movedown: function(widgetwrapper) {

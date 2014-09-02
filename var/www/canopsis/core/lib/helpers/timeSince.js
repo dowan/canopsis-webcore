@@ -19,14 +19,25 @@
 
 define(['ember'], function(Ember) {
 
-    Ember.Handlebars.helper('timeSince', function(timestamp) {
+    Ember.Handlebars.helper('timeSince', function(timestamp , record) {
 
-	var actuel = new Date().getTime();
-	var a = new Date(timestamp * 1000);
-	var time = diffDate(a, actuel, "d");
+    if( timestamp || record.timeStampState ){
+		var actuel = new Date().getTime();
+		timestamp = record.timeStampState || timestamp;
+		var a = new Date(timestamp * 1000);
+		var time = diffDate(a, actuel, "d");
 
-	return new Ember.Handlebars.SafeString("\nIl y a " + time +
-					       (time > 1 ? " jours" : " jour"));
+		var newObject = Ember.Object.create({value : time , field : "time" });
+	  	newObject.addObserver('timeStampState',record, function(sender, key , value) {
+			console.log("test");
+		});
+		var icon = '<span class=glyphicon glyphicon-time ></span>';
+		return new Ember.Handlebars.SafeString("\nIl y a " + time +
+						       (time > 1 ? " jours" : " jour"));
+   	}
+   	else{
+   		return "";
+   		}
     });
 
     //TODO : Move this function to "Application" Scope

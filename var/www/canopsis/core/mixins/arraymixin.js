@@ -127,6 +127,8 @@ define([
 
 		//Called by controller when submit
 		onUpdate: function() {
+			var formController  =  Canopsis.formwrapperController.form;
+
 			var value =this.get(this.get("valuePath"));
 			var valueRef = this.get(this.get("valueRefPath"));
 			if (valueRef) {

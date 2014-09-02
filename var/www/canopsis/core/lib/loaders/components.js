@@ -22,11 +22,14 @@
 
 var componentsTemplates = [
 	'expandableaddbutton',
+	'classifieditemselector',
 	'editor',
 	'renderer',
 	'table',
 	'filterclause',
-	'searchbar'
+	'checkbox',
+	'searchbar',
+	'flotchart'
 ];
 
 var deps = ['ember'];

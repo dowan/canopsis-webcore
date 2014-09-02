@@ -22,22 +22,25 @@ define([
 	'app/application',
 	'app/lib/factories/form',
 	'utils',
+	'app/lib/widgetsmanager',
 	'app/lib/loaders/schema-manager',
 	'app/controller/journal'
-], function(Ember, Application, FormFactory, utils) {
+], function(Ember, Application, FormFactory, utils, widgets) {
 
 	FormFactory('widgetform', {
 		needs: ['journal'],
 
 		title: "Select a widget",
 
+		widgets: widgets,
+
 		availableWidgets: function() {
 			console.log("availableWidgets");
 			var widgets = [];
 
-			for (var key in Canopsis.widgets.all) {
-				var currentWidget = Canopsis.widgets.all[key];
-				currentWidget.name = key;
+			for (var i = 0; i < Canopsis.widgets.all.length; i++) {
+				var currentWidget = Canopsis.widgets.all[i];
+
 				widgets.push(currentWidget);
 			}
 
@@ -48,9 +51,9 @@ define([
 			show: function() {
 				var widgets = [];
 
-				for (var key in Canopsis.widgets.all) {
-					var currentWidget = Canopsis.widgets.all[key];
-					currentWidget.set('name', key);
+				for (var i = 0; i < Canopsis.widgets.all.length; i++) {
+					var currentWidget = Canopsis.widgets.all[i];
+
 					widgets.push(currentWidget);
 				}
 
@@ -77,17 +80,19 @@ define([
 				this._super(this.newWidgetWrapper);
 			},
 
-			selectWidget: function(widget) {
+			selectItem: function(widgetName) {
+				console.log('selectItem', arguments);
+
 				var containerwidget = this.get('formContext.containerwidget');
-				console.group('selectWidget', this, containerwidget, widget.name);
+				console.group('selectWidget', this, containerwidget, widgetName);
 
 				var store = this.get('formContext.containerwidget').store;
 				console.log('store to use', this.get('formContext.containerwidget').store);
-				var widgetId = utils.hash.generateId('widget_' + widget.name);
+				var widgetId = utils.hash.generateId('widget_' + widgetName);
 
 				//FIXME this works when "xtype" is "widget"
-				var newWidget = store.createRecord(widget.name, {
-					'xtype': widget.name,
+				var newWidget = store.createRecord(widgetName, {
+					'xtype': widgetName,
 					'listed_crecord_type': 'account',
 					'meta': {
 						'embeddedRecord': true,
@@ -101,7 +106,7 @@ define([
 					'xtype': 'widgetwrapper',
 					'title': 'wrapper',
 					'widget': widgetId,
-					'widgetType': widget.name,
+					'widgetType': widgetName,
 					'meta': {
 						'embeddedRecord': true,
 						'parentType': containerwidget.get('xtype'),
@@ -116,7 +121,7 @@ define([
 
 				console.info('show embedded widget wizard');
 
-				utils.forms.showNew('modelform', newWidget, {formParent: this});
+				utils.forms.showNew('modelform', newWidget, {formParent: this, title: "Add new " + widgetName});
 				console.groupEnd();
 			}
 		},

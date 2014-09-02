@@ -156,7 +156,6 @@ def send_event(event, host):
 		tags = event.get('tags', None),
 		ticket = event.get('ticket', None),
 		ref_rk = event.get('ref_rk', None),
-		cancel = event.get('cancel', None),
 		author = event.get('author', None)
 	)
 

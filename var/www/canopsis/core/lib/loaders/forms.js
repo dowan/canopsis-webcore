@@ -23,7 +23,12 @@
 var formsTemplates = [
 	'modelform',
 	'widgetform',
-	'arrayitemform'
+	'arrayitemform',
+	'jobform',
+	'taskform',
+	'scheduleform',
+	//'connectorform',
+	//"confirmform"
 ];
 
 var deps = ['ember'];

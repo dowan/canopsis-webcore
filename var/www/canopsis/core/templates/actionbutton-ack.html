@@ -1,15 +1,32 @@
 {{#unless controller.findOptions.useLogCollection}}
 	{{#if minified}}
-		{{#unless this.ack.author}}
-			{{#if this.state}}
-				<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Acknowledge this alert">
-					<button type="button" class="btn btn-default" {{action 'sendEvent' 'ack' this}} >{{glyphicon "ok"}}</button>
+		{{#if this.ack.author}}
+			{{#if this.ack.isAck}}
+				<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Cancel">
+					<button type="button" class="btn btn-default" {{action 'sendEvent' 'ackremove' this}} >
+						{{glyphicon "ban-circle"}}
+					</button>
 				</a>
 			{{/if}}
-		{{/unless}}
+		{{else}}
+			{{#if this.status}}
+				<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Acknowledge">
+					<button type="button" class="btn btn-default" {{action 'sendEvent' 'ack' this}} >
+						{{glyphicon "ok"}}
+					</button>
+				</a>
+			{{/if}}
+		{{/if}}
 	{{else}}
-		<a href="#" class="tooltiptable hint--rounded hint--top" "Acknowlege selected events">
-			<button type="button" class="btn btn-default" {{action 'sendEvent' 'ack'}} >{{glyphicon "ok"}} Acknowlege</button>
+		<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Acknowledge">
+			<button type="button" class="btn btn-default" {{action 'sendEvent' 'ack'}} >
+				{{glyphicon "ok"}} Acknowledge
+			</button>
+		</a>
+		<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Cancel">
+			<button type="button" class="btn btn-default" {{action 'sendEvent' 'ackremove'}} >
+				{{glyphicon "ban-circle"}} Cancel
+			</button>
 		</a>
 	{{/if}}
 {{/unless}}

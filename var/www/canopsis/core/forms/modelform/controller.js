@@ -23,8 +23,9 @@ define([
 	'app/lib/factories/form',
 	'app/mixins/inspectableitem',
 	'app/mixins/validation',
+	'app/lib/utils/slug',
 	'app/lib/loaders/schema-manager'
-], function(Ember, Application, FormFactory, InspectableitemMixin, ValidationMixin) {
+], function(Ember, Application, FormFactory, InspectableitemMixin, ValidationMixin, slugify) {
 	var set = Ember.set,
 		get = Ember.get;
 
@@ -40,11 +41,56 @@ define([
 		validationFields: Ember.computed(function() {return Ember.A();}),
 		ArrayFields: Ember.A(),
 
+		filterUserPreferenceCategory: function (category, keyFilters) {
+
+			var keys = category.get('keys');
+			category.set('keys', []);
+
+			for (var i=0; i<keys.length; i++) {
+				console.log('key', keys[i]);
+				if (this.get('userPreferencesOnly')) {
+					//isUserPreference is set to true in the key schema field.
+					if (keys[i].model && keys[i].model.options && keys[i].model.options.isUserPreference) {
+						category.get('keys').push(keys[i]);
+					}
+				} else {
+					//Filter from form parameter
+					if ($.inArray(keys[i].field, keyFilters) !== -1) {
+						category.get('keys').push(keys[i]);
+					}
+				}
+			}
+			return category
+		},
+
 		categories: function(){
 			var res = get(this, 'categorized_attributes');
+			var category_selection = [];
 			if(res instanceof Array) {
-				set(res[0], 'isDefault', true);
-				return res;
+				for(var i = 0; i < res.length; i++) {
+					var category = res[i];
+
+					category.slug = slugify(category.title);
+					console.log(category);
+					if (this.get('filterFieldByKey') || this.get('userPreferencesOnly')) {
+						//filter on user preferences fields only
+						//if (category)
+						category = this.filterUserPreferenceCategory(category, this.get('filterFieldByKey'))
+						if (category.keys.length) {
+							category_selection.push(res[i]);
+						}
+
+						console.log('category');
+						console.log(category);
+					} else {
+						//select all
+						category_selection.push(res[i]);
+					}
+				}
+				if (category_selection.length) {
+					set(category_selection[0], 'isDefault', true);
+				}
+				return category_selection;
 			}
 			else {
 				return [];
@@ -66,7 +112,7 @@ define([
 			if (this.get('formContext.xtype')) {
 				return this.get('formContext.xtype');
 			} else {
-				return this.get('formContext.crecord_type');
+				return this.get('formContext.crecord_type') || this.get('formContext.connector_type')  ;
 			}
 
 		}.property('formContext'),
@@ -79,9 +125,26 @@ define([
 
 				console.log("submit action");
 
-				var	newRecord = {};
 				var override_inverse = {};
 
+				if( this.isOnCreate && this.modelname){
+					var Stringtype = this.modelname.charAt(0).toUpperCase() + this.modelname.slice(1);
+					var model = Canopsis.Application.allModels[Stringtype];
+					if(model){
+						for ( var fieldName in model){
+							if ( model.hasOwnProperty(fieldName)){
+								var field = model[fieldName];
+								if(  field._meta &&  field._meta.options ){
+									var options = field._meta.options;
+									if( "setOnCreate" in  options){
+										var value = options["setOnCreate"];
+										this.set('formContext.' + fieldName, value);
+									}
+								}
+							}
+						}
+					}
+				}
 				//will execute callback from options if any given
 				var options = this.get('options');
 
@@ -94,7 +157,6 @@ define([
 				var	categories = this.get("categorized_attributes");
 
 				console.log("setting fields");
-
 				for (var i = 0; i < categories.length; i++) {
 					var category = categories[i];
 					for (var j = 0; j < category.keys.length; j++) {
@@ -104,7 +166,6 @@ define([
 						if (override_inverse[attr.field]) {
 							field = override_inverse[attr.field];
 						}
-						newRecord[field] = attr.value;
 						this.set('formContext.' + field, attr.value);
 					}
 				}
@@ -119,7 +180,6 @@ define([
 
 				console.log("this is a widget", this.get('formContext'));
 				this._super(this.get('formContext'));
-
 			}
 		}
 	},

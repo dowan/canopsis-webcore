@@ -24,10 +24,16 @@ var widgetsTemplates = [
 	{ name:'list', url:'app/widgets/list', hasJSPart: true },
 	{ name:'canvas', url:'app/widgets/canvas', hasJSPart: true },
 	{ name:'hbox', url:'app/widgets/hbox', hasJSPart: true },
-	{ name:'lighthbox', url:'app/widgets/lighthbox', hasJSPart: true },
 	{ name:'vbox', url:'app/widgets/vbox', hasJSPart: true },
+	{ name:'verticalbox', url:'app/widgets/verticalbox', hasJSPart: true },
+	{ name:'lighthbox', url:'app/widgets/lighthbox', hasJSPart: true },
 	{ name:'tabmanager', url:'app/widgets/tabmanager', hasJSPart: true },
-	{ name:'uiactionbutton', url:'app/widgets/uiactionbutton', hasJSPart: true }
+	{ name:'uiactionbutton', url:'app/widgets/uiactionbutton', hasJSPart: true },
+	{ name:'uimaintabcollection', url:'app/widgets/uimaintabcollection', hasJSPart: true },
+	{ name:'uimaindropdown', url:'app/widgets/uimaindropdown', hasJSPart: true },
+//	{ name:'multicrecordlist', url:'app/widgets/multicrecordlist', hasJSPart: true , TEMPLATE:'list'},
+	{ name:'jobmanager', url:'app/widgets/jobmanager', hasJSPart: true, TEMPLATE: 'list' },
+	{ name:'timegraph', url:'app/widgets/timegraph', hasJSPart: true}
 ];
 
 var deps = ['ember'];
@@ -56,7 +62,12 @@ define(deps, function(Ember) {
 	console.log({"load widgets": arguments});
 	for (var i = 0; i < widgetsTemplates.length; i++) {
 		var templateName = widgetsTemplates[i].name;
-		Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
+		var TEMPLATE = widgetsTemplates[i].TEMPLATE;
+		if( !TEMPLATE )
+			Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
+		else{
+			Ember.TEMPLATES[templateName] = Ember.TEMPLATES[TEMPLATE];
+		}
 	}
 });
 

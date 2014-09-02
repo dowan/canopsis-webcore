@@ -36,6 +36,7 @@ var editorsTemplates = [
 	{ name: 'rights', js: 'v' },
 	{ name: 'cmetric', js: 'w' },
 	{ name: 'cfilter', js: 'w' },
+	{ name: 'classifiedcrecordselector', js: 'w' },
 	{ name: 'cfilterwithproperties'},
 	{ name: 'templateSelector' , js: "v" },
 	{ name: 'tags' , js: "w" },
@@ -43,7 +44,11 @@ var editorsTemplates = [
 	{ name: 'state', js: 'w' },
 	{ name: 'criticity', js: 'w' },
 	{ name: 'actionfilter', js: 'w' },
-	{ name: 'simplelist', js: 'v' }
+	{ name: 'simplelist', js: 'v' },
+	{ name: 'jobeditor', js: 'w' },
+	{ name: 'source', js: 'v' },
+	{ name: 'stringpair'},
+	{ name: 'session', js: 'w' }
 ];
 
 var deps = ['ember'];

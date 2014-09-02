@@ -25,7 +25,19 @@ define([
 
 	Application.ListlineView = Ember.View.extend({
 		tagName:'tr',
-		templateName: 'listline'
+		templateName: 'listline',
+		classNames: ['listline'],
+
+		init: function() {
+			this._super.apply(this, arguments);
+		},
+
+		checkChanged: function() {
+			var checkbox = this.$('.toggle');
+			if(checkbox !== undefined) {
+				checkbox.iCheck('check');
+			}
+		}.observes('controller.isAllSelected')
 	});
 
 	return Application.ListlineView;

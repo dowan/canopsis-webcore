@@ -21,35 +21,38 @@
 //TODO implement auto check for mvct file existence and require them automatically
 
 var helpers = [
+    'ack',
     'color',
     'colorview',
+    'conf',
+    'criticity',
     'date-fromnow',
     'duration',
     'editor',
     'enableview',
     'format-date',
-    'group',
+    'getfield',
     'glyphicon',
+    'group',
+    'i18n',
+    'ifcond',
+    'json2html',
     'log',
+    'logo',
+    'menu',
     'percent',
     'renderwidget',
+    'rights',
+    'set',
     'stateview',
     'statusview',
-    'timestamp',
+    'subprocess',
     'timeSince',
-    'menu',
-    'rights',
-    'widgetslot',
-    // 'renderer', //Deprecated
-    'ifcond',
-    'set',
-    'getfield',
-    'unset',
-    'i18n',
+    'timestamp',
     'tooltip',
-    'json2html',
-    'ack',
-    'logo'
+    'unset',
+    'widgetslot'
+    // 'renderer', //Deprecated
 ];
 
 var deps = ['app/application', 'app/lib/wrappers/swag'];
