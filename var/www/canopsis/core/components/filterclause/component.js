@@ -129,7 +129,7 @@ define([
 
 			console.log("keyIsValid", inputValue, currentClauseIndex, currentClause, andClausePart);
 
-			if (this.get('onlyAllowRegisteredIndexes') === true) {
+			if (this.get('onlyAllowRegisteredIndexes') === true && andClausePart.options.available_indexes !== undefined) {
 				//detect if inputValue is in available_indexes
 				console.group('onlyAllowRegisteredIndexes check');
 				for (var i = 0; i < andClausePart.options.available_indexes.length; i++) {
