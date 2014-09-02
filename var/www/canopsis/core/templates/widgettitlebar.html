@@ -17,10 +17,12 @@
 			{{#each button in controller.partials.titlebarsbuttons}}
 				{{partial button}}
 			{{/each}}
-			{{#if widget.isDirty}}
-				<button type="button" class="btn btn-small btn-danger btn-sm pull-right" {{action 'rollback' widget}}>
-				{{glyphicon "arrow-left"}}
-				</button>
+			{{#if widget.rollbackable}}
+				{{#if widget.isDirty}}
+					<button type="button" class="btn btn-small btn-danger btn-sm pull-right" {{action 'rollback' widget}}>
+					<i class="fa fa-undo"></i>
+					</button>
+				{{/if}}
 			{{/if}}
 		{{unset 'minified'}}
 	</div>

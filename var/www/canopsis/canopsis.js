@@ -29,6 +29,7 @@ require.config({
 		'bootstrap': 'webcore-libs/bootstrap/current/js/bootstrap.min',
 		'jqueryui': 'webcore-libs/dev/jquery-ui-1.10.3',
 		'bootbox': 'webcore-libs/dev/bootbox',
+		'icheck': 'webcore-libs/icheck/icheck',
 		'jquerydatatables': 'webcore-libs/dev/jquery.dataTables',
 		'bootstrapdatatables': 'webcore-libs/dev/dataTables.bootstrap',
 		'colreorder': 'webcore-libs/dev/ColReorder',

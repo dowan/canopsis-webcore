@@ -213,8 +213,8 @@ define([
 
 				var containerwidgetId = utils.hash.generateId('container');
 
-				var containerwidget = Canopsis.utils.data.getStore().createRecord('vbox', {
-					xtype: 'vbox',
+				var containerwidget = Canopsis.utils.data.getStore().createRecord('verticalbox', {
+					xtype: 'verticalbox',
 					id: containerwidgetId
 				});
 
@@ -222,7 +222,7 @@ define([
 					id: utils.hash.generateId('userview'),
 					crecord_type: 'view',
 					containerwidget: containerwidgetId,
-					containerwidgetType: 'vbox'
+					containerwidgetType: 'verticalbox'
 				});
 
 				console.log('temp record', userview);

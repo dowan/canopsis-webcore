@@ -88,6 +88,16 @@ define([
 			this.set('isRefreshable', true);
 		},
 
+		isRollbackable: function() {
+			if(get(this, 'isDirty') && get(this, 'dirtyType') === "updated") {
+				return true;
+			}
+
+			return false;
+
+		}.property('isDirty', 'dirtyType'),
+
+
 		actions: {
 			do: function(action) {
 				var params = [];
