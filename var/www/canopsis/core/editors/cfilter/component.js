@@ -28,7 +28,9 @@ define([
 	Application.ComponentCfilterComponent = Ember.Component.extend({
 		init:function() {
 			var cfilter_serialized = this.get('cfilter_serialized');
-			if(cfilter_serialized === undefined || cfilter_serialized === null) {
+			if(get(this, 'content') !== null && get(this, 'content') !== undefined) {
+				this.set('cfilter_serialized', get(this, 'content'));
+			} else if(cfilter_serialized === undefined || cfilter_serialized === null) {
 				this.set('cfilter_serialized', '{}');
 			}
 
@@ -423,6 +425,12 @@ define([
 		},
 
 		actions: {
+			unlockIndexes: function() {
+				set(this, 'onlyAllowRegisteredIndexes', false);
+			},
+			lockIndexes: function() {
+				set(this, 'onlyAllowRegisteredIndexes', true);
+			},
 			addAndClause: function() {
 				console.log('Add AND clause');
 
