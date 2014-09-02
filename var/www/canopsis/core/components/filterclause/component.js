@@ -109,7 +109,7 @@ define([
 						this.set('finalized', true);
 						this.set('content.filling', false);
 
-						if (this.get('editionMode') === false && this.get('onlyAllowRegisteredIndexes') === false) {
+						if (/*this.get('editionMode') === false &&*/ this.get('onlyAllowRegisteredIndexes') === false) {
 							this.get('parent').send('addAndClause');
 						}
 
