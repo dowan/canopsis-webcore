@@ -458,7 +458,7 @@ define([
 			lockIndexes: function() {
 				set(this, 'onlyAllowRegisteredIndexes', true);
 			},
-			addAndClause: function() {
+			addAndClause: function(wasFinalized) {
 				console.log('Add AND clause');
 
 				var clauses = this.get('clauses');
@@ -466,8 +466,10 @@ define([
 
 				if (currentClauseIndex >= 0) {
 					var currentClause = clauses.objectAt(currentClauseIndex);
-
-					this.pushEmptyClause(currentClause);
+					console.log(' + current clause was bidule', wasFinalized);
+					if (!wasFinalized) {
+						this.pushEmptyClause(currentClause);
+					}
 				}
 
 				console.log('clauses addAndClause', clauses);
