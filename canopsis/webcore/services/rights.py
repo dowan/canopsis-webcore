@@ -45,8 +45,7 @@ def get_user_rights(user_id):
         "0093.manage_user": {"checksum": 13,
                              "context": "list_managers"},
         "121-84.user_conf": {"checksum":0},
-        "cfilter.1296734": {"checksum":1},
-        "1234.ack": {"checksum":8}
+        "cfilter.1296734": {"checksum":1}
         }
     return rights
 
