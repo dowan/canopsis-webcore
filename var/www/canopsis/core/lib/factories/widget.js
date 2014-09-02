@@ -65,17 +65,30 @@ define([
 
 		console.log("metadataDict", widgetName, metadataDict);
 
-		var registryDict = {
+		var registryEntry = Ember.Object.create({
 			name: widgetName,
 			EmberClass: Application[widgetControllerName]
-		};
+		});
 
-		if(metadataDict && metadataDict.icon) {
-			registryDict.icon = metadataDict.icon;
+		if(metadataDict) {
+			if(metadataDict.icon) {
+				registryEntry.set('icon', metadataDict.icon);
+			}
+			if(metadataDict.classes) {
+				var classes = metadataDict.classes;
+				for (var i = 0, l = classes.length; i < l; i++) {
+					var currentClass = classes[i];
+					if(!Ember.isArray(WidgetsManager.byClass.get(currentClass))) {
+						WidgetsManager.byClass.set(currentClass, Ember.A());
+					}
+
+					WidgetsManager.byClass.get(currentClass).pushObject(registryEntry)
+				}
+			}
 		}
 
 
-		WidgetsManager.all.push(Ember.Object.create(registryDict));
+		WidgetsManager.all.pushObject(registryEntry);
 
 		return Application[widgetControllerName];
 	}
