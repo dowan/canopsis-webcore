@@ -21,7 +21,8 @@ define([
     'ember',
     'app/lib/factories/widget',
     'app/widgets/list/controller',
-    'utils'
+    'utils',
+    'app/serializers/job'
 ], function(Ember, WidgetFactory, WidgetListController, cutils) {
     var widgetOptions = {
         subclass: WidgetListController
@@ -34,9 +35,10 @@ define([
             add: function(recordType) {
                 console.log("add job");
 
-                var record = this.get('widgetDataStore').createRecord(
+                var record = this.get('widgetDataStore').push(
                     recordType,
                     {
+                        id: cutils.hash.generateId(recordType),
                         crecord_type: recordType
                     }
                 );
@@ -46,9 +48,15 @@ define([
                 var me = this;
 
                 recordWizard.submit.then(function(form) {
+                    console.group('submitJob');
+
                     var record = form.get('formContext');
-                    console.log('Saving Job:', record);
+
+                    console.log('record:', record);
+
                     record.save();
+
+                    console.groupEnd();
 
                     me.trigger('refresh');
                     me.startRefresh();

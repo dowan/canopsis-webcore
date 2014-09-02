@@ -37,8 +37,6 @@ define([
                 console.group('configureTask');
 
                 var formParent = this.get('formParent');
-                formParent.formContext.params = this.formContext;
-                console.log('formContext:', formParent.formContext);
 
                 if(this.get('nextForm') === undefined) {
                     var wizard = cutils.forms.showNew('scheduleform', formParent.formContext, {
@@ -58,7 +56,10 @@ define([
             },
 
             submit: function() {
-                this.set('formContext', this.get('formParent.formContext'));
+                console.group('submitTask');
+
+                console.groupEnd();
+
                 this._super(arguments);
             }
         },

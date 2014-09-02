@@ -24,6 +24,9 @@ define([
 	'utils',
 	'jquery.encoding.digests.sha1'
 ], function($, Ember, Application, utils) {
+	var set = Ember.set,
+	    get = Ember.get;
+
 	Application.LoginRoute = Ember.Route.extend({
 		setupController: function(controller, model) {
 			void(model);
@@ -61,7 +64,7 @@ define([
 					controller.set('mail', account.mail);
 					controller.set('authkey', account.authkey);
 
-					utils.session = controller;
+					set(utils, 'session', controller);
 				},
 				async: false
 			});

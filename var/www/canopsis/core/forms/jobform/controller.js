@@ -21,8 +21,7 @@ define([
     'ember',
     'app/application',
     'app/lib/factories/form',
-    'utils',
-    'app/serializers/task'
+    'utils'
 ], function(Ember, Application, FormFactory, cutils) {
 
     FormFactory('jobform', {
@@ -34,7 +33,7 @@ define([
             for(var sname in cutils.schemaList) {
                 if(sname.indexOf('Task.') === 0) {
                     job_types.pushObject({
-                        name: sname.slice(10),
+                        name: sname.slice(9),
                         value: sname
                     });
                 }
@@ -55,17 +54,33 @@ define([
             selectJob: function(job) {
                 console.group('selectJob', this, job.name);
 
-                var modelname = job.value.slice(5);
-                this.formContext.task = modelname;
-
-                modelname = modelname[0].toUpperCase() + modelname.slice(1);
-
+                var xtype = job.value.slice(5);
+                var modelname = xtype[0].toUpperCase() + xtype.slice(1);
                 var model = Application[modelname];
 
+                var params = this.get('formContext.params');
+
+                if(!params) {
+                    params = {
+                        id: cutils.hash.generateId('task')
+                    };
+                }
+
+                params.xtype = xtype;
+
+                console.log('setTask:', xtype, params);
+                this.set('formContext.task', xtype);
+
                 console.log('Instanciate non-persistent model:', model);
-                var context = this.get('store').createRecord('task', {
-                    xtype: modelname
-                });
+                var context = this.get('store').createRecord(xtype, params);
+
+                var jobdict = this.get('formContext')._data;
+                jobdict.paramsType = xtype;
+                jobdict.params = params.id;
+
+                var job = this.get('store').push('job', jobdict);
+                this.formContext.rollback();
+                this.formContext = job;
 
                 console.log('Show new form with context:', context);
                 var recordWizard = cutils.forms.showNew('taskform', context, {
