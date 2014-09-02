@@ -71,6 +71,12 @@ define([
 						console.log(currentMfilterAnd[clauseKey][clauseOperator]);
 						var clauseValue = currentMfilterAnd[clauseKey][clauseOperator];
 
+						//deserialize in array value to a string with comma separator
+						if (clauseOperator === 'in' && typeof clauseValue === 'object') {
+							clauseValue = clauseValue.join(',');
+						}
+
+
 						var keys = this.getIndexesForNewAndClause(currentOr);
 
 						var field = {
@@ -152,6 +158,10 @@ define([
 				value: '$gt'
 			},
 			{
+				label: "in",
+				value: '$in'
+			},
+			{
 				label: "regex",
 				value: '$regex'
 			},
@@ -182,24 +192,39 @@ define([
 				};
 
 				if (clause.and[0] !== undefined) {
-					Ember.set(clause.and[0], 'isFirst', true);
+					set(clause.and[0], 'isFirst', true);
 				}
 
 				for (var j = 0, l_and = clause.and.length; j < l_and; j++) {
 					var field = clause.and[j];
 
 					if(j === 0) {
-						Ember.set(field, 'isFirst', true);
+						set(field, 'isFirst', true);
 					} else {
-						Ember.set(field, 'isFirst', false);
+						set(field, 'isFirst', false);
 					}
 
-					Ember.set(field, 'finalized', true);
+					set(field, 'finalized', true);
 
 					if (j === clause.and.length -1) {
-						Ember.set(clause.and[j], 'isLast', true);
+						set(clause.and[j], 'isLast', true);
 					} else {
-						Ember.set(clause.and[j], 'isLast', false);
+						set(clause.and[j], 'isLast', false);
+					}
+
+					if (clause.and[j].operator === 'in') {
+						console.log('Operator in detected');
+						try {
+							clause.and[j].value = clause.and[j].value.split(',');
+						} catch (err) {
+							console.warn('Malformed list for in operator');
+							clause.and[j].value = [clause.and[j].value];
+						}
+					} else {
+						//manage numbers inputs and cast them to number if numeric.
+						if (typeof clause.and[j].value === 'string' && $.isNumeric(clause.and[j].value)) {
+							clause.and[j].value = parseFloat(clause.and[j].value);
+						}
 					}
 
 					if (field.key !== undefined) {
@@ -216,6 +241,7 @@ define([
 
 						subfilter.$and.push(item);
 					}
+
 				}
 
 				if (subfilter.$and.length > 0) {
@@ -303,6 +329,7 @@ define([
 			}
 
 			var mfilter = this.serializeCfilter();
+			console.log('generated mfilter', mfilter);
 			this.set('cfilter_serialized', mfilter);
 		},
 
@@ -414,7 +441,7 @@ define([
 			console.log('lastAndClauseOfList', lastAndClauseOfList);
 
 			if (lastAndClauseOfList !== undefined) {
-				Ember.set(lastAndClauseOfList, 'lastOfList', false);
+				set(lastAndClauseOfList, 'lastOfList', false);
 			}
 
 			if (get(this, 'onlyAllowRegisteredIndexes') === false || field.options.available_indexes.length > 0) {
