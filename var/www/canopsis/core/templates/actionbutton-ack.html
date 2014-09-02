@@ -20,12 +20,12 @@
 	{{else}}
 		<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Acknowledge">
 			<button type="button" class="btn btn-default" {{action 'sendEvent' 'ack'}} >
-				{{glyphicon "ok"}} Acknowledge
+				{{glyphicon "ok"}} {{tr 'Acknowledge'}}
 			</button>
 		</a>
 		<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Cancel">
 			<button type="button" class="btn btn-default" {{action 'sendEvent' 'ackremove'}} >
-				{{glyphicon "ban-circle"}} Cancel
+				{{glyphicon "ban-circle"}} {{tr 'Cancel'}}
 			</button>
 		</a>
 	{{/if}}
