@@ -18,30 +18,16 @@
 */
 
 define([
-    'ember',
+    'ember-data',
     'app/application',
-    'app/lib/factories/form',
-    'app/forms/modelform/controller',
-    'utils'
-], function(Ember, Application, FormFactory, ModelFormController, cutils) {
-    var formOptions = {
-        subclass: ModelFormController
-    };
+    'app/serializers/application',
+    'app/mixins/embeddedrecordserializer'
+], function(DS, Application, ApplicationSerializer, EmbeddedRecordSerializerMixin) {
 
-    FormFactory('scheduleform', {
-        title: 'Configure Schedule',
+    Application.TaskSerializer = ApplicationSerializer.extend(
+        EmbeddedRecordSerializerMixin,
+        {}
+    );
 
-        actions: {
-            submit: function() {
-                console.log('SCHEDULEFORM:', this.formContext);
-                this._super(arguments);
-            }
-        },
-
-        partials: {
-            buttons: ["formbutton-previous", "formbutton-cancel", "formbutton-submit"]
-        },
-    }, formOptions);
-
-    return Application.ScheduleformController;
+    return Application.TaskSerializer;
 });

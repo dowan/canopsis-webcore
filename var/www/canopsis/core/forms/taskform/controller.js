@@ -40,12 +40,26 @@ define([
                 formParent.formContext.params = this.formContext;
                 console.log('formContext:', formParent.formContext);
 
-                cutils.forms.showNew('scheduleform', formParent.formContext, {
-                    formParent: this,
-                    title: 'Configure Schedule'
-                });
+                if(this.get('nextForm') === undefined) {
+                    var wizard = cutils.forms.showNew('scheduleform', formParent.formContext, {
+                        formParent: this,
+                        title: 'Configure Schedule'
+                    });
+
+                    this.set('nextForm', wizard);
+                }
+                else {
+                    var wizard = this.get('nextForm');
+                    console.log('nextForm', wizard);
+                    cutils.forms.showInstance(wizard);
+                }
 
                 console.groupEnd();
+            },
+
+            submit: function() {
+                this.set('formContext', this.get('formParent.formContext'));
+                this._super(arguments);
             }
         },
 

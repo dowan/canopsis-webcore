@@ -34,7 +34,15 @@ define([
             console.groupEnd();
 
             return value;
-        }.property('attr.field')
+        }.property('attr.field'),
+
+        init: function() {
+            this._super(arguments);
+
+            if(this.get('attr.value') === undefined) {
+                this.set('attr.value', this.get('fieldValue'));
+            }
+        }
     });
 
     return Application.ComponentSessionComponent;
