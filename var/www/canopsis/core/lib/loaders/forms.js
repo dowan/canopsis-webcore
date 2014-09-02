@@ -28,7 +28,6 @@ var formsTemplates = [
 	'taskform',
 	'scheduleform',
 	'confirmform',
-	'aboutform',
 	//'connectorform',
 	//"confirmform"
 ];

@@ -129,16 +129,6 @@ define([
 
 		actions: {
 
-			showAbout: function () {
-				formButtons = ["formbutton-cancel"];
-				var recordWizard = utils.forms.showNew('aboutform', {}, {
-					title: __('About') + ' Canopsis',
-					partials: {
-						buttons: formButtons
-					},
-				});
-			},
-
 			showUserProfile: function (){
 
 				var login = this.get('controllers.login');
