@@ -25,16 +25,8 @@ define([
 
 	var widget = WidgetFactory('hbox', {
 		partials: {
-			titlebarsbuttons : ["titlebarbutton-moveright", "titlebarbutton-moveleft"]
-		},
-
-		init: function() {
-			this._super();
-		},
-		section : function () {
-			return 'col-lg-3 col-md-6 col-xs-12';
-		}.property()
-
+			titlebarsbuttons : ["titlebarbutton-minimize", "titlebarbutton-moveup","titlebarbutton-movedown"]
+		}
 	}, {subclass: Application.CanvasController});
 
 	return widget;

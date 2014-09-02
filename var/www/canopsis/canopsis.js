@@ -28,6 +28,7 @@ require.config({
 		'ember-widgets': 'webcore-libs/ember-widgets/js/ember-widgets',
 		'bootstrap': 'webcore-libs/bootstrap/current/js/bootstrap.min',
 		'jqueryui': 'webcore-libs/dev/jquery-ui-1.10.3',
+		'icheck': 'webcore-libs/icheck/icheck',
 		'bootbox': 'webcore-libs/dev/bootbox.min',
 		'jquerydatatables': 'webcore-libs/dev/jquery.dataTables',
 		'bootstrapdatatables': 'webcore-libs/dev/dataTables.bootstrap',
