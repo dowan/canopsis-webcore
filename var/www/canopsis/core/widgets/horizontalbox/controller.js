@@ -17,12 +17,25 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
+define([
+	'app/application',
+	'app/lib/factories/widget',
+	'app/widgets/canvas/controller'
+], function(Application, WidgetFactory) {
 
-	var widgetsManager = {
-		all: Ember.A(),
-		byClass: Ember.Object.create()
-	};
+	var widget = WidgetFactory('horizontalbox', {
+		partials: {
+			titlebarsbuttons : ["titlebarbutton-moveright", "titlebarbutton-moveleft"]
+		},
 
-	return widgetsManager;
+		init: function() {
+			this._super();
+		},
+		section : function () {
+			return 'col-lg-3 col-md-6 col-xs-12';
+		}.property()
+
+	}, {subclass: Application.CanvasController});
+
+	return widget;
 });

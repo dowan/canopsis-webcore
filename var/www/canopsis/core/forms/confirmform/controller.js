@@ -18,24 +18,23 @@
 */
 
 define([
+	'ember',
 	'app/application',
-	'app/lib/factories/widget',
-	'app/widgets/canvas/controller'
-], function(Application, WidgetFactory) {
+	'app/lib/factories/form',
+], function(Ember, Application, FormFactory) {
 
-	var widget = WidgetFactory('hbox', {
-		partials: {
-			titlebarsbuttons : ["titlebarbutton-moveright", "titlebarbutton-moveleft"]
-		},
+	var formOptions = {};
+	FormFactory('confirmform', {
 
-		init: function() {
-			this._super();
-		},
-		section : function () {
-			return 'col-lg-3 col-md-6 col-xs-12';
-		}.property()
+		confirmation: false,
+		actions: {
+			submit: function() {
+				console.log('confirmed !');
+				this._super();
+			}
+		}
+	},
+	formOptions);
 
-	}, {subclass: Application.CanvasController});
-
-	return widget;
+	return Application.ConfirmformController;
 });

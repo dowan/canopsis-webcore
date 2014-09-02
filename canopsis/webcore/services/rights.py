@@ -35,6 +35,21 @@ logger = getLogger("rights")
 
 #########################################################################
 
+@get('/rights/:user_id')
+def get_user_rights(user_id):
+    rights = {
+        "1234.ack": {"checksum":15},
+        "1235.user_view": {"checksum":2},
+        "cancel.12123": {"checksum":8},
+        "12344.": {"checksum":12},
+        "0093.manage_user": {"checksum": 13,
+                             "context": "list_managers"},
+        "121-84.user_conf": {"checksum":0},
+        "cfilter.1296734": {"checksum":1}
+        }
+    return rights
+
+
 @put('/rights/:namespace/:crecord_id')
 def change_rights(namespace,crecord_id=None):
     account = get_account()

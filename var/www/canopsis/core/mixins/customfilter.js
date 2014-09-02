@@ -21,7 +21,7 @@ define([
 	'ember',
 	'ember-data',
 	'app/application',
-	'utils'
+	'utils',
 ], function(Ember, DS, Application, utils) {
 
 	/**
@@ -100,11 +100,26 @@ define([
 			},
 
 			removeFilter: function (filter) {
-				this.get('filters').removeObject(filter);
-				utils.notification.info(__('Custom filter removed'));
-				this.set('userParams.filters', this.get('filters'));
-				this.get('userConfiguration').saveUserConfiguration();
 
+				var title;
+				try {
+					title = filter.get('title');
+				} catch (err) {
+					title = filter.title;
+				}
+
+				var recordWizard = Canopsis.utils.forms.showNew('confirmform', {}, {
+					title: __('Are you sure to delete filter') + ' ' + title + '?'
+				});
+
+				var controller = this;
+
+				recordWizard.submit.then(function(form) {
+					controller.get('filters').removeObject(filter);
+					utils.notification.info(__('Custom filter removed'));
+					controller.set('userParams.filters', controller.get('filters'));
+					controller.get('userConfiguration').saveUserConfiguration();
+				});
 			},
 		}
 	});

@@ -55,6 +55,7 @@ define([
 					console.log("compiledFilterPattern", compiledFilterPattern);
 
 					list.set("default_filter", compiledFilterPattern);
+					list.set("rollbackable", true);
 					list.set("title", "Info on events : " + element.title);
 				});
 			}
@@ -122,10 +123,12 @@ define([
 		},
 
 		computeWeather: function (data) {
-			console.log(' + computing weathers');
+			console.group('computing weathers');
 			var worst_state = 0;
 			var sub_weathers = [];
 			for (var i=0; i<data.length; i++) {
+
+				console.log("subweather event", data);
 
 				//computing worst state for general weather display
 				if (data[i].state > worst_state) {
@@ -152,6 +155,9 @@ define([
 			console.log('weather content', {sub_weathers: sub_weathers, worst_state: worst_state});
 			this.set('sub_weather', sub_weathers);
 			this.set('worst_state', worst_state);
+
+			console.groupEnd();
+
 			this.trigger('refresh');
 		},
 

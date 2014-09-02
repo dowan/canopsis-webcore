@@ -1,17 +1,17 @@
 {{#if controller.loaded}}
 	<div id="contextMenu" class="dropdown clearfix">
 		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
-			<li class="submenudropdown text-muted">Action</li>
-			<li><a data-action="edit" class='context_ack'><i class="fa fa-check"></i> Acquitter</a></li>
-			<li><a class='context_ackticket'><i class="fa fa-ticket"></i> Déclarer un incident</a></li>
-			<li><a class='context_ackticketnum'><i class="fa fa-pencil"></i> Saisir un numéro de ticket</a></li>
-			<li><a class='context_cancel'><i class="fa fa-ban"></i> Annuler</a></li>
-			<li><a data-action="removeRecord" class='context_delete'><i class="fa fa-trash-o"></i> Supprimer</a></li>
-			<li class="submenudropdown text-muted"><hr/>Prise en main a distante</li>
+			<li class="submenudropdown text-muted">{{tr 'Action'}}</li>
+			<li><a data-action="edit" class='context_ack'><i class="fa fa-check"></i> {{tr 'Acknowledge'}}</a></li>
+			<li><a class='context_ackticket'><i class="fa fa-ticket"></i> {{tr 'Report an incident'}}</a></li>
+			<li><a class='context_ackticketnum'><i class="fa fa-pencil"></i> {{tr 'Enter a ticket number'}}</a></li>
+			<li><a class='context_cancel'><i class="fa fa-ban"></i> {{tr 'Cancel'}}</a></li>
+			<li><a data-action="removeRecord" class='context_delete'><i class="fa fa-trash-o"></i> {{tr 'Delete'}}</a></li>
+			<li class="submenudropdown text-muted"><hr/>{{tr 'Remote handling'}}</li>
 			<li><a class=''><i class="fa fa-caret-right"></i> Telnet</a></li>
 			<li><a class=''><i class="fa fa-caret-right"></i> ssh RDP</a></li>
 			<li><a class=''><i class="fa fa-caret-right"></i> VNC</a></li>
-			<li class="submenudropdown text-muted"><hr/>Divers</li>
+			<li class="submenudropdown text-muted"><hr/>{{tr 'Divers'}}</li>
 			<li><a class=''><i class="fa fa-caret-right"></i> Ping</a></li>
 		</ul>
 	</div>
@@ -26,7 +26,7 @@
 			{{/if}}
 		</div>
 		<div class="pull-right btn-group" data-toggle="btn-toggle">
-			<button class="btn btn-default" {{action setFilter controller.default_filter}}>All</button>
+			<button class="btn btn-default" {{action setFilter controller.default_filter}}>{{tr 'All'}}</button>
 			{{#each filter in controller.filters}}
 				<button type="button" class="btn btn-default editable" data-col="all" {{action setFilter filter.filter}}>{{filter.title}} 
 					<small class="badge bg-blue" {{action editFilter filter}}> <i class="fa fa-wrench"></i></small>
@@ -78,7 +78,7 @@
 						{{/group}}
 					{{/each}}
 					{{#if controller.item_actions}}
-						<th>Actions</th>
+						<th>{{tr 'Actions'}}</th>
 					{{/if}}
 				</tr>
 			</thead>
@@ -104,7 +104,7 @@
 	</div>
 	<div class="btn-toolbar canopsis-toolbar" role="toolbar">
 		<div class="pull-left">
-			Showing {{controller.paginationFirstItemIndex}} to {{controller.paginationLastItemIndex}} of {{controller.itemsTotal}} entries
+			{{tr 'Showing'}} {{controller.paginationFirstItemIndex}} {{tr 'to'}} {{controller.paginationLastItemIndex}} {{tr 'of'}} {{controller.itemsTotal}} {{tr 'entries'}}
 		</div>
 		<div style="clear:both"></div>
 		<div class="pull-left">
@@ -117,13 +117,13 @@
 		</div>
 		<div class="pull-right">
 			{{#group}}
-				<button type="button" class="btn btn-small btn-default" {{action prevPage}}>← Previous</button>
-					Page {{controller.currentPage}} / {{controller.totalPages}}
-				<button type="button" class="btn btn-small btn-default" {{action nextPage}}>Next → </button>
+				<button type="button" class="btn btn-small btn-default" {{action prevPage}}>← {{tr 'Previous'}}</button>
+					{{tr 'Page'}} {{controller.currentPage}} / {{controller.totalPages}}
+				<button type="button" class="btn btn-small btn-default" {{action nextPage}}>{{tr 'Next'}} → </button>
 			{{/group}}
 		</div>
 	</div>
 {{else}}
 	<i class="fa fa-refresh fa-spin"></i>
-	Loading ...
+	{{tr 'Loading'}} ...
 {{/if}}

@@ -181,7 +181,7 @@ define([
 				if(searchFilter !== "") {
 					console.log('filter', classItems);
 					classItems = classItems.filter(function(item, index, enumerable){
-						var doesItStartsWithSearchFilter = item.name.slice(0, searchFilter.length) == searchFilter;
+						var doesItStartsWithSearchFilter = item.name.indexOf(searchFilter) !== -1;
 						return doesItStartsWithSearchFilter;
 					});
 

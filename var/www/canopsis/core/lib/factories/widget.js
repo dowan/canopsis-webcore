@@ -20,7 +20,8 @@
 define([
 	'app/application',
 	'app/controller/widget',
-	"app/lib/widgetsmanager"
+	"app/lib/widgetsmanager",
+	"app/lib/loaders/schema-manager"
 ], function(Application, WidgetController, WidgetsManager) {
 
 	/**
@@ -34,7 +35,7 @@ define([
 	 * @author Gwenael Pluchon <info@gwenp.fr>
 	 */
 	function Widget(widgetName, classdict, options) {
-		console.log("new widget", arguments);
+		console.group("widget factory call", arguments);
 
 		var extendArguments = [];
 
@@ -60,15 +61,40 @@ define([
 
 		Application[widgetControllerName] = options.subclass.extend.apply(options.subclass, extendArguments);
 
-		WidgetsManager.all.push(Ember.Object.create({
+		console.log("widget", widgetControllerName, Application[widgetControllerName], Application);
+		var metadataDict = Application[widgetName.camelize().capitalize()].proto().metadata;
+
+		console.log("metadataDict", widgetName, metadataDict);
+
+		var registryEntry = Ember.Object.create({
 			name: widgetName,
 			EmberClass: Application[widgetControllerName]
-		}));
+		});
+
+		if(metadataDict) {
+			if(metadataDict.icon) {
+				registryEntry.set('icon', metadataDict.icon);
+			}
+			if(metadataDict.classes) {
+				var classes = metadataDict.classes;
+				for (var i = 0, l = classes.length; i < l; i++) {
+					var currentClass = classes[i];
+					if(!Ember.isArray(WidgetsManager.byClass.get(currentClass))) {
+						WidgetsManager.byClass.set(currentClass, Ember.A());
+					}
+
+					WidgetsManager.byClass.get(currentClass).pushObject(registryEntry)
+				}
+			}
+		}
+
+
+		WidgetsManager.all.pushObject(registryEntry);
 
 		return Application[widgetControllerName];
 	}
 
-	console.log("factory widget loaded");
+	console.groupEnd();
 
 	return Widget;
 });

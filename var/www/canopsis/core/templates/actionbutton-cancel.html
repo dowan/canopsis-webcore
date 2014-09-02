@@ -17,12 +17,12 @@
 	{{else}}
 		<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Undo remove">
 			<button type="button" class="btn btn-default" {{action 'sendEvent' 'uncancel'}} >
-				{{glyphicon "share-alt"}} Undo remove
+				{{glyphicon "share-alt"}} {{tr 'Undo remove'}}
 			</button>
 		</a>
 		<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Remove">
 			<button type="button" class="btn btn-default" {{action 'sendEvent' 'cancel'}} >
-				{{glyphicon "trash"}} Remove
+				{{glyphicon "trash"}} {{tr 'Remove'}}
 			</button>
 		</a>
 	{{/if}}

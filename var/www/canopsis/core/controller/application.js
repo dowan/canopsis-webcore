@@ -170,7 +170,7 @@ define([
 			editConfig: function() {
 				console.log('editConfig', formUtils);
 				var frontendConfig = get(this, 'frontendConfig');
-				var editForm = formUtils.showNew('modelform', frontendConfig, { title: "Edit settings", inspectedItemType: "frontend" });
+				var editForm = formUtils.showNew('modelform', frontendConfig, { title: __("Edit settings"), inspectedItemType: "frontend" });
 				editForm.submit.done(function() {
 					frontendConfig.save();
 				});
@@ -180,7 +180,7 @@ define([
 				console.log('editLdapConfig');
 
 				var ldapConfig = get(this, 'ldapConfig');
-				var editForm = formUtils.showNew('modelform', ldapConfig, { title: 'Edit LDAP configuration' });
+				var editForm = formUtils.showNew('modelform', ldapConfig, { title: __('Edit LDAP configuration') });
 				editForm.submit.done(function() {
 					ldapConfig.save();
 				});
@@ -190,7 +190,7 @@ define([
 				console.log('editCasConfig');
 
 				var casConfig = get(this, 'casConfig');
-				var editForm = formUtils.showNew('modelform', casConfig, { title: 'Edit CAS configuration' });
+				var editForm = formUtils.showNew('modelform', casConfig, { title: __('Edit CAS configuration') });
 				editForm.submit.done(function() {
 					casConfig.save();
 				});
@@ -213,8 +213,8 @@ define([
 
 				var containerwidgetId = utils.hash.generateId('container');
 
-				var containerwidget = Canopsis.utils.data.getStore().createRecord('vbox', {
-					xtype: 'vbox',
+				var containerwidget = Canopsis.utils.data.getStore().createRecord('verticalbox', {
+					xtype: 'verticalbox',
 					id: containerwidgetId
 				});
 
@@ -222,12 +222,12 @@ define([
 					id: utils.hash.generateId('userview'),
 					crecord_type: 'view',
 					containerwidget: containerwidgetId,
-					containerwidgetType: 'vbox'
+					containerwidgetType: 'verticalbox'
 				});
 
 				console.log('temp record', userview);
 
-				var recordWizard = Canopsis.utils.forms.showNew('modelform', userview, { title: "Add " + type });
+				var recordWizard = Canopsis.utils.forms.showNew('modelform', userview, { title: __("Add ") + type });
 
 				function transitionToView(userview) {
 					console.log('userview saved, switch to the newly created view');
@@ -253,7 +253,7 @@ define([
 				});
 				console.log('temp record', record);
 
-				var recordWizard = Canopsis.utils.forms.showNew('modelform', record, { title: "Add " + type });
+				var recordWizard = Canopsis.utils.forms.showNew('modelform', record, { title: __("Add ") + type });
 
 				recordWizard.submit.done(function() {
 					record.save();

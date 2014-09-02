@@ -106,11 +106,13 @@ define([
 						console.log('focusOutInput', currentClause);
 						this.set('content.value', inputValue);
 						this.set('content.finalized', true);
-						this.set('finalized', true);
 						this.set('content.filling', false);
 
-						if (this.get('editionMode') === false && this.get('onlyAllowRegisteredIndexes') === false) {
-							this.get('parent').send('addAndClause');
+						var wasFinalized = this.get('finalized');
+						this.set('finalized', true);
+
+						if (this.get('onlyAllowRegisteredIndexes') === false) {
+							this.get('parent').send('addAndClause', wasFinalized);
 						}
 
 						this.set('editionMode', false);
@@ -127,7 +129,7 @@ define([
 
 			console.log("keyIsValid", inputValue, currentClauseIndex, currentClause, andClausePart);
 
-			if (this.get('onlyAllowRegisteredIndexes') === true) {
+			if (this.get('onlyAllowRegisteredIndexes') === true && andClausePart.options.available_indexes !== undefined) {
 				//detect if inputValue is in available_indexes
 				console.group('onlyAllowRegisteredIndexes check');
 				for (var i = 0; i < andClausePart.options.available_indexes.length; i++) {
