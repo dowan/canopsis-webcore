@@ -64,40 +64,45 @@ define([
 		},
 
 		findItems: function() {
-			var me = this;
+			try {
+				var me = this;
 
-			var store = this.get('store');
+				var store = this.get('store');
 
-			var query = {
-				start: this.get('paginationMixinFindOptions.start'),
-				limit: this.get('paginationMixinFindOptions.limit')
-			};
+				var query = {
+					start: this.get('paginationMixinFindOptions.start'),
+					limit: this.get('paginationMixinFindOptions.limit')
+				};
 
-			if (this.get('model') !== undefined) {
-				if(this.get('modelfilter') !== null) {
-					query.filter = this.get('modelfilter');
+				if (this.get('model') !== undefined) {
+					if(this.get('modelfilter') !== null) {
+						query.filter = this.get('modelfilter');
+					}
+
+					store.findQuery(this.get('model'), query).then(function(result) {
+						me.set('widgetDataMetas', result.meta);
+						me.set('items', result.get('content'));
+
+						me.extractItems(result);
+					});
 				}
+				else {
+					var items = this.get('data').slice(
+						query.start,
+						query.start + query.limit
+					);
 
-				store.findQuery(this.get('model'), query).then(function(result) {
-					me.set('widgetDataMetas', result.meta);
-					me.set('items', result.get('content'));
+					this.set('widgetDataMetas', {total: this.get('data').length});
+					this.set('items', items);
 
-					me.extractItems(result);
-				});
-			}
-			else {
-				var items = this.get('data').slice(
-					query.start,
-					query.start + query.limit
-				);
-
-				this.set('widgetDataMetas', {total: this.get('data').length});
-				this.set('items', items);
-
-				me.extractItems({
-					meta: this.get('widgetDataMetas'),
-					content: this.get('items')
-				});
+					me.extractItems({
+						meta: this.get('widgetDataMetas'),
+						content: this.get('items')
+					});
+				}
+			} catch(err) {
+				console.log('extractItems empty due to error 500');
+				this.extractItems([]);
 			}
 		},
 
