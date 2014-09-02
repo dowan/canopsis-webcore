@@ -61,6 +61,7 @@ define([
 
 		Application[widgetControllerName] = options.subclass.extend.apply(options.subclass, extendArguments);
 
+		console.log("widget", widgetControllerName, Application[widgetControllerName], Application);
 		var metadataDict = Application[widgetName.camelize().capitalize()].proto().metadata;
 
 		console.log("metadataDict", widgetName, metadataDict);
