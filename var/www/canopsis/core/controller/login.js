@@ -43,6 +43,8 @@ define([
 				url: '/account/me',
 				data: {limit: 1000},
 				success: function(data) {
+					console.log("got user", data);
+
 					var account = data.data[0];
 
 					controller.set('username', account.user);
@@ -55,18 +57,11 @@ define([
 					}
 
 					controller.set('groups', groups);
+					controller.set('rights', account.rights);
 					controller.set('mail', account.mail);
 					controller.set('authkey', account.authkey);
 
-					if (utils.session === undefined) {
-						utils.session = {};
-					}
-
-					utils.session.username = controller.get('username');
-					utils.session.group = controller.get('group');
-					utils.session.groups = controller.get('groups');
-					utils.session.mail = controller.get('mail');
-					utils.session.authkey = controller.get('authkey');
+					utils.session = controller;
 				},
 				async: false
 			});
