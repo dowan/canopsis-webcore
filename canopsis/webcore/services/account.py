@@ -70,7 +70,12 @@ def account_get_me():
 
     if record:
         rights = {
-            "1234.ack": {"checksum":15},
+            "aclconfig": {"checksum": 1},
+            "authsystems": {"checksum": 1},
+            "enginesconfig": {"checksum": 1},
+            "pluginsconfig": {"checksum": 1},
+            "uisettings": {"checksum": 1},
+            "ack": {"checksum":15},
             "1235.user_view": {"checksum":2},
             "cancel.12123": {"checksum":8},
             "12344.": {"checksum":12},
