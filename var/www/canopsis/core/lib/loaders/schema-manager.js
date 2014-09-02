@@ -178,7 +178,10 @@ define(schemasDeps, function(DS, Application, utils) {
 	function generateEmberModelFromSchema(schema, schemaName, parentModelClass, parentModelClassName) {
 		console.group("generate model", schemaName, schema);
 
-		var modelDict = { "categories": schema.categories };
+		var modelDict = {
+			"categories": schema.categories,
+			"metadata": schema.metadata
+		};
 		//TODO check if relationship options are ok
 		for (var name in schema.properties) {
 

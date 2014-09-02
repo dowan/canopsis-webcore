@@ -20,7 +20,8 @@
 define([
 	'app/application',
 	'app/controller/widget',
-	"app/lib/widgetsmanager"
+	"app/lib/widgetsmanager",
+	"app/lib/loaders/schema-manager"
 ], function(Application, WidgetController, WidgetsManager) {
 
 	/**
@@ -34,7 +35,7 @@ define([
 	 * @author Gwenael Pluchon <info@gwenp.fr>
 	 */
 	function Widget(widgetName, classdict, options) {
-		console.log("new widget", arguments);
+		console.group("widget factory call", arguments);
 
 		var extendArguments = [];
 
@@ -60,15 +61,26 @@ define([
 
 		Application[widgetControllerName] = options.subclass.extend.apply(options.subclass, extendArguments);
 
-		WidgetsManager.all.push(Ember.Object.create({
+		var metadataDict = Application[widgetName.camelize().capitalize()].proto().metadata;
+
+		console.log("metadataDict", widgetName, metadataDict);
+
+		var registryDict = {
 			name: widgetName,
 			EmberClass: Application[widgetControllerName]
-		}));
+		};
+
+		if(metadataDict && metadataDict.icon) {
+			registryDict.icon = metadataDict.icon;
+		}
+
+
+		WidgetsManager.all.push(Ember.Object.create(registryDict));
 
 		return Application[widgetControllerName];
 	}
 
-	console.log("factory widget loaded");
+	console.groupEnd();
 
 	return Widget;
 });
