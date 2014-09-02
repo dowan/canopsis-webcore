@@ -255,11 +255,12 @@ define(schemasDeps, function(DS, Application, utils) {
 						modelDict[keys] = DS.attr(Application.allModels[parentModelClassName][keys]._meta.type, val);
 					}
 
-				} else if (modelDict[keys] !== undefined && keys !== "categories") {
+				} else if (modelDict[keys] !== undefined && keys !== "categories" && keys !== "metadata") {
 
 					var oldkeys = Application.allModels[parentModelClassName][keys];
 					var newkeys = modelDict[keys];
 
+					console.log("oldkeys", oldkeys, "newkeys", newkeys);
 					if (oldkeys !== undefined) {
 
 						var oldkeysAttribute = oldkeys._meta;
@@ -275,10 +276,17 @@ define(schemasDeps, function(DS, Application, utils) {
 
 						console.log("modelDict keys !== undefined : ", parentModelClassName, Application.allModels[parentModelClassName], keys);
 
-						var newOptions = newkeysAttribute.options;
+						var newOptions;
+						if(newkeysAttribute !== undefined) {
+							newOptions = newkeysAttribute.options;
+							newOptions = merge(oldOptions, newOptions, schemaName);
 
-						newOptions = merge(oldOptions, newOptions, schemaName);
-						modelDict[keys] = DS.attr(newkeysAttribute.type, newOptions);
+							modelDict[keys] = DS.attr(newkeysAttribute.type, newOptions);
+						} else {
+							newOptions = oldOptions;
+							modelDict[keys] = DS.attr(oldkeysAttribute.type, newOptions);
+						}
+
 					}
 				}
 			}

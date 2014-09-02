@@ -23,7 +23,7 @@ define([
 	'app/widgets/canvas/controller'
 ], function(Application, WidgetFactory) {
 
-	var widget = WidgetFactory('hbox', {
+	var widget = WidgetFactory('horizontalbox', {
 		partials: {
 			titlebarsbuttons : ["titlebarbutton-moveright", "titlebarbutton-moveleft"]
 		},

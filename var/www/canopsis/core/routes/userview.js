@@ -26,7 +26,20 @@ define([
 
 	Application.UserviewRoute = AuthenticatedRoute.extend({
 		needs: ['application'],
-
+	   actions: {
+	        error: function(error, transition){
+	            if (error.status === 0) {
+	            } else if (error.status == 403) {
+	                //go to some default route
+	            } else if (error.status == 401) {
+	                //handle 401
+	            } else if (error.status == 404) {
+	                this.transitionTo('/userview/view.404');
+	            } else {
+	                showErrorDialog(error);
+	            }
+	        }
+	    },
 		setupController: function(controller, model) {
 			console.log('UserviewRoute setupController', model, controller);
 			set(controller, 'controllers.application.currentViewId', get(model, 'id'));
