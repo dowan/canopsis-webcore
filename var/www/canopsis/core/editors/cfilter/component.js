@@ -28,13 +28,14 @@ define([
 	Application.ComponentCfilterComponent = Ember.Component.extend({
 		init:function() {
 			var cfilter_serialized = this.get('cfilter_serialized');
+
+			set(this, 'onlyAllowRegisteredIndexes', get(Canopsis.conf.frontendConfig, 'cfilter_allow_only_optimized_filters'));
+
 			if(get(this, 'content') !== null && get(this, 'content') !== undefined) {
 				this.set('cfilter_serialized', get(this, 'content'));
 			} else if(cfilter_serialized === undefined || cfilter_serialized === null) {
 				this.set('cfilter_serialized', '{}');
 			}
-
-			set(this, 'onlyAllowRegisteredIndexes', get(Canopsis.conf.frontendConfig, 'cfilter_allow_only_optimized_filters'));
 
 			this._super.apply(this, arguments);
 		},

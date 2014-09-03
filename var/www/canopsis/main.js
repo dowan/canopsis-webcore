@@ -13,8 +13,6 @@ define([
 	'app/lib/loaders/components',
 	'canopsis/canopsisConfiguration',
 	'app/routes/authenticated',
-	'app/routes/event',
-	'app/routes/services',
 	'app/adapters/application',
 	'app/adapters/ack',
 	'app/adapters/event',

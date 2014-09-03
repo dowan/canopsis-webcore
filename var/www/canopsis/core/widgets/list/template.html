@@ -124,6 +124,11 @@
 		</div>
 	</div>
 {{else}}
-	<i class="fa fa-refresh fa-spin"></i>
-	{{tr 'Loading'}} ...
+	{{#if controller.dataError}}
+		<i class="fa fa-warning"></i>
+		{{tr 'Error while loading data'}} ({{controller.dataError.statusText}})
+	{{else}}
+		<i class="fa fa-refresh fa-spin"></i>
+		{{tr 'Loading'}} ...
+	{{/if}}
 {{/if}}
