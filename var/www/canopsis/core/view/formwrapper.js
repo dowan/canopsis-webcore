@@ -31,6 +31,13 @@ define([
 
 		hooksRegistered: false,
 
+		didInsertElement: function () {
+			this.$("#formwrapper").draggable({
+				handle: ".modal-header",
+				axis: "x"
+			});
+		},
+
 		controllerObserver: function() {
 			console.log('controller changed');
 			this.controller.widgetwrapperView = this;
