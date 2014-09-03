@@ -28,8 +28,12 @@ define(['ember' , "app/application"], function(Ember , Application) {
 
 	Ember.Handlebars.helper('logo', function(controller) {
 
-		var  field = controller.attr.field;
-		var  value = controller.record.content._data[field];
+		var field = controller.attr.field;
+		var value = controller.attr.value;
+
+		if(value === undefined) {
+			value = controller.record.content._data[field];
+		}
 		var  logoPath = Canopsis.Application.images[value];
 
 		if(logoPath !== undefined) {

@@ -115,62 +115,73 @@ define([
 						for (var j = 0; j < category.keys.length; j++) {
 							var key = category.keys[j];
 
-							if (typeof key === "object") {
-								key = key.field;
-							}
-
-							if (key !== undefined && modelAttributes.get(key) === undefined) {
-								console.error("An attribute that does not exists seems to be referenced in schema categories", key, referenceModel);
-							}
-
-							//TODO refactor the 20 lines below in an utility function "getEditorForAttr"
-							//find appropriate editor for the model property
-							var editorName;
-							var attr = modelAttributes.get(key);
-							console.log("attr", attr, key);
-
-							//defines an option object explicitely here for next instruction
-							if (attr.options === undefined) {
-								attr.options = {};
-							}
-
-							//hide field if not filter specified or if key match one filter element.
-							if (filters.length === 0 || $.inArray(key, filters) !== -1) {
-								Ember.set(attr, 'options.hiddenInForm', false);
+							if(key === "separator") {
+								createdCategory.keys[j] = Ember.Object.create({
+									type:'string',
+									model: Ember.Object.create({
+										options: Ember.Object.create({
+											role:"separator"
+										})
+									}),
+									options: Ember.Object.create()
+								});
 							} else {
-								Ember.set(attr, 'options.hiddenInForm', true);
+								if (typeof key === "object") {
+									key = key.field;
+								}
+
+								if (key !== undefined && modelAttributes.get(key) === undefined) {
+									console.error("An attribute that does not exists seems to be referenced in schema categories", key, referenceModel);
+								}
+
+								//TODO refactor the 20 lines below in an utility function "getEditorForAttr"
+								//find appropriate editor for the model property
+								var editorName;
+								var attr = modelAttributes.get(key);
+
+								//defines an option object explicitely here for next instruction
+								if (attr.options === undefined) {
+									attr.options = {};
+								}
+
+								//hide field if not filter specified or if key match one filter element.
+								if (filters.length === 0 || $.inArray(key, filters) !== -1) {
+									Ember.set(attr, 'options.hiddenInForm', false);
+								} else {
+									Ember.set(attr, 'options.hiddenInForm', true);
+								}
+
+								if (attr.options !== undefined && attr.options.role !== undefined) {
+									editorName = "editor-" + attr.options.role;
+								} else {
+									editorName = "editor-" + attr.type;
+								}
+
+								if (Ember.TEMPLATES[editorName] === undefined) {
+									editorName = "editor-defaultpropertyeditor";
+								}
+
+								//enable field label override.
+								var label = key;
+								if (override_labels[key]) {
+									label = override_labels[key];
+								}
+
+								createdCategory.keys[j] = {
+									field: label,
+									model: modelAttributes.get(key),
+									editor: editorName
+								};
+								/*
+								if (me.get('inspectedDataItem') !== undefined) {
+									createdCategory.keys[j].value = me.get('inspectedDataItem').get(key);
+								} else {
+									createdCategory.keys[j].value = undefined;
+								}*/
+								createdCategory.keys[j].value = (!this.isOnCreate)? inspectedDataItem.get(key) : attr.options["default"];
+
+								console.log("category key ", category.keys[j].value);
 							}
-
-							if (attr.options !== undefined && attr.options.role !== undefined) {
-								editorName = "editor-" + attr.options.role;
-							} else {
-								editorName = "editor-" + attr.type;
-							}
-
-							if (Ember.TEMPLATES[editorName] === undefined) {
-								editorName = "editor-defaultpropertyeditor";
-							}
-
-							//enable field label override.
-							var label = key;
-							if (override_labels[key]) {
-								label = override_labels[key];
-							}
-
-							createdCategory.keys[j] = {
-								field: label,
-								model: modelAttributes.get(key),
-								editor: editorName
-							};
-							/*
-							if (me.get('inspectedDataItem') !== undefined) {
-								createdCategory.keys[j].value = me.get('inspectedDataItem').get(key);
-							} else {
-								createdCategory.keys[j].value = undefined;
-							}*/
-							createdCategory.keys[j].value = (!this.isOnCreate)? inspectedDataItem.get(key) : attr.options["default"];
-
-							console.log("category key ", category.keys[j].value);
 						}
 
 						this.categories.push(createdCategory);

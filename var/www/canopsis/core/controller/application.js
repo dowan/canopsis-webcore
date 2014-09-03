@@ -178,7 +178,7 @@ define([
 
 			editTicketJob: function() {
 				console.log('editTicketJob');
-			}
+			},
 
 			editLdapConfig: function() {
 				console.log('editLdapConfig');
