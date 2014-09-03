@@ -35,7 +35,8 @@ define(['ember'], function(Ember) {
 		if(time !== 0) {
 			return new Ember.Handlebars.SafeString(__("Il y a ") + time + " " + __("jours"));
 		}
-			return new Ember.Handlebars.SafeString(__("Aujourd'hui"));
+
+		return new Ember.Handlebars.SafeString(__("Today"));
    	}
    	else{
    		return "";

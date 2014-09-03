@@ -20,8 +20,9 @@
 define([
 	'jquery',
 	'ember',
-	'app/application'
-], function($, Ember, Application) {
+	'app/application',
+	'app/lib/indexesmanager'
+], function($, Ember, Application, indexesManager) {
 	var get = Ember.get,
 		set = Ember.set;
 
@@ -47,6 +48,51 @@ define([
 
 		cfilter_serialized : Ember.computed.alias('content'),
 		viewTabColumns: [{ name:"component", title:"component"},{ name:"resource", title:"resource"}],
+
+		indexes : indexesManager,
+		selectedIndexName : 'event',
+
+		selectedIndexChanged: function () {
+			var selectedIndexName = get(this, 'selectedIndexName');
+			var indexes = get(this, 'indexes');
+
+			for (var i = 0, l = indexes.all.length; i < l; i++) {
+				var currentIndex = indexes.all[i];
+				if(currentIndex.name === selectedIndexName) {
+					set(this, 'indexesTree', currentIndex.tree);
+				}
+			}
+		}.observes('selectedIndexName'),
+
+		indexesTree: {
+			'component': {
+				'_metas': {
+					'name': "Component"
+				},
+				'resource': {
+					'_metas': {
+						'name': "Resource",
+						'final':true
+					}
+				}
+			},
+			'connector': {
+				'_metas': {
+					'name': "connector"
+				},
+				'component': {
+					'_metas': {
+						'name': "Component"
+					},
+					'resource': {
+						'_metas': {
+							'name': "Resource",
+							'final':true
+						}
+					}
+				}
+			}
+		},
 
 		clauses: function() {
 			var cfilter_serialized = this.get('cfilter_serialized');
@@ -113,36 +159,6 @@ define([
 		}.property(),
 
 		classNames: ["cfilter"],
-
-		indexesTree: {
-			'component': {
-				'_metas': {
-					'name': "Component"
-				},
-				'resource': {
-					'_metas': {
-						'name': "Resource",
-						'final':true
-					}
-				}
-			},
-			'connector': {
-				'_metas': {
-					'name': "connector"
-				},
-				'component': {
-					'_metas': {
-						'name': "Component"
-					},
-					'resource': {
-						'_metas': {
-							'name': "Resource",
-							'final':true
-						}
-					}
-				}
-			}
-		},
 
 		operators: [
 			{
@@ -460,6 +476,9 @@ define([
 		},
 
 		actions: {
+			selectIndexByName: function (name) {
+				set(this, 'selectedIndexName', name);
+			},
 			unlockIndexes: function() {
 				set(this, 'onlyAllowRegisteredIndexes', false);
 			},
@@ -475,7 +494,7 @@ define([
 				if (currentClauseIndex >= 0) {
 					var currentClause = clauses.objectAt(currentClauseIndex);
 					var useIndexes = get(this, 'onlyAllowRegisteredIndexes');
-					
+
 					//console.log(' + current clause was bidule', wasFinalized, 'use index', useIndexes);
 					//if (useIndexes || !wasFinalized) {
 						this.pushEmptyClause(currentClause);
