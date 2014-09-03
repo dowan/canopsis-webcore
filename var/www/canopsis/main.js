@@ -6,6 +6,7 @@ define([
 	'app/lib/wrappersmanager',
 	'app/lib/formsmanager',
 	'app/lib/widgetsmanager',
+	'app/lib/indexesmanager',
 	'app/lib/inflections',
 	'app/lib/loaders/factories',
 	'app/lib/loaders/helpers',
@@ -43,6 +44,7 @@ define([
 	    wrappersManager,
 	    formsManager,
 	    widgetsManager,
+	    indexesManager,
 	    inflectionsManager,
 	    factories,
 	    helpers,
@@ -57,6 +59,7 @@ define([
 	Canopsis.utils = utils;
 	Canopsis.wrappers = wrappersManager;
 	Canopsis.widgets = widgetsManager;
+	Canopsis.indexes = indexesManager;
 	Canopsis.inflections = inflectionsManager;
 	Canopsis.forms = formsManager;
 	//Canopsis.AllModels = [];
