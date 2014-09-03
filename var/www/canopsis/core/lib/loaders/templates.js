@@ -38,6 +38,7 @@ var templates = [
     { name: 'actionbutton-edit', classes: ["action"], icon : "pencil", label : "Edit"},
     { name: 'actionbutton-ack', classes: ["action", "toolbar"], icon : "ok", label : "Ack"},
     { name: 'actionbutton-cancel', classes: ["action", "toolbar"], icon : "ban-circle", label : "Cancel"},
+    { name: 'actionbutton-changestate', classes: ["action", "toolbar"],icon : "retweet", label : "Change criticity" },
     { name: 'actionbutton-remove', classes: ["action"], icon : "trash", label : "Remove"},
     { name: 'actionbutton-show', classes: ["action"], icon : "eye-open",label : "Show" },
     { name: 'actionbutton-info', classes: ["action"], icon : "info-sign",label : "Info" },
