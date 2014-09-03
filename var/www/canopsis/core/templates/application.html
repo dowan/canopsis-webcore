@@ -171,10 +171,26 @@
 							{{/each}}
 						{{/if}}
 						{{#if Canopsis.utils.session.rights.uisettings.checksum}}
-							<li>
-								<a {{action 'editConfig'}}>
-									<i class="fa fa-magic"></i> <span>UI Settings</span><small class="badge pull-right bg-green">new</small>
+							<li class="treeview">
+								<a href="#">
+									<i class="fa fa-cogs"></i>
+									<span>Settings</span>
+									<i class="fa fa-angle-left pull-right"></i>
 								</a>
+								<ul class="treeview-menu">
+									<li>
+										<a {{action 'editConfig'}}>
+											<i class="fa fa-angle-double-right"></i>
+											User Interface
+										</a>
+									</li>
+									<li>
+										<a {{action 'editTicketJob'}}>
+											<i class="fa fa-angle-double-right"></i>
+											Ticket
+										</a>
+									</li>
+								</ul>
 							</li>
 						{{/if}}
 					</ul>

@@ -60,7 +60,10 @@ define([
 
                 var params = this.get('formContext.params');
 
-                if(!params) {
+                if(params) {
+                    params = params._data;
+                }
+                else {
                     params = {
                         id: cutils.hash.generateId('task')
                     };
