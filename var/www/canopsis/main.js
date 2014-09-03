@@ -53,6 +53,7 @@ define([
 
 	window.Canopsis = {};
 
+	Canopsis.tooltips = {};
 	Canopsis.utils = utils;
 	Canopsis.wrappers = wrappersManager;
 	Canopsis.widgets = widgetsManager;

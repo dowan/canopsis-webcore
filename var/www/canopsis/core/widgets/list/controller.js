@@ -270,8 +270,6 @@ define([
 				}).catch(function (promiseProxy) {
 					console.warn("Catching error", promiseProxy);
 					set(me, 'dataError', promiseProxy);
-				}).fail(function () {
-					set(me, 'dataError', true);
 				});
 			},
 

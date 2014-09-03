@@ -32,8 +32,10 @@ define(['ember'], function(Ember) {
 			console.log("test");
 		});
 		var icon = '<span class=glyphicon glyphicon-time ></span>';
-		return new Ember.Handlebars.SafeString(__("Il y a ") + time + " " +
-						       (time > 1 ? __("jours") : __("jour")));
+		if(time !== 0) {
+			return new Ember.Handlebars.SafeString(__("Il y a ") + time + " " + __("jours"));
+		}
+			return new Ember.Handlebars.SafeString(__("Aujourd'hui"));
    	}
    	else{
    		return "";
