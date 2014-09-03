@@ -25,15 +25,27 @@
 	}
 </style>
 <fieldset>
+	<div class="btn-group pull-right">
+
 	{{#if onlyAllowRegisteredIndexes}}
-		<button class="btn btn-default pull-right" {{action unlockIndexes}}>
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			<i class="fa fa-link"></i> {{selectedIndexName}} <span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+			{{#each index in indexes.all}}
+				<li><a {{action selectIndexByName index.name}}>{{index.name}}</a></li>
+			{{/each}}
+		</ul>
+
+		<button class="btn btn-default pull-right tooltiptable hint--rounded hint--top" {{bind-attr data-hint=Canopsis.tooltips.unlockIndexes}} {{action unlockIndexes}}>
 			<i class="fa fa-lock"></i>
 		</button>
 	{{else}}
-		<button class="btn btn-default pull-right" {{action lockIndexes}}>
+		<button class="btn btn-default pull-right tooltiptable hint--rounded hint--top" {{bind-attr data-hint=Canopsis.tooltips.lockIndexes}} {{action lockIndexes}}>
 			<i class="fa fa-unlock"></i>
 		</button>
 	{{/if}}
+	</div>
 
 	<ul class="nav nav-tabs" role="tablist">
 		<li class="active">
@@ -95,7 +107,7 @@
 		</div>
 
 		<div class="tab-pane" {{bind-attr id=cfilterViewId}}>
-			{{!component-table model="event" modelfilter=cfilter_serialized columns=viewTabColumns targetObject=this}}
+			{{component-table model="event" modelfilter=cfilter_serialized columns=viewTabColumns targetObject=this}}
 		</div>
 	</div>
 </fieldset>

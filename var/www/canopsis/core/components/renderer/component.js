@@ -21,6 +21,7 @@ define([
 	'ember',
 	'app/application'
 ], function(Ember, Application) {
+	var get = Ember.get;
 
 	Application.ComponentRendererComponent = Ember.Component.extend({
 		tagName: 'span',
@@ -30,8 +31,13 @@ define([
 		}.property('attr.field', 'record'),
 
 		rendererType: function() {
+
 			var type = this.get('attr.type');
 			var role = this.get('attr.options.role');
+			if(get(this, 'attr.model.options.role')) {
+				role = get(this, 'attr.model.options.role');
+			}
+
 			var rendererName;
 			if (role) {
 				rendererName = 'renderer-' + role;

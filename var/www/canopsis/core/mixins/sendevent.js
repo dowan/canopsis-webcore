@@ -179,6 +179,15 @@ define([
 				}
 			}
 
+			if (event_type === this.TYPE_CHANGESTATE) {
+				for(i=0; i<crecords.length; i++) {
+					if (crecords[i].get('state')) {
+						selectedRecords.push(crecords[i]);
+					}
+				}
+			}
+
+
 			return selectedRecords;
 		},
 
