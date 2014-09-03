@@ -6,6 +6,7 @@ define([
 	'app/lib/wrappersmanager',
 	'app/lib/formsmanager',
 	'app/lib/widgetsmanager',
+	'app/lib/indexesmanager',
 	'app/lib/inflections',
 	'app/lib/loaders/factories',
 	'app/lib/loaders/helpers',
@@ -26,8 +27,8 @@ define([
 	'colorpicker',
 	'gridster',
 	'timepicker',
+	'icheck',
 	'app/lib/wrappers/console',
-	'app/lib/wrappers/icheck',
 	'app/lib/loaders/editors',
 	'app/lib/loaders/renderers',
 	'app/lib/loaders/widgets',
@@ -43,6 +44,7 @@ define([
 	    wrappersManager,
 	    formsManager,
 	    widgetsManager,
+	    indexesManager,
 	    inflectionsManager,
 	    factories,
 	    helpers,
@@ -53,9 +55,11 @@ define([
 
 	window.Canopsis = {};
 
+	Canopsis.tooltips = {};
 	Canopsis.utils = utils;
 	Canopsis.wrappers = wrappersManager;
 	Canopsis.widgets = widgetsManager;
+	Canopsis.indexes = indexesManager;
 	Canopsis.inflections = inflectionsManager;
 	Canopsis.forms = formsManager;
 	//Canopsis.AllModels = [];

@@ -31,6 +31,8 @@ var editorsTemplates = [
 	{ name: 'color' },
 	{ name: 'array', js: 'w'},
 	{ name: 'mail' },
+	{ name: 'textarea' },
+	{ name: 'separator' },
 	{ name: 'richtext', js: 'w' },
 	{ name: 'timestamp', js: 'v' },
 	{ name: 'rights', js: 'v' },

@@ -253,3 +253,28 @@ table.dataTable>thead>tr>th {
 .flotchart {
 	min-height: 150px;
 }
+
+#formwrapper{
+	margin-left: auto;
+	margin-right: auto;
+	width:300%;
+	margin-left: -100%;
+	padding-left: 100%;
+}
+.modal
+{
+	right: auto;
+}
+.modal-header {
+	cursor: move;
+}
+.modal-dialog {
+	margin-right: 0;
+	margin-left: 0;
+}
+
+div.noRecordsFound {
+	border: 1px solid #ccc;
+	padding: 12px;
+	margin-bottom: 6px;
+}

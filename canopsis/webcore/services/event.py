@@ -156,7 +156,8 @@ def send_event(event, host):
 		tags = event.get('tags', None),
 		ticket = event.get('ticket', None),
 		ref_rk = event.get('ref_rk', None),
-		author = event.get('author', None)
+		author = event.get('author', None),
+		keep_state = event.get('keep_state', None)
 	)
 
 	logger.debug('Event crafted {}'.format(forged_event))
