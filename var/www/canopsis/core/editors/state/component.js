@@ -48,7 +48,7 @@ define([
 
 		actions: {
 			setState:function (state) {
-				this.set('content', state);
+				this.set('content', parseInt(state));
 			}
 		},
 

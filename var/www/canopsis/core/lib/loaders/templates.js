@@ -19,7 +19,6 @@
 
 var templates = [
     { name: 'application' },
-    { name: 'index' },
     { name: 'item' },
     { name: 'notifications' },
     { name: 'containerwidget' },
@@ -36,17 +35,10 @@ var templates = [
     { name: 'widgetslot-default' },
     { name: 'widgetslot-grey' },
 
-    { name: 'connectorbutton-start', classes: ["action" , "toolbar"], icon : "play" , label : "Start"},
-    { name: 'connectorbutton-stop', classes: ["action" , "toolbar"], icon : "off" , label : "Stop"},
-    { name: 'connectorbutton-edit', classes: ["action" , "toolbar"], icon : "pencil" , label : "Edit-Conf"},
-    { name: 'connectorbutton-getconf', classes: ["action" , "toolbar"], icon : "download" , label : "GET-Conf"},
-    { name: 'connectorbutton-setconf', classes: ["action" , "toolbar"], icon : "upload" , label : "SET-Conf"},
-    { name: 'connectorbutton-getstate', classes: ["action" , "toolbar"], icon : "transfert" , label : "GET-state"},
-
-
     { name: 'actionbutton-edit', classes: ["action"], icon : "pencil", label : "Edit"},
     { name: 'actionbutton-ack', classes: ["action", "toolbar"], icon : "ok", label : "Ack"},
     { name: 'actionbutton-cancel', classes: ["action", "toolbar"], icon : "ban-circle", label : "Cancel"},
+    { name: 'actionbutton-changestate', classes: ["action", "toolbar"],icon : "retweet", label : "Change criticity" },
     { name: 'actionbutton-remove', classes: ["action"], icon : "trash", label : "Remove"},
     { name: 'actionbutton-show', classes: ["action"], icon : "eye-open",label : "Show" },
     { name: 'actionbutton-info', classes: ["action"], icon : "info-sign",label : "Info" },
@@ -78,32 +70,32 @@ var deps = ['ember'];
 var depsSize = deps.length;
 
 for (var i = 0; i < templates.length; i++) {
-	deps.push('text!app/templates/' + templates[i].name + '.html');
+    deps.push('text!app/templates/' + templates[i].name + '.html');
 }
 
 define(deps, function(Ember) {
-	var templatesLoaded = Ember.Object.create();
-	templatesLoaded.all = [];
-	templatesLoaded.byClass = Ember.Object.create();
+    templatesLoaded = Ember.Object.create();
+    templatesLoaded.all = [];
+    templatesLoaded.byClass = Ember.Object.create();
 
-	for (var i = depsSize; i < arguments.length; i++) {
-		var currentTemplate = templates[i - depsSize];
-		Ember.TEMPLATES[currentTemplate.name] = Ember.Handlebars.compile(arguments[i]);
+    for (var i = depsSize; i < arguments.length; i++) {
+        var currentTemplate = templates[i - depsSize];
+        Ember.TEMPLATES[currentTemplate.name] = Ember.Handlebars.compile(arguments[i]);
 
-		if (currentTemplate.classes !== undefined) {
-			for (var j = 0; j < currentTemplate.classes.length; j++) {
-				var currentClass = currentTemplate.classes[j];
+        if (currentTemplate.classes !== undefined) {
+            for (var j = 0; j < currentTemplate.classes.length; j++) {
+                var currentClass = currentTemplate.classes[j];
 
-				if (templatesLoaded.byClass[currentClass] === undefined) {
-					templatesLoaded.byClass[currentClass] = [];
-				}
+                if (templatesLoaded.byClass[currentClass] === undefined) {
+                    templatesLoaded.byClass[currentClass] = [];
+                }
 
-				templatesLoaded.byClass[currentClass].push(currentTemplate);
-			}
-		}
+                templatesLoaded.byClass[currentClass].push(currentTemplate);
+            }
+        }
 
-	    templatesLoaded.all.push(currentTemplate);
-	}
+        templatesLoaded.all.push(currentTemplate);
+    }
 
-	return templatesLoaded;
+    return templatesLoaded;
 });

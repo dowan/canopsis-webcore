@@ -9,7 +9,7 @@
 			<nav class="navbar navbar-static-top" role="navigation">
 				<!-- Sidebar toggle button-->
 				<a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button" id="togglenavigationtop">
-					<span class="sr-only">Toggle navigation</span>
+					<span class="sr-only">{{tr 'Toggle navigation'}}</span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
@@ -42,7 +42,7 @@
 								<span class="label label-success">9</span>
 							</a>
 							<ul class="dropdown-menu">
-								<li class="header">You have 9 tasks</li>
+								<li class="header">{{tr 'You have'}} 9 {{tr 'tasks'}}</li>
 								<li>
 									<!-- inner menu: contains the actual data -->
 									<ul class="menu">
@@ -62,7 +62,7 @@
 									</ul>
 								</li>
 								<li class="footer">
-									<a href="#">View all tasks</a>
+									<a href="#">{{tr 'View all tasks'}}</a>
 								</li>
 							</ul>
 						</li>
@@ -81,8 +81,8 @@
 								<!-- Menu Footer-->
 								<li class="user-footer">
 									<div class="pull-left">
-										<a {{action 'showUserProfile'}} href="#" id="userprofil" class="btn btn-default btn-flat">Profile</a>
-										<a {{action 'showView' 'view.about'}} href="#" class="btn btn-default btn-flat">About</a>
+										<a {{action 'showUserProfile'}} href="#" id="userprofil" class="btn btn-default btn-flat">{{tr 'Profile'}}</a>
+										<a {{action 'showView' 'view.about'}} href="#" class="btn btn-default btn-flat">{{tr 'About'}}</a>
 									</div>
 									<div class="pull-right">
 										<a href="#" {{action 'logout'}} class="btn btn-default btn-flat"><i class="fa fa-power-off"></i></a>
@@ -111,20 +111,20 @@
 						</li>
 						<li class="active">
 							<a href="#">
-								<i class="fa fa-desktop"></i> <span>Dashboard</span>
+								<i class="fa fa-desktop"></i> <span>{{tr 'Dashboard'}}</span>
 							</a>
 						</li>
 						{{#if Canopsis.utils.session.rights.aclconfig.checksum}}
 							<li class="treeview">
 								<a href="#">
 									<i class="fa fa-group"></i>
-									<span>Profiles</span>
+									<span>{{tr 'Profiles'}}</span>
 									<i class="fa fa-angle-left pull-right"></i>
 								</a>
 								<ul class="treeview-menu">
-									<li><a {{action 'showView' 'view.accounts'}}><i class="fa fa-angle-double-right"></i> Users</a></li>
-									<li><a {{action 'showView' 'view.permissions'}}><i class="fa fa-angle-double-right"></i> Permissions</a></li>
-									<li><a {{action 'showView' 'view.rights'}}><i class="fa fa-angle-double-right"></i> Rights</a></li>
+									<li><a {{action 'showView' 'view.accounts'}}><i class="fa fa-angle-double-right"></i> {{tr 'Users'}}</a></li>
+									<li><a {{action 'showView' 'view.permissions'}}><i class="fa fa-angle-double-right"></i> {{tr 'Permissions'}}</a></li>
+									<li><a {{action 'showView' 'view.rights'}}><i class="fa fa-angle-double-right"></i> {{tr 'Rights'}}</a></li>
 								</ul>
 							</li>
 						{{/if}}
@@ -132,7 +132,7 @@
 							<li class="treeview">
 								<a href="#">
 									<i class="fa fa-key"></i>
-									<span>Authentification systems</span>
+									<span>{{tr 'Authentification systems'}}</span>
 									<i class="fa fa-angle-left pull-right"></i>
 								</a>
 								<ul class="treeview-menu">
@@ -145,14 +145,14 @@
 							<li class="treeview">
 								<a href="#">
 									<i class="fa fa-cogs"></i>
-									<span>Engines</span>
+									<span>{{tr 'Engines'}}</span>
 									<i class="fa fa-angle-left pull-right"></i>
 								</a>
 								<ul class="treeview-menu">
-									<li><a {{action 'showView' 'view.event'}}><i class="fa fa-angle-double-right"></i> Events</a></li>
-									<li><a {{action 'showView' 'view.selectors'}}><i class="fa fa-angle-double-right"></i> Selectors</a></li>
-									<li><a {{action 'showView' 'view.jobs'}}><i class="fa fa-angle-double-right"></i> Scheduled Jobs</a></li>
-									<li><a {{action 'showView' 'view.filters'}}><i class="fa fa-angle-double-right"></i> Event Filter</a></li>
+									<li><a {{action 'showView' 'view.event'}}><i class="fa fa-angle-double-right"></i> {{tr 'Events'}}</a></li>
+									<li><a {{action 'showView' 'view.selectors'}}><i class="fa fa-angle-double-right"></i> {{tr 'Selectors'}}</a></li>
+									<li><a {{action 'showView' 'view.jobs'}}><i class="fa fa-angle-double-right"></i> {{tr 'Scheduled Jobs'}}</a></li>
+									<li><a {{action 'showView' 'view.filters'}}><i class="fa fa-angle-double-right"></i> {{tr 'Event Filter'}}</a></li>
 								</ul>
 							</li>
 						{{/if}}
@@ -171,10 +171,26 @@
 							{{/each}}
 						{{/if}}
 						{{#if Canopsis.utils.session.rights.uisettings.checksum}}
-							<li>
-								<a {{action 'editConfig'}}>
-									<i class="fa fa-magic"></i> <span>UI Settings</span><small class="badge pull-right bg-green">new</small>
+							<li class="treeview">
+								<a href="#">
+									<i class="fa fa-cogs"></i>
+									<span>{{tr 'Settings'}}</span>
+									<i class="fa fa-angle-left pull-right"></i>
 								</a>
+								<ul class="treeview-menu">
+									<li>
+										<a {{action 'editConfig'}}>
+											<i class="fa fa-angle-double-right"></i>
+											{{tr 'User Interface'}}
+										</a>
+									</li>
+									<li>
+										<a {{action 'editTicketJob'}}>
+											<i class="fa fa-angle-double-right"></i>
+											{{tr 'Ticket'}}
+										</a>
+									</li>
+								</ul>
 							</li>
 						{{/if}}
 					</ul>

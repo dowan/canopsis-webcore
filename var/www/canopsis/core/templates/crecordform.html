@@ -6,9 +6,9 @@
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				<h4 class="modal-title">
 					{{#if this.editedRecordController}}
-						Edit
+						{{tr 'Edit'}}
 					{{else}}
-						New
+						{{tr 'New'}}
 					{{/if}}
 					{{crecord_type}}</h4>
 			</div>
@@ -45,8 +45,8 @@
 				</p>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" {{action "submit"}}>Save changes</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">{{tr 'Close'}}</button>
+				<button type="button" class="btn btn-primary" {{action "submit"}}>{{tr 'Save changes'}}</button>
 			</div>
 		</div>
 	</div>
