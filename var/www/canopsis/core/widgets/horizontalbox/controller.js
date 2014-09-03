@@ -1,4 +1,4 @@
-	/*
+/*
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
 #
 # This file is part of Canopsis.
@@ -19,13 +19,23 @@
 
 define([
 	'app/application',
-	'app/routes/crecords'
-], function(Application, CrecordsRoute) {
+	'app/lib/factories/widget',
+	'app/widgets/canvas/controller'
+], function(Application, WidgetFactory) {
 
-	Application.UserviewsRoute = CrecordsRoute.extend({
-		redirect: function () {
-			console.warn("transitionTo #/userview/view.userviews.");
-			this.transitionTo('/userview/view.userviews');
-		}
-	});
+	var widget = WidgetFactory('horizontalbox', {
+		partials: {
+			titlebarsbuttons : ["titlebarbutton-moveright", "titlebarbutton-moveleft"]
+		},
+
+		init: function() {
+			this._super();
+		},
+		section : function () {
+			return 'col-lg-3 col-md-6 col-xs-12';
+		}.property()
+
+	}, {subclass: Application.CanvasController});
+
+	return widget;
 });

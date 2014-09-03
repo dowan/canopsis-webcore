@@ -82,7 +82,7 @@
 								<li class="user-footer">
 									<div class="pull-left">
 										<a {{action 'showUserProfile'}} href="#" id="userprofil" class="btn btn-default btn-flat">Profile</a>
-										<a {{action 'showAbout'}} href="#" class="btn btn-default btn-flat">About</a>
+										<a {{action 'showView' 'view.about'}} href="#" class="btn btn-default btn-flat">About</a>
 									</div>
 									<div class="pull-right">
 										<a href="#" {{action 'logout'}} class="btn btn-default btn-flat"><i class="fa fa-power-off"></i></a>
@@ -114,60 +114,85 @@
 								<i class="fa fa-desktop"></i> <span>Dashboard</span>
 							</a>
 						</li>
-						<li class="treeview">
-							<a href="#">
-								<i class="fa fa-group"></i>
-								<span>Profiles</span>
-								<i class="fa fa-angle-left pull-right"></i>
-							</a>
-							<ul class="treeview-menu">
-								<li><a {{action 'showView' 'view.accounts'}}><i class="fa fa-angle-double-right"></i> Users</a></li>
-								<li><a {{action 'showView' 'view.permissions'}}><i class="fa fa-angle-double-right"></i> Permissions</a></li>
-								<li><a {{action 'showView' 'view.rights'}}><i class="fa fa-angle-double-right"></i> Rights</a></li>
-							</ul>
-						</li>
-						<li class="treeview">
-							<a href="#">
-								<i class="fa fa-key"></i>
-								<span>Authentification systems</span>
-								<i class="fa fa-angle-left pull-right"></i>
-							</a>
-							<ul class="treeview-menu">
-								<li><a {{action 'editLdapConfig'}}><i class="fa fa-angle-double-right"></i> LDAP</a></li>
-								<li><a {{action 'editCasConfig'}}><i class="fa fa-angle-double-right"></i> CAS</a></li>
-							</ul>
-						</li>
-
-						<li class="treeview">
-							<a href="#">
-								<i class="fa fa-cogs"></i>
-								<span>Engines</span>
-								<i class="fa fa-angle-left pull-right"></i>
-							</a>
-							<ul class="treeview-menu">
-								<li><a {{action 'showView' 'view.event'}}><i class="fa fa-angle-double-right"></i> Events</a></li>
-								<li><a {{action 'showView' 'view.selectors'}}><i class="fa fa-angle-double-right"></i> Selectors</a></li>
-								<li><a {{action 'showView' 'view.jobs'}}><i class="fa fa-angle-double-right"></i> Scheduled Jobs</a></li>
-								<li><a {{action 'showView' 'view.filters'}}><i class="fa fa-angle-double-right"></i> Event Filter</a></li>
-							</ul>
-						</li>
+						{{#if Canopsis.utils.session.rights.aclconfig.checksum}}
+							<li class="treeview">
+								<a href="#">
+									<i class="fa fa-group"></i>
+									<span>Profiles</span>
+									<i class="fa fa-angle-left pull-right"></i>
+								</a>
+								<ul class="treeview-menu">
+									<li><a {{action 'showView' 'view.accounts'}}><i class="fa fa-angle-double-right"></i> Users</a></li>
+									<li><a {{action 'showView' 'view.permissions'}}><i class="fa fa-angle-double-right"></i> Permissions</a></li>
+									<li><a {{action 'showView' 'view.rights'}}><i class="fa fa-angle-double-right"></i> Rights</a></li>
+								</ul>
+							</li>
+						{{/if}}
+						{{#if Canopsis.utils.session.rights.authsystems.checksum}}
+							<li class="treeview">
+								<a href="#">
+									<i class="fa fa-key"></i>
+									<span>Authentification systems</span>
+									<i class="fa fa-angle-left pull-right"></i>
+								</a>
+								<ul class="treeview-menu">
+									<li><a {{action 'editLdapConfig'}}><i class="fa fa-angle-double-right"></i> LDAP</a></li>
+									<li><a {{action 'editCasConfig'}}><i class="fa fa-angle-double-right"></i> CAS</a></li>
+								</ul>
+							</li>
+						{{/if}}
+						{{#if Canopsis.utils.session.rights.enginesconfig.checksum}}
+							<li class="treeview">
+								<a href="#">
+									<i class="fa fa-cogs"></i>
+									<span>Engines</span>
+									<i class="fa fa-angle-left pull-right"></i>
+								</a>
+								<ul class="treeview-menu">
+									<li><a {{action 'showView' 'view.event'}}><i class="fa fa-angle-double-right"></i> Events</a></li>
+									<li><a {{action 'showView' 'view.selectors'}}><i class="fa fa-angle-double-right"></i> Selectors</a></li>
+									<li><a {{action 'showView' 'view.jobs'}}><i class="fa fa-angle-double-right"></i> Scheduled Jobs</a></li>
+									<li><a {{action 'showView' 'view.filters'}}><i class="fa fa-angle-double-right"></i> Event Filter</a></li>
+								</ul>
+							</li>
+						{{/if}}
 						<li>
 							<a href="#">
 								<i class="fa fa-road"></i> <span>Paths and ports</span>
 							</a>
 						</li>
-						{{#each plugin in controller.plugins}}
-							<li>
-								<a {{action plugin.action plugin.param}}>
-									<i {{bind-attr class=plugin.icon}}></i> <span>{{plugin.label}}</span>
+						{{#if Canopsis.utils.session.rights.pluginsconfig.checksum}}
+							{{#each plugin in controller.plugins}}
+								<li>
+									<a {{action plugin.action plugin.param}}>
+										<i {{bind-attr class=plugin.icon}}></i> <span>{{plugin.label}}</span>
+									</a>
+								</li>
+							{{/each}}
+						{{/if}}
+						{{#if Canopsis.utils.session.rights.uisettings.checksum}}
+							<li class="treeview">
+								<a href="#">
+									<i class="fa fa-cogs"></i>
+									<span>Settings</span>
+									<i class="fa fa-angle-left pull-right"></i>
 								</a>
+								<ul class="treeview-menu">
+									<li>
+										<a {{action 'editConfig'}}>
+											<i class="fa fa-angle-double-right"></i>
+											User Interface
+										</a>
+									</li>
+									<li>
+										<a {{action 'editTicketJob'}}>
+											<i class="fa fa-angle-double-right"></i>
+											Ticket
+										</a>
+									</li>
+								</ul>
 							</li>
-						{{/each}}
-						<li>
-							<a {{action 'editConfig'}}>
-								<i class="fa fa-magic"></i> <span>UI Settings</span><small class="badge pull-right bg-green">new</small>
-							</a>
-						</li>
+						{{/if}}
 					</ul>
 				</section>
 				<!-- /.sidebar -->

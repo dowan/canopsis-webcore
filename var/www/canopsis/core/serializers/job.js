@@ -18,24 +18,17 @@
 */
 
 define([
-	'app/application',
-	'app/lib/factories/widget',
-	'app/widgets/canvas/controller'
-], function(Application, WidgetFactory) {
+    'ember-data',
+    'app/application',
+    'app/serializers/application',
+    'app/mixins/embeddedrecordserializer',
+    'app/serializers/task'
+], function(DS, Application, ApplicationSerializer, EmbeddedRecordSerializerMixin) {
 
-	var widget = WidgetFactory('hbox', {
-		partials: {
-			titlebarsbuttons : ["titlebarbutton-moveright", "titlebarbutton-moveleft"]
-		},
+    Application.JobSerializer = ApplicationSerializer.extend(
+        EmbeddedRecordSerializerMixin,
+        {}
+    );
 
-		init: function() {
-			this._super();
-		},
-		section : function () {
-			return 'col-lg-3 col-md-6 col-xs-12';
-		}.property()
-
-	}, {subclass: Application.CanvasController});
-
-	return widget;
+    return Application.JobSerializer;
 });

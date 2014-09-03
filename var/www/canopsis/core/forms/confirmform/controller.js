@@ -18,19 +18,23 @@
 */
 
 define([
+	'ember',
 	'app/application',
-	'app/routes/crecords'
-], function(Application, CrecordsRoute) {
+	'app/lib/factories/form',
+], function(Ember, Application, FormFactory) {
 
-	Application.EventRoute = CrecordsRoute.extend({
-		setupController: function(controller, model) {
-			controller.set('content', model);
-			controller.set('toolitems', controller.toolbar);
-		},
+	var formOptions = {};
+	FormFactory('confirmform', {
 
-		model: function() {
-			return this.store.findAll('event');
+		confirmation: false,
+		actions: {
+			submit: function() {
+				console.log('confirmed !');
+				this._super();
+			}
 		}
-	});
-	return Application.EventRoute;
+	},
+	formOptions);
+
+	return Application.ConfirmformController;
 });

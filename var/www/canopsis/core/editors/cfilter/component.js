@@ -28,11 +28,14 @@ define([
 	Application.ComponentCfilterComponent = Ember.Component.extend({
 		init:function() {
 			var cfilter_serialized = this.get('cfilter_serialized');
-			if(cfilter_serialized === undefined || cfilter_serialized === null) {
-				this.set('cfilter_serialized', '{}');
-			}
 
 			set(this, 'onlyAllowRegisteredIndexes', get(Canopsis.conf.frontendConfig, 'cfilter_allow_only_optimized_filters'));
+
+			if(get(this, 'content') !== null && get(this, 'content') !== undefined) {
+				this.set('cfilter_serialized', get(this, 'content'));
+			} else if(cfilter_serialized === undefined || cfilter_serialized === null) {
+				this.set('cfilter_serialized', '{}');
+			}
 
 			this._super.apply(this, arguments);
 		},
@@ -68,6 +71,12 @@ define([
 						var clauseOperator = Ember.keys(currentMfilterAnd[clauseKey])[0];
 						console.log(currentMfilterAnd[clauseKey][clauseOperator]);
 						var clauseValue = currentMfilterAnd[clauseKey][clauseOperator];
+
+						//deserialize in array value to a string with comma separator
+						if ((clauseOperator === 'not in' || clauseOperator === 'in') && typeof clauseValue === 'object') {
+							clauseValue = clauseValue.join(',');
+						}
+
 
 						var keys = this.getIndexesForNewAndClause(currentOr);
 
@@ -150,6 +159,14 @@ define([
 				value: '$gt'
 			},
 			{
+				label: "in",
+				value: '$in'
+			},
+			{
+				label: "not in",
+				value: '$nin'
+			},
+			{
 				label: "regex",
 				value: '$regex'
 			},
@@ -180,24 +197,39 @@ define([
 				};
 
 				if (clause.and[0] !== undefined) {
-					Ember.set(clause.and[0], 'isFirst', true);
+					set(clause.and[0], 'isFirst', true);
 				}
 
 				for (var j = 0, l_and = clause.and.length; j < l_and; j++) {
 					var field = clause.and[j];
 
 					if(j === 0) {
-						Ember.set(field, 'isFirst', true);
+						set(field, 'isFirst', true);
 					} else {
-						Ember.set(field, 'isFirst', false);
+						set(field, 'isFirst', false);
 					}
 
-					Ember.set(field, 'finalized', true);
+					set(field, 'finalized', true);
 
 					if (j === clause.and.length -1) {
-						Ember.set(clause.and[j], 'isLast', true);
+						set(clause.and[j], 'isLast', true);
 					} else {
-						Ember.set(clause.and[j], 'isLast', false);
+						set(clause.and[j], 'isLast', false);
+					}
+
+					if (clause.and[j].operator === 'in' || clause.and[j].operator === 'not in') {
+						console.log('Operator in detected');
+						try {
+							clause.and[j].value = clause.and[j].value.split(',');
+						} catch (err) {
+							console.warn('Malformed list for in operator');
+							clause.and[j].value = [clause.and[j].value];
+						}
+					} else {
+						//manage numbers inputs and cast them to number if numeric.
+						if (typeof clause.and[j].value === 'string' && $.isNumeric(clause.and[j].value)) {
+							clause.and[j].value = parseFloat(clause.and[j].value);
+						}
 					}
 
 					if (field.key !== undefined) {
@@ -214,6 +246,7 @@ define([
 
 						subfilter.$and.push(item);
 					}
+
 				}
 
 				if (subfilter.$and.length > 0) {
@@ -301,6 +334,7 @@ define([
 			}
 
 			var mfilter = this.serializeCfilter();
+			console.log('generated mfilter', mfilter);
 			this.set('cfilter_serialized', mfilter);
 		},
 
@@ -412,7 +446,7 @@ define([
 			console.log('lastAndClauseOfList', lastAndClauseOfList);
 
 			if (lastAndClauseOfList !== undefined) {
-				Ember.set(lastAndClauseOfList, 'lastOfList', false);
+				set(lastAndClauseOfList, 'lastOfList', false);
 			}
 
 			if (get(this, 'onlyAllowRegisteredIndexes') === false || field.options.available_indexes.length > 0) {
@@ -423,7 +457,13 @@ define([
 		},
 
 		actions: {
-			addAndClause: function() {
+			unlockIndexes: function() {
+				set(this, 'onlyAllowRegisteredIndexes', false);
+			},
+			lockIndexes: function() {
+				set(this, 'onlyAllowRegisteredIndexes', true);
+			},
+			addAndClause: function(wasFinalized) {
 				console.log('Add AND clause');
 
 				var clauses = this.get('clauses');
@@ -431,8 +471,12 @@ define([
 
 				if (currentClauseIndex >= 0) {
 					var currentClause = clauses.objectAt(currentClauseIndex);
-
-					this.pushEmptyClause(currentClause);
+					var useIndexes = get(this, 'onlyAllowRegisteredIndexes');
+					
+					//console.log(' + current clause was bidule', wasFinalized, 'use index', useIndexes);
+					//if (useIndexes || !wasFinalized) {
+						this.pushEmptyClause(currentClause);
+					//}
 				}
 
 				console.log('clauses addAndClause', clauses);

@@ -18,19 +18,16 @@
 */
 
 define([
-	'ember',
-	'app/application'
-], function(Ember, Application) {
-	Application.ServicesRoute = Ember.Route.extend({
-		setupController: function(controller, model) {
-			controller.set('content', model);
-			controller.set('toolitems', controller.toolbar);
-		},
+	'app/application',
+	'app/lib/factories/widget',
+	'app/widgets/canvas/controller'
+], function(Application, WidgetFactory) {
 
-  		model: function() {
-    		return this.store.findAll('service');
-    	}
-    });
+	var widget = WidgetFactory('verticalbox', {
+		partials: {
+			titlebarsbuttons : ["titlebarbutton-minimize", "titlebarbutton-moveup","titlebarbutton-movedown"]
+		}
+	}, {subclass: Application.CanvasController});
 
-    return Application.ServicesRoute;
+	return widget;
 });

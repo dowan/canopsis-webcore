@@ -17,10 +17,11 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
+define(['ember'], function(Ember) {
 
 	var widgetsManager = {
-		all: []
+		all: Ember.A(),
+		byClass: Ember.Object.create()
 	};
 
 	return widgetsManager;

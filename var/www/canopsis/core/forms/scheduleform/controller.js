@@ -31,6 +31,18 @@ define([
     FormFactory('scheduleform', {
         title: 'Configure Schedule',
 
+        actions: {
+            submit: function() {
+                console.group('submitSchedule');
+
+                console.log('context:', this.formContext);
+
+                console.groupEnd();
+
+                this._super(arguments);
+            }
+        },
+
         partials: {
             buttons: ["formbutton-previous", "formbutton-cancel", "formbutton-submit"]
         },

@@ -18,15 +18,28 @@
 */
 
 define([
-	'app/application',
-	'app/routes/authenticated'
-], function(Application, AuthenticatedRoute) {
+    'ember-data',
+    'app/application',
+    'app/serializers/application',
+    'app/mixins/embeddedrecordserializer',
+    'utils'
+], function(DS, Application, ApplicationSerializer, EmbeddedRecordSerializerMixin, cutils) {
 
-	Application.CrecordsRoute = AuthenticatedRoute.extend({
-		actions: {
+    Application.TaskSerializer = ApplicationSerializer.extend(
+        EmbeddedRecordSerializerMixin,
+        {}
+    );
 
-		}
-	});
+    for(var sname in cutils.schemaList) {
+        if(sname.indexOf('Task.') === 0) {
+            var xtype = sname.slice(5);
+            var modelname = xtype[0].toUpperCase() + xtype.slice(1);
 
-	return Application.CrecordsRoute;
+            var serializerName = modelname + 'Serializer';
+
+            Application[serializerName] = Application.TaskSerializer;
+        }
+    }
+
+    return Application.TaskSerializer;
 });

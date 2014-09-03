@@ -27,6 +27,7 @@ var formsTemplates = [
 	'jobform',
 	'taskform',
 	'scheduleform',
+	'confirmform',
 	//'connectorform',
 	//"confirmform"
 ];

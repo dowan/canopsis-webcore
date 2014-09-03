@@ -25,15 +25,15 @@ define(['ember'], function(Ember) {
 		var actuel = new Date().getTime();
 		timestamp = record.timeStampState || timestamp;
 		var a = new Date(timestamp * 1000);
-		var time = diffDate(a, actuel, "d");
+		var time = diffDate(a, actuel, "d") - 1;
 
 		var newObject = Ember.Object.create({value : time , field : "time" });
 	  	newObject.addObserver('timeStampState',record, function(sender, key , value) {
 			console.log("test");
 		});
 		var icon = '<span class=glyphicon glyphicon-time ></span>';
-		return new Ember.Handlebars.SafeString("\nIl y a " + time +
-						       (time > 1 ? " jours" : " jour"));
+		return new Ember.Handlebars.SafeString(__("Il y a ") + time + " " +
+						       (time > 1 ? __("jours") : __("jour")));
    	}
    	else{
    		return "";
