@@ -22,25 +22,25 @@ define([
     'app/application',
     'app/serializers/application',
     'app/mixins/embeddedrecordserializer',
-    'utils',
-    'app/lib/loaders/schema-manager'
+    'utils'
 ], function(DS, Application, ApplicationSerializer, EmbeddedRecordSerializerMixin, cutils) {
 
-    Application.TaskSerializer = ApplicationSerializer.extend(
+    Application.CserviceSerializer = ApplicationSerializer.extend(
         EmbeddedRecordSerializerMixin,
         {}
     );
 
     for(var sname in cutils.schemaList) {
-        if(sname.indexOf('Task.') === 0) {
-            var xtype = sname.slice(5);
+        if(sname.indexOf('Crecord.cservice.') === 0) {
+            var xtype = sname.slice('Crecord.cservice.'.length);
             var modelname = xtype[0].toUpperCase() + xtype.slice(1);
 
             var serializerName = modelname + 'Serializer';
+            console.log('Add serializer:', serializerName);
 
-            Application[serializerName] = Application.TaskSerializer;
+            Application[serializerName] = Application.CserviceSerializer.extend({});
         }
     }
 
-    return Application.TaskSerializer;
+    return Application.CserviceSerializer;
 });

@@ -30,6 +30,7 @@ define([
 
     FormFactory('taskform', {
         title: 'Configure Job settings',
+        scheduled: true,
         jobRecord: undefined,
 
         actions: {
@@ -65,7 +66,18 @@ define([
         },
 
         partials: {
-            buttons: ["formbutton-cancel", "formbutton-next"]
+            buttons: function() {
+                var btns = ["formbutton-cancel"];
+
+                if(this.get('scheduled')) {
+                    btns.push("formbutton-next");
+                }
+                else {
+                    btns.push("formbutton-submit");
+                }
+
+                return btns;
+            }.property('scheduled')
         },
     }, formOptions);
 

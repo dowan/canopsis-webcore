@@ -18,29 +18,35 @@
 */
 
 define([
-    'ember-data',
-    'app/application',
-    'app/serializers/application',
-    'app/mixins/embeddedrecordserializer',
-    'utils',
-    'app/lib/loaders/schema-manager'
-], function(DS, Application, ApplicationSerializer, EmbeddedRecordSerializerMixin, cutils) {
+        'app/application',
+        'app/adapters/application',
+        'utils',
+        'app/lib/loaders/schema-manager'
+], function(Application, ApplicationAdapter, cutils) {
 
-    Application.TaskSerializer = ApplicationSerializer.extend(
-        EmbeddedRecordSerializerMixin,
-        {}
-    );
+    console.group('CserviceAdapter');
+
+    Application.CserviceAdapter = ApplicationAdapter.extend({
+        buildURL: function(type, id) {
+            type = 'cservice';
+
+            return this._super(type, id);
+        }
+    });
 
     for(var sname in cutils.schemaList) {
-        if(sname.indexOf('Task.') === 0) {
-            var xtype = sname.slice(5);
+        if(sname.indexOf('Crecord.cservice.') === 0) {
+            var xtype = sname.slice('Crecord.cservice.'.length);
             var modelname = xtype[0].toUpperCase() + xtype.slice(1);
 
-            var serializerName = modelname + 'Serializer';
+            var adapterName = modelname + 'Adapter';
+            console.log('Add adapter:', adapterName);
 
-            Application[serializerName] = Application.TaskSerializer;
+            Application[adapterName] = Application.CserviceAdapter.extend({});
         }
     }
 
-    return Application.TaskSerializer;
+    console.groupEnd();
+
+    return Application.CserviceAdapter;
 });

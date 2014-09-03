@@ -26,6 +26,7 @@ define([
 
     FormFactory('jobform', {
         title: 'Select task type',
+        scheduled: true,
 
         availableJobs: function() {
             var job_types = [];
@@ -60,7 +61,7 @@ define([
 
                 var params = this.get('formContext.params');
 
-                if(params) {
+                if(params && params.xtype === xtype) {
                     params = params._data;
                 }
                 else {
@@ -87,7 +88,8 @@ define([
 
                 console.log('Show new form with context:', context);
                 var recordWizard = cutils.forms.showNew('taskform', context, {
-                    formParent: this
+                    formParent: this,
+                    scheduled: this.get('scheduled')
                 });
 
                 console.groupEnd();
