@@ -111,9 +111,7 @@ define([
 						var wasFinalized = this.get('finalized');
 						this.set('finalized', true);
 
-						if (this.get('onlyAllowRegisteredIndexes') === false) {
-							this.get('parent').send('addAndClause', wasFinalized);
-						}
+						this.get('parent').send('addAndClause', wasFinalized);
 
 						this.set('editionMode', false);
 					}

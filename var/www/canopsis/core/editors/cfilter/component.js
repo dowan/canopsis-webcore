@@ -73,7 +73,7 @@ define([
 						var clauseValue = currentMfilterAnd[clauseKey][clauseOperator];
 
 						//deserialize in array value to a string with comma separator
-						if (clauseOperator === 'in' && typeof clauseValue === 'object') {
+						if ((clauseOperator === 'not in' || clauseOperator === 'in') && typeof clauseValue === 'object') {
 							clauseValue = clauseValue.join(',');
 						}
 
@@ -163,6 +163,10 @@ define([
 				value: '$in'
 			},
 			{
+				label: "not in",
+				value: '$nin'
+			},
+			{
 				label: "regex",
 				value: '$regex'
 			},
@@ -213,7 +217,7 @@ define([
 						set(clause.and[j], 'isLast', false);
 					}
 
-					if (clause.and[j].operator === 'in') {
+					if (clause.and[j].operator === 'in' || clause.and[j].operator === 'not in') {
 						console.log('Operator in detected');
 						try {
 							clause.and[j].value = clause.and[j].value.split(',');
@@ -467,10 +471,12 @@ define([
 
 				if (currentClauseIndex >= 0) {
 					var currentClause = clauses.objectAt(currentClauseIndex);
-					console.log(' + current clause was bidule', wasFinalized);
-					if (!wasFinalized) {
+					var useIndexes = get(this, 'onlyAllowRegisteredIndexes');
+					
+					//console.log(' + current clause was bidule', wasFinalized, 'use index', useIndexes);
+					//if (useIndexes || !wasFinalized) {
 						this.pushEmptyClause(currentClause);
-					}
+					//}
 				}
 
 				console.log('clauses addAndClause', clauses);
