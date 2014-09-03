@@ -52,7 +52,6 @@ define([
 	    components,
 	    canopsisConfiguration) {
 
-
 	window.Canopsis = {};
 
 	Canopsis.tooltips = {};
