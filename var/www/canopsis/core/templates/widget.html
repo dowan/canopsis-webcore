@@ -1,11 +1,11 @@
 {{#if view.errorMessages}}
 	<div class="panel panel-danger">
-		<div class="panel-heading">{{glyphicon 'warning-sign'}} An error occured !</div>
+		<div class="panel-heading">{{glyphicon 'warning-sign'}} {{tr 'An error occured'}} !</div>
 		<div class="panel-body">
 			<p>
-				An error occured while Canopsis was trying to display this widget.
+				{{tr 'An error occured while Canopsis was trying to display this widget'}}.
 
-				Here's more information about the problem : <br/>
+				{{tr 'Here\'s more information about the problem'}} : <br/>
 
 				<ul>
 					{{#each view.errorMessages}}
@@ -13,11 +13,11 @@
 					{{/each}}
 				</ul>
 
-				These informations might help too : <br/>
+				{{tr 'These informations might help too'}} : <br/>
 
 				<ul>
 					<li>
-						Parent : <br/>
+						{{tr 'Parent'}} : <br/>
 						<ul>
 							<li><b>title:</b> {{title}}</li>
 							<li><b>xtype:</b> {{xtype}}</li>
@@ -29,10 +29,10 @@
 	</div>
 {{else}}
 	<div class="panel panel-warning">
-		<div class="panel-heading">{{glyphicon 'warning-sign'}} Empty widget</div>
+		<div class="panel-heading">{{glyphicon 'warning-sign'}} {{tr 'Empty widget'}}</div>
 		<div class="panel-body">
 			<p>
-				This is an empty widget and might indicate a problem in the widget's xtype. Please check the view document.
+				{{tr 'This is an empty widget and might indicate a problem in the widget\'s xtype'}}. {{tr 'Please check the view document'}}.
 				<ul>
 					<li><b>title:</b> {{title}}</li>
 					<li><b>xtype:</b> {{xtype}}</li>

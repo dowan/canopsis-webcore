@@ -6,17 +6,17 @@
 		<a role="menuitem" tabindex="-1" href="#" {{action 'toggleEditMode'}}>
 			<i class="fa fa-pencil"></i>
 			{{#if Canopsis.editMode}}
-				Sortir du mode édition
+				{{tr 'Leave edition mode'}}
 			{{else}}
-				Editer la vue active
+				{{tr 'Edit current view'}}
 			{{/if}}
 		</a>
 	</li>
-	<li role="presentation"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-clipboard"></i> Exporter la vue active</a></li>
+	<li role="presentation"><a role="menuitem" tabindex="-1" href="#"><i class="fa fa-clipboard"></i> {{tr 'Export current view'}}</a></li>
 	<li role="presentation">
 		<a role="menuitem" tabindex="-1" href="#" {{action 'addNewView'}}>
 			<i class="fa fa-plus"></i>
-			Ajouter une vue
+			{{tr 'Add a view'}}
 		</a>
 	</li>
 	<li role="presentation" class="divider"></li>
