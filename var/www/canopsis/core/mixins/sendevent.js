@@ -37,8 +37,9 @@ define([
 		TYPE_CANCEL: 'cancel',
 		TYPE_RECOVERY: 'recovery',
 		TYPE_UNCANCEL: 'uncancel',
+		TYPE_CHANGESTATE: 'changestate',
 
-		getDataFromRecord: function (event_type, crecord) {
+		getDataFromRecord: function (event_type, crecord, formRecord) {
 			//gets the controller instance for login to access some of it s values
 			console.log("getDataFromRecord", crecord);
 
@@ -61,6 +62,16 @@ define([
 			};
 
 			//business code taking care of different event types to send information
+			if(event_type === this.TYPE_CHANGESTATE) {
+				//override previous state
+				if (!Ember.isNone(formRecord)) {
+					record.state = formRecord.get('state');
+				}
+				record.event_type = 'check';
+				record.keep_state = true;
+			}
+
+
 			if(event_type === this.TYPE_RECOVERY) {
 				set(crecord, 'state', 0);
 				return crecord;
@@ -99,7 +110,7 @@ define([
 			for(var i=0; i<crecords.length; i++) {
 				console.log('Event author', record.get('author'),'comment', record.get('output'));
 
-				var post_event = this.getDataFromRecord(event_type, crecords[i]);
+				var post_event = this.getDataFromRecord(event_type, crecords[i], record);
 				post_event.author = record.get('author');
 				post_event.output = record.get('output');
 
@@ -221,6 +232,8 @@ define([
 					} else if (event_type === this.TYPE_TICKET) {
 						formButtons = ["formbutton-cancel", "formbutton-incident"];
 					} else if (event_type === this.TYPE_CANCEL) {
+						formButtons = ["formbutton-cancel", "formbutton-submit"];
+					} else if (event_type === this.TYPE_CHANGESTATE) {
 						formButtons = ["formbutton-cancel", "formbutton-submit"];
 					}
 
