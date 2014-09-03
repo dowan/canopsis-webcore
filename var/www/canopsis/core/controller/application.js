@@ -32,6 +32,8 @@ define([
 	Application.ApplicationController = Ember.ObjectController.extend({
 		needs: ['login'],
 
+		utils: utils,
+
 		plugins:function(){
 			var all_plugins = [];
 			var plugins = Application.plugins ;

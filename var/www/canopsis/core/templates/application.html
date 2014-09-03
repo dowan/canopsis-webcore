@@ -114,7 +114,7 @@
 								<i class="fa fa-desktop"></i> <span>{{tr 'Dashboard'}}</span>
 							</a>
 						</li>
-						{{#if Canopsis.utils.session.rights.aclconfig.checksum}}
+						{{#if controller.utils.session.rights.aclconfig.checksum}}
 							<li class="treeview">
 								<a href="#">
 									<i class="fa fa-group"></i>
@@ -128,7 +128,7 @@
 								</ul>
 							</li>
 						{{/if}}
-						{{#if Canopsis.utils.session.rights.authsystems.checksum}}
+						{{#if controller.utils.session.rights.authsystems.checksum}}
 							<li class="treeview">
 								<a href="#">
 									<i class="fa fa-key"></i>
@@ -141,7 +141,7 @@
 								</ul>
 							</li>
 						{{/if}}
-						{{#if Canopsis.utils.session.rights.enginesconfig.checksum}}
+						{{#if controller.utils.session.rights.enginesconfig.checksum}}
 							<li class="treeview">
 								<a href="#">
 									<i class="fa fa-cogs"></i>
@@ -161,7 +161,7 @@
 								<i class="fa fa-road"></i> <span>Paths and ports</span>
 							</a>
 						</li>
-						{{#if Canopsis.utils.session.rights.pluginsconfig.checksum}}
+						{{#if controller.utils.session.rights.pluginsconfig.checksum}}
 							{{#each plugin in controller.plugins}}
 								<li>
 									<a {{action plugin.action plugin.param}}>
@@ -170,7 +170,7 @@
 								</li>
 							{{/each}}
 						{{/if}}
-						{{#if Canopsis.utils.session.rights.uisettings.checksum}}
+						{{#if controller.utils.session.rights.uisettings.checksum}}
 							<li class="treeview">
 								<a href="#">
 									<i class="fa fa-cogs"></i>
