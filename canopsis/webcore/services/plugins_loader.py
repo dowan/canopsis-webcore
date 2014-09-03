@@ -32,38 +32,38 @@ logger = logging.getLogger("plugins_loader")
 #########################################################################
 
 var_path = os.path.expanduser("~/var/")
-plugins_path = "/opt/canopsis/var/plugins/"
+plugins_path=os.path.join(var_path ,"plugins/")
+
+logger.info(" var_path  = {} ".format(var_path))
+logger.info(" plugins_path  = {} ".format(plugins_path))
+
 # can't have file with same name but different extention
 
 @get('/plugins/<filename:path>')
 def get_externals_files(filename):
-	found = False;
-	output = filename + "_s_empty"
-	allowed_extentions = ["json" , "js", "html"]
-	base_path = var_path + "plugins/"
+    found = False;
+    output = filename + "_is_empty"
+    allowed_extentions = ["json" , "js", "html"]
+    base_path = var_path + "plugins/"
 
-	if os.path.exists(base_path):
-		extention = filename.split(".")
+    if os.path.exists(base_path):
+        extention = filename.split(".")
 
-		if len(extention) == 1 :
-			if os.path.exists( base_path + filename+ ".js"):
-				found = True
-				filename = filename+ ".js"
+        if len(extention) == 1 :
+            for ext in allowed_extentions:
+                path_to_test = '{}{}.{}'.format(plugins_path, filename, ext)
+                logger.info( "path_to_test = {}".format(path_to_test) )
+                if os.path.exists(path_to_test):
+                    found = True
+                    filename = '{}.{}'.format(filename, ext)
+                    break
 
-			elif os.path.exists( base_path + filename+ ".json"):
-				found = True
-				filename = filename+ ".json"
+        elif extention[-1] in allowed_extentions :
+            found = True
 
-			elif os.path.exists( base_path + filename+ ".html"):
-				found = True
-				filename = filename+ ".html"
+        if found :
+            logger.info("Load form Plugins file : " + filename)
+            output = static_file(filename, root=plugins_path)
+            return output
 
-		elif extention[-1] in allowed_extentions :
-			found = True
-
-		if found :
-			logger.info("Load form Plugins file : " + filename)
-			output = static_file(filename, root=plugins_path)
-			return output
-
-	return HTTPError(404, "Error on "+filename)
+    return HTTPError(404, "Error on "+filename)
