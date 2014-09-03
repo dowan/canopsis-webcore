@@ -190,12 +190,8 @@ define(schemasDeps, function(DS, Application, utils) {
 
 			property.defaultValue = property.default;
 			property.label = property.title;
-			property.placeholder = property.description;
 
 			delete property.default;
-			delete property.title;
-			delete property.description;
-			delete property.type;
 
 			console.group('model\'s attributes and relationships');
 
