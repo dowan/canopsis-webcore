@@ -23,9 +23,6 @@ define([
 ], function(Ember, Application) {
 	 content:Ember.A(),
 	Application.ArrayMixin = Ember.Mixin.create({
-		//cssClass : "",
-		//cssClassON : "green",
-		//cssClassOFF : "red",
 		cssClass: "tooltiptable hint--rounded hint--top btn btn-",
 		cssClassON : "success",
 		cssClassOFF : "danger",
@@ -49,7 +46,7 @@ define([
 		 */
 		init : function(redefined) {
 			if (redefined!== true) {
-			console.warn("you must redefine init (ArrayMixin)");
+				console.warn("you must redefine init (ArrayMixin)");
 			}
 			this._super();
 		},
@@ -68,10 +65,10 @@ define([
 
 			console.log("valueRef", valueRef);
 			if (valueRef === undefined) {
-				valueRef = [false];
+				valueRef = [];
 			}
-
 			value = valueRef.slice(0);
+			debugger;
 			this.set(this.get("valuePath"),value);
 
 			return value;
@@ -128,21 +125,18 @@ define([
 		//Called by controller when submit
 		onUpdate: function() {
 			var formController  =  Canopsis.formwrapperController.form;
-
 			var value =this.get(this.get("valuePath"));
-			var valueRef = this.get(this.get("valueRefPath"));
-			if (valueRef) {
-				while (valueRef.length > 0) {
-					valueRef.pop();
-				}
-				for (var key in value) {
-					valueRef[key] = value[key] ;
-				}
-				this.set(this.get("valueRefPath"), valueRef);
+			var field;
+			if ( this.attr )
+				field = this.get("attr.field") ;
+			else if ( this.content )
+				field = this.get("content.field") ;
+			if (field){
+				var attribut = "formContext." + field;
+				Ember.set(formController , attribut , value);
 			}
-			else {
-				//On creation form or on error
-				console.warn("valueRef isn't defined");
+			else{
+				console.warn("content.field isn't defined ");
 			}
 		}
 	});
