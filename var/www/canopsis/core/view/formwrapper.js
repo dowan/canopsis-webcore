@@ -76,6 +76,9 @@ define([
 			if (this.get('controller.form')) {
 				this.get('controller.form').send('show');
 			}
+
+			var popupLeft = ($(window).width() - $("#formwrapper > .modal-dialog").outerWidth()) / 2;
+			$("#formwrapper").css("left", popupLeft);
 		},
 
 		hidePopup: function() {

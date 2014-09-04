@@ -39,6 +39,7 @@ define([
 			var role = this.get('content.model.options.role');
 
 			console.log('content:', this.get('content'));
+			console.log('type:', Ember.get(this, 'content.field'));
 			console.log('type:', type);
 			console.log('role:', role);
 

@@ -18,33 +18,34 @@
 				{{#each attr in category.keys}}
 					{{#if attr.model.options.readOnly}}
 						<div>
-							{{#if attr.model.options.label}}
+							{{#if attr.model.options.title}}
 								<span class="label" style="color:black">
 									<b>
-										LABEL {{attr.model.options.label}}
+										{{tr attr.model.options.title}}
 									</b>
 								</span>
 							{{else}}
 								{{#if attr.field}}
 									<span class="label" style="color:black">
 										<b>
-											FIELD {{attr.field}}
+											{{tr attr.field}}
 										</b>
 									</span>
 								{{/if}}
 							{{/if}}
 						{{component-renderer attr=attr record=controller.formContext}}
+						</div>
 					{{else}}
 						{{#unless attr.model.options.hiddenInForm}}
 							 <div>
-								{{#if attr.model.options.label}}
+								{{#if attr.model.options.title}}
 									<span class="label" style="color:black">
-										LABEL {{attr.model.options.label}}
+										{{tr attr.model.options.title}}
 									</span>
 								{{else}}
 									{{#if attr.field}}
 										<span class="label" style="color:black">
-											FIELD {{attr.field}}
+											{{tr attr.field}}
 										</span>
 									{{/if}}
 								{{/if}}
@@ -65,30 +66,43 @@
 				{{#each attr in category.keys}}
 					{{#if attr.model.options.readOnly}}
 						<div>
-							<span class="label" style="color:black">
-								<b>
-									{{#if attr.model.options.label}}
-										{{attr.model.options.label}}
-									{{else}}
-										{{attr.field}}
-									{{/if}}
-								</b>
-							</span>
+							{{#if attr.model.options.title}}
+								<span class="label" style="color:black">
+									<b>
+										{{tr attr.model.options.title}}
+									</b>
+								</span>
+							{{else}}
+								{{#if attr.field}}
+									<span class="label" style="color:black">
+										<b>
+											{{tr attr.field}}
+										</b>
+									</span>
+								{{/if}}
+							{{/if}}
 							{{component-renderer attr=attr record=controller.formContext}}
 						</div>
 					{{else}}
-						{{#unless attr.model.options.hiddenInForm}}
 							 <div>
-								<span class="label" style="color:black">
-									{{#if attr.model.options.label}}
-										{{attr.model.options.label}}
-									{{else}}
-										{{attr.field}}
+								{{#if attr.model.options.title}}
+									<span class="label" style="color:black">
+										<b>
+											{{tr attr.model.options.title}}
+										</b>
+									</span>
+								{{else}}
+									{{#if attr.field}}
+										<span class="label" style="color:black">
+											<b>
+												{{tr attr.field}}
+											</b>
+										</span>
 									{{/if}}
-								</span>
+								{{/if}}
+
 								{{component-editor attr=attr form=this}}
 							 </div>
-						{{/unless}}
 					{{/if}}
 				{{/each}}
 

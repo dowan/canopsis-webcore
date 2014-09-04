@@ -22,6 +22,7 @@ define([
 	'app/adapters/entity',
 	'app/adapters/metric',
 	'app/adapters/connector',
+	'app/adapters/cservice',
 	'app/serializers/application',
 	'bootstrap',
 	'colorpicker',
@@ -51,7 +52,6 @@ define([
 	    templates,
 	    components,
 	    canopsisConfiguration) {
-
 
 	window.Canopsis = {};
 

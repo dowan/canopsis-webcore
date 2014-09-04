@@ -24,13 +24,15 @@ define([
 	'app/mixins/pagination'
 ], function(Ember, DS, Application, PaginationMixin) {
 
-	Application.ComponentTableComponent = Ember.Component.extend({
+	Application.ComponentTableComponent = Ember.Component.extend(PaginationMixin, {
 		model: undefined,
 		modelfilter: undefined,
 		data: undefined,
 
 		columns: [],
 		items: [],
+
+		itemsPerPage: 5,
 
 		onDataChange: function() {
 			this.refreshContent();
@@ -112,8 +114,6 @@ define([
 			}
 		}
 	});
-
-	Application.ComponentTableComponent = Application.ComponentTableComponent.extend(PaginationMixin);
 
 	return Application.ComponentTableComponent;
 });
