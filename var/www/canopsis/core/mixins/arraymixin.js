@@ -68,7 +68,6 @@ define([
 				valueRef = [];
 			}
 			value = valueRef.slice(0);
-			debugger;
 			this.set(this.get("valuePath"),value);
 
 			return value;
