@@ -379,6 +379,11 @@ define([
 				params.filter = filter;
 
 				params.limit = this.get('itemsPerPage');
+
+				if(params.limit === 0) {
+					params.limit = 5;
+				}
+
 				params.start = this.get('paginationFirstItemIndex') - 1;
 
 				var sortedAttribute = this.get('sortedAttribute');
