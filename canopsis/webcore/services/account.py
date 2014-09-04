@@ -553,14 +553,14 @@ def create_account(data):
     rootdir = storage.get('directory.root', account=root_account)
     
     if rootdir:
-        userdir = crecord({'_id': 'directory.root.%s' % new_account.user,'id': 'directory.root.%s' % new_account.user ,'expanded':'true'}, type='view_directory', name=new_account.user)
+        userdir = Record({'_id': 'directory.root.%s' % new_account.user,'id': 'directory.root.%s' % new_account.user ,'expanded':'true'}, type='view_directory', name=new_account.user)
         userdir.chown(new_account._id)
         userdir.chgrp(new_account.group)
         userdir.chmod('g-w')
         userdir.chmod('g-r')
 
         rootdir.add_children(userdir)
-        storage.put([rootdir,userdir], account=root_account)
+        storage.put([rootdir, userdir], account=root_account)
     else:
         logger.error('Impossible to get rootdir')
 
