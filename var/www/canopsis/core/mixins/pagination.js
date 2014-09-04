@@ -54,7 +54,7 @@ define([
 		},
 
 		itemsTotal: 1,
-		itemsPerPage: 5,
+		itemsPerPage: Ember.computed.alias('content.itemsPerPage'),
 		currentPage: 1,
 		totalPages: 1,
 		paginationFirstItemIndex: 1,
@@ -74,13 +74,19 @@ define([
 		}.observes('currentPage'),
 
 		refreshContent: function() {
-			console.group("paginationMixin refreshContent");
+			console.group("paginationMixin refreshContent", get(this, 'itemsPerPage'));
+
 
 			if (get(this, 'paginationMixinFindOptions') === undefined) {
 				set(this, 'paginationMixinFindOptions', {});
 			}
 
 			var itemsPerPage = get(this, 'itemsPerPage');
+
+			if(itemsPerPage === undefined || itemsPerPage === 0) {
+				set(this, 'dataError', { statusText: __('List option "itemsPerPage" should not be set up to 0') });
+				return;
+			}
 
 			//HACK when widget is saved and the app is not refreshed, itemsPerPage is a string!
 			if (typeof itemsPerPage === 'string') {
