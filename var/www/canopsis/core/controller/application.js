@@ -24,7 +24,8 @@ define([
 	'app/routes/application',
 	'utils',
 	'app/lib/utils/forms',
-	'app/components/flotchart/component'
+	'app/adapters/cservice',
+	'app/serializers/cservice'
 ], function(Ember, DS, Application, ApplicationRoute, utils, formUtils) {
 	var get = Ember.get,
 		set = Ember.set;
@@ -69,11 +70,17 @@ define([
 				set(appController, 'indexUserview', queryResults);
 			});
 
-			console.log('finding fconfig');
+			console.log('finding cservices config');
 			headerStore.find('frontend', 'cservice.frontend').then(function(queryResults) {
-				console.log('fconfig found');
+				console.log('frontend config found');
 				set(appController, 'frontendConfig', queryResults);
 				set(Canopsis, 'conf.frontendConfig', queryResults);
+			});
+
+			headerStore.find('ticket', 'cservice.ticket').then(function(queryResults) {
+				console.log('ticket config found');
+				set(appController, 'ticketConfig', queryResults);
+				set(Canopsis, 'conf.ticketConfig', queryResults);
 			});
 
 			console.log('finding authentication backends config')
@@ -179,7 +186,21 @@ define([
 			},
 
 			editTicketJob: function() {
-				console.log('editTicketJob');
+				console.group('editTicketJob');
+
+				var ticketConfig = get(this, 'ticketConfig');
+
+				console.log('ticketConfig:', ticketConfig);
+
+				var editForm = formUtils.showNew('jobform', ticketConfig.get('job'), {
+					scheduled: false
+				});
+
+				editForm.submit.done(function() {
+					ticketConfig.save();
+				});
+
+				console.groupEnd();
 			},
 
 			editLdapConfig: function() {
