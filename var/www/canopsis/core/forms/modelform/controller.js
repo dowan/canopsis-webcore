@@ -134,7 +134,7 @@ define([
 						for ( var fieldName in model){
 							if ( model.hasOwnProperty(fieldName)){
 								var field = model[fieldName];
-								if(  field._meta &&  field._meta.options ){
+								if(  field && field._meta &&  field._meta.options ){
 									var options = field._meta.options;
 									if( "setOnCreate" in  options){
 										var value = options["setOnCreate"];
