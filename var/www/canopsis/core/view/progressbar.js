@@ -8,7 +8,6 @@
       classNames: 'progress',
 
       template: function(context , data) {
-        debugger;
         arguments = arguments;
         var statusClass = data.data.view.get('statusClass'),
             percent     = data.data.view.get('percent'),
