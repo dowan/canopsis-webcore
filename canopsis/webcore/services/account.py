@@ -82,8 +82,27 @@ def account_get_me():
             "0093.manage_user": {"checksum": 13,
                                  "context": "list_managers"},
             "121-84.user_conf": {"checksum":0},
+            "1234.ack": {"checksum":8},
             "cfilter.1296734": {"checksum":1},
-            "1234.ack": {"checksum":8}
+
+            "showview_service": {"checksum": 1},
+            "list_search": {"checksum": 1},
+            "list_filters": {"checksum": 1},
+            #actionbuttons
+            "actionbutton_ack": {"checksum": 1},
+            "actionbutton_cancel": {"checksum": 1},
+            "actionbutton_changestate": {"checksum": 1},
+            "actionbutton_eventnavigation": {"checksum": 1},
+            "actionbutton_history": {"checksum": 1},
+            "actionbutton_incident": {"checksum": 1},
+            "actionbutton_info": {"checksum": 1},
+            "actionbutton_ticketnumber": {"checksum": 1},
+            #showview
+            "showview_view_event": {"checksum": 1},
+            "showview_view_selectors": {"checksum": 1},
+            "showview_view_jobs": {"checksum": 1},
+            "showview_view_filters": {"checksum": 1},
+            "showview_view_service": {"checksum": 1}
         }
 
         data = record.dump(json=True)

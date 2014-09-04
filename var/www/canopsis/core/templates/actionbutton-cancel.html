@@ -1,29 +1,31 @@
-{{#unless controller.findOptions.useLogCollection}}
-	{{#if minified}}
-		{{#if this.ack.isCancel}}
+{{#if Canopsis.utils.session.rights.actionbutton_cancel.checksum}}
+	{{#unless controller.findOptions.useLogCollection}}
+		{{#if minified}}
+			{{#if this.ack.isCancel}}
+				<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Undo remove">
+					<button type="button" class="btn btn-default" {{action 'sendEvent' 'uncancel' this}} >
+						{{glyphicon "share-alt"}}
+					</button>
+				</a>
+			{{/if}}
+			{{#if this.ack.isAck}}
+				<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Remove">
+					<button type="button" class="btn btn-default" {{action 'sendEvent' 'cancel' this}} >
+						{{glyphicon "trash"}}
+					</button>
+				</a>
+			{{/if}}
+		{{else}}
 			<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Undo remove">
-				<button type="button" class="btn btn-default" {{action 'sendEvent' 'uncancel' this}} >
-					{{glyphicon "share-alt"}}
+				<button type="button" class="btn btn-default" {{action 'sendEvent' 'uncancel'}} >
+					{{glyphicon "share-alt"}} {{tr 'Undo remove'}}
 				</button>
 			</a>
-		{{/if}}
-		{{#if this.ack.isAck}}
 			<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Remove">
-				<button type="button" class="btn btn-default" {{action 'sendEvent' 'cancel' this}} >
-					{{glyphicon "trash"}}
+				<button type="button" class="btn btn-default" {{action 'sendEvent' 'cancel'}} >
+					{{glyphicon "trash"}} {{tr 'Remove'}}
 				</button>
 			</a>
 		{{/if}}
-	{{else}}
-		<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Undo remove">
-			<button type="button" class="btn btn-default" {{action 'sendEvent' 'uncancel'}} >
-				{{glyphicon "share-alt"}} {{tr 'Undo remove'}}
-			</button>
-		</a>
-		<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Remove">
-			<button type="button" class="btn btn-default" {{action 'sendEvent' 'cancel'}} >
-				{{glyphicon "trash"}} {{tr 'Remove'}}
-			</button>
-		</a>
-	{{/if}}
-{{/unless}}
+	{{/unless}}
+{{/if}}
