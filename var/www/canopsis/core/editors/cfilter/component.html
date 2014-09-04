@@ -37,11 +37,11 @@
 			{{/each}}
 		</ul>
 
-		<button class="btn btn-default pull-right tooltiptable hint--rounded hint--top" {{bind-attr data-hint=Canopsis.tooltips.unlockIndexes}} {{action unlockIndexes}}>
+		<button class="btn btn-default tooltiptable hint--rounded hint--top" {{bind-attr data-hint=Canopsis.tooltips.unlockIndexes}} {{action unlockIndexes}}>
 			<i class="fa fa-lock"></i>
 		</button>
 	{{else}}
-		<button class="btn btn-default pull-right tooltiptable hint--rounded hint--top" {{bind-attr data-hint=Canopsis.tooltips.lockIndexes}} {{action lockIndexes}}>
+		<button class="btn btn-default tooltiptable hint--rounded hint--top" {{bind-attr data-hint=Canopsis.tooltips.lockIndexes}} {{action lockIndexes}}>
 			<i class="fa fa-unlock"></i>
 		</button>
 	{{/if}}
