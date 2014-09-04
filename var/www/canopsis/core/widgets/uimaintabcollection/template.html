@@ -31,11 +31,14 @@
 					</li>
 				</ul>
 			</li>
+
 			{{#each tab in controller.preparedTabs}}
 				<li {{bind-attr class="tab.isActive:active:"}}>
-					<a {{action "showView" tab.value}} style="cursor:pointer">
-						{{tab.label}}
-					</a>
+					{{#ifUserCanDisplayView tab.value}}
+						<a {{action "showView" tab.value}} style="cursor:pointer">
+							{{tab.label}}
+						</a>
+					{{/ifUserCanDisplayView}}
 				</li>
 			{{/each}}
 		</ul>

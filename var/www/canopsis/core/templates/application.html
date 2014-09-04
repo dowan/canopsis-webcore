@@ -149,10 +149,16 @@
 									<i class="fa fa-angle-left pull-right"></i>
 								</a>
 								<ul class="treeview-menu">
-									<li><a {{action 'showView' 'view.event'}}><i class="fa fa-angle-double-right"></i> {{tr 'Events'}}</a></li>
-									<li><a {{action 'showView' 'view.selectors'}}><i class="fa fa-angle-double-right"></i> {{tr 'Selectors'}}</a></li>
-									<li><a {{action 'showView' 'view.jobs'}}><i class="fa fa-angle-double-right"></i> {{tr 'Scheduled Jobs'}}</a></li>
-									<li><a {{action 'showView' 'view.filters'}}><i class="fa fa-angle-double-right"></i> {{tr 'Event Filter'}}</a></li>
+									{{#each engineview in controller.enginesviews}}
+										{{#ifUserCanDisplayView engineview.value}}
+											<li>
+												<a {{action 'showView' engineview.value}}>
+													<i class="fa fa-angle-double-right"></i> 
+													{{engineview.label}}
+												</a>
+											</li>
+										{{/ifUserCanDisplayView}}
+									{{/each}}
 								</ul>
 							</li>
 						{{/if}}
