@@ -102,6 +102,8 @@ define([
 				return;
 			}
 
+
+			//TODO avoid using 0 as limit. A better practivce should be used, like limiting to 1000 and display a warning if payload.length > 1000
 			var params = {
 				limit: 0,
 				ids: JSON.stringify(rks)
@@ -123,32 +125,43 @@ define([
 		},
 
 		computeWeather: function (data) {
+			//TODO change "data" argument name, and "currentData" var name accordingly
 			console.group('computing weathers');
 			var worst_state = 0;
 			var sub_weathers = [];
-			for (var i=0; i<data.length; i++) {
+			for (var i = 0, l = data.length; i < l; i++) {
 
-				console.log("subweather event", data);
+				var currentData = data[i];
+
+				console.log("subweather event", currentData);
 
 				//computing worst state for general weather display
-				if (data[i].state > worst_state) {
-					worst_state = data[i].state;
+				if (currentData.state > worst_state) {
+					worst_state = currentData.state;
 				}
 
 				//compute sub item title depending on if resource exists
 				var resource = '';
-				if (data[i].resource) {
-					resource = ' ' + data[i].resource;
+				if (currentData.resource) {
+					resource = ' ' + currentData.resource;
 				}
 
 				//building the data structure for sub parts of the weather
-				sub_weathers.push({
-					rk: data[i].rk,
-					component: data[i].component,
-					resource: data[i].resource,
-					title: data[i].component + resource,
-					custom_class: this.class_background(data[i].state)
-				});
+				var subweatherDict = {
+					rk: currentData.rk,
+					event_type : get(currentData, 'event_type'),
+					isSelector : get(currentData, 'event_type') === "selector",
+					component: get(currentData, 'component'),
+					resource: get(currentData, 'resource'),
+					title: get(currentData, 'component') + resource,
+					custom_class: this.class_background(get(currentData, 'state'))
+				};
+
+				if(get(currentData, "event_type") === "selector") {
+					this.generateSelectorFilter(currentData, subweatherDict);
+				}
+
+				sub_weathers.push(subweatherDict);
 
 			}
 
@@ -159,6 +172,45 @@ define([
 			console.groupEnd();
 
 			this.trigger('refresh');
+		},
+
+		generateSelectorFilter: function (event, subweatherDict) {
+			console.log('generateSelectorFilter', arguments);
+
+			var params = {
+				limit: 1,
+				ids: JSON.stringify(get(event, 'selector_id'))
+			};
+
+			$.ajax({
+				url: '/rest/object',
+				data: params,
+				success: function(payload) {
+					console.log("### SUCCESS", payload);
+					if(payload.data.length >= 1) {
+						var filter = {"$or" : []};
+
+						var selectorObject = payload.data[0];
+						var include_ids = get(selectorObject, 'include_ids');
+						var exclude_ids = get(selectorObject, 'exclude_ids');
+						var mfilter = get(selectorObject, 'mfilter');
+
+						if(include_ids && include_ids.length) {
+							filter.$or.push({ _id : { $in: include_ids}});
+						}
+
+						if(exclude_ids && exclude_ids.length) {
+							filter.$or.push({ _id : { $nin: exclude_ids}});
+						}
+
+						if(mfilter) {
+							filter.$or.push(JSON.parse(mfilter));
+						}
+
+						Ember.set(subweatherDict, 'selector_filter', JSON.stringify(filter));
+					}
+				}
+			});
 		},
 
 		refreshContent: function () {

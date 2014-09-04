@@ -30,7 +30,7 @@ define([
 		init:function() {
 			var cfilter_serialized = this.get('cfilter_serialized');
 
-			set(this, 'onlyAllowRegisteredIndexes', get(Canopsis.conf.frontendConfig, 'cfilter_allow_only_optimized_filters'));
+			set(this, 'onlyAllowRegisteredIndexes', get(Canopsis, 'conf.frontendConfig.cfilter_allow_only_optimized_filters'));
 
 			set(Canopsis, "tooltips.unlockIndexes", 'Unlock indexes. This might lead to huge performance issues!');
 			set(Canopsis, "tooltips.lockIndexes", 'Lock indexes');
