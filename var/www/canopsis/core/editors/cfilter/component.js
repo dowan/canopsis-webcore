@@ -151,6 +151,9 @@ define([
 					}
 					clauses.pushObject(currentOr);
 				}
+				if(get(this, 'onlyAllowRegisteredIndexes') === false) {
+					this.pushEmptyClause(currentOr);
+				}
 			}
 			console.log('clause deserialized', clauses);
 
@@ -228,7 +231,9 @@ define([
 						set(field, 'isFirst', false);
 					}
 
-					set(field, 'finalized', true);
+					// if(get(this, 'onlyAllowRegisteredIndexes') === true) {
+						set(field, 'finalized', true);
+					// }
 
 					if (j === clause.and.length -1) {
 						set(clause.and[j], 'isLast', true);
