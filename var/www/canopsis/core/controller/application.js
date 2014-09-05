@@ -155,7 +155,7 @@ define([
 
 				var record = dataStore.findQuery('account', {
 					filter: JSON.stringify({
-						user: canopsis.utils.session.get('username')
+						user: utils.session.get('username')
 					})
 				}).then(function(queryResults) {
 					console.log('query result', queryResults);
@@ -163,7 +163,13 @@ define([
 
 					//generating form from record model
 					var recordWizard = utils.forms.showNew('modelform', record, {
-						title: canopsis.utils.session.get('username') +' '+__('profile'),
+						title: utils.session.get('username') +' '+__('profile'),
+						filterFieldByKey: {
+							'firstname': {readOnly : true},
+							'lastname': {readOnly : true},
+							'mail': {readOnly : true},
+							'authkey': {readOnly : true}
+						}
 					});
 
 					//submit form and it s callback
