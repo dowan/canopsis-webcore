@@ -1,6 +1,10 @@
-<button type="button" class="btn btn-default" {{action 'removeSelection' }} >
-	{{glyphicon "trash"}}
-	{{#unless minified}}
+{{#if minified}}
+	<button type="button" class="btn btn-default" {{action 'remove' this}} >
+		{{glyphicon "trash"}}
+	</button>
+{{else}}
+	<button type="button" class="btn btn-default" {{action 'removeSelection'}} >
+		{{glyphicon "trash"}}
 		{{tr 'Remove selection'}}
-	{{/unless}}
-</button>
+	</button>
+{{/if}}
