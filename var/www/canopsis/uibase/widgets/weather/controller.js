@@ -137,15 +137,16 @@ define([
 			for (var i = 0, l = data.length; i < l; i++) {
 
 				var currentData = data[i];
-				currentData.ack = {isAck: true};
 
 				console.log("subweather event", currentData);
 
 				//compute wether or not each event were acknowleged for this weather
-				if (currentData.ack && currentData.isAck) {
+				if (currentData.ack && currentData.ack.isAck) {
+					console.log('one more ack count')
 					ack_count++;
 					computedState = 4;
 				} else {
+					console.log('normal ack count')
 					computedState = data[i].state;
 				}
 
