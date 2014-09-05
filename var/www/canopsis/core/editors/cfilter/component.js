@@ -30,7 +30,7 @@ define([
 		init:function() {
 			var cfilter_serialized = this.get('cfilter_serialized');
 
-			set(this, 'onlyAllowRegisteredIndexes', get(Canopsis.conf.frontendConfig, 'cfilter_allow_only_optimized_filters'));
+			set(this, 'onlyAllowRegisteredIndexes', get(Canopsis, 'conf.frontendConfig.cfilter_allow_only_optimized_filters'));
 
 			set(Canopsis, "tooltips.unlockIndexes", 'Unlock indexes. This might lead to huge performance issues!');
 			set(Canopsis, "tooltips.lockIndexes", 'Lock indexes');
@@ -112,8 +112,14 @@ define([
 					and: Ember.A()
 				});
 
+				if(currentMfilterOr.$and === undefined && Ember.keys(currentMfilterOr)[0] !== undefined) {
+					currentMfilterOr.$and = [currentMfilterOr];
+				}
+
 				if (currentMfilterOr.$and !== undefined) {
+
 					for (var j = 0; j < currentMfilterOr.$and.length; j++) {
+
 						var currentMfilterAnd = currentMfilterOr.$and[j];
 
 						var clauseKey = Ember.keys(currentMfilterAnd)[0];
@@ -125,7 +131,6 @@ define([
 						if ((clauseOperator === 'not in' || clauseOperator === 'in') && typeof clauseValue === 'object') {
 							clauseValue = clauseValue.join(',');
 						}
-
 
 						var keys = this.getIndexesForNewAndClause(currentOr);
 
@@ -150,6 +155,10 @@ define([
 						currentOr.and.pushObject(currentField);
 					}
 					clauses.pushObject(currentOr);
+				}
+
+				if(get(this, 'onlyAllowRegisteredIndexes') === false) {
+					this.pushEmptyClause(currentOr);
 				}
 			}
 			console.log('clause deserialized', clauses);
@@ -228,7 +237,9 @@ define([
 						set(field, 'isFirst', false);
 					}
 
-					set(field, 'finalized', true);
+					// if(get(this, 'onlyAllowRegisteredIndexes') === true) {
+						set(field, 'finalized', true);
+					// }
 
 					if (j === clause.and.length -1) {
 						set(clause.and[j], 'isLast', true);

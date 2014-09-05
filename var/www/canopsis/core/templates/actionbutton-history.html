@@ -1,6 +1,8 @@
-<button type="button" class="btn btn-default" {{action 'showView' 'view.event-history'}}>
-	{{glyphicon "time"}}
-	{{#unless minified}}
-		{{tr 'History'}}
-	{{/unless}}
-</button>
+{{#if Canopsis.utils.session.rights.actionbutton_history.checksum}}
+	<button type="button" class="btn btn-default" {{action 'showView' 'view.event-history'}}>
+		{{glyphicon "time"}}
+		{{#unless minified}}
+			{{tr 'History'}}
+		{{/unless}}
+	</button>
+{{/if}}

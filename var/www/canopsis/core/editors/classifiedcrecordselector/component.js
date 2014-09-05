@@ -113,8 +113,6 @@ define([
 
 			var store = this.get('store_' + get(this, 'elementId'));
 
-			console.log(">>>>>", get(this, 'elementId'), " ", store);
-
 			var query = {
 				start: 0,
 				limit: 10000

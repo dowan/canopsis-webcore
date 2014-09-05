@@ -59,24 +59,6 @@ define([
 		classNames: ['list'],
 
 		didInsertElement: function() {
-			console.log('did insert list', this.$);
-
-			//FIXME datatables not working atm
-			// this.$('table').dataTable();
-
-			this.$('table').contextMenu({
-				menuSelector: "#contextMenu",
-				menuSelected: function (invokedOn, selectedMenu) {
-					var msg = "You selected the menu item '" + selectedMenu.text() +
-						"' on the value '" + invokedOn.text() + "'";
-
-					var targetView = domUtils.getViewFromJqueryElement(invokedOn, 'listline');
-					var lineModelInstance = get(targetView, 'controller.content');
-
-					console.info(msg, lineModelInstance);
-					get(targetView, 'controller').send(selectedMenu.attr('data-action'), lineModelInstance);
-				}
-			});
 			this._super.apply(this, arguments);
 		}
 	});
