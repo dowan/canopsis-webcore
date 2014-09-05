@@ -76,7 +76,8 @@ define([
 				'sunny',
 				'cloudy',
 				'thunderstorm',
-				'thunderstorm'][status] + '-outline';
+				'thunderstorm',
+				''][status] + '-outline';
 		},
 
 		//generate and refresh background property for widget weather display
@@ -90,7 +91,8 @@ define([
 				'bg-green',
 				'bg-orange',
 				'bg-red',
-				'bg-red'][status];
+				'bg-red',
+				'bg-yellow'][status];
 		},
 
 		fetchStates: function () {
@@ -126,9 +128,20 @@ define([
 			console.group('computing weathers');
 			var worst_state = 0;
 			var sub_weathers = [];
-			for (var i=0; i<data.length; i++) {
+			var ack_count = 0;
+			var computedState = 0;
 
+			for (var i=0; i<data.length; i++) {
+				data[i].ack = {isAck: true};
 				console.log("subweather event", data);
+
+				//compute wether or not each event were acknowleged for this weather
+				if (data[i].ack && data[i].isAck) {
+					ack_count++;
+					computedState = 4;
+				} else {
+					computedState = data[i].state;
+				}
 
 				//computing worst state for general weather display
 				if (data[i].state > worst_state) {
@@ -141,16 +154,23 @@ define([
 					resource = ' ' + data[i].resource;
 				}
 
+				console.log('computedState', computedState);
+
 				//building the data structure for sub parts of the weather
 				sub_weathers.push({
 					rk: data[i].rk,
 					component: data[i].component,
 					resource: data[i].resource,
 					title: data[i].component + resource,
-					custom_class: this.class_background(data[i].state)
+					custom_class: this.class_background(computedState)
 				});
 
 			}
+
+			if (ack_count === data.length) {
+				worst_state = 4;
+			}
+			console.log('worst_state', worst_state);
 
 			console.log('weather content', {sub_weathers: sub_weathers, worst_state: worst_state});
 			this.set('sub_weather', sub_weathers);
