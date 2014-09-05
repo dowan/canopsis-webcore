@@ -112,8 +112,14 @@ define([
 					and: Ember.A()
 				});
 
+				if(currentMfilterOr.$and === undefined && Ember.keys(currentMfilterOr)[0] !== undefined) {
+					currentMfilterOr.$and = [currentMfilterOr];
+				}
+
 				if (currentMfilterOr.$and !== undefined) {
+
 					for (var j = 0; j < currentMfilterOr.$and.length; j++) {
+
 						var currentMfilterAnd = currentMfilterOr.$and[j];
 
 						var clauseKey = Ember.keys(currentMfilterAnd)[0];
@@ -125,7 +131,6 @@ define([
 						if ((clauseOperator === 'not in' || clauseOperator === 'in') && typeof clauseValue === 'object') {
 							clauseValue = clauseValue.join(',');
 						}
-
 
 						var keys = this.getIndexesForNewAndClause(currentOr);
 
@@ -151,6 +156,7 @@ define([
 					}
 					clauses.pushObject(currentOr);
 				}
+
 				if(get(this, 'onlyAllowRegisteredIndexes') === false) {
 					this.pushEmptyClause(currentOr);
 				}
