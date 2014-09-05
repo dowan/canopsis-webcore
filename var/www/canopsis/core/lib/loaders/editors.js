@@ -54,7 +54,7 @@ var editorsTemplates = [
 	{ name: 'session', js: 'w' }
 ];
 
-var deps = ['ember'];
+var deps = ['ember', 'app/routes/userview'];
 
 var depsTemplates = [];
 

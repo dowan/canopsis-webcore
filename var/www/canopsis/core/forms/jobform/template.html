@@ -1,6 +1,5 @@
 {{#if Canopsis.conf.DEBUG}}
     <div>parent form: {{controller.formParent}}</div>
 {{/if}}
-{{#each job in Canopsis.formwrapperController.form.availableJobs}}
-    <button type="button" class="btn btn-default" {{action 'selectJob' job}} >{{glyphicon "plus-sign"}} {{job.name}}</button>
-{{/each}}
+
+{{component-classifieditemselector target=controller content=Canopsis.formwrapperController.form.availableJobs}}
