@@ -192,11 +192,16 @@ define([
 
 				console.log('ticketConfig:', ticketConfig);
 
-				var editForm = formUtils.showNew('jobform', ticketConfig.get('job'), {
+				var job = ticketConfig.get('job');
+
+				console.log('job:', job);
+
+				var editForm = formUtils.showNew('jobform', job, {
 					scheduled: false
 				});
 
 				editForm.submit.done(function() {
+					ticketConfig.set('job', job);
 					ticketConfig.save();
 				});
 
