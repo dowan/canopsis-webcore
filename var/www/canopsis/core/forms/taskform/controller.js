@@ -36,7 +36,7 @@ define([
         init: function() {
             this._super(arguments);
 
-            if(this.get('scheduled') === false) {
+            if(this.scheduled === false) {
                 this.partials.buttons = ["formbutton-cancel", "formbutton-submit"];
             }
         },

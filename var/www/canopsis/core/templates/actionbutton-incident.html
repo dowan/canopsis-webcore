@@ -1,7 +1,7 @@
 {{#if Canopsis.utils.session.rights.actionbutton_incident.checksum}}
 	{{#if this.state}}
 		{{#if this.ack.author}}
-			<button type="button" class="btn btn-default tooltiptable hint--rounded hint--top" data-hint="Declare an incident" {{action 'sendEvent' 'declare-ticket' this}} >
+			<button type="button" class="btn btn-default tooltiptable hint--rounded hint--top" data-hint="Declare an incident" {{action 'sendEvent' 'declareticket' this}} >
 				<i class="fa fa-ticket"></i>
 				{{#unless minified}}
 					{{tr 'Declare an incident'}}

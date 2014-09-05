@@ -22,7 +22,8 @@ define([
     'app/application',
     'app/serializers/application',
     'app/mixins/embeddedrecordserializer',
-    'utils'
+    'utils',
+    'app/lib/loaders/schema-manager'
 ], function(DS, Application, ApplicationSerializer, EmbeddedRecordSerializerMixin, cutils) {
 
     Application.CserviceSerializer = ApplicationSerializer.extend(

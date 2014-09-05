@@ -204,8 +204,13 @@ define([
 				console.log('ticketConfig:', ticketConfig);
 
 				var job = ticketConfig.get('job');
+				var params = job.get('params');
 
-				console.log('job:', job);
+				console.log('job:', job, params);
+
+				if(params) {
+					console.log('param subject', params.get('subject'));
+				}
 
 				var editForm = formUtils.showNew('jobform', job, {
 					scheduled: false

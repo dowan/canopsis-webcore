@@ -76,6 +76,7 @@ define([
                     record.save();
 
                     me.trigger('refresh');
+                    me.startRefresh();
                 }, function() {
                     record.rollback();
                 });

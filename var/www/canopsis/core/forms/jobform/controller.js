@@ -71,9 +71,10 @@ define([
                 var modelname = xtype[0].toUpperCase() + xtype.slice(1);
                 var model = Application[modelname];
 
-                var params = this.get('formContext._data.params');
+                var params = this.get('formContext.params');
+                console.log('params:', params);
 
-                if(params && params._data.xtype === xtype) {
+                if(params && params.get('xtype') === xtype) {
                     context = params;
                 }
                 else {
@@ -83,13 +84,11 @@ define([
                         xtype: xtype
                     };
 
-                    console.log('setTask:', xtype, params, get(this, 'formContext'));
-                    this.set('formContext._data.task', xtype);
-
-                    console.log('Instanciate non-persistent model:', model);
+                    console.log('Instanciate non-persistent model:', model, params);
                     context = this.get('store').createRecord(xtype, params);
 
                     var jobdict = this.get('formContext._data');
+                    jobdict.task = xtype;
                     jobdict.paramsType = xtype;
                     jobdict.params = params.id;
 
@@ -98,10 +97,10 @@ define([
                     this.formContext = job;
                 }
 
-                console.log('Show new form with context:', context);
+                console.log('Show new form with context:', context, this.formContext);
                 var recordWizard = cutils.forms.showNew('taskform', context, {
                     formParent: this,
-                    scheduled: this.get('scheduled')
+                    scheduled: this.scheduled
                 });
 
                 console.groupEnd();
