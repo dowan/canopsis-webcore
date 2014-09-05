@@ -18,9 +18,26 @@
 */
 
 define(['ember'], function(Ember) {
-	Ember.Handlebars.helper('criticity', function(value) {
+	Ember.Handlebars.helper('criticity', function(value, crecord) {
 
 		var span;
+
+		//displays keep status information if any onto the state field
+		//keep state is generated when a user overrides the criticity of and acknowleged event
+		var record;
+		//Very bad way to access keep_state information ,but doesn't work with usual getters
+		//TODO refactor
+		if (crecord.contexts && crecord.contexts[0] && crecord.contexts[0].record) {
+			record = crecord.contexts[0].record;
+		}
+		if (record) {
+			record = record.get('content');
+			display_keep_state = '';
+			if (record._data && record._data.keep_state) {
+				display_keep_state = '<span class="badge bg-yellow"><i class="fa fa-male"></i></span>';
+			}
+		}
+
 
 		switch(value) {
 			case 0: span = '<span class="badge bg-green">Info</span>'; break;
@@ -29,7 +46,7 @@ define(['ember'], function(Ember) {
 			case 3: span = '<span class="badge bg-red">Critique</span>'; break;
 			case 4: span = '<span class="badge">Unknown</span>'; break;
 		}
-		return new Ember.Handlebars.SafeString(span);
+		return new Ember.Handlebars.SafeString(span + display_keep_state);
 
 	});
 

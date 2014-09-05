@@ -35,6 +35,13 @@ define([
 
 		utils: utils,
 
+		enginesviews: [
+			Ember.Object.create({ label: __("Events"), value: 'view.event'}),
+			Ember.Object.create({ label: __("Selectors"), value: 'view.selectors'}),
+			Ember.Object.create({ label: __("Scheduled Jobs"), value: 'view.jobs'}),
+			Ember.Object.create({ label: __("Event Filter"), value: 'view.filters'})
+		],
+
 		plugins:function(){
 			var all_plugins = [];
 			var plugins = Application.plugins ;
@@ -140,17 +147,15 @@ define([
 
 			showUserProfile: function (){
 
-				var login = this.get('controllers.login');
-
 				var applicationController = this;
 
 				var dataStore = DS.Store.create({
 					container: this.get("container")
 				});
 
-				var record = dataStore.findQuery('useraccount', {
+				var record = dataStore.findQuery('account', {
 					filter: JSON.stringify({
-						user: login.get('username')
+						user: canopsis.utils.session.get('username')
 					})
 				}).then(function(queryResults) {
 					console.log('query result', queryResults);
@@ -158,7 +163,7 @@ define([
 
 					//generating form from record model
 					var recordWizard = utils.forms.showNew('modelform', record, {
-						title: applicationController.get('username') +' '+__('profile'),
+						title: canopsis.utils.session.get('username') +' '+__('profile'),
 					});
 
 					//submit form and it s callback

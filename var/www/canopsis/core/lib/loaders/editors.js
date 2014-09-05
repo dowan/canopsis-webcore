@@ -33,6 +33,7 @@ var editorsTemplates = [
 	{ name: 'mail' },
 	{ name: 'textarea' },
 	{ name: 'separator' },
+	{ name: 'duration', js: 'w' },
 	{ name: 'richtext', js: 'w' },
 	{ name: 'timestamp', js: 'v' },
 	{ name: 'rights', js: 'v' },
@@ -53,7 +54,7 @@ var editorsTemplates = [
 	{ name: 'session', js: 'w' }
 ];
 
-var deps = ['ember'];
+var deps = ['ember', 'app/routes/userview'];
 
 var depsTemplates = [];
 

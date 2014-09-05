@@ -30,6 +30,7 @@ from canopsis.old.account import Account
 from canopsis.old.storage import get_storage
 from canopsis.old.record import Record
 from canopsis.old.group import Group
+from canopsis.organisation.rights import Rights
 
 #import protection function
 from canopsis.webcore.services.auth import get_account, delete_session, \
@@ -39,10 +40,10 @@ from canopsis.webcore.services.auth import get_account, delete_session, \
 logger = logging.getLogger('Account')
 logger.setLevel(logging.INFO)
 
-#group who have right to access 
+#group who have right to access
 group_managing_access = ['group.CPS_account_admin']
-
 root_account = Account(user="root", group="root")
+right_module = Rights()
 #########################################################################
 
 #### GET Me
@@ -69,12 +70,8 @@ def account_get_me():
     #   return HTTPError(404, _id+" Not Found")
 
     if record:
+        # rights = right_module.get_user_rights(data['_id'])
         rights = {
-            "aclconfig": {"checksum": 1},
-            "authsystems": {"checksum": 1},
-            "enginesconfig": {"checksum": 1},
-            "pluginsconfig": {"checksum": 1},
-            "uisettings": {"checksum": 1},
             "ack": {"checksum":15},
             "1235.user_view": {"checksum":2},
             "cancel.12123": {"checksum":8},
@@ -82,8 +79,33 @@ def account_get_me():
             "0093.manage_user": {"checksum": 13,
                                  "context": "list_managers"},
             "121-84.user_conf": {"checksum":0},
+            "1234.ack": {"checksum":8},
             "cfilter.1296734": {"checksum":1},
-            "1234.ack": {"checksum":8}
+
+            "showview_service": {"checksum": 1},
+            "list_search": {"checksum": 1},
+            "list_filters": {"checksum": 1},
+            #actionbuttons
+            "aclconfig": {"checksum": 1},
+            "authsystems": {"checksum": 1},
+            "enginesconfig": {"checksum": 1},
+            "pluginsconfig": {"checksum": 1},
+            "uisettings": {"checksum": 1},
+
+            "actionbutton_ack": {"checksum": 1},
+            "actionbutton_cancel": {"checksum": 1},
+            "actionbutton_changestate": {"checksum": 1},
+            "actionbutton_eventnavigation": {"checksum": 1},
+            "actionbutton_history": {"checksum": 1},
+            "actionbutton_incident": {"checksum": 1},
+            "actionbutton_info": {"checksum": 1},
+            "actionbutton_ticketnumber": {"checksum": 1},
+            #showview
+            "showview_view_event": {"checksum": 1},
+            "showview_view_selectors": {"checksum": 1},
+            "showview_view_jobs": {"checksum": 1},
+            "showview_view_filters": {"checksum": 1},
+            "showview_view_services": {"checksum": 1}
         }
 
         data = record.dump(json=True)
@@ -114,7 +136,7 @@ def account_get_avatar(_id=None):
     logger.debug('getAvatar of: %s' % _id)
 
     record = storage.get(_id, account=Account(user="root", group="root"))
-    
+
     if not record or not record.data.get('avatar_id', None):
         redirect("/static/canopsis/widgets/stream/logo/ui.png")
 
@@ -129,7 +151,7 @@ def account_get_avatar(_id=None):
 def account_setConfig(_id):
     account = get_account()
     storage = get_storage(namespace='object')
-    
+
     value = request.params.get('value', default=None)
 
     logger.debug(" + setConfig '%s' => '%s'" % (_id, value))
@@ -144,50 +166,50 @@ def account_setConfig(_id):
         output={'total': 0, 'success': True, 'data': []}
     else:
         output={'total': 0, 'success': False, 'data': []}
-    
+
     return output
 
 @get('/account/getAuthKey/:dest_account')
 def account_getAuthKey(dest_account):
     if not dest_account:
         return HTTPError(404, 'No account specified')
-    
+
     #------------------------get accounts----------------------
     account = get_account()
     storage = get_storage(namespace='object',account=account)
-    
+
     _id = 'account.%s' % dest_account
-    
+
     try:
         aim_account = Account(storage.get(_id,account=account))
-        
+
         return {'total':1,'success':True,'data':{'authkey':aim_account.get_authkey()}}
     except Exception,err:
         logger.debug('Error while fetching account : %s' % err)
         return {'total':0,'success':False,'data':{'output':str(err)}}
-        
-    
+
+
 
 @get('/account/getNewAuthKey/:dest_account', checkAuthPlugin={'authorized_grp':'group.CPS_authkey'})
 def account_newAuthKey(dest_account):
     if not dest_account:
         return HTTPError(404, 'No account specified')
-    
+
     #------------------------get accounts----------------------
     account = get_account()
     storage = get_storage(namespace='object',account=account)
-    
+
     _id = 'account.%s' % dest_account
-    
+
     try:
         aim_account = Account(storage.get(_id,account=account))
     except:
         logger.debug('aimed account not found')
         return HTTPError(404, 'Wrong account name or no enough rights')
-    
+
     #---------------------generate new key-------------------
     logger.debug('Change AuthKey for : %s' % aim_account.user)
-    
+
     try:
         aim_account.generate_new_authkey()
         storage.put(aim_account,account=account)
@@ -196,14 +218,14 @@ def account_newAuthKey(dest_account):
     except Exception,err:
         logger.error('Error while updating auth key : %s' % err)
         return {'total': 0, 'success': False, 'data': {}}
-    
+
 #### GET
 @get('/account/:_id')
 @get('/account/')
 def account_get(_id=None):
     namespace = 'object'
     ctype= 'account'
-    
+
     #get the session (security)
     account = get_account()
 
@@ -234,14 +256,14 @@ def account_get(_id=None):
     mfilter = {}
     if ctype:
         mfilter = {'crecord_type': ctype}
-    if _id: 
+    if _id:
         try:
             records = [ storage.get(_id, account=account) ]
             total = 1
         except Exception, err:
             self.logger.error("Exception !\nReason: %s" % err)
             return HTTPError(404, _id+" Not Found")
-        
+
     else:
         records, total =  storage.find(mfilter, limit=limit, offset=start, account=account, with_total=True)
 
@@ -258,7 +280,7 @@ def account_get(_id=None):
 
     return output
 
-    
+
 #### POST
 @post('/account/', checkAuthPlugin={'authorized_grp':group_managing_access})
 def account_post():
@@ -281,7 +303,7 @@ def account_post():
         del data['crecord_type']
     except:
         pass
-    
+
     if data['user']:
         #check if already exist
         already_exist = False
@@ -292,7 +314,7 @@ def account_post():
             already_exist = True
         except:
             logger.debug('Create account %s' % _id)
-            
+
         if already_exist:
             return HTTPError(405, "Account already exist, use put method for update !")
 
@@ -301,20 +323,20 @@ def account_post():
 
     else:
         logger.warning('WARNING : no user specified ...')
-        
+
 @put('/account/',checkAuthPlugin={'authorized_grp':group_managing_access})
 @put('/account/:_id',checkAuthPlugin={'authorized_grp':group_managing_access})
 def account_update(_id=None):
     account = get_account()
     storage = get_storage(namespace='object', account=account)
-    
+
     logger.debug("PUT:")
 
     data = request.body.readline()
     if not data:
         return HTTPError(400, "No data received")
     data = json.loads(data)
-    
+
     if not isinstance(data,list):
         data = [data]
 
@@ -329,26 +351,26 @@ def account_update(_id=None):
 
         if not _id:
             return HTTPError(400, "No id recieved")
-        
+
         try:
             record = Account(storage.get(_id ,account=account))
             logger.debug('Update account %s' % _id)
         except:
             logger.debug('Account %s not found' % _id)
             return HTTPError(404, "Account to update not found")
-        
+
         #Get password
         if 'passwd' in item:
             logger.debug(' + Update password ...')
             record.passwd(str(item['passwd']))
             del item['passwd']
-            
+
         #Get group
         if 'aaa_group' in item:
             logger.debug(' + Update group ...')
             record.chgrp(str(item['aaa_group']))
             del item['aaa_group']
-                
+
         #get secondary groups
         if 'groups' in item:
             groups = []
@@ -358,12 +380,12 @@ def account_update(_id=None):
                 else:
                     groups.append(group)
 
-            logger.debug(' + Update groups ...')    
+            logger.debug(' + Update groups ...')
             logger.debug(' + Old groups : %s' % str(record.groups))
             logger.debug(' + New groups : %s' % str(groups))
             record.groups = groups
             del item['groups']
-        
+
 
         for _key in item:
             logger.debug('Update %s with %s' % (str(_key),item[_key]))
@@ -371,14 +393,14 @@ def account_update(_id=None):
 
         storage.put(record, account=account)
         reload_account(record._id)
-    
+
 #### DELETE
 @delete('/account/',checkAuthPlugin={'authorized_grp':group_managing_access})
 @delete('/account/:_id',checkAuthPlugin={'authorized_grp':group_managing_access})
 def account_delete(_id=None):
     account = get_account()
     storage = get_storage(namespace='object')
-    
+
     logger.debug("DELETE:")
 
     data = request.body.readline()
@@ -395,11 +417,11 @@ def account_delete(_id=None):
         if isinstance(data, list):
             logger.debug(" + Attempt to remove %i item from db" % len(data))
             _id = []
-                
+
             for item in data:
                 if isinstance(item,str):
                     _id.append(item)
-                    
+
                 if isinstance(item,dict):
                     item_id = item.get('_id', item.get('id', None))
                     if item_id:
@@ -413,7 +435,7 @@ def account_delete(_id=None):
 
     if not _id:
         return HTTPError(404, "No '_id' field in header ...")
-    
+
     logger.debug(" + _id: %s " % _id)
     try:
         storage.remove(_id, account=account)
@@ -441,77 +463,77 @@ def account_delete(_id=None):
 def add_account_to_group(group_id=None,account_id=None):
     session_account = get_account()
     storage = get_storage(namespace='object', account=session_account)
-    
+
     if not group_id or not account_id:
         return HTTPError(400, 'Bad request, must specified group and account')
-    
+
     #get group && account
     if group_id.find('group.') == -1:
         group_id = 'group.%s' % group_id
-        
+
     if account_id.find('account.') == -1:
         account_id = 'account.%s' % account_id
-        
+
     logger.debug('Try to get %s and %s' % (account_id,group_id))
-        
+
     try:
         account_record = storage.get(account_id, account=session_account)
         account = Account(account_record)
         group_record = storage.get(group_id, account=session_account)
         group = cgroup(group_record)
-        
+
     except Exception,err:
         logger.error('error while fetching %s and %s : %s' % (account_id,group_id,err))
         return HTTPError(403, 'Record not found or insufficient rights')
-        
+
     #put in group
     group.add_accounts(account)
-    
+
     try:
         storage.put([group,account])
     except:
         logger.error('Put group/account in db goes wrong')
         return HTTPError(500, 'Put group/account in db goes wrong')
-    
+
     return {'total' :1, 'success' : True, 'data':[]}
-        
+
 @post('/account/removeFromGroup/:group_id/:account_id',checkAuthPlugin={'authorized_grp':group_managing_access})
 def remove_account_from_group(group_id=None,account_id=None):
     session_account = get_account()
     storage = get_storage(namespace='object',account=session_account)
-    
+
     if not group_id or not account_id:
         return HTTPError(400, 'Bad request, must specified group and account')
-    
+
     #get group && account
     if group_id.find('group.') == -1:
         group_id = 'group.%s' % group_id
-        
+
     if account_id.find('account.') == -1:
         account_id = 'account.%s' % account_id
-        
+
     logger.debug('Try to get %s and %s' % (account_id,group_id))
-        
+
     try:
         account_record = storage.get(account_id,account=session_account)
         account = Account(account_record)
         group_record = storage.get(group_id,account=session_account)
         group = cgroup(group_record)
-        
+
     except Exception,err:
         logger.error('error while fetching %s and %s : %s' % (account_id,group_id,err))
         return HTTPError(403, 'Record not found or insufficient rights')
-        
+
     #remove in group
-    
+
     group.remove_accounts(account)
-    
+
     try:
         storage.put([group,account])
     except:
         logger.error('Put group/account in db goes wrong')
         return HTTPError(500, 'Put group/account in db goes wrong')
-    
+
     return {'total' :1, 'success' : True, 'data':[]}
 
 
@@ -540,27 +562,27 @@ def create_account(data):
         else:
             groups.append(group)
     new_account.groups = groups
-    
+
     storage = get_storage(namespace='object')
 
     #put record
     logger.debug(' + Save new account')
     new_account.chown(new_account._id)
     storage.put(new_account, account=root_account)
-    
+
     #get rootdir
     logger.debug(' + Create view directory')
     rootdir = storage.get('directory.root', account=root_account)
-    
+
     if rootdir:
-        userdir = crecord({'_id': 'directory.root.%s' % new_account.user,'id': 'directory.root.%s' % new_account.user ,'expanded':'true'}, type='view_directory', name=new_account.user)
+        userdir = Record({'_id': 'directory.root.%s' % new_account.user,'id': 'directory.root.%s' % new_account.user ,'expanded':'true'}, type='view_directory', name=new_account.user)
         userdir.chown(new_account._id)
         userdir.chgrp(new_account.group)
         userdir.chmod('g-w')
         userdir.chmod('g-r')
 
         rootdir.add_children(userdir)
-        storage.put([rootdir,userdir], account=root_account)
+        storage.put([rootdir, userdir], account=root_account)
     else:
         logger.error('Impossible to get rootdir')
 

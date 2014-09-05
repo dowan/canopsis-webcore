@@ -59,24 +59,6 @@ define([
 		classNames: ['list'],
 
 		didInsertElement: function() {
-			console.log('did insert list', this.$);
-
-			//FIXME datatables not working atm
-			// this.$('table').dataTable();
-
-			this.$('table').contextMenu({
-				menuSelector: "#contextMenu",
-				menuSelected: function (invokedOn, selectedMenu) {
-					var msg = "You selected the menu item '" + selectedMenu.text() +
-						"' on the value '" + invokedOn.text() + "'";
-
-					var targetView = domUtils.getViewFromJqueryElement(invokedOn, 'listline');
-					var lineModelInstance = get(targetView, 'controller.content');
-
-					console.info(msg, lineModelInstance);
-					get(targetView, 'controller').send(selectedMenu.attr('data-action'), lineModelInstance);
-				}
-			});
 			this._super.apply(this, arguments);
 		}
 	});
@@ -88,7 +70,7 @@ define([
 				ListViewMixin
 			],
 
-			filters: [],
+			custom_filters: [],
 
 			init: function() {
 				set(this, 'findParams_cfilterFilterPart', get(this, 'default_filter'));
@@ -216,7 +198,7 @@ define([
 					});
 				},
 
-				removeRecord: function(record) {
+				remove: function(record) {
 					console.info('removing record', record);
 					record.deleteRecord();
 					record.save();
@@ -227,7 +209,7 @@ define([
 					console.log("remove action", selected);
 					for (var i = 0; i < selected.length; i++) {
 						var currentSelectedRecord = selected[i];
-						this.send("removeRecord", currentSelectedRecord);
+						this.send("remove", currentSelectedRecord);
 					}
 				}
 			},
@@ -379,6 +361,11 @@ define([
 				params.filter = filter;
 
 				params.limit = this.get('itemsPerPage');
+
+				if(params.limit === 0) {
+					params.limit = 5;
+				}
+
 				params.start = this.get('paginationFirstItemIndex') - 1;
 
 				var sortedAttribute = this.get('sortedAttribute');

@@ -51,6 +51,7 @@ define([
 				console.log("payload before sideLoad", payload);
 
 				if(item.xtype === undefined) {
+					console.error('no xtype for widget', type, item);
 					this.addMessage(payload, 'no xtype for widget');
 					return payload;
 				}

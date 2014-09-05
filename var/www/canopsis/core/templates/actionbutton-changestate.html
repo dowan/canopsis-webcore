@@ -1,17 +1,21 @@
-{{#unless controller.findOptions.useLogCollection}}
-	{{#if minified}}
-		{{#if this.state}}
-				<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Change criticity">
-					<button type="button" class="btn btn-default" {{action 'sendEvent' 'changestate' this}} >
-						{{glyphicon "retweet"}}
-					</button>
-				</a>
+{{#if Canopsis.utils.session.rights.actionbutton_changestate.checksum}}
+	{{#unless controller.findOptions.useLogCollection}}
+		{{#if minified}}
+			{{#if this.state}}
+				{{#if this.ack.isAck}}
+					<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Change criticity">
+						<button type="button" class="btn btn-default" {{action 'sendEvent' 'changestate' this}} >
+							{{glyphicon "retweet"}}
+						</button>
+					</a>
+				{{/if}}
+			{{/if}}
+		{{else}}
+			<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Change criticity">
+				<button type="button" class="btn btn-default" {{action 'sendEvent' 'changestate'}} >
+					{{glyphicon "retweet"}} {{ tr 'Change criticity' }}
+				</button>
+			</a>
 		{{/if}}
-	{{else}}
-		<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Change criticity">
-			<button type="button" class="btn btn-default" {{action 'sendEvent' 'changestate'}} >
-				{{glyphicon "retweet"}} {{ tr 'Change criticity' }} 
-			</button>
-		</a>
-	{{/if}}
-{{/unless}}
+	{{/unless}}
+{{/if}}

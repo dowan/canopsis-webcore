@@ -17,7 +17,11 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember', 'app/application'], function(Ember, Application) {
+define([
+	'ember',
+	'app/application'
+], function(Ember, Application) {
+
 	var set = Ember.set;
 
 	var formUtils = {

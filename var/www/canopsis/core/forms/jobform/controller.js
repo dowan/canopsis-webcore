@@ -23,6 +23,8 @@ define([
     'app/lib/factories/form',
     'utils'
 ], function(Ember, Application, FormFactory, cutils) {
+    var get = Ember.get,
+        set = Ember.set;
 
     FormFactory('jobform', {
         title: 'Select task type',
@@ -40,7 +42,7 @@ define([
                 }
             }
 
-            return job_types;
+            return { all : job_types, byClass: {}};
         }.property('Canopsis.utils.schemaList'),
 
         init: function() {
@@ -52,8 +54,17 @@ define([
         },
 
         actions: {
-            selectJob: function(job) {
-                console.group('selectJob', this, job.name);
+            selectItem: function(jobName) {
+                console.group('selectJob', this, jobName);
+
+                var availableJobs = get(this, 'availableJobs.all');
+
+                var job;
+                for (var i = 0; i < availableJobs.length; i++) {
+                    if(availableJobs[i].name === jobName) {
+                        job = availableJobs[i];
+                    }
+                }
 
                 var xtype = job.value.slice(5);
                 var modelname = xtype[0].toUpperCase() + xtype.slice(1);

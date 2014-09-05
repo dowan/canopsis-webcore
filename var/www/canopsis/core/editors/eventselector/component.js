@@ -77,6 +77,8 @@ define([
 				filter.resource = { '$regex' : '.*'+ this.get('resource') +'.*', '$options': 'i' };
 			}
 
+			filter.event_type = 'check';
+
 			//does user selected selector or topology search
 			if (this.get('selectors')) {
 				filter.event_type = 'selector';

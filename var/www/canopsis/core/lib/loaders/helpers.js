@@ -36,6 +36,7 @@ var helpers = [
     'group',
     'i18n',
     'ifcond',
+    'ifusercandisplayview',
     'json2html',
     'log',
     'logo',
