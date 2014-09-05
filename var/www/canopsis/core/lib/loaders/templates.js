@@ -20,6 +20,7 @@
 var templates = [
     { name: 'application' },
     { name: 'item' },
+    { name: 'index' },
     { name: 'notifications' },
     { name: 'containerwidget' },
     { name: 'containervbox' },

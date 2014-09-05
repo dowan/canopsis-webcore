@@ -81,6 +81,7 @@ define([
                     };
                 }
 
+                params.crecord_type = xtype;
                 params.xtype = xtype;
 
                 console.log('setTask:', xtype, params, get(this, 'formContext'));

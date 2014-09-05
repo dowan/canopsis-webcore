@@ -119,8 +119,9 @@ define([
 		 @param {Object} primaryType The DS.Model class of the record object
 		*/
 		extractRelationships: function(payload, recordJSON, primaryType, parentType) {
+			console.group('extractRelationships', recordJSON, primaryType);
+
 			try {
-				console.group('extractRelationships', recordJSON, primaryType);
 				console.log("payload before extractRelationships", payload);
 
 				if (primaryType.store === undefined) {
@@ -193,12 +194,12 @@ define([
 					}
 				}, this);
 
-				console.groupEnd();
-
 				return payload;
 			} catch (e) {
 				console.log(e.message, e.stack);
 			}
+
+			console.groupEnd();
 		},
 
 		isRecordEmbedded: function(record) {

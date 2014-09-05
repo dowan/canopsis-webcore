@@ -33,6 +33,15 @@ define([
         scheduled: true,
         jobRecord: undefined,
 
+        init: function() {
+            this._super(arguments);
+
+            console.log('IS THIS FUCKING SCHEDULED MOTHERFUCKER ?', this.get('scheduled'));
+            if(this.get('scheduled') === false) {
+                this.partials.buttons = ["formbutton-cancel", "formbutton-submit"];
+            }
+        },
+
         actions: {
             next: function() {
                 console.group('configureTask');
@@ -66,18 +75,7 @@ define([
         },
 
         partials: {
-            buttons: function() {
-                var btns = ["formbutton-cancel"];
-
-                if(this.get('scheduled')) {
-                    btns.push("formbutton-next");
-                }
-                else {
-                    btns.push("formbutton-submit");
-                }
-
-                return btns;
-            }.property('scheduled')
+            buttons: ["formbutton-cancel", "formbutton-next"]
         },
     }, formOptions);
 
