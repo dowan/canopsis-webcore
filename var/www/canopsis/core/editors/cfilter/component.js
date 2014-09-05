@@ -97,7 +97,14 @@ define([
 		clauses: function() {
 			var cfilter_serialized = this.get('cfilter_serialized');
 			var clauses = Ember.A();
-			var mfilter = JSON.parse(cfilter_serialized);
+			var mfilter;
+
+			try {
+				mfilter = JSON.parse(cfilter_serialized);
+			} catch (e) {
+				console.error('unable to parse serialized filter');
+				mfilter = JSON.parse({ $or: {}});
+			}
 
 			console.log('deserializeCfilter', cfilter_serialized, clauses.length);
 			console.log('mfilter', mfilter);

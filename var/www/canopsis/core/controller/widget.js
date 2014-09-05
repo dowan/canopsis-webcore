@@ -89,13 +89,13 @@ define([
 		},
 
 		isRollbackable: function() {
-			if(get(this, 'isDirty') && get(this, 'dirtyType') === "updated") {
+			if(get(this, 'isDirty') && get(this, 'dirtyType') === "updated" && get(this, 'rollbackable') === true) {
 				return true;
 			}
 
 			return false;
 
-		}.property('isDirty', 'dirtyType'),
+		}.property('isDirty', 'dirtyType', 'rollbackable'),
 
 
 		actions: {
@@ -113,11 +113,8 @@ define([
 
 			rollback: function(widget){
 				console.log('rollback changes', arguments);
-				console.log(get(widget, 'isDirty'));
-				console.log(get(widget, 'default_filter'));
-				console.log("widgetrollback", widget.rollback());
-				console.log(get(widget, 'isDirty'));
-				console.log(get(widget, 'default_filter'));
+				widget.rollback();
+				set(this, 'rollbackable', false);
 			},
 
 			editWidget: function (widget) {
@@ -166,7 +163,7 @@ define([
 				var label = "Edit your widget preferences";
 				console.info(label, widget);
 
-				var widgetWizard = utils.forms.showNew('modelform', widget, { 
+				var widgetWizard = utils.forms.showNew('modelform', widget, {
 					title: __(label),
 					userPreferencesOnly: true
 				});
