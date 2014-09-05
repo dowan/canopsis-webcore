@@ -70,9 +70,9 @@ define([
                 var modelname = xtype[0].toUpperCase() + xtype.slice(1);
                 var model = Application[modelname];
 
-                var params = this.get('formContext.params');
+                var params = this.get('formContext._data.params');
 
-                if(params && params.xtype === xtype) {
+                if(params && params._data.xtype === xtype) {
                     params = params._data;
                 }
                 else {
@@ -83,13 +83,13 @@ define([
 
                 params.xtype = xtype;
 
-                console.log('setTask:', xtype, params);
-                this.set('formContext.task', xtype);
+                console.log('setTask:', xtype, params, get(this, 'formContext'));
+                this.set('formContext._data.task', xtype);
 
                 console.log('Instanciate non-persistent model:', model);
                 var context = this.get('store').createRecord(xtype, params);
 
-                var jobdict = this.get('formContext')._data;
+                var jobdict = this.get('formContext._data');
                 jobdict.paramsType = xtype;
                 jobdict.params = params.id;
 
