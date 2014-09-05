@@ -69,8 +69,7 @@ define([
 
 						var record = this.formContext;
 						ctools.forms.showNew('confirmform', record , { title : " confirmation "  , newRecord : arguments[0]});
-					}
-					else {
+					} else {
 						this.submit.resolve(this, arguments);
 						this.get('formwrapper').trigger("hide");
 					}
@@ -78,7 +77,12 @@ define([
 			},
 
 			abort: function() {
-				this.submit.reject();
+				if (this.formParent !== undefined) {
+					this.formParent.send('abort', arguments);
+				} else {
+					console.log("reject form submit");
+					this.submit.reject();
+				}
 			}
 		},
 

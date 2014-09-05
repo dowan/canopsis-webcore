@@ -17,24 +17,24 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'app/lib/factories/wrapper',
-    'jquery',
-    'flotchart',
-    'flotchart-canvas',
-    'flotchart-categories',
-    'flotchart-crosshair',
-    'flotchart-errorbars',
-    'flotchart-fillbetween',
-    'flotchart-image',
-    'flotchart-navigate',
-    'flotchart-pie',
-    'flotchart-resize',
-    'flotchart-selection',
-    'flotchart-stack',
-    'flotchart-symbol',
-    'flotchart-threshold',
-    'flotchart-time'
-], function(Wrapper, $) {
-    return Wrapper("flotchart", $, arguments, '0.8.3-alpha');
-});
+// define([
+//     'app/lib/factories/wrapper',
+//     'jquery',
+//     'flotchart',
+//     'flotchart-canvas',
+//     'flotchart-categories',
+//     'flotchart-crosshair',
+//     'flotchart-errorbars',
+//     'flotchart-fillbetween',
+//     'flotchart-image',
+//     'flotchart-navigate',
+//     'flotchart-pie',
+//     'flotchart-resize',
+//     'flotchart-selection',
+//     'flotchart-stack',
+//     'flotchart-symbol',
+//     'flotchart-threshold',
+//     'flotchart-time'
+// ], function(Wrapper, $) {
+//     return Wrapper("flotchart", $, arguments, '0.8.3-alpha');
+// });
