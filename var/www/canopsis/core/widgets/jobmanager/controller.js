@@ -60,10 +60,14 @@ define([
 
                     me.trigger('refresh');
                     me.startRefresh();
+                }, function() {
+                    record.rollback();
                 });
             },
 
             edit: function(record) {
+                console.log('editting record:', record);
+
                 var recordWizard = cutils.forms.showNew('jobform', record);
                 var me = this;
 
@@ -72,7 +76,9 @@ define([
                     record.save();
 
                     me.trigger('refresh');
-                })
+                }, function() {
+                    record.rollback();
+                });
             }
         }
     }, widgetOptions);

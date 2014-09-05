@@ -57,6 +57,7 @@ define([
             selectItem: function(jobName) {
                 console.group('selectJob', this, jobName);
 
+                var context = undefined;
                 var availableJobs = get(this, 'availableJobs.all');
 
                 var job;
@@ -72,31 +73,30 @@ define([
 
                 var params = this.get('formContext.params');
 
-                if(params && params.xtype === xtype) {
-                    params = params._data;
+                if(params && params._data.xtype === xtype) {
+                    context = params;
                 }
                 else {
                     params = {
-                        id: cutils.hash.generateId('task')
+                        id: cutils.hash.generateId('task'),
+                        crecord_type: xtype,
+                        xtype: xtype
                     };
+
+                    console.log('setTask:', xtype, params, get(this, 'formContext'));
+                    this.set('formContext._data.task', xtype);
+
+                    console.log('Instanciate non-persistent model:', model);
+                    context = this.get('store').createRecord(xtype, params);
+
+                    var jobdict = this.get('formContext._data');
+                    jobdict.paramsType = xtype;
+                    jobdict.params = params.id;
+
+                    var job = this.get('store').push('job', jobdict);
+                    this.formContext.rollback();
+                    this.formContext = job;
                 }
-
-                params.crecord_type = xtype;
-                params.xtype = xtype;
-
-                console.log('setTask:', xtype, params);
-                this.set('formContext.task', xtype);
-
-                console.log('Instanciate non-persistent model:', model);
-                var context = this.get('store').createRecord(xtype, params);
-
-                var jobdict = this.get('formContext')._data;
-                jobdict.paramsType = xtype;
-                jobdict.params = params.id;
-
-                var job = this.get('store').push('job', jobdict);
-                this.formContext.rollback();
-                this.formContext = job;
 
                 console.log('Show new form with context:', context);
                 var recordWizard = cutils.forms.showNew('taskform', context, {

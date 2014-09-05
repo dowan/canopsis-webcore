@@ -36,7 +36,6 @@ define([
         init: function() {
             this._super(arguments);
 
-            console.log('IS THIS FUCKING SCHEDULED MOTHERFUCKER ?', this.get('scheduled'));
             if(this.get('scheduled') === false) {
                 this.partials.buttons = ["formbutton-cancel", "formbutton-submit"];
             }
