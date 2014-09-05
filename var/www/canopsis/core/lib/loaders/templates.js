@@ -39,11 +39,10 @@ var templates = [
     { name: 'actionbutton-ack', classes: ["action", "toolbar"], icon : "ok", label : "Ack"},
     { name: 'actionbutton-cancel', classes: ["action", "toolbar"], icon : "ban-circle", label : "Cancel"},
     { name: 'actionbutton-changestate', classes: ["action", "toolbar"],icon : "retweet", label : "Change criticity" },
-    { name: 'actionbutton-remove', classes: ["action"], icon : "trash", label : "Remove"},
     { name: 'actionbutton-show', classes: ["action"], icon : "eye-open",label : "Show" },
     { name: 'actionbutton-info', classes: ["action"], icon : "info-sign",label : "Info" },
     { name: 'actionbutton-create', classes: ["action", "toolbar"], icon : "plus-sign", label : "Create" },
-    { name: 'actionbutton-removeselection', classes: ["action", "toolbar"], icon : "trash", label : "Remove-selection" },
+    { name: 'actionbutton-removeselection', classes: ["action", "toolbar"], icon : "trash", label : "Remove selection" },
     { name: 'actionbutton-incident', classes: ["action", "toolbar"],icon : "ticket", label : "Incident" },
     { name: 'actionbutton-ticketnumber', classes: ["action", "toolbar"],icon : "ticket", label : "Ticket nummber" },
 
