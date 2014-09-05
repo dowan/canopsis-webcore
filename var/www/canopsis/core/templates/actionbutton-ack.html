@@ -3,7 +3,7 @@
 		{{#if minified}}
 			{{#if this.ack.author}}
 				{{#if this.ack.isAck}}
-					<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Cancel">
+					<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Cancel ack">
 						<button type="button" class="btn btn-default" {{action 'sendEvent' 'ackremove' this}} >
 							{{glyphicon "ban-circle"}}
 						</button>
@@ -11,7 +11,7 @@
 				{{/if}}
 			{{else}}
 				{{#if this.status}}
-					<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Acknowledge">
+					<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Ack">
 						<button type="button" class="btn btn-default" {{action 'sendEvent' 'ack' this}} >
 							{{glyphicon "ok"}}
 						</button>
@@ -19,14 +19,14 @@
 				{{/if}}
 			{{/if}}
 		{{else}}
-			<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Acknowledge">
+			<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Ack">
 				<button type="button" class="btn btn-default" {{action 'sendEvent' 'ack'}} >
-					{{glyphicon "ok"}} {{tr 'Acknowledge'}}
+					{{glyphicon "ok"}} {{tr 'Ack'}}
 				</button>
 			</a>
-			<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Cancel">
+			<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Cancel ack">
 				<button type="button" class="btn btn-default" {{action 'sendEvent' 'ackremove'}} >
-					{{glyphicon "ban-circle"}} {{tr 'Cancel'}}
+					{{glyphicon "ban-circle"}} {{tr 'Cancel ack'}}
 				</button>
 			</a>
 		{{/if}}
