@@ -72,11 +72,6 @@ def account_get_me():
     if record:
         # rights = right_module.get_user_rights(data['_id'])
         rights = {
-            "aclconfig": {"checksum": 1},
-            "authsystems": {"checksum": 1},
-            "enginesconfig": {"checksum": 1},
-            "pluginsconfig": {"checksum": 1},
-            "uisettings": {"checksum": 1},
             "ack": {"checksum":15},
             "1235.user_view": {"checksum":2},
             "cancel.12123": {"checksum":8},
@@ -91,6 +86,12 @@ def account_get_me():
             "list_search": {"checksum": 1},
             "list_filters": {"checksum": 1},
             #actionbuttons
+            "aclconfig": {"checksum": 1},
+            "authsystems": {"checksum": 1},
+            "enginesconfig": {"checksum": 1},
+            "pluginsconfig": {"checksum": 1},
+            "uisettings": {"checksum": 1},
+
             "actionbutton_ack": {"checksum": 1},
             "actionbutton_cancel": {"checksum": 1},
             "actionbutton_changestate": {"checksum": 1},
@@ -104,7 +105,7 @@ def account_get_me():
             "showview_view_selectors": {"checksum": 1},
             "showview_view_jobs": {"checksum": 1},
             "showview_view_filters": {"checksum": 1},
-            "showview_view_service": {"checksum": 1}
+            "showview_view_services": {"checksum": 1}
         }
 
         data = record.dump(json=True)
