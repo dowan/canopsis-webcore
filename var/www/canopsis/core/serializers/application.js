@@ -42,7 +42,6 @@ define([
 			addMessage: function(payload, message, logLevel) {
 				void(logLevel); //TODO not implemented
 
-				console.error('addMessage', message);
 				//FIXME not working in here
 				Canopsis.utils.notification.error(message);
 

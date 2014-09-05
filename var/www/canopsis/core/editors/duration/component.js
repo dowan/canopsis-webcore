@@ -22,72 +22,85 @@ define([
 	'ember',
 	'app/application'
 ], function(Ember, Application) {
+
+	var get = Ember.get,
+	    set = Ember.set;
+
 	Application.ComponentDurationComponent = Ember.Component.extend({
+		init: function () {
+			this._super.apply(this, arguments);
+			console.log('formattedDuration CP');
+			var durationType = get(this, 'selectedDurationType');
 
+			var unformattedDuration = parseInt(get(this, 'content'), 10);
+			var conversionOperand = get(this, 'convertDuration').get(durationType);
+			var res = unformattedDuration / conversionOperand;
 
-		init: function() {
-			this._super();
-
-			this.set('field', {
-				'second' : __('Second'),
-				'minute' :__('Minute'),
-				'hour' : __('Hour'),
-				'day' : __('Day'),
-				'year' : __('Year')
-			});
-
-			this.set('convertDuration', {
-				'second' : 1,
-				'minute' : 60,
-				'hour' : 3600,
-				'day' : 3600 * 24,
-				'year' : 3600 * 24 * 12
-			});
-
-
-			this.set('durationType', [
-				__('Second'),
-				__('Minute'),
-				__('Hour'),
-				__('Day'),
-				__('Year')
-			]);
-
-			console.log('duration values', this.get('convertDuration'), this.get('durationType'));
-
-			//default
-			this.set('selectedDurationType', this.get('field.second'));
-
-			//initialize component with existing integer value if any
-			if (!Ember.isNone(this.get('content'))){
-				var dTypes = this.get('durationType');
-				for (var i=dTypes.length; i>0; i++) {
-					var durationInteger = this.get('content') / this.get('convertDuration')[dTypes[i]];
-					if (durationInteger > 1) {
-						this.set('selectedDurationType', dTypes[i]);
-						this.set('durationValue', durationInteger);
-					}
-				}
-			}
-
+			set(this, 'shownDuration', res);
 		},
 
-		updateContent: function () {
+		shownDurationChanged: function () {
+			console.log('shownDurationChanged');
+			var durationType = get(this, 'selectedDurationType');
+			var conversionOperand = get(this, 'convertDuration').get(durationType);
+			var value = get(this, 'shownDuration');
 
+			set(this, 'content', value * conversionOperand);
+		}.observes('shownDuration'),
 
-			var duration = this.get('durationValue') * convertDuration[this.get('selectedDurationType')];
+		selectedDurationTypeChanged: function () {
+			var durationType = get(this, 'selectedDurationType');
+			var conversionOperand = get(this, 'convertDuration').get(durationType);
 
-			//positives values only
-			if (duration < 0) {
-				duration = 0;
-				this.set('durationValue', 0)
-			}
+			var newValue = get(this, 'shownDuration') * conversionOperand;
+			console.log('selectedDurationTypeChanged', durationType, conversionOperand, newValue);
+			set(this, 'content', newValue);
+		}.observes('selectedDurationType'),
 
-			this.set('content', duration);
+		contentChanged: function () {
+			console.log('formattedDuration CP');
+			var durationType = get(this, 'selectedDurationType');
 
-			console.log('Duration recomputed : ' + duration);
+			var unformattedDuration = parseInt(get(this, 'content'), 10);
+			var conversionOperand = get(this, 'convertDuration').get(durationType);
+			var res = unformattedDuration / conversionOperand;
 
-		}.observes('selectedDurationType', 'durationValue')
+			set(this, 'shownDuration', res);
+
+			return res;
+		}.observes('content'),
+
+		selectedDurationType: 'second',
+
+		selectedDurationLabel: function () {
+			console.log('selectedDurationType');
+			var durationType = get(this, 'selectedDurationType');
+			return get(this, 'field.' + durationType);
+		}.property('selectedDurationType'),
+
+		field: Ember.Object.create({
+			'second' : __('Second'),
+			'minute' :__('Minute'),
+			'hour' : __('Hour'),
+			'day' : __('Day'),
+			'year' : __('Year')
+		}),
+
+		convertDuration: Ember.Object.create({
+			'second' : 1,
+			'minute' : 60,
+			'hour' : 3600,
+			'day' : 3600 * 24,
+			'year' : 3600 * 24 * 12
+		}),
+
+		durationType: [
+			'second',
+			'minute',
+			'hour',
+			'day',
+			'year'
+		]
 	});
 
 	return Application.ComponentDurationComponent;
