@@ -55,7 +55,11 @@ define([
 					}
 				} else {
 					//Filter from form parameter
-					if ($.inArray(keys[i].field, keyFilters) !== -1) {
+					if (keyFilters[keys[i].field]) {
+						console.log('magic keys', keys[i]);
+						if (keyFilters[keys[i].field].readOnly) {
+							keys[i].model.options.readOnly = true;
+						}
 						category.get('keys').push(keys[i]);
 					}
 				}

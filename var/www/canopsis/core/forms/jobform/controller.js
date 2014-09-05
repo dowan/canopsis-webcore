@@ -71,7 +71,7 @@ define([
                 var modelname = xtype[0].toUpperCase() + xtype.slice(1);
                 var model = Application[modelname];
 
-                var params = this.get('formContext.params');
+                var params = this.get('formContext._data.params');
 
                 if(params && params._data.xtype === xtype) {
                     context = params;
