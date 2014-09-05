@@ -82,6 +82,10 @@ define([
 				record.ref_rk = crecord.get('id');
 			}
 
+			if (event_type === this.TYPE_ACK_REMOVE) {
+				record.output = __('Removed ack for event') + ' ' + record.component + ' ' + record.resource;
+			}
+
 			if (event_type === this.TYPE_ACK || event_type === this.TYPE_ACK_REMOVE || event_type === this.TYPE_TICKET) {
 				//ref rk is required by ack engine
 				record.ref_rk = crecord.get('id');

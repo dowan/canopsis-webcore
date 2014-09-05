@@ -48,10 +48,10 @@ define([
 
 				recordWizard.submit.then(function(form) {
 					record = form.get('formContext');
-					widgetController.get('filters').pushObject(record);
+					widgetController.get('custom_filters').pushObject(record);
 					console.log('Custom filter created', record, form);
 					utils.notification.info(__('Custom filter created'));
-					widgetController.set('userParams.filters', widgetController.get('filters'));
+					widgetController.set('userParams.custom_filters', widgetController.get('custom_filters'));
 					widgetController.get('userConfiguration').saveUserConfiguration();
 
 				});
@@ -87,12 +87,12 @@ define([
 				});
 
 				recordWizard.submit.then(function(form) {
-					widgetController.get('filters').removeObject(filter);
+					widgetController.get('custom_filters').removeObject(filter);
 					record = form.get('formContext');
-					widgetController.get('filters').pushObject(record);
+					widgetController.get('custom_filters').pushObject(record);
 					console.log('Custom filter created', record, form);
 					utils.notification.info(__('Custom filter created'));
-					widgetController.set('userParams.filters', widgetController.get('filters'));
+					widgetController.set('userParams.custom_filters', widgetController.get('custom_filters'));
 					widgetController.get('userConfiguration').saveUserConfiguration();
 
 				});
@@ -115,9 +115,9 @@ define([
 				var controller = this;
 
 				recordWizard.submit.then(function(form) {
-					controller.get('filters').removeObject(filter);
+					controller.get('custom_filters').removeObject(filter);
 					utils.notification.info(__('Custom filter removed'));
-					controller.set('userParams.filters', controller.get('filters'));
+					controller.set('userParams.custom_filters', controller.get('custom_filters'));
 					controller.get('userConfiguration').saveUserConfiguration();
 				});
 			},
