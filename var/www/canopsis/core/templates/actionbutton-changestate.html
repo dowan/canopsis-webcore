@@ -1,11 +1,13 @@
 {{#unless controller.findOptions.useLogCollection}}
 	{{#if minified}}
 		{{#if this.state}}
+			{{#if this.ack.isAck}}
 				<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Change criticity">
 					<button type="button" class="btn btn-default" {{action 'sendEvent' 'changestate' this}} >
 						{{glyphicon "retweet"}}
 					</button>
 				</a>
+			{{/if}}
 		{{/if}}
 	{{else}}
 		<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Change criticity">

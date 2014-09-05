@@ -40,6 +40,7 @@ define(['ember', 'utils'], function(Ember, utils) {
 		var render = __(statuses[status]);
 
 		if(status === 4) {
+			//displays cancel information if any onto the status field
 			var value = crecord.get('record.cancel');
 		    var tooltipHtml = [
 		    	'<i>' + __('Date') + '</i> : <br/>',
