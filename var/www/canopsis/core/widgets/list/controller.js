@@ -198,7 +198,7 @@ define([
 					});
 				},
 
-				removeRecord: function(record) {
+				remove: function(record) {
 					console.info('removing record', record);
 					record.deleteRecord();
 					record.save();
@@ -209,7 +209,7 @@ define([
 					console.log("remove action", selected);
 					for (var i = 0; i < selected.length; i++) {
 						var currentSelectedRecord = selected[i];
-						this.send("removeRecord", currentSelectedRecord);
+						this.send("remove", currentSelectedRecord);
 					}
 				}
 			},
