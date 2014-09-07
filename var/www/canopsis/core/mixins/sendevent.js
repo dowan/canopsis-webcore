@@ -18,276 +18,366 @@
 */
 
 define([
-	'ember',
-	'app/application',
-	'utils'
-], function(Ember, Application, utils) {
+    'ember',
+    'app/application',
+    'utils'
+], function(Ember, Application, cutils) {
 
-	var set = Ember.set;
+    Application.sendEventMixin = Ember.Mixin.create({
+        getDataFromRecord: function(event_type, crecord, formRecord) {
+            console.group('getDataFromRecord');
+            console.log('event:', event_type, record);
 
-	/**
-	  Implements methods to send event to api from widget list
-	*/
+            var login = this.get('controllers.login');
 
-	Application.sendEventMixin = Ember.Mixin.create({
+            var record = {
+                authkey: login.get('authkey'),
+                author: login.get('username'),
+                id: crecord.get('id'),
+                connector: crecord.get('connector'),
+                connector_name: crecord.get('connector_name'),
+                event_type: event_type,
+                source_type: crecord.get('source_type'),
+                component: crecord.get('component'),
+                state: crecord.get('state'),
+                state_type: crecord.get('state_type'),
+                crecord_type: event_type
+            };
 
-		TYPE_ACK: 'ack',
-		TYPE_ACK_REMOVE: 'ackremove',
-		TYPE_DECLARETICKET: 'declareticket',
-		TYPE_ASSOCTICKET: 'assocticket',
-		TYPE_CANCEL: 'cancel',
-		TYPE_RECOVERY: 'recovery',
-		TYPE_UNCANCEL: 'uncancel',
-		TYPE_CHANGESTATE: 'changestate',
+            if(record.source_type === 'resource') {
+                record.resource = crecord.get('resource')
+            }
 
-		getDataFromRecord: function (event_type, crecord, formRecord) {
-			//gets the controller instance for login to access some of it s values
-			console.log("getDataFromRecord", crecord);
+            this.processEvent(event_type, 'extract', [record, crecord, formRecord]);
 
-			var login = this.get('controllers.login');
+            console.groupEnd();
 
-			//record instanciation depending on crecord type
-			var record = {
-				authkey : login.get('authkey'),
-				author : login.get('username'),
-				id : crecord.get('id'),
-				connector : crecord.get('connector'),
-				connector_name : crecord.get('connector_name'),
-				event_type : event_type,
-				source_type : crecord.get('source_type'),
-				component : crecord.get('component'),
-				resource : crecord.get('resource'),
-				state : crecord.get('state'),
-				state_type : crecord.get('state_type'),
-				crecord_type: event_type,
-			};
+            return record;
+        },
 
-			//business code taking care of different event types to send information
-			if(event_type === this.TYPE_CHANGESTATE) {
-				//override previous state
-				if (!Ember.isNone(formRecord)) {
-					record.state = formRecord.get('state');
-				}
-				record.event_type = 'check';
-				record.keep_state = true;
-			}
+        submitEvents: function(crecords, record, event_type) {
+            var me = this;
 
+            return new Ember.RSVP.Promise(function(resolve, reject) {
+                var post_events = [];
 
-			if(event_type === this.TYPE_RECOVERY) {
-				set(crecord, 'state', 0);
-				return crecord;
-			}
+                for(var i = 0; i < crecords.length; i++) {
+                    console.log('Event:', record.get('author'), record.get('output'));
 
-			if (event_type === this.TYPE_CANCEL || event_type === this.TYPE_UNCANCEL || event_type === this.TYPE_ACK_REMOVE) {
-				//event cancel or uncancel
-				record.ref_rk = crecord.get('id');
-			}
+                    var post_event = me.getDataFromRecord(event_type, crecords[i], record);
+                    post_event.author = record.get('author');
+                    post_event.output = record.get('output');
 
-			if (event_type === this.TYPE_ACK_REMOVE) {
-				record.output = __('Removed ack for event') + ' ' + record.component + ' ' + record.resource;
-			}
+                    if(!!record.get('ticket')) {
+                        post_event.ticket = record.get('ticket');
+                    }
 
-			if (event_type === this.TYPE_ACK || event_type === this.TYPE_ACK_REMOVE || event_type === this.TYPE_DECLARETICKET || event_type === this.TYPE_ASSOCTICKET) {
-				//ref rk is required by ack engine
-				record.ref_rk = crecord.get('id');
-				//event is cool
-				record.state = 0;
-				//recomputing id with event type
-				record.id = [
-					record.connector,
-					record.connector_name,
-					record.event_type,
-					record.source_type,
-					record.component
-				].join('.');
+                    post_events.push(post_event);
+                }
 
-				if (record.source_type === 'resource') {
-					record.id = [record.id, record.resource].join('.');
-				}
-			}
-			return record;
-		},
+                $.post('/event', {
+                    event: JSON.stringify(post_events)
+                }).then(function(data) {
+                    record.rollback();
+                    record.unloadRecord();
 
+                    setTimeout(function() {
+                        me.refreshContent();
+                    }, 500);
 
-		submitEvents: function (crecords, record, event_type) {
-			//ajax logic, send single or multiple events
-			var post_events = [];
-			for(var i=0; i<crecords.length; i++) {
-				console.log('Event author', record.get('author'),'comment', record.get('output'));
+                    resolve(arguments);
+                }, reject);
+            });
+        },
 
-				var post_event = this.getDataFromRecord(event_type, crecords[i], record);
-				post_event.author = record.get('author');
-				post_event.output = record.get('output');
+        getEventForm: function(event_type, record, crecords, formbuttons) {
+            var wizard = cutils.form.showNew('modelform', record, {
+                title: __('Add event type: ') + event_type,
+                override_labels: {
+                    output: 'comment'
+                },
+                onePageDisplay: true,
+                partials: {
+                    buttons: formbuttons
+                }
+            });
 
-				if(!! record.get('ticket')) {
-					post_event.ticket = record.get('ticket');
-				}
+            var me = this;
+            var rollback = function() {
+                me.startRefresh();
+                record.rollback();
+                record.unloadRecord();
+            };
 
-				post_events.push(post_event);
-			}
-			var listController = this;
-			$.ajax({
-				url: '/event',
-				type: 'POST',
-				data: {'event': JSON.stringify(post_events)},
-				success: function(data) {
-					if (data.success) {
-						console.log('will refresh list content');
-						record.rollback();
-						record.unloadRecord();
-						setTimeout(function() {
-							console.log('refreshing list content');
-							listController.refreshContent();
-						},500);
-					}
-				},
-			});
-		},
+            wizard.submit.then(function(form) {
+                console.log('saveRecord:', record, form);
 
-		filterUsableCrecords: function (event_type, crecords) {
+                record = form.get('formContext');
+                cutils.notification.info(__('event sent: ') + event_type);
+                me.submitEvents(crecords, record, event_type);
 
-			//from selected crecords, filters crecords that can be processed for current event type
+                rollback();
+            }, rollback);
+        },
 
-			var selectedRecords = [];
-			var i;
-			//businbess rules describing how events are filtered depending on their types.
-			//rules are the same as the ack template ones.
-			if (event_type === this.TYPE_ACK) {
-				for(i=0; i<crecords.length; i++) {
-					if (crecords[i].get('state') && !crecords[i].get('ack.isAck') && !crecords[i].get('ack.isCancel')) {
-						selectedRecords.push(crecords[i]);
-					}
-				}
-			}
+        getRoutingKey: function(record) {
+            var rk = [
+                record.connector,
+                record.connector_name,
+                record.event_type,
+                record.source_type,
+                record.component
+            ].join('.');
 
-			if (event_type === this.TYPE_ACK_REMOVE) {
-				for(i=0; i<crecords.length; i++) {
-					if (crecords[i].get('ack.author') && crecords[i].get('ack.isAck')) {
-						selectedRecords.push(crecords[i]);
-					}
-				}
-			}
+            if (record.source_type === 'resource') {
+                rk = [record.id, record.resource].join('.');
+            }
 
-			if (event_type === this.TYPE_CANCEL) {
-				for(i=0; i<crecords.length; i++) {
-					if (crecords[i].get('ack.isAck')) {
-						selectedRecords.push(crecords[i]);
-					}
-				}
-			}
+            return rk;
+        },
 
-			if (event_type === this.TYPE_UNCANCEL) {
-				for(i=0; i<crecords.length; i++) {
-					if (crecords[i].get('ack.isCancel')) {
-						selectedRecords.push(crecords[i]);
-					}
-				}
-			}
+        getDisplayRecord: function(event_type, crecord) {
+            var store = this.get('widgetDataStore');
 
-			if (event_type === this.TYPE_CHANGESTATE) {
-				for(i=0; i<crecords.length; i++) {
-					if (crecords[i].get('state')) {
-						selectedRecords.push(crecords[i]);
-					}
-				}
-			}
+            var recordData = this.getDataFromRecord(event_type, crecord);
+            var record = store.createRecord(event_type, recordData);
 
+            return record;
+        },
 
-			return selectedRecords;
-		},
+        filterUsableCrecords: function(event_type, crecords) {
+            var selected = [];
 
-		actions: {
-			sendEvent: function(event_type, crecord) {
-				//Gets information from record and then send event accordingly depending on event type
-				this.stopRefresh();
+            var filter = this.event_filters[event_type];
 
-				var sendEventMixin = this;
+            for(var i = 0; i < crecords.length; i++) {
+                var record = crecords[i];
 
-				var crecords = [];
-				var display_crecord = crecord;
+                var topush = this.processEvent(event_type, 'filter', [record]);
 
-				if (!Ember.isNone(crecord)) {
-					crecords.push(crecord);
-				} else {
-					crecords = this.get('widgetData.content').filterBy('isSelected', true);
-					crecords = this.filterUsableCrecords(event_type, crecords);
-					console.log('Filtered crecord list', crecords);
-					if (!crecords.length) {
-						utils.notification.info(__('No event matches for operation on ') + event_type);
-						return;
-					} else {
-						crecord = crecords[0];
-					}
-				}
+                if(topush) {
+                    selected.push(record);
+                }
+            }
 
-				display_crecord = this.getDataFromRecord(event_type, crecord);
+            return selected;
+        },
 
-				var record;
-				if(event_type !== this.TYPE_RECOVERY) {
-					record = this.get("widgetDataStore").createRecord(event_type, display_crecord);
-				} else {
-					record = crecord;
-				}
+        event_processors: {
+            ack: {
+                extract: function(record, crecord, formRecord) {
+                    record.ref_rk = crecord.get('id');
+                    record.state = 0;
+                    record.id = this.getRoutingKey(record);
+                };
 
-				var formButtons;
-				if(event_type === this.TYPE_RECOVERY) {
-					var recordToSend = record;
-					this.submitEvents([recordToSend], record, event_type);
-				} else if (event_type === this.TYPE_UNCANCEL || event_type === this.TYPE_ACK_REMOVE) {
-						console.log('record going to be saved', record);
+                filter: function(record) {
+                    return (record.get('state') && !record.get('ack.isAck') && !record.get('ack.isCancel'));
+                },
 
-						//generated data by user form fill
-						utils.notification.info(event_type + ' ' +__('event sent'));
-						//UI repaint taking care of new sent values
-						this.submitEvents(crecords, record, event_type);
-				} else {
-					if (event_type === this.TYPE_ACK) {
-						formButtons = ["formbutton-cancel", "formbutton-ack", "formbutton-ackandproblem"];
-					} else if (event_type === this.TYPE_DECLARETICKET) {
-						formButtons = ["formbutton-cancel", "formbutton-incident"];
-					} else if (event_type === this.TYPE_CANCEL) {
-						formButtons = ["formbutton-cancel", "formbutton-submit"];
-					} else if (event_type === this.TYPE_CHANGESTATE) {
-						formButtons = ["formbutton-cancel", "formbutton-submit"];
-					}
+                handle: function(crecords) {
+                    var record = this.getDisplayRecord(crecords[0]);
 
-					//generating form from record model
-					var recordWizard = utils.forms.showNew('modelform', record, {
-						title: 'Add event type : ' + event_type,
-						override_labels: {output: 'comment'},
-						onePageDisplay: true,
-						partials: {
-							buttons: formButtons
-						},
-					});
+                    var formbuttons = [
+                        'formbutton-cancel',
+                        'formbutton-ack',
+                        'formbutton-ackandproblem'
+                    ];
 
-					//submit form and it s callback
-					recordWizard.submit.then(function(form) {
-						console.log('record going to be saved', record, form);
+                    this.getEventForm('ack', record, crecords, formbuttons);
+                }
+            },
 
-						//generated data by user form fill
-						record = form.get('formContext');
+            ackremove: {
+                extract: function(record, crecord, formRecord) {
+                    record.output = __('Removed ack for event:');
+                    record.output += ' ' + record.component;
 
-						utils.notification.info(event_type + ' ' +__('event sent'));
-						//UI repaint taking care of new sent values
-						sendEventMixin.submitEvents(crecords, record, event_type);
+                    if(record.source_type === 'resource') {
+                        record.output += ' ' + record.resource;
+                    }
 
-					}).fail(function () {
-						utils.notification.warning(__('Unable to send event'));
-						sendEventMixin.startRefresh();
-						record.rollback();
-						record.unloadRecord();
-					}).then(function () {
-						sendEventMixin.startRefresh();
-						record.rollback();
-						record.unloadRecord();
-					});
-				}
+                    record.ref_rk = crecord.get('id');
+                    record.state = 0;
+                    record.id = this.getRoutingKey(record);
+                },
 
-			},
+                filter: function(record) {
+                    return (record.get('ack.author') && record.get('ack.isAck'));
+                },
 
-		}
-	});
+                handle: function(crecords) {
+                    var record = this.getDisplayRecord(crecords[0]);
 
-	return Application.sendEventMixin;
+                    cutils.notification.info(__('event "ackremove" sent'));
+                    this.submitEvents(crecords, record, 'ackremove');
+                }
+            },
+
+            declareticket: {
+                extract: function(record, crecord, formRecord) {
+                    record.ref_rk = crecord.get('id');
+                    record.state = 0;
+                    record.id = this.getRoutingKey(record);
+                },
+
+                filter: function(record) {
+                    return (record.get('ack.isAck'));
+                },
+
+                handle: function(crecords) {
+                    var record = this.getDisplayRecord(crecords[0]);
+
+                    var formbuttons = [
+                        'formbutton-cancel',
+                        'formbutton-incident'
+                    ];
+
+                    this.getEventForm('declareticket', record, crecords, formbuttons);
+                }
+            },
+
+            assocticket: {
+                extract: function(record, crecord, formRecord) {
+                    record.ref_rk = crecord.get('id');
+                    record.state = 0;
+                    record.id = this.getRoutingKey(record);
+                },
+
+                filter: function(record) {
+                    return (record.get('ack.isAck'));
+                },
+
+                handle: function(crecords) {
+                    console.log('Not implemented: assocticket');
+                }
+            },
+
+            cancel: {
+                extract: function(record, crecord, formRecord) {
+                    record.ref_rk = crecord.get('id');
+                },
+
+                filter: function(record) {
+                    return (record.get('ack.isAck'));
+                },
+
+                handle: function(crecords) {
+                    var record = this.getDisplayRecord(crecords[0]);
+
+                    var formbuttons = [
+                        'formbutton-cancel',
+                        'formbutton-submit'
+                    ];
+
+                    this.getEventForm('cancel', record, crecords, formbuttons);
+                }
+            },
+
+            recovery: {
+                extract: function(record, crecord, formRecord) {
+                    crecord.set('state', 0);
+                },
+
+                filter: function(record) {
+                    return false;
+                },
+
+                handle: function(crecords) {
+                    var record = crecords[0];
+                    this.submitEvents([record], record, 'recovery');
+                }
+            },
+
+            uncancel: {
+                extract: function(record, crecord, formRecord) {
+                    record.ref_rk = crecord.get('id');
+                },
+
+                filter: function(record) {
+                    return (record.get('ack.isCancel'));
+                },
+
+                handle: function(crecords) {
+                    var record = this.getDisplayRecord(crecords[0]);
+
+                    cutils.notification.info(__('event "uncancel" sent'));
+                    this.submitEvents(crecords, record, 'uncancel');
+                }
+            },
+
+            changestate: {
+                extract: function(record, crecord, formRecord) {
+                    if(!Ember.isNone(formRecord)) {
+                        record.state = formRecord.get('state');
+                    }
+
+                    record.event_type = 'check';
+                    record.keep_state = true;
+                },
+
+                filter: function(record) {
+                    return (record.get('state'));
+                },
+
+                handle: function(crecords) {
+                    var record = this.getDisplayRecord(crecords[0]);
+
+                    var formbuttons = [
+                        'formbutton-cancel',
+                        'formbutton-submit'
+                    ];
+
+                    this.getEventForm('changestate', record, crecords, formbuttons);
+                }
+            }
+        },
+
+        hasEventProcessorForType: function(event_type) {
+            return (this.event_processors[event_type] !== undefined);
+        },
+
+        processEvent: function(event_type, fname, args) {
+            if(this.hasEventProcessorForType(event_type)) {
+                var callback = this.event_processors[event_type][fname];
+
+                return callback.apply(this, args);
+            }
+        },
+
+        actions: {
+            sendEvent: function(event_type, crecord) {
+                console.group('sendEvent:');
+
+                this.stopRefresh();
+
+                var crecords = [];
+                
+                if (!Ember.isNone(crecord)) {
+                    console.log('event:', event_type, crecord);
+                    crecords.push(crecord);
+                }
+                else {
+                    var content = this.get('widgetData.content');
+                    var selected = content.filterBy('isSelected', true);
+
+                    crecords = this.filterUsableCrecords(event_type, selected);
+
+                    console.log('events:', event_type, crecords);
+
+                    if(!crecords.length) {
+                        cutils.notification.warning(
+                            'No matching event found for event:',
+                            event_type
+                        );
+                        return;
+                    }
+                }
+
+                this.processEvent(event_type, 'handle', [crecords]);
+
+                console.groupEnd();
+            }
+        }
+    });
 });
