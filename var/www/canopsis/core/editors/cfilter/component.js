@@ -32,8 +32,8 @@ define([
 
 			set(this, 'onlyAllowRegisteredIndexes', get(Canopsis, 'conf.frontendConfig.cfilter_allow_only_optimized_filters'));
 
-			set(Canopsis, "tooltips.unlockIndexes", 'Unlock indexes. This might lead to huge performance issues!');
-			set(Canopsis, "tooltips.lockIndexes", 'Lock indexes');
+			set(Canopsis, 'tooltips.unlockIndexes', 'Unlock indexes. This might lead to huge performance issues!');
+			set(Canopsis, 'tooltips.lockIndexes', 'Lock indexes');
 
 			if(get(this, 'content') !== null && get(this, 'content') !== undefined) {
 				this.set('cfilter_serialized', get(this, 'content'));
@@ -47,7 +47,7 @@ define([
 		currentClauseIndex: -1,
 
 		cfilter_serialized : Ember.computed.alias('content'),
-		viewTabColumns: [{ name:"component", title:"component"},{ name:"resource", title:"resource"}],
+		viewTabColumns: [{ name:'component', title:'component'},{ name:'resource', title:'resource'}],
 
 		indexes : indexesManager,
 		selectedIndexName : 'event',
@@ -67,26 +67,26 @@ define([
 		indexesTree: {
 			'component': {
 				'_metas': {
-					'name': "Component"
+					'name': 'Component'
 				},
 				'resource': {
 					'_metas': {
-						'name': "Resource",
+						'name': 'Resource',
 						'final':true
 					}
 				}
 			},
 			'connector': {
 				'_metas': {
-					'name': "connector"
+					'name': 'connector'
 				},
 				'component': {
 					'_metas': {
-						'name': "Component"
+						'name': 'Component'
 					},
 					'resource': {
 						'_metas': {
-							'name': "Resource",
+							'name': 'Resource',
 							'final':true
 						}
 					}
@@ -174,7 +174,7 @@ define([
 
 		}.property(),
 
-		classNames: ["cfilter"],
+		classNames: ['cfilter'],
 
 		operators: [
 			{
@@ -182,31 +182,31 @@ define([
 				value: '$eq'
 			},
 			{
-				label: "!=",
+				label: '!=',
 				value: '$ne'
 			},
 			{
-				label: "<",
+				label: '<',
 				value: '$lt'
 			},
 			{
-				label: ">",
+				label: '>',
 				value: '$gt'
 			},
 			{
-				label: "in",
+				label: 'in',
 				value: '$in'
 			},
 			{
-				label: "not in",
+				label: 'not in',
 				value: '$nin'
 			},
 			{
-				label: "regex",
+				label: 'regex',
 				value: '$regex'
 			},
 			{
-				label: "!regex",
+				label: '!regex',
 				value: '$notregex'
 			}
 		],
@@ -271,8 +271,8 @@ define([
 
 					if (field.key !== undefined) {
 						var item = {};
-						console.log("field", field);
-						var operator = "$eq";
+						console.log('field', field);
+						var operator = '$eq';
 
 						if (field.operator !== undefined) {
 							operator = this.getMongoOperatorForLabel(field.operator);
@@ -295,7 +295,11 @@ define([
 				}
 			}
 
-			mfilter = JSON.stringify(mfilter, null, '    ');
+			if(mfilter.$or.length === 0) {
+				mfilter = '{}';
+			}
+
+			mfilter = JSON.stringify(mfilter, null, '');
 			return mfilter;
 		},
 
