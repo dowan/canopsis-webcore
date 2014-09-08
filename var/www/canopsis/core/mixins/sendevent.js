@@ -169,7 +169,7 @@ define([
                     record.ref_rk = crecord.get('id');
                     record.state = 0;
                     record.id = this.getRoutingKey(record);
-                };
+                },
 
                 filter: function(record) {
                     return (record.get('state') && !record.get('ack.isAck') && !record.get('ack.isCancel'));
