@@ -77,10 +77,10 @@ define([
 			},
 
 			abort: function() {
-				if (this.formParent !== undefined) {
+				if(this.formParent !== undefined) {
 					this.formParent.send('abort', arguments);
 				} else {
-					console.log("reject form submit");
+					console.log('rejecting submit promise');
 					this.submit.reject();
 				}
 			}

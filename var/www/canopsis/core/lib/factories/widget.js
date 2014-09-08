@@ -91,10 +91,10 @@ define([
 
 		WidgetsManager.all.pushObject(registryEntry);
 
+		console.groupEnd();
+
 		return Application[widgetControllerName];
 	}
-
-	console.groupEnd();
 
 	return Widget;
 });
