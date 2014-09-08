@@ -19,16 +19,9 @@
 
 var templates = [
     { name: 'application' },
-    { name: 'item' },
     { name: 'index' },
     { name: 'notifications' },
-    { name: 'containerwidget' },
-    { name: 'containervbox' },
-    { name: 'containerhbox' },
-    { name: 'container2' },
-    { name: 'crecordform' },
     { name: 'formwrapper' },
-    { name: 'menu' },
     { name: 'widgettitlebar' },
     { name: 'userview' },
     { name: 'widget' },
