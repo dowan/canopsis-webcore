@@ -23,7 +23,7 @@ define([
 	'app/application',
 	'app/lib/utils/forms',
 	'app/controller/form',
-	'app/lib/loaders/schema-manager',
+	'app/lib/loaders/schemas',
 ], function($, Ember, Application, formUtils) {
 	var eventedController = Ember.Controller.extend(Ember.Evented);
 	/*

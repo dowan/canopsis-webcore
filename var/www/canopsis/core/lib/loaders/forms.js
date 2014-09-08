@@ -22,7 +22,7 @@
 
 var formsTemplates = [
 	'modelform',
-	'widgetform',
+	'enumchooserform',
 	'arrayitemform',
 	'jobform',
 	'taskform',

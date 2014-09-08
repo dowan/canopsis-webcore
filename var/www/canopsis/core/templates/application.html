@@ -21,14 +21,9 @@
 						<!--Displays schema list-->
 						{{#if Canopsis.conf.DISPLAY_SCHAMA_MANAGER}}
 							<li class="dropdown">
-								<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+								<a class="dropdown-toggle" {{action addNewModelInstance}}>
 									{{glyphicon 'upload'}}
 								</a>
-								<ul class="dropdown-menu">
-								{{#each type in Canopsis.Application.available_types}}
-									<li><a class="handle" {{action 'addModelInstance' type}}>{{type}}</a></li>
-								{{/each}}
-								</ul>
 							</li>
 						{{/if}}
 

@@ -20,7 +20,7 @@
 define([
 	'ember',
 	'app/application',
-	'app/lib/loaders/schema-manager',
+	'app/lib/loaders/schemas',
 	'app/view/formwrapper'
 ], function(Ember, Application) {
 	var eventedController = Ember.Controller.extend(Ember.Evented);

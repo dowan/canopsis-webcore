@@ -22,7 +22,7 @@ define([
     'app/application',
     'app/controller/form',
     'app/mixins/inspectableitem',
-    'app/lib/loaders/schema-manager'
+    'app/lib/loaders/schemas'
 ], function(Ember, Application, FormController, InspectableitemMixin) {
 
     Application.CrecordformController = FormController.extend(InspectableitemMixin, {

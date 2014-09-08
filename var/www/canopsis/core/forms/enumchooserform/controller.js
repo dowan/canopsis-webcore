@@ -21,19 +21,49 @@ define([
 	'ember',
 	'app/application',
 	'app/lib/factories/form',
-	'app/lib/utils/forms',
+	'utils',
 	'app/lib/loaders/schemas',
 	'app/controller/journal'
-], function(Ember, Application, FormFactory, formUtils) {
+], function(Ember, Application, FormFactory, utils) {
 
-	FormFactory('arrayitemform', {
+	FormFactory('enumchooserform', {
 		needs: ['journal'],
 
-		title: "configure arrayitem",
+		title: Ember.required(),
+
+		classifiedItemList: Ember.required(),
+
+		baseItemLabel: Ember.required(),
 
 		parentContainerWidget: Ember.required(),
-		parentUserview: Ember.required()
+		parentUserview: Ember.required(),
+
+		actions: {
+			show: function() {
+				this._super();
+			},
+
+			submit: function(newWidgets) {
+
+				this.get('controllers.journal').send('publish', 'create', 'widget');
+
+				this._super.apply(this, arguments);
+			},
+
+			selectItem: function(elementName) {
+				this.onSelectItem.apply(this, arguments);
+			}
+		},
+
+		onSelectItem: function(elementName) {
+			//TODO manage with utils.problems.overrideNeeded()
+			console.warn("An override of onSelectItem was not provided to the form", this);
+		},
+
+		partials: {
+			buttons: []
+		}
 	});
 
-	return Application.ArrayitemformController;
+	return Application.WidgetformController;
 });

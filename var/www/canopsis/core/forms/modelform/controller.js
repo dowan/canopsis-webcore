@@ -24,7 +24,7 @@ define([
 	'app/mixins/inspectableitem',
 	'app/mixins/validation',
 	'app/lib/utils/slug',
-	'app/lib/loaders/schema-manager'
+	'app/lib/loaders/schemas'
 ], function(Ember, Application, FormFactory, InspectableitemMixin, ValidationMixin, slugify) {
 	var set = Ember.set,
 		get = Ember.get;

@@ -21,7 +21,7 @@ define([
 	'app/application',
 	'app/controller/widget',
 	"app/lib/widgetsmanager",
-	"app/lib/loaders/schema-manager"
+	"app/lib/loaders/schemas"
 ], function(Application, WidgetController, WidgetsManager) {
 
 	/**

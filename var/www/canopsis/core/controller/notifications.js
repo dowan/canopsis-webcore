@@ -21,7 +21,7 @@ define([
 	'ember',
 	'app/application',
 	'utils',
-	'app/lib/loaders/schema-manager'
+	'app/lib/loaders/schemas'
 ], function(Ember, Application, utils) {
 
 	Application.NotificationsRoute = Ember.Route.extend({
