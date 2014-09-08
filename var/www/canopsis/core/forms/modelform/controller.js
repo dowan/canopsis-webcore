@@ -64,7 +64,7 @@ define([
 					}
 				}
 			}
-			return category
+			return category;
 		},
 
 		categories: function(){

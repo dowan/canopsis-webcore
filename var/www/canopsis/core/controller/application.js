@@ -30,7 +30,7 @@ define([
 	var get = Ember.get,
 		set = Ember.set;
 
-	Application.ApplicationController = Ember.ObjectController.extend({
+	var controller = Ember.ObjectController.extend({
 		needs: ['login'],
 
 		utils: utils,
@@ -320,6 +320,8 @@ define([
 
 	});
 
+	Application.ApplicationController = controller;
+
 	void (utils);
-	return Application.ApplicationController;
+	return controller;
 });

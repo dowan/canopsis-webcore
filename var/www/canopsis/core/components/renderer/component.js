@@ -23,7 +23,7 @@ define([
 ], function(Ember, Application) {
 	var get = Ember.get;
 
-	Application.ComponentRendererComponent = Ember.Component.extend({
+	var component = Ember.Component.extend({
 		tagName: 'span',
 
 		value: function() {
@@ -54,5 +54,7 @@ define([
 
 	});
 
-	return Application.ComponentEditorComponent;
+	Application.ComponentRendererComponent = component;
+
+	return component;
 });

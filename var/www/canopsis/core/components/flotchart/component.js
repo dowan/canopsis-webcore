@@ -18,55 +18,58 @@
 */
 
 define([
-    'jquery',
-    'ember',
-    'app/application',
-    'app/lib/utils/hash',
-    'app/lib/wrappers/flotchart'
+	'jquery',
+	'ember',
+	'app/application',
+	'app/lib/utils/hash',
+	'app/lib/wrappers/flotchart'
 ], function($, Ember, Application, hashUtils) {
-    Application.ComponentFlotchartComponent = Ember.Component.extend({
-        tagName: 'div',
-        classNames: 'flotchart',
 
-        options: undefined,
-        series: undefined,
+	var component = Ember.Component.extend({
+		tagName: 'div',
+		classNames: 'flotchart',
 
-        onDataUpdate: function() {
-            if(this.chart !== undefined) {
-                this.send('renderChart');
-            }
-        }.observes('series'),
+		options: undefined,
+		series: undefined,
 
-        init: function() {
-            this._super(arguments);
-        },
+		onDataUpdate: function() {
+			if(this.chart !== undefined) {
+				this.send('renderChart');
+			}
+		}.observes('series'),
 
-        didInsertElement: function() {
-            console.group('createChart');
+		init: function() {
+			this._super(arguments);
+		},
 
-            var plotcontainer = this.$();
+		didInsertElement: function() {
+			console.group('createChart');
 
-            var series = this.get('series');
-            var options = this.get('options');
-            console.log('container:', plotcontainer);
-            console.log('series:', series);
-            console.log('options:', options);
+			var plotcontainer = this.$();
 
-            this.chart = $.plot(plotcontainer, series, options);
+			var series = this.get('series');
+			var options = this.get('options');
+			console.log('container:', plotcontainer);
+			console.log('series:', series);
+			console.log('options:', options);
 
-            this.send('renderChart');
+			this.chart = $.plot(plotcontainer, series, options);
 
-            console.groupEnd();
-        },
+			this.send('renderChart');
 
-        actions: {
-            renderChart: function() {
-                console.log('Render chart');
-                this.chart.setupGrid();
-                this.chart.draw();
-            }
-        }
-    });
+			console.groupEnd();
+		},
 
-    return Application.ComponentFlotchartComponent;
+		actions: {
+			renderChart: function() {
+				console.log('Render chart');
+				this.chart.setupGrid();
+				this.chart.draw();
+			}
+		}
+	});
+
+	Application.ComponentFlotchartComponent = component;
+
+	return component;
 });

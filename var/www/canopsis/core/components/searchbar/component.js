@@ -34,7 +34,7 @@ define([
 	 *
 	 * This component is a WIP, it only supports basic search at the moment
 	 */
-	Application.ComponentSearchbarComponent = Ember.Component.extend({
+	var component = Ember.Component.extend({
 		showSearchOptions: false,
 		tagName: 'span',
 
@@ -80,5 +80,7 @@ define([
 		}.property('elementId')
     });
 
-	return Application.ComponentEditorComponent;
+	Application.ComponentSearchbarComponent = component;
+
+	return component;
 });

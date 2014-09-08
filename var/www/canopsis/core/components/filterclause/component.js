@@ -22,7 +22,7 @@ define([
 	'app/application'
 ], function(Ember, Application) {
 
-	Application.ComponentFilterclauseComponent = Ember.Component.extend({
+	var component = Ember.Component.extend({
 		tagName: 'span',
 		classNames: 'filterclause',
 
@@ -148,5 +148,7 @@ define([
 		}
 	});
 
-	return Application.ComponentFilterclauseComponent;
+	Application.ComponentFilterclauseComponent = component;
+
+	return component;
 });

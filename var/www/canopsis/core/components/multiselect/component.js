@@ -74,7 +74,7 @@ define([
 
 		getNamesArray: function(selections) {
 			var selectionsName = [];
-			for ( i=0 ; i < selections.length ; i++ ) {
+			for ( var i = 0, l = selections.length ; i < l ; i++ ) {
 				var selection = selections[i];
 					selectionsName.push( selection.name );
 			}

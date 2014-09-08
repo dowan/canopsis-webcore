@@ -17,8 +17,3 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember', 'app/view/menu'], function(Ember, MenuView) {
-
-	Ember.Handlebars.helper('menu', MenuView);
-
-});

@@ -24,7 +24,7 @@ define([
 	'app/lib/loaders/schemas'
 ], function(Ember, Application, InspectableItem) {
 
-	Application.CrecordController = Ember.ObjectController.extend(InspectableItem, {
+	var controller = Ember.ObjectController.extend(InspectableItem, {
 		actions: {
 			showEditForm: function() {
 				var crecord_type = this.get("model.constructor.typeKey");
@@ -75,5 +75,7 @@ define([
 		}.property('widgetData')
 	});
 
-	return Application.CrecordController;
+	Application.CrecordController = controller;
+
+	return controller;
 });

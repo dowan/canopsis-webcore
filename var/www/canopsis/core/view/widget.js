@@ -124,12 +124,12 @@ define([
 
 			if (Application[controllerName] !== undefined) {
 				//var mixinClass = Application.SearchableMixin
-				 widgetController =  Application[controllerName].createWithMixins(Ember.Evented, {
+				widgetController =  Application[controllerName].createWithMixins(Ember.Evented, {
 					content: widget,
 					target: this.get('target')
 				});
 			} else {
-				 widgetController =  Application.WidgetController.createWithMixins(Ember.Evented, {
+				widgetController =  Application.WidgetController.createWithMixins(Ember.Evented, {
 					content: widget,
 					target: this.get('target')
 				});
@@ -137,11 +137,11 @@ define([
 
 			var mixinsName = widget._data.mixins;
 
-			if (  mixinsName  ){
+			if (mixinsName) {
 				for (var i = 0 ; i < mixinsName.length ; i++ ){
 					var currentName =  mixinsName[i];
 					var currentMixin = Application.SearchableMixin.all[currentName];
-					if ( currentMixin ){
+					if (currentMixin){
 						currentMixin.apply(widgetController);
 					}
 				}

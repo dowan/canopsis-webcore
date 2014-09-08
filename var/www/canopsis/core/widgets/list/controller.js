@@ -63,7 +63,7 @@ define([
 		}
 	});
 
-	var widget = WidgetFactory('list',
+	var widget = new WidgetFactory('list',
 		{
 			needs: ['login'],
 			viewMixins: [

@@ -20,36 +20,35 @@
 define([
 	'ember',
 	'app/application',
-	'app/mixins/arraymixin',
-	'app/view/crecords'
+	'app/mixins/arraymixin'
 ], function(Ember, Application) {
 
 
-    Application.ArrayToCollectionControlView = Ember.CollectionView.extend(Application.ArrayMixin,{
+	Application.ArrayToCollectionControlView = Ember.CollectionView.extend(Application.ArrayMixin,{
 
 	itemViewClass: Ember.View.extend({
-	    tagName: '',
-	    template: Ember.Handlebars.compile(" <button  data-hint={{ unbound template.label}} {{action 'modify' template target='view.parentView' }} {{bind-attr class='template.CSSclass'}}  > {{glyphicon template.icon}}   </button> ")
+		tagName: '',
+		template: Ember.Handlebars.compile(' <button  data-hint={{ unbound template.label}} {{action "modify" template target="view.parentView" }} {{bind-attr class="template.CSSclass"}}  > {{glyphicon template.icon}}   </button> ')
 	}),
 
 	/*
 	 *  modify template's CSSClass and value (called when button is pressed).
 	 */
 	actions: {
-	    modify: function(template) {
-			var value = this.get("value");
+		modify: function(template) {
+			var value = this.get('value');
 			var isPresent = this.checkIfAContainB(value,template);
-			console.log("isPresent = ",isPresent, " value = ",value," and template =", template);
+			console.log('isPresent = ',isPresent, ' value = ',value,' and template =', template);
 
 			if (!isPresent) {
-			    value.pushObject(template.name);
+				value.pushObject(template.name);
 			} else {
-			    value.removeObject(template.name);
+				value.removeObject(template.name);
 			}
 			this.changeCssClass(template,value);
-	    }
+		}
 	}
-    });
-    return Application.ArrayToControlView;
+	});
+	return Application.ArrayToControlView;
 
 });
