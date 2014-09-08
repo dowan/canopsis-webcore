@@ -19,8 +19,7 @@
 
 define([
 	'app/application',
-	'app/adapters/application',
-	'app/serializers/event',
+	'app/adapters/application'
 ], function(Application, ApplicationAdapter) {
 	var adapter = ApplicationAdapter.extend({
 
