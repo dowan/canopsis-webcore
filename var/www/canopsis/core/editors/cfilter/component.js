@@ -514,9 +514,9 @@ define([
 					var useIndexes = get(this, 'onlyAllowRegisteredIndexes');
 
 					//console.log(' + current clause was bidule', wasFinalized, 'use index', useIndexes);
-					//if (useIndexes || !wasFinalized) {
+					if (useIndexes || !wasFinalized) {
 						this.pushEmptyClause(currentClause);
-					//}
+					}
 				}
 
 				console.log('clauses addAndClause', clauses);

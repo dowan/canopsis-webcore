@@ -167,8 +167,9 @@ define([
 						filterFieldByKey: {
 							'firstname': {readOnly : true},
 							'lastname': {readOnly : true},
-							'mail': {readOnly : true},
-							'authkey': {readOnly : true}
+							'mail': true,
+							'authkey': {readOnly : true},
+							'shadowpasswd': true
 						}
 					});
 
