@@ -39,6 +39,7 @@ define([
 			return this.ajax(this.buildURL(type.typeKey, record.id), "POST", { data: data });
 		}
 	});
+
 	Application.ConnectorAdapter = adapter;
 	Application.NagiosAdapter = adapter;
 

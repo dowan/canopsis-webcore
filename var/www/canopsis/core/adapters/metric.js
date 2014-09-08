@@ -21,7 +21,9 @@ define([
 	'app/application',
 	'app/adapters/entity'
 ], function(Application, EntityAdapter) {
-	Application.MetricAdapter = EntityAdapter.extend({});
+	var adapter = EntityAdapter.extend({});
 
-	return Application.MetricAdapter;
+	Application.MetricAdapter = adapter;
+
+	return adapter;
 });

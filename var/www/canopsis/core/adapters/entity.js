@@ -24,7 +24,7 @@ define([
 	'app/adapters/application'
 ], function(Ember, DS, Application, ApplicationAdapter ) {
 
-	Application.EntityAdapter = ApplicationAdapter.extend({
+	var adapter = ApplicationAdapter.extend({
 		gen_resolve: function(callback) {
 			return function(data) {
 				for (var i = 0; i < data.data.length; i++) {
@@ -141,5 +141,7 @@ define([
 		}
 	});
 
-	return Application.EntityAdapter;
+	Application.EntityAdapter = adapter;
+
+	return adapter;
 });

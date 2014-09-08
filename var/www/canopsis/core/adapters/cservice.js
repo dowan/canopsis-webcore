@@ -18,35 +18,37 @@
 */
 
 define([
-        'app/application',
-        'app/adapters/application',
-        'utils',
-        'app/lib/loaders/schemas'
+		'app/application',
+		'app/adapters/application',
+		'utils',
+		'app/lib/loaders/schemas'
 ], function(Application, ApplicationAdapter, cutils) {
 
-    console.group('CserviceAdapter');
+	console.group('CserviceAdapter');
 
-    Application.CserviceAdapter = ApplicationAdapter.extend({
-        buildURL: function(type, id) {
-            type = 'cservice';
+	var baseAdapter = ApplicationAdapter.extend({
+		buildURL: function(type, id) {
+			type = 'cservice';
 
-            return this._super(type, id);
-        }
-    });
+			return this._super(type, id);
+		}
+	});
 
-    for(var sname in cutils.schemaList) {
-        if(sname.indexOf('Crecord.cservice.') === 0) {
-            var xtype = sname.slice('Crecord.cservice.'.length);
-            var modelname = xtype[0].toUpperCase() + xtype.slice(1);
+	for(var sname in cutils.schemaList) {
+		if(sname.indexOf('Crecord.cservice.') === 0) {
+			var xtype = sname.slice('Crecord.cservice.'.length);
+			var modelname = xtype[0].toUpperCase() + xtype.slice(1);
 
-            var adapterName = modelname + 'Adapter';
-            console.log('Add adapter:', adapterName);
+			var adapterName = modelname + 'Adapter';
+			console.log('Add adapter:', adapterName);
 
-            Application[adapterName] = Application.CserviceAdapter.extend({});
-        }
-    }
+			Application[adapterName] = baseAdapter.extend({});
+		}
+	}
 
-    console.groupEnd();
+	console.groupEnd();
 
-    return Application.CserviceAdapter;
+	Application.CserviceAdapter = baseAdapter;
+
+	return baseAdapter;
 });

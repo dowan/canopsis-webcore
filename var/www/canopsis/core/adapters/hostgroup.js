@@ -21,7 +21,9 @@ define([
 	'app/application',
 	'app/adapters/entity'
 ], function(Application, EntityAdapter) {
-	Application.HostgroupAdapter = EntityAdapter.extend({});
+	var adapter = EntityAdapter.extend({});
 
-	return Application.HostgroupAdapter;
+	Application.HostgroupAdapter = adapter;
+
+	return adapter;
 });
