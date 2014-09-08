@@ -156,6 +156,12 @@ def account_setConfig(_id):
 
     logger.debug(" + setConfig '%s' => '%s'" % (_id, value))
 
+    if account.external:
+        message = "Unable to update account because user uses an external account management"
+        logger.warning(message)
+        return {'total': 0, 'success': False, 'data': [{'message': message}]}
+
+
     if value:
         if _id == "shadowpasswd":
             account.shadowpasswd = value
