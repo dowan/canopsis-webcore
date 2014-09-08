@@ -59,6 +59,8 @@ define([
 						groups.push(account.groups[i].slice('group.'.length));
 					}
 
+					controller.set('firstname', account.firstname);
+					controller.set('lastname', account.lastname);
 					controller.set('groups', groups);
 					controller.set('rights', account.rights);
 					controller.set('mail', account.mail);

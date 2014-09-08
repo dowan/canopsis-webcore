@@ -148,8 +148,6 @@ define([
 		filterUsableCrecords: function(event_type, crecords) {
 			var selected = [];
 
-			var filter = this.event_filters[event_type];
-
 			for(var i = 0; i < crecords.length; i++) {
 				var record = crecords[i];
 
@@ -207,7 +205,7 @@ define([
 				},
 
 				handle: function(crecords) {
-					var record = this.getDisplayRecord(crecords[0]);
+					var record = this.getDisplayRecord('ackremove', crecords[0]);
 
 					cutils.notification.info(__('event "ackremove" sent'));
 					this.submitEvents(crecords, record, 'ackremove');
@@ -226,7 +224,7 @@ define([
 				},
 
 				handle: function(crecords) {
-					var record = this.getDisplayRecord(crecords[0]);
+					var record = this.getDisplayRecord('declareticket', crecords[0]);
 
 					var formbuttons = [
 						'formbutton-cancel',
@@ -263,7 +261,7 @@ define([
 				},
 
 				handle: function(crecords) {
-					var record = this.getDisplayRecord(crecords[0]);
+					var record = this.getDisplayRecord('cancel', crecords[0]);
 
 					var formbuttons = [
 						'formbutton-cancel',
@@ -299,7 +297,7 @@ define([
 				},
 
 				handle: function(crecords) {
-					var record = this.getDisplayRecord(crecords[0]);
+					var record = this.getDisplayRecord('uncancel', crecords[0]);
 
 					cutils.notification.info(__('event "uncancel" sent'));
 					this.submitEvents(crecords, record, 'uncancel');
@@ -321,7 +319,7 @@ define([
 				},
 
 				handle: function(crecords) {
-					var record = this.getDisplayRecord(crecords[0]);
+					var record = this.getDisplayRecord('changestate', crecords[0]);
 
 					var formbuttons = [
 						'formbutton-cancel',
@@ -329,6 +327,47 @@ define([
 					];
 
 					this.getEventForm('changestate', record, crecords, formbuttons);
+				}
+			},
+
+			user: {
+				extract: function(record, crecord, formRecord) {
+					var login = this.get('controllers.login');
+
+					record.output = crecord.get('output');
+					record.display_name = login.get('firstname') + ' ' + login.get('lastname');
+				},
+
+				filter: function(crecords) {
+					return false;
+				},
+
+				handle: function(crecords) {
+					var record = this.getDisplayRecord('user', crecords[0]);
+
+					cutils.notification.info(__('event "user" sent'));
+					this.submitEvents(crecords, record, 'user');
+				}
+			},
+
+			comment: {
+				extract: function(record, crecord, formRecord) {
+					var login = this.get('controllers.login');
+
+					record.referer = crecord.get('referer');
+					record.output = crecord.get('output');
+					record.display_name = login.get('firstname') + ' ' + login.get('lastname');
+				},
+
+				filter: function(crecords) {
+					return false;
+				},
+
+				handle: function(crecords) {
+					var record = this.getDisplayRecord('comment', crecords[0]);
+
+					cutils.notification.info(__('event "comment" sent'));
+					this.submitEvents(crecords, record, 'comment');
 				}
 			}
 		},
