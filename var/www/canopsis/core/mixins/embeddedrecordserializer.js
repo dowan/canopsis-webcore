@@ -194,12 +194,13 @@ define([
 					}
 				}, this);
 
+				console.groupEnd();
+
 				return payload;
 			} catch (e) {
 				console.log(e.message, e.stack);
+				console.groupEnd();
 			}
-
-			console.groupEnd();
 		},
 
 		isRecordEmbedded: function(record) {

@@ -25,11 +25,24 @@ define([
 	'app/view/userview',
 	'app/serializers/userview'
 ], function(Ember, Application, CrecordController) {
+    var get = Ember.get,
+        set = Ember.set;
 
 	Application.UserviewController = CrecordController.extend(Ember.Evented, {
 		needs: ['application'],
 
 		actions: {
+            toggleFullscreen: function() {
+                console.log('toggleFullscreen');
+                var applicationController = get(this, 'controllers.application');
+
+                if(get(applicationController, 'fullscreenMode', true)) {
+                    set(applicationController, 'fullscreenMode', false);
+                } else {
+                    set(applicationController, 'fullscreenMode', true);
+                }
+            },
+
 			insertWidget: function(containerController) {
 				console.log("insertWidget", containerController);
 				var widgetChooserForm = Canopsis.utils.forms.showNew('widgetform', this);

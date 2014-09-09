@@ -14,7 +14,7 @@
 	</div>
 	<div class="pull-right">
 		{{set 'minified' true}}
-			{{#each button in controller.partials.titlebarsbuttons}}
+			{{#each button in controller.availableTitlebarButtons}}
 				{{partial button}}
 			{{/each}}
 			{{#if widget.rollbackable}}

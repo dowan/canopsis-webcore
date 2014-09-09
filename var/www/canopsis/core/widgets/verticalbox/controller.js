@@ -18,16 +18,16 @@
 */
 
 define([
-	'app/application',
-	'app/lib/factories/widget',
-	'app/widgets/canvas/controller'
+    'app/application',
+    'app/lib/factories/widget',
+    'app/widgets/canvas/controller'
 ], function(Application, WidgetFactory) {
 
-	var widget = WidgetFactory('verticalbox', {
-		partials: {
-			titlebarsbuttons : ["titlebarbutton-minimize", "titlebarbutton-moveup","titlebarbutton-movedown"]
-		}
-	}, {subclass: Application.CanvasController});
+    var widget = WidgetFactory('verticalbox', {
+        partials: {
+            titlebarsbuttons : ["titlebarbutton-minimize", "titlebarbutton-moveup","titlebarbutton-movedown"]
+        }
+    }, {subclass: Application.CanvasController});
 
-	return widget;
+    return widget;
 });
