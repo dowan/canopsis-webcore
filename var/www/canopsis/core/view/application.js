@@ -24,7 +24,19 @@ define([
 	'app/controller/application',
 	'app/lib/wrappers/adminLTE'
 ], function($, Ember, Application, ApplicationController, adminLTE) {
+
+    var get = Ember.get,
+        set = Ember.set;
+
 	Application.ApplicationView = Ember.View.extend({
+        rightSideCssClasses: function(){
+            if(get(this, 'controller.fullscreenMode')) {
+                return 'right-side strech fullscreen';
+            } else {
+                return 'right-side strech';
+            }
+        }.property('controller.fullscreenMode'),
+
 		didInsertElement: function() {
 			console.log('main template rendered, trigger $ documentready', adminLTE);
 

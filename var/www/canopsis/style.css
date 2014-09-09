@@ -278,3 +278,7 @@ div.noRecordsFound {
 	padding: 12px;
 	margin-bottom: 6px;
 }
+
+aside.fullscreen {
+	margin-left: 0 !important;
+}
