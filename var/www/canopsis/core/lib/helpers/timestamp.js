@@ -24,7 +24,7 @@ define(['ember', 'utils'], function(Ember, utils) {
     	value = record.timeStampState || value;
     	var time ="";
     	if(value)
-    		 time = utils.dates.timestamp2String(value, attr.options.format);
+    		 time = utils.dates.timestamp2String(value, attr.options.format, true);
 
 		return new Ember.Handlebars.SafeString(time);
     });

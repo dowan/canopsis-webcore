@@ -31,10 +31,19 @@ define(['ember'], function(Ember) {
 			record = crecord.contexts[0].record;
 		}
 		if (record) {
+
+			color = '';
+			switch(value) {
+				case 0: color = 'bg-green'; break;
+				case 1: color = 'bg-yellow'; break;
+				case 2: color = 'bg-orange'; break;
+				case 3: color = 'bg-red'; break;
+			}
+
 			record = record.get('content');
 			display_keep_state = '';
 			if (record._data && record._data.keep_state) {
-				display_keep_state = '<span class="badge bg-yellow"><i class="fa fa-male"></i></span>';
+				display_keep_state = '<span class="badge '+ color +'"><i class="fa fa-male"></i></span>';
 			}
 		}
 

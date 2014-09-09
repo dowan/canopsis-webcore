@@ -91,7 +91,7 @@ define([
 		},
 
 		getEventForm: function(event_type, record, crecords, formbuttons) {
-			var wizard = cutils.form.showNew('modelform', record, {
+			var wizard = cutils.forms.showNew('modelform', record, {
 				title: __('Add event type: ') + event_type,
 				override_labels: {
 					output: 'comment'
@@ -174,7 +174,7 @@ define([
 				},
 
 				handle: function(crecords) {
-					var record = this.getDisplayRecord(crecords[0]);
+					var record = this.getDisplayRecord('ack', crecords[0]);
 
 					var formbuttons = [
 						'formbutton-cancel',
