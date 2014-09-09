@@ -1,211 +1,214 @@
 
 		<!-- header logo: style can be found in heaader.less -->
-		<header class="header">
-			<a href="index.html" class="logo">
-				<!-- Add the class icon to your logo image or logo icon to add the margining -->
-				<img src="/static/canopsis/media/canopsis.png" alt="canopsis"/>
-			</a>
-			<!-- Header Navbar: style can be found in header.less -->
-			<nav class="navbar navbar-static-top" role="navigation">
-				<!-- Sidebar toggle button-->
-				<a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button" id="togglenavigationtop">
-					<span class="sr-only">{{tr 'Toggle navigation'}}</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
+		{{#unless controller.fullscreenMode}}
+			<header class="header">
+				<a href="index.html" class="logo">
+					<!-- Add the class icon to your logo image or logo icon to add the margining -->
+					<img src="/static/canopsis/media/canopsis.png" alt="canopsis"/>
 				</a>
-				<div class="navbar-right">
+				<!-- Header Navbar: style can be found in header.less -->
+				<nav class="navbar navbar-static-top" role="navigation">
+					<!-- Sidebar toggle button-->
+					<a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button" id="togglenavigationtop">
+						<span class="sr-only">{{tr 'Toggle navigation'}}</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</a>
+					<div class="navbar-right">
 
-					<ul class="nav navbar-nav">
+						<ul class="nav navbar-nav">
 
-						<!--Displays schema list-->
-						{{#if Canopsis.conf.DISPLAY_SCHAMA_MANAGER}}
-							<li class="dropdown">
-								<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-									{{glyphicon 'upload'}}
-								</a>
-								<ul class="dropdown-menu">
-								{{#each type in Canopsis.Application.available_types}}
-									<li><a class="handle" {{action 'addModelInstance' type}}>{{type}}</a></li>
-								{{/each}}
-								</ul>
-							</li>
-						{{/if}}
-
-
-						{{outlet notifications}}
-
-						<!-- Tasks: style can be found in dropdown.less -->
-						<li class="dropdown tasks-menu">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-								<i class="fa fa-tasks"></i>
-								<span class="label label-success">9</span>
-							</a>
-							<ul class="dropdown-menu">
-								<li class="header">{{tr 'You have'}} 9 {{tr 'tasks'}}</li>
-								<li>
-									<!-- inner menu: contains the actual data -->
-									<ul class="menu">
-										<li><!-- Task item -->
-											<a href="#">
-												<h3>
-													Component reboot
-													<small class="pull-right">20%</small>
-												</h3>
-												<div class="progress xs">
-													<div class="progress-bar progress-bar-red" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-														<span class="sr-only">20% Complete</span>
-													</div>
-												</div>
-											</a>
-										</li><!-- end task item -->
+							<!--Displays schema list-->
+							{{#if Canopsis.conf.DISPLAY_SCHAMA_MANAGER}}
+								<li class="dropdown">
+									<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+										{{glyphicon 'upload'}}
+									</a>
+									<ul class="dropdown-menu">
+									{{#each type in Canopsis.Application.available_types}}
+										<li><a class="handle" {{action 'addModelInstance' type}}>{{type}}</a></li>
+									{{/each}}
 									</ul>
 								</li>
-								<li class="footer">
-									<a href="#">{{tr 'View all tasks'}}</a>
-								</li>
-							</ul>
-						</li>
-						<!-- User Account: style can be found in dropdown.less -->
-						<li class="dropdown user user-menu">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-								<i class="glyphicon glyphicon-user"></i>
-								<span>{{username}} <i class="caret"></i></span>
-							</a>
-							<ul class="dropdown-menu">
-								<!-- User image -->
-								<li class="user-header bg-light-blue">
-									<img src="/static/canopsis/media/images/avatar.png" class="img-circle" alt="User Image" />
-									<p>{{username}}</p>
-								</li>
-								<!-- Menu Footer-->
-								<li class="user-footer">
-									<div class="pull-left">
-										<a {{action 'showUserProfile'}} href="#" id="userprofil" class="btn btn-default btn-flat">{{tr 'Profile'}}</a>
-										<a {{action 'showView' 'view.about'}} href="#" class="btn btn-default btn-flat">{{tr 'About'}}</a>
-									</div>
-									<div class="pull-right">
-										<a href="#" {{action 'logout'}} class="btn btn-default btn-flat"><i class="fa fa-power-off"></i></a>
-									</div>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-			</nav>
-		</header>
+							{{/if}}
+
+
+							{{outlet notifications}}
+
+							<!-- Tasks: style can be found in dropdown.less -->
+							<li class="dropdown tasks-menu">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									<i class="fa fa-tasks"></i>
+									<span class="label label-success">9</span>
+								</a>
+								<ul class="dropdown-menu">
+									<li class="header">{{tr 'You have'}} 9 {{tr 'tasks'}}</li>
+									<li>
+										<!-- inner menu: contains the actual data -->
+										<ul class="menu">
+											<li><!-- Task item -->
+												<a href="#">
+													<h3>
+														Component reboot
+														<small class="pull-right">20%</small>
+													</h3>
+													<div class="progress xs">
+														<div class="progress-bar progress-bar-red" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+															<span class="sr-only">20% Complete</span>
+														</div>
+													</div>
+												</a>
+											</li><!-- end task item -->
+										</ul>
+									</li>
+									<li class="footer">
+										<a href="#">{{tr 'View all tasks'}}</a>
+									</li>
+								</ul>
+							</li>
+							<!-- User Account: style can be found in dropdown.less -->
+							<li class="dropdown user user-menu">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									<i class="glyphicon glyphicon-user"></i>
+									<span>{{username}} <i class="caret"></i></span>
+								</a>
+								<ul class="dropdown-menu">
+									<!-- User image -->
+									<li class="user-header bg-light-blue">
+										<img src="/static/canopsis/media/images/avatar.png" class="img-circle" alt="User Image" />
+										<p>{{username}}</p>
+									</li>
+									<!-- Menu Footer-->
+									<li class="user-footer">
+										<div class="pull-left">
+											<a {{action 'showUserProfile'}} href="#" id="userprofil" class="btn btn-default btn-flat">{{tr 'Profile'}}</a>
+											<a {{action 'showView' 'view.about'}} href="#" class="btn btn-default btn-flat">{{tr 'About'}}</a>
+										</div>
+										<div class="pull-right">
+											<a href="#" {{action 'logout'}} class="btn btn-default btn-flat"><i class="fa fa-power-off"></i></a>
+										</div>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</nav>
+			</header>
+		{{/unless}}
 		<div class="wrapper row-offcanvas row-offcanvas-left">
 			<!-- Left side column. contains the logo and sidebar -->
-			<aside class="left-side sidebar-offcanvas collapse-left">
-				<!-- sidebar: style can be found in sidebar.less -->
-				<section class="sidebar">
+			{{#unless controller.fullscreenMode}}
+				<aside class="left-side sidebar-offcanvas collapse-left">
+					<!-- sidebar: style can be found in sidebar.less -->
+					<section class="sidebar">
 
-					<!-- /.search form -->
-					<!-- sidebar menu: : style can be found in sidebar.less -->
-					<ul class="sidebar-menu">
-						<li class="toggle" id="togglenavigationbot">
-							<a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
-								<i class="fa fa-chevron-right pull-right"></i>
-								<i class="fa fa-chevron-left pull-right"></i>
-							</a>
-						</li>
-						<li class="active">
-							<a href="#">
-								<i class="fa fa-desktop"></i> <span>{{tr 'Dashboard'}}</span>
-							</a>
-						</li>
-						{{#if controller.utils.session.rights.aclconfig.checksum}}
-							<li class="treeview">
-								<a href="#">
-									<i class="fa fa-group"></i>
-									<span>{{tr 'Profiles'}}</span>
-									<i class="fa fa-angle-left pull-right"></i>
+						<!-- /.search form -->
+						<!-- sidebar menu: : style can be found in sidebar.less -->
+						<ul class="sidebar-menu">
+							<li class="toggle" id="togglenavigationbot">
+								<a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+									<i class="fa fa-chevron-right pull-right"></i>
+									<i class="fa fa-chevron-left pull-right"></i>
 								</a>
-								<ul class="treeview-menu">
-									<li><a {{action 'showView' 'view.accounts'}}><i class="fa fa-angle-double-right"></i> {{tr 'Users'}}</a></li>
-									<li><a {{action 'showView' 'view.permissions'}}><i class="fa fa-angle-double-right"></i> {{tr 'Permissions'}}</a></li>
-									<li><a {{action 'showView' 'view.rights'}}><i class="fa fa-angle-double-right"></i> {{tr 'Rights'}}</a></li>
-								</ul>
 							</li>
-						{{/if}}
-						{{#if controller.utils.session.rights.authsystems.checksum}}
-							<li class="treeview">
+							<li class="active">
 								<a href="#">
-									<i class="fa fa-key"></i>
-									<span>{{tr 'Authentification systems'}}</span>
-									<i class="fa fa-angle-left pull-right"></i>
+									<i class="fa fa-desktop"></i> <span>{{tr 'Dashboard'}}</span>
 								</a>
-								<ul class="treeview-menu">
-									<li><a {{action 'editLdapConfig'}}><i class="fa fa-angle-double-right"></i> LDAP</a></li>
-									<li><a {{action 'editCasConfig'}}><i class="fa fa-angle-double-right"></i> CAS</a></li>
-								</ul>
 							</li>
-						{{/if}}
-						{{#if controller.utils.session.rights.enginesconfig.checksum}}
-							<li class="treeview">
-								<a href="#">
-									<i class="fa fa-cogs"></i>
-									<span>{{tr 'Engines'}}</span>
-									<i class="fa fa-angle-left pull-right"></i>
-								</a>
-								<ul class="treeview-menu">
-									{{#each engineview in controller.enginesviews}}
-										{{#ifUserCanDisplayView engineview.value}}
-											<li>
-												<a {{action 'showView' engineview.value}}>
-													<i class="fa fa-angle-double-right"></i> 
-													{{engineview.label}}
-												</a>
-											</li>
-										{{/ifUserCanDisplayView}}
-									{{/each}}
-								</ul>
-							</li>
-						{{/if}}
-						<li>
-							<a href="#">
-								<i class="fa fa-road"></i> <span>{{tr 'Paths and ports'}}</span>
-							</a>
-						</li>
-						{{#if controller.utils.session.rights.pluginsconfig.checksum}}
-							{{#each plugin in controller.plugins}}
-								<li>
-									<a {{action plugin.action plugin.param}}>
-										<i {{bind-attr class=plugin.icon}}></i> <span>{{plugin.label}}</span>
+							{{#if controller.utils.session.rights.aclconfig.checksum}}
+								<li class="treeview">
+									<a href="#">
+										<i class="fa fa-group"></i>
+										<span>{{tr 'Profiles'}}</span>
+										<i class="fa fa-angle-left pull-right"></i>
 									</a>
+									<ul class="treeview-menu">
+										<li><a {{action 'showView' 'view.accounts'}}><i class="fa fa-angle-double-right"></i> {{tr 'Users'}}</a></li>
+										<li><a {{action 'showView' 'view.permissions'}}><i class="fa fa-angle-double-right"></i> {{tr 'Permissions'}}</a></li>
+										<li><a {{action 'showView' 'view.rights'}}><i class="fa fa-angle-double-right"></i> {{tr 'Rights'}}</a></li>
+									</ul>
 								</li>
-							{{/each}}
-						{{/if}}
-						{{#if controller.utils.session.rights.uisettings.checksum}}
-							<li class="treeview">
+							{{/if}}
+							{{#if controller.utils.session.rights.authsystems.checksum}}
+								<li class="treeview">
+									<a href="#">
+										<i class="fa fa-key"></i>
+										<span>{{tr 'Authentification systems'}}</span>
+										<i class="fa fa-angle-left pull-right"></i>
+									</a>
+									<ul class="treeview-menu">
+										<li><a {{action 'editLdapConfig'}}><i class="fa fa-angle-double-right"></i> LDAP</a></li>
+										<li><a {{action 'editCasConfig'}}><i class="fa fa-angle-double-right"></i> CAS</a></li>
+									</ul>
+								</li>
+							{{/if}}
+							{{#if controller.utils.session.rights.enginesconfig.checksum}}
+								<li class="treeview">
+									<a href="#">
+										<i class="fa fa-cogs"></i>
+										<span>{{tr 'Engines'}}</span>
+										<i class="fa fa-angle-left pull-right"></i>
+									</a>
+									<ul class="treeview-menu">
+										{{#each engineview in controller.enginesviews}}
+											{{#ifUserCanDisplayView engineview.value}}
+												<li>
+													<a {{action 'showView' engineview.value}}>
+														<i class="fa fa-angle-double-right"></i> 
+														{{engineview.label}}
+													</a>
+												</li>
+											{{/ifUserCanDisplayView}}
+										{{/each}}
+									</ul>
+								</li>
+							{{/if}}
+							<li>
 								<a href="#">
-									<i class="fa fa-cogs"></i>
-									<span>{{tr 'Settings'}}</span>
-									<i class="fa fa-angle-left pull-right"></i>
+									<i class="fa fa-road"></i> <span>{{tr 'Paths and ports'}}</span>
 								</a>
-								<ul class="treeview-menu">
-									<li>
-										<a {{action 'editConfig'}}>
-											<i class="fa fa-angle-double-right"></i>
-											{{tr 'User Interface'}}
-										</a>
-									</li>
-									<li>
-										<a {{action 'editTicketJob'}}>
-											<i class="fa fa-angle-double-right"></i>
-											{{tr 'Ticket'}}
-										</a>
-									</li>
-								</ul>
 							</li>
-						{{/if}}
-					</ul>
-				</section>
-				<!-- /.sidebar -->
-			</aside>
-
+							{{#if controller.utils.session.rights.pluginsconfig.checksum}}
+								{{#each plugin in controller.plugins}}
+									<li>
+										<a {{action plugin.action plugin.param}}>
+											<i {{bind-attr class=plugin.icon}}></i> <span>{{plugin.label}}</span>
+										</a>
+									</li>
+								{{/each}}
+							{{/if}}
+							{{#if controller.utils.session.rights.uisettings.checksum}}
+								<li class="treeview">
+									<a href="#">
+										<i class="fa fa-cogs"></i>
+										<span>{{tr 'Settings'}}</span>
+										<i class="fa fa-angle-left pull-right"></i>
+									</a>
+									<ul class="treeview-menu">
+										<li>
+											<a {{action 'editConfig'}}>
+												<i class="fa fa-angle-double-right"></i>
+												{{tr 'User Interface'}}
+											</a>
+										</li>
+										<li>
+											<a {{action 'editTicketJob'}}>
+												<i class="fa fa-angle-double-right"></i>
+												{{tr 'Ticket'}}
+											</a>
+										</li>
+									</ul>
+								</li>
+							{{/if}}
+						</ul>
+					</section>
+					<!-- /.sidebar -->
+				</aside>
+			{{/unless}}
 			<!-- Right side column. Contains the navbar and content of the page -->
-			<aside class="right-side strech">
+			<aside {{bind-attr class=view.rightSideCssClasses}}>
 				{{outlet formwrapper}}
 
 				<!-- Main content -->
