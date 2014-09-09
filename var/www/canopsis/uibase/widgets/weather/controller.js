@@ -92,7 +92,7 @@ define([
 				'bg-orange',
 				'bg-red',
 				'bg-red',
-				'bg-yellow'][status];
+				'bg-purple'][status];
 		},
 
 		fetchStates: function () {
@@ -127,7 +127,6 @@ define([
 		},
 
 		computeWeather: function (data) {
-			//TODO change "data" argument name, and "currentData" var name accordingly
 			console.group('computing weathers');
 			var worst_state = 0;
 			var sub_weathers = [];
@@ -147,12 +146,14 @@ define([
 					computedState = 4;
 				} else {
 					console.log('normal ack count')
-					computedState = data[i].state;
+					computedState = currentData.state;
 				}
 
-				//computing worst state for general weather display
+				//computing worst state for general weather display depending on ack state
 				if (currentData.state > worst_state) {
-					worst_state = currentData.state;
+					if(!currentData.ack || (currentData.ack && !currentData.ack.isAck)) {
+						worst_state = currentData.state;
+					}
 				}
 
 				//compute sub item title depending on if resource exists

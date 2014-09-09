@@ -12,7 +12,7 @@
 			{{else}}
 				{{#if this.status}}
 					<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Ack">
-						<button type="button" class="btn btn-default" {{action 'sendEvent' 'ack' this}} >
+						<button type="button" class="btn btn-default bg-purple" {{action 'sendEvent' 'ack' this}} >
 							{{glyphicon "ok"}}
 						</button>
 					</a>
@@ -20,7 +20,7 @@
 			{{/if}}
 		{{else}}
 			<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Ack">
-				<button type="button" class="btn btn-default" {{action 'sendEvent' 'ack'}} >
+				<button type="button" class="btn btn-default bg-purple" {{action 'sendEvent' 'ack'}} >
 					{{glyphicon "ok"}} {{tr 'Ack'}}
 				</button>
 			</a>
