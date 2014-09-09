@@ -72,13 +72,13 @@ define([
 
 		//generate weather class depending on status
 		class_icon: function (status) {
-			return 'ion-ios7-' + [
-				'sunny',
-				'cloudy',
-				'thunderstorm',
-				'thunderstorm',
-				''][status] + '-outline';
-		},
+			return [
+				'ion-ios7-sunny-outline',
+				'ion-ios7-cloudy-outline',
+				'ion-ios7-thunderstorm-outline',
+				'ion-ios7-thunderstorm-outline',
+				'ion-checkmark-round'][status];
+		} ,
 
 		//generate and refresh background property for widget weather display
 		background: function () {
