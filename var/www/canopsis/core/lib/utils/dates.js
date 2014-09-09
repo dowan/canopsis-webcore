@@ -20,15 +20,43 @@
 define([], function() {
 
 	var dates = {
-		timestamp2String: function (value, format) {
+		timestamp2String: function (value, format, shortDate) {
 			function addZero(i) {
 			    return (i < 10 ? '0'+ i +'' : i +'');
 			}
 
 			var a = new Date(value*1000);
-			var months = ["January", "February", "March", "April", "May",
-				      "June", "July", "August", "September", "October",
-				      "November", "December"];
+            var months = [
+                __("January"),
+                __("February"),
+                __("March"),
+                __("April"),
+                __("May"),
+                __("June"),
+                __("July"),
+                __("August"),
+                __("September"),
+                __("October"),
+                __("November"),
+                __("December")
+            ];
+            if (!Ember.isNone(shortDate)) {
+                var months = [
+                    __("Jan"),
+                    __("Feb"),
+                    __("Mar"),
+                    __("Apr"),
+                    __("May"),
+                    __("June"),
+                    __("July"),
+                    __("Aug"),
+                    __("Sep"),
+                    __("Oct"),
+                    __("Nov"),
+                    __("Dec")
+                ];
+
+            }
 			var year = a.getFullYear();
 			var month = months[a.getMonth()];
 			var date = addZero(a.getDate());
