@@ -18,291 +18,306 @@
 */
 
 define([
-	'jquery',
-	'ember',
-	'app/application',
-	'app/lib/utils/userconfiguration',
-	'app/lib/utils/widgets',
-	'utils'
+    'jquery',
+    'ember',
+    'app/application',
+    'app/lib/utils/userconfiguration',
+    'app/lib/utils/widgets',
+    'utils'
 ], function($, Ember, Application, userConfiguration, widgetUtils, utils) {
-	var get = Ember.get,
-		set = Ember.set;
+    var get = Ember.get,
+        set = Ember.set;
 
-	Application.WidgetController = Ember.ObjectController.extend({
+    Application.WidgetController = Ember.ObjectController.extend({
 
-		userParams: {},
+        userParams: {},
 
-		init: function () {
+        init: function () {
 
-			var widgetController = this;
-			console.log('widget init');
-			console.log('viewController', widgetUtils.getParentViewForWidget(this));
-			console.log('viewController', widgetUtils.getParentViewForWidget(this).get('isMainView'));
+            var widgetController = this;
+            console.log('widget init');
+            console.log('viewController', widgetUtils.getParentViewForWidget(this));
+            console.log('viewController', widgetUtils.getParentViewForWidget(this).get('isMainView'));
 
-			set(this, 'viewController', widgetUtils.getParentViewForWidget(this));
-			set(this, 'isOnMainView', widgetUtils.getParentViewForWidget(this).get('isMainView'));
-			//manage user configuration
-			this.set('userConfiguration', userConfiguration.create({widget: this}));
+            set(this, 'viewController', widgetUtils.getParentViewForWidget(this));
+            set(this, 'isOnMainView', widgetUtils.getParentViewForWidget(this).get('isMainView'));
+            //manage user configuration
+            this.set('userConfiguration', userConfiguration.create({widget: this}));
 
-			this.set("container", utils.routes.getCurrentRouteController().container);
+            this.set("container", utils.routes.getCurrentRouteController().container);
 
-			this.startRefresh();
+            this.startRefresh();
 
-			//setting default/minimal reload delay for current widget
-			if (widgetController.get('refreshInterval') <= 10 || Ember.isNone(widgetController.get('refreshInterval'))) {
-				widgetController.set('refreshInterval', 10);
-			}
+            //setting default/minimal reload delay for current widget
+            if (widgetController.get('refreshInterval') <= 10 || Ember.isNone(widgetController.get('refreshInterval'))) {
+                widgetController.set('refreshInterval', 10);
+            }
 
-			this.refreshContent();
+            this.refreshContent();
 
-		},
+        },
 
-		getSchema: function() {
-			return Application[this.get('xtype').capitalize()].proto().categories;
-		},
+        getSchema: function() {
+            return Application[this.get('xtype').capitalize()].proto().categories;
+        },
 
-		onReload: function () {
-			console.debug('Reload widget:', this.get('id'));
+        onReload: function () {
+            console.debug('Reload widget:', this.get('id'));
 
-			if (this.get('widgetData.content') !== undefined) {
-				//Allows widget to know how many times they have been repainted
-				if (this.get('domReadyCount') === undefined) {
-					this.set('domReadyCount', 1);
-				} else {
-					this.set('domReadyCount', this.get('domReadyCount') + 1);
-				}
-				this.onDomReady($('#' + this.get('id')));
-			}
-		},
+            if (this.get('widgetData.content') !== undefined) {
+                //Allows widget to know how many times they have been repainted
+                if (this.get('domReadyCount') === undefined) {
+                    this.set('domReadyCount', 1);
+                } else {
+                    this.set('domReadyCount', this.get('domReadyCount') + 1);
+                }
+                this.onDomReady($('#' + this.get('id')));
+            }
+        },
 
-		onDomReady: function() {
-			console.log(this.get('title'), 'widget dom load complete');
-			//To override
-		},
+        onDomReady: function() {
+            console.log(this.get('title'), 'widget dom load complete');
+            //To override
+        },
 
-		stopRefresh: function () {
-			this.set('isRefreshable', false);
-		},
+        stopRefresh: function () {
+            this.set('isRefreshable', false);
+        },
 
-		startRefresh: function () {
-			this.set('isRefreshable', true);
-		},
+        startRefresh: function () {
+            this.set('isRefreshable', true);
+        },
 
-		isRollbackable: function() {
-			if(get(this, 'isDirty') && get(this, 'dirtyType') === "updated" && get(this, 'rollbackable') === true) {
-				return true;
-			}
+        isRollbackable: function() {
+            if(get(this, 'isDirty') && get(this, 'dirtyType') === "updated" && get(this, 'rollbackable') === true) {
+                return true;
+            }
 
-			return false;
+            return false;
 
-		}.property('isDirty', 'dirtyType', 'rollbackable'),
+        }.property('isDirty', 'dirtyType', 'rollbackable'),
 
 
-		actions: {
-			do: function(action) {
-				var params = [];
-				for (var i = 1; i < arguments.length; i++) {
-					params.push(arguments[i]);
-				}
+        actions: {
+            do: function(action) {
+                var params = [];
+                for (var i = 1; i < arguments.length; i++) {
+                    params.push(arguments[i]);
+                }
 
-				this.send(action, params);
-			},
-			creationForm: function(itemType) {
-				utils.forms.addRecord(itemType);
-			},
+                this.send(action, params);
+            },
+            creationForm: function(itemType) {
+                utils.forms.addRecord(itemType);
+            },
 
-			rollback: function(widget){
-				console.log('rollback changes', arguments);
-				widget.rollback();
-				set(this, 'rollbackable', false);
-			},
+            rollback: function(widget){
+                console.log('rollback changes', arguments);
+                widget.rollback();
+                set(this, 'rollbackable', false);
+            },
 
-			editWidget: function (widget) {
-				console.info("edit widget", widget);
+            editWidget: function (widget) {
+                console.info("edit widget", widget);
 
-				var widgetWizard = utils.forms.showNew('modelform', widget, { title: __("Edit widget") });
-				console.log("widgetWizard", widgetWizard);
-
-				var widgetController = this;
-
-				widgetWizard.submit.done(function() {
-					console.log('record going to be saved', widget);
-
-					var userview = get(widgetController, 'viewController').get('content');
-					userview.save();
-					console.log("triggering refresh");
-					widgetController.trigger('refresh');
-				});
-			},
-
-			removeWidget: function (widget) {
-				console.group("remove widget", widget);
-				console.log("parent container", this);
-
-				var itemsContent = this.get('content.items.content');
-
-				for (var i = 0, itemsContent_length = itemsContent.length; i < itemsContent_length; i++) {
-					console.log(this.get('content.items.content')[i]);
-					if (itemsContent[i].get('widget') === widget) {
-						itemsContent.removeAt(i);
-						console.log("deleteRecord ok");
-						break;
-					}
-				}
-
-				var userview = get(this, 'viewController').get('content');
-				userview.save();
-
-				console.groupEnd();
-			},
-
-			editWidgetPreferences: function (widget) {
-
-				var widgetController = this;
-
-				var label = "Edit your widget preferences";
-				console.info(label, widget);
-
-				var widgetWizard = utils.forms.showNew('modelform', widget, {
-					title: __(label),
-					userPreferencesOnly: true
-				});
-				console.log("widgetWizard", widgetWizard);
-
-				var widgetController = this;
-
-				widgetWizard.submit.then(function(form) {
-
-					record = form.get('formContext');
-					console.log('user param record', record);
-					//widgetController.set('userParams.filters', widgetController.get('filters'));
-					//widgetController.get('userConfiguration').saveUserConfiguration();
-
-					widgetController.trigger('refresh');
-				});
-			},
-
-			movedown: function(widgetwrapper) {
-				console.group('movedown', widgetwrapper);
-				try{
-					console.log('context', this);
-
-					var foundElementIndex,
-						nextElementIndex;
-
-					for (var i = 0; i < this.get('content.items.content').length; i++) {
-						console.log('loop', i, this.get('content.items.content')[i], widgetwrapper);
-						console.log(this.get('content.items.content')[i] === widgetwrapper);
-						if (foundElementIndex !== undefined && nextElementIndex === undefined) {
-							nextElementIndex = i;
-							console.log('next element found');
-						}
-
-						if (this.get('content.items.content')[i] === widgetwrapper) {
-							foundElementIndex = i;
-							console.log('searched element found');
-						}
-					}
-
-					if (foundElementIndex !== undefined && nextElementIndex !== undefined) {
-						//swap objects
-						var array = Ember.get(this, 'content.items.content');
-						console.log('swap objects', array);
-
-						var tempObject = array.objectAt(foundElementIndex);
-
-						array.insertAt(foundElementIndex, array.objectAt(nextElementIndex));
-						array.insertAt(nextElementIndex, tempObject);
-						array.replace(foundElementIndex + 2, 2);
-
-						console.log('new array', array);
-						Ember.set(this, 'content.items.content', array);
-
-						var userview = get(this, 'viewController').get('content');
-						userview.save();
-					}
-				} catch (e) {
-					console.error(e.stack, e.message);
-				}
-				console.groupEnd();
-			},
-
-			moveup: function(widgetwrapper) {
-				console.group('moveup', widgetwrapper);
-
-				try{
-					console.log('context', this);
-
-					var foundElementIndex,
-						nextElementIndex;
-
-					for (var i = this.get('content.items.content').length; i >= 0 ; i--) {
-						console.log('loop', i, this.get('content.items.content')[i], widgetwrapper);
-						console.log(this.get('content.items.content')[i] === widgetwrapper);
-						if (foundElementIndex !== undefined && nextElementIndex === undefined) {
-							nextElementIndex = i;
-							console.log('next element found');
-						}
-
-						if (this.get('content.items.content')[i] === widgetwrapper) {
-							foundElementIndex = i;
-							console.log('searched element found');
-						}
-					}
-
-					console.log('indexes to swap', foundElementIndex, nextElementIndex);
-
-					if (foundElementIndex !== undefined && nextElementIndex !== undefined) {
-						//swap objects
-						var array = Ember.get(this, 'content.items.content');
-						console.log('swap objects', array);
-
-						var tempObject = array.objectAt(foundElementIndex);
-
-						array.insertAt(foundElementIndex, array.objectAt(nextElementIndex));
-						array.insertAt(nextElementIndex, tempObject);
-						array.replace(nextElementIndex + 2, 2);
-
-						console.log('new array', array);
-						Ember.set(this, 'content.items.content', array);
-
-						var userview = widgetUtils.getParentViewForWidget(this).get('content');
-						userview.save();
-					}
-				} catch (e) {
-					console.error(e.stack, e.message);
-				}
-				console.groupEnd();
-			},
-
-		},
-
-		config: Ember.computed.alias("content"),
-
-		itemController: function() {
-			return this.get("itemType").capitalize();
-		}.property("itemType"),
-
-		refreshContent: function() {
-			this._super();
-
-			this.findItems();
-		},
-
-		findItems: function() {
-			console.warn("findItems not implemented");
-		},
-
-		extractItems: function(queryResult) {
-			console.log("extractItems", queryResult);
-
-			this._super(queryResult);
-
-			this.set("widgetData", queryResult);
-		}
-
-
-	});
-
-	return Application.WidgetController;
+                var widgetWizard = utils.forms.showNew('modelform', widget, { title: __("Edit widget") });
+                console.log("widgetWizard", widgetWizard);
+
+                var widgetController = this;
+
+                widgetWizard.submit.done(function() {
+                    console.log('record going to be saved', widget);
+
+                    var userview = get(widgetController, 'viewController').get('content');
+                    userview.save();
+                    console.log("triggering refresh");
+                    widgetController.trigger('refresh');
+                });
+            },
+
+            removeWidget: function (widget) {
+                console.group("remove widget", widget);
+                console.log("parent container", this);
+
+                var itemsContent = this.get('content.items.content');
+
+                for (var i = 0, itemsContent_length = itemsContent.length; i < itemsContent_length; i++) {
+                    console.log(this.get('content.items.content')[i]);
+                    if (itemsContent[i].get('widget') === widget) {
+                        itemsContent.removeAt(i);
+                        console.log("deleteRecord ok");
+                        break;
+                    }
+                }
+
+                var userview = get(this, 'viewController').get('content');
+                userview.save();
+
+                console.groupEnd();
+            },
+
+            editWidgetPreferences: function (widget) {
+
+                var widgetController = this;
+
+                var label = "Edit your widget preferences";
+                console.info(label, widget);
+
+                var widgetWizard = utils.forms.showNew('modelform', widget, {
+                    title: __(label),
+                    userPreferencesOnly: true
+                });
+                console.log("widgetWizard", widgetWizard);
+
+                widgetWizard.submit.then(function(form) {
+
+                    record = form.get('formContext');
+                    console.log('user param record', record);
+                    //widgetController.set('userParams.filters', widgetController.get('filters'));
+                    //widgetController.get('userConfiguration').saveUserConfiguration();
+
+                    widgetController.trigger('refresh');
+                });
+            },
+
+            movedown: function(widgetwrapper) {
+                console.group('movedown', widgetwrapper);
+                try{
+                    console.log('context', this);
+
+                    var foundElementIndex,
+                        nextElementIndex;
+
+                    for (var i = 0; i < this.get('content.items.content').length; i++) {
+                        console.log('loop', i, this.get('content.items.content')[i], widgetwrapper);
+                        console.log(this.get('content.items.content')[i] === widgetwrapper);
+                        if (foundElementIndex !== undefined && nextElementIndex === undefined) {
+                            nextElementIndex = i;
+                            console.log('next element found');
+                        }
+
+                        if (this.get('content.items.content')[i] === widgetwrapper) {
+                            foundElementIndex = i;
+                            console.log('searched element found');
+                        }
+                    }
+
+                    if (foundElementIndex !== undefined && nextElementIndex !== undefined) {
+                        //swap objects
+                        var array = Ember.get(this, 'content.items.content');
+                        console.log('swap objects', array);
+
+                        var tempObject = array.objectAt(foundElementIndex);
+
+                        array.insertAt(foundElementIndex, array.objectAt(nextElementIndex));
+                        array.insertAt(nextElementIndex, tempObject);
+                        array.replace(foundElementIndex + 2, 2);
+
+                        console.log('new array', array);
+                        Ember.set(this, 'content.items.content', array);
+
+                        var userview = get(this, 'viewController').get('content');
+                        userview.save();
+                    }
+                } catch (e) {
+                    console.error(e.stack, e.message);
+                }
+                console.groupEnd();
+            },
+
+            moveup: function(widgetwrapper) {
+                console.group('moveup', widgetwrapper);
+
+                try{
+                    console.log('context', this);
+
+                    var foundElementIndex,
+                        nextElementIndex;
+
+                    for (var i = this.get('content.items.content').length; i >= 0 ; i--) {
+                        console.log('loop', i, this.get('content.items.content')[i], widgetwrapper);
+                        console.log(this.get('content.items.content')[i] === widgetwrapper);
+                        if (foundElementIndex !== undefined && nextElementIndex === undefined) {
+                            nextElementIndex = i;
+                            console.log('next element found');
+                        }
+
+                        if (this.get('content.items.content')[i] === widgetwrapper) {
+                            foundElementIndex = i;
+                            console.log('searched element found');
+                        }
+                    }
+
+                    console.log('indexes to swap', foundElementIndex, nextElementIndex);
+
+                    if (foundElementIndex !== undefined && nextElementIndex !== undefined) {
+                        //swap objects
+                        var array = Ember.get(this, 'content.items.content');
+                        console.log('swap objects', array);
+
+                        var tempObject = array.objectAt(foundElementIndex);
+
+                        array.insertAt(foundElementIndex, array.objectAt(nextElementIndex));
+                        array.insertAt(nextElementIndex, tempObject);
+                        array.replace(nextElementIndex + 2, 2);
+
+                        console.log('new array', array);
+                        Ember.set(this, 'content.items.content', array);
+
+                        var userview = widgetUtils.getParentViewForWidget(this).get('content');
+                        userview.save();
+                    }
+                } catch (e) {
+                    console.error(e.stack, e.message);
+                }
+                console.groupEnd();
+            },
+
+        },
+
+        config: Ember.computed.alias("content"),
+
+        itemController: function() {
+            return this.get("itemType").capitalize();
+        }.property("itemType"),
+
+        refreshContent: function() {
+            this._super();
+
+            this.findItems();
+        },
+
+        findItems: function() {
+            console.warn("findItems not implemented");
+        },
+
+        extractItems: function(queryResult) {
+            console.log("extractItems", queryResult);
+
+            this._super(queryResult);
+
+            this.set("widgetData", queryResult);
+        },
+
+        availableTitlebarButtons: function(){
+            var buttons = get(this, 'partials.titlebarsbuttons');
+            console.log("availableTitlebarPartialButtons CP");
+
+            var res = Ember.A();
+
+            for (var i = 0, l = buttons.length; i < l; i++) {
+                var currentButton = buttons[i];
+                if(Ember.TEMPLATES[currentButton] !== undefined) {
+                    res.push(currentButton);
+                } else {
+                    //TODO manage this with utils.problems
+                    console.warn('template not found', currentButton);
+                }
+            }
+
+            return res;
+        }.property()
+    });
+
+    return Application.WidgetController;
 });

@@ -127,7 +127,7 @@ define([
 				var items = result.get('content');
 				me.set('items', result.get('content'));
 
-				Ember.run.scheduleOnce('afterRender', {}, function() {me.rerender()});
+				Ember.run.scheduleOnce('afterRender', {}, function() { me.rerender(); });
 
 				me.extractItems(result);
 			});

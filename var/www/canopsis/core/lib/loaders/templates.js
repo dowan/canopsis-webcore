@@ -59,11 +59,11 @@ var templates = [
     { name: 'formbutton-previous', classes: ["formbutton"] },
     { name: 'formbutton-next', classes: ["formbutton"] },
 
-    { name: 'titlebarbutton-moveup', classes: ["formbutton"] },
-    { name: 'titlebarbutton-movedown', classes: ["formbutton"] },
-    { name: 'titlebarbutton-moveleft', classes: ["formbutton"] },
-    { name: 'titlebarbutton-moveright', classes: ["formbutton"] },
-    { name: 'titlebarbutton-minimize', classes: ["formbutton"] }
+    { name: 'titlebarbutton-moveup', classes: ["titlebarbutton"] },
+    { name: 'titlebarbutton-movedown', classes: ["titlebarbutton"] },
+    { name: 'titlebarbutton-moveleft', classes: ["titlebarbutton"] },
+    { name: 'titlebarbutton-moveright', classes: ["titlebarbutton"] },
+    { name: 'titlebarbutton-minimize', classes: ["titlebarbutton"] }
 ];
 
 var deps = ['ember'];
