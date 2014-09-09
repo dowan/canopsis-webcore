@@ -29,7 +29,6 @@ var renderersTemplates = [
     'conf',
     'crecord-type',
     'criticity',
-    'default',
     'mail',
     'object',
     'percent',
