@@ -46,6 +46,7 @@ var helpers = [
     'renderwidget',
     'rights',
     'set',
+    'sorticon',
     'stateview',
     'statusview',
     'subprocess',

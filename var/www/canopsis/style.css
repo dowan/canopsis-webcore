@@ -287,3 +287,7 @@ aside.fullscreen {
 	margin-bottom:1em;
 	font-size: 50%;
 }
+
+table.dataTable thead th, table.dataTable thead td {
+	padding: 10px 0;
+}
