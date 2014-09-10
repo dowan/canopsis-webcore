@@ -18,51 +18,51 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
 
-	/**
-	 * Implements configuration management for controllers
-	 * @mixin
-	 */
-	Application.ConfigurableMixin = Ember.Mixin.create({
-		actions: {
-			//TODO as this shows the WIDGET edit form, it has to be refactored in the widget clas as soon as it will be created
-			showEditForm: function() {
-				//FIXME this does not work, because of the hack line 61
-				crecord_type = "account";
-				console.log("Form generation for", crecord_type);
+    /**
+     * Implements configuration management for controllers
+     * @mixin
+     */
+    Application.ConfigurableMixin = Ember.Mixin.create({
+        actions: {
+            //TODO as this shows the WIDGET edit form, it has to be refactored in the widget clas as soon as it will be created
+            showEditForm: function() {
+                //FIXME this does not work, because of the hack line 61
+                crecord_type = "account";
+                console.log("Form generation for", crecord_type);
 
-				var crecordformController = Application.CrecordformController.create();
-				crecordformController.set("crecord_type", crecord_type);
-				crecordformController.set("editMode", "edit");
-				crecordformController.set("editedRecordController", this);
+                var crecordformController = Application.CrecordformController.create();
+                crecordformController.set("crecord_type", crecord_type);
+                crecordformController.set("editMode", "edit");
+                crecordformController.set("editedRecordController", this);
 
-				this.send('showEditFormWithController', crecordformController);
-			}
-		},
+                this.send('showEditFormWithController', crecordformController);
+            }
+        },
 
-		init: function() {
-			console.log("init");
-			this.refreshConfiguration();
-			this._super.apply(this, arguments);
-		},
+        init: function() {
+            console.log("init");
+            this.refreshConfiguration();
+            this._super.apply(this, arguments);
+        },
 
-		refreshConfiguration: function() {
-			console.log("refreshConfiguration");
+        refreshConfiguration: function() {
+            console.log("refreshConfiguration");
 
-			var me = this;
-			try{
-				this.store.findQuery("account", { filter: { "firstname" : "Cano" } }).then(function(queryResult) {
-					console.log("results found", queryResult);
-					me.set("configuration", queryResult.get("content")[0]);
-				});
-			} catch (e) {
-				console.error(e.message, e.stack);
-			}
-		}
-	});
+            var me = this;
+            try{
+                this.store.findQuery("account", { filter: { "firstname" : "Cano" } }).then(function(queryResult) {
+                    console.log("results found", queryResult);
+                    me.set("configuration", queryResult.get("content")[0]);
+                });
+            } catch (e) {
+                console.error(e.message, e.stack);
+            }
+        }
+    });
 
-	return Application.ConfigurableMixin;
+    return Application.ConfigurableMixin;
 });

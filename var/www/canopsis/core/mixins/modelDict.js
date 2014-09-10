@@ -18,37 +18,37 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
 
-	Application.modelDictMixin = Ember.Mixin.create({
+    Application.modelDictMixin = Ember.Mixin.create({
 
-		onInit : function ( contentREF , _self ){
-			var formController  =  Canopsis.formwrapperController.form;
-			// not really needed since error should have already been threw
-			if ( formController ){
-				var schemaName = formController.get("formContext._data.listed_crecord_type");
-				if (schemaName){
-					schemaName = schemaName.substr(0,1).toUpperCase() + schemaName.substr(1,schemaName.length).toLowerCase();
-					// get model (array of string (field))
-					//var model = Application[schemaName]; var prototypef = model.prototype;
-					var model = Canopsis.Application.allModels[schemaName];
-					//for each field create object with :  name =  field and push them on content
-					for (var attribut in model) {
-						if (model.hasOwnProperty(attribut)) {
-							var Template = { name : attribut };
-							contentREF.push(Template);
-						}
-					}
-				}
-				else {
-					console.warn( "schemaName can't be found on modelDictMixin ( list will be empty  for ", _self ," ) "  );
-				}
-			}
-			_self.set("select", 0 );
-		}
-	});
+        onInit : function ( contentREF , _self ){
+            var formController  =  Canopsis.formwrapperController.form;
+            // not really needed since error should have already been threw
+            if ( formController ){
+                var schemaName = formController.get("formContext._data.listed_crecord_type");
+                if (schemaName){
+                    schemaName = schemaName.substr(0,1).toUpperCase() + schemaName.substr(1,schemaName.length).toLowerCase();
+                    // get model (array of string (field))
+                    //var model = Application[schemaName]; var prototypef = model.prototype;
+                    var model = Canopsis.Application.allModels[schemaName];
+                    //for each field create object with :  name =  field and push them on content
+                    for (var attribut in model) {
+                        if (model.hasOwnProperty(attribut)) {
+                            var Template = { name : attribut };
+                            contentREF.push(Template);
+                        }
+                    }
+                }
+                else {
+                    console.warn( "schemaName can't be found on modelDictMixin ( list will be empty  for ", _self ," ) "  );
+                }
+            }
+            _self.set("select", 0 );
+        }
+    });
 
-	return Application.modelDictMixin;
+    return Application.modelDictMixin;
 });

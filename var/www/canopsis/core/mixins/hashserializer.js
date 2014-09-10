@@ -18,23 +18,23 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
 
-	Application.HashSerializerMixin = Ember.Mixin.create({
-		serializeIntoHash: function(hash, type, record, method, options) {
-			void (type);
-			console.log("serializeIntoHash", arguments);
-			hash = this.serialize(record, options);
-			if (method === "PUT") {
-				return hash;
-			} else if (method === "POST") {
-				return [hash];
-			}
+    Application.HashSerializerMixin = Ember.Mixin.create({
+        serializeIntoHash: function(hash, type, record, method, options) {
+            void (type);
+            console.log("serializeIntoHash", arguments);
+            hash = this.serialize(record, options);
+            if (method === "PUT") {
+                return hash;
+            } else if (method === "POST") {
+                return [hash];
+            }
 
-		}
-	});
+        }
+    });
 
-	return Application.HashSerializerMixin;
+    return Application.HashSerializerMixin;
 });

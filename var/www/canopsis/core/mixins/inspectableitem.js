@@ -18,184 +18,184 @@
 */
 
 define([
-	'jquery',
-	'ember',
-	'app/application'
+    'jquery',
+    'ember',
+    'app/application'
 ], function($, Ember, Application) {
 
-	/**
-	 * Provides an "attributes" property, dependant on content, to iterate on model's attributes, with the value and schema's properties
-	 *
-	 * Warning :the parent controller MUST have attributesKeys property!
-	 * @mixin
-	 */
+    /**
+     * Provides an "attributes" property, dependant on content, to iterate on model's attributes, with the value and schema's properties
+     *
+     * Warning :the parent controller MUST have attributesKeys property!
+     * @mixin
+     */
 
-	Application.InspectableItemMixin = Ember.Mixin.create({
+    Application.InspectableItemMixin = Ember.Mixin.create({
 
-		/**
-			@required
-		*/
-		inspectedDataItem: function() {
-			console.error("This must be defined on the base class. Assuming inspected data is content");
+        /**
+            @required
+        */
+        inspectedDataItem: function() {
+            console.error("This must be defined on the base class. Assuming inspected data is content");
 
-			return "content";
-		}.property(),
+            return "content";
+        }.property(),
 
-		/**
-			@required
-		*/
-		inspectedItemType: function() {
-			console.error("This must be defined on the base class. Assuming inspected data is content.xtype");
+        /**
+            @required
+        */
+        inspectedItemType: function() {
+            console.error("This must be defined on the base class. Assuming inspected data is content.xtype");
 
-			return "content.xtype";
-		}.property(),
+            return "content.xtype";
+        }.property(),
 
-		/**
-			@required
-		*/
-		inspectedItemInstance: function() {
-			console.error("Not mandatory, but attr.value field will not be set");
+        /**
+            @required
+        */
+        inspectedItemInstance: function() {
+            console.error("Not mandatory, but attr.value field will not be set");
 
-			return "content";
-		}.property(),
+            return "content";
+        }.property(),
 
-		//getting attributes (keys and values as seen on the form)
-		categorized_attributes: function() {
-			var inspectedDataItem =  this.get('inspectedDataItem');
-			console.log("recompute categorized_attributes", inspectedDataItem );
-			if (inspectedDataItem !== undefined) {
-				console.log("inspectedDataItem attributes", inspectedDataItem.get('attributes'));
-				var me = this;
+        //getting attributes (keys and values as seen on the form)
+        categorized_attributes: function() {
+            var inspectedDataItem =  this.get('inspectedDataItem');
+            console.log("recompute categorized_attributes", inspectedDataItem );
+            if (inspectedDataItem !== undefined) {
+                console.log("inspectedDataItem attributes", inspectedDataItem.get('attributes'));
+                var me = this;
 
-				if (this.get('inspectedItemType') !== undefined) {
-					var itemType;
+                if (this.get('inspectedItemType') !== undefined) {
+                    var itemType;
 
-					if (this.get('inspectedItemType') === "view") {
-						itemType = "userview";
-					} else {
-						itemType = this.get('inspectedItemType');
-					}
+                    if (this.get('inspectedItemType') === "view") {
+                        itemType = "userview";
+                    } else {
+                        itemType = this.get('inspectedItemType');
+                    }
 
-					console.log("inspected itemType", itemType.capitalize());
-					var referenceModel = Application[itemType.capitalize()];
+                    console.log("inspected itemType", itemType.capitalize());
+                    var referenceModel = Application[itemType.capitalize()];
 
-					if (referenceModel === undefined || referenceModel.proto() === undefined) {
-						console.error("There does not seems to be a registered schema for", itemType.capitalize());
-					}
-					if (referenceModel.proto().categories === undefined) {
-						console.error("No categories in the schema of", itemType);
-					}
+                    if (referenceModel === undefined || referenceModel.proto() === undefined) {
+                        console.error("There does not seems to be a registered schema for", itemType.capitalize());
+                    }
+                    if (referenceModel.proto().categories === undefined) {
+                        console.error("No categories in the schema of", itemType);
+                    }
 
-					var options = this.get('options');
-					var filters = [];
+                    var options = this.get('options');
+                    var filters = [];
 
-					//Allows showing only some fields in the form.
-					if (options && options.filters) {
-						filters = options.filters;
-					}
-					console.log(' + filters ', filters);
+                    //Allows showing only some fields in the form.
+                    if (options && options.filters) {
+                        filters = options.filters;
+                    }
+                    console.log(' + filters ', filters);
 
-					//Enables field label override in form from options.
-					var override_labels = {};
-					if (options && options.override_labels) {
-						override_labels = options.override_labels;
-					}
+                    //Enables field label override in form from options.
+                    var override_labels = {};
+                    if (options && options.override_labels) {
+                        override_labels = options.override_labels;
+                    }
 
-					this.categories = [];
+                    this.categories = [];
 
-					var modelAttributes = Ember.get(referenceModel, 'attributes');
+                    var modelAttributes = Ember.get(referenceModel, 'attributes');
 
-					for (var i = 0; referenceModel.proto().categories &&
-					     i < referenceModel.proto().categories.length; i++) {
-						var category = referenceModel.proto().categories[i];
-						var createdCategory = [];
-						createdCategory.title = category.title;
-						createdCategory.keys = [];
+                    for (var i = 0; referenceModel.proto().categories &&
+                         i < referenceModel.proto().categories.length; i++) {
+                        var category = referenceModel.proto().categories[i];
+                        var createdCategory = [];
+                        createdCategory.title = category.title;
+                        createdCategory.keys = [];
 
-						for (var j = 0; j < category.keys.length; j++) {
-							var key = category.keys[j];
+                        for (var j = 0; j < category.keys.length; j++) {
+                            var key = category.keys[j];
 
-							if(key === "separator") {
-								createdCategory.keys[j] = Ember.Object.create({
-									type:'string',
-									model: Ember.Object.create({
-										options: Ember.Object.create({
-											role:"separator"
-										})
-									}),
-									options: Ember.Object.create()
-								});
-							} else {
-								if (typeof key === "object") {
-									key = key.field;
-								}
+                            if(key === "separator") {
+                                createdCategory.keys[j] = Ember.Object.create({
+                                    type:'string',
+                                    model: Ember.Object.create({
+                                        options: Ember.Object.create({
+                                            role:"separator"
+                                        })
+                                    }),
+                                    options: Ember.Object.create()
+                                });
+                            } else {
+                                if (typeof key === "object") {
+                                    key = key.field;
+                                }
 
-								if (key !== undefined && modelAttributes.get(key) === undefined) {
-									console.error("An attribute that does not exists seems to be referenced in schema categories", key, referenceModel);
-								}
+                                if (key !== undefined && modelAttributes.get(key) === undefined) {
+                                    console.error("An attribute that does not exists seems to be referenced in schema categories", key, referenceModel);
+                                }
 
-								//TODO refactor the 20 lines below in an utility function "getEditorForAttr"
-								//find appropriate editor for the model property
-								var editorName;
-								var attr = modelAttributes.get(key);
+                                //TODO refactor the 20 lines below in an utility function "getEditorForAttr"
+                                //find appropriate editor for the model property
+                                var editorName;
+                                var attr = modelAttributes.get(key);
 
-								//defines an option object explicitely here for next instruction
-								if (attr.options === undefined) {
-									attr.options = {};
-								}
+                                //defines an option object explicitely here for next instruction
+                                if (attr.options === undefined) {
+                                    attr.options = {};
+                                }
 
-								//hide field if not filter specified or if key match one filter element.
-								if (filters.length === 0 || $.inArray(key, filters) !== -1) {
-									Ember.set(attr, 'options.hiddenInForm', false);
-								} else {
-									Ember.set(attr, 'options.hiddenInForm', true);
-								}
+                                //hide field if not filter specified or if key match one filter element.
+                                if (filters.length === 0 || $.inArray(key, filters) !== -1) {
+                                    Ember.set(attr, 'options.hiddenInForm', false);
+                                } else {
+                                    Ember.set(attr, 'options.hiddenInForm', true);
+                                }
 
-								if (attr.options !== undefined && attr.options.role !== undefined) {
-									editorName = "editor-" + attr.options.role;
-								} else {
-									editorName = "editor-" + attr.type;
-								}
+                                if (attr.options !== undefined && attr.options.role !== undefined) {
+                                    editorName = "editor-" + attr.options.role;
+                                } else {
+                                    editorName = "editor-" + attr.type;
+                                }
 
-								if (Ember.TEMPLATES[editorName] === undefined) {
-									editorName = "editor-defaultpropertyeditor";
-								}
+                                if (Ember.TEMPLATES[editorName] === undefined) {
+                                    editorName = "editor-defaultpropertyeditor";
+                                }
 
-								//enable field label override.
-								var label = key;
-								if (override_labels[key]) {
-									label = override_labels[key];
-								}
+                                //enable field label override.
+                                var label = key;
+                                if (override_labels[key]) {
+                                    label = override_labels[key];
+                                }
 
-								createdCategory.keys[j] = {
-									field: label,
-									model: modelAttributes.get(key),
-									editor: editorName
-								};
-								/*
-								if (me.get('inspectedDataItem') !== undefined) {
-									createdCategory.keys[j].value = me.get('inspectedDataItem').get(key);
-								} else {
-									createdCategory.keys[j].value = undefined;
-								}*/
-								createdCategory.keys[j].value = (!this.isOnCreate)? inspectedDataItem.get(key) : attr.options["default"];
+                                createdCategory.keys[j] = {
+                                    field: label,
+                                    model: modelAttributes.get(key),
+                                    editor: editorName
+                                };
+                                /*
+                                if (me.get('inspectedDataItem') !== undefined) {
+                                    createdCategory.keys[j].value = me.get('inspectedDataItem').get(key);
+                                } else {
+                                    createdCategory.keys[j].value = undefined;
+                                }*/
+                                createdCategory.keys[j].value = (!this.isOnCreate)? inspectedDataItem.get(key) : attr.options["default"];
 
-								console.log("category key ", category.keys[j].value);
-							}
-						}
+                                console.log("category key ", category.keys[j].value);
+                            }
+                        }
 
-						this.categories.push(createdCategory);
-					}
+                        this.categories.push(createdCategory);
+                    }
 
-					console.log("categories", this.categories);
-					return this.categories;
-				}
-				else {
-					return undefined;
-				}
-			}
-		}.property("inspectedDataItem", "inspectedItemType")
-	});
+                    console.log("categories", this.categories);
+                    return this.categories;
+                }
+                else {
+                    return undefined;
+                }
+            }
+        }.property("inspectedDataItem", "inspectedItemType")
+    });
 
-	return Application.InspectableItemMixin;
+    return Application.InspectableItemMixin;
 });

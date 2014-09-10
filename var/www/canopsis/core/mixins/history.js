@@ -18,31 +18,31 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
 
-	/**
-	  Implements history collection finder
-	*/
+    /**
+      Implements history collection finder
+    */
 
-	Application.HistoryMixin = Ember.Mixin.create({
+    Application.HistoryMixin = Ember.Mixin.create({
 
-		historyMixinFindOptions: function () {
-			console.warn('this should be overriden');
-		}.property(),
+        historyMixinFindOptions: function () {
+            console.warn('this should be overriden');
+        }.property(),
 
-		isHistory: function () {
-			return this.get('historyMixinFindOptions');
-		},
+        isHistory: function () {
+            return this.get('historyMixinFindOptions');
+        },
 
-		actions: {
-			history: function () {
-				this.set('historyMixinFindOptions', !this.get('historyMixinFindOptions'));
-				this.findItems();
-			}
-		}
-	});
+        actions: {
+            history: function () {
+                this.set('historyMixinFindOptions', !this.get('historyMixinFindOptions'));
+                this.findItems();
+            }
+        }
+    });
 
-	return Application.HistoryMixin;
+    return Application.HistoryMixin;
 });
