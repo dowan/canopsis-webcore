@@ -1,0 +1,30 @@
+<table>
+	<tr>
+		<td>
+			<button class="btn btn-default" {{action "switchDurationType"}}>
+				{{tr controller.durationType}}
+			</button>&nbsp;&nbsp;
+		</td>
+		{{#if controller.isDurationType}}
+			<td>
+				{{tr 'Select delay'}}
+			</td>
+			<td>
+				{{component-wrapper callback=controller.updateDuration editor-type="duration"}}
+			</td>
+		{{else}}
+			<td>
+				{{tr 'Start date'}}
+			</td>
+			<td>
+				{{component-wrapper callback=controller.updateDuration editor-type="timestamp"}}
+			</td>
+			<td>
+				&nbsp;&nbsp;{{tr 'Stop date'}}
+			</td>
+			<td>
+				{{component-wrapper callback=controller.updateDuration editor-type="timestamp"}}
+			</td>
+		{{/if}}
+	</tr>
+</table>

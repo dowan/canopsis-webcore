@@ -19,292 +19,306 @@
 # ---------------------------------
 
 import logging
-import json
-import sys
-import os
 
-from bottle import error, route, get, request, response, post, HTTPError, redirect
-from beaker.middleware import SessionMiddleware
+from bottle import \
+    get, request, response, post, HTTPError, redirect
 
 ## Canopsis
 from canopsis.old.account import Account
 from canopsis.old.storage import get_storage
-from canopsis.old.record import Record
 
 logger = logging.getLogger("auth")
 logger.setLevel(logging.INFO)
 
 #session variable
 session_accounts = {
-	'anonymous': Account()
+    'anonymous': Account()
 }
 
 # List of plugins to skip
 # CAS will handle the logout method
-auth_backends = ['AuthKeyBackend', 'LDAPBackend', 'CASBackend', 'EnsureAuthenticated']
+auth_backends = ['AuthKeyBackend', 'LDAPBackend', 'CASBackend',
+'EnsureAuthenticated']
 auth_backends_logout = ['AuthKeyBackend', 'LDAPBackend', 'EnsureAuthenticated']
 
 
 class EnsureAuthenticated(object):
-	name = 'EnsureAuthenticated'
+    name = 'EnsureAuthenticated'
 
-	def apply(self, callback, context):
-		def decorated(*args, **kwargs):
-			s = request.environ.get('beaker.session')
+    def apply(self, callback, context):
+        def decorated(*args, **kwargs):
+            s = request.environ.get('beaker.session')
 
-			if not s.get('auth_on', False):
-				return HTTPError(401, 'Not authorized')
+            if not s.get('auth_on', False):
+                return HTTPError(401, 'Not authorized')
 
-			return callback(*args, **kwargs)
+            return callback(*args, **kwargs)
 
-		return decorated
+        return decorated
 
-@post('/auth',skip=auth_backends)
+
+@post('/auth', skip=auth_backends)
 def auth():
-	login = request.params.get('username', default=None)
-	password = request.params.get('password', default=None)
+    login = request.params.get('username', default=None)
+    password = request.params.get('password', default=None)
 
-	if not login or not password:
-		return HTTPError(400, "Invalid arguments")
+    if not login or not password:
+        return HTTPError(400, "Invalid arguments")
 
-	mode = 'plain'
+    mode = 'plain'
 
-	if request.params.get('shadow', default=False):
-		mode = 'shadow'
-	
-	if request.params.get('cryptedKey', default=False) or request.params.get('crypted', default=False):
-		mode = 'crypted'
+    if request.params.get('shadow', default=False):
+        mode = 'shadow'
 
-	_id = "account.%s" % login
+    if request.params.get('cryptedKey', default=False) or request.params.get('crypted', default=False):
+        mode = 'crypted'
 
-	logger.debug(" + _id:      %s" % _id)
-	logger.debug(" + Login:    %s" % login)
-	logger.debug(" + Mode:     %s" % mode)
+    _id = "account.%s" % login
 
-	storage = get_storage(namespace='object')
-	account = None
+    logger.debug(" + _id:      %s" % _id)
+    logger.debug(" + Login:    %s" % login)
+    logger.debug(" + Mode:     %s" % mode)
 
-	## Local
-	try:
-		account = Account(storage.get(_id, account=Account(user=login)))
-	except Exception, err:
-		logger.error(err)
+    storage = get_storage(namespace='object')
+    account = None
 
-	## Check
-	if not account or account.external:
-		if mode == 'plain':
-			response.status = 307
-			response.set_header('Location', '/auth/external')
+    ## Local
+    try:
+        account = Account(storage.get(_id, account=Account(user=login)))
+    except Exception as err:
+        logger.error(err)
 
-			return 'username={0}&password={1}'.format(login, password)
+    ## Check
+    if not account or account.external:
+        if mode == 'plain':
+            response.status = 307
+            response.set_header('Location', '/auth/external')
 
-		else:
-			return HTTPError(403, 'Plain authentication required')
+            return 'username={0}&password={1}'.format(login, password)
 
-	if not account.is_enable():
-		return HTTPError(403, "This account is not enabled")
+        else:
+            return HTTPError(403, 'Plain authentication required')
 
-	logger.debug(" + Check with local db")
-	access = False
+    if not account.is_enable():
+        return HTTPError(403, "This account is not enabled")
 
-	if mode == 'plain':
-		access = account.check_passwd(password)
+    logger.debug(" + Check with local db")
+    access = False
 
-	elif mode == 'shadow':
-		access = account.check_shadowpasswd(password)
+    if mode == 'plain':
+        access = account.check_passwd(password)
 
-	elif mode == 'crypted':
-		access = account.check_tmp_cryptedKey(password)
+    elif mode == 'shadow':
+        access = account.check_shadowpasswd(password)
 
-	if not access:
-		logger.debug(" + Invalid password ...")
-		return HTTPError(403, "Forbidden")
+    elif mode == 'crypted':
+        access = account.check_tmp_cryptedKey(password)
 
-	create_session(account)
+    if not access:
+        logger.debug(" + Invalid password ...")
+        return HTTPError(403, "Forbidden")
 
-	redirect('/')
+    create_session(account)
+
+    redirect('/')
+
 
 @post('/auth/external')
 def doauth():
-	# When we arrive here, the Bottle plugins in charge of authentication have
-	# initialized the session, we just need to redirect to the index.
-	redirect('/static/canopsis/index.html')
+    # When we arrive here, the Bottle plugins in charge of authentication have
+    # initialized the session, we just need to redirect to the index.
+    redirect('/static/canopsis/index.html')
+
 
 @get('/logged_in')
 def logged_in():
-	# Route used when came back from CAS or any other external backend
-	redirect('/static/canopsis/index.html')
+    # Route used when came back from CAS or any other external backend
+    redirect('/static/canopsis/index.html')
+
 
 @get('/autoLogin/:key', skip=auth_backends)
 def autoLogin(key=None):
-	if not key:
-		return HTTPError(400, "No key provided")
+    if not key:
+        return HTTPError(400, "No key provided")
 
-	account = check_authkey(key)
+    account = check_authkey(key)
 
-	if not account:
-		return HTTPError(403, "Forbidden")
+    if not account:
+        return HTTPError(403, "Forbidden")
 
-	if not account.is_enable():
-		logger.debug(" + Account is disabled")
-		return HTTPError(403, "Account is disabled")
+    if not account.is_enable():
+        logger.debug(" + Account is disabled")
+        return HTTPError(403, "Account is disabled")
 
-	create_session(account)
+    create_session(account)
 
-	return {'total':1,'data':[ account.dump() ], 'success':True}
+    return {'total': 1, 'data': [account.dump()], 'success': True}
 
-#Access for disconnect and clean session
+
 @get('/logout', skip=auth_backends_logout)
 @get('/disconnect', skip=auth_backends_logout)
 def disconnect():
-	s = request.environ.get('beaker.session')
-	user = s.get('account_user', None)
+    s = request.environ.get('beaker.session')
+    user = s.get('account_user', None)
 
-	if not user:
-		return HTTPError(403, "Forbidden")
+    if not user:
+        return HTTPError(403, "Forbidden")
 
-	logger.debug("Disconnect '%s'" % user)
-	delete_session()
+    logger.debug("Disconnect '%s'" % user)
+    delete_session()
 
-	redirect('/')
-	# return {'total': 0, 'success': True, 'data': []}
+    redirect('/')
+    # return {'total': 0, 'success': True, 'data': []}
 
-#find the account in memory, or try to find it from database, if not in db log anon
+
 def get_account(_id=None):
-	logger.debug("Get Account:")
+    """
+    find the account in memory, or try to find it from database,
+    if not in db log anon
+    """
+    logger.debug("Get Account:")
 
-	s = request.environ.get('beaker.session')
+    s = request.environ.get('beaker.session')
 
-	if not _id:
-		_id = s.get('account_id', None)
+    if not _id:
+        _id = s.get('account_id', None)
 
-	logger.debug(" + _id: %s" % _id)
+    logger.debug(" + _id: %s" % _id)
 
-	if not _id:
-		logger.debug("  + Failed")
-		return session_accounts['anonymous']
+    if not _id:
+        logger.debug("  + Failed")
+        return session_accounts['anonymous']
 
-	logger.debug("Load account from cache")
-	account = session_accounts.get(_id, None)
+    logger.debug("Load account from cache")
+    account = session_accounts.get(_id, None)
 
-	if account:
-		return account
+    if account:
+        return account
 
-	logger.debug("  + Failed")
+    logger.debug("  + Failed")
 
-	logger.debug("Load account from DB")
-	
-	try:
-		storage = get_storage(namespace='object')
-		account = Account(storage.get(_id, account=Account(user='root')))
-	except Exception as err:
-		logger.debug("  + Failed: %s" % err)
-		return session_accounts['anonymous']
+    logger.debug("Load account from DB")
 
-	session_accounts[_id] = account
-	return account
+    try:
+        storage = get_storage(namespace='object')
+        account = Account(storage.get(_id, account=Account(user='root')))
+    except Exception as err:
+        logger.debug("  + Failed: %s" % err)
+        return session_accounts['anonymous']
 
-#cache is cool, but when you change rights, cache still have old rights, so reload 
+    session_accounts[_id] = account
+    return account
+
+
 def reload_account(_id):
-	logger.info('Reload cache and session')
+    """
+    cache is cool, but when you change rights, cache still have old rights,
+    so reload
+    """
+    logger.info('Reload cache and session')
 
-	try:
-		account = get_account()
-		storage = get_storage(namespace='object')
-		record = storage.get(_id, account=account)
-	except Exception as err:
-		logger.error('Impossible to load record: %s' % err)
-		return False
+    try:
+        account = get_account()
+        storage = get_storage(namespace='object')
+        record = storage.get(_id, account=account)
+    except Exception as err:
+        logger.error('Impossible to load record: %s' % err)
+        return False
 
-	account = Account(record)
+    account = Account(record)
 
-	if not account:
-		logger.error('Impossible to load account')
-		return False
+    if not account:
+        logger.error('Impossible to load account')
+        return False
 
-	session_accounts[account._id] = account
+    session_accounts[account._id] = account
 
-	logger.debug(' + Session and cache are reloaded')
-	return True
+    logger.debug(' + Session and cache are reloaded')
+    return True
+
 
 def check_authkey(key, account=None):
-	storage = get_storage(namespace='object')
-	
-	mfilter = {
-		'crecord_type': 'account',
-		'authkey': key,
-	}
-	
-	logger.debug("Search authkey: '%s'" % key)
+    storage = get_storage(namespace='object')
 
-	record = storage.find_one(mfilter=mfilter, account=Account(user='root'))
+    mfilter = {
+        'crecord_type': 'account',
+        'authkey': key,
+    }
 
-	if not record:
-		return None
+    logger.debug("Search authkey: '%s'" % key)
 
-	logger.debug(" + Done")
-	key_account = Account(record)
+    record = storage.find_one(mfilter=mfilter, account=Account(user='root'))
 
-	if account and account._id != key_account._id:
-		logger.debug(" + Account missmatch")
-		return None
+    if not record:
+        return None
 
-	return key_account
+    logger.debug(" + Done")
+    key_account = Account(record)
+
+    if account and account._id != key_account._id:
+        logger.debug(" + Account missmatch")
+        return None
+
+    return key_account
+
 
 def check_root(account):
-	if account._id == 'account.root' or  account.group == 'group.CPS_root':
-		return True
+    if account._id == 'account.root' or account.group == 'group.CPS_root':
+        return True
 
-	if 'group.CPS_root' in account.groups:
-		return True
+    if 'group.CPS_root' in account.groups:
+        return True
 
-	return False
+    return False
+
 
 def check_group_rights(account, group_id):
-	if check_root(account):
-		return True
+    if check_root(account):
+        return True
 
-	if group_id == account.group:
-		return True
+    if group_id == account.group:
+        return True
 
-	if group_id in account.groups:
-		return True
+    if group_id in account.groups:
+        return True
 
-	logger.debug("'%s' is not in '%s'" % (account.user,group_id))
-	return False
+    logger.debug("'%s' is not in '%s'" % (account.user, group_id))
+    return False
+
 
 def create_session(account):
-	session_accounts[account._id] = account
+    session_accounts[account._id] = account
 
-	s = request.environ.get('beaker.session')
-	s['account_id'] = account._id
-	s['account_user'] = account.user
-	s['account_group'] = account.group
-	s['account_groups'] = account.groups
-	s['auth_on'] = True
-	s.save()
+    s = request.environ.get('beaker.session')
+    s['account_id'] = account._id
+    s['account_user'] = account.user
+    s['account_group'] = account.group
+    s['account_groups'] = account.groups
+    s['auth_on'] = True
+    s.save()
 
-	return s
+    return s
+
 
 def delete_session(_id=None):
-	account = get_account()
+    account = get_account()
 
-	if not _id:	
-		_id = account._id
+    if not _id:
+        _id = account._id
 
-	if isinstance(_id, list):
-		ids = _id
-	else:
-		ids = [ _id ]
+    if isinstance(_id, list):
+        ids = _id
+    else:
+        ids = [_id]
 
-	logger.debug("Delete session '%s'" % ids)
+    logger.debug("Delete session '%s'" % ids)
 
-	for _id in ids:
-		try:
-			del session_accounts[_id]
-		except:
-			pass
+    for _id in ids:
+        try:
+            del session_accounts[_id]
+        except:
+            pass
 
-	if account._id in ids:
-		s = request.environ.get('beaker.session')
-		s.delete()
+    if account._id in ids:
+        s = request.environ.get('beaker.session')
+        s.delete()

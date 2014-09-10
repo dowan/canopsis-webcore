@@ -121,6 +121,16 @@ define([
 
 		}.property('formContext'),
 
+		updateArray: function() {
+			var ArrayFields = this.get("ArrayFields");
+			if (ArrayFields !== undefined) {
+				for (var w = 0; w < this.ArrayFields.length; w++) {
+					console.log("ArrayFields  : ", this.ArrayFields[w]);
+					this.ArrayFields[w].onUpdate();
+				}
+			}
+		},
+
 		actions: {
 			submit: function() {
 				if (this.validation !== undefined && !this.validation()) {
@@ -174,13 +184,7 @@ define([
 					}
 				}
 				//Update value of array
-				var ArrayFields = this.get("ArrayFields");
-				if (ArrayFields !== undefined) {
-					for (var w = 0; w < this.ArrayFields.length; w++) {
-						console.log("ArrayFields  : ", this.ArrayFields[w]);
-						this.ArrayFields[w].onUpdate();
-					}
-				}
+				this.updateArray();
 
 				console.log("this is a widget", this.get('formContext'));
 				this._super(this.get('formContext'));

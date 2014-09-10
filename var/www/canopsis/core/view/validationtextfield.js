@@ -1,9 +1,9 @@
-  define([
-  'jquery',
-  'ember',
-  'app/application',
-  'app/view/crecords'
-], function($, Ember, Application) {
+define([
+    'jquery',
+    'ember',
+    'app/application',
+    'app/lib/utils/forms',
+], function($, Ember, Application, formUtils ) {
 
     /**
      * Generic textField for validation
@@ -11,29 +11,39 @@
      */
     Application.ValidationTextField = Ember.TextField.extend({
         attr : "",
-        formController : null,
+
+        willDestroyElement:function(){
+            //TODO : find a better place
+            var formController  =  Canopsis.formwrapperController.form;
+            formController.set('validationFields' , Ember.A() );
+        },
+
         init: function(){
-          var model =  this.attr.model;
+            var form  =  Canopsis.formwrapperController.form;
+            this.set('form' , form );
 
-          if (Ember.isNone(this.get('value')) && !Ember.isNone(this.get('attr.model.options.defaultValue'))) {
-              this.set('value', this.get('attr.model.options.defaultValue'));
-          }
+            var model =  this.attr.model;
 
-          var type =  model.options["input_type"]|| model.type;
-          type = ( type === "string" )? "text" : type;
-         // this.type = type;
-          this._super()
+            if (Ember.isNone(this.get('value')) && !Ember.isNone(this.get('attr.model.options.defaultValue'))) {
+                this.set('value', this.get('attr.model.options.defaultValue'));
+            }
+
+            var type =  model.options['input_type'] || model.type;
+            type = (type === 'string')? 'text' : type;
+            // this.type = type;
+            this._super();
         },
 
         registerFieldWithController: function() {
             var formController  =  Canopsis.formwrapperController.form;
-            var validationFields ;
-
             if ( formController ){
-              var validationFields = formController.get('validationFields');
-              if (validationFields){
-                  validationFields.pushObject(this);
-              }
+                var validationFields = formController.get('validationFields');
+                if (validationFields){
+                    validationFields.pushObject(this);
+                }
+            }
+            if (formController.validateOnInsert){
+                this.validate();
             }
         }.on('didInsertElement'),
 
@@ -42,25 +52,25 @@
         },
 
         validate : function() {
-          var formController  = Canopsis.formwrapperController.form;
-          var FCValidation    = formController.get('validation');
-          if ( FCValidation  !== undefined ) {
-              var attr = this.get('attr') ;
-              var valideStruct =  Ember.validators.validate(attr);
-              console.log("valideStruct",valideStruct);
+            var formController  = Canopsis.formwrapperController.form;
+            var FCValidation    = formController.get('validation');
+            if ( FCValidation  !== undefined ) {
+                var attr = this.get('attr') ;
+                var valideStruct =  Ember.validators.validate(attr);
+                console.log('valideStruct',valideStruct);
 
-              this.$().closest('div').next(".help-block").remove();
+                if (!this.removedFromDOM){
+                    var selector =  this.$();
+                    selector.closest('div').next('.help-block').remove();
 
-              if (!valideStruct.valid) {
-
-                this.$().closest('div').addClass('has-error').after("<span class='help-block'>"+ valideStruct.error + "</span>");
-              } else {
-
-                this.$().closest('div').removeClass("has-error");
-              }
-
-              return valideStruct.valid;
-          }
+                    if (!valideStruct.valid) {
+                        selector.closest('div').addClass('has-error').after('<span class="help-block">'+ valideStruct.error + '</span>');
+                    } else {
+                        selector.closest('div').removeClass('has-error');
+                    }
+                }
+            return valideStruct;
+            }
         }
     });
 

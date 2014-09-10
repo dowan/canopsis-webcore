@@ -23,6 +23,7 @@
 var componentsTemplates = [
 	'expandableaddbutton',
 	'classifieditemselector',
+    'wrapper',
 	'editor',
 	'renderer',
 	'table',
