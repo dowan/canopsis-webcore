@@ -18,85 +18,90 @@
 */
 
 define([
-	'jquery',
-	'ember',
-	'app/application',
-	'utils',
-	'jquery.encoding.digests.sha1'
+    'jquery',
+    'ember',
+    'app/application',
+    'utils',
+    'jquery.encoding.digests.sha1'
 ], function($, Ember, Application, utils) {
-	var set = Ember.set,
-	    get = Ember.get;
+    var set = Ember.set,
+        get = Ember.get;
 
-	Application.LoginRoute = Ember.Route.extend({
-		setupController: function(controller, model) {
-			void(model);
+    Application.LoginRoute = Ember.Route.extend({
+        setupController: function(controller, model) {
+            void(model);
 
-			controller.reset();
-			//prevents from getting a string into the authkey
-		}
-	});
+            controller.reset();
+            //prevents from getting a string into the authkey
+        }
+    });
 
-	Application.LoginController = Ember.ObjectController.extend({
-		content: {},
+    Application.LoginController = Ember.ObjectController.extend({
+        content: {},
 
-		getUser: function () {
-			var controller = this;
+        getUser: function () {
+            var controller = this;
 
-			$.ajax({
-				url: '/account/me',
-				data: {limit: 1000},
-				success: function(data) {
-					console.log("got user", data);
+            $.ajax({
+                url: '/account/me',
+                data: {limit: 1000},
+                success: function(data) {
+                    console.log("got user", data);
+                    var account = data.data[0];
 
-					var account = data.data[0];
+                    controller.set('username', account.user);
+                    controller.set('group', account.aaa_group.slice('group.'.length));
 
-					controller.set('username', account.user);
-					controller.set('group', account.aaa_group.slice('group.'.length));
+                    var groups = [];
 
-					var groups = [];
+                    for(var i = 0; i < account.groups.length; i++) {
+                        groups.push(account.groups[i].slice('group.'.length));
+                    }
 
-					for(var i = 0; i < account.groups.length; i++) {
-						groups.push(account.groups[i].slice('group.'.length));
-					}
+                    controller.set('firstname', account.firstname);
+                    controller.set('lastname', account.lastname);
+                    controller.set('groups', groups);
+                    controller.set('rights', account.rights);
+                    controller.set('mail', account.mail);
+                    controller.set('authkey', account.authkey);
+                    if (Ember.isNone(account.ui_language)) {
+                        lang = 'en';
+                    } else {
+                        lang = account.ui_language;
+                    }
+                    controller.set('ui_language', lang);
 
-					controller.set('firstname', account.firstname);
-					controller.set('lastname', account.lastname);
-					controller.set('groups', groups);
-					controller.set('rights', account.rights);
-					controller.set('mail', account.mail);
-					controller.set('authkey', account.authkey);
+                    set(utils, 'session', controller);
+                },
+                async: false
+            });
 
-					set(utils, 'session', controller);
-				},
-				async: false
-			});
+        },
+        username: function () {
+        }.property(),
 
-		},
-		username: function () {
-		}.property(),
+        reset: function() {
+            this.setProperties({
+                username: "",
+                password: "",
+                shadow: "",
+                cryptedkey: "",
+                authkey: this.get('authkey')
+            });
+        },
 
-		reset: function() {
-			this.setProperties({
-				username: "",
-				password: "",
-				shadow: "",
-				cryptedkey: "",
-				authkey: this.get('authkey')
-			});
-		},
+        authkey: function () {
+            var authkey = localStorage.cps_authkey;
+            if (authkey === 'undefined') {
+                authkey = undefined;
+            }
+            return authkey;
+        }.property('authkey'),
 
-		authkey: function () {
-			var authkey = localStorage.cps_authkey;
-			if (authkey === 'undefined') {
-				authkey = undefined;
-			}
-			return authkey;
-		}.property('authkey'),
+        authkeyChanged: function() {
+            localStorage.cps_authkey = this.get('authkey');
+        }.observes('authkey')
+    });
 
-		authkeyChanged: function() {
-			localStorage.cps_authkey = this.get('authkey');
-		}.observes('authkey')
-	});
-
-	return Application.LoginController;
+    return Application.LoginController;
 });
