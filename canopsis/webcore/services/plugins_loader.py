@@ -18,52 +18,51 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-import os
-import logging
-import json
-import re
+from os.path import expanduser, join, exists
 
-from bottle import get, request, response ,static_file , HTTPError
-## Canopsis
-from canopsis.webcore.services.auth import auth_backends
+from logging import getLogger
 
-logger = logging.getLogger("plugins_loader")
+from bottle import get, static_file, HTTPError
+
+logger = getLogger("plugins_loader")
 
 #########################################################################
 
-var_path = os.path.expanduser("~/var/")
-plugins_path=os.path.join(var_path ,"plugins/")
+var_path = expanduser("~/var/")
+plugins_path = join(var_path, "plugins/")
 
 logger.info(" var_path  = {} ".format(var_path))
 logger.info(" plugins_path  = {} ".format(plugins_path))
 
-# can't have file with same name but different extention
 
 @get('/plugins/<filename:path>')
 def get_externals_files(filename):
-    found = False;
+    """
+    can't have file with same name but different extention
+    """
+    found = False
     output = filename + "_is_empty"
-    allowed_extentions = ["json" , "js", "html"]
+    allowed_extentions = ["json", "js", "html"]
     base_path = var_path + "plugins/"
 
-    if os.path.exists(base_path):
+    if exists(base_path):
         extention = filename.split(".")
 
-        if len(extention) == 1 :
+        if len(extention) == 1:
             for ext in allowed_extentions:
                 path_to_test = '{}{}.{}'.format(plugins_path, filename, ext)
-                logger.info( "path_to_test = {}".format(path_to_test) )
-                if os.path.exists(path_to_test):
+                logger.info("path_to_test = {}".format(path_to_test))
+                if exists(path_to_test):
                     found = True
                     filename = '{}.{}'.format(filename, ext)
                     break
 
-        elif extention[-1] in allowed_extentions :
+        elif extention[-1] in allowed_extentions:
             found = True
 
-        if found :
+        if found:
             logger.info("Load form Plugins file : " + filename)
             output = static_file(filename, root=plugins_path)
             return output
 
-    return HTTPError(404, "Error on "+filename)
+    return HTTPError(404, "Error on " + filename)
