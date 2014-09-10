@@ -18,24 +18,24 @@
 */
 
 define([
-	'ember',
-	'app/application',
-	'utils'
+    'ember',
+    'app/application',
+    'utils'
 ], function(Ember, Application , utils) {
 // TODO: just make a function from this
-	Application.Tags_optionFilterMixin = Ember.Mixin.create({
+    Application.Tags_optionFilterMixin = Ember.Mixin.create({
 
-		onInit : function ( contentREF , _self ){
-			var formController  =  Canopsis.formwrapperController.form;
+        onInit : function ( contentREF , _self ){
+            var formController  =  Canopsis.formwrapperController.form;
             if ( formController ){
-				utils.filterObject.getFieldsByPrefix( "_opt_" , formController.formContext , function( attr , result  ){
-					var nameMixin = { name : attr.slice(5) };
-					result.push(nameMixin);
-				} , contentREF);
-			}
-			_self.set("select", 0 );
-		}
-	});
+                utils.filterObject.getFieldsByPrefix( "_opt_" , formController.formContext , function( attr , result  ){
+                    var nameMixin = { name : attr.slice(5) };
+                    result.push(nameMixin);
+                } , contentREF);
+            }
+            _self.set("select", 0 );
+        }
+    });
 
-	return Application.Tags_optionFilterMixin;
+    return Application.Tags_optionFilterMixin;
 });

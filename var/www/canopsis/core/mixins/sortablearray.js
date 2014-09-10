@@ -18,78 +18,78 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
-	var get = Ember.get,
-		set = Ember.set;
+    var get = Ember.get,
+        set = Ember.set;
 
-	/**
-	  Implements sorting in arraycontrollers
+    /**
+      Implements sorting in arraycontrollers
 
-	  You should define on the ArrayController:
-		  - the `findOptions` property
-		  - the `refreshContent()` method
+      You should define on the ArrayController:
+          - the `findOptions` property
+          - the `refreshContent()` method
 
-	*/
-	Application.SortableArrayMixin = Ember.Mixin.create({
+    */
+    Application.SortableArrayMixin = Ember.Mixin.create({
 
-		sort_direction: false,
+        sort_direction: false,
 
-		actions: {
-			sort: function(attribute) {
-				var direction;
+        actions: {
+            sort: function(attribute) {
+                var direction;
 
-				direction = get(this, 'sort_direction') ? 'ASC' : 'DESC';
-				set(this, 'sort_direction', !get(this, 'sort_direction'));
+                direction = get(this, 'sort_direction') ? 'ASC' : 'DESC';
+                set(this, 'sort_direction', !get(this, 'sort_direction'));
 
-				if (get(this, 'sortedAttribute') !== undefined) {
-					set(this, 'sortedAttribute.headerClassName', "sorting");
-				}
+                if (get(this, 'sortedAttribute') !== undefined) {
+                    set(this, 'sortedAttribute.headerClassName', "sorting");
+                }
 
-				console.log('attribute', attribute);
-				set(attribute, 'headerClassName', 'sorting_' + direction.toLowerCase());
+                console.log('attribute', attribute);
+                set(attribute, 'headerClassName', 'sorting_' + direction.toLowerCase());
 
-				set(this, 'sortedAttribute', attribute);
+                set(this, 'sortedAttribute', attribute);
 
-				console.log("sortBy", arguments);
-				if (this.findOptions === undefined) {
-					this.findOptions = {};
-				}
+                console.log("sortBy", arguments);
+                if (this.findOptions === undefined) {
+                    this.findOptions = {};
+                }
 
-				this.findOptions.sort = JSON.stringify([{"property": attribute.field,"direction": direction}]);
+                this.findOptions.sort = JSON.stringify([{"property": attribute.field,"direction": direction}]);
 
-				this.refreshContent();
-			}
-		},
+                this.refreshContent();
+            }
+        },
 
-		attributesKeys: function() {
-			console.log("attributesKeys from sortableArray");
-			var keys = this._super.apply(this);
-			var sortedAttribute = get(this, 'sortedAttribute');
+        attributesKeys: function() {
+            console.log("attributesKeys from sortableArray");
+            var keys = this._super.apply(this);
+            var sortedAttribute = get(this, 'sortedAttribute');
 
-			console.log("sortedAttribute", sortedAttribute);
-			if(sortedAttribute !== undefined)
-			{
-				for (var i = 0; i < keys.length; i++) {
-					var currentKey = keys[i];
-					var sortedAttributeField = get(sortedAttribute, 'field');
-					var sortedAttributeHeaderClassName = get(sortedAttribute, 'headerClassName');
+            console.log("sortedAttribute", sortedAttribute);
+            if(sortedAttribute !== undefined)
+            {
+                for (var i = 0; i < keys.length; i++) {
+                    var currentKey = keys[i];
+                    var sortedAttributeField = get(sortedAttribute, 'field');
+                    var sortedAttributeHeaderClassName = get(sortedAttribute, 'headerClassName');
 
-					if(get(currentKey, 'field') === sortedAttributeField) {
-						set(currentKey, 'headerClassName', sortedAttributeHeaderClassName);
-					} else {
-						set(currentKey, 'headerClassName', 'sorting');
-					}
-				}
-			} else {
-				for (var i = 0; i < keys.length; i++) {
-					set(keys[i], 'headerClassName', 'sorting');
-				}
-			}
-			return keys;
-		}.property("inspectedProperty", "inspectedDataArray"),
-	});
+                    if(get(currentKey, 'field') === sortedAttributeField) {
+                        set(currentKey, 'headerClassName', sortedAttributeHeaderClassName);
+                    } else {
+                        set(currentKey, 'headerClassName', 'sorting');
+                    }
+                }
+            } else {
+                for (var j = 0; j < keys.length; j++) {
+                    set(keys[j], 'headerClassName', 'sorting');
+                }
+            }
+            return keys;
+        }.property("inspectedProperty", "inspectedDataArray"),
+    });
 
-	return Application.SortableArrayMixin;
+    return Application.SortableArrayMixin;
 });

@@ -18,41 +18,41 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
 // TODO: just make a function from this
-	Application.mixinArrayMixin = Ember.Mixin.create({
+    Application.mixinArrayMixin = Ember.Mixin.create({
 
-		onInit : function ( contentREF , _self ){
+        onInit : function ( contentREF , _self ){
 
-			function getAndPushMixinNames(classToGet , contentREF){
-				var currentClass = SearchableMixin.byClass[classToGet];
-				for ( var i = 0 ; i < currentClass.length ; i++ ) {
-					var nameMixin = { name : currentClass[i] };
-					contentREF.push(nameMixin);
-				}
-			}
+            function getAndPushMixinNames(classToGet , contentREF){
+                var currentClass = SearchableMixin.byClass[classToGet];
+                for ( var i = 0 ; i < currentClass.length ; i++ ) {
+                    var nameMixin = { name : currentClass[i] };
+                    contentREF.push(nameMixin);
+                }
+            }
 
-			var formController  =  Canopsis.formwrapperController.form;
+            var formController  =  Canopsis.formwrapperController.form;
             if ( formController ){
-				var classToGet = _self.templateData.keywords.controller.content.model.options.mixinClass;
-				var SearchableMixin = Canopsis.Application.SearchableMixin;
+                var classToGet = _self.templateData.keywords.controller.content.model.options.mixinClass;
+                var SearchableMixin = Canopsis.Application.SearchableMixin;
 
-				if (classToGet !== undefined) {
-					getAndPushMixinNames( classToGet , contentREF );
-				}
-				else {
-					for ( var attribut in SearchableMixin.byClass ) {
-						if ( SearchableMixin.byClass.hasOwnProperty( attribut ) ) {
-							getAndPushMixinNames( attribut , contentREF );
-						}
-					}
-				}
-			}
-			_self.set("select", 1 );
-		}
-	});
+                if (classToGet !== undefined) {
+                    getAndPushMixinNames( classToGet , contentREF );
+                }
+                else {
+                    for ( var attribut in SearchableMixin.byClass ) {
+                        if ( SearchableMixin.byClass.hasOwnProperty( attribut ) ) {
+                            getAndPushMixinNames( attribut , contentREF );
+                        }
+                    }
+                }
+            }
+            _self.set("select", 1 );
+        }
+    });
 
-	return Application.mixinArrayMixin;
+    return Application.mixinArrayMixin;
 });

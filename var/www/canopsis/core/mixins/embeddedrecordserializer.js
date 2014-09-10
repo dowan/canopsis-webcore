@@ -18,281 +18,281 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
 
-	function keyForRelationship(key, kind) {
-		void (kind);
+    function keyForRelationship(key, kind) {
+        void (kind);
 
-		key = key.decamelize();
-		return key;
-	}
+        key = key.decamelize();
+        return key;
+    }
 
-	Application.EmbeddedRecordSerializerMixin = Ember.Mixin.create({
-		/**
-		The current ID index of generated IDs
-		@property
-		@private
-		*/
-		_generatedIds: 0,
+    Application.EmbeddedRecordSerializerMixin = Ember.Mixin.create({
+        /**
+        The current ID index of generated IDs
+        @property
+        @private
+        */
+        _generatedIds: 0,
 
-		/**
-		 Sideload a JSON object to the payload
+        /**
+         Sideload a JSON object to the payload
 
-		 @method sideloadItem
-		 @param {Object} payload JSON object representing the payload
-		 @param {subclass of DS.Model} type The DS.Model class of the item to be sideloaded
-		 @paraam {Object} item JSON object representing the record to sideload to the payload
-		*/
-		sideloadItem: function(payload, type, item, parentJSON) {
-			try {
-				console.log("sideLoad", type, item.xtype);
-				console.log("payload before sideLoad", payload);
+         @method sideloadItem
+         @param {Object} payload JSON object representing the payload
+         @param {subclass of DS.Model} type The DS.Model class of the item to be sideloaded
+         @paraam {Object} item JSON object representing the record to sideload to the payload
+        */
+        sideloadItem: function(payload, type, item, parentJSON) {
+            try {
+                console.log("sideLoad", type, item.xtype);
+                console.log("payload before sideLoad", payload);
 
-				if(item.xtype === undefined) {
-					console.error('no xtype for widget', type, item);
-					this.addMessage(payload, 'no xtype for widget');
-					return payload;
-				}
-				if(Application[item.xtype.capitalize()] === undefined) {
-					this.addMessage(payload, 'bad xtype for widget :' + item.xtype);
-					return payload;
-				}
+                if(item.xtype === undefined) {
+                    console.error('no xtype for widget', type, item);
+                    this.addMessage(payload, 'no xtype for widget');
+                    return payload;
+                }
+                if(Application[item.xtype.capitalize()] === undefined) {
+                    this.addMessage(payload, 'bad xtype for widget :' + item.xtype);
+                    return payload;
+                }
 
-				// The key for the sideload array
-				var sideloadKey = item.xtype.pluralize();
-				// the ID property key
-				var primaryKey = Ember.get(this, 'primaryKey');
-				var id = item[primaryKey];
+                // The key for the sideload array
+                var sideloadKey = item.xtype.pluralize();
+                // the ID property key
+                var primaryKey = Ember.get(this, 'primaryKey');
+                var id = item[primaryKey];
 
-				// The sideload array for this item
-				var sideloadArr = payload[sideloadKey] || [];
+                // The sideload array for this item
+                var sideloadArr = payload[sideloadKey] || [];
 
-				console.log("sideloadKey", sideloadKey);
+                console.log("sideloadKey", sideloadKey);
 
-				// Missing an ID, give it one
-				if (typeof id === 'undefined') {
-					id = 'generated-'+ (++this._generatedIds);
-					item[primaryKey] = id;
-				}
+                // Missing an ID, give it one
+                if (typeof id === 'undefined') {
+                    id = 'generated-'+ (++this._generatedIds);
+                    item[primaryKey] = id;
+                }
 
-				if (Ember.isNone(item.meta)) {
-					item.meta = {};
-				}
+                if (Ember.isNone(item.meta)) {
+                    item.meta = {};
+                }
 
-				console.log('filling item', item, 'meta with parent', parentJSON.xtype);
+                console.log('filling item', item, 'meta with parent', parentJSON.xtype);
 
-				item.meta.embeddedRecord = true;
-				item.meta.parentId = parentJSON.id;
+                item.meta.embeddedRecord = true;
+                item.meta.parentId = parentJSON.id;
 
-				if (!Ember.isNone(parentJSON.xtype)) {
-					item.meta.parentType = parentJSON.xtype;
-				} else if (!Ember.isNone(parentJSON.crecord_type)) {
-					item.meta.parentType = parentJSON.crecord_type;
-				}
+                if (!Ember.isNone(parentJSON.xtype)) {
+                    item.meta.parentType = parentJSON.xtype;
+                } else if (!Ember.isNone(parentJSON.crecord_type)) {
+                    item.meta.parentType = parentJSON.crecord_type;
+                }
 
-				// Don't add if already side loaded
-				if (!Ember.isNone(sideloadArr.findBy('id', id))) {
-					return payload;
-				}
+                // Don't add if already side loaded
+                if (!Ember.isNone(sideloadArr.findBy('id', id))) {
+                    return payload;
+                }
 
-				console.log("pushing item", sideloadArr, "into", sideloadKey);
+                console.log("pushing item", sideloadArr, "into", sideloadKey);
 
-				// Add to sideloaded array
-				sideloadArr.push(item);
-				payload[sideloadKey] = sideloadArr;
+                // Add to sideloaded array
+                sideloadArr.push(item);
+                payload[sideloadKey] = sideloadArr;
 
-				return payload;
-			} catch (e) {
-				console.log(e.message, e.stack);
-			}
-		},
+                return payload;
+            } catch (e) {
+                console.log(e.message, e.stack);
+            }
+        },
 
-		/**
-		 Extract relationships from the payload and sideload them. This function recursively
-		 walks down the JSON tree
+        /**
+         Extract relationships from the payload and sideload them. This function recursively
+         walks down the JSON tree
 
-		 @method sideloadItem
-		 @param {Object} payload JSON object representing the payload
-		 @param {Object} recordJSON JSON object representing the current record in the payload to look for relationships
-		 @param {Object} primaryType The DS.Model class of the record object
-		*/
-		extractRelationships: function(payload, recordJSON, primaryType, parentType) {
-			console.group('extractRelationships', recordJSON, primaryType);
+         @method sideloadItem
+         @param {Object} payload JSON object representing the payload
+         @param {Object} recordJSON JSON object representing the current record in the payload to look for relationships
+         @param {Object} primaryType The DS.Model class of the record object
+        */
+        extractRelationships: function(payload, recordJSON, primaryType, parentType) {
+            console.group('extractRelationships', recordJSON, primaryType);
 
-			try {
-				console.log("payload before extractRelationships", payload);
+            try {
+                console.log("payload before extractRelationships", payload);
 
-				if (primaryType.store === undefined) {
-					primaryType.store = parentType.store;
-				}
+                if (primaryType.store === undefined) {
+                    primaryType.store = parentType.store;
+                }
 
-				console.log('primaryType', primaryType, recordJSON.xtype);
-				if (primaryType === Application.Widget) {
-					var concreteWidgetType = Application[recordJSON.xtype.capitalize()];
-					primaryType = concreteWidgetType;
-				}
+                console.log('primaryType', primaryType, recordJSON.xtype);
+                if (primaryType === Application.Widget) {
+                    var concreteWidgetType = Application[recordJSON.xtype.capitalize()];
+                    primaryType = concreteWidgetType;
+                }
 
-				if (primaryType.store === undefined) {
-					primaryType.store = parentType.store;
-				}
+                if (primaryType.store === undefined) {
+                    primaryType.store = parentType.store;
+                }
 
-				primaryType.eachRelationship(function(key, relationship) {
-					console.log('eachRelationship', key, recordJSON, recordJSON[key]);
-					console.log('relationship', relationship);
+                primaryType.eachRelationship(function(key, relationship) {
+                    console.log('eachRelationship', key, recordJSON, recordJSON[key]);
+                    console.log('relationship', relationship);
 
-					// The record at this relationship
-					var related = recordJSON[key],
-						// belongsTo or hasMany
-						type = relationship.type;
+                    // The record at this relationship
+                    var related = recordJSON[key],
+                        // belongsTo or hasMany
+                        type = relationship.type;
 
-					console.log("related", related);
+                    console.log("related", related);
 
-					if (related) {
+                    if (related) {
 
-						// One-to-one
-						if (relationship.kind === 'belongsTo') {
-							console.group("belongsTo relationship");
-							console.log('related', related);
-							console.log('relationship', relationship);
-							console.log('recordJSON', recordJSON);
-							console.groupEnd();
+                        // One-to-one
+                        if (relationship.kind === 'belongsTo') {
+                            console.group("belongsTo relationship");
+                            console.log('related', related);
+                            console.log('relationship', relationship);
+                            console.log('recordJSON', recordJSON);
+                            console.groupEnd();
 
-							// Sideload the object to the payload
-							this.sideloadItem(payload, type, related, recordJSON);
+                            // Sideload the object to the payload
+                            this.sideloadItem(payload, type, related, recordJSON);
 
-							// Replace object with ID
-							recordJSON[key] = related.id;
-							recordJSON[key + "Type"] = related.xtype;
-							// Find relationships in this record
-							this.extractRelationships(payload, related, type, primaryType);
-						}
+                            // Replace object with ID
+                            recordJSON[key] = related.id;
+                            recordJSON[key + "Type"] = related.xtype;
+                            // Find relationships in this record
+                            this.extractRelationships(payload, related, type, primaryType);
+                        }
 
-						// Many
-						else if (relationship.kind === 'hasMany') {
-							console.group("hasMany relationship");
-							console.log('related', related);
-							console.log('relationship', relationship);
-							console.log('recordJSON', recordJSON);
-							console.groupEnd();
+                        // Many
+                        else if (relationship.kind === 'hasMany') {
+                            console.group("hasMany relationship");
+                            console.log('related', related);
+                            console.log('relationship', relationship);
+                            console.log('recordJSON', recordJSON);
+                            console.groupEnd();
 
-							// Loop through each object
-							related.forEach(function(item, index) {
-								console.log("sideLoad items in", recordJSON);
-								// Sideload the object to the payload
-								this.sideloadItem(payload, type, item, recordJSON);
+                            // Loop through each object
+                            related.forEach(function(item, index) {
+                                console.log("sideLoad items in", recordJSON);
+                                // Sideload the object to the payload
+                                this.sideloadItem(payload, type, item, recordJSON);
 
-								// Replace object with ID
-								related[index] = item.id;
+                                // Replace object with ID
+                                related[index] = item.id;
 
-								// Find relationships in this record
-								this.extractRelationships(payload, item, type, primaryType);
-							}, this);
-						}
+                                // Find relationships in this record
+                                this.extractRelationships(payload, item, type, primaryType);
+                            }, this);
+                        }
 
-					}
-				}, this);
+                    }
+                }, this);
 
-				console.groupEnd();
+                console.groupEnd();
 
-				return payload;
-			} catch (e) {
-				console.log(e.message, e.stack);
-				console.groupEnd();
-			}
-		},
+                return payload;
+            } catch (e) {
+                console.log(e.message, e.stack);
+                console.groupEnd();
+            }
+        },
 
-		isRecordEmbedded: function(record) {
-			var res;
-			if (record._data.meta !== undefined && record._data.meta.embeddedRecord === true) {
-				res = true;
-			} else {
-				res = false;
-			}
-			console.log("isRecordEmbedded", record, res);
+        isRecordEmbedded: function(record) {
+            var res;
+            if (record._data.meta !== undefined && record._data.meta.embeddedRecord === true) {
+                res = true;
+            } else {
+                res = false;
+            }
+            console.log("isRecordEmbedded", record, res);
 
-			return res;
-		},
+            return res;
+        },
 
-		getTopmostNotEmbeddedRecordFor: function(record, options) {
-			void (options);
+        getTopmostNotEmbeddedRecordFor: function(record, options) {
+            void (options);
 
-			console.log("getTopmostNotEmbeddedRecordFor", record, record.data, record._data);
-			var recordCursor = record;
+            console.log("getTopmostNotEmbeddedRecordFor", record, record.data, record._data);
+            var recordCursor = record;
 
-			while(this.isRecordEmbedded(recordCursor)) {
-				var parentType = recordCursor._data.meta.parentType;
-				var parentId = recordCursor._data.meta.parentId;
+            while(this.isRecordEmbedded(recordCursor)) {
+                var parentType = recordCursor._data.meta.parentType;
+                var parentId = recordCursor._data.meta.parentId;
 
-				//TODO dynamize
-				if (parentType === 'view') {
-					parentType = "userview";
-				}
+                //TODO dynamize
+                if (parentType === 'view') {
+                    parentType = "userview";
+                }
 
-				recordCursor = recordCursor.store.getById(parentType, parentId);
-			}
+                recordCursor = recordCursor.store.getById(parentType, parentId);
+            }
 
-			return recordCursor;
-		},
+            return recordCursor;
+        },
 
-		serialize: function(record, options) {
-			console.log("serialize", record);
-			var lookForDocumentRoot = true;
+        serialize: function(record, options) {
+            console.log("serialize", record);
+            var lookForDocumentRoot = true;
 
-			if (options !== undefined && options.lookForDocumentRoot === false) {
-				lookForDocumentRoot = false;
-			}
+            if (options !== undefined && options.lookForDocumentRoot === false) {
+                lookForDocumentRoot = false;
+            }
 
-			if (lookForDocumentRoot && this.isRecordEmbedded(record)) {
-				this.getTopmostNotEmbeddedRecordFor(record).save(options);
-				return;
-			}
-			return this._super(record, options);
-		},
+            if (lookForDocumentRoot && this.isRecordEmbedded(record)) {
+                this.getTopmostNotEmbeddedRecordFor(record).save(options);
+                return;
+            }
+            return this._super(record, options);
+        },
 
-		serializeBelongsTo: function(record, json, relationship) {
-			console.log('serializeBelongsTo', arguments);
+        serializeBelongsTo: function(record, json, relationship) {
+            console.log('serializeBelongsTo', arguments);
 
-			var attr = relationship.key;
-			console.log('serializeBelongsTo', relationship, record);
+            var attr = relationship.key;
+            console.log('serializeBelongsTo', relationship, record);
 
-			var key = keyForRelationship(attr, relationship.kind);
-			console.log("key", key);
+            var key = keyForRelationship(attr, relationship.kind);
+            console.log("key", key);
 
-			if (record.get(key) !== undefined && record.get(key) !== null) {
-				var serializedSubDocument = record.get(key).serialize({ lookForDocumentRoot : false });
-				console.log("serializedSubDocument", serializedSubDocument);
-				json[key] = serializedSubDocument;
-			}
+            if (record.get(key) !== undefined && record.get(key) !== null) {
+                var serializedSubDocument = record.get(key).serialize({ lookForDocumentRoot : false });
+                console.log("serializedSubDocument", serializedSubDocument);
+                json[key] = serializedSubDocument;
+            }
 
-		},
+        },
 
-		serializeHasMany: function(record, json, relationship) {
-			console.log('serializeHasMany', arguments);
+        serializeHasMany: function(record, json, relationship) {
+            console.log('serializeHasMany', arguments);
 
-			var attr = relationship.key;
-			console.log('serializeHasMany', relationship, record);
+            var attr = relationship.key;
+            console.log('serializeHasMany', relationship, record);
 
-			var key = keyForRelationship(attr, relationship.kind);
-			console.log("key", key);
+            var key = keyForRelationship(attr, relationship.kind);
+            console.log("key", key);
 
-			var subDocuments = record.get(key).get('content');
-			console.log("subDocuments", subDocuments);
+            var subDocuments = record.get(key).get('content');
+            console.log("subDocuments", subDocuments);
 
-			json[key] = [];
+            json[key] = [];
 
-			for (var i = 0; i < subDocuments.length; i++) {
-				if (subDocuments[i] !== undefined && subDocuments[i] !== null) {
-					var serializedSubDocument = subDocuments[i].serialize({ lookForDocumentRoot : false });
-					serializedSubDocument.xtype = relationship.type.typeKey;
-					json[key].push(serializedSubDocument);
-				}
-			}
+            for (var i = 0; i < subDocuments.length; i++) {
+                if (subDocuments[i] !== undefined && subDocuments[i] !== null) {
+                    var serializedSubDocument = subDocuments[i].serialize({ lookForDocumentRoot : false });
+                    serializedSubDocument.xtype = relationship.type.typeKey;
+                    json[key].push(serializedSubDocument);
+                }
+            }
 
-			console.log("serializedSubDocuments", json[key]);
-		}
-	});
+            console.log("serializedSubDocuments", json[key]);
+        }
+    });
 
-	return Application.EmbeddedRecordSerializerMixin;
+    return Application.EmbeddedRecordSerializerMixin;
 });

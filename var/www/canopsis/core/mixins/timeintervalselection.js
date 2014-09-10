@@ -19,22 +19,21 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/application',
+    'utils'
+], function(Ember, Application, utils) {
+    var get = Ember.get,
+        set = Ember.set;
 
-    Application.HashSerializerMixin = Ember.Mixin.create({
-        serializeIntoHash: function(hash, type, record, method, options) {
-            void (type);
-            console.log("serializeIntoHash", arguments);
-            hash = this.serialize(record, options);
-            if (method === "PUT") {
-                return hash;
-            } else if (method === "POST") {
-                return [hash];
-            }
+    var mixin = Ember.Mixin.create({
 
+        partials: {
+            header: ['timeintervalselection']
         }
+
     });
 
-    return Application.HashSerializerMixin;
+    Application.TimeintervalselectionMixin = mixin;
+
+    return mixin;
 });

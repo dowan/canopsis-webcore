@@ -35,6 +35,13 @@ var templates = [
     { name: 'listline' },
     { name: 'widgetslot-default' },
     { name: 'widgetslot-grey' },
+    { name: 'partialslot' },
+    { name: 'pagination' },
+    { name: 'itemsperpage' },
+    { name: 'search' },
+    { name: 'customfilters' },
+
+    { name: 'timeintervalselection' },
 
     { name: 'actionbutton-edit', classes: ["action"], icon : "pencil", label : "Edit"},
     { name: 'actionbutton-ack', classes: ["action", "toolbar"], icon : "ok", label : "Ack"},

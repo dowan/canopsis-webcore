@@ -17,24 +17,9 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/application'
-], function(Ember, Application) {
+define(['app/lib/abstractclassmanager'], function(Abstractclassmanager) {
 
-    Application.HashSerializerMixin = Ember.Mixin.create({
-        serializeIntoHash: function(hash, type, record, method, options) {
-            void (type);
-            console.log("serializeIntoHash", arguments);
-            hash = this.serialize(record, options);
-            if (method === "PUT") {
-                return hash;
-            } else if (method === "POST") {
-                return [hash];
-            }
+    var manager = Abstractclassmanager.create();
 
-        }
-    });
-
-    return Application.HashSerializerMixin;
+    return manager;
 });

@@ -18,56 +18,57 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
 
-	Application.MetaSerializerMixin = Ember.Mixin.create({
-		extractMeta: function(store, type, payload) {
-			console.log("extractMeta", store, type, payload);
-			if (payload.meta === undefined) {
-				payload.meta = {};
-			}
+    Application.MetaSerializerMixin = Ember.Mixin.create({
+        extractMeta: function(store, type, payload) {
+            console.log("extractMeta", store, type, payload);
+            if (payload.meta === undefined) {
+                payload.meta = {};
+            }
 
-			if (payload && payload.total) {
-				payload.meta.total = payload.total;
-			}
+            if (payload && payload.total) {
+                payload.meta.total = payload.total;
+            }
 
-			if (payload && payload.messages) {
-				payload.meta.totalmessages = payload.messages;
-			}
+            if (payload && payload.messages) {
+                payload.meta.totalmessages = payload.messages;
+            }
 
-			delete payload.total;
-			delete payload.messages;
-			delete payload.success;
+            delete payload.total;
+            delete payload.messages;
+            delete payload.success;
 
-			console.log('normalizePayload', arguments);
-			console.log(this)
-			var typeKey = type.typeKey,
-				typeKeyPlural = typeKey.pluralize();
+            console.log('normalizePayload', arguments);
+            console.log(this);
 
-			payload[typeKeyPlural] = payload.data;
-			delete payload.data;
+            var typeKey = type.typeKey,
+                typeKeyPlural = typeKey.pluralize();
 
-			// Many items (findMany, findAll)
-			if (typeof payload[typeKeyPlural] !== 'undefined') {
-				payload[typeKeyPlural].forEach(function(item) {
-						this.extractRelationships(payload, item, type);
-				}, this);
-			}
+            payload[typeKeyPlural] = payload.data;
+            delete payload.data;
 
-			// Single item (find)
-			else if (typeof payload[typeKey] !== 'undefined') {
-				this.extractRelationships(payload, payload[typeKey], type);
-			}
-			return this._super(store, type, payload);
-		},
+            // Many items (findMany, findAll)
+            if (typeof payload[typeKeyPlural] !== 'undefined') {
+                payload[typeKeyPlural].forEach(function(item) {
+                        this.extractRelationships(payload, item, type);
+                }, this);
+            }
 
-		extractRelationships: function(payload, item, type){
-			this._super.apply(this, arguments);
-		}
+            // Single item (find)
+            else if (typeof payload[typeKey] !== 'undefined') {
+                this.extractRelationships(payload, payload[typeKey], type);
+            }
+            return this._super(store, type, payload);
+        },
 
-	});
+        extractRelationships: function(payload, item, type){
+            this._super.apply(this, arguments);
+        }
 
-	return Application.MetaSerializerMixin;
+    });
+
+    return Application.MetaSerializerMixin;
 });

@@ -18,91 +18,95 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
-	var get = Ember.get,
-		set = Ember.set;
-	/**
-	 * Implements search in arraycontrollers
-	 *
-	 * You should define on the ArrayController:
-	 *	  - the `findOptions` property
-	 *	  - the `refreshContent()` method
-	 *	  - the searchableAttributes property
-	 *
-	 * @mixin
-	 */
-	Application.ArraySearchMixin = Ember.Mixin.create({
-		actions: {
-			searchItems: function(findOptions) {
+    var get = Ember.get,
+        set = Ember.set;
+    /**
+     * Implements search in arraycontrollers
+     *
+     * You should define on the ArrayController:
+     *    - the `findOptions` property
+     *    - the `refreshContent()` method
+     *    - the searchableAttributes property
+     *
+     * @mixin
+     */
+    Application.ArraySearchMixin = Ember.Mixin.create({
+        partials: {
+            header: ['search']
+        },
 
-				console.log('searchItems', findOptions);
+        actions: {
+            searchItems: function(findOptions) {
 
-				set(this, 'findOptions', findOptions);
+                console.log('searchItems', findOptions);
 
-				if (this.currentPage !== undefined) {
-					this.set("currentPage", 1);
-				}
+                set(this, 'findOptions', findOptions);
 
-				this.refreshContent();
-			}
-		},
+                if (this.currentPage !== undefined) {
+                    this.set("currentPage", 1);
+                }
 
-		computeFilterPartForCriterion: function(searchPhrase) {
-			console.log("search", this.get("searchableAttributes"));
-			var searchableAttributes = get(this, 'searchableAttributes');
+                this.refreshContent();
+            }
+        },
 
-			//TODO these checks should be asserts
-			if (searchableAttributes === undefined) {
-					console.warn("searchableAttributes not defined in controller, but searchItems still called. Trying to recompute searchableAttributes.", this);
+        computeFilterPartForCriterion: function(searchPhrase) {
+            console.log("search", this.get("searchableAttributes"));
+            var searchableAttributes = get(this, 'searchableAttributes');
 
-					this.searchableAttributesUpdate();
+            //TODO these checks should be asserts
+            if (searchableAttributes === undefined) {
+                    console.warn("searchableAttributes not defined in controller, but searchItems still called. Trying to recompute searchableAttributes.", this);
 
-					searchableAttributes = get(this, 'searchableAttributes');
+                    this.searchableAttributesUpdate();
 
-					console.log('new searchableAttributes', searchableAttributes);
-					if(searchableAttributes === undefined) {
-							console.warn("searchableAttributes not defined in controller, but searchItems still called. Doing nothing.", this);
-							return;
-					}
+                    searchableAttributes = get(this, 'searchableAttributes');
 
-			}
-			if (typeof searchableAttributes !== "object") {
-					console.warn("searchableAttributes should be an array.", this);
-					return;
-			}
-			if (searchableAttributes.length === 0) {
-					console.warn("Asking for a search on records with no searchableAttributes. Doing nothing.", this);
-					return;
-			}
+                    console.log('new searchableAttributes', searchableAttributes);
+                    if(searchableAttributes === undefined) {
+                            console.warn("searchableAttributes not defined in controller, but searchItems still called. Doing nothing.", this);
+                            return;
+                    }
 
-			var filter_orArray = [];
-			for (var i = 0; i < searchableAttributes.length; i++) {
-					var filter_orArrayItem = {};
-					filter_orArrayItem[searchableAttributes[i]] = {"$regex": searchPhrase, "$options": "i"};
-					filter_orArray.push(filter_orArrayItem);
-			}
+            }
+            if (typeof searchableAttributes !== "object") {
+                    console.warn("searchableAttributes should be an array.", this);
+                    return;
+            }
+            if (searchableAttributes.length === 0) {
+                    console.warn("Asking for a search on records with no searchableAttributes. Doing nothing.", this);
+                    return;
+            }
 
-			return JSON.stringify({"$or": filter_orArray });
-		},
+            var filter_orArray = [];
+            for (var i = 0; i < searchableAttributes.length; i++) {
+                    var filter_orArrayItem = {};
+                    filter_orArrayItem[searchableAttributes[i]] = {"$regex": searchPhrase, "$options": "i"};
+                    filter_orArray.push(filter_orArrayItem);
+            }
 
-		searchableAttributesUpdate: function(){
-			console.log('shown_columnsChanged');
-			var shown_columns = get(this, 'shown_columns');
-			var searchableAttributes = Ember.A();
+            return JSON.stringify({"$or": filter_orArray });
+        },
 
-			for (var i = 0, shown_columns_length = shown_columns.length; i < shown_columns_length; i++) {
-				// if(shown_columns[i].searchable === true) {
-					searchableAttributes.push(shown_columns[i].field);
-				// }
-			}
+        searchableAttributesUpdate: function(){
+            console.log('shown_columnsChanged');
+            var shown_columns = get(this, 'shown_columns');
+            var searchableAttributes = Ember.A();
 
-			set(this, 'searchableAttributes', searchableAttributes);
-			console.log('new searchableAttributes', searchableAttributes);
+            for (var i = 0, shown_columns_length = shown_columns.length; i < shown_columns_length; i++) {
+                // if(shown_columns[i].searchable === true) {
+                    searchableAttributes.push(shown_columns[i].field);
+                // }
+            }
 
-		}.observes('shown_columns')
-	});
+            set(this, 'searchableAttributes', searchableAttributes);
+            console.log('new searchableAttributes', searchableAttributes);
 
-	return Application.ArraySearchMixin;
+        }.observes('shown_columns')
+    });
+
+    return Application.ArraySearchMixin;
 });

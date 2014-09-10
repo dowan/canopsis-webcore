@@ -18,39 +18,39 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
 
-	Application.InspectableArrayMixin = Ember.Mixin.create({
-		attributesKeys: function() {
-			var attributes = [];
+    Application.InspectableArrayMixin = Ember.Mixin.create({
+        attributesKeys: function() {
+            var attributes = [];
 
-			var attributesDict = this.get('inspectedDataArray.type.attributes.values');
-			console.log("attributesDict", attributesDict);
+            var attributesDict = this.get('inspectedDataArray.type.attributes.values');
+            console.log("attributesDict", attributesDict);
 
-			for (var key in attributesDict) {
-				var attr = attributesDict[key];
+            for (var key in attributesDict) {
+                var attr = attributesDict[key];
 
-				if (attr.options.hiddenInLists === false || attr.options.hiddenInLists === undefined) {
-					attributes.push(Ember.Object.create({
-						field: attr.name,
-						type: attr.type,
-						options: attr.options
-					}));
-					console.log("pushed attr", {
-						field: attr.name,
-						type: attr.type,
-						options: attr.options
-					});
-				}
-			}
-			return attributes;
-		}.property("inspectedProperty", "inspectedDataArray"),
+                if (attr.options.hiddenInLists === false || attr.options.hiddenInLists === undefined) {
+                    attributes.push(Ember.Object.create({
+                        field: attr.name,
+                        type: attr.type,
+                        options: attr.options
+                    }));
+                    console.log("pushed attr", {
+                        field: attr.name,
+                        type: attr.type,
+                        options: attr.options
+                    });
+                }
+            }
+            return attributes;
+        }.property("inspectedProperty", "inspectedDataArray"),
 
 
-		inspectedDataArray: function() { console.error("This must be defined on the base class"); }.property()
-	});
+        inspectedDataArray: function() { console.error("This must be defined on the base class"); }.property()
+    });
 
-	return Application.InspectableArrayMixin;
+    return Application.InspectableArrayMixin;
 });

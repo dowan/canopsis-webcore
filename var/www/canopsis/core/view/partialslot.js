@@ -22,19 +22,13 @@ define([
     'app/application'
 ], function(Ember, Application) {
 
-    Application.HashSerializerMixin = Ember.Mixin.create({
-        serializeIntoHash: function(hash, type, record, method, options) {
-            void (type);
-            console.log("serializeIntoHash", arguments);
-            hash = this.serialize(record, options);
-            if (method === "PUT") {
-                return hash;
-            } else if (method === "POST") {
-                return [hash];
-            }
+    var view = Ember.View.extend({
+        templateName:'partialslot',
 
-        }
+        slot: Ember.required()
     });
 
-    return Application.HashSerializerMixin;
+    Application.partialslotView = view;
+
+    return view;
 });

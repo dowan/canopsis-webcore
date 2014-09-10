@@ -17,11 +17,9 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
+define(['app/lib/abstractclassmanager'], function(Abstractclassmanager) {
 
-	var formsManager = {
-		all: {}
-	};
+	var formsManager = Abstractclassmanager.create();
 
 	return formsManager;
 });
