@@ -17,20 +17,22 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
+define(['ember', 'utils'], function(Ember, utils) {
 
     Ember.Handlebars.helper('timeSince', function(timestamp , record) {
 
     if( timestamp || record.timeStampState ){
-        var actuel = new Date().getTime();
+
+        var current = new Date().getTime();
         timestamp = record.timeStampState || timestamp;
         var a = new Date(timestamp * 1000);
-        var time = diffDate(a, actuel, "d") - 1;
+        var time = utils.dates.diffDate(a, current, "d") - 1;
 
         var newObject = Ember.Object.create({value : time , field : "time" });
-          newObject.addObserver('timeStampState',record, function(sender, key , value) {
+        newObject.addObserver('timeStampState',record, function(sender, key , value) {
             console.log("test");
         });
+
         var icon = '<span class=glyphicon glyphicon-time ></span>';
         if(time !== 0) {
             return new Ember.Handlebars.SafeString(__("Date sentence prefix") + time + " " + __("days ago"));
@@ -43,28 +45,4 @@ define(['ember'], function(Ember) {
            }
     });
 
-    //TODO : Move this function to "Application" Scope
-    function diffDate(d1,d2,u) {
-    div = 1;
-
-    switch(u) {
-    case 's':
-        div=1000;
-        break;
-    case 'm':
-        div=1000*60;
-        break;
-    case 'h':
-        div=1000*60*60;
-        break;
-    case 'd':
-        div=1000*60*60*24;
-        break;
-    default:
-        break;
-    }
-
-    var Diff = d2 - d1;
-    return Math.ceil((Diff/div));
-    }
 });

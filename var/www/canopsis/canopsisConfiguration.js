@@ -10,7 +10,8 @@ define([], function () {
         VERBOSE: 1,
         DISPLAY_SCHAMA_MANAGER: true,
         REFRESH_ALL_WIDGETS: true,
-        TRANSLATE: true
+        TRANSLATE: true,
+        SHOW_TRANSLATIONS: true,
     };
 
     if(canopsisConfiguration.DEBUG === false) {
