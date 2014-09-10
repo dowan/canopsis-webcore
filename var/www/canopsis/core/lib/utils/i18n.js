@@ -29,7 +29,7 @@ define([
         newTranslations: true,
         _: function(word) {
             if (i18n.translations[i18n.lang] && i18n.translations[i18n.lang][word]) {
-                return i18n.translations[i18n.lang][word];
+                return i18n.showTranslation(i18n.translations[i18n.lang][word]);
             } else {
                 //adding translation to todo list
                 if (typeof(word) === 'string' && !i18n.todo[word]) {
@@ -38,10 +38,16 @@ define([
                     i18n.newTranslations = true;
                 }
                 //returns original not translated string
+                return i18n.showTranslation(word);
+            }
+        },
+        showTranslation: function (word) {
+            if (window.Canopsis && Canopsis.conf.SHOW_TRANSLATIONS) {
+                return '[' + word + ']';
+            } else {
                 return word;
             }
         },
-
         uploadDefinitions: function () {
 
             $.ajax({
