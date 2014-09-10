@@ -2,8 +2,9 @@
   'jquery',
   'ember',
   'app/application',
-  'app/view/crecords'
-], function($, Ember, Application) {
+  'app/view/crecords',
+  'app/controller/formwrapper'
+], function($, Ember, Application, formwrapperController) {
 
     /**
      * Generic textField for validation
@@ -26,7 +27,7 @@
         },
 
         registerFieldWithController: function() {
-            var formController  =  Canopsis.formwrapperController.form;
+            var formController  =  formwrapperController.form;
             var validationFields ;
 
             if ( formController ){
@@ -42,7 +43,7 @@
         },
 
         validate : function() {
-          var formController  = Canopsis.formwrapperController.form;
+          var formController  = formwrapperController.form;
           var FCValidation    = formController.get('validation');
           if ( FCValidation  !== undefined ) {
               var attr = this.get('attr') ;
