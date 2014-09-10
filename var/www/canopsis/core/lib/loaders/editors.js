@@ -36,7 +36,7 @@ var editorsTemplates = [
     { name: 'duration', js: 'w' },
 	{ name: 'timeinterval', js: 'w' },
 	{ name: 'richtext', js: 'w' },
-	{ name: 'timestamp', js: 'v' },
+	{ name: 'timestamp', js: 'w' },
 	{ name: 'rights', js: 'v' },
 	{ name: 'cmetric', js: 'w' },
 	{ name: 'cfilter', js: 'w' },
