@@ -23,17 +23,20 @@ define([
 	'app/application',
 	'app/mixins/arraymixin',
 	'app/lib/utils/forms'
-], function($, Ember, Application, ArrayMixin, formsUtils) {
+], function($, Ember, Application, formsUtils) {
 	var get = Ember.get,
 		set = Ember.set;
 
-	Application.ComponentArrayComponent = Ember.Component.extend(ArrayMixin,{
+	Application.ComponentArrayComponent = Ember.Component.extend({
 		valueRefPath:"content.value",
 		valuePath:"value",
 
 		init: function() {
 			this._super.apply(this, arguments);
-			var value = this.getValue();
+			var value = get(this,"content.value") || [];
+			set(this, 'value', value);
+			set(this, 'content.value', value);
+
 			var values = get(this, 'value');
 
 			var me = this;
@@ -47,7 +50,6 @@ define([
 					};
 				}
 			});
-
 		},
 
 		didInsertElement: function() {

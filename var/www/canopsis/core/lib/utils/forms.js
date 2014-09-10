@@ -54,7 +54,7 @@ define([
             if( formwrapperController ){
                 var oldform = formwrapperController.form;
                 if( oldform && oldform.updateArray ){
-                    oldform.updateArray();
+                    //oldform.updateArray();
                 }
             }
 
