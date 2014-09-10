@@ -282,3 +282,8 @@ div.noRecordsFound {
 aside.fullscreen {
 	margin-left: 0 !important;
 }
+
+.superscript {
+	margin-bottom:1em;
+	font-size: 50%;
+}
