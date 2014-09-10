@@ -18,32 +18,32 @@
 */
 
 define([
-	'app/application',
-	'app/controller/crecords'
+    'app/application',
+    'app/controller/crecords'
 ], function(Application, CrecordsController) {
 
-	Application.GroupsController = CrecordsController.extend({
-		itemType: 'group',
-		toolbar: [{
-			title: 'Refresh',
-			action: 'refresh',
-			icon: 'refresh'
-		},{
-			title: 'Add',
-			action: 'showAddForm',
-			icon: 'plus-sign'
-		},{
-			title: 'Remove',
-			action: 'remove',
-			icon: 'trash'
-		}],
+    Application.GroupsController = CrecordsController.extend({
+        itemType: 'group',
+        toolbar: [{
+            title: 'Refresh',
+            action: 'refresh',
+            icon: 'refresh'
+        },{
+            title: 'Add',
+            action: 'showAddForm',
+            icon: 'plus-sign'
+        },{
+            title: 'Remove',
+            action: 'remove',
+            icon: 'trash'
+        }],
 
-		actions: {
-			refresh: function() {
-				this.set('content', this.store.findAll('group'));
-			}
-		}
-	});
+        actions: {
+            refresh: function() {
+                this.set('content', this.store.findAll('group'));
+            }
+        }
+    });
 
-	return Application.GroupsController;
+    return Application.GroupsController;
 });

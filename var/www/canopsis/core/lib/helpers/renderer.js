@@ -19,72 +19,72 @@
 
 define(['ember'], function(Ember) {
 
-	/**
-	 * Helper to display a renderer. Uses the context to get attribute value and options, so take care to where you call this helper.
-	 * @param rendererType {string} the renderer to try to display. If the parameter does not match an existing renderer, falls back to the default one
-	 *
-	 * @author Gwenael Pluchon <info@gwenp.fr>
-	 *
-	 * @deprecated use the renderer component instead
-	 */
-	Ember.Handlebars.registerHelper('renderer', function(options) {
-		console.log("renderer helper", arguments);
-		console.log(options);
+    /**
+     * Helper to display a renderer. Uses the context to get attribute value and options, so take care to where you call this helper.
+     * @param rendererType {string} the renderer to try to display. If the parameter does not match an existing renderer, falls back to the default one
+     *
+     * @author Gwenael Pluchon <info@gwenp.fr>
+     *
+     * @deprecated use the renderer component instead
+     */
+    Ember.Handlebars.registerHelper('renderer', function(options) {
+        console.log("renderer helper", arguments);
+        console.log(options);
 
-		var attr = options.data.keywords.attr;
-		var value;
+        var attr = options.data.keywords.attr;
+        var value;
 
-		if (!Ember.isNone(attr.value)) {
-			value = attr.value;
-		} else if (!Ember.isNone(options.data.keywords) && !Ember.isNone(options.data.keywords.crecord)) {
-			value = options.data.keywords.crecord.get(attr.field);
-		} else {
-			value = '';
-		}
+        if (!Ember.isNone(attr.value)) {
+            value = attr.value;
+        } else if (!Ember.isNone(options.data.keywords) && !Ember.isNone(options.data.keywords.crecord)) {
+            value = options.data.keywords.crecord.get(attr.field);
+        } else {
+            value = '';
+        }
 
-		var rendererName;
+        var rendererName;
 
-		console.log(attr);
-		console.log(value);
+        console.log(attr);
+        console.log(value);
 
-		var rendererContext = {
-			attr : attr,
-			value : value
-		};
+        var rendererContext = {
+            attr : attr,
+            value : value
+        };
 
-		options.contexts.push(rendererContext);
+        options.contexts.push(rendererContext);
 
-		if (!Ember.isNone(attr.options) && !Ember.isNone(attr.options.role)) {
-			rendererName = attr.options.role;
-		} else if (!Ember.isNone(attr.model) && !Ember.isNone(attr.model.options) && !Ember.isNone(attr.model.options.role)) {
-			rendererName = attr.model.options.role;
-		} else {
-			rendererName = attr.type;
-		}
+        if (!Ember.isNone(attr.options) && !Ember.isNone(attr.options.role)) {
+            rendererName = attr.options.role;
+        } else if (!Ember.isNone(attr.model) && !Ember.isNone(attr.model.options) && !Ember.isNone(attr.model.options.role)) {
+            rendererName = attr.model.options.role;
+        } else {
+            rendererName = attr.type;
+        }
 
-		rendererName = "renderer-" + rendererName;
+        rendererName = "renderer-" + rendererName;
 
-		//trying to find if the required renderer is an helper or a template
-		var foundRenderer = "renderer-default";
+        //trying to find if the required renderer is an helper or a template
+        var foundRenderer = "renderer-default";
 
-		//if a template matches the renderer, select it, else keep the standard one
-		if (Ember.TEMPLATES[rendererName] !== undefined) {
-			foundRenderer = rendererName;
-		}
+        //if a template matches the renderer, select it, else keep the standard one
+        if (Ember.TEMPLATES[rendererName] !== undefined) {
+            foundRenderer = rendererName;
+        }
 
-		if(foundRenderer === 'renderer-default') {
-			if (Ember.isNone(value)) {
-				value = '';
-			} else {
-				value = Ember.Handlebars.Utils.escapeExpression(value);
-			}
+        if(foundRenderer === 'renderer-default') {
+            if (Ember.isNone(value)) {
+                value = '';
+            } else {
+                value = Ember.Handlebars.Utils.escapeExpression(value);
+            }
 
-			return new Ember.Handlebars.SafeString(value);
-		} else {
-			console.log("call renderer partial", foundRenderer);
-			return Ember.Handlebars.helpers.partial.apply(this, [foundRenderer, options]);
-		}
+            return new Ember.Handlebars.SafeString(value);
+        } else {
+            console.log("call renderer partial", foundRenderer);
+            return Ember.Handlebars.helpers.partial.apply(this, [foundRenderer, options]);
+        }
 
-	});
+    });
 
 });

@@ -18,12 +18,12 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
 
-	Application.RendererTagsView = Ember.View.extend({
-	});
+    Application.RendererTagsView = Ember.View.extend({
+    });
 
-	return Application.RendererTagsView;
+    return Application.RendererTagsView;
 });

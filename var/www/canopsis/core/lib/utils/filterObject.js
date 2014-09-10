@@ -19,26 +19,26 @@
 
 define(['app/application'], function(Application) {
 
-	var filterObjectUtils = {
-		getFieldsByPrefix: function( prefix , record, callback , contentREF , _self  ) {
-			var resultISString =  typeof (contentREF) === "string" ;
-			var result = ( resultISString )? contentREF :  contentREF || Ember.A();
-			var ctype = record.get("crecord_type") || record.get("connector_type");
-			var Stringtype = ctype.charAt(0).toUpperCase() + ctype.slice(1);
-			var model = Canopsis.Application.allModels[Stringtype];
+    var filterObjectUtils = {
+        getFieldsByPrefix: function( prefix , record, callback , contentREF , _self  ) {
+            var resultISString =  typeof (contentREF) === "string" ;
+            var result = ( resultISString )? contentREF :  contentREF || Ember.A();
+            var ctype = record.get("crecord_type") || record.get("connector_type");
+            var Stringtype = ctype.charAt(0).toUpperCase() + ctype.slice(1);
+            var model = Canopsis.Application.allModels[Stringtype];
 
-			for ( var attr in model ){
-				if ( model.hasOwnProperty( attr ) ){
-					if( attr.indexOf(prefix) > -1){
-						if ( resultISString )
-							result = callback( attr , result , record , model , _self);
-						else
-							callback( attr , result , record , model , _self);
-					}
-				}
-			}
-		return result;
-		}
-	}
-	return filterObjectUtils;
+            for ( var attr in model ){
+                if ( model.hasOwnProperty( attr ) ){
+                    if( attr.indexOf(prefix) > -1){
+                        if ( resultISString )
+                            result = callback( attr , result , record , model , _self);
+                        else
+                            callback( attr , result , record , model , _self);
+                    }
+                }
+            }
+        return result;
+        }
+    }
+    return filterObjectUtils;
 });

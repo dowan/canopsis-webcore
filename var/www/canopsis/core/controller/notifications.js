@@ -18,57 +18,57 @@
 */
 
 define([
-	'ember',
-	'app/application',
-	'utils',
-	'app/lib/loaders/schema-manager'
+    'ember',
+    'app/application',
+    'utils',
+    'app/lib/loaders/schema-manager'
 ], function(Ember, Application, utils) {
 
-	Application.NotificationsRoute = Ember.Route.extend({
-		model: function() {
-			return this.store.find('notification');
-		}
-	});
+    Application.NotificationsRoute = Ember.Route.extend({
+        model: function() {
+            return this.store.find('notification');
+        }
+    });
 
-	//Model initialization
-	Application.NotificationAdapter = DS.FixtureAdapter.extend();
-	Application.Notification.FIXTURES = [];
+    //Model initialization
+    Application.NotificationAdapter = DS.FixtureAdapter.extend();
+    Application.Notification.FIXTURES = [];
 
-	Application.NotificationsController = Ember.ArrayController.extend({
+    Application.NotificationsController = Ember.ArrayController.extend({
 
-		init: function () {
-			this._super();
-			utils.notification.controller = this;
-		},
+        init: function () {
+            this._super();
+            utils.notification.controller = this;
+        },
 
-		createNotification: function (level, message) {
+        createNotification: function (level, message) {
 
-			var falevel = level;
+            var falevel = level;
 
-			if (message === undefined || level === undefined) {
-				message = 'missing information for notification';
-				falevel = 'warning';
-				level = 'warning';
-			}
-			if (level === 'error') {
-				falevel = 'warning';
-				level = 'danger';
-			}
-			var notification = this.store.createRecord('notification',{
-				level: level,
-				message: message,
-				timestamp: new Date().getTime(),
-				falevel: 'fa-' + falevel
-			});
+            if (message === undefined || level === undefined) {
+                message = 'missing information for notification';
+                falevel = 'warning';
+                level = 'warning';
+            }
+            if (level === 'error') {
+                falevel = 'warning';
+                level = 'danger';
+            }
+            var notification = this.store.createRecord('notification',{
+                level: level,
+                message: message,
+                timestamp: new Date().getTime(),
+                falevel: 'fa-' + falevel
+            });
 
-			notification.save();
-		},
+            notification.save();
+        },
 
-		count: function () {
-			return this.get('content.length');
-		}.property('content.length')
-	});
+        count: function () {
+            return this.get('content.length');
+        }.property('content.length')
+    });
 
 
-	return Application.NotificationsController;
+    return Application.NotificationsController;
 });

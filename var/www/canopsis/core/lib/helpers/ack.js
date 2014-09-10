@@ -24,27 +24,27 @@ define([
 
     Ember.Handlebars.helper('ack', function(value) {
 
-	    var tooltipHtml = ['<i>' + __('Date') + '</i> : <br/>',
-	    	utils.dates.timestamp2String(value.timestamp) +' <br/> ',
-	    	value.author +' <br/><br/> ',
-	    	'<i>'+__('Comment') +' :</i> : <br/>' + value.comment].join('');
+        var tooltipHtml = ['<i>' + __('Date') + '</i> : <br/>',
+            utils.dates.timestamp2String(value.timestamp) +' <br/> ',
+            value.author +' <br/><br/> ',
+            '<i>'+__('Comment') +' :</i> : <br/>' + value.comment].join('');
 
-		var guid = utils.hash.generate_GUID();
+        var guid = utils.hash.generate_GUID();
 
-		var ackColor;
-		if(value.isCancel) {
-			ackColor = "";
-		} else {
-			ackColor = " bg-maroon";
-		}
-		var ack  = '<span id="'+ guid +'" class="badge' + ackColor + '" data-html="true" title="" data-original-title="' + tooltipHtml + '"><i class="fa fa-check"></i></span>';
+        var ackColor;
+        if(value.isCancel) {
+            ackColor = "";
+        } else {
+            ackColor = " bg-maroon";
+        }
+        var ack  = '<span id="'+ guid +'" class="badge' + ackColor + '" data-html="true" title="" data-original-title="' + tooltipHtml + '"><i class="fa fa-check"></i></span>';
 
-		//Triggers tooltip display once loaded /!\ hack
-		setTimeout(function () {
-			$('#' + guid).tooltip();
-		}, 1000);
+        //Triggers tooltip display once loaded /!\ hack
+        setTimeout(function () {
+            $('#' + guid).tooltip();
+        }, 1000);
 
-		return new Ember.Handlebars.SafeString(ack);
+        return new Ember.Handlebars.SafeString(ack);
     });
 
 });

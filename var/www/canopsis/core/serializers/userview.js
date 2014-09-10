@@ -18,35 +18,35 @@
 */
 
 define([
-	'ember-data',
-	'app/application',
-	'app/serializers/application',
-	'app/mixins/embeddedrecordserializer'
+    'ember-data',
+    'app/application',
+    'app/serializers/application',
+    'app/mixins/embeddedrecordserializer'
 ], function(DS, Application, ApplicationSerializer, EmbeddedRecordSerializerMixin) {
 
-	var serializerClass = ApplicationSerializer.extend(
-		EmbeddedRecordSerializerMixin,
-		{}
-	);
+    var serializerClass = ApplicationSerializer.extend(
+        EmbeddedRecordSerializerMixin,
+        {}
+    );
 
-	Application.UserviewSerializer = serializerClass;
+    Application.UserviewSerializer = serializerClass;
 
-	//TODO make this dynamic
-	Application.WidgetSerializer = serializerClass;
-	Application.WidgetwrapperSerializer = serializerClass;
-	Application.ListSerializer = serializerClass;
-	Application.JobmanagerSerializer = serializerClass;
+    //TODO make this dynamic
+    Application.WidgetSerializer = serializerClass;
+    Application.WidgetwrapperSerializer = serializerClass;
+    Application.ListSerializer = serializerClass;
+    Application.JobmanagerSerializer = serializerClass;
 
-	Application.CanvasSerializer = serializerClass;
-	Application.VboxSerializer = serializerClass;
-	Application.VerticalboxSerializer = serializerClass;
-	Application.LighthboxSerializer = serializerClass;
-	Application.HboxSerializer = serializerClass;
-	Application.TextSerializer = serializerClass;
-	Application.TabmanagerSerializer = serializerClass;
-	Application.UiactionbuttonSerializer = serializerClass;
-	Application.UimaintabcollectionSerializer = serializerClass;
-	Application.WeatherSerializer = serializerClass;
+    Application.CanvasSerializer = serializerClass;
+    Application.VboxSerializer = serializerClass;
+    Application.VerticalboxSerializer = serializerClass;
+    Application.LighthboxSerializer = serializerClass;
+    Application.HboxSerializer = serializerClass;
+    Application.TextSerializer = serializerClass;
+    Application.TabmanagerSerializer = serializerClass;
+    Application.UiactionbuttonSerializer = serializerClass;
+    Application.UimaintabcollectionSerializer = serializerClass;
+    Application.WeatherSerializer = serializerClass;
 
-	return serializerClass;
+    return serializerClass;
 });

@@ -19,27 +19,27 @@
 
 define(['ember' , 'utils'], function(Ember , utils) {
 
-	Ember.Handlebars.helper('conf', function( controller ) {
+    Ember.Handlebars.helper('conf', function( controller ) {
 
-		breakPoint ("helper.conf");
-		var options_filter =  this.record.get("options_filter");
-		var options = utils.filterObject.getFieldsByPrefix( "_opt_" , this.record.content , function( attr , result ,record ){
-			var field = attr.slice(5);
-			if ( options_filter.contains ( field )){
-				var value = record.get( attr );
-				var option = Ember.Object.create({ value : value , field : field });
-				result.pushObject( option );
-			}
-		});
+        breakPoint ("helper.conf");
+        var options_filter =  this.record.get("options_filter");
+        var options = utils.filterObject.getFieldsByPrefix( "_opt_" , this.record.content , function( attr , result ,record ){
+            var field = attr.slice(5);
+            if ( options_filter.contains ( field )){
+                var value = record.get( attr );
+                var option = Ember.Object.create({ value : value , field : field });
+                result.pushObject( option );
+            }
+        });
 
-		var returnValue = "";
-		options.forEach(function(x){
-		    var start 	= "<div>";
-		    var end 	= "</div>";
+        var returnValue = "";
+        options.forEach(function(x){
+            var start     = "<div>";
+            var end     = "</div>";
 
-		    returnValue += start + x.field + " : " + x.value + end ;
-		});
-		return new Ember.Handlebars.SafeString( returnValue );
-	});
+            returnValue += start + x.field + " : " + x.value + end ;
+        });
+        return new Ember.Handlebars.SafeString( returnValue );
+    });
 
 });

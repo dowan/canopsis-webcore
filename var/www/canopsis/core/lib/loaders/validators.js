@@ -21,29 +21,29 @@
 //TODO implement auto check for mvct file existence and require them automatically
 
 var validatorsArray = [
-	'mail',
-	'rights',
-	'required',
-	'validate',
-	"number",
+    'mail',
+    'rights',
+    'required',
+    'validate',
+    "number",
 ];
 
 var deps = ['ember'];
 
 for (var i = 0; i < validatorsArray.length; i++) {
-	var validatorUrl = 'app/validators/' + validatorsArray[i] + '/validator';
-	deps.push(validatorUrl);
+    var validatorUrl = 'app/validators/' + validatorsArray[i] + '/validator';
+    deps.push(validatorUrl);
 }
 
 define(deps, function(Ember) {
-	var validators = {};
-	console.log("Begin load validators", arguments);
-	for (var i = 1; i < arguments.length; i++) {
-		var validatorName = validatorsArray[i-1];
-		console.log("load validator", validatorName);
-		validators[validatorName] = arguments[i];
-	}
-	Ember.validators = validators;
-	return validators;
+    var validators = {};
+    console.log("Begin load validators", arguments);
+    for (var i = 1; i < arguments.length; i++) {
+        var validatorName = validatorsArray[i-1];
+        console.log("load validator", validatorName);
+        validators[validatorName] = arguments[i];
+    }
+    Ember.validators = validators;
+    return validators;
 
 });

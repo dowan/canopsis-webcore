@@ -21,16 +21,16 @@
 //TODO implement auto check for mvct file existence and require them automatically
 
 var componentsTemplates = [
-	'expandableaddbutton',
-	'classifieditemselector',
+    'expandableaddbutton',
+    'classifieditemselector',
     'wrapper',
-	'editor',
-	'renderer',
-	'table',
-	'filterclause',
-	'checkbox',
-	'searchbar',
-	'flotchart'
+    'editor',
+    'renderer',
+    'table',
+    'filterclause',
+    'checkbox',
+    'searchbar',
+    'flotchart'
 ];
 
 var deps = ['ember'];
@@ -39,22 +39,22 @@ var depsSize = deps.length;
 
 //generate deps
 for (var i = 0; i < componentsTemplates.length; i++) {
-	deps.push('text!app/components/' + componentsTemplates[i] + '/template.html');
+    deps.push('text!app/components/' + componentsTemplates[i] + '/template.html');
 
-	var componentJsUrl = 'app/components/' + componentsTemplates[i] + '/component';
-	jsDeps.push(componentJsUrl);
+    var componentJsUrl = 'app/components/' + componentsTemplates[i] + '/component';
+    jsDeps.push(componentJsUrl);
 }
 
 for (i = 0; i < jsDeps.length; i++) {
-	deps.push(jsDeps[i]);
+    deps.push(jsDeps[i]);
 }
 
 console.log({"form dependencies": deps});
 define(deps, function(Ember) {
-	console.log("load components", arguments);
-	for (var i = 0; i < componentsTemplates.length; i++) {
-		var templateName = 'components/component-' + componentsTemplates[i];
+    console.log("load components", arguments);
+    for (var i = 0; i < componentsTemplates.length; i++) {
+        var templateName = 'components/component-' + componentsTemplates[i];
 
-		Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
-	}
+        Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
+    }
 });

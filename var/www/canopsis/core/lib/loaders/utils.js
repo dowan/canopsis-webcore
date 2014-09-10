@@ -21,31 +21,31 @@
 //TODO implement auto check for mvct file existence and require them automatically
 
 var utilsFiles = [
-	'forms',
-	'routes',
-	'data',
-	'notification',
-	'i18n',
-	'hash',
-	'dates',
-	'indexes',
-	'filterObject'
+    'forms',
+    'routes',
+    'data',
+    'notification',
+    'i18n',
+    'hash',
+    'dates',
+    'indexes',
+    'filterObject'
 ];
 
 var deps = [];
 
 for (var i = 0; i < utilsFiles.length; i++) {
-	deps.push('app/lib/utils/' + utilsFiles[i]);
+    deps.push('app/lib/utils/' + utilsFiles[i]);
 }
 
 define(deps, function() {
-	var utils = {};
-	console.log("Begin load utils", arguments);
-	for (var i = 0; i < arguments.length; i++) {
-		var utilName = utilsFiles[i];
-		console.log("load util", utilName);
-		utils[utilName] = arguments[i];
-	}
-	window.ctools = utils;
-	return utils;
+    var utils = {};
+    console.log("Begin load utils", arguments);
+    for (var i = 0; i < arguments.length; i++) {
+        var utilName = utilsFiles[i];
+        console.log("load util", utilName);
+        utils[utilName] = arguments[i];
+    }
+    window.ctools = utils;
+    return utils;
 });

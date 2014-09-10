@@ -18,11 +18,11 @@
 */
 
 define([
-	'app/lib/factories/widget',
-	'app/lib/loaders/schema-manager'
+    'app/lib/factories/widget',
+    'app/lib/loaders/schema-manager'
 ], function(WidgetFactory) {
 
-	var widget = WidgetFactory('text', {});
+    var widget = WidgetFactory('text', {});
 
-	return widget;
+    return widget;
 });

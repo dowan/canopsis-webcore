@@ -21,15 +21,15 @@
 //TODO implement auto check for mvct file existence and require them automatically
 
 var formsTemplates = [
-	'modelform',
-	'widgetform',
-	'arrayitemform',
-	'jobform',
-	'taskform',
-	'scheduleform',
-	'confirmform',
-	//'connectorform',
-	//"confirmform"
+    'modelform',
+    'widgetform',
+    'arrayitemform',
+    'jobform',
+    'taskform',
+    'scheduleform',
+    'confirmform',
+    //'connectorform',
+    //"confirmform"
 ];
 
 var deps = ['ember'];
@@ -39,22 +39,22 @@ var depsSize = deps.length;
 
 //generate deps
 for (var i = 0; i < formsTemplates.length; i++) {
-	deps.push('text!app/forms/' + formsTemplates[i] + '/template.html');
+    deps.push('text!app/forms/' + formsTemplates[i] + '/template.html');
 
-	var controllerUrl = 'app/forms/' + formsTemplates[i] + '/controller';
-	jsDeps.push(controllerUrl);
+    var controllerUrl = 'app/forms/' + formsTemplates[i] + '/controller';
+    jsDeps.push(controllerUrl);
 }
 
 for (i = 0; i < jsDeps.length; i++) {
-	deps.push(jsDeps[i]);
+    deps.push(jsDeps[i]);
 }
 
 console.log({"form dependencies": deps});
 define(deps, function(Ember) {
-	console.log("load forms", arguments);
-	for (var i = 0; i < formsTemplates.length; i++) {
-		var templateName = formsTemplates[i];
-		Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
-	}
+    console.log("load forms", arguments);
+    for (var i = 0; i < formsTemplates.length; i++) {
+        var templateName = formsTemplates[i];
+        Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
+    }
 });
 

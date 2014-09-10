@@ -19,11 +19,11 @@
 
 define(['ember'], function(Ember) {
 
-	Ember.Handlebars.registerHelper('ifCond', function(v1, v2, options) {
-	if (v1 === v2) {
-		return options.fn(this);
-	}
-	return options.inverse(this);
-	});
+    Ember.Handlebars.registerHelper('ifCond', function(v1, v2, options) {
+    if (v1 === v2) {
+        return options.fn(this);
+    }
+    return options.inverse(this);
+    });
 
 });

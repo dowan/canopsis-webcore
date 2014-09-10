@@ -19,9 +19,9 @@
 var JSONSelect;
 
 define([
-	'app/lib/factories/wrapper',
-	'webcore-libs/jsonselect/jsonselect'
+    'app/lib/factories/wrapper',
+    'webcore-libs/jsonselect/jsonselect'
 ], function(Wrapper) {
 
-	return Wrapper("jsonselect", JSONSelect, arguments, "unknown");
+    return Wrapper("jsonselect", JSONSelect, arguments, "unknown");
 });

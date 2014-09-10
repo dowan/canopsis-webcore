@@ -18,11 +18,11 @@
 */
 
 define([
-	'app/application',
-	'app/view/form'
+    'app/application',
+    'app/view/form'
 ], function(Application, FormView) {
 
-	Application.CrecordformView = FormView.extend({});
+    Application.CrecordformView = FormView.extend({});
 
-	return Application.CrecordformView;
+    return Application.CrecordformView;
 });

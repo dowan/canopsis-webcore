@@ -19,75 +19,75 @@
 
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
-	Application.ComponentActionfilterComponent = Ember.Component.extend({
+    Application.ComponentActionfilterComponent = Ember.Component.extend({
 
 
-		init: function() {
-			this._super();
-			//default value on load
-			this.set('selectedAction', 'pass');
-			console.log(' ! --- > content', this.get('content'));
-			//Use a temp variable to avoid content deletion and strange behaviors.
-			if (this.get('content') === undefined) {
-				this.set('contentUnprepared', Ember.A());
-			} else {
-				this.set('contentUnprepared', this.get('content'));
-			}
-		},
+        init: function() {
+            this._super();
+            //default value on load
+            this.set('selectedAction', 'pass');
+            console.log(' ! --- > content', this.get('content'));
+            //Use a temp variable to avoid content deletion and strange behaviors.
+            if (this.get('content') === undefined) {
+                this.set('contentUnprepared', Ember.A());
+            } else {
+                this.set('contentUnprepared', this.get('content'));
+            }
+        },
 
-		selectedAction: 'pwoute',
-		availableactions: ['pass','drop','override','remove'],
+        selectedAction: 'pwoute',
+        availableactions: ['pass','drop','override','remove'],
 
-		isOverride: function () {
-			console.log('isOverride', this.get('selectedAction'), this.get('selectedAction') === 'override');
-			return this.get('selectedAction') === 'override';
-		}.property('selectedAction'),
+        isOverride: function () {
+            console.log('isOverride', this.get('selectedAction'), this.get('selectedAction') === 'override');
+            return this.get('selectedAction') === 'override';
+        }.property('selectedAction'),
 
-		isRoute: function () {
-			//not used yet
-			return false;
-			//console.log('isRoute', this.get('selectedAction'), this.get('selectedAction') === 'route');
-			//return this.get('selectedAction') === 'route';
-		}.property('selectedAction'),
+        isRoute: function () {
+            //not used yet
+            return false;
+            //console.log('isRoute', this.get('selectedAction'), this.get('selectedAction') === 'route');
+            //return this.get('selectedAction') === 'route';
+        }.property('selectedAction'),
 
-		isRemove: function () {
-			console.log('isRemove', this.get('selectedAction'), this.get('selectedAction') === 'remove');
-			return this.get('selectedAction') === 'remove';
-		}.property('selectedAction'),
-
-
-		actions : {
-			addAction: function () {
-				var action = {
-					type: this.get('selectedAction')
-				};
-
-				if (this.get('selectedAction') === 'override') {
-					action.field = this.get('field');
-					action.value = this.get('value');
-				}
-
-				if (this.get('selectedAction') === 'remove') {
-					action.key = this.get('key');
-				}
-
-				console.log('Adding action', action);
-				this.get('contentUnprepared').pushObject(action);
-				this.set('content', this.get('contentUnprepared'));
-			},
-			deleteAction: function (action) {
-				console.log('Removing action', action);
-				this.get('contentUnprepared').removeObject(action);
-				this.set('content', this.get('contentUnprepared'));
+        isRemove: function () {
+            console.log('isRemove', this.get('selectedAction'), this.get('selectedAction') === 'remove');
+            return this.get('selectedAction') === 'remove';
+        }.property('selectedAction'),
 
 
-			}
-		}
+        actions : {
+            addAction: function () {
+                var action = {
+                    type: this.get('selectedAction')
+                };
 
-	});
+                if (this.get('selectedAction') === 'override') {
+                    action.field = this.get('field');
+                    action.value = this.get('value');
+                }
 
-	return Application.ComponentActionfilterComponent;
+                if (this.get('selectedAction') === 'remove') {
+                    action.key = this.get('key');
+                }
+
+                console.log('Adding action', action);
+                this.get('contentUnprepared').pushObject(action);
+                this.set('content', this.get('contentUnprepared'));
+            },
+            deleteAction: function (action) {
+                console.log('Removing action', action);
+                this.get('contentUnprepared').removeObject(action);
+                this.set('content', this.get('contentUnprepared'));
+
+
+            }
+        }
+
+    });
+
+    return Application.ComponentActionfilterComponent;
 });

@@ -18,22 +18,22 @@
 */
 
 define([
-	'ember',
-	'app/application',
-	'app/lib/factories/form',
-	'app/lib/utils/forms',
-	'app/lib/loaders/schema-manager',
-	'app/controller/journal'
+    'ember',
+    'app/application',
+    'app/lib/factories/form',
+    'app/lib/utils/forms',
+    'app/lib/loaders/schema-manager',
+    'app/controller/journal'
 ], function(Ember, Application, FormFactory, formUtils) {
 
-	FormFactory('arrayitemform', {
-		needs: ['journal'],
+    FormFactory('arrayitemform', {
+        needs: ['journal'],
 
-		title: "configure arrayitem",
+        title: "configure arrayitem",
 
-		parentContainerWidget: Ember.required(),
-		parentUserview: Ember.required()
-	});
+        parentContainerWidget: Ember.required(),
+        parentUserview: Ember.required()
+    });
 
-	return Application.ArrayitemformController;
+    return Application.ArrayitemformController;
 });

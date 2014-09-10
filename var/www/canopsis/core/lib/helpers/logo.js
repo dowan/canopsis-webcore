@@ -19,35 +19,35 @@
 define(['ember' , "app/application"], function(Ember , Application) {
 
 
-	Application.images = [];
-	var folderPath = "/static/canopsis/media/images/";
-	Application.images.nagios    = folderPath + 'nagioslogo.png';
-	Application.images.shinken   = folderPath + 'shinkenlogo.png';
-	Application.images.schneider = folderPath + 'schneiderlogo.png';
-	Application.images.collectd  = folderPath + 'collectd.jpg';
+    Application.images = [];
+    var folderPath = "/static/canopsis/media/images/";
+    Application.images.nagios    = folderPath + 'nagioslogo.png';
+    Application.images.shinken   = folderPath + 'shinkenlogo.png';
+    Application.images.schneider = folderPath + 'schneiderlogo.png';
+    Application.images.collectd  = folderPath + 'collectd.jpg';
 
-	Ember.Handlebars.helper('logo', function(controller) {
+    Ember.Handlebars.helper('logo', function(controller) {
 
-		var field = controller.attr.field;
-		var value = controller.attr.value;
+        var field = controller.attr.field;
+        var value = controller.attr.value;
 
-		if(value === undefined) {
-			value = controller.record.content._data[field];
-		}
-		var  logoPath = Canopsis.Application.images[value];
+        if(value === undefined) {
+            value = controller.record.content._data[field];
+        }
+        var  logoPath = Canopsis.Application.images[value];
 
-		if(logoPath !== undefined) {
-			return new Ember.Handlebars.SafeString('<img alt="Source" src="'+ logoPath + '"/>');
-		} else {
-			return new Ember.Handlebars.SafeString(value);
-		}
-	});
+        if(logoPath !== undefined) {
+            return new Ember.Handlebars.SafeString('<img alt="Source" src="'+ logoPath + '"/>');
+        } else {
+            return new Ember.Handlebars.SafeString(value);
+        }
+    });
 
-	Ember.Handlebars.helper('logofromstring', function(imageName) {
+    Ember.Handlebars.helper('logofromstring', function(imageName) {
 
-		var  logoPath = Canopsis.Application.images[imageName];
+        var  logoPath = Canopsis.Application.images[imageName];
 
-		return new Ember.Handlebars.SafeString(logoPath);
-	});
+        return new Ember.Handlebars.SafeString(logoPath);
+    });
 
 });

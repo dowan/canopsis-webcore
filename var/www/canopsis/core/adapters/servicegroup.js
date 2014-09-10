@@ -18,10 +18,10 @@
 */
 
 define([
-	'app/application',
-	'app/adapters/entity'
+    'app/application',
+    'app/adapters/entity'
 ], function(Application, EntityAdapter) {
-	Application.ServicegroupAdapter = EntityAdapter.extend({});
+    Application.ServicegroupAdapter = EntityAdapter.extend({});
 
-	return Application.ServicegroupAdapter;
+    return Application.ServicegroupAdapter;
 });

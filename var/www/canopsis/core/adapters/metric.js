@@ -18,10 +18,10 @@
 */
 
 define([
-	'app/application',
-	'app/adapters/entity'
+    'app/application',
+    'app/adapters/entity'
 ], function(Application, EntityAdapter) {
-	Application.MetricAdapter = EntityAdapter.extend({});
+    Application.MetricAdapter = EntityAdapter.extend({});
 
-	return Application.MetricAdapter;
+    return Application.MetricAdapter;
 });

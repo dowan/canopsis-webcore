@@ -18,10 +18,10 @@
 */
 
 define([
-	'app/lib/factories/wrapper',
-	'jquery',
-	'webcore-libs/datatables/media/js/jquery.dataTables.min'
+    'app/lib/factories/wrapper',
+    'jquery',
+    'webcore-libs/datatables/media/js/jquery.dataTables.min'
 ], function(Wrapper, $) {
 
-	return Wrapper("datatables", $.fn.dataTable, arguments, "1.10");
+    return Wrapper("datatables", $.fn.dataTable, arguments, "1.10");
 });

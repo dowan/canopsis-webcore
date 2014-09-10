@@ -18,23 +18,23 @@
 */
 
  define([
-	'app/application',
-	'app/view/arraytocollectioncontrol'
+    'app/application',
+    'app/view/arraytocollectioncontrol'
 ], function(Application) {
-		Application.RightView = Application.ArrayToCollectionControlView.extend({
+        Application.RightView = Application.ArrayToCollectionControlView.extend({
 
-			init: function() {
-				var value = this.getValue();
-				var contentREF = this.getContent();
+            init: function() {
+                var value = this.getValue();
+                var contentREF = this.getContent();
 
-				var readTemplate = {name : "r", icon : "eye-open" , label : "Read" };
-				var writeTemplate = {name : "w", icon : "pencil", label : "Write" };
-				this.addTemplate(readTemplate, value, contentREF);
-				this.addTemplate(writeTemplate, value, contentREF);
+                var readTemplate = {name : "r", icon : "eye-open" , label : "Read" };
+                var writeTemplate = {name : "w", icon : "pencil", label : "Write" };
+                this.addTemplate(readTemplate, value, contentREF);
+                this.addTemplate(writeTemplate, value, contentREF);
 
-				this._super(true);
-			}
+                this._super(true);
+            }
 
-	});
-	return Application.RightView;
+    });
+    return Application.RightView;
 });

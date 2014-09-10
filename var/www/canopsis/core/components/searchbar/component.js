@@ -18,67 +18,67 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
-	var get = Ember.get,
-		set = Ember.set;
+    var get = Ember.get,
+        set = Ember.set;
 
-	/**
-	 * Search bar component
-	 *
-	 * Includes 3 tabs :
-	 *  - All : allow selection of every field
-	 *  - Indexed : only for indexed fields
-	 *  - filter : cfilter embedding
-	 *
-	 * This component is a WIP, it only supports basic search at the moment
-	 */
-	Application.ComponentSearchbarComponent = Ember.Component.extend({
-		showSearchOptions: false,
-		tagName: 'span',
+    /**
+     * Search bar component
+     *
+     * Includes 3 tabs :
+     *  - All : allow selection of every field
+     *  - Indexed : only for indexed fields
+     *  - filter : cfilter embedding
+     *
+     * This component is a WIP, it only supports basic search at the moment
+     */
+    Application.ComponentSearchbarComponent = Ember.Component.extend({
+        showSearchOptions: false,
+        tagName: 'span',
 
-		actions: {
-			searchInputAction: function(searchPhrase) {
-				console.log('searchItems', this, this.controller, searchPhrase);
+        actions: {
+            searchInputAction: function(searchPhrase) {
+                console.log('searchItems', this, this.controller, searchPhrase);
 
-				this.controller.target.set('searchCriterion', searchPhrase);
-			}
-		},
+                this.controller.target.set('searchCriterion', searchPhrase);
+            }
+        },
 
-		didInsertElement: function() {
-			console.log('didInsertElement');
-			this.$('.dropdown-menu a, .dropdown-menu div').click(function(e) {
-				e.stopPropagation();
-			});
+        didInsertElement: function() {
+            console.log('didInsertElement');
+            this.$('.dropdown-menu a, .dropdown-menu div').click(function(e) {
+                e.stopPropagation();
+            });
 
-			this.$('.nav-tabs a').click(function (e) {
-				e.preventDefault();
-				$(this).tab('show');
-			});
-		},
+            this.$('.nav-tabs a').click(function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+            });
+        },
 
-		tabAllId: function() {
-			console.log('tabAllId');
+        tabAllId: function() {
+            console.log('tabAllId');
 
-			return get(this, 'elementId') + 'TabAll';
-		}.property('elementId'),
-		tabIndexedId: function() {
-			return get(this, 'elementId') + 'TabIndexed';
-		}.property('elementId'),
-		tabFilterId: function() {
-			return get(this, 'elementId') + 'TabFilter';
-		}.property('elementId'),
-		tabAllHref: function() {
-			return "#" + get(this, 'elementId') + 'TabAll';
-		}.property('elementId'),
-		tabIndexedHref: function() {
-			return "#" + get(this, 'elementId') + 'TabIndexed';
-		}.property('elementId'),
-		tabFilterHref: function() {
-			return "#" + get(this, 'elementId') + 'TabFilter';
-		}.property('elementId')
+            return get(this, 'elementId') + 'TabAll';
+        }.property('elementId'),
+        tabIndexedId: function() {
+            return get(this, 'elementId') + 'TabIndexed';
+        }.property('elementId'),
+        tabFilterId: function() {
+            return get(this, 'elementId') + 'TabFilter';
+        }.property('elementId'),
+        tabAllHref: function() {
+            return "#" + get(this, 'elementId') + 'TabAll';
+        }.property('elementId'),
+        tabIndexedHref: function() {
+            return "#" + get(this, 'elementId') + 'TabIndexed';
+        }.property('elementId'),
+        tabFilterHref: function() {
+            return "#" + get(this, 'elementId') + 'TabFilter';
+        }.property('elementId')
     });
 
-	return Application.ComponentEditorComponent;
+    return Application.ComponentEditorComponent;
 });

@@ -18,102 +18,102 @@
 */
 
 define([
-	'ember',
-	'ember-data',
-	'app/application',
-	'app/mixins/pagination'
+    'ember',
+    'ember-data',
+    'app/application',
+    'app/mixins/pagination'
 ], function(Ember, DS, Application, PaginationMixin) {
 
-	Application.ComponentTableComponent = Ember.Component.extend(PaginationMixin, {
-		model: undefined,
-		modelfilter: undefined,
-		data: undefined,
+    Application.ComponentTableComponent = Ember.Component.extend(PaginationMixin, {
+        model: undefined,
+        modelfilter: undefined,
+        data: undefined,
 
-		columns: [],
-		items: [],
+        columns: [],
+        items: [],
 
-		itemsPerPage: 5,
+        itemsPerPage: 5,
 
-		onDataChange: function() {
-			this.refreshContent();
-		}.observes('data.@each'),
+        onDataChange: function() {
+            this.refreshContent();
+        }.observes('data.@each'),
 
-		onModelFilterChange: function() {
-			this.set('currentPage', 1);
-			this.refreshContent();
-		}.observes('modelfilter'),
+        onModelFilterChange: function() {
+            this.set('currentPage', 1);
+            this.refreshContent();
+        }.observes('modelfilter'),
 
-		init: function() {
-			this._super(arguments);
+        init: function() {
+            this._super(arguments);
 
-			if (this.get('model') !== undefined) {
-				this.set('store', DS.Store.create({
-					container: this.get('container')
-				}));
-			}
-		},
+            if (this.get('model') !== undefined) {
+                this.set('store', DS.Store.create({
+                    container: this.get('container')
+                }));
+            }
+        },
 
-		didInsertElement: function() {
-			this.refreshContent();
-		},
+        didInsertElement: function() {
+            this.refreshContent();
+        },
 
-		refreshContent: function() {
-			this._super(arguments);
+        refreshContent: function() {
+            this._super(arguments);
 
-			this.findItems();
+            this.findItems();
 
-			console.log(this.get('widgetDataMetas'));
-		},
+            console.log(this.get('widgetDataMetas'));
+        },
 
-		findItems: function() {
-			try {
-				var me = this;
+        findItems: function() {
+            try {
+                var me = this;
 
-				var store = this.get('store');
+                var store = this.get('store');
 
-				var query = {
-					start: this.get('paginationMixinFindOptions.start'),
-					limit: this.get('paginationMixinFindOptions.limit')
-				};
+                var query = {
+                    start: this.get('paginationMixinFindOptions.start'),
+                    limit: this.get('paginationMixinFindOptions.limit')
+                };
 
-				if (this.get('model') !== undefined) {
-					if(this.get('modelfilter') !== null) {
-						query.filter = this.get('modelfilter');
-					}
+                if (this.get('model') !== undefined) {
+                    if(this.get('modelfilter') !== null) {
+                        query.filter = this.get('modelfilter');
+                    }
 
-					store.findQuery(this.get('model'), query).then(function(result) {
-						me.set('widgetDataMetas', result.meta);
-						me.set('items', result.get('content'));
+                    store.findQuery(this.get('model'), query).then(function(result) {
+                        me.set('widgetDataMetas', result.meta);
+                        me.set('items', result.get('content'));
 
-						me.extractItems(result);
-					});
-				}
-				else {
-					var items = this.get('data').slice(
-						query.start,
-						query.start + query.limit
-					);
+                        me.extractItems(result);
+                    });
+                }
+                else {
+                    var items = this.get('data').slice(
+                        query.start,
+                        query.start + query.limit
+                    );
 
-					this.set('widgetDataMetas', {total: this.get('data').length});
-					this.set('items', items);
+                    this.set('widgetDataMetas', {total: this.get('data').length});
+                    this.set('items', items);
 
-					me.extractItems({
-						meta: this.get('widgetDataMetas'),
-						content: this.get('items')
-					});
-				}
-			} catch(err) {
-				console.log('extractItems empty due to error 500');
-				this.extractItems([]);
-			}
-		},
+                    me.extractItems({
+                        meta: this.get('widgetDataMetas'),
+                        content: this.get('items')
+                    });
+                }
+            } catch(err) {
+                console.log('extractItems empty due to error 500');
+                this.extractItems([]);
+            }
+        },
 
-		actions: {
-			do: function(action, item) {
-				this.targetObject.send(action, item);
-			}
-		}
-	});
+        actions: {
+            do: function(action, item) {
+                this.targetObject.send(action, item);
+            }
+        }
+    });
 
-	return Application.ComponentTableComponent;
+    return Application.ComponentTableComponent;
 });

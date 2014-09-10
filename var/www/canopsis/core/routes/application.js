@@ -18,73 +18,73 @@
 */
 
 define([
-	'ember',
-	'app/application',
-	'app/routes/authenticated',
-	'app/lib/loaders/templates'
+    'ember',
+    'app/application',
+    'app/routes/authenticated',
+    'app/lib/loaders/templates'
 ], function(Ember, Application, AuthenticatedRoute) {
 
-	Application.ApplicationRoute = AuthenticatedRoute.extend({
-		actions: {
-			showView: function(id) {
-				console.log("ShowView action", arguments);
-				this.transitionTo('userview', id);
-			},
+    Application.ApplicationRoute = AuthenticatedRoute.extend({
+        actions: {
+            showView: function(id) {
+                console.log("ShowView action", arguments);
+                this.transitionTo('userview', id);
+            },
 
-			showEditFormWithController: function(formController, formContext, options) {
-				if (formController.ArrayFields) {
-					while(formController.ArrayFields.length > 0) {
-						formController.ArrayFields.pop();
-					}
-				}
+            showEditFormWithController: function(formController, formContext, options) {
+                if (formController.ArrayFields) {
+                    while(formController.ArrayFields.length > 0) {
+                        formController.ArrayFields.pop();
+                    }
+                }
 
-				var formName = formController.constructor.toString().slice(1, "Controller".length * -1).toLowerCase();
-				console.log("showEditFormWithController", formController, formName, formContext, options);
+                var formName = formController.constructor.toString().slice(1, "Controller".length * -1).toLowerCase();
+                console.log("showEditFormWithController", formController, formName, formContext, options);
 
-				var formwrapperController = this.controllerFor('formwrapper');
-				Ember.set('Canopsis.formwrapperController', formwrapperController);
+                var formwrapperController = this.controllerFor('formwrapper');
+                Ember.set('Canopsis.formwrapperController', formwrapperController);
 
-				formController.set('formwrapper', formwrapperController);
-				formController.set('formContext', formContext);
-				formwrapperController.set('form', formController);
-				formwrapperController.set('formName', formName);
+                formController.set('formwrapper', formwrapperController);
+                formController.set('formContext', formContext);
+                formwrapperController.set('form', formController);
+                formwrapperController.set('formName', formName);
 
-				formwrapperController.send('show');
+                formwrapperController.send('show');
 
-				return formController;
-			}
-		},
+                return formController;
+            }
+        },
 
-		model: function() {
-			return {
-				title: 'Canopsis'
-			};
-		},
+        model: function() {
+            return {
+                title: 'Canopsis'
+            };
+        },
 
-		renderTemplate: function() {
-			this.render();
+        renderTemplate: function() {
+            this.render();
 
-			//getting the generated controller
-			var notificationsController = this.controllerFor('notifications');
-			var formwrapperController = this.controllerFor('formwrapper');
+            //getting the generated controller
+            var notificationsController = this.controllerFor('notifications');
+            var formwrapperController = this.controllerFor('formwrapper');
 
-			//assigning the model
-			notificationsController.set('content', this.store.find("notification"));
+            //assigning the model
+            notificationsController.set('content', this.store.find("notification"));
 
-			this.render('notifications', {
-			    outlet: 'notifications',
-			    into: 'application',
-			    controller: notificationsController
-			});
+            this.render('notifications', {
+                outlet: 'notifications',
+                into: 'application',
+                controller: notificationsController
+            });
 
-			this.render('formwrapper', {
-			    outlet: 'formwrapper',
-			    into: 'application',
-			    controller: formwrapperController
-			});
+            this.render('formwrapper', {
+                outlet: 'formwrapper',
+                into: 'application',
+                controller: formwrapperController
+            });
 
-		}
-	});
+        }
+    });
 
-	return Application.ApplicationRoute;
+    return Application.ApplicationRoute;
 });

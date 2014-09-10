@@ -18,27 +18,27 @@
 */
 
 define([
-	'ember',
-	'app/application',
-	'jsonselect'
+    'ember',
+    'app/application',
+    'jsonselect'
 ], function(Ember, Application, JSONSelect) {
 
-	Application.ListlineView = Ember.View.extend({
-		tagName:'tr',
-		templateName: 'listline',
-		classNames: ['listline'],
+    Application.ListlineView = Ember.View.extend({
+        tagName:'tr',
+        templateName: 'listline',
+        classNames: ['listline'],
 
-		init: function() {
-			this._super.apply(this, arguments);
-		},
+        init: function() {
+            this._super.apply(this, arguments);
+        },
 
-		checkChanged: function() {
-			var checkbox = this.$('.toggle');
-			if(checkbox !== undefined) {
-				checkbox.iCheck('check');
-			}
-		}.observes('controller.isAllSelected')
-	});
+        checkChanged: function() {
+            var checkbox = this.$('.toggle');
+            if(checkbox !== undefined) {
+                checkbox.iCheck('check');
+            }
+        }.observes('controller.isAllSelected')
+    });
 
-	return Application.ListlineView;
+    return Application.ListlineView;
 });

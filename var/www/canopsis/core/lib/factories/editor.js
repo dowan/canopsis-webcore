@@ -18,45 +18,45 @@
 */
 
 define([
-	'ember',
-	'app/application',
-	'app/view/editor'
+    'ember',
+    'app/application',
+    'app/view/editor'
 ], function(Ember, Application, EditorView) {
 
-	/**
-	 * Editors factory. Creates a view, store it in Application and an appropriate Handlebars helper
-	 * @param editorName {string} the name of the new editor. lowercase
-	 * @param classdict {dict} the view dict
-	 * @param options {dict} options :
-	 *			- subclass: to handle editor's view inheritance: default is EditorView
-	 *			- templateName: to use another template in the editor
-	 *
-	 * @author Gwenael Pluchon <info@gwenp.fr>
-	 */
-	function Editor(editorName, classdict, options) {
-		if (options === undefined) {
-			options = {};
-		}
+    /**
+     * Editors factory. Creates a view, store it in Application and an appropriate Handlebars helper
+     * @param editorName {string} the name of the new editor. lowercase
+     * @param classdict {dict} the view dict
+     * @param options {dict} options :
+     *            - subclass: to handle editor's view inheritance: default is EditorView
+     *            - templateName: to use another template in the editor
+     *
+     * @author Gwenael Pluchon <info@gwenp.fr>
+     */
+    function Editor(editorName, classdict, options) {
+        if (options === undefined) {
+            options = {};
+        }
 
-		if (options.subclass === undefined) {
-			options.subclass = EditorView;
-		}
+        if (options.subclass === undefined) {
+            options.subclass = EditorView;
+        }
 
-		if (classdict.templateName === undefined) {
-			//FIXME this is not working
-			//TODO write a dict in Application, with all templates stored, and an api to search for {editor, renderers, regular} templates
-			classdict.templateName = "editor-" + editorName;
-		}
+        if (classdict.templateName === undefined) {
+            //FIXME this is not working
+            //TODO write a dict in Application, with all templates stored, and an api to search for {editor, renderers, regular} templates
+            classdict.templateName = "editor-" + editorName;
+        }
 
-		var editorViewName = editorName.camelize().capitalize();
+        var editorViewName = editorName.camelize().capitalize();
 
-		Application[editorViewName] = options.subclass.extend(classdict);
-		Ember.Handlebars.helper('editor-' + editorName, Application[editorViewName]);
+        Application[editorViewName] = options.subclass.extend(classdict);
+        Ember.Handlebars.helper('editor-' + editorName, Application[editorViewName]);
 
-		return Application[editorViewName];
-	}
+        return Application[editorViewName];
+    }
 
-	console.log("factory editor loaded");
+    console.log("factory editor loaded");
 
-	return Editor;
+    return Editor;
 });

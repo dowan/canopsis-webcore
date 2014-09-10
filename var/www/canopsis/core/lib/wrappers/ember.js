@@ -19,17 +19,17 @@
 var Ember;
 
 define([
-	'app/lib/factories/wrapper',
-	'webcore-libs/dev/ember'
+    'app/lib/factories/wrapper',
+    'webcore-libs/dev/ember'
 ], function(Wrapper) {
 /*
-	Ember.onerror = function(error) {
-		Canopsis.utils.notification.error(error);
-	};
+    Ember.onerror = function(error) {
+        Canopsis.utils.notification.error(error);
+    };
 
-	Ember.RSVP.configure('onerror', function(error) {
-		Canopsis.utils.notification.error(error.message);
-	});
+    Ember.RSVP.configure('onerror', function(error) {
+        Canopsis.utils.notification.error(error.message);
+    });
 */
-	return Wrapper("ember", Ember, arguments, Ember.VERSION);
+    return Wrapper("ember", Ember, arguments, Ember.VERSION);
 });

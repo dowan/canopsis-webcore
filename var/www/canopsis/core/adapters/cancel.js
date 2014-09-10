@@ -18,10 +18,10 @@
 */
 
 define([
-	'app/application',
-	'app/adapters/event'
+    'app/application',
+    'app/adapters/event'
 ], function(Application, EventAdapter) {
-	Application.CancelAdapter = EventAdapter.extend({});
+    Application.CancelAdapter = EventAdapter.extend({});
 
-	return Application.CancelAdapter;
+    return Application.CancelAdapter;
 });

@@ -18,23 +18,23 @@
 */
 
 define([
-	'ember',
-	'app/application',
-	'app/lib/factories/form',
+    'ember',
+    'app/application',
+    'app/lib/factories/form',
 ], function(Ember, Application, FormFactory) {
 
-	var formOptions = {};
-	FormFactory('confirmform', {
+    var formOptions = {};
+    FormFactory('confirmform', {
 
-		confirmation: false,
-		actions: {
-			submit: function() {
-				console.log('confirmed !');
-				this._super();
-			}
-		}
-	},
-	formOptions);
+        confirmation: false,
+        actions: {
+            submit: function() {
+                console.log('confirmed !');
+                this._super();
+            }
+        }
+    },
+    formOptions);
 
-	return Application.ConfirmformController;
+    return Application.ConfirmformController;
 });

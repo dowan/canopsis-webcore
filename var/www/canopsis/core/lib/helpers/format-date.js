@@ -19,13 +19,13 @@
 
 define(['moment', 'ember'], function(moment, Ember) {
 
-	Ember.Handlebars.helper('format-date', function(timestamp) {
-		if (timestamp) {
-			return new Ember.Handlebars.SafeString(moment.unix(timestamp));
-		}
-		else {
-			return new Ember.Handlebars.SafeString('');
-		}
-	});
+    Ember.Handlebars.helper('format-date', function(timestamp) {
+        if (timestamp) {
+            return new Ember.Handlebars.SafeString(moment.unix(timestamp));
+        }
+        else {
+            return new Ember.Handlebars.SafeString('');
+        }
+    });
 
 });

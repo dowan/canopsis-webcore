@@ -19,73 +19,73 @@
 var DS;
 
 define([
-	'ember',
-	'app/lib/factories/wrapper',
-	'webcore-libs/dev/ember-data'
+    'ember',
+    'app/lib/factories/wrapper',
+    'webcore-libs/dev/ember-data'
 ], function(Ember, Wrapper) {
 
-	DS.ArrayTransform = DS.Transform.extend({
-		deserialize: function(serialized) {
-			if (Ember.typeOf(serialized) === 'array') {
-				return serialized;
-			}
+    DS.ArrayTransform = DS.Transform.extend({
+        deserialize: function(serialized) {
+            if (Ember.typeOf(serialized) === 'array') {
+                return serialized;
+            }
 
-			return [];
-		},
+            return [];
+        },
 
-		serialize: function(deserialized) {
-			var type = Ember.typeOf(deserialized);
+        serialize: function(deserialized) {
+            var type = Ember.typeOf(deserialized);
 
-			if (type === 'array') {
-				return deserialized;
-			}
-			else if (type === 'string') {
-				return deserialized.split(',').map(function(item) {
-					return jQuery.trim(item);
-				});
-			}
+            if (type === 'array') {
+                return deserialized;
+            }
+            else if (type === 'string') {
+                return deserialized.split(',').map(function(item) {
+                    return jQuery.trim(item);
+                });
+            }
 
-			return [];
-		}
-	});
+            return [];
+        }
+    });
 
-	DS.IntegerTransform = DS.Transform.extend({
-		deserialize: function(serialized) {
-			if (typeof serialized === "number") {
-				return serialized;
-			} else {
-				console.warn("deserialized value is not a number as it is supposed to be", arguments);
-				return 0;
-			}
-		},
+    DS.IntegerTransform = DS.Transform.extend({
+        deserialize: function(serialized) {
+            if (typeof serialized === "number") {
+                return serialized;
+            } else {
+                console.warn("deserialized value is not a number as it is supposed to be", arguments);
+                return 0;
+            }
+        },
 
-		serialize: function(deserialized) {
-			return Ember.isEmpty(deserialized) ? null : Number(deserialized);
-		}
-	});
+        serialize: function(deserialized) {
+            return Ember.isEmpty(deserialized) ? null : Number(deserialized);
+        }
+    });
 
-	DS.ObjectTransform = DS.Transform.extend({
-		deserialize: function(serialized) {
-			if (Ember.typeOf(serialized) === 'object') {
-				return serialized;
-			}
+    DS.ObjectTransform = DS.Transform.extend({
+        deserialize: function(serialized) {
+            if (Ember.typeOf(serialized) === 'object') {
+                return serialized;
+            }
 
-			return {};
-		},
+            return {};
+        },
 
-		serialize: function(deserialized) {
-			var type = Ember.typeOf(deserialized);
+        serialize: function(deserialized) {
+            var type = Ember.typeOf(deserialized);
 
-			if (type === 'object') {
-				return deserialized;
+            if (type === 'object') {
+                return deserialized;
 
-			} else if (type === 'string') {
-				console.log("bad format");
-			}
+            } else if (type === 'string') {
+                console.log("bad format");
+            }
 
-			return {};
-		}
-	});
+            return {};
+        }
+    });
 
-	return Wrapper("ember-data", DS, arguments, DS.VERSION);
+    return Wrapper("ember-data", DS, arguments, DS.VERSION);
 });

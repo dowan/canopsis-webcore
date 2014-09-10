@@ -18,10 +18,10 @@
 */
 
 define([
-	'app/application',
-	'app/view/crecords'
+    'app/application',
+    'app/view/crecords'
 ], function(Application, CrecordsView) {
-	Application.EventView = CrecordsView.extend({});
+    Application.EventView = CrecordsView.extend({});
 
-	return Application.EventView;
+    return Application.EventView;
 });

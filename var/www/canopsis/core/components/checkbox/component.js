@@ -18,46 +18,46 @@
 */
 
 define([
-	'ember',
-	'ember-data',
-	'app/application'
+    'ember',
+    'ember-data',
+    'app/application'
 ], function(Ember, DS, Application) {
 
-	var set = Ember.set,
-	    get = Ember.get;
+    var set = Ember.set,
+        get = Ember.get;
 
-	var component = Ember.Component.extend({
-		didInsertElement: function(){
-			this.$('input').iCheck({
-				checkboxClass: 'icheckbox_minimal-grey',
-				radioClass: 'iradio_minimal-grey'
-			});
+    var component = Ember.Component.extend({
+        didInsertElement: function(){
+            this.$('input').iCheck({
+                checkboxClass: 'icheckbox_minimal-grey',
+                radioClass: 'iradio_minimal-grey'
+            });
 
-			var checkboxComponent = this;
-			this.$('input').on('ifChecked', function(){
-				set(checkboxComponent, 'checked', true);
-			});
-			this.$('input').on('ifUnchecked', function(){
-				set(checkboxComponent, 'checked', false);
-			});
-		},
+            var checkboxComponent = this;
+            this.$('input').on('ifChecked', function(){
+                set(checkboxComponent, 'checked', true);
+            });
+            this.$('input').on('ifUnchecked', function(){
+                set(checkboxComponent, 'checked', false);
+            });
+        },
 
-		checkedChanged: function(){
-			console.log('checked changed');
-			if(get(this, 'checked')) {
-				this.$('input').iCheck('check');
-			} else {
-				this.$('input').iCheck('uncheck');
-			}
-		}.observes('checked'),
+        checkedChanged: function(){
+            console.log('checked changed');
+            if(get(this, 'checked')) {
+                this.$('input').iCheck('check');
+            } else {
+                this.$('input').iCheck('uncheck');
+            }
+        }.observes('checked'),
 
-		willRemoveElement: function() {
-			console.log('destroy checkbox', this);
-			this.$('input').iCheck('destroy');
-		}
-	});
+        willRemoveElement: function() {
+            console.log('destroy checkbox', this);
+            this.$('input').iCheck('destroy');
+        }
+    });
 
-	Application.ComponentCheckboxComponent = component;
+    Application.ComponentCheckboxComponent = component;
 
-	return component;
+    return component;
 });

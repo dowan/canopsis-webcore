@@ -21,37 +21,37 @@
 //TODO implement auto check for mvct file existence and require them automatically
 
 var editorsTemplates = [
-	/* js = 'cvw' : the editor have a Controller, a View and a Webcomponent
-	 * js = 'cv' : the editor have a Controller and a View
-	 * js = 'w' : the editor have a Webcomponent
-	 */
-	{ name: 'defaultpropertyeditor', js: 'v' },
-	{ name: 'boolean' },
-	{ name: 'group', js: 'c' },
-	{ name: 'color' },
-	{ name: 'array', js: 'w'},
-	{ name: 'mail' },
-	{ name: 'textarea' },
-	{ name: 'separator' },
+    /* js = 'cvw' : the editor have a Controller, a View and a Webcomponent
+     * js = 'cv' : the editor have a Controller and a View
+     * js = 'w' : the editor have a Webcomponent
+     */
+    { name: 'defaultpropertyeditor', js: 'v' },
+    { name: 'boolean' },
+    { name: 'group', js: 'c' },
+    { name: 'color' },
+    { name: 'array', js: 'w'},
+    { name: 'mail' },
+    { name: 'textarea' },
+    { name: 'separator' },
     { name: 'duration', js: 'w' },
-	{ name: 'timeinterval', js: 'w' },
-	{ name: 'richtext', js: 'w' },
-	{ name: 'timestamp', js: 'w' },
-	{ name: 'rights', js: 'v' },
-	{ name: 'cmetric', js: 'w' },
-	{ name: 'cfilter', js: 'w' },
-	{ name: 'classifiedcrecordselector', js: 'w' },
-	{ name: 'cfilterwithproperties'},
-	{ name: 'templateSelector' , js: "v" },
-	{ name: 'tags' , js: "w" },
-	{ name: 'eventselector', js: 'w' },
-	{ name: 'state', js: 'w' },
-	{ name: 'criticity', js: 'w' },
-	{ name: 'actionfilter', js: 'w' },
-	{ name: 'simplelist', js: 'v' },
-	{ name: 'jobeditor', js: 'w' },
-	{ name: 'source', js: 'v' },
-	{ name: 'stringpair'},
+    { name: 'timeinterval', js: 'w' },
+    { name: 'richtext', js: 'w' },
+    { name: 'timestamp', js: 'w' },
+    { name: 'rights', js: 'v' },
+    { name: 'cmetric', js: 'w' },
+    { name: 'cfilter', js: 'w' },
+    { name: 'classifiedcrecordselector', js: 'w' },
+    { name: 'cfilterwithproperties'},
+    { name: 'templateSelector' , js: "v" },
+    { name: 'tags' , js: "w" },
+    { name: 'eventselector', js: 'w' },
+    { name: 'state', js: 'w' },
+    { name: 'criticity', js: 'w' },
+    { name: 'actionfilter', js: 'w' },
+    { name: 'simplelist', js: 'v' },
+    { name: 'jobeditor', js: 'w' },
+    { name: 'source', js: 'v' },
+    { name: 'stringpair'},
     { name: 'session', js: 'w' }
 ];
 
@@ -61,55 +61,55 @@ var depsTemplates = [];
 
 //generate deps
 for (var i = 0; i < editorsTemplates.length; i++) {
-	var name = editorsTemplates[i].name;
-	var files = editorsTemplates[i].js;
+    var name = editorsTemplates[i].name;
+    var files = editorsTemplates[i].js;
 
-	var tmplPos;
+    var tmplPos;
 
-	if (files !== undefined) {
-		var url;
+    if (files !== undefined) {
+        var url;
 
-		if (files.indexOf('c') >= 0) {
-			url = 'app/editors/' + name + '/controller';
+        if (files.indexOf('c') >= 0) {
+            url = 'app/editors/' + name + '/controller';
 
-			deps.push(url);
-		}
+            deps.push(url);
+        }
 
-		if (files.indexOf('v') >= 0) {
-			url = 'app/editors/' + name + '/view';
+        if (files.indexOf('v') >= 0) {
+            url = 'app/editors/' + name + '/view';
 
-			deps.push(url);
-		}
+            deps.push(url);
+        }
 
-		if (files.indexOf('w') >= 0) {
-			url = 'text!app/editors/' + name + '/component.html';
+        if (files.indexOf('w') >= 0) {
+            url = 'text!app/editors/' + name + '/component.html';
 
-			tmplPos = deps.push(url);
-			depsTemplates.push({name: 'components/component-' + name, pos: tmplPos});
+            tmplPos = deps.push(url);
+            depsTemplates.push({name: 'components/component-' + name, pos: tmplPos});
 
-			url = 'app/editors/' + name + '/component';
-			deps.push(url);
-		}
-	}
+            url = 'app/editors/' + name + '/component';
+            deps.push(url);
+        }
+    }
 
-	tmplPos = deps.push('text!app/editors/' + name + '/template.html');
-	depsTemplates.push({name: 'editor-' + name, pos: tmplPos});
+    tmplPos = deps.push('text!app/editors/' + name + '/template.html');
+    depsTemplates.push({name: 'editor-' + name, pos: tmplPos});
 
 }
 
 console.log({"editors dependencies": deps});
 
 define(deps, function(Ember) {
-	console.log("load editors", arguments);
+    console.log("load editors", arguments);
 
-	for (var i = 0; i < depsTemplates.length; i++) {
-		var tmplInfo = depsTemplates[i];
+    for (var i = 0; i < depsTemplates.length; i++) {
+        var tmplInfo = depsTemplates[i];
 
-		var template = arguments[tmplInfo.pos - 1];
+        var template = arguments[tmplInfo.pos - 1];
 
-		console.log("new editor", template, tmplInfo.name);
+        console.log("new editor", template, tmplInfo.name);
 
-		Ember.TEMPLATES[tmplInfo.name] = Ember.Handlebars.compile(template);
-	}
+        Ember.TEMPLATES[tmplInfo.name] = Ember.Handlebars.compile(template);
+    }
 });
 

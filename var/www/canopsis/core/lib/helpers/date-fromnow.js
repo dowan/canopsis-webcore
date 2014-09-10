@@ -19,13 +19,13 @@
 
 define(['moment', 'ember'], function(moment, Ember) {
 
-	Ember.Handlebars.helper('date-fromnow', function(timestamp) {
-		if (timestamp) {
-			return new Ember.Handlebars.SafeString(moment.unix(timestamp).fromNow());
-		}
-		else {
-			return new Ember.Handlebars.SafeString('');
-		}
-	});
+    Ember.Handlebars.helper('date-fromnow', function(timestamp) {
+        if (timestamp) {
+            return new Ember.Handlebars.SafeString(moment.unix(timestamp).fromNow());
+        }
+        else {
+            return new Ember.Handlebars.SafeString('');
+        }
+    });
 
 });

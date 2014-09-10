@@ -18,11 +18,11 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
 
-	Application.EditorController = Ember.ObjectController.extend({});
+    Application.EditorController = Ember.ObjectController.extend({});
 
-	return Application.EditorController;
+    return Application.EditorController;
 });

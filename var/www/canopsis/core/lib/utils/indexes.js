@@ -18,54 +18,54 @@
 */
 
 define([
-	'ember',
-	'canopsis/canopsisConfiguration',
-	'app/application'
+    'ember',
+    'canopsis/canopsisConfiguration',
+    'app/application'
 ], function(ember, conf) {
 
-	var indexes = {
-		cache: {},
-		load: function (collection) {
-			$.ajax({
-				url: '/rest/indexes/' + collection,
-				success: function(data) {
-					indexes.cache[collection] = data.indexes;
-				},
-				async: false
-			});
-			return this.cache[collection];
-		},
-		parse: function (indexes) {
+    var indexes = {
+        cache: {},
+        load: function (collection) {
+            $.ajax({
+                url: '/rest/indexes/' + collection,
+                success: function(data) {
+                    indexes.cache[collection] = data.indexes;
+                },
+                async: false
+            });
+            return this.cache[collection];
+        },
+        parse: function (indexes) {
 
-		},
-		get: function(collection) {
-			console.log(this);
-			if (Ember.isNone(this.cache[collection])) {
-				this.load(collection);
-			}
-			return this.cache[collection];
-		},
-		getAsList: function (collection) {
-			var indexes = this.get(collection);
-			indexesList = [];
-			for (var key in indexes) {
-				indexesList.push(indexes[key].key);
-			}
-			return indexesList;
-		},
-		getIndexWithField: function (collection, fields) {
-			//Retruns all indexes from given collection that match one element in the fields array
-			var indexes = this.getAsList(collection);
-			var indexSelection = [];
-			for (var x=0; x<indexes.length; x++){
-				console.log('searching ' + indexes[x][0][0] + ' in' , fields);
-				if ($.inArray(indexes[x][0][0], fields) !== -1) {
-					indexSelection.push(indexes[x]);
-				}
-			}
-			return indexSelection;
-		}
-	}
+        },
+        get: function(collection) {
+            console.log(this);
+            if (Ember.isNone(this.cache[collection])) {
+                this.load(collection);
+            }
+            return this.cache[collection];
+        },
+        getAsList: function (collection) {
+            var indexes = this.get(collection);
+            indexesList = [];
+            for (var key in indexes) {
+                indexesList.push(indexes[key].key);
+            }
+            return indexesList;
+        },
+        getIndexWithField: function (collection, fields) {
+            //Retruns all indexes from given collection that match one element in the fields array
+            var indexes = this.getAsList(collection);
+            var indexSelection = [];
+            for (var x=0; x<indexes.length; x++){
+                console.log('searching ' + indexes[x][0][0] + ' in' , fields);
+                if ($.inArray(indexes[x][0][0], fields) !== -1) {
+                    indexSelection.push(indexes[x]);
+                }
+            }
+            return indexSelection;
+        }
+    }
 
-	return indexes;
+    return indexes;
 });

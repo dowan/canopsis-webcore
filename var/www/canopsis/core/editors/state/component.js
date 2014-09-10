@@ -19,40 +19,40 @@
 
 
 define([
-	'ember',
-	'app/application',
+    'ember',
+    'app/application',
 ], function(Ember, Application) {
-	Application.ComponentStateComponent = Ember.Component.extend({
+    Application.ComponentStateComponent = Ember.Component.extend({
 
 
-		init: function() {
-			this._super();
-		},
+        init: function() {
+            this._super();
+        },
 
-		isInfo:function () {
-			return this.get('content') === 0;
-		}.property('content'),
+        isInfo:function () {
+            return this.get('content') === 0;
+        }.property('content'),
 
-		isMinor:function () {
-			return this.get('content') === 1;
-		}.property('content'),
+        isMinor:function () {
+            return this.get('content') === 1;
+        }.property('content'),
 
-		isMajor:function () {
-			return this.get('content') === 2;
-		}.property('content'),
+        isMajor:function () {
+            return this.get('content') === 2;
+        }.property('content'),
 
-		isCritical:function () {
-			return this.get('content') === 3;
-		}.property('content'),
+        isCritical:function () {
+            return this.get('content') === 3;
+        }.property('content'),
 
 
-		actions: {
-			setState:function (state) {
-				this.set('content', parseInt(state));
-			}
-		},
+        actions: {
+            setState:function (state) {
+                this.set('content', parseInt(state));
+            }
+        },
 
-	});
+    });
 
-	return Application.ComponentStateComponent;
+    return Application.ComponentStateComponent;
 });

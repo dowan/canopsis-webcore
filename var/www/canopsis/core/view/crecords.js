@@ -18,12 +18,12 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
-	Application.CrecordsView = Ember.View.extend({
-		templateName: "crecords"
-	});
+    Application.CrecordsView = Ember.View.extend({
+        templateName: "crecords"
+    });
 
-	return Application.CrecordsView;
+    return Application.CrecordsView;
 });

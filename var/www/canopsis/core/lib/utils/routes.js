@@ -19,17 +19,17 @@
 
 define(['app/application'], function(Application) {
 
-	var routesUtils = {
-		getCurrentRouteController: function() {
-			var currentHandlers = Application.__container__.lookup("router:main").router.currentHandlerInfos;
-			var currentRouteController = currentHandlers[currentHandlers.length - 1].handler.controller;
+    var routesUtils = {
+        getCurrentRouteController: function() {
+            var currentHandlers = Application.__container__.lookup("router:main").router.currentHandlerInfos;
+            var currentRouteController = currentHandlers[currentHandlers.length - 1].handler.controller;
 
-			console.log("currentHandlers", currentHandlers);
-			console.log("currentRouteController", currentRouteController);
+            console.log("currentHandlers", currentHandlers);
+            console.log("currentRouteController", currentRouteController);
 
-			return currentRouteController;
-		}
-	};
+            return currentRouteController;
+        }
+    };
 
-	return routesUtils;
+    return routesUtils;
 });

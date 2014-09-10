@@ -19,6 +19,6 @@
 
 define(['ember', 'app/view/menu'], function(Ember, MenuView) {
 
-	Ember.Handlebars.helper('menu', MenuView);
+    Ember.Handlebars.helper('menu', MenuView);
 
 });

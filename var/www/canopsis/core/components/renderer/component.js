@@ -18,41 +18,41 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
-	var get = Ember.get;
+    var get = Ember.get;
 
-	Application.ComponentRendererComponent = Ember.Component.extend({
-		tagName: 'span',
+    Application.ComponentRendererComponent = Ember.Component.extend({
+        tagName: 'span',
 
-		value: function() {
-			return this.get('record.' + this.get('attr.field'));
-		}.property('attr.field', 'record'),
+        value: function() {
+            return this.get('record.' + this.get('attr.field'));
+        }.property('attr.field', 'record'),
 
-		rendererType: function() {
+        rendererType: function() {
 
-			var type = this.get('attr.type');
-			var role = this.get('attr.options.role');
-			if(get(this, 'attr.model.options.role')) {
-				role = get(this, 'attr.model.options.role');
-			}
+            var type = this.get('attr.type');
+            var role = this.get('attr.options.role');
+            if(get(this, 'attr.model.options.role')) {
+                role = get(this, 'attr.model.options.role');
+            }
 
-			var rendererName;
-			if (role) {
-				rendererName = 'renderer-' + role;
-			} else {
-				rendererName = 'renderer-' + type;
-			}
+            var rendererName;
+            if (role) {
+                rendererName = 'renderer-' + role;
+            } else {
+                rendererName = 'renderer-' + type;
+            }
 
-			if (Ember.TEMPLATES[rendererName] === undefined) {
-				rendererName = undefined;
-			}
+            if (Ember.TEMPLATES[rendererName] === undefined) {
+                rendererName = undefined;
+            }
 
-			return rendererName;
-		}.property('attr.type', 'attr.role')
+            return rendererName;
+        }.property('attr.type', 'attr.role')
 
-	});
+    });
 
-	return Application.ComponentEditorComponent;
+    return Application.ComponentEditorComponent;
 });

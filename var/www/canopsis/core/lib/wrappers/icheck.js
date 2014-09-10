@@ -19,11 +19,11 @@
 var DS;
 
 define([
-	'jquery',
-	'app/lib/factories/wrapper',
-	'webcore-libs/icheck/icheck'
+    'jquery',
+    'app/lib/factories/wrapper',
+    'webcore-libs/icheck/icheck'
 ], function($, Wrapper) {
 
-	return Wrapper("icheck", undefined, arguments, undefined);
+    return Wrapper("icheck", undefined, arguments, undefined);
 
 });

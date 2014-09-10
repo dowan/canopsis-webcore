@@ -18,21 +18,21 @@
 */
 
 define([
-	'ember',
-	'app/application',
-	'app/lib/loaders/schema-manager',
-	'app/view/formwrapper'
+    'ember',
+    'app/application',
+    'app/lib/loaders/schema-manager',
+    'app/view/formwrapper'
 ], function(Ember, Application) {
-	var eventedController = Ember.Controller.extend(Ember.Evented);
+    var eventedController = Ember.Controller.extend(Ember.Evented);
 
-	Application.FormwrapperController = eventedController.extend({
-		actions: {
-			show: function() {
-				console.log("FormwrapperController show", this);
-				this.get('widgetwrapperView').showPopup();
-			}
-		}
-	});
+    Application.FormwrapperController = eventedController.extend({
+        actions: {
+            show: function() {
+                console.log("FormwrapperController show", this);
+                this.get('widgetwrapperView').showPopup();
+            }
+        }
+    });
 
-	return Application.FormwrapperController;
+    return Application.FormwrapperController;
 });

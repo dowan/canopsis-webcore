@@ -18,19 +18,19 @@
 */
 
 define(['ember', 'app/application'], function(Ember, Application) {
-	Ember.Handlebars.helper('menu', Application.MenuView);
-	Ember.Handlebars.helper('color', function(color) {
+    Ember.Handlebars.helper('menu', Application.MenuView);
+    Ember.Handlebars.helper('color', function(color) {
 
-		var style = '';
+        var style = '';
 
-		if (color.toLowerCase() !== '#null') {
-			style = 'style="background-color:' + color + '"';
-		} else {
-			color = 'no color';
-		}
+        if (color.toLowerCase() !== '#null') {
+            style = 'style="background-color:' + color + '"';
+        } else {
+            color = 'no color';
+        }
 
-		return new Ember.Handlebars.SafeString('<div class="color" ' + style + '>' + color + '</div>');
+        return new Ember.Handlebars.SafeString('<div class="color" ' + style + '>' + color + '</div>');
 
-	});
+    });
 
 });

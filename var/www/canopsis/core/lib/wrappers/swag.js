@@ -18,10 +18,10 @@
 */
 
 define([
-	'app/lib/factories/wrapper',
-	'webcore-libs/swag/swag'
+    'app/lib/factories/wrapper',
+    'webcore-libs/swag/swag'
 ], function(Wrapper) {
-	Swag.registerHelpers();
-	return Wrapper("swag", Swag, undefined, "0.7.0");
+    Swag.registerHelpers();
+    return Wrapper("swag", Swag, undefined, "0.7.0");
 
 });

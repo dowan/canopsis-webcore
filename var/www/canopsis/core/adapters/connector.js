@@ -19,28 +19,28 @@
 
 
 define([
-	'app/application',
-	'app/adapters/entity',
+    'app/application',
+    'app/adapters/entity',
 ], function(Application, EntityAdapter) {
-	var adapter = EntityAdapter.extend({
+    var adapter = EntityAdapter.extend({
 
-		buildURL: function(type, id) {
-			return ("/rest/entities/" + type + (!!id ? "/" + id : ""));
-		},
+        buildURL: function(type, id) {
+            return ("/rest/entities/" + type + (!!id ? "/" + id : ""));
+        },
 
-		createRecord: function(store, type, record) {
-			var data = {};
-			var id = "connector." + record.get("connector_type") +"."+ record.get("hostname");
-			record.set( "_id" , id );
-			var serializer = store.serializerFor(type.typeKey);
+        createRecord: function(store, type, record) {
+            var data = {};
+            var id = "connector." + record.get("connector_type") +"."+ record.get("hostname");
+            record.set( "_id" , id );
+            var serializer = store.serializerFor(type.typeKey);
 
-			data = serializer.serializeIntoHash(data, type, record, "POST", { includeId: true });
+            data = serializer.serializeIntoHash(data, type, record, "POST", { includeId: true });
 
-			return this.ajax(this.buildURL(type.typeKey, record.id), "POST", { data: data });
-		}
-	});
-	Application.ConnectorAdapter = adapter;
-	Application.NagiosAdapter = adapter;
+            return this.ajax(this.buildURL(type.typeKey, record.id), "POST", { data: data });
+        }
+    });
+    Application.ConnectorAdapter = adapter;
+    Application.NagiosAdapter = adapter;
 
-	return adapter;
+    return adapter;
 });

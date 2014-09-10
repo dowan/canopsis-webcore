@@ -19,38 +19,38 @@
 
 define(['ember'], function(Ember) {
 
-	/**
-	 * Helper to display an editor. Uses the context to get attribute value and options, so take care to where you call this helper.
-	 * @param editorType {string} the editor to try to display. If the parameter does not match an existing editor, falls back to the default one
-	 *
-	 * @author Gwenael Pluchon <info@gwenp.fr>
-	 */
-	Ember.Handlebars.registerHelper('editorhelper', function(editorType, options) {
-		void (editorType);
-		console.log("editor helper", arguments, options.data.keywords.attr.editor);
+    /**
+     * Helper to display an editor. Uses the context to get attribute value and options, so take care to where you call this helper.
+     * @param editorType {string} the editor to try to display. If the parameter does not match an existing editor, falls back to the default one
+     *
+     * @author Gwenael Pluchon <info@gwenp.fr>
+     */
+    Ember.Handlebars.registerHelper('editorhelper', function(editorType, options) {
+        void (editorType);
+        console.log("editor helper", arguments, options.data.keywords.attr.editor);
 
-		var editor = options.data.keywords.attr.editor;
+        var editor = options.data.keywords.attr.editor;
 
-		//trying to find if the required editor is an helper or a template
-		if (Ember.Handlebars.helpers[editor] !== undefined) {
+        //trying to find if the required editor is an helper or a template
+        if (Ember.Handlebars.helpers[editor] !== undefined) {
 
-			//rendering editor by calling the helper
-			console.log("call editor helper for type", editor);
-			return Ember.Handlebars.helpers[editor].apply(this, [options]);
+            //rendering editor by calling the helper
+            console.log("call editor helper for type", editor);
+            return Ember.Handlebars.helpers[editor].apply(this, [options]);
 
-		} else {
-			var foundEditor = "editor-defaultpropertyeditor";
+        } else {
+            var foundEditor = "editor-defaultpropertyeditor";
 
-			//if a template matches the editor, select it, else keep the standard one
-			if (Ember.TEMPLATES[editor] !== undefined) {
-				foundEditor = editor;
-			}
+            //if a template matches the editor, select it, else keep the standard one
+            if (Ember.TEMPLATES[editor] !== undefined) {
+                foundEditor = editor;
+            }
 
-			console.log("call editor partial for type", foundEditor);
-			return Ember.Handlebars.helpers.partial.apply(this, [foundEditor, options]);
-		}
+            console.log("call editor partial for type", foundEditor);
+            return Ember.Handlebars.helpers.partial.apply(this, [foundEditor, options]);
+        }
 
-		console.error("editor helper did not find a way to display correctly an editor", arguments);
-	});
+        console.error("editor helper did not find a way to display correctly an editor", arguments);
+    });
 
 });

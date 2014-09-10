@@ -18,29 +18,29 @@
 */
 
 define([
-	'app/application',
-	'app/adapters/application'
+    'app/application',
+    'app/adapters/application'
 ], function(Application, ApplicationAdapter) {
-	var adapter = ApplicationAdapter.extend({
+    var adapter = ApplicationAdapter.extend({
 
-		buildURL: function(type, id) {
-			void(id);
-			return "/event";
-		},
+        buildURL: function(type, id) {
+            void(id);
+            return "/event";
+        },
 
-		findQuery: function(store, type, query) {
-			var noAckSearch = false;
-			if (query && query.noAckSearch) {
-				noAckSearch = true;
-				delete query.noAckSearch;
-			}
-			var url = "/rest/events";
+        findQuery: function(store, type, query) {
+            var noAckSearch = false;
+            if (query && query.noAckSearch) {
+                noAckSearch = true;
+                delete query.noAckSearch;
+            }
+            var url = "/rest/events";
 
-			return this.ajax(url, 'GET', { data: query });
-		}
-	});
+            return this.ajax(url, 'GET', { data: query });
+        }
+    });
 
-	Application.EventAdapter = adapter;
+    Application.EventAdapter = adapter;
 
-	return adapter;
+    return adapter;
 });

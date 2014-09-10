@@ -21,27 +21,27 @@
 //TODO implement auto check for mvct file existence and require them automatically
 
 var factories = [
-	{ name:'editor', url: 'app/lib/factories/editor' },
-	{ name:'widget', url: 'app/lib/factories/widget' },
-	{ name:'form', url: 'app/lib/factories/form' }
+    { name:'editor', url: 'app/lib/factories/editor' },
+    { name:'widget', url: 'app/lib/factories/widget' },
+    { name:'form', url: 'app/lib/factories/form' }
 ];
 
 var factoriesDeps = ['app/application'];
 var factoriesDepsSize = factoriesDeps.length;
 
 for (var i = 0; i < factories.length; i++) {
-	factoriesDeps.push(factories[i].url);
+    factoriesDeps.push(factories[i].url);
 }
 
 define(factoriesDeps, function(Application) {
-	console.log(arguments);
-	Application.factories = {};
+    console.log(arguments);
+    Application.factories = {};
 
-	console.log("loading factories", factories, "into", Application.factories);
+    console.log("loading factories", factories, "into", Application.factories);
 
-	for (var i = 0; i < factories.length; i++) {
-		Application.factories[factories[i].name.capitalize()] = arguments[i + factoriesDepsSize];
-	}
+    for (var i = 0; i < factories.length; i++) {
+        Application.factories[factories[i].name.capitalize()] = arguments[i + factoriesDepsSize];
+    }
 
-	return Application.factories;
+    return Application.factories;
 });

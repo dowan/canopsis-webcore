@@ -20,39 +20,39 @@
 var routes;
 
 require([
-	'plugins',
-	'/plugins/plugin_loader.js',
-	'text!canopsis/enabled.json',
-	'text!canopsis/uibase/files/manifest.json',
-	'text!canopsis/uibase/files/routes.json',
-	'text!canopsis/uibase/files/files.json',
-	'text!canopsis/core/files/manifest.json',
-	'text!canopsis/core/files/routes.json',
-	'text!canopsis/core/files/files.json'
+    'plugins',
+    '/plugins/plugin_loader.js',
+    'text!canopsis/enabled.json',
+    'text!canopsis/uibase/files/manifest.json',
+    'text!canopsis/uibase/files/routes.json',
+    'text!canopsis/uibase/files/files.json',
+    'text!canopsis/core/files/manifest.json',
+    'text!canopsis/core/files/routes.json',
+    'text!canopsis/core/files/files.json'
 ], function(plugins_tool , plugins_loader) {
-	var arguments = arguments;
-	routes = [];
-	function load_( path ){
-		var files;
-		var plugins = [];
+    var arguments = arguments;
+    routes = [];
+    function load_( path ){
+        var files;
+        var plugins = [];
 
-		try {
-			plugins = plugins_tool.Plugins.getPlugins(path);
-			plugins = plugins_tool.Plugins.resolveDependancies(plugins);
-		} catch (e) {
-			console.log("PluginError: " + e);
-		}
+        try {
+            plugins = plugins_tool.Plugins.getPlugins(path);
+            plugins = plugins_tool.Plugins.resolveDependancies(plugins);
+        } catch (e) {
+            console.log("PluginError: " + e);
+        }
 
-		var routes_plugins = plugins_tool.Manifest.fetchRoutes(plugins, path);
-		routes = routes.concat(routes_plugins);
-		files = plugins_tool.Manifest.fetchFiles(plugins, path);
-		files = files.map(function(e) {
-			return e.replace("canopsis/core/", "app/");
-		});
-		require(files);
-	}
+        var routes_plugins = plugins_tool.Manifest.fetchRoutes(plugins, path);
+        routes = routes.concat(routes_plugins);
+        files = plugins_tool.Manifest.fetchFiles(plugins, path);
+        files = files.map(function(e) {
+            return e.replace("canopsis/core/", "app/");
+        });
+        require(files);
+    }
 
-	load_("canopsis/");
-	load_("/plugins/");
+    load_("canopsis/");
+    load_("/plugins/");
 });
 

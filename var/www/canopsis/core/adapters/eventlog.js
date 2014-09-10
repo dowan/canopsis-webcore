@@ -18,26 +18,26 @@
 */
 
 define([
-	'app/application',
-	'app/adapters/application',
-	'app/serializers/eventlog',
+    'app/application',
+    'app/adapters/application',
+    'app/serializers/eventlog',
 ], function(Application, ApplicationAdapter) {
-	var adapter = ApplicationAdapter.extend({
+    var adapter = ApplicationAdapter.extend({
 
-		buildURL: function(type, id) {
-			void(id);
+        buildURL: function(type, id) {
+            void(id);
 
-			return "/rest/events_log";
-		},
+            return "/rest/events_log";
+        },
 
-		findQuery: function(store, type, query) {
-			var url = "/rest/events_log";
+        findQuery: function(store, type, query) {
+            var url = "/rest/events_log";
 
-			return this.ajax(url, 'GET', { data: query });
-		}
-	});
+            return this.ajax(url, 'GET', { data: query });
+        }
+    });
 
-	Application.EventlogAdapter = adapter;
+    Application.EventlogAdapter = adapter;
 
-	return adapter;
+    return adapter;
 });

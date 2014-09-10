@@ -18,10 +18,10 @@
 */
 
 define([
-	'app/lib/factories/wrapper',
-	'jquery',
-	'webcore-libs/mmenu/js/jquery.mmenu.min.all'
+    'app/lib/factories/wrapper',
+    'jquery',
+    'webcore-libs/mmenu/js/jquery.mmenu.min.all'
 ], function(Wrapper, $) {
 
-	return Wrapper("mmenu", $.fn.mmenu, arguments);
+    return Wrapper("mmenu", $.fn.mmenu, arguments);
 });

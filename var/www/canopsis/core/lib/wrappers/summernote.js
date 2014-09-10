@@ -18,10 +18,10 @@
 */
 
 define([
-	'app/lib/factories/wrapper',
-	'jquery',
-	'webcore-libs/summernote/summernote.min'
+    'app/lib/factories/wrapper',
+    'jquery',
+    'webcore-libs/summernote/summernote.min'
 ], function(Wrapper, $) {
 
-	return Wrapper("mmenu", $.fn.mmenu, arguments);
+    return Wrapper("mmenu", $.fn.mmenu, arguments);
 });

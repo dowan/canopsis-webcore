@@ -19,57 +19,57 @@
 
 define(['ember', 'app/lib/abstractclassmanager'], function(Ember, Abstractclassmanager) {
 
-	var manager = Abstractclassmanager.create();
+    var manager = Abstractclassmanager.create();
 
-	manager.all.pushObject(Ember.Object.create({
-		name: 'event',
-		tree: {
-			'component': {
-				'_metas': {
-					'name': "Component"
-				},
-				'resource': {
-					'_metas': {
-						'name': "Resource",
-						'final':true
-					}
-				}
-			},
-			'connector': {
-				'_metas': {
-					'name': "connector"
-				},
-				'component': {
-					'_metas': {
-						'name': "Component"
-					},
-					'resource': {
-						'_metas': {
-							'name': "Resource",
-							'final':true
-						}
-					}
-				}
-			}
-		}
-	}));
+    manager.all.pushObject(Ember.Object.create({
+        name: 'event',
+        tree: {
+            'component': {
+                '_metas': {
+                    'name': "Component"
+                },
+                'resource': {
+                    '_metas': {
+                        'name': "Resource",
+                        'final':true
+                    }
+                }
+            },
+            'connector': {
+                '_metas': {
+                    'name': "connector"
+                },
+                'component': {
+                    '_metas': {
+                        'name': "Component"
+                    },
+                    'resource': {
+                        '_metas': {
+                            'name': "Resource",
+                            'final':true
+                        }
+                    }
+                }
+            }
+        }
+    }));
 
-	manager.all.pushObject(Ember.Object.create({
-		name: 'crecord',
-		tree: {
-			'crecord_type': {
-				'_metas': {
-					'name': "Crecord type"
-				},
-				'crecord_name': {
-					'_metas': {
-						'name': "Crecord name",
-						'final':true
-					}
-				}
-			}
-		}
-	}));
+    manager.all.pushObject(Ember.Object.create({
+        name: 'crecord',
+        tree: {
+            'crecord_type': {
+                '_metas': {
+                    'name': "Crecord type"
+                },
+                'crecord_name': {
+                    '_metas': {
+                        'name': "Crecord name",
+                        'final':true
+                    }
+                }
+            }
+        }
+    }));
 
-	return manager;
+    return manager;
 });

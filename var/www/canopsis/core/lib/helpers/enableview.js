@@ -19,8 +19,8 @@
 
 define(['ember'], function(Ember) {
 
-	Ember.Handlebars.helper('enableview', function(enable) {
-		return new Ember.Handlebars.SafeString('<div class="canopsis-divicon canopsis-' + (enable ? 'enabled' : 'disabled') + '"></div>');
-	});
+    Ember.Handlebars.helper('enableview', function(enable) {
+        return new Ember.Handlebars.SafeString('<div class="canopsis-divicon canopsis-' + (enable ? 'enabled' : 'disabled') + '"></div>');
+    });
 
 });

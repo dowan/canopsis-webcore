@@ -1,4 +1,4 @@
-	/*
+    /*
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
 #
 # This file is part of Canopsis.
@@ -22,27 +22,27 @@ define([
     'utils',
 ], function(Ember, utils) {
 
-	Ember.Handlebars.helper('subprocess', function(current) {
-		var returnValue = '';
-		var badgeClass = ["badge alert-danger" , "badge alert-success"];
-	//	for ( var f = 0 ; f < current.length; f++){
-		for ( var sub in current ){
-			if ( current.hasOwnProperty( sub ) ) {
-				var value = current[sub];
-				returnValue += '<div><span class="' + badgeClass[value] + '">'+ sub + '</span></div><br>';
-			}
-		}
+    Ember.Handlebars.helper('subprocess', function(current) {
+        var returnValue = '';
+        var badgeClass = ["badge alert-danger" , "badge alert-success"];
+    //    for ( var f = 0 ; f < current.length; f++){
+        for ( var sub in current ){
+            if ( current.hasOwnProperty( sub ) ) {
+                var value = current[sub];
+                returnValue += '<div><span class="' + badgeClass[value] + '">'+ sub + '</span></div><br>';
+            }
+        }
 /*
-		for ( var f = 0 ; f < current.length; f++){
-			var value = current[f];
-			for( var i in value ){
-				if ( value.hasOwnProperty( i ) ) {
-					returnValue += '<div><span class="' + badgeClass[value[i]] + '">'+ i + '</span></div><br>';
-				}
-			}
-		}
+        for ( var f = 0 ; f < current.length; f++){
+            var value = current[f];
+            for( var i in value ){
+                if ( value.hasOwnProperty( i ) ) {
+                    returnValue += '<div><span class="' + badgeClass[value[i]] + '">'+ i + '</span></div><br>';
+                }
+            }
+        }
 */
-		return new Ember.Handlebars.SafeString( returnValue );
+        return new Ember.Handlebars.SafeString( returnValue );
 
-	});
+    });
 });

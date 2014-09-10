@@ -19,19 +19,19 @@
 
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
 
-	var get = Ember.get,
-	    set = Ember.set;
+    var get = Ember.get,
+        set = Ember.set;
 
-	Application.ComponentTimeintervalComponent = Ember.Component.extend({
-		init: function () {
-			this._super.apply(this, arguments);
+    Application.ComponentTimeintervalComponent = Ember.Component.extend({
+        init: function () {
+            this._super.apply(this, arguments);
             set(this, 'durationType', 'duration');
 
-		},
+        },
         updateDuration: function (content) {
             console.log('update time interval -> ', content);
         },
@@ -54,5 +54,5 @@ define([
         }
     });
 
-	return Application.ComponentTimeintervalComponent;
+    return Application.ComponentTimeintervalComponent;
 });

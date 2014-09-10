@@ -19,13 +19,13 @@
 
 define([], function() {
 
-	var dates = {
-		timestamp2String: function (value, format, shortDate) {
-			function addZero(i) {
-			    return (i < 10 ? '0'+ i +'' : i +'');
-			}
+    var dates = {
+        timestamp2String: function (value, format, shortDate) {
+            function addZero(i) {
+                return (i < 10 ? '0'+ i +'' : i +'');
+            }
 
-			var a = new Date(value*1000);
+            var a = new Date(value*1000);
             var months = [
                 __("January"),
                 __("February"),
@@ -57,43 +57,43 @@ define([], function() {
                 ];
 
             }
-			var year = a.getFullYear();
-			var month = months[a.getMonth()];
-			var date = addZero(a.getDate());
-			var hour = addZero(a.getHours());
-			var min = addZero(a.getMinutes());
-			var sec = addZero(a.getSeconds());
-			var time = "";
+            var year = a.getFullYear();
+            var month = months[a.getMonth()];
+            var date = addZero(a.getDate());
+            var hour = addZero(a.getHours());
+            var min = addZero(a.getMinutes());
+            var sec = addZero(a.getSeconds());
+            var time = "";
 
-			switch(format) {
-				case 'f':
-				    time = [date, month, year].join(' ') + ' ' + [hour, min, sec].join(':') ;
-				    break;
-				case 'r':
-				    time = [date, addZero(a.getMonth()), year].join('/') + ' <br>' + [hour, min, sec].join(':') ;
-				    break;
+            switch(format) {
+                case 'f':
+                    time = [date, month, year].join(' ') + ' ' + [hour, min, sec].join(':') ;
+                    break;
+                case 'r':
+                    time = [date, addZero(a.getMonth()), year].join('/') + ' <br>' + [hour, min, sec].join(':') ;
+                    break;
 
-				default:
-				    time = [date, month, year].join(' ') + ' ' + [hour, min, sec].join(':') ;
-				    break;
-			}
-			return time;
-		},
+                default:
+                    time = [date, month, year].join(' ') + ' ' + [hour, min, sec].join(':') ;
+                    break;
+            }
+            return time;
+        },
 
-		//bottom is not used yet
-		locale: 'fr',
-		months: ['January','February','March','April','May','June','July','August','September','October','November','December'],
-		days: ['Monday', 'Thuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+        //bottom is not used yet
+        locale: 'fr',
+        months: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+        days: ['Monday', 'Thuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
 
-		setLang: function (lang) {
-			dates.locale = lang;
-			if (lang === 'fr') {
-				dates.month = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Octobre', 'Novembre', 'Décembre'];
-				dates.days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
-			}
-		},
-		dateFormat:'YYYY/MM/DD'
-	};
+        setLang: function (lang) {
+            dates.locale = lang;
+            if (lang === 'fr') {
+                dates.month = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Octobre', 'Novembre', 'Décembre'];
+                dates.days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+            }
+        },
+        dateFormat:'YYYY/MM/DD'
+    };
 
-	return dates;
+    return dates;
 });

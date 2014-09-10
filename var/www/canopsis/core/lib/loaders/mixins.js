@@ -21,7 +21,7 @@
 //TODO implement auto check for mvct file existence and require them automatically
 
 var mixinsArray = [
-	{ name: 'validation', classes: ["action"]},
+    { name: 'validation', classes: ["action"]},
     { name: 'modelDict', classes: ["action"]},
     { name: 'mixinArray', classes: ["test"]},
     { name: 'pagination', classes: ["test"]},
@@ -32,32 +32,32 @@ var deps = ['app/application'];
 var depsSize = deps.length;
 
 for (var i = 0; i < mixinsArray.length; i++) {
-	var mixinUrl = 'app/mixins/' + mixinsArray[i].name;
-	deps.push(mixinUrl);
+    var mixinUrl = 'app/mixins/' + mixinsArray[i].name;
+    deps.push(mixinUrl);
 }
 
 define(deps, function(Application) {
-	var mixinsLoaded = {};
-	mixinsLoaded.all = [];
-	mixinsLoaded.byClass = {};
-	console.log("Begin load Searchable mixins", arguments);
-	for (var i = depsSize; i < arguments.length; i++) {
-		var currentMixin = mixinsArray[i - depsSize];
+    var mixinsLoaded = {};
+    mixinsLoaded.all = [];
+    mixinsLoaded.byClass = {};
+    console.log("Begin load Searchable mixins", arguments);
+    for (var i = depsSize; i < arguments.length; i++) {
+        var currentMixin = mixinsArray[i - depsSize];
 
-		if (currentMixin.classes !== undefined) {
-			for (var j = 0; j < currentMixin.classes.length; j++) {
-				var currentClass = currentMixin.classes[j];
+        if (currentMixin.classes !== undefined) {
+            for (var j = 0; j < currentMixin.classes.length; j++) {
+                var currentClass = currentMixin.classes[j];
 
-				if (mixinsLoaded.byClass[currentClass] === undefined) {
-					mixinsLoaded.byClass[currentClass] = [];
-				}
+                if (mixinsLoaded.byClass[currentClass] === undefined) {
+                    mixinsLoaded.byClass[currentClass] = [];
+                }
 
-				mixinsLoaded.byClass[currentClass].push(currentMixin.name);
-			}
-		}
-	    mixinsLoaded.all[currentMixin.name] = arguments[i];
+                mixinsLoaded.byClass[currentClass].push(currentMixin.name);
+            }
+        }
+        mixinsLoaded.all[currentMixin.name] = arguments[i];
 
-	}
-	Application.SearchableMixin = mixinsLoaded;
-	return mixinsLoaded;
+    }
+    Application.SearchableMixin = mixinsLoaded;
+    return mixinsLoaded;
 });

@@ -18,45 +18,45 @@
 */
 
 define(['ember'], function(Ember) {
-	Ember.Handlebars.helper('criticity', function(value, crecord) {
+    Ember.Handlebars.helper('criticity', function(value, crecord) {
 
-		var span;
+        var span;
 
-		//displays keep status information if any onto the state field
-		//keep state is generated when a user overrides the criticity of and acknowleged event
-		var record;
-		//Very bad way to access keep_state information ,but doesn't work with usual getters
-		//TODO refactor
-		if (crecord.contexts && crecord.contexts[0] && crecord.contexts[0].record) {
-			record = crecord.contexts[0].record;
-		}
-		if (record) {
+        //displays keep status information if any onto the state field
+        //keep state is generated when a user overrides the criticity of and acknowleged event
+        var record;
+        //Very bad way to access keep_state information ,but doesn't work with usual getters
+        //TODO refactor
+        if (crecord.contexts && crecord.contexts[0] && crecord.contexts[0].record) {
+            record = crecord.contexts[0].record;
+        }
+        if (record) {
 
-			color = '';
-			switch(value) {
-				case 0: color = 'bg-green'; break;
-				case 1: color = 'bg-yellow'; break;
-				case 2: color = 'bg-orange'; break;
-				case 3: color = 'bg-red'; break;
-			}
+            color = '';
+            switch(value) {
+                case 0: color = 'bg-green'; break;
+                case 1: color = 'bg-yellow'; break;
+                case 2: color = 'bg-orange'; break;
+                case 3: color = 'bg-red'; break;
+            }
 
-			record = record.get('content');
-			display_keep_state = '';
-			if (record._data && record._data.keep_state) {
-				display_keep_state = '<span class="badge '+ color +'"><i class="fa fa-male"></i></span>';
-			}
-		}
+            record = record.get('content');
+            display_keep_state = '';
+            if (record._data && record._data.keep_state) {
+                display_keep_state = '<span class="badge '+ color +'"><i class="fa fa-male"></i></span>';
+            }
+        }
 
 
-		switch(value) {
-			case 0: span = '<span class="badge bg-green">Info</span>'; break;
-			case 1: span = '<span class="badge bg-yellow">Mineure</span>'; break;
-			case 2: span = '<span class="badge bg-orange">Majeure</span>'; break;
-			case 3: span = '<span class="badge bg-red">Critique</span>'; break;
-			case 4: span = '<span class="badge">Unknown</span>'; break;
-		}
-		return new Ember.Handlebars.SafeString(span + display_keep_state);
+        switch(value) {
+            case 0: span = '<span class="badge bg-green">Info</span>'; break;
+            case 1: span = '<span class="badge bg-yellow">Mineure</span>'; break;
+            case 2: span = '<span class="badge bg-orange">Majeure</span>'; break;
+            case 3: span = '<span class="badge bg-red">Critique</span>'; break;
+            case 4: span = '<span class="badge">Unknown</span>'; break;
+        }
+        return new Ember.Handlebars.SafeString(span + display_keep_state);
 
-	});
+    });
 
 });

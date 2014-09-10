@@ -19,9 +19,9 @@
 
 define(['ember'], function(Ember) {
 
-	//TODO check if it used or not
-	Ember.Handlebars.helper('colorview', function(color) {
-		return new Ember.Handlebars.SafeString('<div style="width: 24px; height: 24px; margin: auto; background-color: ' + color + ';"></div>');
-	});
+    //TODO check if it used or not
+    Ember.Handlebars.helper('colorview', function(color) {
+        return new Ember.Handlebars.SafeString('<div style="width: 24px; height: 24px; margin: auto; background-color: ' + color + ';"></div>');
+    });
 
 });

@@ -18,49 +18,49 @@
 */
 
 define([
-	'jquery',
-	'app/lib/factories/widget'
+    'jquery',
+    'app/lib/factories/widget'
 ], function($, WidgetFactory) {
 
-	var get = Ember.get,
-	    set = Ember.set;
+    var get = Ember.get,
+        set = Ember.set;
 
-	var widget = WidgetFactory('uimaintabcollection',{
-		needs: ['application'],
+    var widget = WidgetFactory('uimaintabcollection',{
+        needs: ['application'],
 
-		currentViewId: Ember.computed.alias('controllers.application.currentViewId'),
-		tagName: 'span',
+        currentViewId: Ember.computed.alias('controllers.application.currentViewId'),
+        tagName: 'span',
 
-		preparedTabs: function() {
-			var uimaintabcollectionController = this;
+        preparedTabs: function() {
+            var uimaintabcollectionController = this;
 
-			var res = Ember.A();
+            var res = Ember.A();
 
-			get(this, 'tabs').forEach(function(item, index) {
-				if(item.value === get(uimaintabcollectionController, 'currentViewId')) {
-					item.isActive = true;
-				} else {
-					item.isActive = false;
-				}
-				res.push(item);
-			});
+            get(this, 'tabs').forEach(function(item, index) {
+                if(item.value === get(uimaintabcollectionController, 'currentViewId')) {
+                    item.isActive = true;
+                } else {
+                    item.isActive = false;
+                }
+                res.push(item);
+            });
 
-			return res;
-		}.property('tabs', 'currentViewId'),
+            return res;
+        }.property('tabs', 'currentViewId'),
 
-		actions: {
-			do: function(action, params) {
-				if(params === undefined || params === null){
-					params = [];
-				}
+        actions: {
+            do: function(action, params) {
+                if(params === undefined || params === null){
+                    params = [];
+                }
 
-				this.send(action, params);
-			},
-			testAction: function() {
-				console.log('testAction');
-			}
-		}
-	});
+                this.send(action, params);
+            },
+            testAction: function() {
+                console.log('testAction');
+            }
+        }
+    });
 
-	return widget;
+    return widget;
 });

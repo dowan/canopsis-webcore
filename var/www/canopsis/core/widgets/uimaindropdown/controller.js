@@ -18,25 +18,25 @@
 */
 
 define([
-	'jquery',
-	'app/lib/factories/widget'
+    'jquery',
+    'app/lib/factories/widget'
 ], function($, WidgetFactory) {
 
-	var widget = WidgetFactory('uimaindropdown',{
-		tagName: 'span',
-		actions: {
-			do: function(action, params) {
-				if(params === undefined || params === null){
-					params = [];
-				}
+    var widget = WidgetFactory('uimaindropdown',{
+        tagName: 'span',
+        actions: {
+            do: function(action, params) {
+                if(params === undefined || params === null){
+                    params = [];
+                }
 
-				this.send(action, params);
-			},
-			testAction: function() {
-				console.log('testAction');
-			}
-		}
-	});
+                this.send(action, params);
+            },
+            testAction: function() {
+                console.log('testAction');
+            }
+        }
+    });
 
-	return widget;
+    return widget;
 });

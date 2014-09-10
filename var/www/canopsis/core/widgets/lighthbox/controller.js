@@ -18,25 +18,25 @@
 */
 
 define([
-	'app/application',
-	'app/lib/factories/widget',
-	'app/widgets/canvas/controller'
+    'app/application',
+    'app/lib/factories/widget',
+    'app/widgets/canvas/controller'
 ], function(Application, WidgetFactory) {
 
-	var widget = WidgetFactory('lighthbox', {
-		partials: {
-			titlebarsbuttons : ["titlebarbutton-moveright", "titlebarbutton-moveleft"]
-		},
-		itemCssClassArray: function() {
-			var itemCssClass = this.get('content.itemCssClass');
-			if(itemCssClass !== undefined && itemCssClass !== null)
-				return itemCssClass.split(',');
-			else {
-				console.log('empty itemCssClassArray for lighthbox');
-				return [];
-			}
-		}.property('content.itemCssClass')
-	}, {subclass: Application.CanvasController});
+    var widget = WidgetFactory('lighthbox', {
+        partials: {
+            titlebarsbuttons : ["titlebarbutton-moveright", "titlebarbutton-moveleft"]
+        },
+        itemCssClassArray: function() {
+            var itemCssClass = this.get('content.itemCssClass');
+            if(itemCssClass !== undefined && itemCssClass !== null)
+                return itemCssClass.split(',');
+            else {
+                console.log('empty itemCssClassArray for lighthbox');
+                return [];
+            }
+        }.property('content.itemCssClass')
+    }, {subclass: Application.CanvasController});
 
-	return widget;
+    return widget;
 });

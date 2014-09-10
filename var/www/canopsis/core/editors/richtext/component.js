@@ -18,58 +18,58 @@
 */
 
 define([
-	'ember',
+    'ember',
     'app/application',
-	'app/lib/wrappers/summernote'
+    'app/lib/wrappers/summernote'
 ], function(Ember, Application) {
 
-	Application.ComponentRichtextComponent = Ember.Component.extend({
-		classNames: ['wysiwyg-editor'],
-		btnSize: 'btn-xs',
-		height: 120,
+    Application.ComponentRichtextComponent = Ember.Component.extend({
+        classNames: ['wysiwyg-editor'],
+        btnSize: 'btn-xs',
+        height: 120,
 
-		willDestroyElement: function() {
-			this.$('textarea').destroy();
-		},
+        willDestroyElement: function() {
+            this.$('textarea').destroy();
+        },
 
-		didInsertElement: function() {
-			var btnSize = this.get('btnSize');
-			var height = this.get('height');
+        didInsertElement: function() {
+            var btnSize = this.get('btnSize');
+            var height = this.get('height');
 
-			this.$('textarea').summernote({
-				height: height,
-				toolbar: [
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['insert', ['link']],
-					['table', ['table']],
-					['help', ['help']]
-				]
-			});
+            this.$('textarea').summernote({
+                height: height,
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                    ['insert', ['link']],
+                    ['table', ['table']],
+                    ['help', ['help']]
+                ]
+            });
 
-			var content = this.get('content');
-			this.$('textarea').code(content);
-			this.$('.btn').addClass(btnSize);
-		},
+            var content = this.get('content');
+            this.$('textarea').code(content);
+            this.$('.btn').addClass(btnSize);
+        },
 
-		keyUp: function() {
-			this.doUpdate();
-		},
+        keyUp: function() {
+            this.doUpdate();
+        },
 
-		click: function() {
-			this.doUpdate();
-		},
+        click: function() {
+            this.doUpdate();
+        },
 
-		doUpdate: function() {
-			var content = this.$('.note-editable').html();
-			console.log("doUpdate", content);
-			console.log("doUpdate val", this.get('templateData.keywords.attr.value'));
-			this.set('content', content);
-		}
-	});
+        doUpdate: function() {
+            var content = this.$('.note-editable').html();
+            console.log("doUpdate", content);
+            console.log("doUpdate val", this.get('templateData.keywords.attr.value'));
+            this.set('content', content);
+        }
+    });
 
-	return Application.ComponentRichtextComponent;
+    return Application.ComponentRichtextComponent;
 });

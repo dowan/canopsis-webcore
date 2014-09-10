@@ -26,112 +26,112 @@ define([
 ], function(Ember, Application, FormController, InspectableitemMixin) {
 
     Application.CrecordformController = FormController.extend(InspectableitemMixin, {
-	modalId: 'crecordform-modal',
+    modalId: 'crecordform-modal',
 
-	validationFields: Ember.A(),
-	ArrayFields: Ember.A(),
+    validationFields: Ember.A(),
+    ArrayFields: Ember.A(),
 
-	inspectedDataItem: function() {
-	    return this.get('editedRecordController');
-	}.property('editedRecordController'),
+    inspectedDataItem: function() {
+        return this.get('editedRecordController');
+    }.property('editedRecordController'),
 
-	inspectedItemType: function() {
-	    return this.get('crecord_type');
-	}.property('crecord_type'),
+    inspectedItemType: function() {
+        return this.get('crecord_type');
+    }.property('crecord_type'),
 
-	actions: {
-	    submit: function() {
-		console.log("addRecord from CrecordformController, editMode:", this.editMode);
+    actions: {
+        submit: function() {
+        console.log("addRecord from CrecordformController, editMode:", this.editMode);
 
-		console.log(this);
-		console.log("saveRecord edited crecord controller", this.editedRecordController);
-
-
-
-		//will execute callback from options if any given
-
-		var options = this.get('options');
-		var override_inverse = {};
-
-		//TODO @eric refactor this in InspectableitemMixin?
-		if (options && options.override_labels) {
-		    for (key in options.override_labels) {
-			override_inverse[options.override_labels[key]] = key;
-		    }
-		}
-
-		var categories = this.get("categorized_attributes");
+        console.log(this);
+        console.log("saveRecord edited crecord controller", this.editedRecordController);
 
 
-		//TODO @momo refactor this in ValidationMixin
-		// Validation
-		var validationFields = this.get("validationFields");
-		if (validationFields)
-		{
-			for (var z = 0; z < validationFields.length; z++) {
-			    console.log("validate on : ", validationFields[z]);
-			    // Check if a field's validate function return false
-			    if (validationFields[z].validate() !== true) {
 
-				console.log("Can't validate on attr ",validationFields[z]);
-				// for now just stop and return (fields error messages have been updated)
-				return;
-			    }
-			}
-		}
+        //will execute callback from options if any given
 
-		//TODO @Momo is this still used? if yes, can't we use an inspectable mixin?
-		// Array
-		var ArrayFields = this.get("ArrayFields");
-		if (ArrayFields) {
-			for (var w = 0; w < ArrayFields.length; w++) {
-			    console.log("ArrayFields  : ", ArrayFields[w]);
-			    ArrayFields[w].onUpdate();
-			}
-		}
+        var options = this.get('options');
+        var override_inverse = {};
 
-		var newRecord;
+        //TODO @eric refactor this in InspectableitemMixin?
+        if (options && options.override_labels) {
+            for (key in options.override_labels) {
+            override_inverse[options.override_labels[key]] = key;
+            }
+        }
 
-		for (var i = 0; i < categories.length; i++) {
-		    var	category = categories[i];
-		    for (var j = 0; j < category.keys.length; j++) {
-			var attr = category.keys[j];
-			var field = attr.field;
-			//set back overried value to original field
-			if (override_inverse[attr.field]) {
-			    field = override_inverse[attr.field];
-			}
-			newRecord[field] = attr.value;
+        var categories = this.get("categorized_attributes");
 
-		    }
-		}
 
-		if (this.editMode === "add") {
-		    //sets data to record from default values described in model
-		    //sets extra keys from options parameter if any
-		    if (options && options.set) {
-			for (key in options.set) {
-			    newRecord[key] = options.set[key];
-			}
-		    }
-		    console.log(' -> newRecord :', newRecord);
-		    //TODO ugly
-		    var mainCrecordController = Canopsis.utils.routes.getCurrentRouteController();
-		    mainCrecordController.send('addRecord', this.crecord_type, newRecord, options);
-		}
-		else if (this.editMode === "edit") {
-		    Canopsis.utils.routes.getCurrentRouteController().send("editAndSaveModel", this.editedRecordController, newRecord, options);
-		}
-		else {
-		    console.log("bad record form mode");
-		}
+        //TODO @momo refactor this in ValidationMixin
+        // Validation
+        var validationFields = this.get("validationFields");
+        if (validationFields)
+        {
+            for (var z = 0; z < validationFields.length; z++) {
+                console.log("validate on : ", validationFields[z]);
+                // Check if a field's validate function return false
+                if (validationFields[z].validate() !== true) {
 
-		//reset editmode to avoid unpredictable behaviour later
-		this.editMode = undefined;
-		this.trigger("validate");
-		this.submit.resolve();
-	    }
-	}
+                console.log("Can't validate on attr ",validationFields[z]);
+                // for now just stop and return (fields error messages have been updated)
+                return;
+                }
+            }
+        }
+
+        //TODO @Momo is this still used? if yes, can't we use an inspectable mixin?
+        // Array
+        var ArrayFields = this.get("ArrayFields");
+        if (ArrayFields) {
+            for (var w = 0; w < ArrayFields.length; w++) {
+                console.log("ArrayFields  : ", ArrayFields[w]);
+                ArrayFields[w].onUpdate();
+            }
+        }
+
+        var newRecord;
+
+        for (var i = 0; i < categories.length; i++) {
+            var    category = categories[i];
+            for (var j = 0; j < category.keys.length; j++) {
+            var attr = category.keys[j];
+            var field = attr.field;
+            //set back overried value to original field
+            if (override_inverse[attr.field]) {
+                field = override_inverse[attr.field];
+            }
+            newRecord[field] = attr.value;
+
+            }
+        }
+
+        if (this.editMode === "add") {
+            //sets data to record from default values described in model
+            //sets extra keys from options parameter if any
+            if (options && options.set) {
+            for (key in options.set) {
+                newRecord[key] = options.set[key];
+            }
+            }
+            console.log(' -> newRecord :', newRecord);
+            //TODO ugly
+            var mainCrecordController = Canopsis.utils.routes.getCurrentRouteController();
+            mainCrecordController.send('addRecord', this.crecord_type, newRecord, options);
+        }
+        else if (this.editMode === "edit") {
+            Canopsis.utils.routes.getCurrentRouteController().send("editAndSaveModel", this.editedRecordController, newRecord, options);
+        }
+        else {
+            console.log("bad record form mode");
+        }
+
+        //reset editmode to avoid unpredictable behaviour later
+        this.editMode = undefined;
+        this.trigger("validate");
+        this.submit.resolve();
+        }
+    }
     });
 
     return Application.CrecordformController;

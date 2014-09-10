@@ -18,44 +18,44 @@
 */
 
 define([
-	'ember-data',
-	'app/application',
-	'app/mixins/metaserializer',
-	'app/mixins/hashserializer',
-	'app/lib/utils/notification'
+    'ember-data',
+    'app/application',
+    'app/mixins/metaserializer',
+    'app/mixins/hashserializer',
+    'app/lib/utils/notification'
 ], function(DS, Application, MetaSerializerMixin, HashSerializerMixin) {
 
-	//TODO put this in a polyfill file
-	if (!Array.isArray) {
-		Array.isArray = function(arg) {
-			return Object.prototype.toString.call(arg) === '[object Array]';
-		};
-	}
+    //TODO put this in a polyfill file
+    if (!Array.isArray) {
+        Array.isArray = function(arg) {
+            return Object.prototype.toString.call(arg) === '[object Array]';
+        };
+    }
 
-	Application.ApplicationSerializer = DS.RESTSerializer.extend(
-		MetaSerializerMixin,
-		HashSerializerMixin,
-		{
-			/**
-			 * Add a message to payload's metadata
-			 */
-			addMessage: function(payload, message, logLevel) {
-				void(logLevel); //TODO not implemented
+    Application.ApplicationSerializer = DS.RESTSerializer.extend(
+        MetaSerializerMixin,
+        HashSerializerMixin,
+        {
+            /**
+             * Add a message to payload's metadata
+             */
+            addMessage: function(payload, message, logLevel) {
+                void(logLevel); //TODO not implemented
 
-				//FIXME not working in here
-				Canopsis.utils.notification.error(message);
+                //FIXME not working in here
+                Canopsis.utils.notification.error(message);
 
-				//FIXME metadata does not seems to be handled properly
-				if(payload.meta === undefined) {
-					payload.meta = {};
-				}
-				if(payload.meta.messages === undefined) {
-					payload.meta.messages = [];
-				}
-				payload.meta.messages.push(message);
-			}
-		}
-	);
+                //FIXME metadata does not seems to be handled properly
+                if(payload.meta === undefined) {
+                    payload.meta = {};
+                }
+                if(payload.meta.messages === undefined) {
+                    payload.meta.messages = [];
+                }
+                payload.meta.messages.push(message);
+            }
+        }
+    );
 
-	return Application.ApplicationSerializer;
+    return Application.ApplicationSerializer;
 });

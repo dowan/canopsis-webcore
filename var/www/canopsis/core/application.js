@@ -18,30 +18,30 @@
 */
 
 define([
-	'ember',
-	'ember-data',
-	//FIXME: why does it work only here ?
-	'ember-widgets',
-	'jsonselect'
+    'ember',
+    'ember-data',
+    //FIXME: why does it work only here ?
+    'ember-widgets',
+    'jsonselect'
 ], function(Ember, DS) {
 
-	var Application = Ember.Application.create({
-		LOG_ACTIVE_GENERATION: false,
-		LOG_TRANSITIONS: false,
-		LOG_TRANSITIONS_INTERNAL: false,
-		LOG_VIEW_LOOKUPS: false
-	});
+    var Application = Ember.Application.create({
+        LOG_ACTIVE_GENERATION: false,
+        LOG_TRANSITIONS: false,
+        LOG_TRANSITIONS_INTERNAL: false,
+        LOG_VIEW_LOOKUPS: false
+    });
 
-	Application.initializer({
-		name:"RESTAdaptertransforms",
-		after: "transforms",
-		initialize: function(container,application) {
-			void (container);
-			application.register('transform:array',DS.ArrayTransform);
-			application.register('transform:integer',DS.IntegerTransform);
-			application.register('transform:object',DS.ObjectTransform);
-		}
-	});
+    Application.initializer({
+        name:"RESTAdaptertransforms",
+        after: "transforms",
+        initialize: function(container,application) {
+            void (container);
+            application.register('transform:array',DS.ArrayTransform);
+            application.register('transform:integer',DS.IntegerTransform);
+            application.register('transform:object',DS.ObjectTransform);
+        }
+    });
 
-	return Application;
+    return Application;
 });

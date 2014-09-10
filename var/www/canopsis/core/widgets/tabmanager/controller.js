@@ -18,39 +18,39 @@
 */
 
 define([
-	'app/lib/factories/widget',
-	'app/widgets/canvas/controller'
+    'app/lib/factories/widget',
+    'app/widgets/canvas/controller'
 ], function(WidgetFactory) {
 
-	var set = Ember.set,
-		get = Ember.get;
+    var set = Ember.set,
+        get = Ember.get;
 
-	var widget = WidgetFactory('tabmanager', {
-		init: function() {
-			if(get(this, 'items.content').length >= 0 && !Ember.isEmpty(get(this, 'items.content')[0])) {
-				console.log('init tabs', get(this, 'items.content')[0].get('widget'));
-				this.send('selectTab', get(this, 'items.content')[0].get('widget'));
-				set(get(this, 'items.content')[0], 'tabSelected', true);
-			}
+    var widget = WidgetFactory('tabmanager', {
+        init: function() {
+            if(get(this, 'items.content').length >= 0 && !Ember.isEmpty(get(this, 'items.content')[0])) {
+                console.log('init tabs', get(this, 'items.content')[0].get('widget'));
+                this.send('selectTab', get(this, 'items.content')[0].get('widget'));
+                set(get(this, 'items.content')[0], 'tabSelected', true);
+            }
 
-			this._super.apply(this, arguments);
-		},
+            this._super.apply(this, arguments);
+        },
 
-		actions: {
-			selectTab: function(item) {
-				console.info('select tab', item);
-				if(get(this, 'selectedItem')) {
-					set(this, 'selectedItem.tabSelected', false);
-				}
-				set(item, 'tabSelected', true);
-				set(this, 'selectedItem', item);
-			}
-		},
+        actions: {
+            selectTab: function(item) {
+                console.info('select tab', item);
+                if(get(this, 'selectedItem')) {
+                    set(this, 'selectedItem.tabSelected', false);
+                }
+                set(item, 'tabSelected', true);
+                set(this, 'selectedItem', item);
+            }
+        },
 
-		partials: {
-			titlebarsbuttons : ["titlebarbutton-minimize", "titlebarbutton-moveup","titlebarbutton-movedown"]
-		}
-	});
+        partials: {
+            titlebarsbuttons : ["titlebarbutton-minimize", "titlebarbutton-moveup","titlebarbutton-movedown"]
+        }
+    });
 
-	return widget;
+    return widget;
 });

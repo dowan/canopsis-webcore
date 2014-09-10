@@ -19,8 +19,8 @@
 
 define(['ember'], function(Ember) {
 
-	Ember.Handlebars.helper('set', function(name, value, options) {
-		options.data.keywords[name] = value;
-	});
+    Ember.Handlebars.helper('set', function(name, value, options) {
+        options.data.keywords[name] = value;
+    });
 
 });

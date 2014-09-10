@@ -19,17 +19,17 @@
 
 
 define([
-	'app/lib/loaders/factories'
+    'app/lib/loaders/factories'
 ], function(factories) {
 
-	var simplelist2 = factories.Editor("simplelist", {
+    var simplelist2 = factories.Editor("simplelist", {
 
-		init: function() {
-			this._super();
-			console.log("simple list init");
-		}
+        init: function() {
+            this._super();
+            console.log("simple list init");
+        }
 
-	});
+    });
 
-	return simplelist2;
+    return simplelist2;
 });

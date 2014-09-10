@@ -18,50 +18,50 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
 
-	Application.ComponentEditorComponent = Ember.Component.extend({
-		tagName: 'span',
-		init: function() {
-			console.log("init editor compo");
+    Application.ComponentEditorComponent = Ember.Component.extend({
+        tagName: 'span',
+        init: function() {
+            console.log("init editor compo");
 
-			this._super();
+            this._super();
 
-			this.set('templateData.keywords.attr', Ember.computed.alias('content'));
-		},
+            this.set('templateData.keywords.attr', Ember.computed.alias('content'));
+        },
 
-		editorType: function() {
-			console.group('editorType');
+        editorType: function() {
+            console.group('editorType');
 
-			var type = this.get('content.model.type');
-			var role = this.get('content.model.options.role');
+            var type = this.get('content.model.type');
+            var role = this.get('content.model.options.role');
 
-			console.log('content:', this.get('content'));
-			console.log('type:', Ember.get(this, 'content.field'));
-			console.log('type:', type);
-			console.log('role:', role);
+            console.log('content:', this.get('content'));
+            console.log('type:', Ember.get(this, 'content.field'));
+            console.log('type:', type);
+            console.log('role:', role);
 
-			var editorName;
+            var editorName;
 
-			if (role) {
-				editorName = 'editor-' + role;
-			} else {
-				editorName = 'editor-' + type;
-			}
+            if (role) {
+                editorName = 'editor-' + role;
+            } else {
+                editorName = 'editor-' + type;
+            }
 
-			if (Ember.TEMPLATES[editorName] === undefined) {
-				editorName = 'editor-defaultpropertyeditor';
-			}
+            if (Ember.TEMPLATES[editorName] === undefined) {
+                editorName = 'editor-defaultpropertyeditor';
+            }
 
-			console.groupEnd();
+            console.groupEnd();
 
-			return editorName;
-		}.property('content.type', 'content.role'),
+            return editorName;
+        }.property('content.type', 'content.role'),
 
-		attr: Ember.computed.alias("content")
-	});
+        attr: Ember.computed.alias("content")
+    });
 
-	return Application.ComponentEditorComponent;
+    return Application.ComponentEditorComponent;
 });

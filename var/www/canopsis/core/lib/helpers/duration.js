@@ -19,49 +19,49 @@
 
 define(['ember'], function(Ember) {
 
-	Ember.Handlebars.helper('duration', function(timestamp) {
-		if (timestamp) {
-			timestamp = parseInt(timestamp);
+    Ember.Handlebars.helper('duration', function(timestamp) {
+        if (timestamp) {
+            timestamp = parseInt(timestamp);
 
-			var dt = {
-				days: 0,
-				hours: 0,
-				minutes: 0,
-				seconds: timestamp
-			};
+            var dt = {
+                days: 0,
+                hours: 0,
+                minutes: 0,
+                seconds: timestamp
+            };
 
-			dt.minutes = parseInt(dt.seconds / 60);
-			dt.seconds -= (dt.minutes * 60);
+            dt.minutes = parseInt(dt.seconds / 60);
+            dt.seconds -= (dt.minutes * 60);
 
-			dt.hours = parseInt(dt.minutes / 60);
-			dt.minutes -= (dt.hours * 60);
+            dt.hours = parseInt(dt.minutes / 60);
+            dt.minutes -= (dt.hours * 60);
 
-			dt.days = parseInt(dt.hours / 24);
-			dt.hours -= (dt.days * 24);
+            dt.days = parseInt(dt.hours / 24);
+            dt.hours -= (dt.days * 24);
 
-			var str = "";
+            var str = "";
 
-			if (dt.days > 0) {
-				str += dt.days + ' day' + (dt.days > 1 ? 's ' : ' ');
-			}
+            if (dt.days > 0) {
+                str += dt.days + ' day' + (dt.days > 1 ? 's ' : ' ');
+            }
 
-			if (dt.hours > 0) {
-				str += dt.hours + ' h ';
-			}
+            if (dt.hours > 0) {
+                str += dt.hours + ' h ';
+            }
 
-			if (dt.minutes > 0) {
-				str += dt.minutes + ' min ';
-			}
+            if (dt.minutes > 0) {
+                str += dt.minutes + ' min ';
+            }
 
-			if (dt.seconds > 0) {
-				str += dt.seconds + ' s';
-			}
+            if (dt.seconds > 0) {
+                str += dt.seconds + ' s';
+            }
 
-			return new Ember.Handlebars.SafeString(str);
-		}
-		else {
-			return new Ember.Handlebars.SafeString('');
-		}
-	});
+            return new Ember.Handlebars.SafeString(str);
+        }
+        else {
+            return new Ember.Handlebars.SafeString('');
+        }
+    });
 
 });

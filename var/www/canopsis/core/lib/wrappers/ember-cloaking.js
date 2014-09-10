@@ -19,9 +19,9 @@
 var DS;
 
 define([
-	'ember',
-	'app/lib/factories/wrapper'
+    'ember',
+    'app/lib/factories/wrapper'
 ], function(Ember, Wrapper) {
-	var embercloaking = require(['webcore-libs/ember-cloaking']);
-	return Wrapper("ember-cloaking", undefined, arguments, undefined);
+    var embercloaking = require(['webcore-libs/ember-cloaking']);
+    return Wrapper("ember-cloaking", undefined, arguments, undefined);
 });

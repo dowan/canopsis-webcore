@@ -18,13 +18,13 @@
 */
 define(['ember', 'utils'], function(Ember, utils) {
 
-	Ember.Handlebars.helper('tr', function(value) {
+    Ember.Handlebars.helper('tr', function(value) {
 
-		var translation = utils.i18n._(value);
+        var translation = utils.i18n._(value);
 
-		console.log('translating', value, 'into', translation);
+        console.log('translating', value, 'into', translation);
 
-		return new Ember.Handlebars.SafeString(translation);
+        return new Ember.Handlebars.SafeString(translation);
 
-	});
+    });
 });

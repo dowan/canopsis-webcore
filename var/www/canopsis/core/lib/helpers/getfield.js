@@ -19,8 +19,8 @@
 
 define(['ember'], function(Ember) {
 
-	Ember.Handlebars.helper('getfield', function(ctx, fieldname) {
-		return new Ember.Handlebars.SafeString(ctx.get(fieldname) || '');
-	});
+    Ember.Handlebars.helper('getfield', function(ctx, fieldname) {
+        return new Ember.Handlebars.SafeString(ctx.get(fieldname) || '');
+    });
 
 });

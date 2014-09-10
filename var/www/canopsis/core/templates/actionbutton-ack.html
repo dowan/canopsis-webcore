@@ -1,34 +1,34 @@
 {{#if Canopsis.utils.session.rights.actionbutton_ack.checksum}}
-	{{#unless controller.findOptions.useLogCollection}}
-		{{#if minified}}
-			{{#if this.ack.author}}
-				{{#if this.ack.isAck}}
-					<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Cancel ack">
-						<button type="button" class="btn btn-default" {{action 'sendEvent' 'ackremove' this}} >
-							{{glyphicon "ban-circle"}}
-						</button>
-					</a>
-				{{/if}}
-			{{else}}
-				{{#if this.status}}
-					<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Ack">
-						<button type="button" class="btn btn-default bg-purple" {{action 'sendEvent' 'ack' this}} >
-							{{glyphicon "ok"}}
-						</button>
-					</a>
-				{{/if}}
-			{{/if}}
-		{{else}}
-			<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Ack">
-				<button type="button" class="btn btn-default" {{action 'sendEvent' 'ack'}} >
-					{{glyphicon "ok"}} {{tr 'Ack'}}
-				</button>
-			</a>
-			<a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Cancel ack">
-				<button type="button" class="btn btn-default" {{action 'sendEvent' 'ackremove'}} >
-					{{glyphicon "ban-circle"}} {{tr 'Cancel ack'}}
-				</button>
-			</a>
-		{{/if}}
-	{{/unless}}
+    {{#unless controller.findOptions.useLogCollection}}
+        {{#if minified}}
+            {{#if this.ack.author}}
+                {{#if this.ack.isAck}}
+                    <a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Cancel ack">
+                        <button type="button" class="btn btn-default" {{action 'sendEvent' 'ackremove' this}} >
+                            {{glyphicon "ban-circle"}}
+                        </button>
+                    </a>
+                {{/if}}
+            {{else}}
+                {{#if this.status}}
+                    <a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Ack">
+                        <button type="button" class="btn btn-default bg-purple" {{action 'sendEvent' 'ack' this}} >
+                            {{glyphicon "ok"}}
+                        </button>
+                    </a>
+                {{/if}}
+            {{/if}}
+        {{else}}
+            <a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Ack">
+                <button type="button" class="btn btn-default" {{action 'sendEvent' 'ack'}} >
+                    {{glyphicon "ok"}} {{tr 'Ack'}}
+                </button>
+            </a>
+            <a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Cancel ack">
+                <button type="button" class="btn btn-default" {{action 'sendEvent' 'ackremove'}} >
+                    {{glyphicon "ban-circle"}} {{tr 'Cancel ack'}}
+                </button>
+            </a>
+        {{/if}}
+    {{/unless}}
 {{/if}}

@@ -19,9 +19,9 @@
 
 define([], function() {
 
-	var wrappersManager = {
-		loadedLibraries: {}
-	};
+    var wrappersManager = {
+        loadedLibraries: {}
+    };
 
-	return wrappersManager;
+    return wrappersManager;
 });

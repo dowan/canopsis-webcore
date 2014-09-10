@@ -19,25 +19,25 @@
 
 define(['app/application'], function() {
 
-	var notification = {
-		//will be defined when notification controller is called.
-		controller: undefined,
-		info: function (message) {
-			notification.controller.createNotification('info', message);
-			console.log('info', message);
-		},
-		warning: function (message) {
-			notification.controller.createNotification('warning', message);
-			console.log('warning', message);
-		},
-		error: function (message) {
-			notification.controller.createNotification('error', message);
-			console.error(message);
-		},
-		help: function () {
-			console.log("usage is: utils.notification.notificate('info'|'warning'|'error', 'my message');");
-		}
-	};
+    var notification = {
+        //will be defined when notification controller is called.
+        controller: undefined,
+        info: function (message) {
+            notification.controller.createNotification('info', message);
+            console.log('info', message);
+        },
+        warning: function (message) {
+            notification.controller.createNotification('warning', message);
+            console.log('warning', message);
+        },
+        error: function (message) {
+            notification.controller.createNotification('error', message);
+            console.error(message);
+        },
+        help: function () {
+            console.log("usage is: utils.notification.notificate('info'|'warning'|'error', 'my message');");
+        }
+    };
 
-	return notification;
+    return notification;
 });

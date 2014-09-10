@@ -18,26 +18,26 @@
 */
 
 define([
-	'ember-data',
-	'app/application',
-	'app/serializers/application'
+    'ember-data',
+    'app/application',
+    'app/serializers/application'
 ], function(DS, Application, ApplicationSerializer) {
 
-	var serializerClass = ApplicationSerializer.extend({
-		extractRelationships: function(payload, item, type){
-			console.log('extractRelationships', arguments);
+    var serializerClass = ApplicationSerializer.extend({
+        extractRelationships: function(payload, item, type){
+            console.log('extractRelationships', arguments);
 
-			void(payload);
-			void(type);
+            void(payload);
+            void(type);
 
-			console.log('item.ack', item.ack);
-			if(item.ack === 1 || item.ack === true) {
-				item.ack = item.rk;
-			}
-		}
-	});
+            console.log('item.ack', item.ack);
+            if(item.ack === 1 || item.ack === true) {
+                item.ack = item.rk;
+            }
+        }
+    });
 
-	Application.EventlogSerializer = serializerClass;
+    Application.EventlogSerializer = serializerClass;
 
-	return serializerClass;
+    return serializerClass;
 });

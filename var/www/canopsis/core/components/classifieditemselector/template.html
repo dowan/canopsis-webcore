@@ -1,131 +1,131 @@
 <style type="text/css">
-	.list-group a {
-		display: block;
-		cursor: pointer;
-		color: #333;
-	}
+    .list-group a {
+        display: block;
+        cursor: pointer;
+        color: #333;
+    }
 
-	.list-group.icon li {
-		float: left;
-		width: 25%;
-		height: 115px;
-		padding: 10px;
-		font-size: 14px;
-		line-height: 1.4;
-		text-align: center;
-		background-color: #F9F9F9;
-		border: 1px solid #FFF;
-	}
+    .list-group.icon li {
+        float: left;
+        width: 25%;
+        height: 115px;
+        padding: 10px;
+        font-size: 14px;
+        line-height: 1.4;
+        text-align: center;
+        background-color: #F9F9F9;
+        border: 1px solid #FFF;
+    }
 
-	.list-group.icon li span.glyphicon {
-		margin-top: 5px;
-		margin-bottom: 10px;
-		font-size: 24px;
-		display: block;
-		margin-left: auto;
-		margin-right: auto;
-	}
+    .list-group.icon li span.glyphicon {
+        margin-top: 5px;
+        margin-bottom: 10px;
+        font-size: 24px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
 </style>
 
 <div class="btn-group pull-right" style="margin-left:10px">
-	<button type="button" {{bind-attr class=listModeButtonCssClass}} {{action setListMode}}>
-		{{glyphicon 'list'}}
-	</button>
-	<button type="button" {{bind-attr class=iconModeButtonCssClass}} {{action setIconMode}}>
-		{{glyphicon 'th-large'}}
-	</button>
+    <button type="button" {{bind-attr class=listModeButtonCssClass}} {{action setListMode}}>
+        {{glyphicon 'list'}}
+    </button>
+    <button type="button" {{bind-attr class=iconModeButtonCssClass}} {{action setIconMode}}>
+        {{glyphicon 'th-large'}}
+    </button>
 </div>
 
 <div class="input-group">
-	<span class="input-group-addon">{{glyphicon "search"}}</span>
-	{{input type="text" class="form-control" placeholder="Search" value=searchFilter}}
+    <span class="input-group-addon">{{glyphicon "search"}}</span>
+    {{input type="text" class="form-control" placeholder="Search" value=searchFilter}}
 </div>
 
 
 <div class="panel-group" style= "margin-top:4px">
-	<div class="panel panel-success">
-		<div class="panel-heading">
-			<h4 class="panel-title">
-				<a {{action collapse "selection"}} style="cursor:pointer">
-					selection ({{selection.length}})
-				</a>
-			</h4>
-		</div>
-		{{#unless selectionCollapsed}}
-			<ul {{bind-attr class=listGroupClass}}>
-				{{#each item in selection}}
-					<li class="list-group-item">
-						<a {{action unselectItem item}}>
-							{{#if item.icon}}
-								{{glyphicon item.icon}} 
-							{{else}}
-								{{#if defaultIcon}}
-									{{glyphicon defaultIcon}} 
-								{{/if}}
-							{{/if}}
-							{{item.name}}
-						</a>
-					</li>
-				{{else}}
-					<li><i>No values.</i></li>
-				{{/each}}
-			</ul>
-		{{/unless}}
-	</div>
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<h4 class="panel-title">
-				<a {{action collapse "all"}} style="cursor:pointer">
-					All ({{allClasses.length}})
-				</a>
-			</h4>
-		</div>
-		{{#unless allCollapsed}}
-			<ul {{bind-attr class=listGroupClass}}>
-				{{#each item in allClasses}}
-					<li class="list-group-item">
-						<a {{action selectItem item}}>
-							{{#if item.icon}}
-								{{glyphicon item.icon}} 
-							{{else}}
-								{{#if defaultIcon}}
-									{{glyphicon defaultIcon}} 
-								{{/if}}
-							{{/if}}
-							{{item.name}}
-						</a>
-					</li>
-				{{/each}}
-			</ul>
-		{{/unless}}
-	</div>
-	{{#each class in classesFiltered}}
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h4 class="panel-title">
-					<a {{action collapse class}}>
-						{{class.key}} ({{class.items.length}})
-					</a>
-				</h4>
-			</div>
-			{{#unless class.isCollapsed}}
-				<ul {{bind-attr class=listGroupClass}}>
-					{{#each item in class.items}}
-						<li class="list-group-item">
-							<a {{action selectItem item}}>
-								{{#if item.icon}}
-									{{glyphicon item.icon}} 
-								{{else}}
-									{{#if defaultIcon}}
-										{{glyphicon defaultIcon}} 
-									{{/if}}
-								{{/if}}
-								{{item.name}}
-							</a>
-						</li>
-					{{/each}}
-				</ul>
-			{{/unless}}
-		</div>
-	{{/each}}
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a {{action collapse "selection"}} style="cursor:pointer">
+                    selection ({{selection.length}})
+                </a>
+            </h4>
+        </div>
+        {{#unless selectionCollapsed}}
+            <ul {{bind-attr class=listGroupClass}}>
+                {{#each item in selection}}
+                    <li class="list-group-item">
+                        <a {{action unselectItem item}}>
+                            {{#if item.icon}}
+                                {{glyphicon item.icon}} 
+                            {{else}}
+                                {{#if defaultIcon}}
+                                    {{glyphicon defaultIcon}} 
+                                {{/if}}
+                            {{/if}}
+                            {{item.name}}
+                        </a>
+                    </li>
+                {{else}}
+                    <li><i>No values.</i></li>
+                {{/each}}
+            </ul>
+        {{/unless}}
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a {{action collapse "all"}} style="cursor:pointer">
+                    All ({{allClasses.length}})
+                </a>
+            </h4>
+        </div>
+        {{#unless allCollapsed}}
+            <ul {{bind-attr class=listGroupClass}}>
+                {{#each item in allClasses}}
+                    <li class="list-group-item">
+                        <a {{action selectItem item}}>
+                            {{#if item.icon}}
+                                {{glyphicon item.icon}} 
+                            {{else}}
+                                {{#if defaultIcon}}
+                                    {{glyphicon defaultIcon}} 
+                                {{/if}}
+                            {{/if}}
+                            {{item.name}}
+                        </a>
+                    </li>
+                {{/each}}
+            </ul>
+        {{/unless}}
+    </div>
+    {{#each class in classesFiltered}}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a {{action collapse class}}>
+                        {{class.key}} ({{class.items.length}})
+                    </a>
+                </h4>
+            </div>
+            {{#unless class.isCollapsed}}
+                <ul {{bind-attr class=listGroupClass}}>
+                    {{#each item in class.items}}
+                        <li class="list-group-item">
+                            <a {{action selectItem item}}>
+                                {{#if item.icon}}
+                                    {{glyphicon item.icon}} 
+                                {{else}}
+                                    {{#if defaultIcon}}
+                                        {{glyphicon defaultIcon}} 
+                                    {{/if}}
+                                {{/if}}
+                                {{item.name}}
+                            </a>
+                        </li>
+                    {{/each}}
+                </ul>
+            {{/unless}}
+        </div>
+    {{/each}}
 </div>

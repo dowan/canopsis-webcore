@@ -19,45 +19,45 @@
 
 define(['ember'], function(Ember) {
 
-	//TODO check if it used or not
-	Ember.Handlebars.helper('json2html', function(json) {
-		if (typeof json === 'string') {
+    //TODO check if it used or not
+    Ember.Handlebars.helper('json2html', function(json) {
+        if (typeof json === 'string') {
 
-			try {
-				json = JSON.parse(json);
-			} catch (exception) {
-				console.error('unable to deserialize json');
-				json = {'invalid': 'json string'};
-			}
-		}
+            try {
+                json = JSON.parse(json);
+            } catch (exception) {
+                console.error('unable to deserialize json');
+                json = {'invalid': 'json string'};
+            }
+        }
 
-		function parseJson(object) {
-			var html = '';
-			if (Ember.isArray(object)) {
-				html += '<ul class="jsonUl">';
-				for (var element in  object) {
-					html += '<li class="jsonLi">' + parseJson(object[element]) + '</li>';
-				}
-				html += '</ul>';
-			} else if (typeof object === 'object') {
-				for (var key in object) {
-					html += '<ul class="jsonUl"><li class="jsonLi">';
-					html += '<span class="label label-primary">'+ key +'</span>';
-					if (typeof object[key] === 'object') {
-						html += parseJson(object[key]);
-					} else {
-						html +=  '&nbsp;<span class="glyphicon glyphicon-arrow-right" style="display:inline"></span><span class="label label-warning">'+ object[key] +'</span>' ;
-					}
-					html += '</li></ul>';
-				}
-			}
+        function parseJson(object) {
+            var html = '';
+            if (Ember.isArray(object)) {
+                html += '<ul class="jsonUl">';
+                for (var element in  object) {
+                    html += '<li class="jsonLi">' + parseJson(object[element]) + '</li>';
+                }
+                html += '</ul>';
+            } else if (typeof object === 'object') {
+                for (var key in object) {
+                    html += '<ul class="jsonUl"><li class="jsonLi">';
+                    html += '<span class="label label-primary">'+ key +'</span>';
+                    if (typeof object[key] === 'object') {
+                        html += parseJson(object[key]);
+                    } else {
+                        html +=  '&nbsp;<span class="glyphicon glyphicon-arrow-right" style="display:inline"></span><span class="label label-warning">'+ object[key] +'</span>' ;
+                    }
+                    html += '</li></ul>';
+                }
+            }
 
-			return html;
-		}
+            return html;
+        }
 
-		var html = parseJson(json);
+        var html = parseJson(json);
 
-		return new Ember.Handlebars.SafeString(html);
-	});
+        return new Ember.Handlebars.SafeString(html);
+    });
 
 });

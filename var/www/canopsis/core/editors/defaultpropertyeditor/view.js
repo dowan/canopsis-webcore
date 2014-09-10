@@ -18,16 +18,16 @@
 */
 
 define([
-	'app/lib/loaders/factories'
+    'app/lib/loaders/factories'
 ], function(factories) {
 
-	var defaultpropertyeditor = factories.Editor("defaultpropertyeditor", {
-		init: function() {
-			console.log("EditorDefaultPropertyEditorView init");
-			console.log(this, arguments);
-			this._super();
-		}
-	});
+    var defaultpropertyeditor = factories.Editor("defaultpropertyeditor", {
+        init: function() {
+            console.log("EditorDefaultPropertyEditorView init");
+            console.log(this, arguments);
+            this._super();
+        }
+    });
 
-	return defaultpropertyeditor;
+    return defaultpropertyeditor;
 });

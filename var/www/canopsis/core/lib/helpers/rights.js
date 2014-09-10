@@ -18,28 +18,28 @@
 */
 define(['ember'], function(Ember) {
 
-	Ember.Handlebars.helper('rights', function(value) {
+    Ember.Handlebars.helper('rights', function(value) {
 
-	var rightsTocheck = ["r","w"];
-	var icon = ["eye", "pencil"];
-	var result = "";
+    var rightsTocheck = ["r","w"];
+    var icon = ["eye", "pencil"];
+    var result = "";
 
-	var icon_tag = ' <span class="label label-%@"><span class="fa fa-%@" style="color:white"></span></span>';
+    var icon_tag = ' <span class="label label-%@"><span class="fa fa-%@" style="color:white"></span></span>';
 
-	rightsTocheck.forEach(function(elem, i)
-	{
-		var color;
+    rightsTocheck.forEach(function(elem, i)
+    {
+        var color;
 
-		if(!!value && value.contains !== undefined) {
-			color = (value.contains(elem)? "success" : "default");
-		} else {
-			color = "default";
-		}
+        if(!!value && value.contains !== undefined) {
+            color = (value.contains(elem)? "success" : "default");
+        } else {
+            color = "default";
+        }
 
-		result += icon_tag.fmt(color, icon[i]);
-	});
+        result += icon_tag.fmt(color, icon[i]);
+    });
 
-	return new Ember.Handlebars.SafeString(result);
+    return new Ember.Handlebars.SafeString(result);
 
-	});
+    });
 });

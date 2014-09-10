@@ -18,82 +18,82 @@
 */
 
 define([
-	'jquery',
-	'ember',
-	'app/application'
+    'jquery',
+    'ember',
+    'app/application'
 ], function($, Ember, Application) {
 
-	Application.FormwrapperView = Ember.View.extend({
-		init: function() {
-			this._super();
-			console.log("formwrapper view init", this, this.get('controller'));
-		},
+    Application.FormwrapperView = Ember.View.extend({
+        init: function() {
+            this._super();
+            console.log("formwrapper view init", this, this.get('controller'));
+        },
 
-		hooksRegistered: false,
+        hooksRegistered: false,
 
-		didInsertElement: function () {
-			this.$("#formwrapper").draggable({
-				handle: ".modal-header",
-				axis: "x"
-			});
-		},
+        didInsertElement: function () {
+            this.$("#formwrapper").draggable({
+                handle: ".modal-header",
+                axis: "x"
+            });
+        },
 
-		controllerObserver: function() {
-			console.log('controller changed');
-			this.controller.widgetwrapperView = this;
-		}.observes('controller'),
+        controllerObserver: function() {
+            console.log('controller changed');
+            this.controller.widgetwrapperView = this;
+        }.observes('controller'),
 
-		//Controller -> View Hooks
-		registerHooks: function() {
-			this.hooksRegistered = true;
+        //Controller -> View Hooks
+        registerHooks: function() {
+            this.hooksRegistered = true;
 
-			console.log("registerHooks", this);
-			this.get("controller").on('show', this, this.showPopup);
-			this.get("controller").on('validate', this, this.hidePopup);
-			this.get("controller").on('hide', this, this.hidePopup);
+            console.log("registerHooks", this);
+            this.get("controller").on('show', this, this.showPopup);
+            this.get("controller").on('validate', this, this.hidePopup);
+            this.get("controller").on('hide', this, this.hidePopup);
 
-			var formwrapperView = this;
+            var formwrapperView = this;
 
-			$('#formwrapper').on('hidden.bs.modal', function () {
-				formwrapperView.onPopupHidden.apply(formwrapperView, arguments);
-			});
-		},
+            $('#formwrapper').on('hidden.bs.modal', function () {
+                formwrapperView.onPopupHidden.apply(formwrapperView, arguments);
+            });
+        },
 
-		unregisterHooks: function() {
-			this.get("controller").off('show', this, this.showPopup);
-			this.get("controller").off('validate', this, this.hidePopup);
-			this.get("controller").off('hide', this, this.hidePopup);
-		},
+        unregisterHooks: function() {
+            this.get("controller").off('show', this, this.showPopup);
+            this.get("controller").off('validate', this, this.hidePopup);
+            this.get("controller").off('hide', this, this.hidePopup);
+        },
 
-		//regular methods
-		showPopup: function() {
-			console.log("view showPopup");
-			if (! this.hooksRegistered) {
-				this.registerHooks();
-			}
+        //regular methods
+        showPopup: function() {
+            console.log("view showPopup");
+            if (! this.hooksRegistered) {
+                this.registerHooks();
+            }
 
-			$("#formwrapper").modal('show');
-			if (this.get('controller.form')) {
-				this.get('controller.form').send('show');
-			}
+            $("#formwrapper").modal('show');
+            if (this.get('controller.form')) {
+                this.get('controller.form').send('show');
+            }
 
-			var popupLeft = ($(window).width() - $("#formwrapper > .modal-dialog").outerWidth()) / 2;
-			$("#formwrapper").css("left", popupLeft);
-		},
+            var popupLeft = ($(window).width() - $("#formwrapper > .modal-dialog").outerWidth()) / 2;
+            $("#formwrapper").css("left", popupLeft);
+        },
 
-		hidePopup: function() {
-			console.log("view hidePopup");
-			$("#formwrapper").modal("hide");
-		},
+        hidePopup: function() {
+            console.log("view hidePopup");
+            $("#formwrapper").modal("hide");
+        },
 
-		onPopupHidden: function() {
-			console.log("onPopupHidden", arguments);
-			if (this.get('controller.form.submit').state() === "pending") {
-				console.info("rejecting form submission");
-				this.get('controller.form').send("abort");
-			}
-		}
-	});
+        onPopupHidden: function() {
+            console.log("onPopupHidden", arguments);
+            if (this.get('controller.form.submit').state() === "pending") {
+                console.info("rejecting form submission");
+                this.get('controller.form').send("abort");
+            }
+        }
+    });
 
-	return Application.FormwrapperView;
+    return Application.FormwrapperView;
 });

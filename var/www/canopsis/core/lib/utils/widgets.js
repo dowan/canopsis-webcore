@@ -18,24 +18,24 @@
 */
 
 define(['ember'], function(Ember) {
-	var get = Ember.get;
+    var get = Ember.get;
 
-	var widgetsUtils = {
-		getParentViewForWidget: function(widget) {
-			console.group('getParentViewForWidget');
+    var widgetsUtils = {
+        getParentViewForWidget: function(widget) {
+            console.group('getParentViewForWidget');
 
-			var currentItem = widget;
-			console.log(currentItem);
+            var currentItem = widget;
+            console.log(currentItem);
 
-			while (get(currentItem, 'crecord_type') !== 'view') {
-				console.log(currentItem, get(currentItem, 'parentController'), get(currentItem, 'target'));
-				currentItem = get(currentItem, 'target');
-			}
-			console.groupEnd();
+            while (get(currentItem, 'crecord_type') !== 'view') {
+                console.log(currentItem, get(currentItem, 'parentController'), get(currentItem, 'target'));
+                currentItem = get(currentItem, 'target');
+            }
+            console.groupEnd();
 
-			return currentItem;
-		}
-	};
+            return currentItem;
+        }
+    };
 
-	return widgetsUtils;
+    return widgetsUtils;
 });

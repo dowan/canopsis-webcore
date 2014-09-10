@@ -18,80 +18,80 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
 
-	Application.AuthenticatedRoute = Ember.Route.extend({
+    Application.AuthenticatedRoute = Ember.Route.extend({
 
-		beforeModel: function() {
-			this.controllerFor('login').getUser();
-		},
+        beforeModel: function() {
+            this.controllerFor('login').getUser();
+        },
 
-		actions: {
-			show_add_crecord_form: function(crecord_type, options) {
-				console.log('show_add_crecord_form');
-				console.log(' + Options ', options);
+        actions: {
+            show_add_crecord_form: function(crecord_type, options) {
+                console.log('show_add_crecord_form');
+                console.log(' + Options ', options);
 
-				var crecordformController = Application.CrecordformController.create({
-					container: this.container,
-					options: options,
-					crecord_type: crecord_type,
-					editMode : 'add'
-				});
+                var crecordformController = Application.CrecordformController.create({
+                    container: this.container,
+                    options: options,
+                    crecord_type: crecord_type,
+                    editMode : 'add'
+                });
 
-				//Delete old validationFields (should be done on close)
-				if (crecordformController.validationFields) {
-					while(crecordformController.validationFields.length > 0) {
-						crecordformController.validationFields.pop();
-					}
-				}
+                //Delete old validationFields (should be done on close)
+                if (crecordformController.validationFields) {
+                    while(crecordformController.validationFields.length > 0) {
+                        crecordformController.validationFields.pop();
+                    }
+                }
 
-				//Delete old ArrayFields (should be done on close)
-				if (crecordformController.ArrayFields) {
-					while(crecordformController.ArrayFields.length > 0) {
-						crecordformController.ArrayFields.pop();
-					}
-				}
+                //Delete old ArrayFields (should be done on close)
+                if (crecordformController.ArrayFields) {
+                    while(crecordformController.ArrayFields.length > 0) {
+                        crecordformController.ArrayFields.pop();
+                    }
+                }
 
-				this.render("crecordform", {
-					outlet: 'popup',
-					controller: crecordformController,
-					into:'application'
-				});
-			},
+                this.render("crecordform", {
+                    outlet: 'popup',
+                    controller: crecordformController,
+                    into:'application'
+                });
+            },
 
-			editAndSaveModel: function(model, record_raw, callback) {
-				console.log("editAndSaveModel", record_raw);
-				model.setProperties(record_raw);
-				var promise = model.save();
-				if (callback !== undefined) {
-					promise.then(callback);
-				}
-			},
+            editAndSaveModel: function(model, record_raw, callback) {
+                console.log("editAndSaveModel", record_raw);
+                model.setProperties(record_raw);
+                var promise = model.save();
+                if (callback !== undefined) {
+                    promise.then(callback);
+                }
+            },
 
-			addRecord: function(crecord_type, raw_record, options) {
-				raw_record[crecord_type] = crecord_type;
+            addRecord: function(crecord_type, raw_record, options) {
+                raw_record[crecord_type] = crecord_type;
 
-				if (options !== undefined && options.customFormAction !== undefined) {
-					options.customFormAction(crecord_type, raw_record);
-				} else {
-					var record = this.store.createRecord(crecord_type, raw_record);
-					var promise = record.save();
-					if (options !== undefined && options.callback !== undefined) {
-						promise.then(options.callback);
-					}
-				}
-				//send the new item via the API
-				//optional callback may ba called from crecord form
-			},
-			error: function(reason, transition) {
-				if (reason.status === 403 || reason.status === 401) {
-					this.loginRequired(transition);
-				}
-			}
-		}
-	});
+                if (options !== undefined && options.customFormAction !== undefined) {
+                    options.customFormAction(crecord_type, raw_record);
+                } else {
+                    var record = this.store.createRecord(crecord_type, raw_record);
+                    var promise = record.save();
+                    if (options !== undefined && options.callback !== undefined) {
+                        promise.then(options.callback);
+                    }
+                }
+                //send the new item via the API
+                //optional callback may ba called from crecord form
+            },
+            error: function(reason, transition) {
+                if (reason.status === 403 || reason.status === 401) {
+                    this.loginRequired(transition);
+                }
+            }
+        }
+    });
 
-	return Application.AuthenticatedRoute;
+    return Application.AuthenticatedRoute;
 });

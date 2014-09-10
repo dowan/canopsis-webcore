@@ -19,27 +19,27 @@
 
 define(['ember'], function(Ember) {
 
-	var hash = {
-		generate_GUID: function() {
-			//Generates a random GUID
-			var s4 = function () {
-				return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-			};
+    var hash = {
+        generate_GUID: function() {
+            //Generates a random GUID
+            var s4 = function () {
+                return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+            };
 
-			var token = s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+            var token = s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 
-			return token;
-		},
-		generateId: function(prefix) {
+            return token;
+        },
+        generateId: function(prefix) {
 
-			var token = hash.generate_GUID();
+            var token = hash.generate_GUID();
 
-			if(!Ember.isNone(prefix)) {
-				token = prefix + '_' + token;
-			}
-			return token;
-		},
-	};
+            if(!Ember.isNone(prefix)) {
+                token = prefix + '_' + token;
+            }
+            return token;
+        },
+    };
 
-	return hash;
+    return hash;
 });

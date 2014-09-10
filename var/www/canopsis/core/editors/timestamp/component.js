@@ -19,19 +19,19 @@
 
 
 define([
-	'ember',
-	'app/application',
+    'ember',
+    'app/application',
     'utils'
 ], function(Ember, Application, utils) {
 
-	var get = Ember.get,
-	    set = Ember.set;
+    var get = Ember.get,
+        set = Ember.set;
 
-	Application.ComponentTimestampComponent = Ember.Component.extend({
-		init: function () {
-			this._super.apply(this, arguments);
+    Application.ComponentTimestampComponent = Ember.Component.extend({
+        init: function () {
+            this._super.apply(this, arguments);
             set(this, 'id', utils.hash.generate_GUID());
-		},
+        },
 
         didInsertElement: function (){
             //@doc http://eonasdan.github.io/bootstrap-datetimepicker/
@@ -54,5 +54,5 @@ define([
         }
     });
 
-	return Application.ComponentTimestampComponent;
+    return Application.ComponentTimestampComponent;
 });

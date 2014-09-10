@@ -20,7 +20,7 @@
 define([
     'jquery',
     'ember',
-	'app/application',
+    'app/application',
     'app/lib/factories/widget',
     'app/components/flotchart/component'
 ], function($, Ember, Application, WidgetFactory) {
@@ -108,5 +108,5 @@ define([
         }
     }, widgetOptions);
 
-	return widget;
+    return widget;
 });

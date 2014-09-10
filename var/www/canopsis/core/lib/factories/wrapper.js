@@ -19,18 +19,18 @@
 
 define(["app/lib/wrappersmanager"], function(wrappersManager) {
 
-	/**
-	 * @author Gwenael Pluchon <info@gwenp.fr>
-	 */
-	function Wrapper(name, objectToWrap, requiredFiles, version) {
-		wrappersManager.loadedLibraries[name] = {};
+    /**
+     * @author Gwenael Pluchon <info@gwenp.fr>
+     */
+    function Wrapper(name, objectToWrap, requiredFiles, version) {
+        wrappersManager.loadedLibraries[name] = {};
 
-		wrappersManager.loadedLibraries[name].object = objectToWrap;
-		wrappersManager.loadedLibraries[name].requiredFiles = requiredFiles;
-		wrappersManager.loadedLibraries[name].version = version;
+        wrappersManager.loadedLibraries[name].object = objectToWrap;
+        wrappersManager.loadedLibraries[name].requiredFiles = requiredFiles;
+        wrappersManager.loadedLibraries[name].version = version;
 
-		return objectToWrap;
-	}
+        return objectToWrap;
+    }
 
-	return Wrapper;
+    return Wrapper;
 });

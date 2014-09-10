@@ -21,19 +21,19 @@
 //TODO implement auto check for mvct file existence and require them automatically
 
 var widgetsTemplates = [
-	{ name:'list', url:'app/widgets/list', hasJSPart: true },
-	{ name:'canvas', url:'app/widgets/canvas', hasJSPart: true },
-	{ name:'vbox', url:'app/widgets/vbox', hasJSPart: true },
-	{ name:'verticalbox', url:'app/widgets/verticalbox', hasJSPart: true },
-	{ name:'horizontalbox', url:'app/widgets/horizontalbox', hasJSPart: true },
-	{ name:'lighthbox', url:'app/widgets/lighthbox', hasJSPart: true },
-	{ name:'tabmanager', url:'app/widgets/tabmanager', hasJSPart: true },
-	{ name:'uiactionbutton', url:'app/widgets/uiactionbutton', hasJSPart: true },
-	{ name:'uimaintabcollection', url:'app/widgets/uimaintabcollection', hasJSPart: true },
-	{ name:'uimaindropdown', url:'app/widgets/uimaindropdown', hasJSPart: true },
-//	{ name:'multicrecordlist', url:'app/widgets/multicrecordlist', hasJSPart: true , TEMPLATE:'list'},
-	{ name:'jobmanager', url:'app/widgets/jobmanager', hasJSPart: true, TEMPLATE: 'list' },
-	{ name:'timegraph', url:'app/widgets/timegraph', hasJSPart: true}
+    { name:'list', url:'app/widgets/list', hasJSPart: true },
+    { name:'canvas', url:'app/widgets/canvas', hasJSPart: true },
+    { name:'vbox', url:'app/widgets/vbox', hasJSPart: true },
+    { name:'verticalbox', url:'app/widgets/verticalbox', hasJSPart: true },
+    { name:'horizontalbox', url:'app/widgets/horizontalbox', hasJSPart: true },
+    { name:'lighthbox', url:'app/widgets/lighthbox', hasJSPart: true },
+    { name:'tabmanager', url:'app/widgets/tabmanager', hasJSPart: true },
+    { name:'uiactionbutton', url:'app/widgets/uiactionbutton', hasJSPart: true },
+    { name:'uimaintabcollection', url:'app/widgets/uimaintabcollection', hasJSPart: true },
+    { name:'uimaindropdown', url:'app/widgets/uimaindropdown', hasJSPart: true },
+//    { name:'multicrecordlist', url:'app/widgets/multicrecordlist', hasJSPart: true , TEMPLATE:'list'},
+    { name:'jobmanager', url:'app/widgets/jobmanager', hasJSPart: true, TEMPLATE: 'list' },
+    { name:'timegraph', url:'app/widgets/timegraph', hasJSPart: true}
 ];
 
 var deps = ['ember'];
@@ -43,31 +43,31 @@ var depsSize = deps.length;
 
 //generate deps
 for (var i = 0; i < widgetsTemplates.length; i++) {
-	deps.push('text!' + widgetsTemplates[i].url + '/template.html');
+    deps.push('text!' + widgetsTemplates[i].url + '/template.html');
 
-	if (widgetsTemplates[i].hasJSPart === true) {
-		var viewUrl = widgetsTemplates[i].url + '/controller';
-		console.log("adding view", viewUrl);
+    if (widgetsTemplates[i].hasJSPart === true) {
+        var viewUrl = widgetsTemplates[i].url + '/controller';
+        console.log("adding view", viewUrl);
 
-		jsDeps.push(viewUrl);
-	}
+        jsDeps.push(viewUrl);
+    }
 }
 
 for (i = 0; i < jsDeps.length; i++) {
-	deps.push(jsDeps[i]);
+    deps.push(jsDeps[i]);
 }
 
 console.log({"widget dependencies": deps});
 define(deps, function(Ember) {
-	console.log({"load widgets": arguments});
-	for (var i = 0; i < widgetsTemplates.length; i++) {
-		var templateName = widgetsTemplates[i].name;
-		var TEMPLATE = widgetsTemplates[i].TEMPLATE;
-		if( !TEMPLATE )
-			Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
-		else{
-			Ember.TEMPLATES[templateName] = Ember.TEMPLATES[TEMPLATE];
-		}
-	}
+    console.log({"load widgets": arguments});
+    for (var i = 0; i < widgetsTemplates.length; i++) {
+        var templateName = widgetsTemplates[i].name;
+        var TEMPLATE = widgetsTemplates[i].TEMPLATE;
+        if( !TEMPLATE )
+            Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
+        else{
+            Ember.TEMPLATES[templateName] = Ember.TEMPLATES[TEMPLATE];
+        }
+    }
 });
 

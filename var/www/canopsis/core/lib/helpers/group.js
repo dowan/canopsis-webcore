@@ -19,25 +19,25 @@
 
 define(['ember'], function(Ember) {
 
-	var get = Ember.get, EmberHandlebars = Ember.Handlebars;
+    var get = Ember.get, EmberHandlebars = Ember.Handlebars;
 
-	//https://github.com/emberjs/group-helper/
-	//Used for performance
-	EmberHandlebars.registerHelper('group', function(options) {
-		var data = options.data,
-				fn = options.fn,
-				view = data.view,
-				childView;
+    //https://github.com/emberjs/group-helper/
+    //Used for performance
+    EmberHandlebars.registerHelper('group', function(options) {
+        var data = options.data,
+                fn = options.fn,
+                view = data.view,
+                childView;
 
-		childView = view.createChildView(Ember._MetamorphView, {
-			context: get(view, 'context'),
+        childView = view.createChildView(Ember._MetamorphView, {
+            context: get(view, 'context'),
 
-			template: function(context, options) {
-				options.data.insideGroup = true;
-				return fn(context, options);
-			}
-		});
+            template: function(context, options) {
+                options.data.insideGroup = true;
+                return fn(context, options);
+            }
+        });
 
-		view.appendChild(childView);
-	});
+        view.appendChild(childView);
+    });
 });

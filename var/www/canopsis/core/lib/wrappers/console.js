@@ -1,8 +1,8 @@
 define(['consolejs'], function() {
 
-	delete console.init;
+    delete console.init;
 
-	console.debug = console.log;
+    console.debug = console.log;
 
-	return console;
+    return console;
 });

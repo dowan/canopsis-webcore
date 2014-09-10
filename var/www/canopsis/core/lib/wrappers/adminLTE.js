@@ -17,11 +17,11 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 define([
-	'app/lib/factories/wrapper',
-	'webcore-libs/dev/AdminLTE',
-	'webcore-libs/dev/plugins/AdminLTE/app'], function(Wrapper, AdminLteJs) {
+    'app/lib/factories/wrapper',
+    'webcore-libs/dev/AdminLTE',
+    'webcore-libs/dev/plugins/AdminLTE/app'], function(Wrapper, AdminLteJs) {
 
-	console.log('AdminLTE wrapper', AdminLteJs);
+    console.log('AdminLTE wrapper', AdminLteJs);
 
-	return Wrapper("AdminLTE", AdminLteJs, arguments, "0.1");
+    return Wrapper("AdminLTE", AdminLteJs, arguments, "0.1");
 });

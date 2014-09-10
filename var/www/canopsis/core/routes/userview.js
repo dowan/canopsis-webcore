@@ -1,4 +1,4 @@
-	/*
+    /*
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
 #
 # This file is part of Canopsis.
@@ -18,40 +18,40 @@
 */
 
 define([
-	'app/application',
-	'app/routes/authenticated'
+    'app/application',
+    'app/routes/authenticated'
 ], function(Application, AuthenticatedRoute) {
-	var set = Ember.set,
-	    get = Ember.get;
+    var set = Ember.set,
+        get = Ember.get;
 
-	Application.UserviewRoute = AuthenticatedRoute.extend({
-		needs: ['application'],
-	   actions: {
-	        error: function(error, transition){
-	            if (error.status === 0) {
-	            } else if (error.status == 403) {
-	                //go to some default route
-	            } else if (error.status == 401) {
-	                //handle 401
-	            } else if (error.status == 404) {
-	                this.transitionTo('/userview/view.404');
-	            } else {
-	                showErrorDialog(error);
-	            }
-	        }
-	    },
-		setupController: function(controller, model) {
-			console.log('UserviewRoute setupController', model, controller);
-			set(controller, 'controllers.application.currentViewId', get(model, 'id'));
+    Application.UserviewRoute = AuthenticatedRoute.extend({
+        needs: ['application'],
+       actions: {
+            error: function(error, transition){
+                if (error.status === 0) {
+                } else if (error.status == 403) {
+                    //go to some default route
+                } else if (error.status == 401) {
+                    //handle 401
+                } else if (error.status == 404) {
+                    this.transitionTo('/userview/view.404');
+                } else {
+                    showErrorDialog(error);
+                }
+            }
+        },
+        setupController: function(controller, model) {
+            console.log('UserviewRoute setupController', model, controller);
+            set(controller, 'controllers.application.currentViewId', get(model, 'id'));
 
-			controller.setProperties( {
-				'content': model,
-				'isMainView': true
-			});
+            controller.setProperties( {
+                'content': model,
+                'isMainView': true
+            });
 
-			controller.trigger('refreshView');
-		}
-	});
+            controller.trigger('refreshView');
+        }
+    });
 
-	return Application.UserviewIndexRoute;
+    return Application.UserviewIndexRoute;
 });

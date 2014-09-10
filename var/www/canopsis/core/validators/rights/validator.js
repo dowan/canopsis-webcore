@@ -21,9 +21,9 @@ define([
 ], function() {
     // TODO : determine if relevant
     function rightsValidator(attr, valideStruct) {
-	void (attr);
-  	valideStruct.valid = true;
-	return valideStruct;
+    void (attr);
+      valideStruct.valid = true;
+    return valideStruct;
     };
 
     return rightsValidator;

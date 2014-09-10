@@ -18,21 +18,21 @@
 */
 
 define([
-	'ember',
-	'app/application',
-	'utils'
+    'ember',
+    'app/application',
+    'utils'
 ], function(Ember, Application, utils) {
 
-	Application.EditorView = Ember.View.extend({
-		attrBinding: "templateData.keywords.attr.value",
+    Application.EditorView = Ember.View.extend({
+        attrBinding: "templateData.keywords.attr.value",
 
-		init: function() {
-			var id = utils.hash.generateId(this.templateName);
-			console.log("editor view", this.templateName, this);
-			console.log("new id");
-			this.elementId = id;
-		}
-	});
+        init: function() {
+            var id = utils.hash.generateId(this.templateName);
+            console.log("editor view", this.templateName, this);
+            console.log("new id");
+            this.elementId = id;
+        }
+    });
 
-	return Application.EditorView;
+    return Application.EditorView;
 });

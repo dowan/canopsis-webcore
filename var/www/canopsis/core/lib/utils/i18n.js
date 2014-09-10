@@ -18,96 +18,96 @@
 */
 
 define([
-	'canopsis/canopsisConfiguration',
-	'app/application'
+    'canopsis/canopsisConfiguration',
+    'app/application'
 ], function(conf) {
 
-	var i18n = {
-		lang: 'fr',
-		todo: {},
-		translations: {},
-		newTranslations: true,
-		_: function(word) {
-			if (i18n.translations[i18n.lang] && i18n.translations[i18n.lang][word]) {
-				return i18n.translations[i18n.lang][word];
-			} else {
-				//adding translation to todo list
-				if (typeof(word) === 'string' && !i18n.todo[word]) {
+    var i18n = {
+        lang: 'fr',
+        todo: {},
+        translations: {},
+        newTranslations: true,
+        _: function(word) {
+            if (i18n.translations[i18n.lang] && i18n.translations[i18n.lang][word]) {
+                return i18n.translations[i18n.lang][word];
+            } else {
+                //adding translation to todo list
+                if (typeof(word) === 'string' && !i18n.todo[word]) {
 
-					i18n.todo[word] = 1;
-					i18n.newTranslations = true;
-				}
-				//returns original not translated string
-				return word;
-			}
-		},
+                    i18n.todo[word] = 1;
+                    i18n.newTranslations = true;
+                }
+                //returns original not translated string
+                return word;
+            }
+        },
 
-		uploadDefinitions: function () {
+        uploadDefinitions: function () {
 
-			$.ajax({
-				url: '/rest/misc/i18n',
-				type: 'POST',
-				data: JSON.stringify({
-					id: 'translations',
-					todo: i18n.todo,
-					crecord_type: 'i18n'
-				}),
-				success: function(data) {
-					if (data.success) {
-						console.log('Upload lang upload complete');
-					}
-				},
-				async: false
-			});
-		},
-		downloadDefinitions: function () {
+            $.ajax({
+                url: '/rest/misc/i18n',
+                type: 'POST',
+                data: JSON.stringify({
+                    id: 'translations',
+                    todo: i18n.todo,
+                    crecord_type: 'i18n'
+                }),
+                success: function(data) {
+                    if (data.success) {
+                        console.log('Upload lang upload complete');
+                    }
+                },
+                async: false
+            });
+        },
+        downloadDefinitions: function () {
 
-			$.ajax({
-				url: '/files/i18n/' + i18n.lang,
-				success: function(data) {
-					if (data.success) {
-						i18n.translations[i18n.lang] = data.data;
-					}
-				},
-				async: false
-			}).fail(function () {
-				console.log('initialization case. translation is now ready');
-				i18n.uploadDefinitions();
-			});
+            $.ajax({
+                url: '/files/i18n/' + i18n.lang,
+                success: function(data) {
+                    if (data.success) {
+                        i18n.translations[i18n.lang] = data.data;
+                    }
+                },
+                async: false
+            }).fail(function () {
+                console.log('initialization case. translation is now ready');
+                i18n.uploadDefinitions();
+            });
 
-			if (conf.DEBUG && conf.TRANSLATE) {
-				$.ajax({
-					url: '/rest/misc/i18n',
-					success: function(data) {
-						if (data.success) {
-							for (var item in data.data[0].todo) {
-								i18n.todo[item] = data.data[0].todo[item];
-							}
-							console.log('Loaded pending translation');
-						}
-					},
-				}).fail(function () {
-					console.warn('Error on load pending translation');
-				});
-			}
-		},
+            if (conf.DEBUG && conf.TRANSLATE) {
+                $.ajax({
+                    url: '/rest/misc/i18n',
+                    success: function(data) {
+                        if (data.success) {
+                            for (var item in data.data[0].todo) {
+                                i18n.todo[item] = data.data[0].todo[item];
+                            }
+                            console.log('Loaded pending translation');
+                        }
+                    },
+                }).fail(function () {
+                    console.warn('Error on load pending translation');
+                });
+            }
+        },
 
-	};
+    };
 
-	window.__ = i18n._;
+    window.__ = i18n._;
 
-	i18n.downloadDefinitions();
+    i18n.downloadDefinitions();
 
-	if (conf.DEBUG && conf.TRANSLATE) {
-		setInterval(function () {
-			if (i18n.newTranslations) {
-				console.log('Uploading new translations');
-				i18n.newTranslations = false;
-				i18n.uploadDefinitions();
-			}
+    if (conf.DEBUG && conf.TRANSLATE) {
+        setInterval(function () {
+            if (i18n.newTranslations) {
+                console.log('Uploading new translations');
+                i18n.newTranslations = false;
+                i18n.uploadDefinitions();
+            }
 
-		}, 10000);
-	}
+        }, 10000);
+    }
 
-	return i18n;
+    return i18n;
 });

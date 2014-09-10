@@ -19,11 +19,11 @@
 
 define(['ember'], function(Ember) {
 
-	Ember.Handlebars.helper('percent', function(value) {
+    Ember.Handlebars.helper('percent', function(value) {
 
-		value = value + '%';
-		return new Ember.Handlebars.SafeString(value);
+        value = value + '%';
+        return new Ember.Handlebars.SafeString(value);
 
-	});
+    });
 
 });

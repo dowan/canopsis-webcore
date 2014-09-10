@@ -19,24 +19,24 @@
 
 define(['app/application'], function(Application) {
 
-	var dataUtils = {
-		getStore: function() {
-			console.warn("this should not be used as there is not only one store in Canopsis. This might lead to unexpected behaviour");
-			return Application.__container__.lookup('store:main');
-		},
+    var dataUtils = {
+        getStore: function() {
+            console.warn("this should not be used as there is not only one store in Canopsis. This might lead to unexpected behaviour");
+            return Application.__container__.lookup('store:main');
+        },
 
-		//TODO change parentElement term to something more descriptive
-		addRecordToRelationship: function(record, parentElement, relationshipKey, cardinality) {
-			console.log('addRecordToRelationship', arguments);
-			if (cardinality === "hasMany") {
-				console.log("addRecordToRelationship hasMany", relationshipKey, arguments, parentElement);
-				parentElement.get(relationshipKey).pushObject(record);
-			} else if (cardinality === "belongsTo") {
-				console.log("addRecordToRelationship belongsTo", relationshipKey, arguments, parentElement);
-				parentElement.set(relationshipKey, record);
-			}
-		}
-	};
+        //TODO change parentElement term to something more descriptive
+        addRecordToRelationship: function(record, parentElement, relationshipKey, cardinality) {
+            console.log('addRecordToRelationship', arguments);
+            if (cardinality === "hasMany") {
+                console.log("addRecordToRelationship hasMany", relationshipKey, arguments, parentElement);
+                parentElement.get(relationshipKey).pushObject(record);
+            } else if (cardinality === "belongsTo") {
+                console.log("addRecordToRelationship belongsTo", relationshipKey, arguments, parentElement);
+                parentElement.set(relationshipKey, record);
+            }
+        }
+    };
 
-	return dataUtils;
+    return dataUtils;
 });

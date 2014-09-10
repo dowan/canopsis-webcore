@@ -1,13 +1,13 @@
 {{#group}}
-	{{#unless attr.options.hideDate}}
-		{{timestamp value attr}}
-		<br>
-	{{/unless}}
-	{{#if attr.options.canDisplayAgo}}
-			<small class="text-muted">
-				{{glyphicon "time"}}
-				{{timeSince value}}
-			</small>
-		</br>
-	{{/if}}
+    {{#unless attr.options.hideDate}}
+        {{timestamp value attr}}
+        <br>
+    {{/unless}}
+    {{#if attr.options.canDisplayAgo}}
+            <small class="text-muted">
+                {{glyphicon "time"}}
+                {{timeSince value}}
+            </small>
+        </br>
+    {{/if}}
 {{/group}}

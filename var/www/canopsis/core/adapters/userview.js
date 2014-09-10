@@ -18,16 +18,16 @@
 */
 
 define([
-	'app/application',
-	'app/adapters/application'
+    'app/application',
+    'app/adapters/application'
 ], function(Application, ApplicationAdapter) {
-	Application.UserviewAdapter = ApplicationAdapter.extend({
-		buildURL: function(type) {
-			type = "view";
+    Application.UserviewAdapter = ApplicationAdapter.extend({
+        buildURL: function(type) {
+            type = "view";
 
-			return this._super.apply(this, arguments);
-		}
-	});
+            return this._super.apply(this, arguments);
+        }
+    });
 
-	return Application.UserviewAdapter;
+    return Application.UserviewAdapter;
 });

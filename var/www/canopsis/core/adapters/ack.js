@@ -20,26 +20,26 @@
 //TODO: Use EntityAdapter to retrieve ACK
 
 define([
-	'app/application',
-	'app/adapters/application',
-	'app/serializers/ack'
+    'app/application',
+    'app/adapters/application',
+    'app/serializers/ack'
 ], function(Application, ApplicationAdapter) {
-	var adapter = ApplicationAdapter.extend({
-		buildURL: function(type, id) {
-			return "/event";
-		},
+    var adapter = ApplicationAdapter.extend({
+        buildURL: function(type, id) {
+            return "/event";
+        },
 
-		find: function(store, type, id) {
-			console.log('find', arguments);
-			return this.findQuery (store, type, { filter: { rk: id, solved : false }, sort: {timestamp:1}, limit:1 });
-		},
+        find: function(store, type, id) {
+            console.log('find', arguments);
+            return this.findQuery (store, type, { filter: { rk: id, solved : false }, sort: {timestamp:1}, limit:1 });
+        },
 
-		findQuery: function(store, type, query) {
-			return this.ajax('/rest/ack', 'GET', { data: query });
-		}
-	});
+        findQuery: function(store, type, query) {
+            return this.ajax('/rest/ack', 'GET', { data: query });
+        }
+    });
 
-	Application.AckAdapter = adapter;
+    Application.AckAdapter = adapter;
 
-	return adapter;
+    return adapter;
 });

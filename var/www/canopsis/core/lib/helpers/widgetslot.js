@@ -19,14 +19,14 @@
 
 define(['ember', 'app/view/widgetslot', 'app/view/widget'], function(Ember, WidgetslotView, WidgetView) {
 
-	/**
-	 * Helper to display an editor. Uses the context to get attribute value and options, so take care to where you call this helper.
-	 * @param editorType {string} the editor to try to display. If the parameter does not match an existing editor, falls back to the default one
-	 *
-	 * @author Gwenael Pluchon <info@gwenp.fr>
-	 */
-	Ember.Handlebars.helper('widgetslot', WidgetslotView);
-	Ember.Handlebars.helper('widgethelper', WidgetView);
+    /**
+     * Helper to display an editor. Uses the context to get attribute value and options, so take care to where you call this helper.
+     * @param editorType {string} the editor to try to display. If the parameter does not match an existing editor, falls back to the default one
+     *
+     * @author Gwenael Pluchon <info@gwenp.fr>
+     */
+    Ember.Handlebars.helper('widgetslot', WidgetslotView);
+    Ember.Handlebars.helper('widgethelper', WidgetView);
 });
 
 

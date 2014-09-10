@@ -18,23 +18,23 @@
 */
 
 define([
-	'ember',
-	'utils'
+    'ember',
+    'utils'
 ], function(Ember, utils) {
 
-	var get = Ember.get,
-	    set = Ember.set;
+    var get = Ember.get,
+        set = Ember.set;
 
-	Ember.Handlebars.registerHelper('ifUserCanDisplayView', function(viewId, options) {
-		console.log("ifUserCanDisplayView keywords", Ember.get(options, 'data.keywords'), viewId);
+    Ember.Handlebars.registerHelper('ifUserCanDisplayView', function(viewId, options) {
+        console.log("ifUserCanDisplayView keywords", Ember.get(options, 'data.keywords'), viewId);
 
-		viewId = Ember.get(options, 'data.keywords.' + viewId);
-		console.log("ifUserCanDisplayView viewId", viewId.replace('.', '_'), get(utils, 'session.rights.showview_' + viewId.replace('.', '_')));
+        viewId = Ember.get(options, 'data.keywords.' + viewId);
+        console.log("ifUserCanDisplayView viewId", viewId.replace('.', '_'), get(utils, 'session.rights.showview_' + viewId.replace('.', '_')));
 
-		if (get(utils, 'session.rights.showview_' + viewId.replace('.', '_'))) {
-			return options.fn(this);
-		}
-		return options.inverse(this);
-	});
+        if (get(utils, 'session.rights.showview_' + viewId.replace('.', '_'))) {
+            return options.fn(this);
+        }
+        return options.inverse(this);
+    });
 
 });

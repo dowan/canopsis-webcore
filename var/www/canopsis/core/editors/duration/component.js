@@ -19,89 +19,89 @@
 
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
 
-	var get = Ember.get,
-	    set = Ember.set;
+    var get = Ember.get,
+        set = Ember.set;
 
-	Application.ComponentDurationComponent = Ember.Component.extend({
-		init: function () {
-			this._super.apply(this, arguments);
-			console.log('formattedDuration CP');
-			var durationType = get(this, 'selectedDurationType');
+    Application.ComponentDurationComponent = Ember.Component.extend({
+        init: function () {
+            this._super.apply(this, arguments);
+            console.log('formattedDuration CP');
+            var durationType = get(this, 'selectedDurationType');
 
-			var unformattedDuration = parseInt(get(this, 'content'), 10);
-			var conversionOperand = get(this, 'convertDuration').get(durationType);
-			var res = unformattedDuration / conversionOperand;
+            var unformattedDuration = parseInt(get(this, 'content'), 10);
+            var conversionOperand = get(this, 'convertDuration').get(durationType);
+            var res = unformattedDuration / conversionOperand;
 
-			set(this, 'shownDuration', res);
-		},
+            set(this, 'shownDuration', res);
+        },
 
-		shownDurationChanged: function () {
-			console.log('shownDurationChanged');
-			var durationType = get(this, 'selectedDurationType');
-			var conversionOperand = get(this, 'convertDuration').get(durationType);
-			var value = get(this, 'shownDuration');
+        shownDurationChanged: function () {
+            console.log('shownDurationChanged');
+            var durationType = get(this, 'selectedDurationType');
+            var conversionOperand = get(this, 'convertDuration').get(durationType);
+            var value = get(this, 'shownDuration');
 
-			set(this, 'content', value * conversionOperand);
-		}.observes('shownDuration'),
+            set(this, 'content', value * conversionOperand);
+        }.observes('shownDuration'),
 
-		selectedDurationTypeChanged: function () {
-			var durationType = get(this, 'selectedDurationType');
-			var conversionOperand = get(this, 'convertDuration').get(durationType);
+        selectedDurationTypeChanged: function () {
+            var durationType = get(this, 'selectedDurationType');
+            var conversionOperand = get(this, 'convertDuration').get(durationType);
 
-			var newValue = get(this, 'shownDuration') * conversionOperand;
-			console.log('selectedDurationTypeChanged', durationType, conversionOperand, newValue);
-			set(this, 'content', newValue);
-		}.observes('selectedDurationType'),
+            var newValue = get(this, 'shownDuration') * conversionOperand;
+            console.log('selectedDurationTypeChanged', durationType, conversionOperand, newValue);
+            set(this, 'content', newValue);
+        }.observes('selectedDurationType'),
 
-		contentChanged: function () {
-			console.log('formattedDuration CP');
-			var durationType = get(this, 'selectedDurationType');
+        contentChanged: function () {
+            console.log('formattedDuration CP');
+            var durationType = get(this, 'selectedDurationType');
 
-			var unformattedDuration = parseInt(get(this, 'content'), 10);
-			var conversionOperand = get(this, 'convertDuration').get(durationType);
-			var res = unformattedDuration / conversionOperand;
+            var unformattedDuration = parseInt(get(this, 'content'), 10);
+            var conversionOperand = get(this, 'convertDuration').get(durationType);
+            var res = unformattedDuration / conversionOperand;
 
-			set(this, 'shownDuration', res);
+            set(this, 'shownDuration', res);
 
-			return res;
-		}.observes('content'),
+            return res;
+        }.observes('content'),
 
-		selectedDurationType: 'second',
+        selectedDurationType: 'second',
 
-		selectedDurationLabel: function () {
-			console.log('selectedDurationType');
-			var durationType = get(this, 'selectedDurationType');
-			return get(this, 'field.' + durationType);
-		}.property('selectedDurationType'),
+        selectedDurationLabel: function () {
+            console.log('selectedDurationType');
+            var durationType = get(this, 'selectedDurationType');
+            return get(this, 'field.' + durationType);
+        }.property('selectedDurationType'),
 
-		field: Ember.Object.create({
-			'second' : __('Second'),
-			'minute' :__('Minute'),
-			'hour' : __('Hour'),
-			'day' : __('Day'),
-			'year' : __('Year')
-		}),
+        field: Ember.Object.create({
+            'second' : __('Second'),
+            'minute' :__('Minute'),
+            'hour' : __('Hour'),
+            'day' : __('Day'),
+            'year' : __('Year')
+        }),
 
-		convertDuration: Ember.Object.create({
-			'second' : 1,
-			'minute' : 60,
-			'hour' : 3600,
-			'day' : 3600 * 24,
-			'year' : 3600 * 24 * 12
-		}),
+        convertDuration: Ember.Object.create({
+            'second' : 1,
+            'minute' : 60,
+            'hour' : 3600,
+            'day' : 3600 * 24,
+            'year' : 3600 * 24 * 12
+        }),
 
-		durationType: [
-			'second',
-			'minute',
-			'hour',
-			'day',
-			'year'
-		]
-	});
+        durationType: [
+            'second',
+            'minute',
+            'hour',
+            'day',
+            'year'
+        ]
+    });
 
-	return Application.ComponentDurationComponent;
+    return Application.ComponentDurationComponent;
 });

@@ -19,9 +19,9 @@
 
 define(['ember'], function(Ember) {
 
-	// Helper to render any widget template
-	Ember.Handlebars.registerBoundHelper('renderWidget',function(callingContext, widget, options) {
-  		return Ember.Handlebars.helpers.render.call(callingContext, widget.get('widget_type'), 'widget', options);
-	});
+    // Helper to render any widget template
+    Ember.Handlebars.registerBoundHelper('renderWidget',function(callingContext, widget, options) {
+          return Ember.Handlebars.helpers.render.call(callingContext, widget.get('widget_type'), 'widget', options);
+    });
 
 });

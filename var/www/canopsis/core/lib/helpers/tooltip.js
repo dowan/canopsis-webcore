@@ -22,13 +22,13 @@ define([
 ], function(Ember) {
 
     Ember.Handlebars.helper('tooltip', function(text) {
-	var tooltip;
+    var tooltip;
 
-	tooltip = '<a href="#" class="tooltiptable hint--rounded hint--top" data-hint=%@>';
-	tooltip += '<i class="fa fa-info-circle"></i></a>';
-	tooltip = tooltip.fmt(text);
+    tooltip = '<a href="#" class="tooltiptable hint--rounded hint--top" data-hint=%@>';
+    tooltip += '<i class="fa fa-info-circle"></i></a>';
+    tooltip = tooltip.fmt(text);
 
-	return new Ember.Handlebars.SafeString(tooltip);
+    return new Ember.Handlebars.SafeString(tooltip);
     });
 
 });

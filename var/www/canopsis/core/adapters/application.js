@@ -18,38 +18,38 @@
 */
 
 define([
-	'ember',
-	'ember-data',
-	'app/application'
+    'ember',
+    'ember-data',
+    'app/application'
 ], function(Ember, DS, Application) {
 
-	Application.entities = ["nagios","shinken"];
-	Application.ApplicationAdapter = DS.RESTAdapter.extend({
-		buildURL: function(type, id) {
-			var namespace = ( Application.entities.contains(type)   )? "entities" :"object" ;
-			return ("/rest/"+namespace+"/" + type + (!!id ? "/" + id : ""));
-		},
+    Application.entities = ["nagios","shinken"];
+    Application.ApplicationAdapter = DS.RESTAdapter.extend({
+        buildURL: function(type, id) {
+            var namespace = ( Application.entities.contains(type)   )? "entities" :"object" ;
+            return ("/rest/"+namespace+"/" + type + (!!id ? "/" + id : ""));
+        },
 
-		createRecord: function(store, type, record) {
-			var data = {};
-			var serializer = store.serializerFor(type.typeKey);
+        createRecord: function(store, type, record) {
+            var data = {};
+            var serializer = store.serializerFor(type.typeKey);
 
-			data = serializer.serializeIntoHash(data, type, record, "POST", { includeId: true });
+            data = serializer.serializeIntoHash(data, type, record, "POST", { includeId: true });
 
-			return this.ajax(this.buildURL(type.typeKey, record.id), "POST", { data: data });
-		},
+            return this.ajax(this.buildURL(type.typeKey, record.id), "POST", { data: data });
+        },
 
-		updateRecord: function(store, type, record) {
-			var data = {};
-			var serializer = store.serializerFor(type.typeKey);
+        updateRecord: function(store, type, record) {
+            var data = {};
+            var serializer = store.serializerFor(type.typeKey);
 
-			data = serializer.serializeIntoHash(data, type, record, "PUT");
+            data = serializer.serializeIntoHash(data, type, record, "PUT");
 
-			var id = Ember.get(record, 'id');
+            var id = Ember.get(record, 'id');
 
-			return this.ajax(this.buildURL(type.typeKey, id), "PUT", { data: data });
-		}
-	});
+            return this.ajax(this.buildURL(type.typeKey, id), "PUT", { data: data });
+        }
+    });
 
-	return Application.ApplicationAdapter;
+    return Application.ApplicationAdapter;
 });

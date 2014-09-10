@@ -18,45 +18,45 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
 
-	Application.ComponentExpandableaddbuttonComponent = Ember.Component.extend({
-		tagName: 'span',
+    Application.ComponentExpandableaddbuttonComponent = Ember.Component.extend({
+        tagName: 'span',
 
-		yieldSpanStyle: 'display:none',
+        yieldSpanStyle: 'display:none',
 
-		focusIn: function() {
-			//check if focused is not true to avoid bubbling to execute in loop the code below
-			if (this.get('focused') !== true) {
-				this.set('focused', true);
+        focusIn: function() {
+            //check if focused is not true to avoid bubbling to execute in loop the code below
+            if (this.get('focused') !== true) {
+                this.set('focused', true);
 
-				this.$('.yieldContainer').css({'display':'inline'});
-				this.set('focusingChildInput', true);
-				this.$(".defaultFocus").focus();
-				this.set('focusingChildInput', false);
-			}
-		},
+                this.$('.yieldContainer').css({'display':'inline'});
+                this.set('focusingChildInput', true);
+                this.$(".defaultFocus").focus();
+                this.set('focusingChildInput', false);
+            }
+        },
 
-		focusOut: function() {
-			console.log('focusOut', this.get('focusingChildInput'));
+        focusOut: function() {
+            console.log('focusOut', this.get('focusingChildInput'));
 
-			if (! this.get('focusingChildInput')) {
-				this.$('.yieldContainer').css({'display':'none'});
-				this.set('focused', false);
+            if (! this.get('focusingChildInput')) {
+                this.$('.yieldContainer').css({'display':'none'});
+                this.set('focused', false);
 
-				var inputValue = this.$('.defaultFocus').val();
+                var inputValue = this.$('.defaultFocus').val();
 
-				if (!! inputValue) {
-					console.log('child input has a value');
-					this.sendAction('onAddElement', inputValue);
-				}
+                if (!! inputValue) {
+                    console.log('child input has a value');
+                    this.sendAction('onAddElement', inputValue);
+                }
 
-				this.$('.defaultFocus').val('');
-			}
-		}
-	});
+                this.$('.defaultFocus').val('');
+            }
+        }
+    });
 
-	return Application.ComponentExpandableaddbuttonComponent;
+    return Application.ComponentExpandableaddbuttonComponent;
 });

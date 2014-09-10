@@ -18,45 +18,45 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
 
-	Application.JournalController = Ember.Controller.extend({
-		needs: ['login'],
+    Application.JournalController = Ember.Controller.extend({
+        needs: ['login'],
 
-		init: function() {
-			this._super();
-		},
+        init: function() {
+            this._super();
+        },
 
-		actions: {
-			publish: function(action, component) {
-				var user = this.get('controllers.login').get('username');
+        actions: {
+            publish: function(action, component) {
+                var user = this.get('controllers.login').get('username');
 
-				var ev = {
-					timestamp: Date.now() / 1000,
-					connector: 'canopsis',
-					connector_name: 'canopsis-ui',
-					event_type: 'uiaction',
+                var ev = {
+                    timestamp: Date.now() / 1000,
+                    connector: 'canopsis',
+                    connector_name: 'canopsis-ui',
+                    event_type: 'uiaction',
 
-					source_type: 'component',
-					component: component,
+                    source_type: 'component',
+                    component: component,
 
-					author: user,
-					action: action,
+                    author: user,
+                    action: action,
 
-					state: 0,
-					state_type: 1,
+                    state: 0,
+                    state_type: 1,
 
-					output: user + ' did ' + action + ' on ' + component
-				};
+                    output: user + ' did ' + action + ' on ' + component
+                };
 
-				//FIXME and add event controller to needs
-				// var eventController = this.get('controllers.event');
-				// eventController.send('send_event', ev);
-			}
-		}
-	});
+                //FIXME and add event controller to needs
+                // var eventController = this.get('controllers.event');
+                // eventController.send('send_event', ev);
+            }
+        }
+    });
 
-	return Application.JournalController;
+    return Application.JournalController;
 });

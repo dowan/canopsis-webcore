@@ -18,36 +18,36 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
 
-	Application.WidgetslotView = Ember.View.extend({
-		init: function() {
-			console.log('widgetslot init', this.get('controller.content.widgetslotTemplate'));
+    Application.WidgetslotView = Ember.View.extend({
+        init: function() {
+            console.log('widgetslot init', this.get('controller.content.widgetslotTemplate'));
 
-			var widgetslotTemplate = this.get('controller.content.widgetslotTemplate');
+            var widgetslotTemplate = this.get('controller.content.widgetslotTemplate');
 
-			if(widgetslotTemplate !== undefined && widgetslotTemplate !== null && Ember.TEMPLATES[widgetslotTemplate] !== undefined) {
-				this.set('templateName', widgetslotTemplate);
-			}
-			this._super.apply(this, arguments);
-		},
+            if(widgetslotTemplate !== undefined && widgetslotTemplate !== null && Ember.TEMPLATES[widgetslotTemplate] !== undefined) {
+                this.set('templateName', widgetslotTemplate);
+            }
+            this._super.apply(this, arguments);
+        },
 
-		templateName:'widgetslot-default',
-		classNames: ['widgetslot'],
+        templateName:'widgetslot-default',
+        classNames: ['widgetslot'],
 
-		actions: {
-			minimize: function() {
-				console.log('minimize action', arguments);
-				if(this.get('minimized') === true) {
-					this.set('minimized', false);
-				} else {
-					this.set('minimized', true);
-				}
-			}
-		}
-	});
+        actions: {
+            minimize: function() {
+                console.log('minimize action', arguments);
+                if(this.get('minimized') === true) {
+                    this.set('minimized', false);
+                } else {
+                    this.set('minimized', true);
+                }
+            }
+        }
+    });
 
-	return Application.WidgetslotView;
+    return Application.WidgetslotView;
 });

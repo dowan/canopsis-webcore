@@ -19,30 +19,30 @@
 
 define(['ember'], function(Ember) {
 
-	/**
-	 * Helper to log something into the console.
-	 *
-	 * @author Gwenael Pluchon <info@gwenp.fr>
-	 */
-	Ember.Handlebars.registerBoundHelper('log', function(message, options) {
-		void(options);
+    /**
+     * Helper to log something into the console.
+     *
+     * @author Gwenael Pluchon <info@gwenp.fr>
+     */
+    Ember.Handlebars.registerBoundHelper('log', function(message, options) {
+        void(options);
 
-		console.tags.add("helper");
+        console.tags.add("helper");
 
-		if (this.get !== undefined) {
-			var typeKey = this.get('model.type.typeKey');
-			console.tags.add(typeKey);
-		}
+        if (this.get !== undefined) {
+            var typeKey = this.get('model.type.typeKey');
+            console.tags.add(typeKey);
+        }
 
-		console.log(message);
+        console.log(message);
 
-		console.tags.remove("helper");
+        console.tags.remove("helper");
 
-		if (this.get !== undefined) {
-			console.tags.remove(typeKey);
-		}
+        if (this.get !== undefined) {
+            console.tags.remove(typeKey);
+        }
 
-		return '';
-	});
+        return '';
+    });
 
 });

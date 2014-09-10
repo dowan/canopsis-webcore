@@ -19,15 +19,15 @@
 
 define(['ember'], function(Ember) {
 
-	var domUtils = {
-		getViewFromJqueryElement: function($el, className) {
-			if(className) {
-				return Ember.View.views[$el.closest('.ember-view .' + className).attr('id')];
-			} else {
-				return Ember.View.views[$el.closest('.ember-view').attr('id')];
-			}
-		}
-	};
+    var domUtils = {
+        getViewFromJqueryElement: function($el, className) {
+            if(className) {
+                return Ember.View.views[$el.closest('.ember-view .' + className).attr('id')];
+            } else {
+                return Ember.View.views[$el.closest('.ember-view').attr('id')];
+            }
+        }
+    };
 
-	return domUtils;
+    return domUtils;
 });

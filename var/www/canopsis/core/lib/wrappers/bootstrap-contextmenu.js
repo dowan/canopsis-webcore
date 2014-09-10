@@ -17,11 +17,11 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 define([
-	'jquery',
-	'app/lib/factories/wrapper',
-	'webcore-libs/bootstrap-contextmenu/bootstrap-contextmenu'
+    'jquery',
+    'app/lib/factories/wrapper',
+    'webcore-libs/bootstrap-contextmenu/bootstrap-contextmenu'
 ], function($, Wrapper) {
 
-	return Wrapper("bootstrap-contextmenu", undefined, arguments, undefined);
+    return Wrapper("bootstrap-contextmenu", undefined, arguments, undefined);
 
 });

@@ -18,10 +18,10 @@
 */
 
 define([
-	'app/application',
-	'app/adapters/entity'
+    'app/application',
+    'app/adapters/entity'
 ], function(Application, EntityAdapter) {
-	Application.DowntimeAdapter = EntityAdapter.extend({});
+    Application.DowntimeAdapter = EntityAdapter.extend({});
 
-	return Application.DowntimeAdapter;
+    return Application.DowntimeAdapter;
 });

@@ -18,14 +18,14 @@
 */
 
 define([
-	'app/lib/factories/widget'
+    'app/lib/factories/widget'
 ], function(WidgetFactory) {
 
-	var widget = WidgetFactory('canvas', {
-		init: function() {
-			this._super();
-		}
-	});
+    var widget = WidgetFactory('canvas', {
+        init: function() {
+            this._super();
+        }
+    });
 
-	return widget;
+    return widget;
 });

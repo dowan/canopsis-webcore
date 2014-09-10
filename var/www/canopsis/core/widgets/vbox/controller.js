@@ -18,16 +18,16 @@
 */
 
 define([
-	'app/lib/factories/widget',
-	'app/widgets/canvas/controller'
+    'app/lib/factories/widget',
+    'app/widgets/canvas/controller'
 ], function(WidgetFactory) {
 
-	var widget = WidgetFactory('vbox', {
+    var widget = WidgetFactory('vbox', {
 
-		partials: {
-			titlebarsbuttons : ["titlebarbutton-minimize", "titlebarbutton-moveup","titlebarbutton-movedown"]
-		}
-	});
+        partials: {
+            titlebarsbuttons : ["titlebarbutton-minimize", "titlebarbutton-moveup","titlebarbutton-movedown"]
+        }
+    });
 
-	return widget;
+    return widget;
 });

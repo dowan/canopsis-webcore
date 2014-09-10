@@ -19,8 +19,8 @@
 
 define(['ember'], function(Ember) {
 
-	Ember.Handlebars.helper('unset', function(name, options) {
-		options.data.keywords[name] = undefined;
-	});
+    Ember.Handlebars.helper('unset', function(name, options) {
+        options.data.keywords[name] = undefined;
+    });
 
 });

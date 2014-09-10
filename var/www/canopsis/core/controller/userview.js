@@ -18,20 +18,20 @@
 */
 
 define([
-	'ember',
-	'app/application',
-	'app/controller/crecord',
-	'app/routes/userview',
-	'app/view/userview',
-	'app/serializers/userview'
+    'ember',
+    'app/application',
+    'app/controller/crecord',
+    'app/routes/userview',
+    'app/view/userview',
+    'app/serializers/userview'
 ], function(Ember, Application, CrecordController) {
     var get = Ember.get,
         set = Ember.set;
 
-	Application.UserviewController = CrecordController.extend(Ember.Evented, {
-		needs: ['application'],
+    Application.UserviewController = CrecordController.extend(Ember.Evented, {
+        needs: ['application'],
 
-		actions: {
+        actions: {
             toggleFullscreen: function() {
                 console.log('toggleFullscreen');
                 var applicationController = get(this, 'controllers.application');
@@ -43,31 +43,31 @@ define([
                 }
             },
 
-			insertWidget: function(containerController) {
-				console.log("insertWidget", containerController);
-				var widgetChooserForm = Canopsis.utils.forms.showNew('widgetform', this);
+            insertWidget: function(containerController) {
+                console.log("insertWidget", containerController);
+                var widgetChooserForm = Canopsis.utils.forms.showNew('widgetform', this);
 
-				var userviewController = this;
+                var userviewController = this;
 
-				widgetChooserForm.submit.done(function(form, newWidgetWrappers) {
-					void (form);
-					var newWidgetWrapper = newWidgetWrappers[0];
+                widgetChooserForm.submit.done(function(form, newWidgetWrappers) {
+                    void (form);
+                    var newWidgetWrapper = newWidgetWrappers[0];
 
-					console.log('onsubmit, adding widgetwrapper to containerwidget', newWidgetWrapper, containerController);
-					console.log('containerwidget items', containerController.get('content.items.content'));
-					//FIXME wrapper does not seems to have a widget
-					containerController.get('content.items.content').pushObject(newWidgetWrapper);
+                    console.log('onsubmit, adding widgetwrapper to containerwidget', newWidgetWrapper, containerController);
+                    console.log('containerwidget items', containerController.get('content.items.content'));
+                    //FIXME wrapper does not seems to have a widget
+                    containerController.get('content.items.content').pushObject(newWidgetWrapper);
 
-					console.log("saving view");
-					userviewController.get('content').save();
-				});
+                    console.log("saving view");
+                    userviewController.get('content').save();
+                });
 
-				widgetChooserForm.submit.fail(function() {
-					console.info('Widget insertion canceled');
-				});
-			}
-		}
-	});
+                widgetChooserForm.submit.fail(function() {
+                    console.info('Widget insertion canceled');
+                });
+            }
+        }
+    });
 
-	return Application.UserviewController;
+    return Application.UserviewController;
 });

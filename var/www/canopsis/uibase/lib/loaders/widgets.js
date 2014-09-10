@@ -21,8 +21,8 @@
 //TODO implement auto check for mvct file existence and require them automatically
 
 var uibaseWidgetsTemplates = [
-	{ name:'weather', url:'canopsis/uibase/widgets/weather', hasJSPart: true },
-	{ name:'text', url:'canopsis/uibase/widgets/text', hasJSPart: true }
+    { name:'weather', url:'canopsis/uibase/widgets/weather', hasJSPart: true },
+    { name:'text', url:'canopsis/uibase/widgets/text', hasJSPart: true }
 ];
 
 var deps = ['ember'];
@@ -31,26 +31,26 @@ var depsSize = deps.length;
 
 //generate deps
 for (var i = 0; i < uibaseWidgetsTemplates.length; i++) {
-	deps.push('text!' + uibaseWidgetsTemplates[i].url + '/template.html');
+    deps.push('text!' + uibaseWidgetsTemplates[i].url + '/template.html');
 
-	if (uibaseWidgetsTemplates[i].hasJSPart === true) {
-		var viewUrl = uibaseWidgetsTemplates[i].url + '/controller';
-		console.log("adding view", viewUrl);
+    if (uibaseWidgetsTemplates[i].hasJSPart === true) {
+        var viewUrl = uibaseWidgetsTemplates[i].url + '/controller';
+        console.log("adding view", viewUrl);
 
-		jsDeps.push(viewUrl);
-	}
+        jsDeps.push(viewUrl);
+    }
 }
 
 for (i = 0; i < jsDeps.length; i++) {
-	deps.push(jsDeps[i]);
+    deps.push(jsDeps[i]);
 }
 
 console.log({"uibase widget dependencies": deps});
 define(deps, function(Ember) {
-	console.log("load widgets from uibase", arguments);
-	for (var i = 0; i < uibaseWidgetsTemplates.length; i++) {
-		var templateName = uibaseWidgetsTemplates[i].name;
-		Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
-	}
+    console.log("load widgets from uibase", arguments);
+    for (var i = 0; i < uibaseWidgetsTemplates.length; i++) {
+        var templateName = uibaseWidgetsTemplates[i].name;
+        Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
+    }
 });
 

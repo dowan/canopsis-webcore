@@ -18,53 +18,53 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
-	Application.UserviewView = Ember.View.extend({
-		actions: {
-			refreshView: function() {
-				this.rerender();
-			}
-		},
-		hookRegistered: false,
-		//Controller -> View Hooks
-		registerHooks: function() {
+    Application.UserviewView = Ember.View.extend({
+        actions: {
+            refreshView: function() {
+                this.rerender();
+            }
+        },
+        hookRegistered: false,
+        //Controller -> View Hooks
+        registerHooks: function() {
 
-			console.log("registerHooks", this.get("controller"), this.get("controller").on);
-			if (!this.get('hookRegistered')) {
-				this.get("controller").on('refreshView', this, this.rerender);
-				this.set('hookRegistered', true);
-			}
-		},
+            console.log("registerHooks", this.get("controller"), this.get("controller").on);
+            if (!this.get('hookRegistered')) {
+                this.get("controller").on('refreshView', this, this.rerender);
+                this.set('hookRegistered', true);
+            }
+        },
 
-		unregisterHooks: function() {
-			this.get("controller").off('refreshView', this, this.rerender);
-			this.set('hookRegistered', false);
-		},
+        unregisterHooks: function() {
+            this.get("controller").off('refreshView', this, this.rerender);
+            this.set('hookRegistered', false);
+        },
 
-		rerender: function() {
-			console.info('refreshing view', this);
-			if (this.get('state') === 'destroying') {
-				console.warn('view is being destroying, cancel refresh');
-				return;
-			}
-			this._super.apply(this, arguments);
-			this.registerHooks();
-		},
+        rerender: function() {
+            console.info('refreshing view', this);
+            if (this.get('state') === 'destroying') {
+                console.warn('view is being destroying, cancel refresh');
+                return;
+            }
+            this._super.apply(this, arguments);
+            this.registerHooks();
+        },
 
-		didInsertElement : function() {
-			console.log("inserted view", this);
+        didInsertElement : function() {
+            console.log("inserted view", this);
 
-			this.registerHooks();
-			return this._super.apply(this, arguments);
-		},
+            this.registerHooks();
+            return this._super.apply(this, arguments);
+        },
 
-		willClearRender: function() {
-			this.unregisterHooks();
-			return this._super.apply(this, arguments);
-		}
-	});
+        willClearRender: function() {
+            this.unregisterHooks();
+            return this._super.apply(this, arguments);
+        }
+    });
 
-	return Application.UserviewView;
+    return Application.UserviewView;
 });

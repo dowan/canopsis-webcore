@@ -1,39 +1,39 @@
 <div class="box-header">
-	<div class="pull-right">
-		{{#if Canopsis.editMode}}
-			<button type="button" class="btn btn-small btn-success btn-sm pull-right" {{action 'editWidgetPreferences' widget}}>
-				{{glyphicon "pencil"}}
-			</button>
-			<button type="button" class="btn btn-small btn-info btn-sm pull-right" {{action 'removeWidget' widget}}>
-				{{glyphicon "remove"}}
-			</button>
-			<button type="button" class="btn btn-small btn-info btn-sm pull-right" {{action 'editWidget' widget}}>
-				{{glyphicon "edit"}}
-			</button>
-		{{/if}}
-	</div>
-	<div class="pull-right">
-		{{set 'minified' true}}
-			{{#each button in controller.availableTitlebarButtons}}
-				{{partial button}}
-			{{/each}}
-			{{#if widget.rollbackable}}
-				{{#if widget.isDirty}}
-					<button type="button" class="btn btn-small btn-danger btn-sm pull-right" {{action 'rollback' widget}}>
-					<i class="fa fa-undo"></i>
-					</button>
-				{{/if}}
-			{{/if}}
-		{{unset 'minified'}}
-	</div>
-	<h3 class="box-title">
-		{{#unless controller.hide_titles}}
-			{{widget.title}}
-			{{#if Canopsis.editMode}}
-				{{#unless widget.title}}
-					&lt; {{tr 'Untitled'}} {{widget.xtype}} widget &gt;
-				{{/unless}}
-			{{/if}}
-		{{/unless}}
-	</h3>
+    <div class="pull-right">
+        {{#if Canopsis.editMode}}
+            <button type="button" class="btn btn-small btn-success btn-sm pull-right" {{action 'editWidgetPreferences' widget}}>
+                {{glyphicon "pencil"}}
+            </button>
+            <button type="button" class="btn btn-small btn-info btn-sm pull-right" {{action 'removeWidget' widget}}>
+                {{glyphicon "remove"}}
+            </button>
+            <button type="button" class="btn btn-small btn-info btn-sm pull-right" {{action 'editWidget' widget}}>
+                {{glyphicon "edit"}}
+            </button>
+        {{/if}}
+    </div>
+    <div class="pull-right">
+        {{set 'minified' true}}
+            {{#each button in controller.availableTitlebarButtons}}
+                {{partial button}}
+            {{/each}}
+            {{#if widget.rollbackable}}
+                {{#if widget.isDirty}}
+                    <button type="button" class="btn btn-small btn-danger btn-sm pull-right" {{action 'rollback' widget}}>
+                    <i class="fa fa-undo"></i>
+                    </button>
+                {{/if}}
+            {{/if}}
+        {{unset 'minified'}}
+    </div>
+    <h3 class="box-title">
+        {{#unless controller.hide_titles}}
+            {{widget.title}}
+            {{#if Canopsis.editMode}}
+                {{#unless widget.title}}
+                    &lt; {{tr 'Untitled'}} {{widget.xtype}} widget &gt;
+                {{/unless}}
+            {{/if}}
+        {{/unless}}
+    </h3>
 </div>

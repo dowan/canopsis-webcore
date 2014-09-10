@@ -18,128 +18,128 @@
 */
 
 define([
-	'ember',
-	'ember-data',
-	'app/application',
-	'app/adapters/application'
+    'ember',
+    'ember-data',
+    'app/application',
+    'app/adapters/application'
 ], function(Ember, DS, Application, ApplicationAdapter ) {
 
-	Application.EntityAdapter = ApplicationAdapter.extend({
-		gen_resolve: function(callback) {
-			return function(data) {
-				for (var i = 0; i < data.data.length; i++) {
-					data.data[i].id = data.data[i]._id;
-					delete data.data[i]._id;
-				}
+    Application.EntityAdapter = ApplicationAdapter.extend({
+        gen_resolve: function(callback) {
+            return function(data) {
+                for (var i = 0; i < data.data.length; i++) {
+                    data.data[i].id = data.data[i]._id;
+                    delete data.data[i]._id;
+                }
 
-				Ember.run(null, callback, data);
-			};
-		},
+                Ember.run(null, callback, data);
+            };
+        },
 
-		gen_reject: function(callback) {
-			return function(xhr) {
-				xhr.then = null;
-				Ember.run(null, callback, xhr);
-			};
-		},
+        gen_reject: function(callback) {
+            return function(xhr) {
+                xhr.then = null;
+                Ember.run(null, callback, xhr);
+            };
+        },
 
-		buildURL: function(type, id) {
-			return '/entities/' + type + (id ? ('/' + id) : '');
-		},
+        buildURL: function(type, id) {
+            return '/entities/' + type + (id ? ('/' + id) : '');
+        },
 /*
-		createRecord: function() {
-			Canopsis.utils.notification.error('Impossible to create entity');
-		},
+        createRecord: function() {
+            Canopsis.utils.notification.error('Impossible to create entity');
+        },
 
-		updateRecord: function() {
-			Canopsis.utils.notification.error('Impossible to update entity');
-		},
+        updateRecord: function() {
+            Canopsis.utils.notification.error('Impossible to update entity');
+        },
 
-		deleteRecord: function() {
-			Canopsis.utils.notification.error('Impossible to delete entity');
-		},
+        deleteRecord: function() {
+            Canopsis.utils.notification.error('Impossible to delete entity');
+        },
 */
-		find: function(store, model, id) {
-			void(store);
-			var me = this;
+        find: function(store, model, id) {
+            void(store);
+            var me = this;
 
-			return new Ember.RSVP.Promise(function(resolve, reject) {
-				var url = me.buildURL(model.typeKey, id);
-				var funcres = me.gen_resolve(resolve);
-				var funcrej = me.gen_reject(reject);
+            return new Ember.RSVP.Promise(function(resolve, reject) {
+                var url = me.buildURL(model.typeKey, id);
+                var funcres = me.gen_resolve(resolve);
+                var funcrej = me.gen_reject(reject);
 
-				$.get(url).then(funcres, funcrej);
-			});
-		},
+                $.get(url).then(funcres, funcrej);
+            });
+        },
 
-		findMany: function(store, model, ids) {
-			void(store);
-			var me = this;
+        findMany: function(store, model, ids) {
+            void(store);
+            var me = this;
 
-			return new Ember.RSVP.Promise(function(resolve, reject) {
-				var funcres = me.gen_resolve(resolve);
-				var funcrej = me.gen_reject(reject);
+            return new Ember.RSVP.Promise(function(resolve, reject) {
+                var funcres = me.gen_resolve(resolve);
+                var funcrej = me.gen_reject(reject);
 
-				var mfilter = {'type': model.typeKey};
+                var mfilter = {'type': model.typeKey};
 
-				if (type === 'downtime') {
-					mfilter['downtime_id'] = {'$in': ids};
-				}
-				else {
-					mfilter['name'] = {'$in': ids};
-				}
+                if (type === 'downtime') {
+                    mfilter['downtime_id'] = {'$in': ids};
+                }
+                else {
+                    mfilter['name'] = {'$in': ids};
+                }
 
-				mfilter = JSON.stringify(mfilter);
+                mfilter = JSON.stringify(mfilter);
 
-				$.post('/entities/', {filter: mfilter}).then(funcres, funcrej);
-			});
-		},
+                $.post('/entities/', {filter: mfilter}).then(funcres, funcrej);
+            });
+        },
 
-		findAll: function(store, model, options) {
-			void(store);
-			var me = this;
+        findAll: function(store, model, options) {
+            void(store);
+            var me = this;
 
-			return new Ember.RSVP.Promise(function(resolve, reject) {
-				var funcres = me.gen_resolve(resolve);
-				var funcrej = me.gen_reject(reject);
+            return new Ember.RSVP.Promise(function(resolve, reject) {
+                var funcres = me.gen_resolve(resolve);
+                var funcrej = me.gen_reject(reject);
 
-				var promise = undefined;
+                var promise = undefined;
 
-				if (options && options.mfilter) {
-					var mfilter = JSON.stringify({
-						'$and': [
-							{'type': model.typeKey},
-							options.mfilter
-						]
-					});
+                if (options && options.mfilter) {
+                    var mfilter = JSON.stringify({
+                        '$and': [
+                            {'type': model.typeKey},
+                            options.mfilter
+                        ]
+                    });
 
-					promise = $.post('/entities/', {filter: mfilter});
-				}
-				else {
-					var url = me.buildURL(model.typeKey);
+                    promise = $.post('/entities/', {filter: mfilter});
+                }
+                else {
+                    var url = me.buildURL(model.typeKey);
 
-					promise = $.get(url);
-				}
+                    promise = $.get(url);
+                }
 
-				promise.then(funcres, funcrej);
-			});
-		},
+                promise.then(funcres, funcrej);
+            });
+        },
 
-		findQuery: function(store, model, query) {
-			void(store);
-			var me = this;
+        findQuery: function(store, model, query) {
+            void(store);
+            var me = this;
 
-			return new Ember.RSVP.Promise(function(resolve, reject) {
-				var funcres = me.gen_resolve(resolve);
-				var funcrej = me.gen_reject(reject);
+            return new Ember.RSVP.Promise(function(resolve, reject) {
+                var funcres = me.gen_resolve(resolve);
+                var funcrej = me.gen_reject(reject);
 
-				query.filter = JSON.stringify({'type': model.typeKey});
-				console.log('findQuery: ', query);
+                query.filter = JSON.stringify({'type': model.typeKey});
+                console.log('findQuery: ', query);
 
-				$.post('/entities/', query).then(funcres, funcrej);
-			});
-		}
-	});
+                $.post('/entities/', query).then(funcres, funcrej);
+            });
+        }
+    });
 
-	return Application.EntityAdapter;
+    return Application.EntityAdapter;
 });

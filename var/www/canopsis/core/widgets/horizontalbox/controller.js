@@ -18,24 +18,24 @@
 */
 
 define([
-	'app/application',
-	'app/lib/factories/widget',
-	'app/widgets/canvas/controller'
+    'app/application',
+    'app/lib/factories/widget',
+    'app/widgets/canvas/controller'
 ], function(Application, WidgetFactory) {
 
-	var widget = WidgetFactory('horizontalbox', {
-		partials: {
-			titlebarsbuttons : ["titlebarbutton-moveright", "titlebarbutton-moveleft"]
-		},
+    var widget = WidgetFactory('horizontalbox', {
+        partials: {
+            titlebarsbuttons : ["titlebarbutton-moveright", "titlebarbutton-moveleft"]
+        },
 
-		init: function() {
-			this._super();
-		},
-		section : function () {
-			return 'col-lg-3 col-md-6 col-xs-12';
-		}.property()
+        init: function() {
+            this._super();
+        },
+        section : function () {
+            return 'col-lg-3 col-md-6 col-xs-12';
+        }.property()
 
-	}, {subclass: Application.CanvasController});
+    }, {subclass: Application.CanvasController});
 
-	return widget;
+    return widget;
 });

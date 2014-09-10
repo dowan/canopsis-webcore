@@ -19,47 +19,47 @@
 
 define(['ember', 'utils'], function(Ember, utils) {
 
-	Ember.Handlebars.helper('statusview', function(status, crecord) {
-		/**
+    Ember.Handlebars.helper('statusview', function(status, crecord) {
+        /**
             # status legend:
             # 0 == Ok
             # 1 == On going
             # 2 == Stealthy
             # 3 == Bagot
             # 4 == Canceled
-		**/
+        **/
 
-		var statuses = {
-			0: 'Off',
-			1: 'On going',
-			2: 'Stealthy',
-			3: 'Bagot',
-			4: 'Cancelled',
-		};
+        var statuses = {
+            0: 'Off',
+            1: 'On going',
+            2: 'Stealthy',
+            3: 'Bagot',
+            4: 'Cancelled',
+        };
 
-		var render = __(statuses[status]);
+        var render = __(statuses[status]);
 
-		if(status === 4) {
-			//displays cancel information if any onto the status field
-			var value = crecord.get('record.cancel');
-		    var tooltipHtml = [
-		    	'<i>' + __('Date') + '</i> : <br/>',
-		    	utils.dates.timestamp2String(value.timestamp) +' <br/> ',
-		    	value.author +' <br/><br/> ',
-	    		'<i>'+__('Commentaire') +' :</i> : <br/>' + value.comment
-	    	].join('');
+        if(status === 4) {
+            //displays cancel information if any onto the status field
+            var value = crecord.get('record.cancel');
+            var tooltipHtml = [
+                '<i>' + __('Date') + '</i> : <br/>',
+                utils.dates.timestamp2String(value.timestamp) +' <br/> ',
+                value.author +' <br/><br/> ',
+                '<i>'+__('Commentaire') +' :</i> : <br/>' + value.comment
+            ].join('');
 
-			var guid = utils.hash.generate_GUID();
+            var guid = utils.hash.generate_GUID();
 
-			var render  = '<span id="'+ guid +'" data-html="true" data-original-title="' + tooltipHtml + '">' + render + '</span>';
+            var render  = '<span id="'+ guid +'" data-html="true" data-original-title="' + tooltipHtml + '">' + render + '</span>';
 
-			//Triggers tooltip display once loaded /!\ hack
-			setTimeout(function () {
-				$('#' + guid).tooltip();
-			}, 1000);
-		}
+            //Triggers tooltip display once loaded /!\ hack
+            setTimeout(function () {
+                $('#' + guid).tooltip();
+            }, 1000);
+        }
 
-	    return new Ember.Handlebars.SafeString(render);
-	});
+        return new Ember.Handlebars.SafeString(render);
+    });
 
 });
