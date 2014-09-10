@@ -21,9 +21,9 @@
 from bottle import get, delete, put
 
 from canopsis.common.ws import response, route
-from canopsis.topology.manager import TopologyManager
+from canopsis.topology.manager import Topology
 
-manager = TopologyManager()
+manager = Topology()
 
 
 @route(get)

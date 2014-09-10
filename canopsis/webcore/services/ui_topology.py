@@ -18,7 +18,7 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 from sys import modules
-from sys.path import append
+from sys import path
 from os import listdir
 from os.path import expanduser
 from logging import getLogger
@@ -31,7 +31,7 @@ from bottle import get
 logger = getLogger("ui_topology")
 
 operators_path = expanduser('~/opt/amqp2engines/engines/topology')
-append(operators_path)
+path.append(operators_path)
 
 
 @get('/topology/getOperators')
