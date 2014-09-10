@@ -40,6 +40,7 @@ define([
         },
 
         showInstance: function(formInstance) {
+            Canopsis.formwrapperController.form.updateArray();
             set(Canopsis.formwrapperController, 'form.validateOnInsert', false);
             set(Canopsis.formwrapperController, 'form', formInstance);
             set(Canopsis.formwrapperController, 'formName', formInstance.formName);
@@ -48,6 +49,13 @@ define([
         showNew: function(formName, formContext, options) {
             if (options === undefined) {
                 options = {};
+            }
+            var formwrapperController = Canopsis.formwrapperController;
+            if( formwrapperController ){
+                var oldform = formwrapperController.form;
+                if( oldform && oldform.updateArray ){
+                    oldform.updateArray();
+                }
             }
 
             if ( formContext.get && Ember.isNone(formContext.get('crecord_type'))) {
@@ -60,12 +68,13 @@ define([
             console.log("formController", formController);
 
             Canopsis.utils.routes.getCurrentRouteController().send('showEditFormWithController', formController, formContext, options);
+
             return formController;
         },
 
         editRecord: function(record) {
             var widgetWizard = Canopsis.utils.forms.showNew('modelform', record);
-            console.log("widgetWizard", widgetWizard);
+            console.log('widgetWizard', widgetWizard);
 
             widgetWizard.submit.then(function() {
                 console.log('record saved');
