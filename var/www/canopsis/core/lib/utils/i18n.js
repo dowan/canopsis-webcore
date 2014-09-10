@@ -23,7 +23,6 @@ define([
 ], function(conf) {
 
     var i18n = {
-        lang: 'fr',
         todo: {},
         translations: {},
         newTranslations: true,
@@ -105,11 +104,29 @@ define([
                 });
             }
         },
-
+        getUserLanguage: function(){
+            $.ajax({
+                url: '/account/me',
+                success: function(data) {
+                    if (data.success && data.data && data.data.length && data.data[0].ui_language) {
+                        i18n.lang = data.data[0].ui_language;
+                        console.log('Lang initialization succeed, default language for application is set to ' + i18n.lang.toUpperCase());
+                    } else {
+                        console.error('Lang data fetch failed, default language for application is set to EN', data);
+                        i18n.lang = 'en';
+                    }
+                },
+                async: false
+            }).fail(function () {
+                console.error('Lang initialization failed, default language for application is set to EN');
+                i18n.uploadDefinitions();
+            });
+        }
     };
 
     window.__ = i18n._;
 
+    i18n.getUserLanguage();
     i18n.downloadDefinitions();
 
     if (conf.DEBUG && conf.TRANSLATE) {
