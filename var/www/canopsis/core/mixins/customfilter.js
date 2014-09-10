@@ -31,6 +31,9 @@ define([
 	*/
 
 	Application.CustomFilterManagerMixin = Ember.Mixin.create({
+        partials: {
+            header: ['customfilters']
+        },
 
 		actions: {
 			addUserFilter: function () {

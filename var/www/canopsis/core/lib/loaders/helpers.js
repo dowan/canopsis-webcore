@@ -41,6 +41,7 @@ var helpers = [
     'log',
     'logo',
     'menu',
+    'partialslot',
     'percent',
     'renderwidget',
     'rights',

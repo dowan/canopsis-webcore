@@ -35,6 +35,11 @@ var templates = [
     { name: 'listline' },
     { name: 'widgetslot-default' },
     { name: 'widgetslot-grey' },
+    { name: 'partialslot' },
+    { name: 'pagination' },
+    { name: 'itemsperpage' },
+    { name: 'search' },
+    { name: 'customfilters' },
 
     { name: 'timeintervalselection' },
 

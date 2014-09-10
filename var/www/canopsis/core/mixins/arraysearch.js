@@ -34,6 +34,10 @@ define([
 	 * @mixin
 	 */
 	Application.ArraySearchMixin = Ember.Mixin.create({
+        partials: {
+            header: ['search']
+        },
+
 		actions: {
 			searchItems: function(findOptions) {
 
