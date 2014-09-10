@@ -18,69 +18,70 @@
 */
 
 define([
-	'ember',
-	'app/application'
+    'ember',
+    'app/application'
 ], function(Ember, Application) {
 
-	var set = Ember.set;
+    var set = Ember.set;
 
-	var formUtils = {
-		instantiateForm: function(formName, formContext, options) {
-			void (formContext);
-			console.log('try to instantiate form', formName, options.formParent);
-			var classDict = options;
+    var formUtils = {
+        instantiateForm: function(formName, formContext, options) {
+            void (formContext);
+            console.log('try to instantiate form', formName, options.formParent);
+            var classDict = options;
 
-			options.formName = formName;
-			classDict.target = Canopsis.utils.routes.getCurrentRouteController();
-			classDict.container = Application.__container__;
+            options.formName = formName;
+            classDict.target = Canopsis.utils.routes.getCurrentRouteController();
+            classDict.container = Application.__container__;
 
-			var formController = Canopsis.forms.all[formName].EmberClass.create(classDict);
+            var formController = Canopsis.forms.all[formName].EmberClass.create(classDict);
 
-			return formController;
-		},
+            return formController;
+        },
 
-		showInstance: function(formInstance) {
-			set(Canopsis.formwrapperController, 'form', formInstance);
-			set(Canopsis.formwrapperController, 'formName', formInstance.formName);
-		},
+        showInstance: function(formInstance) {
+            set(Canopsis.formwrapperController, 'form.validateOnInsert', false);
+            set(Canopsis.formwrapperController, 'form', formInstance);
+            set(Canopsis.formwrapperController, 'formName', formInstance.formName);
+        },
 
-		showNew: function(formName, formContext, options) {
-			if (options === undefined) {
-				options = {};
-			}
+        showNew: function(formName, formContext, options) {
+            if (options === undefined) {
+                options = {};
+            }
 
-			if ( formContext.get && Ember.isNone(formContext.get('crecord_type'))) {
-				console.warn('There is no crecord_type in the given record. Form may not display properly.')
-			}
+            if ( formContext.get && Ember.isNone(formContext.get('crecord_type'))) {
+                console.warn('There is no crecord_type in the given record. Form may not display properly.')
+            }
 
-			console.log("Form generation", formName);
+            console.log("Form generation", formName);
 
-			var formController = this.instantiateForm(formName, formContext, options);
-			console.log("formController", formController);
+            var formController = this.instantiateForm(formName, formContext, options);
+            console.log("formController", formController);
 
-			Canopsis.utils.routes.getCurrentRouteController().send('showEditFormWithController', formController, formContext, options);
-			return formController;
-		},
+            Canopsis.utils.routes.getCurrentRouteController().send('showEditFormWithController', formController, formContext, options);
+            return formController;
+        },
 
-		editRecord: function(record) {
-			var widgetWizard = Canopsis.utils.forms.showNew('modelform', record);
-			console.log("widgetWizard", widgetWizard);
+        editRecord: function(record) {
+            var widgetWizard = Canopsis.utils.forms.showNew('modelform', record);
+            console.log("widgetWizard", widgetWizard);
 
-			widgetWizard.submit.then(function() {
-				console.log('record saved');
+            widgetWizard.submit.then(function() {
+                console.log('record saved');
 
-				record.save();
-				widgetWizard.trigger('hidePopup');
-				widgetWizard.destroy();
-			});
+                record.save();
+                widgetWizard.trigger('hidePopup');
+                widgetWizard.destroy();
+            });
 
-			return widgetWizard;
-		},
+            return widgetWizard;
+        },
 
-		addRecord: function(record_type) {
-			Canopsis.utils.routes.getCurrentRouteController().send('show_add_crecord_form', record_type);
-		}
-	};
+        addRecord: function(record_type) {
+            Canopsis.utils.routes.getCurrentRouteController().send('show_add_crecord_form', record_type);
+        }
+    };
 
-	return formUtils;
+    return formUtils;
 });

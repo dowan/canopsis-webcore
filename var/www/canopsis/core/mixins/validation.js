@@ -18,41 +18,98 @@
 */
 
 define([
-	'ember',
-	'app/application'
-], function(Ember, Application) {
+    'ember',
+    'app/application',
+    'app/lib/utils/forms',
+    'app/lib/utils/slug'
+], function(Ember, Application , formUtils , slugify) {
 
-	/**
-	 * Implements Validation in form
-	 * You should define on the validationFields
-	 * @mixin
-	 */
-	Application.ValidationMixin = Ember.Mixin.create({
+    /**
+     * Implements Validation in form
+     * You should define on the validationFields
+     * @mixin
+     */
+    Application.ValidationMixin = Ember.Mixin.create({
 
-		validationFields: function() {
-			console.warn("Property \"validationFields\" must be defined on the concrete class.");
+        validationFields: function() {
+            console.warn("Property \"validationFields\" must be defined on the concrete class.");
 
-			return "<validationFields is null>";
-		},
+            return "<validationFields is null>";
+        },
 
-		validation: function() {
-			console.log("Enter validation MIXIN");
-			var validationFields = this.get("validationFields");
-			var isValid = true;
-			if (validationFields) {
-				for (var z = 0; z < validationFields.length; z++) {
-					console.log("validate on : ", validationFields[z]);
-					// Check if a field's validate function return false
-					if (validationFields[z].validate() !== true) {
-						console.log("Can't validate on attr ",validationFields[z]);
-						// for now just stop and return (fields error messages have been updated)
-						isValid =  false ;
-					}
-				}
-			}
+        changeTAB: function( name , active){
+            var toFind = "#"+name+"_tab";
+            if(active)
+                $( toFind ).addClass("active");
+            else
+                $( toFind ).removeClass("active");
 
-			return isValid;
-		}
-	});
-	return Application.ValidationMixin;
+
+            var id = "#"+name;
+            if(active)
+                $( id ).addClass("active");
+            else
+                $( id ).removeClass("active");
+        },
+
+        set_tab: function(last_field_error){
+            var categories = this.categories;
+
+            for (var i = 0 ; i < categories.length ; i++){
+                var current = categories[i];
+                this.changeTAB( current.slug , false );
+                current.set("isDefault", false);
+            }
+    outer:  for (var i = 0 ; i < categories.length ; i++){
+                var current = categories[i];
+
+                for (var j = 0 ; j < current.keys.length ; j++){
+                    var key = current.keys[j];
+                    var field = key.field;
+
+                    if (field === last_field_error ){
+                        this.changeTAB( current.slug , true );
+                        current.set("isDefault", true);
+
+                        break outer;
+                    }
+                }
+            }
+        },
+
+        validation: function() {
+            console.log("Enter validation MIXIN");
+            var validationFields = this.get("validationFields");
+            var isValid = true;
+            var error_array = [];
+            var last_field_error ="";
+            var form = this;
+
+            if (validationFields) {
+                for (var z = 0; z < validationFields.length; z++) {
+                    console.log("validate on : ", validationFields[z]);
+                    var current = validationFields[z].validate();
+
+                    if (current.valid !== true) {
+                        error_array.push(current);
+                        console.log("Can't validate on attr ",validationFields[z]);
+                        last_field_error = validationFields[z].attr.field;
+                        isValid =  false ;
+
+                        if (validationFields[z].removedFromDOM){
+                            //var form = validationFields[z].get('form');
+                            form.validateOnInsert = true;
+                            formUtils.showInstance(form);
+                            break;
+                        }
+                    }
+                }
+            }
+            if( !isValid ){
+                this.set_tab(last_field_error);
+            }
+            return isValid;
+        }
+    });
+    return Application.ValidationMixin;
 });
