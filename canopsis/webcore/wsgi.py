@@ -37,7 +37,8 @@ from canopsis.webcore.services import auth
 import gevent
 import signal
 
-## Hack: Prevent "ExtractionError: Can't extract file(s) to egg cache" when 2 process extract egg at the same time ...
+## Hack: Prevent "ExtractionError: Can't extract file(s) to egg cache" when 2
+#process extract egg at the same time ...
 try:
     from beaker.middleware import SessionMiddleware
 
@@ -56,31 +57,37 @@ config_filename = os.path.expanduser('~/etc/webserver.conf')
 config = ConfigParser.RawConfigParser()
 config.read(config_filename)
 
-#put config in builtins to make it readable from modules in canopsis.webcore.services
+#put config in builtins to make it readable from modules in
+#canopsis.webcore.services
 __builtins__["config"] = config
 
 ## Logger
-logging_level=logging.INFO
+logging_level = logging.INFO
 
-logging.basicConfig(format=r"%(asctime)s [%(process)d] [%(name)s] [%(levelname)s] %(message)s", datefmt=r"%Y-%m-%d %H:%M:%S", level=logging_level)
-logger  = logging.getLogger("webserver")
-    
+logging.basicConfig(
+    format=r"%(asctime)s [%(process)d] [%(name)s] [%(levelname)s] %(message)s",
+    datefmt=r"%Y-%m-%d %H:%M:%S", level=logging_level)
+logger = logging.getLogger("webserver")
+
 
 webservices = []
 webservice_paths = {}
 webservices_mods = {}
 
 try:
-    for webservice,path in config.items('webservice_paths'):
-        logger.info("webservice_paths : webservice = " + webservice + " path : " + path )
+    for webservice, path in config.items('webservice_paths'):
+        logger.info("webservice_paths : webservice = " + webservice +
+            " path : " + path)
         if webservice not in webservice_paths:
-            logger.info("webservice_paths : add webservice = " + webservice + " path : " + path )
+            logger.info("webservice_paths : add webservice = " + webservice +
+                " path : " + path)
             webservice_paths[webservice] = path
-except : #NoSectionError:
-    logger.info("WARNING : Can't found webservice_paths on webserver.conf " )
+except:  # NoSectionError:
+    logger.info(
+        "WARNING : Can't found webservice_paths on webserver.conf ")
 
 
-for webservice,enabled in config.items('webservices'):
+for webservice, enabled in config.items('webservices'):
     enabled = int(enabled)
 
     if enabled and webservice not in webservices:
@@ -100,10 +107,10 @@ mongo_userid = mongo_config.get("master", "userid")
 mongo_password = mongo_config.get("master", "password")
 mongo_db = mongo_config.get("master", "db")
 
-session_cookie_expires  = 300
-session_secret          = 'canopsis'
-session_lock_dir        = os.path.expanduser('~/tmp/webcore_cache')
-root_directory          = os.path.expanduser("~/var/www/")
+session_cookie_expires = 300
+session_secret = 'canopsis'
+session_lock_dir = os.path.expanduser('~/tmp/webcore_cache')
+root_directory = os.path.expanduser("~/var/www/")
 
 if mongo_userid and mongo_password:
     session_mongo_url = 'mongodb://{0}:{1}@{2}:{3}/{4}.beaker'.format(
@@ -123,25 +130,16 @@ else:
 
 try:
     ## get config
-    debug                   = config.getboolean('server', "debug")
-    root_directory          = os.path.expanduser(config.get('server', "root_directory"))
+    debug = config.getboolean('server', "debug")
+    root_directory = os.path.expanduser(config.get('server', "root_directory"))
 
-    session_cookie_expires  = config.getint('session', "cookie_expires")
-    session_secret          = config.get('session', "secret")
-    session_data_dir        = os.path.expanduser(config.get('session', "data_dir"))
+    session_cookie_expires = config.getint('session', "cookie_expires")
+    session_secret = config.get('session', "secret")
+    session_data_dir = os.path.expanduser(config.get('session', "data_dir"))
 
 except Exception as err:
-    print "Error when reading '%s' (%s)" % (config_filename, err)
+    print("Error when reading '%s' (%s)" % (config_filename, err))
 
-## Logger
-#logging_level=logging.INFO
-#if debug:
-#    logging_level=logging.DEBUG
-    
-#logging.basicConfig(format=r"%(asctime)s [%(process)d] [%(name)s] [%(levelname)s] %(message)s", datefmt=r"%Y-%m-%d %H:%M:%S", level=logging_level)
-#logger  = logging.getLogger("webserver")
-    
-#bottle.debug(debug)
 
 ## load and unload webservices
 def load_webservices():
@@ -167,7 +165,9 @@ def load_webservices():
             webservices_mods[modname] = mod
 
         except Exception as err:
-            logger.error('Impossible to load webservice {0}: {1}'.format(modname, err))
+            logger.error('Impossible to load webservice {0}: {1}'.format(
+                modname, err))
+
 
 def unload_webservices():
     logger.info("Unload webservices.")
@@ -178,6 +178,7 @@ def unload_webservices():
         if hasattr(module, 'unload'):
             logger.info('Unloading module {0}'.format(webservice))
             module.unload()
+
 
 def autoLogin(key=None):
     if key and len(key) == 56:
@@ -193,13 +194,14 @@ def autoLogin(key=None):
             return False
 
 ## Bind signals
-stop_in_progress=False
+stop_in_progress = False
+
 
 def signal_handler():
     global stop_in_progress
 
     if not stop_in_progress:
-        stop_in_progress=True
+        stop_in_progress = True
         logger.info("Receive signal to stop worker ...")
         unload_webservices()
         logger.info("Ready to stop.")
@@ -227,7 +229,9 @@ if config.has_option('auth', 'providers'):
             mod = import_module(modname)
 
         except ImportError as err:
-            logger.error('Impossible to load authentication backend {0}: {1}'.format(modname, err))
+            logger.error(
+                'Impossible to load authentication backend {0}: {1}'.format(
+                    modname, err))
 
         else:
             bottle.install(mod.get_backend())
@@ -238,12 +242,13 @@ bottle.install(auth.EnsureAuthenticated())
 session_opts = {
     'session.type': 'mongodb',
     'session.cookie_expires': session_cookie_expires,
-    'session.url' : session_mongo_url,
+    'session.url': session_mongo_url,
     'session.auto': True,
-#   'session.timeout': 300,
+    #'session.timeout': 300,
     'session.secret': session_secret,
-    'session.lock_dir' : session_lock_dir,
+    'session.lock_dir': session_lock_dir,
 }
+
 
 ## Basic Handler
 @route('/:lang/static/canopsis/index.html')
@@ -251,10 +256,12 @@ session_opts = {
 def index(lang='en'):
     return static_file('canopsis/index.html', root=root_directory)
 
+
 @route('/:lang/static/canopsis/index.debug.html')
 @route('/static/canopsis/index.debug.html')
 def index_debug(lang='en'):
     return static_file('canopsis/index.debug.html', root=root_directory)
+
 
 @route('/:lang/static/:path#.+#', skip=auth.auth_backends)
 @route('/static/:path#.+#', skip=auth.auth_backends)
@@ -265,9 +272,11 @@ def server_static(path, lang='en'):
 
     return static_file(path, root=root_directory)
 
-@route('/favicon.ico',skip=[auth.auth_backends])
+
+@route('/favicon.ico', skip=[auth.auth_backends])
 def favicon():
     return
+
 
 @route('/', skip=auth.auth_backends)
 @route('/:key', skip=auth.auth_backends)

@@ -17,9 +17,23 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/lib/abstractclassmanager'], function(Abstractclassmanager) {
+define([
+    'ember',
+    'app/application',
+    'utils'
+], function(Ember, Application, utils) {
+    var get = Ember.get,
+        set = Ember.set;
 
-	var formsManager = Abstractclassmanager.create();
+    var mixin = Ember.Mixin.create({
 
-	return formsManager;
+        partials: {
+            header: ['timeintervalselection']
+        }
+
+    });
+
+    Application.TimeintervalselectionMixin = mixin;
+
+    return mixin;
 });

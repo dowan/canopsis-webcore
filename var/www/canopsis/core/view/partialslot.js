@@ -17,9 +17,18 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/lib/abstractclassmanager'], function(Abstractclassmanager) {
+define([
+    'ember',
+    'app/application'
+], function(Ember, Application) {
 
-	var formsManager = Abstractclassmanager.create();
+    var view = Ember.View.extend({
+        templateName:'partialslot',
 
-	return formsManager;
+        slot: Ember.required()
+    });
+
+    Application.partialslotView = view;
+
+    return view;
 });

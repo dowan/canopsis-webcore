@@ -19,24 +19,23 @@
 
 define([
 	'ember',
-	'app/application'
-], function(Ember) {
+    'app/lib/abstractclassmanager',
+    'app/application'
+], function(Ember, Abstractclassmanager) {
 
 	var inflexions = [
 		['nagios' , 'nagios'],
 		['curve', 'curves']
 	];
 
-	var inflectionsManager = {
-		all: []
-	};
+	var inflectionsManager = Abstractclassmanager.create();
 
 	console.log(Ember);
 
 	for (var i = 0; i < inflexions.length; i++) {
 		inflectionsManager.all.push(inflexions[i][0] + ' -> ' + inflexions[i][1]);
 		Ember.Inflector.inflector.irregular(inflexions[i][0], inflexions[i][1]);
-	};
+	}
 
 	return inflectionsManager;
 });

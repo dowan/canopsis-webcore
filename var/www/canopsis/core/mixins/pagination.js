@@ -32,7 +32,12 @@ define([
 		  - the `findItems()` method
 
 	*/
-	Application.PaginationMixin = Ember.Mixin.create({
+	var mixin = Ember.Mixin.create({
+        partials: {
+            header: ['itemsperpage'],
+            footer: ['pagination']
+        },
+
 		paginationMixinContent: function() {
 			console.warn("paginationMixinContent should be defined on the concrete class");
 		},
@@ -134,5 +139,7 @@ define([
 		}
 	});
 
-	return Application.PaginationMixin;
+    Application.PaginationMixin = mixin;
+
+	return mixin;
 });

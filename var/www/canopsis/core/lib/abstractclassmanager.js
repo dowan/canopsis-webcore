@@ -17,9 +17,12 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/lib/abstractclassmanager'], function(Abstractclassmanager) {
+define(['ember'], function(Ember) {
 
-	var formsManager = Abstractclassmanager.create();
+    var manager = Ember.Object.extend({
+        all: Ember.A(),
+        byClass: Ember.Object.create()
+    });
 
-	return formsManager;
+    return manager;
 });

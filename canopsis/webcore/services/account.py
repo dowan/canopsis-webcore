@@ -20,7 +20,7 @@
 # ---------------------------------
 
 import logging
-import json
+from json import loads
 
 from bottle import request, HTTPError, response, redirect, get, put, delete, \
     post
@@ -44,12 +44,11 @@ logger.setLevel(logging.INFO)
 group_managing_access = ['group.CPS_account_admin']
 root_account = Account(user="root", group="root")
 right_module = Rights()
-#########################################################################
+
 
 #### GET Me
 @get('/account/me')
 def account_get_me():
-    ctype= 'account'
 
     #get the session (security)
     account = get_account()
@@ -72,15 +71,15 @@ def account_get_me():
     if record:
         # rights = right_module.get_user_rights(data['_id'])
         rights = {
-            "ack": {"checksum":15},
-            "1235.user_view": {"checksum":2},
-            "cancel.12123": {"checksum":8},
-            "12344.": {"checksum":12},
+            "ack": {"checksum": 15},
+            "1235.user_view": {"checksum": 2},
+            "cancel.12123": {"checksum": 8},
+            "12344.": {"checksum": 12},
             "0093.manage_user": {"checksum": 13,
                                  "context": "list_managers"},
-            "121-84.user_conf": {"checksum":0},
-            "1234.ack": {"checksum":8},
-            "cfilter.1296734": {"checksum":1},
+            "121-84.user_conf": {"checksum": 0},
+            "1234.ack": {"checksum": 8},
+            "cfilter.1296734": {"checksum": 1},
 
             "showview_service": {"checksum": 1},
             "list_search": {"checksum": 1},
@@ -115,7 +114,7 @@ def account_get_me():
 
         reload_account(account._id)
 
-    output={'total': 1, 'success': True, 'data': output}
+    output = {'total': 1, 'success': True, 'data': output}
 
     logger.debug(" + Output: " + str(output))
 
@@ -123,7 +122,7 @@ def account_get_me():
 
     return output
 
-#### Get Avatar
+
 @get('/account/getAvatar/:_id')
 @get('/account/getAvatar')
 def account_get_avatar(_id=None):
@@ -140,13 +139,13 @@ def account_get_avatar(_id=None):
     if not record or not record.data.get('avatar_id', None):
         redirect("/static/canopsis/widgets/stream/logo/ui.png")
 
-    avatar_id =  record.data.get('avatar_id')
+    avatar_id = record.data.get('avatar_id')
 
     logger.debug(' + avatar_id: %s' % avatar_id)
 
     redirect("/files/%s" % avatar_id)
 
-#### POST setConfig
+
 @post('/account/setConfig/:_id')
 def account_setConfig(_id):
     account = get_account()
@@ -157,10 +156,10 @@ def account_setConfig(_id):
     logger.debug(" + setConfig '%s' => '%s'" % (_id, value))
 
     if account.external:
-        message = "Unable to update account because user uses an external account management"
+        message = "Unable to update account because \
+user uses an external account management"
         logger.warning(message)
         return {'total': 0, 'success': False, 'data': [{'message': message}]}
-
 
     if value:
         if _id == "shadowpasswd":
@@ -169,11 +168,12 @@ def account_setConfig(_id):
             account.data[_id] = value
 
         storage.put(account, account=account)
-        output={'total': 0, 'success': True, 'data': []}
+        output = {'total': 0, 'success': True, 'data': []}
     else:
-        output={'total': 0, 'success': False, 'data': []}
+        output = {'total': 0, 'success': False, 'data': []}
 
     return output
+
 
 @get('/account/getAuthKey/:dest_account')
 def account_getAuthKey(dest_account):
@@ -182,33 +182,34 @@ def account_getAuthKey(dest_account):
 
     #------------------------get accounts----------------------
     account = get_account()
-    storage = get_storage(namespace='object',account=account)
+    storage = get_storage(namespace='object', account=account)
 
     _id = 'account.%s' % dest_account
 
     try:
-        aim_account = Account(storage.get(_id,account=account))
+        aim_account = Account(storage.get(_id, account=account))
 
-        return {'total':1,'success':True,'data':{'authkey':aim_account.get_authkey()}}
-    except Exception,err:
+        return {'total': 1, 'success': True, 'data':
+        {'authkey': aim_account.get_authkey()}}
+    except Exception as err:
         logger.debug('Error while fetching account : %s' % err)
-        return {'total':0,'success':False,'data':{'output':str(err)}}
+        return {'total': 0, 'success': False, 'data': {'output': str(err)}}
 
 
-
-@get('/account/getNewAuthKey/:dest_account', checkAuthPlugin={'authorized_grp':'group.CPS_authkey'})
+@get('/account/getNewAuthKey/:dest_account',
+    checkAuthPlugin={'authorized_grp': 'group.CPS_authkey'})
 def account_newAuthKey(dest_account):
     if not dest_account:
         return HTTPError(404, 'No account specified')
 
     #------------------------get accounts----------------------
     account = get_account()
-    storage = get_storage(namespace='object',account=account)
+    storage = get_storage(namespace='object', account=account)
 
     _id = 'account.%s' % dest_account
 
     try:
-        aim_account = Account(storage.get(_id,account=account))
+        aim_account = Account(storage.get(_id, account=account))
     except:
         logger.debug('aimed account not found')
         return HTTPError(404, 'Wrong account name or no enough rights')
@@ -218,19 +219,22 @@ def account_newAuthKey(dest_account):
 
     try:
         aim_account.generate_new_authkey()
-        storage.put(aim_account,account=account)
+        storage.put(aim_account, account=account)
         logger.debug('New auth key is : %s' % aim_account.get_authkey())
-        return {'total': 0, 'success': True, 'data': {'authkey': aim_account.get_authkey(),'account':aim_account.user}}
-    except Exception,err:
+        return {'total': 0, 'success': True, 'data':
+        {'authkey': aim_account.get_authkey(), 'account': aim_account.user}}
+    except Exception as err:
         logger.error('Error while updating auth key : %s' % err)
         return {'total': 0, 'success': False, 'data': {}}
 
-#### GET
+
 @get('/account/:_id')
 @get('/account/')
 def account_get(_id=None):
+
+    ctype = 'account'
+
     namespace = 'object'
-    ctype= 'account'
 
     #get the session (security)
     account = get_account()
@@ -240,21 +244,21 @@ def account_get(_id=None):
 
     limit = int(request.params.get('limit', default=20))
     #page =  int(request.params.get('page', default=0))
-    start =  int(request.params.get('start', default=0))
+    start = int(request.params.get('start', default=0))
     #groups = request.params.get('groups', default=None)
     search = request.params.get('search', default=None)
 
     logger.debug("GET:")
-    logger.debug(" + User: "+str(account.user))
-    logger.debug(" + Group(s): "+str(account.groups))
-    logger.debug(" + namespace: "+str(namespace))
-    logger.debug(" + Ctype: "+str(ctype))
-    logger.debug(" + _id: "+str(_id))
-    logger.debug(" + Limit: "+str(limit))
-    #logger.debug(" + Page: "+str(page))
-    logger.debug(" + Start: "+str(start))
-    #logger.debug(" + Groups: "+str(groups))
-    logger.debug(" + Search: "+str(search))
+    logger.debug(" + User: " + str(account.user))
+    logger.debug(" + Group(s): " + str(account.groups))
+    logger.debug(" + namespace: " + str(namespace))
+    logger.debug(" + Ctype: " + str(ctype))
+    logger.debug(" + _id: " + str(_id))
+    logger.debug(" + Limit: " + str(limit))
+    #logger.debug(" + Page: " + str(page))
+    logger.debug(" + Start: " + str(start))
+    #logger.debug(" + Groups: " + str(groups))
+    logger.debug(" + Search: " + str(search))
 
     storage = get_storage(namespace=namespace)
 
@@ -264,14 +268,14 @@ def account_get(_id=None):
         mfilter = {'crecord_type': ctype}
     if _id:
         try:
-            records = [ storage.get(_id, account=account) ]
+            records = [storage.get(_id, account=account)]
             total = 1
-        except Exception, err:
-            self.logger.error("Exception !\nReason: %s" % err)
-            return HTTPError(404, _id+" Not Found")
+        except Exception as err:
+            logger.error("Exception !\nReason: %s" % err)
+            return HTTPError(404, _id + " Not Found")
 
     else:
-        records, total =  storage.find(mfilter, limit=limit, offset=start, account=account, with_total=True)
+        records, total = storage.find(mfilter, limit=limit, offset=start, account=account, with_total=True)
 
     output = []
     for record in records:
@@ -280,19 +284,18 @@ def account_get(_id=None):
             data['id'] = data['_id']
             output.append(data)
 
-    output={'total': total, 'success': True, 'data': output}
+    output = {'total': total, 'success': True, 'data': output}
 
     #logger.debug(" + Output: "+str(output))
 
     return output
 
 
-#### POST
-@post('/account/', checkAuthPlugin={'authorized_grp':group_managing_access})
+@post('/account/', checkAuthPlugin={'authorized_grp': group_managing_access})
 def account_post():
     #get the session (security)
     account = get_account()
-    storage = get_storage(namespace='object',account=account)
+    storage = get_storage(namespace='object', account=account)
 
     logger.debug("POST:")
 
@@ -300,7 +303,7 @@ def account_post():
     if not data:
         return HTTPError(400, "No data received")
 
-    data = json.loads(data)
+    data = loads(data)
 
     ## Clean data
     try:
@@ -315,14 +318,15 @@ def account_post():
         already_exist = False
         _id = "account.%s" % data['user']
         try:
-            record = storage.get(_id, account=account)
+            storage.get(_id, account=account)
             logger.debug('Update account %s' % _id)
             already_exist = True
         except:
             logger.debug('Create account %s' % _id)
 
         if already_exist:
-            return HTTPError(405, "Account already exist, use put method for update !")
+            return HTTPError(405,
+                "Account already exist, use put method for update !")
 
         #----------------------------CREATION--------------------------
         create_account(data)
@@ -330,8 +334,9 @@ def account_post():
     else:
         logger.warning('WARNING : no user specified ...')
 
-@put('/account/',checkAuthPlugin={'authorized_grp':group_managing_access})
-@put('/account/:_id',checkAuthPlugin={'authorized_grp':group_managing_access})
+
+@put('/account/', checkAuthPlugin={'authorized_grp': group_managing_access})
+@put('/account/:_id', checkAuthPlugin={'authorized_grp': group_managing_access})
 def account_update(_id=None):
     account = get_account()
     storage = get_storage(namespace='object', account=account)
@@ -341,9 +346,9 @@ def account_update(_id=None):
     data = request.body.readline()
     if not data:
         return HTTPError(400, "No data received")
-    data = json.loads(data)
+    data = loads(data)
 
-    if not isinstance(data,list):
+    if not isinstance(data, list):
         data = [data]
 
     for item in data:
@@ -359,7 +364,7 @@ def account_update(_id=None):
             return HTTPError(400, "No id recieved")
 
         try:
-            record = Account(storage.get(_id ,account=account))
+            record = Account(storage.get(_id, account=account))
             logger.debug('Update account %s' % _id)
         except:
             logger.debug('Account %s not found' % _id)
@@ -392,17 +397,17 @@ def account_update(_id=None):
             record.groups = groups
             del item['groups']
 
-
         for _key in item:
-            logger.debug('Update %s with %s' % (str(_key),item[_key]))
-            setattr(record,_key,item[_key])
+            logger.debug('Update %s with %s' % (str(_key), item[_key]))
+            setattr(record, _key, item[_key])
 
         storage.put(record, account=account)
         reload_account(record._id)
 
-#### DELETE
-@delete('/account/',checkAuthPlugin={'authorized_grp':group_managing_access})
-@delete('/account/:_id',checkAuthPlugin={'authorized_grp':group_managing_access})
+
+@delete('/account/', checkAuthPlugin={'authorized_grp': group_managing_access})
+@delete('/account/:_id',
+    checkAuthPlugin={'authorized_grp': group_managing_access})
 def account_delete(_id=None):
     account = get_account()
     storage = get_storage(namespace='object')
@@ -412,7 +417,7 @@ def account_delete(_id=None):
     data = request.body.readline()
     if data:
         try:
-            data = json.loads(data)
+            data = loads(data)
         except:
             logger.warning('Invalid data in request payload')
             data = None
@@ -425,10 +430,10 @@ def account_delete(_id=None):
             _id = []
 
             for item in data:
-                if isinstance(item,str):
+                if isinstance(item, str):
                     _id.append(item)
 
-                if isinstance(item,dict):
+                if isinstance(item, dict):
                     item_id = item.get('_id', item.get('id', None))
                     if item_id:
                         _id.append(item_id)
@@ -447,26 +452,26 @@ def account_delete(_id=None):
         storage.remove(_id, account=account)
         delete_session(_id)
     except:
-        return HTTPError(404, _id+" Not Found")
+        return HTTPError(404, _id + " Not Found")
 
     #delete all object
     if not isinstance(_id, list):
         _id = [_id]
 
-    mfilter = {'aaa_owner':{'$in':_id}}
-    record_list = storage.find(mfilter=mfilter,account=account)
+    mfilter = {'aaa_owner': {'$in': _id}}
+    record_list = storage.find(mfilter=mfilter, account=account)
     record_id_list = [record._id for record in record_list]
 
     try:
-        storage.remove(record_id_list,account=account)
+        storage.remove(record_id_list, account=account)
     except Exception as err:
-        log.error('Error While suppressing account items: %s' % err)
+        logger.error('Error While suppressing account items: %s' % err)
 
     logger.debug('account removed')
 
-### GROUP
-@post('/account/addToGroup/:group_id/:account_id',checkAuthPlugin={'authorized_grp':group_managing_access})
-def add_account_to_group(group_id=None,account_id=None):
+
+@post('/account/addToGroup/:group_id/:account_id', checkAuthPlugin={'authorized_grp':group_managing_access})
+def add_account_to_group(group_id=None, account_id=None):
     session_account = get_account()
     storage = get_storage(namespace='object', account=session_account)
 
@@ -480,33 +485,36 @@ def add_account_to_group(group_id=None,account_id=None):
     if account_id.find('account.') == -1:
         account_id = 'account.%s' % account_id
 
-    logger.debug('Try to get %s and %s' % (account_id,group_id))
+    logger.debug('Try to get %s and %s' % (account_id, group_id))
 
     try:
         account_record = storage.get(account_id, account=session_account)
         account = Account(account_record)
         group_record = storage.get(group_id, account=session_account)
-        group = cgroup(group_record)
+        group = Group(group_record)
 
-    except Exception,err:
-        logger.error('error while fetching %s and %s : %s' % (account_id,group_id,err))
+    except Exception as err:
+        logger.error('error while fetching %s and %s : %s' % (
+            account_id, group_id, err))
         return HTTPError(403, 'Record not found or insufficient rights')
 
     #put in group
     group.add_accounts(account)
 
     try:
-        storage.put([group,account])
+        storage.put([group, account])
     except:
         logger.error('Put group/account in db goes wrong')
         return HTTPError(500, 'Put group/account in db goes wrong')
 
-    return {'total' :1, 'success' : True, 'data':[]}
+    return {'total': 1, 'success': True, 'data': []}
 
-@post('/account/removeFromGroup/:group_id/:account_id',checkAuthPlugin={'authorized_grp':group_managing_access})
-def remove_account_from_group(group_id=None,account_id=None):
+
+@post('/account/removeFromGroup/:group_id/:account_id',
+    checkAuthPlugin={'authorized_grp': group_managing_access})
+def remove_account_from_group(group_id=None, account_id=None):
     session_account = get_account()
-    storage = get_storage(namespace='object',account=session_account)
+    storage = get_storage(namespace='object', account=session_account)
 
     if not group_id or not account_id:
         return HTTPError(400, 'Bad request, must specified group and account')
@@ -518,16 +526,17 @@ def remove_account_from_group(group_id=None,account_id=None):
     if account_id.find('account.') == -1:
         account_id = 'account.%s' % account_id
 
-    logger.debug('Try to get %s and %s' % (account_id,group_id))
+    logger.debug('Try to get %s and %s' % (account_id, group_id))
 
     try:
-        account_record = storage.get(account_id,account=session_account)
+        account_record = storage.get(account_id, account=session_account)
         account = Account(account_record)
-        group_record = storage.get(group_id,account=session_account)
-        group = cgroup(group_record)
+        group_record = storage.get(group_id, account=session_account)
+        group = Group(group_record)
 
-    except Exception,err:
-        logger.error('error while fetching %s and %s : %s' % (account_id,group_id,err))
+    except Exception as err:
+        logger.error('error while fetching %s and %s : %s' % (
+            account_id, group_id, err))
         return HTTPError(403, 'Record not found or insufficient rights')
 
     #remove in group
@@ -535,12 +544,12 @@ def remove_account_from_group(group_id=None,account_id=None):
     group.remove_accounts(account)
 
     try:
-        storage.put([group,account])
+        storage.put([group, account])
     except:
         logger.error('Put group/account in db goes wrong')
         return HTTPError(500, 'Put group/account in db goes wrong')
 
-    return {'total' :1, 'success' : True, 'data':[]}
+    return {'total': 1, 'success': True, 'data': []}
 
 
 def create_account(data):
@@ -581,7 +590,11 @@ def create_account(data):
     rootdir = storage.get('directory.root', account=root_account)
 
     if rootdir:
-        userdir = Record({'_id': 'directory.root.%s' % new_account.user,'id': 'directory.root.%s' % new_account.user ,'expanded':'true'}, type='view_directory', name=new_account.user)
+        userdir = Record(
+            {'_id': 'directory.root.%s' % new_account.user,
+            'id': 'directory.root.%s' % new_account.user,
+            'expanded': 'true'},
+            type='view_directory', name=new_account.user)
         userdir.chown(new_account._id)
         userdir.chgrp(new_account.group)
         userdir.chmod('g-w')

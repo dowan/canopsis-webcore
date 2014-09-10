@@ -18,487 +18,482 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-import logging
-import json
+from logging import getLogger, INFO
+from json import loads
 
-
-from bottle import get, put, delete, request, HTTPError, post, \
-    response, FormsDict
+from bottle import get, put, delete, request, HTTPError, post, response
 ## Canopsis
 from canopsis.old.account import Account
 from canopsis.old.storage import get_storage
 from canopsis.old.record import Record
-import base64
+from base64 import b64decode
 
 #import protection function
 from canopsis.webcore.services.auth import get_account, check_group_rights
 
-logger = logging.getLogger("rest")
+logger = getLogger("rest")
 logger.setLevel('DEBUG')
 db = get_storage(account=Account(user='root', group='root'))
 
 ctype_to_group_access = {
-							'schedule' : 'group.CPS_schedule_admin',
-							'curve' : 'group.CPS_curve_admin',
-							'account' : 'group.CPS_account_admin',
-							'group' : 'group.CPS_account_admin',
-							'selector' : 'group.CPS_selector_admin',
-							'derogation' : 'group.CPS_derogation_admin',
-							'consolidation' : 'group.CPS_consolidation_admin'
-						}
+                            'schedule': 'group.CPS_schedule_admin',
+                            'curve': 'group.CPS_curve_admin',
+                            'account': 'group.CPS_account_admin',
+                            'group': 'group.CPS_account_admin',
+                            'selector': 'group.CPS_selector_admin',
+                            'derogation': 'group.CPS_derogation_admin',
+                            'consolidation': 'group.CPS_consolidation_admin'
+                        }
 
-# Gets database indexes
+
 @get('/rest/indexes/:collection')
 def rest_get_db_indexes(collection):
 
-	storage = get_storage(namespace=collection, logging_level=logger.level).get_backend()
+    storage = get_storage(namespace=collection, logging_level=logger.level).get_backend()
 
-	indexes = storage.index_information()
+    indexes = storage.index_information()
 
-	logger.info('Get indexes from collection {}'.format(collection))
+    logger.info('Get indexes from collection {}'.format(collection))
 
-	return {'collection': collection, 'indexes': indexes}
+    return {'collection': collection, 'indexes': indexes}
 
 
 #########################################################################
 #### GET Media
 @get('/rest/media/:namespace/:_id')
 def rest_get_media(namespace, _id):
-	account = get_account()
-	storage = get_storage(namespace=namespace, logging_level=logger.level)
+    account = get_account()
+    storage = get_storage(namespace=namespace, logging_level=logger.level)
 
-	logger.debug("Get media '%s' from '%s':" % (_id, namespace))
+    logger.debug("Get media '%s' from '%s':" % (_id, namespace))
 
-	try:
-		raw = storage.get(_id, account=account, namespace=namespace, mfields=["media_bin", "media_name", "media_type"], ignore_bin=False)
+    try:
+        raw = storage.get(_id, account=account, namespace=namespace, mfields=["media_bin", "media_name", "media_type"], ignore_bin=False)
 
-		media_type = raw.get('media_type', None)
-		media_name = raw.get('media_name', None)
-		media_bin = raw.get('media_bin', None)
+        media_type = raw.get('media_type', None)
+        media_name = raw.get('media_name', None)
+        media_bin = raw.get('media_bin', None)
 
-	except Exception, err:
-		logger.error(err)
-		return HTTPError(404, err)
+    except Exception as err:
+        logger.error(err)
+        return HTTPError(404, err)
 
-	if not media_type or not media_name or not media_bin:
-		logger.error("Insufficient field in record")
-		return HTTPError(404, "Insufficient field in record")
+    if not media_type or not media_name or not media_bin:
+        logger.error("Insufficient field in record")
+        return HTTPError(404, "Insufficient field in record")
 
-	logger.debug(" + media_type: %s" % media_type)
-	logger.debug(" + media_name: %s" % media_name)
-	logger.debug(" + media_bin:  %s" % len(media_bin))
+    logger.debug(" + media_type: %s" % media_type)
+    logger.debug(" + media_name: %s" % media_name)
+    logger.debug(" + media_bin:  %s" % len(media_bin))
 
-	response.headers['Content-Disposition'] = 'attachment; filename="%s"' % media_name
-	response.headers['Content-Type'] = media_type
+    response.headers['Content-Disposition'] = 'attachment; filename="%s"' % media_name
+    response.headers['Content-Type'] = media_type
 
-	return base64.b64decode(media_bin)
+    return b64decode(media_bin)
+
 
 @get('/rest/events_trees/:rk')
 @get('/rest/events_trees')
 def rest_trees_get(rk=None):
-	"""
-		REST API Handler to get events trees.
-	"""
+    """
+        REST API Handler to get events trees.
+    """
 
-	account = get_account()
-	storage = get_storage(logging_level=logging.INFO, namespace='events_trees', account=account)
+    account = get_account()
+    storage = get_storage(logging_level=INFO, namespace='events_trees', account=account)
+
+    if not rk:
+        logger.debug('Getting whole collection.')
+
+        records = storage.find()
+
+        return {
+            'total': len(records),
+            'success': True,
+            'data': [r.dump() for r in records]
+        }
+
+    else:
+        logger.debug("Getting tree matching rk '{0}'".format(rk))
+
+        # Get Routing Key components
+        rkcomps = rk.split('.')
+
+        # Fetch root tree
+        record = storage.find_one(mfilter={'rk': rkcomps[0]})
+
+        if not record:
+            logger.error('No matching root node for rk {0}'.format(rk))
+            return HTTPError(404, "There is no events tree matching the routing key")
+
+        # Now go to the matching node
+        tree = record.dump(json=True)
+
+        if rk == tree['rk']:
+            return {
+                'total': 1,
+                'success': True,
+                'data': tree
+            }
+
+        current_node = tree
+        current_rk = rkcomps[0]
+
+        for rkcomp in rkcomps[1:]:
+            current_rk = '{0}.{1}'.format(current_rk, rkcomp)
+
+            # Find the node in the children list
+            for child in current_node['child_nodes']:
+                if child['rk'] == current_rk:
+                    current_node = child
+                    break
+
+            # If not found, raise an error
+            else:
+                logger.error('No matching node for rk {0}'.format(rk))
+                return HTTPError(404, "There is no events tree matching the routing key")
+
+        # Return the sub-tree
+        return {
+            'total': 1,
+            'success': True,
+            'data': current_node
+        }
 
 
-	if not rk:
-		logger.debug('Getting whole collection.')
-
-		records = storage.find()
-
-		return {
-			'total': len(records),
-			'success': True,
-			'data': [r.dump() for r in records]
-		}
-
-	else:
-		logger.debug("Getting tree matching rk '{0}'".format(rk))
-
-	
-		# Get Routing Key components
-		rkcomps = rk.split('.')
-
-		# Fetch root tree
-		record = storage.find_one(mfilter={'rk': rkcomps[0]})
-
-		if not record:
-			logger.error('No matching root node for rk {0}'.format(rk))
-			return HTTPError(404, "There is no events tree matching the routing key")
-
-		# Now go to the matching node
-		tree = record.dump(json=True)
-
-		if rk == tree['rk']:
-			return {
-				'total': 1,
-				'success': True,
-				'data': tree
-			}
-
-		current_node = tree
-		current_rk = rkcomps[0]
-
-		for rkcomp in rkcomps[1:]:
-			current_rk = '{0}.{1}'.format(current_rk, rkcomp)
-
-			# Find the node in the children list
-			for child in current_node['child_nodes']:
-				if child['rk'] == current_rk:
-					current_node = child
-					break
-
-			# If not found, raise an error
-			else:
-				logger.error('No matching node for rk {0}'.format(rk))
-				return HTTPError(404, "There is no events tree matching the routing key")
-
-		# Return the sub-tree
-		return {
-			'total': 1,
-			'success': True,
-			'data': current_node
-		}
-
-#### GET
 def rest_get(namespace, ctype=None, _id=None, params=None):
-	#get the session (security)
-	account = get_account()
-	logger.debug('params')
+    #get the session (security)
+    account = get_account()
+    logger.debug('params')
 
-	logger.debug(dict(params))
-	limit		= int(params.get('limit', default=20))
-	start		= int(params.get('start', default=0))
-	groups		= params.get('groups', default=None)
-	search		= params.get('search', default=None)
-	filter		= params.get('filter', default=None)
-	sort		= params.get('sort', default=None)
-	query		= params.get('query', default=None)
-	onlyWritable	= params.get('onlyWritable', default=False)
-	noInternal	= params.get('noInternal', default=False)
-	ids			= params.get('ids', default=[])
-	multi			= params.get('multi', default=None)
+    logger.debug(dict(params))
+    limit = int(params.get('limit', default=20))
+    start = int(params.get('start', default=0))
+    groups = params.get('groups', default=None)
+    search = params.get('search', default=None)
+    filter = params.get('filter', default=None)
+    sort = params.get('sort', default=None)
+    query = params.get('query', default=None)
+    onlyWritable = params.get('onlyWritable', default=False)
+    noInternal = params.get('noInternal', default=False)
+    ids = params.get('ids', default=[])
+    multi = params.get('multi', default=None)
 
-	get_id			= request.params.get('_id', default=None)
+    get_id = request.params.get('_id', default=None)
 
-	fields = request.params.get('fields', default=None)
+    fields = request.params.get('fields', default=None)
 
-	if not _id and get_id:
-		_id  = get_id
+    if not _id and get_id:
+        _id = get_id
 
-	if not isinstance(ids, list):
-		try:
-			ids = json.loads(ids)
-		except Exception, err:
-			logger.error("Impossible to decode ids: %s: %s" % (ids, err))
+    if not isinstance(ids, list):
+        try:
+            ids = loads(ids)
+        except Exception as err:
+            logger.error("Impossible to decode ids: %s: %s" % (ids, err))
 
-	if filter:
-		try:
-			filter = json.loads(filter)
-		except Exception, err:
-			logger.error("Impossible to decode filter: %s: %s" % (filter, err))
-			filter = None
+    if filter:
+        try:
+            filter = loads(filter)
+        except Exception as err:
+            logger.error("Impossible to decode filter: %s: %s" % (filter, err))
+            filter = None
 
-	msort = []
-	if sort:
-		#[{"property":"timestamp","direction":"DESC"}]
-		sort = json.loads(sort)
-		for item in sort:
-			direction = 1
-			if str(item['direction']) == "DESC":
-				direction = -1
+    msort = []
+    if sort:
+        #[{"property":"timestamp","direction":"DESC"}]
+        sort = loads(sort)
+        for item in sort:
+            direction = 1
+            if str(item['direction']) == "DESC":
+                direction = -1
 
-			msort.append((str(item['property']), direction))
+            msort.append((str(item['property']), direction))
 
+    logger.debug("GET:")
 
-	logger.debug("GET:")
+    logger.debug(" + User: " + str(account.user))
+    logger.debug(" + Group(s): " + str(account.groups))
+    logger.debug(" + namespace: " + str(namespace))
+    logger.debug(" + Ctype: " + str(ctype))
+    logger.debug(" + _id: " + str(_id))
+    logger.debug(" + ids: " + str(ids))
+    logger.debug(" + Limit: " + str(limit))
+    logger.debug(" + Start: " + str(start))
+    logger.debug(" + Groups: " + str(groups))
+    logger.debug(" + onlyWritable: " + str(onlyWritable))
+    logger.debug(" + Sort: " + str(sort))
+    logger.debug(" + MSort: " + str(msort))
+    logger.debug(" + Search: " + str(search))
+    logger.debug(" + filter: " + str(filter))
+    logger.debug(" + query: " + str(query))
+    logger.debug(" + multi: " + str(multi))
 
-	logger.debug(" + User: "+str(account.user))
-	logger.debug(" + Group(s): "+str(account.groups))
-	logger.debug(" + namespace: "+str(namespace))
-	logger.debug(" + Ctype: "+str(ctype))
-	logger.debug(" + _id: "+str(_id))
-	logger.debug(" + ids: "+str(ids))
-	logger.debug(" + Limit: "+str(limit))
-	logger.debug(" + Start: "+str(start))
-	logger.debug(" + Groups: "+str(groups))
-	logger.debug(" + onlyWritable: "+str(onlyWritable))
-	logger.debug(" + Sort: "+str(sort))
-	logger.debug(" + MSort: "+str(msort))
-	logger.debug(" + Search: "+str(search))
-	logger.debug(" + filter: "+str(filter))
-	logger.debug(" + query: "+str(query))
-	logger.debug(" + multi: "+str(multi))
+    storage = get_storage(namespace=namespace, logging_level=logger.level)
 
+    total = 0
 
+    mfilter = {}
+    if isinstance(filter, list):
+        for item in filter:
+            mfilter[item['property']] = item['value']
 
-	storage = get_storage(namespace=namespace, logging_level=logger.level)
+    elif isinstance(filter, dict):
+        mfilter = filter
 
-	total = 0
+    records = []
+    if multi:
+        test = multi.split(',')
+        mfilter["crecord_type"] = {'$in': test}
 
-	mfilter = {}
-	if isinstance(filter, list):
-		for item in filter:
-			mfilter[item['property']] = item['value']
+    else:
+        if ctype:
+            if mfilter:
+                mfilter['crecord_type'] = ctype
+            else:
+                mfilter = {'crecord_type': ctype}
 
-	elif isinstance(filter, dict):
-		mfilter = filter
+    if query:
+        if mfilter:
+            mfilter['crecord_name'] = {'$regex': '.*%s.*' % query,
+            '$options': 'i'}
+        else:
+            mfilter = {'crecord_name':
+            {'$regex': '.*%s.*' % query, '$options': 'i'}}
 
-	records = []
-	if multi:
-		test = multi.split(',')
-		mfilter["crecord_type"] = { '$in': test }
+    if _id:
+        ids = _id.split(',')
 
-	else :
-		if ctype:
-			if mfilter:
-				mfilter['crecord_type'] = ctype
-			else:
-				mfilter = {'crecord_type': ctype}
+    if ids:
+        try:
+            records = storage.get(ids, account=account)
+            if isinstance(records, Record):
+                records = [records]
+                total = 1
+            elif isinstance(records, list):
+                total = len(records)
+            else:
+                total = 0
+        except Exception as err:
+            logger.debug('Error: %s' % err)
+            total = 0
 
-	if query:
-		if mfilter:
-			mfilter['crecord_name'] = { '$regex' : '.*'+str(query)+'.*', '$options': 'i' }
-		else:
-			mfilter = {'crecord_name': { '$regex' : '.*'+str(query)+'.*', '$options': 'i' }}
+        if total == 0:
+            return HTTPError(404, str(ids) + " Not Found")
 
+    else:
+        if search:
+            mfilter['_id'] = {'$regex': '.*%s.*' % search, '$options': 'i'}
 
-	if _id:
-		ids = _id.split(',')
+        logger.debug(" + mfilter: " + str(mfilter))
+        logger.debug(" + mfilter: " + str(mfilter))
 
-	if ids:
-		try:
-			records = storage.get(ids, account=account)
-			if isinstance(records,Record):
-				records = [records]
-				total = 1
-			elif isinstance(records,list):
-				total = len(records)
-			else:
-				total = 0
-		except Exception, err:
-			logger.debug('Error: %s' % err)
-			total = 0
+        #clean mfilter
+        #mfilter = clean_mfilter(mfilter)
 
-		if total == 0:
-			return HTTPError(404, str(ids) +" Not Found")
+        records, total = storage.find(
+            mfilter, sort=msort, limit=limit, offset=start, account=account,
+            with_total=True, namespace=namespace)
 
-	else:
-		if search:
-			mfilter['_id'] = { '$regex' : '.*'+search+'.*', '$options': 'i' }
+    output = []
 
-		logger.debug(" + mfilter: "+str(mfilter))
-		logger.debug(" + mfilter: "+str(mfilter))
+    #----------------dump record and post filtering-------
+    for record in records:
+        if record:
+            do_dump = True
 
-		#clean mfilter
-		#mfilter = clean_mfilter(mfilter)
+            if onlyWritable:
+                if not record.check_write(account=account):
+                    do_dump = False
 
-		records, total = storage.find( mfilter, sort=msort, limit=limit, offset=start, account=account, with_total=True, namespace=namespace)
+            if noInternal:
+                if 'internal' in record.data and record.data['internal']:
+                    do_dump = False
 
-	output = []
+            if do_dump:
+                data = record.dump(json=True)
+                data['id'] = data['_id']
+                if 'next_run_time' in data:
+                    data['next_run_time'] = str(data['next_run_time'])
 
-	#----------------dump record and post filtering-------
-	for record in records:
-		if record:
-			do_dump = True
+                #Clean non wanted field
+                if fields:
+                    fields_to_delete = []
+                    for item in data:
+                        if not item in fields:
+                            fields_to_delete.append(item)
+                    for field in fields_to_delete:
+                        del data[field]
 
-			if onlyWritable:
-				if not record.check_write(account=account):
-					do_dump = False
+                output.append(data)
 
-			if noInternal:
-				if 'internal' in record.data and record.data['internal']:
-					do_dump = False
+    output = {'total': total, 'success': True, 'data': output}
 
-			if do_dump:
-				data = record.dump(json=True)
-				data['id'] = data['_id']
-				if data.has_key('next_run_time'):
-					data['next_run_time'] = str(data['next_run_time'])
-
-				#Clean non wanted field
-				if fields:
-					fields_to_delete = []
-					for item in data:
-						if not item in fields:
-							fields_to_delete.append(item)
-					for field in fields_to_delete:
-						del data[field]
-
-
-				output.append(data)
-
-	output={'total': total, 'success': True, 'data': output}
-
-	return output
+    return output
 
 
 @get('/rest/:namespace/:ctype/:_id')
 @get('/rest/:namespace/:ctype')
 @get('/rest/:namespace')
 def rest_get_route(namespace, ctype=None, _id=None):
-	return rest_get(namespace, ctype, _id, request.params)
+    return rest_get(namespace, ctype, _id, request.params)
 
-#### POST
+
 @put('/rest/:namespace/:ctype/:_id')
 @put('/rest/:namespace/:ctype')
 @post('/rest/:namespace/:ctype/:_id')
 @post('/rest/:namespace/:ctype')
 def rest_post(namespace, ctype, _id=None):
-	#get the session (security)
-	account = get_account()
-	storage = get_storage(namespace=namespace, logging_level=logger.level)
+    #get the session (security)
+    account = get_account()
+    storage = get_storage(namespace=namespace, logging_level=logger.level)
 
-	#check rights on specific ctype (check ctype_to_group_access variable below)
-	if ctype in ctype_to_group_access:
-		if not check_group_rights(account,ctype_to_group_access[ctype]):
-			return HTTPError(403, 'Insufficient rights')
+    #check rights on specific ctype (check ctype_to_group_access variable below)
+    if ctype in ctype_to_group_access:
+        if not check_group_rights(account, ctype_to_group_access[ctype]):
+            return HTTPError(403, 'Insufficient rights')
 
-	logger.debug("POST:")
+    logger.debug("POST:")
 
-	items = request.body.readline()
-	if not items:
-		return HTTPError(400, "No data received")
+    items = request.body.readline()
+    if not items:
+        return HTTPError(400, "No data received")
 
-	logger.debug(" + data: %s" % items)
-	logger.debug(" + data-type: %s" % type(items))
+    logger.debug(" + data: %s" % items)
+    logger.debug(" + data-type: %s" % type(items))
 
-	if isinstance(items, str):
-		try:
-			items = json.loads(items)
-		except Exception as err:
-			logger.error("PUT: Impossible to parse data ({})".format(err))
-			return HTTPError(500, "Impossible to parse data")
+    if isinstance(items, str):
+        try:
+            items = loads(items)
+        except Exception as err:
+            logger.error("PUT: Impossible to parse data ({})".format(err))
+            return HTTPError(500, "Impossible to parse data")
 
-	if not isinstance(items, list):
-		items = [items]
+    if not isinstance(items, list):
+        items = [items]
 
-	for data in items:
-	##	data['crecord_type'] = ctype
+    for data in items:
+    ##  data['crecord_type'] = ctype
 
-		if not _id:
-			_id = data.get('_id', None)
+        if not _id:
+            _id = data.get('_id', None)
 
-			if not _id:
-				_id = data.get('id', None)
+            if not _id:
+                _id = data.get('id', None)
 
-			if _id:
-				_id = str(_id)
+            if _id:
+                _id = str(_id)
 
-		## Clean data
-		try:
-			del data['_id']
-		except:
-			pass
+        ## Clean data
+        try:
+            del data['_id']
+        except:
+            pass
 
-		try:
-			del data['id']
-		except:
-			pass
+        try:
+            del data['id']
+        except:
+            pass
 
-		logger.debug(" + _id:   %s" % _id)
-		logger.debug(" + ctype: %s" % ctype)
-		logger.debug(" + Data:  %s" % data)
+        logger.debug(" + _id:   %s" % _id)
+        logger.debug(" + ctype: %s" % ctype)
+        logger.debug(" + Data:  %s" % data)
 
-		## Set group
-		if data.has_key('aaa_group'):
-			group = data['aaa_group']
-		else:
-			group = account.group
+        ## Set group
+        if 'aaa_group' in data:
+            group = data['aaa_group']
+        else:
+            group = account.group
 
-		record = None
-		if _id:
-			try:
-				record = storage.get(_id ,account=account)
-				logger.debug('Update record %s' % _id)
-			except:
-				logger.debug('Create record %s' % _id)
+        record = None
+        if _id:
+            try:
+                record = storage.get(_id, account=account)
+                logger.debug('Update record %s' % _id)
+            except:
+                logger.debug('Create record %s' % _id)
 
-		if record:
-			for key in dict(data).keys():
-				record.data[key] = data[key]
+        if record:
+            for key in dict(data).keys():
+                record.data[key] = data[key]
 
-			# Update Name
-			try:
-				record.name = data['crecord_name']
-			except:
-				pass
+            # Update Name
+            try:
+                record.name = data['crecord_name']
+            except:
+                pass
 
-		else:
-			raw_record = Record(_id=_id, _type=str(ctype)).dump()
-			logger.debug(' + raw_record: %s' % raw_record)
+        else:
+            raw_record = Record(_id=_id, _type=str(ctype)).dump()
+            logger.debug(' + raw_record: %s' % raw_record)
 
-			#logger.debug(' + _id: %s (%s)' % (raw_record['_id'], type(raw_record['_id'])))
+            #logger.debug(' + _id: %s (%s)' % (raw_record['_id'], type(raw_record['_id'])))
 
-			for key in dict(data).keys():
-				raw_record[key] = data[key]
+            for key in dict(data).keys():
+                raw_record[key] = data[key]
 
-			record = Record(raw_record=raw_record)
-			logger.debug(' + dump record: %s' % record.dump())
+            record = Record(raw_record=raw_record)
+            logger.debug(' + dump record: %s' % record.dump())
 
-			record.chown(account.user)
-			record.chgrp(group)
-			#if ctype in ctype_to_group_access:
-				#record.admin_group = ctype_to_group_access[ctype]
+            record.chown(account.user)
+            record.chgrp(group)
+            #if ctype in ctype_to_group_access:
+                #record.admin_group = ctype_to_group_access[ctype]
 
-		logger.debug(' + Record: %s' % record.dump())
-		try:
-			storage.put(record, namespace=namespace, account=account)
+        logger.debug(' + Record: %s' % record.dump())
+        try:
+            storage.put(record, namespace=namespace, account=account)
 
-		except Exception as err:
-			logger.error('Impossible to put ({})'.format(err))
-			return HTTPError(403, "Access denied")
+        except Exception as err:
+            logger.error('Impossible to put ({})'.format(err))
+            return HTTPError(403, "Access denied")
 
-#### DELETE
+
 @delete('/rest/:namespace/:ctype/:_id')
 @delete('/rest/:namespace/:ctype')
 def rest_delete(namespace, ctype, _id=None):
-	account = get_account()
-	storage = get_storage(namespace=namespace, logging_level=logger.level)
+    account = get_account()
+    storage = get_storage(namespace=namespace, logging_level=logger.level)
 
-	logger.debug("DELETE:")
+    logger.debug("DELETE:")
 
-	data = request.body.readline()
-	if data:
-		try:
-			data = json.loads(data)
-		except:
-			logger.warning('Invalid data in request payload')
-			data = None
+    data = request.body.readline()
+    if data:
+        try:
+            data = loads(data)
+        except:
+            logger.warning('Invalid data in request payload')
+            data = None
 
-	if data:
-		logger.debug(" + Data: %s" % data)
+    if data:
+        logger.debug(" + Data: %s" % data)
 
-		if isinstance(data, list):
-			logger.debug(" + Attempt to remove %i item from db" % len(data))
-			_id = []
+        if isinstance(data, list):
+            logger.debug(" + Attempt to remove %i item from db" % len(data))
+            _id = []
 
-			for item in data:
-				if isinstance(item,str):
-					_id.append(item)
+            for item in data:
+                if isinstance(item, str):
+                    _id.append(item)
 
-				if isinstance(item,dict):
-					item_id = item.get('_id', item.get('id', None))
-					if item_id:
-						_id.append(item_id)
+                if isinstance(item, dict):
+                    item_id = item.get('_id', item.get('id', None))
+                    if item_id:
+                        _id.append(item_id)
 
-		if isinstance(data, str):
-			_id = data
+        if isinstance(data, str):
+            _id = data
 
-		if isinstance(data, dict):
-			_id = data.get('_id', data.get('id', None))
+        if isinstance(data, dict):
+            _id = data.get('_id', data.get('id', None))
 
-	if not _id:
-		logger.error("DELETE: No '_id' field in header ...")
-		return HTTPError(404, "No '_id' field in header ...")
+    if not _id:
+        logger.error("DELETE: No '_id' field in header ...")
+        return HTTPError(404, "No '_id' field in header ...")
 
-	logger.debug(" + _id: %s" % _id)
+    logger.debug(" + _id: %s" % _id)
 
-	try:
-		storage.remove(_id, account=account)
-	except:
-		return HTTPError(404, _id+" Not Found")
-
+    try:
+        storage.remove(_id, account=account)
+    except:
+        return HTTPError(404, _id + " Not Found")

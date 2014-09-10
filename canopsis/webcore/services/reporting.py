@@ -18,8 +18,8 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-import logging
-import json
+from logging import getLogger
+from json import loads
 
 from bottle import request, post, response
 
@@ -35,45 +35,46 @@ from canopsis.engines import task_reporting
 
 #import protection function
 from canopsis.webcore.services.auth import get_account
-import time
 
 
-logger = logging.getLogger('Reporting')
+logger = getLogger('Reporting')
 logger.setLevel('DEBUG')
 
 #group who have right to access
 group_managing_access = ['group.CPS_reporting_admin']
 
-#########################################################################
 
-@post('/reporting/:startTime/:stopTime/:view_name/:mail/:timezone/',checkAuthPlugin={'authorized_grp':group_managing_access})
-@post('/reporting/:startTime/:stopTime/:view_name/:mail/',checkAuthPlugin={'authorized_grp':group_managing_access})
-@post('/reporting/:startTime/:stopTime/:view_name/',checkAuthPlugin={'authorized_grp':group_managing_access})
-def generate_report(startTime, stopTime,view_name,mail=None, timezone=timezone):
+@post('/reporting/:startTime/:stopTime/:view_name/:mail/:timezone/',
+    checkAuthPlugin={'authorized_grp': group_managing_access})
+@post('/reporting/:startTime/:stopTime/:view_name/:mail/',
+    checkAuthPlugin={'authorized_grp': group_managing_access})
+@post('/reporting/:startTime/:stopTime/:view_name/',
+    checkAuthPlugin={'authorized_grp': group_managing_access})
+def generate_report(startTime, stopTime, view_name, mail=None, timezone=timezone):
     stopTime = int(stopTime)
     startTime = int(startTime)
 
     account = get_account()
-    storage = cstorage(account=account, namespace='object')
+    storage = Storage(account=account, namespace='object')
 
     if mail:
         try:
-            mail = json.loads(mail)
-        except Exception, err:
+            mail = loads(mail)
+        except Exception as err:
             logger.error('Error while transform string mail to object' % err)
             mail = None
     try:
-        record = storage.get(view_name,account=account)
-    except Exception, err:
+        record = storage.get(view_name, account=account)
+    except Exception as err:
         logger.error(err)
-        return {'total': 1, 'success': False, 'data': [str(err)] }
+        return {'total': 1, 'success': False, 'data': [str(err)]}
 
     toDate = datetime.fromtimestamp(int(stopTime))
     if startTime and startTime != -1:
         fromDate = datetime.fromtimestamp(int(startTime))
-        file_name = '%s_From_%s_To_%s.pdf' % (record.name,fromDate,toDate)
+        file_name = '%s_From_%s_To_%s.pdf' % (record.name, fromDate, toDate)
     else:
-        file_name = '%s_%s.pdf' % (record.name,toDate)
+        file_name = '%s_%s.pdf' % (record.name, toDate)
 
     logger.debug('file_name:   %s' % file_name)
     logger.debug('view_name:   %s' % view_name)
@@ -103,22 +104,25 @@ def generate_report(startTime, stopTime,view_name,mail=None, timezone=timezone):
         result.wait()
         result = result.result
 
-    except Exception, err:
-        return {'total': 1, 'success': False, 'data': [str(err)] }
+    except Exception as err:
+        return {'total': 1, 'success': False, 'data': [str(err)]}
 
     if not result or len(result['data']) == 0:
-        logger.error('Error while generating pdf : %s' % result['celery_output'])
-        return {'total': 0, 'success': False, 'data': [result['celery_output']] }
+        logger.error(
+            'Error while generating pdf : %s' % result['celery_output'])
+        return {'total': 0, 'success': False,
+        'data': [result['celery_output']]}
 
     _id = str(result['data'][0])
 
     logger.debug(' + File Id: %s' % _id)
-    return {'total': 1, 'success': True, 'data': [{'id': _id}] }
+    return {'total': 1, 'success': True, 'data': [{'id': _id}]}
+
 
 @post('/sendreport')
 def send_report():
     account = get_account()
-    reportStorage = cstorage(account=account, namespace='files')
+    reportStorage = Storage(account=account, namespace='files')
 
     recipients = request.params.get('recipients', default=None)
     _id = request.params.get('_id', default=None)
@@ -126,23 +130,24 @@ def send_report():
     subject = request.params.get('subject', default=None)
 
     meta = reportStorage.get(_id)
-    meta.__class__ = cfile
+    meta.__class__ = File
 
     mail = {
-        'account':account,
+        'account': account,
         'attachments': meta,
-        'recipients':recipients,
-        'subject':subject,
+        'recipients': recipients,
+        'subject': subject,
         'body': body,
     }
 
     try:
         task = task_mail.send.delay(**mail)
         output = task.get()
-        return {'success':True,'total':'1','data':{'output':output}}
-    except Exception, err:
+        return {'success': True, 'total': '1', 'data': {'output': output}}
+    except Exception as err:
         logger.error('Error when run subtask mail : %s' % err)
-        return {'success':False,'total':'1','data':{'output':'Mail sending failed'}}
+        return {'success': False, 'total': '1',
+        'data': {'output': 'Mail sending failed'}}
 
 
 # For highcharts
@@ -156,11 +161,10 @@ def export_svg():
     else:
         filename += ".svg"
 
-
     logger.debug("Export SVG image: %s" % filename)
 
     if svg and filename:
-        response.set_header('Content-Disposition', 'attachment; filename="%s"' % filename)
+        response.set_header(
+            'Content-Disposition', 'attachment; filename="%s"' % filename)
         response.content_type = 'image/svg+xml'
         return svg
-

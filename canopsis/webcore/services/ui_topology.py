@@ -17,7 +17,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
-import sys
+from sys import modules
+from sys import path
 from os import listdir
 from os.path import expanduser
 from logging import getLogger
@@ -30,7 +31,8 @@ from bottle import get
 logger = getLogger("ui_topology")
 
 operators_path = expanduser('~/opt/amqp2engines/engines/topology')
-sys.path.append(operators_path)
+path.append(operators_path)
+
 
 @get('/topology/getOperators')
 def get_operators():
@@ -42,8 +44,8 @@ def get_operators():
             if operator[1] == 'py':
                 module = __import__(operator[0])
                 operators.append(module.options)
-                del sys.modules[operator[0]]
-        except Exception, err:
+                del modules[operator[0]]
+        except Exception as err:
             logger.warning("Impossible to parse '%s' (%s)" % (opfile, err))
 
-    return { 'total':len(operators), 'success':True ,'data': operators }
+    return {'total': len(operators), 'success': True, 'data': operators}
