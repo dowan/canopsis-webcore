@@ -29,6 +29,9 @@ define([
         set = Ember.set;
 
     Application.ApplicationView = Ember.View.extend({
+        /**
+         * @property the css class of the main container
+         */
         rightSideCssClasses: function(){
             if(get(this, 'controller.fullscreenMode')) {
                 return 'right-side strech fullscreen';
@@ -36,6 +39,7 @@ define([
                 return 'right-side strech';
             }
         }.property('controller.fullscreenMode'),
+
 
         didInsertElement: function() {
             console.log('main template rendered, trigger $ documentready', adminLTE);

@@ -32,6 +32,10 @@ define([
         needs: ['application'],
 
         actions: {
+            /**
+             * Toggle fullscreen and regular mode, by toggling Applicationcontroller#fullscreenMode boolean.
+             * The rest of the implementation is on handlebars templates (application and userview)
+             */
             toggleFullscreen: function() {
                 console.log('toggleFullscreen');
                 var applicationController = get(this, 'controllers.application');

@@ -36,6 +36,9 @@ define([
         ]
     };
 
+    /**
+     * @class Generic form which dynamically generates its content by reading a model's schema
+     */
     FormFactory('modelform', {
 
         validationFields: Ember.computed(function() {return Ember.A();}),
@@ -64,7 +67,7 @@ define([
                     }
                 }
             }
-            return category
+            return category;
         },
 
         categories: function(){
@@ -79,7 +82,7 @@ define([
                     if (this.get('filterFieldByKey') || this.get('userPreferencesOnly')) {
                         //filter on user preferences fields only
                         //if (category)
-                        category = this.filterUserPreferenceCategory(category, this.get('filterFieldByKey'))
+                        category = this.filterUserPreferenceCategory(category, this.get('filterFieldByKey'));
                         if (category.keys.length) {
                             category_selection.push(res[i]);
                         }
@@ -141,17 +144,17 @@ define([
 
                 var override_inverse = {};
 
-                if( this.isOnCreate && this.modelname){
+                if(this.isOnCreate && this.modelname){
                     var Stringtype = this.modelname.charAt(0).toUpperCase() + this.modelname.slice(1);
                     var model = Canopsis.Application.allModels[Stringtype];
-                    if(model){
-                        for ( var fieldName in model){
-                            if ( model.hasOwnProperty(fieldName)){
+                    if(model) {
+                        for(var fieldName in model){
+                            if(model.hasOwnProperty(fieldName)) {
                                 var field = model[fieldName];
-                                if(  field && field._meta &&  field._meta.options ){
-                                    var options = field._meta.options;
-                                    if( "setOnCreate" in  options){
-                                        var value = options["setOnCreate"];
+                                if(field && field._meta &&  field._meta.options){
+                                    var metaoptions = field._meta.options;
+                                    if( "setOnCreate" in metaoptions){
+                                        var value = options.setOnCreate;
                                         this.set('formContext.' + fieldName, value);
                                     }
                                 }
@@ -162,13 +165,13 @@ define([
                 //will execute callback from options if any given
                 var options = this.get('options');
 
-                if (options && options.override_labels) {
-                    for (var key in options.override_labels) {
+                if(options && options.override_labels) {
+                    for(var key in options.override_labels) {
                         override_inverse[options.override_labels[key]] = key;
                     }
                 }
 
-                var    categories = this.get("categorized_attributes");
+                var categories = this.get("categorized_attributes");
 
                 console.log("setting fields");
                 for (var i = 0; i < categories.length; i++) {
