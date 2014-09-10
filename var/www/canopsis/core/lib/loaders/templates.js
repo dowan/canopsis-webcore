@@ -36,6 +36,8 @@ var templates = [
     { name: 'widgetslot-default' },
     { name: 'widgetslot-grey' },
 
+    { name: 'timeintervalselection' },
+
     { name: 'actionbutton-edit', classes: ["action"], icon : "pencil", label : "Edit"},
     { name: 'actionbutton-ack', classes: ["action", "toolbar"], icon : "ok", label : "Ack"},
     { name: 'actionbutton-cancel', classes: ["action", "toolbar"], icon : "ban-circle", label : "Cancel"},
