@@ -178,7 +178,13 @@ define([
 								} else {
 									createdCategory.keys[j].value = undefined;
 								}*/
-								createdCategory.keys[j].value = (!this.isOnCreate)? inspectedDataItem.get(key) : attr.options["default"];
+								var value = (!this.isOnCreate)? inspectedDataItem.get(key) : attr.options["default"];
+
+								if (attr.type === "array"){
+									var value_temp = Ember.copy(value , true);
+									value = value_temp;
+								}
+								createdCategory.keys[j].value = value;
 
 								console.log("category key ", category.keys[j].value);
 							}
