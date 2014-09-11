@@ -26,20 +26,77 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+
     Application.ComponentTimeintervalComponent = Ember.Component.extend({
         init: function () {
+
             this._super.apply(this, arguments);
+
             set(this, 'durationType', 'duration');
 
+            if (Ember.isNone(this.get('content'))) {
+                this.set('content',
+                    {
+                        startDate: 0,
+                        stopDate: 0
+                    }
+                );
+            }
+
         },
-        updateDuration: function (content) {
-            console.log('update time interval -> ', content);
+
+        onUpdate: function () {
+
+            console.log('on update timeinterval editor content', get(this, 'content'));
+
+        }.observes('content'),
+
+        updateDelayDuration: function (delay, referer) {
+
+            var content = referer.get('content');
+
+            var now = parseInt(new Date().getTime() / 1000);
+
+            content.startDate = now - delay;
+
+            referer.set('content', content);
+
+            console.log('updateDelayDuration', content);
+        },
+
+        updateStartDuration: function (startDate, referer) {
+
+            var content = referer.get('content');
+
+            content.startDate = startDate;
+
+            referer.set('content', content);
+
+            console.log('updateDelayDuration', content);
+
+        },
+
+        updateStopDuration: function (stopDate, referer) {
+
+            var content = referer.get('content');
+
+            var now = parseInt(new Date().getTime() / 1000);
+
+            content.stopDate = stopDate;
+
+            referer.set('content', content);
+
+            console.log('updateDelayDuration', content);
         },
 
         isDurationType: function (){
+
             var test = get(this, 'durationType') === 'duration';
-            console.log('testing duration type', test);
+
+            console.log('Duration type is now', get(this, 'durationType') , test);
+
             return test;
+
         }.property('durationType'),
 
         actions: {

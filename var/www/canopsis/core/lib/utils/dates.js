@@ -73,6 +73,10 @@ define([], function() {
                     time = [date, addZero(a.getMonth()), year].join('/') + ' <br>' + [hour, min, sec].join(':') ;
                     break;
 
+                case 'timeOnly':
+                    time = [hour, min, sec].join(':') ;
+                    break;
+
                 default:
                     time = [date, month, year].join(' ') + ' ' + [hour, min, sec].join(':') ;
                     break;
@@ -92,7 +96,32 @@ define([], function() {
                 dates.days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
             }
         },
-        dateFormat:'YYYY/MM/DD'
+
+        dateFormat:'YYYY/MM/DD',
+
+        diffDate: function(d1,d2,u) {
+            div = 1;
+
+            switch(u) {
+                case 's':
+                    div=1000;
+                    break;
+                case 'm':
+                    div=1000*60;
+                    break;
+                case 'h':
+                    div=1000*60*60;
+                    break;
+                case 'd':
+                    div=1000*60*60*24;
+                    break;
+                default:
+                    break;
+            }
+
+            var Diff = d2 - d1;
+            return Math.ceil((Diff/div));
+        }
     };
 
     return dates;

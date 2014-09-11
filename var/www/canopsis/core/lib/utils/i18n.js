@@ -23,25 +23,38 @@ define([
 ], function(conf) {
 
     var i18n = {
-        lang: 'fr',
         todo: {},
         translations: {},
         newTranslations: true,
         _: function(word) {
             if (i18n.translations[i18n.lang] && i18n.translations[i18n.lang][word]) {
-                return i18n.translations[i18n.lang][word];
+                return i18n.showTranslation(i18n.translations[i18n.lang][word]);
             } else {
+                var isTranslated = true;
                 //adding translation to todo list
                 if (typeof(word) === 'string' && !i18n.todo[word]) {
 
                     i18n.todo[word] = 1;
                     i18n.newTranslations = true;
+                    isTranslated = false;
+
                 }
                 //returns original not translated string
+                return i18n.showTranslation(word, isTranslated);
+            }
+        },
+        showTranslation: function (word, isTranslated) {
+            if (window.Canopsis && Canopsis.conf.SHOW_TRANSLATIONS) {
+                if(isTranslated) {
+                    circleColor = 'text-success';
+                } else {
+                    circleColor = 'text-danger';
+                }
+                return word + '<span class="fa-stack superscript"><i class="fa fa-circle fa-stack-2x ' + circleColor + '"></i><i class="fa fa-flag fa-stack-1x fa-inverse"></i></span>';
+            } else {
                 return word;
             }
         },
-
         uploadDefinitions: function () {
 
             $.ajax({
@@ -91,11 +104,29 @@ define([
                 });
             }
         },
-
+        getUserLanguage: function(){
+            $.ajax({
+                url: '/account/me',
+                success: function(data) {
+                    if (data.success && data.data && data.data.length && data.data[0].ui_language) {
+                        i18n.lang = data.data[0].ui_language;
+                        console.log('Lang initialization succeed, default language for application is set to ' + i18n.lang.toUpperCase());
+                    } else {
+                        console.error('Lang data fetch failed, default language for application is set to EN', data);
+                        i18n.lang = 'en';
+                    }
+                },
+                async: false
+            }).fail(function () {
+                console.error('Lang initialization failed, default language for application is set to EN');
+                i18n.uploadDefinitions();
+            });
+        }
     };
 
     window.__ = i18n._;
 
+    i18n.getUserLanguage();
     i18n.downloadDefinitions();
 
     if (conf.DEBUG && conf.TRANSLATE) {

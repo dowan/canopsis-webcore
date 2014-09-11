@@ -25,12 +25,13 @@
                     {{#each attr in controller.shown_columns}}
                         {{#group}}
                             {{#if attr.options.show}}
-                                <th {{bind-attr class="attr.headerClassName"}} {{action sort attr}}>
+                                <th {{action sort attr}}>
                                     {{#if attr.options.label}}
                                         {{tr attr.options.label}}
                                     {{else}}
                                         {{tr attr.field}}
                                     {{/if}}
+                                    {{sorticon attr.headerClassName}}
                                 </th>
                             {{/if}}
                         {{/group}}

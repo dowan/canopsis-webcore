@@ -17,25 +17,21 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember', 'utils'], function(Ember, utils) {
+define(['ember'], function(Ember) {
 
-    Ember.Handlebars.helper('timestamp', function(value, attr , record) {
+    Ember.Handlebars.helper('sorticon', function(cssClass) {
 
-        value = record.timeStampState || value;
 
-        var current = new Date().getTime();
-        var timestamp = new Date(value * 1000);
-        var timeSince = utils.dates.diffDate(timestamp, current, "d") - 1;
+        var state_template;
+        if(cssClass === "sorting_desc") {
+            sortTemplate = '<i class="fa fa-angle-down"></i>';
+        } else if(cssClass === "sorting_asc") {
+            sortTemplate = '<i class="fa fa-angle-up"></i>';
+        } else {
+            return;
+        }
 
-        var time ="";
-        if(value)
-            var format = attr.options.format;
-            if (timeSince === 0) {
-                format = 'timeOnly';
-            }
-            time = utils.dates.timestamp2String(value, format, true);
-
-        return new Ember.Handlebars.SafeString(time);
+        return new Ember.Handlebars.SafeString(sortTemplate);
     });
 
 });

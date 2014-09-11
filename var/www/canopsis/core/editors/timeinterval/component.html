@@ -10,20 +10,20 @@
                 {{tr 'Select delay'}}
             </td>
             <td>
-                {{component-wrapper callback=controller.updateDuration editor-type="duration"}}
+                {{component-wrapper callback=controller.updateDelayDuration editor-type="duration" referer=controller}}
             </td>
         {{else}}
             <td>
                 {{tr 'Start date'}}
             </td>
             <td>
-                {{component-wrapper callback=controller.updateDuration editor-type="timestamp"}}
+                {{component-wrapper callback=controller.updateStartDuration editor-type="timestamp" referer=controller}}
             </td>
             <td>
                 &nbsp;&nbsp;{{tr 'Stop date'}}
             </td>
             <td>
-                {{component-wrapper callback=controller.updateDuration editor-type="timestamp"}}
+                {{component-wrapper callback=controller.updateStopDuration editor-type="timestamp" referer=controller}}
             </td>
         {{/if}}
     </tr>

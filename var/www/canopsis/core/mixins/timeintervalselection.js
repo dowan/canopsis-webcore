@@ -29,6 +29,10 @@ define([
 
         partials: {
             header: ['timeintervalselection']
+        },
+
+        updateInterval: function (interval, referer){
+            console.log('interval from mixin',interval);
         }
 
     });
