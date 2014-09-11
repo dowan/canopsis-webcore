@@ -203,7 +203,6 @@ define([
                         record.save();
 
                         listController.trigger('refresh');
-
                     });
                 },
 
@@ -314,9 +313,13 @@ define([
                         selected_columns.push(shown_columns[column]);
                     }
                 }
+
+                if(get(this, 'maximized_column_index'))
+                    selected_columns[get(this, 'maximized_column_index')].maximized = true;
+
                 return selected_columns;
 
-            }.property('attributesKeysDict', 'attributesKeys', 'sorted_columns'),
+            }.property('attributesKeysDict', 'attributesKeys', 'sorted_columns', 'maximized_column_index'),
 
             searchCriterionChanged: function () {
                 console.log('searchFieldValueChanged', get(this, 'searchCriterion'), get(this, 'searchFieldValue'));

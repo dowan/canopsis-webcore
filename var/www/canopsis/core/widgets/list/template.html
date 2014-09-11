@@ -25,7 +25,7 @@
                     {{#each attr in controller.shown_columns}}
                         {{#group}}
                             {{#if attr.options.show}}
-                                <th {{action sort attr}}>
+                                <th {{action sort attr}} {{bind-attr class=attr.maximized:maximized}}>
                                     {{#if attr.options.label}}
                                         {{tr attr.options.label}}
                                     {{else}}
