@@ -301,7 +301,7 @@ define([
             }
 
             if(mfilter.$or.length === 0) {
-                mfilter = '{}';
+                mfilter = {};
             }
 
             mfilter = JSON.stringify(mfilter, null, '');
