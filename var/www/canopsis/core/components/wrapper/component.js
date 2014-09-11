@@ -41,10 +41,17 @@ define([
         onContentUpdate: function(){
 
             var callback = this.get('callback');
+
+            var referer = this.get('referer');
+
+            if (Ember.isNone(referer)) {
+                console.warn('Referer not defined in component template. callbacks cannot work');
+            }
+
             if (!Ember.isNone(callback)) {
-                callback(this.get('attr.value'));
+                callback(this.get('attr.value'), referer);
             } else {
-                console.log('Callback is not valid : ', callback);
+                console.log('Callback is not valid : ', callback, this);
             }
 
         }.observes('attr.value'),
