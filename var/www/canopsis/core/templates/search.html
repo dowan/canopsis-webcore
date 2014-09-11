@@ -1,7 +1,5 @@
 {{#if Canopsis.utils.session.rights.list_search.checksum}}
-    <div class="pull-right">
-
-        {{tr 'Search'}} :
+    <div class="col-xs-3">
         {{component-searchbar value=controller.searchFieldValue placeholder="Search" target=controller searchableAttributes=controller.searchableAttributes}}
     </div>
 {{/if}}
