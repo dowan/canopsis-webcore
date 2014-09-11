@@ -2,30 +2,22 @@
     {{#unless controller.findOptions.useLogCollection}}
         {{#if minified}}
             {{#if this.ack.isAck}}
-                <a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Remove">
-                    <button type="button" class="btn btn-default" {{action 'sendEvent' 'cancel' this}} >
-                        {{glyphicon "trash"}}
-                    </button>
-                </a>
+                <button class="btn btn-default btn-xs tooltiptable hint--rounded hint--top" data-hint="Remove" {{action 'sendEvent' 'cancel' this}} >
+                    {{glyphicon "trash"}}
+                </button>
             {{/if}}
             {{#if this.ack.isCancel}}
-                <a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Undo remove">
-                    <button type="button" class="btn btn-default" {{action 'sendEvent' 'uncancel' this}} >
-                        {{glyphicon "share-alt"}}
-                    </button>
-                </a>
+                <button class="btn btn-default btn-xs tooltiptable hint--rounded hint--top" data-hint="Undo remove" {{action 'sendEvent' 'uncancel' this}} >
+                    {{glyphicon "share-alt"}}
+                </button>
             {{/if}}
         {{else}}
-            <a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Remove">
-                <button type="button" class="btn btn-default" {{action 'sendEvent' 'cancel'}} >
-                    {{glyphicon "trash"}} {{tr 'Remove'}}
-                </button>
-            </a>
-            <a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Undo remove">
-                <button type="button" class="btn btn-default" {{action 'sendEvent' 'uncancel'}} >
-                    {{glyphicon "share-alt"}} {{tr 'Undo remove'}}
-                </button>
-            </a>
+            <button class="btn btn-default tooltiptable hint--rounded hint--top" data-hint="Remove" {{action 'sendEvent' 'cancel'}} >
+                {{glyphicon "trash"}} {{tr 'Remove'}}
+            </button>
+            <button class="btn btn-default tooltiptable hint--rounded hint--top" data-hint="Undo remove" {{action 'sendEvent' 'uncancel'}} >
+                {{glyphicon "share-alt"}} {{tr 'Undo remove'}}
+            </button>
         {{/if}}
     {{/unless}}
 {{/if}}
