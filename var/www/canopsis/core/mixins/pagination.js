@@ -55,6 +55,14 @@ define([
                 if (get(this, "currentPage") < get(this, "totalPages")) {
                     this.set("currentPage", get(this, "currentPage") + 1);
                 }
+            },
+            firstPage: function() {
+                this.set("currentPage", 1);
+            },
+            lastPage: function() {
+                if (get(this, "currentPage") < get(this, "totalPages")) {
+                    this.set("currentPage", get(this, 'totalPages'));
+                }
             }
         },
 
