@@ -109,6 +109,11 @@ define([
             console.log('deserializeCfilter', cfilter_serialized, clauses.length);
             console.log('mfilter', mfilter);
 
+            if(mfilter.$or === undefined && Object.keys(mfilter).length !== 0) {
+                console.error('This editor cannot display the current filter');
+                set(this, 'filterError', 'This editor cannot display the current filter');
+                return clauses;
+            }
             if(mfilter.$or === undefined) {
                 return clauses;
             }
@@ -435,9 +440,10 @@ define([
                 for (var i = 0; i < currentClause.and.length; i++) {
                     var currentAnd = currentClause.and[i];
                     console.log('currentAnd', currentAnd);
-                    indexesTreeCursor = indexesTreeCursor[currentAnd.key];
                     if (indexesTreeCursor === undefined) {
                         console.error('bad index management', currentAnd.key);
+                    } else {
+                        indexesTreeCursor = indexesTreeCursor[currentAnd.key];
                     }
                     console.log('indexesTreeCursor', indexesTreeCursor);
                 }
