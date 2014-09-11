@@ -14,7 +14,9 @@
                             </td>
                         {{/if}}
                         <td>
-                            {{component-editor attr=item editorType=itemEditorType}}
+                            <div>
+                                {{component-editor attr=item editorType=itemEditorType}}
+                            </div>
                         </td>
                         <td>
                             <a {{action removeItem item}} class="btn btn-danger pull-right">
@@ -28,6 +30,7 @@
     {{!/group}}
 {{else}}
     <div class="well"><i>No values.</i></div>
+
 {{/if}}
 <a {{action addItem}} class="btn btn-info">
     {{glyphicon "plus"}} Add

@@ -41,6 +41,8 @@ define([
 
         showInstance: function(formInstance) {
             Canopsis.formwrapperController.form.updateArray();
+            formInstance.empty_validationFields();
+
             set(Canopsis.formwrapperController, 'form.validateOnInsert', false);
             set(Canopsis.formwrapperController, 'form', formInstance);
             set(Canopsis.formwrapperController, 'formName', formInstance.formName);
@@ -59,7 +61,7 @@ define([
             }
 
             if ( formContext.get && Ember.isNone(formContext.get('crecord_type'))) {
-                console.warn('There is no crecord_type in the given record. Form may not display properly.')
+                console.warn('There is no crecord_type in the given record. Form may not display properly.');
             }
 
             console.log("Form generation", formName);

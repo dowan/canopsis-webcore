@@ -77,6 +77,10 @@ define([
             }
         },
 
+        empty_validationFields: function() {
+            this.set('validationFields' , Ember.A() );
+        },
+
         validation: function() {
             console.log("Enter validation MIXIN");
             var validationFields = this.get("validationFields");
@@ -93,7 +97,7 @@ define([
                     if (current.valid !== true) {
                         error_array.push(current);
                         console.log("Can't validate on attr ",validationFields[z]);
-                        last_field_error = validationFields[z].attr.field;
+                        last_field_error = validationFields[z].attr.field || validationFields[z].attr.parent.attr.field;
                         isValid =  false ;
 
                         if (validationFields[z].removedFromDOM){
