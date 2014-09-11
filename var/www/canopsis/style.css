@@ -293,12 +293,16 @@ table.dataTable thead th, table.dataTable thead td {
 	font-size: 90%;
 }
 
-td {
+td, th {
     white-space: nowrap;
 }
 
 th.maximized {
 	width:100%;
+}
+
+table.sortable th {
+	cursor: pointer;
 }
 
 .content {
