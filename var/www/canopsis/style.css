@@ -290,4 +290,26 @@ aside.fullscreen {
 
 table.dataTable thead th, table.dataTable thead td {
 	padding: 10px 0;
+	font-size: 90%;
+}
+
+td, th {
+    white-space: nowrap;
+}
+
+th.maximized {
+	width:100%;
+}
+
+table.sortable th {
+	cursor: pointer;
+}
+
+.content {
+	padding: 0px 7px 0px !important;
+}
+
+.table>thead:first-child>tr:first-child>th {
+	padding-left: 3px;
+	padding-right: 3px;
 }

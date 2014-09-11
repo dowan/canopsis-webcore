@@ -24,9 +24,9 @@ define(['ember'], function(Ember) {
 
         var state_template;
         if(cssClass === "sorting_desc") {
-            sortTemplate = '<i class="fa fa-angle-down"></i>';
+            sortTemplate = '<i class="fa fa-caret-down"></i>';
         } else if(cssClass === "sorting_asc") {
-            sortTemplate = '<i class="fa fa-angle-up"></i>';
+            sortTemplate = '<i class="fa fa-caret-up"></i>';
         } else {
             return;
         }

@@ -48,7 +48,7 @@ define([
                 if(values !== undefined) {
                     for (var i = 0; i < values.length; i++) {
                         me.get('arrayAttributes').pushObject(me.generateVirtualAttribute(i));
-                    };
+                    }
                 }
             });
         },
@@ -194,7 +194,7 @@ define([
 
             for (var i = 0; i < array.length; i++) {
                 array[i].index = i;
-            };
+            }
 
             array.arrayContentDidChange(newIndex, 0, 1);
 
