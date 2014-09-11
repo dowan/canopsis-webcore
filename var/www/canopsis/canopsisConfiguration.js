@@ -11,7 +11,7 @@ define([], function () {
         DISPLAY_SCHAMA_MANAGER: true,
         REFRESH_ALL_WIDGETS: true,
         TRANSLATE: true,
-        SHOW_TRANSLATIONS: true,
+        SHOW_TRANSLATIONS: false,
     };
 
     if(canopsisConfiguration.DEBUG === false) {
