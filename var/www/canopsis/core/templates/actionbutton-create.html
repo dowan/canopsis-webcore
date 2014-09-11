@@ -1,6 +1,10 @@
-<button type="button" class="btn btn-default" {{action 'add' controller.itemType}} >
-    {{glyphicon "plus-sign"}}
-    {{#unless minified}}
-        {{tr 'Create'}}
-    {{/unless}}
-</button>
+{{#if minified}}
+    <button class="btn btn-default btn-xs" {{action 'add' controller.itemType}} >
+        {{glyphicon "plus-sign"}}
+    </button>
+{{else}}
+    <button class="btn btn-default" {{action 'add' controller.itemType}} >
+        {{glyphicon "plus-sign"}}
+            {{tr 'Create'}}
+    </button>
+{{/if}}

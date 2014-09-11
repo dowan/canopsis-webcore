@@ -12,15 +12,18 @@
 
         willDestroyElement:function(){
             //TODO : find a better place
-            var formController  =  Canopsis.formwrapperController.form;
-            formController.set('validationFields' , Ember.A() );
+           // var formController  =  Canopsis.formwrapperController.form;
+           // formController.set('validationFields' , Ember.A() );
         },
 
         init: function(){
             var form  =  Canopsis.formwrapperController.form;
             this.set('form' , form );
 
-            var model =  this.attr.model;
+            var attributes = this.attr || this.content;
+            this.set("attr" , attributes );
+
+            var model = attributes.model;
 
             if (Ember.isNone(this.get('value')) && !Ember.isNone(this.get('attr.model.options.defaultValue'))) {
                 this.set('value', this.get('attr.model.options.defaultValue'));

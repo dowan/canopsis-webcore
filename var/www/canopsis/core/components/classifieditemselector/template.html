@@ -27,7 +27,7 @@
     }
 </style>
 
-<div class="btn-group pull-right" style="margin-left:10px">
+<div class="btn-group pull-right" style="margin-left:6px">
     <button type="button" {{bind-attr class=listModeButtonCssClass}} {{action setListMode}}>
         {{glyphicon 'list'}}
     </button>
@@ -43,35 +43,37 @@
 
 
 <div class="panel-group" style= "margin-top:4px">
-    <div class="panel panel-success">
-        <div class="panel-heading">
-            <h4 class="panel-title">
-                <a {{action collapse "selection"}} style="cursor:pointer">
-                    selection ({{selection.length}})
-                </a>
-            </h4>
-        </div>
-        {{#unless selectionCollapsed}}
-            <ul {{bind-attr class=listGroupClass}}>
-                {{#each item in selection}}
-                    <li class="list-group-item">
-                        <a {{action unselectItem item}}>
-                            {{#if item.icon}}
-                                {{glyphicon item.icon}} 
-                            {{else}}
-                                {{#if defaultIcon}}
-                                    {{glyphicon defaultIcon}} 
+    {{#if showselection}}
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a {{action collapse "selection"}} style="cursor:pointer">
+                        selection ({{selection.length}})
+                    </a>
+                </h4>
+            </div>
+            {{#unless selectionCollapsed}}
+                <ul {{bind-attr class=listGroupClass}}>
+                    {{#each item in selection}}
+                        <li class="list-group-item">
+                            <a {{action unselectItem item}}>
+                                {{#if item.icon}}
+                                    {{glyphicon item.icon}} 
+                                {{else}}
+                                    {{#if defaultIcon}}
+                                        {{glyphicon defaultIcon}} 
+                                    {{/if}}
                                 {{/if}}
-                            {{/if}}
-                            {{item.name}}
-                        </a>
-                    </li>
-                {{else}}
-                    <li><i>No values.</i></li>
-                {{/each}}
-            </ul>
-        {{/unless}}
-    </div>
+                                {{item.name}}
+                            </a>
+                        </li>
+                    {{else}}
+                        <li><i>No values.</i></li>
+                    {{/each}}
+                </ul>
+            {{/unless}}
+        </div>
+    {{/if}}
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
