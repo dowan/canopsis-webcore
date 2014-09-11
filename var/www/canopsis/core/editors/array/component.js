@@ -22,12 +22,13 @@ define([
     'ember',
     'app/application',
     'app/mixins/arraymixin',
-    'app/lib/utils/forms'
+    'app/lib/utils/forms',
+    'app/mixins/validationfield'
 ], function($, Ember, Application, formsUtils) {
     var get = Ember.get,
         set = Ember.set;
 
-    Application.ComponentArrayComponent = Ember.Component.extend({
+    Application.ComponentArrayComponent = Ember.Component.extend(Application.ValidationFieldMixin,{
         valueRefPath:"content.value",
         valuePath:"value",
 
@@ -161,6 +162,7 @@ define([
                 }
                 var newIndex = get(this, 'value').length -1;
                 get(this, 'arrayAttributes').pushObject(this.generateVirtualAttribute(newIndex));
+                this.validate();
             },
             editItem: function(item) {
                 console.log('editItem', item, get(this, 'form'), formsUtils);
@@ -176,6 +178,7 @@ define([
                 for (var i = item.index; i < arrayAttributes.length; i++) {
                     arrayAttributes.objectAt(i).set('index', arrayAttributes.objectAt(i).get('index') - 1);
                 }
+                this.validate();
             }
         },
         moveItem: function(oldIndex, newIndex) {

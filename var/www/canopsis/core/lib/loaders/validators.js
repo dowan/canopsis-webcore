@@ -25,7 +25,9 @@ var validatorsArray = [
     'rights',
     'required',
     'validate',
-    "number",
+    'number',
+    'minItems',
+    'maxItems'
 ];
 
 var deps = ['ember'];
