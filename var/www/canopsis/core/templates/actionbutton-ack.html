@@ -3,32 +3,24 @@
         {{#if minified}}
             {{#if this.ack.author}}
                 {{#if this.ack.isAck}}
-                    <a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Cancel ack">
-                        <button type="button" class="btn btn-default" {{action 'sendEvent' 'ackremove' this}} >
-                            {{glyphicon "ban-circle"}}
-                        </button>
-                    </a>
+                    <button class="btn btn-default btn-xs tooltiptable hint--rounded hint--top" data-hint="Cancel ack" {{action 'sendEvent' 'ackremove' this}} >
+                        {{glyphicon "ban-circle"}}
+                    </button>
                 {{/if}}
             {{else}}
                 {{#if this.status}}
-                    <a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Ack">
-                        <button type="button" class="btn btn-default bg-purple" {{action 'sendEvent' 'ack' this}} >
-                            {{glyphicon "ok"}}
-                        </button>
-                    </a>
+                    <button class="btn btn-default btn-xs bg-purple tooltiptable hint--rounded hint--top" data-hint="Ack" {{action 'sendEvent' 'ack' this}} >
+                        {{glyphicon "ok"}}
+                    </button>
                 {{/if}}
             {{/if}}
         {{else}}
-            <a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Ack">
-                <button type="button" class="btn btn-default" {{action 'sendEvent' 'ack'}} >
-                    {{glyphicon "ok"}} {{tr 'Ack'}}
-                </button>
-            </a>
-            <a href="#" class="tooltiptable hint--rounded hint--top" data-hint="Cancel ack">
-                <button type="button" class="btn btn-default" {{action 'sendEvent' 'ackremove'}} >
-                    {{glyphicon "ban-circle"}} {{tr 'Cancel ack'}}
-                </button>
-            </a>
+            <button class="btn btn-default tooltiptable hint--rounded hint--top" data-hint="Ack" {{action 'sendEvent' 'ack'}} >
+                {{glyphicon "ok"}} {{tr 'Ack'}}
+            </button>
+            <button class="btn btn-default tooltiptable hint--rounded hint--top" data-hint="Cancel ack" {{action 'sendEvent' 'ackremove'}} >
+                {{glyphicon "ban-circle"}} {{tr 'Cancel ack'}}
+            </button>
         {{/if}}
     {{/unless}}
 {{/if}}
