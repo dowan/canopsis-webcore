@@ -28,7 +28,10 @@ define([
         ['curve', 'curves']
     ];
 
-    var inflectionsManager = Abstractclassmanager.create();
+    var inflectionsManager = {
+        all: Ember.A(),
+        byClass: Ember.Object.create()
+    };
 
     console.log(Ember);
 
