@@ -2,12 +2,12 @@
     {{#unless controller.findOptions.useLogCollection}}
         {{#if minified}}
             {{#if this.ack.isAck}}
-                <button class="btn btn-default btn-xs tooltiptable hint--rounded hint--top" data-hint="Remove" {{action 'sendEvent' 'cancel' this}} >
+                <button class="btn btn-default btn-sm tooltiptable hint--rounded hint--top" data-hint="Remove" {{action 'sendEvent' 'cancel' this}} >
                     {{glyphicon "trash"}}
                 </button>
             {{/if}}
             {{#if this.ack.isCancel}}
-                <button class="btn btn-default btn-xs tooltiptable hint--rounded hint--top" data-hint="Undo remove" {{action 'sendEvent' 'uncancel' this}} >
+                <button class="btn btn-default btn-sm tooltiptable hint--rounded hint--top" data-hint="Undo remove" {{action 'sendEvent' 'uncancel' this}} >
                     {{glyphicon "share-alt"}}
                 </button>
             {{/if}}

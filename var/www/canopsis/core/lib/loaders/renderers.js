@@ -33,6 +33,7 @@ var renderersTemplates = [
     'object',
     'percent',
     'rights',
+    'richtext',
     'source',
     'state',
     'stateConnector',

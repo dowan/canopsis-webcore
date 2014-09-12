@@ -2,7 +2,7 @@
     {{#unless controller.findOptions.useLogCollection}}
         {{#if minified}}
             {{#if this.ack.isAck}}
-                <button class="btn btn-default btn-xs tooltiptable hint--rounded hint--top" data-hint="Change criticity" {{action 'sendEvent' 'changestate' this}} >
+                <button class="btn btn-default btn-sm tooltiptable hint--rounded hint--top" data-hint="Change criticity" {{action 'sendEvent' 'changestate' this}} >
                     {{glyphicon "retweet"}}
                 </button>
             {{/if}}
