@@ -29,7 +29,8 @@ var utilsFiles = [
     'hash',
     'dates',
     'indexes',
-    'filterObject'
+    'filterObject',
+    'widgetSelectors'
 ];
 
 var deps = [];
