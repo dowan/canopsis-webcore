@@ -3,13 +3,13 @@
         {{#if minified}}
             {{#if this.ack.author}}
                 {{#if this.ack.isAck}}
-                    <button class="btn btn-default btn-xs tooltiptable hint--rounded hint--top" data-hint="Cancel ack" {{action 'sendEvent' 'ackremove' this}} >
+                    <button class="btn btn-default btn-sm tooltiptable hint--rounded hint--top" data-hint="Cancel ack" {{action 'sendEvent' 'ackremove' this}} >
                         {{glyphicon "ban-circle"}}
                     </button>
                 {{/if}}
             {{else}}
                 {{#if this.status}}
-                    <button class="btn btn-default btn-xs bg-purple tooltiptable hint--rounded hint--top" data-hint="Ack" {{action 'sendEvent' 'ack' this}} >
+                    <button class="btn btn-default btn-sm bg-purple tooltiptable hint--rounded hint--top" data-hint="Ack" {{action 'sendEvent' 'ack' this}} >
                         {{glyphicon "ok"}}
                     </button>
                 {{/if}}

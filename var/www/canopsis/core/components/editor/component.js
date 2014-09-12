@@ -22,7 +22,7 @@ define([
     'app/application'
 ], function(Ember, Application) {
 
-    Application.ComponentEditorComponent = Ember.Component.extend({
+    var component = Ember.Component.extend({
         tagName: 'span',
         init: function() {
             console.log("init editor compo");
@@ -63,5 +63,7 @@ define([
         attr: Ember.computed.alias("content")
     });
 
-    return Application.ComponentEditorComponent;
+    Application.ComponentEditorComponent = component;
+
+    return component;
 });

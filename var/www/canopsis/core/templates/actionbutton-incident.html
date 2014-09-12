@@ -2,7 +2,7 @@
     {{#if this.state}}
         {{#if this.ack.author}}
             {{#if minified}}
-                <button type="button" class="btn btn-default btn-xs tooltiptable hint--rounded hint--top" data-hint="Declare an incident" {{action 'sendEvent' 'declareticket' this}} >
+                <button type="button" class="btn btn-default btn-sm tooltiptable hint--rounded hint--top" data-hint="Declare an incident" {{action 'sendEvent' 'declareticket' this}} >
                     <i class="fa fa-ticket"></i>
                 </button>
             {{else}}
