@@ -101,8 +101,6 @@ define([
 
             loaded: false,
 
-            itemsPerPagePropositions : [5, 10, 20, 50],
-
             isAllSelectedChanged: function(){
                 console.log('toggle isAllSelected');
                 this.get('widgetData').content.setEach('isSelected', get(this, 'isAllSelected'));
@@ -119,7 +117,6 @@ define([
             historyMixinFindOptions: Ember.computed.alias("findOptions.useLogCollection"),
             //inspectedDataItemMixin
             inspectedDataArray: Ember.computed.alias("widgetData"),
-            itemsPerPage: Ember.computed.alias("content.itemsPerPage"),
             //pagination
             paginationMixinFindOptions: Ember.computed.alias("findOptions"),
 
