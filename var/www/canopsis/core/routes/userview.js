@@ -19,8 +19,9 @@
 
 define([
     'app/application',
-    'app/routes/authenticated'
-], function(Application, AuthenticatedRoute) {
+    'app/routes/authenticated',
+    'utils'
+], function(Application, AuthenticatedRoute, utils) {
     var set = Ember.set,
         get = Ember.get;
 
@@ -37,7 +38,7 @@ define([
                     this.transitionTo('/userview/view.404');
                 } else {
                     console.error(error);
-                    showErrorDialog(error);
+                    utils.notification.error(__('Impossible to load view.'));
                 }
             }
         },

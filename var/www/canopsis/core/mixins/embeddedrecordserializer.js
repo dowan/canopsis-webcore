@@ -43,7 +43,7 @@ define([
          @method sideloadItem
          @param {Object} payload JSON object representing the payload
          @param {subclass of DS.Model} type The DS.Model class of the item to be sideloaded
-         @paraam {Object} item JSON object representing the record to sideload to the payload
+         @param {Object} item JSON object representing the record to sideload to the payload
         */
         sideloadItem: function(payload, type, item, parentJSON) {
             try {
@@ -51,13 +51,12 @@ define([
                 console.log("payload before sideLoad", payload);
 
                 if(item.xtype === undefined) {
-                    console.error('no xtype for widget', type, item);
-                    this.addMessage(payload, 'no xtype for widget');
-                    return payload;
+                    console.error('no xtype for widget', type, item, payload);
+                    return undefined;
                 }
                 if(Application[item.xtype.capitalize()] === undefined) {
-                    this.addMessage(payload, 'bad xtype for widget :' + item.xtype);
-                    return payload;
+                    console.error(payload, 'bad xtype for widget :' + item.xtype);
+                    return undefined;
                 }
 
                 // The key for the sideload array
@@ -113,10 +112,11 @@ define([
          Extract relationships from the payload and sideload them. This function recursively
          walks down the JSON tree
 
-         @method sideloadItem
+         @method extractRelationships
          @param {Object} payload JSON object representing the payload
          @param {Object} recordJSON JSON object representing the current record in the payload to look for relationships
          @param {Object} primaryType The DS.Model class of the record object
+         @param {Object} parentType
         */
         extractRelationships: function(payload, recordJSON, primaryType, parentType) {
             console.group('extractRelationships', recordJSON, primaryType);
@@ -160,15 +160,16 @@ define([
                             console.groupEnd();
 
                             // Sideload the object to the payload
-                            this.sideloadItem(payload, type, related, recordJSON);
+                            var sideloadItemResult = this.sideloadItem(payload, type, related, recordJSON);
 
-                            // Replace object with ID
-                            recordJSON[key] = related.id;
-                            recordJSON[key + "Type"] = related.xtype;
-                            // Find relationships in this record
-                            this.extractRelationships(payload, related, type, primaryType);
+                            if(sideloadItemResult !== undefined) {
+                                // Replace object with ID
+                                recordJSON[key] = related.id;
+                                recordJSON[key + "Type"] = related.xtype;
+                                // Find relationships in this record
+                                this.extractRelationships(payload, related, type, primaryType);
+                            }
                         }
-
                         // Many
                         else if (relationship.kind === 'hasMany') {
                             console.group("hasMany relationship");
@@ -181,13 +182,15 @@ define([
                             related.forEach(function(item, index) {
                                 console.log("sideLoad items in", recordJSON);
                                 // Sideload the object to the payload
-                                this.sideloadItem(payload, type, item, recordJSON);
+                                var sideloadItemResult = this.sideloadItem(payload, type, item, recordJSON);
 
-                                // Replace object with ID
-                                related[index] = item.id;
+                                if(sideloadItemResult !== undefined) {
+                                    // Replace object with ID
+                                    related[index] = item.id;
 
-                                // Find relationships in this record
-                                this.extractRelationships(payload, item, type, primaryType);
+                                    // Find relationships in this record
+                                    this.extractRelationships(payload, item, type, primaryType);
+                                }
                             }, this);
                         }
 

@@ -115,7 +115,6 @@ define([
             }
 
             var itemsPerPage = get(this, 'itemsPerPage');
-            console.debug('itemsPerPage', itemsPerPage);
 
             if(itemsPerPage === undefined || itemsPerPage === 0) {
                 set(this, 'dataError', { statusText: __('List option "itemsPerPage" should not be set up to 0') });

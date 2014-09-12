@@ -17,9 +17,6 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-//TODO implement auto check for mvct file existence and require them automatically
-
 var editorsTemplates = [
     /* js = 'cvw' : the editor have a Controller, a View and a Webcomponent
      * js = 'cv' : the editor have a Controller and a View

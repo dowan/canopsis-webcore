@@ -17,9 +17,6 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-//TODO implement auto check for mvct file existence and require them automatically
-
 var mixinsArray = [
     { name: 'validation', classes: ["action"]},
     { name: 'modelDict', classes: ["action"]},
