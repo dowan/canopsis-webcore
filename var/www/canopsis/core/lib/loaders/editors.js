@@ -35,6 +35,7 @@ var editorsTemplates = [
     { name: 'separator' },
     { name: 'duration', js: 'w' },
     { name: 'timeinterval', js: 'w' },
+    { name: 'dateinterval', js: 'w' },
     { name: 'richtext', js: 'w' },
     { name: 'timestamp', js: 'w' },
     { name: 'rights', js: 'v' },

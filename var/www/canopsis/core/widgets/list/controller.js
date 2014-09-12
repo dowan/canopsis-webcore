@@ -48,9 +48,8 @@ define([
         mixins: [
             InspectableArrayMixin,
             CustomFilterManagerMixin,
-            ArraySearchMixin,
-            TimeintervalselectionMixin,
             SortableArrayMixin,
+            ArraySearchMixin,
             PaginationMixin,
             HistoryMixin,
             SendEventMixin
@@ -322,7 +321,7 @@ define([
             }.property('attributesKeysDict', 'attributesKeys', 'sorted_columns', 'maximized_column_index'),
 
             searchCriterionChanged: function () {
-                console.log('searchFieldValueChanged', get(this, 'searchCriterion'), get(this, 'searchFieldValue'));
+                console.log('searchFieldValueChanged: criterion', get(this, 'searchCriterion'), 'field value', get(this, 'searchFieldValue'));
 
                 var searchCriterion = get(this, 'searchFieldValue');
                 var filter = {};

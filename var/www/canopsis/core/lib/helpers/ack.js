@@ -35,7 +35,7 @@ define([
         if(value.isCancel) {
             ackColor = "";
         } else {
-            ackColor = " bg-maroon";
+            ackColor = " bg-purple";
         }
         var ack  = '<span id="'+ guid +'" class="badge' + ackColor + '" data-html="true" title="" data-original-title="' + tooltipHtml + '"><i class="fa fa-check"></i></span>';
 
