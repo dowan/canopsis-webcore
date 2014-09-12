@@ -46,6 +46,9 @@ define([
 
             var maxLength = get(this, 'maxLength');
             var text = get(this, 'content');
+            if(text === null || text === undefined) {
+                return "";
+            }
             console.log('format content', text);
 
             if (text.length <= maxLength) {
