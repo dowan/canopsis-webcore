@@ -29,6 +29,7 @@ var editorsTemplates = [
     { name: 'boolean' },
     { name: 'group', js: 'c' },
     { name: 'color' },
+    { name: 'integer' },
     { name: 'array', js: 'w'},
     { name: 'mail' },
     { name: 'textarea' },

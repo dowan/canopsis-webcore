@@ -36,6 +36,7 @@ define([
                 } else if (error.status == 404) {
                     this.transitionTo('/userview/view.404');
                 } else {
+                    console.error(error);
                     showErrorDialog(error);
                 }
             }
