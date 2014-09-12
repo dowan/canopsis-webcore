@@ -41,8 +41,9 @@ define([
 
             var daterangepicker = $('#' + get(this, 'id'));
 
-             daterangepicker.daterangepicker(
+            daterangepicker.daterangepicker(
                 {
+                    timePickerIncrement: 5,
                     timePicker: true,
                     ranges: {
                         'Today': [moment(), moment()],
@@ -68,13 +69,12 @@ define([
                     console.log(get(datepickerComponent, 'content'));
 
                 }
-        );
+
+
+            );
 
         },
 
-        actions: {
-
-        }
     });
 
     return Application.ComponentDateintervalComponent;
