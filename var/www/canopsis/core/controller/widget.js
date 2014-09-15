@@ -21,14 +21,15 @@ define([
     'jquery',
     'ember',
     'app/application',
+    'app/controller/partialslotablecontroller',
     'app/lib/utils/userconfiguration',
     'app/lib/utils/widgets',
     'utils'
-], function($, Ember, Application, userConfiguration, widgetUtils, utils) {
+], function($, Ember, Application, PartialslotAbleController, userConfiguration, widgetUtils, utils) {
     var get = Ember.get,
         set = Ember.set;
 
-    Application.WidgetController = Ember.ObjectController.extend({
+    Application.WidgetController = PartialslotAbleController.extend({
 
         userParams: {},
 
@@ -63,8 +64,6 @@ define([
          * Override of willmergemixin to merge mixin's partials with base partials
          */
         willMergeMixin: function(Mixin) {
-            console.log('willMergeMixin', this, Mixin);
-
             this._super.apply(this, arguments);
 
             //TODO put this in arrayutils
