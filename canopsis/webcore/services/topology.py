@@ -49,7 +49,7 @@ def topology_find(regex=None, add_nodes=False):
     return result
 
 
-@route(put)
+@route(put, body_params=['topology'])
 def topology(topology=None):
 
     manager.put(topology=topology)
@@ -60,7 +60,7 @@ def topology(topology=None):
 
 
 @route(delete)
-def delete(ids=None):
+def topology(ids=None):
 
     manager.remove(ids=ids)
 
@@ -85,5 +85,25 @@ def topology_nodes_by_entities_id(entity_id):
     nodes = manager.find_nodes_by_entity_id(entity_id=entity_id)
 
     result = response(nodes)
+
+    return result
+
+
+@route(delete)
+def topology_nodes(ids=None):
+
+    manager.remove_nodes(ids=ids)
+
+    result = response(ids)
+
+    return result
+
+
+@route(put)
+def topology_node(topology_node):
+
+    manager.put_node(topology_node=topology_node)
+
+    result = response(topology_node)
 
     return result
