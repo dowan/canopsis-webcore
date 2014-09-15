@@ -58,46 +58,6 @@ define([
 
         },
 
-        _partials: {},
-
-        /**
-         * Override of willmergemixin to merge mixin's partials with base partials
-         */
-        willMergeMixin: function(Mixin) {
-            this._super.apply(this, arguments);
-
-            //TODO put this in arrayutils
-            function union_arrays (x, y) {
-                var obj = {};
-                for (var i = x.length-1; i >= 0; -- i)
-                    obj[x[i]] = x[i];
-                for (var j = y.length-1; j >= 0; -- j)
-                    obj[y[j]] = y[j];
-                var res = [];
-                for (var k in obj) {
-                    if (obj.hasOwnProperty(k))  // <-- optional
-                        res.push(obj[k]);
-                }
-                return res;
-            }
-
-            var me = this;
-
-            if(Mixin.partials !== undefined) {
-                Object.keys(Mixin.partials).forEach(function(key) {
-                    console.log(key, Mixin.partials[key]);
-
-                    var partialsKey = '_partials.' + key;
-
-                    if(get(me, partialsKey) === undefined) {
-                        set(me, partialsKey, Ember.A());
-                    }
-
-                    set(me, partialsKey, union_arrays(get(me, partialsKey), Mixin.partials[key]));
-                });
-            }
-        },
-
         getSchema: function() {
             return Application[this.get('xtype').capitalize()].proto().categories;
         },
