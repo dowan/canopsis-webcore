@@ -1,0 +1,24 @@
+<!-- User Account: style can be found in dropdown.less -->
+<li class="dropdown user user-menu">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <i class="glyphicon glyphicon-user"></i>
+        <span>{{username}} <i class="caret"></i></span>
+    </a>
+    <ul class="dropdown-menu">
+        <!-- User image -->
+        <li class="user-header bg-light-blue">
+            <img src="/static/canopsis/media/images/avatar.png" class="img-circle" alt="User Image" />
+            <p>{{username}}</p>
+        </li>
+        <!-- Menu Footer-->
+        <li class="user-footer">
+            <div class="pull-left">
+                <a {{action 'showUserProfile'}} href="#" id="userprofil" class="btn btn-default btn-flat">{{tr 'Profile'}}</a>
+                <a {{action 'showView' 'view.about'}} href="#" class="btn btn-default btn-flat">{{tr 'About'}}</a>
+            </div>
+            <div class="pull-right">
+                <a href="#" {{action 'logout'}} class="btn btn-default btn-flat"><i class="fa fa-power-off"></i></a>
+            </div>
+        </li>
+    </ul>
+</li>

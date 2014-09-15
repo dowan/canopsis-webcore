@@ -65,17 +65,7 @@ define([
             this.render();
 
             //getting the generated controller
-            var notificationsController = this.controllerFor('notifications');
             var formwrapperController = this.controllerFor('formwrapper');
-
-            //assigning the model
-            notificationsController.set('content', this.store.find("notification"));
-
-            this.render('notifications', {
-                outlet: 'notifications',
-                into: 'application',
-                controller: notificationsController
-            });
 
             this.render('formwrapper', {
                 outlet: 'formwrapper',

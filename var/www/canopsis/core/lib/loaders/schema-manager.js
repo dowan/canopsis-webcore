@@ -17,9 +17,6 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-//TODO implement auto check for mvct file existence and require them automatically
-
 //add your custom schemas files here.
 var schemaFiles = [
 ];

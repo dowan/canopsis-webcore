@@ -2,14 +2,18 @@
     {{#unless controller.findOptions.useLogCollection}}
         {{#if minified}}
             {{#if this.ack.isAck}}
-                <button class="btn btn-default btn-xs tooltiptable hint--rounded hint--top" data-hint="Change criticity" {{action 'sendEvent' 'changestate' this}} >
-                    {{glyphicon "retweet"}}
-                </button>
+                {{#component-tooltip content="Change criticity"}}
+                    <button class="btn btn-default btn-sm" {{action 'sendEvent' 'changestate' this}} >
+                        {{glyphicon "retweet"}}
+                    </button>
+                {{/component-tooltip}}
             {{/if}}
         {{else}}
-            <button class="btn btn-default tooltiptable hint--rounded hint--top" data-hint="Change criticity" {{action 'sendEvent' 'changestate'}} >
-                {{glyphicon "retweet"}} {{ tr 'Change criticity' }}
-            </button>
+            {{#component-tooltip content="Change criticity"}}
+                <button class="btn btn-default" {{action 'sendEvent' 'changestate'}} >
+                    {{glyphicon "retweet"}} {{ tr 'Change criticity' }}
+                </button>
+            {{/component-tooltip}}
         {{/if}}
     {{/unless}}
 {{/if}}

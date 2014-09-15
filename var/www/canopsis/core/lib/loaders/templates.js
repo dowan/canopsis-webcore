@@ -19,16 +19,9 @@
 
 var templates = [
     { name: 'application' },
-    { name: 'item' },
     { name: 'index' },
-    { name: 'notifications' },
     { name: 'containerwidget' },
-    { name: 'containervbox' },
-    { name: 'containerhbox' },
-    { name: 'container2' },
-    { name: 'crecordform' },
     { name: 'formwrapper' },
-    { name: 'menu' },
     { name: 'widgettitlebar' },
     { name: 'userview' },
     { name: 'widget' },
@@ -42,6 +35,10 @@ var templates = [
     { name: 'customfilters' },
 
     { name: 'timeintervalselection' },
+    { name: 'userstatusmenu' },
+    { name: 'schemamanagerstatusmenu' },
+    { name: 'notificationsstatusmenu' },
+    { name: 'consolemanagerstatusmenu' },
 
     { name: 'actionbutton-edit', classes: ["action"], icon : "pencil", label : "Edit"},
     { name: 'actionbutton-ack', classes: ["action", "toolbar"], icon : "ok", label : "Ack"},

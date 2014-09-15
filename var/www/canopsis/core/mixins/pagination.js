@@ -38,6 +38,15 @@ define([
             footer: ['pagination']
         },
 
+        init:function () {
+            this.itemsPerPagePropositionSelected = get(this, 'content.itemsPerPage');
+            this._super.apply(this, arguments);
+        },
+
+        itemsPerPage: function() {
+            return get(this, 'content.itemsPerPage');
+        }.property('content.itemsPerPage'),
+
         paginationMixinContent: function() {
             console.warn("paginationMixinContent should be defined on the concrete class");
         },
@@ -55,15 +64,30 @@ define([
                 if (get(this, "currentPage") < get(this, "totalPages")) {
                     this.set("currentPage", get(this, "currentPage") + 1);
                 }
+            },
+            firstPage: function() {
+                this.set("currentPage", 1);
+            },
+            lastPage: function() {
+                if (get(this, "currentPage") < get(this, "totalPages")) {
+                    this.set("currentPage", get(this, 'totalPages'));
+                }
             }
         },
 
         itemsTotal: 1,
-        itemsPerPage: Ember.computed.alias('content.itemsPerPage'),
         currentPage: 1,
         totalPages: 1,
         paginationFirstItemIndex: 1,
         paginationLastItemIndex: 1,
+
+        itemsPerPagePropositions : function() {
+            var res = [5, 10, 20, 50];
+            var itemsPerPagePropositionSelected = get(this, 'itemsPerPagePropositionSelected');
+            if(itemsPerPagePropositionSelected !== 5 && itemsPerPagePropositionSelected !== 10 && itemsPerPagePropositionSelected !== 20 && itemsPerPagePropositionSelected !== 50)
+                res.push(itemsPerPagePropositionSelected);
+            return res;
+        }.property('itemsPerPagePropositionSelected'),
 
         //FIXME as this is always defined, it might always override the widget's settings
         //FIXME when fixing this, be careful to avoid multiple list refreshes
@@ -77,6 +101,10 @@ define([
         onCurrentPageChanges: function() {
             this.refreshContent();
         }.observes('currentPage'),
+
+        itemsPerPagePropositionSelectedChanged: function() {
+            set(this, 'itemsPerPage', get(this, 'itemsPerPagePropositionSelected'));
+        }.observes('itemsPerPagePropositionSelected'),
 
         refreshContent: function() {
             console.group("paginationMixin refreshContent", get(this, 'itemsPerPage'));

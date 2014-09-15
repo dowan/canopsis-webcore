@@ -1,12 +1,14 @@
 {{#if Canopsis.utils.session.rights.actionbutton_ticketnumber.checksum}}
     {{#if this.state}}
         {{#if this.ack.author}}
-            <button class="btn btn-default tooltiptable hint--rounded hint--top" data-hint="Assign ticket number" {{action 'sendEvent' 'assocticket' this}} >
-                <i class="fa fa-pencil"></i>
-                {{#unless minified}}
-                    {{tr 'Assign a ticket number'}}
-                {{/unless}}
-            </button>
+            {{#component-tooltip content="Assign ticket number"}}
+                <button class="btn btn-default" {{action 'sendEvent' 'assocticket' this}} >
+                    <i class="fa fa-pencil"></i>
+                    {{#unless minified}}
+                        {{tr 'Assign a ticket number'}}
+                    {{/unless}}
+                </button>
+            {{/component-tooltip}}
         {{/if}}
     {{/if}}
 {{/if}}

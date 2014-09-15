@@ -17,8 +17,6 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-//TODO implement auto check for mvct file existence and require them automatically
-
 var renderersTemplates = [
     'ack',
     'actionfilter',
@@ -33,6 +31,7 @@ var renderersTemplates = [
     'object',
     'percent',
     'rights',
+    'richtext',
     'source',
     'state',
     'stateConnector',

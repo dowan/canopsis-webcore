@@ -37,29 +37,23 @@ define(['ember', 'utils'], function(Ember, utils) {
             4: 'Cancelled',
         };
 
-        var render = __(statuses[status]);
+        crecord.statusvalue = __(statuses[status]);
 
         if(status === 4) {
             //displays cancel information if any onto the status field
             var value = crecord.get('record.cancel');
-            var tooltipHtml = [
-                '<i>' + __('Date') + '</i> : <br/>',
-                utils.dates.timestamp2String(value.timestamp) +' <br/> ',
-                value.author +' <br/><br/> ',
-                '<i>'+__('Commentaire') +' :</i> : <br/>' + value.comment
+            crecord.statushtml = [
+                '<center>',
+                '<i>' , __('Date') , '</i> : <br/>',
+                utils.dates.timestamp2String(value.timestamp) ,' <br/> ',
+                __('By'), ' : ' , value.author ,' <br/><br/> ',
+                '<i>', __('Comment') ,' :</i> : <br/>' , value.comment,
+                '</center>'
             ].join('');
 
-            var guid = utils.hash.generate_GUID();
-
-            var render  = '<span id="'+ guid +'" data-html="true" data-original-title="' + tooltipHtml + '">' + render + '</span>';
-
-            //Triggers tooltip display once loaded /!\ hack
-            setTimeout(function () {
-                $('#' + guid).tooltip();
-            }, 1000);
         }
 
-        return new Ember.Handlebars.SafeString(render);
+        return "";
     });
 
 });

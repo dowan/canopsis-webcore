@@ -2,13 +2,13 @@
 <li class="dropdown notifications-menu">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
         <i class="fa fa-warning"></i>
-        <span class="label label-warning">{{count}}</span>
+        <span class="label label-warning">{{notificationCount}}</span>
     </a>
     <ul class="dropdown-menu">
-        <li class="header">{{tr 'You have'}} {{count}} {{tr 'notifications'}}</li>
+        <li class="header">{{tr 'You have'}} {{notificationCount}} {{tr 'notifications'}}</li>
         <li>
             <ul class="menu">
-                {{#each}}
+                {{#each notifications}}
                 <li>
                     <a href="#">
                         <i class="fa" {{bind-attr class="level falevel"}}></i> {{message}}

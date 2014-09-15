@@ -35,7 +35,7 @@ define(['ember', 'utils'], function(Ember, utils) {
 
         var icon = '<span class=glyphicon glyphicon-time ></span>';
         if(time !== 0) {
-            return new Ember.Handlebars.SafeString(__("Date sentence prefix") + time + " " + __("days ago"));
+            return new Ember.Handlebars.SafeString(time + " " + __("days ago"));
         }
 
         return new Ember.Handlebars.SafeString(__("Today"));

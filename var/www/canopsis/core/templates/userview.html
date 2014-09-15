@@ -1,31 +1,3 @@
-{{#if controllers.application.fullscreenMode}}
-    {{#if isMainView}}
-            <div class="btn-group pull-right" style="clear:both; margin-top:5px; margin-bottom:5px">
-                <button type="button" class="btn btn-default btn-sm active" {{action 'toggleFullscreen' this}} >
-                    {{glyphicon "fullscreen"}}
-                </button>
-
-                <button type="button" class="btn btn-default btn-sm" {{action 'refreshView' target=view}} >
-                    {{glyphicon "refresh"}}
-                </button>
-            </div>
-        <div class="btn-toolbar canopsis-toolbar" role="toolbar">
-            {{widgethelper widget=containerwidget parentContainerWidget=this}}
-        </div>
-    {{/if}}
-{{else}}
-    {{#if isMainView}}
-            <div class="btn-group pull-right" style="clear:both; margin-top:5px; margin-bottom:5px">
-                <button type="button" class="btn btn-default btn-sm" {{action 'toggleFullscreen' this}} >
-                    {{glyphicon "fullscreen"}}
-                </button>
-
-                <button type="button" class="btn btn-default btn-sm" {{action 'refreshView' target=view}} >
-                    {{glyphicon "refresh"}}
-                </button>
-            </div>
-    {{/if}}
-    <div class="btn-toolbar canopsis-toolbar" role="toolbar">
-        {{widgethelper widget=containerwidget parentContainerWidget=this}}
-    </div>
-{{/if}}
+<div class="btn-toolbar canopsis-toolbar" role="toolbar">
+    {{widgethelper widget=containerwidget parentContainerWidget=this}}
+</div>

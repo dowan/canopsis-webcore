@@ -49,11 +49,11 @@ define(['ember'], function(Ember) {
 
 
         switch(value) {
-            case 0: span = '<span class="badge bg-green">Info</span>'; break;
-            case 1: span = '<span class="badge bg-yellow">Mineure</span>'; break;
-            case 2: span = '<span class="badge bg-orange">Majeure</span>'; break;
-            case 3: span = '<span class="badge bg-red">Critique</span>'; break;
-            case 4: span = '<span class="badge">Unknown</span>'; break;
+            case 0: span = '<span class="badge bg-green">'+__('Info')+'</span>'; break;
+            case 1: span = '<span class="badge bg-yellow">'+__('Minor')+'</span>'; break;
+            case 2: span = '<span class="badge bg-orange">'+__('Major')+'</span>'; break;
+            case 3: span = '<span class="badge bg-red">'+__('Critical')+'</span>'; break;
+            case 4: span = '<span class="badge">'+__('Unknown')+'</span>'; break;
         }
         return new Ember.Handlebars.SafeString(span + display_keep_state);
 

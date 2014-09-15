@@ -18,17 +18,30 @@
 */
 
 define([
-    'ember'
-], function(Ember) {
+    'ember',
+    'app/application'
+], function(Ember, Application) {
+    var get = Ember.get,
+        set = Ember.set;
 
-    Ember.Handlebars.helper('tooltip', function(text) {
-    var tooltip;
+    /**
+      Implements pagination in ArrayControllers
 
-    tooltip = '<a href="#" class="tooltiptable hint--rounded hint--top" data-hint=%@>';
-    tooltip += '<i class="fa fa-info-circle"></i></a>';
-    tooltip = tooltip.fmt(text);
+      You should define on the ArrayController:
+          - the `findOptions` property
+          - the `findItems()` method
 
-    return new Ember.Handlebars.SafeString(tooltip);
+    */
+    var mixin = Ember.Mixin.create({
+        partials: {
+            statusbar: ['consolemanagerstatusmenu']
+        },
+        verbosity_mode: function() {
+            return __("custom");
+        }.property()
     });
 
+    Application.ConsolemanagerMixin = mixin;
+
+    return mixin;
 });

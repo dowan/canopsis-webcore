@@ -17,9 +17,6 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-//TODO implement auto check for mvct file existence and require them automatically
-
 var utilsFiles = [
     'forms',
     'routes',
@@ -29,7 +26,8 @@ var utilsFiles = [
     'hash',
     'dates',
     'indexes',
-    'filterObject'
+    'filterObject',
+    'widgetSelectors'
 ];
 
 var deps = [];

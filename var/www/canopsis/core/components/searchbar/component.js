@@ -43,7 +43,19 @@ define([
                 console.log('searchItems', this, this.controller, searchPhrase);
 
                 this.controller.target.set('searchCriterion', searchPhrase);
+            },
+
+            clearSearch: function () {
+                console.log('clear search field');
+                //clear text field
+                this.set('value', '');
+                //set search field
+                this.controller.target.set('searchFieldValue', '');
+                //trigger search
+                this.send('searchInputAction', '');
+
             }
+
         },
 
         didInsertElement: function() {

@@ -48,9 +48,8 @@ define([
         mixins: [
             InspectableArrayMixin,
             CustomFilterManagerMixin,
-            ArraySearchMixin,
-            TimeintervalselectionMixin,
             SortableArrayMixin,
+            ArraySearchMixin,
             PaginationMixin,
             HistoryMixin,
             SendEventMixin
@@ -102,8 +101,6 @@ define([
 
             loaded: false,
 
-            itemsPerPagePropositions : [5, 10, 20, 50],
-
             isAllSelectedChanged: function(){
                 console.log('toggle isAllSelected');
                 this.get('widgetData').content.setEach('isSelected', get(this, 'isAllSelected'));
@@ -120,7 +117,6 @@ define([
             historyMixinFindOptions: Ember.computed.alias("findOptions.useLogCollection"),
             //inspectedDataItemMixin
             inspectedDataArray: Ember.computed.alias("widgetData"),
-            itemsPerPage: Ember.computed.alias("content.itemsPerPage"),
             //pagination
             paginationMixinFindOptions: Ember.computed.alias("findOptions"),
 
@@ -322,7 +318,7 @@ define([
             }.property('attributesKeysDict', 'attributesKeys', 'sorted_columns', 'maximized_column_index'),
 
             searchCriterionChanged: function () {
-                console.log('searchFieldValueChanged', get(this, 'searchCriterion'), get(this, 'searchFieldValue'));
+                console.log('searchFieldValueChanged: criterion', get(this, 'searchCriterion'), 'field value', get(this, 'searchFieldValue'));
 
                 var searchCriterion = get(this, 'searchFieldValue');
                 var filter = {};

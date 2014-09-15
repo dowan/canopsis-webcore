@@ -1,10 +1,14 @@
 {{#if minified}}
-    <button class="btn btn-default btn-xs" {{action 'add' controller.itemType}} >
-        {{glyphicon "plus-sign"}}
-    </button>
+    {{#component-tooltip content="Add entry for current list"}}
+        <button class="btn btn-default btn-sm" {{action 'add' controller.itemType}} >
+            {{glyphicon "plus-sign"}}
+        </button>
+    {{/component-tooltip}}
 {{else}}
-    <button class="btn btn-default" {{action 'add' controller.itemType}} >
-        {{glyphicon "plus-sign"}}
-            {{tr 'Create'}}
-    </button>
+    {{#component-tooltip content="Add entry for current list"}}
+        <button class="btn btn-default" {{action 'add' controller.itemType}} >
+            {{glyphicon "plus-sign"}}
+                {{tr 'Create'}}
+        </button>
+    {{/component-tooltip}}
 {{/if}}

@@ -17,13 +17,9 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-//TODO implement auto check for mvct file existence and require them automatically
-
 var widgetsTemplates = [
     { name:'list', url:'app/widgets/list', hasJSPart: true },
     { name:'canvas', url:'app/widgets/canvas', hasJSPart: true },
-    { name:'vbox', url:'app/widgets/vbox', hasJSPart: true },
     { name:'verticalbox', url:'app/widgets/verticalbox', hasJSPart: true },
     { name:'horizontalbox', url:'app/widgets/horizontalbox', hasJSPart: true },
     { name:'lighthbox', url:'app/widgets/lighthbox', hasJSPart: true },

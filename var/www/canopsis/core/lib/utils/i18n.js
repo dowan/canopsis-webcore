@@ -112,7 +112,7 @@ define([
                         i18n.lang = data.data[0].ui_language;
                         console.log('Lang initialization succeed, default language for application is set to ' + i18n.lang.toUpperCase());
                     } else {
-                        console.error('Lang data fetch failed, default language for application is set to EN', data);
+                        console.warn('Lang data fetch failed, default language for application is set to EN', data);
                         i18n.lang = 'en';
                     }
                 },

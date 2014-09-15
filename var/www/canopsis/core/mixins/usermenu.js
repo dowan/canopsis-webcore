@@ -18,16 +18,19 @@
 */
 
 define([
-    'app/lib/factories/widget',
-    'app/widgets/canvas/controller'
-], function(WidgetFactory) {
+    'ember',
+    'app/application'
+], function(Ember, Application) {
+    var get = Ember.get,
+        set = Ember.set;
 
-    var widget = WidgetFactory('vbox', {
-
+    var mixin = Ember.Mixin.create({
         partials: {
-            titlebarsbuttons : ["titlebarbutton-minimize", "titlebarbutton-moveup","titlebarbutton-movedown"]
+            statusbar: ['userstatusmenu']
         }
     });
 
-    return widget;
+    Application.UsermenuMixin = mixin;
+
+    return mixin;
 });

@@ -1,3 +1,5 @@
-<button type="button" class="btn btn-xs btn-default" {{action 'edit' this}}>
-    {{glyphicon "edit"}}
-</button>
+{{#component-tooltip content="Edit current entry"}}
+    <button type="button" class="btn btn-sm btn-default" {{action 'edit' this}}>
+        {{glyphicon "edit"}}
+    </button>
+{{/component-tooltip}}

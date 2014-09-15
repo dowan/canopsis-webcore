@@ -21,10 +21,11 @@ define([
     'ember',
     'app/application',
     'app/controller/crecord',
+    'app/lib/utils/forms',
     'app/routes/userview',
     'app/view/userview',
-    'app/serializers/userview'
-], function(Ember, Application, CrecordController) {
+    'app/serializers/userview',
+], function(Ember, Application, CrecordController, formUtils) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -32,21 +33,6 @@ define([
         needs: ['application'],
 
         actions: {
-            /**
-             * Toggle fullscreen and regular mode, by toggling Applicationcontroller#fullscreenMode boolean.
-             * The rest of the implementation is on handlebars templates (application and userview)
-             */
-            toggleFullscreen: function() {
-                console.log('toggleFullscreen');
-                var applicationController = get(this, 'controllers.application');
-
-                if(get(applicationController, 'fullscreenMode', true)) {
-                    set(applicationController, 'fullscreenMode', false);
-                } else {
-                    set(applicationController, 'fullscreenMode', true);
-                }
-            },
-
             insertWidget: function(containerController) {
                 console.log("insertWidget", containerController);
                 var widgetChooserForm = Canopsis.utils.forms.showNew('widgetform', this);
@@ -69,6 +55,10 @@ define([
                 widgetChooserForm.submit.fail(function() {
                     console.info('Widget insertion canceled');
                 });
+            },
+
+            refresh: function() {
+                this.trigger('refreshView');
             }
         }
     });

@@ -306,10 +306,29 @@ table.sortable th {
 }
 
 .content {
-	padding: 0px 7px 0px !important;
+	padding: 7px !important;
 }
 
 .table>thead:first-child>tr:first-child>th {
 	padding-left: 3px;
 	padding-right: 3px;
+}
+
+
+.popover {
+    background: black !important;
+    color:white !important;
+}
+
+
+.popover.in{
+    opacity:.8;
+    filter:alpha(opacity=80)
+}
+
+.popover.bottom .arrow:after {
+    border-bottom-color: black!important;
+}
+.popover.top .arrow:after {
+    border-top-color: black!important;
 }

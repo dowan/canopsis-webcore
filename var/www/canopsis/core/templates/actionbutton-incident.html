@@ -2,15 +2,18 @@
     {{#if this.state}}
         {{#if this.ack.author}}
             {{#if minified}}
-                <button type="button" class="btn btn-default btn-xs tooltiptable hint--rounded hint--top" data-hint="Declare an incident" {{action 'sendEvent' 'declareticket' this}} >
-                    <i class="fa fa-ticket"></i>
-                </button>
+                {{#component-tooltip content="Declare an incident"}}
+                    <button type="button" class="btn btn-default btn-sm" {{action 'sendEvent' 'declareticket' this}} >
+                        <i class="fa fa-ticket"></i>
+                    </button>
+                {{/component-tooltip}}
             {{else}}
-                <button type="button" class="btn btn-default tooltiptable hint--rounded hint--top" data-hint="Declare an incident" {{action 'sendEvent' 'declareticket' this}} >
-                    <i class="fa fa-ticket"></i>
+                {{#component-tooltip content="Declare an incident"}}
+                    <button type="button" class="btn btn-default" {{action 'sendEvent' 'declareticket' this}} >
+                        <i class="fa fa-ticket"></i>
                         {{tr 'Declare an incident'}}
-                </button>
-
+                    </button>
+                {{/component-tooltip}}
             {{/if}}
         {{/if}}
     {{/if}}

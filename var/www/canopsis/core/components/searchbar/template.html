@@ -30,5 +30,12 @@
         {{input type="text" placeholder=placeholder action="searchInputAction" class="form-control inlineInput" value=value}}
     </span>
 {{else}}
-    {{input type="text" placeholder=placeholder action="searchInputAction" class="form-control inlineInput" value=value}}
+
+    <div class="input-group">
+        {{input type="text" placeholder=placeholder action="searchInputAction" class="form-control inlineInput" value=value}}
+        <div class="input-group-btn">
+            <button class="btn btn-default" {{action 'clearSearch'}}>{{glyphicon 'remove-circle'}}</button>
+        </div>
+    </div>
+
 {{/if}}

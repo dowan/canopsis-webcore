@@ -1,1 +1,10 @@
 {{statusview value this}}
+
+{{#if this.statushtml}}
+    <span>{{this.statusvalue}}</span>
+    {{#component-tooltip content=this.statushtml htmlEnabled=true}}
+        <span>{{glyphicon 'eye-open'}}</span>
+    {{/component-tooltip}}
+{{else}}
+    <span>{{this.statusvalue}}</span>
+{{/if}}

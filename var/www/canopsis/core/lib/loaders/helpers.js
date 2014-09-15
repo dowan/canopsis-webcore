@@ -17,9 +17,6 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-//TODO implement auto check for mvct file existence and require them automatically
-
 var helpers = [
     'ack',
     'color',
@@ -52,10 +49,8 @@ var helpers = [
     'subprocess',
     'timeSince',
     'timestamp',
-    'tooltip',
     'unset',
     'widgetslot'
-    // 'renderer', //Deprecated
 ];
 
 var deps = ['app/application', 'app/lib/wrappers/swag'];

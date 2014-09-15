@@ -30,6 +30,7 @@ define([
     var component = Ember.Component.extend({
 
         multiselect: true,
+        showselection: true,
 
         actions: {
             setListMode: function() {
@@ -47,12 +48,8 @@ define([
             selectItem: function(item) {
                 console.log('selectItem', arguments);
                 if(get(this, 'multiselect') === false) {
-                    console.log('>>>>> replace selection');
-
                     set(this, 'selection', [item]);
                 } else {
-                    console.log('>>>>> append to array');
-
                     if(!Ember.isArray(get(this, 'selection'))) {
                         set(this, 'selection', Ember.A());
                     }
@@ -63,7 +60,6 @@ define([
                     if(search.length === 0){
                         get(this, 'selection').pushObject(item);
                     }
-                    console.log('>>>>>', get(this, 'selection'));
                 }
 
                 if(get(this, 'target')) {
@@ -103,7 +99,7 @@ define([
 
         searchFilter: "",
 
-        allCollapsed: true,
+        allCollapsed: false,
         selectionCollapsed: false,
 
         mode: "list",
@@ -138,10 +134,11 @@ define([
 
         allClasses: function(){
             var searchFilter = get(this, 'searchFilter');
+            var res;
             if(searchFilter === "") {
-                var res = get(this, 'content.all');
+                res = get(this, 'content.all');
             } else {
-                var res = get(this, 'content.all').filter(function(item, index, enumerable){
+                res = get(this, 'content.all').filter(function(item, index, enumerable){
                     var doesItStartsWithSearchFilter = item.name.slice(0, searchFilter.length) == searchFilter;
                     return doesItStartsWithSearchFilter;
                 });
