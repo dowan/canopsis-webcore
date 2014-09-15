@@ -21,16 +21,22 @@ define([
     'ember',
     'ember-data',
     'app/application',
+    'app/controller/partialslotablecontroller',
+    'app/mixins/usermenu',
+    'app/mixins/schemamanager',
+    'app/mixins/notifications',
     'app/routes/application',
     'utils',
     'app/lib/utils/forms',
     'app/adapters/cservice',
+    'app/adapters/notification',
     'app/serializers/cservice'
-], function(Ember, DS, Application, ApplicationRoute, utils, formUtils) {
+], function(Ember, DS, Application, PartialslotAbleController, UsermenuMixin, SchemamanagerMixin, NotificationsMixin, ApplicationRoute, utils, formUtils) {
     var get = Ember.get,
         set = Ember.set;
 
-    Application.ApplicationController = Ember.ObjectController.extend({
+    Application.ApplicationController = PartialslotAbleController.extend(
+        SchemamanagerMixin, NotificationsMixin, UsermenuMixin, {
         needs: ['login'],
 
         utils: utils,
@@ -56,6 +62,8 @@ define([
 
         init: function() {
             console.group('app init');
+            utils.notification.controller = this;
+
             var appController = this;
 
             var headerStore = DS.Store.create({
@@ -91,7 +99,7 @@ define([
                 set(Canopsis, 'conf.ticketConfig', queryResults);
             });
 
-            console.log('finding authentication backends config')
+            console.log('finding authentication backends config');
 
             headerStore.find('ldapconfig', 'ldap.config').then(function(queryResults) {
                 console.log('ldap config found');
@@ -204,7 +212,7 @@ define([
                         record.save();
 
                         utils.notification.info(__('profile') + ' ' +__('updated'));
-                        console.log(get(record, 'ui_language') , previousUiLanguage)
+                        console.log(get(record, 'ui_language') , previousUiLanguage);
                         if (get(record, 'ui_language') !== previousUiLanguage) {
                             console.log('Language changed, will prompt for application reload');
                             applicationController.send(

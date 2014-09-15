@@ -36,6 +36,9 @@ var templates = [
     { name: 'customfilters' },
 
     { name: 'timeintervalselection' },
+    { name: 'usermenu' },
+    { name: 'schemamanager' },
+    { name: 'notificationsstatusmenu' },
 
     { name: 'actionbutton-edit', classes: ["action"], icon : "pencil", label : "Edit"},
     { name: 'actionbutton-ack', classes: ["action", "toolbar"], icon : "ok", label : "Ack"},
