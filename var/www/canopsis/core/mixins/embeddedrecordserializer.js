@@ -19,8 +19,9 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/application',
+    'utils',
+], function(Ember, Application, utils) {
 
     function keyForRelationship(key, kind) {
         void (kind);
@@ -30,12 +31,6 @@ define([
     }
 
     Application.EmbeddedRecordSerializerMixin = Ember.Mixin.create({
-        /**
-        The current ID index of generated IDs
-        @property
-        @private
-        */
-        _generatedIds: 0,
 
         /**
          Sideload a JSON object to the payload
@@ -72,7 +67,7 @@ define([
 
                 // Missing an ID, give it one
                 if (typeof id === 'undefined') {
-                    id = 'generated-'+ (++this._generatedIds);
+                    id = utils.hash.generateId('item');
                     item[primaryKey] = id;
                 }
 

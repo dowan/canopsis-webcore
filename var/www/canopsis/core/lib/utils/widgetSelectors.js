@@ -23,24 +23,29 @@ define(['ember'], function(Ember) {
 
 
         toTree: function (widget) {
+            //doesn't work yet
             if (Ember.isNone(widget)) {
                 console.warn('Widget is undefined in widget selector toTree');
                 return {};
             }
 
             tree = {};
+            console.log('enter tree for widget' , widget.get('id'));
             var widgets = widgetSelectors.directChildren(widget);
+            var sub_tree = [];
+
             for (var i=0; i<widgets.length; i++) {
 
-                console.log('iterating over widget ',i);
-                var children = widgetSelectors.toTree(widgets[i]);
-                tree[widgets[i].get('id')] = {
-                    children: children,
-                    widget: widgets[i]
-                };
+                console.log('iterating over widget ', widgets[i].get('id'));
+                sub_tree.push(widgetSelectors.toTree(widgets[i]));
 
             }
 
+            tree[widget.get('id')] = {
+                children: sub_tree,
+                widget: widget
+            };
+            console.log('will return sub tree', tree);
             return tree;
         },
 
@@ -51,7 +56,7 @@ define(['ember'], function(Ember) {
                 return [];
             }
 
-            console.log('in direct children')
+            console.log('in direct children');
 
             var widgets = widget.get('items.content');
             var result = [];
