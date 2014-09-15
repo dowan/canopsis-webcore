@@ -36,7 +36,7 @@ define([
         selectedValue: undefined,
 
         classifiedItems : function(){
-            console.log(">>> recompute classifiedItems", get(this, 'items'));
+            console.log("recompute classifiedItems", get(this, 'items'));
             var items = get(this, 'items');
 
             var res = Ember.Object.create({
@@ -93,9 +93,6 @@ define([
             }));
 
             this.refreshContent();
-        },
-
-        didInsertElement: function() {
         },
 
         refreshContent: function() {

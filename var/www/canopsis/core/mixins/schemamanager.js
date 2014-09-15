@@ -19,30 +19,18 @@
 
 define([
     'ember',
-    'ember-data',
-    //FIXME: why does it work only here ?
-    'ember-widgets',
-    'jsonselect'
-], function(Ember, DS) {
+    'app/application'
+], function(Ember, Application) {
+    var get = Ember.get,
+        set = Ember.set;
 
-    var Application = Ember.Application.create({
-        LOG_ACTIVE_GENERATION: false,
-        LOG_TRANSITIONS: false,
-        LOG_TRANSITIONS_INTERNAL: false,
-        LOG_VIEW_LOOKUPS: false,
-        LOG_BINDINGS: true
-    });
-
-    Application.initializer({
-        name:"RESTAdaptertransforms",
-        after: "transforms",
-        initialize: function(container,application) {
-            void (container);
-            application.register('transform:array',DS.ArrayTransform);
-            application.register('transform:integer',DS.IntegerTransform);
-            application.register('transform:object',DS.ObjectTransform);
+    var mixin = Ember.Mixin.create({
+        partials: {
+            statusbar: ['schemamanagerstatusmenu']
         }
     });
 
-    return Application;
+    Application.SchemamanagerMixin = mixin;
+
+    return mixin;
 });

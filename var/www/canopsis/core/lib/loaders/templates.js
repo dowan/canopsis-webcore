@@ -20,7 +20,6 @@
 var templates = [
     { name: 'application' },
     { name: 'index' },
-    { name: 'notifications' },
     { name: 'containerwidget' },
     { name: 'formwrapper' },
     { name: 'widgettitlebar' },
@@ -36,6 +35,10 @@ var templates = [
     { name: 'customfilters' },
 
     { name: 'timeintervalselection' },
+    { name: 'userstatusmenu' },
+    { name: 'schemamanagerstatusmenu' },
+    { name: 'notificationsstatusmenu' },
+    { name: 'consolemanagerstatusmenu' },
 
     { name: 'actionbutton-edit', classes: ["action"], icon : "pencil", label : "Edit"},
     { name: 'actionbutton-ack', classes: ["action", "toolbar"], icon : "ok", label : "Ack"},
