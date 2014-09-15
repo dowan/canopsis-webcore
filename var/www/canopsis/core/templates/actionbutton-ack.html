@@ -3,24 +3,34 @@
         {{#if minified}}
             {{#if this.ack.author}}
                 {{#if this.ack.isAck}}
-                    <button class="btn btn-default btn-sm tooltiptable hint--rounded hint--top" data-hint="Cancel ack" {{action 'sendEvent' 'ackremove' this}} >
-                        {{glyphicon "ban-circle"}}
-                    </button>
+                    {{#component-tooltip content="Cancel ack"}}
+                        <button class="btn btn-default btn-sm" {{action 'sendEvent' 'ackremove' this}} >
+                            {{glyphicon "ban-circle"}}
+                        </button>
+                    {{/component-tooltip}}
                 {{/if}}
             {{else}}
                 {{#if this.status}}
-                    <button class="btn btn-default btn-sm tooltiptable hint--rounded hint--top" data-hint="Ack" {{action 'sendEvent' 'ack' this}} >
-                        {{glyphicon "ok"}}
-                    </button>
+                    {{#component-tooltip content="Ack"}}
+                        <button class="btn btn-default btn-sm" {{action 'sendEvent' 'ack' this}} >
+                            {{glyphicon "ok"}}
+                        </button>
+                    {{/component-tooltip}}
                 {{/if}}
             {{/if}}
         {{else}}
-            <button class="btn btn-default tooltiptable hint--rounded hint--top" data-hint="Ack" {{action 'sendEvent' 'ack'}} >
-                {{glyphicon "ok"}} {{tr 'Ack'}}
-            </button>
-            <button class="btn btn-default tooltiptable hint--rounded hint--top" data-hint="Cancel ack" {{action 'sendEvent' 'ackremove'}} >
-                {{glyphicon "ban-circle"}} {{tr 'Cancel ack'}}
-            </button>
+            {{#component-tooltip content="Ack"}}
+                <button class="btn btn-default" {{action 'sendEvent' 'ack'}} >
+                    {{glyphicon "ok"}} {{tr 'Ack'}}
+                </button>
+            {{/component-tooltip}}
+
+            {{#component-tooltip content="Cancel ack"}}
+                <button class="btn btn-default" {{action 'sendEvent' 'ackremove'}} >
+                    {{glyphicon "ban-circle"}} {{tr 'Cancel ack'}}
+                </button>
+            {{/component-tooltip}}
+
         {{/if}}
     {{/unless}}
 {{/if}}

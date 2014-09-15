@@ -32,9 +32,6 @@ define([
 
             set(this, 'onlyAllowRegisteredIndexes', get(Canopsis, 'conf.frontendConfig.cfilter_allow_only_optimized_filters'));
 
-            set(Canopsis, 'tooltips.unlockIndexes', 'Unlock indexes. This might lead to huge performance issues!');
-            set(Canopsis, 'tooltips.lockIndexes', 'Lock indexes');
-
             if(get(this, 'content') !== null && get(this, 'content') !== undefined) {
                 this.set('cfilter_serialized', get(this, 'content'));
             } else if(cfilter_serialized === undefined || cfilter_serialized === null) {

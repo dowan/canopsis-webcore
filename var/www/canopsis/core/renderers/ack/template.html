@@ -1,3 +1,8 @@
 {{#if value.author}}
     {{ack value}}
+    {{#component-tooltip content=value.html htmlEnabled=true}}
+        <span {{bind-attr class=":badge value.color"}} >
+            <i class="fa fa-check"></i>
+        </span>
+    {{/component-tooltip}}
 {{/if}}

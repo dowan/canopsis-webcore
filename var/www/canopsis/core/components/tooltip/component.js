@@ -36,12 +36,25 @@ define([
             this.$("[data-toggle=popover]").popover();
             var component = this;
 
-            this.$().popover({
+            var options = {
                 html : get(component, 'htmlEnabled'),
                 placement: get(component, 'placement'),
                 trigger: get(component, 'triggerEvent'),
-                content: get(component, 'content')
-            });
+            };
+
+            var content = get(component, 'content');
+
+            if (!Ember.isNone(content)) {
+                options.content = __(content);
+            }
+
+            var title = get(component, 'title');
+
+            if (!Ember.isNone(title)) {
+                options.title = __(title);
+            }
+
+            this.$().popover(options);
         }
     });
 
