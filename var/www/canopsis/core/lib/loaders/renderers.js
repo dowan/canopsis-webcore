@@ -19,6 +19,7 @@
 
 var renderersTemplates = [
     'ack',
+    'ticket',
     'actionfilter',
     'boolean',
     'cfilter',

@@ -110,7 +110,7 @@ define([
                     'meta': {
                         'embeddedRecord': true,
                         'parentType': containerwidget.get('xtype'),
-                        'parentId': containerwidget.get('widgetId')
+                        'parentId': containerwidget.get('id')
                     }
                 });
 

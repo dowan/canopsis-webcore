@@ -19,6 +19,7 @@
 
 var helpers = [
     'ack',
+    'ticket',
     'color',
     'colorview',
     'conf',
