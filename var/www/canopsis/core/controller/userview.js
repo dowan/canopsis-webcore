@@ -33,52 +33,6 @@ define([
         needs: ['application'],
 
         actions: {
-
-            /**
-            * Display a pop up allowing customer to set view time
-            * parameters that will affect all widget data selection.
-            **/
-            displayLiveReporting: function () {
-
-                var userviewController = this;
-
-                var record = Canopsis.utils.data.getStore().createRecord('livereporting', {
-                    crecord_type: 'livereporting'
-                });
-
-                var recordWizard = Canopsis.utils.forms.showNew('modelform', record, {
-                    title: __('Edit live reporting')
-                });
-
-                recordWizard.submit.then(function(form) {
-                    /*
-                    record = form.get('formContext');
-                    userviewController.get('custom_filters').pushObject(record);
-                    console.log('Custom filter created', record, form);
-                    utils.notification.info(__('Custom filter created'));
-                    userviewController.set('userParams.custom_filters', userviewController.get('custom_filters'));
-                    userviewController.get('userConfiguration').saveUserConfiguration();
-                    */
-                });
-
-            },
-
-
-            /**
-             * Toggle fullscreen and regular mode, by toggling Applicationcontroller#fullscreenMode boolean.
-             * The rest of the implementation is on handlebars templates (application and userview)
-             */
-            toggleFullscreen: function() {
-                console.log('toggleFullscreen');
-                var applicationController = get(this, 'controllers.application');
-
-                if(get(applicationController, 'fullscreenMode', true)) {
-                    set(applicationController, 'fullscreenMode', false);
-                } else {
-                    set(applicationController, 'fullscreenMode', true);
-                }
-            },
-
             insertWidget: function(containerController) {
                 console.log("insertWidget", containerController);
                 var widgetChooserForm = Canopsis.utils.forms.showNew('widgetform', this);
@@ -101,6 +55,10 @@ define([
                 widgetChooserForm.submit.fail(function() {
                     console.info('Widget insertion canceled');
                 });
+            },
+
+            refresh: function() {
+                this.trigger('refreshView');
             }
         }
     });

@@ -32,15 +32,15 @@ define([
         registerHooks: function() {
 
             console.log("registerHooks", this.get("controller"), this.get("controller").on);
-            if (!this.get('hookRegistered')) {
-                this.get("controller").on('refreshView', this, this.rerender);
-                this.set('hookRegistered', true);
-            }
+            this.get("controller").on('refreshView', this, this.rerender);
+            // if (!this.get('hookRegistered')) {
+            //     this.set('hookRegistered', true);
+            // }
         },
 
         unregisterHooks: function() {
             this.get("controller").off('refreshView', this, this.rerender);
-            this.set('hookRegistered', false);
+            // this.set('hookRegistered', false);
         },
 
         rerender: function() {
