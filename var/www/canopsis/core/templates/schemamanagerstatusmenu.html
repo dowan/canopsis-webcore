@@ -5,9 +5,10 @@
             {{glyphicon 'upload'}}
         </a>
         <ul class="dropdown-menu">
-        {{#each type in Canopsis.Application.available_types}}
-            <li><a class="handle" {{action 'addModelInstance' type}}>{{type}}</a></li>
-        {{/each}}
+        
+        {{!#each type in Canopsis.Application.available_types}}
+            <!-- <li><a class="handle" {{action 'addModelInstance' type}}>{{type}}</a></li> -->
+        {{!/each}}
         </ul>
     </li>
 {{/if}}

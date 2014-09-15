@@ -26,7 +26,7 @@ define([
 
     var mixin = Ember.Mixin.create({
         partials: {
-            statusbar: ['usermenu']
+            statusbar: ['userstatusmenu']
         }
     });
 

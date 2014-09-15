@@ -306,7 +306,7 @@ table.sortable th {
 }
 
 .content {
-	padding: 0px 7px 0px !important;
+	padding: 7px !important;
 }
 
 .table>thead:first-child>tr:first-child>th {
