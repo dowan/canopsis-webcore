@@ -15,13 +15,11 @@
     }).property('value'),
 
     init:function(){
-        debugger;
         this._super();
         //this.set("value" , 33);
     },
 
     width_test: function(){
-        debugger;
         return "width: " + this.get("percent_test") + "%";
     }.property("percent_test"),
 
@@ -39,7 +37,6 @@
     }.property(),
 
     percent_test:function(){
-        debugger;
         var value = this.get("valuenow");
         var max = this.get("valuemax");
 
@@ -49,7 +46,6 @@
 
 
     statusClass: function(){
-        debugger;
         var warn = 50//attr.get('warn') || 50;
         var crit = 75//attr.get('crit') || 75;
         var result = 'progress-bar progress-bar-';
@@ -85,6 +81,6 @@
     statusClassDidChange: Ember.observer(function() {
         this.$('.bar').addClass(this.get('statusClass'));
     }, 'statusClass')
-  })
+  });
   return  Application.ComponentProgressbarComponent;
-})
+});

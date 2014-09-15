@@ -34,7 +34,6 @@ define([
 
         actions: {
             changevalue:function(){
-                debugger;
                 var value = $('#changevalue').val();
                 var test = $('#bad_when_full');
                 var bad_when_full = $('#bad_when_full')[0].checked ;
