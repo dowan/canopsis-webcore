@@ -1,4 +1,4 @@
-/*
+    /*
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
 #
 # This file is part of Canopsis.
@@ -17,12 +17,24 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/lib/abstractclassmanager'], function(Abstractclassmanager) {
+define([
+    'app/application',
+    'app/routes/authenticated',
+    'utils'
+], function(Application, AuthenticatedRoute, utils) {
+    var set = Ember.set,
+        get = Ember.get;
 
-    var manager = {
-        all: [],
-        byClass: {}
-    };
+    var route = AuthenticatedRoute.extend({
 
-    return manager;
+        setupController: function() {
+            console.log('setupController', this.controllerFor('application'));
+            this.controllerFor('application').onIndexRoute = true;
+            console.log('beforemodel');
+        }
+    });
+
+    Application.IndexRoute = route;
+
+    return route;
 });

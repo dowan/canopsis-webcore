@@ -19,10 +19,10 @@
 
 define(['ember'], function(Ember) {
 
-    var manager = Ember.Object.extend({
-        all: Ember.A(),
-        byClass: Ember.Object.create()
-    });
+    var manager = {
+        all: [],
+        byClass: {}
+    };
 
     return manager;
 });

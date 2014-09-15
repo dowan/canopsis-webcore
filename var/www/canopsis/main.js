@@ -37,6 +37,8 @@ define([
     'app/lib/loaders/validators',
     'app/lib/loaders/mixins',
     'app/routes/application',
+    'app/routes/index',
+    'app/routes/userview',
     'css3-mediaqueries'
 ], function(commit,
         routesLoader,

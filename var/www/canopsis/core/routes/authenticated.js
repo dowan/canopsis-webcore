@@ -22,7 +22,7 @@ define([
     'app/application'
 ], function(Ember, Application) {
 
-    Application.AuthenticatedRoute = Ember.Route.extend({
+    var route = Ember.Route.extend({
 
         beforeModel: function() {
             this.controllerFor('login').getUser();
@@ -93,5 +93,7 @@ define([
         }
     });
 
-    return Application.AuthenticatedRoute;
+    Application.AuthenticatedRoute = route;
+
+    return route;
 });

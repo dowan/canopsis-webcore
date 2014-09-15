@@ -12,9 +12,7 @@
                 {{/if}}
             </div>
             <div class="modal-footer">
-                {{#each buttonpartial in controller.form.partials.buttons}}
-                    {{partial buttonpartial}}
-                {{/each}}
+                {{partialslot slot=controller.form._partials.buttons}}
             </div>
         </div>
     </div>

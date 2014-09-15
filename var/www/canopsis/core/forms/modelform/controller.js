@@ -23,16 +23,18 @@ define([
     'app/lib/factories/form',
     'app/mixins/inspectableitem',
     'app/mixins/validation',
+    'app/mixins/recordpreset',
     'app/lib/utils/slug',
     'app/lib/loaders/schema-manager'
-], function(Ember, Application, FormFactory, InspectableitemMixin, ValidationMixin, slugify) {
+], function(Ember, Application, FormFactory, InspectableitemMixin, ValidationMixin, RecordpresetMixin, slugify) {
     var set = Ember.set,
         get = Ember.get;
 
     var formOptions = {
         mixins: [
             InspectableitemMixin,
-            ValidationMixin
+            ValidationMixin,
+            RecordpresetMixin
         ]
     };
 

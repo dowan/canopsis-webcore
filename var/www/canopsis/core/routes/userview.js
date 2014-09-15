@@ -25,7 +25,7 @@ define([
     var set = Ember.set,
         get = Ember.get;
 
-    Application.UserviewRoute = AuthenticatedRoute.extend({
+    var route = AuthenticatedRoute.extend({
         needs: ['application'],
         actions: {
             error: function(error, transition){
@@ -105,5 +105,7 @@ define([
         }
     });
 
-    return Application.UserviewIndexRoute;
+    Application.UserviewRoute = route;
+
+    return route;
 });

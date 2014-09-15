@@ -1,5 +1,5 @@
-
 <p>
+    {{partialslot slot=controller._partials.toolbar tagName="ul" classNames="nav navbar-nav pull-right"}}
     {{#unless controller.onePageDisplay}}
         <ul class="nav nav-tabs">
             {{#each category in controller.categories}}
@@ -7,7 +7,6 @@
             {{/each}}
         </ul>
     {{/unless}}
-
     <!-- Tab panes -->
     <div class="tab-content">
         {{#each category in controller.categories}}

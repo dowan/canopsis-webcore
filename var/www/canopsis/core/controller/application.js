@@ -92,6 +92,16 @@ define([
                 console.log('frontend config found');
                 set(appController, 'frontendConfig', queryResults);
                 set(Canopsis, 'conf.frontendConfig', queryResults);
+                if(get(appController, 'onIndexRoute') === true) {
+                    console.error('on index route, redirecting to the appropriate route');
+
+                    var default_view = get(appController, 'frontendConfig.default_view');
+
+                    console.error(default_view);
+                    if(!! default_view) {
+                        appController.send('showView', default_view);
+                    }
+                }
             });
 
             headerStore.find('ticket', 'cservice.ticket').then(function(queryResults) {

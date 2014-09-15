@@ -19,7 +19,10 @@
 
 define(['app/lib/abstractclassmanager'], function(Abstractclassmanager) {
 
-    var formsManager = Abstractclassmanager.create();
+    var formsManager = {
+        all: [],
+        byClass: {}
+    };
 
     return formsManager;
 });

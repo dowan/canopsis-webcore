@@ -24,6 +24,9 @@ define([
     "app/lib/loaders/schema-manager"
 ], function(Application, WidgetController, WidgetsManager) {
 
+    var get = Ember.get,
+        set = Ember.set;
+
     /**
      * Widget factory. Creates a controller, stores it in Application
      * @param widgetName {string} the name of the new widget. lowercase
@@ -77,19 +80,19 @@ define([
             }
             if(metadataDict.classes) {
                 var classes = metadataDict.classes;
-                for (var i = 0, l = classes.length; i < l; i++) {
-                    var currentClass = classes[i];
-                    if(!Ember.isArray(WidgetsManager.byClass.get(currentClass))) {
-                        WidgetsManager.byClass.set(currentClass, Ember.A());
+                for (var j = 0, l = classes.length; j < l; j++) {
+                    var currentClass = classes[j];
+                    if(!Ember.isArray(get( WidgetsManager.byClass, currentClass))) {
+                        set(WidgetsManager.byClass, currentClass, Ember.A());
                     }
 
-                    WidgetsManager.byClass.get(currentClass).pushObject(registryEntry)
+                    get(WidgetsManager.byClass, currentClass).push(registryEntry);
                 }
             }
         }
 
 
-        WidgetsManager.all.pushObject(registryEntry);
+        WidgetsManager.all.push(registryEntry);
 
         console.groupEnd();
 
