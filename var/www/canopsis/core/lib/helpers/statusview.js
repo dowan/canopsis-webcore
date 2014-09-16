@@ -42,14 +42,16 @@ define(['ember', 'utils'], function(Ember, utils) {
         if(status === 4) {
             //displays cancel information if any onto the status field
             var value = crecord.get('record.cancel');
-            crecord.statushtml = [
-                '<center>',
-                '<i>' , __('Date') , '</i> : <br/>',
-                utils.dates.timestamp2String(value.timestamp) ,' <br/> ',
-                __('By'), ' : ' , value.author ,' <br/><br/> ',
-                '<i>', __('Comment') ,' :</i> : <br/>' , value.comment,
-                '</center>'
-            ].join('');
+            if(!Ember.isNone(value.timestamp)) {
+                crecord.statushtml = [
+                    '<center>',
+                    '<i>' , __('Date') , '</i> : <br/>',
+                    utils.dates.timestamp2String(value.timestamp) ,' <br/> ',
+                    __('By'), ' : ' , value.author ,' <br/><br/> ',
+                    '<i>', __('Comment') ,'</i> : <br/>' , value.comment,
+                    '</center>'
+                ].join('');
+            }
 
         }
 

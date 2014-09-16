@@ -22,9 +22,25 @@ define([
     'utils',
 ], function(Ember, utils) {
 
-    Ember.Handlebars.helper('ack', function(value) {
+    Ember.Handlebars.helper('ack', function(value, crecord) {
+
+        //displays ticket information if any onto the status field
+        var ticket = crecord.get('record.ticket_declared');
+        if(!Ember.isNone(ticket.timestamp)) {
+            value.ticket = ['<center>',
+                '<b>' + __('Ticket declared') + '</b><br/>',
+                '<i>' + __('Date') + '</i> : <br/>',
+                utils.dates.timestamp2String(value.timestamp) +' <br/> ',
+                __('By') +' : ' + value.author +' <br/><br/> ',
+                "</center>"
+            ].join('');
+        }
+
+
 
         value.html = ['<center>',
+            '<b>' + __('Ack') + '</b><br/>',
+
             '<i>' + __('Date') + '</i> : <br/>',
             utils.dates.timestamp2String(value.timestamp) +' <br/> ',
             __('By') +' : ' + value.author +' <br/><br/> ',

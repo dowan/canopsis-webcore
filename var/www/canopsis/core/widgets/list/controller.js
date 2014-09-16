@@ -82,6 +82,11 @@ define([
 
             init: function() {
                 set(this, 'findParams_cfilterFilterPart', get(this, 'default_filter'));
+
+                //prepare user configuration to fetch customer preference by reseting data.
+                //dont understand why without this reset, values same values are set into many list instances.
+                this.set('custom_filters', []);
+
                 this._super();
             },
 

@@ -27,18 +27,18 @@ manager = Context()
 
 
 @route(get)
-def context(_type, name=None, context=None, extended=None):
+def context(_type, names=None, context=None, extended=None):
 
     entities = manager.get(
-        _type=_type, name=name, context=context, extended=extended)
+        _type=_type, names=names, context=context, extended=extended)
 
     result = response(entities)
 
     return result
 
 
-@route(get)
-def context_find(
+@route(post, body_params=['limit', 'skip', 'sort', '_filter'])
+def context(
     _type=None, context=None, _filter=None, extended=False,
     limit=0, skip=0, sort=None
 ):
@@ -52,7 +52,7 @@ def context_find(
     return result
 
 
-@route(put)
+@route(put, body_params=['_type', 'entity', 'context', 'extended_id'])
 def context(_type, entity, context=None, extended_id=None):
 
     manager.put(
@@ -63,8 +63,8 @@ def context(_type, entity, context=None, extended_id=None):
     return result
 
 
-@route(delete)
-def delete(ids=None, _type=None, context=None, extended=False):
+@route(delete, body_params=['context', 'ids', '_type', 'extended'])
+def context(ids=None, _type=None, context=None, extended=False):
 
     manager.remove(ids=ids, _type=_type, context=context, extended=extended)
 
@@ -73,7 +73,7 @@ def delete(ids=None, _type=None, context=None, extended=False):
     return result
 
 
-@route(post)
+@route(post, body_params=['entities', 'extended'])
 def unify(entities, extended=False):
 
     nodes = manager.unify_entities(entities=entities, extended=extended)

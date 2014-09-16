@@ -26,7 +26,7 @@ from canopsis.perfdata.manager import PerfData
 manager = PerfData()
 
 
-@route(get)
+@route(post, body_params=['metric_id', 'timewindow', 'period'])
 def perfdata_count(metric_id, timewindow=None, period=None):
 
     count = manager.count(
@@ -37,9 +37,10 @@ def perfdata_count(metric_id, timewindow=None, period=None):
     return result
 
 
-@route(get)
+@route(
+    post, body_params=['timewindow', 'period', 'limit', 'skip', 'timeserie'])
 def perfdata(
-    metric_id, period=None, with_meta=True, timewindow=None,
+    metric_id, timewindow=None, period=None, with_meta=True,
     limit=0, skip=0, timeserie=None
 ):
 
@@ -56,7 +57,7 @@ def perfdata(
     return result
 
 
-@route(get)
+@route(post, body_params=['timewindow', 'limit', 'sort'])
 def perfdata_meta(metric_id, timewindow=None, limit=0, sort=None):
 
     meta = manager.get_meta(
@@ -67,7 +68,7 @@ def perfdata_meta(metric_id, timewindow=None, limit=0, sort=None):
     return result
 
 
-@route(put)
+@route(put, body_params=['metric_id', 'points', 'meta', 'period'])
 def perfdata(metric_id, points, meta=None, period=None):
 
     manager.put(metric_id=metric_id, points=points, meta=meta, period=period)
@@ -77,7 +78,7 @@ def perfdata(metric_id, points, meta=None, period=None):
     return result
 
 
-@route(delete)
+@route(delete, body_params=['metric_id', 'period', 'with_meta', 'timewindow'])
 def perfdata(metric_id, period=None, with_meta=False, timewindow=None):
 
     manager.remove(
@@ -89,7 +90,7 @@ def perfdata(metric_id, period=None, with_meta=False, timewindow=None):
     return result
 
 
-@route(post)
+@route(put, body_params=['metric_id', 'meta', 'timestamp'])
 def perfdata_meta(metric_id, meta, timestamp=None):
 
     nodes = manager.put_meta(
