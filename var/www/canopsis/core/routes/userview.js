@@ -87,7 +87,10 @@ define([
 
             refresh: function() {
                 var userviewController = this.controllerFor('userview');
-                userviewController.send('refresh');
+
+                console.log('refresh', this);
+                this.refresh();
+                userviewController.send('refreshView');
             }
 
 
