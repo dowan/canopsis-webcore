@@ -3,7 +3,7 @@ define([
     'app/mixins/arraymixin',
     'app/components/multiselect/component'
 ], function(Application , Arraymixin) {
-    Application.ComponentTagsComponent = Ember.Component.extend(Arraymixin,{
+    Application.ComponentTagsComponent = Ember.Component.extend({
         contentREF:[],
         name : "",
         select:0,
@@ -50,7 +50,8 @@ define([
         // select             : template for list item tags
         init: function() {
            // var contentREF = this.getContent();
-           var contentREF = this.getContent();
+           var contentREF = this.get("content") || [];
+            this.set("content" , contentREF );
 
             var attr = this.get("attr");
             var value = this.get("attr.value") || [];

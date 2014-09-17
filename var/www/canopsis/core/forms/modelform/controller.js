@@ -125,7 +125,7 @@ define([
             }
 
         }.property('formContext'),
-
+/*
         updateArray: function() {
             var ArrayFields = this.get("ArrayFields");
             if (ArrayFields !== undefined) {
@@ -135,7 +135,7 @@ define([
                 }
             }
         },
-
+*/
         actions: {
             submit: function() {
                 if (this.validation !== undefined && !this.validation()) {
@@ -189,7 +189,7 @@ define([
                     }
                 }
                 //Update value of array
-                this.updateArray();
+              //  this.updateArray();
 
                 console.log("this is a widget", this.get('formContext'));
                 this._super(this.get('formContext'));
