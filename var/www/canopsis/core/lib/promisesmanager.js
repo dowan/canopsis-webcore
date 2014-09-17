@@ -33,10 +33,12 @@ define(['ember'], function(Ember) {
         byClass: {},
 
         handlePromise: function(promise) {
-            console.log('manage promise', promise);
-            this.all.pushObject(promise);
-            this.pending.pushObject(promise);
-            this.set('pendingCount', this.pendingCount + 1);
+            Ember.run.schedule('sync', this, function() {
+                console.log('manage promise', promise);
+                this.all.pushObject(promise);
+                this.pending.pushObject(promise);
+                this.set('pendingCount', this.pendingCount + 1);
+            });
         },
 
         promiseSuccess: function(promise) {
@@ -44,15 +46,19 @@ define(['ember'], function(Ember) {
         },
 
         promiseFail: function(promise) {
-            console.error('promise failed', promise);
-            this.get('errors').pushObject(promise);
-            this.set('errorsCount', this.errorsCount + 1);
+            Ember.run.schedule('sync', this, function() {
+                console.error('promise failed', promise);
+                this.get('errors').pushObject(promise);
+                this.set('errorsCount', this.errorsCount + 1);
+            });
         },
 
         promiseFinally: function (promise) {
-            console.log('finally');
-            this.get('pending').removeObject(promise);
-            this.set('pendingCount', this.pendingCount - 1);
+            Ember.run.schedule('sync', this, function() {
+                console.log('finally');
+                this.get('pending').removeObject(promise);
+                this.set('pendingCount', this.pendingCount - 1);
+            });
         }
     });
 
