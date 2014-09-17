@@ -29,8 +29,8 @@ define([
     ];
 
     var inflectionsManager = {
-        all: Ember.A(),
-        byClass: Ember.Object.create()
+        all: [],
+        byClass: {}
     };
 
     console.log(Ember);

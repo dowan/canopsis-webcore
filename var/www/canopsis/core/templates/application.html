@@ -18,6 +18,13 @@
                     <div class="navbar-right">
                         <ul class="nav navbar-nav">
 
+                            {{#if isLoading}}
+                            <li class="dropdown tasks-menu">
+                                    <a href="#">
+                                        <i class="fa fa-refresh fa-spin"></i>
+                                    </a>
+                                </li>
+                            {{/if}}
                             <!-- Tasks: style can be found in dropdown.less -->
                             <li class="dropdown tasks-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -77,91 +84,91 @@
                                     <i class="fa fa-desktop"></i> <span>{{tr 'Dashboard'}}</span>
                                 </a>
                             </li>
-                            {{#if controller.utils.session.rights.aclconfig.checksum}}
-                                <li class="treeview">
-                                    <a href="#">
-                                        <i class="fa fa-group"></i>
-                                        <span>{{tr 'Profiles'}}</span>
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    </a>
-                                    <ul class="treeview-menu">
-                                        <li><a {{action 'showView' 'view.accounts'}}><i class="fa fa-angle-double-right"></i> {{tr 'Users'}}</a></li>
-                                        <li><a {{action 'showView' 'view.permissions'}}><i class="fa fa-angle-double-right"></i> {{tr 'Permissions'}}</a></li>
-                                        <li><a {{action 'showView' 'view.rights'}}><i class="fa fa-angle-double-right"></i> {{tr 'Rights'}}</a></li>
-                                    </ul>
-                                </li>
-                            {{/if}}
-                            {{#if controller.utils.session.rights.authsystems.checksum}}
-                                <li class="treeview">
-                                    <a href="#">
-                                        <i class="fa fa-key"></i>
-                                        <span>{{tr 'Authentification systems'}}</span>
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    </a>
-                                    <ul class="treeview-menu">
-                                        <li><a {{action 'editLdapConfig'}}><i class="fa fa-angle-double-right"></i> LDAP</a></li>
-                                        <li><a {{action 'editCasConfig'}}><i class="fa fa-angle-double-right"></i> CAS</a></li>
-                                    </ul>
-                                </li>
-                            {{/if}}
-                            {{#if controller.utils.session.rights.enginesconfig.checksum}}
-                                <li class="treeview">
-                                    <a href="#">
-                                        <i class="fa fa-cogs"></i>
-                                        <span>{{tr 'Engines'}}</span>
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    </a>
-                                    <ul class="treeview-menu">
-                                        {{#each engineview in controller.enginesviews}}
-                                            {{#ifUserCanDisplayView engineview.value}}
-                                                <li>
-                                                    <a {{action 'showView' engineview.value}}>
-                                                        <i class="fa fa-angle-double-right"></i> 
-                                                        {{engineview.label}}
-                                                    </a>
-                                                </li>
-                                            {{/ifUserCanDisplayView}}
-                                        {{/each}}
-                                    </ul>
-                                </li>
-                            {{/if}}
-                            <li>
-                                <a href="#">
-                                    <i class="fa fa-road"></i> <span>{{tr 'Paths and ports'}}</span>
-                                </a>
-                            </li>
-                            {{#if controller.utils.session.rights.pluginsconfig.checksum}}
-                                {{#each plugin in controller.plugins}}
-                                    <li>
-                                        <a {{action plugin.action plugin.param}}>
-                                            <i {{bind-attr class=plugin.icon}}></i> <span>{{plugin.label}}</span>
+                                {{#if controller.utils.session.rights.aclconfig.checksum}}
+                                    <li class="treeview">
+                                        <a href="#">
+                                            <i class="fa fa-group"></i>
+                                            <span>{{tr 'Profiles'}}</span>
+                                            <i class="fa fa-angle-left pull-right"></i>
                                         </a>
+                                        <ul class="treeview-menu">
+                                            <li><a {{action 'showView' 'view.accounts'}}><i class="fa fa-angle-double-right"></i> {{tr 'Users'}}</a></li>
+                                            <li><a {{action 'showView' 'view.permissions'}}><i class="fa fa-angle-double-right"></i> {{tr 'Permissions'}}</a></li>
+                                            <li><a {{action 'showView' 'view.rights'}}><i class="fa fa-angle-double-right"></i> {{tr 'Rights'}}</a></li>
+                                        </ul>
                                     </li>
-                                {{/each}}
-                            {{/if}}
-                            {{#if controller.utils.session.rights.uisettings.checksum}}
-                                <li class="treeview">
+                                {{/if}}
+                                {{#if controller.utils.session.rights.authsystems.checksum}}
+                                    <li class="treeview">
+                                        <a href="#">
+                                            <i class="fa fa-key"></i>
+                                            <span>{{tr 'Authentification systems'}}</span>
+                                            <i class="fa fa-angle-left pull-right"></i>
+                                        </a>
+                                        <ul class="treeview-menu">
+                                            <li><a {{action 'editLdapConfig'}}><i class="fa fa-angle-double-right"></i> LDAP</a></li>
+                                            <li><a {{action 'editCasConfig'}}><i class="fa fa-angle-double-right"></i> CAS</a></li>
+                                        </ul>
+                                    </li>
+                                {{/if}}
+                                {{#if controller.utils.session.rights.enginesconfig.checksum}}
+                                    <li class="treeview">
+                                        <a href="#">
+                                            <i class="fa fa-cogs"></i>
+                                            <span>{{tr 'Engines'}}</span>
+                                            <i class="fa fa-angle-left pull-right"></i>
+                                        </a>
+                                        <ul class="treeview-menu">
+                                            {{#each engineview in controller.enginesviews}}
+                                                {{#ifUserCanDisplayView engineview.value}}
+                                                    <li>
+                                                        <a {{action 'showView' engineview.value}}>
+                                                            <i class="fa fa-angle-double-right"></i> 
+                                                            {{engineview.label}}
+                                                        </a>
+                                                    </li>
+                                                {{/ifUserCanDisplayView}}
+                                            {{/each}}
+                                        </ul>
+                                    </li>
+                                {{/if}}
+                                <li>
                                     <a href="#">
-                                        <i class="fa fa-cogs"></i>
-                                        <span>{{tr 'Settings'}}</span>
-                                        <i class="fa fa-angle-left pull-right"></i>
+                                        <i class="fa fa-road"></i> <span>{{tr 'Paths and ports'}}</span>
                                     </a>
-                                    <ul class="treeview-menu">
-                                        <li>
-                                            <a {{action 'editConfig'}}>
-                                                <i class="fa fa-angle-double-right"></i>
-                                                {{tr 'User Interface'}}
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a {{action 'editTicketJob'}}>
-                                                <i class="fa fa-angle-double-right"></i>
-                                                {{tr 'Ticket'}}
-                                            </a>
-                                        </li>
-                                    </ul>
                                 </li>
-                            {{/if}}
+                                {{#if controller.utils.session.rights.pluginsconfig.checksum}}
+                                    {{#each plugin in controller.plugins}}
+                                        <li>
+                                            <a {{action plugin.action plugin.param}}>
+                                                <i {{bind-attr class=plugin.icon}}></i> <span>{{plugin.label}}</span>
+                                            </a>
+                                        </li>
+                                    {{/each}}
+                                {{/if}}
+                                {{#if controller.utils.session.rights.uisettings.checksum}}
+                                    <li class="treeview">
+                                        <a href="#">
+                                            <i class="fa fa-cogs"></i>
+                                            <span>{{tr 'Settings'}}</span>
+                                            <i class="fa fa-angle-left pull-right"></i>
+                                        </a>
+                                        <ul class="treeview-menu">
+                                            <li>
+                                                <a {{action 'editConfig'}}>
+                                                    <i class="fa fa-angle-double-right"></i>
+                                                    {{tr 'User Interface'}}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a {{action 'editTicketJob'}}>
+                                                    <i class="fa fa-angle-double-right"></i>
+                                                    {{tr 'Ticket'}}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                {{/if}}
                         </ul>
                     </section>
                     <!-- /.sidebar -->
@@ -171,10 +178,12 @@
             <aside {{bind-attr class=view.rightSideCssClasses}}>
                 {{outlet formwrapper}}
 
-                <!-- Main content -->
-                {{#if headerUserview}}
-                    {{render "userview" headerUserview}}
-                {{/if}}
+                {{#group}}
+                    <!-- Main content -->
+                    {{#if headerUserview}}
+                        {{render "userview" headerUserview}}
+                    {{/if}}
+                {{/group}}
                 <section class="content tab-content">
                     <div class="content">
                         {{outlet}}

@@ -22,6 +22,7 @@ define([
     'ember',
     'app/application',
     'app/mixins/pagination',
+    'app/adapters/crecord'
 ], function($, Ember, Application, PaginationMixin) {
     var get = Ember.get,
         set = Ember.set;
@@ -35,56 +36,6 @@ define([
 
         selectedValue: undefined,
 
-        classifiedItems : function(){
-            console.log("recompute classifiedItems", get(this, 'items'));
-            var items = get(this, 'items');
-
-            var res = Ember.Object.create({
-                all: Ember.A()
-            });
-
-            for (var i = 0, l = items.length; i < l; i++) {
-                var currentItem = items[i];
-                res.all.pushObject(Ember.Object.create({ name: currentItem.get('crecord_name') }));
-            }
-
-            return res;
-        }.property('items', 'items.@each'),
-
-        actions: {
-            do: function(action, item) {
-                this.targetObject.send(action, item);
-            }
-        },
-
-        selectionChanged: function(){
-            var selectionUnprepared = get(this, 'selectionUnprepared');
-            var res;
-
-            if(get(this, "multiselect")) {
-                res = Ember.A();
-
-                for (var i = 0; i < selectionUnprepared.length; i++) {
-                    res.pushObject(get(selectionUnprepared[i], 'name'));
-                }
-            } else {
-                if(Ember.isArray(selectionUnprepared)) {
-                    res = get(selectionUnprepared[0], 'name');
-                }
-            }
-
-            set(this, 'selection', res);
-        }.observes('selectionUnprepared', 'selectionUnprepared.@each'),
-
-        onDataChange: function() {
-            this.refreshContent();
-        }.observes('data.@each'),
-
-        onModelFilterChange: function() {
-            this.set('currentPage', 1);
-            this.refreshContent();
-        }.observes('modelfilter'),
-
         init: function() {
             this._super(arguments);
 
@@ -92,8 +43,92 @@ define([
                 container: this.get('container')
             }));
 
+            var initialContent = get(this, 'content');
+            console.log('init', initialContent);
+
+            if(initialContent) {
+                if( typeof initialContent === "string") {
+                    set(this, 'selectionUnprepared', [{ 'name': initialContent}]);
+                } else {
+                    throw "not implemented";
+                }
+            }
+
             this.refreshContent();
         },
+
+        actions: {
+            do: function(action, item) {
+                this.targetObject.send(action, item);
+            }
+        },
+
+        /*
+         * Compute a structure with classified item each time the 'items' property changed
+         */
+        classifiedItems : function(){
+            console.log("recompute classifiedItems", get(this, 'items'));
+            var items = get(this, 'items');
+            var valueKey = get(this, 'valueKey');
+
+            var res = Ember.Object.create({
+                all: Ember.A()
+            });
+
+            for (var i = 0, l = items.length; i < l; i++) {
+                var currentItem = items[i];
+                var objDict = { name: currentItem.get('crecord_name') };
+                if(valueKey) {
+                    objDict.value = currentItem.get(valueKey);
+                    console.log('objDict value', currentItem, currentItem.get(valueKey));
+                }
+                res.all.pushObject(Ember.Object.create(objDict));
+            }
+
+            return res;
+        }.property('items', 'items.@each'),
+
+        selectionChanged: function(){
+            var selectionUnprepared = get(this, 'selectionUnprepared');
+            var res;
+
+            var valueKey = get(this, 'valueKey');
+
+            if(get(this, "multiselect")) {
+                res = Ember.A();
+
+                if(valueKey) {
+                    for (var i = 0; i < selectionUnprepared.length; i++) {
+                        res.pushObject(get(selectionUnprepared[i], 'value'));
+                    }
+                } else {
+                    for (var j = 0; j < selectionUnprepared.length; j++) {
+                        res.pushObject(get(selectionUnprepared[j], 'name'));
+                    }
+                }
+            } else {
+                if(Ember.isArray(selectionUnprepared)) {
+
+                    if(valueKey) {
+                        res = get(selectionUnprepared[0], 'value');
+                    } else {
+                        res = get(selectionUnprepared[0], 'name');
+                    }
+                }
+            }
+
+            set(this, 'selection', res);
+        }.observes('selectionUnprepared', 'selectionUnprepared.@each'),
+
+        onDataChange: function() {
+            console.error('refreshContent');
+            this.refreshContent();
+        }.observes('data.@each'),
+
+        onModelFilterChange: function() {
+            this.set('currentPage', 1);
+            this.refreshContent();
+        }.observes('modelfilter'),
 
         refreshContent: function() {
             this._super(arguments);
@@ -105,7 +140,11 @@ define([
             console.log(this.get('widgetDataMetas'));
         },
 
+        /*
+         * Fetch items as crecords, for performance reasons (userviews slowed down the component a lot because of embedded records for instance)
+         */
         findItems: function() {
+            console.log('>>> findItems');
             var me = this;
 
             var store = this.get('store_' + get(this, 'elementId'));
@@ -115,11 +154,10 @@ define([
                 limit: 10000
             };
 
-            if(this.get('modelfilter') !== null) {
-                query.filter = this.get('modelfilter');
-            }
+            query.filter = JSON.stringify({'crecord_type': this.get('crecordtype')});
+            console.log('findItems', this.get('crecordtype'), query);
 
-            store.findQuery(this.get('model'), query).then(function(result) {
+            store.findQuery('crecord', query).then(function(result) {
                 me.set('widgetDataMetas', result.meta);
                 var items = result.get('content');
                 me.set('items', result.get('content'));
@@ -128,10 +166,14 @@ define([
 
                 me.extractItems(result);
             });
+        },
+
+        extractItems: function(queryResult) {
+            console.log("extractItems", queryResult);
         }
     });
 
-    Application.ComponentClassifiedcrecordselectorComponent = component.extend(PaginationMixin);
+    Application.ComponentClassifiedcrecordselectorComponent = component.extend();
 
     return component;
 });

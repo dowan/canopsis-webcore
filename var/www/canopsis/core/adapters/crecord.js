@@ -17,12 +17,30 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/lib/abstractclassmanager'], function(Abstractclassmanager) {
+define([
+    'app/application',
+    'app/adapters/application',
+    'app/serializers/eventlog',
+], function(Application, ApplicationAdapter) {
 
-    var manager = {
-        all: [],
-        byClass: {}
-    };
+    var adapter = ApplicationAdapter.extend({
 
-    return manager;
+        buildURL: function(type, id) {
+            void(id);
+
+            return "/rest/object";
+        },
+
+        findQuery: function(store, type, query) {
+            var url = "/rest/object";
+
+            console.log('findQuery', arguments);
+
+            return this.ajax(url, 'GET', { data: query });
+        }
+    });
+
+    Application.CrecordAdapter = adapter;
+
+    return adapter;
 });

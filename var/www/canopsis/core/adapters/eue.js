@@ -17,12 +17,12 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/lib/abstractclassmanager'], function(Abstractclassmanager) {
+define([
+    'app/application',
+    'app/adapters/event'
+], function(Application, EventAdapter) {
 
-    var manager = {
-        all: [],
-        byClass: {}
-    };
+    Application.EueAdapter = EventAdapter;
 
-    return manager;
+    return Application.EueAdapter;
 });

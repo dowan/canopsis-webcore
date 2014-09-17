@@ -19,7 +19,10 @@
 
 define(['ember', 'app/lib/abstractclassmanager'], function(Ember, Abstractclassmanager) {
 
-    var manager = Abstractclassmanager.create();
+    var manager = {
+        all: [],
+        byClass: {}
+    };
 
     manager.all.pushObject(Ember.Object.create({
         name: 'event',

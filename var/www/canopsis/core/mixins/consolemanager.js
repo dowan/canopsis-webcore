@@ -19,23 +19,45 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/application',
+    'app/lib/utils/forms',
+    'app/lib/utils/data'
+], function(Ember, Application, formUtils, dataUtils) {
     var get = Ember.get,
         set = Ember.set;
 
     /**
-      Implements pagination in ArrayControllers
-
-      You should define on the ArrayController:
-          - the `findOptions` property
-          - the `findItems()` method
-
+     * Mixins allowing console and various js runtime settings
     */
     var mixin = Ember.Mixin.create({
         partials: {
             statusbar: ['consolemanagerstatusmenu']
         },
+
+        actions: {
+            showConsoleSettings: function(){
+                var jsruntimeconfigrecord = dataUtils.getStore().createRecord('jsruntimeconfiguration', {
+                    id: 0,
+                    selected_tags: window.console.tags._selectedTags,
+                    colors: window.console.style._colors
+                });
+
+                var editForm = formUtils.showNew('modelform', jsruntimeconfigrecord, { title: __('Edit JS runtime configuration'), inspectedItemType: "jsruntimeconfiguration" });
+                console.log("editForm deferred", editForm.submit);
+                editForm.submit.done(function() {
+                    console.log("jsruntimeconfigrecord saved", jsruntimeconfigrecord);
+                });
+                editForm.submit.always(function() {
+                    console.log("jsruntimeconfigrecord always", jsruntimeconfigrecord);
+                    window.console.tags._selectedTags = jsruntimeconfigrecord.get('selected_tags');
+                    window.console.style._colors = jsruntimeconfigrecord.get('colors');
+                    window.console.settings.save();
+                    jsruntimeconfigrecord.unloadRecord();
+                });
+
+            }
+        },
+
         verbosity_mode: function() {
             return __("custom");
         }.property()

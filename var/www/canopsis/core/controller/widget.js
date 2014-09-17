@@ -24,7 +24,8 @@ define([
     'app/controller/partialslotablecontroller',
     'app/lib/utils/userconfiguration',
     'app/lib/utils/widgets',
-    'utils'
+    'utils',
+
 ], function($, Ember, Application, PartialslotAbleController, userConfiguration, widgetUtils, utils) {
     var get = Ember.get,
         set = Ember.set;
@@ -35,8 +36,11 @@ define([
 
         init: function () {
 
-            var widgetController = this;
+
             console.log('widget init');
+
+            this.get('model').set('controllerInstance', this);
+
             console.log('viewController', widgetUtils.getParentViewForWidget(this));
             console.log('viewController', widgetUtils.getParentViewForWidget(this).get('isMainView'));
 
@@ -50,12 +54,16 @@ define([
             this.startRefresh();
 
             //setting default/minimal reload delay for current widget
-            if (widgetController.get('refreshInterval') <= 10 || Ember.isNone(widgetController.get('refreshInterval'))) {
-                widgetController.set('refreshInterval', 10);
+            if (this.get('refreshInterval') <= 10 || Ember.isNone(this.get('refreshInterval'))) {
+                this.set('refreshInterval', 10);
             }
 
             this.refreshContent();
 
+        },
+
+        updateInterval: function (interval){
+            console.warn('This method should be overriden for current widget',this.get('id'), interval);
         },
 
         getSchema: function() {

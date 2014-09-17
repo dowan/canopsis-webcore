@@ -24,7 +24,7 @@ define([
     'app/lib/loaders/templates'
 ], function(Ember, Application, AuthenticatedRoute) {
 
-    Application.ApplicationRoute = AuthenticatedRoute.extend({
+    var route = AuthenticatedRoute.extend({
         actions: {
             showView: function(id) {
                 console.log("ShowView action", arguments);
@@ -62,6 +62,7 @@ define([
         },
 
         renderTemplate: function() {
+            console.info('render application template');
             this.render();
 
             //getting the generated controller
@@ -76,5 +77,7 @@ define([
         }
     });
 
-    return Application.ApplicationRoute;
+    Application.ApplicationRoute = route;
+
+    return route;
 });

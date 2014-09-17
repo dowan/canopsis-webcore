@@ -20,14 +20,23 @@
 define([
     'app/application',
     'app/routes/authenticated',
-    'utils'
+    'utils',
+    'seeds/RoutesLoader'
 ], function(Application, AuthenticatedRoute, utils) {
     var set = Ember.set,
         get = Ember.get;
 
-    Application.UserviewRoute = AuthenticatedRoute.extend({
+    var initialLoadDone = false;
+
+    var route = AuthenticatedRoute.extend({
         needs: ['application'],
         actions: {
+            loading: function() {
+                if(initialLoadDone === true) {
+                    set(this.controllerFor('application'), 'isLoading', true);
+                }
+            },
+
             error: function(error, transition){
                 if (error.status === 0) {
                 } else if (error.status == 403) {
@@ -62,7 +71,7 @@ define([
             **/
             displayLiveReporting: function () {
 
-                var userviewController = this.controllerFor('userview');
+                var controller = this.controllerFor('userview');
 
                 var record = Canopsis.utils.data.getStore().createRecord('livereporting', {
                     crecord_type: 'livereporting'
@@ -73,25 +82,47 @@ define([
                 });
 
                 recordWizard.submit.then(function(form) {
-                    /*
+
+                    var rootWidget = controller.get('content.containerwidget');
+                    var children = utils.widgetSelectors.children(rootWidget);
+
                     record = form.get('formContext');
-                    userviewController.get('custom_filters').pushObject(record);
-                    console.log('Custom filter created', record, form);
-                    utils.notification.info(__('Custom filter created'));
-                    userviewController.set('userParams.custom_filters', userviewController.get('custom_filters'));
-                    userviewController.get('userConfiguration').saveUserConfiguration();
-                    */
+                    interval = record.get('dateinterval');
+
+                    //Set filter as void instead undefined
+                    if (Ember.isNone(interval)) {
+                        interval = {};
+                    }
+
+                    console.debug('record generated', record.get('dateinterval'));
+
+                    for (var i=0; i<children.length; i++) {
+
+                        console.debug('Child widget', children[i].get('id'), children[i]);
+                        var widgetController = children[i].get('controllerInstance');
+
+                        if (!Ember.isNone(widgetController)) {
+                            //each widget takes responsibility to refresh or not once update interval is called
+                            widgetController.updateInterval(interval);
+                        } else {
+                            console.error('Unable to find controller instance for widget', children[i].get('id'));
+                        }
+
+                    }
+
                 });
 
             },
 
             refresh: function() {
                 var userviewController = this.controllerFor('userview');
-                userviewController.send('refresh');
+
+                console.log('refresh', this);
+                this.refresh();
+                userviewController.send('refreshView');
             }
-
-
         },
+
         setupController: function(controller, model) {
             console.log('UserviewRoute setupController', model, controller);
             set(controller, 'controllers.application.currentViewId', get(model, 'id'));
@@ -101,9 +132,16 @@ define([
                 'isMainView': true
             });
 
+            if(initialLoadDone === false) {
+                initialLoadDone = true;
+            }
+
+            set(this.controllerFor('application'), 'isLoading', false);
             controller.trigger('refreshView');
         }
     });
 
-    return Application.UserviewIndexRoute;
+    Application.UserviewRoute = route;
+
+    return route;
 });

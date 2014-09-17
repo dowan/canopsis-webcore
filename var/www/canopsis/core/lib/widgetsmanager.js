@@ -19,7 +19,10 @@
 
 define(['app/lib/abstractclassmanager'], function(Abstractclassmanager) {
 
-    var widgetsManager = Abstractclassmanager.create();
+    var widgetsManager = {
+        all: [],
+        byClass: {}
+    };
 
     return widgetsManager;
 });

@@ -17,12 +17,22 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/lib/abstractclassmanager'], function(Abstractclassmanager) {
+define([
+    'ember',
+    'app/application'
+], function(Ember, Application) {
+    var get = Ember.get,
+        set = Ember.set;
 
-    var manager = {
-        all: [],
-        byClass: {}
-    };
+    /**
+    */
+    var mixin = Ember.Mixin.create({
+        partials: {
+            toolbar: ['presettoolbar']
+        }
+    });
 
-    return manager;
+    Application.RecordpresetMixin = mixin;
+
+    return mixin;
 });

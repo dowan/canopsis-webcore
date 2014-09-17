@@ -44,7 +44,7 @@ define([
         currentClauseIndex: -1,
 
         cfilter_serialized : Ember.computed.alias('content'),
-        viewTabColumns: [{ name:'component', title:'component'},{ name:'resource', title:'resource'}],
+        viewTabColumns: [{ name:'component', title:'component' }, { name:'resource', title:'resource' }],
 
         indexes : indexesManager,
         selectedIndexName : 'event',

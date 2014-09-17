@@ -1,4 +1,4 @@
-/*
+    /*
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
 #
 # This file is part of Canopsis.
@@ -18,19 +18,23 @@
 */
 
 define([
-    'ember',
-    'utils',
-], function(Ember, utils) {
+    'app/application',
+    'app/routes/authenticated',
+    'utils'
+], function(Application, AuthenticatedRoute, utils) {
+    var set = Ember.set,
+        get = Ember.get;
 
-    Ember.Handlebars.helper('incident', function(value) {
+    var route = AuthenticatedRoute.extend({
 
-        value.html = ['<center>',
-            '<i>' + __('Date') + '</i> : <br/>',
-            utils.dates.timestamp2String(value.timestamp) +' <br/> ',
-            __('By') +' : ' + value.author +' <br/><br/> ',
-            "</center>"].join('');
-
-        return "";
+        setupController: function() {
+            console.log('setupController', this.controllerFor('application'));
+            this.controllerFor('application').onIndexRoute = true;
+            console.log('beforemodel');
+        }
     });
 
+    Application.IndexRoute = route;
+
+    return route;
 });

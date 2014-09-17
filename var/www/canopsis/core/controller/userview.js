@@ -57,7 +57,8 @@ define([
                 });
             },
 
-            refresh: function() {
+            refreshView: function() {
+                console.log('refresh view');
                 this.trigger('refreshView');
             }
         }
