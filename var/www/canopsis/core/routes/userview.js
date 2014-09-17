@@ -71,7 +71,7 @@ define([
             **/
             displayLiveReporting: function () {
 
-                var userviewController = this.controllerFor('userview');
+                var controller = this.controllerFor('userview');
 
                 var record = Canopsis.utils.data.getStore().createRecord('livereporting', {
                     crecord_type: 'livereporting'
@@ -82,14 +82,34 @@ define([
                 });
 
                 recordWizard.submit.then(function(form) {
-                    /*
+
+                    var rootWidget = controller.get('content.containerwidget');
+                    var children = utils.widgetSelectors.children(rootWidget);
+
                     record = form.get('formContext');
-                    userviewController.get('custom_filters').pushObject(record);
-                    console.log('Custom filter created', record, form);
-                    utils.notification.info(__('Custom filter created'));
-                    userviewController.set('userParams.custom_filters', userviewController.get('custom_filters'));
-                    userviewController.get('userConfiguration').saveUserConfiguration();
-                    */
+                    interval = record.get('dateinterval');
+
+                    //Set filter as void instead undefined
+                    if (Ember.isNone(interval)) {
+                        interval = {};
+                    }
+
+                    console.debug('record generated', record.get('dateinterval'));
+
+                    for (var i=0; i<children.length; i++) {
+
+                        console.debug('Child widget', children[i].get('id'), children[i]);
+                        var widgetController = children[i].get('controllerInstance');
+
+                        if (!Ember.isNone(widgetController)) {
+                            //each widget takes responsibility to refresh or not once update interval is called
+                            widgetController.updateInterval(interval);
+                        } else {
+                            console.error('Unable to find controller instance for widget', children[i].get('id'));
+                        }
+
+                    }
+
                 });
 
             },
