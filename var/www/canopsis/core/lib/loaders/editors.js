@@ -106,7 +106,7 @@ define(deps, function(Ember) {
 
         var template = arguments[tmplInfo.pos - 1];
 
-        console.log("new editor", template, tmplInfo.name);
+        console.log("new editor", tmplInfo.name);
 
         Ember.TEMPLATES[tmplInfo.name] = Ember.Handlebars.compile(template);
     }

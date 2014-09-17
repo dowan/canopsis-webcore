@@ -25,9 +25,17 @@ define([
     var set = Ember.set,
         get = Ember.get;
 
+    var initialLoadDone = false;
+
     var route = AuthenticatedRoute.extend({
         needs: ['application'],
         actions: {
+            loading: function() {
+                if(initialLoadDone === true) {
+                    set(this.controllerFor('application'), 'isLoading', true);
+                }
+            },
+
             error: function(error, transition){
                 if (error.status === 0) {
                 } else if (error.status == 403) {
@@ -107,11 +115,13 @@ define([
 
             refresh: function() {
                 var userviewController = this.controllerFor('userview');
-                userviewController.send('refresh');
+
+                console.log('refresh', this);
+                this.refresh();
+                userviewController.send('refreshView');
             }
-
-
         },
+
         setupController: function(controller, model) {
             console.log('UserviewRoute setupController', model, controller);
             set(controller, 'controllers.application.currentViewId', get(model, 'id'));
@@ -121,6 +131,11 @@ define([
                 'isMainView': true
             });
 
+            if(initialLoadDone === false) {
+                initialLoadDone = true;
+            }
+
+            set(this.controllerFor('application'), 'isLoading', false);
             controller.trigger('refreshView');
         }
     });
