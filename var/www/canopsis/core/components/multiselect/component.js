@@ -26,50 +26,56 @@ define([
         selectionItemView: Ember.Widgets.MultiSelectOptionView,
         select:0,
 
-          keyDown: function(event) {
-              // space = 32 ; enter = 13
-              if (this.canCreate &&
-                  event.keyCode === 13) {
+        keyDown: function(event) {
+            // space = 32 ; enter = 13
+            if (this.canCreate &&
+                event.keyCode === 13) {
                 var query = this.get("query");
                 if (!Ember.isEmpty(query)) {
-                      var selections = this.get("selections");
-                      query = this.get("query");
-                      selections.pushObject({ name : query});//this.get("content")[0]);
+                    var selections = this.get("selections");
+                    query = this.get("query");
+                    selections.pushObject({ name : query});//this.get("content")[0]);
                     Ember.set(this,'query',"");
                 }
-              }
+            }
+        },
+
+        filteredContent: Ember.computed(function() {
+            var me = this;
+            var content, query, selections,
+            _this = this;
+            content = this.get('content');
+            query = this.get('query');
+            selections = this.get('selections');
+
+            if (!(content && selections)) {
+              return [];
+            }
+            return this.get('content').filter(function(item) {
+                var isNOTONSelection = me.contain_propriety_with_same_value(item);
+                var matching = _this.matcher(query, item);
+                return isNOTONSelection && matching;
+            });
+          }).property('content.@each', 'optionLabelPath', 'query', 'selections.@each'),
+
+        contain_propriety_with_same_value: function(item){
+            var item_name = item.name;
+            var selections = this.get("selections");
+            var selectionNames = this.getNamesArray(selections);
+
+            var item_is_ON_Selection = selectionNames.contains(item_name);
+            return !item_is_ON_Selection;
         },
 
         init: function() {
-              this._super();
-              var SelectOption = ( this.get("select") === 0 )? "MultiSelectOptionView" : "MultiSelectOptionViewMY";
-              this.set("selectionItemView",  Ember.Widgets[SelectOption]);
-              //this.filteredContent;
-              content = this.get( 'content' );
-              var selections = this.get( "selections" );
+            this._super();
+            var SelectOption = ( this.get("select") === 0 )? "MultiSelectOptionView" : "MultiSelectOptionViewMY";
+            this.set("selectionItemView",  Ember.Widgets[SelectOption]);
+            content = this.get( 'content' );
+            var selections = this.get( "selections" );
 
-          //    var selectionsName = this.getNamesArray(selections);
-
-             var newContent = Ember.copy(content , true);
-              this.set("content" , newContent);
-
-              var contentNames = this.getNamesArray( content );
-              var selectionNOtInContent = this.filter( contentNames, "selections", false );
-
-              var NameToRefOnContent = this.filter( selections , "content", true, "name" ) ;
-              if ( selections ) {
-                while ( selections.length > 0 ) {
-                    selections.pop();
-                }
-            }
-
-            for ( var i=0 ; i < NameToRefOnContent.length ; i++ ) {
-                selections.pushObject(NameToRefOnContent[i]);
-            }
-
-            for ( i=0 ; i < selectionNOtInContent.length ; i++ ) {
-                selections.pushObject({ name: selectionNOtInContent[i]});
-            }
+            var newContent = Ember.copy(content , true);
+            this.set("content" , newContent);
         },
 
         getNamesArray: function(selections) {
@@ -81,13 +87,16 @@ define([
             return selectionsName;
         },
 
-        filter: function( ToFilterWith , proprietyName , isON , fieldToFilter ) {
-            var arrayTofilter = this.get( proprietyName );
+        filter: function( ToFilterWith , arrayTofilter , isON ) {
+
             if ( Ember.isArray( arrayTofilter ) && Ember.isArray( ToFilterWith ) ){
+
                 var tabFiltered = arrayTofilter.filter( function ( content ) {
-                    var toTestWith = ( fieldToFilter )? content[fieldToFilter] : content ;
+
+                    var toTestWith =  content["name"]  ;
                     var keep = ToFilterWith.contains( toTestWith );
-                    return (isON)? keep : !keep;
+                    keep = (isON)? keep : !keep;
+                    return  keep;
                 });
                // return tabFiltered;
             }
@@ -114,27 +123,14 @@ define([
         },
 
         modalShow: function(item) {
-            Ember.Widgets.ModalComponent.popup({
-                targetObject: this,
-                confirm: 'modalConfirm',
-                cancel: 'modalCancel',
-                content: this.convertDictToArray(item),
-                test:item,
-                //templateName: 'custom-modal-content',
-                contentViewClass: Ember.View.extend({
-                    tagName: '',
-                    template: Ember.Handlebars.compile('{{log test}} {{#each attr in content}} <div><span class="label" style="color:black"><label>{{attr.field}}:</label></span>{{input valueBinding="attr.value" }}</div> {{/each}}'),
-                }),
-                confirm: function(){
-                        console.log("Modal Confirm!",item);
-                        var fieldsArray = this.get("content");
-                        for (var i = 0; i < fieldsArray.length; i++) {
-                            Ember.set(item, fieldsArray[i].field, fieldsArray[i].value);
-                        }
-                    },
+            debugger;
+            var form =  Canopsis.formwrapperController.form;
+            var record  =  form.formContext;
 
+            var recordWizard = Canopsis.utils.forms.showNew('modelform', record, { title: "test " });
 
-                cancel: function(){  console.log("Modal Cancel!") }
+            recordWizard.submit.done(function() {
+                record.save();
             });
         },
         actions: {
