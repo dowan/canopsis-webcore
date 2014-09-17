@@ -39,6 +39,7 @@ var templates = [
     { name: 'schemamanagerstatusmenu' },
     { name: 'notificationsstatusmenu' },
     { name: 'consolemanagerstatusmenu' },
+    { name: 'promisemanagerstatusmenu' },
     { name: 'presettoolbar' },
 
     { name: 'actionbutton-edit', classes: ["action"], icon : "pencil", label : "Edit"},
