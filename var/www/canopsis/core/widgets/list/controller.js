@@ -23,7 +23,6 @@ define([
     'app/lib/factories/widget',
     'app/mixins/pagination',
     'app/mixins/inspectablearray',
-    'app/mixins/timeintervalselection',
     'app/mixins/arraysearch',
     'app/mixins/sortablearray',
     'app/mixins/history',
@@ -38,7 +37,7 @@ define([
     'app/view/listline',
     'app/lib/wrappers/datatables',
     'app/lib/wrappers/bootstrap-contextmenu'
-], function(Ember, DS, WidgetFactory, PaginationMixin, InspectableArrayMixin, TimeintervalselectionMixin,
+], function(Ember, DS, WidgetFactory, PaginationMixin, InspectableArrayMixin,
         ArraySearchMixin, SortableArrayMixin, HistoryMixin, SendEventMixin, CustomFilterManagerMixin, utils, domUtils) {
 
     var get = Ember.get,
@@ -88,6 +87,28 @@ define([
                 this.set('custom_filters', []);
 
                 this._super();
+            },
+
+            /**
+            * Manages how time filter is set to the widget
+            **/
+            updateInterval: function (interval){
+                console.warn('Set widget list time interval', interval);
+                this.set('timeIntervalFilter', interval);
+                this.refreshContent();
+            },
+
+            /**
+            * Manages how time filter is get from the widget for refresh purposes
+            **/
+            getTimeInterval: function () {
+                var interval = get(this, 'timeIntervalFilter');
+                if (Ember.isNone(interval)) {
+                    return {};
+                } else {
+                    return interval;
+                }
+
             },
 
             itemType: function() {
@@ -347,31 +368,39 @@ define([
                 var filter;
 
                 function isDefined(filterPart) {
-                    if(filterPart === {} || filterPart === null || filterPart === undefined)
+                    if(filterPart === {} || Ember.isNone(filterPart)) {
                         return false;
+                    }
 
                     return true;
                 }
 
-                if(isDefined(searchFilterPart)) {
-                    filter = searchFilterPart;
+                var sourceFilter = [
+                    searchFilterPart,
+                    cfilterFilterPart,
+                    this.getTimeInterval()
+                ];
 
-                    if(isDefined(cfilterFilterPart)) {
-                        console.log('combine cfilter & search filterParts');
+                var filters = [];
 
-                        filter = JSON.stringify({ '$and': [
-                            JSON.parse(searchFilterPart),
-                            JSON.parse(cfilterFilterPart)
-                        ]});
+                for (var i=0; i<sourceFilter.length; i++) {
+                    if(typeof sourceFilter[i] === 'string') {
+                        //if json, parse json
+                        sourceFilter[i] = JSON.parse(sourceFilter[i]);
                     }
-                }
-                else if(isDefined(cfilterFilterPart)) {
-                    filter = cfilterFilterPart;
+                    if (isDefined(sourceFilter[i])) {
+                        //when defined filter then it is added to the filter list
+                        filters.push(sourceFilter[i]);
+                    }
                 }
 
                 var params = {};
 
-                params.filter = filter;
+                if (filters.length) {
+                    params.filter = JSON.stringify({ '$and': filters });
+                }
+
+                console.log('List computed filter is', params.filter);
 
                 params.limit = this.get('itemsPerPage');
 

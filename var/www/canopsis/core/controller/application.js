@@ -91,7 +91,7 @@ define([
             headerStore.find('frontend', 'cservice.frontend').then(function(queryResults) {
                 console.log('frontend config found');
                 set(appController, 'frontendConfig', queryResults);
-                set(Canopsis, 'conf.frontendConfig', queryResults);
+                // set(Canopsis, 'conf.frontendConfig', queryResults);
                 if(get(appController, 'onIndexRoute') === true) {
                     console.error('on index route, redirecting to the appropriate route');
 
@@ -107,7 +107,7 @@ define([
             headerStore.find('ticket', 'cservice.ticket').then(function(queryResults) {
                 console.log('ticket config found');
                 set(appController, 'ticketConfig', queryResults);
-                set(Canopsis, 'conf.ticketConfig', queryResults);
+                // set(Canopsis, 'conf.ticketConfig', queryResults);
             });
 
             console.log('finding authentication backends config');
@@ -115,7 +115,7 @@ define([
             headerStore.find('ldapconfig', 'cservice.ldapconfig').then(function(queryResults) {
                 console.log('ldap config found');
                 set(appController, 'ldapConfig', queryResults);
-                set(Canopsis, 'conf.ldapConfig', queryResults);
+                // set(Canopsis, 'conf.ldapConfig', queryResults);
             }, function() {
                 console.log('create base ldap config');
 
@@ -126,13 +126,13 @@ define([
                 record.id = 'cservice.ldapconfig';
 
                 set(appController, 'ldapConfig', record);
-                set(Canopsis, 'conf.ldapConfig', record);
+                // set(Canopsis, 'conf.ldapConfig', record);
             });
 
             headerStore.find('casconfig', 'cservice.casconfig').then(function(queryResults) {
                 console.log('cas config found');
                 set(appController, 'casConfig', queryResults);
-                set(Canopsis, 'conf.casConfig', queryResults);
+                // set(Canopsis, 'conf.casConfig', queryResults);
             }, function() {
                 console.log('create base cas config');
 
@@ -143,7 +143,7 @@ define([
                 record.id = 'cservice.casconfig';
 
                 set(appController, 'casConfig', record);
-                set(Canopsis, 'conf.casConfig', record);
+                // set(Canopsis, 'conf.casConfig', record);
             });
 
             var footerStore = DS.Store.create({

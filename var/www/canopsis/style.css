@@ -329,6 +329,19 @@ table.sortable th {
 .popover.bottom .arrow:after {
     border-bottom-color: black!important;
 }
+
 .popover.top .arrow:after {
     border-top-color: black!important;
+}
+
+#loading {
+	position:absolute;
+	top: 50%;
+	left: 50%
+}
+
+#loading i {
+	position:relative;
+	top:-50%;
+	left:-50%
 }

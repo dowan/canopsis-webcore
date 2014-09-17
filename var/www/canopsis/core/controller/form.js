@@ -120,8 +120,6 @@ define([
                 else {
                     console.log("resolve modelform submit");
                     if ( this.confirmation ){
-                        breakPoint("form.submit");
-
                         var record = this.formContext;
                         ctools.forms.showNew('confirmform', record , { title : " confirmation "  , newRecord : arguments[0]});
                     } else {

@@ -58,13 +58,43 @@ define([
                 },
                 function(start, end) {
 
-                    var startTimestamp = parseInt(new Date(start).getTime() / 1000)
+                    var startTimestamp = parseInt(new Date(start).getTime() / 1000);
                     var stopTimestamp = parseInt(new Date(end).getTime() / 1000);
+                    console.log('startTimestamp',startTimestamp,'stopTimestamp',stopTimestamp);
 
-                    set(datepickerComponent, 'content', {
-                        startTimestamp: startTimestamp,
-                        stopTimestamp: stopTimestamp
-                    });
+                    if (startTimestamp === stopTimestamp) {
+                        console.log('We are on the same day, let compute the start of the day');
+                        var startDateOfTheDay = new Date(start);
+                        startDateOfTheDay.setHours(0);
+                        startDateOfTheDay.setMinutes(0);
+                        startDateOfTheDay.setSeconds(0);
+                        startDateOfTheDay.setMilliseconds(0);
+                        var startTimestamp = parseInt(startDateOfTheDay.getTime() / 1000);
+                        console.log('NEW -> startTimestamp',startTimestamp,'stopTimestamp',stopTimestamp);
+                    }
+
+
+                    //Translate result into mongo form filter
+                    filter = {};
+                    //we ve got an interval
+                    var timestamp = {};
+                    var hasLimit = false;
+                    if (startTimestamp) {
+                        timestamp.$gte = startTimestamp;
+                        hasLimit = true;
+
+                    }
+                    if (stopTimestamp) {
+                        timestamp.$lte = stopTimestamp;
+                        hasLimit = true;
+                    }
+                    if (hasLimit) {
+                        filter = {'timestamp': timestamp};
+                    } else {
+                        filter = {};
+                    }
+
+                    set(datepickerComponent, 'content', filter);
 
                     console.log(get(datepickerComponent, 'content'));
 

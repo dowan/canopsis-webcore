@@ -2,15 +2,14 @@ define([
     'app/application',
     'app/mixins/arraymixin',
     'app/components/multiselect/component'
-], function(Application) {
-    Application.ComponentTagsComponent = Ember.Component.extend(Application.ArrayMixin, {
-        content: [],
-        selection:[],
+], function(Application , Arraymixin) {
+    Application.ComponentTagsComponent = Ember.Component.extend(Arraymixin,{
         contentREF:[],
         name : "",
         select:0,
         ArrayName:"",
         mixinName:"",
+
         //onInit :"";
 
         //Default     : Called for feed content if no mixin is given
@@ -50,10 +49,12 @@ define([
         // Feed selections     : already selected value
         // select             : template for list item tags
         init: function() {
-            var value = this.getValue();
-            var contentREF = this.getContent();
+           // var contentREF = this.getContent();
+           var contentREF = this.getContent();
 
             var attr = this.get("attr");
+            var value = this.get("attr.value") || [];
+
             //var select = this.get("select");
             //select = ( select )? select : 0;
 
@@ -68,20 +69,14 @@ define([
             var ToCallForInit = ( this.onInit )? this.onInit : this.onInitBase;
             ToCallForInit( contentREF , this , this.get("ArrayName") );
 
-            var selection = this.get("selection");
-            this.emptyArray( selection );
+            var selection = [];
 
-            //for each field on value  create object with :  name =  field and push them on selection
-            //var valueLength = value.length;
-            for (var i = 0 ; i < value.length ; i++) {
-                Template = { name : value[i] };
-                selection.push(Template);
-            }
-
+            this.set("attr.value" , value );
             this._super(true);
         },
 
         onUpdate: function() {
+            /*
             var formController  =  Canopsis.formwrapperController.form;
             var selection = this.get("value");
             var value = [];
@@ -98,6 +93,7 @@ define([
             else{
                 console.warn("selection isn't defined on tags/view.js");
             }
+*/
         }
     });
     return Application.ComponentTagsComponent;
