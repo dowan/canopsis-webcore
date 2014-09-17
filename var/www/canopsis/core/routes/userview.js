@@ -20,7 +20,8 @@
 define([
     'app/application',
     'app/routes/authenticated',
-    'utils'
+    'utils',
+    'seeds/RoutesLoader'
 ], function(Application, AuthenticatedRoute, utils) {
     var set = Ember.set,
         get = Ember.get;

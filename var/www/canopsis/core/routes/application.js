@@ -62,6 +62,7 @@ define([
         },
 
         renderTemplate: function() {
+            console.info('render application template');
             this.render();
 
             //getting the generated controller
