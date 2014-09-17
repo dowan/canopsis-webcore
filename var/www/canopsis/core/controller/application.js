@@ -25,6 +25,7 @@ define([
     'app/mixins/usermenu',
     'app/mixins/schemamanager',
     'app/mixins/consolemanager',
+    'app/mixins/promisemanager',
     'app/mixins/notifications',
     'app/routes/application',
     'utils',
@@ -32,12 +33,12 @@ define([
     'app/adapters/cservice',
     'app/adapters/notification',
     'app/serializers/cservice'
-], function(Ember, DS, Application, PartialslotAbleController, UsermenuMixin, SchemamanagerMixin, ConsolemanagerMixin, NotificationsMixin, ApplicationRoute, utils, formUtils) {
+], function(Ember, DS, Application, PartialslotAbleController, UsermenuMixin, SchemamanagerMixin, ConsolemanagerMixin, PromisemanagerMixin, NotificationsMixin, ApplicationRoute, utils, formUtils) {
     var get = Ember.get,
         set = Ember.set;
 
     Application.ApplicationController = PartialslotAbleController.extend(
-        SchemamanagerMixin, ConsolemanagerMixin, NotificationsMixin, UsermenuMixin, {
+        SchemamanagerMixin, PromisemanagerMixin, ConsolemanagerMixin, NotificationsMixin, UsermenuMixin, {
         needs: ['login'],
 
         utils: utils,
@@ -48,7 +49,6 @@ define([
             Ember.Object.create({ label: __("Scheduled Jobs"), value: 'view.jobs'}),
             Ember.Object.create({ label: __("Event Filter"), value: 'view.filters'})
         ],
-
 
         plugins:function(){
             var all_plugins = [];

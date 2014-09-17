@@ -20,11 +20,36 @@
 define([
     'ember',
     'ember-data',
-    'app/application'
-], function(Ember, DS, Application) {
+    'app/application',
+    'app/lib/promisesmanager'
+], function(Ember, DS, Application, promisesmanager) {
+    var get = Ember.get,
+        set = Ember.set;
 
     Application.entities = ["nagios","shinken"];
     Application.ApplicationAdapter = DS.RESTAdapter.extend({
+        ajax: function(url, type, hash) {
+            var promise = this._super(url, type, hash);
+
+            promise.url = url;
+            promise.type = type;
+            promisesmanager.handlePromise(promise);
+
+            promise.then(function() {
+                promisesmanager.promiseSuccess(promise);
+            });
+
+            promise.catch(function() {
+                promisesmanager.promiseFail(promise);
+            });
+
+            promise.finally(function() {
+                promisesmanager.promiseFinally(promise);
+            });
+
+            return promise;
+        },
+
         buildURL: function(type, id) {
             var namespace = ( Application.entities.contains(type)   )? "entities" :"object" ;
             return ("/rest/"+namespace+"/" + type + (!!id ? "/" + id : ""));
