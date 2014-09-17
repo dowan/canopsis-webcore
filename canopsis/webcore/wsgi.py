@@ -236,6 +236,9 @@ if config.has_option('auth', 'providers'):
         else:
             bottle.install(mod.get_backend())
 
+else:
+    providers = []
+
 bottle.install(auth.EnsureAuthenticated())
 
 ## Session system with beaker
@@ -297,12 +300,20 @@ def loginpage(key=None, lang='en'):
     if not ticket and not s.get('auth_on', False):
         st = get_storage('object', account=Account(user='root', group='root'))
 
-        try:
-            record = st.get('cservice.frontend')
-            record = record.dump()
+        cservices = {
+            'webserver': {provider: 1 for provider in providers}
+        }
+        wanted_cservices = ['frontend', 'ticket', 'casconfig']
 
-        except KeyError:
-            record = {}
+        for cservice in wanted_cservices:
+            try:
+                record = st.get('cservice.{0}'.format(cservice))
+                record = record.dump()
+
+            except KeyError:
+                record = {}
+
+            cservices[cservice] = record
 
         del st
 
@@ -310,7 +321,7 @@ def loginpage(key=None, lang='en'):
             tmplsrc = src.read()
 
         tmpl = Template(tmplsrc)
-        return tmpl(record)
+        return tmpl(cservices)
 
     else:
         redirect('/{0}/static/canopsis/index.html'.format(lang))
