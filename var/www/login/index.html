@@ -34,6 +34,39 @@
 					<img src="/static/login/img/canopsis.png" alt="Canopsis" />
 				</div>
 
+				{{#if webserver.cas}}
+					<div class="panel-group" id="loginboxes">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a data-toggle="collapse" data-parent="#loginboxes" href="#casbox">
+										{{casconfig.title}}
+									</a>
+								</h4>
+							</div>
+
+							<div class="panel-collapse collapse in" id="casbox">
+								<div class="panel-body">
+									<a class="btn bg-olive btn-block" href="{{casconfig.server}}/login?service={{casconfig.service}}/logged_in">
+										Go to WebSSO
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<div class="panel">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a data-toggle="collapse" data-parent="#loginboxes" href="#normalbox">
+										Local authentication
+									</a>
+								</h4>
+							</div>
+
+							<div class="panel-collapse collapse" id="normalbox">
+								<div class="panel-body">
+				{{/if}}
+
 				<form action="/auth" method="post">
 					<div class="body bg-gray">
 						<div class="input-group">
@@ -56,9 +89,16 @@
 					</div>
 				</form>
 
-				{{#if login_footer}}
+				{{#if webserver.cas}}
+								</div>
+							</div>
+						</div>
+					</div>
+				{{/if}}
+
+				{{#if frontend.login_footer}}
 					<div class="footer bg-gray">
-						{{{login_footer}}}
+						{{{frontend.login_footer}}}
 					</div>
 				{{/if}}
 

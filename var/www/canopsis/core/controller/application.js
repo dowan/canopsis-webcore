@@ -112,7 +112,7 @@ define([
 
             console.log('finding authentication backends config');
 
-            headerStore.find('ldapconfig', 'ldap.config').then(function(queryResults) {
+            headerStore.find('ldapconfig', 'cservice.ldapconfig').then(function(queryResults) {
                 console.log('ldap config found');
                 set(appController, 'ldapConfig', queryResults);
                 set(Canopsis, 'conf.ldapConfig', queryResults);
@@ -123,13 +123,13 @@ define([
                     crecord_type: 'ldapconfig'
                 });
 
-                record.id = 'ldap.config';
+                record.id = 'cservice.ldapconfig';
 
                 set(appController, 'ldapConfig', record);
                 set(Canopsis, 'conf.ldapConfig', record);
             });
 
-            headerStore.find('casconfig', 'cas.config').then(function(queryResults) {
+            headerStore.find('casconfig', 'cservice.casconfig').then(function(queryResults) {
                 console.log('cas config found');
                 set(appController, 'casConfig', queryResults);
                 set(Canopsis, 'conf.casConfig', queryResults);
@@ -140,7 +140,7 @@ define([
                     crecord_type: 'casconfig'
                 });
 
-                record.id = 'cas.config';
+                record.id = 'cservice.casconfig';
 
                 set(appController, 'casConfig', record);
                 set(Canopsis, 'conf.casConfig', record);
