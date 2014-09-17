@@ -17,7 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/application'], function() {
+define([], function() {
 
     var notification = {
         //will be defined when notification controller is called.
