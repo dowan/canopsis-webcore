@@ -44,7 +44,7 @@ define([
             var userConfiguration = {
                 preferences_level: preferences_level,
                 widget_preferences: preferences,
-                crecord_name: utils.session.username,
+                crecord_name: utils.session.user,
                 widget_id: this.get('widget.id'),
                 id: preference_id,
                 crecord_type: 'userpreferences'
@@ -73,7 +73,7 @@ define([
                 data: {
                     limit: 1,
                     filter: JSON.stringify({
-                        crecord_name: utils.session.username,
+                        crecord_name: utils.session.user,
                         widget_id: this.get('widget.id')
                     })
                 },

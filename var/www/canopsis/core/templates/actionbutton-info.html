@@ -1,12 +1,12 @@
 {{#if Canopsis.utils.session.rights.actionbutton_info.checksum}}
     {{#if minified}}
-        {{#component-tooltip content="Information" content="Redirection to the targeted address"}}
+        {{#component-tooltip content="Redirection to the targeted address" title="Information"}}
             <button {{action 'info' this}} class="btn btn-default btn-sm">
                 <i class="fa fa-info"></i>
             </button>
         {{/component-tooltip}}
     {{else}}
-        {{#component-tooltip content="Information" content="Redirection to the targeted address"}}
+        {{#component-tooltip content="Redirection to the targeted address"}}
             <button {{action 'info' this}} class="btn btn-default">
                 <i class="fa fa-info"></i>
                     {{tr 'Info'}}
