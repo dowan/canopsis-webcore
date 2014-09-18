@@ -42,16 +42,15 @@ def get_externals_files(filename):
     can't have file with same name but different extention
     """
     found = False
-    output = filename + "_is_empty"
+    output = "{0}_is_empty".format(filename)
     allowed_extentions = ["json", "js", "html"]
-    base_path = var_path + "plugins/"
 
-    if exists(base_path):
+    if exists(plugins_path):
         extention = filename.split(".")
 
         if len(extention) == 1:
             for ext in allowed_extentions:
-                path_to_test = '{}{}.{}'.format(plugins_path, filename, ext)
+                path_to_test = join(plugins_path, '{}.{}'.format(filename, ext))
                 logger.info("path_to_test = {}".format(path_to_test))
                 if exists(path_to_test):
                     found = True
