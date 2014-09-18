@@ -19,7 +19,8 @@
 # ---------------------------------
 
 from os import listdir
-from os.path import expanduser, exists
+from os.path import expanduser, exists, join
+from sys import prefix as sys_prefix
 
 from logging import getLogger
 from json import dumps
@@ -35,7 +36,7 @@ logger = getLogger("ui_locales")
 
 
 #########################################################################
-base_path = expanduser("~/var/www/canopsis/")
+base_path = join(sys_prefix, 'var', 'www', 'canopsis')
 
 locales = ['en', 'fr']
 locales_str = {}

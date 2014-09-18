@@ -123,7 +123,6 @@ define([
         },
 
         modalShow: function(item) {
-            debugger;
             var form =  Canopsis.formwrapperController.form;
             var record  =  form.formContext;
 
