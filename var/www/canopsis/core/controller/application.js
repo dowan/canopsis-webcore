@@ -33,7 +33,8 @@ define([
     'app/adapters/cservice',
     'app/adapters/notification',
     'app/serializers/cservice',
-    'app/adapters/loggedaccount'
+    'app/adapters/loggedaccount',
+    'app/lib/loaders/helpers'
 ], function(Ember, DS, Application, PartialslotAbleController, UsermenuMixin, SchemamanagerMixin, ConsolemanagerMixin, PromisemanagerMixin, NotificationsMixin, ApplicationRoute, utils, formUtils) {
     var get = Ember.get,
         set = Ember.set;
