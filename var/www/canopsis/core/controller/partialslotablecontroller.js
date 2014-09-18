@@ -23,7 +23,8 @@ define([
     'app/application',
     'app/lib/utils/userconfiguration',
     'app/lib/utils/widgets',
-    'utils'
+    'utils',
+    'app/lib/helpers/partialslot'
 ], function($, Ember, Application, userConfiguration, widgetUtils, utils) {
     var get = Ember.get,
         set = Ember.set;
