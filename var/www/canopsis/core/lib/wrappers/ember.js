@@ -24,10 +24,10 @@ define([
     'app/lib/utils/notification'
 ], function(Wrapper, notificationUtil) {
 
-    Ember.onerror = function(error) {
-        console.error("Ember.onerror", error);
-        notificationUtil.error(error.message);
-    };
+    // Ember.onerror = function(error) {
+    //     console.error("Ember.onerror", error);
+    //     notificationUtil.error(error.message);
+    // };
 
     // Ember.RSVP.configure('onerror', function(error) {
     //     Canopsis.utils.notification.error(error.message);

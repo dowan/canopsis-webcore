@@ -94,11 +94,10 @@ define([
                 set(appController, 'frontendConfig', queryResults);
                 // set(Canopsis, 'conf.frontendConfig', queryResults);
                 if(get(appController, 'onIndexRoute') === true) {
-                    console.error('on index route, redirecting to the appropriate route');
+                    console.info('on index route, redirecting to the appropriate route');
 
                     var defaultview = get(appController, 'frontendConfig.defaultview');
 
-                    console.error(defaultview);
                     if(!! defaultview) {
                         appController.send('showView', defaultview);
                     }

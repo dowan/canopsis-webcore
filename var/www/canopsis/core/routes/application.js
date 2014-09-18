@@ -21,7 +21,8 @@ define([
     'ember',
     'app/application',
     'app/routes/authenticated',
-    'app/lib/loaders/templates'
+    'app/lib/loaders/templates',
+    'app/lib/helpers/i18n'
 ], function(Ember, Application, AuthenticatedRoute) {
 
     var route = AuthenticatedRoute.extend({
