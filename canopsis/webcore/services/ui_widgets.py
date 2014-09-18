@@ -19,9 +19,10 @@
 # ---------------------------------
 
 from os import listdir
-from os.path import expanduser, exists
+from os.path import expanduser, exists, join
 from logging import getLogger
 from json import loads
+from sys import prefix as sys_prefix
 import re
 
 from bottle import get, request, response
@@ -33,7 +34,7 @@ logger = getLogger("ui-widgets")
 
 #########################################################################
 
-www_path = expanduser("~/var/www/")
+www_path = join(sys_prefix, 'var', 'www')
 base_path = "%s/canopsis/" % www_path
 
 

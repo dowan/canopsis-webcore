@@ -19,6 +19,7 @@
 # ---------------------------------
 
 from os.path import expanduser, join, exists
+from sys import prefix as sys_prefix
 
 from logging import getLogger
 
@@ -28,7 +29,7 @@ logger = getLogger("plugins_loader")
 
 #########################################################################
 
-var_path = expanduser("~/var/")
+var_path = join(sys_prefix, "var")
 plugins_path = join(var_path, "plugins/")
 
 logger.info(" var_path  = {} ".format(var_path))
