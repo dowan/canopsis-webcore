@@ -44,7 +44,7 @@ define([
             }
         },
         showTranslation: function (word, isTranslated) {
-            if (window.Canopsis && Canopsis.conf.SHOW_TRANSLATIONS) {
+            if (conf.SHOW_TRANSLATIONS) {
                 if(isTranslated) {
                     circleColor = 'text-success';
                 } else {

@@ -21,10 +21,12 @@ define([
     'ember',
     'ember-data',
     'app/application',
+    'app/lib/utils/forms',
+    'app/lib/formsmanager',
     'utils'
-], function(Ember, DS, Application, cutils) {
+], function(Ember, DS, Application, formsUtils, formsmanager, utils) {
 
-    Application.ComponentJobeditorComponent = Ember.Component.extend({
+    var component = Ember.Component.extend({
         job_types: [],
         job_type: undefined,
         job_params: {},
@@ -34,7 +36,7 @@ define([
 
             this.job_types = [];
 
-            for(var sname in cutils.schemaList) {
+            for(var sname in utils.schemaList) {
                 if(sname.indexOf('Task.') === 0) {
                     this.job_types.pushObject({
                         name: sname.slice(10),
@@ -58,12 +60,14 @@ define([
                 var context = model._create(this.get('content'));
 
                 console.log('Show new form with context:', context);
-                cutils.forms.showNew('modelform', context, {
-                    formParent: Canopsis.formwrapperController.form
+                formsUtils.showNew('modelform', context, {
+                    formParent: formsmanager.formwrapper.form
                 });
             }
         }
     });
 
-    return Application.ComponentJobeditorComponent;
+    Application.ComponentJobeditorComponent = component;
+
+    return component;
 });

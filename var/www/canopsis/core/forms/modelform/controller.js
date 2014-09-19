@@ -148,7 +148,7 @@ define([
 
                 if(this.isOnCreate && this.modelname){
                     var Stringtype = this.modelname.charAt(0).toUpperCase() + this.modelname.slice(1);
-                    var model = Canopsis.Application.allModels[Stringtype];
+                    var model = Application.allModels[Stringtype];
                     if(model) {
                         for(var fieldName in model){
                             if(model.hasOwnProperty(fieldName)) {

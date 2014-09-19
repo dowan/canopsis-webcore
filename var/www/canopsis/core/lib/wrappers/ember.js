@@ -22,15 +22,15 @@ define([
     'app/lib/factories/wrapper',
     'webcore-libs/dev/ember',
     'app/lib/utils/notification'
-], function(Wrapper, notificationUtil) {
+], function(Wrapper, notificationUtils) {
 
     // Ember.onerror = function(error) {
     //     console.error("Ember.onerror", error);
-    //     notificationUtil.error(error.message);
+    //     notificationUtils.error(error.message);
     // };
 
     // Ember.RSVP.configure('onerror', function(error) {
-    //     Canopsis.utils.notification.error(error.message);
+    //     notificationUtils.error(error.message);
     // });
 
     return Wrapper("ember", Ember, arguments, Ember.VERSION);

@@ -42,12 +42,12 @@ define([
         },
 
         showInstance: function(formInstance) {
-            Canopsis.formwrapperController.form.updateArray();
+            formsManager.formwrapper.form.updateArray();
             formInstance.empty_validationFields();
 
-            set(Canopsis.formwrapperController, 'form.validateOnInsert', false);
-            set(Canopsis.formwrapperController, 'form', formInstance);
-            set(Canopsis.formwrapperController, 'formName', formInstance.formName);
+            set(formsManager.formwrapper, 'form.validateOnInsert', false);
+            set(formsManager.formwrapper, 'form', formInstance);
+            set(formsManager.formwrapper, 'formName', formInstance.formName);
         },
 
         showNew: function(formName, formContext, options) {

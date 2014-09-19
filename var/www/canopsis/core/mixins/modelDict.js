@@ -19,13 +19,14 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/application',
+    'app/lib/formsmanager'
+], function(Ember, Application, formsmanager) {
 
-    Application.modelDictMixin = Ember.Mixin.create({
+    var mixin = Ember.Mixin.create({
 
         onInit : function ( contentREF , _self ){
-            var formController  =  Canopsis.formwrapperController.form;
+            var formController  =  formsmanager.formwrapper.form;
             // not really needed since error should have already been threw
             if ( formController ){
                 var schemaName = formController.get("formContext._data.listed_crecord_type");
@@ -33,7 +34,7 @@ define([
                     schemaName = schemaName.substr(0,1).toUpperCase() + schemaName.substr(1,schemaName.length).toLowerCase();
                     // get model (array of string (field))
                     //var model = Application[schemaName]; var prototypef = model.prototype;
-                    var model = Canopsis.Application.allModels[schemaName];
+                    var model = Application.allModels[schemaName];
                     //for each field create object with :  name =  field and push them on content
                     for (var attribut in model) {
                         if (model.hasOwnProperty(attribut)) {
@@ -50,5 +51,7 @@ define([
         }
     });
 
-    return Application.modelDictMixin;
+    Application.modelDictMixin = mixin;
+
+    return mixin;
 });

@@ -36,7 +36,7 @@ define([
         actions: {
             insertWidget: function(containerController) {
                 console.log("insertWidget", containerController);
-                var widgetChooserForm = Canopsis.utils.forms.showNew('widgetform', this);
+                var widgetChooserForm = formUtils.showNew('widgetform', this);
 
                 var userviewController = this;
 

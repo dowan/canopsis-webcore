@@ -2,8 +2,9 @@ define([
     'app/application',
     'app/mixins/arraymixin',
     'app/lib/mixinsmanager',
+    'app/lib/formsmanager',
     'app/components/multiselect/component'
-], function(Application , Arraymixin, mixinsmanager) {
+], function(Application , Arraymixin, mixinsmanager, formsmanager) {
 
     var component = Ember.Component.extend({
         contentREF:[],
@@ -84,7 +85,7 @@ define([
 
         onUpdate: function() {
             /*
-            var formController  =  Canopsis.formwrapperController.form;
+            var formController  =  formsmanager.formwrapper.form;
             var selection = this.get("value");
             var value = [];
             if (selection) {

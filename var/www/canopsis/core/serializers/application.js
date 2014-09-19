@@ -23,7 +23,7 @@ define([
     'app/mixins/metaserializer',
     'app/mixins/hashserializer',
     'app/lib/utils/notification'
-], function(DS, Application, MetaSerializerMixin, HashSerializerMixin) {
+], function(DS, Application, MetaSerializerMixin, HashSerializerMixin, notificationUtils) {
 
     //TODO put this in a polyfill file
     if (!Array.isArray) {
@@ -32,7 +32,7 @@ define([
         };
     }
 
-    Application.ApplicationSerializer = DS.RESTSerializer.extend(
+    var serializer = DS.RESTSerializer.extend(
         MetaSerializerMixin,
         HashSerializerMixin,
         {
@@ -43,7 +43,7 @@ define([
                 void(logLevel); //TODO not implemented
 
                 //FIXME not working in here
-                Canopsis.utils.notification.error(message);
+                notificationUtils.error(message);
 
                 //FIXME metadata does not seems to be handled properly
                 if(payload.meta === undefined) {
@@ -57,5 +57,7 @@ define([
         }
     );
 
-    return Application.ApplicationSerializer;
+    Application.ApplicationSerializer = serializer;
+
+    return serializer;
 });

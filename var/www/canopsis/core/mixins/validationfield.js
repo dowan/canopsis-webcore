@@ -31,7 +31,7 @@ define([
 
         willDestroyElement:function(){
             //TODO : find a better place
-           // var formController  =  Canopsis.formwrapperController.form;
+           // var formController  =  formsmanager.formwrapper.form;
            // formController.set('validationFields' , Ember.A() );
         },
 
