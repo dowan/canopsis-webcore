@@ -19,12 +19,14 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/application',
+    'canopsis/canopsisConfiguration',
+    'app/lib/mixinsmanager'
+], function(Ember, Application, canopsisConfiguration, mixinsManager) {
     var get = Ember.get,
         set = Ember.set;
 
-    Application.WidgetView = Ember.View.extend({
+    var view = Ember.View.extend({
         templateName:'widget',
         classNames: ['widget'],
 
@@ -34,6 +36,7 @@ define([
         errorMessages : Ember.A(),
 
         init: function() {
+            console.warn('widget view init', this);
             console.group('widget initialisation :', this.widget.get("xtype"), this.widget, get(this, 'widget.tagName'));
             set(this, 'target', get(this, 'controller'));
 
@@ -58,9 +61,9 @@ define([
 
             //widget refresh management
             var widgetController = this.get('controller');
-            console.log('refreshInterval - > ',widgetController.get('refreshInterval'));
+            console.log('refreshInterval - > ', widgetController.get('refreshInterval'));
             var interval = setInterval(function () {
-                if (Canopsis.conf.REFRESH_ALL_WIDGETS) {
+                if (canopsisConfiguration.REFRESH_ALL_WIDGETS) {
                     if (get(widgetController,'isRefreshable') && get(widgetController, 'refreshableWidget')) {
                         console.log('refreshing widget ' + widgetController.get('title'));
                         widgetController.refreshContent();
@@ -99,9 +102,6 @@ define([
         registerHooks: function() {
             console.log("registerHooks", this.get("controller"), this.get("controller").on);
             get(this, "controller").on('refresh', this, this.rerender);
-
-
-
         },
 
         unregisterHooks: function() {
@@ -123,7 +123,6 @@ define([
             console.log("controllerName", controllerName, Application[controllerName], this.get('target'));
 
             if (Application[controllerName] !== undefined) {
-                //var mixinClass = Application.SearchableMixin
                  widgetController =  Application[controllerName].createWithMixins(Ember.Evented, {
                     content: widget,
                     target: this.get('target')
@@ -140,7 +139,7 @@ define([
             if (  mixinsName  ){
                 for (var i = 0 ; i < mixinsName.length ; i++ ){
                     var currentName =  mixinsName[i];
-                    var currentMixin = Application.SearchableMixin.all[currentName];
+                    var currentMixin = mixinsManager.all[currentName];
                     if ( currentMixin ){
                         currentMixin.apply(widgetController);
                     }
@@ -168,5 +167,7 @@ define([
 
     });
 
-    return Application.WidgetView;
+    Application.WidgetView = view;
+
+    return view;
 });

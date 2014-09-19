@@ -30,11 +30,13 @@ define([
     'app/routes/application',
     'utils',
     'app/lib/utils/forms',
+    'app/lib/utils/data',
     'app/adapters/cservice',
     'app/adapters/notification',
     'app/serializers/cservice',
-    'app/lib/loaders/helpers'
-], function(Ember, DS, Application, PartialslotAbleController, UsermenuMixin, SchemamanagerMixin, ConsolemanagerMixin, PromisemanagerMixin, NotificationsMixin, ApplicationRoute, utils, formUtils) {
+    'app/lib/loaders/helpers',
+    'app/lib/loaders/widgets'
+], function(Ember, DS, Application, PartialslotAbleController, UsermenuMixin, SchemamanagerMixin, ConsolemanagerMixin, PromisemanagerMixin, NotificationsMixin, ApplicationRoute, utils, formUtils, dataUtils) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -168,7 +170,7 @@ define([
             promptReloadApplication: function(title, location) {
                 setTimeout(function (){
                     console.log('in promptReloadApplication');
-                    var recordWizard = Canopsis.utils.forms.showNew('confirmform', {}, {
+                    var recordWizard = formsUtils.showNew('confirmform', {}, {
                         title: __(title)
                     });
 
@@ -313,12 +315,12 @@ define([
 
                 var containerwidgetId = utils.hash.generateId('container');
 
-                var containerwidget = Canopsis.utils.data.getStore().createRecord('verticalbox', {
+                var containerwidget = dataUtils.getStore().createRecord('verticalbox', {
                     xtype: 'verticalbox',
                     id: containerwidgetId
                 });
 
-                var userview = Canopsis.utils.data.getStore().push(type, {
+                var userview = dataUtils.getStore().push(type, {
                     id: utils.hash.generateId('userview'),
                     crecord_type: 'view',
                     containerwidget: containerwidgetId,
@@ -327,7 +329,7 @@ define([
 
                 console.log('temp record', userview);
 
-                var recordWizard = Canopsis.utils.forms.showNew('modelform', userview, { title: __("Add ") + type });
+                var recordWizard = formsUtils.showNew('modelform', userview, { title: __("Add ") + type });
 
                 function transitionToView(userview) {
                     console.log('userview saved, switch to the newly created view');
@@ -348,12 +350,12 @@ define([
             addModelInstance: function(type) {
                 console.log("add", type);
 
-                var record = Canopsis.utils.data.getStore().createRecord(type, {
+                var record = dataUtils.getStore().createRecord(type, {
                     crecord_type: type.underscore()
                 });
                 console.log('temp record', record);
 
-                var recordWizard = Canopsis.utils.forms.showNew('modelform', record, { title: __("Add ") + type });
+                var recordWizard = formsUtils.showNew('modelform', record, { title: __("Add ") + type });
 
                 recordWizard.submit.done(function() {
                     record.save();

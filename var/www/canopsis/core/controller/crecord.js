@@ -25,43 +25,6 @@ define([
 ], function(Ember, Application, InspectableItem) {
 
     Application.CrecordController = Ember.ObjectController.extend(InspectableItem, {
-        actions: {
-            showEditForm: function() {
-                var crecord_type = this.get("model.constructor.typeKey");
-                console.log("Form generation for", crecord_type);
-
-                var crecordformController = Application.CrecordformController.create();
-                crecordformController.set("crecord_type", crecord_type);
-                crecordformController.set("editMode", "edit");
-                crecordformController.set("editedRecordController", this);
-
-                //Delete old validationFields (should be done on close)
-                if (crecordformController.validationFields) {
-                    while(crecordformController.validationFields.length > 0) {
-                        crecordformController.validationFields.pop();
-                    }
-                }
-
-                //Delete old ArrayFields (should be done on close)
-                if (crecordformController.ArrayFields) {
-                    while(crecordformController.ArrayFields.length > 0) {
-                        crecordformController.ArrayFields.pop();
-                    }
-                }
-
-                this.send('showEditFormWithController', crecordformController);
-            },
-
-            editRecord: function(record_raw, callback) {
-                console.log("editRecord", record_raw);
-                this.get("model").setProperties(record_raw);
-                var promise = this.get("model").save();
-                if (callback !== undefined) {
-                    promise.then(callback);
-                }
-            }
-        },
-
         remove: function() {
             this.get("model").deleteRecord();
             this.get("model").save();

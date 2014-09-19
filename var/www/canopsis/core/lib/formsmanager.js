@@ -21,7 +21,8 @@ define(['app/lib/abstractclassmanager'], function(Abstractclassmanager) {
 
     var formsManager = {
         all: [],
-        byClass: {}
+        byClass: {},
+        formwrapper: undefined
     };
 
     return formsManager;

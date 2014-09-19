@@ -21,10 +21,11 @@ define([
     'ember',
     'ember-data',
     'app/application',
-    'app/adapters/application'
-], function(Ember, DS, Application, ApplicationAdapter ) {
+    'app/adapters/application',
+    'app/lib/utils/notification'
+], function(Ember, DS, Application, ApplicationAdapter, notificationUtils) {
 
-    Application.EntityAdapter = ApplicationAdapter.extend({
+    var adapter = ApplicationAdapter.extend({
         gen_resolve: function(callback) {
             return function(data) {
                 for (var i = 0; i < data.data.length; i++) {
@@ -48,15 +49,15 @@ define([
         },
 /*
         createRecord: function() {
-            Canopsis.utils.notification.error('Impossible to create entity');
+            notificationUtils.error('Impossible to create entity');
         },
 
         updateRecord: function() {
-            Canopsis.utils.notification.error('Impossible to update entity');
+            notificationUtils.error('Impossible to update entity');
         },
 
         deleteRecord: function() {
-            Canopsis.utils.notification.error('Impossible to delete entity');
+            notificationUtils.error('Impossible to delete entity');
         },
 */
         find: function(store, model, id) {
@@ -83,10 +84,10 @@ define([
                 var mfilter = {'type': model.typeKey};
 
                 if (type === 'downtime') {
-                    mfilter['downtime_id'] = {'$in': ids};
+                    mfilter.downtime_id = {'$in': ids};
                 }
                 else {
-                    mfilter['name'] = {'$in': ids};
+                    mfilter.name = {'$in': ids};
                 }
 
                 mfilter = JSON.stringify(mfilter);
@@ -103,7 +104,7 @@ define([
                 var funcres = me.gen_resolve(resolve);
                 var funcrej = me.gen_reject(reject);
 
-                var promise = undefined;
+                var promise;
 
                 if (options && options.mfilter) {
                     var mfilter = JSON.stringify({
@@ -141,5 +142,7 @@ define([
         }
     });
 
-    return Application.EntityAdapter;
+    Application.EntityAdapter = adapter;
+
+    return adapter;
 });

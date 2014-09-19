@@ -19,32 +19,33 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/application',
+    'app/lib/formsmanager',
+    'app/lib/mixinsmanager'
+], function(Ember, Application, formsmanager, mixinsmanager) {
 // TODO: just make a function from this
     Application.mixinArrayMixin = Ember.Mixin.create({
 
         onInit : function ( contentREF , _self ){
 
             function getAndPushMixinNames(classToGet , contentREF){
-                var currentClass = SearchableMixin.byClass[classToGet];
+                var currentClass = mixinsmanager.byClass[classToGet];
                 for ( var i = 0 ; i < currentClass.length ; i++ ) {
                     var nameMixin = { name : currentClass[i] };
                     contentREF.push(nameMixin);
                 }
             }
 
-            var formController  =  Canopsis.formwrapperController.form;
+            var formController  =  formsmanager.formwrapper.form;
             if ( formController ){
                 var classToGet = _self.templateData.keywords.controller.content.model.options.mixinClass;
-                var SearchableMixin = Canopsis.Application.SearchableMixin;
 
                 if (classToGet !== undefined) {
                     getAndPushMixinNames( classToGet , contentREF );
                 }
                 else {
-                    for ( var attribut in SearchableMixin.byClass ) {
-                        if ( SearchableMixin.byClass.hasOwnProperty( attribut ) ) {
+                    for ( var attribut in mixinsmanager.byClass ) {
+                        if ( mixinsmanager.byClass.hasOwnProperty( attribut ) ) {
                             getAndPushMixinNames( attribut , contentREF );
                         }
                     }

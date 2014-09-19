@@ -22,7 +22,9 @@ define([
     'ember-data',
     'app/application',
     'utils',
-], function(Ember, DS, Application, utils) {
+    'app/lib/utils/data',
+    'app/lib/utils/forms'
+], function(Ember, DS, Application, utils, dataUtils, formsUtils) {
 
     /**
       Implements Custom filter management for list
@@ -41,11 +43,11 @@ define([
 
                 var widgetController = this;
 
-                var record = Canopsis.utils.data.getStore().createRecord('customfilter', {
+                var record = dataUtils.getStore().createRecord('customfilter', {
                     crecord_type: 'customfilter'
                 });
 
-                var recordWizard = Canopsis.utils.forms.showNew('modelform', record, {
+                var recordWizard = formsUtils.showNew('modelform', record, {
                     title: __('Create a custom filter for current list')
                 });
 
@@ -78,14 +80,14 @@ define([
                     filterTitle = filter.title;
                 }
                 //rebuild a crecord as data may be simple js object saved to userpreferences
-                var record = Canopsis.utils.data.getStore().createRecord('customfilter', {
+                var record = dataUtils.getStore().createRecord('customfilter', {
                     crecord_type: 'customfilter',
                     filter: filterValue,
                     title: filterTitle,
                 });
 
 
-                var recordWizard = Canopsis.utils.forms.showNew('modelform', record, {
+                var recordWizard = formsUtils.showNew('modelform', record, {
                     title: __('Edit filter for current list')
                 });
 
@@ -111,7 +113,7 @@ define([
                     title = filter.title;
                 }
 
-                var recordWizard = Canopsis.utils.forms.showNew('confirmform', {}, {
+                var recordWizard = formsUtils.showNew('confirmform', {}, {
                     title: __('Are you sure to delete filter') + ' ' + title + '?'
                 });
 

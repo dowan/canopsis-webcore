@@ -59,6 +59,9 @@ require.config({
     },
 
     shim: {
+        'jquery.encoding.digests.sha1': {
+             deps: ['jquery']
+        },
 
         'bootbox': {
             deps: ['jquery', 'bootstrap']

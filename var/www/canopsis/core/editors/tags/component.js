@@ -1,9 +1,11 @@
 define([
     'app/application',
     'app/mixins/arraymixin',
+    'app/lib/mixinsmanager',
     'app/components/multiselect/component'
-], function(Application , Arraymixin) {
-    Application.ComponentTagsComponent = Ember.Component.extend({
+], function(Application , Arraymixin, mixinsmanager) {
+
+    var component = Ember.Component.extend({
         contentREF:[],
         name : "",
         select:0,
@@ -21,14 +23,18 @@ define([
             var EntryArray = Application[ ArrayName ];
             Ember.assert("Can't find  EntryArray or contentREF on ComponentTags",  EntryArray && contentREF );
 
+            var template;
             for ( var attribut in EntryArray ) {
                 if ( EntryArray.hasOwnProperty( attribut ) ) {
-                    var Template = { name : attribut };
-                    contentREF.push(Template);
+
+                    template = { name : attribut };
+
+                    contentREF.push(template);
                 }
             }
-            var Template = { name : "from base (original) hello man" };
-            contentREF.push(Template);
+
+            template = { name : "from base (original) hello man" };
+            contentREF.push(template);
         },
 
         getAndApplyMixin:function( MixinName , _self ){
@@ -37,7 +43,7 @@ define([
 
             var initMixin ;
             if ( !Ember.isEmpty( MixinName ) ){
-                initMixin = Application.SearchableMixin.all[ MixinName ];
+                initMixin = mixinsmanager.all[ MixinName ];
                 Ember.assert('no mixin found ', !Ember.isEmpty( initMixin ));
 
                 initMixin.apply( _self );
@@ -97,5 +103,8 @@ define([
 */
         }
     });
-    return Application.ComponentTagsComponent;
+
+    Application.ComponentTagsComponent = component;
+
+    return component;
 });

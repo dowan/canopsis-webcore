@@ -27,22 +27,6 @@ define([
      * @mixin
      */
     Application.ConfigurableMixin = Ember.Mixin.create({
-        actions: {
-            //TODO as this shows the WIDGET edit form, it has to be refactored in the widget clas as soon as it will be created
-            showEditForm: function() {
-                //FIXME this does not work, because of the hack line 61
-                crecord_type = "account";
-                console.log("Form generation for", crecord_type);
-
-                var crecordformController = Application.CrecordformController.create();
-                crecordformController.set("crecord_type", crecord_type);
-                crecordformController.set("editMode", "edit");
-                crecordformController.set("editedRecordController", this);
-
-                this.send('showEditFormWithController', crecordformController);
-            }
-        },
-
         init: function() {
             console.log("init");
             this.refreshConfiguration();

@@ -21,8 +21,10 @@ define([
     'app/application',
     'app/routes/authenticated',
     'utils',
-    'seeds/RoutesLoader'
-], function(Application, AuthenticatedRoute, utils) {
+    'seeds/RoutesLoader',
+    'app/lib/utils/data',
+    'app/lib/utils/forms'
+], function(Application, AuthenticatedRoute, utils, dataUtils, formUtils) {
     var set = Ember.set,
         get = Ember.get;
 
@@ -58,7 +60,8 @@ define([
             toggleFullscreen: function() {
                 var applicationController = this.controllerFor('application');
 
-                if(get(applicationController, 'fullscreenMode', true)) {
+                //TODO one line
+                if(get(applicationController, 'fullscreenMode')) {
                     set(applicationController, 'fullscreenMode', false);
                 } else {
                     set(applicationController, 'fullscreenMode', true);
@@ -73,11 +76,11 @@ define([
 
                 var controller = this.controllerFor('userview');
 
-                var record = Canopsis.utils.data.getStore().createRecord('livereporting', {
+                var record = dataUtils.getStore().createRecord('livereporting', {
                     crecord_type: 'livereporting'
                 });
 
-                var recordWizard = Canopsis.utils.forms.showNew('modelform', record, {
+                var recordWizard = formUtils.showNew('modelform', record, {
                     title: __('Edit live reporting')
                 });
 
@@ -125,7 +128,7 @@ define([
 
         setupController: function(controller, model) {
             console.log('UserviewRoute setupController', model, controller);
-            set(controller, 'controllers.application.currentViewId', get(model, 'id'));
+            set(this.controllerFor('application'), 'currentViewId', get(model, 'id'));
 
             controller.setProperties({
                 'content': model,

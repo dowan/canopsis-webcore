@@ -19,8 +19,10 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/application',
+    'app/lib/formsmanager',
+    'app/lib/utils/forms'
+], function(Ember, Application, formsmanager, formsUtils) {
 
     Ember.Widgets.MultiSelectComponent3 = Ember.Widgets.MultiSelectComponent.extend({
         selectionItemView: Ember.Widgets.MultiSelectOptionView,
@@ -89,11 +91,13 @@ define([
 
         filter: function( ToFilterWith , arrayTofilter , isON ) {
 
+            var tabFiltered;
+
             if ( Ember.isArray( arrayTofilter ) && Ember.isArray( ToFilterWith ) ){
 
-                var tabFiltered = arrayTofilter.filter( function ( content ) {
+                tabFiltered = arrayTofilter.filter( function ( content ) {
 
-                    var toTestWith =  content["name"]  ;
+                    var toTestWith =  content.name  ;
                     var keep = ToFilterWith.contains( toTestWith );
                     keep = (isON)? keep : !keep;
                     return  keep;
@@ -123,10 +127,10 @@ define([
         },
 
         modalShow: function(item) {
-            var form =  Canopsis.formwrapperController.form;
+            var form =  formsmanager.formwrapper.form;
             var record  =  form.formContext;
 
-            var recordWizard = Canopsis.utils.forms.showNew('modelform', record, { title: "test " });
+            var recordWizard = formsUtils.showNew('modelform', record, { title: "test " });
 
             recordWizard.submit.done(function() {
                 record.save();
@@ -146,7 +150,7 @@ define([
           templateName: 'multi_select_itemMY',
     }),
 
-    Ember.TEMPLATES["multi_select_itemMY"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+    Ember.TEMPLATES.multi_select_itemMY = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
         this.compilerInfo = [4,'>= 1.0.0'];
         helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
           var buffer = '', stack1, escapeExpression=this.escapeExpression;

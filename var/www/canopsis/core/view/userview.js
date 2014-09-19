@@ -21,17 +21,21 @@ define([
     'ember',
     'app/application'
 ], function(Ember, Application) {
-    Application.UserviewView = Ember.View.extend({
+    var get = Ember.get,
+        set = Ember.set;
+
+    var view = Ember.View.extend({
         actions: {
             refreshView: function() {
                 this.rerender();
             }
         },
         hookRegistered: false,
+
         //Controller -> View Hooks
         registerHooks: function() {
 
-            console.log("registerHooks", this.get("controller"), this.get("controller").on);
+            console.log("registerHooks", this.get("controller"), get(this, 'controller.on'));
             this.get("controller").on('refreshView', this, this.rerender);
             // if (!this.get('hookRegistered')) {
             //     this.set('hookRegistered', true);
@@ -66,5 +70,7 @@ define([
         }
     });
 
-    return Application.UserviewView;
+    Application.UserviewView = view;
+
+    return view;
 });
