@@ -19,8 +19,10 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/application',
+    'app/lib/utils/routes',
+    'app/lib/formsmanager'
+], function(Ember, Application, routesUtils, formsManager) {
 
     var set = Ember.set;
 
@@ -31,28 +33,28 @@ define([
             var classDict = options;
 
             options.formName = formName;
-            classDict.target = Canopsis.utils.routes.getCurrentRouteController();
+            classDict.target = routesUtils.getCurrentRouteController();
             classDict.container = Application.__container__;
 
-            var formController = Canopsis.forms.all[formName].EmberClass.create(classDict);
+            var formController = formsManager.all[formName].EmberClass.create(classDict);
 
             return formController;
         },
 
         showInstance: function(formInstance) {
-            Canopsis.formwrapperController.form.updateArray();
+            formsManager.formwrapper.form.updateArray();
             formInstance.empty_validationFields();
 
-            set(Canopsis.formwrapperController, 'form.validateOnInsert', false);
-            set(Canopsis.formwrapperController, 'form', formInstance);
-            set(Canopsis.formwrapperController, 'formName', formInstance.formName);
+            set(formsManager.formwrapper, 'form.validateOnInsert', false);
+            set(formsManager.formwrapper, 'form', formInstance);
+            set(formsManager.formwrapper, 'formName', formInstance.formName);
         },
 
         showNew: function(formName, formContext, options) {
             if (options === undefined) {
                 options = {};
             }
-            var formwrapperController = Canopsis.formwrapperController;
+            var formwrapperController = formsManager.formwrapper;
             if( formwrapperController ){
                 var oldform = formwrapperController.form;
                 if( oldform && oldform.updateArray ){
@@ -69,13 +71,13 @@ define([
             var formController = this.instantiateForm(formName, formContext, options);
             console.log("formController", formController);
 
-            Canopsis.utils.routes.getCurrentRouteController().send('showEditFormWithController', formController, formContext, options);
+            routesUtils.getCurrentRouteController().send('showEditFormWithController', formController, formContext, options);
 
             return formController;
         },
 
         editRecord: function(record) {
-            var widgetWizard = Canopsis.utils.forms.showNew('modelform', record);
+            var widgetWizard = formsUtils.showNew('modelform', record);
             console.log('widgetWizard', widgetWizard);
 
             widgetWizard.submit.then(function() {
@@ -90,7 +92,7 @@ define([
         },
 
         addRecord: function(record_type) {
-            Canopsis.utils.routes.getCurrentRouteController().send('show_add_crecord_form', record_type);
+            routesUtils.getCurrentRouteController().send('show_add_crecord_form', record_type);
         }
     };
 

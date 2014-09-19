@@ -1,4 +1,5 @@
 require.config({
+    waitSeconds: 20,
     baseUrl: '/static/',
     paths: {
         'app': 'canopsis/core',
@@ -58,6 +59,9 @@ require.config({
     },
 
     shim: {
+        'jquery.encoding.digests.sha1': {
+             deps: ['jquery']
+        },
 
         'bootbox': {
             deps: ['jquery', 'bootstrap']

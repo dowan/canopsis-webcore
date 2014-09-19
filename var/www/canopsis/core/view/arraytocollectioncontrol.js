@@ -25,30 +25,56 @@ define([
 ], function(Ember, Application) {
 
 
-    Application.ArrayToCollectionControlView = Ember.CollectionView.extend(Application.ArrayMixin,{
+    Application.ArrayToCollectionControlView = Ember.CollectionView.extend({
+        cssClass: "tooltiptable hint--rounded hint--top btn btn-",
+        cssClassON : "success",
+        cssClassOFF : "danger",
 
-    itemViewClass: Ember.View.extend({
-        tagName: '',
-        template: Ember.Handlebars.compile(" <button  data-hint={{ unbound template.label}} {{action 'modify' template target='view.parentView' }} {{bind-attr class='template.CSSclass'}}  > {{glyphicon template.icon}}   </button> ")
-    }),
+        itemViewClass: Ember.View.extend({
+            tagName: '',
+            template: Ember.Handlebars.compile(" <button  data-hint={{ unbound template.label}} {{action 'modify' template target='view.parentView' }} {{bind-attr class='template.CSSclass'}}  > {{glyphicon template.icon}}   </button> ")
+        }),
 
-    /*
-     *  modify template's CSSClass and value (called when button is pressed).
-     */
-    actions: {
-        modify: function(template) {
-            var value = this.get("value");
-            var isPresent = this.checkIfAContainB(value,template);
-            console.log("isPresent = ",isPresent, " value = ",value," and template =", template);
+        /*
+        *   Create template  {name, icon, CSSclass, label} (called by init) and push it on content
+        */
+        addTemplate : function(templat, value, contentREF) {
+            var copyTemplate = [];
 
-            if (!isPresent) {
-                value.pushObject(template.name);
-            } else {
-                value.removeObject(template.name);
+            for (var attribut in templat) {
+                if (templat.hasOwnProperty(attribut)) {
+                    copyTemplate[attribut] = templat[attribut];
+                }
             }
-            this.changeCssClass(template,value);
+            this.changeCssClass(copyTemplate, value);
+            contentREF.push({ template: copyTemplate });
+        },
+        changeCssClass : function(template,value) {
+            var CSSclassToUse =  (this.checkIfAContainB(value,template))? this.cssClassON : this.cssClassOFF;
+            Ember.set(template, "CSSclass", this.cssClass+CSSclassToUse);
+        },
+
+        checkIfAContainB : function(value, template) {
+            //add attribute to check
+            return(value.contains(template.name));
+        },
+        /*
+         *  modify template's CSSClass and value (called when button is pressed).
+         */
+        actions: {
+            modify: function(template) {
+                var value = this.get("value");
+                var isPresent = this.checkIfAContainB(value,template);
+                console.log("isPresent = ",isPresent, " value = ",value," and template =", template);
+
+                if (!isPresent) {
+                    value.pushObject(template.name);
+                } else {
+                    value.removeObject(template.name);
+                }
+                this.changeCssClass(template,value);
+            }
         }
-    }
     });
     return Application.ArrayToControlView;
 

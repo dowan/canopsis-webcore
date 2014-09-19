@@ -20,13 +20,15 @@
 define([
     'ember',
     'app/application',
-    'utils'
-], function(Ember, Application , utils) {
+    'utils',
+    'app/lib/formsmanager'
+], function(Ember, Application , utils, formsmanager) {
 // TODO: just make a function from this
-    Application.Tags_optionFilterMixin = Ember.Mixin.create({
+
+    var mixin = Ember.Mixin.create({
 
         onInit : function ( contentREF , _self ){
-            var formController  =  Canopsis.formwrapperController.form;
+            var formController  =  formsmanager.formwrapper.form;
             if ( formController ){
                 utils.filterObject.getFieldsByPrefix( "_opt_" , formController.formContext , function( attr , result  ){
                     var nameMixin = { name : attr.slice(5) };
@@ -37,5 +39,7 @@ define([
         }
     });
 
-    return Application.Tags_optionFilterMixin;
+    Application.Tags_optionFilterMixin = mixin;
+
+    return mixin;
 });

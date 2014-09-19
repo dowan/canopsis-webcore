@@ -25,7 +25,7 @@ var mixinsArray = [
     { name: 'tags_optionFilter', classes: ["test"]},
 ];
 
-var deps = ['app/application'];
+var deps = ['app/lib/mixinsmanager'];
 var depsSize = deps.length;
 
 for (var i = 0; i < mixinsArray.length; i++) {
@@ -33,11 +33,9 @@ for (var i = 0; i < mixinsArray.length; i++) {
     deps.push(mixinUrl);
 }
 
-define(deps, function(Application) {
-    var mixinsLoaded = {};
-    mixinsLoaded.all = [];
-    mixinsLoaded.byClass = {};
-    console.log("Begin load Searchable mixins", arguments);
+define(deps, function(mixinsManager) {
+
+    console.log("Begin load mixins", arguments);
     for (var i = depsSize; i < arguments.length; i++) {
         var currentMixin = mixinsArray[i - depsSize];
 
@@ -45,16 +43,16 @@ define(deps, function(Application) {
             for (var j = 0; j < currentMixin.classes.length; j++) {
                 var currentClass = currentMixin.classes[j];
 
-                if (mixinsLoaded.byClass[currentClass] === undefined) {
-                    mixinsLoaded.byClass[currentClass] = [];
+                if (mixinsManager.byClass[currentClass] === undefined) {
+                    mixinsManager.byClass[currentClass] = [];
                 }
 
-                mixinsLoaded.byClass[currentClass].push(currentMixin.name);
+                mixinsManager.byClass[currentClass].push(currentMixin.name);
             }
         }
-        mixinsLoaded.all[currentMixin.name] = arguments[i];
+        mixinsManager.all[currentMixin.name] = arguments[i];
 
     }
-    Application.SearchableMixin = mixinsLoaded;
-    return mixinsLoaded;
+
+    return mixinsManager;
 });

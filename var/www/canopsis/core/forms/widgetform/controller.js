@@ -38,21 +38,21 @@ define([
             console.log("availableWidgets");
             var widgets = [];
 
-            for (var i = 0; i < Canopsis.widgets.all.length; i++) {
-                var currentWidget = Canopsis.widgets.all[i];
+            for (var i = 0; i < widgets.all.length; i++) {
+                var currentWidget = widgets.all[i];
 
                 widgets.push(currentWidget);
             }
 
             return widgets;
-        }.property('Canopsis.widgets.all', "title"),
+        }.property('widgets.all', "title"),
 
         actions: {
             show: function() {
                 var widgets = [];
 
-                for (var i = 0; i < Canopsis.widgets.all.length; i++) {
-                    var currentWidget = Canopsis.widgets.all[i];
+                for (var i = 0; i < widgets.all.length; i++) {
+                    var currentWidget = widgets.all[i];
 
                     widgets.push(currentWidget);
                 }

@@ -21,8 +21,9 @@ define([
     'app/application',
     'app/controller/widget',
     "app/lib/widgetsmanager",
-    "app/lib/loaders/schema-manager"
-], function(Application, WidgetController, WidgetsManager) {
+    "app/lib/loaders/schema-manager",
+    "app/serializers/userview"
+], function(Application, WidgetController, WidgetsManager, UserviewSerializer) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -59,10 +60,13 @@ define([
         extendArguments.push(classdict);
 
         var widgetControllerName = widgetName.camelize().capitalize() + "Controller";
+        var widgetSerializerName = widgetName.camelize().capitalize() + "Serializer";
+
         console.log("extendArguments", extendArguments);
         console.log("subclass", options.subclass);
 
         Application[widgetControllerName] = options.subclass.extend.apply(options.subclass, extendArguments);
+        Application[widgetSerializerName] = UserviewSerializer;
 
         console.log("widget", widgetControllerName, Application[widgetControllerName], Application);
         var metadataDict = Application[widgetName.camelize().capitalize()].proto().metadata;

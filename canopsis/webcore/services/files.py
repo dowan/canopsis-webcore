@@ -35,7 +35,8 @@ from canopsis.webcore.services.auth import get_account
 
 import polib
 
-from os.path import expanduser, isfile
+from os.path import join, isfile
+from sys import prefix as sys_prefix
 
 logger = getLogger('Files')
 
@@ -63,7 +64,7 @@ max_size = 5
 @get('/files/i18n/:lang')
 def load_translations(lang='en'):
 
-    lang_file = expanduser('~/locale/{}/ui_lang.po'.format(lang))
+    lang_file = join(sys_prefix, 'locale', lang, 'ui_lang.po')
     translations = {}
     if isfile(lang_file):
         try:

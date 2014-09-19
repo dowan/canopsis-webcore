@@ -1,8 +1,27 @@
-  define([
-  'jquery',
-  'ember',
-  'app/application'
-], function($, Ember, Application) {
+/*
+# Copyright (c) 2014 "Capensis" [http://www.capensis.com]
+#
+# This file is part of Canopsis.
+#
+# Canopsis is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Canopsis is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+*/
+define([
+    'jquery',
+    'ember',
+    'app/application',
+    'app/lib/formsmanager'
+], function($, Ember, Application, formsmanager) {
 
     /**
      * Use Component-> validators -> validate (Ember.validators["validate"]) for validation
@@ -12,12 +31,12 @@
 
         willDestroyElement:function(){
             //TODO : find a better place
-           // var formController  =  Canopsis.formwrapperController.form;
+           // var formController  =  formsmanager.formwrapper.form;
            // formController.set('validationFields' , Ember.A() );
         },
 
         init: function(){
-            var form  =  Canopsis.formwrapperController.form;
+            var form  =  formsmanager.formwrapper.form;
             this.set('form' , form );
 
             var attributes = this.attr || this.content;
@@ -29,14 +48,14 @@
                 this.set('value', this.get('attr.model.options.defaultValue'));
             }
 
-            var type =  model.options['input_type'] || model.type;
+            var type =  model.options.input_type || model.type;
             type = (type === 'string')? 'text' : type;
             // this.type = type;
             this._super();
         },
 
         registerFieldWithController: function() {
-            var formController  =  Canopsis.formwrapperController.form;
+            var formController  =  formsmanager.formwrapper.form;
             if ( formController ){
                 var validationFields = formController.get('validationFields');
                 if (validationFields){
@@ -53,7 +72,7 @@
         },
 
         validate : function() {
-            var formController  = Canopsis.formwrapperController.form;
+            var formController  = formsmanager.formwrapper.form;
             var FCValidation    = formController.get('validation');
             if ( FCValidation  !== undefined ) {
                 var attr = this.get('attr') ;

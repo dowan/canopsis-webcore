@@ -25,7 +25,7 @@ define(['app/application'], function(Application) {
             var result = ( resultISString )? contentREF :  contentREF || Ember.A();
             var ctype = record.get("crecord_type") || record.get("connector_type");
             var Stringtype = ctype.charAt(0).toUpperCase() + ctype.slice(1);
-            var model = Canopsis.Application.allModels[Stringtype];
+            var model = Application.allModels[Stringtype];
 
             for ( var attr in model ){
                 if ( model.hasOwnProperty( attr ) ){
@@ -40,5 +40,6 @@ define(['app/application'], function(Application) {
         return result;
         }
     }
+
     return filterObjectUtils;
 });

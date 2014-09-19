@@ -30,9 +30,14 @@ define([
     'app/routes/application',
     'utils',
     'app/lib/utils/forms',
+    'app/lib/utils/data',
     'app/adapters/cservice',
     'app/adapters/notification',
-    'app/serializers/cservice'
+    'app/serializers/cservice',
+    'app/lib/loaders/helpers',
+    'app/lib/loaders/widgets',
+    'app/adapters/loggedaccount',
+    'app/lib/loaders/helpers'
 ], function(Ember, DS, Application, PartialslotAbleController, UsermenuMixin, SchemamanagerMixin, ConsolemanagerMixin, PromisemanagerMixin, NotificationsMixin, ApplicationRoute, utils, formUtils) {
     var get = Ember.get,
         set = Ember.set;
@@ -93,11 +98,10 @@ define([
                 set(appController, 'frontendConfig', queryResults);
                 // set(Canopsis, 'conf.frontendConfig', queryResults);
                 if(get(appController, 'onIndexRoute') === true) {
-                    console.error('on index route, redirecting to the appropriate route');
+                    console.info('on index route, redirecting to the appropriate route');
 
                     var defaultview = get(appController, 'frontendConfig.defaultview');
 
-                    console.error(defaultview);
                     if(!! defaultview) {
                         appController.send('showView', defaultview);
                     }
@@ -159,16 +163,12 @@ define([
             this._super.apply(this, arguments);
         },
 
-        username: function () {
-            return this.get('controllers.login').get('username');
-        }.property('controllers.login.username'),
-
         actions: {
 
             promptReloadApplication: function(title, location) {
                 setTimeout(function (){
                     console.log('in promptReloadApplication');
-                    var recordWizard = Canopsis.utils.forms.showNew('confirmform', {}, {
+                    var recordWizard = formsUtils.showNew('confirmform', {}, {
                         title: __(title)
                     });
 
@@ -186,13 +186,13 @@ define([
 
                 var applicationController = this;
 
-                var username = utils.session.get('username');
+                var username = utils.session.get('user');
 
                 var dataStore = DS.Store.create({
                     container: this.get("container")
                 });
 
-                var record = dataStore.findQuery('account', {
+                var record = dataStore.findQuery('loggedaccount', {
                     filter: JSON.stringify({
                         user: username
                     })
@@ -313,12 +313,12 @@ define([
 
                 var containerwidgetId = utils.hash.generateId('container');
 
-                var containerwidget = Canopsis.utils.data.getStore().createRecord('verticalbox', {
+                var containerwidget = dataUtils.getStore().createRecord('verticalbox', {
                     xtype: 'verticalbox',
                     id: containerwidgetId
                 });
 
-                var userview = Canopsis.utils.data.getStore().push(type, {
+                var userview = dataUtils.getStore().push(type, {
                     id: utils.hash.generateId('userview'),
                     crecord_type: 'view',
                     containerwidget: containerwidgetId,
@@ -327,7 +327,7 @@ define([
 
                 console.log('temp record', userview);
 
-                var recordWizard = Canopsis.utils.forms.showNew('modelform', userview, { title: __("Add ") + type });
+                var recordWizard = formsUtils.showNew('modelform', userview, { title: __("Add ") + type });
 
                 function transitionToView(userview) {
                     console.log('userview saved, switch to the newly created view');
@@ -348,12 +348,12 @@ define([
             addModelInstance: function(type) {
                 console.log("add", type);
 
-                var record = Canopsis.utils.data.getStore().createRecord(type, {
+                var record = dataUtils.getStore().createRecord(type, {
                     crecord_type: type.underscore()
                 });
                 console.log('temp record', record);
 
-                var recordWizard = Canopsis.utils.forms.showNew('modelform', record, { title: __("Add ") + type });
+                var recordWizard = formsUtils.showNew('modelform', record, { title: __("Add ") + type });
 
                 recordWizard.submit.done(function() {
                     record.save();

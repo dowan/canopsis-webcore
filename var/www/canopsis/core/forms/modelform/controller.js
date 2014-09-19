@@ -125,7 +125,7 @@ define([
             }
 
         }.property('formContext'),
-
+/*
         updateArray: function() {
             var ArrayFields = this.get("ArrayFields");
             if (ArrayFields !== undefined) {
@@ -135,7 +135,7 @@ define([
                 }
             }
         },
-
+*/
         actions: {
             submit: function() {
                 if (this.validation !== undefined && !this.validation()) {
@@ -148,7 +148,7 @@ define([
 
                 if(this.isOnCreate && this.modelname){
                     var Stringtype = this.modelname.charAt(0).toUpperCase() + this.modelname.slice(1);
-                    var model = Canopsis.Application.allModels[Stringtype];
+                    var model = Application.allModels[Stringtype];
                     if(model) {
                         for(var fieldName in model){
                             if(model.hasOwnProperty(fieldName)) {
@@ -189,7 +189,7 @@ define([
                     }
                 }
                 //Update value of array
-                this.updateArray();
+              //  this.updateArray();
 
                 console.log("this is a widget", this.get('formContext'));
                 this._super(this.get('formContext'));

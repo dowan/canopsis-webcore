@@ -44,7 +44,7 @@ define([
             }
         },
         showTranslation: function (word, isTranslated) {
-            if (window.Canopsis && Canopsis.conf.SHOW_TRANSLATIONS) {
+            if (conf.SHOW_TRANSLATIONS) {
                 if(isTranslated) {
                     circleColor = 'text-success';
                 } else {
@@ -56,13 +56,18 @@ define([
             }
         },
         uploadDefinitions: function () {
+            var todo = [];
+
+            for (var todoElement in i18n.todo) {
+                todo.push(todoElement);
+            }
 
             $.ajax({
-                url: '/rest/misc/i18n',
+                url: '/rest/object/i18n',
                 type: 'POST',
                 data: JSON.stringify({
                     id: 'translations',
-                    todo: i18n.todo,
+                    todo: todo,
                     crecord_type: 'i18n'
                 }),
                 success: function(data) {

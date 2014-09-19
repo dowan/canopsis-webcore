@@ -44,41 +44,18 @@ define([
 
             $.ajax({
                 url: '/account/me',
-                data: {limit: 1000},
                 success: function(data) {
-                    console.log("got user", data);
-                    var account = data.data[0];
-
-                    controller.set('username', account.user);
-                    controller.set('group', account.aaa_group.slice('group.'.length));
-
-                    var groups = [];
-
-                    for(var i = 0; i < account.groups.length; i++) {
-                        groups.push(account.groups[i].slice('group.'.length));
+                    if (data.success) {
+                        var login = Ember.Object.create(data.data[0]);
+                        controller.set('record', login);
                     }
-
-                    controller.set('firstname', account.firstname);
-                    controller.set('lastname', account.lastname);
-                    controller.set('groups', groups);
-                    controller.set('rights', account.rights);
-                    controller.set('mail', account.mail);
-                    controller.set('authkey', account.authkey);
-                    if (Ember.isNone(account.ui_language)) {
-                        lang = 'en';
-                    } else {
-                        lang = account.ui_language;
-                    }
-                    controller.set('ui_language', lang);
-
-                    set(utils, 'session', controller);
+                    set(utils, 'session', controller.get('record'));
                 },
                 async: false
             });
 
         },
-        username: function () {
-        }.property(),
+
 
         reset: function() {
             this.setProperties({

@@ -50,6 +50,7 @@ define([
                 if( typeof initialContent === "string") {
                     set(this, 'selectionUnprepared', [{ 'name': initialContent}]);
                 } else {
+                    console.log("initialContent", initialContent);
                     throw "not implemented";
                 }
             }

@@ -37,6 +37,7 @@ define([
             this.$('input').on('ifChecked', function(){
                 set(checkboxComponent, 'checked', true);
             });
+
             this.$('input').on('ifUnchecked', function(){
                 set(checkboxComponent, 'checked', false);
             });

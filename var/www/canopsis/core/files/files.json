@@ -4,8 +4,6 @@
     "name": "controller",
     "files": [
         {"name": "application"},
-        {"name": "crecord"},
-        {"name": "crecordform"},
         {"name": "formwrapper"},
         {"name": "editor"},
         {"name": "login"},
@@ -23,7 +21,6 @@
     "name": "view",
     "files": [
         {"name": "application"},
-        {"name": "crecordform"},
         {"name": "formwrapper"},
         {"name": "crecords"},
         {"name": "editor"},

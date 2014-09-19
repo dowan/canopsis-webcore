@@ -16,22 +16,17 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
-var Ember;
 
 define([
-    'app/lib/factories/wrapper',
-    'webcore-libs/dev/ember',
-    'app/lib/utils/notification'
-], function(Wrapper, notificationUtils) {
+        'app/application',
+        'app/adapters/application'
+], function(Application, ApplicationAdapter) {
 
-    // Ember.onerror = function(error) {
-    //     console.error("Ember.onerror", error);
-    //     notificationUtils.error(error.message);
-    // };
+    Application.LoggedaccountAdapter = ApplicationAdapter.extend({
+        buildURL: function() {
+            return '/rest/object/account';
+        }
+    });
 
-    // Ember.RSVP.configure('onerror', function(error) {
-    //     notificationUtils.error(error.message);
-    // });
-
-    return Wrapper("ember", Ember, arguments, Ember.VERSION);
+    return Application.LoggedaccountAdapter;
 });

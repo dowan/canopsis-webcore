@@ -22,7 +22,7 @@ define([
     'app/application',
     'app/lib/factories/form',
     'utils'
-], function(Ember, Application, FormFactory, cutils) {
+], function(Ember, Application, FormFactory, utils) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -33,7 +33,7 @@ define([
         availableJobs: function() {
             var job_types = [];
 
-            for(var sname in cutils.schemaList) {
+            for(var sname in utils.schemaList) {
                 if(sname.indexOf('Task.') === 0) {
                     job_types.pushObject({
                         name: sname.slice(9),
@@ -43,7 +43,7 @@ define([
             }
 
             return { all : job_types, byClass: {}};
-        }.property('Canopsis.utils.schemaList'),
+        }.property('utils.schemaList'),
 
         init: function() {
             this._super(arguments);
@@ -57,7 +57,7 @@ define([
             selectItem: function(jobName) {
                 console.group('selectJob', this, jobName);
 
-                var context = undefined;
+                var context;
                 var availableJobs = get(this, 'availableJobs.all');
 
                 var job;
@@ -79,7 +79,7 @@ define([
                 }
                 else {
                     params = {
-                        id: cutils.hash.generateId('task'),
+                        id: utils.hash.generateId('task'),
                         crecord_type: xtype,
                         xtype: xtype
                     };
@@ -92,13 +92,13 @@ define([
                     jobdict.paramsType = xtype;
                     jobdict.params = params.id;
 
-                    var job = this.get('store').push('job', jobdict);
+                    job = this.get('store').push('job', jobdict);
                     this.formContext.rollback();
                     this.formContext = job;
                 }
 
                 console.log('Show new form with context:', context, this.formContext);
-                var recordWizard = cutils.forms.showNew('taskform', context, {
+                var recordWizard = utils.forms.showNew('taskform', context, {
                     formParent: this,
                     scheduled: this.scheduled
                 });

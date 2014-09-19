@@ -25,6 +25,7 @@ define([
     'app/routes/userview',
     'app/view/userview',
     'app/serializers/userview',
+    'app/lib/loaders/widgets'
 ], function(Ember, Application, CrecordController, formUtils) {
     var get = Ember.get,
         set = Ember.set;
@@ -35,7 +36,7 @@ define([
         actions: {
             insertWidget: function(containerController) {
                 console.log("insertWidget", containerController);
-                var widgetChooserForm = Canopsis.utils.forms.showNew('widgetform', this);
+                var widgetChooserForm = formUtils.showNew('widgetform', this);
 
                 var userviewController = this;
 

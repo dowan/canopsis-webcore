@@ -19,6 +19,7 @@
 # ---------------------------------
 
 from os.path import expanduser, join, exists
+from sys import prefix as sys_prefix
 
 from logging import getLogger
 
@@ -28,7 +29,7 @@ logger = getLogger("plugins_loader")
 
 #########################################################################
 
-var_path = expanduser("~/var/")
+var_path = join(sys_prefix, "var")
 plugins_path = join(var_path, "plugins/")
 
 logger.info(" var_path  = {} ".format(var_path))
@@ -41,16 +42,15 @@ def get_externals_files(filename):
     can't have file with same name but different extention
     """
     found = False
-    output = filename + "_is_empty"
+    output = "{0}_is_empty".format(filename)
     allowed_extentions = ["json", "js", "html"]
-    base_path = var_path + "plugins/"
 
-    if exists(base_path):
+    if exists(plugins_path):
         extention = filename.split(".")
 
         if len(extention) == 1:
             for ext in allowed_extentions:
-                path_to_test = '{}{}.{}'.format(plugins_path, filename, ext)
+                path_to_test = join(plugins_path, '{}.{}'.format(filename, ext))
                 logger.info("path_to_test = {}".format(path_to_test))
                 if exists(path_to_test):
                     found = True

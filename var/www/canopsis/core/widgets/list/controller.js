@@ -66,7 +66,7 @@ define([
     var widget = WidgetFactory('list',
         {
 
-            needs: ['login'],
+            needs: ['login', 'application'],
             viewMixins: [
                 ListViewMixin
             ],
@@ -157,7 +157,7 @@ define([
             actions: {
                 //TODO refactor buttons as components
                 info: function(record) {
-                    var list_info_button_pattern = get(Canopsis.conf.frontendConfig, "list_info_button_pattern");
+                    var list_info_button_pattern = get(this, 'controllers.application.frontendConfig.list_info_button_pattern');
 
                     var template = list_info_button_pattern;
                     var context = record._data;

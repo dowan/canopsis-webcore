@@ -24,15 +24,19 @@ define([
 ], function(Ember, Application, cutils) {
 
     var mixin = Ember.Mixin.create({
+
+        init: function (){
+            this._super();
+            this.set('login', this.get('controllers.login.record'));
+        },
+
         getDataFromRecord: function(event_type, crecord, formRecord) {
             console.group('getDataFromRecord');
             console.log('event:', event_type, record);
 
-            var login = this.get('controllers.login');
-
             var record = {
-                authkey: login.get('authkey'),
-                author: login.get('username'),
+                authkey: this.get('login.authkey'),
+                author: this.get('login.user'),
                 id: crecord.get('id'),
                 connector: crecord.get('connector'),
                 connector_name: crecord.get('connector_name'),
@@ -332,10 +336,9 @@ define([
 
             user: {
                 extract: function(record, crecord, formRecord) {
-                    var login = this.get('controllers.login');
 
                     record.output = crecord.get('output');
-                    record.display_name = login.get('firstname') + ' ' + login.get('lastname');
+                    record.display_name = this.get('login.firstname') + ' ' + this.get('login.lastname');
                 },
 
                 filter: function(crecords) {
@@ -352,11 +355,10 @@ define([
 
             comment: {
                 extract: function(record, crecord, formRecord) {
-                    var login = this.get('controllers.login');
 
                     record.referer = crecord.get('referer');
                     record.output = crecord.get('output');
-                    record.display_name = login.get('firstname') + ' ' + login.get('lastname');
+                    record.display_name = this.get('login.firstname') + ' ' + this.get('login.lastname');
                 },
 
                 filter: function(crecords) {

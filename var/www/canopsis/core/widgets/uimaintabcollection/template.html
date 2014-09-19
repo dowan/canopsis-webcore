@@ -1,14 +1,14 @@
 {{#with controllers.application.currentViewId as currentViewId}}
     <div class="btn-group pull-right" style="clear:both; margin-top:5px; margin-bottom:5px">
-        <button type="button" class="btn btn-default btn-sm" {{action 'displayLiveReporting' this}} >
+        <button class="btn btn-default btn-sm" {{action 'displayLiveReporting' this}} >
             {{glyphicon "time"}}
         </button>
 
-        <button type="button" class="btn btn-default btn-sm" {{action 'toggleFullscreen' this}} >
+        <button class="btn btn-default btn-sm" {{action 'toggleFullscreen' this}} >
             {{glyphicon "fullscreen"}}
         </button>
 
-        <button type="button" class="btn btn-default btn-sm" {{action 'refresh'}} >
+        <button class="btn btn-default btn-sm" {{action 'refresh'}} >
             {{glyphicon "refresh"}}
         </button>
     </div>
