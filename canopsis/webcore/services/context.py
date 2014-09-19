@@ -20,7 +20,7 @@
 
 from bottle import get, delete, put, post
 
-from canopsis.common.ws import response, route
+from canopsis.common.ws import route
 from canopsis.context.manager import Context
 
 manager = Context()
@@ -29,55 +29,43 @@ manager = Context()
 @route(get)
 def context(_type, names=None, context=None, extended=None):
 
-    entities = manager.get(
+    result = manager.get(
         _type=_type, names=names, context=context, extended=extended)
-
-    result = response(entities)
 
     return result
 
 
-@route(post, body_params=['limit', 'skip', 'sort', '_filter'])
+@route(post, payload=['limit', 'skip', 'sort', '_filter'])
 def context(
     _type=None, context=None, _filter=None, extended=False,
     limit=0, skip=0, sort=None
 ):
 
-    entities = manager.find(
+    result = manager.find(
         _type=_type, context=context, _filter=_filter, extended=extended,
         limit=limit, skip=skip, sort=sort)
-
-    result = response(entities)
 
     return result
 
 
-@route(put, body_params=['_type', 'entity', 'context', 'extended_id'])
+@route(put, payload=['_type', 'entity', 'context', 'extended_id'])
 def context(_type, entity, context=None, extended_id=None):
 
     manager.put(
         _type=_type, entity=entity, context=context, extended_id=extended_id)
 
-    result = response(entity)
-
-    return result
+    return entity
 
 
-@route(delete, body_params=['context', 'ids', '_type', 'extended'])
+@route(delete, payload=['context', 'ids', '_type', 'extended'])
 def context(ids=None, _type=None, context=None, extended=False):
 
     manager.remove(ids=ids, _type=_type, context=context, extended=extended)
 
-    result = response(None)
 
-    return result
-
-
-@route(post, body_params=['entities', 'extended'])
+@route(post, payload=['entities', 'extended'])
 def unify(entities, extended=False):
 
-    nodes = manager.unify_entities(entities=entities, extended=extended)
-
-    result = response(nodes)
+    result = manager.unify_entities(entities=entities, extended=extended)
 
     return result
