@@ -30,7 +30,7 @@ define([
     'app/mixins/customfilter',
     'utils',
     'app/lib/utils/dom',
-    'app/lib/loaders/schema-manager',
+    'app/lib/loaders/schemas',
     'app/adapters/event',
     'app/adapters/userview',
     'canopsis/core/lib/wrappers/ember-cloaking',

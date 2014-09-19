@@ -22,7 +22,7 @@ define([
     'app/application',
     'app/lib/factories/form',
     'app/lib/utils/forms',
-    'app/lib/loaders/schema-manager',
+    'app/lib/loaders/schemas',
     'app/controller/journal'
 ], function(Ember, Application, FormFactory, formUtils) {
 

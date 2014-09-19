@@ -21,7 +21,7 @@ define([
     'ember',
     'app/application',
     'app/mixins/inspectableitem',
-    'app/lib/loaders/schema-manager'
+    'app/lib/loaders/schemas'
 ], function(Ember, Application, InspectableItem) {
 
     Application.CrecordController = Ember.ObjectController.extend(InspectableItem, {

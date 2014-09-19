@@ -23,7 +23,7 @@ define([
     'app/serializers/application',
     'app/mixins/embeddedrecordserializer',
     'utils',
-    'app/lib/loaders/schema-manager'
+    'app/lib/loaders/schemas'
 ], function(DS, Application, ApplicationSerializer, EmbeddedRecordSerializerMixin, cutils) {
 
     Application.TaskSerializer = ApplicationSerializer.extend(

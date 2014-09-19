@@ -21,8 +21,8 @@ define([
     'app/application',
     'app/controller/widget',
     "app/lib/widgetsmanager",
-    "app/lib/loaders/schema-manager",
-    "app/serializers/userview"
+    "app/serializers/userview",
+    "app/lib/loaders/schemas"
 ], function(Application, WidgetController, WidgetsManager, UserviewSerializer) {
 
     var get = Ember.get,
