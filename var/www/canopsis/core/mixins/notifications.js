@@ -61,7 +61,7 @@ define([
         }.property('notifications.length')
     });
 
-    Application.SchemamanagerMixin = mixin;
+    Application.NotificationsMixin = mixin;
 
     return mixin;
 });

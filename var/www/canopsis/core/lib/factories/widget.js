@@ -68,7 +68,7 @@ define([
         Application[widgetControllerName] = options.subclass.extend.apply(options.subclass, extendArguments);
         Application[widgetSerializerName] = UserviewSerializer;
 
-        console.log("widget", widgetControllerName, Application[widgetControllerName], Application);
+        console.log("widget", widgetControllerName, Application[widgetControllerName].proto(), Application);
         var metadataDict = Application[widgetName.camelize().capitalize()].proto().metadata;
 
         console.log("metadataDict", widgetName, metadataDict);

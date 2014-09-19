@@ -372,6 +372,10 @@ define(schemasDeps, function(DS, Application, utils) {
         data: {limit: 1000},
         success: function(data) {
             if (data.success) {
+                if(data.total === 0) {
+                    console.warn('No schemas was imported from the backend, you might have nothing in your database, or a communication problem with the server');
+                }
+
                 console.log('Api schema data',data);
                 loadSchemasFromApiJson(data.data);
             } else {
