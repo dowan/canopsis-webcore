@@ -48,19 +48,6 @@ define([
         }.property('widgets.all', "title"),
 
         actions: {
-            show: function() {
-                var widgets = [];
-
-                for (var i = 0; i < widgets.all.length; i++) {
-                    var currentWidget = widgets.all[i];
-
-                    widgets.push(currentWidget);
-                }
-
-                this.set('availableWidgets', widgets);
-                this._super();
-            },
-
             submit: function(newWidgets) {
                 var newWidget = newWidgets[0];
 

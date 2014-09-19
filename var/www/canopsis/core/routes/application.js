@@ -43,7 +43,7 @@ define([
                 var formName = formController.constructor.toString().slice(1, "Controller".length * -1).toLowerCase();
                 console.log("showEditFormWithController", formController, formName, formContext, options);
 
-                var formwrapperController = formsmanager.formwrapper;
+                var formwrapperController = this.controllerFor('formwrapper');
                 Ember.set(formsmanager, 'formwrapper', formwrapperController);
 
                 formController.set('formwrapper', formwrapperController);
