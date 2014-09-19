@@ -30,7 +30,8 @@ var widgetsTemplates = [
 //    { name:'multicrecordlist', url:'app/widgets/multicrecordlist', hasJSPart: true , TEMPLATE:'list'},
     { name:'jobmanager', url:'app/widgets/jobmanager', hasJSPart: true, TEMPLATE: 'list' },
     { name:'timegraph', url:'app/widgets/timegraph', hasJSPart: true},
-    { name:'progressbar', url:'app/widgets/progressbar', hasJSPart: true}
+    { name:'progressbar', url:'app/widgets/progressbar', hasJSPart: true},
+    { name:'graph', url:'app/widgets/graph', hasJSPart: true}
 
 ];
 

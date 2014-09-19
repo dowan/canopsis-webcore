@@ -47,6 +47,7 @@ define([
     Application.UiactionbuttonSerializer = serializerClass;
     Application.UimaintabcollectionSerializer = serializerClass;
     Application.WeatherSerializer = serializerClass;
+    Application.GraphSerializer = serializerClass;
 
     return serializerClass;
 });
