@@ -35,8 +35,10 @@ define([
     'app/adapters/notification',
     'app/serializers/cservice',
     'app/lib/loaders/helpers',
-    'app/lib/loaders/widgets'
-], function(Ember, DS, Application, PartialslotAbleController, UsermenuMixin, SchemamanagerMixin, ConsolemanagerMixin, PromisemanagerMixin, NotificationsMixin, ApplicationRoute, utils, formUtils, dataUtils) {
+    'app/lib/loaders/widgets',
+    'app/adapters/loggedaccount',
+    'app/lib/loaders/helpers'
+], function(Ember, DS, Application, PartialslotAbleController, UsermenuMixin, SchemamanagerMixin, ConsolemanagerMixin, PromisemanagerMixin, NotificationsMixin, ApplicationRoute, utils, formUtils) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -161,10 +163,6 @@ define([
             this._super.apply(this, arguments);
         },
 
-        username: function () {
-            return this.get('controllers.login').get('username');
-        }.property('controllers.login.username'),
-
         actions: {
 
             promptReloadApplication: function(title, location) {
@@ -188,13 +186,13 @@ define([
 
                 var applicationController = this;
 
-                var username = utils.session.get('username');
+                var username = utils.session.get('user');
 
                 var dataStore = DS.Store.create({
                     container: this.get("container")
                 });
 
-                var record = dataStore.findQuery('account', {
+                var record = dataStore.findQuery('loggedaccount', {
                     filter: JSON.stringify({
                         user: username
                     })

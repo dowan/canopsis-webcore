@@ -35,8 +35,11 @@ define([
             var unformattedDuration = parseInt(get(this, 'content'), 10);
             var conversionOperand = get(this, 'convertDuration').get(durationType);
             var res = unformattedDuration / conversionOperand;
-
+            if (Ember.isNone(res) || isNaN(res)) {
+                res = 0;
+            }
             set(this, 'shownDuration', res);
+            console.debug('shown duration initialized to ', this.get('shownDuration') ,res);
         },
 
         shownDurationChanged: function () {
@@ -51,24 +54,12 @@ define([
         selectedDurationTypeChanged: function () {
             var durationType = get(this, 'selectedDurationType');
             var conversionOperand = get(this, 'convertDuration').get(durationType);
+            console.log('conversionOperand', durationType, conversionOperand, get(this, 'shownDuration'));
 
             var newValue = get(this, 'shownDuration') * conversionOperand;
             console.log('selectedDurationTypeChanged', durationType, conversionOperand, newValue);
             set(this, 'content', newValue);
         }.observes('selectedDurationType'),
-
-        contentChanged: function () {
-            console.log('formattedDuration CP');
-            var durationType = get(this, 'selectedDurationType');
-
-            var unformattedDuration = parseInt(get(this, 'content'), 10);
-            var conversionOperand = get(this, 'convertDuration').get(durationType);
-            var res = unformattedDuration / conversionOperand;
-
-            set(this, 'shownDuration', res);
-
-            return res;
-        }.observes('content'),
 
         selectedDurationType: 'second',
 

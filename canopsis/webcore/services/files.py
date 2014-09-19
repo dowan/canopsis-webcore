@@ -35,7 +35,7 @@ from canopsis.webcore.services.auth import get_account
 
 import polib
 
-from os.path import expanduser, isfile
+from os.path import join, isfile
 from sys import prefix as sys_prefix
 
 logger = getLogger('Files')
