@@ -33,6 +33,10 @@ define([
         LOG_BINDINGS: true
     });
 
+    Application.Router.map(function() {
+        this.resource('userview', { path: '/userview/:userview_id' });
+    });
+
     Application.initializer({
         name:"RESTAdaptertransforms",
         after: "transforms",

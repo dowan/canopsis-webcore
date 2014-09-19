@@ -1,6 +1,5 @@
 define([
     'canopsis/commit',
-    'seeds/RoutesLoader',
     'app/application',
     'utils',
     'app/lib/wrappersmanager',
@@ -42,7 +41,6 @@ define([
     'app/routes/userview',
     'css3-mediaqueries'
 ], function(commit,
-        routesLoader,
         Application,
         utils,
         wrappersManager,
@@ -99,10 +97,5 @@ define([
     Application.connector = [ { name : "nagios" }, { name : "shinken" } , { name : "schneider" } , { name : "collectd" }];
 
     Application.manifest = routes;
-    routesLoader.initializeRoutes(
-        Application,
-        routes,
-        function () {
-            console.log('Routes initialization callback');
-    });
+
 });
