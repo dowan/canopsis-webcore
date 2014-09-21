@@ -38,7 +38,7 @@ define([
     'app/lib/loaders/widgets',
     'app/adapters/loggedaccount',
     'app/lib/loaders/helpers'
-], function(Ember, DS, Application, PartialslotAbleController, UsermenuMixin, SchemamanagerMixin, ConsolemanagerMixin, PromisemanagerMixin, NotificationsMixin, ApplicationRoute, utils, formUtils) {
+], function(Ember, DS, Application, PartialslotAbleController, UsermenuMixin, SchemamanagerMixin, ConsolemanagerMixin, PromisemanagerMixin, NotificationsMixin, ApplicationRoute, utils, formsUtils, dataUtils) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -240,9 +240,9 @@ define([
             },
 
             editConfig: function() {
-                console.log('editConfig', formUtils);
+                console.log('editConfig', formsUtils);
                 var frontendConfig = get(this, 'frontendConfig');
-                var editForm = formUtils.showNew('modelform', frontendConfig, { title: __("Edit settings"), inspectedItemType: "frontend" });
+                var editForm = formsUtils.showNew('modelform', frontendConfig, { title: __("Edit settings"), inspectedItemType: "frontend" });
                 editForm.submit.done(function() {
                     frontendConfig.save();
                 });
@@ -264,7 +264,7 @@ define([
                     console.log('param subject', params.get('subject'));
                 }
 
-                var editForm = formUtils.showNew('jobform', job, {
+                var editForm = formsUtils.showNew('jobform', job, {
                     scheduled: false
                 });
 
@@ -280,7 +280,7 @@ define([
                 console.log('editLdapConfig');
 
                 var ldapConfig = get(this, 'ldapConfig');
-                var editForm = formUtils.showNew('modelform', ldapConfig, { title: __('Edit LDAP configuration') });
+                var editForm = formsUtils.showNew('modelform', ldapConfig, { title: __('Edit LDAP configuration') });
                 editForm.submit.done(function() {
                     ldapConfig.save();
                 });
@@ -290,7 +290,7 @@ define([
                 console.log('editCasConfig');
 
                 var casConfig = get(this, 'casConfig');
-                var editForm = formUtils.showNew('modelform', casConfig, { title: __('Edit CAS configuration') });
+                var editForm = formsUtils.showNew('modelform', casConfig, { title: __('Edit CAS configuration') });
                 editForm.submit.done(function() {
                     casConfig.save();
                 });

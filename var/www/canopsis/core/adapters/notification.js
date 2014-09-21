@@ -19,7 +19,7 @@
 
 define([
     'app/application',
-    'app/lib/loaders/schema-manager'
+    'app/lib/loaders/schemas'
 ], function(Application) {
 
     Application.NotificationAdapter = DS.FixtureAdapter.extend();

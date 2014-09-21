@@ -30,12 +30,13 @@ define([
     'app/mixins/customfilter',
     'utils',
     'app/lib/utils/dom',
-    'app/lib/loaders/schema-manager',
+    'app/lib/loaders/schemas',
     'app/adapters/event',
     'app/adapters/userview',
     'canopsis/core/lib/wrappers/ember-cloaking',
     'app/view/listline',
     'app/lib/wrappers/datatables',
+    'app/lib/loaders/components',
     'app/lib/wrappers/bootstrap-contextmenu'
 ], function(Ember, DS, WidgetFactory, PaginationMixin, InspectableArrayMixin,
         ArraySearchMixin, SortableArrayMixin, HistoryMixin, SendEventMixin, CustomFilterManagerMixin, utils, domUtils) {

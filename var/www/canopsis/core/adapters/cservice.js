@@ -21,7 +21,7 @@ define([
         'app/application',
         'app/adapters/application',
         'utils',
-        'app/lib/loaders/schema-manager'
+        'app/lib/loaders/schemas'
 ], function(Application, ApplicationAdapter, cutils) {
 
     console.group('CserviceAdapter');

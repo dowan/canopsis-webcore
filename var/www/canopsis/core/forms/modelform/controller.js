@@ -25,7 +25,7 @@ define([
     'app/mixins/validation',
     'app/mixins/recordpreset',
     'app/lib/utils/slug',
-    'app/lib/loaders/schema-manager'
+    'app/lib/loaders/schemas'
 ], function(Ember, Application, FormFactory, InspectableitemMixin, ValidationMixin, RecordpresetMixin, slugify) {
     var set = Ember.set,
         get = Ember.get;

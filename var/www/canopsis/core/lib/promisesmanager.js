@@ -46,11 +46,16 @@ define(['ember'], function(Ember) {
         },
 
         promiseFail: function(promise) {
-            Ember.run.schedule('sync', this, function() {
-                console.error('promise failed', promise);
-                this.get('errors').pushObject(promise);
-                this.set('errorsCount', this.errorsCount + 1);
-            });
+            if(promise._detail !== undefined && promise._detail.status === 200) {
+                console.warn('promise failed with error code 200, assuming it\'s a success');
+                this.promiseSuccess(promise);
+            } else {
+                Ember.run.schedule('sync', this, function() {
+                    console.error('promise failed', promise);
+                    this.get('errors').pushObject(promise);
+                    this.set('errorsCount', this.errorsCount + 1);
+                });
+            }
         },
 
         promiseFinally: function (promise) {

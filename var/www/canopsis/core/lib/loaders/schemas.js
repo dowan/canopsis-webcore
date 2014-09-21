@@ -367,11 +367,18 @@ define(schemasDeps, function(DS, Application, utils) {
     //Module's main thread: init schemas from many sources
     Application.available_types = [];
 
+    var shemasLimit = 1000;
     $.ajax({
         url: '/rest/schemas',
-        data: {limit: 1000},
+        data: {limit: shemasLimit},
         success: function(data) {
             if (data.success) {
+                if(data.total === 0) {
+                    console.warn('No schemas was imported from the backend, you might have nothing in your database, or a communication problem with the server');
+                } else if(data.total === shemasLimit) {
+                    console.warn('You loaded', shemasLimit, 'schemas. You might have some more on your database that were ignored.');
+                }
+
                 console.log('Api schema data',data);
                 loadSchemasFromApiJson(data.data);
             } else {
