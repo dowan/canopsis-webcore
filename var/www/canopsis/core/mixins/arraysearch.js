@@ -33,7 +33,7 @@ define([
      *
      * @mixin
      */
-    Application.ArraySearchMixin = Ember.Mixin.create({
+    var mixin = Ember.Mixin.create({
         partials: {
             header: ['search']
         },
@@ -108,5 +108,7 @@ define([
         }.observes('shown_columns')
     });
 
-    return Application.ArraySearchMixin;
+    Application.ArraySearchMixin = mixin;
+
+    return mixin;
 });

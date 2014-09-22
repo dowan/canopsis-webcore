@@ -20,10 +20,11 @@
 define([
     'app/application',
     'app/controller/widget',
-    "app/lib/widgetsmanager",
+    "app/lib/widgetsregistry",
     "app/serializers/userview",
+    'app/lib/utils/notification',
     "app/lib/loaders/schemas"
-], function(Application, WidgetController, WidgetsManager, UserviewSerializer) {
+], function(Application, WidgetController, WidgetsRegistry, UserviewSerializer, notificationUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -61,6 +62,12 @@ define([
 
         var widgetControllerName = widgetName.camelize().capitalize() + "Controller";
         var widgetSerializerName = widgetName.camelize().capitalize() + "Serializer";
+        var widgetModel = Application[widgetName.camelize().capitalize()];
+
+        if(widgetModel === null || widgetModel === undefined) {
+            notificationUtils.error('No model found for the widget ' + widgetName + '. There might be no schema concerning this widget on the database');
+            return;
+        }
 
         console.log("extendArguments", extendArguments);
         console.log("subclass", options.subclass);
@@ -68,7 +75,7 @@ define([
         Application[widgetControllerName] = options.subclass.extend.apply(options.subclass, extendArguments);
         Application[widgetSerializerName] = UserviewSerializer;
 
-        console.log("widget", widgetControllerName, Application[widgetControllerName].proto(), Application);
+        console.error("widget", widgetName.camelize().capitalize(), Application[widgetName.camelize().capitalize()]);
         var metadataDict = Application[widgetName.camelize().capitalize()].proto().metadata;
 
         console.log("metadataDict", widgetName, metadataDict);
@@ -86,17 +93,17 @@ define([
                 var classes = metadataDict.classes;
                 for (var j = 0, l = classes.length; j < l; j++) {
                     var currentClass = classes[j];
-                    if(!Ember.isArray(get( WidgetsManager.byClass, currentClass))) {
-                        set(WidgetsManager.byClass, currentClass, Ember.A());
+                    if(!Ember.isArray(get( WidgetsRegistry.byClass, currentClass))) {
+                        set(WidgetsRegistry.byClass, currentClass, Ember.A());
                     }
 
-                    get(WidgetsManager.byClass, currentClass).push(registryEntry);
+                    get(WidgetsRegistry.byClass, currentClass).push(registryEntry);
                 }
             }
         }
 
 
-        WidgetsManager.all.push(registryEntry);
+        WidgetsRegistry.all.push(registryEntry);
 
         console.groupEnd();
 

@@ -20,7 +20,7 @@
 
 from bottle import get, delete, put, post
 
-from canopsis.common.ws import route
+from canopsis.common.ws import route, response
 from canopsis.perfdata.manager import PerfData
 
 manager = PerfData()
@@ -47,6 +47,7 @@ def perfdata(
         timewindow=timewindow, limit=limit, skip=skip)
 
     if timeserie is not None:
+
         _points = result[0] if with_meta else result
         result = timeserie.calculate(_points, timewindow=timewindow)
 

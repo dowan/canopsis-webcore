@@ -23,7 +23,7 @@ define([
     'jsonselect'
 ], function(Ember, Application, JSONSelect) {
 
-    Application.MenuView = Ember.View.extend({
+    var view = Ember.View.extend({
         actions: {
             showmenu: function() {
                 console.log("showing mmenu (app)");
@@ -73,5 +73,7 @@ define([
         }
     });
 
-    return Application.MenuView;
+    Application.MenuView = view;
+
+    return view;
 });

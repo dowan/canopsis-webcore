@@ -26,7 +26,7 @@ define([
       Implements history collection finder
     */
 
-    Application.HistoryMixin = Ember.Mixin.create({
+    var mixin = Ember.Mixin.create({
 
         historyMixinFindOptions: function () {
             console.warn('this should be overriden');
@@ -44,5 +44,7 @@ define([
         }
     });
 
-    return Application.HistoryMixin;
+    Application.HistoryMixin = mixin;
+
+    return mixin;
 });

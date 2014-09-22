@@ -118,6 +118,10 @@ define([
 
         instantiateCorrectController: function(widget) {
             //for a widget that have xtype=widget, controllerName=WidgetController
+            var xtype = widget.get("xtype");
+            if(xtype === undefined || xtype === null) {
+                console.error('no xtype for widget', widget, this);
+            }
             var controllerName = widget.get("xtype").capitalize() + "Controller";
             var widgetController;
             console.log("controllerName", controllerName, Application[controllerName], this.get('target'));

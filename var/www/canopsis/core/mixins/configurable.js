@@ -26,7 +26,7 @@ define([
      * Implements configuration management for controllers
      * @mixin
      */
-    Application.ConfigurableMixin = Ember.Mixin.create({
+    var mixin = Ember.Mixin.create({
         init: function() {
             console.log("init");
             this.refreshConfiguration();
@@ -48,5 +48,7 @@ define([
         }
     });
 
-    return Application.ConfigurableMixin;
+    Application.ConfigurableMixin = mixin;
+
+    return mixin;
 });

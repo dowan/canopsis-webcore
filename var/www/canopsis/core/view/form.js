@@ -22,9 +22,11 @@ define([
     'app/application'
 ], function(Ember, Application) {
 
-    Application.FormView = Ember.View.extend({
+    var view = Ember.View.extend({
 
     });
 
-    return Application.FormView;
+    Application.FormView = view;
+
+    return view;
 });

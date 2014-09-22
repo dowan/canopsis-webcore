@@ -32,7 +32,7 @@ define([
       Custom cfilter allow perform selelection on a list with custom filter information.
     */
 
-    Application.CustomFilterManagerMixin = Ember.Mixin.create({
+    var mixin = Ember.Mixin.create({
         partials: {
             header: ['customfilters']
         },
@@ -129,5 +129,7 @@ define([
         }
     });
 
-    return Application.CustomFilterManagerMixin;
+    Application.CustomFilterManagerMixin = mixin;
+
+    return mixin;
 });

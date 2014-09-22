@@ -23,7 +23,7 @@ define([
     'app/application'
 ], function($, Ember, Application) {
 
-    Application.FormwrapperView = Ember.View.extend({
+    var view = Ember.View.extend({
         init: function() {
             this._super();
             console.log("formwrapper view init", this, this.get('controller'));
@@ -95,5 +95,7 @@ define([
         }
     });
 
-    return Application.FormwrapperView;
+    Application.FormwrapperView = view;
+
+    return view;
 });

@@ -26,7 +26,7 @@ define([
     'app/lib/loaders/schemas'
 ], function(DS, Application, ApplicationSerializer, EmbeddedRecordSerializerMixin, cutils) {
 
-    Application.CserviceSerializer = ApplicationSerializer.extend(
+    var serializer = ApplicationSerializer.extend(
         EmbeddedRecordSerializerMixin,
         {}
     );
@@ -39,9 +39,11 @@ define([
             var serializerName = modelname + 'Serializer';
             console.log('Add serializer:', serializerName);
 
-            Application[serializerName] = Application.CserviceSerializer.extend({});
+            Application[serializerName] = serializer.extend({});
         }
     }
 
-    return Application.CserviceSerializer;
+    Application.CserviceSerializer = serializer;
+
+    return serializer;
 });

@@ -21,7 +21,9 @@ define([
     'app/application',
     'app/view/crecords'
 ], function(Application, CrecordsView) {
-    Application.UserviewsView = CrecordsView.extend({});
+    var view = CrecordsView.extend({});
 
-    return Application.UserviewsView;
+    Application.UserviewsView = view;
+
+    return view;
 });

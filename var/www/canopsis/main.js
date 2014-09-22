@@ -4,7 +4,7 @@ define([
     'utils',
     'app/lib/wrappersmanager',
     'app/lib/formsmanager',
-    'app/lib/widgetsmanager',
+    'app/lib/widgetsregistry',
     'app/lib/indexesmanager',
     'app/lib/inflections',
     'app/lib/loaders/factories',
@@ -45,7 +45,7 @@ define([
         utils,
         wrappersManager,
         formsManager,
-        widgetsManager,
+        widgetsRegistry,
         indexesManager,
         inflectionsManager,
         factories,
@@ -59,7 +59,7 @@ define([
     Canopsis.tooltips = {};
     Canopsis.utils = utils;
     Canopsis.wrappers = wrappersManager;
-    Canopsis.widgets = widgetsManager;
+    Canopsis.widgets = widgetsRegistry;
     Canopsis.indexes = indexesManager;
     Canopsis.inflections = inflectionsManager;
     Canopsis.forms = formsManager;

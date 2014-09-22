@@ -30,6 +30,7 @@ define([
     );
 
     Application.UserviewSerializer = serializerClass;
+    Application.WidgetwrapperSerializer = serializerClass;
 
     //TODO make this dynamic
     Application.WidgetSerializer = serializerClass;
