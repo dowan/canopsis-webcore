@@ -24,7 +24,7 @@ define([
     'app/lib/utils/forms'
 ], function(Ember, Application, formsmanager, formsUtils) {
 
-    Ember.Widgets.MultiSelectComponent3 = Ember.Widgets.MultiSelectComponent.extend({
+    var component = Ember.Widgets.MultiSelectComponent.extend({
         selectionItemView: Ember.Widgets.MultiSelectOptionView,
         select:0,
 
@@ -172,5 +172,7 @@ define([
 
     Ember.Handlebars.helper( 'multi-select-component3', Ember.Widgets.MultiSelectComponent3 );
 
-    return Application.ComponentExpandableaddbuttonComponent;
+    Ember.Widgets.MultiSelectComponent3 = component;
+
+    return component;
 });

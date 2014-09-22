@@ -24,7 +24,7 @@ define([
     'app/mixins/pagination'
 ], function(Ember, DS, Application, PaginationMixin) {
 
-    Application.ComponentTableComponent = Ember.Component.extend(PaginationMixin, {
+    var component = Ember.Component.extend(PaginationMixin, {
         model: undefined,
         modelfilter: undefined,
         data: undefined,
@@ -115,5 +115,7 @@ define([
         }
     });
 
-    return Application.ComponentTableComponent;
+    Application.ComponentTableComponent = component;
+
+    return component;
 });

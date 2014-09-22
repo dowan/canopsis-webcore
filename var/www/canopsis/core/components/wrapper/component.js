@@ -24,7 +24,7 @@ define([
 
 //{{component-editor attr=attr form=this}}
 
-    Application.ComponentWrapperComponent = Ember.Component.extend({
+    var component = Ember.Component.extend({
         tagName: 'span',
         init: function() {
             this._super();
@@ -74,5 +74,7 @@ define([
 
     });
 
-    return Application.ComponentWrapperComponent;
+    Application.ComponentWrapperComponent = component;
+
+    return component;
 });

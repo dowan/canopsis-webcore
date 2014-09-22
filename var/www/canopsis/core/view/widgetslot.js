@@ -22,7 +22,7 @@ define([
     'app/application'
 ], function(Ember, Application) {
 
-    Application.WidgetslotView = Ember.View.extend({
+    var view = Ember.View.extend({
         init: function() {
             console.log('widgetslot init', this.get('controller.content.widgetslotTemplate'));
 
@@ -49,5 +49,7 @@ define([
         }
     });
 
-    return Application.WidgetslotView;
+    Application.WidgetslotView = view;
+
+    return view;
 });

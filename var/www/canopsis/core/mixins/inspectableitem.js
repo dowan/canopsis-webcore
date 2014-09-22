@@ -30,7 +30,7 @@ define([
      * @mixin
      */
 
-    Application.InspectableItemMixin = Ember.Mixin.create({
+    var mixin = Ember.Mixin.create({
 
         /**
             @required
@@ -203,5 +203,7 @@ define([
         }.property("inspectedDataItem", "inspectedItemType")
     });
 
-    return Application.InspectableItemMixin;
+    Application.InspectableItemMixin = mixin;
+
+    return mixin;
 });

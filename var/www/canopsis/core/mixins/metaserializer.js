@@ -26,7 +26,7 @@ define([
      * @mixin This mixin should be used with serializers
      * It aims to handle request metadata (total, errors, ...)
      */
-    Application.MetaSerializerMixin = Ember.Mixin.create({
+    var mixin = Ember.Mixin.create({
         extractMeta: function(store, type, payload) {
             console.log("extractMeta", store, type, payload);
             if (payload.meta === undefined) {
@@ -74,5 +74,7 @@ define([
 
     });
 
-    return Application.MetaSerializerMixin;
+    Application.MetaSerializerMixin = mixin;
+
+    return mixin;
 });

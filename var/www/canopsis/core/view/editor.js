@@ -23,7 +23,7 @@ define([
     'utils'
 ], function(Ember, Application, utils) {
 
-    Application.EditorView = Ember.View.extend({
+    var view = Ember.View.extend({
         attrBinding: "templateData.keywords.attr.value",
 
         init: function() {
@@ -34,5 +34,7 @@ define([
         }
     });
 
-    return Application.EditorView;
+    Application.EditorView = view;
+
+    return view;
 });

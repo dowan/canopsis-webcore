@@ -24,7 +24,7 @@ define([
     'app/lib/utils/hash',
     'app/lib/wrappers/flotchart'
 ], function($, Ember, Application, hashUtils) {
-    Application.ComponentFlotchartComponent = Ember.Component.extend({
+    var component = Ember.Component.extend({
         tagName: 'div',
         classNames: 'flotchart',
 
@@ -68,5 +68,7 @@ define([
         }
     });
 
-    return Application.ComponentFlotchartComponent;
+    Application.ComponentFlotchartComponent = component;
+
+    return component;
 });

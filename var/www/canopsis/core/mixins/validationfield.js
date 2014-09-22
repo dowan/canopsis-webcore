@@ -26,7 +26,7 @@ define([
     /**
      * Use Component-> validators -> validate (Ember.validators["validate"]) for validation
      */
-    Application.ValidationFieldMixin = Ember.Mixin.create({
+    var mixin = Ember.Mixin.create({
         attr : "",
 
         willDestroyElement:function(){
@@ -93,4 +93,8 @@ define([
             }
         }
     });
+
+    Application.ValidationFieldMixin = mixin;
+
+    return mixin;
 });

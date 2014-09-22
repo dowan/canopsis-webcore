@@ -28,7 +28,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-    Application.ApplicationView = Ember.View.extend({
+    var view = Ember.View.extend({
         /**
          * @property the css class of the main container
          */
@@ -159,5 +159,7 @@ define([
         }
     });
 
-    return Application.ApplicationView;
+    Application.ApplicationView = view;
+
+    return view;
 });

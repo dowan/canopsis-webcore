@@ -23,7 +23,7 @@ define([
     'jsonselect'
 ], function(Ember, Application, JSONSelect) {
 
-    Application.ListlineView = Ember.View.extend({
+    var view = Ember.View.extend({
         tagName:'tr',
         templateName: 'listline',
         classNames: ['listline'],
@@ -40,5 +40,7 @@ define([
         }.observes('controller.isAllSelected')
     });
 
-    return Application.ListlineView;
+    Application.ListlineView = view;
+
+    return view;
 });

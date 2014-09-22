@@ -22,7 +22,7 @@ define([
     'app/application'
 ], function(Ember, Application) {
 
-    Application.ComponentExpandableaddbuttonComponent = Ember.Component.extend({
+    var component = Ember.Component.extend({
         tagName: 'span',
 
         yieldSpanStyle: 'display:none',
@@ -58,5 +58,7 @@ define([
         }
     });
 
-    return Application.ComponentExpandableaddbuttonComponent;
+    Application.ComponentExpandableaddbuttonComponent = component;
+
+    return component;
 });

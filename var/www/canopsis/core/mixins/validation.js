@@ -29,7 +29,7 @@ define([
      * You should define on the validationFields
      * @mixin
      */
-    Application.ValidationMixin = Ember.Mixin.create({
+    var mixin = Ember.Mixin.create({
 
         validationFields: function() {
             console.warn("Property \"validationFields\" must be defined on the concrete class.");
@@ -115,5 +115,7 @@ define([
             return isValid;
         }
     });
-    return Application.ValidationMixin;
+
+    Application.ValidationMixin = mixin;
+    return mixin;
 });

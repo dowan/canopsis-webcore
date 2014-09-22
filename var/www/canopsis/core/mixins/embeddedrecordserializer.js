@@ -30,7 +30,7 @@ define([
         return key;
     }
 
-    Application.EmbeddedRecordSerializerMixin = Ember.Mixin.create({
+    var mixin = Ember.Mixin.create({
 
         /**
          Sideload a JSON object to the payload
@@ -292,5 +292,7 @@ define([
         }
     });
 
-    return Application.EmbeddedRecordSerializerMixin;
+    Application.EmbeddedRecordSerializerMixin = mixin;
+
+    return mixin;
 });

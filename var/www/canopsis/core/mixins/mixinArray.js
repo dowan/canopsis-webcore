@@ -24,7 +24,7 @@ define([
     'app/lib/mixinsmanager'
 ], function(Ember, Application, formsmanager, mixinsmanager) {
 // TODO: just make a function from this
-    Application.mixinArrayMixin = Ember.Mixin.create({
+    var mixin = Ember.Mixin.create({
 
         onInit : function ( contentREF , _self ){
 
@@ -55,5 +55,7 @@ define([
         }
     });
 
-    return Application.mixinArrayMixin;
+    Application.mixinArrayMixin = mixin;
+
+    return mixin;
 });

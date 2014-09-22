@@ -4,7 +4,7 @@
   'app/application'
 ], function($, Ember, Application) {
 
-    Application.ComponentProgressbarComponent = Ember.Component.extend({
+    var component = Ember.Component.extend({
         classNames: 'progress',
 
         getPercent:Ember.computed(function() {
@@ -82,5 +82,8 @@
         this.$('.bar').addClass(this.get('statusClass'));
     }, 'statusClass')
   });
-  return  Application.ComponentProgressbarComponent;
+
+  Application.ComponentProgressbarComponent = component;
+
+  return component;
 });
