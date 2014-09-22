@@ -20,25 +20,23 @@
 
 from bottle import get, delete, put, post
 
-from canopsis.common.ws import response, route
+from canopsis.common.ws import route
 from canopsis.perfdata.manager import PerfData
 
 manager = PerfData()
 
 
-@route(post, body_params=['metric_id', 'timewindow', 'period'])
+@route(post, payload=['metric_id', 'timewindow', 'period'])
 def perfdata_count(metric_id, timewindow=None, period=None):
 
-    count = manager.count(
+    result = manager.count(
         metric_id=metric_id, timewindow=timewindow, period=period)
-
-    result = response(count)
 
     return result
 
 
 @route(
-    post, body_params=['timewindow', 'period', 'limit', 'skip', 'timeserie'])
+    post, payload=['timewindow', 'period', 'limit', 'skip', 'timeserie'])
 def perfdata(
     metric_id, timewindow=None, period=None, with_meta=True,
     limit=0, skip=0, timeserie=None
@@ -57,7 +55,7 @@ def perfdata(
     return result
 
 
-@route(post, body_params=['timewindow', 'limit', 'sort'])
+@route(post, payload=['timewindow', 'limit', 'sort'])
 def perfdata_meta(metric_id, timewindow=None, limit=0, sort=None):
 
     meta = manager.get_meta(
@@ -68,7 +66,7 @@ def perfdata_meta(metric_id, timewindow=None, limit=0, sort=None):
     return result
 
 
-@route(put, body_params=['metric_id', 'points', 'meta', 'period'])
+@route(put, payload=['metric_id', 'points', 'meta', 'period'])
 def perfdata(metric_id, points, meta=None, period=None):
 
     manager.put(metric_id=metric_id, points=points, meta=meta, period=period)
@@ -78,7 +76,7 @@ def perfdata(metric_id, points, meta=None, period=None):
     return result
 
 
-@route(delete, body_params=['metric_id', 'period', 'with_meta', 'timewindow'])
+@route(delete, payload=['metric_id', 'period', 'with_meta', 'timewindow'])
 def perfdata(metric_id, period=None, with_meta=False, timewindow=None):
 
     manager.remove(
@@ -90,7 +88,7 @@ def perfdata(metric_id, period=None, with_meta=False, timewindow=None):
     return result
 
 
-@route(put, body_params=['metric_id', 'meta', 'timestamp'])
+@route(put, payload=['metric_id', 'meta', 'timestamp'])
 def perfdata_meta(metric_id, meta, timestamp=None):
 
     nodes = manager.put_meta(

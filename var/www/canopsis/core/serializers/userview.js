@@ -32,5 +32,23 @@ define([
     Application.UserviewSerializer = serializerClass;
     Application.WidgetwrapperSerializer = serializerClass;
 
+    //TODO make this dynamic
+    Application.WidgetSerializer = serializerClass;
+    Application.WidgetwrapperSerializer = serializerClass;
+    Application.ListSerializer = serializerClass;
+    Application.JobmanagerSerializer = serializerClass;
+
+    Application.CanvasSerializer = serializerClass;
+    Application.VboxSerializer = serializerClass;
+    Application.VerticalboxSerializer = serializerClass;
+    Application.LighthboxSerializer = serializerClass;
+    Application.HboxSerializer = serializerClass;
+    Application.TextSerializer = serializerClass;
+    Application.TabmanagerSerializer = serializerClass;
+    Application.UiactionbuttonSerializer = serializerClass;
+    Application.UimaintabcollectionSerializer = serializerClass;
+    Application.WeatherSerializer = serializerClass;
+    Application.GraphSerializer = serializerClass;
+
     return serializerClass;
 });

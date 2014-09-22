@@ -20,7 +20,7 @@
 
 from bottle import get, delete, put
 
-from canopsis.common.ws import response, route
+from canopsis.common.ws import route
 from canopsis.topology.manager import Topology
 
 manager = Topology()
@@ -32,9 +32,7 @@ def topology(ids=None, add_nodes=True):
     if not ids:
         ids = None
 
-    topology = manager.get(ids=ids, add_nodes=add_nodes)
-
-    result = response(topology)
+    result = manager.get(ids=ids, add_nodes=add_nodes)
 
     return result
 
@@ -42,19 +40,17 @@ def topology(ids=None, add_nodes=True):
 @route(get)
 def topology_find(regex=None, add_nodes=False):
 
-    topologies = manager.find(regex=regex, add_nodes=add_nodes)
-
-    result = response(topologies)
+    result = manager.find(regex=regex, add_nodes=add_nodes)
 
     return result
 
 
-@route(put, body_params=['topology'])
+@route(put, payload='topology')
 def topology(topology=None):
 
     manager.put(topology=topology)
 
-    result = response(topology)
+    result = topology
 
     return result
 
@@ -64,7 +60,7 @@ def topology(ids=None):
 
     manager.remove(ids=ids)
 
-    result = response(ids)
+    result = ids
 
     return result
 
@@ -72,19 +68,15 @@ def topology(ids=None):
 @route(get)
 def topology_nodes(ids=None):
 
-    nodes = manager.get_nodes(ids=ids)
-
-    result = response(nodes)
+    result = manager.get_nodes(ids=ids)
 
     return result
 
 
 @route(get)
-def topology_nodes_by_entities_id(entity_id):
+def topology_nodes_find(entity_id=None):
 
-    nodes = manager.find_nodes_by_entity_id(entity_id=entity_id)
-
-    result = response(nodes)
+    result = manager.find_nodes_by_entity_id(entity_id=entity_id)
 
     return result
 
@@ -94,16 +86,16 @@ def topology_nodes(ids=None):
 
     manager.remove_nodes(ids=ids)
 
-    result = response(ids)
+    result = ids
 
     return result
 
 
-@route(put)
+@route(put, payload='topology_node')
 def topology_node(topology_node):
 
     manager.put_node(topology_node=topology_node)
 
-    result = response(topology_node)
+    result = topology_node
 
     return result
