@@ -20,10 +20,10 @@
 define([
     'app/application',
     'app/controller/widget',
-    "app/lib/widgetsmanager",
+    "app/lib/widgetsregistry",
     "app/serializers/userview",
     "app/lib/loaders/schemas"
-], function(Application, WidgetController, WidgetsManager, UserviewSerializer) {
+], function(Application, WidgetController, WidgetsRegistry, UserviewSerializer) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -86,17 +86,17 @@ define([
                 var classes = metadataDict.classes;
                 for (var j = 0, l = classes.length; j < l; j++) {
                     var currentClass = classes[j];
-                    if(!Ember.isArray(get( WidgetsManager.byClass, currentClass))) {
-                        set(WidgetsManager.byClass, currentClass, Ember.A());
+                    if(!Ember.isArray(get( WidgetsRegistry.byClass, currentClass))) {
+                        set(WidgetsRegistry.byClass, currentClass, Ember.A());
                     }
 
-                    get(WidgetsManager.byClass, currentClass).push(registryEntry);
+                    get(WidgetsRegistry.byClass, currentClass).push(registryEntry);
                 }
             }
         }
 
 
-        WidgetsManager.all.push(registryEntry);
+        WidgetsRegistry.all.push(registryEntry);
 
         console.groupEnd();
 

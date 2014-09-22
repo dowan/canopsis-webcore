@@ -28,7 +28,7 @@ define([
     var component = Ember.Component.extend({
         tagName: 'span',
 
-        htmlEnabled: false,
+        htmlEnabled: true,
         placement: 'top',
         triggerEvent: 'hover',
 
