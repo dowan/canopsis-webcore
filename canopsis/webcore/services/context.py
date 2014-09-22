@@ -43,7 +43,7 @@ def context(
 
     result = manager.find(
         _type=_type, context=context, _filter=_filter, extended=extended,
-        limit=limit, skip=skip, sort=sort)
+        limit=limit, skip=skip, sort=sort, with_count=True)
 
     return result
 
