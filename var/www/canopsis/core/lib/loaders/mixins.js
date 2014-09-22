@@ -25,7 +25,7 @@ var mixinsArray = [
     { name: 'tags_optionFilter', classes: ["test"]},
 ];
 
-var deps = ['app/lib/mixinsmanager'];
+var deps = ['app/lib/mixinsregistry'];
 var depsSize = deps.length;
 
 for (var i = 0; i < mixinsArray.length; i++) {
@@ -33,7 +33,7 @@ for (var i = 0; i < mixinsArray.length; i++) {
     deps.push(mixinUrl);
 }
 
-define(deps, function(mixinsManager) {
+define(deps, function(mixinsregistry) {
 
     console.log("Begin load mixins", arguments);
     for (var i = depsSize; i < arguments.length; i++) {
@@ -43,16 +43,16 @@ define(deps, function(mixinsManager) {
             for (var j = 0; j < currentMixin.classes.length; j++) {
                 var currentClass = currentMixin.classes[j];
 
-                if (mixinsManager.byClass[currentClass] === undefined) {
-                    mixinsManager.byClass[currentClass] = [];
+                if (mixinsregistry.byClass[currentClass] === undefined) {
+                    mixinsregistry.byClass[currentClass] = [];
                 }
 
-                mixinsManager.byClass[currentClass].push(currentMixin.name);
+                mixinsregistry.byClass[currentClass].push(currentMixin.name);
             }
         }
-        mixinsManager.all[currentMixin.name] = arguments[i];
+        mixinsregistry.all[currentMixin.name] = arguments[i];
 
     }
 
-    return mixinsManager;
+    return mixinsregistry;
 });

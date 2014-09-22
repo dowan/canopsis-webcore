@@ -22,9 +22,9 @@ define([
     'ember-data',
     'app/application',
     'app/lib/utils/forms',
-    'app/lib/formsmanager',
+    'app/lib/formsregistry',
     'utils'
-], function(Ember, DS, Application, formsUtils, formsmanager, utils) {
+], function(Ember, DS, Application, formsUtils, formsregistry, utils) {
 
     var component = Ember.Component.extend({
         job_types: [],
@@ -61,7 +61,7 @@ define([
 
                 console.log('Show new form with context:', context);
                 formsUtils.showNew('modelform', context, {
-                    formParent: formsmanager.formwrapper.form
+                    formParent: formsregistry.formwrapper.form
                 });
             }
         }

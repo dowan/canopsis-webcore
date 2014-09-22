@@ -21,10 +21,10 @@ define([
     'ember',
     'app/application',
     'app/routes/authenticated',
-    'app/lib/formsmanager',
+    'app/lib/formsregistry',
     'app/lib/loaders/templates',
     'app/lib/helpers/i18n'
-], function(Ember, Application, AuthenticatedRoute, formsmanager) {
+], function(Ember, Application, AuthenticatedRoute, formsregistry) {
 
     var route = AuthenticatedRoute.extend({
         actions: {
@@ -44,7 +44,7 @@ define([
                 console.log("showEditFormWithController", formController, formName, formContext, options);
 
                 var formwrapperController = this.controllerFor('formwrapper');
-                Ember.set(formsmanager, 'formwrapper', formwrapperController);
+                Ember.set(formsregistry, 'formwrapper', formwrapperController);
 
                 formController.set('formwrapper', formwrapperController);
                 formController.set('formContext', formContext);

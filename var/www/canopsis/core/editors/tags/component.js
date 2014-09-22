@@ -1,10 +1,10 @@
 define([
     'app/application',
     'app/mixins/arraymixin',
-    'app/lib/mixinsmanager',
-    'app/lib/formsmanager',
+    'app/lib/mixinsregistry',
+    'app/lib/formsregistry',
     'app/components/multiselect/component'
-], function(Application , Arraymixin, mixinsmanager, formsmanager) {
+], function(Application , Arraymixin, mixinsregistry, formsregistry) {
 
     var component = Ember.Component.extend({
         contentREF:[],
@@ -44,7 +44,7 @@ define([
 
             var initMixin ;
             if ( !Ember.isEmpty( MixinName ) ){
-                initMixin = mixinsmanager.all[ MixinName ];
+                initMixin = mixinsregistry.all[ MixinName ];
                 Ember.assert('no mixin found ', !Ember.isEmpty( initMixin ));
 
                 initMixin.apply( _self );
@@ -85,7 +85,7 @@ define([
 
         onUpdate: function() {
             /*
-            var formController  =  formsmanager.formwrapper.form;
+            var formController  =  formsregistry.formwrapper.form;
             var selection = this.get("value");
             var value = [];
             if (selection) {

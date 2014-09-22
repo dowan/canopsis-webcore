@@ -21,14 +21,14 @@ define([
     'ember',
     'app/application',
     'utils',
-    'app/lib/formsmanager'
-], function(Ember, Application , utils, formsmanager) {
+    'app/lib/formsregistry'
+], function(Ember, Application , utils, formsregistry) {
 // TODO: just make a function from this
 
     var mixin = Ember.Mixin.create({
 
         onInit : function ( contentREF , _self ){
-            var formController  =  formsmanager.formwrapper.form;
+            var formController  =  formsregistry.formwrapper.form;
             if ( formController ){
                 utils.filterObject.getFieldsByPrefix( "_opt_" , formController.formContext , function( attr , result  ){
                     var nameMixin = { name : attr.slice(5) };

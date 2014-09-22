@@ -21,8 +21,8 @@ define([
     'ember',
     'app/application',
     'canopsis/canopsisConfiguration',
-    'app/lib/mixinsmanager'
-], function(Ember, Application, canopsisConfiguration, mixinsManager) {
+    'app/lib/mixinsregistry'
+], function(Ember, Application, canopsisConfiguration, mixinsregistry) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -143,7 +143,7 @@ define([
             if (  mixinsName  ){
                 for (var i = 0 ; i < mixinsName.length ; i++ ){
                     var currentName =  mixinsName[i];
-                    var currentMixin = mixinsManager.all[currentName];
+                    var currentMixin = mixinsregistry.all[currentName];
                     if ( currentMixin ){
                         currentMixin.apply(widgetController);
                     }

@@ -20,9 +20,9 @@
 define([
     'ember',
     'app/application',
-    'app/lib/formsmanager',
+    'app/lib/formsregistry',
     'app/lib/utils/forms'
-], function(Ember, Application, formsmanager, formsUtils) {
+], function(Ember, Application, formsregistry, formsUtils) {
 
     var component = Ember.Widgets.MultiSelectComponent.extend({
         selectionItemView: Ember.Widgets.MultiSelectOptionView,
@@ -127,7 +127,7 @@ define([
         },
 
         modalShow: function(item) {
-            var form =  formsmanager.formwrapper.form;
+            var form =  formsregistry.formwrapper.form;
             var record  =  form.formContext;
 
             var recordWizard = formsUtils.showNew('modelform', record, { title: "test " });

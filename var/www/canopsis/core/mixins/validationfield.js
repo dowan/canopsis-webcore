@@ -20,8 +20,8 @@ define([
     'jquery',
     'ember',
     'app/application',
-    'app/lib/formsmanager'
-], function($, Ember, Application, formsmanager) {
+    'app/lib/formsregistry'
+], function($, Ember, Application, formsregistry) {
 
     /**
      * Use Component-> validators -> validate (Ember.validators["validate"]) for validation
@@ -31,12 +31,12 @@ define([
 
         willDestroyElement:function(){
             //TODO : find a better place
-           // var formController  =  formsmanager.formwrapper.form;
+           // var formController  =  formsregistry.formwrapper.form;
            // formController.set('validationFields' , Ember.A() );
         },
 
         init: function(){
-            var form  =  formsmanager.formwrapper.form;
+            var form  =  formsregistry.formwrapper.form;
             this.set('form' , form );
 
             var attributes = this.attr || this.content;
@@ -55,7 +55,7 @@ define([
         },
 
         registerFieldWithController: function() {
-            var formController  =  formsmanager.formwrapper.form;
+            var formController  =  formsregistry.formwrapper.form;
             if ( formController ){
                 var validationFields = formController.get('validationFields');
                 if (validationFields){
@@ -72,7 +72,7 @@ define([
         },
 
         validate : function() {
-            var formController  = formsmanager.formwrapper.form;
+            var formController  = formsregistry.formwrapper.form;
             var FCValidation    = formController.get('validation');
             if ( FCValidation  !== undefined ) {
                 var attr = this.get('attr') ;

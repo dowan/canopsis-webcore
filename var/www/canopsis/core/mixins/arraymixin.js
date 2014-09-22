@@ -20,8 +20,8 @@
 define([
     'ember',
     'app/application',
-    'app/lib/formsmanager'
-], function(Ember, Application, formsmanager) {
+    'app/lib/formsregistry'
+], function(Ember, Application, formsregistry) {
      content:Ember.A(),
     Application.ArrayMixin = Ember.Mixin.create({
         cssClass: "tooltiptable hint--rounded hint--top btn btn-",
@@ -103,7 +103,7 @@ define([
         },
 
         registerFieldWithController: function() {
-            var formController  =  formsmanager.formwrapper.form;
+            var formController  =  formsregistry.formwrapper.form;
             if ( formController ){
                 var ArrayFields = formController.get('ArrayFields');
                 if (ArrayFields) {
@@ -124,7 +124,7 @@ define([
 
         //Called by controller when submit
         onUpdate: function() {
-            var formController  =  formsmanager.formwrapper.form;
+            var formController  =  formsregistry.formwrapper.form;
             var value =this.get(this.get("valuePath"));
             var field;
             if ( this.attr )

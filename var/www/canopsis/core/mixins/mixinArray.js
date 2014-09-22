@@ -20,23 +20,23 @@
 define([
     'ember',
     'app/application',
-    'app/lib/formsmanager',
-    'app/lib/mixinsmanager'
-], function(Ember, Application, formsmanager, mixinsmanager) {
+    'app/lib/formsregistry',
+    'app/lib/mixinsregistry'
+], function(Ember, Application, formsregistry, mixinsregistry) {
 // TODO: just make a function from this
     var mixin = Ember.Mixin.create({
 
         onInit : function ( contentREF , _self ){
 
             function getAndPushMixinNames(classToGet , contentREF){
-                var currentClass = mixinsmanager.byClass[classToGet];
+                var currentClass = mixinsregistry.byClass[classToGet];
                 for ( var i = 0 ; i < currentClass.length ; i++ ) {
                     var nameMixin = { name : currentClass[i] };
                     contentREF.push(nameMixin);
                 }
             }
 
-            var formController  =  formsmanager.formwrapper.form;
+            var formController  =  formsregistry.formwrapper.form;
             if ( formController ){
                 var classToGet = _self.templateData.keywords.controller.content.model.options.mixinClass;
 
@@ -44,8 +44,8 @@ define([
                     getAndPushMixinNames( classToGet , contentREF );
                 }
                 else {
-                    for ( var attribut in mixinsmanager.byClass ) {
-                        if ( mixinsmanager.byClass.hasOwnProperty( attribut ) ) {
+                    for ( var attribut in mixinsregistry.byClass ) {
+                        if ( mixinsregistry.byClass.hasOwnProperty( attribut ) ) {
                             getAndPushMixinNames( attribut , contentREF );
                         }
                     }

@@ -21,8 +21,8 @@ define([
     'ember',
     'app/application',
     'app/lib/utils/routes',
-    'app/lib/formsmanager'
-], function(Ember, Application, routesUtils, formsManager) {
+    'app/lib/formsregistry'
+], function(Ember, Application, routesUtils, formsregistry) {
 
     var set = Ember.set;
 
@@ -36,25 +36,25 @@ define([
             classDict.target = routesUtils.getCurrentRouteController();
             classDict.container = Application.__container__;
 
-            var formController = formsManager.all[formName].EmberClass.create(classDict);
+            var formController = formsregistry.all[formName].EmberClass.create(classDict);
 
             return formController;
         },
 
         showInstance: function(formInstance) {
-            formsManager.formwrapper.form.updateArray();
+            formsregistry.formwrapper.form.updateArray();
             formInstance.empty_validationFields();
 
-            set(formsManager.formwrapper, 'form.validateOnInsert', false);
-            set(formsManager.formwrapper, 'form', formInstance);
-            set(formsManager.formwrapper, 'formName', formInstance.formName);
+            set(formsregistry.formwrapper, 'form.validateOnInsert', false);
+            set(formsregistry.formwrapper, 'form', formInstance);
+            set(formsregistry.formwrapper, 'formName', formInstance.formName);
         },
 
         showNew: function(formName, formContext, options) {
             if (options === undefined) {
                 options = {};
             }
-            var formwrapperController = formsManager.formwrapper;
+            var formwrapperController = formsregistry.formwrapper;
             if( formwrapperController ){
                 var oldform = formwrapperController.form;
                 if( oldform && oldform.updateArray ){

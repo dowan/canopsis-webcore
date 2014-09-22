@@ -21,8 +21,8 @@ define([
     'jquery',
     'ember',
     'app/application',
-    'app/lib/indexesmanager'
-], function($, Ember, Application, indexesManager) {
+    'app/lib/indexesregistry'
+], function($, Ember, Application, indexesregistry) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -46,7 +46,7 @@ define([
         cfilter_serialized : Ember.computed.alias('content'),
         viewTabColumns: [{ name:'component', title:'component' }, { name:'resource', title:'resource' }],
 
-        indexes : indexesManager,
+        indexes : indexesregistry,
         selectedIndexName : 'event',
 
         selectedIndexChanged: function () {
