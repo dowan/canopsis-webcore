@@ -22,11 +22,13 @@ define([
         'app/adapters/application'
 ], function(Application, ApplicationAdapter) {
 
-    Application.AccountAdapter = ApplicationAdapter.extend({
+    var adapter = ApplicationAdapter.extend({
         buildURL: function() {
             return this._super.apply(this, arguments);
         }
     });
 
-    return Application.AccountAdapter;
+    Application.AccountAdapter = adapter;
+
+    return adapter;
 });

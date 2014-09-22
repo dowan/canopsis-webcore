@@ -68,7 +68,7 @@ define([
 
         init: function() {
             console.group('app init');
-            utils.notification.controller = this;
+            utils.notification.setController(this);
 
             var appController = this;
 
