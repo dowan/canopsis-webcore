@@ -20,7 +20,7 @@
 
 from bottle import get, delete, put, post
 
-from canopsis.common.ws import route, response
+from canopsis.common.ws import route
 from canopsis.perfdata.manager import PerfData
 
 manager = PerfData()
@@ -36,7 +36,9 @@ def perfdata_count(metric_id, timewindow=None, period=None):
 
 
 @route(
-    post, payload=['timewindow', 'period', 'limit', 'skip', 'timeserie'])
+    post,
+    payload=['metric_id',
+        'timewindow', 'period', 'limit', 'skip', 'timeserie', 'with_meta'])
 def perfdata(
     metric_id, timewindow=None, period=None, with_meta=True,
     limit=0, skip=0, timeserie=None
