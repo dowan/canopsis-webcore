@@ -21,11 +21,12 @@ define([
     'app/application',
     'app/routes/authenticated',
     'utils',
-    'seeds/RoutesLoader',
     'app/lib/utils/data',
     'app/lib/utils/forms',
-    'app/lib/loaders/schemas'
-], function(Application, AuthenticatedRoute, utils, dataUtils, formUtils) {
+    'app/lib/utils/widgetSelectors',
+    'app/lib/loaders/schemas',
+    'seeds/RoutesLoader'
+], function(Application, AuthenticatedRoute, utils, dataUtils, formUtils, widgetSelectorsUtils) {
     var set = Ember.set,
         get = Ember.get;
 
@@ -84,11 +85,11 @@ define([
 
                 recordWizard.submit.then(function(form) {
 
-                    var rootWidget = controller.get('content.containerwidget');
-                    var children = utils.widgetSelectors.children(rootWidget);
+                    var rootWidget = get(controller, 'content.containerwidget');
+                    var children = widgetSelectorsUtils.children(rootWidget);
 
-                    record = form.get('formContext');
-                    interval = record.get('dateinterval');
+                    record = get(form, 'formContext');
+                    interval = get(record, 'dateinterval');
 
                     //Set filter as void instead undefined
                     if (Ember.isNone(interval)) {
@@ -97,22 +98,19 @@ define([
 
                     console.debug('record generated', record.get('dateinterval'));
 
-                    for (var i=0; i<children.length; i++) {
+                    for (var i = 0, l = children.length; i < l; i++) {
 
-                        console.debug('Child widget', children[i].get('id'), children[i]);
-                        var widgetController = children[i].get('controllerInstance');
+                        console.debug('Child widget', get(children[i], 'id'), children[i]);
+                        var widgetController = get(children[i], 'controllerInstance');
 
                         if (!Ember.isNone(widgetController)) {
                             //each widget takes responsibility to refresh or not once update interval is called
                             widgetController.updateInterval(interval);
                         } else {
-                            console.error('Unable to find controller instance for widget', children[i].get('id'));
+                            console.error('Unable to find controller instance for widget', get(children[i], 'id'));
                         }
-
                     }
-
                 });
-
             },
 
             refresh: function() {

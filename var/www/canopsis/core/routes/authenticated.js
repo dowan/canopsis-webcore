@@ -31,8 +31,11 @@ define([
         actions: {
             editAndSaveModel: function(model, record_raw, callback) {
                 console.log("editAndSaveModel", record_raw);
+
                 model.setProperties(record_raw);
+
                 var promise = model.save();
+
                 if (callback !== undefined) {
                     promise.then(callback);
                 }

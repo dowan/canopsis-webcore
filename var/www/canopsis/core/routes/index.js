@@ -28,7 +28,6 @@ define([
     var route = AuthenticatedRoute.extend({
 
         setupController: function() {
-            console.log('setupController', this.controllerFor('application'));
             this.controllerFor('application').onIndexRoute = true;
             console.log('beforemodel');
         }
