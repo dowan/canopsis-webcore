@@ -19,7 +19,8 @@
 
 define([
     'ember',
-    'app/application'
+    'app/application',
+    'app/lib/loaders/renderers'
 ], function(Ember, Application) {
     var get = Ember.get;
 

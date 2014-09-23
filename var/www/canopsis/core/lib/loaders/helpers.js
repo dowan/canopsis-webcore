@@ -50,6 +50,8 @@ var helpers = [
     'subprocess',
     'timeSince',
     'timestamp',
+    'validationtextarea',
+    'validationtextfield',
     'unset',
     'widgetslot'
 ];

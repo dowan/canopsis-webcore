@@ -33,7 +33,11 @@ define([
         triggerEvent: 'hover',
 
         didInsertElement: function() {
-            this.$("[data-toggle=popover]").popover();
+            var popoverTargets = this.$("[data-toggle=popover]");
+            if(popoverTargets) {
+                popoverTargets.popover();
+            }
+
             var component = this;
 
             var options = {
