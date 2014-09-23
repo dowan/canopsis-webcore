@@ -5,6 +5,8 @@ define([
     'app/lib/formsregistry',
     'app/components/multiselect/component'
 ], function(Application , Arraymixin, mixinsregistry, formsregistry) {
+    var get = Ember.get,
+        set = Ember.set;
 
     var component = Ember.Component.extend({
         contentREF:[],
@@ -57,11 +59,11 @@ define([
         // select             : template for list item tags
         init: function() {
            // var contentREF = this.getContent();
-           var contentREF = this.get("content") || [];
-            this.set("content" , contentREF );
+           var contentREF = get(this, "content") || [];
+            set(this, "content" , contentREF );
 
-            var attr = this.get("attr");
-            var value = this.get("attr.value") || [];
+            var attr = get(this, "attr");
+            var value = get(this, "attr.value") || [];
 
             //var select = this.get("select");
             //select = ( select )? select : 0;
@@ -69,7 +71,7 @@ define([
             // select template for list item tags
             //this.set("select", select );
 
-            var MixinName = this.get("mixinName");
+            var MixinName = get(this, "mixinName");
             this.getAndApplyMixin( MixinName , this );
 
             // if mixin added : use it for feed content
@@ -79,29 +81,8 @@ define([
 
             var selection = [];
 
-            this.set("attr.value" , value );
+            set(this, "attr.value" , value );
             this._super(true);
-        },
-
-        onUpdate: function() {
-            /*
-            var formController  =  formsregistry.formwrapper.form;
-            var selection = this.get("value");
-            var value = [];
-            if (selection) {
-                for (var i = 0 ; i < selection.length ; i++) {
-                    value.push(selection[i].name);
-                }
-                var field = this.get("attr.field");
-                if (field){
-                    var attribut = "formContext." + field;
-                    Ember.set(formController , attribut , value);
-                }
-            }
-            else{
-                console.warn("selection isn't defined on tags/view.js");
-            }
-*/
         }
     });
 

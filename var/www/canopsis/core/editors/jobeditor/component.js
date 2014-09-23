@@ -25,6 +25,8 @@ define([
     'app/lib/formsregistry',
     'utils'
 ], function(Ember, DS, Application, formsUtils, formsregistry, utils) {
+    var get = Ember.get,
+        set = Ember.set;
 
     var component = Ember.Component.extend({
         job_types: [],

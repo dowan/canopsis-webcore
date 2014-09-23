@@ -22,56 +22,60 @@ define([
     'ember',
     'app/application',
 ], function(Ember, Application) {
-    Application.ComponentCriticityComponent = Ember.Component.extend({
+    var get = Ember.get,
+        set = Ember.set;
 
 
+    var component = Ember.Component.extend({
         init: function() {
             this._super();
         },
 
         is00:function () {
-            return this.get('content') === 0;
+            return get(this, 'content') === 0;
         }.property('content'),
 
         is01:function () {
-            return this.get('content') === 1;
+            return get(this, 'content') === 1;
         }.property('content'),
 
         is02:function () {
-            return this.get('content') === 2;
+            return get(this, 'content') === 2;
         }.property('content'),
 
         is10:function () {
-            return this.get('content') === 10;
+            return get(this, 'content') === 10;
         }.property('content'),
 
         is11:function () {
-            return this.get('content') === 11;
+            return get(this, 'content') === 11;
         }.property('content'),
 
         is12:function () {
-            return this.get('content') === 12;
+            return get(this, 'content') === 12;
         }.property('content'),
 
         is20:function () {
-            return this.get('content') === 20;
+            return get(this, 'content') === 20;
         }.property('content'),
 
         is21:function () {
-            return this.get('content') === 21;
+            return get(this, 'content') === 21;
         }.property('content'),
 
         is22:function () {
-            return this.get('content') === 22;
+            return get(this, 'content') === 22;
         }.property('content'),
 
         actions: {
             setCriticity: function (criticity) {
-                this.set('content', criticity);
+                set(this, 'content', criticity);
             }
         },
 
     });
 
-    return Application.ComponentCriticityComponent;
+    Application.ComponentCriticityComponent = component;
+
+    return component;
 });

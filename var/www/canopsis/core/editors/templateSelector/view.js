@@ -22,7 +22,10 @@ define([
     'app/lib/loaders/templates',
     'app/view/arraytocollectioncontrol'
 ], function(Application, templates) {
-    Application.TemplateView = Application.ArrayToCollectionControlView.extend({
+    var get = Ember.get,
+        set = Ember.set;
+
+    var view = Application.ArrayToCollectionControlView.extend({
         //cssClass: "btn-items-",
         init: function() {
             var contentREF = this.get("content")|| [];
@@ -30,24 +33,27 @@ define([
             var value = this.get("attr.value") || [];
 
             var classToGet = this.templateData.keywords.controller.content.model.options.templateClass;
+
             if(classToGet !== undefined) {
-                for (var i=0 ; i < templates.byClass[classToGet].length ; i++) {
+                for (var i = 0, l1 = templates.byClass[classToGet].length ; i < l1 ; i++) {
                     this.addTemplate(templates.byClass[classToGet][i], value, contentREF);
                 }
-            }
-            else{
-                for (var i=0 ; i < templates.all.length ; i++) {
-                    this.addTemplate(templates.all[i], value, contentREF);
+            } else{
+                for (var j = 0, l2 = templates.all.length; j < l2 ; j++) {
+                    this.addTemplate(templates.all[j], value, contentREF);
                 }
             }
 
             //Have to be done after
-            this.set("attr.value" , value);
-            this.set("value" , value);
+            set(this, "attr.value" , value);
+            set(this, "value" , value);
 
-            this.set("content" , contentREF);
+            set(this, "content" , contentREF);
             this._super(true);
         }
     });
-    return Application.TemplateView;
+
+    Application.TemplateView = view;
+
+    return view;
 });

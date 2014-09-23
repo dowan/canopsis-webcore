@@ -21,9 +21,12 @@ define([
     'ember',
     'app/application'
 ], function(Ember, Application) {
-    Application.EditorGroupController = Ember.ArrayController.extend({
+
+    var editor = Ember.ArrayController.extend({
         groups: [{"name": "g1"},{"name": "g2"}]
     });
 
-    return Application.EditorGroupController;
+    Application.EditorGroupController = editor;
+
+    return editor;
 });

@@ -21,16 +21,16 @@
 define([
     'ember',
     'app/application',
-    'utils'
-], function(Ember, Application, utils) {
+    'app/lib/utils/hash'
+], function(Ember, Application, hashUtils) {
 
     var get = Ember.get,
         set = Ember.set;
 
-    Application.ComponentTimestampComponent = Ember.Component.extend({
+    var component = Ember.Component.extend({
         init: function () {
             this._super.apply(this, arguments);
-            set(this, 'id', utils.hash.generate_GUID());
+            set(this, 'id', hashUtils.generate_GUID());
         },
 
         didInsertElement: function (){
@@ -54,5 +54,7 @@ define([
         }
     });
 
-    return Application.ComponentTimestampComponent;
+    Application.ComponentTimestampComponent = component;
+
+    return component;
 });

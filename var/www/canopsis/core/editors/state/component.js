@@ -22,37 +22,41 @@ define([
     'ember',
     'app/application',
 ], function(Ember, Application) {
-    Application.ComponentStateComponent = Ember.Component.extend({
+    var get = Ember.get,
+        set = Ember.set;
 
+    var component = Ember.Component.extend({
 
         init: function() {
             this._super();
         },
 
         isInfo:function () {
-            return this.get('content') === 0;
+            return get(this, 'content') === 0;
         }.property('content'),
 
         isMinor:function () {
-            return this.get('content') === 1;
+            return get(this, 'content') === 1;
         }.property('content'),
 
         isMajor:function () {
-            return this.get('content') === 2;
+            return get(this, 'content') === 2;
         }.property('content'),
 
         isCritical:function () {
-            return this.get('content') === 3;
+            return get(this, 'content') === 3;
         }.property('content'),
 
 
         actions: {
             setState:function (state) {
-                this.set('content', parseInt(state));
+                set(this, 'content', parseInt(state));
             }
         },
 
     });
 
-    return Application.ComponentStateComponent;
+    Application.ComponentStateComponent = component;
+
+    return component;
 });

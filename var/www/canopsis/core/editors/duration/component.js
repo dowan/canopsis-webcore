@@ -26,7 +26,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-    Application.ComponentDurationComponent = Ember.Component.extend({
+    var component = Ember.Component.extend({
         init: function () {
             this._super.apply(this, arguments);
             console.log('formattedDuration CP');
@@ -94,5 +94,7 @@ define([
         ]
     });
 
-    return Application.ComponentDurationComponent;
+    Application.ComponentDurationComponent = component;
+
+    return component;
 });

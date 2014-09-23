@@ -26,16 +26,15 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-
-    Application.ComponentTimeintervalComponent = Ember.Component.extend({
+    var component = Ember.Component.extend({
         init: function () {
 
             this._super.apply(this, arguments);
 
             set(this, 'durationType', 'duration');
 
-            if (Ember.isNone(this.get('content'))) {
-                this.set('content',
+            if (Ember.isNone(get(this, 'content'))) {
+                set(this, 'content',
                     {
                         startDate: 0,
                         stopDate: 0
@@ -53,24 +52,24 @@ define([
 
         updateDelayDuration: function (delay, referer) {
 
-            var content = referer.get('content');
+            var content = get(referer, 'content');
 
             var now = parseInt(new Date().getTime() / 1000);
 
             content.startDate = now - delay;
 
-            referer.set('content', content);
+            set(referer, 'content', content);
 
             console.log('updateDelayDuration', content);
         },
 
         updateStartDuration: function (startDate, referer) {
 
-            var content = referer.get('content');
+            var content = get(referer, 'content');
 
             content.startDate = startDate;
 
-            referer.set('content', content);
+            set(referer, 'content', content);
 
             console.log('updateDelayDuration', content);
 
@@ -78,13 +77,13 @@ define([
 
         updateStopDuration: function (stopDate, referer) {
 
-            var content = referer.get('content');
+            var content = get(referer, 'content');
 
             var now = parseInt(new Date().getTime() / 1000);
 
             content.stopDate = stopDate;
 
-            referer.set('content', content);
+            set(referer, 'content', content);
 
             console.log('updateDelayDuration', content);
         },
@@ -106,10 +105,13 @@ define([
                 } else {
                     set(this, 'durationType', 'duration');
                 }
+
                 console.log('switching duration type', get(this,'durationType'));
             }
         }
     });
 
-    return Application.ComponentTimeintervalComponent;
+    Application.ComponentTimeintervalComponent = component;
+
+    return component;
 });

@@ -22,8 +22,10 @@ define([
     'app/application',
     'app/lib/wrappers/summernote'
 ], function(Ember, Application) {
+    var get = Ember.get,
+        set = Ember.set;
 
-    Application.ComponentRichtextComponent = Ember.Component.extend({
+    var editor = Ember.Component.extend({
         classNames: ['wysiwyg-editor'],
         btnSize: 'btn-xs',
         height: 120,
@@ -33,8 +35,8 @@ define([
         },
 
         didInsertElement: function() {
-            var btnSize = this.get('btnSize');
-            var height = this.get('height');
+            var btnSize = get(this, 'btnSize');
+            var height = get(this, 'height');
 
             this.$('textarea').summernote({
                 height: height,
@@ -50,7 +52,7 @@ define([
                 ]
             });
 
-            var content = this.get('content');
+            var content = get(this, 'content');
             this.$('textarea').code(content);
             this.$('.btn').addClass(btnSize);
         },
@@ -66,10 +68,12 @@ define([
         doUpdate: function() {
             var content = this.$('.note-editable').html();
             console.log("doUpdate", content);
-            console.log("doUpdate val", this.get('templateData.keywords.attr.value'));
-            this.set('content', content);
+            console.log("doUpdate val", get(this, 'templateData.keywords.attr.value'));
+            set(this, 'content', content);
         }
     });
 
-    return Application.ComponentRichtextComponent;
+    Application.ComponentRichtextComponent = editor;
+
+    return editor;
 });

@@ -28,7 +28,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-    Application.ComponentArrayComponent = Ember.Component.extend(Application.ValidationFieldMixin,{
+    var component = Ember.Component.extend(Application.ValidationFieldMixin,{
         valueRefPath: "content.value",
         valuePath: "value",
 
@@ -212,5 +212,7 @@ define([
         }
     });
 
-    return Application.ComponentArrayComponent;
+    Application.ComponentArrayComponent = component;
+
+    return component;
 });

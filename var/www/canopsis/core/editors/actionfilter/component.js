@@ -22,8 +22,10 @@ define([
     'ember',
     'app/application'
 ], function(Ember, Application) {
-    Application.ComponentActionfilterComponent = Ember.Component.extend({
+    var get = Ember.get,
+        set = Ember.set;
 
+    Application.ComponentActionfilterComponent = Ember.Component.extend({
 
         init: function() {
             this._super();

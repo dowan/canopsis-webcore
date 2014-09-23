@@ -21,20 +21,25 @@
     'app/application',
     'app/view/arraytocollectioncontrol'
 ], function(Application) {
-        Application.RightView = Application.ArrayToCollectionControlView.extend({
+    var get = Ember.get,
+        set = Ember.set;
 
-            init: function() {
-                var value = this.getValue();
-                var contentREF = this.getContent();
+    var view = Application.ArrayToCollectionControlView.extend({
 
-                var readTemplate = {name : "r", icon : "eye-open" , label : "Read" };
-                var writeTemplate = {name : "w", icon : "pencil", label : "Write" };
-                this.addTemplate(readTemplate, value, contentREF);
-                this.addTemplate(writeTemplate, value, contentREF);
+        init: function() {
+            var value = this.getValue();
+            var contentREF = this.getContent();
 
-                this._super(true);
-            }
+            var readTemplate = {name : "r", icon : "eye-open" , label : "Read" };
+            var writeTemplate = {name : "w", icon : "pencil", label : "Write" };
+            this.addTemplate(readTemplate, value, contentREF);
+            this.addTemplate(writeTemplate, value, contentREF);
 
+            this._super(true);
+        }
     });
-    return Application.RightView;
+
+    Application.RightView = view;
+
+    return view;
 });
