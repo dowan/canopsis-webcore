@@ -31,7 +31,7 @@ define([
         didInsertElement: function() {
             var $dropdowns = this.$('.dropdown-toggle');
 
-            console.error('didInsertElement', $dropdowns);
+            console.log('didInsertElement', $dropdowns);
 
             if($dropdowns) {
                 $dropdowns.dropdown();
