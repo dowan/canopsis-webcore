@@ -44,6 +44,7 @@ define([
                 useCurrent: true, //when true, picker will set the value to the current date/time
                 language: 'fr'
             });
+
             console.log('timestamp dom init complete');
 
             timepicker.on("dp.change",function (e) {

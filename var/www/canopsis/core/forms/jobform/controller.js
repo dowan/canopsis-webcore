@@ -21,12 +21,14 @@ define([
     'ember',
     'app/application',
     'app/lib/factories/form',
-    'utils'
-], function(Ember, Application, FormFactory, utils) {
+    'utils',
+    'app/lib/utils/forms',
+    'app/lib/utils/hash'
+], function(Ember, Application, FormFactory, utils, formsUtils, hashUtils) {
     var get = Ember.get,
         set = Ember.set;
 
-    FormFactory('jobform', {
+    var form = FormFactory('jobform', {
         title: 'Select task type',
         scheduled: true,
 
@@ -48,8 +50,8 @@ define([
         init: function() {
             this._super(arguments);
 
-            this.set('store', DS.Store.create({
-                container: this.get("container")
+            set(this, 'store', DS.Store.create({
+                container: get(this, "container")
             }));
         },
 
@@ -61,7 +63,7 @@ define([
                 var availableJobs = get(this, 'availableJobs.all');
 
                 var job;
-                for (var i = 0; i < availableJobs.length; i++) {
+                for (var i = 0, l = availableJobs.length; i < l; i++) {
                     if(availableJobs[i].name === jobName) {
                         job = availableJobs[i];
                     }
@@ -71,23 +73,23 @@ define([
                 var modelname = xtype[0].toUpperCase() + xtype.slice(1);
                 var model = Application[modelname];
 
-                var params = this.get('formContext.params');
+                var params = get(this, 'formContext.params');
                 console.log('params:', params);
 
-                if(params && params.get('xtype') === xtype) {
+                if(params && get(params, 'xtype') === xtype) {
                     context = params;
                 }
                 else {
                     params = {
-                        id: utils.hash.generateId('task'),
+                        id: hashUtils.generateId('task'),
                         crecord_type: xtype,
                         xtype: xtype
                     };
 
                     console.log('Instanciate non-persistent model:', model, params);
-                    context = this.get('store').createRecord(xtype, params);
+                    context = get(this, 'store').createRecord(xtype, params);
 
-                    var jobdict = this.get('formContext._data');
+                    var jobdict = get(this, 'formContext._data');
                     jobdict.task = xtype;
                     jobdict.paramsType = xtype;
                     jobdict.params = params.id;
@@ -98,7 +100,7 @@ define([
                 }
 
                 console.log('Show new form with context:', context, this.formContext);
-                var recordWizard = utils.forms.showNew('taskform', context, {
+                var recordWizard = formsUtils.showNew('taskform', context, {
                     formParent: this,
                     scheduled: this.scheduled
                 });
@@ -112,5 +114,5 @@ define([
         },
     });
 
-    return Application.JobformController;
+    return form;
 });

@@ -29,7 +29,7 @@ define([
         subclass: ModelFormController
     };
 
-    FormFactory('taskform', {
+    var form = FormFactory('taskform', {
         title: 'Configure Job settings',
         scheduled: true,
         jobRecord: undefined,
@@ -46,7 +46,7 @@ define([
             next: function() {
                 console.group('configureTask');
 
-                var formParent = this.get('formParent');
+                var formParent = get(this, 'formParent');
                 var wizard;
 
                 if(get(this, 'nextForm') === undefined) {
@@ -80,5 +80,5 @@ define([
         },
     }, formOptions);
 
-    return Application.TaskformController;
+    return form;
 });

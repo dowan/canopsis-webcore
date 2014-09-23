@@ -27,8 +27,10 @@ define([
     'app/lib/loaders/schemas',
     'app/controller/journal'
 ], function(Ember, Application, FormFactory, formsUtils, hashUtils, widgets) {
+    var get = Ember.get,
+        set = Ember.set;
 
-    FormFactory('widgetform', {
+    var form = FormFactory('widgetform', {
         needs: ['journal'],
 
         title: "Select a widget",
@@ -39,7 +41,7 @@ define([
             console.log("availableWidgets");
             var widgets = [];
 
-            for (var i = 0; i < widgets.all.length; i++) {
+            for (var i = 0, l = widgets.all.length; i < l; i++) {
                 var currentWidget = widgets.all[i];
 
                 widgets.push(currentWidget);
@@ -97,15 +99,15 @@ define([
                     'widgetType': widgetName,
                     'meta': {
                         'embeddedRecord': true,
-                        'parentType': containerwidget.get('xtype'),
-                        'parentId': containerwidget.get('id')
+                        'parentType': get(containerwidget, 'xtype'),
+                        'parentId': get(containerwidget, 'id')
                     }
                 });
 
                 console.log('newWidgetWrapper', this.newWidgetWrapper);
 
                 console.log('newWidget', newWidget);
-                console.log('formwrapper', this.get('formwrapper'));
+                console.log('formwrapper', get(this, 'formwrapper'));
 
                 console.info('show embedded widget wizard');
 
@@ -122,5 +124,5 @@ define([
         parentUserview: Ember.required()
     });
 
-    return Application.WidgetformController;
+    return form;
 });

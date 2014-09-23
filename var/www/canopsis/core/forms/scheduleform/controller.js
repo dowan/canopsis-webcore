@@ -21,14 +21,13 @@ define([
     'ember',
     'app/application',
     'app/lib/factories/form',
-    'app/forms/modelform/controller',
-    'utils'
-], function(Ember, Application, FormFactory, ModelFormController, cutils) {
+    'app/forms/modelform/controller'
+], function(Ember, Application, FormFactory, ModelFormController) {
     var formOptions = {
         subclass: ModelFormController
     };
 
-    FormFactory('scheduleform', {
+    var form = FormFactory('scheduleform', {
         title: 'Configure Schedule',
 
         actions: {
@@ -48,5 +47,5 @@ define([
         },
     }, formOptions);
 
-    return Application.ScheduleformController;
+    return form;
 });

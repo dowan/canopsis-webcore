@@ -26,7 +26,7 @@ define([
     'app/mixins/recordpreset',
     'app/lib/utils/slug',
     'app/lib/loaders/schemas'
-], function(Ember, Application, FormFactory, InspectableitemMixin, ValidationMixin, RecordpresetMixin, slugify) {
+], function(Ember, Application, FormFactory, InspectableitemMixin, ValidationMixin, RecordpresetMixin, slugUtils) {
     var set = Ember.set,
         get = Ember.get;
 
@@ -41,7 +41,7 @@ define([
     /**
      * @class Generic form which dynamically generates its content by reading a model's schema
      */
-    FormFactory('modelform', {
+    var form = FormFactory('modelform', {
 
         validationFields: Ember.computed(function() {return Ember.A();}),
         ArrayFields: Ember.A(),
@@ -50,8 +50,9 @@ define([
             var keys = category.get('keys');
             set(category, 'keys', []);
 
-            for (var i=0; i<keys.length; i++) {
+            for (var i = 0, l = keys.length; i < l; i++) {
                 console.log('key', keys[i]);
+
                 if (this.get('userPreferencesOnly')) {
                     //isUserPreference is set to true in the key schema field.
                     if (keys[i].model && keys[i].model.options && keys[i].model.options.isUserPreference) {
@@ -78,7 +79,7 @@ define([
                 for(var i = 0; i < res.length; i++) {
                     var category = res[i];
 
-                    category.slug = slugify(category.title);
+                    category.slug = slugUtils(category.title);
                     console.log(category);
                     if (get(this, 'filterFieldByKey') || get(this, 'userPreferencesOnly')) {
                         //filter on user preferences fields only
@@ -146,8 +147,10 @@ define([
                 var override_inverse = {};
 
                 if(this.isOnCreate && this.modelname){
-                    var Stringtype = this.modelname.charAt(0).toUpperCase() + this.modelname.slice(1);
-                    var model = Application.allModels[Stringtype];
+
+                    var stringtype = this.modelname.charAt(0).toUpperCase() + this.modelname.slice(1);
+                    var model = Application.allModels[stringtype];
+
                     if(model) {
                         for(var fieldName in model){
                             if(model.hasOwnProperty(fieldName)) {
@@ -164,7 +167,7 @@ define([
                     }
                 }
                 //will execute callback from options if any given
-                var options = this.get('options');
+                var options = get(this, 'options');
 
                 if(options && options.override_labels) {
                     for(var key in options.override_labels) {
@@ -175,16 +178,16 @@ define([
                 var categories = get(this, 'categorized_attributes');
 
                 console.log('setting fields');
-                for (var i = 0; i < categories.length; i++) {
+                for (var i = 0, li = categories.length; i < li; i++) {
                     var category = categories[i];
-                    for (var j = 0; j < category.keys.length; j++) {
+                    for (var j = 0, lj = category.keys.length; j < lj; j++) {
                         var attr = category.keys[j];
-                        var field = attr.field;
+                        var categoryKeyField = attr.field;
                         //set back overried value to original field
                         if (override_inverse[attr.field]) {
-                            field = override_inverse[attr.field];
+                            categoryKeyField = override_inverse[attr.field];
                         }
-                        set(this, 'formContext.' + field, attr.value);
+                        set(this, 'formContext.' + categoryKeyField, attr.value);
                     }
                 }
                 //Update value of array
@@ -197,5 +200,5 @@ define([
     },
     formOptions);
 
-    return Application.ModelformController;
+    return form;
 });
