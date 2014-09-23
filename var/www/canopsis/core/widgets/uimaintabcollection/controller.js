@@ -27,25 +27,8 @@ define([
         set = Ember.set;
 
 
-    var UimaintabcollectionViewMixin = Ember.Mixin.create({
-        didInsertElement: function() {
-            var $dropdowns = this.$('.dropdown-toggle');
-
-            console.log('didInsertElement', $dropdowns);
-
-            if($dropdowns) {
-                $dropdowns.dropdown();
-            }
-
-            this._super.apply(this, arguments);
-        }
-    });
-
     var widget = WidgetFactory('uimaintabcollection',{
         needs: ['application'],
-        viewMixins: [
-            UimaintabcollectionViewMixin
-        ],
 
         currentViewId: Ember.computed.alias('controllers.application.currentViewId'),
         tagName: 'span',
