@@ -21,11 +21,12 @@ define([
     'ember',
     'app/application',
     'app/lib/factories/form',
-    'utils',
+    'app/lib/utils/forms',
+    'app/lib/utils/hash',
     'app/lib/widgetsregistry',
     'app/lib/loaders/schemas',
     'app/controller/journal'
-], function(Ember, Application, FormFactory, utils, widgets) {
+], function(Ember, Application, FormFactory, formsUtils, hashUtils, widgets) {
 
     FormFactory('widgetform', {
         needs: ['journal'],
@@ -51,7 +52,7 @@ define([
             submit: function(newWidgets) {
                 var newWidget = newWidgets[0];
 
-                this.get('controllers.journal').send('publish', 'create', 'widget');
+                get(this, 'controllers.journal').send('publish', 'create', 'widget');
 
                 console.log("onWidgetChooserSubmit", arguments);
 
@@ -70,12 +71,12 @@ define([
             selectItem: function(widgetName) {
                 console.log('selectItem', arguments);
 
-                var containerwidget = this.get('formContext.containerwidget');
+                var containerwidget = get(this, 'formContext.containerwidget');
                 console.group('selectWidget', this, containerwidget, widgetName);
 
-                var store = this.get('formContext.containerwidget').store;
-                console.log('store to use', this.get('formContext.containerwidget').store);
-                var widgetId = utils.hash.generateId('widget_' + widgetName);
+                var store = get(this, 'formContext.containerwidget').store;
+                console.log('store to use', get(this, 'formContext.containerwidget').store);
+                var widgetId = hashUtils.generateId('widget_' + widgetName);
 
                 //FIXME this works when "xtype" is "widget"
                 var newWidget = store.createRecord(widgetName, {
@@ -89,7 +90,7 @@ define([
                 });
 
                 this.newWidgetWrapper = store.push('widgetwrapper', {
-                    'id': utils.hash.generateId('widgetwrapper'),
+                    'id': hashUtils.generateId('widgetwrapper'),
                     'xtype': 'widgetwrapper',
                     'title': 'wrapper',
                     'widget': widgetId,
@@ -108,7 +109,7 @@ define([
 
                 console.info('show embedded widget wizard');
 
-                utils.forms.showNew('modelform', newWidget, {formParent: this, title: "Add new " + widgetName});
+                formsUtils.showNew('modelform', newWidget, {formParent: this, title: "Add new " + widgetName});
                 console.groupEnd();
             }
         },

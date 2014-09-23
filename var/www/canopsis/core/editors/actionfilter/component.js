@@ -31,10 +31,10 @@ define([
             this.set('selectedAction', 'pass');
             console.log(' ! --- > content', this.get('content'));
             //Use a temp variable to avoid content deletion and strange behaviors.
-            if (this.get('content') === undefined) {
-                this.set('contentUnprepared', Ember.A());
+            if (get(this, 'content') === undefined) {
+                set(this, 'contentUnprepared', Ember.A());
             } else {
-                this.set('contentUnprepared', this.get('content'));
+                set(this, 'contentUnprepared', get(this, 'content'));
             }
         },
 
@@ -42,8 +42,8 @@ define([
         availableactions: ['pass','drop','override','remove'],
 
         isOverride: function () {
-            console.log('isOverride', this.get('selectedAction'), this.get('selectedAction') === 'override');
-            return this.get('selectedAction') === 'override';
+            console.log('isOverride', get(this, 'selectedAction'), get(this, 'selectedAction') === 'override');
+            return get(this, 'selectedAction') === 'override';
         }.property('selectedAction'),
 
         isRoute: function () {
@@ -54,36 +54,35 @@ define([
         }.property('selectedAction'),
 
         isRemove: function () {
-            console.log('isRemove', this.get('selectedAction'), this.get('selectedAction') === 'remove');
-            return this.get('selectedAction') === 'remove';
+            console.log('isRemove', get(this, 'selectedAction'), get(this, 'selectedAction') === 'remove');
+            return get(this, 'selectedAction') === 'remove';
         }.property('selectedAction'),
 
 
         actions : {
             addAction: function () {
                 var action = {
-                    type: this.get('selectedAction')
+                    type: get(this, 'selectedAction')
                 };
 
-                if (this.get('selectedAction') === 'override') {
-                    action.field = this.get('field');
-                    action.value = this.get('value');
+                if (get(this, 'selectedAction') === 'override') {
+                    action.field = get(this, 'field');
+                    action.value = get(this, 'value');
                 }
 
-                if (this.get('selectedAction') === 'remove') {
-                    action.key = this.get('key');
+                if (get(this, 'selectedAction') === 'remove') {
+                    action.key = get(this, 'key');
                 }
 
                 console.log('Adding action', action);
-                this.get('contentUnprepared').pushObject(action);
-                this.set('content', this.get('contentUnprepared'));
+                get(this, 'contentUnprepared').pushObject(action);
+                set(this, 'content', get(this, 'contentUnprepared'));
             },
+
             deleteAction: function (action) {
                 console.log('Removing action', action);
-                this.get('contentUnprepared').removeObject(action);
-                this.set('content', this.get('contentUnprepared'));
-
-
+                get(this, 'contentUnprepared').removeObject(action);
+                set(this, 'content', get(this, 'contentUnprepared'));
             }
         }
 

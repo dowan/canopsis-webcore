@@ -24,13 +24,13 @@ define([
     'app/mixins/arraymixin',
     'app/lib/utils/forms',
     'app/mixins/validationfield'
-], function($, Ember, Application, formsUtils) {
+], function($, Ember, Application, formsUtils, validationfield) {
     var get = Ember.get,
         set = Ember.set;
 
     Application.ComponentArrayComponent = Ember.Component.extend(Application.ValidationFieldMixin,{
-        valueRefPath:"content.value",
-        valuePath:"value",
+        valueRefPath: "content.value",
+        valuePath: "value",
 
         init: function() {
             this._super.apply(this, arguments);
@@ -43,11 +43,11 @@ define([
             var me = this;
 
             Ember.run(function() {
-                me.set('arrayAttributes', Ember.A());
+                set(me, 'arrayAttributes', Ember.A());
 
                 if(values !== undefined) {
                     for (var i = 0; i < values.length; i++) {
-                        me.get('arrayAttributes').pushObject(me.generateVirtualAttribute(i));
+                        get(me, 'arrayAttributes').pushObject(me.generateVirtualAttribute(i));
                     }
                 }
             });
@@ -74,10 +74,12 @@ define([
                         });
                         return $helper;
                     },
+
                     start: function(event, ui) {
                         // creates a temporary attribute on the element with the old index
                         $(ui.item.context).attr('data-previndex', $(ui.item.context).index('tr'));
                     },
+
                     update: function(event, ui) {
                         console.log('update', ui.item);
                         console.log('update', $(ui.item.context));
@@ -137,12 +139,12 @@ define([
 
             Ember.addObserver(currentGeneratedAttr, 'value', function(attr) {
                 console.log('value changed', attr.value, attr.index);
-                componentArrayComponent.get('value').removeAt(attr.index);
-                componentArrayComponent.get('value').insertAt(attr.index, attr.value);
+                get(componentArrayComponent, 'value').removeAt(attr.index);
+                get(componentArrayComponent, 'value').insertAt(attr.index, attr.value);
                 console.log('content changed', componentArrayComponent.get('value'));
             });
 
-            console.log("generateVirtualAttribute@3");
+            console.log("generateVirtualAttribute");
 
             return currentGeneratedAttr;
         },

@@ -47,16 +47,15 @@ define([
         ArrayFields: Ember.A(),
 
         filterUserPreferenceCategory: function (category, keyFilters) {
-
             var keys = category.get('keys');
-            category.set('keys', []);
+            set(category, 'keys', []);
 
             for (var i=0; i<keys.length; i++) {
                 console.log('key', keys[i]);
                 if (this.get('userPreferencesOnly')) {
                     //isUserPreference is set to true in the key schema field.
                     if (keys[i].model && keys[i].model.options && keys[i].model.options.isUserPreference) {
-                        category.get('keys').push(keys[i]);
+                        get(category, 'keys').push(keys[i]);
                     }
                 } else {
                     //Filter from form parameter
@@ -65,7 +64,7 @@ define([
                         if (keyFilters[keys[i].field].readOnly) {
                             keys[i].model.options.readOnly = true;
                         }
-                        category.get('keys').push(keys[i]);
+                        get(category, 'keys').push(keys[i]);
                     }
                 }
             }
@@ -81,10 +80,10 @@ define([
 
                     category.slug = slugify(category.title);
                     console.log(category);
-                    if (this.get('filterFieldByKey') || this.get('userPreferencesOnly')) {
+                    if (get(this, 'filterFieldByKey') || get(this, 'userPreferencesOnly')) {
                         //filter on user preferences fields only
                         //if (category)
-                        category = this.filterUserPreferenceCategory(category, this.get('filterFieldByKey'));
+                        category = this.filterUserPreferenceCategory(category, get(this, 'filterFieldByKey'));
                         if (category.keys.length) {
                             category_selection.push(res[i]);
                         }
@@ -112,16 +111,16 @@ define([
         }.property(),
 
         inspectedDataItem: function() {
-            return this.get('formContext');
+            return get(this, 'formContext');
         }.property('formContext'),
 
         inspectedItemType: function() {
-            console.log('recompute inspectedItemType', this.get('formContext'));
+            console.log('recompute inspectedItemType', get(this, 'formContext'));
 
             if (this.get('formContext.xtype')) {
-                return this.get('formContext.xtype');
+                return get(this, 'formContext.xtype');
             } else {
-                return this.get('formContext.crecord_type') || this.get('formContext.connector_type')  ;
+                return get(this, 'formContext.crecord_type') || get(this, 'formContext.connector_type')  ;
             }
 
         }.property('formContext'),
@@ -142,7 +141,7 @@ define([
                     return;
                 }
 
-                console.log("submit action");
+                console.log('submit action');
 
                 var override_inverse = {};
 
@@ -155,9 +154,9 @@ define([
                                 var field = model[fieldName];
                                 if(field && field._meta &&  field._meta.options){
                                     var metaoptions = field._meta.options;
-                                    if( "setOnCreate" in metaoptions){
+                                    if( 'setOnCreate' in metaoptions){
                                         var value = options.setOnCreate;
-                                        this.set('formContext.' + fieldName, value);
+                                        set(this, 'formContext.' + fieldName, value);
                                     }
                                 }
                             }
@@ -173,9 +172,9 @@ define([
                     }
                 }
 
-                var categories = this.get("categorized_attributes");
+                var categories = get(this, 'categorized_attributes');
 
-                console.log("setting fields");
+                console.log('setting fields');
                 for (var i = 0; i < categories.length; i++) {
                     var category = categories[i];
                     for (var j = 0; j < category.keys.length; j++) {
@@ -185,14 +184,14 @@ define([
                         if (override_inverse[attr.field]) {
                             field = override_inverse[attr.field];
                         }
-                        this.set('formContext.' + field, attr.value);
+                        set(this, 'formContext.' + field, attr.value);
                     }
                 }
                 //Update value of array
               //  this.updateArray();
 
-                console.log("this is a widget", this.get('formContext'));
-                this._super(this.get('formContext'));
+                console.log('this is a widget', get(this, 'formContext'));
+                this._super(get(this, 'formContext'));
             }
         }
     },
