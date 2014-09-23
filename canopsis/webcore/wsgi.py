@@ -61,38 +61,6 @@ config.read(config_filename)
 #canopsis.webcore.services
 __builtins__["config"] = config
 
-## Logger
-logging_level = logging.INFO
-
-logging.basicConfig(
-    format=r"%(asctime)s [%(process)d] [%(name)s] [%(levelname)s] %(message)s",
-    datefmt=r"%Y-%m-%d %H:%M:%S", level=logging_level)
-logger = logging.getLogger("webserver")
-
-
-webservices = []
-webservice_paths = {}
-webservices_mods = {}
-
-try:
-    for webservice, path in config.items('webservice_paths'):
-        logger.info("webservice_paths : webservice = " + webservice +
-            " path : " + path)
-        if webservice not in webservice_paths:
-            logger.info("webservice_paths : add webservice = " + webservice +
-                " path : " + path)
-            webservice_paths[webservice] = path
-except:  # NoSectionError:
-    logger.info(
-        "WARNING : Can't found webservice_paths on webserver.conf ")
-
-
-for webservice, enabled in config.items('webservices'):
-    enabled = int(enabled)
-
-    if enabled and webservice not in webservices:
-        webservices.append(webservice)
-
 mongo_config_file = os.path.expanduser('~/etc/cstorage.conf')
 mongo_config = ConfigParser.RawConfigParser()
 mongo_config.read(mongo_config_file)
@@ -140,11 +108,47 @@ try:
 except Exception as err:
     print("Error when reading '%s' (%s)" % (config_filename, err))
 
+## Logger
+logging_level = logging.DEBUG if debug else logging.INFO
+
+logging.basicConfig(
+    format=r"%(asctime)s [%(process)d] [%(name)s] [%(levelname)s] %(message)s",
+    datefmt=r"%Y-%m-%d %H:%M:%S", level=logging_level)
+logger = logging.getLogger("webserver")
+
+webservices = []
+webservice_paths = {}
+webservices_mods = {}
+
+try:
+    for webservice, enabled in config.items('webservices'):
+        enabled = int(enabled)
+
+        if enabled and webservice not in webservices:
+            webservices.append(webservice)
+
+except ConfigParser.NoSectionError:
+    logger.warning('No webservice found')
+
+try:
+    for webservice, path in config.items('webservice_paths'):
+        if webservice not in webservice_paths:
+            logger.info("Add webservice path: {0} - {1}".format(
+                webservice,
+                path
+            ))
+
+            webservice_paths[webservice] = path
+
+except ConfigParser.NoSectionError:
+    logger.warning("No webservice paths found")
+
 
 ## load and unload webservices
 def load_webservices():
     for webservice in webservices:
         logger.info('Loading webservice: {0}'.format(webservice))
+
         if webservice in webservice_paths:
             path = webservice_paths[webservice]
             sys.path.insert(0, path)

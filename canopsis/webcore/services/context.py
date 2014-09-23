@@ -28,6 +28,8 @@ manager = Context()
 
 @route(get)
 def context(_type, names=None, context=None, extended=None):
+    if names:
+        names = [n.strip() for n in names.split(',')]
 
     result = manager.get(
         _type=_type, names=names, context=context, extended=extended)
@@ -43,7 +45,7 @@ def context(
 
     result = manager.find(
         _type=_type, context=context, _filter=_filter, extended=extended,
-        limit=limit, skip=skip, sort=sort)
+        limit=limit, skip=skip, sort=sort, with_count=True)
 
     return result
 
