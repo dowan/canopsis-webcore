@@ -37,7 +37,8 @@ define([
     'app/lib/loaders/helpers',
     'app/lib/loaders/widgets',
     'app/adapters/loggedaccount',
-    'app/lib/loaders/helpers'
+    'app/lib/loaders/helpers',
+    'app/lib/wrappers/bootstrap'
 ], function(Ember, DS, Application, PartialslotAbleController, UsermenuMixin, SchemamanagerMixin, ConsolemanagerMixin, PromisemanagerMixin, NotificationsMixin, ApplicationRoute, utils, formsUtils, dataUtils) {
     var get = Ember.get,
         set = Ember.set;

@@ -19,7 +19,8 @@
 
 define([
     'ember',
-    'app/application'
+    'app/application',
+    'app/lib/wrappers/bootstrap'
 ], function(Ember, Application) {
 
     var get = Ember.get,

@@ -28,13 +28,13 @@ define([
         tagName: 'span',
 
         value: function() {
-            return this.get('record.' + this.get('attr.field'));
+            return get(this, 'record.' + get(this, 'attr.field'));
         }.property('attr.field', 'record'),
 
         rendererType: function() {
 
-            var type = this.get('attr.type');
-            var role = this.get('attr.options.role');
+            var type = get(this, 'attr.type');
+            var role = get(this, 'attr.options.role');
             if(get(this, 'attr.model.options.role')) {
                 role = get(this, 'attr.model.options.role');
             }
