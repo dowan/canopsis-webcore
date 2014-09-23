@@ -46,7 +46,6 @@ define([
             delete payload.success;
 
             console.log('normalizePayload', arguments);
-            console.log(this);
 
             var typeKey = type.typeKey,
                 typeKeyPlural = typeKey.pluralize();

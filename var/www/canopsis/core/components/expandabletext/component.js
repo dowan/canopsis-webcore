@@ -36,7 +36,7 @@ define([
 
         var limit = options.limit || 100,
             preserveTags = (typeof options.preserveTags !== 'undefined') ? options.preserveTags : true,
-            sufix = options.sufix || '...';
+            sufix = options.sufix || '';
 
         var arr = html.replace(/</g, "\n<")
                       .replace(/>/g, ">\n")

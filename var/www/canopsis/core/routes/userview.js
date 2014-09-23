@@ -23,7 +23,8 @@ define([
     'utils',
     'seeds/RoutesLoader',
     'app/lib/utils/data',
-    'app/lib/utils/forms'
+    'app/lib/utils/forms',
+    'app/lib/loaders/schemas'
 ], function(Application, AuthenticatedRoute, utils, dataUtils, formUtils) {
     var set = Ember.set,
         get = Ember.get;
@@ -60,12 +61,9 @@ define([
             toggleFullscreen: function() {
                 var applicationController = this.controllerFor('application');
 
-                //TODO one line
-                if(get(applicationController, 'fullscreenMode')) {
-                    set(applicationController, 'fullscreenMode', false);
-                } else {
-                    set(applicationController, 'fullscreenMode', true);
-                }
+                var updatedFullscreenMode = !get(applicationController, 'fullscreenMode');
+
+                set(applicationController, 'fullscreenMode', updatedFullscreenMode);
             },
 
             /**

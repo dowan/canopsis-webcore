@@ -21,19 +21,22 @@
 //TODO implement auto check for mvct file existence and require them automatically
 
 var componentsTemplates = [
-    'expandableaddbutton',
+    'arrayclassifiedcrecordselector',
+    'checkbox',
+    'classifiedcrecordselector',
     'classifieditemselector',
-    'wrapper',
     'editor',
+    'expandableaddbutton',
     'expandabletext',
+    'filterclause',
+    'flotchart',
+    'progressbar',
     'renderer',
+    'searchbar',
+    'stringclassifiedcrecordselector',
     'table',
     'tooltip',
-    'filterclause',
-    'checkbox',
-    'searchbar',
-    'flotchart',
-    'progressbar'
+    'wrapper'
 ];
 
 var deps = ['ember'];

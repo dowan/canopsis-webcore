@@ -28,6 +28,7 @@ var helpers = [
     'editor',
     'enableview',
     'format-date',
+    'formview',
     'getfield',
     'glyphicon',
     'group',

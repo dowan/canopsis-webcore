@@ -20,8 +20,9 @@
 define([
     'jquery',
     'ember',
-    'app/application'
-], function($, Ember, Application) {
+    'app/application',
+    'app/view/form'
+], function($, Ember, Application, FormView) {
 
     var view = Ember.View.extend({
         init: function() {
@@ -30,6 +31,7 @@ define([
         },
 
         hooksRegistered: false,
+        formViewClass : FormView,
 
         didInsertElement: function () {
             this.$("#formwrapper").draggable({

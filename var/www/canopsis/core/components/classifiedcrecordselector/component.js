@@ -35,6 +35,7 @@ define([
         items: [],
 
         selectedValue: undefined,
+        selectionUnprepared:  [],
 
         init: function() {
             this._super(arguments);
@@ -46,14 +47,7 @@ define([
             var initialContent = get(this, 'content');
             console.log('init', initialContent);
 
-            if(initialContent) {
-                if( typeof initialContent === "string") {
-                    set(this, 'selectionUnprepared', [{ 'name': initialContent}]);
-                } else {
-                    console.log("initialContent", initialContent);
-                    throw "not implemented";
-                }
-            }
+            this.setInitialContent(initialContent);
 
             this.refreshContent();
         },
@@ -64,13 +58,18 @@ define([
             }
         },
 
+        /**
+         * Must be implemented to fill the content at form load
+         */
+        setInitialContent: function(initialContent) {},
+
         /*
          * Compute a structure with classified item each time the 'items' property changed
          */
         classifiedItems : function(){
-            console.log("recompute classifiedItems", get(this, 'items'));
             var items = get(this, 'items');
             var valueKey = get(this, 'valueKey');
+            console.log("recompute classifiedItems", get(this, 'items'), valueKey);
 
             var res = Ember.Object.create({
                 all: Ember.A()
@@ -80,6 +79,7 @@ define([
                 var currentItem = items[i];
                 var objDict = { name: currentItem.get('crecord_name') };
                 if(valueKey) {
+                    console.log('add valueKey', currentItem.get(valueKey));
                     objDict.value = currentItem.get(valueKey);
                     console.log('objDict value', currentItem, currentItem.get(valueKey));
                 }
@@ -97,23 +97,23 @@ define([
 
             if(get(this, "multiselect")) {
                 res = Ember.A();
+                console.log("Push", selectionUnprepared[0]);
 
                 if(valueKey) {
                     for (var i = 0; i < selectionUnprepared.length; i++) {
-                        res.pushObject(get(selectionUnprepared[i], 'value'));
+                        res.pushObject(selectionUnprepared[i]);
                     }
                 } else {
                     for (var j = 0; j < selectionUnprepared.length; j++) {
-                        res.pushObject(get(selectionUnprepared[j], 'name'));
+                        res.pushObject(selectionUnprepared[j]);
                     }
                 }
             } else {
                 if(Ember.isArray(selectionUnprepared)) {
-
                     if(valueKey) {
-                        res = get(selectionUnprepared[0], 'value');
+                        res = selectionUnprepared[0];
                     } else {
-                        res = get(selectionUnprepared[0], 'name');
+                        res = selectionUnprepared[0];
                     }
                 }
             }
@@ -135,8 +135,6 @@ define([
             this._super(arguments);
 
             this.findItems();
-
-            var me = this;
 
             console.log(this.get('widgetDataMetas'));
         },
@@ -161,20 +159,17 @@ define([
             store.findQuery('crecord', query).then(function(result) {
                 me.set('widgetDataMetas', result.meta);
                 var items = result.get('content');
-                me.set('items', result.get('content'));
+                me.set('items', items);
 
                 Ember.run.scheduleOnce('afterRender', {}, function() { me.rerender(); });
-
-                me.extractItems(result);
+                me.extractItems(items);
             });
         },
 
-        extractItems: function(queryResult) {
-            console.log("extractItems", queryResult);
-        }
+        extractItems: function() {}
     });
 
-    Application.ComponentClassifiedcrecordselectorComponent = component.extend();
+    Application.ComponentClassifiedcrecordselectorComponent = component;
 
     return component;
 });

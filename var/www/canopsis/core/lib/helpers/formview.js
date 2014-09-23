@@ -17,20 +17,9 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember-data',
-    'app/application',
-    'app/serializers/application',
-    'app/mixins/embeddedrecordserializer'
-], function(DS, Application, ApplicationSerializer, EmbeddedRecordSerializerMixin) {
+define(['ember', 'app/view/form'], function(Ember, FormView) {
 
-    var serializerClass = ApplicationSerializer.extend(
-        EmbeddedRecordSerializerMixin,
-        {}
-    );
-
-    Application.UserviewSerializer = serializerClass;
-    Application.WidgetwrapperSerializer = serializerClass;
-
-    return serializerClass;
+    Ember.Handlebars.helper('formview', FormView);
 });
+
+

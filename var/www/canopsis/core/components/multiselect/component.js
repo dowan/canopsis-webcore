@@ -170,9 +170,7 @@ define([
         return buffer;
     });
 
-    Ember.Handlebars.helper( 'multi-select-component3', Ember.Widgets.MultiSelectComponent3 );
-
-    Ember.Widgets.MultiSelectComponent3 = component;
+    Application.ComponentMultiselectComponent = component;
 
     return component;
 });

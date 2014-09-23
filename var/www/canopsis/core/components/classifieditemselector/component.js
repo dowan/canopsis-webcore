@@ -151,11 +151,16 @@ define([
         expandedPanelCssClass: 'list-group',
 
         classList: function(){
-            return $.map(contentByClass, function(value, key) {
-                if (contentByClass.hasOwnProperty(key)) {
-                    return key;
-                }
-            });
+            var contentByClass = get(this, 'content.byClass');
+            console.log('contentByClass', contentByClass);
+
+            if(contentByClass !== null && contentByClass !== undefined) {
+                return $.map(contentByClass, function(value, key) {
+                    if (contentByClass.hasOwnProperty(key)) {
+                        return key;
+                    }
+                });
+            }
         }.property('content'),
 
         classesFiltered: function(){

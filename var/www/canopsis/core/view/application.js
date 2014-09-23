@@ -119,7 +119,6 @@ define([
             });
 
             /* Sidebar tree view */
-            //TODO uncomment while ready
             $(".sidebar .treeview").tree();
 
             /* 
@@ -155,7 +154,6 @@ define([
 
             //Fix the fixed layout sidebar scroll bug
             fix_sidebar();
-            console.log("sidebar", $(".sidebar"));
         }
     });
 
