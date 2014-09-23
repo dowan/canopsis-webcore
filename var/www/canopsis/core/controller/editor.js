@@ -22,7 +22,9 @@ define([
     'app/application'
 ], function(Ember, Application) {
 
-    Application.EditorController = Ember.ObjectController.extend({});
+    var controller = Ember.ObjectController.extend({});
 
-    return Application.EditorController;
+    Application.EditorController = controller;
+
+    return controller;
 });

@@ -78,10 +78,10 @@ define([
             - callback, witch is called once form sent
             - plain ajax contains information that will be used insted of ember data mechanism
     */
-    Application.FormController = eventedController.extend({
+    var controller = eventedController.extend({
         init: function() {
-            var formParent = this.get('formParent');
-            this.set('previousForm', formParent);
+            var formParent = get(this, 'formParent');
+            set(this, 'previousForm', formParent);
 
             this._super.apply(this, arguments);
         },
@@ -100,7 +100,7 @@ define([
         submit: $.Deferred(),
         actions: {
             previousForm: function() {
-                var previousForm = this.get('previousForm');
+                var previousForm = get(this, 'previousForm');
 
                 console.log('previousForm', previousForm, this);
                 formUtils.showInstance(previousForm);
@@ -121,10 +121,10 @@ define([
                     console.log("resolve modelform submit");
                     if ( this.confirmation ){
                         var record = this.formContext;
-                        ctools.forms.showNew('confirmform', record , { title : " confirmation "  , newRecord : arguments[0]});
+                        formUtils.showNew('confirmform', record , { title : " confirmation "  , newRecord : arguments[0]});
                     } else {
                         this.submit.resolve(this, arguments);
-                        this.get('formwrapper').trigger("hide");
+                        get(this, 'formwrapper').trigger("hide");
                     }
                 }
             },
@@ -150,5 +150,7 @@ define([
         }.property()
     });
 
-    return Application.FormController;
+    Application.FormController = controller;
+
+    return controller;
 });

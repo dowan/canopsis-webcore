@@ -25,7 +25,7 @@ define([
 ], function(Ember, Application) {
     var eventedController = Ember.Controller.extend(Ember.Evented);
 
-    Application.FormwrapperController = eventedController.extend({
+    var controller = eventedController.extend({
         actions: {
             show: function() {
                 console.log("FormwrapperController show", this);
@@ -34,5 +34,7 @@ define([
         }
     });
 
-    return Application.FormwrapperController;
+    Application.FormwrapperController = controller;
+
+    return controller;
 });

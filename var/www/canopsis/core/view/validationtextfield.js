@@ -1,11 +1,12 @@
   define([
-  'jquery',
   'ember',
   'app/application',
   'app/mixins/validationfield'
-], function($, Ember, Application ) {
-    Application.ValidationTextField = Ember.TextField.extend(Application.ValidationFieldMixin,{
-    });
+], function(Ember, Application, ValidationFieldMixin) {
 
-    void ($);
+    var view = Ember.TextField.extend(ValidationFieldMixin, {});
+
+    Application.ComponentValidationtextfieldComponent = view;
+
+    return view;
 });

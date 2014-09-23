@@ -24,19 +24,24 @@ define([
     'app/lib/loaders/schemas'
 ], function(Ember, Application, InspectableItem) {
 
-    Application.CrecordController = Ember.ObjectController.extend(InspectableItem, {
+    var get = Ember.get,
+        set = Ember.set;
+
+    var controller = Ember.ObjectController.extend(InspectableItem, {
         remove: function() {
-            this.get("model").deleteRecord();
-            this.get("model").save();
+            get(this, "model").deleteRecord();
+            get(this, "model").save();
         },
 
         //This is where to get data from the crecord. It should not be changed, and is for internal use only
         dataAccessKey: "content._data",
 
         inspectedDataItem: function() {
-            return this.get('widgetData');
+            return get(this, 'widgetData');
         }.property('widgetData')
     });
 
-    return Application.CrecordController;
+    Application.CrecordController = controller;
+
+    return controller;
 });

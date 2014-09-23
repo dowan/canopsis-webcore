@@ -19,7 +19,7 @@
 
 define(['ember', 'app/view/validationtextarea'], function(Ember, ValidationtextareaView) {
 
-    Ember.Handlebars.helper('validationtextarea', ValidationtextareaView);
+    Ember.Handlebars.helper('component-validationtextarea', ValidationtextareaView);
 });
 
 

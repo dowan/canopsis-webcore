@@ -62,7 +62,7 @@ define([
                 }
             }
 
-            if ( formContext.get && Ember.isNone(formContext.get('crecord_type'))) {
+            if (formContext.get && Ember.isNone(formContext.get('crecord_type'))) {
                 console.warn('There is no crecord_type in the given record. Form may not display properly.');
             }
 

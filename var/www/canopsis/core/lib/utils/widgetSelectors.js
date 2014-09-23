@@ -34,18 +34,18 @@ define(['ember'], function(Ember) {
             var widgets = widgetSelectors.directChildren(widget);
             var sub_tree = [];
 
-            for (var i=0; i<widgets.length; i++) {
-
+            for (var i = 0, l = widgets.length; i < l; i++) {
                 console.log('iterating over widget ', widgets[i].get('id'));
                 sub_tree.push(widgetSelectors.toTree(widgets[i]));
-
             }
 
             tree[widget.get('id')] = {
                 children: sub_tree,
                 widget: widget
             };
+
             console.log('will return sub tree', tree);
+
             return tree;
         },
 
@@ -62,8 +62,8 @@ define(['ember'], function(Ember) {
             var result = [];
 
             if(!Ember.isNone(widgets)) {
-                for (var i=0; i<widgets.length; i++) {
-                    result.push(widgets[i].get('widget'));
+                for (var i = 0, l = widgets.length; i < l; i++) {
+                    result.push(get(widgets[i], 'widget'));
                 }
             }
             return result;
@@ -79,12 +79,12 @@ define(['ember'], function(Ember) {
             var all = [];
             var widgets = widgetSelectors.directChildren(widget);
 
-            for (var i=0; i<widgets.length; i++) {
-                console.log('iterating over widget ',i)
+            for (var i = 0, li = widgets.length; i < l; i++) {
+                console.log('iterating over widget ',i);
 
                 var children = widgetSelectors.children(widgets[i]);
 
-                for(var j=0;j<children.length;j++){
+                for(var j = 0, lj = children.length; j < lj;j++){
                     console.log('iterating over sub children', j );
                     all.push(children[j]);
                 }
@@ -126,11 +126,11 @@ define(['ember'], function(Ember) {
             if (filter.keyEquals) {
                 for (var key in filter.keyEquals) {
                     console.log('checking if key', key, 'is in widget');
-                    for (var i=0; i<widgets.length; i++) {
+                    for (var i = 0, l = widgets.length; i < l; i++) {
                         if (widgets[i].get(key) === filter.keyEquals[key]) {
-                            if (Ember.isNone(selectedKeys[widgets[i].get('id')])) {
+                            if (Ember.isNone(selectedKeys[get(widgets[i],'id')])) {
                                 selection.push(widgets[i]);
-                                selectedKeys[widgets[i].get('id')] = true;
+                                selectedKeys[get(widgets[i], 'id')] = true;
                             }
                         }
                     }

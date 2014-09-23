@@ -36,7 +36,7 @@ define([
         }
     });
 
-    Application.LoginController = Ember.ObjectController.extend({
+    var controller = Ember.ObjectController.extend({
         content: {},
 
         getUser: function () {
@@ -47,9 +47,9 @@ define([
                 success: function(data) {
                     if (data.success) {
                         var login = Ember.Object.create(data.data[0]);
-                        controller.set('record', login);
+                        set(controller, 'record', login);
                     }
-                    set(utils, 'session', controller.get('record'));
+                    set(utils, 'session', get(controller, 'record'));
                 },
                 async: false
             });
@@ -63,7 +63,7 @@ define([
                 password: "",
                 shadow: "",
                 cryptedkey: "",
-                authkey: this.get('authkey')
+                authkey: get(this, 'authkey')
             });
         },
 
@@ -76,9 +76,11 @@ define([
         }.property('authkey'),
 
         authkeyChanged: function() {
-            localStorage.cps_authkey = this.get('authkey');
+            localStorage.cps_authkey = get(this, 'authkey');
         }.observes('authkey')
     });
 
-    return Application.LoginController;
+    Application.LoginController = controller;
+
+    return controller;
 });

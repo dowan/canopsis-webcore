@@ -37,9 +37,10 @@ define(['app/application'], function(Application) {
                     }
                 }
             }
-        return result;
+
+            return result;
         }
-    }
+    };
 
     return filterObjectUtils;
 });

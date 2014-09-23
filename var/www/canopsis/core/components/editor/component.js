@@ -19,7 +19,8 @@
 
 define([
     'ember',
-    'app/application'
+    'app/application',
+    'app/lib/helpers/validationtextfield'
 ], function(Ember, Application) {
 
     var component = Ember.Component.extend({

@@ -22,7 +22,7 @@ define([
     'app/application'
 ], function(Ember, Application) {
 
-    Application.JournalController = Ember.Controller.extend({
+    var controller = Ember.Controller.extend({
         needs: ['login'],
 
         init: function() {
@@ -58,5 +58,7 @@ define([
         }
     });
 
-    return Application.JournalController;
+    Application.JournalController = controller;
+
+    return controller;
 });

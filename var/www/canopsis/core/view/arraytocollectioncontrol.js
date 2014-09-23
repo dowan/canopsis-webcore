@@ -23,9 +23,10 @@ define([
     'app/mixins/arraymixin',
     'app/view/crecords'
 ], function(Ember, Application) {
+    var get = Ember.get,
+        set = Ember.set;
 
-
-    Application.ArrayToCollectionControlView = Ember.CollectionView.extend({
+    var view = Ember.CollectionView.extend({
         cssClass: "tooltiptable hint--rounded hint--top btn btn-",
         cssClassON : "success",
         cssClassOFF : "danger",
@@ -51,7 +52,7 @@ define([
         },
         changeCssClass : function(template,value) {
             var CSSclassToUse =  (this.checkIfAContainB(value,template))? this.cssClassON : this.cssClassOFF;
-            Ember.set(template, "CSSclass", this.cssClass+CSSclassToUse);
+            set(template, "CSSclass", this.cssClass+CSSclassToUse);
         },
 
         checkIfAContainB : function(value, template) {
@@ -76,6 +77,8 @@ define([
             }
         }
     });
-    return Application.ArrayToControlView;
 
+    Application.ArrayToCollectionControlView = view;
+
+    return view;
 });

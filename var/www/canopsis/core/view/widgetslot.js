@@ -21,15 +21,17 @@ define([
     'ember',
     'app/application'
 ], function(Ember, Application) {
+    var get = Ember.get,
+        set = Ember.set;
 
     var view = Ember.View.extend({
         init: function() {
-            console.log('widgetslot init', this.get('controller.content.widgetslotTemplate'));
+            console.log('widgetslot init', get(this, 'controller.content.widgetslotTemplate'));
 
-            var widgetslotTemplate = this.get('controller.content.widgetslotTemplate');
+            var widgetslotTemplate = get(this, 'controller.content.widgetslotTemplate');
 
             if(widgetslotTemplate !== undefined && widgetslotTemplate !== null && Ember.TEMPLATES[widgetslotTemplate] !== undefined) {
-                this.set('templateName', widgetslotTemplate);
+                set(this, 'templateName', widgetslotTemplate);
             }
             this._super.apply(this, arguments);
         },
@@ -40,10 +42,10 @@ define([
         actions: {
             minimize: function() {
                 console.log('minimize action', arguments);
-                if(this.get('minimized') === true) {
-                    this.set('minimized', false);
+                if(get(this, 'minimized') === true) {
+                    set(this, 'minimized', false);
                 } else {
-                    this.set('minimized', true);
+                    set(this, 'minimized', true);
                 }
             }
         }

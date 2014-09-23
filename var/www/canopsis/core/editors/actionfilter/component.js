@@ -25,7 +25,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-    Application.ComponentActionfilterComponent = Ember.Component.extend({
+    var component = Ember.Component.extend({
 
         init: function() {
             this._super();
@@ -90,5 +90,7 @@ define([
 
     });
 
-    return Application.ComponentActionfilterComponent;
+    Application.ComponentActionfilterComponent = component;
+
+    return component;
 });

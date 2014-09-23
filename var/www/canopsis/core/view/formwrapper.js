@@ -23,11 +23,13 @@ define([
     'app/application',
     'app/view/form'
 ], function($, Ember, Application, FormView) {
+    var get = Ember.get,
+        set = Ember.set;
 
     var view = Ember.View.extend({
         init: function() {
             this._super();
-            console.log("formwrapper view init", this, this.get('controller'));
+            console.log("formwrapper view init", this, get(this, 'controller'));
         },
 
         hooksRegistered: false,
@@ -75,8 +77,8 @@ define([
             }
 
             $("#formwrapper").modal('show');
-            if (this.get('controller.form')) {
-                this.get('controller.form').send('show');
+            if (get(this, 'controller.form')) {
+                get(this, 'controller.form').send('show');
             }
 
             var popupLeft = ($(window).width() - $("#formwrapper > .modal-dialog").outerWidth()) / 2;
@@ -90,9 +92,9 @@ define([
 
         onPopupHidden: function() {
             console.log("onPopupHidden", arguments);
-            if (this.get('controller.form.submit').state() === "pending") {
+            if (get(this, 'controller.form.submit').state() === "pending") {
                 console.info("rejecting form submission");
-                this.get('controller.form').send("abort");
+                get(this, 'controller.form').send("abort");
             }
         }
     });

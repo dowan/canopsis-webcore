@@ -23,62 +23,67 @@ define([
     'app/view/crecords'
 ], function(Ember, Application) {
 
+    var get = Ember.get,
+        set = Ember.set;
 
-Application.CollectionViewCheckBox = Ember.CollectionView.extend({
+    var view = Ember.CollectionView.extend({
 
-    /**
-     * Create a deep Copy.(no change are made on account instance until save boutton is pressed)
-     */
-     //TODO : Make a base class for array from this one
-    init: function() {
-        var value = this.get("value");
-        var valueRef = this.get("valueRef");
+        /**
+         * Create a deep Copy.(no change are made on account instance until save boutton is pressed)
+         */
+         //TODO : Make a base class for array from this one
+        init: function() {
+            var value = get(this, 'value');
+            var valueRef = get(this, 'valueRef');
 
-        console.log("valueRef", valueRef);
-        //FIXME @Momo does not work on record creation
-        if (valueRef === undefined) {
-            valueRef = [false];
-        }
+            console.log("valueRef", valueRef);
+            //FIXME @Momo does not work on record creation
+            if (valueRef === undefined) {
+                valueRef = [false];
+            }
 
-        value = valueRef.slice(0);
+            value = valueRef.slice(0);
 
-        this.set("value",value);
-        this._super();
-    },
+            set(this, 'value', value);
+            this._super();
+        },
 
-    registerFieldWithController: function() {
-        var ArrayFields = this.get('controller.ArrayFields');
-        if (ArrayFields) {
-            ArrayFields.pushObject(this);
-        }
-    }.on('didInsertElement'),
+        registerFieldWithController: function() {
+            var ArrayFields = get(this, 'controller.ArrayFields');
+            if (ArrayFields) {
+                ArrayFields.pushObject(this);
+            }
+        }.on('didInsertElement'),
 
-    onUpdate: function() {
-        var value = this.get("value");
-        var valueRef = this.get("valueRef");
+        onUpdate: function() {
+            var value = get(this, 'value');
+            var valueRef = get(this, 'valueRef');
 
-        while(valueRef.length > 0) {
-            valueRef.pop();
-        }
+            while(valueRef.length > 0) {
+                valueRef.pop();
+            }
 
-        for (var key in value) {
-            valueRef[key] = value[key] ;
-        }
-        this.set("valueRef", valueRef);
-    },
+            for (var key in value) {
+                valueRef[key] = value[key] ;
+            }
+            set(this, "valueRef", valueRef);
+        },
 
-    valueRef: "",
-    value: "",
-    templateName: 'collection_template',
-    itemViewClass: Ember.View.extend({
-        tagName: 'li',
-        template: Ember.Handlebars.compile("<label> {{view Canopsis.Application.customCheckBoxView contentBinding='title'}}{{title}}</label>")
-    }),
-    content: [
-        { title: 'Read' },
-        { title: 'Write' }
-    ]
-});
-    return Application.CollectionViewCheckBox;
+        valueRef: "",
+        value: "",
+        templateName: 'collection_template',
+        itemViewClass: Ember.View.extend({
+            tagName: 'li',
+            template: Ember.Handlebars.compile("<label> {{view Canopsis.Application.customCheckBoxView contentBinding='title'}}{{title}}</label>")
+        }),
+        content: [
+            { title: 'Read' },
+            { title: 'Write' }
+        ]
+    });
+
+    Application.CollectionViewCheckBox = view;
+
+    return view;
 
 });

@@ -19,7 +19,7 @@
 
 define(['ember', 'app/view/validationtextfield'], function(Ember, ValidationtextfieldView) {
 
-    Ember.Handlebars.helper('validationtextfield', ValidationtextfieldView);
+    // Ember.Handlebars.helper('validationtextfield', ValidationtextfieldView);
 });
 
 

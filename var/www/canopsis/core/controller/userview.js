@@ -30,7 +30,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-    Application.UserviewController = CrecordController.extend(Ember.Evented, {
+    var controller = CrecordController.extend(Ember.Evented, {
         needs: ['application'],
 
         actions: {
@@ -45,12 +45,12 @@ define([
                     var newWidgetWrapper = newWidgetWrappers[0];
 
                     console.log('onsubmit, adding widgetwrapper to containerwidget', newWidgetWrapper, containerController);
-                    console.log('containerwidget items', containerController.get('content.items.content'));
+                    console.log('containerwidget items', get(containerController, 'content.items.content'));
                     //FIXME wrapper does not seems to have a widget
-                    containerController.get('content.items.content').pushObject(newWidgetWrapper);
+                    get(containerController, 'content.items.content').pushObject(newWidgetWrapper);
 
                     console.log("saving view");
-                    userviewController.get('content').save();
+                    get(userviewController, 'content').save();
                 });
 
                 widgetChooserForm.submit.fail(function() {
@@ -65,5 +65,7 @@ define([
         }
     });
 
-    return Application.UserviewController;
+    Application.UserviewController = controller;
+
+    return controller;
 });

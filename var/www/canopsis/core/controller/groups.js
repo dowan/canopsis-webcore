@@ -22,7 +22,7 @@ define([
     'app/controller/crecords'
 ], function(Application, CrecordsController) {
 
-    Application.GroupsController = CrecordsController.extend({
+    var controller = CrecordsController.extend({
         itemType: 'group',
         toolbar: [{
             title: 'Refresh',
@@ -45,5 +45,7 @@ define([
         }
     });
 
-    return Application.GroupsController;
+    Application.GroupsController = controller;
+
+    return controller;
 });
