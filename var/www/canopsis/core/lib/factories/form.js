@@ -24,6 +24,9 @@ define([
     'app/view/form'
 ], function(Application, FormController, formsregistry) {
 
+    var get = Ember.get,
+        set = Ember.set;
+
     /**
      * Form factory. Creates a controller, stores it in Application
      * @param formName {string} the name of the new form. lowercase
@@ -53,13 +56,14 @@ define([
             }
         }
 
+        set(classdict, 'formName', formName);
+
         extendArguments.push(classdict);
 
         var formControllerName = formName.camelize().capitalize() + "Controller";
         var formViewName = formName.camelize().capitalize() + "View";
         console.log("extendArguments", extendArguments);
         console.log("subclass", options.subclass);
-
 
         Application[formViewName] = Application.FormView.extend();
         Application[formControllerName] = options.subclass.extend.apply(options.subclass, extendArguments);

@@ -96,7 +96,7 @@ define([
                         interval = {};
                     }
 
-                    console.debug('record generated', record.get('dateinterval'));
+                    console.debug('record generated', get(record, 'dateinterval'));
 
                     for (var i = 0, l = children.length; i < l; i++) {
 
