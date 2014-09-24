@@ -11,7 +11,7 @@
     <div class="tab-content">
         {{#each category in controller.categories}}
 
-            {{#if Canopsis.controller.onePageDisplay}}
+            {{#if controller.onePageDisplay}}
                 <center><h4>{{category.title}}</h4></center>
 
                 {{#each attr in category.keys}}

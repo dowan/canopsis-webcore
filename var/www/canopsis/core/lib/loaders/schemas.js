@@ -342,7 +342,7 @@ define(schemasDeps, function(DS, Application, utils) {
             parentModelClassName);
 
 
-        Application.available_types.push(schemaName);
+        available_types.push(schemaName);
         console.groupEnd();
     }
 
@@ -364,8 +364,7 @@ define(schemasDeps, function(DS, Application, utils) {
         return newOptions ;
     }
 
-    //Module's main thread: init schemas from many sources
-    Application.available_types = [];
+    var available_types = [];
 
     var shemasLimit = 1000;
     $.ajax({
@@ -389,4 +388,5 @@ define(schemasDeps, function(DS, Application, utils) {
     });
 
 
+    return available_types;
 });

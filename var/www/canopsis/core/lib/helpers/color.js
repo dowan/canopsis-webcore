@@ -49,7 +49,6 @@ define(['ember', 'app/application'], function(Ember, Application) {
         }
 
         return new Ember.Handlebars.SafeString('<div class="color" ' + style + '>' + color + '</div>');
-
     });
 
 });

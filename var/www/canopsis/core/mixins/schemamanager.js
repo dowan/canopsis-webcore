@@ -20,13 +20,15 @@
 define([
     'ember',
     'app/application',
-    'canopsis/canopsisConfiguration'
-], function(Ember, Application, canopsisConfiguration) {
+    'canopsis/canopsisConfiguration',
+    'app/lib/loaders/schemas'
+], function(Ember, Application, canopsisConfiguration, available_types) {
     var get = Ember.get,
         set = Ember.set;
 
     var mixin = Ember.Mixin.create({
         configuration: canopsisConfiguration,
+        available_types : available_types,
 
         partials: {
             statusbar: ['schemamanagerstatusmenu']

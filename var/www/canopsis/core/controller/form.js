@@ -79,6 +79,8 @@ define([
             - plain ajax contains information that will be used insted of ember data mechanism
     */
     var controller = eventedController.extend({
+        needs: ['application'],
+
         init: function() {
             var formParent = get(this, 'formParent');
             set(this, 'previousForm', formParent);
