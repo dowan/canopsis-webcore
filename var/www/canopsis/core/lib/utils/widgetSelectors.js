@@ -58,7 +58,7 @@ define(['ember'], function(Ember) {
 
             console.log('in direct children');
 
-            var widgets = widget.get('items.content');
+            var widgets = get(widget, 'items.content');
             var result = [];
 
             if(!Ember.isNone(widgets)) {

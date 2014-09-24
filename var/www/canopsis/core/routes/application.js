@@ -44,7 +44,7 @@ define([
                     }
                 }
 
-                var formName = formController.get('formName');
+                var formName = get(formController, 'formName');
                 console.log("showEditFormWithController", formController, formName, formContext, options);
 
                 var formwrapperController = this.controllerFor('formwrapper');

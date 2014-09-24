@@ -19,12 +19,15 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/application',
+    'canopsis/canopsisConfiguration'
+], function(Ember, Application, canopsisConfiguration) {
     var get = Ember.get,
         set = Ember.set;
 
     var mixin = Ember.Mixin.create({
+        configuration: canopsisConfiguration,
+
         partials: {
             statusbar: ['schemamanagerstatusmenu']
         }

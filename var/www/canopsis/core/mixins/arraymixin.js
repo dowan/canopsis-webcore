@@ -22,8 +22,11 @@ define([
     'app/application',
     'app/lib/formsregistry'
 ], function(Ember, Application, formsregistry) {
-     content:Ember.A(),
-    Application.ArrayMixin = Ember.Mixin.create({
+
+    var get = Ember.get,
+        set = Ember.set;
+
+    var mixin = Ember.Mixin.create({
         cssClass: "tooltiptable hint--rounded hint--top btn btn-",
         cssClassON : "success",
         cssClassOFF : "danger",
@@ -78,7 +81,7 @@ define([
          *  Get and Reset content .
          */
         getContent: function() {
-            var  contentREF = this.get("content");
+            var  contentREF = get(this, "content");
             // WARNING : clear content and content must be an array
             while(contentREF.length > 0) {
             contentREF.pop();
@@ -105,7 +108,7 @@ define([
         registerFieldWithController: function() {
             var formController  =  formsregistry.formwrapper.form;
             if ( formController ){
-                var ArrayFields = formController.get('ArrayFields');
+                var ArrayFields = get(formController, 'ArrayFields');
                 if (ArrayFields) {
                     ArrayFields.pushObject(this);
                 }
@@ -141,5 +144,8 @@ define([
             }
         }
     });
-    return Application.ArrayMixin;
+
+    Application.ArrayMixin = mixin;
+
+    return mixin;
 });

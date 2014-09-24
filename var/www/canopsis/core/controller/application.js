@@ -21,6 +21,7 @@ define([
     'ember',
     'ember-data',
     'app/application',
+    'canopsis/canopsisConfiguration',
     'app/controller/partialslotablecontroller',
     'app/mixins/usermenu',
     'app/mixins/schemamanager',
@@ -41,7 +42,7 @@ define([
     'app/adapters/loggedaccount',
     'app/lib/loaders/helpers',
     'app/lib/wrappers/bootstrap'
-], function(Ember, DS, Application, PartialslotAbleController, UsermenuMixin, SchemamanagerMixin, ConsolemanagerMixin, PromisemanagerMixin, NotificationsMixin, ApplicationRoute, utils, formsUtils, dataUtils, hashUtils, notificationUtils) {
+], function(Ember, DS, Application, canopsisConfiguration, PartialslotAbleController, UsermenuMixin, SchemamanagerMixin, ConsolemanagerMixin, PromisemanagerMixin, NotificationsMixin, ApplicationRoute, utils, formsUtils, dataUtils, hashUtils, notificationUtils) {
     var get = Ember.get,
         set = Ember.set;
 
