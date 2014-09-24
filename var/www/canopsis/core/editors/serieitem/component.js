@@ -17,29 +17,38 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+
 define([
     'ember',
-    'app/lib/abstractclassmanager',
     'app/application'
-], function(Ember, Abstractclassmanager) {
+], function(Ember, Application) {
 
-    var inflexions = [
-        ['nagios' , 'nagios'],
-        ['curve', 'curves'],
-        ['serie', 'serie']
-    ];
+    var get = Ember.get,
+        set = Ember.set;
 
-    var inflectionsManager = {
-        all: [],
-        byClass: {}
-    };
+    var component = Ember.Component.extend({
+        availableSeries: function() {
+            var store = get(this, 'componentDataStore');
 
-    console.log(Ember);
+            return store.findAll('serie');
+        }.property(),
 
-    for (var i = 0; i < inflexions.length; i++) {
-        inflectionsManager.all.push(inflexions[i][0] + ' -> ' + inflexions[i][1]);
-        Ember.Inflector.inflector.irregular(inflexions[i][0], inflexions[i][1]);
-    }
+        availableCurves: function() {
+            var store = get(this, 'componentDataStore');
 
-    return inflectionsManager;
+            return store.findAll('curve');
+        }.property(),
+
+        init: function() {
+            this._super(arguments);
+
+            set(this, "componentDataStore", DS.Store.create({
+                container: get(this, "container")
+            }));
+        }
+    });
+
+    Application.ComponentSerieitemComponent = component;
+
+    return component;
 });

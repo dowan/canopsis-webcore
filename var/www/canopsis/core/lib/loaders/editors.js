@@ -49,10 +49,10 @@ var editorsTemplates = [
     { name: 'criticity', js: 'w' },
     { name: 'actionfilter', js: 'w' },
     { name: 'simplelist', js: 'v' },
-    { name: 'jobeditor', js: 'w' },
     { name: 'source', js: 'v' },
     { name: 'stringpair'},
-    { name: 'session', js: 'w' }
+    { name: 'session', js: 'w' },
+    { name: 'serieitem', js: 'w'}
 ];
 
 var deps = ['ember', 'app/routes/userview'];
