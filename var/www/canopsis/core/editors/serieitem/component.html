@@ -1,7 +1,5 @@
-{{#each serie in availableSeries}}
-    <p>-- {{serie.name}}</p>
-{{/each}}
+<p>Choose serie :</p>
+<p>{{view Ember.Select content=availableSeries optionValuePath="content.id" optionLabelPath="content.name" class="form-control"}}</p>
 
-{{#each curve in availableCurves}}
-    <p>++ {{curve.name}}</p>
-{{/each}}
+<p>Choose curve :</p>
+<p>{{view Ember.Select content=availableCurves optionValuePath="content.id" optionLabelPath="content.name" class="form-control"}}</p>

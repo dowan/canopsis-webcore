@@ -33,8 +33,14 @@ define([
 
         valueChanged: function() {
             var metrics = this.get('selectedMetrics');
-            this.set('content', metrics);
+            var ids = [];
 
+            for(var i = 0, l = metrics.length; i < l; i++) {
+                var m_id = get(metric, 'id');
+                ids.push(m_id);
+            }
+
+            this.set('content', ids);
         }.observes('selectedMetrics.@each'),
 
         helpModal: {
