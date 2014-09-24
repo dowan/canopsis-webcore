@@ -23,8 +23,27 @@ define(['ember', 'app/application'], function(Ember, Application) {
 
         var style = '';
 
-        if (color.toLowerCase() !== '#null') {
-            style = 'style="background-color:' + color + '"';
+        if (color && color.toLowerCase() !== '#null') {
+            var max = parseInt('FFFFFF', 16);
+            var bgcolor = parseInt(color, 16);
+            var fgcolor = max - bgcolor;
+            fgcolor = fgcolor.toString(16);
+
+            // Gray scale
+            var r = parseInt(fgcolor.substring(0, 2), 16);
+            var g = parseInt(fgcolor.substring(2, 4), 16);
+            var b = parseInt(fgcolor.substring(4, 6), 16);
+
+            fgcolor = (r + g + b) / 3;
+            fgcolor = parseInt(fgcolor.toFixed());
+            fgcolor = fgcolor.toString(16);
+            fgcolor = fgcolor + fgcolor + fgcolor;
+
+            // set the style attribute
+            var css = 'background-color: #' + color + ';';
+            css += 'color: #' + fgcolor + ';';
+
+            style = 'style="' + css + '"';
         } else {
             color = 'no color';
         }
