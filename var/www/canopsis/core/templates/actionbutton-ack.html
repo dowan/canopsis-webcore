@@ -1,6 +1,6 @@
-{{#if Canopsis.utils.session.rights.actionbutton_ack.checksum}}
-    {{#unless controller.findOptions.useLogCollection}}
-        {{#if minified}}
+{{#unless controller.findOptions.useLogCollection}}
+    {{#if minified}}
+        {{#if controller.parentController.rights.actionbutton_ack.checksum}}
             {{#if this.ack.author}}
                 {{#if this.ack.isAck}}
                     {{#component-tooltip content="Cancel ack"}}
@@ -18,7 +18,9 @@
                     {{/component-tooltip}}
                 {{/if}}
             {{/if}}
-        {{else}}
+        {{/if}}
+    {{else}}
+        {{#if controller.rights.actionbutton_ack.checksum}}
             {{#component-tooltip content="Ack"}}
                 <button class="btn btn-default" {{action 'sendEvent' 'ack'}} >
                     {{glyphicon "ok"}} {{tr 'Ack'}}
@@ -31,5 +33,5 @@
                 </button>
             {{/component-tooltip}}
         {{/if}}
-    {{/unless}}
-{{/if}}
+    {{/if}}
+{{/unless}}

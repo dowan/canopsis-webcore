@@ -1,6 +1,6 @@
-{{#if Canopsis.utils.session.rights.actionbutton_cancel.checksum}}
-    {{#unless controller.findOptions.useLogCollection}}
-        {{#if minified}}
+{{#unless controller.findOptions.useLogCollection}}
+    {{#if minified}}
+        {{#if controller.parentController.rights.actionbutton_cancel.checksum}}
             {{#if this.ack.isAck}}
                 {{#component-tooltip content="Remove"}}
                     <button class="btn btn-default btn-sm" {{action 'sendEvent' 'cancel' this}} >
@@ -16,7 +16,9 @@
                     </button>
                 {{/component-tooltip}}
             {{/if}}
-        {{else}}
+        {{/if}}
+    {{else}}
+        {{#if controller.rights.actionbutton_cancel.checksum}}
             {{#component-tooltip content="Remove"}}
                 <button class="btn btn-default" {{action 'sendEvent' 'cancel'}} >
                     {{glyphicon "trash"}} {{tr 'Remove'}}
@@ -28,5 +30,5 @@
                 </button>
             {{/component-tooltip}}
         {{/if}}
-    {{/unless}}
-{{/if}}
+    {{/if}}
+{{/unless}}

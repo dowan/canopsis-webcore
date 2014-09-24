@@ -192,10 +192,10 @@ define([
 
                 var applicationController = this;
 
-                var username = utils.session.get('user');
+                var username = get(utils.session, 'user');
 
                 var dataStore = DS.Store.create({
-                    container: this.get("container")
+                    container: get(this, "container")
                 });
 
                 var record = dataStore.findQuery('loggedaccount', {
@@ -261,13 +261,13 @@ define([
 
                 console.log('ticketConfig:', ticketConfig);
 
-                var job = ticketConfig.get('job');
-                var params = job.get('params');
+                var job = get(ticketConfig, 'job');
+                var params = get(job, 'params');
 
                 console.log('job:', job, params);
 
                 if(params) {
-                    console.log('param subject', params.get('subject'));
+                    console.log('param subject', get(params, 'subject'));
                 }
 
                 var editForm = formsUtils.showNew('jobform', job, {
@@ -337,13 +337,13 @@ define([
 
                 function transitionToView(userview) {
                     console.log('userview saved, switch to the newly created view');
-                    applicationController.send('showView', userview.get('id'));
+                    applicationController.send('showView', get(userview, 'id'));
                 }
 
                 recordWizard.submit.done(function() {
                     console.log("userview.save()");
                     console.log(userview.save());
-                    applicationController.transitionToRoute("/userview/" + userview.get('id'));
+                    applicationController.transitionToRoute("/userview/" + get(userview, 'id'));
                 });
             },
 

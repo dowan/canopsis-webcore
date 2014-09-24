@@ -72,6 +72,8 @@ define([
                 ListViewMixin
             ],
 
+            rights: Ember.computed.alias('controllers.login.record.rights'),
+
             mergedProperties: ['partials'],
 
             partials: {
