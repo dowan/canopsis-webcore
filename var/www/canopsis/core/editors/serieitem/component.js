@@ -39,6 +39,22 @@ define([
             return store.findAll('curve');
         }.property(),
 
+        serieChanged: function() {
+            var store = get(this, 'componentDataStore');
+            var serie_id = get(this, 'selectedSerie');
+            var serie = store.find('serie', serie_id);
+
+            this.set('content.serie', serie);
+        }.property('selectedSerie'),
+
+        curveChanged: function() {
+            var store = get(this, 'componentDataStore');
+            var curve_id = get(this, 'selectedCurve');
+            var curve = store.find('curve', curve_id);
+
+            this.set('content.curve', serie);
+        }.property('selectedCurve'),
+
         init: function() {
             this._super(arguments);
 
