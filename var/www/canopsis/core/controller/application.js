@@ -52,6 +52,8 @@ define([
 
         editMode: false,
 
+        runtimeConfiguration: canopsisConfiguration,
+
         utils: utils,
 
         enginesviews: [
@@ -357,6 +359,7 @@ define([
                 var record = dataUtils.getStore().createRecord(type, {
                     crecord_type: type.underscore()
                 });
+
                 console.log('temp record', record);
 
                 var recordWizard = formsUtils.showNew('modelform', record, { title: __("Add ") + type });

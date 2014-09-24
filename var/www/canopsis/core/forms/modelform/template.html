@@ -6,7 +6,7 @@
             <h4>{{glyphicon 'warning-sign'}} {{tr 'Schema not editable'}}</h4>
             <p>
                 {{tr 'This schema is not editable'}}.
-                {{#if Canopsis.conf.DEBUG}}
+                {{#if controller.controllers.application.runtimeConfiguration.DEBUG}}
                     <div>TODO warn administrators that the schema does not have categories.</div>
                 {{/if}}
             </p>
@@ -23,8 +23,10 @@
     <div class="tab-content">
         {{#each category in controller.categories}}
 
-            {{#if Canopsis.controller.onePageDisplay}}
-                <center><h4>{{category.title}}</h4></center>
+            {{#if controller.onePageDisplay}}
+                <center>
+                    <h4>{{category.title}}</h4>
+                </center>
 
                 {{#each attr in category.keys}}
                     {{#if attr.model.options.readOnly}}
@@ -48,7 +50,7 @@
                         </div>
                     {{else}}
                         {{#unless attr.model.options.hiddenInForm}}
-                             <div>
+                            <div>
                                 {{#if attr.model.options.title}}
                                     <span class="label" style="color:black">
                                         {{tr attr.model.options.title}}
@@ -61,7 +63,7 @@
                                     {{/if}}
                                 {{/if}}
                                 {{component-editor attr=attr form=this}}
-                             </div>
+                            </div>
                         {{/unless}}
                     {{/if}}
                 {{/each}}
@@ -95,25 +97,25 @@
                             {{component-renderer attr=attr record=controller.formContext}}
                         </div>
                     {{else}}
-                             <div>
-                                {{#if attr.model.options.title}}
+                        <div>
+                            {{#if attr.model.options.title}}
+                                <span class="label" style="color:black">
+                                    <b>
+                                        {{tr attr.model.options.title}}
+                                    </b>
+                                </span>
+                            {{else}}
+                                {{#if attr.field}}
                                     <span class="label" style="color:black">
                                         <b>
-                                            {{tr attr.model.options.title}}
+                                            {{tr attr.field}}
                                         </b>
                                     </span>
-                                {{else}}
-                                    {{#if attr.field}}
-                                        <span class="label" style="color:black">
-                                            <b>
-                                                {{tr attr.field}}
-                                            </b>
-                                        </span>
-                                    {{/if}}
                                 {{/if}}
+                            {{/if}}
 
-                                {{component-editor attr=attr form=this}}
-                             </div>
+                            {{component-editor attr=attr form=this}}
+                        </div>
                     {{/if}}
                 {{/each}}
 

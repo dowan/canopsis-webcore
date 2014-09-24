@@ -21,15 +21,16 @@ define([
     'jquery',
     'app/lib/factories/widget'
 ], function($, WidgetFactory) {
-    var get = Ember.get;
+    var get = Ember.get,
+        set = Ember.set;
 
     var widget = WidgetFactory('weather', {
         init: function() {
             this._super();
-            this.set('worst_state', 0);
-            this.set('sub_weather', []);
+            set(this, 'worst_state', 0);
+            set(this, 'sub_weather', []);
             this.fetchStates();
-            console.log('Setting up weather widget : ' + this.get('config.title'));
+            console.log('Setting up weather widget : ' + get(this, 'config.title'));
         },
 
         actions: {
@@ -54,20 +55,20 @@ define([
 
                     console.log("compiledFilterPattern", compiledFilterPattern);
 
-                    list.set("default_filter", compiledFilterPattern);
-                    list.set("rollbackable", true);
-                    list.set("title", "Info on events : " + element.title);
+                    set(list, "default_filter", compiledFilterPattern);
+                    set(list, "rollbackable", true);
+                    set(list, "title", "Info on events : " + element.title);
                 });
             }
         },
 
         //generate and refresh the title
         title: function () {
-            return this.get('config.title');
+            return get(this, 'config.title');
         }.property('config.title'),
 
         icon: function () {
-            return this.class_icon(this.get('worst_state'));
+            return this.class_icon(get(this, 'worst_state'));
         }.property('worst_state'),
 
         //generate weather class depending on status
@@ -82,7 +83,7 @@ define([
 
         //generate and refresh background property for widget weather display
         background: function () {
-            return this.class_background(this.get('worst_state'));
+            return this.class_background(get(this, 'worst_state'));
         }.property('worst_state'),
 
         //generate weather class depending on status
@@ -97,10 +98,10 @@ define([
 
         fetchStates: function () {
             var that = this;
-            var rks = that.get('config.event_selection');
+            var rks = get(that, 'config.event_selection');
 
             if (!rks || !rks.length) {
-                console.warn('Widget weather ' + this.get('title') + ' No rk found, the widget may not be configured properly');
+                console.warn('Widget weather ' + get(this, 'title') + ' No rk found, the widget may not be configured properly');
                 return;
             }
 
@@ -121,7 +122,7 @@ define([
                         console.error('Unable to load event information for weather widget from API');
                     }
                     that.trigger('refresh');
-                    console.log(' + Weather content', that.get('config.event_selection'));
+                    console.log(' + Weather content', get(that, 'config.event_selection'));
                 }
             });
         },
@@ -189,8 +190,8 @@ define([
             console.log('worst_state', worst_state);
 
             console.log('weather content', {sub_weathers: sub_weathers, worst_state: worst_state});
-            this.set('sub_weather', sub_weathers);
-            this.set('worst_state', worst_state);
+            set(this, 'sub_weather', sub_weathers);
+            set(this, 'worst_state', worst_state);
 
             console.groupEnd();
 
@@ -230,7 +231,7 @@ define([
                             filter.$or.push(JSON.parse(mfilter));
                         }
 
-                        Ember.set(subweatherDict, 'selector_filter', JSON.stringify(filter));
+                        set(subweatherDict, 'selector_filter', JSON.stringify(filter));
                     }
                 }
             });
