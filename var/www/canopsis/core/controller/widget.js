@@ -33,8 +33,11 @@ define([
         set = Ember.set;
 
     var controller = PartialslotAbleController.extend({
+        needs: ['application'],
 
         userParams: {},
+
+        editMode : Ember.computed.alias('controllers.application.editMode'),
 
         init: function () {
 

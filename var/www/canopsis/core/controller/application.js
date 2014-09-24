@@ -49,6 +49,8 @@ define([
         SchemamanagerMixin, PromisemanagerMixin, ConsolemanagerMixin, NotificationsMixin, UsermenuMixin, {
         needs: ['login'],
 
+        editMode: false,
+
         utils: utils,
 
         enginesviews: [
@@ -300,12 +302,12 @@ define([
             },
 
             toggleEditMode: function() {
-                if (Canopsis.editMode === true) {
+                if (get(this, 'editMode') === true) {
                     console.info('Entering edit mode');
-                    set(Canopsis, 'editMode', false);
+                    set(this, 'editMode', false);
                 } else {
                     console.info('Leaving edit mode');
-                    set(Canopsis, 'editMode', true);
+                    set(this, 'editMode', true);
                 }
             },
 

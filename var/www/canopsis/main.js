@@ -71,7 +71,6 @@ define([
     Canopsis.components = components;
     Canopsis.Application = Application;
     Canopsis.commit = commit;
-    Canopsis.editMode = false;
 
     window.debugName = [ "ajaxCall",
                         // "confirmForm.submit"
