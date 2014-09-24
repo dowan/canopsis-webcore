@@ -20,11 +20,11 @@
  define([
     'app/application',
     'app/view/arraytocollectioncontrol'
-], function(Application) {
+], function(Application, ArraytocollectioncontrolView) {
     var get = Ember.get,
         set = Ember.set;
 
-    var view = Application.ArrayToCollectionControlView.extend({
+    var view = ArraytocollectioncontrolView.extend({
 
         init: function() {
             var value = this.getValue();

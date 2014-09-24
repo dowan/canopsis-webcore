@@ -41,7 +41,7 @@ define([
 
             console.log('widget init');
 
-            this.get('model').set('controllerInstance', this);
+            get(this, 'model').set('controllerInstance', this);
 
             console.log('viewController', widgetUtils.getParentViewForWidget(this));
             console.log('viewController', get(widgetUtils.getParentViewForWidget(this), 'isMainView'));
@@ -49,9 +49,9 @@ define([
             set(this, 'viewController', widgetUtils.getParentViewForWidget(this));
             set(this, 'isOnMainView', get(widgetUtils.getParentViewForWidget(this), 'isMainView'));
             //manage user configuration
-            this.set('userConfiguration', userConfiguration.create({widget: this}));
+            set(this, 'userConfiguration', userConfiguration.create({widget: this}));
 
-            this.set("container", routesUtils.getCurrentRouteController().container);
+            set(this, "container", routesUtils.getCurrentRouteController().container);
 
             this.startRefresh();
 
@@ -88,7 +88,7 @@ define([
         },
 
         onDomReady: function() {
-            console.log(this.get('title'), 'widget dom load complete');
+            console.log(get(this, 'title'), 'widget dom load complete');
             //To override
         },
 
@@ -249,7 +249,7 @@ define([
                     var foundElementIndex,
                         nextElementIndex;
 
-                    var itemsContent = this.get('content.items.content');
+                    var itemsContent = get(this, 'content.items.content');
 
                     for (var i = itemsContent.length; i >= 0 ; i--) {
                         console.log('loop', i, itemsContent[i], widgetwrapper);

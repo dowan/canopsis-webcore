@@ -26,8 +26,9 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-    Application.entities = ["nagios","shinken"];
-    Application.ApplicationAdapter = DS.RESTAdapter.extend({
+    var entities = ["nagios","shinken"];
+
+    var adapter = DS.RESTAdapter.extend({
         ajax: function(url, type, hash) {
             var promise = this._super(url, type, hash);
 
@@ -51,8 +52,8 @@ define([
         },
 
         buildURL: function(type, id) {
-            var namespace = ( Application.entities.contains(type)   )? "entities" :"object" ;
-            return ("/rest/"+namespace+"/" + type + (!!id ? "/" + id : ""));
+            var namespace = ( entities.contains(type) ) ? "entities" :"object" ;
+            return ("/rest/"+ namespace +"/" + type + (!!id ? "/" + id : ""));
         },
 
         createRecord: function(store, type, record) {
@@ -76,5 +77,7 @@ define([
         }
     });
 
-    return Application.ApplicationAdapter;
+    Application.ApplicationAdapter = adapter;
+
+    return adapter;
 });

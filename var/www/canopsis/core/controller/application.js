@@ -31,6 +31,8 @@ define([
     'utils',
     'app/lib/utils/forms',
     'app/lib/utils/data',
+    'app/lib/utils/hash',
+    'app/lib/utils/notification',
     'app/adapters/cservice',
     'app/adapters/notification',
     'app/serializers/cservice',
@@ -39,11 +41,11 @@ define([
     'app/adapters/loggedaccount',
     'app/lib/loaders/helpers',
     'app/lib/wrappers/bootstrap'
-], function(Ember, DS, Application, PartialslotAbleController, UsermenuMixin, SchemamanagerMixin, ConsolemanagerMixin, PromisemanagerMixin, NotificationsMixin, ApplicationRoute, utils, formsUtils, dataUtils) {
+], function(Ember, DS, Application, PartialslotAbleController, UsermenuMixin, SchemamanagerMixin, ConsolemanagerMixin, PromisemanagerMixin, NotificationsMixin, ApplicationRoute, utils, formsUtils, dataUtils, hashUtils, notificationUtils) {
     var get = Ember.get,
         set = Ember.set;
 
-    Application.ApplicationController = PartialslotAbleController.extend(
+    var controller = PartialslotAbleController.extend(
         SchemamanagerMixin, PromisemanagerMixin, ConsolemanagerMixin, NotificationsMixin, UsermenuMixin, {
         needs: ['login'],
 
@@ -69,7 +71,7 @@ define([
 
         init: function() {
             console.group('app init');
-            utils.notification.setController(this);
+            notificationUtils.setController(this);
 
             var appController = this;
 
@@ -203,7 +205,7 @@ define([
                     var previousUiLanguage = get(record, 'ui_language');
                     console.log('previousUiLanguage', previousUiLanguage);
                     //generating form from record model
-                    var recordWizard = utils.forms.showNew('modelform', record, {
+                    var recordWizard = formsUtils.showNew('modelform', record, {
                         title: username +' '+__('profile'),
                         filterFieldByKey: {
                             'firstname': {readOnly : true},
@@ -223,7 +225,7 @@ define([
 
                         record.save();
 
-                        utils.notification.info(__('profile') + ' ' +__('updated'));
+                        notificationUtils.info(__('profile') + ' ' +__('updated'));
                         console.log(get(record, 'ui_language') , previousUiLanguage);
                         if (get(record, 'ui_language') !== previousUiLanguage) {
                             console.log('Language changed, will prompt for application reload');
@@ -312,7 +314,7 @@ define([
                 var applicationController = this;
                 console.log("add", type);
 
-                var containerwidgetId = utils.hash.generateId('container');
+                var containerwidgetId = hashUtils.generateId('container');
 
                 var containerwidget = dataUtils.getStore().createRecord('verticalbox', {
                     xtype: 'verticalbox',
@@ -320,7 +322,7 @@ define([
                 });
 
                 var userview = dataUtils.getStore().push(type, {
-                    id: utils.hash.generateId('userview'),
+                    id: hashUtils.generateId('userview'),
                     crecord_type: 'view',
                     containerwidget: containerwidgetId,
                     containerwidgetType: 'verticalbox'
@@ -373,6 +375,8 @@ define([
 
     });
 
+    Application.ApplicationController = controller;
+
     void (utils);
-    return Application.ApplicationController;
+    return controller;
 });

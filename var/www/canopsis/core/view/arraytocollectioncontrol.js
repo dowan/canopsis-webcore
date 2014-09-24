@@ -22,11 +22,11 @@ define([
     'app/application',
     'app/mixins/arraymixin',
     'app/view/crecords'
-], function(Ember, Application) {
+], function(Ember, Application, ArrayMixin) {
     var get = Ember.get,
         set = Ember.set;
 
-    var view = Ember.CollectionView.extend({
+    var view = Ember.CollectionView.extend(ArrayMixin, {
         cssClass: "tooltiptable hint--rounded hint--top btn btn-",
         cssClassON : "success",
         cssClassOFF : "danger",

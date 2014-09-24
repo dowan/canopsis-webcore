@@ -21,6 +21,8 @@ define([
     'ember',
     'app/application'
 ], function(Ember, Application) {
+    var get = Ember.get,
+        set = Ember.set;
 
     var controller = Ember.Controller.extend({
         needs: ['login'],
@@ -31,7 +33,7 @@ define([
 
         actions: {
             publish: function(action, component) {
-                var user = this.get('controllers.login.record.user');
+                var user = get(this, 'controllers.login.record.user');
 
                 var ev = {
                     timestamp: Date.now() / 1000,

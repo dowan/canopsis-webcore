@@ -23,13 +23,15 @@ define([
     'app/lib/loaders/schemas',
     'app/view/formwrapper'
 ], function(Ember, Application) {
+    var get = Ember.get;
+
     var eventedController = Ember.Controller.extend(Ember.Evented);
 
     var controller = eventedController.extend({
         actions: {
             show: function() {
                 console.log("FormwrapperController show", this);
-                this.get('widgetwrapperView').showPopup();
+                get(this, 'widgetwrapperView').showPopup();
             }
         }
     });

@@ -21,6 +21,8 @@ define([
     'app/application',
     'app/controller/crecords'
 ], function(Application, CrecordsController) {
+    var get = Ember.get,
+        set = Ember.set;
 
     var controller = CrecordsController.extend({
         itemType: 'group',
@@ -40,7 +42,7 @@ define([
 
         actions: {
             refresh: function() {
-                this.set('content', this.store.findAll('group'));
+                set(this, 'content', this.store.findAll('group'));
             }
         }
     });
