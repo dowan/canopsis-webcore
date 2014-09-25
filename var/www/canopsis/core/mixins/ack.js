@@ -19,25 +19,19 @@
 
 define([
     'ember',
-    'app/lib/abstractclassmanager',
     'app/application'
-], function(Ember, Abstractclassmanager) {
+], function(Ember, Application) {
 
-    var inflexions = [
-        ['nagios' , 'nagios'],
-        ['curve', 'curves'],
-        ['serie', 'serie']
-    ];
+    var get = Ember.get,
+        set = Ember.set;
 
-    var inflectionsManager = {
-        all: [],
-        byClass: {}
-    };
+    var mixin = Ember.Mixin.create({
+        partials: {
+            itemactionbutton: ['actionbutton-ack']
+        }
+    });
 
-    for (var i = 0, l = inflexions.length; i < l; i++) {
-        inflectionsManager.all.pushObject(inflexions[i][0] + ' -> ' + inflexions[i][1]);
-        Ember.Inflector.inflector.irregular(inflexions[i][0], inflexions[i][1]);
-    }
+    Application.AckMixin = mixin;
 
-    return inflectionsManager;
+    return mixin;
 });

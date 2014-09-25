@@ -33,11 +33,12 @@ define(['ember'], function(Ember) {
         byClass: {},
 
         handlePromise: function(promise) {
+            var me = this;
             Ember.run.schedule('sync', this, function() {
                 console.log('manage promise', promise);
-                this.all.pushObject(promise);
-                this.pending.pushObject(promise);
-                this.set('pendingCount', this.pendingCount + 1);
+                me.all.pushObject(promise);
+                me.pending.pushObject(promise);
+                set(me, 'pendingCount', me.pendingCount + 1);
             });
         },
 
@@ -50,19 +51,21 @@ define(['ember'], function(Ember) {
                 console.warn('promise failed with error code 200, assuming it\'s a success');
                 this.promiseSuccess(promise);
             } else {
+                var me = this;
                 Ember.run.schedule('sync', this, function() {
                     console.error('promise failed', promise);
-                    this.get('errors').pushObject(promise);
-                    this.set('errorsCount', this.errorsCount + 1);
+                    get(me, 'errors').pushObject(promise);
+                    set(me, 'errorsCount', me.errorsCount + 1);
                 });
             }
         },
 
         promiseFinally: function (promise) {
+            var me = this;
             Ember.run.schedule('sync', this, function() {
                 console.log('finally');
-                this.get('pending').removeObject(promise);
-                this.set('pendingCount', this.pendingCount - 1);
+                get(me, 'pending').removeObject(promise);
+                set(me, 'pendingCount', me.pendingCount - 1);
             });
         }
     });
