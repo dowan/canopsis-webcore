@@ -25,10 +25,30 @@ define([
 
     var mixin = Ember.Mixin.create({
 
+        needs: ['application'],
+
         init: function (){
             this._super();
             this.set('login', this.get('controllers.login.record'));
         },
+
+        /**
+        * Change crecord value to make it pending in user interface, this allows displaying a loadding glyphicon.
+        * Pending status is defined for records that undergoes change and witch are not yet refreshed from server.
+        **/
+        setPendingOperation: function(crecords){
+            var safe_mode = this.get('controllers.application.frontendConfig.safe_mode');
+            if (safe_mode) {
+                for (var i=0; i<crecords.length; i++) {
+                    console.log('Pending operations on crecord',crecords[i]);
+                    crecords[i].set('pendingOperation', true);
+                }
+            }
+        },
+
+        /**
+        * Generates an object that contains all neceary data to be an event understood by Canopsis
+        **/
 
         getDataFromRecord: function(event_type, crecord, formRecord) {
             console.group('getDataFromRecord');
@@ -59,8 +79,15 @@ define([
             return record;
         },
 
+        /**
+        * Sends event to the api that will then send event to the amqp service.
+        * Events are built from UI elements
+        **/
         submitEvents: function(crecords, record, event_type) {
             var me = this;
+            var safe_mode = this.get('controllers.application.frontendConfig.safe_mode');
+
+            console.log('safe_mode', safe_mode);
 
             return new Ember.RSVP.Promise(function(resolve, reject) {
                 var post_events = [];
@@ -77,6 +104,11 @@ define([
                     }
 
                     post_events.push(post_event);
+
+                    //processes ui event as they are processed by backoffice in order to get direct render
+                    if (!safe_mode) {
+                        me.processEvent(event_type, 'transform', [crecords[i], post_event]);
+                    }
                 }
 
                 $.post('/event', {
@@ -84,16 +116,24 @@ define([
                 }).then(function(data) {
                     record.rollback();
                     record.unloadRecord();
+                    console.log('safe_mode', safe_mode);
 
-                    setTimeout(function() {
+                    if (safe_mode) {
+                        //Safe mode refresh data from server
                         me.refreshContent();
-                    }, 500);
+                    } else {
+                        //Refresh list at Ember level (js), do not triggers a server query yet.
+                        me.trigger('refresh');
+                    }
 
                     resolve(arguments);
                 }, reject);
             });
         },
 
+        /**
+        * Generates and displays a form for givent record type
+        **/
         getEventForm: function(event_type, record, crecords, formbuttons) {
             var wizard = cutils.forms.showNew('modelform', record, {
                 title: __('Add event type: ') + event_type,
@@ -124,6 +164,10 @@ define([
             }, rollback);
         },
 
+        /**
+        * Generates the routing key for given record.
+        * Assume that record is an event.
+        **/
         getRoutingKey: function(record) {
             var rk = [
                 record.connector,
@@ -149,6 +193,10 @@ define([
             return record;
         },
 
+        /**
+        * define if a selected record in list (with checkbox) is allowed
+        * for the sendevent action for current event type
+        **/
         filterUsableCrecords: function(event_type, crecords) {
             var selected = [];
 
@@ -165,6 +213,11 @@ define([
             return selected;
         },
 
+        //TODO refactor into sub classes
+        /**
+        * Transform keys makes transformation on crecord in order to simulate server data is fetched.
+        *
+        **/
         event_processors: {
             ack: {
                 extract: function(record, crecord, formRecord) {
@@ -187,6 +240,16 @@ define([
                     ];
 
                     this.getEventForm('ack', record, crecords, formbuttons);
+                },
+
+                transform: function(crecord, record) {
+                    console.log('transform method for ack -> crecords', crecord, 'record', record);
+                    crecord.set('ack', {
+                        comment: record.output,
+                        timestamp: parseInt(new Date().getTime()),
+                        author: record.author,
+                        isAck: true
+                    });
                 }
             },
 
@@ -213,7 +276,13 @@ define([
 
                     cutils.notification.info(__('event "ackremove" sent'));
                     this.submitEvents(crecords, record, 'ackremove');
+                },
+
+                transform: function(crecord, record) {
+                    console.log('transform method for ack remove', crecord, record);
+                    crecord.set('ack', undefined);
                 }
+
             },
 
             declareticket: {
@@ -236,7 +305,12 @@ define([
                     ];
 
                     this.getEventForm('declareticket', record, crecords, formbuttons);
+                },
+
+                transform: function(crecords, record) {
+                    console.log('transform method for declare ticket', crecords, record);
                 }
+
             },
 
             assocticket: {
@@ -252,7 +326,12 @@ define([
 
                 handle: function(crecords) {
                     console.log('Not implemented: assocticket');
+                },
+
+                transform: function(crecords, record) {
+                    console.log('transform method for assoticket', crecords, record);
                 }
+
             },
 
             cancel: {
@@ -273,7 +352,21 @@ define([
                     ];
 
                     this.getEventForm('cancel', record, crecords, formbuttons);
+                },
+
+                transform: function(crecord, record) {
+                    console.log('transform method for cancel -> crecords', crecord, 'record', record);
+                    crecord.set('ack.isCancel',true);
+                    crecord.set('ack.isAck',false);
+                    crecord.set('status', 4);
+                    crecord.set('cancel',{
+                        comment: record.output,
+                        timestamp: parseInt(new Date().getTime()),
+                        author: record.author,
+                        previous_status: record.state
+                    });
                 }
+
             },
 
             recovery: {
@@ -305,7 +398,27 @@ define([
 
                     cutils.notification.info(__('event "uncancel" sent'));
                     this.submitEvents(crecords, record, 'uncancel');
+                },
+
+                transform: function(crecord, record) {
+                    console.log('transform method for uncancel -> crecords', crecord, 'record', record);
+                    crecord.set('ack.isCancel', false);
+                    crecord.set('ack.isAck', true);
+                    crecord.set('status', crecord.get('cancel.previous_status'));
+
+                    //reset the ack is a hack if ack is not set in the event, but there is no choice and this is a temp information
+                    if(Ember.isNone(crecord.get('ack'))) {
+                        crecord.set('ack', {
+                            comment: record.output,
+                            timestamp: parseInt(new Date().getTime()),
+                            author: record.author,
+                            isAck: true
+                        });
+                    } else {
+                        crecord.set('ack', crecord.get('ack'));
+                    }
                 }
+
             },
 
             changestate: {
@@ -331,7 +444,19 @@ define([
                     ];
 
                     this.getEventForm('changestate', record, crecords, formbuttons);
+                },
+
+
+                transform: function(crecord, record) {
+                    console.log('transform method for ack changestate', crecord, record);
+                    crecord.set('state', record.state);
+                    if (record.state === 0) {
+                        crecord.set('ack', undefined);
+                    } else {
+                        crecord.set('cancel', undefined);
+                    }
                 }
+
             },
 
             user: {
@@ -350,7 +475,12 @@ define([
 
                     cutils.notification.info(__('event "user" sent'));
                     this.submitEvents(crecords, record, 'user');
+                },
+
+                transform: function(crecords, record) {
+                    console.log('transform method for user', crecords, record);
                 }
+
             },
 
             comment: {
@@ -370,14 +500,25 @@ define([
 
                     cutils.notification.info(__('event "comment" sent'));
                     this.submitEvents(crecords, record, 'comment');
+                },
+
+                transform: function(crecords, record) {
+                    console.log('transform method for comment', crecords, record);
                 }
+
             }
         },
 
+        /**
+        * Boolean return method that tells whether or not an event type has it 's own processing code
+        **/
         hasEventProcessorForType: function(event_type) {
             return (this.event_processors[event_type] !== undefined);
         },
 
+        /**
+        * Event processing code handler
+        **/
         processEvent: function(event_type, fname, args) {
             if(this.hasEventProcessorForType(event_type)) {
                 var callback = this.event_processors[event_type][fname];
@@ -387,6 +528,11 @@ define([
         },
 
         actions: {
+
+            /**
+            * Entry point for this class
+            * Sends one or many event to the server depending on selected record and action performed.
+            **/
             sendEvent: function(event_type, crecord) {
                 console.group('sendEvent:');
 
@@ -416,6 +562,8 @@ define([
                 }
 
                 this.processEvent(event_type, 'handle', [crecords]);
+
+                this.setPendingOperation(crecords);
 
                 console.groupEnd();
             }

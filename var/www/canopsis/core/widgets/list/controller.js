@@ -73,6 +73,7 @@ define([
             ],
 
             rights: Ember.computed.alias('controllers.login.record.rights'),
+            safeMode: Ember.computed.alias('controllers.application.frontendConfig.safe_mode'),
 
             mergedProperties: ['partials'],
 
@@ -280,6 +281,12 @@ define([
                     me.set("widgetDataMetas", me.get("widgetDataStore").metadataFor(me.get("listed_crecord_type")));
                     me.extractItems.apply(me, [queryResults]);
                     me.set('loaded', true);
+
+                    console.log('Initializing special fields in list records',queryResults);
+                    for(var i=0; i<queryResults.content.length; i++) {
+                        //This value reset spiner display for record in flight status
+                        queryResults.content[i].set('pendingOperation', false);
+                    }
 
                     me.trigger('refresh');
                 }).catch(function (promiseProxy) {
