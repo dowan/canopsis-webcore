@@ -27,6 +27,28 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+
+    function computeMixinsArray(widget) {
+        var mixinsNames = get(widget, 'mixins');
+        var mixinArray = [];
+
+        if(mixinsNames) {
+            for (var i = 0, l = mixinsNames.length; i < l; i++) {
+                var currentName = mixinsNames[i];
+                var currentClass = get(Application, currentName + "Mixin");
+
+                if(currentClass) {
+                    mixinArray.pushObject(currentClass);
+                }
+            }
+        }
+
+        mixinArray.pushObject(Ember.Evented);
+
+        return mixinArray;
+    }
+
+
     var view = Ember.View.extend({
         templateName:'widget',
         classNames: ['widget'],
@@ -66,7 +88,7 @@ define([
             var interval = setInterval(function () {
                 if (canopsisConfiguration.REFRESH_ALL_WIDGETS) {
                     if (get(widgetController,'isRefreshable') && get(widgetController, 'refreshableWidget')) {
-                        console.log('refreshing widget ' + widgetController.get('title'));
+                        console.log('refreshing widget ' + get(widgetController, 'title'));
                         widgetController.refreshContent();
                     }
                 }
@@ -124,21 +146,26 @@ define([
                 console.error('no xtype for widget', widget, this);
             }
 
+            var mixins = computeMixinsArray(widget);
+
+            mixins.pushObject({
+                content: widget,
+                target: get(this, 'target')
+            });
+
             var controllerName = get(widget, "xtype").capitalize() + "Controller";
             var widgetController;
-            console.log("controllerName", controllerName, Application[controllerName], this.get('target'));
+            console.log("controllerName", controllerName, Application[controllerName], get(this, 'target'));
+
+            var widgetClass;
 
             if (Application[controllerName] !== undefined) {
-                 widgetController =  Application[controllerName].createWithMixins(Ember.Evented, {
-                    content: widget,
-                    target: get(this, 'target')
-                });
+                widgetClass = Application[controllerName];
             } else {
-                 widgetController =  WidgetController.createWithMixins(Ember.Evented, {
-                    content: widget,
-                    target: get(this, 'target')
-                });
+                widgetClass = WidgetController;
             }
+
+            widgetController =  widgetClass.createWithMixins.apply(widgetClass, mixins);
 
             var mixinsName = widget._data.mixins;
 
@@ -146,6 +173,7 @@ define([
                 for (var i = 0, l = mixinsName.length; i < l ; i++ ){
                     var currentName =  mixinsName[i];
                     var currentMixin = mixinsregistry.all[currentName];
+
                     if (currentMixin) {
                         currentMixin.apply(widgetController);
                     }

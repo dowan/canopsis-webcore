@@ -21,8 +21,11 @@ var mixinsArray = [
     { name: 'validation', classes: ["action"]},
     { name: 'modelDict', classes: ["action"]},
     { name: 'mixinArray', classes: ["test"]},
-    { name: 'pagination', classes: ["test"]},
-    { name: 'tags_optionFilter', classes: ["test"]},
+    { name: 'pagination', classes: ["widget"]},
+    { name: 'tagsoptionfilter', classes: ["widget"]},
+    { name: 'arraysearch', classes: ['widget']},
+    { name: 'history', classes: ['widget']},
+    { name: 'sendevent', classes: ['widget']}
 ];
 
 var deps = ['app/lib/mixinsregistry'];
@@ -36,7 +39,7 @@ for (var i = 0; i < mixinsArray.length; i++) {
 define(deps, function(mixinsregistry) {
 
     console.log("Begin load mixins", arguments);
-    for (var i = depsSize; i < arguments.length; i++) {
+    for (var i = depsSize, l = arguments.length; i < l; i++) {
         var currentMixin = mixinsArray[i - depsSize];
 
         if (currentMixin.classes !== undefined) {
@@ -50,8 +53,7 @@ define(deps, function(mixinsregistry) {
                 mixinsregistry.byClass[currentClass].push(currentMixin.name);
             }
         }
-        mixinsregistry.all[currentMixin.name] = arguments[i];
-
+        mixinsregistry.all.push(currentMixin);
     }
 
     return mixinsregistry;

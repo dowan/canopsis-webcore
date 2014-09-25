@@ -19,25 +19,19 @@
 
 define([
     'ember',
-    'app/lib/abstractclassmanager',
-    'app/application'
-], function(Ember, Abstractclassmanager) {
+    'app/application',
+    'app/lib/mixinsregistry'
+], function(Ember, Application, mixinsregistry) {
+    var get = Ember.get,
+        set = Ember.set;
 
-    var inflexions = [
-        ['nagios' , 'nagios'],
-        ['curve', 'curves'],
-        ['serie', 'serie']
-    ];
+    console.log("mixiniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiins", mixinsregistry);
 
-    var inflectionsManager = {
-        all: [],
-        byClass: {}
-    };
+    var editor = Ember.Component.extend({
+        mixins: mixinsregistry
+    });
 
-    for (var i = 0, l = inflexions.length; i < l; i++) {
-        inflectionsManager.all.pushObject(inflexions[i][0] + ' -> ' + inflexions[i][1]);
-        Ember.Inflector.inflector.irregular(inflexions[i][0], inflexions[i][1]);
-    }
+    Application.ComponentMixinchooserComponent = editor;
 
-    return inflectionsManager;
+    return editor;
 });
