@@ -26,16 +26,16 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-    Application.ComponentCfilterComponent = Ember.Component.extend({
+    var component = Ember.Component.extend({
         init:function() {
-            var cfilter_serialized = this.get('cfilter_serialized');
+            var cfilter_serialized = get(this, 'cfilter_serialized');
 
             set(this, 'onlyAllowRegisteredIndexes', get(Canopsis, 'conf.frontendConfig.cfilter_allow_only_optimized_filters'));
 
             if(get(this, 'content') !== null && get(this, 'content') !== undefined) {
-                this.set('cfilter_serialized', get(this, 'content'));
+                set(this, 'cfilter_serialized', get(this, 'content'));
             } else if(cfilter_serialized === undefined || cfilter_serialized === null) {
-                this.set('cfilter_serialized', '{}');
+                set(this, 'cfilter_serialized', '{}');
             }
 
             this._super.apply(this, arguments);
@@ -92,7 +92,7 @@ define([
         },
 
         clauses: function() {
-            var cfilter_serialized = this.get('cfilter_serialized');
+            var cfilter_serialized = get(this, 'cfilter_serialized');
             var clauses = Ember.A();
             var mfilter;
 
@@ -115,7 +115,7 @@ define([
                 return clauses;
             }
 
-            for (var i = 0; i < mfilter.$or.length; i++) {
+            for (var i = 0, l = mfilter.$or.length; i < l; i++) {
                 var currentMfilterOr = mfilter.$or[i];
                 var currentOr = Ember.Object.create({
                     and: Ember.A()
@@ -127,7 +127,7 @@ define([
 
                 if (currentMfilterOr.$and !== undefined) {
 
-                    for (var j = 0; j < currentMfilterOr.$and.length; j++) {
+                    for (var j = 0, lj = currentMfilterOr.$and.length; j < lj; j++) {
 
                         var currentMfilterAnd = currentMfilterOr.$and[j];
 
@@ -145,7 +145,7 @@ define([
 
                         var field = {
                             isFirst : (j === 0),
-                            keyId: this.get('cfilterEditId') + '-keys-' + (j + 1),
+                            keyId: get(this, 'cfilterEditId') + '-keys-' + (j + 1),
                             options: {
                                 'available_indexes' : keys
                             },
@@ -219,7 +219,7 @@ define([
         onlyAllowRegisteredIndexes: true,
 
         serializeCfilter: function() {
-            var clauses = this.get('clauses');
+            var clauses = get(this, 'clauses');
 
             var mfilter = {
                 '$or': []
@@ -283,7 +283,7 @@ define([
                         item[field.key] = {};
                         item[field.key][operator] = field.value;
 
-                        subfilter.$and.push(item);
+                        subfilter.$and.pushObject(item);
                     }
 
                 }
@@ -293,7 +293,7 @@ define([
                         subfilter = subfilter.$and[0];
                     }
 
-                    mfilter.$or.push(subfilter);
+                    mfilter.$or.pushObject(subfilter);
                 }
             }
 
@@ -306,7 +306,7 @@ define([
         },
 
         getMongoOperatorForLabel: function(label) {
-            for (var i = 0; i < this.operators.length; i++) {
+            for (var i = 0, l = this.operators.length; i < l; i++) {
                 if (this.operators[i].label === label) {
                     return this.operators[i].value;
                 }
@@ -316,7 +316,7 @@ define([
         },
 
         getLabelForMongoOperator: function(mongoOperator) {
-            for (var i = 0; i < this.operators.length; i++) {
+            for (var i = 0, l = this.operators.length; i < l; i++) {
                 if (this.operators[i].value === mongoOperator) {
                     return this.operators[i].label;
                 }
@@ -327,9 +327,10 @@ define([
 
         checkIfNewAndClauseDisplayed : function() {
 
-            var currentClauseIndex = this.get('currentClauseIndex');
+            var currentClauseIndex = get(this, 'currentClauseIndex');
+
             if (currentClauseIndex >= 0) {
-                var clauses = this.get('clauses');
+                var clauses = get(this, 'clauses');
                 var currentClause = clauses.objectAt(currentClauseIndex);
 
                 var lastAndOfClause = currentClause.and[currentClause.and.length - 1];
@@ -343,86 +344,86 @@ define([
                 };
 
                 if (lastAndOfClause !== undefined && isEmpty(lastAndOfClause.key) && isEmpty(lastAndOfClause.value)) {
-                    this.set('newAndClauseDisplayed', false);
+                    set(this, 'newAndClauseDisplayed', false);
                     return;
                 }
 
-                this.set('newAndClauseDisplayed', true);
+                set(this, 'newAndClauseDisplayed', true);
 
                 return;
             } else {
-                this.set('newAndClauseDisplayed', false);
+                set(this, 'newAndClauseDisplayed', false);
                 return;
             }
         }.observes('currentClauseIndex'),
 
         clausesChanged: function() {
-            var clauses = this.get('clauses');
+            var clauses = get(this, 'clauses');
 
-            console.log('clausesChanged', clauses, this.get('cfilter_serialized'));
+            console.log('clausesChanged', clauses, get(this, 'cfilter_serialized'));
 
             //detect if we have to display the addOrClause button
             if (clauses.length === 0) {
-                this.set('orButtonHidden', false);
+                set(this, 'orButtonHidden', false);
             } else {
                 var lastOrClause = clauses[clauses.length -1];
                 console.log('last and length', clauses);
                 console.log('last and length', lastOrClause);
                 console.log('last and length', lastOrClause.and.length);
                 if (lastOrClause.and.length <= 1) {
-                    this.set('orButtonHidden', true);
+                    set(this, 'orButtonHidden', true);
                 } else {
-                    this.set('orButtonHidden', false);
+                    set(this, 'orButtonHidden', false);
                 }
             }
 
             var mfilter = this.serializeCfilter();
             console.log('generated mfilter', mfilter);
-            this.set('cfilter_serialized', mfilter);
+            set(this, 'cfilter_serialized', mfilter);
         },
 
         cfilterId: function() {
-            return this.get('elementId') + '-cfilter';
+            return get(this, 'elementId') + '-cfilter';
         }.property('elementId'),
 
         cfilter: function() {
-            return $('#' + this.get('cfilterId'));
+            return $('#' + get(this, 'cfilterId'));
         },
 
         cfilterEditId: function() {
-            return this.get('cfilterId') + '-edit';
+            return get(this, 'cfilterId') + '-edit';
         }.property('cfilterId'),
 
         cfilterEditTabId: function() {
-            return '#' + this.get('cfilterEditId');
+            return '#' + get(this, 'cfilterEditId');
         }.property('cfilterEditId'),
 
         cfilterEdit: function() {
-            return $(this.get('cfilterEditTabId'));
+            return $(get(this, 'cfilterEditTabId'));
         },
 
         cfilterRawId: function() {
-            return this.get('cfilterId') + '-raw';
+            return get(this, 'cfilterId') + '-raw';
         }.property('cfilterId'),
 
         cfilterRawTabId: function() {
-            return '#' + this.get('cfilterRawId');
+            return '#' + get(this, 'cfilterRawId');
         }.property('cfilterRawId'),
 
         cfilterRaw: function() {
-            return $(this.get('cfilterRawTabId'));
+            return $(get(this, 'cfilterRawTabId'));
         },
 
         cfilterViewId: function() {
-            return this.get('cfilterId') + '-view';
+            return get(this, 'cfilterId') + '-view';
         }.property('cfilterId'),
 
         cfilterViewTabId: function() {
-            return '#' + this.get('cfilterViewId');
+            return '#' + get(this, 'cfilterViewId');
         }.property('cfilterViewId'),
 
         cfilterView: function() {
-            return $(this.get('cfilterViewTabId'));
+            return $(get(this, 'cfilterViewTabId'));
         },
 
         getIndexesForNewAndClause: function(currentClause) {
@@ -432,9 +433,9 @@ define([
 
                 console.group('getIndexesForNewAndClause', currentClause);
 
-                var indexesTreeCursor = this.get('indexesTree');
+                var indexesTreeCursor = get(this, 'indexesTree');
 
-                for (var i = 0; i < currentClause.and.length; i++) {
+                for (var i = 0, l = currentClause.and.length; i < l; i++) {
                     var currentAnd = currentClause.and[i];
                     console.log('currentAnd', currentAnd);
                     if (indexesTreeCursor === undefined) {
@@ -452,7 +453,7 @@ define([
                 for (var key in indexesTreeCursor) {
                     console.log('iter', key, indexesTreeCursor[key]);
                     if (key !== '_metas') {
-                        available_indexes.push({name: indexesTreeCursor[key]._metas.name, value: key, _metas: indexesTreeCursor[key]._metas});
+                        available_indexes.pushObject({name: indexesTreeCursor[key]._metas.name, value: key, _metas: indexesTreeCursor[key]._metas});
                     }
                 }
 
@@ -472,7 +473,7 @@ define([
             console.log('available_indexes', keys);
 
             var field = {
-                keyId: this.get('cfilterEditId') + '-keys-' + (currentClause.and.length + 1),
+                keyId: get(this, 'cfilterEditId') + '-keys-' + (currentClause.and.length + 1),
 
                 options: {
                     'available_indexes' : keys
@@ -493,7 +494,7 @@ define([
                 set(lastAndClauseOfList, 'lastOfList', false);
             }
 
-            if (get(this, 'onlyAllowRegisteredIndexes') === false || field.options.available_indexes.length > 0) {
+            if (get(this, 'onlyAllowRegisteredIndexes') === false || get(field, 'options.available_indexes.length') > 0) {
                 currentClause.and.pushObject(Ember.Object.create(field));
             }
 
@@ -527,20 +528,20 @@ define([
                 }
 
                 console.log('clauses addAndClause', clauses);
-                this.set('clauses', clauses);
+                set(this, 'clauses', clauses);
                 this.clausesChanged();
             },
 
             addOrClause: function() {
-                var clauses = this.get('clauses');
+                var clauses = get(this, 'clauses');
                 console.group('Add OR clause', clauses);
 
-                var currentClauseIndex = this.get('currentClauseIndex');
+                var currentClauseIndex = get(this, 'currentClauseIndex');
                 var currentClause;
 
                 if (currentClauseIndex >= 0) {
                     currentClause = clauses.objectAt(currentClauseIndex);
-                    currentClause.set('current', false);
+                    set(currentClause, 'current', false);
                 }
 
                 currentClause = clauses.pushObject(
@@ -550,7 +551,7 @@ define([
                     })
                 );
 
-                this.set('currentClauseIndex', clauses.length - 1);
+                set(this, 'currentClauseIndex', clauses.length - 1);
 
                 this.send('addAndClause');
                 this.send('activate', currentClause);
@@ -559,8 +560,8 @@ define([
             },
 
             activate: function(clause) {
-                var clauses = this.get('clauses');
-                var currentClauseIndex = this.get('currentClauseIndex');
+                var clauses = get(this, 'clauses');
+                var currentClauseIndex = get(this, 'currentClauseIndex');
 
                 var newCurrentClauseIndex = clauses.indexOf(clause);
 
@@ -571,11 +572,11 @@ define([
                         clauses.objectAt(currentClauseIndex).set('current', false);
                     }
 
-                    clause.set('current', true);
+                    set(clause, 'current', true);
 
                     console.log('changing currentClauseIndex');
 
-                    this.set('currentClauseIndex', newCurrentClauseIndex);
+                    set(this, 'currentClauseIndex', newCurrentClauseIndex);
                 }
             },
 
@@ -584,7 +585,7 @@ define([
 
                 var currentClause;
                 var deletedClauseIndex;
-                var clauses = this.get('clauses');
+                var clauses = get(this, 'clauses');
                 var eraseSuccessors = false;
 
                 for (var i = 0; i < selectedClause.and.length; i++) {
@@ -604,7 +605,7 @@ define([
                         }
                         i--;
 
-                        if (this.get('onlyAllowRegisteredIndexes') === true) {
+                        if (get(this, 'onlyAllowRegisteredIndexes') === true) {
                             eraseSuccessors = true;
                             if (i === -1) {
 
@@ -612,13 +613,13 @@ define([
 
                                 var removedClause = selectedClause;
 
-                                for (var j = 0; j < clauses.length; j++) {
+                                for (var j = 0, lj = clauses.length; j < lj; j++) {
                                     currentClause = clauses[j];
                                     if (currentClause === removedClause) {
                                         clauses.removeAt(j);
 
-                                        if (this.get('currentClauseIndex') >= j) {
-                                            this.set('currentClauseIndex', this.get('currentClauseIndex') - 1);
+                                        if (get(this, 'currentClauseIndex') >= j) {
+                                            set(this, 'currentClauseIndex', get(this, 'currentClauseIndex') - 1);
                                         }
 
                                         this.clausesChanged();
@@ -639,5 +640,7 @@ define([
         }
     });
 
-    return Application.ComponentCfilterComponent;
+    Application.ComponentCfilterComponent = component;
+
+    return component;
 });
