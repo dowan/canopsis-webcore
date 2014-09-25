@@ -114,7 +114,7 @@ define([
                     for (var i = 0; referenceModel.proto().categories &&
                          i < referenceModel.proto().categories.length; i++) {
                         var category = referenceModel.proto().categories[i];
-                        var createdCategory = [];
+                        var createdCategory = {};
                         createdCategory.title = category.title;
                         createdCategory.keys = [];
 

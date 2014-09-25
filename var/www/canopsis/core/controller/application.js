@@ -68,7 +68,7 @@ define([
             var plugins = Application.plugins ;
             for ( var pluginName in plugins ){
                 if( plugins.hasOwnProperty(pluginName)){
-                    all_plugins.push(plugins[pluginName] );
+                    all_plugins.pushObject(plugins[pluginName] );
                 }
             }
             return all_plugins;

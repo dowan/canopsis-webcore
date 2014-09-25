@@ -19,29 +19,19 @@
 
 define([
     'ember',
-    'app/application',
-    'canopsis/canopsisConfiguration',
-    'app/lib/loaders/schemas',
-    'app/view/formwrapper'
-], function(Ember, Application, canopsisConfiguration) {
-    var get = Ember.get;
+    'app/application'
+], function(Ember, Application) {
 
-    var eventedController = Ember.Controller.extend(Ember.Evented);
+    var get = Ember.get,
+        set = Ember.set;
 
-    var controller = eventedController.extend({
-        // used only here
-        config: canopsisConfiguration,
-        debug: Ember.computed.alias('config.DEBUG'),
-
-        actions: {
-            show: function() {
-                console.log("FormwrapperController show", this);
-                get(this, 'widgetwrapperView').showPopup();
-            }
+    var mixin = Ember.Mixin.create({
+        partials: {
+            itemactionbutton: ['actionbutton-ack']
         }
     });
 
-    Application.FormwrapperController = controller;
+    Application.AckMixin = mixin;
 
-    return controller;
+    return mixin;
 });

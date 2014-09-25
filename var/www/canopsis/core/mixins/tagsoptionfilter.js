@@ -28,7 +28,7 @@ define([
     var mixin = Ember.Mixin.create({
 
         onInit : function ( contentREF , _self ){
-            var formController  =  formsregistry.formwrapper.form;
+            var formController = formsregistry.formwrapper.form;
             if ( formController ){
                 utils.filterObject.getFieldsByPrefix( "_opt_" , formController.formContext , function( attr , result  ){
                     var nameMixin = { name : attr.slice(5) };
@@ -39,7 +39,7 @@ define([
         }
     });
 
-    Application.Tags_optionFilterMixin = mixin;
+    Application.TagsoptionfilterMixin = mixin;
 
     return mixin;
 });

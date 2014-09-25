@@ -34,10 +34,8 @@ define([
         byClass: {}
     };
 
-    console.log(Ember);
-
-    for (var i = 0; i < inflexions.length; i++) {
-        inflectionsManager.all.push(inflexions[i][0] + ' -> ' + inflexions[i][1]);
+    for (var i = 0, l = inflexions.length; i < l; i++) {
+        inflectionsManager.all.pushObject(inflexions[i][0] + ' -> ' + inflexions[i][1]);
         Ember.Inflector.inflector.irregular(inflexions[i][0], inflexions[i][1]);
     }
 

@@ -22,7 +22,6 @@ define([
     'ember',
     'app/application',
     'app/lib/utils/forms',
-    'app/controller/form',
     'app/lib/loaders/schemas',
 ], function($, Ember, Application, formUtils) {
     var get = Ember.get,
@@ -138,11 +137,23 @@ define([
                     console.log('rejecting submit promise');
                     this.submit.reject();
                 }
+            },
+
+            inspectForm: function() {
+                console.group('inspectForm');
+                console.log('form:', this);
+
+                window.$F = get(this, 'categorized_attributes');
+
+                console.log('categorized_attributes available in $F');
+
+                console.groupEnd();
             }
         },
 
         partials: {
-            buttons: ["formbutton-cancel", "formbutton-submit"]
+            buttons: ["formbutton-cancel", "formbutton-submit"],
+            debugButtons: ['formbutton-inspectform']
         },
 
         title: function() {

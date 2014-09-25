@@ -26,6 +26,7 @@ define([
     'app/mixins/arraysearch',
     'app/mixins/sortablearray',
     'app/mixins/history',
+    'app/mixins/ack',
     'app/mixins/sendevent',
     'app/mixins/customfilter',
     'utils',
@@ -39,7 +40,7 @@ define([
     'app/lib/loaders/components',
     'app/lib/wrappers/bootstrap-contextmenu'
 ], function(Ember, DS, WidgetFactory, PaginationMixin, InspectableArrayMixin,
-        ArraySearchMixin, SortableArrayMixin, HistoryMixin, SendEventMixin, CustomFilterManagerMixin, utils, domUtils) {
+        ArraySearchMixin, SortableArrayMixin, HistoryMixin, AckMixin, SendEventMixin, CustomFilterManagerMixin, utils, domUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -47,12 +48,7 @@ define([
     var listOptions = {
         mixins: [
             InspectableArrayMixin,
-            CustomFilterManagerMixin,
-            SortableArrayMixin,
-            ArraySearchMixin,
-            PaginationMixin,
-            HistoryMixin,
-            SendEventMixin
+            PaginationMixin
         ]
     };
 

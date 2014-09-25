@@ -68,19 +68,20 @@ define([
             var excludeRks = this.getSelectedRks();
 
             //adding exclusion rks if any loaded
-            if (excludeRks.length) {
+            if (get(excludeRks, 'length')) {
                 filter._id = {'$nin': excludeRks};
             }
 
             var component = get(this, 'component');
+
             var resource = get(this, 'resource');
 
             //permissive search throught component and resource
             if (component) {
-                filter.component = { '$regex' : '.*'+ component +'.*', '$options': 'i' };
+                set(filter, 'component', { '$regex' : '.*'+ component +'.*', '$options': 'i' });
             }
             if (resource) {
-                filter.resource = { '$regex' : '.*'+ resource +'.*', '$options': 'i' };
+                set(filter, 'resource', { '$regex' : '.*'+ resource +'.*', '$options': 'i' });
             }
 
             filter.event_type = 'check';
@@ -89,14 +90,14 @@ define([
             var topologies = get(this, 'topologies');
             //does user selected selector or topology search
             if (selectors) {
-                filter.event_type = 'selector';
+                set(filter, 'event_type', 'selector');
             }
 
             if (topologies) {
-                filter.event_type = 'topologies';
+                set(filter, 'event_type', 'topologies');
             }
 
-            if (!filter.resource && !filter.component) {
+            if (!get(filter, 'resource') && !get(filter, 'component')) {
                 set(this, 'events', []);
                 //when user only wants topologies or selectors, query is done anyway with the right crecord type
                 if (!topologies && !selectors) {
@@ -104,7 +105,7 @@ define([
                 }
             }
 
-            var query = this.get("componentDataStore").findQuery(
+            var query = get(this, "componentDataStore").findQuery(
                 'event',
                 {
                     filter: JSON.stringify(filter),
@@ -166,7 +167,7 @@ define([
                 console.log('Rk to delete', event.id);
                 var selectedEvents = get(this, 'selectedEvents');
 
-                for (var i=0, l = selectedEvents.length; i < l; i++) {
+                for (var i = 0, l = selectedEvents.length; i < l; i++) {
                     if (event.id === selectedEvents[i].id) {
                         console.log('Removing event');
                         get(this, 'selectedEvents').removeAt(i);

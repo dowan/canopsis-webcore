@@ -55,9 +55,11 @@ define([
 
                     console.log("compiledFilterPattern", compiledFilterPattern);
 
-                    set(list, "default_filter", compiledFilterPattern);
-                    set(list, "rollbackable", true);
-                    set(list, "title", "Info on events : " + element.title);
+                    if(compiledFilterPattern !== "") {
+                        set(list, "default_filter", compiledFilterPattern);
+                        set(list, "rollbackable", true);
+                        set(list, "title", "Info on events : " + element.title);
+                    }
                 });
             }
         },
@@ -141,12 +143,12 @@ define([
                 console.log("subweather event", currentData);
 
                 //compute wether or not each event were acknowleged for this weather
-                if (currentData.ack && currentData.ack.isAck) {
-                    console.log('one more ack count')
+                if (get(currentData, 'ack.isAck')) {
+                    console.log('one more ack count');
                     ack_count++;
                     computedState = 4;
                 } else {
-                    console.log('normal ack count')
+                    console.log('normal ack count');
                     computedState = currentData.state;
                 }
 
@@ -180,13 +182,14 @@ define([
                     this.generateSelectorFilter(currentData, subweatherDict);
                 }
 
-                sub_weathers.push(subweatherDict);
+                sub_weathers.pushObject(subweatherDict);
 
             }
 
             if (ack_count === data.length) {
                 worst_state = 4;
             }
+
             console.log('worst_state', worst_state);
 
             console.log('weather content', {sub_weathers: sub_weathers, worst_state: worst_state});
@@ -220,15 +223,15 @@ define([
                         var mfilter = get(selectorObject, 'mfilter');
 
                         if(include_ids && include_ids.length) {
-                            filter.$or.push({ _id : { $in: include_ids}});
+                            filter.$or.pushObject({ _id : { $in: include_ids}});
                         }
 
                         if(exclude_ids && exclude_ids.length) {
-                            filter.$or.push({ _id : { $nin: exclude_ids}});
+                            filter.$or.pushObject({ _id : { $nin: exclude_ids}});
                         }
 
                         if(mfilter) {
-                            filter.$or.push(JSON.parse(mfilter));
+                            filter.$or.pushObject(JSON.parse(mfilter));
                         }
 
                         set(subweatherDict, 'selector_filter', JSON.stringify(filter));

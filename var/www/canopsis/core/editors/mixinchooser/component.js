@@ -20,28 +20,18 @@
 define([
     'ember',
     'app/application',
-    'canopsis/canopsisConfiguration',
-    'app/lib/loaders/schemas',
-    'app/view/formwrapper'
-], function(Ember, Application, canopsisConfiguration) {
-    var get = Ember.get;
+    'app/lib/mixinsregistry'
+], function(Ember, Application, mixinsregistry) {
+    var get = Ember.get,
+        set = Ember.set;
 
-    var eventedController = Ember.Controller.extend(Ember.Evented);
+    console.log("mixiniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiins", mixinsregistry);
 
-    var controller = eventedController.extend({
-        // used only here
-        config: canopsisConfiguration,
-        debug: Ember.computed.alias('config.DEBUG'),
-
-        actions: {
-            show: function() {
-                console.log("FormwrapperController show", this);
-                get(this, 'widgetwrapperView').showPopup();
-            }
-        }
+    var editor = Ember.Component.extend({
+        mixins: mixinsregistry
     });
 
-    Application.FormwrapperController = controller;
+    Application.ComponentMixinchooserComponent = editor;
 
-    return controller;
+    return editor;
 });
