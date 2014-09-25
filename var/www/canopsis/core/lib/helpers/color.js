@@ -24,9 +24,32 @@ define(['ember', 'app/application'], function(Ember, Application) {
         var style = '';
 
         if (color && color.toLowerCase() !== '#null') {
+            if(color[0] === '#') {
+                color = color.slice(1);
+            }
+
             var max = parseInt('FFFFFF', 16);
+            var median = parseInt('888888', 16);
+            var acceptableDiff = parseInt('444444', 16);
             var bgcolor = parseInt(color, 16);
             var fgcolor = max - bgcolor;
+
+            // avoid gray on gray
+            var diff = fgcolor - median;
+
+            if (diff < 0) {
+                diff = -diff;
+
+                if (diff <= acceptableDiff) {
+                    fgcolor -= acceptableDiff - diff;
+                }
+            }
+            else {
+                if (diff <= acceptableDiff) {
+                    fgcolor += acceptableDiff - diff;
+                }
+            }
+
             fgcolor = fgcolor.toString(16);
 
             // Gray scale

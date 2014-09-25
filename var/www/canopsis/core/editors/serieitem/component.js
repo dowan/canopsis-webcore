@@ -44,7 +44,8 @@ define([
             var serie_id = get(this, 'selectedSerie');
             var serie = store.find('serie', serie_id);
 
-            this.set('content.serie', serie);
+            console.log(get(this, 'content'));
+            set(this, 'content.value.serie', serie);
         }.property('selectedSerie'),
 
         curveChanged: function() {
@@ -52,7 +53,7 @@ define([
             var curve_id = get(this, 'selectedCurve');
             var curve = store.find('curve', curve_id);
 
-            this.set('content.curve', serie);
+            set(this, 'content.value.style', serie);
         }.property('selectedCurve'),
 
         init: function() {
