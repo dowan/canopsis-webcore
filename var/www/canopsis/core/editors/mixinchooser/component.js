@@ -17,12 +17,21 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
+define([
+    'ember',
+    'app/application',
+    'app/lib/mixinsregistry'
+], function(Ember, Application, mixinsregistry) {
+    var get = Ember.get,
+        set = Ember.set;
 
-    var manager = {
-        all: [],
-        byClass: {}
-    };
+    console.log("mixiniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiins", mixinsregistry);
 
-    return manager;
+    var editor = Ember.Component.extend({
+        mixins: mixinsregistry
+    });
+
+    Application.ComponentMixinchooserComponent = editor;
+
+    return editor;
 });

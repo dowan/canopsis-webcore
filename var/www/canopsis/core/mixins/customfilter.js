@@ -129,7 +129,7 @@ define([
         }
     });
 
-    Application.CustomFilterManagerMixin = mixin;
+    Application.CustomfilterMixin = mixin;
 
     return mixin;
 });

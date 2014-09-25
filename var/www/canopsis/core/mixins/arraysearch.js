@@ -108,7 +108,7 @@ define([
         }.observes('shown_columns')
     });
 
-    Application.ArraySearchMixin = mixin;
+    Application.ArraysearchMixin = mixin;
 
     return mixin;
 });

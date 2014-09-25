@@ -35,7 +35,7 @@ define([
         if(mixinsNames) {
             for (var i = 0, l = mixinsNames.length; i < l; i++) {
                 var currentName = mixinsNames[i];
-                var currentClass = get(Application, currentName);
+                var currentClass = get(Application, currentName + "Mixin");
 
                 if(currentClass) {
                     mixinArray.pushObject(currentClass);

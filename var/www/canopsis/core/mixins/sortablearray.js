@@ -91,7 +91,7 @@ define([
         }.property("inspectedProperty", "inspectedDataArray"),
     });
 
-    Application.SortableArrayMixin = mixin;
+    Application.SortablearrayMixin = mixin;
 
     return mixin;
 });

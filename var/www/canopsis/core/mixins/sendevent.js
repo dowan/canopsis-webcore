@@ -422,7 +422,7 @@ define([
         }
     });
 
-    Application.sendEventMixin = mixin;
+    Application.SendeventMixin = mixin;
 
     return mixin;
 });

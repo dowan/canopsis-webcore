@@ -28,7 +28,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-    var component = Ember.Component.extend(Application.ValidationFieldMixin,{
+    var component = Ember.Component.extend(Application.ValidationFieldMixin, {
         valueRefPath: "content.value",
         valuePath: "value",
 
@@ -46,7 +46,7 @@ define([
                 set(me, 'arrayAttributes', Ember.A());
 
                 if(values !== undefined) {
-                    for (var i = 0; i < values.length; i++) {
+                    for (var i = 0, l = values.length; i < l; i++) {
                         get(me, 'arrayAttributes').pushObject(me.generateVirtualAttribute(i));
                     }
                 }
@@ -177,7 +177,7 @@ define([
                 var arrayAttributes = get(this, 'arrayAttributes');
                 get(this, 'value').removeAt(item.index);
                 arrayAttributes.removeAt(item.index);
-                for (var i = item.index; i < arrayAttributes.length; i++) {
+                for (var i = item.index, l = arrayAttributes.length; i < l; i++) {
                     arrayAttributes.objectAt(i).set('index', arrayAttributes.objectAt(i).get('index') - 1);
                 }
                 this.validate();
@@ -194,7 +194,7 @@ define([
             array.splice(oldIndex, 1);
             array.splice(newIndex, 0, oldIndex_value);
 
-            for (var i = 0; i < array.length; i++) {
+            for (var i = 0, l = array.length; i < l; i++) {
                 array[i].index = i;
             }
 
