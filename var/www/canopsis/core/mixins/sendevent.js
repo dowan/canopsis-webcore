@@ -319,8 +319,12 @@ define([
                     this.getEventForm('declareticket', record, crecords, formbuttons);
                 },
 
-                transform: function(crecords, record) {
-                    console.log('transform method for declare ticket', crecords, record);
+                transform: function(crecord, record) {
+                    console.log('transform method for declare ticket', crecord, record);
+                    crecord.set('ticket_declared', {
+                        timestamp: parseInt(new Date().getTime()),
+                        author: record.author
+                    });
                 }
 
             },
@@ -340,8 +344,10 @@ define([
                     console.log('Not implemented: assocticket');
                 },
 
-                transform: function(crecords, record) {
-                    console.log('transform method for assoticket', crecords, record);
+                transform: function(crecord, record) {
+                    console.log('transform method for assoticket', crecord, record);
+                    //TODO
+
                 }
 
             },
@@ -393,7 +399,11 @@ define([
                 handle: function(crecords) {
                     var record = crecords[0];
                     this.submitEvents([record], record, 'recovery');
-                }
+                },
+
+                 transform: function(crecord, record) {
+                    //TODO
+                 }
             },
 
             uncancel: {
@@ -489,8 +499,9 @@ define([
                     this.submitEvents(crecords, record, 'user');
                 },
 
-                transform: function(crecords, record) {
-                    console.log('transform method for user', crecords, record);
+                transform: function(crecord, record) {
+                    console.log('transform method for user', crecord, record);
+                    //TODO
                 }
 
             },
@@ -514,8 +525,9 @@ define([
                     this.submitEvents(crecords, record, 'comment');
                 },
 
-                transform: function(crecords, record) {
-                    console.log('transform method for comment', crecords, record);
+                transform: function(crecord, record) {
+                    console.log('transform method for comment', crecord, record);
+                    //TODO
                 }
 
             }
