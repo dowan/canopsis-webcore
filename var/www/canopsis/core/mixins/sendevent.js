@@ -23,13 +23,25 @@ define([
     'utils'
 ], function(Ember, Application, cutils) {
 
+    var get = Ember.get,
+        set = Ember.set;
+
     var mixin = Ember.Mixin.create({
 
         needs: ['application'],
 
         init: function (){
             this._super();
-            this.set('login', this.get('controllers.login.record'));
+            this.set('login', get(this, 'controllers.login.record'));
+        },
+
+        partials: {
+            itemactionbuttons: ['actionbutton-ack',
+                                'actionbutton-cancel',
+                                'actionbutton-incident',
+                                'actionbutton-changestate',
+                                'actionbutton-ticketnumber'],
+            selectionToolbarButtons: ['actionbutton-cancel', 'actionbutton-ack']
         },
 
         /**
@@ -55,21 +67,21 @@ define([
             console.log('event:', event_type, record);
 
             var record = {
-                authkey: this.get('login.authkey'),
-                author: this.get('login.user'),
-                id: crecord.get('id'),
-                connector: crecord.get('connector'),
-                connector_name: crecord.get('connector_name'),
+                authkey: get(this, 'login.authkey'),
+                author: get(this, 'login.user'),
+                id: get(crecord, 'id'),
+                connector: get(crecord, 'connector'),
+                connector_name: get(crecord, 'connector_name'),
                 event_type: event_type,
-                source_type: crecord.get('source_type'),
-                component: crecord.get('component'),
-                state: crecord.get('state'),
-                state_type: crecord.get('state_type'),
+                source_type: get(crecord, 'source_type'),
+                component: get(crecord, 'component'),
+                state: get(crecord, 'state'),
+                state_type: get(crecord, 'state_type'),
                 crecord_type: event_type
             };
 
             if(record.source_type === 'resource') {
-                record.resource = crecord.get('resource');
+                record.resource = get(crecord, 'resource');
             }
 
             this.processEvent(event_type, 'extract', [record, crecord, formRecord]);
@@ -93,14 +105,14 @@ define([
                 var post_events = [];
 
                 for(var i = 0; i < crecords.length; i++) {
-                    console.log('Event:', record.get('author'), record.get('output'));
+                    console.log('Event:', get(record, 'author'), get(record, 'output'));
 
                     var post_event = me.getDataFromRecord(event_type, crecords[i], record);
-                    post_event.author = record.get('author');
-                    post_event.output = record.get('output');
+                    post_event.author = get(record, 'author');
+                    post_event.output = get(record, 'output');
 
-                    if(!!record.get('ticket')) {
-                        post_event.ticket = record.get('ticket');
+                    if(!!get(record, 'ticket')) {
+                        post_event.ticket = get(record, 'ticket');
                     }
 
                     post_events.push(post_event);
@@ -156,7 +168,7 @@ define([
             wizard.submit.then(function(form) {
                 console.log('saveRecord:', record, form);
 
-                record = form.get('formContext');
+                record = get(form, 'formContext');
                 cutils.notification.info(__('event sent: ') + event_type);
                 me.submitEvents(crecords, record, event_type);
 
@@ -185,7 +197,7 @@ define([
         },
 
         getDisplayRecord: function(event_type, crecord) {
-            var store = this.get('widgetDataStore');
+            var store = get(this, 'widgetDataStore');
 
             var recordData = this.getDataFromRecord(event_type, crecord);
             var record = store.createRecord(event_type, recordData);
@@ -200,7 +212,7 @@ define([
         filterUsableCrecords: function(event_type, crecords) {
             var selected = [];
 
-            for(var i = 0; i < crecords.length; i++) {
+            for(var i = 0, l = crecords.length; i < l; i++) {
                 var record = crecords[i];
 
                 var topush = this.processEvent(event_type, 'filter', [record]);
@@ -221,13 +233,13 @@ define([
         event_processors: {
             ack: {
                 extract: function(record, crecord, formRecord) {
-                    record.ref_rk = crecord.get('id');
+                    record.ref_rk = get(crecord, 'id');
                     record.state = 0;
                     record.id = this.getRoutingKey(record);
                 },
 
                 filter: function(record) {
-                    return (record.get('state') && !record.get('ack.isAck') && !record.get('ack.isCancel'));
+                    return (get(record, 'state') && !get(record, 'ack.isAck') && !get(record, 'ack.isCancel'));
                 },
 
                 handle: function(crecords) {
@@ -262,13 +274,13 @@ define([
                         record.output += ' ' + record.resource;
                     }
 
-                    record.ref_rk = crecord.get('id');
+                    record.ref_rk = get(crecord, 'id');
                     record.state = 0;
                     record.id = this.getRoutingKey(record);
                 },
 
                 filter: function(record) {
-                    return (record.get('ack.author') && record.get('ack.isAck'));
+                    return (get(record, 'ack.author') && get(record, 'ack.isAck'));
                 },
 
                 handle: function(crecords) {
@@ -287,13 +299,13 @@ define([
 
             declareticket: {
                 extract: function(record, crecord, formRecord) {
-                    record.ref_rk = crecord.get('id');
+                    record.ref_rk = get(crecord, 'id');
                     record.state = 0;
                     record.id = this.getRoutingKey(record);
                 },
 
                 filter: function(record) {
-                    return (record.get('ack.isAck'));
+                    return (get(record, 'ack.isAck'));
                 },
 
                 handle: function(crecords) {
@@ -319,13 +331,13 @@ define([
 
             assocticket: {
                 extract: function(record, crecord, formRecord) {
-                    record.ref_rk = crecord.get('id');
+                    record.ref_rk = get(crecord, 'id');
                     record.state = 0;
                     record.id = this.getRoutingKey(record);
                 },
 
                 filter: function(record) {
-                    return (record.get('ack.isAck'));
+                    return (get(record, 'ack.isAck'));
                 },
 
                 handle: function(crecords) {
@@ -342,11 +354,11 @@ define([
 
             cancel: {
                 extract: function(record, crecord, formRecord) {
-                    record.ref_rk = crecord.get('id');
+                    record.ref_rk = get(crecord, 'id');
                 },
 
                 filter: function(record) {
-                    return (record.get('ack.isAck'));
+                    return (get(record, 'ack.isAck'));
                 },
 
                 handle: function(crecords) {
@@ -377,7 +389,7 @@ define([
 
             recovery: {
                 extract: function(record, crecord, formRecord) {
-                    crecord.set('state', 0);
+                    set(crecord, 'state', 0);
                 },
 
                 filter: function(record) {
@@ -396,11 +408,11 @@ define([
 
             uncancel: {
                 extract: function(record, crecord, formRecord) {
-                    record.ref_rk = crecord.get('id');
+                    record.ref_rk = get(crecord, 'id');
                 },
 
                 filter: function(record) {
-                    return (record.get('ack.isCancel'));
+                    return (get(record, 'ack.isCancel'));
                 },
 
                 handle: function(crecords) {
@@ -434,7 +446,7 @@ define([
             changestate: {
                 extract: function(record, crecord, formRecord) {
                     if(!Ember.isNone(formRecord)) {
-                        record.state = formRecord.get('state');
+                        record.state = get(formRecord, 'state');
                     }
 
                     record.event_type = 'check';
@@ -442,7 +454,7 @@ define([
                 },
 
                 filter: function(record) {
-                    return (record.get('state'));
+                    return (get(record, 'state'));
                 },
 
                 handle: function(crecords) {
@@ -472,8 +484,8 @@ define([
             user: {
                 extract: function(record, crecord, formRecord) {
 
-                    record.output = crecord.get('output');
-                    record.display_name = this.get('login.firstname') + ' ' + this.get('login.lastname');
+                    record.output = get(crecord, 'output');
+                    record.display_name = get(this, 'login.firstname') + ' ' + get(this, 'login.lastname');
                 },
 
                 filter: function(crecords) {
@@ -497,9 +509,9 @@ define([
             comment: {
                 extract: function(record, crecord, formRecord) {
 
-                    record.referer = crecord.get('referer');
-                    record.output = crecord.get('output');
-                    record.display_name = this.get('login.firstname') + ' ' + this.get('login.lastname');
+                    record.referer = get(crecord, 'referer');
+                    record.output = get(crecord, 'output');
+                    record.display_name = get(this, 'login.firstname') + ' ' + get(this, 'login.lastname');
                 },
 
                 filter: function(crecords) {
@@ -557,7 +569,7 @@ define([
                     crecords.push(crecord);
                 }
                 else {
-                    var content = this.get('widgetData.content');
+                    var content = get(this, 'widgetData.content');
                     var selected = content.filterBy('isSelected', true);
 
                     crecords = this.filterUsableCrecords(event_type, selected);

@@ -25,8 +25,6 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-    console.log("mixiniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiins", mixinsregistry);
-
     var editor = Ember.Component.extend({
         mixins: mixinsregistry
     });

@@ -22,14 +22,16 @@ define([
     'app/application'
 ], function(Ember, Application) {
 
-    var view = Ember.View.extend({
-        templateName: 'partialslot',
-        tagName: 'span',
+    var get = Ember.get,
+        set = Ember.set;
 
-        slot: Ember.required()
+    var mixin = Ember.Mixin.create({
+        partials: {
+            itemactionbuttons: ['actionbutton-info']
+        }
     });
 
-    Application.partialslotView = view;
+    Application.InfobuttonMixin = mixin;
 
-    return view;
+    return mixin;
 });

@@ -29,36 +29,84 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+
+    function removeMixinsPartials(widget, mixinName) {
+        console.log('removing mixin partials', arguments);
+
+        var partials = get(widget, '_partials');
+
+        var partialsToRemove = get(Application, mixinName + 'Mixin.mixins')[0].properties.partials;
+
+        for (var k in partialsToRemove) {
+            if (partialsToRemove.hasOwnProperty(k)) {
+                for (var i = 0, l = partialsToRemove[k].length; i < l; i++) {
+                    get(widget, '_partials')[k].removeObject(partialsToRemove[k][i]);
+                }
+            }
+        }
+
+        set(widget, '_partials', partials);
+    }
+
+    //TODO put this in arrayutils
+    function union_arrays (x, y) {
+        var obj = {};
+        for (var i = x.length-1; i >= 0; -- i)
+            obj[x[i]] = x[i];
+        for (var j = y.length-1; j >= 0; -- j)
+            obj[y[j]] = y[j];
+        var res = [];
+        for (var k in obj) {
+            if (obj.hasOwnProperty(k))  // <-- optional
+                res.push(obj[k]);
+        }
+        return res;
+    }
+
     var controller = Ember.ObjectController.extend({
 
         _partials: {},
 
-        /**
-         * Override of willmergemixin to merge mixin's partials with base partials
-         */
-        willMergeMixin: function(Mixin) {
-            this._super.apply(this, arguments);
+        mixinsWillChange: function(instance, key) {
+            this.oldMixinsValue = get(instance, key);
+        }.observesBefore('content.mixins'),
 
-            //TODO put this in arrayutils
-            function union_arrays (x, y) {
-                var obj = {};
-                for (var i = x.length-1; i >= 0; -- i)
-                    obj[x[i]] = x[i];
-                for (var j = y.length-1; j >= 0; -- j)
-                    obj[y[j]] = y[j];
-                var res = [];
-                for (var k in obj) {
-                    if (obj.hasOwnProperty(k))  // <-- optional
-                        res.push(obj[k]);
+        mixinsDidChange: function(instance, key) {
+            var oldMixins = get(this, 'oldMixinsValue');
+            var newMixins = get(instance, key);
+            if(newMixins && oldMixins) {
+                for (var i = 0, li = oldMixins.length; i < li; i++) {
+                    oldMixins = oldMixins.without(newMixins[i]);
                 }
-                return res;
+
+                for (var j = 0, lj = oldMixins.length; j < lj; j++) {
+                    removeMixinsPartials(this, oldMixins[j]);
+                }
             }
 
+            this.oldMixinsValue = undefined;
+
+        }.observes('content.mixins'),
+
+        refreshPartialsList: function() {
+            console.log('refreshPartialsList', get(this, 'partials'));
+            var partials = get(this, 'partials');
+            set(this, '_partials', partials);
+            var mixins = get(this, 'content.mixins');
+
+            if(Ember.isArray(mixins)) {
+                for (var i = 0, l = mixins.length; i < l; i++) {
+                    this.mergeMixinPartials(mixins[i]);
+                }
+            }
+        },
+
+
+        mergeMixinPartials: function(Mixin) {
             var me = this;
 
             if(Mixin.partials !== undefined) {
                 Object.keys(Mixin.partials).forEach(function(key) {
-                    console.log(key, Mixin.partials[key]);
 
                     var partialsKey = '_partials.' + key;
 
@@ -69,6 +117,17 @@ define([
                     set(me, partialsKey, union_arrays(get(me, partialsKey), Mixin.partials[key]));
                 });
             }
+        },
+
+        /**
+         * Override of willmergemixin to merge mixin's partials with base partials
+         */
+        willMergeMixin: function(Mixin) {
+            this._super.apply(this, arguments);
+
+            console.log('willmergemixin', this, Mixin.partials);
+
+            this.mergeMixinPartials(Mixin);
         }
     });
 

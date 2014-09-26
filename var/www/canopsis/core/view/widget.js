@@ -27,7 +27,6 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-
     function computeMixinsArray(widget) {
         var mixinsNames = get(widget, 'mixins');
         var mixinArray = [];
@@ -45,6 +44,7 @@ define([
 
         mixinArray.pushObject(Ember.Evented);
 
+        console.warn('mixinArray for ', get(widget, 'title'), mixinArray);
         return mixinArray;
     }
 
@@ -155,6 +155,7 @@ define([
 
             var controllerName = get(widget, "xtype").capitalize() + "Controller";
             var widgetController;
+
             console.log("controllerName", controllerName, Application[controllerName], get(this, 'target'));
 
             var widgetClass;
@@ -166,6 +167,8 @@ define([
             }
 
             widgetController =  widgetClass.createWithMixins.apply(widgetClass, mixins);
+
+            widgetController.refreshPartialsList();
 
             var mixinsName = widget._data.mixins;
 

@@ -26,9 +26,6 @@ define([
         set = Ember.set;
 
     var mixin = Ember.Mixin.create({
-        partials: {
-            itemactionbutton: ['actionbutton-ack']
-        }
     });
 
     Application.AckMixin = mixin;
