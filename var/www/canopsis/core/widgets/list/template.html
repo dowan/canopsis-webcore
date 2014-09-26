@@ -11,7 +11,6 @@
                 {{partial toolitem}}
             {{/each}}
             {{partialslot slot=controller._partials.actionToolbarButtons}}
-
         </div>
         {{partialslot slot=controller._partials.header}}
         <div style="clear:both;"></div>
@@ -64,9 +63,7 @@
         {{/unless}}
     </div>
     <div class="btn-toolbar canopsis-toolbar" role="toolbar">
-        <div class="pull-left">
-            {{tr 'Showing'}} {{controller.paginationFirstItemIndex}} {{tr 'to'}} {{controller.paginationLastItemIndex}} {{tr 'of'}} {{controller.itemsTotal}} {{tr 'entries'}}
-        </div>
+        {{partialslot slot=controller._partials.footer}}
         <div style="clear:both"></div>
         <div class="pull-left">
             {{#if controller.selection_toolbar}}
@@ -76,7 +73,6 @@
                 {{/each}}
             {{/if}}
         </div>
-        {{partialslot slot=controller._partials.footer}}
     </div>
 {{else}}
     {{#if controller.dataError.statusText}}

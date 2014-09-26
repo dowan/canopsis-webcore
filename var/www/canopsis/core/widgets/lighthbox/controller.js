@@ -23,12 +23,16 @@ define([
     'app/widgets/canvas/controller'
 ], function(Application, WidgetFactory) {
 
+    var get = Ember.get,
+        set = Ember.set;
+
     var widget = WidgetFactory('lighthbox', {
         partials: {
             titlebarsbuttons : ["titlebarbutton-moveright", "titlebarbutton-moveleft"]
         },
+
         itemCssClassArray: function() {
-            var itemCssClass = this.get('content.itemCssClass');
+            var itemCssClass = get(this, 'content.itemCssClass');
             if(itemCssClass !== undefined && itemCssClass !== null)
                 return itemCssClass.split(',');
             else {

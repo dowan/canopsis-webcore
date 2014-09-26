@@ -21,9 +21,13 @@ define([
     'ember',
     'app/lib/factories/widget',
     'app/widgets/list/controller',
-    'utils',
+    'app/lib/utils/forms',
+    'app/lib/utils/hash',
     'app/serializers/job'
-], function(Ember, WidgetFactory, WidgetListController, cutils) {
+], function(Ember, WidgetFactory, WidgetListController, formsUtils, hashUtils) {
+    var get = Ember.get,
+        set = Ember.set;
+
     var widgetOptions = {
         subclass: WidgetListController
     };
@@ -35,22 +39,22 @@ define([
             add: function(recordType) {
                 console.log("add job");
 
-                var record = this.get('widgetDataStore').push(
+                var record = get(this, 'widgetDataStore').push(
                     recordType,
                     {
-                        id: cutils.hash.generateId(recordType),
+                        id: hashUtils.generateId(recordType),
                         crecord_type: recordType
                     }
                 );
 
-                var recordWizard = cutils.forms.showNew('jobform', record);
+                var recordWizard = formsUtils.showNew('jobform', record);
 
                 var me = this;
 
                 recordWizard.submit.then(function(form) {
                     console.group('submitJob');
 
-                    var record = form.get('formContext');
+                    var record = get(form, 'formContext');
 
                     console.log('record:', record);
 
@@ -68,11 +72,11 @@ define([
             edit: function(record) {
                 console.log('editting record:', record);
 
-                var recordWizard = cutils.forms.showNew('jobform', record);
+                var recordWizard = formsUtils.showNew('jobform', record);
                 var me = this;
 
                 recordWizard.submit.then(function(form) {
-                    var record = form.get('formContext');
+                    var record = get(form, 'formContext');
                     record.save();
 
                     me.trigger('refresh');

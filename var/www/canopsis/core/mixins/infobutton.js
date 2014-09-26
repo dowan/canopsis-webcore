@@ -28,6 +28,19 @@ define([
     var mixin = Ember.Mixin.create({
         partials: {
             itemactionbuttons: ['actionbutton-info']
+        },
+
+        actions: {
+            info: function(record) {
+                var list_info_button_pattern = get(this, 'controllers.application.frontendConfig.list_info_button_pattern');
+
+                var template = list_info_button_pattern;
+                var context = record._data;
+                var compiledUrl = Handlebars.compile(template)(context);
+
+                console.log('info', compiledUrl, record._data);
+                window.open(compiledUrl, '_blank');
+            }
         }
     });
 

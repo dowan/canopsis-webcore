@@ -22,7 +22,8 @@ define([
     'app/lib/factories/widget',
     'app/components/progressbar/component'
 ], function($, WidgetFactory) {
-    var get = Ember.get;
+    var get = Ember.get,
+        set = Ember.set;
 
     var widget = WidgetFactory('progressbar', {
         init: function() {
@@ -38,8 +39,8 @@ define([
                 var test = $('#bad_when_full');
                 var bad_when_full = $('#bad_when_full')[0].checked ;
 
-                this.set("value", value);
-                this.set("bad_when_full", bad_when_full);
+                set(this, "value", value);
+                set(this, "bad_when_full", bad_when_full);
 
             }
         }

@@ -67,27 +67,6 @@ define([
 
         _partials: {},
 
-        mixinsWillChange: function(instance, key) {
-            this.oldMixinsValue = get(instance, key);
-        }.observesBefore('content.mixins'),
-
-        mixinsDidChange: function(instance, key) {
-            var oldMixins = get(this, 'oldMixinsValue');
-            var newMixins = get(instance, key);
-            if(newMixins && oldMixins) {
-                for (var i = 0, li = oldMixins.length; i < li; i++) {
-                    oldMixins = oldMixins.without(newMixins[i]);
-                }
-
-                for (var j = 0, lj = oldMixins.length; j < lj; j++) {
-                    removeMixinsPartials(this, oldMixins[j]);
-                }
-            }
-
-            this.oldMixinsValue = undefined;
-
-        }.observes('content.mixins'),
-
         refreshPartialsList: function() {
             console.log('refreshPartialsList', get(this, 'partials'));
             var partials = get(this, 'partials');
@@ -96,17 +75,23 @@ define([
 
             if(Ember.isArray(mixins)) {
                 for (var i = 0, l = mixins.length; i < l; i++) {
-                    this.mergeMixinPartials(mixins[i]);
+                    partials = this.mergeMixinPartials(mixins[i], partials);
                 }
             }
+
+            console.log('set partials', partials);
+            set(this, '_partials', partials);
         },
 
 
-        mergeMixinPartials: function(Mixin) {
+        mergeMixinPartials: function(Mixin, partials) {
             var me = this;
+            console.group("mergeMixinPartials", Mixin, Mixin.partials);
 
-            if(Mixin.partials !== undefined) {
-                Object.keys(Mixin.partials).forEach(function(key) {
+            var mixinPartials = get(Application, Mixin + 'Mixin').mixins[0].properties.partials;
+
+            if(mixinPartials !== undefined) {
+                Object.keys(mixinPartials).forEach(function(key) {
 
                     var partialsKey = '_partials.' + key;
 
@@ -114,20 +99,18 @@ define([
                         set(me, partialsKey, Ember.A());
                     }
 
-                    set(me, partialsKey, union_arrays(get(me, partialsKey), Mixin.partials[key]));
+                    for (var i = 0, l = mixinPartials[key].length; i < l; i++) {
+                        var currentPartial = mixinPartials[key][i];
+                        if(!get(me, partialsKey).contains(currentPartial)) {
+                            get(me, partialsKey).pushObject(currentPartial);
+                        }
+                    }
                 });
             }
-        },
 
-        /**
-         * Override of willmergemixin to merge mixin's partials with base partials
-         */
-        willMergeMixin: function(Mixin) {
-            this._super.apply(this, arguments);
+            console.groupEnd();
 
-            console.log('willmergemixin', this, Mixin.partials);
-
-            this.mergeMixinPartials(Mixin);
+            return partials;
         }
     });
 

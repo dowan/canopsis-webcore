@@ -44,7 +44,7 @@ define([
             for (var i = 0, l = widgets.all.length; i < l; i++) {
                 var currentWidget = widgets.all[i];
 
-                widgets.push(currentWidget);
+                widgets.pushObject(currentWidget);
             }
 
             return widgets;
