@@ -36,7 +36,7 @@ var componentsTemplates = [
     'stringclassifiedcrecordselector',
     'table',
     'tooltip',
-    'wrapper'
+    'wrapper',
 ];
 
 var deps = ['ember'];

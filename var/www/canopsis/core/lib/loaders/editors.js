@@ -34,6 +34,7 @@ var editorsTemplates = [
     { name: 'dateinterval', js: 'w' },
     { name: 'defaultpropertyeditor', js: 'v' },
     { name: 'duration', js: 'w' },
+    { name: 'sortable', js: 'w' },
     { name: 'eventselector', js: 'w' },
     { name: 'group', js: 'c' },
     { name: 'integer' },
