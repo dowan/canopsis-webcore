@@ -32,6 +32,8 @@ define([
     'app/mixins/customfilter',
     'utils',
     'app/lib/utils/dom',
+    'app/lib/utils/routes',
+    'app/lib/utils/forms',
     'app/lib/loaders/schemas',
     'app/adapters/event',
     'app/adapters/userview',
@@ -41,7 +43,7 @@ define([
     'app/lib/loaders/components',
     'app/lib/wrappers/bootstrap-contextmenu'
 ], function(Ember, DS, WidgetFactory, PaginationMixin, InspectableArrayMixin,
-        ArraySearchMixin, SortableArrayMixin, HistoryMixin, AckMixin, SendEventMixin, CustomFilterManagerMixin, utils, domUtils) {
+        ArraySearchMixin, SortableArrayMixin, HistoryMixin, AckMixin, InfobuttonMixin, SendEventMixin, CustomFilterManagerMixin, utils, domUtils, routesUtils, formsUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -63,7 +65,6 @@ define([
 
     var widget = WidgetFactory('list',
         {
-
             needs: ['login', 'application'],
             viewMixins: [
                 ListViewMixin
@@ -85,7 +86,7 @@ define([
 
                 //prepare user configuration to fetch customer preference by reseting data.
                 //dont understand why without this reset, values same values are set into many list instances.
-                this.set('custom_filters', []);
+                set(this, 'custom_filters', []);
 
                 this._super();
             },
@@ -95,7 +96,7 @@ define([
             **/
             updateInterval: function (interval){
                 console.warn('Set widget list time interval', interval);
-                this.set('timeIntervalFilter', interval);
+                set(this, 'timeIntervalFilter', interval);
                 this.refreshContent();
             },
 
@@ -113,10 +114,10 @@ define([
             },
 
             itemType: function() {
-                var listed_crecord_type = this.get("listed_crecord_type");
+                var listed_crecord_type = get(this, "listed_crecord_type");
                 console.info('listed_crecord_type', listed_crecord_type);
                 if(listed_crecord_type !== undefined && listed_crecord_type !== null ) {
-                    return this.get("listed_crecord_type");
+                    return get(this, "listed_crecord_type");
                 } else {
                     return 'event';
                 }
@@ -156,23 +157,11 @@ define([
             },
 
             actions: {
-                //TODO refactor buttons as components
-                info: function(record) {
-                    var list_info_button_pattern = get(this, 'controllers.application.frontendConfig.list_info_button_pattern');
-
-                    var template = list_info_button_pattern;
-                    var context = record._data;
-                    var compiledUrl = Handlebars.compile(template)(context); 
-
-                    console.log('info', compiledUrl, record._data);
-                    window.open(compiledUrl, '_blank');
-                },
-
                 setFilter: function (filter) {
                     set(this, 'findParams_cfilterFilterPart', filter);
 
-                    if (this.currentPage !== undefined) {
-                        this.set("currentPage", 1);
+                    if (get(this, currentPage) !== undefined) {
+                        set(this, "currentPage", 1);
                     }
 
                     this.refreshContent();
@@ -180,18 +169,18 @@ define([
 
                 show: function(id) {
                     console.log("Show action", arguments);
-                    utils.routes.getCurrentRouteController().send('showView', id);
+                    routesUtils.getCurrentRouteController().send('showView', id);
                 },
 
                 add: function (recordType) {
                     console.log("add", recordType);
 
-                    var record = this.get("widgetDataStore").createRecord(recordType, {
+                    var record = get(this, "widgetDataStore").createRecord(recordType, {
                         crecord_type: recordType
                     });
-                    console.log('temp record', record);
+                    console.log('temp record', record, formsUtils);
 
-                    var recordWizard = utils.forms.showNew('modelform', record, { title: "Add " + recordType });
+                    var recordWizard = formsUtils.showNew('modelform', record, { title: "Add " + recordType });
 
                     var listController = this;
 
@@ -216,12 +205,12 @@ define([
                     console.log("edit", record);
 
                     var listController = this;
-                    var recordWizard = utils.forms.showNew('modelform', record, { title: "Edit " + record.get('crecord_type') });
+                    var recordWizard = formsUtils.showNew('modelform', record, { title: "Edit " + get(record, 'crecord_type') });
 
                     recordWizard.submit.then(function(form) {
                         console.log('record going to be saved', record, form);
 
-                        record = form.get('formContext');
+                        record = get(form, 'formContext');
 
                         record.save();
 
@@ -238,7 +227,8 @@ define([
                 removeSelection: function() {
                     var selected = this.get("widgetData").filterBy('isSelected', true);
                     console.log("remove action", selected);
-                    for (var i = 0; i < selected.length; i++) {
+
+                    for (var i = 0, l = selected.length; i < l; i++) {
                         var currentSelectedRecord = selected[i];
                         this.send("remove", currentSelectedRecord);
                     }
@@ -248,13 +238,13 @@ define([
             findItems: function() {
                 var me = this;
 
-                if (this.get("widgetDataStore") === undefined) {
-                    this.set("widgetDataStore", DS.Store.create({
-                        container: this.get("container")
+                if (get(this, "widgetDataStore") === undefined) {
+                    set(this, "widgetDataStore", DS.Store.create({
+                        container: get(this, "container")
                     }));
                 }
 
-                var itemType = this.get("itemType");
+                var itemType = get(this, "itemType");
 
                 console.log("findItems", itemType);
 
@@ -269,15 +259,15 @@ define([
                 console.log("find items of type", itemType, "with options", findParams);
                 console.tags.remove('data');
 
-                this.get("widgetDataStore").findQuery(itemType, findParams).then(function(queryResults) {
+                get(this, "widgetDataStore").findQuery(itemType, findParams).then(function(queryResults) {
                     console.tags.add('data');
                     console.log("got results in widgetDataStore", itemType, "with options", findParams);
                     console.tags.remove('data');
 
                     //retreive the metas of the records
-                    me.set("widgetDataMetas", me.get("widgetDataStore").metadataFor(me.get("listed_crecord_type")));
+                    set(me, "widgetDataMetas", get(me, "widgetDataStore").metadataFor(get(me, "listed_crecord_type")));
                     me.extractItems.apply(me, [queryResults]);
-                    me.set('loaded', true);
+                    set(me, 'loaded', true);
 
                     console.log('Initializing special fields in list records',queryResults);
                     for(var i=0; i<queryResults.content.length; i++) {
@@ -294,10 +284,10 @@ define([
 
             attributesKeysDict: function() {
                 var res = {};
-                var attributesKeys = this.get('attributesKeys');
-                var sortedAttribute = this.get('sortedAttribute');
+                var attributesKeys = get(this, 'attributesKeys');
+                var sortedAttribute = get(this, 'sortedAttribute');
 
-                for (var i = 0; i < attributesKeys.length; i++) {
+                for (var i = 0, l = attributesKeys.length; i < l; i++) {
                     if (sortedAttribute !== undefined && sortedAttribute.field === attributesKeys[i].field) {
                         res[attributesKeys[i].field] = sortedAttribute;
                     } else {
@@ -309,21 +299,22 @@ define([
             }.property('attributesKeys'),
 
             shown_columns: function() {
-                console.log("compute shown_columns", this.get('sorted_columns'), this.get('attributesKeys'), this.get('sortedAttribute'));
+                console.log("compute shown_columns", get(this, 'sorted_columns'), get(this, 'attributesKeys'), get(this, 'sortedAttribute'));
                 if (this.get('user_show_columns') !== undefined) {
-                    console.log('user columns selected', this.get('user_show_columns'));
-                    return this.get('user_show_columns');
+                    console.log('user columns selected', get(this, 'user_show_columns'));
+                    return get(this, 'user_show_columns');
                 }
 
                 var shown_columns = [];
-                var displayed_columns = this.get('displayed_columns') || this.get('content._data.displayed_columns') ;
+                var displayed_columns = get(this, 'displayed_columns') || get(this, 'content._data.displayed_columns') ;
                 if (displayed_columns !== undefined && displayed_columns.length > 0) {
 
                     var attributesKeysDict = this.get('attributesKeysDict');
 
                     //var sorted_columns = this.get('displayed_columns');
                     var sorted_columns = displayed_columns;
-                    for (var i = 0; i < sorted_columns.length; i++) {
+
+                    for (var i = 0, li = sorted_columns.length; i < li; i++) {
                         if (attributesKeysDict[sorted_columns[i]] !== undefined) {
                             attributesKeysDict[sorted_columns[i]].options.show = true;
                             shown_columns.push(attributesKeysDict[sorted_columns[i]]);
@@ -335,11 +326,12 @@ define([
                 }
 
                 var selected_columns = [];
-                for(var column=0; column < shown_columns.length; column++) {
+                for(var column=0, l = shown_columns.length; column < l; column++) {
 
                     shown_columns[column].options.show = true;
-                    if ($.inArray(shown_columns[column].field, this.get('hidden_columns')) === -1) {
-                        selected_columns.push(shown_columns[column]);
+
+                    if ($.inArray(shown_columns[column].field, get(this, 'hidden_columns')) === -1) {
+                        selected_columns.pushObject(shown_columns[column]);
                     }
                 }
 
@@ -390,14 +382,14 @@ define([
 
                 var filters = [];
 
-                for (var i=0; i<sourceFilter.length; i++) {
+                for (var i = 0, l = sourceFilter.length; i < l; i++) {
                     if(typeof sourceFilter[i] === 'string') {
                         //if json, parse json
                         sourceFilter[i] = JSON.parse(sourceFilter[i]);
                     }
                     if (isDefined(sourceFilter[i])) {
                         //when defined filter then it is added to the filter list
-                        filters.push(sourceFilter[i]);
+                        filters.pushObject(sourceFilter[i]);
                     }
                 }
 
@@ -409,15 +401,16 @@ define([
 
                 console.log('List computed filter is', params.filter);
 
-                params.limit = this.get('itemsPerPage');
+                params.limit = get(this, 'itemsPerPage');
 
+                //TODO check if useless or not
                 if(params.limit === 0) {
                     params.limit = 5;
                 }
 
-                params.start = this.get('paginationFirstItemIndex') - 1;
+                params.start = get(this, 'paginationFirstItemIndex') - 1;
 
-                var sortedAttribute = this.get('sortedAttribute');
+                var sortedAttribute = get(this, 'sortedAttribute');
 
                 console.log('sortedAttribute', sortedAttribute);
 

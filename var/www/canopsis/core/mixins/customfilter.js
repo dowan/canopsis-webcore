@@ -34,7 +34,7 @@ define([
 
     var mixin = Ember.Mixin.create({
         partials: {
-            header: ['customfilters']
+            subHeader: ['customfilters']
         },
 
         actions: {

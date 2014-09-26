@@ -24,6 +24,8 @@ define([
     'app/lib/factories/widget',
     'app/components/flotchart/component'
 ], function($, Ember, Application, WidgetFactory) {
+    var get = Ember.get,
+        set = Ember.set;
 
     var widgetOptions = {};
 
@@ -38,9 +40,9 @@ define([
 
             var now = +new Date();
 
-            var config = this.get('config');
+            var config = get(this, 'config');
 
-            this.set('timenav', config.get('timenav'));
+            set(this, 'timenav', get(config, 'timenav'));
 
             if(this.chartOptions === undefined) {
                 this.chartOptions = {};
@@ -65,8 +67,8 @@ define([
                 },
 
                 xaxis: {
-                    min: now - (config.get('time_window_offset') + config.get('time_window')) * 1000,
-                    max: now - config.get('time_window') * 1000
+                    min: now - (get(config, 'time_window_offset') + get(config, 'time_window')) * 1000,
+                    max: now - get(config, 'time_window') * 1000
                 },
 
                 yaxis: {
@@ -82,28 +84,28 @@ define([
 
                 legend: {
                     hideable: true,
-                    legend: config.get('legend')
+                    legend: get(config, 'legend')
                 },
 
                 series: {
                     shadowSize: 0,
-                    stack: config.get('stacked'),
+                    stack: get(config, 'stacked'),
                     lines: {
-                        show: config.get('lines'),
-                        fill: config.get('areas'),
-                        lineWidth: config.get('line_width')
+                        show: get(config, 'lines'),
+                        fill: get(config, 'areas'),
+                        lineWidth: get(config, 'line_width')
                     },
                     points: {
-                        show: config.get('points'),
-                        symbol: config.get('point_shape')
+                        show: get(config, 'points'),
+                        symbol: get(config, 'point_shape')
                     },
                     bars: {
-                        show: config.get('bars'),
-                        lineWidth: config.get('bar_width')
+                        show: get(config, 'bars'),
+                        lineWidth: get(config, 'bar_width')
                     }
                 },
 
-                tooltip: config.get('tooltip')
+                tooltip: get(config, 'tooltip')
             });
         }
     }, widgetOptions);
