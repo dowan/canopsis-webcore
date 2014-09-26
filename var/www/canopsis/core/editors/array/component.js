@@ -34,6 +34,11 @@ define([
 
         init: function() {
             this._super.apply(this, arguments);
+
+            set(this, "componentDataStore", DS.Store.create({
+                container: get(this, "container")
+            }));
+
             var value = get(this,"content.value") || [];
             set(this, 'value', value);
             set(this, 'content.value', value);
@@ -157,13 +162,28 @@ define([
             addItem: function() {
                 console.log('addItem', get(this, 'value'));
 
-                if(get(this, 'content.model.options.items.type') === 'object') {
-                    get(this, 'value').pushObject(Ember.Object.create(get(this, 'content.model.options.items.objectDict')));
+                var values = get(this, 'value');
+                var itemType = get(this, 'content.model.options.items.type');
+                var model = get(this, 'content.model.options.items.model');
+                var objDict = get(this, 'content.model.options.items.objectDict');
+
+                if(model !== undefined) {
+                    var store = get(this, 'componentDataStore');
+                    var record = store.createRecord(model, {
+                        xtype: model
+                    });
+
+                    values.pushObject(record);
+                } else if(itemType === 'object') {
+                    values.pushObject(Ember.Object.create(objDict));
                 } else {
-                    get(this, 'value').pushObject(undefined);
+                    values.pushObject(undefined);
                 }
-                var newIndex = get(this, 'value').length -1;
-                get(this, 'arrayAttributes').pushObject(this.generateVirtualAttribute(newIndex));
+
+                var newIndex = values.length - 1;
+                var attr = this.generateVirtualAttribute(newIndex);
+                get(this, 'arrayAttributes').pushObject(attr);
+
                 this.validate();
             },
             editItem: function(item) {

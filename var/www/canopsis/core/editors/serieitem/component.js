@@ -42,18 +42,24 @@ define([
         serieChanged: function() {
             var store = get(this, 'componentDataStore');
             var serie_id = get(this, 'selectedSerie');
-            var serie = store.find('serie', serie_id);
+            var me = this;
 
-            this.set('content.serie', serie);
-        }.property('selectedSerie'),
+            store.find('serie', serie_id).then(function(serie) {
+                set(serie, 'xtype', get(serie, 'crecord_type'));
+                set(me, 'content.value.serie', serie);
+            });
+        }.observes('selectedSerie'),
 
         curveChanged: function() {
             var store = get(this, 'componentDataStore');
             var curve_id = get(this, 'selectedCurve');
-            var curve = store.find('curve', curve_id);
+            var me = this;
 
-            this.set('content.curve', serie);
-        }.property('selectedCurve'),
+            store.find('curve', curve_id).then(function(curve) {
+                set(curve, 'xtype', get(curve, 'crecord_type'));
+                set(me, 'content.value.style', curve);
+            });
+        }.observes('selectedCurve'),
 
         init: function() {
             this._super(arguments);
@@ -61,6 +67,12 @@ define([
             set(this, "componentDataStore", DS.Store.create({
                 container: get(this, "container")
             }));
+
+            var defaultSerie = get(this, 'availableSeries')[0];
+            var defaultCurve = get(this, 'availableCurves')[0];
+
+            set(this, 'selectedSerie', defaultSerie);
+            set(this, 'selectedCurve', defaultCurve);
         }
     });
 
