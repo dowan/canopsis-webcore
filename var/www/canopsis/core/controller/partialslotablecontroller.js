@@ -29,30 +29,77 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+
+    function removeMixinsPartials(widget, mixinName) {
+        console.error('removing mixin partials', arguments);
+
+        var partials = get(widget, '_partials');
+
+        var partialsToRemove = get(Application, mixinName + 'Mixin.mixins')[0].properties.partials;
+
+        for (var k in partialsToRemove) {
+            if (partialsToRemove.hasOwnProperty(k)) {
+                for (var i = 0, l = partialsToRemove[k].length; i < l; i++) {
+                    get(widget, '_partials')[k].removeObject(partialsToRemove[k][i]);
+                }
+            }
+        }
+
+        set(widget, '_partials', partials);
+    }
+
+    //TODO put this in arrayutils
+    function union_arrays (x, y) {
+        var obj = {};
+        for (var i = x.length-1; i >= 0; -- i)
+            obj[x[i]] = x[i];
+        for (var j = y.length-1; j >= 0; -- j)
+            obj[y[j]] = y[j];
+        var res = [];
+        for (var k in obj) {
+            if (obj.hasOwnProperty(k))  // <-- optional
+                res.push(obj[k]);
+        }
+        return res;
+    }
+
     var controller = Ember.ObjectController.extend({
 
         _partials: {},
+
+        mixinsWillChange: function(instance, key) {
+            console.error('will', arguments);
+            console.error('will2', get(instance, key));
+
+            this.oldMixinsValue = get(instance, key);
+        }.observesBefore('content.mixins'),
+
+        mixinsDidChange: function(instance, key) {
+            console.error('did', this);
+
+            var oldMixins = get(this, 'oldMixinsValue');
+            var newMixins = get(instance, key);
+            console.error('did2', oldMixins, newMixins);
+            if(newMixins && oldMixins) {
+                for (var i = 0, l = oldMixins.length; i < l; i++) {
+                    oldMixins = oldMixins.without(newMixins[i]);
+                }
+
+                console.error('newMixins', oldMixins);
+                for (var j = 0, lj = oldMixins.length; j < lj; j++) {
+                    removeMixinsPartials(this, oldMixins[j]);
+                }
+
+                console.error('did3', newMixins);
+            }
+
+        }.observes('content.mixins'),
 
         /**
          * Override of willmergemixin to merge mixin's partials with base partials
          */
         willMergeMixin: function(Mixin) {
             this._super.apply(this, arguments);
-
-            //TODO put this in arrayutils
-            function union_arrays (x, y) {
-                var obj = {};
-                for (var i = x.length-1; i >= 0; -- i)
-                    obj[x[i]] = x[i];
-                for (var j = y.length-1; j >= 0; -- j)
-                    obj[y[j]] = y[j];
-                var res = [];
-                for (var k in obj) {
-                    if (obj.hasOwnProperty(k))  // <-- optional
-                        res.push(obj[k]);
-                }
-                return res;
-            }
 
             var me = this;
 

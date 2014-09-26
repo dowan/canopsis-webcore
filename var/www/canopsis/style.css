@@ -350,3 +350,7 @@ table.sortable th {
 a {
 	cursor: pointer;
 }
+
+table.dataTable tbody th, table.dataTable tbody td {
+	padding: 4px 5px;
+}

@@ -34,7 +34,7 @@ define([
     */
     var mixin = Ember.Mixin.create({
         partials: {
-            header: ['itemsperpage'],
+            subHeader: ['itemsperpage'],
             footer: ['pagination']
         },
 
@@ -80,6 +80,12 @@ define([
         totalPages: 1,
         paginationFirstItemIndex: 1,
         paginationLastItemIndex: 1,
+
+
+        itemsDivided: function(){
+            return get(this, 'itemsTotal') / get(this, 'itemsPerPage');
+
+        }.property('itemsTotal', 'itemsPerPage'),
 
         itemsPerPagePropositions : function() {
             var res = [5, 10, 20, 50];

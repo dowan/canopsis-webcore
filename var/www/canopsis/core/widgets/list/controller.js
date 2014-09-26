@@ -27,6 +27,7 @@ define([
     'app/mixins/sortablearray',
     'app/mixins/history',
     'app/mixins/ack',
+    'app/mixins/infobutton',
     'app/mixins/sendevent',
     'app/mixins/customfilter',
     'utils',

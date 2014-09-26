@@ -19,17 +19,19 @@
 
 define([
     'ember',
-    'app/application',
-    'app/lib/mixinsregistry'
-], function(Ember, Application, mixinsregistry) {
+    'app/application'
+], function(Ember, Application) {
+
     var get = Ember.get,
         set = Ember.set;
 
-    var editor = Ember.Component.extend({
-        mixins: mixinsregistry
+    var mixin = Ember.Mixin.create({
+        partials: {
+            itemactionbuttons: ['actionbutton-info']
+        }
     });
 
-    Application.ComponentMixinchooserComponent = editor;
+    Application.InfobuttonMixin = mixin;
 
-    return editor;
+    return mixin;
 });

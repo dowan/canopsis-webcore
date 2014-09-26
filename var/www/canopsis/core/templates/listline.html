@@ -14,9 +14,9 @@
         <div style="display:flex">
             {{set 'minified' true}}
 
-            {{#each item_action in parentController.item_actions}}
-                {{partial item_action}}
-            {{/each}}
+            {{clog "controller.parentController._partials.itemactionbuttons"}}
+            {{clog controller.parentController._partials.itemactionbuttons}}
+            {{partialslot slot=controller.parentController._partials.itemactionbuttons}}
         </div>
     </td>
 {{/if}}
