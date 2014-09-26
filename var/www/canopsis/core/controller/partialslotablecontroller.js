@@ -31,7 +31,7 @@ define([
 
 
     function removeMixinsPartials(widget, mixinName) {
-        console.error('removing mixin partials', arguments);
+        console.log('removing mixin partials', arguments);
 
         var partials = get(widget, '_partials');
 
@@ -68,44 +68,45 @@ define([
         _partials: {},
 
         mixinsWillChange: function(instance, key) {
-            console.error('will', arguments);
-            console.error('will2', get(instance, key));
-
             this.oldMixinsValue = get(instance, key);
         }.observesBefore('content.mixins'),
 
         mixinsDidChange: function(instance, key) {
-            console.error('did', this);
-
             var oldMixins = get(this, 'oldMixinsValue');
             var newMixins = get(instance, key);
-            console.error('did2', oldMixins, newMixins);
             if(newMixins && oldMixins) {
-                for (var i = 0, l = oldMixins.length; i < l; i++) {
+                for (var i = 0, li = oldMixins.length; i < li; i++) {
                     oldMixins = oldMixins.without(newMixins[i]);
                 }
 
-                console.error('newMixins', oldMixins);
                 for (var j = 0, lj = oldMixins.length; j < lj; j++) {
                     removeMixinsPartials(this, oldMixins[j]);
                 }
-
-                console.error('did3', newMixins);
             }
+
+            this.oldMixinsValue = undefined;
 
         }.observes('content.mixins'),
 
-        /**
-         * Override of willmergemixin to merge mixin's partials with base partials
-         */
-        willMergeMixin: function(Mixin) {
-            this._super.apply(this, arguments);
+        refreshPartialsList: function() {
+            console.log('refreshPartialsList', get(this, 'partials'));
+            var partials = get(this, 'partials');
+            set(this, '_partials', partials);
+            var mixins = get(this, 'content.mixins');
 
+            if(Ember.isArray(mixins)) {
+                for (var i = 0, l = mixins.length; i < l; i++) {
+                    this.mergeMixinPartials(mixins[i]);
+                }
+            }
+        },
+
+
+        mergeMixinPartials: function(Mixin) {
             var me = this;
 
             if(Mixin.partials !== undefined) {
                 Object.keys(Mixin.partials).forEach(function(key) {
-                    console.log(key, Mixin.partials[key]);
 
                     var partialsKey = '_partials.' + key;
 
@@ -116,6 +117,17 @@ define([
                     set(me, partialsKey, union_arrays(get(me, partialsKey), Mixin.partials[key]));
                 });
             }
+        },
+
+        /**
+         * Override of willmergemixin to merge mixin's partials with base partials
+         */
+        willMergeMixin: function(Mixin) {
+            this._super.apply(this, arguments);
+
+            console.log('willmergemixin', this, Mixin.partials);
+
+            this.mergeMixinPartials(Mixin);
         }
     });
 
