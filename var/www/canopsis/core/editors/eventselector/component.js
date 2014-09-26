@@ -22,30 +22,27 @@ define([
     'ember',
     'app/application'
 ], function(Ember, Application) {
-    var get = Ember.get,
-        set = Ember.set;
 
     var component = Ember.Component.extend({
-
         init: function() {
             this._super();
-            set(this, "componentDataStore", DS.Store.create({
-                container: get(this, "container")
+            this.set("componentDataStore", DS.Store.create({
+                container: this.get("container")
             }));
             console.log("Event selector init");
 
-            set(this, 'selectedEvents', []);
+            this.set('selectedEvents', []);
 
-            if (get(this, 'content') !== undefined) {
+            if (this.get('content') !== undefined) {
                 this.initializeEvents();
             }
         },
 
         initializeEvents: function () {
-            rks = get(this, 'content');
+            rks = this.get('content');
 
             var that = this;
-            var query = get(this, 'componentDataStore').findQuery(
+            var query = this.get("componentDataStore").findQuery(
                 'event',
                 {
                     filter: JSON.stringify({_id: {'$in': rks}}),
@@ -55,7 +52,7 @@ define([
             ).then(
                 function (data) {
                     console.log('Fetched initialization data from events', data.content);
-                    set(that, 'selectedEvents', data.content);
+                    that.set('selectedEvents', data.content);
                 }
             );
             void (query);
@@ -68,44 +65,38 @@ define([
             var excludeRks = this.getSelectedRks();
 
             //adding exclusion rks if any loaded
-            if (get(excludeRks, 'length')) {
+            if (excludeRks.length) {
                 filter._id = {'$nin': excludeRks};
             }
 
-            var component = get(this, 'component');
-
-            var resource = get(this, 'resource');
-
             //permissive search throught component and resource
-            if (component) {
-                set(filter, 'component', { '$regex' : '.*'+ component +'.*', '$options': 'i' });
+            if (this.get('component')) {
+                filter.component = { '$regex' : '.*'+ this.get('component') +'.*', '$options': 'i' };
             }
-            if (resource) {
-                set(filter, 'resource', { '$regex' : '.*'+ resource +'.*', '$options': 'i' });
+            if (this.get('resource')) {
+                filter.resource = { '$regex' : '.*'+ this.get('resource') +'.*', '$options': 'i' };
             }
 
             filter.event_type = 'check';
 
-            var selectors = get(this, 'selectors');
-            var topologies = get(this, 'topologies');
             //does user selected selector or topology search
-            if (selectors) {
-                set(filter, 'event_type', 'selector');
+            if (this.get('selectors')) {
+                filter.event_type = 'selector';
             }
 
-            if (topologies) {
-                set(filter, 'event_type', 'topologies');
+            if (this.get('topologies')) {
+                filter.event_type = 'topologies';
             }
 
-            if (!get(filter, 'resource') && !get(filter, 'component')) {
-                set(this, 'events', []);
+            if (!filter.resource && !filter.component) {
+                this.set('events', []);
                 //when user only wants topologies or selectors, query is done anyway with the right crecord type
-                if (!topologies && !selectors) {
+                if (!this.get('topologies') && !this.get('selectors')) {
                     return;
                 }
             }
 
-            var query = get(this, "componentDataStore").findQuery(
+            var query = this.get("componentDataStore").findQuery(
                 'event',
                 {
                     filter: JSON.stringify(filter),
@@ -118,7 +109,7 @@ define([
             query.then(
                 function (data) {
                     console.log('Fetched data from events', data.content);
-                    set(that, 'events', data.content);
+                    that.set('events', data.content);
             });
 
             void (query);
@@ -126,12 +117,12 @@ define([
         }.observes('component', 'resource'),
 
         setSelector: function() {
-            set(this, 'topologies', false);
+            this.set('topologies', false);
             this.findEvents();
         }.observes('selectors'),
 
         setTopologies: function() {
-            set(this, 'selectors', false);
+            this.set('selectors', false);
             this.findEvents();
         }.observes('topologies'),
 
@@ -139,12 +130,10 @@ define([
         },
 
         getSelectedRks: function() {
-            var selectedEventsBuffer = [];
-            var selectedEvents = get(this, 'selectedEvents');
-
-            if (selectedEvents !== undefined) {
-                for (var i = 0, l = selectedEvents.length; i < l; i++) {
-                    selectedEvents.pushObject(selectedEvents[i].id);
+            var selectedEvents = [];
+            if (this.get('selectedEvents') !== undefined) {
+                for (var i=0; i<this.get('selectedEvents').length; i++) {
+                    selectedEvents.push(this.get('selectedEvents')[i].id);
                 }
             }
             return selectedEvents;
@@ -154,29 +143,25 @@ define([
 
             add: function (event) {
                 console.log('Adding event', event);
-                get(this, 'selectedEvents').pushObject(event);
-                get(this, 'events').removeObject(event);
-                set(this, 'content', this.getSelectedRks());
-
-                if (!get(this, 'events').length) {
+                this.get('selectedEvents').pushObject(event);
+                this.get('events').removeObject(event);
+                this.set('content', this.getSelectedRks());
+                if (!this.get('events').length) {
                     this.findEvents();
                 }
             },
 
             delete: function (event) {
                 console.log('Rk to delete', event.id);
-                var selectedEvents = get(this, 'selectedEvents');
-
-                for (var i = 0, l = selectedEvents.length; i < l; i++) {
-                    if (event.id === selectedEvents[i].id) {
+                for (var i=0; i<this.get('selectedEvents').length; i++) {
+                    if (event.id === this.get('selectedEvents')[i].id) {
                         console.log('Removing event');
-                        get(this, 'selectedEvents').removeAt(i);
+                        this.get('selectedEvents').removeAt(i);
                         break;
                     }
                 }
-
                 this.findEvents();
-                set(this, 'content', this.getSelectedRks());
+                this.set('content', this.getSelectedRks());
             }
         }
     });
