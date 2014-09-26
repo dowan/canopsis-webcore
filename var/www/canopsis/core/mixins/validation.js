@@ -54,7 +54,7 @@ define([
 
         set_tab: function(last_field_error){
             var categories = this.categories;
-            /*
+            /* //@TODO MOMO
             for (var i = 0 ; i < categories.length ; i++){
                 var current = categories[i];
                 this.changeTAB( current.slug , false );
