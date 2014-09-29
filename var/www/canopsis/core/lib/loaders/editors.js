@@ -43,7 +43,6 @@ var editorsTemplates = [
     { name: 'richtext', js: 'w' },
 
     { name: 'templateselector' },
-    { name: 'rights', js: 'v' },
     { name: 'separator' },
     { name: 'serieitem', js: 'w'},
     { name: 'session', js: 'w' },
@@ -54,7 +53,7 @@ var editorsTemplates = [
     { name: 'stringclassifiedcrecordselector' },
     { name: 'stringpair'},
     { name: 'tags' , js: "w" },
-    { name: 'templateSelector' , js: "v" },
+
     { name: 'textarea' },
     { name: 'timeinterval', js: 'w' },
     { name: 'timestamp', js: 'w' },
