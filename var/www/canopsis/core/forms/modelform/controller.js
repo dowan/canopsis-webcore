@@ -47,7 +47,7 @@ define([
         ArrayFields: Ember.A(),
 
         filterUserPreferenceCategory: function (category, keyFilters) {
-            var keys = category.get('keys');
+            var keys = get(category, 'keys');
             set(category, 'keys', []);
 
             for (var i = 0, l = keys.length; i < l; i++) {
@@ -80,7 +80,7 @@ define([
                     var category = res[i];
 
                     category.slug = slugUtils(category.title);
-                    console.log(category);
+                    console.log('current category', category);
                     if (get(this, 'filterFieldByKey') || get(this, 'userPreferencesOnly')) {
                         //filter on user preferences fields only
                         //if (category)

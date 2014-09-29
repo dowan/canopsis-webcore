@@ -64,6 +64,10 @@ require.config({
              deps: ['jquery']
         },
 
+        'adminLTE': {
+            deps: ['jquery', 'bootstrap']
+        },
+
         'bootbox': {
             deps: ['jquery', 'bootstrap']
         },

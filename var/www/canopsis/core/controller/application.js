@@ -209,20 +209,19 @@ define([
                         user: username
                     })
                 }).then(function(queryResults) {
+
                     console.log('query result', queryResults);
+
                     var record = queryResults.get('content')[0];
                     var previousUiLanguage = get(record, 'ui_language');
+
+                    set(record, 'crecord_type', 'loggedaccount');
+
                     console.log('previousUiLanguage', previousUiLanguage);
+
                     //generating form from record model
                     var recordWizard = formsUtils.showNew('modelform', record, {
-                        title: username +' '+__('profile'),
-                        filterFieldByKey: {
-                            'firstname': {readOnly : true},
-                            'lastname': {readOnly : true},
-                            'authkey': {readOnly : true},
-                            'mail': true,
-                            'ui_language': true
-                        }
+                        title: username + ' ' +__('profile'),
                     });
 
                     //submit form and it s callback

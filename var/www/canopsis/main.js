@@ -19,6 +19,7 @@
 
 define([
     'app/application',
+    'canoApp',
     'app/adapters/application',
     'app/adapters/ack',
     'app/adapters/event',
@@ -47,10 +48,11 @@ define([
     'app/routes/index',
     'app/routes/userview',
     'css3-mediaqueries'
-], function(Application) {
+], function(Application, Canopsis) {
 
-
-
+    window.getCanopsis = function () {
+        return Canopsis;
+    };
 
     //TEMP
     Application.connector = [ { name : "nagios" }, { name : "shinken" } , { name : "schneider" } , { name : "collectd" }];
