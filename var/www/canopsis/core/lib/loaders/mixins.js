@@ -25,7 +25,8 @@ var mixinsArray = [
     { name: 'tagsoptionfilter', classes: ["widget"]},
     { name: 'arraysearch', classes: ['widget']},
     { name: 'history', classes: ['widget']},
-    { name: 'sendevent', classes: ['widget']}
+    { name: 'sendevent', classes: ['widget']},
+    { name: 'crud', classes: ['widget']}
 ];
 
 var deps = ['app/lib/mixinsregistry'];
