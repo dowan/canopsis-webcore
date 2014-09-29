@@ -54,7 +54,8 @@ var editorsTemplates = [
     { name: 'templateSelector' , js: "v" },
     { name: 'textarea' },
     { name: 'timeinterval', js: 'w' },
-    { name: 'timestamp', js: 'w' }
+    { name: 'timestamp', js: 'w' },
+    { name: 'modelselect', js: 'w' }
 ];
 
 var deps = ['ember', 'app/routes/userview'];
