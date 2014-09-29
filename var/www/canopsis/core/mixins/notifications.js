@@ -25,9 +25,6 @@ define([
         set = Ember.set;
 
     var mixin = Ember.Mixin.create({
-        partials: {
-            statusbar: ['notificationsstatusmenu']
-        },
 
         notifications: function(){
             return this.store.find("notification");

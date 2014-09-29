@@ -28,11 +28,7 @@ define([
 
     var mixin = Ember.Mixin.create({
         configuration: canopsisConfiguration,
-        available_types : available_types,
-
-        partials: {
-            statusbar: ['schemamanagerstatusmenu']
-        }
+        available_types : available_types
     });
 
     Application.SchemamanagerMixin = mixin;

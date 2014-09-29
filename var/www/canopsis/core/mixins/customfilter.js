@@ -38,9 +38,17 @@ define([
         },
 
         actions: {
+            setFilter: function (filter) {
+                set(this, 'findParams_cfilterFilterPart', filter);
+
+                if (get(this, currentPage) !== undefined) {
+                    set(this, "currentPage", 1);
+                }
+
+                this.refreshContent();
+            },
+
             addUserFilter: function () {
-
-
                 var widgetController = this;
 
                 var record = dataUtils.getStore().createRecord('customfilter', {

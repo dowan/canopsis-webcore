@@ -30,9 +30,7 @@ define([
      * Mixins allowing console and various js runtime settings
     */
     var mixin = Ember.Mixin.create({
-        partials: {
-            statusbar: ['consolemanagerstatusmenu']
-        },
+        partials: {},
 
         actions: {
             showConsoleSettings: function(){
