@@ -32,6 +32,9 @@ define([
       Custom cfilter allow perform selelection on a list with custom filter information.
     */
 
+    var get = Ember.get,
+        set = Ember.set;
+
     var mixin = Ember.Mixin.create({
         partials: {
             subHeader: ['customfilters']
@@ -41,8 +44,8 @@ define([
             setFilter: function (filter) {
                 set(this, 'findParams_cfilterFilterPart', filter);
 
-                if (get(this, currentPage) !== undefined) {
-                    set(this, "currentPage", 1);
+                if (get(this, 'currentPage') !== undefined) {
+                    set(this, 'currentPage', 1);
                 }
 
                 this.refreshContent();
@@ -75,23 +78,11 @@ define([
 
                 var widgetController = this;
 
-                var filterValue;
-                var filterTitle;
-
-                try {
-                    //gets data from ember instance if object is ember object
-                    filterValue = filter.get('filter');
-                    filterTitle = filter.get('title');
-                } catch (err) {
-                    //gets data from js object if not ember object
-                    filterValue = filter.filter;
-                    filterTitle = filter.title;
-                }
                 //rebuild a crecord as data may be simple js object saved to userpreferences
                 var record = dataUtils.getStore().createRecord('customfilter', {
                     crecord_type: 'customfilter',
-                    filter: filterValue,
-                    title: filterTitle,
+                    filter: get(filter, 'filter'),
+                    title: get(filter, 'title'),
                 });
 
 
