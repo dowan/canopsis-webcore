@@ -1,5 +1,3 @@
-<p>Choose serie :</p>
-<p>{{view Ember.Select content=availableSeries optionValuePath="content.id" optionLabelPath="content.name" value=selectedSerie class="form-control"}}</p>
-
-<p>Choose curve :</p>
-<p>{{view Ember.Select content=availableCurves optionValuePath="content.id" optionLabelPath="content.name" value=selectedCurve class="form-control"}}</p>
+{{component-modelselect content=item.serie}}
+{{component-modelselect content=item.curve}}
+{{component-color content=item.color}}

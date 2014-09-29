@@ -17,45 +17,33 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 define([
     'ember',
     'app/application',
-    'app/editors/modelselect/component'
 ], function(Ember, Application) {
-
     var get = Ember.get,
         set = Ember.set;
 
     var component = Ember.Component.extend({
-        
+        model: Ember.computed.alias('content.model.options.model'),
+        value: Ember.computed.alias('content.value'),
+
+        availableModels: function() {
+            var store = get(this, 'componentDataStore');
+            var model = get(this, 'model');
+
+            return store.findAll(model);
+        }.property('content.model.options.model'),
 
         init: function() {
-            this._super(arguments);
+            this._super.apply(this, arguments);
 
             set(this, "componentDataStore", DS.Store.create({
                 container: get(this, "container")
             }));
-
-        console.log('BLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH');
-        console.log('BLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH');
-        console.log('BLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH');
-        console.log('BLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH');
-        console.log('BLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH');
-
-        console.log(get(this, 'content'));
-
-        
-        console.log('BLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH');
-        console.log('BLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH');
-        console.log('BLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH');
-        console.log('BLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH');
-        console.log('BLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH');
-
         }
     });
 
-    Application.ComponentSerieitemComponent = component;
-
+    Application.ComponentModelselectComponent = component;
     return component;
 });

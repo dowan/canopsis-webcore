@@ -160,8 +160,8 @@ define([
                 setFilter: function (filter) {
                     set(this, 'findParams_cfilterFilterPart', filter);
 
-                    if (get(this, currentPage) !== undefined) {
-                        set(this, "currentPage", 1);
+                    if (get(this, 'currentPage') !== undefined) {
+                        set(this, 'currentPage', 1);
                     }
 
                     this.refreshContent();
@@ -254,6 +254,18 @@ define([
                 }
 
                 var findParams = this.computeFindParams();
+
+                //Setting default sort order param to the query depending on widget configuration
+                var columnSort = this.get('default_column_sort');
+                if (Ember.isNone(findParams.sort) && !Ember.isNone(columnSort)) {
+                    if (!Ember.isNone(columnSort.property)){
+                        var direction = 'DESC';
+                        if (columnSort.direction === 'DESC' || columnSort.direction === 'ASC') {
+                            direction = columnSort.direction;
+                        }
+                        findParams.sort = JSON.stringify([{property: columnSort.property, direction: direction}]);
+                    }
+                }
 
                 console.tags.add('data');
                 console.log("find items of type", itemType, "with options", findParams);

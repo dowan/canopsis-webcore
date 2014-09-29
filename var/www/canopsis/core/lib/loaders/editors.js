@@ -34,6 +34,7 @@ var editorsTemplates = [
     { name: 'dateinterval', js: 'w' },
     { name: 'defaultpropertyeditor', js: 'v' },
     { name: 'duration', js: 'w' },
+    { name: 'sortable', js: 'w' },
     { name: 'eventselector', js: 'w' },
     { name: 'group', js: 'c' },
     { name: 'integer' },
@@ -53,7 +54,8 @@ var editorsTemplates = [
     { name: 'templateSelector' , js: "v" },
     { name: 'textarea' },
     { name: 'timeinterval', js: 'w' },
-    { name: 'timestamp', js: 'w' }
+    { name: 'timestamp', js: 'w' },
+    { name: 'modelselect', js: 'w' }
 ];
 
 var deps = ['ember', 'app/routes/userview'];
