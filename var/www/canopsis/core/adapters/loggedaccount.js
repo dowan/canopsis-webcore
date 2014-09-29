@@ -22,11 +22,11 @@ define([
         'app/adapters/application'
 ], function(Application, ApplicationAdapter) {
 
-    Application.UseraccountAdapter = ApplicationAdapter.extend({
+    Application.LoggedaccountAdapter = ApplicationAdapter.extend({
         buildURL: function() {
             return '/rest/object/account';
         }
     });
 
-    return Application.UseraccountAdapter;
+    return Application.LoggedaccountAdapter;
 });
