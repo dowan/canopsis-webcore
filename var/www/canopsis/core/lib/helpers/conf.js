@@ -21,7 +21,6 @@ define(['ember' , 'utils'], function(Ember , utils) {
 
     Ember.Handlebars.helper('conf', function( controller ) {
 
-        breakPoint ("helper.conf");
         var options_filter =  this.record.get("options_filter");
         var options = utils.filterObject.getFieldsByPrefix( "_opt_" , this.record.content , function( attr , result ,record ){
             var field = attr.slice(5);

@@ -75,23 +75,6 @@ define([
     Canopsis.commit = commit;
     Canopsis.editMode = false;
 
-    window.debugName = [ "ajaxCall",
-                        // "confirmForm.submit"
-                        //"confirmform.makeObject",
-                        //"connectorform.availableConnectors"
-                        //"connectorform.submit"
-                        //"multicrecordList.editConf"
-                        //"setReceivedConf",
-                        //"confirmForm.submit"
-                        //"helper.conf"
-                         ];
-    window.breakPoint = function( caller){
-        //var caller = arguments.callee.caller.name;
-        if( window.debugName.contains( caller ))
-            debugger;
-    };
-
-
 
     Canopsis.conf = canopsisConfiguration;
     console.log('Canopsis configuration', Canopsis.conf);
