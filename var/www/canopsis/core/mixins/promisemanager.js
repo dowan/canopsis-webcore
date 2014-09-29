@@ -26,10 +26,6 @@ define([
         set = Ember.set;
 
     var mixin = Ember.Mixin.create({
-        partials: {
-            statusbar: ['promisemanagerstatusmenu']
-        },
-
         promises: promisesmanager,
     });
 

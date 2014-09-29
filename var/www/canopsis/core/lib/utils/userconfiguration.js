@@ -23,7 +23,7 @@ define([
     'utils'
 ], function(Ember, Application, utils) {
 
-    Application.userConfiguration = Ember.ObjectController.extend({
+    var userConfiguration = Ember.ObjectController.extend({
 
         needs: ['login'],
         content: {},
@@ -102,5 +102,5 @@ define([
     });
 
 
-    return Application.userConfiguration;
+    return userConfiguration;
 });

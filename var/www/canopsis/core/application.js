@@ -42,9 +42,9 @@ define([
         after: "transforms",
         initialize: function(container,application) {
             void (container);
-            application.register('transform:array',DS.ArrayTransform);
-            application.register('transform:integer',DS.IntegerTransform);
-            application.register('transform:object',DS.ObjectTransform);
+            application.register('transform:array', DS.ArrayTransform);
+            application.register('transform:integer', DS.IntegerTransform);
+            application.register('transform:object', DS.ObjectTransform);
         }
     });
 

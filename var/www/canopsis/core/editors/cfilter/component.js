@@ -21,8 +21,9 @@ define([
     'jquery',
     'ember',
     'app/application',
-    'app/lib/indexesregistry'
-], function($, Ember, Application, indexesregistry) {
+    'app/lib/indexesregistry',
+    'canoApp'
+], function($, Ember, Application, indexesregistry, Canopsis) {
     var get = Ember.get,
         set = Ember.set;
 

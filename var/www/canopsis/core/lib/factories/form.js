@@ -22,7 +22,7 @@ define([
     'app/controller/form',
     "app/lib/formsregistry",
     'app/view/form'
-], function(Application, FormController, formsregistry) {
+], function(Application, FormController, formsregistry, FormView) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -65,7 +65,7 @@ define([
         console.log("extendArguments", extendArguments);
         console.log("subclass", options.subclass);
 
-        Application[formViewName] = Application.FormView.extend();
+        Application[formViewName] = FormView.extend();
         Application[formControllerName] = options.subclass.extend.apply(options.subclass, extendArguments);
 
         formsregistry.all[formName] = {
