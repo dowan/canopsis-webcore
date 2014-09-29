@@ -33,7 +33,7 @@ define([
         set = Ember.set;
 
     var controller = PartialslotAbleController.extend({
-        needs: ['application'],
+        needs: ['application', 'login'],
 
         userParams: {},
 

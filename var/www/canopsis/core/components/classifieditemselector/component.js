@@ -101,6 +101,7 @@ define([
 
         allCollapsed: false,
         selectionCollapsed: false,
+        classesCollapsed: true,
 
         mode: "list",
 
@@ -135,6 +136,7 @@ define([
         allClasses: function(){
             var searchFilter = get(this, 'searchFilter');
             var res;
+
             if(searchFilter === "") {
                 res = get(this, 'content.all');
             } else {
@@ -143,6 +145,7 @@ define([
                     return doesItStartsWithSearchFilter;
                 });
             }
+
             console.log("recompute allClasses", res);
             return res;
         }.property('searchFilter'),
@@ -175,7 +178,7 @@ define([
                     items: classes[i].items,
                     id: classes[i].id,
                     titleHref: classes[i].titleHref,
-                    isCollapsed: classes[i].isCollapsed
+                    isCollapsed: classes[i].isCollapsed || get(this, 'classesCollapsed')
                 });
 
                 var classItems = currentClass.items;
@@ -210,16 +213,13 @@ define([
                         var newObject = Ember.Object.create({
                             key: key,
                             items: value,
-                            id: component.get('elementId') + "_" + key,
-                            titleHref: "#" + component.get('elementId') + "_" + key
+                            id: get(component, 'elementId') + "_" + key,
+                            titleHref: "#" + get(component, 'elementId') + "_" + key
                         });
                         var res = [newObject];
 
-                        if(contentByClass[key] === undefined || contentByClass[key].isCollapsed === undefined) {
-                            res.isCollapsed = false;
-                        } else {
-                            res.isCollapsed = contentByClass[key].isCollapsed;
-                        }
+                        set(res, 'isCollapsed', contentByClass[key].isCollapsed);
+
                         return res;
                     }
                 });

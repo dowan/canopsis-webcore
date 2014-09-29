@@ -151,6 +151,10 @@ define([
 
             console.groupEnd();
         },
+        computeFindParams: function() {
+            console.log('computeFindParams', arguments);
+            this._super.apply(this, arguments);
+        },
 
         extractItems: function(queryResult) {
             get(this, 'paginationMixinContent');

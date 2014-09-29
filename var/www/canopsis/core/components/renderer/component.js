@@ -26,6 +26,7 @@ define([
 
     var component = Ember.Component.extend({
         tagName: 'span',
+        classNames: ['renderer'],
 
         value: function() {
             return get(this, 'record.' + get(this, 'attr.field'));

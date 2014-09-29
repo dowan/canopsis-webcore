@@ -50,6 +50,10 @@ define([
         SchemamanagerMixin, PromisemanagerMixin, ConsolemanagerMixin, NotificationsMixin, UsermenuMixin, {
         needs: ['login'],
 
+        partials: {
+            statusbar: ['schemamanagerstatusmenu', 'consolemanagerstatusmenu', 'notificationsstatusmenu', 'promisemanagerstatusmenu', 'userstatusmenu']
+        },
+
         editMode: false,
 
         runtimeConfiguration: canopsisConfiguration,
@@ -169,10 +173,10 @@ define([
 
             console.groupEnd();
             this._super.apply(this, arguments);
+            this.refreshPartialsList();
         },
 
         actions: {
-
             promptReloadApplication: function(title, location) {
                 setTimeout(function (){
                     console.log('in promptReloadApplication');

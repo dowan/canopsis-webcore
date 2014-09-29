@@ -23,9 +23,8 @@ define([
     'app/application',
     'app/lib/utils/userconfiguration',
     'app/lib/utils/widgets',
-    'utils',
     'app/lib/helpers/partialslot'
-], function($, Ember, Application, userConfiguration, widgetUtils, utils) {
+], function($, Ember, Application, userConfiguration, widgetUtils) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -86,29 +85,6 @@ define([
 
         mergeMixinPartials: function(Mixin, partials) {
             var me = this;
-            console.group("mergeMixinPartials", Mixin, Mixin.partials);
-
-            var mixinPartials = get(Application, Mixin + 'Mixin').mixins[0].properties.partials;
-
-            if(mixinPartials !== undefined) {
-                Object.keys(mixinPartials).forEach(function(key) {
-
-                    var partialsKey = '_partials.' + key;
-
-                    if(get(me, partialsKey) === undefined) {
-                        set(me, partialsKey, Ember.A());
-                    }
-
-                    for (var i = 0, l = mixinPartials[key].length; i < l; i++) {
-                        var currentPartial = mixinPartials[key][i];
-                        if(!get(me, partialsKey).contains(currentPartial)) {
-                            get(me, partialsKey).pushObject(currentPartial);
-                        }
-                    }
-                });
-            }
-
-            console.groupEnd();
 
             return partials;
         }
