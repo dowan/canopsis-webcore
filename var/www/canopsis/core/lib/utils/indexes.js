@@ -48,24 +48,28 @@ define([
         getAsList: function (collection) {
             var indexes = this.get(collection);
             indexesList = [];
+
             for (var key in indexes) {
                 indexesList.push(indexes[key].key);
             }
+
             return indexesList;
         },
         getIndexWithField: function (collection, fields) {
             //Retruns all indexes from given collection that match one element in the fields array
             var indexes = this.getAsList(collection);
             var indexSelection = [];
-            for (var x=0; x<indexes.length; x++){
+
+            for (var x = 0, l = indexes.length; x < l; x++){
                 console.log('searching ' + indexes[x][0][0] + ' in' , fields);
                 if ($.inArray(indexes[x][0][0], fields) !== -1) {
                     indexSelection.push(indexes[x]);
                 }
             }
+
             return indexSelection;
         }
-    }
+    };
 
     return indexes;
 });

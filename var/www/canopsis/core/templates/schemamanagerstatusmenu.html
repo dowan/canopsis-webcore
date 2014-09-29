@@ -1,11 +1,11 @@
 <!--Displays schema list-->
-{{#if Canopsis.conf.DISPLAY_SCHAMA_MANAGER}}
+{{#if configuration.DISPLAY_SCHAMA_MANAGER}}
     <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
             {{glyphicon 'upload'}}
         </a>
         <ul class="dropdown-menu">
-        {{#each type in Canopsis.Application.available_types}}
+        {{#each type in available_types}}
             <li><a class="handle" {{action 'addModelInstance' type}}>{{type}}</a></li>
         {{/each}}
         </ul>

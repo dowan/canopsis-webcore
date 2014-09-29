@@ -29,7 +29,7 @@ define([
      * You should define on the validationFields
      * @mixin
      */
-    Application.ValidationMixin = Ember.Mixin.create({
+    var mixin = Ember.Mixin.create({
 
         validationFields: function() {
             console.warn("Property \"validationFields\" must be defined on the concrete class.");
@@ -54,7 +54,7 @@ define([
 
         set_tab: function(last_field_error){
             var categories = this.categories;
-
+            /* //@TODO MOMO
             for (var i = 0 ; i < categories.length ; i++){
                 var current = categories[i];
                 this.changeTAB( current.slug , false );
@@ -75,6 +75,7 @@ define([
                     }
                 }
             }
+            */
         },
 
         empty_validationFields: function() {
@@ -115,5 +116,7 @@ define([
             return isValid;
         }
     });
-    return Application.ValidationMixin;
+
+    Application.ValidationMixin = mixin;
+    return mixin;
 });

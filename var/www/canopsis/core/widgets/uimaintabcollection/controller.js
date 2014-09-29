@@ -19,11 +19,13 @@
 
 define([
     'jquery',
-    'app/lib/factories/widget'
+    'app/lib/factories/widget',
+    'app/lib/wrappers/bootstrap'
 ], function($, WidgetFactory) {
 
     var get = Ember.get,
         set = Ember.set;
+
 
     var widget = WidgetFactory('uimaintabcollection',{
         needs: ['application'],

@@ -20,7 +20,7 @@ define(['ember' , "app/application"], function(Ember , Application) {
 
     var folderPath = "/static/canopsis/media/images/";
 
-    Application.images = {
+    var images = {
         nagios : folderPath + 'nagioslogo.png',
         shinken : folderPath + 'shinkenlogo.png',
         schneider : folderPath + 'schneiderlogo.png',
@@ -33,9 +33,14 @@ define(['ember' , "app/application"], function(Ember , Application) {
         var value = controller.attr.value;
 
         if(value === undefined) {
-            value = controller.record.content._data[field];
+            if(controller.record.content !== undefined) {
+                value = controller.record.content._data[field];
+            } else {
+                value = '';
+            }
         }
-        var  logoPath = Application.images[value];
+
+        var logoPath = images[value];
 
         if(logoPath !== undefined) {
             return new Ember.Handlebars.SafeString('<img alt="Source" src="'+ logoPath + '"/>');
@@ -46,7 +51,7 @@ define(['ember' , "app/application"], function(Ember , Application) {
 
     Ember.Handlebars.helper('logofromstring', function(imageName) {
 
-        var  logoPath = Application.images[imageName];
+        var  logoPath = images[imageName];
 
         return new Ember.Handlebars.SafeString(logoPath);
     });

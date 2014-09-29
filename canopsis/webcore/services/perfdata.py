@@ -20,83 +20,85 @@
 
 from bottle import get, delete, put, post
 
-from canopsis.common.ws import response, route
+from canopsis.common.ws import route
 from canopsis.perfdata.manager import PerfData
 
+import logging
+
+
 manager = PerfData()
+logger = logging.getLogger('webserver')
 
 
-@route(post, body_params=['metric_id', 'timewindow', 'period'])
+@route(post, payload=['metric_id', 'timewindow', 'period'])
 def perfdata_count(metric_id, timewindow=None, period=None):
 
-    count = manager.count(
+    result = manager.count(
         metric_id=metric_id, timewindow=timewindow, period=period)
-
-    result = response(count)
 
     return result
 
 
 @route(
-    post, body_params=['timewindow', 'period', 'limit', 'skip', 'timeserie'])
+    post,
+    payload=[
+        'metric_id', 'with_meta',
+        'limit', 'skip',
+        'timewindow', 'period', 'timeserie'
+    ])
 def perfdata(
     metric_id, timewindow=None, period=None, with_meta=True,
     limit=0, skip=0, timeserie=None
 ):
 
-    points = manager.get(
+    result = manager.get(
         metric_id=metric_id, period=period, with_meta=with_meta,
-        timewindow=timewindow, limit=limit, skip=skip, timeserie=timeserie)
+        timewindow=timewindow, limit=limit, skip=skip)
 
     if timeserie is not None:
-        _points = points[0] if with_meta else points
-        points = timeserie.calculate(_points, timewindow=timewindow)
 
-    result = response(perfdata)
+        _points = result[0] if with_meta else result
+        result = timeserie.calculate(_points, timewindow=timewindow)
 
     return result
 
 
-@route(post, body_params=['timewindow', 'limit', 'sort'])
+@route(post, payload=['timewindow', 'limit', 'sort'])
 def perfdata_meta(metric_id, timewindow=None, limit=0, sort=None):
 
-    meta = manager.get_meta(
+    result = manager.get_meta(
         metric_id=metric_id, timewindow=timewindow, limit=limit, sort=sort)
-
-    result = response(meta)
 
     return result
 
 
-@route(put, body_params=['metric_id', 'points', 'meta', 'period'])
+@route(put, payload=['metric_id', 'points', 'meta', 'period'])
 def perfdata(metric_id, points, meta=None, period=None):
 
     manager.put(metric_id=metric_id, points=points, meta=meta, period=period)
 
-    result = response(points)
+    result = points
 
     return result
 
 
-@route(delete, body_params=['metric_id', 'period', 'with_meta', 'timewindow'])
+@route(delete, payload=['metric_id', 'period', 'with_meta', 'timewindow'])
 def perfdata(metric_id, period=None, with_meta=False, timewindow=None):
 
     manager.remove(
         metric_id=metric_id, period=period, with_meta=with_meta,
         timewindow=timewindow)
 
-    result = response(None)
+    result = None
 
     return result
 
 
-@route(put, body_params=['metric_id', 'meta', 'timestamp'])
+@route(put, payload=['metric_id', 'meta', 'timestamp'])
 def perfdata_meta(metric_id, meta, timestamp=None):
 
-    nodes = manager.put_meta(
+    result = manager.put_meta(
         metric_id=metric_id, meta=meta, timestamp=timestamp)
-
-    result = response(nodes)
 
     return result
 
@@ -104,9 +106,7 @@ def perfdata_meta(metric_id, meta, timestamp=None):
 @route(get)
 def perfdata_period(metric_id):
 
-    period = manager.get_period(metric_id)
-
-    result = response(period)
+    result = manager.get_period(metric_id)
 
     return result
 
@@ -114,8 +114,6 @@ def perfdata_period(metric_id):
 @route(get)
 def perfdata_internal(metric):
 
-    internal = manager.is_internal(metric)
-
-    result = response(internal)
+    result = manager.is_internal(metric)
 
     return result

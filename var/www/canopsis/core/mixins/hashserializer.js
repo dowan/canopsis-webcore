@@ -22,7 +22,7 @@ define([
     'app/application'
 ], function(Ember, Application) {
 
-    Application.HashSerializerMixin = Ember.Mixin.create({
+    var mixin = Ember.Mixin.create({
         serializeIntoHash: function(hash, type, record, method, options) {
             void (type);
             console.log("serializeIntoHash", arguments);
@@ -36,5 +36,7 @@ define([
         }
     });
 
-    return Application.HashSerializerMixin;
+    Application.HashSerializerMixin = mixin;
+
+    return mixin;
 });

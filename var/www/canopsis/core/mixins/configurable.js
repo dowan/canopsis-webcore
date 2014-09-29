@@ -22,11 +22,14 @@ define([
     'app/application'
 ], function(Ember, Application) {
 
+    var get = Ember.get,
+        set = Ember.set;
+
     /**
      * Implements configuration management for controllers
      * @mixin
      */
-    Application.ConfigurableMixin = Ember.Mixin.create({
+    var mixin = Ember.Mixin.create({
         init: function() {
             console.log("init");
             this.refreshConfiguration();
@@ -40,7 +43,7 @@ define([
             try{
                 this.store.findQuery("account", { filter: { "firstname" : "Cano" } }).then(function(queryResult) {
                     console.log("results found", queryResult);
-                    me.set("configuration", queryResult.get("content")[0]);
+                    set(me, "configuration", queryResult.get("content")[0]);
                 });
             } catch (e) {
                 console.error(e.message, e.stack);
@@ -48,5 +51,7 @@ define([
         }
     });
 
-    return Application.ConfigurableMixin;
+    Application.ConfigurableMixin = mixin;
+
+    return mixin;
 });

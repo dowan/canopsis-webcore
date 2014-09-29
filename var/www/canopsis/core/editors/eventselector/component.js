@@ -22,8 +22,8 @@ define([
     'ember',
     'app/application'
 ], function(Ember, Application) {
-    Application.ComponentEventselectorComponent = Ember.Component.extend({
 
+    var component = Ember.Component.extend({
         init: function() {
             this._super();
             this.set("componentDataStore", DS.Store.create({
@@ -166,5 +166,7 @@ define([
         }
     });
 
-    return Application.ComponentEventselectorComponent;
+    Application.ComponentEventselectorComponent = component;
+
+    return component;
 });

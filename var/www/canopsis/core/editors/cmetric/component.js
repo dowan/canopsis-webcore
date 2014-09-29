@@ -21,8 +21,11 @@ define([
     'ember',
     'ember-data',
     'app/application',
-    'utils'
-], function(Ember, DS, Application, utils) {
+    'app/lib/utils/hash',
+    'app/adapters/context'
+], function(Ember, DS, Application, hash) {
+    var get = Ember.get,
+        set = Ember.set;
 
     Application.ComponentCmetricComponent = Ember.Component.extend({
         selectedMetrics: undefined,
@@ -30,8 +33,14 @@ define([
 
         valueChanged: function() {
             var metrics = this.get('selectedMetrics');
-            this.set('content', metrics);
+            var ids = [];
 
+            for(var i = 0, l = metrics.length; i < l; i++) {
+                var m_id = get(metric, 'id');
+                ids.push(m_id);
+            }
+
+            this.set('content', ids);
         }.observes('selectedMetrics.@each'),
 
         helpModal: {
@@ -44,15 +53,15 @@ define([
                 + "<li><code>co:</code>, <code>re:</code>, <code>me:</code> : look for non-existant field</li>"
                 + "</ul>",
 
-            id: utils.hash.generateId('cmetric-help-modal'),
-            label: utils.hash.generateId('cmetric-help-modal-label')
+            id: hash.generateId('cmetric-help-modal'),
+            label: hash.generateId('cmetric-help-modal-label')
         },
 
         select_cols: function() {
             return [
                 {name: 'component', title: 'Component'},
                 {name: 'resource', title: 'Resource'},
-                {name: 'name', title: 'Metric'},
+                {name: 'data_id', title: 'Metric'},
                 {
                     action: 'select',
                     actionAll: 'selectAll',
@@ -66,7 +75,7 @@ define([
             return [
                 {name: 'component', title: 'Component'},
                 {name: 'resource', title: 'Resource'},
-                {name: 'name', title: 'Metric'},
+                {name: 'data_id', title: 'Metric'},
                 {
                     action: 'unselect',
                     actionAll: 'unselectAll',
@@ -94,7 +103,7 @@ define([
             var patterns = {
                 component: [],
                 resource: [],
-                name: []
+                data_id: []
             };
 
             for(i = 0; i < conditions.length; i++) {
@@ -110,10 +119,10 @@ define([
                         patterns.resource.push(regex);
                     }
                     else if(condition.indexOf('me:') === 0) {
-                        patterns.name.push(regex);
+                        patterns.data_id.push(regex);
                     }
                     else {
-                        patterns.name.push(condition);
+                        patterns.data_id.push(condition);
                     }
                 }
             }
@@ -122,7 +131,7 @@ define([
             var filters = {
                 component: {'$or': []},
                 resource: {'$or': []},
-                name: {'$or': []}
+                data_id: {'$or': []}
             };
 
             for(var key in filters) {

@@ -28,6 +28,7 @@ var helpers = [
     'editor',
     'enableview',
     'format-date',
+    'formview',
     'getfield',
     'glyphicon',
     'group',
@@ -49,6 +50,8 @@ var helpers = [
     'subprocess',
     'timeSince',
     'timestamp',
+    'validationtextarea',
+    'validationtextfield',
     'unset',
     'widgetslot'
 ];

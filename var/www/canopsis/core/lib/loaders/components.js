@@ -21,12 +21,19 @@
 //TODO implement auto check for mvct file existence and require them automatically
 
 var componentsTemplates = [
-    'expandableaddbutton',
+    'arrayclassifiedcrecordselector',
+    'checkbox',
+    'classifiedcrecordselector',
     'classifieditemselector',
-    'wrapper',
     'editor',
+    'expandableaddbutton',
     'expandabletext',
+    'filterclause',
+    'flotchart',
+    'progressbar',
     'renderer',
+    'searchbar',
+    'stringclassifiedcrecordselector',
     'table',
     'tooltip',
     'filterclause',
@@ -34,7 +41,8 @@ var componentsTemplates = [
     'searchbar',
     'flotchart',
     'progressbar',
-    'templateselector'
+    'templateselector',
+    'wrapper'
 ];
 
 var deps = ['ember'];
@@ -57,6 +65,8 @@ console.log({"form dependencies": deps});
 define(deps, function(Ember) {
     console.log("load components", arguments);
     for (var i = 0; i < componentsTemplates.length; i++) {
+
+        console.log('load component', componentsTemplates[i]);
         var templateName = 'components/component-' + componentsTemplates[i];
 
         Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);

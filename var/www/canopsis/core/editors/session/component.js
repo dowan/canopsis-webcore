@@ -22,8 +22,10 @@ define([
     'app/application',
     'utils'
 ], function(Ember, Application, cutils) {
+    var get = Ember.get,
+        set = Ember.set;
 
-    Application.ComponentSessionComponent = Ember.Component.extend({
+    var component = Ember.Component.extend({
         fieldValue: function() {
             var key = this.get('attr.model.options.valueFrom');
             var value = cutils.session[key];
@@ -39,11 +41,17 @@ define([
         init: function() {
             this._super(arguments);
 
-            if(this.get('attr.value') === undefined) {
-                this.set('attr.value', this.get('fieldValue'));
+            if(get(this, 'attr.value') === undefined) {
+                set(this, 'attr.value', get(this, 'fieldValue'));
             }
+        },
+        validate: function(){
+            if(isRed(value))
+                return true;
         }
     });
 
-    return Application.ComponentSessionComponent;
+    Application.ComponentSessionComponent = component;
+
+    return component;
 });

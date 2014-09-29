@@ -20,11 +20,11 @@
 define([
     'ember',
     'app/application',
-    'app/lib/formsmanager',
+    'app/lib/formsregistry',
     'app/lib/utils/forms'
-], function(Ember, Application, formsmanager, formsUtils) {
+], function(Ember, Application, formsregistry, formsUtils) {
 
-    Ember.Widgets.MultiSelectComponent3 = Ember.Widgets.MultiSelectComponent.extend({
+    var component = Ember.Widgets.MultiSelectComponent.extend({
         selectionItemView: Ember.Widgets.MultiSelectOptionView,
         select:0,
 
@@ -127,7 +127,7 @@ define([
         },
 
         modalShow: function(item) {
-            var form =  formsmanager.formwrapper.form;
+            var form =  formsregistry.formwrapper.form;
             var record  =  form.formContext;
 
             var recordWizard = formsUtils.showNew('modelform', record, { title: "test " });
@@ -170,7 +170,7 @@ define([
         return buffer;
     });
 
-    Ember.Handlebars.helper( 'multi-select-component3', Ember.Widgets.MultiSelectComponent3 );
+    Application.ComponentMultiselectComponent = component;
 
-    return Application.ComponentExpandableaddbuttonComponent;
+    return component;
 });

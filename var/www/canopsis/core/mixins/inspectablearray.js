@@ -22,7 +22,7 @@ define([
     'app/application'
 ], function(Ember, Application) {
 
-    Application.InspectableArrayMixin = Ember.Mixin.create({
+    var mixin = Ember.Mixin.create({
         attributesKeys: function() {
             var attributes = [];
 
@@ -52,5 +52,7 @@ define([
         inspectedDataArray: function() { console.error("This must be defined on the base class"); }.property()
     });
 
-    return Application.InspectableArrayMixin;
+    Application.InspectableArrayMixin = mixin;
+
+    return mixin;
 });

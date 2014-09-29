@@ -33,14 +33,18 @@ define([
         LOG_BINDINGS: true
     });
 
+    Application.Router.map(function() {
+        this.resource('userview', { path: '/userview/:userview_id' });
+    });
+
     Application.initializer({
         name:"RESTAdaptertransforms",
         after: "transforms",
         initialize: function(container,application) {
             void (container);
-            application.register('transform:array',DS.ArrayTransform);
-            application.register('transform:integer',DS.IntegerTransform);
-            application.register('transform:object',DS.ObjectTransform);
+            application.register('transform:array', DS.ArrayTransform);
+            application.register('transform:integer', DS.IntegerTransform);
+            application.register('transform:object', DS.ObjectTransform);
         }
     });
 

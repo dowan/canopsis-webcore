@@ -20,9 +20,12 @@
 define([
     'app/application',
     'app/controller/form',
-    "app/lib/formsmanager",
+    "app/lib/formsregistry",
     'app/view/form'
-], function(Application, FormController, FormsManager) {
+], function(Application, FormController, formsregistry, FormView) {
+
+    var get = Ember.get,
+        set = Ember.set;
 
     /**
      * Form factory. Creates a controller, stores it in Application
@@ -53,6 +56,8 @@ define([
             }
         }
 
+        set(classdict, 'formName', formName);
+
         extendArguments.push(classdict);
 
         var formControllerName = formName.camelize().capitalize() + "Controller";
@@ -60,11 +65,10 @@ define([
         console.log("extendArguments", extendArguments);
         console.log("subclass", options.subclass);
 
-
-        Application[formViewName] = Application.FormView.extend();
+        Application[formViewName] = FormView.extend();
         Application[formControllerName] = options.subclass.extend.apply(options.subclass, extendArguments);
 
-        FormsManager.all[formName] = {
+        formsregistry.all[formName] = {
             EmberClass: Application[formControllerName]
         };
 

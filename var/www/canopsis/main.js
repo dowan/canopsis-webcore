@@ -1,18 +1,24 @@
+/*
+# Copyright (c) 2014 "Capensis" [http://www.capensis.com]
+#
+# This file is part of Canopsis.
+#
+# Canopsis is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Canopsis is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 define([
-    'canopsis/commit',
-    'seeds/RoutesLoader',
     'app/application',
-    'utils',
-    'app/lib/wrappersmanager',
-    'app/lib/formsmanager',
-    'app/lib/widgetsmanager',
-    'app/lib/indexesmanager',
-    'app/lib/inflections',
-    'app/lib/loaders/factories',
-    'app/lib/loaders/helpers',
-    'app/lib/loaders/templates',
-    'app/lib/loaders/components',
-    'canopsis/canopsisConfiguration',
     'app/adapters/application',
     'app/adapters/ack',
     'app/adapters/event',
@@ -41,51 +47,14 @@ define([
     'app/routes/index',
     'app/routes/userview',
     'css3-mediaqueries'
-], function(commit,
-        routesLoader,
-        Application,
-        utils,
-        wrappersManager,
-        formsManager,
-        widgetsManager,
-        indexesManager,
-        inflectionsManager,
-        factories,
-        helpers,
-        templates,
-        components,
-        canopsisConfiguration) {
-
-    window.Canopsis = {};
-
-    Canopsis.tooltips = {};
-    Canopsis.utils = utils;
-    Canopsis.wrappers = wrappersManager;
-    Canopsis.widgets = widgetsManager;
-    Canopsis.indexes = indexesManager;
-    Canopsis.inflections = inflectionsManager;
-    Canopsis.forms = formsManager;
-    //Canopsis.AllModels = [];
-    Canopsis.manifest = Application.manifest;
-    Canopsis.factories = factories;
-    Canopsis.helpers = helpers;
-    Canopsis.templates = templates;
-    Canopsis.components = components;
-    Canopsis.Application = Application;
-    Canopsis.commit = commit;
-    Canopsis.editMode = false;
+], function(Application) {
 
 
-    Canopsis.conf = canopsisConfiguration;
-    console.log('Canopsis configuration', Canopsis.conf);
+
+
     //TEMP
     Application.connector = [ { name : "nagios" }, { name : "shinken" } , { name : "schneider" } , { name : "collectd" }];
 
     Application.manifest = routes;
-    routesLoader.initializeRoutes(
-        Application,
-        routes,
-        function () {
-            console.log('Routes initialization callback');
-    });
+
 });

@@ -20,13 +20,13 @@
 define([
     'ember',
     'app/application',
-    'app/lib/formsmanager'
-], function(Ember, Application, formsmanager) {
+    'app/lib/formsregistry'
+], function(Ember, Application, formsregistry) {
 
     var mixin = Ember.Mixin.create({
 
         onInit : function ( contentREF , _self ){
-            var formController  =  formsmanager.formwrapper.form;
+            var formController  =  formsregistry.formwrapper.form;
             // not really needed since error should have already been threw
             if ( formController ){
                 var schemaName = formController.get("formContext._data.listed_crecord_type");

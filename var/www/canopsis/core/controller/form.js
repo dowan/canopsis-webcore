@@ -22,8 +22,7 @@ define([
     'ember',
     'app/application',
     'app/lib/utils/forms',
-    'app/controller/form',
-    'app/lib/loaders/schema-manager',
+    'app/lib/loaders/schemas',
 ], function($, Ember, Application, formUtils) {
     var get = Ember.get,
         set = Ember.set;
@@ -78,10 +77,12 @@ define([
             - callback, witch is called once form sent
             - plain ajax contains information that will be used insted of ember data mechanism
     */
-    Application.FormController = eventedController.extend({
+    var controller = eventedController.extend({
+        needs: ['application'],
+
         init: function() {
-            var formParent = this.get('formParent');
-            this.set('previousForm', formParent);
+            var formParent = get(this, 'formParent');
+            set(this, 'previousForm', formParent);
 
             this._super.apply(this, arguments);
         },
@@ -100,7 +101,7 @@ define([
         submit: $.Deferred(),
         actions: {
             previousForm: function() {
-                var previousForm = this.get('previousForm');
+                var previousForm = get(this, 'previousForm');
 
                 console.log('previousForm', previousForm, this);
                 formUtils.showInstance(previousForm);
@@ -121,10 +122,10 @@ define([
                     console.log("resolve modelform submit");
                     if ( this.confirmation ){
                         var record = this.formContext;
-                        ctools.forms.showNew('confirmform', record , { title : " confirmation "  , newRecord : arguments[0]});
+                        formUtils.showNew('confirmform', record , { title : " confirmation "  , newRecord : arguments[0]});
                     } else {
                         this.submit.resolve(this, arguments);
-                        this.get('formwrapper').trigger("hide");
+                        get(this, 'formwrapper').trigger("hide");
                     }
                 }
             },
@@ -136,11 +137,23 @@ define([
                     console.log('rejecting submit promise');
                     this.submit.reject();
                 }
+            },
+
+            inspectForm: function() {
+                console.group('inspectForm');
+                console.log('form:', this);
+
+                window.$F = get(this, 'categorized_attributes');
+
+                console.log('categorized_attributes available in $F');
+
+                console.groupEnd();
             }
         },
 
         partials: {
-            buttons: ["formbutton-cancel", "formbutton-submit"]
+            buttons: ["formbutton-cancel", "formbutton-submit"],
+            debugButtons: ['formbutton-inspectform']
         },
 
         title: function() {
@@ -150,5 +163,7 @@ define([
         }.property()
     });
 
-    return Application.FormController;
+    Application.FormController = controller;
+
+    return controller;
 });

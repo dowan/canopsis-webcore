@@ -29,7 +29,7 @@ define([
         set = Ember.set;
 
 
-    Application.ComponentDateintervalComponent = Ember.Component.extend({
+    var component = Ember.Component.extend({
 
         init: function () {
             this._super.apply(this, arguments);
@@ -39,7 +39,7 @@ define([
         didInsertElement: function (){
             var datepickerComponent = this;
 
-            var daterangepicker = $('#' + get(this, 'id'));
+            var daterangepicker = this.$('#' + get(this, 'id'));
 
             daterangepicker.daterangepicker(
                 {
@@ -60,7 +60,7 @@ define([
 
                     var startTimestamp = parseInt(new Date(start).getTime() / 1000);
                     var stopTimestamp = parseInt(new Date(end).getTime() / 1000);
-                    console.log('startTimestamp',startTimestamp,'stopTimestamp',stopTimestamp);
+                    console.log('startTimestamp', startTimestamp, 'stopTimestamp', stopTimestamp);
 
                     if (startTimestamp === stopTimestamp) {
                         console.log('We are on the same day, let compute the start of the day');
@@ -69,25 +69,27 @@ define([
                         startDateOfTheDay.setMinutes(0);
                         startDateOfTheDay.setSeconds(0);
                         startDateOfTheDay.setMilliseconds(0);
-                        var startTimestamp = parseInt(startDateOfTheDay.getTime() / 1000);
+                        startTimestamp = parseInt(startDateOfTheDay.getTime() / 1000);
                         console.log('NEW -> startTimestamp',startTimestamp,'stopTimestamp',stopTimestamp);
                     }
-
 
                     //Translate result into mongo form filter
                     filter = {};
                     //we ve got an interval
                     var timestamp = {};
                     var hasLimit = false;
+
                     if (startTimestamp) {
                         timestamp.$gte = startTimestamp;
                         hasLimit = true;
 
                     }
+
                     if (stopTimestamp) {
                         timestamp.$lte = stopTimestamp;
                         hasLimit = true;
                     }
+
                     if (hasLimit) {
                         filter = {'timestamp': timestamp};
                     } else {
@@ -97,15 +99,12 @@ define([
                     set(datepickerComponent, 'content', filter);
 
                     console.log(get(datepickerComponent, 'content'));
-
                 }
-
-
             );
-
-        },
-
+        }
     });
 
-    return Application.ComponentDateintervalComponent;
+    Application.ComponentDateintervalComponent = component;
+
+    return component;
 });

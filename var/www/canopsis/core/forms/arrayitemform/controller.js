@@ -21,12 +21,10 @@ define([
     'ember',
     'app/application',
     'app/lib/factories/form',
-    'app/lib/utils/forms',
-    'app/lib/loaders/schema-manager',
-    'app/controller/journal'
-], function(Ember, Application, FormFactory, formUtils) {
+    'app/lib/loaders/schemas'
+], function(Ember, Application, FormFactory) {
 
-    FormFactory('arrayitemform', {
+    var form = FormFactory('arrayitemform', {
         needs: ['journal'],
 
         title: "configure arrayitem",
@@ -35,5 +33,5 @@ define([
         parentUserview: Ember.required()
     });
 
-    return Application.ArrayitemformController;
+    return form;
 });

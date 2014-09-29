@@ -24,38 +24,43 @@ define([
     'app/controller/partialslotablecontroller',
     'app/lib/utils/userconfiguration',
     'app/lib/utils/widgets',
+    'app/lib/utils/routes',
+    'app/lib/utils/forms',
     'utils',
 
-], function($, Ember, Application, PartialslotAbleController, userConfiguration, widgetUtils, utils) {
+], function($, Ember, Application, PartialslotAbleController, userConfiguration, widgetUtils, routesUtils, formsUtils, utils) {
     var get = Ember.get,
         set = Ember.set;
 
-    Application.WidgetController = PartialslotAbleController.extend({
+    var controller = PartialslotAbleController.extend({
+        needs: ['application', 'login'],
 
         userParams: {},
+
+        editMode : Ember.computed.alias('controllers.application.editMode'),
 
         init: function () {
 
 
             console.log('widget init');
 
-            this.get('model').set('controllerInstance', this);
+            get(this, 'model').set('controllerInstance', this);
 
             console.log('viewController', widgetUtils.getParentViewForWidget(this));
-            console.log('viewController', widgetUtils.getParentViewForWidget(this).get('isMainView'));
+            console.log('viewController', get(widgetUtils.getParentViewForWidget(this), 'isMainView'));
 
             set(this, 'viewController', widgetUtils.getParentViewForWidget(this));
-            set(this, 'isOnMainView', widgetUtils.getParentViewForWidget(this).get('isMainView'));
+            set(this, 'isOnMainView', get(widgetUtils.getParentViewForWidget(this), 'isMainView'));
             //manage user configuration
-            this.set('userConfiguration', userConfiguration.create({widget: this}));
+            set(this, 'userConfiguration', userConfiguration.create({widget: this}));
 
-            this.set("container", utils.routes.getCurrentRouteController().container);
+            set(this, "container", routesUtils.getCurrentRouteController().container);
 
             this.startRefresh();
 
             //setting default/minimal reload delay for current widget
-            if (this.get('refreshInterval') <= 10 || Ember.isNone(this.get('refreshInterval'))) {
-                this.set('refreshInterval', 10);
+            if (get(this, 'refreshInterval') <= 10 || Ember.isNone(get(this, 'refreshInterval'))) {
+                set(this, 'refreshInterval', 10);
             }
 
             this.refreshContent();
@@ -63,38 +68,39 @@ define([
         },
 
         updateInterval: function (interval){
-            console.warn('This method should be overriden for current widget',this.get('id'), interval);
+            console.warn('This method should be overriden for current widget', get(this, 'id'), interval);
         },
 
         getSchema: function() {
-            return Application[this.get('xtype').capitalize()].proto().categories;
+            return Application[get(this, 'xtype').capitalize()].proto().categories;
         },
 
         onReload: function () {
-            console.debug('Reload widget:', this.get('id'));
+            console.debug('Reload widget:', get(this, 'id'));
 
-            if (this.get('widgetData.content') !== undefined) {
+            if (get(this, 'widgetData.content') !== undefined) {
                 //Allows widget to know how many times they have been repainted
-                if (this.get('domReadyCount') === undefined) {
-                    this.set('domReadyCount', 1);
+                if (get(this, 'domReadyCount') === undefined) {
+                    set(this, 'domReadyCount', 1);
                 } else {
-                    this.set('domReadyCount', this.get('domReadyCount') + 1);
+                    set(this, 'domReadyCount', get(this, 'domReadyCount') + 1);
                 }
-                this.onDomReady($('#' + this.get('id')));
+
+                this.onDomReady($('#' + get(this, 'id')));
             }
         },
 
         onDomReady: function() {
-            console.log(this.get('title'), 'widget dom load complete');
+            console.log(get(this, 'title'), 'widget dom load complete');
             //To override
         },
 
         stopRefresh: function () {
-            this.set('isRefreshable', false);
+            set(this, 'isRefreshable', false);
         },
 
         startRefresh: function () {
-            this.set('isRefreshable', true);
+            set(this, 'isRefreshable', true);
         },
 
         isRollbackable: function() {
@@ -110,14 +116,14 @@ define([
         actions: {
             do: function(action) {
                 var params = [];
-                for (var i = 1; i < arguments.length; i++) {
+                for (var i = 1, l = arguments.length; i < l; i++) {
                     params.push(arguments[i]);
                 }
 
                 this.send(action, params);
             },
             creationForm: function(itemType) {
-                utils.forms.addRecord(itemType);
+                formsUtils.addRecord(itemType);
             },
 
             rollback: function(widget){
@@ -148,18 +154,18 @@ define([
                 console.group("remove widget", widget);
                 console.log("parent container", this);
 
-                var itemsContent = this.get('content.items.content');
+                var itemsContent = get(this, 'content.items.content');
 
-                for (var i = 0, itemsContent_length = itemsContent.length; i < itemsContent_length; i++) {
-                    console.log(this.get('content.items.content')[i]);
-                    if (itemsContent[i].get('widget') === widget) {
+                for (var i = 0, l = itemsContent.length; i < l; i++) {
+                    console.log(get(this, 'content.items.content')[i]);
+                    if (get(itemsContent[i], 'widget') === widget) {
                         itemsContent.removeAt(i);
                         console.log("deleteRecord ok");
                         break;
                     }
                 }
 
-                var userview = get(this, 'viewController').get('content');
+                var userview = get(this, 'viewController.content');
                 userview.save();
 
                 console.groupEnd();
@@ -172,7 +178,7 @@ define([
                 var label = "Edit your widget preferences";
                 console.info(label, widget);
 
-                var widgetWizard = utils.forms.showNew('modelform', widget, {
+                var widgetWizard = formsUtils.showNew('modelform', widget, {
                     title: __(label),
                     userPreferencesOnly: true
                 });
@@ -180,7 +186,7 @@ define([
 
                 widgetWizard.submit.then(function(form) {
 
-                    record = form.get('formContext');
+                    record = get(form, 'formContext');
                     console.log('user param record', record);
                     //widgetController.set('userParams.filters', widgetController.get('filters'));
                     //widgetController.get('userConfiguration').saveUserConfiguration();
@@ -197,15 +203,18 @@ define([
                     var foundElementIndex,
                         nextElementIndex;
 
-                    for (var i = 0; i < this.get('content.items.content').length; i++) {
-                        console.log('loop', i, this.get('content.items.content')[i], widgetwrapper);
-                        console.log(this.get('content.items.content')[i] === widgetwrapper);
+
+                    var itemsContent = get(this, 'content.items.content');
+
+                    for (var i = 0, l = itemsContent.length; i < l; i++) {
+                        console.log('loop', i, itemsContent[i], widgetwrapper);
+                        console.log(itemsContent[i] === widgetwrapper);
                         if (foundElementIndex !== undefined && nextElementIndex === undefined) {
                             nextElementIndex = i;
                             console.log('next element found');
                         }
 
-                        if (this.get('content.items.content')[i] === widgetwrapper) {
+                        if (itemsContent[i] === widgetwrapper) {
                             foundElementIndex = i;
                             console.log('searched element found');
                         }
@@ -213,7 +222,7 @@ define([
 
                     if (foundElementIndex !== undefined && nextElementIndex !== undefined) {
                         //swap objects
-                        var array = Ember.get(this, 'content.items.content');
+                        var array = itemsContent;
                         console.log('swap objects', array);
 
                         var tempObject = array.objectAt(foundElementIndex);
@@ -223,9 +232,9 @@ define([
                         array.replace(foundElementIndex + 2, 2);
 
                         console.log('new array', array);
-                        Ember.set(this, 'content.items.content', array);
+                        set(this, 'content.items.content', array);
 
-                        var userview = get(this, 'viewController').get('content');
+                        var userview = get(this, 'viewController.content');
                         userview.save();
                     }
                 } catch (e) {
@@ -243,15 +252,18 @@ define([
                     var foundElementIndex,
                         nextElementIndex;
 
-                    for (var i = this.get('content.items.content').length; i >= 0 ; i--) {
-                        console.log('loop', i, this.get('content.items.content')[i], widgetwrapper);
-                        console.log(this.get('content.items.content')[i] === widgetwrapper);
+                    var itemsContent = get(this, 'content.items.content');
+
+                    for (var i = itemsContent.length; i >= 0 ; i--) {
+                        console.log('loop', i, itemsContent[i], widgetwrapper);
+                        console.log(itemsContent[i] === widgetwrapper);
+
                         if (foundElementIndex !== undefined && nextElementIndex === undefined) {
                             nextElementIndex = i;
                             console.log('next element found');
                         }
 
-                        if (this.get('content.items.content')[i] === widgetwrapper) {
+                        if (itemsContent[i] === widgetwrapper) {
                             foundElementIndex = i;
                             console.log('searched element found');
                         }
@@ -261,7 +273,7 @@ define([
 
                     if (foundElementIndex !== undefined && nextElementIndex !== undefined) {
                         //swap objects
-                        var array = Ember.get(this, 'content.items.content');
+                        var array = get(this, 'content.items.content');
                         console.log('swap objects', array);
 
                         var tempObject = array.objectAt(foundElementIndex);
@@ -271,9 +283,9 @@ define([
                         array.replace(nextElementIndex + 2, 2);
 
                         console.log('new array', array);
-                        Ember.set(this, 'content.items.content', array);
+                        set(this, 'content.items.content', array);
 
-                        var userview = widgetUtils.getParentViewForWidget(this).get('content');
+                        var userview = get(widgetUtils.getParentViewForWidget(this), 'content');
                         userview.save();
                     }
                 } catch (e) {
@@ -288,9 +300,9 @@ define([
 
         itemController: function() {
             if(get(this, 'itemType')) {
-                return this.get("itemType").capitalize();
+                return get(this, 'itemType').capitalize();
             }
-        }.property("itemType"),
+        }.property('itemType'),
 
         refreshContent: function() {
             this._super();
@@ -299,7 +311,7 @@ define([
         },
 
         findItems: function() {
-            console.warn("findItems not implemented");
+            console.warn('findItems not implemented');
         },
 
         extractItems: function(queryResult) {
@@ -307,7 +319,7 @@ define([
 
             this._super(queryResult);
 
-            this.set("widgetData", queryResult);
+            set(this, "widgetData", queryResult);
         },
 
         availableTitlebarButtons: function(){
@@ -322,6 +334,7 @@ define([
 
             for (var i = 0, l = buttons.length; i < l; i++) {
                 var currentButton = buttons[i];
+
                 if(Ember.TEMPLATES[currentButton] !== undefined) {
                     res.push(currentButton);
                 } else {
@@ -334,5 +347,7 @@ define([
         }.property()
     });
 
-    return Application.WidgetController;
+    Application.WidgetController = controller;
+
+    return controller;
 });

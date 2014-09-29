@@ -1,4 +1,4 @@
-{{#if Canopsis.utils.session.rights.list_filters.checksum}}
+{{#if controller.rights.list_filters.checksum}}
     <div class="pull-right btn-group" data-toggle="btn-toggle">
         <button class="btn btn-default" {{action setFilter controller.default_filter}}>{{tr 'All'}}</button>
         {{#each filter in controller.filters}}

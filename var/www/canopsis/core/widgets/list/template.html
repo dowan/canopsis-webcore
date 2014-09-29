@@ -3,17 +3,18 @@
         <div class="pull-left">
             {{#if controller.selection_toolbar}}
                 {{tr 'For the selection'}} :
-                {{#each toolitem in controller.selection_toolbar}}
-                    {{partial toolitem}}
-                {{/each}}
             {{/if}}
+            {{partialslot slot=controller._partials.selectionToolbarButtons}}
         </div>
         <div class="pull-right btn-group" data-toggle="btn-toggle">
             {{#each toolitem in controller.actions_toolbar}}
                 {{partial toolitem}}
             {{/each}}
+            {{partialslot slot=controller._partials.actionToolbarButtons}}
         </div>
         {{partialslot slot=controller._partials.header}}
+        <div style="clear:both;"></div>
+        {{partialslot slot=controller._partials.subHeader}}
     </div>
     <div class="table-responsive">
         <table {{bind-attr id="controller.id"}} class="table table-striped table-bordered table-hover dataTable sortable">
@@ -62,9 +63,7 @@
         {{/unless}}
     </div>
     <div class="btn-toolbar canopsis-toolbar" role="toolbar">
-        <div class="pull-left">
-            {{tr 'Showing'}} {{controller.paginationFirstItemIndex}} {{tr 'to'}} {{controller.paginationLastItemIndex}} {{tr 'of'}} {{controller.itemsTotal}} {{tr 'entries'}}
-        </div>
+        {{partialslot slot=controller._partials.footer}}
         <div style="clear:both"></div>
         <div class="pull-left">
             {{#if controller.selection_toolbar}}
@@ -74,7 +73,6 @@
                 {{/each}}
             {{/if}}
         </div>
-        {{partialslot slot=controller._partials.footer}}
     </div>
 {{else}}
     {{#if controller.dataError.statusText}}

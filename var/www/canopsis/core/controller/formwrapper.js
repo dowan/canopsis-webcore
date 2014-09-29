@@ -20,19 +20,28 @@
 define([
     'ember',
     'app/application',
-    'app/lib/loaders/schema-manager',
+    'canopsis/canopsisConfiguration',
+    'app/lib/loaders/schemas',
     'app/view/formwrapper'
-], function(Ember, Application) {
+], function(Ember, Application, canopsisConfiguration) {
+    var get = Ember.get;
+
     var eventedController = Ember.Controller.extend(Ember.Evented);
 
-    Application.FormwrapperController = eventedController.extend({
+    var controller = eventedController.extend({
+        // used only here
+        config: canopsisConfiguration,
+        debug: Ember.computed.alias('config.DEBUG'),
+
         actions: {
             show: function() {
                 console.log("FormwrapperController show", this);
-                this.get('widgetwrapperView').showPopup();
+                get(this, 'widgetwrapperView').showPopup();
             }
         }
     });
 
-    return Application.FormwrapperController;
+    Application.FormwrapperController = controller;
+
+    return controller;
 });

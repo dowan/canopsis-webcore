@@ -24,11 +24,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-    var mixin = Ember.Mixin.create({
-        partials: {
-            statusbar: ['userstatusmenu']
-        }
-    });
+    var mixin = Ember.Mixin.create({});
 
     Application.UsermenuMixin = mixin;
 

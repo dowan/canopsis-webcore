@@ -21,13 +21,16 @@ define([
     'ember',
     'app/application',
     'app/lib/factories/form',
-    'utils',
-    'app/lib/widgetsmanager',
-    'app/lib/loaders/schema-manager',
+    'app/lib/utils/forms',
+    'app/lib/utils/hash',
+    'app/lib/widgetsregistry',
+    'app/lib/loaders/schemas',
     'app/controller/journal'
-], function(Ember, Application, FormFactory, utils, widgets) {
+], function(Ember, Application, FormFactory, formsUtils, hashUtils, widgets) {
+    var get = Ember.get,
+        set = Ember.set;
 
-    FormFactory('widgetform', {
+    var form = FormFactory('widgetform', {
         needs: ['journal'],
 
         title: "Select a widget",
@@ -38,33 +41,20 @@ define([
             console.log("availableWidgets");
             var widgets = [];
 
-            for (var i = 0; i < widgets.all.length; i++) {
+            for (var i = 0, l = widgets.all.length; i < l; i++) {
                 var currentWidget = widgets.all[i];
 
-                widgets.push(currentWidget);
+                widgets.pushObject(currentWidget);
             }
 
             return widgets;
         }.property('widgets.all', "title"),
 
         actions: {
-            show: function() {
-                var widgets = [];
-
-                for (var i = 0; i < widgets.all.length; i++) {
-                    var currentWidget = widgets.all[i];
-
-                    widgets.push(currentWidget);
-                }
-
-                this.set('availableWidgets', widgets);
-                this._super();
-            },
-
             submit: function(newWidgets) {
                 var newWidget = newWidgets[0];
 
-                this.get('controllers.journal').send('publish', 'create', 'widget');
+                get(this, 'controllers.journal').send('publish', 'create', 'widget');
 
                 console.log("onWidgetChooserSubmit", arguments);
 
@@ -83,12 +73,12 @@ define([
             selectItem: function(widgetName) {
                 console.log('selectItem', arguments);
 
-                var containerwidget = this.get('formContext.containerwidget');
+                var containerwidget = get(this, 'formContext.containerwidget');
                 console.group('selectWidget', this, containerwidget, widgetName);
 
-                var store = this.get('formContext.containerwidget').store;
-                console.log('store to use', this.get('formContext.containerwidget').store);
-                var widgetId = utils.hash.generateId('widget_' + widgetName);
+                var store = get(this, 'formContext.containerwidget').store;
+                console.log('store to use', get(this, 'formContext.containerwidget').store);
+                var widgetId = hashUtils.generateId('widget_' + widgetName);
 
                 //FIXME this works when "xtype" is "widget"
                 var newWidget = store.createRecord(widgetName, {
@@ -102,26 +92,26 @@ define([
                 });
 
                 this.newWidgetWrapper = store.push('widgetwrapper', {
-                    'id': utils.hash.generateId('widgetwrapper'),
+                    'id': hashUtils.generateId('widgetwrapper'),
                     'xtype': 'widgetwrapper',
                     'title': 'wrapper',
                     'widget': widgetId,
                     'widgetType': widgetName,
                     'meta': {
                         'embeddedRecord': true,
-                        'parentType': containerwidget.get('xtype'),
-                        'parentId': containerwidget.get('id')
+                        'parentType': get(containerwidget, 'xtype'),
+                        'parentId': get(containerwidget, 'id')
                     }
                 });
 
                 console.log('newWidgetWrapper', this.newWidgetWrapper);
 
                 console.log('newWidget', newWidget);
-                console.log('formwrapper', this.get('formwrapper'));
+                console.log('formwrapper', get(this, 'formwrapper'));
 
                 console.info('show embedded widget wizard');
 
-                utils.forms.showNew('modelform', newWidget, {formParent: this, title: "Add new " + widgetName});
+                formsUtils.showNew('modelform', newWidget, {formParent: this, title: "Add new " + widgetName});
                 console.groupEnd();
             }
         },
@@ -134,5 +124,5 @@ define([
         parentUserview: Ember.required()
     });
 
-    return Application.WidgetformController;
+    return form;
 });

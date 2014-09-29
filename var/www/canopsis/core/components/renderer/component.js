@@ -19,21 +19,23 @@
 
 define([
     'ember',
-    'app/application'
+    'app/application',
+    'app/lib/loaders/renderers'
 ], function(Ember, Application) {
     var get = Ember.get;
 
-    Application.ComponentRendererComponent = Ember.Component.extend({
+    var component = Ember.Component.extend({
         tagName: 'span',
+        classNames: ['renderer'],
 
         value: function() {
-            return this.get('record.' + this.get('attr.field'));
+            return get(this, 'record.' + get(this, 'attr.field'));
         }.property('attr.field', 'record'),
 
         rendererType: function() {
 
-            var type = this.get('attr.type');
-            var role = this.get('attr.options.role');
+            var type = get(this, 'attr.type');
+            var role = get(this, 'attr.options.role');
             if(get(this, 'attr.model.options.role')) {
                 role = get(this, 'attr.model.options.role');
             }
@@ -54,5 +56,7 @@ define([
 
     });
 
-    return Application.ComponentEditorComponent;
+    Application.ComponentRendererComponent = component;
+
+    return component;
 });

@@ -32,7 +32,7 @@ define([
           - the `refreshContent()` method
 
     */
-    Application.SortableArrayMixin = Ember.Mixin.create({
+    var mixin = Ember.Mixin.create({
 
         sort_direction: false,
 
@@ -91,5 +91,7 @@ define([
         }.property("inspectedProperty", "inspectedDataArray"),
     });
 
-    return Application.SortableArrayMixin;
+    Application.SortablearrayMixin = mixin;
+
+    return mixin;
 });

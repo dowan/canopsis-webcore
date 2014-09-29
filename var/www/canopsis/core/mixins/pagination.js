@@ -34,7 +34,7 @@ define([
     */
     var mixin = Ember.Mixin.create({
         partials: {
-            header: ['itemsperpage'],
+            subHeader: ['itemsperpage'],
             footer: ['pagination']
         },
 
@@ -80,6 +80,12 @@ define([
         totalPages: 1,
         paginationFirstItemIndex: 1,
         paginationLastItemIndex: 1,
+
+
+        itemsDivided: function(){
+            return get(this, 'itemsTotal') / get(this, 'itemsPerPage');
+
+        }.property('itemsTotal', 'itemsPerPage'),
 
         itemsPerPagePropositions : function() {
             var res = [5, 10, 20, 50];
@@ -144,6 +150,10 @@ define([
             this._super.apply(this, arguments);
 
             console.groupEnd();
+        },
+        computeFindParams: function() {
+            console.log('computeFindParams', arguments);
+            this._super.apply(this, arguments);
         },
 
         extractItems: function(queryResult) {

@@ -24,7 +24,7 @@ define([
     'app/mixins/pagination'
 ], function(Ember, DS, Application, PaginationMixin) {
 
-    Application.ComponentTableComponent = Ember.Component.extend(PaginationMixin, {
+    var component = Ember.Component.extend(PaginationMixin, {
         model: undefined,
         modelfilter: undefined,
         data: undefined,
@@ -72,7 +72,7 @@ define([
                 var store = this.get('store');
 
                 var query = {
-                    start: this.get('paginationMixinFindOptions.start'),
+                    skip: this.get('paginationMixinFindOptions.start'),
                     limit: this.get('paginationMixinFindOptions.limit')
                 };
 
@@ -90,8 +90,8 @@ define([
                 }
                 else {
                     var items = this.get('data').slice(
-                        query.start,
-                        query.start + query.limit
+                        query.skip,
+                        query.skip + query.limit
                     );
 
                     this.set('widgetDataMetas', {total: this.get('data').length});
@@ -115,5 +115,7 @@ define([
         }
     });
 
-    return Application.ComponentTableComponent;
+    Application.ComponentTableComponent = component;
+
+    return component;
 });

@@ -342,7 +342,7 @@ define(schemasDeps, function(DS, Application, utils) {
             parentModelClassName);
 
 
-        Application.available_types.push(schemaName);
+        available_types.push(schemaName);
         console.groupEnd();
     }
 
@@ -364,14 +364,20 @@ define(schemasDeps, function(DS, Application, utils) {
         return newOptions ;
     }
 
-    //Module's main thread: init schemas from many sources
-    Application.available_types = [];
+    var available_types = [];
 
+    var shemasLimit = 1000;
     $.ajax({
         url: '/rest/schemas',
-        data: {limit: 1000},
+        data: {limit: shemasLimit},
         success: function(data) {
             if (data.success) {
+                if(data.total === 0) {
+                    console.warn('No schemas was imported from the backend, you might have nothing in your database, or a communication problem with the server');
+                } else if(data.total === shemasLimit) {
+                    console.warn('You loaded', shemasLimit, 'schemas. You might have some more on your database that were ignored.');
+                }
+
                 console.log('Api schema data',data);
                 loadSchemasFromApiJson(data.data);
             } else {
@@ -382,4 +388,5 @@ define(schemasDeps, function(DS, Application, utils) {
     });
 
 
+    return available_types;
 });

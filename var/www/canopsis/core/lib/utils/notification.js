@@ -19,19 +19,45 @@
 
 define([], function() {
 
+    targetcontroller = {
+        temp_buffer: [],
+        createNotification: function(notificationType, notificationMessage) {
+            this.temp_buffer.push({
+                notificationType: notificationType,
+                notificationMessage: notificationMessage
+            });
+        }
+    };
+
+
+
     var notification = {
+        /**
+         * Initialize the notification controller
+         * when the controller is not set up, it stores all the messages in a buffer stack.
+         */
+        setController: function(controller) {
+            var buffer = targetcontroller.temp_buffer;
+            targetcontroller = controller;
+
+            for (var i = 0, l = buffer.length; i < l; i++) {
+                var currentNotification = buffer[i];
+
+                controller.createNotification(currentNotification.notificationType, currentNotification.notificationMessage);
+            }
+        },
+
         //will be defined when notification controller is called.
-        controller: undefined,
         info: function (message) {
-            notification.controller.createNotification('info', message);
+            targetcontroller.createNotification('info', message);
             console.log('info', message);
         },
         warning: function (message) {
-            notification.controller.createNotification('warning', message);
+            targetcontroller.createNotification('warning', message);
             console.log('warning', message);
         },
         error: function (message) {
-            notification.controller.createNotification('error', message);
+            targetcontroller.createNotification('error', message);
             console.error(message);
         },
         help: function () {

@@ -25,10 +25,12 @@ define([
     'app/serializers/task'
 ], function(DS, Application, ApplicationSerializer, EmbeddedRecordSerializerMixin) {
 
-    Application.JobSerializer = ApplicationSerializer.extend(
+    var serializer = ApplicationSerializer.extend(
         EmbeddedRecordSerializerMixin,
         {}
     );
 
-    return Application.JobSerializer;
+    Application.JobSerializer = serializer;
+
+    return serializer;
 });

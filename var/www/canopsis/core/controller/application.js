@@ -21,6 +21,7 @@ define([
     'ember',
     'ember-data',
     'app/application',
+    'canopsis/canopsisConfiguration',
     'app/controller/partialslotablecontroller',
     'app/mixins/usermenu',
     'app/mixins/schemamanager',
@@ -31,20 +32,31 @@ define([
     'utils',
     'app/lib/utils/forms',
     'app/lib/utils/data',
+    'app/lib/utils/hash',
+    'app/lib/utils/notification',
     'app/adapters/cservice',
     'app/adapters/notification',
     'app/serializers/cservice',
     'app/lib/loaders/helpers',
     'app/lib/loaders/widgets',
     'app/adapters/loggedaccount',
-    'app/lib/loaders/helpers'
-], function(Ember, DS, Application, PartialslotAbleController, UsermenuMixin, SchemamanagerMixin, ConsolemanagerMixin, PromisemanagerMixin, NotificationsMixin, ApplicationRoute, utils, formUtils) {
+    'app/lib/loaders/helpers',
+    'app/lib/wrappers/bootstrap'
+], function(Ember, DS, Application, canopsisConfiguration, PartialslotAbleController, UsermenuMixin, SchemamanagerMixin, ConsolemanagerMixin, PromisemanagerMixin, NotificationsMixin, ApplicationRoute, utils, formsUtils, dataUtils, hashUtils, notificationUtils) {
     var get = Ember.get,
         set = Ember.set;
 
-    Application.ApplicationController = PartialslotAbleController.extend(
+    var controller = PartialslotAbleController.extend(
         SchemamanagerMixin, PromisemanagerMixin, ConsolemanagerMixin, NotificationsMixin, UsermenuMixin, {
         needs: ['login'],
+
+        partials: {
+            statusbar: ['schemamanagerstatusmenu', 'consolemanagerstatusmenu', 'notificationsstatusmenu', 'promisemanagerstatusmenu', 'userstatusmenu']
+        },
+
+        editMode: false,
+
+        runtimeConfiguration: canopsisConfiguration,
 
         utils: utils,
 
@@ -60,7 +72,7 @@ define([
             var plugins = Application.plugins ;
             for ( var pluginName in plugins ){
                 if( plugins.hasOwnProperty(pluginName)){
-                    all_plugins.push(plugins[pluginName] );
+                    all_plugins.pushObject(plugins[pluginName] );
                 }
             }
             return all_plugins;
@@ -68,7 +80,7 @@ define([
 
         init: function() {
             console.group('app init');
-            utils.notification.controller = this;
+            notificationUtils.setController(this);
 
             var appController = this;
 
@@ -161,10 +173,10 @@ define([
 
             console.groupEnd();
             this._super.apply(this, arguments);
+            this.refreshPartialsList();
         },
 
         actions: {
-
             promptReloadApplication: function(title, location) {
                 setTimeout(function (){
                     console.log('in promptReloadApplication');
@@ -186,10 +198,10 @@ define([
 
                 var applicationController = this;
 
-                var username = utils.session.get('user');
+                var username = get(utils.session, 'user');
 
                 var dataStore = DS.Store.create({
-                    container: this.get("container")
+                    container: get(this, "container")
                 });
 
                 var record = dataStore.findQuery('loggedaccount', {
@@ -202,7 +214,7 @@ define([
                     var previousUiLanguage = get(record, 'ui_language');
                     console.log('previousUiLanguage', previousUiLanguage);
                     //generating form from record model
-                    var recordWizard = utils.forms.showNew('modelform', record, {
+                    var recordWizard = formsUtils.showNew('modelform', record, {
                         title: username +' '+__('profile'),
                         filterFieldByKey: {
                             'firstname': {readOnly : true},
@@ -222,7 +234,7 @@ define([
 
                         record.save();
 
-                        utils.notification.info(__('profile') + ' ' +__('updated'));
+                        notificationUtils.info(__('profile') + ' ' +__('updated'));
                         console.log(get(record, 'ui_language') , previousUiLanguage);
                         if (get(record, 'ui_language') !== previousUiLanguage) {
                             console.log('Language changed, will prompt for application reload');
@@ -240,9 +252,9 @@ define([
             },
 
             editConfig: function() {
-                console.log('editConfig', formUtils);
+                console.log('editConfig', formsUtils);
                 var frontendConfig = get(this, 'frontendConfig');
-                var editForm = formUtils.showNew('modelform', frontendConfig, { title: __("Edit settings"), inspectedItemType: "frontend" });
+                var editForm = formsUtils.showNew('modelform', frontendConfig, { title: __("Edit settings"), inspectedItemType: "frontend" });
                 editForm.submit.done(function() {
                     frontendConfig.save();
                 });
@@ -255,16 +267,16 @@ define([
 
                 console.log('ticketConfig:', ticketConfig);
 
-                var job = ticketConfig.get('job');
-                var params = job.get('params');
+                var job = get(ticketConfig, 'job');
+                var params = get(job, 'params');
 
                 console.log('job:', job, params);
 
                 if(params) {
-                    console.log('param subject', params.get('subject'));
+                    console.log('param subject', get(params, 'subject'));
                 }
 
-                var editForm = formUtils.showNew('jobform', job, {
+                var editForm = formsUtils.showNew('jobform', job, {
                     scheduled: false
                 });
 
@@ -280,7 +292,7 @@ define([
                 console.log('editLdapConfig');
 
                 var ldapConfig = get(this, 'ldapConfig');
-                var editForm = formUtils.showNew('modelform', ldapConfig, { title: __('Edit LDAP configuration') });
+                var editForm = formsUtils.showNew('modelform', ldapConfig, { title: __('Edit LDAP configuration') });
                 editForm.submit.done(function() {
                     ldapConfig.save();
                 });
@@ -290,19 +302,19 @@ define([
                 console.log('editCasConfig');
 
                 var casConfig = get(this, 'casConfig');
-                var editForm = formUtils.showNew('modelform', casConfig, { title: __('Edit CAS configuration') });
+                var editForm = formsUtils.showNew('modelform', casConfig, { title: __('Edit CAS configuration') });
                 editForm.submit.done(function() {
                     casConfig.save();
                 });
             },
 
             toggleEditMode: function() {
-                if (Canopsis.editMode === true) {
+                if (get(this, 'editMode') === true) {
                     console.info('Entering edit mode');
-                    set(Canopsis, 'editMode', false);
+                    set(this, 'editMode', false);
                 } else {
                     console.info('Leaving edit mode');
-                    set(Canopsis, 'editMode', true);
+                    set(this, 'editMode', true);
                 }
             },
 
@@ -311,7 +323,7 @@ define([
                 var applicationController = this;
                 console.log("add", type);
 
-                var containerwidgetId = utils.hash.generateId('container');
+                var containerwidgetId = hashUtils.generateId('container');
 
                 var containerwidget = dataUtils.getStore().createRecord('verticalbox', {
                     xtype: 'verticalbox',
@@ -319,7 +331,7 @@ define([
                 });
 
                 var userview = dataUtils.getStore().push(type, {
-                    id: utils.hash.generateId('userview'),
+                    id: hashUtils.generateId('userview'),
                     crecord_type: 'view',
                     containerwidget: containerwidgetId,
                     containerwidgetType: 'verticalbox'
@@ -331,13 +343,13 @@ define([
 
                 function transitionToView(userview) {
                     console.log('userview saved, switch to the newly created view');
-                    applicationController.send('showView', userview.get('id'));
+                    applicationController.send('showView', get(userview, 'id'));
                 }
 
                 recordWizard.submit.done(function() {
                     console.log("userview.save()");
                     console.log(userview.save());
-                    applicationController.transitionToRoute("/userview/" + userview.get('id'));
+                    applicationController.transitionToRoute("/userview/" + get(userview, 'id'));
                 });
             },
 
@@ -351,6 +363,7 @@ define([
                 var record = dataUtils.getStore().createRecord(type, {
                     crecord_type: type.underscore()
                 });
+
                 console.log('temp record', record);
 
                 var recordWizard = formsUtils.showNew('modelform', record, { title: __("Add ") + type });
@@ -372,6 +385,8 @@ define([
 
     });
 
+    Application.ApplicationController = controller;
+
     void (utils);
-    return Application.ApplicationController;
+    return controller;
 });

@@ -17,12 +17,19 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/lib/abstractclassmanager'], function(Abstractclassmanager) {
+define([
+    'ember',
+    'ember-data',
+    'app/lib/factories/widget'
+], function(Ember, DS, WidgetFactory) {
 
-    var manager = {
-        all: [],
-        byClass: {}
-    };
+    var get = Ember.get,
+        set = Ember.set;
 
-    return manager;
+    var widget = WidgetFactory('graph',
+        {
+        }
+    );
+
+    return widget;
 });

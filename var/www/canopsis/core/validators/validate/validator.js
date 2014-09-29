@@ -1,3 +1,22 @@
+/*
+# Copyright (c) 2014 "Capensis" [http://www.capensis.com]
+#
+# This file is part of Canopsis.
+#
+# Canopsis is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Canopsis is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 define([
     'ember'
 ], function(Ember) {
@@ -23,13 +42,13 @@ define([
 
             for (var key in options) {
                 if ( options.hasOwnProperty( key ) ) {
-                    var validatorName = (key === "role")? options[key] : key;
-                    var validator = Ember.validators[validatorName];
+                    var keyValidatorName = (key === "role")? options[key] : key;
+                    var keyValidator = Ember.validators[keyValidatorName];
 
-                    if (validator !== undefined) {
+                    if (keyValidator !== undefined) {
 
-                        console.log("pushed : ", validatorName);
-                        validators.push(Ember.validators[validatorName]);
+                        console.log("pushed : ", keyValidatorName);
+                        validators.push(Ember.validators[keyValidatorName]);
                     }
                 }
             }
@@ -74,7 +93,7 @@ define([
             }
         }
         return toReturn;
-    };
+    }
 
     return Validator;
 });

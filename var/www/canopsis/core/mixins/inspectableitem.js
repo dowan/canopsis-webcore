@@ -20,8 +20,13 @@
 define([
     'jquery',
     'ember',
-    'app/application'
-], function($, Ember, Application) {
+    'app/application',
+    'app/lib/utils/notification'
+], function($, Ember, Application, notificationUtils) {
+
+    var get = Ember.get,
+        set = Ember.set;
+
 
     /**
      * Provides an "attributes" property, dependant on content, to iterate on model's attributes, with the value and schema's properties
@@ -30,7 +35,7 @@ define([
      * @mixin
      */
 
-    Application.InspectableItemMixin = Ember.Mixin.create({
+    var mixin = Ember.Mixin.create({
 
         /**
             @required
@@ -61,32 +66,33 @@ define([
 
         //getting attributes (keys and values as seen on the form)
         categorized_attributes: function() {
-            var inspectedDataItem =  this.get('inspectedDataItem');
+            var inspectedDataItem =  get(this, 'inspectedDataItem');
             console.log("recompute categorized_attributes", inspectedDataItem );
             if (inspectedDataItem !== undefined) {
-                console.log("inspectedDataItem attributes", inspectedDataItem.get('attributes'));
+
+                console.log("inspectedDataItem attributes", get(inspectedDataItem, 'attributes'));
                 var me = this;
 
-                if (this.get('inspectedItemType') !== undefined) {
+                if (get(this, 'inspectedItemType') !== undefined) {
                     var itemType;
 
-                    if (this.get('inspectedItemType') === "view") {
+                    if (get(this, 'inspectedItemType') === "view") {
                         itemType = "userview";
                     } else {
-                        itemType = this.get('inspectedItemType');
+                        itemType = get(this, 'inspectedItemType');
                     }
 
                     console.log("inspected itemType", itemType.capitalize());
                     var referenceModel = Application[itemType.capitalize()];
 
                     if (referenceModel === undefined || referenceModel.proto() === undefined) {
-                        console.error("There does not seems to be a registered schema for", itemType.capitalize());
+                        notificationUtils.error("There does not seems to be a registered schema for", itemType.capitalize());
                     }
                     if (referenceModel.proto().categories === undefined) {
-                        console.error("No categories in the schema of", itemType);
+                        notificationUtils.error("No categories in the schema of" + itemType);
                     }
 
-                    var options = this.get('options');
+                    var options = get(this, 'options');
                     var filters = [];
 
                     //Allows showing only some fields in the form.
@@ -103,16 +109,16 @@ define([
 
                     this.categories = [];
 
-                    var modelAttributes = Ember.get(referenceModel, 'attributes');
+                    var modelAttributes = get(referenceModel, 'attributes');
 
                     for (var i = 0; referenceModel.proto().categories &&
                          i < referenceModel.proto().categories.length; i++) {
                         var category = referenceModel.proto().categories[i];
-                        var createdCategory = [];
+                        var createdCategory = {};
                         createdCategory.title = category.title;
                         createdCategory.keys = [];
 
-                        for (var j = 0; j < category.keys.length; j++) {
+                        for (var j = 0, lj = category.keys.length; j < lj; j++) {
                             var key = category.keys[j];
 
                             if(key === "separator") {
@@ -131,62 +137,72 @@ define([
                                 }
 
                                 if (key !== undefined && modelAttributes.get(key) === undefined) {
-                                    console.error("An attribute that does not exists seems to be referenced in schema categories", key, referenceModel);
-                                }
+                                    notificationUtils.error("An attribute that does not exists seems to be referenced in schema categories" + key, referenceModel);
 
-                                //TODO refactor the 20 lines below in an utility function "getEditorForAttr"
-                                //find appropriate editor for the model property
-                                var editorName;
-                                var attr = modelAttributes.get(key);
+                                    //break the iteration
+                                    createdCategory.keys[j] = Ember.Object.create({
+                                        type:'string',
+                                        model: Ember.Object.create({
+                                            options: Ember.Object.create({
+                                                role:"separator"
+                                            })
+                                        }),
+                                        options: Ember.Object.create()
+                                    });
 
-                                //defines an option object explicitely here for next instruction
-                                if (attr.options === undefined) {
-                                    attr.options = {};
-                                }
-
-                                //hide field if not filter specified or if key match one filter element.
-                                if (filters.length === 0 || $.inArray(key, filters) !== -1) {
-                                    Ember.set(attr, 'options.hiddenInForm', false);
+                                    //break the iteration, insertinng a separator instead of a regular editor
+                                    //TODO custom error readonly editor
+                                    continue;
                                 } else {
-                                    Ember.set(attr, 'options.hiddenInForm', true);
+                                    //TODO refactor the 20 lines below in an utility function "getEditorForAttr"
+                                    //find appropriate editor for the model property
+                                    var editorName;
+                                    var attr = modelAttributes.get(key);
+
+                                    //defines an option object explicitely here for next instruction
+                                    if (attr.options === undefined) {
+                                        attr.options = {};
+                                    }
+
+                                    //hide field if not filter specified or if key match one filter element.
+                                    if (filters.length === 0 || $.inArray(key, filters) !== -1) {
+                                        set(attr, 'options.hiddenInForm', false);
+                                    } else {
+                                        set(attr, 'options.hiddenInForm', true);
+                                    }
+
+                                    if (attr.options !== undefined && attr.options.role !== undefined) {
+                                        editorName = "editor-" + attr.options.role;
+                                    } else {
+                                        editorName = "editor-" + attr.type;
+                                    }
+
+                                    if (Ember.TEMPLATES[editorName] === undefined) {
+                                        editorName = "editor-defaultpropertyeditor";
+                                    }
+
+                                    //enable field label override.
+                                    var label = key;
+                                    if (override_labels[key]) {
+                                        label = override_labels[key];
+                                    }
+
+                                    createdCategory.keys[j] = {
+                                        field: label,
+                                        model: modelAttributes.get(key),
+                                        editor: editorName
+                                    };
+
+                                    var value = (!this.isOnCreate)? get(inspectedDataItem, key) : attr.options["default"];
+
+                                    if (attr.type === "array"){
+                                        var value_temp = Ember.copy(value , true);
+                                        value = value_temp;
+                                    }
+                                    createdCategory.keys[j].value = value;
+
+                                    console.log("category key ", category.keys[j].value);
                                 }
-
-                                if (attr.options !== undefined && attr.options.role !== undefined) {
-                                    editorName = "editor-" + attr.options.role;
-                                } else {
-                                    editorName = "editor-" + attr.type;
-                                }
-
-                                if (Ember.TEMPLATES[editorName] === undefined) {
-                                    editorName = "editor-defaultpropertyeditor";
-                                }
-
-                                //enable field label override.
-                                var label = key;
-                                if (override_labels[key]) {
-                                    label = override_labels[key];
-                                }
-
-                                createdCategory.keys[j] = {
-                                    field: label,
-                                    model: modelAttributes.get(key),
-                                    editor: editorName
-                                };
-                                /*
-                                if (me.get('inspectedDataItem') !== undefined) {
-                                    createdCategory.keys[j].value = me.get('inspectedDataItem').get(key);
-                                } else {
-                                    createdCategory.keys[j].value = undefined;
-                                }*/
-                                var value = (!this.isOnCreate)? inspectedDataItem.get(key) : attr.options["default"];
-
-                                if (attr.type === "array"){
-                                    var value_temp = Ember.copy(value , true);
-                                    value = value_temp;
-                                }
-                                createdCategory.keys[j].value = value;
-
-                                console.log("category key ", category.keys[j].value);
                             }
                         }
 
@@ -203,5 +219,7 @@ define([
         }.property("inspectedDataItem", "inspectedItemType")
     });
 
-    return Application.InspectableItemMixin;
+    Application.InspectableItemMixin = mixin;
+
+    return mixin;
 });

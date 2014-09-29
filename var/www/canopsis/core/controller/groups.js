@@ -21,8 +21,10 @@ define([
     'app/application',
     'app/controller/crecords'
 ], function(Application, CrecordsController) {
+    var get = Ember.get,
+        set = Ember.set;
 
-    Application.GroupsController = CrecordsController.extend({
+    var controller = CrecordsController.extend({
         itemType: 'group',
         toolbar: [{
             title: 'Refresh',
@@ -40,10 +42,12 @@ define([
 
         actions: {
             refresh: function() {
-                this.set('content', this.store.findAll('group'));
+                set(this, 'content', this.store.findAll('group'));
             }
         }
     });
 
-    return Application.GroupsController;
+    Application.GroupsController = controller;
+
+    return controller;
 });

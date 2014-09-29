@@ -22,13 +22,14 @@ define([
     'app/application',
     'app/lib/factories/form',
     'app/forms/modelform/controller',
-    'utils'
-], function(Ember, Application, FormFactory, ModelFormController, cutils) {
+    'utils',
+    'app/lib/utils/forms'
+], function(Ember, Application, FormFactory, ModelFormController, formsUtils) {
     var formOptions = {
         subclass: ModelFormController
     };
 
-    FormFactory('taskform', {
+    var form = FormFactory('taskform', {
         title: 'Configure Job settings',
         scheduled: true,
         jobRecord: undefined,
@@ -45,20 +46,21 @@ define([
             next: function() {
                 console.group('configureTask');
 
-                var formParent = this.get('formParent');
+                var formParent = get(this, 'formParent');
+                var wizard;
 
-                if(this.get('nextForm') === undefined) {
-                    var wizard = cutils.forms.showNew('scheduleform', formParent.formContext, {
+                if(get(this, 'nextForm') === undefined) {
+                    wizard = formsUtils.showNew('scheduleform', formParent.formContext, {
                         formParent: this,
                         title: 'Configure Schedule'
                     });
 
-                    this.set('nextForm', wizard);
+                    set(this, 'nextForm', wizard);
                 }
                 else {
-                    var wizard = this.get('nextForm');
+                    wizard = get(this, 'nextForm');
                     console.log('nextForm', wizard);
-                    cutils.forms.showInstance(wizard);
+                    formsUtils.showInstance(wizard);
                 }
 
                 console.groupEnd();
@@ -78,5 +80,5 @@ define([
         },
     }, formOptions);
 
-    return Application.TaskformController;
+    return form;
 });

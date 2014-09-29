@@ -23,6 +23,7 @@ define([
 ], function(Ember, Application) {
     var get = Ember.get,
         set = Ember.set;
+
     /**
      * Implements search in arraycontrollers
      *
@@ -33,7 +34,7 @@ define([
      *
      * @mixin
      */
-    Application.ArraySearchMixin = Ember.Mixin.create({
+    var mixin = Ember.Mixin.create({
         partials: {
             header: ['search']
         },
@@ -54,7 +55,7 @@ define([
         },
 
         computeFilterPartForCriterion: function(searchPhrase) {
-            console.log("search", this.get("searchableAttributes"));
+            console.log("search", get(this, "searchableAttributes"));
             var searchableAttributes = get(this, 'searchableAttributes');
 
             //TODO these checks should be asserts
@@ -85,7 +86,7 @@ define([
             for (var i = 0; i < searchableAttributes.length; i++) {
                     var filter_orArrayItem = {};
                     filter_orArrayItem[searchableAttributes[i]] = {"$regex": searchPhrase, "$options": "i"};
-                    filter_orArray.push(filter_orArrayItem);
+                    filter_orArray.pushObject(filter_orArrayItem);
             }
 
             return JSON.stringify({"$or": filter_orArray });
@@ -96,7 +97,7 @@ define([
             var shown_columns = get(this, 'shown_columns');
             var searchableAttributes = Ember.A();
 
-            for (var i = 0, shown_columns_length = shown_columns.length; i < shown_columns_length; i++) {
+            for (var i = 0, l = shown_columns.length; i < l; i++) {
                 // if(shown_columns[i].searchable === true) {
                     searchableAttributes.push(shown_columns[i].field);
                 // }
@@ -108,5 +109,7 @@ define([
         }.observes('shown_columns')
     });
 
-    return Application.ArraySearchMixin;
+    Application.ArraysearchMixin = mixin;
+
+    return mixin;
 });

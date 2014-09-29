@@ -24,13 +24,14 @@ define(['ember'], function(Ember) {
      *
      * @author Gwenael Pluchon <info@gwenp.fr>
      */
-    Ember.Handlebars.registerBoundHelper('log', function(message, options) {
+    Ember.Handlebars.registerBoundHelper('clog', function(message, options) {
         void(options);
 
         console.tags.add("helper");
 
+        var typeKey;
         if (this.get !== undefined) {
-            var typeKey = this.get('model.type.typeKey');
+            typeKey = this.get('model.type.typeKey');
             console.tags.add(typeKey);
         }
 

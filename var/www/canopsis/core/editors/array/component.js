@@ -24,16 +24,21 @@ define([
     'app/mixins/arraymixin',
     'app/lib/utils/forms',
     'app/mixins/validationfield'
-], function($, Ember, Application, formsUtils) {
+], function($, Ember, Application, formsUtils, validationfield) {
     var get = Ember.get,
         set = Ember.set;
 
-    Application.ComponentArrayComponent = Ember.Component.extend(Application.ValidationFieldMixin,{
-        valueRefPath:"content.value",
-        valuePath:"value",
+    var component = Ember.Component.extend(Application.ValidationFieldMixin, {
+        valueRefPath: "content.value",
+        valuePath: "value",
 
         init: function() {
             this._super.apply(this, arguments);
+
+            set(this, "componentDataStore", DS.Store.create({
+                container: get(this, "container")
+            }));
+
             var value = get(this,"content.value") || [];
             set(this, 'value', value);
             set(this, 'content.value', value);
@@ -43,11 +48,11 @@ define([
             var me = this;
 
             Ember.run(function() {
-                me.set('arrayAttributes', Ember.A());
+                set(me, 'arrayAttributes', Ember.A());
 
                 if(values !== undefined) {
-                    for (var i = 0; i < values.length; i++) {
-                        me.get('arrayAttributes').pushObject(me.generateVirtualAttribute(i));
+                    for (var i = 0, l = values.length; i < l; i++) {
+                        get(me, 'arrayAttributes').pushObject(me.generateVirtualAttribute(i));
                     }
                 }
             });
@@ -74,10 +79,12 @@ define([
                         });
                         return $helper;
                     },
+
                     start: function(event, ui) {
                         // creates a temporary attribute on the element with the old index
                         $(ui.item.context).attr('data-previndex', $(ui.item.context).index('tr'));
                     },
+
                     update: function(event, ui) {
                         console.log('update', ui.item);
                         console.log('update', $(ui.item.context));
@@ -137,12 +144,12 @@ define([
 
             Ember.addObserver(currentGeneratedAttr, 'value', function(attr) {
                 console.log('value changed', attr.value, attr.index);
-                componentArrayComponent.get('value').removeAt(attr.index);
-                componentArrayComponent.get('value').insertAt(attr.index, attr.value);
+                get(componentArrayComponent, 'value').removeAt(attr.index);
+                get(componentArrayComponent, 'value').insertAt(attr.index, attr.value);
                 console.log('content changed', componentArrayComponent.get('value'));
             });
 
-            console.log("generateVirtualAttribute@3");
+            console.log("generateVirtualAttribute");
 
             return currentGeneratedAttr;
         },
@@ -155,13 +162,28 @@ define([
             addItem: function() {
                 console.log('addItem', get(this, 'value'));
 
-                if(get(this, 'content.model.options.items.type') === 'object') {
-                    get(this, 'value').pushObject(Ember.Object.create(get(this, 'content.model.options.items.objectDict')));
+                var values = get(this, 'value');
+                var itemType = get(this, 'content.model.options.items.type');
+                var model = get(this, 'content.model.options.items.model');
+                var objDict = get(this, 'content.model.options.items.objectDict');
+
+                if(model !== undefined) {
+                    var store = get(this, 'componentDataStore');
+                    var record = store.createRecord(model, {
+                        xtype: model
+                    });
+
+                    values.pushObject(record);
+                } else if(itemType === 'object') {
+                    values.pushObject(Ember.Object.create(objDict));
                 } else {
-                    get(this, 'value').pushObject(undefined);
+                    values.pushObject(undefined);
                 }
-                var newIndex = get(this, 'value').length -1;
-                get(this, 'arrayAttributes').pushObject(this.generateVirtualAttribute(newIndex));
+
+                var newIndex = values.length - 1;
+                var attr = this.generateVirtualAttribute(newIndex);
+                get(this, 'arrayAttributes').pushObject(attr);
+
                 this.validate();
             },
             editItem: function(item) {
@@ -175,7 +197,7 @@ define([
                 var arrayAttributes = get(this, 'arrayAttributes');
                 get(this, 'value').removeAt(item.index);
                 arrayAttributes.removeAt(item.index);
-                for (var i = item.index; i < arrayAttributes.length; i++) {
+                for (var i = item.index, l = arrayAttributes.length; i < l; i++) {
                     arrayAttributes.objectAt(i).set('index', arrayAttributes.objectAt(i).get('index') - 1);
                 }
                 this.validate();
@@ -192,7 +214,7 @@ define([
             array.splice(oldIndex, 1);
             array.splice(newIndex, 0, oldIndex_value);
 
-            for (var i = 0; i < array.length; i++) {
+            for (var i = 0, l = array.length; i < l; i++) {
                 array[i].index = i;
             }
 
@@ -210,5 +232,7 @@ define([
         }
     });
 
-    return Application.ComponentArrayComponent;
+    Application.ComponentArrayComponent = component;
+
+    return component;
 });

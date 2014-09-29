@@ -81,9 +81,10 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
 }
 
 .color{
-	color:#333;
-	border-radius:4px;
-	padding:4px;
+	font-weight: bold;
+	border-radius: 4px;
+	padding: 4px;
+	text-align: center;
 }
 
 .alertBox{
@@ -348,4 +349,8 @@ table.sortable th {
 
 a {
 	cursor: pointer;
+}
+
+table.dataTable tbody th, table.dataTable tbody td {
+	padding: 4px 5px;
 }

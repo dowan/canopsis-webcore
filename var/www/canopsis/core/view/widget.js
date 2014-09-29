@@ -21,10 +21,33 @@ define([
     'ember',
     'app/application',
     'canopsis/canopsisConfiguration',
-    'app/lib/mixinsmanager'
-], function(Ember, Application, canopsisConfiguration, mixinsManager) {
+    'app/lib/mixinsregistry',
+    'app/controller/widget'
+], function(Ember, Application, canopsisConfiguration, mixinsregistry, WidgetController) {
     var get = Ember.get,
         set = Ember.set;
+
+    function computeMixinsArray(widget) {
+        var mixinsNames = get(widget, 'mixins');
+        var mixinArray = [];
+
+        if(mixinsNames) {
+            for (var i = 0, l = mixinsNames.length; i < l; i++) {
+                var currentName = mixinsNames[i];
+                var currentClass = get(Application, currentName + "Mixin");
+
+                if(currentClass) {
+                    mixinArray.pushObject(currentClass);
+                }
+            }
+        }
+
+        mixinArray.pushObject(Ember.Evented);
+
+        console.warn('mixinArray for ', get(widget, 'title'), mixinArray);
+        return mixinArray;
+    }
+
 
     var view = Ember.View.extend({
         templateName:'widget',
@@ -37,7 +60,7 @@ define([
 
         init: function() {
             console.warn('widget view init', this);
-            console.group('widget initialisation :', this.widget.get("xtype"), this.widget, get(this, 'widget.tagName'));
+            console.group('widget initialisation :', get(this.widget, "xtype"), this.widget, get(this, 'widget.tagName'));
             set(this, 'target', get(this, 'controller'));
 
             this._super();
@@ -60,12 +83,12 @@ define([
             }
 
             //widget refresh management
-            var widgetController = this.get('controller');
+            var widgetController = get(this, 'controller');
             console.log('refreshInterval - > ', widgetController.get('refreshInterval'));
             var interval = setInterval(function () {
                 if (canopsisConfiguration.REFRESH_ALL_WIDGETS) {
                     if (get(widgetController,'isRefreshable') && get(widgetController, 'refreshableWidget')) {
-                        console.log('refreshing widget ' + widgetController.get('title'));
+                        console.log('refreshing widget ' + get(widgetController, 'title'));
                         widgetController.refreshContent();
                     }
                 }
@@ -100,7 +123,7 @@ define([
 
         //Controller -> View Hooks
         registerHooks: function() {
-            console.log("registerHooks", this.get("controller"), this.get("controller").on);
+            console.log("registerHooks", get(this, "controller"), get(this, "controller").on);
             get(this, "controller").on('refresh', this, this.rerender);
         },
 
@@ -108,7 +131,7 @@ define([
         },
 
         willDestroyElement: function () {
-            clearInterval(this.get('widgetRefreshInterval'));
+            clearInterval(get(this, 'widgetRefreshInterval'));
         },
 
         rerender: function() {
@@ -118,29 +141,43 @@ define([
 
         instantiateCorrectController: function(widget) {
             //for a widget that have xtype=widget, controllerName=WidgetController
-            var controllerName = widget.get("xtype").capitalize() + "Controller";
+            var xtype = get(widget, "xtype");
+            if(xtype === undefined || xtype === null) {
+                console.error('no xtype for widget', widget, this);
+            }
+
+            var mixins = computeMixinsArray(widget);
+
+            mixins.pushObject({
+                content: widget,
+                target: get(this, 'target')
+            });
+
+            var controllerName = get(widget, "xtype").capitalize() + "Controller";
             var widgetController;
-            console.log("controllerName", controllerName, Application[controllerName], this.get('target'));
+
+            console.log("controllerName", controllerName, Application[controllerName], get(this, 'target'));
+
+            var widgetClass;
 
             if (Application[controllerName] !== undefined) {
-                 widgetController =  Application[controllerName].createWithMixins(Ember.Evented, {
-                    content: widget,
-                    target: this.get('target')
-                });
+                widgetClass = Application[controllerName];
             } else {
-                 widgetController =  Application.WidgetController.createWithMixins(Ember.Evented, {
-                    content: widget,
-                    target: this.get('target')
-                });
+                widgetClass = WidgetController;
             }
+
+            widgetController =  widgetClass.createWithMixins.apply(widgetClass, mixins);
+
+            widgetController.refreshPartialsList();
 
             var mixinsName = widget._data.mixins;
 
-            if (  mixinsName  ){
-                for (var i = 0 ; i < mixinsName.length ; i++ ){
+            if (mixinsName) {
+                for (var i = 0, l = mixinsName.length; i < l ; i++ ){
                     var currentName =  mixinsName[i];
-                    var currentMixin = mixinsManager.all[currentName];
-                    if ( currentMixin ){
+                    var currentMixin = mixinsregistry.all[currentName];
+
+                    if (currentMixin) {
                         currentMixin.apply(widgetController);
                     }
                 }
@@ -153,7 +190,7 @@ define([
 
             this.registerHooks();
             var result = this._super.apply(this, arguments);
-            this.get('controller').onReload(this.$);
+            get(this, 'controller').onReload(this.$);
             //TODO put this somewhere on list widget
             // this.$('input').iCheck({checkboxClass: 'icheckbox_minimal-grey', radioClass: 'iradio_minimal-grey'});
 

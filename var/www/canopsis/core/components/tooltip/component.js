@@ -19,7 +19,8 @@
 
 define([
     'ember',
-    'app/application'
+    'app/application',
+    'app/lib/wrappers/bootstrap'
 ], function(Ember, Application) {
 
     var get = Ember.get,
@@ -28,12 +29,16 @@ define([
     var component = Ember.Component.extend({
         tagName: 'span',
 
-        htmlEnabled: false,
+        htmlEnabled: true,
         placement: 'top',
         triggerEvent: 'hover',
 
         didInsertElement: function() {
-            this.$("[data-toggle=popover]").popover();
+            var popoverTargets = this.$("[data-toggle=popover]");
+            if(popoverTargets) {
+                popoverTargets.popover();
+            }
+
             var component = this;
 
             var options = {

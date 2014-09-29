@@ -28,7 +28,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-    Application.ApplicationView = Ember.View.extend({
+    var view = Ember.View.extend({
         /**
          * @property the css class of the main container
          */
@@ -119,7 +119,6 @@ define([
             });
 
             /* Sidebar tree view */
-            //TODO uncomment while ready
             $(".sidebar .treeview").tree();
 
             /* 
@@ -155,9 +154,10 @@ define([
 
             //Fix the fixed layout sidebar scroll bug
             fix_sidebar();
-            console.log("sidebar", $(".sidebar"));
         }
     });
 
-    return Application.ApplicationView;
+    Application.ApplicationView = view;
+
+    return view;
 });

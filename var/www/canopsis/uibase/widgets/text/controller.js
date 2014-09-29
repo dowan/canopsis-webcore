@@ -19,7 +19,7 @@
 
 define([
     'app/lib/factories/widget',
-    'app/lib/loaders/schema-manager'
+    'app/lib/loaders/schemas'
 ], function(WidgetFactory) {
 
     var widget = WidgetFactory('text', {});

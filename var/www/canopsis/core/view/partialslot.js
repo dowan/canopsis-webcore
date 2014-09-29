@@ -23,7 +23,8 @@ define([
 ], function(Ember, Application) {
 
     var view = Ember.View.extend({
-        templateName:'partialslot',
+        templateName: 'partialslot',
+        tagName: 'span',
 
         slot: Ember.required()
     });

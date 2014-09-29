@@ -1,4 +1,4 @@
-{{#if Canopsis.editMode}}
+{{#if controller.editMode}}
     <button type="button" class="btn btn-info btn-sm" {{action 'insertWidget' controller}} >{{glyphicon "plus-sign"}} {{tr 'Insert widget'}}</button>
 {{/if}}
 <section class="nav-tabs-custom">
@@ -10,7 +10,7 @@
                             {{item.widget.title}}
                         </span>
 
-                        {{#if Canopsis.editMode}}
+                        {{#if controller.editMode}}
                             <span class="badge" {{action 'editWidget' item.widget}}>
                                 {{glyphicon "edit"}}
                             </span>

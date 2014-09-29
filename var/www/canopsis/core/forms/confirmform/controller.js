@@ -24,7 +24,7 @@ define([
 ], function(Ember, Application, FormFactory) {
 
     var formOptions = {};
-    FormFactory('confirmform', {
+    var form = FormFactory('confirmform', {
 
         confirmation: false,
         actions: {
@@ -36,5 +36,5 @@ define([
     },
     formOptions);
 
-    return Application.ConfirmformController;
+    return form;
 });
