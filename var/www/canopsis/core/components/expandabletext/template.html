@@ -1,6 +1,7 @@
-{{{formattedContent}}}
 {{#if contentIsTruncated}}
     {{#component-tooltip content=content}}
-        <span class="label label-primary popover_button">...</span>
+        {{{formattedContent}}}
     {{/component-tooltip}}
+    {{else}}
+        {{{formattedContent}}}
 {{/if}}

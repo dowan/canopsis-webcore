@@ -32,6 +32,11 @@ define([
         multiselect: true,
         showselection: true,
 
+        init: function(){
+            this._super.apply(this, arguments);
+            set(this, 'allCollapsed', true);
+        },
+
         actions: {
             setListMode: function() {
                 set(this, 'mode', 'list');
@@ -224,7 +229,7 @@ define([
                     }
                 });
             } else {
-                set(component, 'allCollapsed', false);
+                set(component, 'allCollapsed', true);
                 return [];
             }
         }.property('content')

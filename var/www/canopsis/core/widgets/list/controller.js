@@ -41,7 +41,8 @@ define([
     'app/view/listline',
     'app/lib/wrappers/datatables',
     'app/lib/loaders/components',
-    'app/lib/wrappers/bootstrap-contextmenu'
+    'app/lib/wrappers/bootstrap-contextmenu',
+    'webcore-libs/simpleresizabletables'
 ], function(Ember, DS, WidgetFactory, PaginationMixin, InspectableArrayMixin,
         ArraySearchMixin, SortableArrayMixin, HistoryMixin, AckMixin, InfobuttonMixin, SendEventMixin, CustomFilterManagerMixin, utils, domUtils, routesUtils, formsUtils) {
 
@@ -59,6 +60,69 @@ define([
         classNames: ['list'],
 
         didInsertElement: function() {
+            //reactivate this for table overflow
+            // this.$('table').tableOverflow();
+
+            var list = this;
+
+            this.$('table').simpleResizableTable();
+
+            this.$('td').resize(function(){
+                var td = $(this);
+                var element = td.children('.renderer');
+
+                if(element === undefined) {
+                    return;
+                }
+
+                td.removeClass('overflowed');
+                td.unbind('mouseover');
+                var $divs = td.children('.placeddiv');
+                if($divs.length) {
+                    $divs.remove();
+                }
+
+                var el_w = element.width(), td_w = td.width();
+
+                if(el_w > td_w) {
+
+                    td.addClass('overflowed');
+                    td.mouseenter(function(){
+                        var $divs = td.children('.placeddiv');
+                        if($divs.length) {
+                            return;
+                        }
+
+                        var newDiv = $('<div class="placeddiv">content</div>');
+
+                        td.append(newDiv);
+
+                        var offset = td.offset();
+
+                        newDiv.css("padding", td.css('padding'));
+                        newDiv.css("backgroundColor", td.css('backgroundColor'));
+                        newDiv.css("position", "absolute");
+
+                        newDiv.offset(offset);
+                        newDiv.html(element.html());
+
+                        var tdHeight = td.parent().height(),
+                            divHeight = newDiv.height();
+
+                        if(tdHeight > divHeight) {
+                            newDiv.css("height", tdHeight);
+                        } else {
+                            newDiv.css("height", divHeight);
+                        }
+
+                        td.on("mouseleave", function(e) {
+                            newDiv.remove();
+                        });
+                   });
+                }
+            });
+
+            this.$('td').resize();
             this._super.apply(this, arguments);
         }
     });
@@ -427,7 +491,6 @@ define([
                 console.log('sortedAttribute', sortedAttribute);
 
                 if(isDefined(sortedAttribute)) {
-
                     var direction = "ASC";
 
                     if(sortedAttribute.headerClassName === "sorting_desc") {
