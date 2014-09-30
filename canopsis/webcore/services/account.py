@@ -104,7 +104,8 @@ def account_get_me():
             "showview_view_selectors": {"checksum": 1},
             "showview_view_jobs": {"checksum": 1},
             "showview_view_filters": {"checksum": 1},
-            "showview_view_services": {"checksum": 1}
+            "showview_view_services": {"checksum": 1},
+            "showview_view_series": {"checksum": 1}
         }
 
         data = record.dump(json=True)

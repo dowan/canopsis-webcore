@@ -24,6 +24,9 @@ define([
     'app/mixins/pagination'
 ], function(Ember, DS, Application, PaginationMixin) {
 
+    var get = Ember.get,
+        set = Ember.set;
+
     var component = Ember.Component.extend(PaginationMixin, {
         model: undefined,
         modelfilter: undefined,
@@ -39,18 +42,21 @@ define([
         }.observes('data.@each'),
 
         onModelFilterChange: function() {
-            this.set('currentPage', 1);
+            set(this, 'currentPage', 1);
             this.refreshContent();
         }.observes('modelfilter'),
 
         init: function() {
             this._super(arguments);
 
-            if (this.get('model') !== undefined) {
-                this.set('store', DS.Store.create({
-                    container: this.get('container')
+            if (get(this, 'model') !== undefined) {
+                set(this, 'store', DS.Store.create({
+                    container: get(this, 'container')
                 }));
             }
+
+            set(this, 'widgetDataMetas', {total: 0});
+            set(this, 'items', []);
         },
 
         didInsertElement: function() {
@@ -62,49 +68,60 @@ define([
 
             this.findItems();
 
-            console.log(this.get('widgetDataMetas'));
+            console.log(get(this, 'widgetDataMetas'));
         },
 
         findItems: function() {
             try {
                 var me = this;
 
-                var store = this.get('store');
+                var store = get(this, 'store');
+                var model = get(this, 'model');
+                var modelfilter = get(this, 'modelfilter');
 
                 var query = {
-                    skip: this.get('paginationMixinFindOptions.start'),
-                    limit: this.get('paginationMixinFindOptions.limit')
+                    skip: get(this, 'paginationMixinFindOptions.start'),
+                    limit: get(this, 'paginationMixinFindOptions.limit')
                 };
 
-                if (this.get('model') !== undefined) {
-                    if(this.get('modelfilter') !== null) {
-                        query.filter = this.get('modelfilter');
+                if (model !== undefined) {
+                    if(modelfilter !== null) {
+                        query.filter = modelfilter;
                     }
 
-                    store.findQuery(this.get('model'), query).then(function(result) {
-                        me.set('widgetDataMetas', result.meta);
-                        me.set('items', result.get('content'));
+                    store.findQuery(model, query).then(function(result) {
+                        console.log('Received data for table:', result);
+
+                        set(me, 'widgetDataMetas', get(result, 'meta'));
+                        set(me, 'items', get(result, 'content'));
 
                         me.extractItems(result);
                     });
                 }
                 else {
-                    var items = this.get('data').slice(
+                    var items = get(this, 'data').slice(
                         query.skip,
                         query.skip + query.limit
                     );
 
-                    this.set('widgetDataMetas', {total: this.get('data').length});
-                    this.set('items', items);
+                    set(this, 'widgetDataMetas', {
+                        total: get(this, 'data.length')
+                    });
+
+                    set(this, 'items', items);
 
                     me.extractItems({
-                        meta: this.get('widgetDataMetas'),
-                        content: this.get('items')
+                        meta: get(this, 'widgetDataMetas'),
+                        content: get(this, 'items')
                     });
                 }
             } catch(err) {
-                console.log('extractItems empty due to error 500');
-                this.extractItems([]);
+                console.log('extractItems not updated:', err);
+
+                this.extractItems({
+                    meta: get(this, 'widgetDataMetas'),
+                    content: get(this, 'items')
+                });
             }
         },
 
