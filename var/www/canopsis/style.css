@@ -291,15 +291,16 @@ aside.fullscreen {
 
 table.dataTable thead th, table.dataTable thead td {
 	padding: 10px 0;
+	overflow: hidden;
 	font-size: 90%;
 }
 
 td, th {
-    white-space: nowrap;
+    overflow-x: hidden;
 }
 
-th.maximized {
-	width:100%;
+th.checkboxes {
+	width:20px;
 }
 
 table.sortable th {
@@ -320,7 +321,6 @@ table.sortable th {
     background: black !important;
     color:white !important;
 }
-
 
 .popover.in{
     opacity:.8;
@@ -351,6 +351,72 @@ a {
 	cursor: pointer;
 }
 
+table.dataTable {
+	table-layout:fixed;
+	font-size:90%;
+	white-space: nowrap;
+}
+
+.table-striped > tbody > tr > td.overflowed {
+	background: linear-gradient(to left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
+	background-image: url('/static/canopsis/media/images/ellipsis.png');
+	background-position: bottom right;
+	background-repeat: no-repeat;
+	overflow: hidden;
+}
+.table-striped > tbody > tr:nth-child(odd) > td.overflowed {
+	background: linear-gradient(to left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) #f3f4f5;
+	background-image: url('/static/canopsis/media/images/ellipsis.png');
+	background-position: bottom right;
+	background-repeat: no-repeat;
+}
+
+table.table tr:hover > td.overflowed {
+	background: linear-gradient(to left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) #E2E2E2;
+	background-image: url('/static/canopsis/media/images/ellipsis.png');
+	background-position: bottom right;
+	background-repeat: no-repeat;
+}
+
+td >.renderer {
+	overflow: hidden;
+	display: inline-block;
+	max-height: 100px;
+}
+
+td.overflowed > .placeddiv {
+	-moz-box-shadow: 0px 0px 5px 0px #656565;
+	-webkit-box-shadow: 0px 0px 5px 0px #656565;
+	-o-box-shadow: 0px 0px 5px 0px #656565;
+	box-shadow: 0px 0px 5px 0px #656565;
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=#656565, Direction=NaN, Strength=5);
+	white-space: normal;
+}
+
 table.dataTable tbody th, table.dataTable tbody td {
 	padding: 4px 5px;
+}
+
+th.output {
+	width:28%;
+}
+
+th.state {
+	width:70px;
+}
+
+th.ack {
+	width:65px;
+}
+
+th.status {
+	width:65px;
+}
+
+th.timestamp {
+	width:120px;
+}
+
+th.actions {
+	width:228px;
 }

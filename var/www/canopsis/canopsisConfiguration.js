@@ -9,7 +9,7 @@ define([], function () {
         DEBUG: true,
         VERBOSE: 1,
         DISPLAY_SCHAMA_MANAGER: true,
-        REFRESH_ALL_WIDGETS: true,
+        REFRESH_ALL_WIDGETS: false,
         TRANSLATE: true,
         SHOW_TRANSLATIONS: false,
     };
