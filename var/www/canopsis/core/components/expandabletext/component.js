@@ -140,7 +140,7 @@ define([
             }
             console.log('format content', text);
 
-            var trimmed = trimHtml(text, {limit : 5});
+            var trimmed = trimHtml(text, {limit : 50000});
 
             console.log('trimmed:', trimmed);
 

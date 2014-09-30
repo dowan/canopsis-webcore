@@ -186,6 +186,19 @@ define([
 
             }
 
+            //when we got only one event, let display it s output separately
+            console.log('The data lenght => ', data.length);
+            if(data.length === 1) {
+                set(this, 'singleEvent', true);
+                var output = get(data[0],'output');
+                if (output.length > 150) {
+                    output = output.substr(0,150) + ' ...';
+                }
+                set(this, 'singleEventOutput', output);
+            } else {
+                set(this, 'singleEvent', false);
+            }
+
             if (ack_count === data.length) {
                 worst_state = 4;
             }

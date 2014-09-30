@@ -32,15 +32,15 @@ define([
         metricSearch: null,
 
         valueChanged: function() {
-            var metrics = this.get('selectedMetrics');
+            var metrics = get(this, 'selectedMetrics');
             var ids = [];
 
             for(var i = 0, l = metrics.length; i < l; i++) {
-                var m_id = get(metric, 'id');
+                var m_id = get(metrics[i], 'id');
                 ids.push(m_id);
             }
 
-            this.set('content', ids);
+            set(this, 'content', ids);
         }.observes('selectedMetrics.@each'),
 
         helpModal: {
@@ -88,12 +88,35 @@ define([
         init: function() {
             this._super(arguments);
 
-            this.set('store', DS.Store.create({
+            var store = DS.Store.create({
                 container: this.get('container')
-            }));
+            });
 
-            var content = this.get('content') || [];
-            this.set('selectedMetrics', content);
+            set(this, 'componentDataStore', store);
+
+            var content = get(this, 'content') || [];
+            var me = this;
+
+            var query = {
+                filter: {
+                    '_id': {'$in': content}
+                }
+            };
+
+            store.findQuery('ctxmetric', query).then(function(result) {
+                var metrics = get(me, 'selectedMetrics') || [];
+
+                var content = get(result, 'content');
+                var l = get(result, 'meta.total');
+
+                console.log('Received data:', l, content, metrics);
+
+                for(var i = 0; i < l; i++) {
+                    metrics.pushObject(content[i]);
+                }
+
+                set(me, 'selectedMetrics', metrics);
+            });
         },
 
         build_filter: function(search) {
@@ -169,18 +192,18 @@ define([
 
         actions: {
             select: function(metric) {
-                var selected = this.get('selectedMetrics');
+                var selected = get(this, 'selectedMetrics');
 
                 if (selected.indexOf(metric) < 0) {
                     console.log('Select metric:', metric);
                     selected.pushObject(metric);
                 }
 
-                this.set('selectedMetrics', selected);
+                set(this, 'selectedMetrics', selected);
             },
 
             unselect: function(metric) {
-                var selected = this.get('selectedMetrics');
+                var selected = get(this, 'selectedMetrics');
 
                 var idx = selected.indexOf(metric);
 
@@ -189,33 +212,33 @@ define([
                     selected.removeAt(idx);
                 }
 
-                this.set('selectedMetrics', selected);
+                set(this, 'selectedMetrics', selected);
             },
 
             selectAll: function() {
-                var store = this.get('store');
-                var metrics = store.findAll('metric');
+                var store = get(this, 'componentDataStore');
+                var metrics = store.findAll('ctxmetric');
 
-                this.set('selectedMetrics', metrics);
+                set(this, 'selectedMetrics', metrics);
             },
 
             unselectAll: function() {
-                this.set('selectedMetrics', []);
+                set(this, 'selectedMetrics', []);
             },
 
             search: function(search) {
                 if(search) {
                     var mfilter = this.build_filter(search);
-                    this.set('metricSearch', mfilter);
+                    set(this, 'metricSearch', mfilter);
                 }
                 else {
-                    this.set('metricSearch', null);
+                    set(this, 'metricSearch', null);
                 }
             }
         },
 
         didInsertElement: function() {
-            $('#' + this.get('helpModal.id')).popover({trigger: 'hover'});
+            $('#' + get(this, 'helpModal.id')).popover({trigger: 'hover'});
         }
     });
 

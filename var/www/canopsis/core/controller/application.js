@@ -64,7 +64,8 @@ define([
             Ember.Object.create({ label: __("Events"), value: 'view.event'}),
             Ember.Object.create({ label: __("Selectors"), value: 'view.selectors'}),
             Ember.Object.create({ label: __("Scheduled Jobs"), value: 'view.jobs'}),
-            Ember.Object.create({ label: __("Event Filter"), value: 'view.filters'})
+            Ember.Object.create({ label: __("Event Filter"), value: 'view.filters'}),
+            Ember.Object.create({ label: __("Performance Data"), value: 'view.series'})
         ],
 
         plugins:function(){
@@ -230,6 +231,8 @@ define([
 
                         //generated data by user form fill
                         record = form.get('formContext');
+
+                        set(record, 'crecord_type', 'account');
 
                         record.save();
 

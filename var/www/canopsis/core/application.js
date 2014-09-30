@@ -30,7 +30,8 @@ define([
         LOG_TRANSITIONS: false,
         LOG_TRANSITIONS_INTERNAL: false,
         LOG_VIEW_LOOKUPS: false,
-        LOG_BINDINGS: true
+        LOG_BINDINGS: true,
+        rootElement: '#applicationdiv'
     });
 
     Application.Router.map(function() {
