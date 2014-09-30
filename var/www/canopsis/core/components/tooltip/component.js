@@ -32,6 +32,7 @@ define([
         htmlEnabled: true,
         placement: 'top',
         triggerEvent: 'hover',
+        noTranslation: false,
 
         didInsertElement: function() {
             var popoverTargets = this.$("[data-toggle=popover]");
@@ -50,13 +51,21 @@ define([
             var content = get(component, 'content');
 
             if (!Ember.isNone(content)) {
-                options.content = __(content);
+                if(get(component, 'noTranslation')) {
+                    options.content = content;
+                } else {
+                    options.content = __(content);
+                }
             }
 
             var title = get(component, 'title');
 
             if (!Ember.isNone(title)) {
-                options.title = __(title);
+                if(get(component, 'noTranslation')) {
+                    options.title = title;
+                } else {
+                    options.title = __(title);
+                }
             }
 
             this.$().popover(options);

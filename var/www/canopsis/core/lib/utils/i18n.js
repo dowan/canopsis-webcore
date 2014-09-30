@@ -23,24 +23,33 @@ define([
 ], function(conf) {
 
     var i18n = {
-        todo: {},
+        todo: [],
         translations: {},
         newTranslations: true,
         _: function(word) {
-            if (i18n.translations[i18n.lang] && i18n.translations[i18n.lang][word]) {
-                return i18n.showTranslation(i18n.translations[i18n.lang][word]);
+
+            if (typeof word !== 'string') {
+                //This is not an interesting data type
+                return word;
+            } else if (!isNaN(parseInt(word))) {
+                //This is just a number, it is useless to translate it.
+                return word;
             } else {
-                var isTranslated = true;
-                //adding translation to todo list
-                if (typeof(word) === 'string' && !i18n.todo[word]) {
+                if (i18n.translations[i18n.lang] && i18n.translations[i18n.lang][word]) {
+                    return i18n.showTranslation(i18n.translations[i18n.lang][word]);
+                } else {
+                    var isTranslated = true;
+                    //adding translation to todo list
+                    if (i18n.todo.indexOf(word) === -1) {
 
-                    i18n.todo[word] = 1;
-                    i18n.newTranslations = true;
-                    isTranslated = false;
+                        i18n.todo.push(word);
+                        i18n.newTranslations = true;
+                        isTranslated = false;
 
+                    }
+                    //returns original not translated string
+                    return i18n.showTranslation(word, isTranslated);
                 }
-                //returns original not translated string
-                return i18n.showTranslation(word, isTranslated);
             }
         },
         showTranslation: function (word, isTranslated) {
@@ -56,18 +65,13 @@ define([
             }
         },
         uploadDefinitions: function () {
-            var todo = [];
-
-            for (var todoElement in i18n.todo) {
-                todo.push(todoElement);
-            }
 
             $.ajax({
                 url: '/rest/object/i18n',
                 type: 'POST',
                 data: JSON.stringify({
                     id: 'translations',
-                    todo: todo,
+                    todo: i18n.todo,
                     crecord_type: 'i18n'
                 }),
                 success: function(data) {
