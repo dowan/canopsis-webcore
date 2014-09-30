@@ -291,6 +291,7 @@ aside.fullscreen {
 
 table.dataTable thead th, table.dataTable thead td {
 	padding: 10px 0;
+	overflow: hidden;
 	font-size: 90%;
 }
 
@@ -361,6 +362,7 @@ table.dataTable {
 	background-image: url('/static/canopsis/media/images/ellipsis.png');
 	background-position: bottom right;
 	background-repeat: no-repeat;
+	overflow: hidden;
 }
 .table-striped > tbody > tr:nth-child(odd) > td.overflowed {
 	background: linear-gradient(to left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) #f3f4f5;
