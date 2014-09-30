@@ -41,8 +41,7 @@ define([
     'app/view/listline',
     'app/lib/wrappers/datatables',
     'app/lib/loaders/components',
-    'app/lib/wrappers/bootstrap-contextmenu',
-    'webcore-libs/simpleresizabletables'
+    'app/lib/wrappers/bootstrap-contextmenu'
 ], function(Ember, DS, WidgetFactory, PaginationMixin, InspectableArrayMixin,
         ArraySearchMixin, SortableArrayMixin, HistoryMixin, AckMixin, InfobuttonMixin, SendEventMixin, CustomFilterManagerMixin, utils, domUtils, routesUtils, formsUtils) {
 
@@ -64,8 +63,6 @@ define([
             // this.$('table').tableOverflow();
 
             var list = this;
-
-            this.$('table').simpleResizableTable();
 
             this.$('td').resize(function(){
                 var td = $(this);
