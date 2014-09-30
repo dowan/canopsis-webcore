@@ -23,9 +23,11 @@
                         <p>
                             <a {{action goToInfo this}} class="small-box-footer full"></a>
                         </p>
-                        <h5>
-                            {{controller.singleEventOutput}}
-                        </h5>
+                        {{#if controller.show_output}}
+                            <h5>
+                                {{controller.singleEventOutput}}
+                            </h5>
+                        {{/if}}
                     </div>
                 </div>
             {{/each}}
