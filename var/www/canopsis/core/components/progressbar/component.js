@@ -4,23 +4,24 @@
   'app/application'
 ], function($, Ember, Application) {
 
-    var component = Ember.Component.extend({
-        classNames: 'progress',
-
-        getPercent:Ember.computed(function() {
-        var value = this.get('value');
-        var max = this.get('max');
-        var percent = value/max * 100;
-        return percent;
-    }).property('value'),
+    Application.ComponentProgressbarComponent = Ember.Component.extend({
+    classNames: 'progress',
+    inline:false,
 
     init:function(){
         this._super();
-        //this.set("value" , 33);
+        var inline = this.get("inline");
+        var classNames = (inline)? ['progress' , 'PBinline'] : ['progress' , 'PB'] ;
+        this.set("classNames", classNames);
     },
 
+    inlineDidChange:  Ember.observer( function() {
+        var classNames = (inline)? ['progress' , 'PBinline'] :  ['progress' , 'PB'] ;
+        this.set("classNames", classNames);
+    }, 'this.inline'),
+
     width_test: function(){
-        return "width: " + this.get("percent_test") + "%";
+        return "width: " + this.get("percent_test") + "% ;";
     }.property("percent_test"),
 
     valuenow:function(){
@@ -82,8 +83,5 @@
         this.$('.bar').addClass(this.get('statusClass'));
     }, 'statusClass')
   });
-
-  Application.ComponentProgressbarComponent = component;
-
-  return component;
+  return   Application.ComponentProgressbarComponent;
 });

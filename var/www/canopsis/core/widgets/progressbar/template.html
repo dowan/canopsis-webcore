@@ -1,16 +1,18 @@
 <div class="inner">
-	<button type="button" {{ action changevalue }} class="btn btn-warning btn-xs"> CHANGE</button>
-		<div class="col-lg-6">
-			<div class="input-group">
-				<span class="input-group-addon">
-	    			<input type="checkbox" id="bad_when_full">
-	    		</span>
-	      		<input type="text" class="form-control"  id="changevalue">
-	    	</div><!-- /input-group -->
-		</div><!-- /.col-lg-6 -->
-    <h2>
-		{{controller.ressource}}
-		{{component-progressbar attr=attr form=this value=controller.value bad_when_full=controller.bad_when_full}}
-    </h2>
+	<button type="button" {{ action changevalue }} class="btn btn-warning btn-xs">
+		CHANGE
+	</button>
+	<input type="text" class="form-control"  id="changevalue">
+</div>
+<div style="display:block">
+	{{#each perfdata in controller.event_selection}}
+		<!--{{perfdata}} -->
+			<div>
+				<div style="display:inline;">
+					test :
+				</div>
+				{{component-progressbar inline=controller.inline attr=attr form=this value=controller.value bad_when_full=controller.bad_when_full}}
+			</div>
+	{{/each}}
 </div>
 

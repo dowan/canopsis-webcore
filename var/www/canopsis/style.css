@@ -354,3 +354,17 @@ a {
 table.dataTable tbody th, table.dataTable tbody td {
 	padding: 4px 5px;
 }
+
+.progress-label {
+    float: left;
+    margin-right: 1em;
+}
+
+.PBinline {
+	display:inline-flex;
+	width:400px;
+}
+
+.PB {
+	width:400px;
+}
