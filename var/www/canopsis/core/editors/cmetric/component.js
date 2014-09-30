@@ -97,14 +97,26 @@ define([
             var content = get(this, 'content') || [];
             var me = this;
 
-            for(var i = 0, l = content.length; i < l; i++) {
-                var metric = content[i];
+            var query = {
+                filter: {
+                    '_id': {'$in': content}
+                }
+            };
 
-                store.find('metric', metric.id).then(function(metric) {
-                    var metrics = get(me, 'selectedMetrics');
-                    metrics.pushObject(metric);
-                });
-            }
+            store.findQuery('ctxmetric', query).then(function(result) {
+                var metrics = get(me, 'selectedMetrics') || [];
+
+                var content = get(result, 'content');
+                var l = get(result, 'meta.total');
+
+                console.log('Received data:', l, content, metrics);
+
+                for(var i = 0; i < l; i++) {
+                    metrics.pushObject(content[i]);
+                }
+
+                set(me, 'selectedMetrics', metrics);
+            });
         },
 
         build_filter: function(search) {
@@ -205,7 +217,7 @@ define([
 
             selectAll: function() {
                 var store = get(this, 'componentDataStore');
-                var metrics = store.findAll('metric');
+                var metrics = store.findAll('ctxmetric');
 
                 set(this, 'selectedMetrics', metrics);
             },
