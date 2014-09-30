@@ -232,6 +232,8 @@ define([
                         //generated data by user form fill
                         record = form.get('formContext');
 
+                        set(record, 'crecord_type', 'account');
+
                         record.save();
 
                         notificationUtils.info(__('profile') + ' ' +__('updated'));
