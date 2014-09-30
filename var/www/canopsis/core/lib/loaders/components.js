@@ -36,7 +36,13 @@ var componentsTemplates = [
     'stringclassifiedcrecordselector',
     'table',
     'tooltip',
-    'wrapper',
+    'filterclause',
+    'checkbox',
+    'searchbar',
+    'flotchart',
+    'progressbar',
+    'templateselector',
+    'wrapper'
 ];
 
 var deps = ['ember'];

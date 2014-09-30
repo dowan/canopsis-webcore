@@ -17,8 +17,8 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember', 'app/application'], function(Ember, Application) {
-    Ember.Handlebars.helper('menu', Application.MenuView);
+define(['ember', 'app/application', 'app/view/menu'], function(Ember, Application, MenuView) {
+    Ember.Handlebars.helper('menu', MenuView);
     Ember.Handlebars.helper('color', function(color) {
 
         var style = '';

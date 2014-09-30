@@ -64,7 +64,8 @@ define([
             Ember.Object.create({ label: __("Events"), value: 'view.event'}),
             Ember.Object.create({ label: __("Selectors"), value: 'view.selectors'}),
             Ember.Object.create({ label: __("Scheduled Jobs"), value: 'view.jobs'}),
-            Ember.Object.create({ label: __("Event Filter"), value: 'view.filters'})
+            Ember.Object.create({ label: __("Event Filter"), value: 'view.filters'}),
+            Ember.Object.create({ label: __("Performance Data"), value: 'view.series'})
         ],
 
         plugins:function(){
@@ -209,20 +210,19 @@ define([
                         user: username
                     })
                 }).then(function(queryResults) {
+
                     console.log('query result', queryResults);
+
                     var record = queryResults.get('content')[0];
                     var previousUiLanguage = get(record, 'ui_language');
+
+                    set(record, 'crecord_type', 'loggedaccount');
+
                     console.log('previousUiLanguage', previousUiLanguage);
+
                     //generating form from record model
                     var recordWizard = formsUtils.showNew('modelform', record, {
-                        title: username +' '+__('profile'),
-                        filterFieldByKey: {
-                            'firstname': {readOnly : true},
-                            'lastname': {readOnly : true},
-                            'authkey': {readOnly : true},
-                            'mail': true,
-                            'ui_language': true
-                        }
+                        title: username + ' ' +__('profile'),
                     });
 
                     //submit form and it s callback

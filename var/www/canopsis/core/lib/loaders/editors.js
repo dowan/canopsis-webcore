@@ -41,17 +41,19 @@ var editorsTemplates = [
     { name: 'mail' },
     { name: 'mixinchooser', js: 'w'},
     { name: 'richtext', js: 'w' },
-    { name: 'rights', js: 'v' },
+
+    { name: 'templateselector' },
     { name: 'separator' },
     { name: 'serieitem', js: 'w'},
     { name: 'session', js: 'w' },
+
     { name: 'simplelist', js: 'v' },
     { name: 'source', js: 'v' },
     { name: 'state', js: 'w' },
     { name: 'stringclassifiedcrecordselector' },
     { name: 'stringpair'},
     { name: 'tags' , js: "w" },
-    { name: 'templateSelector' , js: "v" },
+
     { name: 'textarea' },
     { name: 'timeinterval', js: 'w' },
     { name: 'timestamp', js: 'w' },

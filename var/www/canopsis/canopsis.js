@@ -3,6 +3,7 @@ require.config({
     baseUrl: '/static/',
     paths: {
         'app': 'canopsis/core',
+        'canoApp': 'canopsis/canopsisApplication',
         'schemas': 'canopsis/schemas',
         'etc': 'canopsis/etc',
         'lib': 'webcore-libs/dev',
@@ -61,6 +62,10 @@ require.config({
     shim: {
         'jquery.encoding.digests.sha1': {
              deps: ['jquery']
+        },
+
+        'adminLTE': {
+            deps: ['jquery', 'bootstrap']
         },
 
         'bootbox': {
