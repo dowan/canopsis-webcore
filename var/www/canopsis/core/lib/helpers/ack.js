@@ -26,12 +26,21 @@ define([
 
         //displays ticket information if any onto the status field
         var ticket = crecord.get('record.ticket_declared');
+        var ticketNumber = crecord.get('record.ticket') || __('To be set');
         if(!Ember.isNone(ticket.timestamp)) {
             value.ticket = ['<center>',
                 '<b>' + __('Ticket declared') + '</b><br/>',
                 '<i>' + __('Date') + '</i> : <br/>',
                 utils.dates.timestamp2String(value.timestamp) +' <br/> ',
+                '<b>' + __('Ticket number') + '</b><br/>',
+                ticketNumber +' <br/> ',
                 __('By') +' : ' + value.author +' <br/><br/> ',
+                "</center>"
+            ].join('');
+        } else if (!Ember.isNone(crecord.get('record.ticket'))) {
+            value.ticket = ['<center>',
+                '<b>' + __('Ticket number') + '</b><br/>',
+                ticketNumber +' <br/> ',
                 "</center>"
             ].join('');
         }

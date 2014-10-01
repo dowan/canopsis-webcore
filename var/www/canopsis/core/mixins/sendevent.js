@@ -263,6 +263,7 @@ define([
                         author: record.author,
                         isAck: true
                     });
+                    crecord.set('ticket', record.ticket);
                 }
             },
 
@@ -342,13 +343,14 @@ define([
                 },
 
                 handle: function(crecords) {
-                    console.log('Not implemented: assocticket');
+                    var record = this.getDisplayRecord('assocticket', crecords[0]);
+
+                    this.getEventForm('assocticket', record, crecords);
                 },
 
                 transform: function(crecord, record) {
                     console.log('transform method for assoticket', crecord, record);
-                    //TODO
-
+                    crecord.set('ticket', record.ticket);
                 }
 
             },
