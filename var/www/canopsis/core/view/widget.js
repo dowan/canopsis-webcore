@@ -168,6 +168,8 @@ define([
 
             widgetController =  widgetClass.createWithMixins.apply(widgetClass, mixins);
 
+            widgetController.refreshPartialsList();
+
             var mixinsName = widget._data.mixins;
 
             if (mixinsName) {
@@ -181,7 +183,6 @@ define([
                 }
             }
 
-            widgetController.refreshPartialsList();
 
             return widgetController;
         },

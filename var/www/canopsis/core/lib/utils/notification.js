@@ -51,14 +51,17 @@ define([], function() {
         info: function (message) {
             targetcontroller.createNotification('info', message);
             console.log('info', message);
+            return message;
         },
         warning: function (message) {
             targetcontroller.createNotification('warning', message);
             console.log('warning', message);
+            return message;
         },
         error: function (message) {
             targetcontroller.createNotification('error', message);
             console.error(message);
+            return message;
         },
         help: function () {
             console.log("usage is: utils.notification.notificate('info'|'warning'|'error', 'my message');");

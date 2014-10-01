@@ -25,7 +25,15 @@ define([
         set = Ember.set;
 
     var component = Ember.Component.extend({
-        model: Ember.computed.alias('content.model.options.model'),
+        model: function() {
+            var model = get(this, 'content.model.options.model');
+
+            var typekeySplit = model.split('.');
+            var typekey = typekeySplit[typekeySplit.length - 1].capitalize();
+
+            return typekey;
+        }.property('content.model.options.model'),
+
         value: Ember.computed.alias('content.value'),
 
         availableModels: function() {

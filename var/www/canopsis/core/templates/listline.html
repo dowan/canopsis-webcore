@@ -8,7 +8,7 @@
 
 {{#each attr in parentController.shown_columns}}
         {{#if attr.options.show}}
-            <td>{{component-renderer attr=attr record=this}}</td>
+            <td {{bind-attr class=attr.field}}>{{component-renderer attr=attr record=this}}</td>
         {{/if}}
 {{/each}}
 

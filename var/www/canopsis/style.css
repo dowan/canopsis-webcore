@@ -412,7 +412,20 @@ table.dataTable tbody th, table.dataTable tbody td {
 }
 
 th.output {
+	white-space: normal;
 	width:28%;
+}
+
+td.output.overflowed {
+	white-space: normal;
+	width: 28%;
+	padding: 4px 5px;
+}
+
+td.output.overflowed .placeddiv {
+	white-space: normal;
+	width: 28%;
+	padding: 6px 7px !important;
 }
 
 th.state {
