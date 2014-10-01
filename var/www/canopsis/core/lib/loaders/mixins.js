@@ -26,7 +26,8 @@ var mixinsArray = [
     { name: 'arraysearch', classes: ['widget']},
     { name: 'history', classes: ['widget']},
     { name: 'sendevent', classes: ['widget']},
-    { name: 'crud', classes: ['widget']}
+    { name: 'crud', classes: ['widget']},
+    { name: 'showviewbutton', classes: ['widget', 'userviews']}
 ];
 
 var deps = ['app/lib/mixinsregistry'];

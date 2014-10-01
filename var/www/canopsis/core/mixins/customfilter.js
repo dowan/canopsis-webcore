@@ -124,8 +124,15 @@ define([
                     controller.set('userParams.custom_filters', controller.get('custom_filters'));
                     controller.get('userConfiguration').saveUserConfiguration();
                 });
-            },
-        }
+            }
+        },
+
+        default_filterChanged: function(){
+            console.log("default_filterChanged observer");
+            set(this, 'findParams_cfilterFilterPart', get(this, 'default_filter'));
+            this.refreshContent();
+        }.observes('default_filter'),
+
     });
 
     Application.CustomfilterMixin = mixin;

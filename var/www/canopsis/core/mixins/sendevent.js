@@ -64,7 +64,7 @@ define([
 
         getDataFromRecord: function(event_type, crecord, formRecord) {
             console.group('getDataFromRecord');
-            console.log('event:', event_type, record);
+            console.log('get data from record:', event_type, record, formRecord);
 
             var record = {
                 authkey: get(this, 'login.authkey'),
@@ -258,7 +258,7 @@ define([
                     console.log('transform method for ack -> crecords', crecord, 'record', record);
                     crecord.set('ack', {
                         comment: record.output,
-                        timestamp: parseInt(new Date().getTime()),
+                        timestamp: cutils.dates.getNow(),
                         author: record.author,
                         isAck: true
                     });
@@ -323,7 +323,7 @@ define([
                 transform: function(crecord, record) {
                     console.log('transform method for declare ticket', crecord, record);
                     crecord.set('ticket_declared', {
-                        timestamp: parseInt(new Date().getTime()),
+                        timestamp: cutils.dates.getNow(),
                         author: record.author
                     });
                 }
@@ -335,6 +335,7 @@ define([
                     record.ref_rk = get(crecord, 'id');
                     record.state = 0;
                     record.id = this.getRoutingKey(record);
+                    record.output = __('Associated ticket number');
                 },
 
                 filter: function(record) {
@@ -381,7 +382,7 @@ define([
                     crecord.set('status', 4);
                     crecord.set('cancel',{
                         comment: record.output,
-                        timestamp: parseInt(new Date().getTime()),
+                        timestamp: cutils.dates.getNow(),
                         author: record.author,
                         previous_status: record.state
                     });
@@ -434,7 +435,7 @@ define([
                     if(Ember.isNone(crecord.get('ack'))) {
                         crecord.set('ack', {
                             comment: record.output,
-                            timestamp: parseInt(new Date().getTime()),
+                            timestamp: cutils.dates.getNow(),
                             author: record.author,
                             isAck: true
                         });

@@ -19,8 +19,9 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/application',
+    'app/lib/utils/forms'
+], function(Ember, Application, formsUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -40,6 +41,70 @@ define([
             header: [],
             subHeader: [],
             footer: []
+        },
+
+        actions: {
+            add: function (recordType) {
+                console.log("add", recordType);
+
+                var record = get(this, "widgetDataStore").createRecord(recordType, {
+                    crecord_type: recordType
+                });
+                console.log('temp record', record, formsUtils);
+
+                var recordWizard = formsUtils.showNew('modelform', record, { title: "Add " + recordType });
+
+                var listController = this;
+
+                recordWizard.submit.then(function(form) {
+                    console.log('record going to be saved', record, form);
+
+                    record = form.get('formContext');
+
+                    record.save();
+
+                    //quite ugly callback
+                    setTimeout(function () {
+                        listController.refreshContent();
+                        console.log('refresh after operation');
+                    },500);
+
+                    listController.startRefresh();
+                });
+            },
+
+            edit: function (record) {
+                console.log("edit", record);
+
+                var listController = this;
+                var recordWizard = formsUtils.showNew('modelform', record, { title: "Edit " + get(record, 'crecord_type') });
+
+                recordWizard.submit.then(function(form) {
+                    console.log('record going to be saved', record, form);
+
+                    record = get(form, 'formContext');
+
+                    record.save();
+
+                    listController.trigger('refresh');
+                });
+            },
+
+            remove: function(record) {
+                console.info('removing record', record);
+                record.deleteRecord();
+                record.save();
+            },
+
+            removeSelection: function() {
+                var selected = this.get("widgetData").filterBy('isSelected', true);
+                console.log("remove action", selected);
+
+                for (var i = 0, l = selected.length; i < l; i++) {
+                    var currentSelectedRecord = selected[i];
+                    this.send("remove", currentSelectedRecord);
+                }
+            }
         }
     });
 
