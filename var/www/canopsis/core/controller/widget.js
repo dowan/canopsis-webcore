@@ -35,6 +35,11 @@ define([
     var controller = PartialslotAbleController.extend({
         needs: ['application', 'login'],
 
+        /**
+         * This is usefull mostly for debug, to know that a printend object is a widget
+         */
+        abstractType: "widget",
+
         userParams: {},
 
         editMode : Ember.computed.alias('controllers.application.editMode'),
