@@ -134,12 +134,6 @@ define([
             rights: Ember.computed.alias('controllers.login.record.rights'),
             safeMode: Ember.computed.alias('controllers.application.frontendConfig.safe_mode'),
 
-            mergedProperties: ['partials'],
-
-            partials: {
-                selectiontemplates: ['actionbutton-show']
-            },
-
             custom_filters: [],
 
             init: function() {
@@ -195,12 +189,6 @@ define([
                 this.get('widgetData').content.setEach('isSelected', get(this, 'isAllSelected'));
             }.observes('isAllSelected'),
 
-            default_filterChanged: function(){
-                console.log("default_filterChanged observer");
-                set(this, 'findParams_cfilterFilterPart', get(this, 'default_filter'));
-                this.refreshContent();
-            }.observes('default_filter'),
-
             //Mixin aliases
             //history
             historyMixinFindOptions: Ember.computed.alias("findOptions.useLogCollection"),
@@ -215,85 +203,6 @@ define([
 
             onDomReady: function (element) {
                 void(element);
-            },
-
-            actions: {
-                setFilter: function (filter) {
-                    set(this, 'findParams_cfilterFilterPart', filter);
-
-                    if (get(this, 'currentPage') !== undefined) {
-                        set(this, 'currentPage', 1);
-                    }
-
-                    this.refreshContent();
-                },
-
-                show: function(id) {
-                    console.log("Show action", arguments);
-                    routesUtils.getCurrentRouteController().send('showView', id);
-                },
-
-                add: function (recordType) {
-                    console.log("add", recordType);
-
-                    var record = get(this, "widgetDataStore").createRecord(recordType, {
-                        crecord_type: recordType
-                    });
-                    console.log('temp record', record, formsUtils);
-
-                    var recordWizard = formsUtils.showNew('modelform', record, { title: "Add " + recordType });
-
-                    var listController = this;
-
-                    recordWizard.submit.then(function(form) {
-                        console.log('record going to be saved', record, form);
-
-                        record = form.get('formContext');
-
-                        record.save();
-
-                        //quite ugly callback
-                        setTimeout(function () {
-                            listController.refreshContent();
-                            console.log('refresh after operation');
-                        },500);
-
-                        listController.startRefresh();
-                    });
-                },
-
-                edit: function (record) {
-                    console.log("edit", record);
-
-                    var listController = this;
-                    var recordWizard = formsUtils.showNew('modelform', record, { title: "Edit " + get(record, 'crecord_type') });
-
-                    recordWizard.submit.then(function(form) {
-                        console.log('record going to be saved', record, form);
-
-                        record = get(form, 'formContext');
-
-                        record.save();
-
-                        listController.trigger('refresh');
-                    });
-                },
-
-                remove: function(record) {
-                    console.info('removing record', record);
-                    record.deleteRecord();
-                    record.save();
-                },
-
-                removeSelection: function() {
-                    var selected = this.get("widgetData").filterBy('isSelected', true);
-                    console.log("remove action", selected);
-
-                    for (var i = 0, l = selected.length; i < l; i++) {
-                        var currentSelectedRecord = selected[i];
-                        this.send("remove", currentSelectedRecord);
-                    }
-                }
             },
 
             findItems: function() {
@@ -343,7 +252,7 @@ define([
                     set(me, 'loaded', true);
 
                     console.log('Initializing special fields in list records',queryResults);
-                    for(var i=0; i<queryResults.content.length; i++) {
+                    for(var i = 0, l = queryResults.content.length; i < l; i++) {
                         //This value reset spiner display for record in flight status
                         queryResults.content[i].set('pendingOperation', false);
                     }
@@ -414,22 +323,6 @@ define([
                 return selected_columns;
 
             }.property('attributesKeysDict', 'attributesKeys', 'sorted_columns', 'maximized_column_index'),
-
-            searchCriterionChanged: function () {
-                console.log('searchFieldValueChanged: criterion', get(this, 'searchCriterion'), 'field value', get(this, 'searchFieldValue'));
-
-                var searchCriterion = get(this, 'searchFieldValue');
-                var filter = {};
-
-                if(searchCriterion !== null && searchCriterion !== undefined) {
-                    var searchFilterPart = this.computeFilterPartForCriterion(searchCriterion);
-                    console.log('searchFilterPart', searchFilterPart);
-                    filter = searchFilterPart;
-                }
-
-                set(this, 'findParams_searchFilterPart', filter);
-                this.refreshContent();
-            }.observes('searchCriterion'),
 
             computeFindParams: function(){
                 console.group('computeFindParams');
