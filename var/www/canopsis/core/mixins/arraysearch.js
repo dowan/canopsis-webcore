@@ -54,6 +54,22 @@ define([
             }
         },
 
+        searchCriterionChanged: function () {
+            console.log('searchFieldValueChanged: criterion', get(this, 'searchCriterion'), 'field value', get(this, 'searchFieldValue'));
+
+            var searchCriterion = get(this, 'searchFieldValue');
+            var filter = {};
+
+            if(searchCriterion !== null && searchCriterion !== undefined) {
+                var searchFilterPart = this.computeFilterPartForCriterion(searchCriterion);
+                console.log('searchFilterPart', searchFilterPart);
+                filter = searchFilterPart;
+            }
+
+            set(this, 'findParams_searchFilterPart', filter);
+            this.refreshContent();
+        }.observes('searchCriterion'),
+
         computeFilterPartForCriterion: function(searchPhrase) {
             console.log("search", get(this, "searchableAttributes"));
             var searchableAttributes = get(this, 'searchableAttributes');

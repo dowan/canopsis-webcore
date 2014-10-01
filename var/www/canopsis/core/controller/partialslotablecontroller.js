@@ -64,6 +64,8 @@ define([
 
     var controller = Ember.ObjectController.extend({
 
+        mergedProperties: ['partials'],
+
         _partials: {},
 
         refreshPartialsList: function() {
