@@ -26,21 +26,29 @@ define([
 
         //displays ticket information if any onto the status field
         var ticket = crecord.get('record.ticket_declared');
+
         var ticketNumber = crecord.get('record.ticket') || __('To be set');
+
         if(!Ember.isNone(ticket.timestamp)) {
             value.ticket = ['<center>',
                 '<b>' + __('Ticket declared') + '</b><br/>',
-                '<i>' + __('Date') + '</i> : <br/>',
                 utils.dates.timestamp2String(value.timestamp) +' <br/> ',
                 '<b>' + __('Ticket number') + '</b><br/>',
-                ticketNumber +' <br/> ',
+                '<i>' + ticketNumber +'</i><br/> ',
                 __('By') +' : ' + value.author +' <br/><br/> ',
                 "</center>"
             ].join('');
+
         } else if (!Ember.isNone(crecord.get('record.ticket'))) {
+
+            //When no ticket declared, then ticket date was saved.
+            console.debug('ticket date is ', crecord.get('record.ticket_date'));
+            var date = utils.dates.timestamp2String(crecord.get('record.ticket_date'));
+
             value.ticket = ['<center>',
                 '<b>' + __('Ticket number') + '</b><br/>',
-                ticketNumber +' <br/> ',
+                '<i>' + ticketNumber +'</i><br/> ',
+                date +' <br/> ',
                 "</center>"
             ].join('');
         }
@@ -49,7 +57,6 @@ define([
 
         value.html = ['<center>',
             '<b>' + __('Ack') + '</b><br/>',
-
             '<i>' + __('Date') + '</i> : <br/>',
             utils.dates.timestamp2String(value.timestamp) +' <br/> ',
             __('By') +' : ' + value.author +' <br/><br/> ',
@@ -57,9 +64,12 @@ define([
             "</center>"].join('');
 
         if(value.isCancel) {
+
             value.color = "";
             value.title = __("Cancelled");
+
         } else {
+
             value.color = "bg-purple";
             value.title = __("Acknowleged");
 

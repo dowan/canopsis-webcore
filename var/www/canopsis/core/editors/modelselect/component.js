@@ -49,6 +49,22 @@ define([
             set(this, "componentDataStore", DS.Store.create({
                 container: get(this, "container")
             }));
+
+            var selectedId = get(this, 'value');
+
+            if(selectedId) {
+                set(this, 'selectedModel', selectedId);
+            }
+            else {
+                var promise = get(this, 'availableModels');
+                var me = this;
+
+                promise.then(function(result) {
+                    var first = result.content[0];
+
+                    set(me, 'selectedModel', first);
+                });
+            }
         }
     });
 

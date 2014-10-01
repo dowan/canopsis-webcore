@@ -44,12 +44,20 @@ define([
 
             var item = {};
 
+            console.group('Create virtual attributes for serieitem:');
             model.eachAttribute(function(name, attr) {
+                var val = get(this, 'content.value.' + name);
+                var defaultVal = get(attr, 'defaultValue');
+
                 item[name] = {
-                    value: get(this, 'content.value.' + name),
+                    value: val || defaultVal,
                     model: attr
                 };
+
+                console.log(name, val, defaultVal, item[name]);
             });
+
+            console.groupEnd();
 
             set(this, 'item', item);
         },
