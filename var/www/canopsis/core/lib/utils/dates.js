@@ -20,6 +20,15 @@
 define([], function() {
 
     var dates = {
+
+        getNow: function() {
+            return parseInt(new Date().getTime() / 1000);
+        },
+
+        getStringNow: function(format, shortDate) {
+            return dates.timestamp2String(dates.getNow(), format, shortDate);
+        },
+
         timestamp2String: function (value, format, shortDate) {
             function addZero(i) {
                 return (i < 10 ? '0'+ i +'' : i +'');
