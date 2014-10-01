@@ -40,8 +40,7 @@ define([
                                 'actionbutton-cancel',
                                 'actionbutton-incident',
                                 'actionbutton-changestate',
-                                'actionbutton-ticketnumber',
-                                'actionbutton-info'],
+                                'actionbutton-ticketnumber'],
             selectionToolbarButtons: ['actionbutton-cancel', 'actionbutton-ack']
         },
 

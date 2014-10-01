@@ -78,7 +78,7 @@ define([
                 }
             }
 
-            console.log('set partials', partials);
+            console.log('set partials for ', this, ' --> ', partials);
             set(this, '_partials', partials);
         },
 
@@ -86,7 +86,20 @@ define([
         mergeMixinPartials: function(Mixin, partials) {
             var me = this;
 
-            return partials;
+            console.log("mergeMixinPartials mixin:", Mixin);
+            if(Application[Mixin + 'Mixin']) {
+                var partialsToAdd = Application[Mixin + 'Mixin'].mixins[0].properties.partials;
+
+                for (var k in partialsToAdd) {
+                    if (partialsToAdd.hasOwnProperty(k)) {
+                        var partialsArray = partialsToAdd[k];
+
+                        var partialKey = '_partials.' + k;
+                        set(this, partialKey, union_arrays(get(this, partialKey), partialsArray));
+                    }
+                }
+                return partials;
+            }
         }
     });
 
