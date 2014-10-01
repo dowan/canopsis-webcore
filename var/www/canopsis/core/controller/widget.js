@@ -36,7 +36,7 @@ define([
         needs: ['application', 'login'],
 
         /**
-         * This is usefull mostly for debug, to know that a printend object is a widget
+         * This is useful mostly for debug, to know that a printend object is a widget
          */
         abstractType: "widget",
 
@@ -49,7 +49,7 @@ define([
 
             console.log('widget init');
 
-            get(this, 'model').set('controllerInstance', this);
+            set(this, 'model.controllerInstance', this);
 
             console.log('viewController', widgetUtils.getParentViewForWidget(this));
             console.log('viewController', get(widgetUtils.getParentViewForWidget(this), 'isMainView'));
