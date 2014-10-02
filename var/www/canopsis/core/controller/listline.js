@@ -19,35 +19,18 @@
 
 define([
     'ember',
-    'app/application',
-    'jsonselect',
-    'app/controller/listline'
-], function(Ember, Application, JSONSelect, ListLineController) {
+    'app/application'
+], function(Ember, Application) {
 
+    var controller = Ember.ObjectController.extend({
+        init: function () {
+            this._super();
+            console.debug('initialized list line controller');
+        }
 
-    var set = Ember.set,
-        get = Ember.get;
-
-
-    var view = Ember.View.extend({
-        tagName:'tr',
-        templateName: 'listline',
-        classNames: ['listline'],
-
-        init: function() {
-            this._super.apply(this, arguments);
-            set(this, 'controller', ListLineController.create());
-        },
-
-        checkChanged: function() {
-            var checkbox = this.$('.toggle');
-            if(checkbox !== undefined) {
-                checkbox.iCheck('check');
-            }
-        }.observes('controller.isAllSelected')
     });
 
-    Application.ListlineView = view;
+    Application.ListLineController = controller;
 
-    return view;
+    return controller;
 });
