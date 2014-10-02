@@ -28,6 +28,23 @@ define([
     var component = Classifiedcrecordselector.extend({
         multiselect:false,
 
+        selectionChanged: function(){
+            var selectionUnprepared = get(this, 'selectionUnprepared');
+            var res;
+
+            var valueKey = get(this, 'valueKey');
+
+            if(Ember.isArray(selectionUnprepared)) {
+                if(valueKey) {
+                    res = get(selectionUnprepared[0], 'value');
+                } else {
+                    res = get(selectionUnprepared[0], 'name');
+                }
+                console.log('selection changed', res);
+            }
+            set(this, 'selection', res);
+        }.observes('selectionUnprepared', 'selectionUnprepared.@each'),
+
         setInitialContent: function(initialContent) {
             var valueKey = get(this, 'valueKey');
 
@@ -40,9 +57,8 @@ define([
                 if( typeof initialContent === "string") {
                     if(!valueKey) {
                         set(this, 'selectionUnprepared', [{ 'name': initialContent}]);
-                    } else {
-                        //see extractItems
                     }
+                    //else see extractItems
                 } else {
                     set(this, 'selectionUnprepared', []);
                 }
@@ -54,12 +70,15 @@ define([
             var initialContent = get(this, 'content');
 
             if(valueKey) {
-                console.log('extractItems', arguments);
+                console.log('extractItems with valueKey', arguments, Ember.inspect(initialContent));
+                window.$DGB = initialContent;
 
                 var correspondingExtractedItem = items.findBy('id', initialContent);
 
+                console.log('correspondingExtractedItem', correspondingExtractedItem);
                 if(correspondingExtractedItem !== undefined) {
-                    selectionUnprepared = [{ name: correspondingExtractedItem.get('crecord_name')}];
+                    selectionUnprepared = [{ name: get(correspondingExtractedItem, 'crecord_name'), value: get(correspondingExtractedItem, 'id')}];
+                    set(this, 'selectionUnprepared', selectionUnprepared);
                 }
                 this.set('loadingInitialContent', false);
             }
