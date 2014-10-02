@@ -22,6 +22,7 @@ var templates = [
     { name: 'index' },
     { name: 'containerwidget' },
     { name: 'formwrapper' },
+    { name: 'recorddisplayer' },
     { name: 'widgettitlebar' },
     { name: 'userview' },
     { name: 'widget' },

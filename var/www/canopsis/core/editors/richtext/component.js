@@ -48,7 +48,8 @@ define([
                     ['height', ['height']],
                     ['insert', ['link']],
                     ['table', ['table']],
-                    ['help', ['help']]
+                    ['help', ['help']],
+                    ['misc', ['codeview']]
                 ]
             });
 

@@ -41,14 +41,32 @@ define([
     'app/lib/loaders/widgets',
     'app/adapters/loggedaccount',
     'app/lib/loaders/helpers',
-    'app/lib/wrappers/bootstrap'
-], function(Ember, DS, Application, canopsisConfiguration, PartialslotAbleController, UsermenuMixin, SchemamanagerMixin, ConsolemanagerMixin, PromisemanagerMixin, NotificationsMixin, ApplicationRoute, utils, formsUtils, dataUtils, hashUtils, notificationUtils) {
+    'app/lib/wrappers/bootstrap',
+    'app/controller/recorddisplayer'
+], function(
+    Ember,
+    DS,
+    Application,
+    canopsisConfiguration,
+    PartialslotAbleController,
+    UsermenuMixin,
+    SchemamanagerMixin,
+    ConsolemanagerMixin,
+    PromisemanagerMixin,
+    NotificationsMixin,
+    ApplicationRoute,
+    utils,
+    formsUtils,
+    dataUtils,
+    hashUtils,
+    notificationUtils) {
     var get = Ember.get,
         set = Ember.set;
 
     var controller = PartialslotAbleController.extend(
         SchemamanagerMixin, PromisemanagerMixin, ConsolemanagerMixin, NotificationsMixin, UsermenuMixin, {
-        needs: ['login'],
+
+        needs: ['login', 'recorddisplayer'],
 
         partials: {
             statusbar: ['schemamanagerstatusmenu', 'consolemanagerstatusmenu', 'notificationsstatusmenu', 'promisemanagerstatusmenu', 'userstatusmenu']
@@ -175,6 +193,12 @@ define([
             console.groupEnd();
             this._super.apply(this, arguments);
             this.refreshPartialsList();
+        },
+
+
+        showRecordWindow: function (crecord, template) {
+            console.log('show record window from list line controller', crecord, template);
+            this.send('recordDisplayShow', crecord, template);
         },
 
         actions: {
