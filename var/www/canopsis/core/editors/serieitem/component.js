@@ -43,16 +43,26 @@ define([
             console.log('Fetch model:', modelname, model);
 
             var item = {};
+            var me = this;
 
             console.group('Create virtual attributes for serieitem:');
-            model.eachAttribute(function(name, attr) {
-                var val = get(this, 'content.value.' + name);
-                var defaultVal = get(attr, 'defaultValue');
 
-                item[name] = {
+            model.eachAttribute(function(name, attr) {
+                var contentKey = 'content.value.' + name;
+                var itemKey = 'item.' + name + '.value';
+
+                var val = get(me, contentKey);
+                var defaultVal = get(attr, 'options.defaultValue');
+
+                item[name] = Ember.Object.create({
                     value: val || defaultVal,
                     model: attr
-                };
+                });
+
+                me.addObserver(itemKey, function() {
+                    var val = get(me, itemKey);
+                    set(me, contentKey, val);
+                });
 
                 console.log(name, val, defaultVal, item[name]);
             });
@@ -60,22 +70,7 @@ define([
             console.groupEnd();
 
             set(this, 'item', item);
-        },
-
-        serieChanged: function() {
-            var val = get(this, 'item.serie.value');
-            set(this, 'content.value.serie', val);
-        }.observes('item.serie.value'),
-
-        curveChanged: function() {
-            var val = get(this, 'item.curve.value');
-            set(this, 'content.value.curve', val);
-        }.observes('item.curve.value'),
-
-        colorChanged: function() {
-            var val = get(this, 'item.color.value');
-            set(this, 'content.value.color', val);
-        }.observes('item.color.value')
+        }
     });
 
     Application.ComponentSerieitemComponent = component;
