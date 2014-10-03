@@ -19,7 +19,7 @@
 
 define([
     'app/application',
-    'canoApp',
+    'runtime.conf',
     'app/adapters/application',
     'app/adapters/ack',
     'app/adapters/event',

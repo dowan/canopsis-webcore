@@ -22,7 +22,7 @@ define([
     'ember',
     'app/application',
     'app/lib/indexesregistry',
-    'canoApp'
+    'runtime.conf'
 ], function($, Ember, Application, indexesregistry, Canopsis) {
     var get = Ember.get,
         set = Ember.set;
