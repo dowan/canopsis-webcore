@@ -89,6 +89,10 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
 	cursor:pointer;
 }
 
+.underline:hover{
+	text-decoration: underline;
+}
+
 .color{
 	font-weight: bold;
 	border-radius: 4px;
