@@ -8,7 +8,15 @@
 
 {{#each attr in parentController.shown_columns}}
     {{#if attr.options.show}}
-        <td {{bind-attr class=attr.field}}>{{component-renderer attr=attr record=this listController=controller.parentController}}</td>
+        <td {{bind-attr class=attr.field}}>
+            {{#if attr.options.canUseDisplayRecord}}
+                <i class="handle underline" {{action sendDisplayRecord parentController.controllerInstance this}}>
+                    {{component-renderer attr=attr record=this}}
+                </i>
+            {{else}}
+                {{component-renderer attr=attr record=this}}
+            {{/if}}
+        </td>
     {{/if}}
 {{/each}}
 

@@ -126,10 +126,33 @@ define([
 
     var widget = WidgetFactory('list',
         {
-            needs: ['login', 'application'],
+            needs: ['login', 'application', 'recorddisplayer'],
+
             viewMixins: [
                 ListViewMixin
             ],
+
+            actions: {
+                sendDisplayRecord: function (dest, record) {
+                    //This method is not ugly TODO refactor, it would be better if event bubble until application directly
+                    // but at the moment, event doen t bubble properly
+                    console.debug('sendDisplayRecord action called with params', dest, record);
+
+                    var template = get(dest, 'record_template');
+                    if (Ember.isNone(template)){
+                        template = '';
+                    }
+
+                    console.debug('Template is ', template);
+
+                    var recorddisplayerController = get(dest, 'controllerInstance.controllers.recorddisplayer');
+
+                    var recorddisplayerController = this.get('controllers.recorddisplayer');
+
+                    recorddisplayerController.send('show', record, template);
+                }
+            },
+
 
             rights: Ember.computed.alias('controllers.login.record.rights'),
             safeMode: Ember.computed.alias('controllers.application.frontendConfig.safe_mode'),
@@ -282,6 +305,8 @@ define([
 
             shown_columns: function() {
                 console.log("compute shown_columns", get(this, 'sorted_columns'), get(this, 'attributesKeys'), get(this, 'sortedAttribute'));
+
+                //user preference for displayed columns.
                 if (this.get('user_show_columns') !== undefined) {
                     console.log('user columns selected', get(this, 'user_show_columns'));
                     return get(this, 'user_show_columns');
@@ -312,6 +337,19 @@ define([
 
                     shown_columns[column].options.show = true;
 
+                    //reset previous if any in case list configuration is updated
+                    if (shown_columns[column].options.canUseDisplayRecord) {
+                        delete shown_columns[column].options.canUseDisplayRecord;
+                    }
+
+                    //set option display record field to true allow list line template to change renderer
+                    //diusplay and if true, an action can be triggrered from trusted column.
+                    if (shown_columns[column].field === get(this, 'display_record_field')) {
+                        shown_columns[column].options.canUseDisplayRecord = true;
+                    }
+
+                    //Manage hidden colums from the list parameters information.
+                    //If colname exists in hidden_column list, then it is not displayed.
                     if ($.inArray(shown_columns[column].field, get(this, 'hidden_columns')) === -1) {
                         selected_columns.pushObject(shown_columns[column]);
                     }
@@ -319,6 +357,8 @@ define([
 
                 if(get(this, 'maximized_column_index'))
                     selected_columns[get(this, 'maximized_column_index')].maximized = true;
+
+                console.debug('selected cols', selected_columns);
 
                 return selected_columns;
 

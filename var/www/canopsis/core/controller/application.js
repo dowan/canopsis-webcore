@@ -196,13 +196,6 @@ define([
         },
 
 
-        showRecordWindow: function (crecord, template) {
-            var recorddisplayerController = this.get('controllers.recorddisplayer');
-            console.debug('record displayer controller', recorddisplayerController);
-            console.debug('crecord', crecord,'template', template);
-            recorddisplayerController.send('show', crecord, template);
-        },
-
         actions: {
             promptReloadApplication: function(title, location) {
                 setTimeout(function (){

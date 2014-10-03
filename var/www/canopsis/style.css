@@ -1,8 +1,9 @@
 #recorddisplayer{
 	margin-top:5%;
-	position:absolute;
+	position:fixed;
 	z-index: 90;
 }
+
 #recorddisplayer .recorddisplayercontent {
 	text-align:left;
 }
