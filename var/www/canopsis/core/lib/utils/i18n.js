@@ -101,7 +101,7 @@ define([
                 $.ajax({
                     url: '/rest/misc/i18n',
                     success: function(data) {
-                        if (data.success) {
+                        if (data.success && data.data && data.data.length) {
                             for (var item in data.data[0].todo) {
                                 i18n.todo[item] = data.data[0].todo[item];
                             }

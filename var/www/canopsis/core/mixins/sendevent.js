@@ -77,7 +77,8 @@ define([
                 component: get(crecord, 'component'),
                 state: get(crecord, 'state'),
                 state_type: get(crecord, 'state_type'),
-                crecord_type: event_type
+                crecord_type: event_type,
+                timestamp:  cutils.dates.getNow()
             };
 
             if(record.source_type === 'resource') {
@@ -263,6 +264,7 @@ define([
                         isAck: true
                     });
                     crecord.set('ticket', record.ticket);
+                    crecord.set('ticket_date', cutils.dates.getNow());
                 }
             },
 
@@ -322,10 +324,8 @@ define([
 
                 transform: function(crecord, record) {
                     console.log('transform method for declare ticket', crecord, record);
-                    crecord.set('ticket_declared', {
-                        timestamp: cutils.dates.getNow(),
-                        author: record.author
-                    });
+                    crecord.set('ticket', record.ticket);
+                    crecord.set('ticket_date', cutils.dates.getNow());
                 }
 
             },

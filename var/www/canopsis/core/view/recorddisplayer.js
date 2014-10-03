@@ -18,36 +18,34 @@
 */
 
 define([
+    'jquery',
     'ember',
     'app/application',
-    'jsonselect',
-    'app/controller/listline'
-], function(Ember, Application, JSONSelect, ListLineController) {
-
-
-    var set = Ember.set,
-        get = Ember.get;
-
+], function($, Ember, Application) {
+    var get = Ember.get,
+        set = Ember.set;
 
     var view = Ember.View.extend({
-        tagName:'tr',
-        templateName: 'listline',
-        classNames: ['listline'],
-
         init: function() {
-            this._super.apply(this, arguments);
-            set(this, 'controller', ListLineController.create());
+            this._super();
+            console.log("recorddisplayer view init", this, get(this, 'controller'));
         },
 
-        checkChanged: function() {
-            var checkbox = this.$('.toggle');
-            if(checkbox !== undefined) {
-                checkbox.iCheck('check');
-            }
-        }.observes('controller.isAllSelected')
+        didInsertElement: function () {
+            /*
+            this.$("#formwrapper").draggable({
+                handle: ".modal-header",
+                axis: "x"
+            });
+            */
+            console.debug('Recorddisplayer dom element', $("#recorddisplayer"));
+            $("#recorddisplayer").hide();
+        },
+
+
     });
 
-    Application.ListlineView = view;
+    Application.RecorddisplayerView = view;
 
     return view;
 });
