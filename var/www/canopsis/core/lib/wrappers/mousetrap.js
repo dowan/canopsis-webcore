@@ -20,8 +20,8 @@
 define([
     'app/lib/factories/wrapper',
     'jquery',
-    'webcore-libs/summernote/summernote.min'
+    'webcore-libs/mousetrap/mousetrap.min'
 ], function(Wrapper, $) {
 
-    return Wrapper("summernote", $.fn.mmenu, arguments);
+    return Wrapper("mousetrap", Mousetrap, arguments, "1.4.6");
 });

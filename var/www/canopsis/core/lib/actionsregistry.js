@@ -17,11 +17,18 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'app/lib/factories/wrapper',
-    'jquery',
-    'webcore-libs/summernote/summernote.min'
-], function(Wrapper, $) {
+define([], function() {
 
-    return Wrapper("summernote", $.fn.mmenu, arguments);
+    var actionsRegistry = {
+        all: [{
+            name: 'gotoEventView',
+            actionData: ['showView', 'view.event']
+        }, {
+            name: 'toggleEditMode',
+            actionData: ['toggleEditMode']
+        }],
+        byClass: {}
+    };
+
+    return actionsRegistry;
 });

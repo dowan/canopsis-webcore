@@ -26,6 +26,7 @@ define([
     'app/lib/formsregistry',
     'app/lib/widgetsregistry',
     'app/lib/indexesregistry',
+    'app/lib/actionsregistry',
     'app/lib/inflections',
     'app/lib/loaders/factories',
     'app/lib/loaders/helpers',
@@ -39,6 +40,7 @@ define([
         formsManager,
         widgetsRegistry,
         indexesManager,
+        actionsRegistry,
         inflectionsManager,
         factories,
         helpers,
@@ -52,6 +54,7 @@ define([
     Canopsis.utils = utils;
     Canopsis.wrappers = wrappersManager;
     Canopsis.widgets = widgetsRegistry;
+    Canopsis.actions = actionsRegistry;
     Canopsis.indexes = indexesManager;
     Canopsis.inflections = inflectionsManager;
     Canopsis.forms = formsManager;
