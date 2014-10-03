@@ -34,6 +34,7 @@ define([
     'app/lib/utils/data',
     'app/lib/utils/hash',
     'app/lib/utils/notification',
+    'app/lib/actionsregistry',
     'app/adapters/cservice',
     'app/adapters/notification',
     'app/serializers/cservice',
@@ -42,6 +43,7 @@ define([
     'app/adapters/loggedaccount',
     'app/lib/loaders/helpers',
     'app/lib/wrappers/bootstrap',
+    'app/lib/wrappers/mousetrap',
     'app/controller/recorddisplayer'
 ], function(
     Ember,
@@ -59,7 +61,8 @@ define([
     formsUtils,
     dataUtils,
     hashUtils,
-    notificationUtils) {
+    notificationUtils,
+    actionsRegistry) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -128,6 +131,22 @@ define([
                 console.log('frontend config found');
                 set(appController, 'frontendConfig', queryResults);
                 // set(Canopsis, 'conf.frontendConfig', queryResults);
+
+                var keybindings = get(appController, 'frontendConfig.keybindings');
+
+                console.error('keybindings', keybindings);
+
+                for (var i = 0, l = keybindings.length; i < l; i++) {
+                    var currentKeybinding = keybindings[i];
+                    console.error('Mousetrap define', currentKeybinding);
+
+                    Mousetrap.bind([currentKeybinding.label], function(e) {
+                        console.error('keybinding ok');
+                        appController.send.apply(appController, [currentKeybinding.value]);
+                        return false;
+                    });
+                }
+
                 if(get(appController, 'onIndexRoute') === true) {
                     console.info('on index route, redirecting to the appropriate route');
 
