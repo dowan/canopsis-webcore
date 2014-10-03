@@ -1,10 +1,10 @@
 #recorddisplayer{
-	width:70%;
-	height:90%;
 	margin-top:5%;
 	position:absolute;
-	left:15%;
 	z-index: 90;
+}
+#recorddisplayer .recorddisplayercontent {
+	text-align:left;
 }
 
 .fleft {
@@ -87,6 +87,10 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
 
 .handle{
 	cursor:pointer;
+}
+
+.underline:hover{
+	text-decoration: underline;
 }
 
 .color{

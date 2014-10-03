@@ -49,7 +49,6 @@ define([
                     ['insert', ['link']],
                     ['table', ['table']],
                     ['help', ['help']],
-                    ['misc', ['codeview']]
                 ]
             });
 
