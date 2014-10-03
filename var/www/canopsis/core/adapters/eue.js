@@ -22,7 +22,9 @@ define([
     'app/adapters/event'
 ], function(Application, EventAdapter) {
 
-    Application.EueAdapter = EventAdapter;
+    var adapter = EventAdapter;
 
-    return Application.EueAdapter;
+    Application.EueAdapter = adapter;
+
+    return adapter;
 });

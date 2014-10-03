@@ -22,8 +22,14 @@ define([
     'app/lib/loaders/schemas'
 ], function(Application) {
 
-    Application.NotificationAdapter = DS.FixtureAdapter.extend();
-    Application.Notification.FIXTURES = [];
+    var adapter = DS.FixtureAdapter.extend();
 
-    return Application.NotificationAdapter;
+    if(Application.Notification) {
+        console.error('trying to set notifications fixtures but the model is still not loaded');
+        Application.Notification.FIXTURES = [];
+    }
+
+    Application.NotificationAdapter = adapter;
+
+    return adapter;
 });

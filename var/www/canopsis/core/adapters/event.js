@@ -21,6 +21,7 @@ define([
     'app/application',
     'app/adapters/application'
 ], function(Application, ApplicationAdapter) {
+
     var adapter = ApplicationAdapter.extend({
 
         buildURL: function(type, id) {

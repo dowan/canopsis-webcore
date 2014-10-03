@@ -154,7 +154,7 @@ define([
             });
 
             var controllerName = get(widget, "xtype").capitalize() + "Controller";
-            var widgetController;
+            var widgetControllerInstance;
 
             console.log("controllerName", controllerName, Application[controllerName], get(this, 'target'));
 
@@ -166,9 +166,9 @@ define([
                 widgetClass = WidgetController;
             }
 
-            widgetController =  widgetClass.createWithMixins.apply(widgetClass, mixins);
+            widgetControllerInstance =  widgetClass.createWithMixins.apply(widgetClass, mixins);
 
-            widgetController.refreshPartialsList();
+            widgetControllerInstance.refreshPartialsList();
 
             var mixinsName = widget._data.mixins;
 
@@ -178,13 +178,13 @@ define([
                     var currentMixin = mixinsregistry.all[currentName];
 
                     if (currentMixin) {
-                        currentMixin.apply(widgetController);
+                        currentMixin.apply(widgetControllerInstance);
                     }
                 }
             }
 
 
-            return widgetController;
+            return widgetControllerInstance;
         },
 
         didInsertElement : function() {

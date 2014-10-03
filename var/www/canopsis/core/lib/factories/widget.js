@@ -27,7 +27,8 @@ define([
 ], function(Application, WidgetController, WidgetsRegistry, UserviewSerializer, notificationUtils) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     /**
      * Widget factory. Creates a controller, stores it in Application
@@ -48,12 +49,14 @@ define([
             options = {};
         }
 
+        //This option allows to manually define inheritance for widgets
         if (options.subclass === undefined) {
             options.subclass = WidgetController;
         }
 
+        //TODO check if this is still needed, as mixins are in configuration now
         if (options.mixins !== undefined) {
-            for (var i = 0; i < options.mixins.length; i++) {
+            for (var i = 0, l = options.mixins.length; i < l; i++) {
                 extendArguments.push(options.mixins[i]);
             }
         }
@@ -64,7 +67,7 @@ define([
         var widgetSerializerName = widgetName.camelize().capitalize() + "Serializer";
         var widgetModel = Application[widgetName.camelize().capitalize()];
 
-        if(widgetModel === null || widgetModel === undefined) {
+        if(isNone(widgetModel)) {
             notificationUtils.error('No model found for the widget ' + widgetName + '. There might be no schema concerning this widget on the database');
             return;
         }
@@ -73,7 +76,11 @@ define([
         console.log("subclass", options.subclass);
 
         Application[widgetControllerName] = options.subclass.extend.apply(options.subclass, extendArguments);
-        Application[widgetSerializerName] = UserviewSerializer;
+
+        //dynamically create an adapter that implements EmbeddedRecordMixin if a custom adapter is not already defined in Application
+        if(isNone(get(Application, widgetSerializerName))) {
+            Application[widgetSerializerName] = UserviewSerializer;
+        }
 
         console.log("widget", widgetName.camelize().capitalize(), Application[widgetName.camelize().capitalize()]);
         var metadataDict = Application[widgetName.camelize().capitalize()].proto().metadata;
@@ -85,13 +92,13 @@ define([
             EmberClass: Application[widgetControllerName]
         });
 
-        if(metadataDict) {
+        if(!isNone(metadataDict)) {
             if(metadataDict.icon) {
                 registryEntry.set('icon', metadataDict.icon);
             }
             if(metadataDict.classes) {
                 var classes = metadataDict.classes;
-                for (var j = 0, l = classes.length; j < l; j++) {
+                for (var j = 0, lj = classes.length; j < lj; j++) {
                     var currentClass = classes[j];
                     if(!Ember.isArray(get( WidgetsRegistry.byClass, currentClass))) {
                         set(WidgetsRegistry.byClass, currentClass, Ember.A());
