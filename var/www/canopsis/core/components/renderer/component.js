@@ -26,34 +26,6 @@ define([
 
     var component = Ember.Component.extend({
 
-        needs: ['application'],
-
-        actions: {
-            sendDisplayRecord: function (dest, action, record) {
-                //This method is not ugly TODO refactor, it would be better if event bubble until application directly
-                // but at the moment, event doen t bubble properly
-                console.debug('sendDisplayRecord action called with params', dest, action, record);
-
-                var template = get(dest, 'record_template');
-                if (Ember.isNone(template)){
-                    template = '';
-                }
-
-                console.debug('Template is ', template);
-
-                var applicationController = get(dest, 'controllerInstance.controllers.application');
-
-
-                console.log('applicationController', applicationController);
-
-                if (!Ember.isNone(applicationController)) {
-                    applicationController.showRecordWindow(record, template);
-                } else {
-                    console.debug('Unable to find application controller');
-                }
-            }
-        },
-
         tagName: 'span',
         classNames: ['renderer'],
 
