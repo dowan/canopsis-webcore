@@ -33,7 +33,7 @@ define([
 
         didInsertElement: function () {
             console.debug('Recorddisplayer dom element', $("#recorddisplayer"));
-            $("#recorddisplayer").hide();
+            //$("#recorddisplayer").hide();
             $( window ).resize( function () {
 
                 var left = ($(window).width() - $("#recorddisplayer").outerWidth()) / 2;
