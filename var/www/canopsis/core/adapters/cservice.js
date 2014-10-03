@@ -26,7 +26,7 @@ define([
 
     console.group('CserviceAdapter');
 
-    Application.CserviceAdapter = ApplicationAdapter.extend({
+    var adapter = ApplicationAdapter.extend({
         buildURL: function(type, id) {
             type = 'cservice';
 
@@ -42,11 +42,13 @@ define([
             var adapterName = modelname + 'Adapter';
             console.log('Add adapter:', adapterName);
 
-            Application[adapterName] = Application.CserviceAdapter.extend({});
+            Application[adapterName] = adapter.extend({});
         }
     }
 
     console.groupEnd();
 
-    return Application.CserviceAdapter;
+    Application.CserviceAdapter = adapter;
+
+    return adapter;
 });

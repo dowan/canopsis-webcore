@@ -47,6 +47,7 @@ var editorsTemplates = [
     { name: 'serieitem', js: 'w'},
     { name: 'session', js: 'w' },
 
+    { name: 'simpledict', js: 'w' },
     { name: 'simplelist', js: 'v' },
     { name: 'source', js: 'v' },
     { name: 'state', js: 'w' },
@@ -65,7 +66,7 @@ var deps = ['ember', 'app/routes/userview'];
 var depsTemplates = [];
 
 //generate deps
-for (var i = 0; i < editorsTemplates.length; i++) {
+for (var i = 0, l = editorsTemplates.length; i < l; i++) {
     var name = editorsTemplates[i].name;
     var files = editorsTemplates[i].js;
 

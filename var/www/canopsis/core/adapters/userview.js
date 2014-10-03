@@ -21,7 +21,8 @@ define([
     'app/application',
     'app/adapters/application'
 ], function(Application, ApplicationAdapter) {
-    Application.UserviewAdapter = ApplicationAdapter.extend({
+
+    var adapter = ApplicationAdapter.extend({
         buildURL: function(type) {
             type = "view";
 
@@ -29,5 +30,7 @@ define([
         }
     });
 
-    return Application.UserviewAdapter;
+    Application.UserviewAdapter = adapter;
+
+    return adapter;
 });

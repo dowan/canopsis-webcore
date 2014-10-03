@@ -28,7 +28,8 @@ define([
     'app/lib/loaders/schemas'
 ], function(Ember, Application, FormFactory, InspectableitemMixin, ValidationMixin, RecordpresetMixin, slugUtils) {
     var set = Ember.set,
-        get = Ember.get;
+        get = Ember.get,
+        isNone = Ember.isNone;
 
     var formOptions = {
         mixins: [
@@ -42,6 +43,7 @@ define([
      * @class Generic form which dynamically generates its content by reading a model's schema
      */
     var form = FormFactory('modelform', {
+        needs: ['application'],
 
         validationFields: Ember.computed(function() {return Ember.A();}),
         ArrayFields: Ember.A(),
