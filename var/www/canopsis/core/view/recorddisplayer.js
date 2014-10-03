@@ -40,7 +40,9 @@ define([
                 $("#recorddisplayer").css("left", left);
 
             });
-            $('#recorddisplayer').draggable();
+            $('#recorddisplayer').draggable({
+                handle: ".recorddisplayerhandle"
+            });
 
         },
 
