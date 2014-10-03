@@ -32,12 +32,6 @@ define([
         },
 
         didInsertElement: function () {
-            /*
-            this.$("#formwrapper").draggable({
-                handle: ".modal-header",
-                axis: "x"
-            });
-            */
             console.debug('Recorddisplayer dom element', $("#recorddisplayer"));
             $("#recorddisplayer").hide();
         },

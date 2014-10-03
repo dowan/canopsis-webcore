@@ -29,32 +29,36 @@ define([
 
     var controller = eventedController.extend({
 
+        title:__('Information'),
+
         init: function () {
             console.debug('initilizing recorddisplayer controller');
-            set(this, 'title', __('Displaying record content'));
-
-
-
-            var template = 'this is -> {{property}}';
-            var context = Ember.Object.create({property:'test value'});
-            var html = Handlebars.compile(template)(context);
-            set(this, 'content', html);
         },
-
-
 
 
         actions: {
 
-            show: function() {
-                console.log('Show recorddisplayer');
+            show: function(crecord, template) {
+                console.log('Show recorddisplayer', crecord, template);
+
+                var html;
+
+                try {
+                    html = Handlebars.compile(template)(crecord._data);
+                } catch (err) {
+                    html = '<i>An error occured while compiling the template with the record. please if the template is correct</i>';
+                }
+
+                set(this, 'content', new Ember.Handlebars.SafeString(html));
+
+                var left = ($(window).width() - $("#recorddisplayer").outerWidth()) / 2;
+                $("#recorddisplayer").css("left", left);
 
                 $("#recorddisplayer").fadeIn(500);
 
             },
 
             hide: function() {
-
                 console.log("hiding recorddisplayer");
                 $("#recorddisplayer").fadeOut(500);
             },

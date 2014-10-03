@@ -197,8 +197,10 @@ define([
 
 
         showRecordWindow: function (crecord, template) {
-            console.log('show record window from list line controller', crecord, template);
-            this.send('recordDisplayShow', crecord, template);
+            var recorddisplayerController = this.get('controllers.recorddisplayer');
+            console.debug('record displayer controller', recorddisplayerController);
+            console.debug('crecord', crecord,'template', template);
+            recorddisplayerController.send('show', crecord, template);
         },
 
         actions: {
