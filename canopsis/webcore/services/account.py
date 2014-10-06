@@ -45,6 +45,32 @@ group_managing_access = ['group.CPS_account_admin']
 root_account = Account(user="root", group="root")
 right_module = Rights()
 
+ROUTE_FAIL = {
+    'total': 1,
+    'success': False,
+    'data': []
+    }
+
+ROUTE_SUCCESS = {
+    'total': 1,
+    'success': True,
+    'data': []
+    }
+
+
+
+def update_rights(e_id, e_type, e_rights):
+    if e_rights:
+        for right in e_rights:
+            if not right_module.add_right(e_id, e_type, right, e_rights['checksum']):
+                return False
+
+
+def update_comp(e_id, e_type, composites):
+    if composites:
+        for comp in composites:
+            if not right_module.add_composite(e_id, e_type, comp):
+                return False
 
 
 @post('/account/group/create')
@@ -63,65 +89,6 @@ def delete_composite():
 
     return {'total': 1,
             'success': right_module.delete_composite(c_name),
-            'data': []}
-
-
-@post('/account/profile/addgroup')
-def addcomposite_profile():
-    c_name = request.params.get('group_name')
-    p_name = request.params.get('profile_name')
-
-    return {'total': 1,
-            'success': right_module.add_comp_to_profile(p_name, c_name),
-            'data': []}
-
-
-@post('/account/role/addgroup')
-def addcomposite_role():
-    c_name = request.params.get('group_name')
-    r_name = request.params.get('role_name')
-
-    return {'total': 1,
-            'success': right_module.add_comp_to_role(r_name, c_name),
-            'data': []}
-
-
-@post('/account/profile/rmgroup')
-def rmcomposite_profile():
-    c_name = request.params.get('group_name')
-    p_name = request.params.get('profile_name')
-
-    return {'total': 1,
-            'success': right_module.rm_comp_profile(p_name, c_name),
-            'data': []}
-
-
-@post('/account/role/rmgroup')
-def rmcomposite_role():
-    c_name = request.params.get('group_name')
-    r_name = request.params.get('role_name')
-
-    return {'total': 1,
-            'success': right_module.rm_comp_role(r_name, c_name),
-            'data': []}
-
-
-@post('/account/profile/create')
-def create_profile():
-    p_name = request.params.get('profile_name')
-    p_comp = request.params.get('profile_groups')
-
-    return {'total': 1,
-            'success': not not right_module.create_profile(p_name, p_comp),
-            'data': []}
-
-
-@post('/account/profile/delete')
-def delete_profile():
-    p_name = request.params.get('profile_name')
-
-    return {'total': 1,
-            'success': right_module.delete_profile(p_name),
             'data': []}
 
 
@@ -144,15 +111,78 @@ def get_profile():
             'data': data}
 
 
-@post('/account/role/addprofile')
-def addprofile_role():
+@post('/account/profile')
+def update_profile():
+    p_id = request.params.get('profile_name')
+    p_comp = request.params.get('profile_groups')
+    p_rights = request.params.get('profile_rights')
+
+    profile = right_module.get_profile(p_id)
+
+    if not profile and not right_module.create_profile(p_id, p_comp):
+        return ROUTE_FAIL
+
+    if not update_rights(p_id, 'profile', p_rights):
+        return ROUTE_FAIL
+
+    if not update_comp(p_id, 'profile', p_comp):
+        return ROUTE_FAIL
+
+    return ROUTE_SUCCESS
+
+
+@post('/account/profile/delete')
+def delete_profile():
     p_name = request.params.get('profile_name')
-    p_comp = request.params.get('profile_groups', [])
+
+    return {'total': 1,
+            'success': right_module.delete_profile(p_name),
+            'data': []}
+
+
+@post('/account/profile/rmgroup')
+def rmcomposite_profile():
+    c_name = request.params.get('group_name')
+    p_name = request.params.get('profile_name')
+
+    return {'total': 1,
+            'success': right_module.rm_comp_profile(p_name, c_name),
+            'data': []}
+
+
+@post('/account/role')
+def update_role():
+    r_id = request.params.get('role_name')
+    r_comp = request.params.get('role_groups')
+    r_rights = request.params.get('role_rights')
+    r_profiles = request.params.get('role_profile')
+
+    role = right_module.get_role(r_id)
+
+    if not role and not right_module.create_role(r_id, r_profile):
+        return ROUTE_FAIL
+
+    if not update_comp(r_id, 'role', r_comp):
+        return ROUTE_FAIL
+
+    if not update_rights(r_id, 'role', r_rights):
+        return ROUTE_FAIL
+
+    for profile in r_profiles:
+        if 'profile' in role or not profile in role['profile']:
+            if not right_module.add_profile(r_id, profile):
+                return ROUTE_FAIL
+
+    return ROUTE_SUCCESS
+
+
+@post('/account/role/rmgroup')
+def rmcomposite_role():
+    c_name = request.params.get('group_name')
     r_name = request.params.get('role_name')
 
     return {'total': 1,
-            'success': right_module.add_profile(r_name, p_name,
-                                                p_composites=p_comp),
+            'success': right_module.rm_comp_role(r_name, c_name),
             'data': []}
 
 
@@ -163,16 +193,6 @@ def rmprofile_role():
 
     return {'total': 1,
             'success': right_module.remove_profile(r_name, p_name),
-            'data': []}
-
-
-@post('/account/role/create')
-def create_role():
-    r_name = request.params.get('role_name')
-    r_profile = request.params.get('role_profile')
-
-    return {'total': 1,
-            'success': not not right_module.create_role(r_name, r_profile),
             'data': []}
 
 
@@ -205,60 +225,32 @@ def get_role():
             'data': data}
 
 
-@post('/account/user/create')
+@post('/account/user')
 def create_user():
-    u_name = request.params.get('user_name')
+    u_id = request.params.get('user_name')
     u_role = request.params.get('user_role')
     u_contact = request.params.get('user_contact')
     u_rights = request.params.get('user_rights')
     u_comp = request.params.get('user_groups')
 
-    return {'total': 1,
-            'success': not not right_module.create_user(u_name, u_role,
-                                                        contact=u_contact,
-                                                        composites=u_comp,
-                                                        rights=u_rights),
-            'data': []}
+    user = right_module.get_user(u_id)
 
+    if not user and not right_module.create_user(u_id, u_role,
+                                                 contact=u_contact,
+                                                 rights=u_rights,
+                                                 composites=u_comp):
+        return ROUTE_FAIL
 
-@post('/account/user/name')
-def user_setname():
-    u_id = request.params.get('user_id')
-    u_name = request.params.get('user_name')
+    if not update_comp(u_id, 'user', u_comp):
+        return ROUTE_FAIL
 
-    return {'total': 1,
-            'success': not not right_module.set_user_name(u_id, u_name),
-            'data': []}
+    if not update_rights(u_id, 'user', u_rights):
+        return ROUTE_FAIL
 
+    if not right_module.add_role(u_id, u_role):
+        return ROUTE_FAIL
 
-@post('/account/user/email')
-def user_setemail():
-    u_id = request.params.get('user_id')
-    u_email = request.params.get('user_email')
-
-    return {'total': 1,
-            'success': not not right_module.set_user_email(u_id, u_email),
-            'data': []}
-
-
-@post('/account/user/phone')
-def user_setphone():
-    u_id = request.params.get('user_id')
-    u_phone = request.params.get('user_phone')
-
-    return {'total': 1,
-            'success': not not right_module.set_user_phone(u_id, u_phone),
-            'data': []}
-
-
-@post('/account/user/address')
-def user_setaddress():
-    u_id = request.params.get('user_id')
-    u_address = request.params.get('user_address')
-
-    return {'total': 1,
-            'success': not not right_module.set_user_address(u_id, u_address),
-            'data': []}
+    return ROUTE_SUCCESS
 
 
 @get('/account/user')
