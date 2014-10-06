@@ -46,6 +46,128 @@ root_account = Account(user="root", group="root")
 right_module = Rights()
 
 
+
+@post('/account/group/create')
+def create_composite():
+    c_name = request.params.get('group_name')
+    c_rights = request.params.get('group_rights')
+
+    return {'total': 1,
+            'success': not not right_module.create_composite(c_name, c_rights),
+            'data': []}
+
+
+@post('/account/group/delete')
+def delete_composite():
+    c_name = request.params.get('group_name')
+
+    return {'total': 1,
+            'success': right_module.delete_composite(c_name),
+            'data': []}
+
+
+@post('/account/profile/addgroup')
+def addcomposite_profile():
+    c_name = request.params.get('group_name')
+    p_name = request.params.get('profile_name')
+
+    return {'total': 1,
+            'success': right_module.add_comp_to_profile(p_name, c_name),
+            'data': []}
+
+
+@post('/account/role/addgroup')
+def addcomposite_role():
+    c_name = request.params.get('group_name')
+    r_name = request.params.get('role_name')
+
+    return {'total': 1,
+            'success': right_module.add_comp_to_role(r_name, c_name),
+            'data': []}
+
+
+@post('/account/profile/rmgroup')
+def rmcomposite_profile():
+    c_name = request.params.get('group_name')
+    p_name = request.params.get('profile_name')
+
+    return {'total': 1,
+            'success': right_module.rm_comp_profile(p_name, c_name),
+            'data': []}
+
+
+@post('/account/role/rmgroup')
+def rmcomposite_role():
+    c_name = request.params.get('group_name')
+    r_name = request.params.get('role_name')
+
+    return {'total': 1,
+            'success': right_module.rm_comp_role(r_name, c_name),
+            'data': []}
+
+
+@post('/account/profile/create')
+def create_profile():
+    p_name = request.params.get('profile_name')
+    p_comp = request.params.get('profile_groups')
+
+    return {'total': 1,
+            'success': not not right_module.create_profile(p_name, p_comp),
+            'data': []}
+
+
+@post('/account/profile/delete')
+def delete_profile():
+    p_name = request.params.get('profile_name')
+
+    return {'total': 1,
+            'success': right_module.delete_profile(p_name),
+            'data': []}
+
+
+@post('/account/role/addprofile')
+def addprofile_role():
+    p_name = request.params.get('profile_name')
+    p_comp = request.params.get('profile_groups', [])
+    r_name = request.params.get('role_name')
+
+    return {'total': 1,
+            'success': right_module.add_profile(r_name, p_name,
+                                                p_composites=p_comp),
+            'data': []}
+
+
+@post('/account/role/rmprofile')
+def rmprofile_role():
+    r_name = request.params.get('role_name')
+    p_name = request.params.get('profile_name')
+
+    return {'total': 1,
+            'success': right_module.remove_profile(r_name, p_name),
+            'data': []}
+
+
+@post('/account/role/create')
+def create_role():
+    r_name = request.params.get('role_name')
+    r_profile = request.params.get('role_profile')
+
+    return {'total': 1,
+            'success': not not right_module.create_role(r_name, r_profile),
+            'data': []}
+
+
+@post('/account/role/delete')
+def delete_role():
+    r_name = request.params.get('role_name')
+
+    return {'total': 1,
+            'success': right_module.delete_role(r_name),
+            'data': []}
+
+
+
+
 #### GET Me
 @get('/account/me')
 def account_get_me():
