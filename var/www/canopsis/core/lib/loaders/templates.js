@@ -90,6 +90,8 @@ define(deps, function(Ember) {
         var currentTemplate = templates[i - depsSize];
         Ember.TEMPLATES[currentTemplate.name] = Ember.Handlebars.compile(arguments[i]);
 
+        currentTemplate.fileContent = arguments[i];
+
         if (currentTemplate.classes !== undefined) {
             for (var j = 0; j < currentTemplate.classes.length; j++) {
                 var currentClass = currentTemplate.classes[j];

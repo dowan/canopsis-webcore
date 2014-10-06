@@ -39,7 +39,6 @@ var renderersTemplates = [
     'status',
     'subprocess',
     'tags',
-    'recordContentWindow',
     'timestamp'
 ];
 

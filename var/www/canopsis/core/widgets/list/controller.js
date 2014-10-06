@@ -166,7 +166,7 @@ define([
                 //dont understand why without this reset, values same values are set into many list instances.
                 set(this, 'custom_filters', []);
 
-                this._super();
+                this._super.apply(this, arguments);
             },
 
             /**

@@ -29,16 +29,16 @@ define([
         multiselect:false,
 
         selectionChanged: function(){
-            var selectionUnprepared = get(this, 'selectionUnprepared');
+            var selectionUnprepared = get(this, 'selectionUnprepared')[0];
             var res;
 
             var valueKey = get(this, 'valueKey');
 
-            if(Ember.isArray(selectionUnprepared)) {
+            if(!Ember.isNone(selectionUnprepared)) {
                 if(valueKey) {
-                    res = get(selectionUnprepared[0], 'value');
+                    res = get(selectionUnprepared, 'value');
                 } else {
-                    res = get(selectionUnprepared[0], 'name');
+                    res = get(selectionUnprepared, 'name');
                 }
                 console.log('selection changed', res);
             }

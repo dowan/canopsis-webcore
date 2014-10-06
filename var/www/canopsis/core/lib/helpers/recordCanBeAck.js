@@ -19,20 +19,18 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
-    var get = Ember.get,
-        set = Ember.set;
+    'utils',
+], function(Ember, utils) {
 
-    /**
-    */
-    var mixin = Ember.Mixin.create({
-        partials: {
-            // toolbar: ['presettoolbar']
-        }
+    var set = Ember.set;
+
+    Ember.Handlebars.helper('recordCanBeAck', function(crecord) {
+
+        console.debug('in recordCanBeAck. record status is', crecord.get('status'));
+        recordCanBeAck = crecord.get('status') !== 0 && crecord.get('status') !== 2;
+        set(crecord, 'recordCanBeAck', recordCanBeAck);
+
+        return "";
     });
 
-    Application.RecordpresetMixin = mixin;
-
-    return mixin;
 });

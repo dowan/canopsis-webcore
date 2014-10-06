@@ -59,7 +59,7 @@ define([
                 recordWizard.submit.then(function(form) {
                     console.log('record going to be saved', record, form);
 
-                    record = form.get('formContext');
+                    record = get(form, 'formContext');
 
                     record.save();
 

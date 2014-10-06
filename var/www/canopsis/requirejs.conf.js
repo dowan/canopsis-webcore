@@ -36,6 +36,7 @@ require.config({
         'jquerydatatables': 'webcore-libs/dev/jquery.dataTables',
         'bootstrapdatatables': 'webcore-libs/dev/dataTables.bootstrap',
         'colreorder': 'webcore-libs/dev/ColReorder',
+        'adminLTElib': 'webcore-libs/dev/AdminLTE',
         'adminLTE': 'canopsis/core/lib/wrappers/adminLTE',
         'utils': 'canopsis/core/lib/loaders/utils',
         'lodash': 'webcore-libs/dev/lodash.compat',
@@ -66,6 +67,10 @@ require.config({
 
         'adminLTE': {
             deps: ['jquery', 'bootstrap']
+        },
+
+        'adminLTElib': {
+            deps: ['jquery']
         },
 
         'bootbox': {

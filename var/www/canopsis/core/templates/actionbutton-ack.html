@@ -10,7 +10,8 @@
                     {{/component-tooltip}}
                 {{/if}}
             {{else}}
-                {{#if this.status}}
+                {{recordCanBeAck this}}
+                {{#if this.recordCanBeAck}}
                     {{#component-tooltip content="Ack"}}
                         <button class="btn btn-default btn-sm" {{action 'sendEvent' 'ack' this}} >
                             {{glyphicon "ok"}}

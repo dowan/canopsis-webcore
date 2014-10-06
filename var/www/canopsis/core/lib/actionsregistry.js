@@ -23,9 +23,24 @@ define([], function() {
         all: [{
             name: 'gotoEventView',
             actionData: ['showView', 'view.event']
-        }, {
+        },{
             name: 'toggleEditMode',
             actionData: ['toggleEditMode']
+        },{
+            name: 'promptReloadApplication',
+            actionData: ['promptReloadApplication']
+        },{
+            name: 'showUserProfile',
+            actionData: ['showUserProfile']
+        },{
+            name: 'editConfig',
+            actionData: ['editConfig']
+        },{
+            name: 'addNewView',
+            actionData: ['addNewView']
+        },{
+            name: 'logout',
+            actionData: ['logout']
         }],
         byClass: {}
     };

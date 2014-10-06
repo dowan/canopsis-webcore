@@ -53,7 +53,9 @@ var helpers = [
     'validationtextarea',
     'validationtextfield',
     'unset',
-    'widgetslot'
+    'widgetslot',
+    'recordCanBeAck'
+
 ];
 
 var deps = ['app/application', 'app/lib/wrappers/swag'];
