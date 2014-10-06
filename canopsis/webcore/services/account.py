@@ -64,6 +64,7 @@ def update_rights(e_id, e_type, e_rights):
         for right in e_rights:
             if not right_module.add_right(e_id, e_type, right, e_rights['checksum']):
                 return False
+    return True
 
 
 def update_comp(e_id, e_type, composites):
@@ -71,7 +72,7 @@ def update_comp(e_id, e_type, composites):
         for comp in composites:
             if not right_module.add_composite(e_id, e_type, comp):
                 return False
-
+    return True
 
 @post('/account/group')
 def create_composite():
@@ -128,10 +129,10 @@ def update_profile():
     if not profile and not right_module.create_profile(p_id, p_comp):
         return ROUTE_FAIL
 
-    if not update_rights(p_id, 'profile', p_rights):
+    if not update_comp(p_id, 'profile', p_comp):
         return ROUTE_FAIL
 
-    if not update_comp(p_id, 'profile', p_comp):
+    if not update_rights(p_id, 'profile', p_rights):
         return ROUTE_FAIL
 
     return ROUTE_SUCCESS
@@ -168,16 +169,16 @@ def update_role():
     if not role and not right_module.create_role(r_id, r_profile):
         return ROUTE_FAIL
 
+    for profile in r_profiles:
+        if 'profile' in role or not profile in role['profile']:
+            if not right_module.add_profile(r_id, profile):
+                return ROUTE_FAIL
+
     if not update_comp(r_id, 'role', r_comp):
         return ROUTE_FAIL
 
     if not update_rights(r_id, 'role', r_rights):
         return ROUTE_FAIL
-
-    for profile in r_profiles:
-        if 'profile' in role or not profile in role['profile']:
-            if not right_module.add_profile(r_id, profile):
-                return ROUTE_FAIL
 
     return ROUTE_SUCCESS
 
