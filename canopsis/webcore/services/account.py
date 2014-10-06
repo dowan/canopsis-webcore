@@ -73,14 +73,20 @@ def update_comp(e_id, e_type, composites):
                 return False
 
 
-@post('/account/group/create')
+@post('/account/group')
 def create_composite():
     c_name = request.params.get('group_name')
     c_rights = request.params.get('group_rights')
 
-    return {'total': 1,
-            'success': not not right_module.create_composite(c_name, c_rights),
-            'data': []}
+    composite = right_module.get_composite(c_name)
+
+    if not composite or not right_module.create_composite(c_name, c_rights):
+        return ROUTE_FAIL
+
+    if not update_rights(c_name, 'composite', c_rights):
+        return ROUTE_FAIL
+
+    return ROUTE_SUCCESS
 
 
 @post('/account/group/delete')
