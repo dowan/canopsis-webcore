@@ -134,14 +134,13 @@ define([
 
                 var keybindings = get(appController, 'frontendConfig.keybindings');
 
-                console.error('keybindings', keybindings);
+                console.log('load keybindings', keybindings);
 
                 for (var i = 0, l = keybindings.length; i < l; i++) {
                     var currentKeybinding = keybindings[i];
-                    console.error('Mousetrap define', currentKeybinding);
+                    console.log('Mousetrap define', currentKeybinding);
 
                     Mousetrap.bind([currentKeybinding.label], function(e) {
-                        console.error('keybinding ok');
                         appController.send.apply(appController, [currentKeybinding.value]);
                         return false;
                     });
@@ -230,7 +229,7 @@ define([
                             window.location = location;
                         }
                     });
-                },1500);
+                }, 1500);
             },
 
             showUserProfile: function (){
@@ -292,8 +291,9 @@ define([
             },
 
             editConfig: function() {
-                console.log('editConfig', formsUtils);
                 var frontendConfig = get(this, 'frontendConfig');
+                console.log('editConfig', formsUtils, frontendConfig);
+
                 var editForm = formsUtils.showNew('modelform', frontendConfig, { title: __("Edit settings"), inspectedItemType: "frontend" });
                 editForm.submit.done(function() {
                     frontendConfig.save();

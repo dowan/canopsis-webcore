@@ -58,20 +58,23 @@ define([
         contentChanged: function(){
             var buffer = Ember.A();
             var content = get(this, 'content');
-            var keys = Ember.keys(content);
 
-            console.warn(content, keys);
+            if(content) {
+                var keys = Ember.keys(content);
 
-            for (var i = 0, l = keys.length; i < l; i++) {
-                var currentKey = keys[i];
-                buffer.pushObject(Ember.Object.create({
-                    key: currentKey,
-                    value: content[currentKey]
-                }));
+                console.warn(content, keys);
+
+                for (var i = 0, l = keys.length; i < l; i++) {
+                    var currentKey = keys[i];
+                    buffer.pushObject(Ember.Object.create({
+                        key: currentKey,
+                        value: content[currentKey]
+                    }));
+                }
+                console.warn('dictAsArray', buffer);
+
+                set(this, 'dictAsArray', buffer);
             }
-            console.warn('dictAsArray', buffer);
-
-            set(this, 'dictAsArray', buffer);
         }
     });
 

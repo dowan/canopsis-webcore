@@ -50,7 +50,11 @@ define([
                     ['table', ['table']],
                     ['help', ['help']],
                     ['misc', ['codeview']]
-                ]
+                ],
+                codemirror: { // codemirror options
+                    theme: 'ambiance',
+                    mode: 'htmlmixed'
+                }
             });
 
             var content = get(this, 'content');
