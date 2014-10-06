@@ -1,3 +1,7 @@
+.noyscroll{
+	overflow-y: hidden !important;
+}
+
 #recorddisplayer{
 	margin-top:5%;
 	position:fixed;
