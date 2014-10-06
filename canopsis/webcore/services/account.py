@@ -125,34 +125,23 @@ def delete_profile():
             'data': []}
 
 
-@get('/account/profile/rights')
-def get_profile_rights():
-    p_id = request.params.get('profile_id')
-    p_rights = right_module.get_profile_rights(p_id)
+@get('/account/profile')
+def get_profile():
+    profiles_id = request.params.get('profiles_id')
+    len_data = 0
+    data = []
 
-    if not p_rights:
-        return {'total': 1,
-                'success': False,
-                'data': []}
+    for p_id in profiles_id:
+        p_comp = right_module.get_profile_composites(p_id)
+        if len(p_comp):
+            len_data += 1
+            data.append({'name': p_id,
+                         'rights': right_module.get_profile_rights(p_id),
+                         'composites': p_comp})
 
-    return {'total': len(p_rights),
-            'success': True,
-            'data': [p_rights]}
-
-
-@get('/account/profile/groups')
-def get_profile_composites():
-    p_id = request.params.get('profile_id')
-    p_composites = right_module.get_profile_composites(p_id)
-
-    if not p_composites:
-        return {'total': 1,
-                'success': False,
-                'data': []}
-
-    return {'total': len(p_composites),
-            'success': True,
-            'data': [p_composites]}
+    return {'total': len_data,
+            'success': not not len_data,
+            'data': data}
 
 
 @post('/account/role/addprofile')
@@ -196,49 +185,24 @@ def delete_role():
             'data': []}
 
 
-@get('/account/role/profile')
-def get_role_profile():
-    r_id = request.params.get('role_id')
-    r_profile = right_module.get_role_profile(r_id)
+@get('/account/role')
+def get_role():
+    roles_id = request.params.get('roles_id')
+    len_data = 0
+    data = []
 
-    if not r_profile:
-        return {'total': 1,
-                'success': False,
-                'data': []}
+    for r_id in roles_id:
+        r_profile = right_module.get_role_profile(r_id)
 
-    return {'total': len(r_profile),
-            'success': True,
-            'data': [r_profile]}
+        if len(r_profile):
+            len_data += 1
+            data.append({'name': r_id,
+                         'rights': right_module.get_role_rights(r_id),
+                         'profile': r_profile})
 
-
-@get('/account/role/rights')
-def get_role_rights():
-    r_id = request.params.get('role_id')
-    r_rights = right_module.get_role_rights(r_id)
-
-    if not r_rights:
-        return {'total': 1,
-                'success': False,
-                'data': []}
-
-    return {'total': len(r_rights),
-            'success': True,
-            'data': [r_rights]}
-
-
-@get('/account/role/groups')
-def get_role_composites():
-    r_id = request.params.get('role_id')
-    r_composites = right_module.get_role_composites(r_id)
-
-    if not r_composites:
-        return {'total': 1,
-                'success': False,
-                'data': []}
-
-    return {'total': len(r_composites),
-            'success': True,
-            'data': [r_composites]}
+    return {'total': len_data,
+            'success': not not len_data,
+            'data': data}
 
 
 @post('/account/user/create')
@@ -297,6 +261,24 @@ def user_setaddress():
             'data': []}
 
 
+@get('/account/user')
+def get_user():
+    users_id = request.params.get('users_id')
+    len_data = 0
+    data = []
+
+    for u_id in users_id:
+        user = right_module.get_user(u_id)
+
+        if user:
+            len_data += 1
+            data.append(user)
+
+    return {'total': len_data,
+            'success': not not len_data,
+            'data': data}
+
+
 @get('/account/user/rights')
 def get_user_rights():
     u_id = request.params.get('user_id')
@@ -310,46 +292,6 @@ def get_user_rights():
     return {'total': len(u_rights),
             'success': True,
             'data': [u_rights]}
-
-
-@get('/account/user/role')
-def get_user_role():
-    u_id = request.params.get('user_id')
-    u_role = right_module.get_user_role(u_id)
-
-    return {'total': 1,
-            'success': not not u_role,
-            'data': [u_role]}
-
-
-@get('/account/user/groups')
-def get_user_composites():
-    u_id = request.params.get('user_id')
-    u_composites = right_module.get_user_composites(u_id)
-
-    if not u_rights:
-        return {'total': 1,
-                'success': False,
-                'data': []}
-
-    return {'total': len(u_composites),
-            'success': True,
-            'data': [u_composites]}
-
-
-@get('/account/user/profiles')
-def get_user_profiles():
-    u_id = request.params.get('user_id')
-    u_profiles = right_module.get_user_profiles(u_id)
-
-    if not u_rights:
-        return {'total': 1,
-                'success': False,
-                'data': []}
-
-    return {'total': len(u_profiles),
-            'success': True,
-            'data': [u_profiles]}
 
 
 
