@@ -20,35 +20,63 @@
 define([
     'jquery',
     'ember',
+    'ember-data',
     'app/application',
     'app/lib/factories/widget',
-    'app/components/flotchart/component'
-], function($, Ember, Application, WidgetFactory) {
+    'app/components/flotchart/component',
+    'app/controller/serie'
+], function($, Ember, DS, Application, WidgetFactory) {
     var get = Ember.get,
         set = Ember.set;
 
     var widgetOptions = {};
 
     var widget = WidgetFactory('timegraph', {
+        needs: ['serie'],
         chartOptions: undefined,
         dataSeries: [],
 
         timenav: false,
 
         init: function() {
-            this._super(arguments);
+            this._super();
 
+            var me = this;
             var now = +new Date();
-
             var config = get(this, 'config');
+            var store = DS.Store.create({
+                container: get(this, 'container')
+            });
+
+            set(this, 'widgetDataStore', store);
+
+            console.group('timegraph init');
+
+            var stylizedseries = get(config, 'series');
+
+            var serieIds = [];
+            for(var i = 0, l = stylizedseries.length; i < l; i++) {
+                serieIds.push(stylizedseries[i].serie);
+            }
+
+            console.log('Fetch series:', serieIds);
+            serieIds = JSON.stringify(serieIds);
+
+            store.findQuery('serie', {ids: serieIds}).then(function(result) {
+                var series = [];
+                set(me, 'series', series);
+
+                for(var i, l = result.meta.total; i < l; i++) {
+                    var serie = result.content[i];
+                    series.pushObject(serie);
+                }
+            });
 
             set(this, 'timenav', get(config, 'timenav'));
 
-            if(this.chartOptions === undefined) {
-                this.chartOptions = {};
-            }
+            chartOptions = get(this, 'chartOptions') || {};
 
-            $.extend(this.chartOptions, {
+            $.extend(chartOptions, {
                 zoom: {
                     interactive: false
                 },
@@ -87,26 +115,13 @@ define([
                     legend: get(config, 'legend')
                 },
 
-                series: {
-                    shadowSize: 0,
-                    stack: get(config, 'stacked'),
-                    lines: {
-                        show: get(config, 'lines'),
-                        fill: get(config, 'areas'),
-                        lineWidth: get(config, 'line_width')
-                    },
-                    points: {
-                        show: get(config, 'points'),
-                        symbol: get(config, 'point_shape')
-                    },
-                    bars: {
-                        show: get(config, 'bars'),
-                        lineWidth: get(config, 'bar_width')
-                    }
-                },
-
                 tooltip: get(config, 'tooltip')
             });
+
+            console.log('Configure chart:', chartOptions);
+            set(this, 'chartOptions', chartOptions);
+
+            console.groupEnd();
         }
     }, widgetOptions);
 
