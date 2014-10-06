@@ -62,7 +62,7 @@
                                         </span>
                                     {{/if}}
                                 {{/if}}
-                                {{component-editor attr=attr form=this}}
+                                {{component-editor attr=attr form=this editorOverrides=controller.controllers.application.frontendConfig.editors}}
                             </div>
                         {{/unless}}
                     {{/if}}
@@ -114,7 +114,7 @@
                                 {{/if}}
                             {{/if}}
 
-                            {{component-editor attr=attr form=this}}
+                            {{component-editor attr=attr form=this editorOverrides=controller.controllers.application.frontendConfig.editors}}
                         </div>
                     {{/if}}
                 {{/each}}

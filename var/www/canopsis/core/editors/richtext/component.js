@@ -48,8 +48,13 @@ define([
                     ['height', ['height']],
                     ['insert', ['link']],
                     ['table', ['table']],
-                    ['help', ['help']]
-                ]
+                    ['help', ['help']],
+                    ['misc', ['codeview']]
+                ],
+                codemirror: { // codemirror options
+                    theme: 'ambiance',
+                    mode: 'htmlmixed'
+                }
             });
 
             var content = get(this, 'content');

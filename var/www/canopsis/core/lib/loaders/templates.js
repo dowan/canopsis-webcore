@@ -22,6 +22,7 @@ var templates = [
     { name: 'index' },
     { name: 'containerwidget' },
     { name: 'formwrapper' },
+    { name: 'recorddisplayer' },
     { name: 'widgettitlebar' },
     { name: 'userview' },
     { name: 'widget' },
@@ -89,6 +90,8 @@ define(deps, function(Ember) {
     for (var i = depsSize; i < arguments.length; i++) {
         var currentTemplate = templates[i - depsSize];
         Ember.TEMPLATES[currentTemplate.name] = Ember.Handlebars.compile(arguments[i]);
+
+        currentTemplate.fileContent = arguments[i];
 
         if (currentTemplate.classes !== undefined) {
             for (var j = 0; j < currentTemplate.classes.length; j++) {

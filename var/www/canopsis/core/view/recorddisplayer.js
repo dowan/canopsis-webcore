@@ -18,21 +18,38 @@
 */
 
 define([
+    'jquery',
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/application',
+], function($, Ember, Application) {
     var get = Ember.get,
         set = Ember.set;
 
-    /**
-    */
-    var mixin = Ember.Mixin.create({
-        partials: {
-            // toolbar: ['presettoolbar']
-        }
+    var view = Ember.View.extend({
+        init: function() {
+            this._super();
+            console.log("recorddisplayer view init", this, get(this, 'controller'));
+        },
+
+        didInsertElement: function () {
+            console.debug('Recorddisplayer dom element', $("#recorddisplayer"));
+            //$("#recorddisplayer").hide();
+            $( window ).resize( function () {
+
+                var left = ($(window).width() - $("#recorddisplayer").outerWidth()) / 2;
+                $("#recorddisplayer").css("left", left);
+
+            });
+            $('#recorddisplayer').draggable({
+                handle: ".recorddisplayerhandle"
+            });
+
+        },
+
+
     });
 
-    Application.RecordpresetMixin = mixin;
+    Application.RecorddisplayerView = view;
 
-    return mixin;
+    return view;
 });

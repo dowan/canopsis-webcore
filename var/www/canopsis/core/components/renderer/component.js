@@ -25,6 +25,7 @@ define([
     var get = Ember.get;
 
     var component = Ember.Component.extend({
+
         tagName: 'span',
         classNames: ['renderer'],
 

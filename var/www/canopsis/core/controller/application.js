@@ -34,6 +34,7 @@ define([
     'app/lib/utils/data',
     'app/lib/utils/hash',
     'app/lib/utils/notification',
+    'app/lib/actionsregistry',
     'app/adapters/cservice',
     'app/adapters/notification',
     'app/serializers/cservice',
@@ -41,14 +42,34 @@ define([
     'app/lib/loaders/widgets',
     'app/adapters/loggedaccount',
     'app/lib/loaders/helpers',
-    'app/lib/wrappers/bootstrap'
-], function(Ember, DS, Application, canopsisConfiguration, PartialslotAbleController, UsermenuMixin, SchemamanagerMixin, ConsolemanagerMixin, PromisemanagerMixin, NotificationsMixin, ApplicationRoute, utils, formsUtils, dataUtils, hashUtils, notificationUtils) {
+    'app/lib/wrappers/bootstrap',
+    'app/lib/wrappers/mousetrap',
+    'app/controller/recorddisplayer'
+], function(
+    Ember,
+    DS,
+    Application,
+    canopsisConfiguration,
+    PartialslotAbleController,
+    UsermenuMixin,
+    SchemamanagerMixin,
+    ConsolemanagerMixin,
+    PromisemanagerMixin,
+    NotificationsMixin,
+    ApplicationRoute,
+    utils,
+    formsUtils,
+    dataUtils,
+    hashUtils,
+    notificationUtils,
+    actionsRegistry) {
     var get = Ember.get,
         set = Ember.set;
 
     var controller = PartialslotAbleController.extend(
         SchemamanagerMixin, PromisemanagerMixin, ConsolemanagerMixin, NotificationsMixin, UsermenuMixin, {
-        needs: ['login'],
+
+        needs: ['login', 'recorddisplayer'],
 
         partials: {
             statusbar: ['schemamanagerstatusmenu', 'consolemanagerstatusmenu', 'notificationsstatusmenu', 'promisemanagerstatusmenu', 'userstatusmenu']
@@ -110,6 +131,21 @@ define([
                 console.log('frontend config found');
                 set(appController, 'frontendConfig', queryResults);
                 // set(Canopsis, 'conf.frontendConfig', queryResults);
+
+                var keybindings = get(appController, 'frontendConfig.keybindings');
+
+                console.log('load keybindings', keybindings);
+
+                for (var i = 0, l = keybindings.length; i < l; i++) {
+                    var currentKeybinding = keybindings[i];
+                    console.log('Mousetrap define', currentKeybinding);
+
+                    Mousetrap.bind([currentKeybinding.label], function(e) {
+                        appController.send.apply(appController, [currentKeybinding.value]);
+                        return false;
+                    });
+                }
+
                 if(get(appController, 'onIndexRoute') === true) {
                     console.info('on index route, redirecting to the appropriate route');
 
@@ -177,6 +213,7 @@ define([
             this.refreshPartialsList();
         },
 
+
         actions: {
             promptReloadApplication: function(title, location) {
                 setTimeout(function (){
@@ -192,7 +229,7 @@ define([
                             window.location = location;
                         }
                     });
-                },1500);
+                }, 1500);
             },
 
             showUserProfile: function (){
@@ -254,8 +291,9 @@ define([
             },
 
             editConfig: function() {
-                console.log('editConfig', formsUtils);
                 var frontendConfig = get(this, 'frontendConfig');
+                console.log('editConfig', formsUtils, frontendConfig);
+
                 var editForm = formsUtils.showNew('modelform', frontendConfig, { title: __("Edit settings"), inspectedItemType: "frontend" });
                 editForm.submit.done(function() {
                     frontendConfig.save();

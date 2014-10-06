@@ -21,7 +21,10 @@ define([
     'app/application',
     'app/adapters/entity'
 ], function(Application, EntityAdapter) {
-    Application.ResourceAdapter = EntityAdapter.extend({});
 
-    return Application.ResourceAdapter;
+    var adapter = EntityAdapter.extend({});
+
+    Application.ResourceAdapter = adapter;
+
+    return adapter;
 });

@@ -20,36 +20,56 @@
 define([
     'ember',
     'app/application',
+    'canopsis/canopsisConfiguration',
     'app/lib/helpers/validationtextfield'
-], function(Ember, Application) {
+], function(Ember, Application, canopsisConfiguration) {
+    var get = Ember.get,
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     var component = Ember.Component.extend({
         tagName: 'span',
+
+        canopsisConfiguration: canopsisConfiguration,
+        debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
+
         init: function() {
             console.log("init editor compo");
 
             this._super();
 
-            this.set('templateData.keywords.attr', Ember.computed.alias('content'));
+            set(this, 'templateData.keywords.attr', Ember.computed.alias('content'));
         },
 
         editorType: function() {
             console.group('editorType');
 
-            var type = this.get('content.model.type');
-            var role = this.get('content.model.options.role');
+            var overrides = get(this, 'editorOverrides');
 
-            console.log('content:', this.get('content'));
-            console.log('type:', Ember.get(this, 'content.field'));
+
+            var type = get(this, 'content.model.type');
+            var role = get(this, 'content.model.options.role');
+
+
+            console.log('content:', get(this, 'content'));
+            console.log('type:', get(this, 'content.field'));
             console.log('type:', type);
             console.log('role:', role);
 
             var editorName;
 
             if (role) {
-                editorName = 'editor-' + role;
+                if(!isNone(overrides) && get(overrides, role)) {
+                    editorName = 'editor-' + get(overrides, role);
+                } else {
+                    editorName = 'editor-' + role;
+                }
             } else {
-                editorName = 'editor-' + type;
+                if(!isNone(overrides) && get(overrides, type)) {
+                    editorName = 'editor-' + get(overrides, type);
+                } else {
+                    editorName = 'editor-' + type;
+                }
             }
 
             if (Ember.TEMPLATES[editorName] === undefined) {

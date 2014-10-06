@@ -37,8 +37,7 @@ define([
 
         didInsertElement: function () {
             this.$("#formwrapper").draggable({
-                handle: ".modal-header",
-                axis: "x"
+                handle: ".modal-header"
             });
         },
 

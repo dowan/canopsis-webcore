@@ -18,13 +18,19 @@
 */
 
 define([
-    'app/application',
-    'app/adapters/event'
-], function(Application, EventAdapter) {
+    'ember',
+    'utils',
+], function(Ember, utils) {
 
-    var adapter = EventAdapter;
+    var set = Ember.set;
 
-    Application.EueAdapter = adapter;
+    Ember.Handlebars.helper('recordCanBeAck', function(crecord) {
 
-    return adapter;
+        console.debug('in recordCanBeAck. record status is', crecord.get('status'));
+        recordCanBeAck = crecord.get('status') !== 0 && crecord.get('status') !== 2;
+        set(crecord, 'recordCanBeAck', recordCanBeAck);
+
+        return "";
+    });
+
 });

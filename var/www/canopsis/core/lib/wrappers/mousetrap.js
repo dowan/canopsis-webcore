@@ -18,13 +18,10 @@
 */
 
 define([
-    'app/application',
-    'app/adapters/event'
-], function(Application, EventAdapter) {
+    'app/lib/factories/wrapper',
+    'jquery',
+    'webcore-libs/mousetrap/mousetrap.min'
+], function(Wrapper, $) {
 
-    var adapter = EventAdapter;
-
-    Application.EueAdapter = adapter;
-
-    return adapter;
+    return Wrapper("mousetrap", Mousetrap, arguments, "1.4.6");
 });

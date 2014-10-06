@@ -23,5 +23,5 @@ define([
     'webcore-libs/summernote/summernote.min'
 ], function(Wrapper, $) {
 
-    return Wrapper("mmenu", $.fn.mmenu, arguments);
+    return Wrapper("summernote", $.fn.mmenu, arguments);
 });

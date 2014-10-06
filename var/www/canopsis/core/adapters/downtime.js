@@ -21,7 +21,10 @@ define([
     'app/application',
     'app/adapters/entity'
 ], function(Application, EntityAdapter) {
-    Application.DowntimeAdapter = EntityAdapter.extend({});
 
-    return Application.DowntimeAdapter;
+    var adapter = EntityAdapter.extend({});
+
+    Application.DowntimeAdapter = adapter;
+
+    return adapter;
 });

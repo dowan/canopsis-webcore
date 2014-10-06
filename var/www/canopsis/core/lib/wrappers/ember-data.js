@@ -67,23 +67,23 @@ define([
     DS.ObjectTransform = DS.Transform.extend({
         deserialize: function(serialized) {
             if (Ember.typeOf(serialized) === 'object') {
-                return serialized;
+                return Ember.Object.create(serialized);
             }
 
-            return {};
+            return Ember.Object.create({});
         },
 
         serialize: function(deserialized) {
             var type = Ember.typeOf(deserialized);
 
             if (type === 'object') {
-                return deserialized;
+                return Ember.Object.create(deserialized);
 
             } else if (type === 'string') {
                 console.log("bad format");
             }
 
-            return {};
+            return Ember.Object.create({});
         }
     });
 

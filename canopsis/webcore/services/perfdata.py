@@ -51,14 +51,45 @@ def perfdata(
     limit=0, skip=0, timeserie=None
 ):
 
-    result = manager.get(
-        metric_id=metric_id, period=period, with_meta=with_meta,
-        timewindow=timewindow, limit=limit, skip=skip)
+    if not isinstance(metric_id, list):
+        metrics = [metric_id]
 
-    if timeserie is not None:
+    else:
+        metrics = metric_id
 
-        _points = result[0] if with_meta else result
-        result = timeserie.calculate(_points, timewindow=timewindow)
+    result = []
+
+    for metric_id in metrics:
+        ret = manager.get(
+            metric_id=metric_id, period=period, with_meta=with_meta,
+            timewindow=timewindow, limit=limit, skip=skip)
+
+        if timeserie is not None:
+
+            _points = ret[0] if with_meta else ret
+            ret = timeserie.calculate(_points, timewindow=timewindow)
+
+        if with_meta:
+            result.append({
+                "points": ret[0],
+                "length": ret[1]
+            })
+
+        else:
+            result.append({
+                "points": ret,
+                "length": len(ret)
+            })
+
+    if len(result) == 1:
+        if with_meta:
+            result = (result[0]['points'], result[0]['length'])
+
+        else:
+            result = result[0]
+
+    else:
+        result = (result, len(result))
 
     return result
 

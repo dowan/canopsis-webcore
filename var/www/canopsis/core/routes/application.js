@@ -58,7 +58,14 @@ define([
                 formwrapperController.send('show');
 
                 return formController;
+            },
+
+            recordDisplayShow: function (crecord) {
+                var recorddisplayController = this.controllerFor('login');
+                console.debug('from deep -> ', crecord, recorddisplayController);
+
             }
+
         },
 
         model: function() {
@@ -78,6 +85,14 @@ define([
                 outlet: 'formwrapper',
                 into: 'application',
                 controller: formwrapperController
+            });
+
+            var recorddisplayerController = this.controllerFor('recorddisplayer');
+
+            this.render('recorddisplayer', {
+                outlet: 'recorddisplayer',
+                into: 'application',
+                controller: recorddisplayerController
             });
 
         }

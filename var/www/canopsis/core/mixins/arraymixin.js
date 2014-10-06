@@ -107,7 +107,7 @@ define([
 
         registerFieldWithController: function() {
             var formController  =  formsregistry.formwrapper.form;
-            if ( formController ){
+            if (formController) {
                 var ArrayFields = get(formController, 'ArrayFields');
                 if (ArrayFields) {
                     ArrayFields.pushObject(this);

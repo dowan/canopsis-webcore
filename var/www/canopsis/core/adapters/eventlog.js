@@ -22,6 +22,7 @@ define([
     'app/adapters/application',
     'app/serializers/eventlog',
 ], function(Application, ApplicationAdapter) {
+
     var adapter = ApplicationAdapter.extend({
 
         buildURL: function(type, id) {

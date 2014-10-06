@@ -77,7 +77,8 @@ define([
                 component: get(crecord, 'component'),
                 state: get(crecord, 'state'),
                 state_type: get(crecord, 'state_type'),
-                crecord_type: event_type
+                crecord_type: event_type,
+                timestamp:  cutils.dates.getNow()
             };
 
             if(record.source_type === 'resource') {
@@ -262,7 +263,10 @@ define([
                         author: record.author,
                         isAck: true
                     });
-                    crecord.set('ticket', record.ticket);
+                    if(!Ember.isNone(record.ticket)) {
+                        crecord.set('ticket', record.ticket);
+                        crecord.set('ticket_date', cutils.dates.getNow());
+                    }
                 }
             },
 
@@ -294,6 +298,10 @@ define([
                 transform: function(crecord, record) {
                     console.log('transform method for ack remove', crecord, record);
                     crecord.set('ack', undefined);
+                    crecord.set('declare_ticket_author', undefined);
+                    crecord.set('declare_ticket_date', undefined);
+                    crecord.set('ticket', undefined);
+                    crecord.set('ticket_date', undefined);
                 }
 
             },
@@ -322,10 +330,8 @@ define([
 
                 transform: function(crecord, record) {
                     console.log('transform method for declare ticket', crecord, record);
-                    crecord.set('ticket_declared', {
-                        timestamp: cutils.dates.getNow(),
-                        author: record.author
-                    });
+                    crecord.set('declare_ticket_author', record.author);
+                    crecord.set('declare_ticket_date', cutils.dates.getNow());
                 }
 
             },
@@ -351,6 +357,7 @@ define([
                 transform: function(crecord, record) {
                     console.log('transform method for assoticket', crecord, record);
                     crecord.set('ticket', record.ticket);
+                    crecord.set('ticket_date', cutils.dates.getNow());
                 }
 
             },

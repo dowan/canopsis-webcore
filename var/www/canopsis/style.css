@@ -1,3 +1,17 @@
+.noyscroll{
+	overflow-y: hidden !important;
+}
+
+#recorddisplayer{
+	margin-top:5%;
+	position:fixed;
+	z-index: 90;
+}
+
+#recorddisplayer .recorddisplayercontent {
+	text-align:left;
+}
+
 .fleft {
 	float: left;
 }
@@ -78,6 +92,10 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
 
 .handle{
 	cursor:pointer;
+}
+
+.underline:hover{
+	text-decoration: underline;
 }
 
 .color{

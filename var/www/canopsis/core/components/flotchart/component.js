@@ -24,6 +24,9 @@ define([
     'app/lib/utils/hash',
     'app/lib/wrappers/flotchart'
 ], function($, Ember, Application, hashUtils) {
+    var get = Ember.get,
+        set = Ember.set;
+
     var component = Ember.Component.extend({
         tagName: 'div',
         classNames: 'flotchart',
@@ -46,8 +49,8 @@ define([
 
             var plotcontainer = this.$();
 
-            var series = this.get('series');
-            var options = this.get('options');
+            var series = get(this, 'series');
+            var options = get(this, 'options');
             console.log('container:', plotcontainer);
             console.log('series:', series);
             console.log('options:', options);

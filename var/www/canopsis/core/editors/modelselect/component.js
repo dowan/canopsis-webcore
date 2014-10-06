@@ -34,30 +34,41 @@ define([
             return typekey;
         }.property('content.model.options.model'),
 
-        value: Ember.computed.alias('content.value'),
+        newModelSelected: function() {
+            var model = get(this, 'selectedModel');
+
+            set(this, 'content.value', model.id);
+        }.observes('selectedModel'),
 
         availableModels: function() {
             var store = get(this, 'componentDataStore');
             var model = get(this, 'model');
 
             return store.findAll(model);
-        }.property('content.model.options.model'),
+        }.property('model'),
 
         init: function() {
             this._super.apply(this, arguments);
 
-            set(this, "componentDataStore", DS.Store.create({
+            var store = DS.Store.create({
                 container: get(this, "container")
-            }));
+            })
 
-            var selectedId = get(this, 'value');
+            set(this, "componentDataStore", store);
+
+            var selectedId = get(this, 'content.value');
+            var promise = undefined;
+            var me = this;
 
             if(selectedId) {
-                set(this, 'selectedModel', selectedId);
-            }
-            else {
-                var promise = get(this, 'availableModels');
-                var me = this;
+                var model = get(this, 'model');
+                promise = store.find(model, selectedId);
+
+                promise.then(function(record) {
+                    set(me, 'selectedModel', record);
+                });
+            } else {
+                promise = get(this, 'availableModels');
 
                 promise.then(function(result) {
                     var first = result.content[0];
