@@ -28,7 +28,7 @@ define([
     */
     var mixin = Ember.Mixin.create({
         partials: {
-            toolbar: ['presettoolbar']
+            // toolbar: ['presettoolbar']
         }
     });
 
