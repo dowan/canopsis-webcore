@@ -125,6 +125,36 @@ def delete_profile():
             'data': []}
 
 
+@get('/account/profile/rights')
+def get_profile_rights():
+    p_id = request.params.get('profile_id')
+    p_rights = right_module.get_profile_rights(p_id)
+
+    if not p_rights:
+        return {'total': 1,
+                'success': False,
+                'data': []}
+
+    return {'total': len(p_rights),
+            'success': True,
+            'data': [p_rights]}
+
+
+@get('/account/profile/groups')
+def get_profile_composites():
+    p_id = request.params.get('profile_id')
+    p_composites = right_module.get_profile_composites(p_id)
+
+    if not p_composites:
+        return {'total': 1,
+                'success': False,
+                'data': []}
+
+    return {'total': len(p_composites),
+            'success': True,
+            'data': [p_composites]}
+
+
 @post('/account/role/addprofile')
 def addprofile_role():
     p_name = request.params.get('profile_name')
@@ -165,6 +195,161 @@ def delete_role():
             'success': right_module.delete_role(r_name),
             'data': []}
 
+
+@get('/account/role/profile')
+def get_role_profile():
+    r_id = request.params.get('role_id')
+    r_profile = right_module.get_role_profile(r_id)
+
+    if not r_profile:
+        return {'total': 1,
+                'success': False,
+                'data': []}
+
+    return {'total': len(r_profile),
+            'success': True,
+            'data': [r_profile]}
+
+
+@get('/account/role/rights')
+def get_role_rights():
+    r_id = request.params.get('role_id')
+    r_rights = right_module.get_role_rights(r_id)
+
+    if not r_rights:
+        return {'total': 1,
+                'success': False,
+                'data': []}
+
+    return {'total': len(r_rights),
+            'success': True,
+            'data': [r_rights]}
+
+
+@get('/account/role/groups')
+def get_role_composites():
+    r_id = request.params.get('role_id')
+    r_composites = right_module.get_role_composites(r_id)
+
+    if not r_composites:
+        return {'total': 1,
+                'success': False,
+                'data': []}
+
+    return {'total': len(r_composites),
+            'success': True,
+            'data': [r_composites]}
+
+
+@post('/account/user/create')
+def create_user():
+    u_name = request.params.get('user_name')
+    u_role = request.params.get('user_role')
+    u_contact = request.params.get('user_contact')
+    u_rights = request.params.get('user_rights')
+    u_comp = request.params.get('user_groups')
+
+    return {'total': 1,
+            'success': not not right_module.create_user(u_name, u_role,
+                                                        contact=u_contact,
+                                                        composites=u_comp,
+                                                        rights=u_rights),
+            'data': []}
+
+
+@post('/account/user/name')
+def user_setname():
+    u_id = request.params.get('user_id')
+    u_name = request.params.get('user_name')
+
+    return {'total': 1,
+            'success': not not right_module.set_user_name(u_id, u_name),
+            'data': []}
+
+
+@post('/account/user/email')
+def user_setemail():
+    u_id = request.params.get('user_id')
+    u_email = request.params.get('user_email')
+
+    return {'total': 1,
+            'success': not not right_module.set_user_email(u_id, u_email),
+            'data': []}
+
+
+@post('/account/user/phone')
+def user_setphone():
+    u_id = request.params.get('user_id')
+    u_phone = request.params.get('user_phone')
+
+    return {'total': 1,
+            'success': not not right_module.set_user_phone(u_id, u_phone),
+            'data': []}
+
+
+@post('/account/user/address')
+def user_setaddress():
+    u_id = request.params.get('user_id')
+    u_address = request.params.get('user_address')
+
+    return {'total': 1,
+            'success': not not right_module.set_user_address(u_id, u_address),
+            'data': []}
+
+
+@get('/account/user/rights')
+def get_user_rights():
+    u_id = request.params.get('user_id')
+    u_rights = right_module.get_user_rights(u_id)
+
+    if not u_rights:
+        return {'total': 1,
+                'success': False,
+                'data': []}
+
+    return {'total': len(u_rights),
+            'success': True,
+            'data': [u_rights]}
+
+
+@get('/account/user/role')
+def get_user_role():
+    u_id = request.params.get('user_id')
+    u_role = right_module.get_user_role(u_id)
+
+    return {'total': 1,
+            'success': not not u_role,
+            'data': [u_role]}
+
+
+@get('/account/user/groups')
+def get_user_composites():
+    u_id = request.params.get('user_id')
+    u_composites = right_module.get_user_composites(u_id)
+
+    if not u_rights:
+        return {'total': 1,
+                'success': False,
+                'data': []}
+
+    return {'total': len(u_composites),
+            'success': True,
+            'data': [u_composites]}
+
+
+@get('/account/user/profiles')
+def get_user_profiles():
+    u_id = request.params.get('user_id')
+    u_profiles = right_module.get_user_profiles(u_id)
+
+    if not u_rights:
+        return {'total': 1,
+                'success': False,
+                'data': []}
+
+    return {'total': len(u_profiles),
+            'success': True,
+            'data': [u_profiles]}
 
 
 
