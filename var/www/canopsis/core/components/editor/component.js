@@ -41,6 +41,13 @@ define([
             set(this, 'templateData.keywords.attr', Ember.computed.alias('content'));
         },
 
+        actions: {
+            inspect: function() {
+                window.$E = get(this, 'content');
+                console.log('--- Attribute put in global variable $E ---');
+            }
+        },
+
         editorType: function() {
             console.group('editorType');
 
