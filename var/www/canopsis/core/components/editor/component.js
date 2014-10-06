@@ -20,14 +20,19 @@
 define([
     'ember',
     'app/application',
+    'canopsis/canopsisConfiguration',
     'app/lib/helpers/validationtextfield'
-], function(Ember, Application) {
+], function(Ember, Application, canopsisConfiguration) {
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone;
 
     var component = Ember.Component.extend({
         tagName: 'span',
+
+        canopsisConfiguration: canopsisConfiguration,
+        debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
+
         init: function() {
             console.log("init editor compo");
 
