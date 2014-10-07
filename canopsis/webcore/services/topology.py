@@ -18,7 +18,7 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-from bottle import get, delete, put
+from bottle import get, delete, put, post
 
 from canopsis.common.ws import route
 from canopsis.topology.manager import Topology
@@ -27,6 +27,16 @@ manager = Topology()
 
 
 @route(get)
+def topology(ids=None, add_nodes=True):
+
+    if not ids:
+        ids = None
+
+    result = manager.get(ids=ids, add_nodes=add_nodes)
+
+    return result
+
+@route(post, payload=('ids', 'add_nodes'))
 def topology(ids=None, add_nodes=True):
 
     if not ids:
@@ -66,6 +76,14 @@ def topology(ids=None):
 
 
 @route(get)
+def topology_nodes(ids=None):
+
+    result = manager.get_nodes(ids=ids)
+
+    return result
+
+
+@route(post, payload='ids')
 def topology_nodes(ids=None):
 
     result = manager.get_nodes(ids=ids)

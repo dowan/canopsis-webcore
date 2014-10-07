@@ -19,31 +19,27 @@
 
 define(['ember', 'utils'], function(Ember, utils) {
 
-    var get = Ember.get;
+    var set = Ember.set;
 
-    Ember.Handlebars.helper('timestamp', function(value, attr, record) {
+    Ember.Handlebars.helper('interval2html', function(target, from , to) {
 
-        if (!Ember.isNone(record)) {
-            value = get(record, 'timeStampState') || value;
+        var html = '<div style="min-width:200px"></div>';
+
+        if(!Ember.isNone(from)) {
+            html += __('From') + ' ' + utils.dates.timestamp2String(from, 'day');
         }
 
-        var current = new Date().getTime();
-        var timestamp = new Date(value * 1000);
-        var timeSince = utils.dates.diffDate(timestamp, current, 'd') - 1;
-
-        var time ='';
-        var format;
-
-        if(value && !Ember.isNone(attr)) {
-            format = get(attr, 'options.format');
+        if(!Ember.isNone(from) && !Ember.isNone(to)) {
+            html += '<br />';
         }
 
-        if (timeSince === 0) {
-            format = 'timeOnly';
+        if(!Ember.isNone(to)) {
+            html += __('to') + ' ' + utils.dates.timestamp2String(to, 'day');
         }
-        time = utils.dates.timestamp2String(value, format, true);
 
-        return new Ember.Handlebars.SafeString(time);
+        set(target, 'interval2html', html);
+
+        return '';
     });
 
 });

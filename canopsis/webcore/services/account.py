@@ -74,6 +74,7 @@ def update_comp(e_id, e_type, composites):
                 return False
     return True
 
+
 @post('/account/group')
 def create_composite():
 
@@ -108,25 +109,6 @@ def delete_composite():
     return {'total': 1,
             'success': right_module.delete_composite(c_name),
             'data': []}
-
-
-@get('/account/profile')
-def get_profile():
-    profiles_id = request.params.get('profiles_id')
-    len_data = 0
-    data = []
-
-    for p_id in profiles_id:
-        p_comp = right_module.get_profile_composites(p_id)
-        if len(p_comp):
-            len_data += 1
-            data.append({'name': p_id,
-                         'rights': right_module.get_profile_rights(p_id),
-                         'composites': p_comp})
-
-    return {'total': len_data,
-            'success': not not len_data,
-            'data': data}
 
 
 @post('/account/profile')
@@ -244,26 +226,6 @@ def delete_role():
             'data': []}
 
 
-@get('/account/role')
-def get_role():
-    roles_id = request.params.get('roles_id')
-    len_data = 0
-    data = []
-
-    for r_id in roles_id:
-        r_profile = right_module.get_role_profile(r_id)
-
-        if len(r_profile):
-            len_data += 1
-            data.append({'name': r_id,
-                         'rights': right_module.get_role_rights(r_id),
-                         'profile': r_profile})
-
-    return {'total': len_data,
-            'success': not not len_data,
-            'data': data}
-
-
 @post('/account/user')
 def create_user():
 
@@ -301,24 +263,6 @@ def create_user():
         return ROUTE_FAIL
 
     return ROUTE_SUCCESS
-
-
-@get('/account/user')
-def get_user():
-    users_id = request.params.get('users_id')
-    len_data = 0
-    data = []
-
-    for u_id in users_id:
-        user = right_module.get_user(u_id)
-
-        if user:
-            len_data += 1
-            data.append(user)
-
-    return {'total': len_data,
-            'success': not not len_data,
-            'data': data}
 
 
 @get('/account/user/rights')

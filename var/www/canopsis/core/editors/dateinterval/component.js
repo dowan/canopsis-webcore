@@ -56,8 +56,8 @@ define([
                     startDate: moment().subtract('days', 29),
                     endDate: moment()
                 },
-                function(start, end) {
-
+                function(start, end, label) {
+                    set(datepickerComponent, 'label', label);
                     var startTimestamp = parseInt(new Date(start).getTime() / 1000);
                     var stopTimestamp = parseInt(new Date(end).getTime() / 1000);
                     console.log('startTimestamp', startTimestamp, 'stopTimestamp', stopTimestamp);

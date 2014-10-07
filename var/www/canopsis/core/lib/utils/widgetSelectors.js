@@ -19,6 +19,10 @@
 
 define(['ember'], function(Ember) {
 
+    var get = Ember.get,
+        set = Ember.set;
+
+
     var widgetSelectors = {
 
 
@@ -29,12 +33,13 @@ define(['ember'], function(Ember) {
                 return {};
             }
 
-            tree = {};
+            var tree = {};
             console.log('enter tree for widget' , widget.get('id'));
             var widgets = widgetSelectors.directChildren(widget);
             var sub_tree = [];
 
-            for (var i = 0, l = widgets.length; i < l; i++) {
+            var len = widgets.length;
+            for (var i = 0, l = len; i < l; i++) {
                 console.log('iterating over widget ', widgets[i].get('id'));
                 sub_tree.push(widgetSelectors.toTree(widgets[i]));
             }
@@ -62,7 +67,8 @@ define(['ember'], function(Ember) {
             var result = [];
 
             if(!Ember.isNone(widgets)) {
-                for (var i = 0, l = widgets.length; i < l; i++) {
+                var len = widgets.length;
+                for (var i=0; i < len; i++) {
                     result.push(get(widgets[i], 'widget'));
                 }
             }
@@ -79,12 +85,14 @@ define(['ember'], function(Ember) {
             var all = [];
             var widgets = widgetSelectors.directChildren(widget);
 
-            for (var i = 0, li = widgets.length; i < l; i++) {
+            var len = widgets.length;
+            for (var i=0; i < len; i++) {
                 console.log('iterating over widget ',i);
 
                 var children = widgetSelectors.children(widgets[i]);
 
-                for(var j = 0, lj = children.length; j < lj;j++){
+                var len1 = children.length;
+                for(var j = 0, lj = len1; j < lj;j++){
                     console.log('iterating over sub children', j );
                     all.push(children[j]);
                 }
