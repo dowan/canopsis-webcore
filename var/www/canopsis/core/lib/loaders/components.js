@@ -33,6 +33,7 @@ var componentsTemplates = [
     'progressbar',
     'renderer',
     'searchbar',
+    'dictclassifiedcrecordselector',
     'stringclassifiedcrecordselector',
     'table',
     'tooltip',

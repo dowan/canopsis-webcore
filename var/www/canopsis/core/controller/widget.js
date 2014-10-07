@@ -23,12 +23,13 @@ define([
     'app/application',
     'app/controller/partialslotablecontroller',
     'app/lib/utils/userconfiguration',
+    'canopsis/canopsisConfiguration',
     'app/lib/utils/widgets',
     'app/lib/utils/routes',
     'app/lib/utils/forms',
-    'utils',
+    'utils'
+], function($, Ember, Application, PartialslotAbleController, userConfiguration, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, utils) {
 
-], function($, Ember, Application, PartialslotAbleController, userConfiguration, widgetUtils, routesUtils, formsUtils, utils) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -39,6 +40,9 @@ define([
          * This is useful mostly for debug, to know that a printend object is a widget
          */
         abstractType: "widget",
+
+        canopsisConfiguration: canopsisConfiguration,
+        debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
 
         userParams: {},
 
@@ -119,6 +123,15 @@ define([
 
 
         actions: {
+            /**
+             * Show debug info in console and put widget var in window.$E
+             */
+            inspect: function (widget) {
+                window.$E = get(this, 'content');
+                console.info('--- Widget put in global variable $E ---');
+                console.info(window.$E);
+            },
+
             do: function(action) {
                 var params = [];
                 for (var i = 1, l = arguments.length; i < l; i++) {
