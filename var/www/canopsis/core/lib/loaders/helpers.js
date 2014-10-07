@@ -54,8 +54,8 @@ var helpers = [
     'validationtextfield',
     'unset',
     'widgetslot',
-    'recordCanBeAck'
-
+    'recordCanBeAck',
+    'interval2html'
 ];
 
 var deps = ['app/application', 'app/lib/wrappers/swag'];
