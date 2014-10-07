@@ -34,6 +34,7 @@ define([
     'app/lib/utils/dom',
     'app/lib/utils/routes',
     'app/lib/utils/forms',
+    'app/mixins/foldablelistlinemixin',
     'app/lib/loaders/schemas',
     'app/adapters/event',
     'app/adapters/userview',
@@ -44,7 +45,7 @@ define([
     'app/lib/wrappers/bootstrap-contextmenu',
     'app/adapters/group'
 ], function(Ember, DS, WidgetFactory, PaginationMixin, InspectableArrayMixin,
-        ArraySearchMixin, SortableArrayMixin, HistoryMixin, AckMixin, InfobuttonMixin, SendEventMixin, CustomFilterManagerMixin, utils, domUtils, routesUtils, formsUtils) {
+        ArraySearchMixin, SortableArrayMixin, HistoryMixin, AckMixin, InfobuttonMixin, SendEventMixin, CustomFilterManagerMixin, utils, domUtils, routesUtils, formsUtils, FoldableListLineMixin) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -53,7 +54,7 @@ define([
         mixins: [
             InspectableArrayMixin,
             PaginationMixin
-        ]
+        ],
     };
 
     var ListViewMixin = Ember.Mixin.create({
