@@ -8,7 +8,7 @@ define([], function () {
     var canopsisConfiguration = {
         DEBUG: true,
         VERBOSE: 1,
-        DISPLAY_SCHAMA_MANAGER: true,
+        DISPLAY_SCHEMA_MANAGER: true,
         REFRESH_ALL_WIDGETS: false,
         TRANSLATE: true,
         SHOW_TRANSLATIONS: false,
