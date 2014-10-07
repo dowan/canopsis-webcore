@@ -17,20 +17,19 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/application',
-    'app/components/classifiedcrecordselector/component'
-], function(Ember, Application, Classifiedcrecordselector) {
+define(['ember'], function(Ember) {
 
-    var get = Ember.get,
-        set = Ember.set;
+    var set = Ember.set;
 
-    var component = Classifiedcrecordselector.extend({
-        multiselect: true
+    var debugUtils = Ember.Object.create({
+        inspectObject: function(object) {
+            window.$E = object;
+
+            set(this, 'inspectedObject', object);
+
+            console.info('--- inspect object :', this.inspectedObject);
+        }
     });
 
-    Application.ComponentDictclassifiedcrecordselectorComponent = component;
-
-    return component;
+    return debugUtils;
 });
