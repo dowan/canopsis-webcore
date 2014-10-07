@@ -6,6 +6,10 @@
     {{component-checkbox checked=isSelected class="toggle"}}
 </td>
 
+<td>
+    {{partialslot slot=controller.parentController._partials.testou}}
+</td>
+
 {{#each attr in parentController.shown_columns}}
     {{#if attr.options.show}}
         <td {{bind-attr class=attr.field}}>
@@ -24,8 +28,8 @@
     <td style="padding-left:0; padding-right:0">
         <div style="display:flex">
             {{set 'minified' true}}
-
             {{partialslot slot=controller.parentController._partials.itemactionbuttons}}
         </div>
     </td>
 {{/if}}
+

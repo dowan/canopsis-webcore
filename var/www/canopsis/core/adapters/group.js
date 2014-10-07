@@ -17,12 +17,24 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
 
-    var widgetsManager = {
-        all: [],
-        byClass: {}
-    };
+define([
+    'app/application',
+    'app/adapters/application',
+], function(Application, ApplicationAdapter) {
 
-    return widgetsManager;
+    var adapter = ApplicationAdapter.extend({
+
+        buildURL: function(type, id) {
+            return ("/account/" + type + (!!id ? "/" + id : ""));
+        }
+    });
+
+    Application.RoleAdapter = adapter;
+    Application.GroupAdapter = adapter;
+    Application.AccountAdapter = adapter;
+    Application.RightAdapter = adapter;
+    Application.ProfileAdapter = adapter;
+
+    return adapter;
 });

@@ -29,10 +29,11 @@ var widgetsTemplates = [
     { name:'uimaindropdown', url:'app/widgets/uimaindropdown', hasJSPart: true },
 //    { name:'multicrecordlist', url:'app/widgets/multicrecordlist', hasJSPart: true , TEMPLATE:'list'},
     { name:'jobmanager', url:'app/widgets/jobmanager', hasJSPart: true, TEMPLATE: 'list' },
+    { name:'euewi', url:'app/widgets/euewi', hasJSPart: true, TEMPLATE: 'list' },
     { name:'timegraph', url:'app/widgets/timegraph', hasJSPart: true},
     { name:'progressbar', url:'app/widgets/progressbar', hasJSPart: true},
-    { name:'graph', url:'app/widgets/graph', hasJSPart: true}
-
+    { name:'graph', url:'app/widgets/graph', hasJSPart: true},
+  //  { name:'gauge', url:'app/widgets/gauge', hasJSPart: true}
 ];
 
 var deps = ['ember'];

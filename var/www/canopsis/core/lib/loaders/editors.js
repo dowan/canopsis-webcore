@@ -51,6 +51,7 @@ var editorsTemplates = [
     { name: 'simplelist', js: 'v' },
     { name: 'source', js: 'v' },
     { name: 'state', js: 'w' },
+    { name: 'dictclassifiedcrecordselector' },
     { name: 'stringclassifiedcrecordselector' },
     { name: 'stringpair'},
     { name: 'tags' , js: "w" },

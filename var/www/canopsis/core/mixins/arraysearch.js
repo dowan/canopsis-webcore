@@ -76,18 +76,17 @@ define([
 
             //TODO these checks should be asserts
             if (searchableAttributes === undefined) {
-                    console.warn("searchableAttributes not defined in controller, but searchItems still called. Trying to recompute searchableAttributes.", this);
+                console.warn("searchableAttributes not defined in controller, but searchItems still called. Trying to recompute searchableAttributes.", this);
 
-                    this.searchableAttributesUpdate();
+                this.searchableAttributesUpdate();
 
-                    searchableAttributes = get(this, 'searchableAttributes');
+                searchableAttributes = get(this, 'searchableAttributes');
 
-                    console.log('new searchableAttributes', searchableAttributes);
-                    if(searchableAttributes === undefined) {
-                            console.warn("searchableAttributes not defined in controller, but searchItems still called. Doing nothing.", this);
-                            return;
-                    }
-
+                console.log('new searchableAttributes', searchableAttributes);
+                if(searchableAttributes === undefined) {
+                    console.warn("searchableAttributes not defined in controller, but searchItems still called. Doing nothing.", this);
+                    return;
+                }
             }
             if (typeof searchableAttributes !== "object") {
                     console.warn("searchableAttributes should be an array.", this);
@@ -99,7 +98,7 @@ define([
             }
 
             var filter_orArray = [];
-            for (var i = 0; i < searchableAttributes.length; i++) {
+            for (var i = 0, l = searchableAttributes.length; i < l; i++) {
                     var filter_orArrayItem = {};
                     filter_orArrayItem[searchableAttributes[i]] = {"$regex": searchPhrase, "$options": "i"};
                     filter_orArray.pushObject(filter_orArrayItem);
@@ -110,17 +109,34 @@ define([
 
         searchableAttributesUpdate: function(){
             console.log('shown_columnsChanged');
-            var shown_columns = get(this, 'shown_columns');
-            var searchableAttributes = Ember.A();
 
-            for (var i = 0, l = shown_columns.length; i < l; i++) {
-                // if(shown_columns[i].searchable === true) {
+            var searchableColumns = get(this, 'searchable_columns');
+
+            if (Ember.isNone(searchableColumns)) {
+                //legacy search on all shown fields.
+                var shown_columns = get(this, 'shown_columns');
+                var searchableAttributes = Ember.A();
+
+                for (var i = 0, l = shown_columns.length; i < l; i++) {
                     searchableAttributes.push(shown_columns[i].field);
-                // }
+                }
+
+                set(this, 'searchableAttributes', searchableAttributes);
+                console.log('new searchableAttributes', searchableAttributes);
+            } else {
+                //User or default configuration made searchable ordered fields that greatly should match database indexed fields.
+                var searchableAttributes = Ember.A();
+
+                for (var i=0, l=searchableColumns.length; i < l; i++) {
+                        searchableAttributes.push(searchableColumns[i]);
+                }
+
+                set(this, 'searchableAttributes', searchableAttributes);
+                console.log('new searchableAttributes computed from widget parameters', searchableAttributes);
+
+
             }
 
-            set(this, 'searchableAttributes', searchableAttributes);
-            console.log('new searchableAttributes', searchableAttributes);
 
         }.observes('shown_columns')
     });

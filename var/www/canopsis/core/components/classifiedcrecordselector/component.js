@@ -58,10 +58,39 @@ define([
             }
         },
 
-        /**
-         * Must be implemented to fill the content at form load
-         */
-        setInitialContent: function(initialContent) {},
+        setInitialContent: function(initialContent) {
+            var valueKey = get(this, 'valueKey');
+
+            console.log('setInitialContent', valueKey);
+            if(initialContent) {
+                if(valueKey) {
+                    set(this, 'loadingInitialContent', "true");
+                }
+
+                //for the "if(valueKey)" case, check extractItems method
+                if(!valueKey) {
+                    if( typeof initialContent === "string") {
+                        //we assume here that there is only one value
+                        set(this, 'selectionUnprepared', [{ 'name': initialContent}]);
+                    } else {
+                        if( typeof initialContent === "object" && initialContent !== null) {
+                            var buffer = [];
+
+                            for (var key in initialContent) {
+                                if (initialContent.hasOwnProperty(key)) {
+                                    buffer.pushObject({'name': key});
+                                }
+                            }
+
+                            set(this, 'selectionUnprepared', buffer);
+                        } else {
+                            set(this, 'selectionUnprepared', []);
+                        }
+
+                    }
+                }
+            }
+        },
 
         /*
          * Compute a structure with classified item each time the 'items' property changed
@@ -166,7 +195,47 @@ define([
             });
         },
 
-        extractItems: function() {}
+        extractItems: function(items) {
+            var valueKey = get(this, 'valueKey');
+            var initialContent = get(this, 'content');
+
+            console.log('extractItems', initialContent);
+            if(valueKey) {
+                //Fetch values with ajax request content
+                var correspondingExtractedItem;
+
+                if(typeof initialContent === "string") {
+                    console.log('extractItems with valueKey', arguments, Ember.inspect(initialContent));
+
+                    correspondingExtractedItem = items.findBy('id', initialContent);
+
+                    console.log('correspondingExtractedItem', correspondingExtractedItem);
+                    if(correspondingExtractedItem !== undefined) {
+                        selectionUnprepared = [{ name: get(correspondingExtractedItem, 'crecord_name'), value: get(correspondingExtractedItem, 'id')}];
+                        set(this, 'selectionUnprepared', selectionUnprepared);
+                    }
+                } else if( typeof initialContent === "object" && initialContent !== null) {
+                    var buffer = [];
+
+                    for (var key in initialContent) {
+                        if (initialContent.hasOwnProperty(key)) {
+
+                            correspondingExtractedItem = items.findBy('id', key);
+                            var selectionObject = {
+                                name: get(correspondingExtractedItem, 'crecord_name'),
+                                value: get(correspondingExtractedItem, 'id')
+                            };
+
+                            buffer.pushObject(selectionObject);
+                        }
+                    }
+
+                    set(this, 'selectionUnprepared', buffer);
+                }
+
+                set(this, 'loadingInitialContent', false);
+            }
+        }
     });
 
     Application.ComponentClassifiedcrecordselectorComponent = component;
