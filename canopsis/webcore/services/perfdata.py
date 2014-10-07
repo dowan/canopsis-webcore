@@ -72,18 +72,17 @@ def perfdata(
         if with_meta:
             result.append({
                 "points": ret[0],
-                "length": ret[1]
+                "meta": ret[1]
             })
 
         else:
             result.append({
-                "points": ret,
-                "length": len(ret)
+                "points": ret
             })
 
     if len(result) == 1:
         if with_meta:
-            result = (result[0]['points'], result[0]['length'])
+            result = (result[0]['points'], result[0]['meta'])
 
         else:
             result = result[0]

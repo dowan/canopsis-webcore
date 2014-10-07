@@ -47,16 +47,7 @@ define([
         },
 
         fetchMany: function(metrics, tstart, tend) {
-            var promises = [];
-
-            for(var i = 0, l = metrics.length; i < l; i++) {
-                var metric = metrics[i];
-
-                var promise = this.fetch(metric, tstart, tend);
-                promises.push(promise);
-            }
-
-            return $.when.apply(this, promises);
+            return this.fetch(JSON.stringify(metrics), tstart, tend);
         },
 
         aggregate: function(metric_id, tstart, tend, method, interval) {
@@ -80,16 +71,7 @@ define([
         },
 
         aggregateMany: function(metrics, tstart, tend, method, interval) {
-            var promises = [];
-
-            for(var i = 0, l = metrics.length; i < l; i++) {
-                var metric = metrics[i];
-
-                var promise = this.aggregate(metric, tstart, tend, method, interval);
-                promises.push(promise);
-            }
-
-            return $.when.apply(this, promises);
+            return this.aggregate(JSON.stringify(metrics), tstart, tend, method, interval);
         }
     });
 
