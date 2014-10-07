@@ -56,6 +56,7 @@ var editorsTemplates = [
     { name: 'stringpair'},
     { name: 'tags' , js: "w" },
 
+    { name: 'rights', js: "w" },
     { name: 'textarea' },
     { name: 'timeinterval', js: 'w' },
     { name: 'timestamp', js: 'w' },

@@ -20,8 +20,7 @@
 
 define([
     'ember',
-    'app/application',
-    'app/lib/utils/i18n'
+    'app/application'
 ], function(Ember, Application) {
 
     var get = Ember.get,

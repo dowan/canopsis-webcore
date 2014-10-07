@@ -24,8 +24,10 @@ define([
     'app/lib/indexesregistry',
     'runtime.conf'
 ], function($, Ember, Application, indexesregistry, Canopsis) {
+
     var get = Ember.get,
         set = Ember.set;
+
 
     var component = Ember.Component.extend({
         init:function() {
@@ -41,26 +43,6 @@ define([
 
             this._super.apply(this, arguments);
         },
-
-        currentClauseIndex: -1,
-
-        cfilter_serialized : Ember.computed.alias('content'),
-        viewTabColumns: [{ name:'component', title:'component' }, { name:'resource', title:'resource' }],
-
-        indexes : indexesregistry,
-        selectedIndexName : 'event',
-
-        selectedIndexChanged: function () {
-            var selectedIndexName = get(this, 'selectedIndexName');
-            var indexes = get(this, 'indexes');
-
-            for (var i = 0, l = indexes.all.length; i < l; i++) {
-                var currentIndex = indexes.all[i];
-                if(currentIndex.name === selectedIndexName) {
-                    set(this, 'indexesTree', currentIndex.tree);
-                }
-            }
-        }.observes('selectedIndexName'),
 
         indexesTree: {
             'component': {
@@ -91,6 +73,26 @@ define([
                 }
             }
         },
+
+        currentClauseIndex: -1,
+
+        cfilter_serialized : Ember.computed.alias('content'),
+        viewTabColumns: [{ name:'component', title:'component' }, { name:'resource', title:'resource' }],
+
+        indexes : indexesregistry,
+        selectedIndexName : 'event',
+
+        selectedIndexChanged: function () {
+            var selectedIndexName = get(this, 'selectedIndexName');
+            var indexes = get(this, 'indexes');
+
+            for (var i = 0, l = indexes.all.length; i < l; i++) {
+                var currentIndex = indexes.all[i];
+                if(currentIndex.name === selectedIndexName) {
+                    set(this, 'indexesTree', currentIndex.tree);
+                }
+            }
+        }.observes('selectedIndexName'),
 
         clauses: function() {
             var cfilter_serialized = get(this, 'cfilter_serialized');
@@ -361,7 +363,7 @@ define([
         clausesChanged: function() {
             var clauses = get(this, 'clauses');
 
-            console.log('clausesChanged', clauses, get(this, 'cfilter_serialized'));
+            console.log('clausesChanged', clauses, clauses.length);
 
             //detect if we have to display the addOrClause button
             if (clauses.length === 0) {
@@ -467,9 +469,11 @@ define([
         },
 
         pushEmptyClause: function(currentClause) {
-            console.group('pushEmptyAndClause');
+            console.group('pushEmptyAndClause', get(this, 'onlyAllowRegisteredIndexes'));
 
             var keys = this.getIndexesForNewAndClause(currentClause);
+
+            var useIndexes = get(this, 'onlyAllowRegisteredIndexes') === true;
 
             console.log('available_indexes', keys);
 
@@ -495,7 +499,7 @@ define([
                 set(lastAndClauseOfList, 'lastOfList', false);
             }
 
-            if (get(this, 'onlyAllowRegisteredIndexes') === false || get(field, 'options.available_indexes.length') > 0) {
+            if (!useIndexes || get(field, 'options.available_indexes.length') > 0) {
                 currentClause.and.pushObject(Ember.Object.create(field));
             }
 
@@ -518,12 +522,20 @@ define([
                 var clauses = this.get('clauses');
                 var currentClauseIndex = this.get('currentClauseIndex');
 
+                console.log(currentClauseIndex);
+                var currentClause = clauses.objectAt(currentClauseIndex);
+
+                if(Ember.isNone(currentClause)) {
+                    console.error('currentClause seems empty');
+                }
+
                 if (currentClauseIndex >= 0) {
-                    var currentClause = clauses.objectAt(currentClauseIndex);
                     var useIndexes = get(this, 'onlyAllowRegisteredIndexes');
 
-                    //console.log(' + current clause was bidule', wasFinalized, 'use index', useIndexes);
+                    console.log('test if it\'s possible to add a and clause', useIndexes, !wasFinalized);
                     if (useIndexes || !wasFinalized) {
+                        console.log('try to push empty and clause');
+
                         this.pushEmptyClause(currentClause);
                     }
                 }
@@ -554,6 +566,7 @@ define([
 
                 set(this, 'currentClauseIndex', clauses.length - 1);
 
+                console.log('calling addAndClause');
                 this.send('addAndClause');
                 this.send('activate', currentClause);
 

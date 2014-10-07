@@ -42,6 +42,7 @@ var templates = [
     { name: 'consolemanagerstatusmenu' },
     { name: 'promisemanagerstatusmenu' },
     { name: 'presettoolbar' },
+    { name: 'rightschecksumbuttons' },
 
     { name: 'actionbutton-edit', classes: ["action"], icon : "pencil", label : "Edit"},
     { name: 'actionbutton-ack', classes: ["action", "toolbar"], icon : "ok", label : "Ack"},

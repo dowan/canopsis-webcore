@@ -19,29 +19,28 @@
 
 define(['ember', 'utils'], function(Ember, utils) {
 
-    Ember.Handlebars.helper('timestamp', function(value, attr , record) {
+    var get = Ember.get;
 
-        if (record)
-        {
-            value = record.timeStampState || value;
+    Ember.Handlebars.helper('timestamp', function(value, attr, record) {
+
+        if (!Ember.isNone(record)) {
+            value = get(record, 'timeStampState') || value;
         }
 
         var current = new Date().getTime();
         var timestamp = new Date(value * 1000);
-        var timeSince = utils.dates.diffDate(timestamp, current, "d") - 1;
 
+        var timeSince = utils.dates.diffDate(timestamp, current, 'd') - 1;
+
+        var time ='';
         var format;
-        var time ="";
-        if(value && attr.options)
-        {
-            format = attr.options.format;
-            if (timeSince === 0) {
-                format = 'timeOnly';
-            }
+
+        if(value && !Ember.isNone(attr)) {
+            format = get(attr, 'options.format');
         }
-        else
-        {
-            format = '';
+
+        if (timeSince === 0) {
+            format = 'timeOnly';
         }
         time = utils.dates.timestamp2String(value, format, true);
 

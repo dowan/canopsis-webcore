@@ -17,20 +17,29 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/application',
-    'app/components/classifiedcrecordselector/component'
-], function(Ember, Application, Classifiedcrecordselector) {
+define(['ember', 'utils'], function(Ember, utils) {
 
-    var get = Ember.get,
-        set = Ember.set;
+    var set = Ember.set;
 
-    var component = Classifiedcrecordselector.extend({
-        multiselect: true
+    Ember.Handlebars.helper('interval2html', function(target, from , to) {
+
+        var html = '<div style="min-width:200px"></div>';
+
+        if(!Ember.isNone(from)) {
+            html += __('From') + ' ' + utils.dates.timestamp2String(from, 'day');
+        }
+
+        if(!Ember.isNone(from) && !Ember.isNone(to)) {
+            html += '<br />';
+        }
+
+        if(!Ember.isNone(to)) {
+            html += __('to') + ' ' + utils.dates.timestamp2String(to, 'day');
+        }
+
+        set(target, 'interval2html', html);
+
+        return '';
     });
 
-    Application.ComponentDictclassifiedcrecordselectorComponent = component;
-
-    return component;
 });

@@ -27,8 +27,9 @@ define([
     'app/lib/utils/widgets',
     'app/lib/utils/routes',
     'app/lib/utils/forms',
+    'app/lib/utils/debug',
     'utils'
-], function($, Ember, Application, PartialslotAbleController, userConfiguration, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, utils) {
+], function($, Ember, Application, PartialslotAbleController, userConfiguration, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, utils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -49,8 +50,6 @@ define([
         editMode : Ember.computed.alias('controllers.application.editMode'),
 
         init: function () {
-
-
             console.log('widget init');
 
             set(this, 'model.controllerInstance', this);
@@ -127,9 +126,7 @@ define([
              * Show debug info in console and put widget var in window.$E
              */
             inspect: function (widget) {
-                window.$E = get(this, 'content');
-                console.info('--- Widget put in global variable $E ---');
-                console.info(window.$E);
+                debugUtils.inspectObject(this);
             },
 
             do: function(action) {
@@ -140,6 +137,7 @@ define([
 
                 this.send(action, params);
             },
+
             creationForm: function(itemType) {
                 formsUtils.addRecord(itemType);
             },
