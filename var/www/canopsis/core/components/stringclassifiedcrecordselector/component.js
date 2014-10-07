@@ -43,46 +43,7 @@ define([
                 console.log('selection changed', res);
             }
             set(this, 'selection', res);
-        }.observes('selectionUnprepared', 'selectionUnprepared.@each'),
-
-        setInitialContent: function(initialContent) {
-            var valueKey = get(this, 'valueKey');
-
-            console.log('setInitialContent', valueKey);
-            if(initialContent) {
-                if(valueKey) {
-                    set(this, 'loadingInitialContent', "true");
-                }
-
-                if( typeof initialContent === "string") {
-                    if(!valueKey) {
-                        set(this, 'selectionUnprepared', [{ 'name': initialContent}]);
-                    }
-                    //else see extractItems
-                } else {
-                    set(this, 'selectionUnprepared', []);
-                }
-            }
-        },
-
-        extractItems: function(items) {
-            var valueKey = get(this, 'valueKey');
-            var initialContent = get(this, 'content');
-
-            if(valueKey) {
-                console.log('extractItems with valueKey', arguments, Ember.inspect(initialContent));
-                window.$DGB = initialContent;
-
-                var correspondingExtractedItem = items.findBy('id', initialContent);
-
-                console.log('correspondingExtractedItem', correspondingExtractedItem);
-                if(correspondingExtractedItem !== undefined) {
-                    selectionUnprepared = [{ name: get(correspondingExtractedItem, 'crecord_name'), value: get(correspondingExtractedItem, 'id')}];
-                    set(this, 'selectionUnprepared', selectionUnprepared);
-                }
-                this.set('loadingInitialContent', false);
-            }
-        }
+        }.observes('selectionUnprepared', 'selectionUnprepared.@each')
     });
 
     Application.ComponentStringclassifiedcrecordselectorComponent = component;

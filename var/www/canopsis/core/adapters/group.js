@@ -17,22 +17,24 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/application'
-], function(Ember, Application) {
-    var get = Ember.get,
-        set = Ember.set;
 
-    /**
-    */
-    var mixin = Ember.Mixin.create({
-        partials: {
-            // toolbar: ['presettoolbar']
+define([
+    'app/application',
+    'app/adapters/application',
+], function(Application, ApplicationAdapter) {
+
+    var adapter = ApplicationAdapter.extend({
+
+        buildURL: function(type, id) {
+            return ("/account/" + type + (!!id ? "/" + id : ""));
         }
     });
 
-    Application.RecordpresetMixin = mixin;
+    Application.RoleAdapter = adapter;
+    Application.GroupAdapter = adapter;
+    Application.AccountAdapter = adapter;
+    Application.RightAdapter = adapter;
+    Application.ProfileAdapter = adapter;
 
-    return mixin;
+    return adapter;
 });

@@ -45,6 +45,254 @@ group_managing_access = ['group.CPS_account_admin']
 root_account = Account(user="root", group="root")
 right_module = Rights()
 
+ROUTE_FAIL = {
+    'total': 1,
+    'success': False,
+    'data': []
+    }
+
+ROUTE_SUCCESS = {
+    'total': 1,
+    'success': True,
+    'data': []
+    }
+
+
+
+def update_rights(e_id, e_type, e_rights):
+    if e_rights:
+        for right in e_rights:
+            if not right_module.add_right(e_id, e_type, right, e_rights['checksum']):
+                return False
+    return True
+
+
+def update_comp(e_id, e_type, composites):
+    if composites:
+        for comp in composites:
+            if not right_module.add_composite(e_id, e_type, comp):
+                return False
+    return True
+
+@post('/account/group')
+def create_composite():
+    c_name = request.params.get('group_name')
+    c_rights = request.params.get('group_rights')
+
+    composite = right_module.get_composite(c_name)
+
+    if not composite or not right_module.create_composite(c_name, c_rights):
+        return ROUTE_FAIL
+
+    if not update_rights(c_name, 'composite', c_rights):
+        return ROUTE_FAIL
+
+    return ROUTE_SUCCESS
+
+
+@post('/account/group/delete')
+def delete_composite():
+    c_name = request.params.get('group_name')
+
+    return {'total': 1,
+            'success': right_module.delete_composite(c_name),
+            'data': []}
+
+
+@get('/account/profile')
+def get_profile():
+    profiles_id = request.params.get('profiles_id')
+    len_data = 0
+    data = []
+
+    for p_id in profiles_id:
+        p_comp = right_module.get_profile_composites(p_id)
+        if len(p_comp):
+            len_data += 1
+            data.append({'name': p_id,
+                         'rights': right_module.get_profile_rights(p_id),
+                         'composites': p_comp})
+
+    return {'total': len_data,
+            'success': not not len_data,
+            'data': data}
+
+
+@post('/account/profile')
+def update_profile():
+    p_id = request.params.get('profile_name')
+    p_comp = request.params.get('profile_groups')
+    p_rights = request.params.get('profile_rights')
+
+    profile = right_module.get_profile(p_id)
+
+    if not profile and not right_module.create_profile(p_id, p_comp):
+        return ROUTE_FAIL
+
+    if not update_comp(p_id, 'profile', p_comp):
+        return ROUTE_FAIL
+
+    if not update_rights(p_id, 'profile', p_rights):
+        return ROUTE_FAIL
+
+    return ROUTE_SUCCESS
+
+
+@post('/account/profile/delete')
+def delete_profile():
+    p_name = request.params.get('profile_name')
+
+    return {'total': 1,
+            'success': right_module.delete_profile(p_name),
+            'data': []}
+
+
+@post('/account/profile/rmgroup')
+def rmcomposite_profile():
+    c_name = request.params.get('group_name')
+    p_name = request.params.get('profile_name')
+
+    return {'total': 1,
+            'success': right_module.rm_comp_profile(p_name, c_name),
+            'data': []}
+
+
+@post('/account/role')
+def update_role():
+    r_id = request.params.get('role_name')
+    r_comp = request.params.get('role_groups')
+    r_rights = request.params.get('role_rights')
+    r_profiles = request.params.get('role_profile')
+
+    role = right_module.get_role(r_id)
+
+    if not role and not right_module.create_role(r_id, r_profile):
+        return ROUTE_FAIL
+
+    for profile in r_profiles:
+        if 'profile' in role or not profile in role['profile']:
+            if not right_module.add_profile(r_id, profile):
+                return ROUTE_FAIL
+
+    if not update_comp(r_id, 'role', r_comp):
+        return ROUTE_FAIL
+
+    if not update_rights(r_id, 'role', r_rights):
+        return ROUTE_FAIL
+
+    return ROUTE_SUCCESS
+
+
+@post('/account/role/rmgroup')
+def rmcomposite_role():
+    c_name = request.params.get('group_name')
+    r_name = request.params.get('role_name')
+
+    return {'total': 1,
+            'success': right_module.rm_comp_role(r_name, c_name),
+            'data': []}
+
+
+@post('/account/role/rmprofile')
+def rmprofile_role():
+    r_name = request.params.get('role_name')
+    p_name = request.params.get('profile_name')
+
+    return {'total': 1,
+            'success': right_module.remove_profile(r_name, p_name),
+            'data': []}
+
+
+@post('/account/role/delete')
+def delete_role():
+    r_name = request.params.get('role_name')
+
+    return {'total': 1,
+            'success': right_module.delete_role(r_name),
+            'data': []}
+
+
+@get('/account/role')
+def get_role():
+    roles_id = request.params.get('roles_id')
+    len_data = 0
+    data = []
+
+    for r_id in roles_id:
+        r_profile = right_module.get_role_profile(r_id)
+
+        if len(r_profile):
+            len_data += 1
+            data.append({'name': r_id,
+                         'rights': right_module.get_role_rights(r_id),
+                         'profile': r_profile})
+
+    return {'total': len_data,
+            'success': not not len_data,
+            'data': data}
+
+
+@post('/account/user')
+def create_user():
+    u_id = request.params.get('user_name')
+    u_role = request.params.get('user_role')
+    u_contact = request.params.get('user_contact')
+    u_rights = request.params.get('user_rights')
+    u_comp = request.params.get('user_groups')
+
+    user = right_module.get_user(u_id)
+
+    if not user and not right_module.create_user(u_id, u_role,
+                                                 contact=u_contact,
+                                                 rights=u_rights,
+                                                 composites=u_comp):
+        return ROUTE_FAIL
+
+    if not update_comp(u_id, 'user', u_comp):
+        return ROUTE_FAIL
+
+    if not update_rights(u_id, 'user', u_rights):
+        return ROUTE_FAIL
+
+    if not right_module.add_role(u_id, u_role):
+        return ROUTE_FAIL
+
+    return ROUTE_SUCCESS
+
+
+@get('/account/user')
+def get_user():
+    users_id = request.params.get('users_id')
+    len_data = 0
+    data = []
+
+    for u_id in users_id:
+        user = right_module.get_user(u_id)
+
+        if user:
+            len_data += 1
+            data.append(user)
+
+    return {'total': len_data,
+            'success': not not len_data,
+            'data': data}
+
+
+@get('/account/user/rights')
+def get_user_rights():
+    u_id = request.params.get('user_id')
+    u_rights = right_module.get_user_rights(u_id)
+
+    if not u_rights:
+        return {'total': 1,
+                'success': False,
+                'data': []}
+
+    return {'total': len(u_rights),
+            'success': True,
+            'data': [u_rights]}
+
+
 
 #### GET Me
 @get('/account/me')

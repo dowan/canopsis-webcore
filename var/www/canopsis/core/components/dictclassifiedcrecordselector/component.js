@@ -19,20 +19,17 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/application',
+    'app/components/classifiedcrecordselector/component'
+], function(Ember, Application, Classifiedcrecordselector) {
     var get = Ember.get,
         set = Ember.set;
 
-    /**
-    */
-    var mixin = Ember.Mixin.create({
-        partials: {
-            // toolbar: ['presettoolbar']
-        }
+    var component = Classifiedcrecordselector.extend({
+        multiselect: true
     });
 
-    Application.RecordpresetMixin = mixin;
+    Application.ComponentDictclassifiedcrecordselectorComponent = component;
 
-    return mixin;
+    return component;
 });

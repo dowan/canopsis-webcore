@@ -22,7 +22,53 @@ define([
     'app/lib/loaders/schemas'
 ], function(WidgetFactory) {
 
-    var widget = WidgetFactory('text', {});
+    var get = Ember.get,
+        set = Ember.set,
+        isNone = Ember.isNone;
+
+    var count = 0;
+
+    var TextViewMixin = Ember.Mixin.create({
+        didInsertElement: function () {
+            set(this, 'controller.viewElementId', get(this, 'elementId'));
+            this._super.apply(this, arguments);
+        },
+
+        willDestroyElement: function () {
+            this.controller.unloadGeneratedTemplate();
+            this._super.apply(this, arguments);
+        }
+    });
+
+    var widget = WidgetFactory('text', {
+        viewMixins: [
+            TextViewMixin
+        ],
+
+        generatedTemplateName: function() {
+            var viewElementId = get(this, 'viewElementId');
+
+            var template = get(this, 'html');
+            var templateName = 'dynamic-' + viewElementId;
+            console.log('setting template', templateName, template);
+            var tpl = Ember.Handlebars.compile(template);
+            set(Ember.TEMPLATES, templateName, tpl);
+
+            console.log('tempalte set.', tpl, Ember.TEMPLATES[templateName]);
+            return templateName;
+        }.property('viewElementId'),
+
+        unloadGeneratedTemplate: function() {
+            var generatedTemplateName = get(this, 'generatedTemplateName');
+            if(isNone(generatedTemplateName)) {
+                console.warn('no generated template found while destroying view', this);
+                return;
+            }
+
+            console.log('destroying generated template', generatedTemplateName);
+            delete Ember.TEMPLATES[generatedTemplateName];
+        }
+    });
 
     return widget;
 });

@@ -20,20 +20,34 @@
 define([
     'ember',
     'app/application',
+    'canopsis/canopsisConfiguration',
     'app/lib/helpers/validationtextfield'
-], function(Ember, Application) {
+], function(Ember, Application, canopsisConfiguration) {
+
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone;
 
     var component = Ember.Component.extend({
         tagName: 'span',
+
+        canopsisConfiguration: canopsisConfiguration,
+        debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
+
         init: function() {
             console.log("init editor compo");
 
             this._super();
 
             set(this, 'templateData.keywords.attr', Ember.computed.alias('content'));
+        },
+
+        actions: {
+            inspect: function() {
+                window.$E = get(this, 'content');
+                console.info('--- Attribute put in global variable $E ---');
+                console.info(window.$E);
+            }
         },
 
         editorType: function() {

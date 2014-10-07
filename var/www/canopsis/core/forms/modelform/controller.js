@@ -173,7 +173,9 @@ define([
 
                 if(options && options.override_labels) {
                     for(var key in options.override_labels) {
-                        override_inverse[options.override_labels[key]] = key;
+                        if(options.override_labels.hasOwnProperty(key)) {
+                            override_inverse[options.override_labels[key]] = key;
+                        }
                     }
                 }
 
