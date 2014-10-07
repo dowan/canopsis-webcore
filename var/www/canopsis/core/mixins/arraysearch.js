@@ -110,17 +110,34 @@ define([
 
         searchableAttributesUpdate: function(){
             console.log('shown_columnsChanged');
-            var shown_columns = get(this, 'shown_columns');
-            var searchableAttributes = Ember.A();
 
-            for (var i = 0, l = shown_columns.length; i < l; i++) {
-                // if(shown_columns[i].searchable === true) {
+            var searchableColumns = get(this, 'searchable_columns');
+
+            if (Ember.isNone(searchableColumns)) {
+                //legacy search on all shown fields.
+                var shown_columns = get(this, 'shown_columns');
+                var searchableAttributes = Ember.A();
+
+                for (var i = 0, l = shown_columns.length; i < l; i++) {
                     searchableAttributes.push(shown_columns[i].field);
-                // }
+                }
+
+                set(this, 'searchableAttributes', searchableAttributes);
+                console.log('new searchableAttributes', searchableAttributes);
+            } else {
+                //User or default configuration made searchable ordered fields that greatly should match database indexed fields.
+                var searchableAttributes = Ember.A();
+
+                for (var i=0, l=searchableColumns.length; i < l; i++) {
+                        searchableAttributes.push(searchableColumns[i]);
+                }
+
+                set(this, 'searchableAttributes', searchableAttributes);
+                console.log('new searchableAttributes computed from widget parameters', searchableAttributes);
+
+
             }
 
-            set(this, 'searchableAttributes', searchableAttributes);
-            console.log('new searchableAttributes', searchableAttributes);
 
         }.observes('shown_columns')
     });
