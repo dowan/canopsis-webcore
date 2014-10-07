@@ -25,8 +25,28 @@ define([
 
     var adapter = ApplicationAdapter.extend({
 
-        buildURL: function(type, id) {
-            return ("/account/" + type + (!!id ? "/" + id : ""));
+        buildURL: function(type, id, record_or_records, method) {
+            if(type === "account") {
+                type = "user";
+            }
+
+            if(method === 'GET') {
+                return ('/rest/default_canopsis/' + type + (!!id ? '/' + id : ''));
+            } else {
+                return ('/account/' + type + (!!id ? '/' + id : ''));
+            }
+        },
+
+        find: function(store, type, id, record) {
+            return this.ajax(this.buildURL(type.typeKey, id, record, 'GET'), 'GET');
+        },
+
+        findMany: function(store, type, ids, records) {
+            return this.ajax(this.buildURL(type.typeKey, ids, records, 'GET'), 'GET', { data: { ids: ids } });
+        },
+
+        findQuery: function(store, type, query) {
+            return this.ajax(this.buildURL(type.typeKey, undefined, undefined, 'GET'), 'GET', { data: query });
         }
     });
 
