@@ -18,6 +18,7 @@
 */
 
 define([
+    'ember',
     'app/application',
     'app/routes/authenticated',
     'utils',
@@ -26,7 +27,7 @@ define([
     'app/lib/utils/widgetSelectors',
     'app/lib/loaders/schemas',
     'seeds/RoutesLoader'
-], function(Application, AuthenticatedRoute, utils, dataUtils, formUtils, widgetSelectorsUtils) {
+], function(Ember, Application, AuthenticatedRoute, utils, dataUtils, formUtils, widgetSelectorsUtils) {
     var set = Ember.set,
         get = Ember.get;
 
@@ -43,11 +44,12 @@ define([
 
             error: function(error, transition){
                 if (error.status === 0) {
-                } else if (error.status == 403) {
-                    //go to some default route
-                } else if (error.status == 401) {
-                    //handle 401
-                } else if (error.status == 404) {
+                    console.debug('no error detected in access status');
+                } else if (error.status === 403) {
+                    console.debug('go to some default route');
+                } else if (error.status === 401) {
+                    console.debug('handle 401');
+                } else if (error.status === 404) {
                     this.transitionTo('/userview/view.404');
                 } else {
                     console.error(error);
@@ -89,7 +91,7 @@ define([
                     var children = widgetSelectorsUtils.children(rootWidget);
 
                     record = get(form, 'formContext');
-                    interval = get(record, 'dateinterval');
+                    var interval = get(record, 'dateinterval');
 
                     //Set filter as void instead undefined
                     if (Ember.isNone(interval)) {
@@ -97,8 +99,8 @@ define([
                     }
 
                     console.debug('record generated', get(record, 'dateinterval'));
-
-                    for (var i = 0, l = children.length; i < l; i++) {
+                    var len = children.length;
+                    for (var i = 0, l = len; i < l; i++) {
 
                         console.debug('Child widget', get(children[i], 'id'), children[i]);
                         var widgetController = get(children[i], 'controllerInstance');
