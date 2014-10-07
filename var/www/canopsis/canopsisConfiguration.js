@@ -3,7 +3,7 @@ define([], function () {
     /*
     * Here is the canopsis UI main configuration file.
     * It is possible to add properies and values that are reachable
-    * from the whole application throught the namespace Canopsis.conf.PROPERTY
+    * from the whole application through the namespace Canopsis.conf.PROPERTY
     */
     var canopsisConfiguration = {
         DEBUG: true,
