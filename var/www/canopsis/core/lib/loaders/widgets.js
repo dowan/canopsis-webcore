@@ -33,7 +33,7 @@ var widgetsTemplates = [
     { name:'timegraph', url:'app/widgets/timegraph', hasJSPart: true},
     { name:'progressbar', url:'app/widgets/progressbar', hasJSPart: true},
     { name:'graph', url:'app/widgets/graph', hasJSPart: true},
-    { name:'gauge', url:'app/widgets/gauge', hasJSPart: true}
+  //  { name:'gauge', url:'app/widgets/gauge', hasJSPart: true}
 ];
 
 var deps = ['ember'];
