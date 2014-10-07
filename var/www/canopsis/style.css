@@ -12,6 +12,10 @@
 	z-index: 90;
 }
 
+.hand{
+	cursor:move;
+}
+
 #recorddisplayer .recorddisplayercontent {
 	text-align:left;
 }
