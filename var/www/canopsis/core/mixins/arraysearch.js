@@ -76,18 +76,17 @@ define([
 
             //TODO these checks should be asserts
             if (searchableAttributes === undefined) {
-                    console.warn("searchableAttributes not defined in controller, but searchItems still called. Trying to recompute searchableAttributes.", this);
+                console.warn("searchableAttributes not defined in controller, but searchItems still called. Trying to recompute searchableAttributes.", this);
 
-                    this.searchableAttributesUpdate();
+                this.searchableAttributesUpdate();
 
-                    searchableAttributes = get(this, 'searchableAttributes');
+                searchableAttributes = get(this, 'searchableAttributes');
 
-                    console.log('new searchableAttributes', searchableAttributes);
-                    if(searchableAttributes === undefined) {
-                            console.warn("searchableAttributes not defined in controller, but searchItems still called. Doing nothing.", this);
-                            return;
-                    }
-
+                console.log('new searchableAttributes', searchableAttributes);
+                if(searchableAttributes === undefined) {
+                    console.warn("searchableAttributes not defined in controller, but searchItems still called. Doing nothing.", this);
+                    return;
+                }
             }
             if (typeof searchableAttributes !== "object") {
                     console.warn("searchableAttributes should be an array.", this);
@@ -99,7 +98,7 @@ define([
             }
 
             var filter_orArray = [];
-            for (var i = 0; i < searchableAttributes.length; i++) {
+            for (var i = 0, l = searchableAttributes.length; i < l; i++) {
                     var filter_orArrayItem = {};
                     filter_orArrayItem[searchableAttributes[i]] = {"$regex": searchPhrase, "$options": "i"};
                     filter_orArray.pushObject(filter_orArrayItem);
