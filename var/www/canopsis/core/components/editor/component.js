@@ -23,6 +23,7 @@ define([
     'canopsis/canopsisConfiguration',
     'app/lib/helpers/validationtextfield'
 ], function(Ember, Application, canopsisConfiguration) {
+
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone;
@@ -44,7 +45,8 @@ define([
         actions: {
             inspect: function() {
                 window.$E = get(this, 'content');
-                console.log('--- Attribute put in global variable $E ---');
+                console.info('--- Attribute put in global variable $E ---');
+                console.info(window.$E);
             }
         },
 
