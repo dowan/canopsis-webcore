@@ -195,6 +195,6 @@ require.config({
     }
 });
 
-define(["canopsis/file_loader", 'seeds/RoutesLoader', 'app/lib/wrappers/console'], function () {
+define(['canopsis/file_loader', 'seeds/RoutesLoader', 'app/lib/wrappers/console', 'app/lib/helpers/i18n'], function () {
     require(['canopsis/main']);
 });
