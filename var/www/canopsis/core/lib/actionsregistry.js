@@ -41,6 +41,12 @@ define([], function() {
         },{
             name: 'logout',
             actionData: ['logout']
+        },{
+            name: 'refresh',
+            actionData: ['refresh']
+        },{
+            name: 'toggleFullscreen',
+            actionData: ['toggleFullscreen']
         }],
         byClass: {}
     };
