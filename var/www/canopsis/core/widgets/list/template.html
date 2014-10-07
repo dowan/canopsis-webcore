@@ -23,6 +23,9 @@
                     <th class="checkboxes">
                         {{component-checkbox checked=controller.isAllSelected class="toggle"}}
                     </th>
+                    <th class="checkboxes">
+                           
+                    </th>
                     {{#each attr in controller.shown_columns}}
                         {{#group}}
                             {{#if attr.options.show}}
@@ -54,6 +57,22 @@
                     {{#each controller.widgetData}}
                         {{render "listline" this
                             parentController=controller}}
+
+                        {{#if unfolded}}
+                            {{#if loaded}}
+                                {{{html}}}
+                            {{else}}
+                                <tr>
+                                    <td COLSPAN=5>
+                                        <li class="dropdown tasks-menu">
+                                            <a href="#">
+                                                <i class="fa fa-refresh fa-spin"></i>
+                                            </a>
+                                        </li>
+                                    </td>
+                                </tr>
+                            {{/if}}
+                        {{/if}}
                     {{/each}}
                 </tbody>
             {{/if}}

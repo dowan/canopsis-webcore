@@ -1,0 +1,9 @@
+{{#if unfolded}}
+	<span style="cursor:pointer;" {{action 'unfold_action' this}}>
+	    {{glyphicon "minus"}}
+	</span>
+{{else}}
+	<span style="cursor:pointer;" {{action 'unfold_action' this}}>
+	    {{glyphicon "plus"}}
+	</span>
+{{/if}}
