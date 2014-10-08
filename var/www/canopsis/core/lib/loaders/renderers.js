@@ -40,7 +40,8 @@ var renderersTemplates = [
     'subprocess',
     'tags',
     'timestamp',
-    'translator'
+    'translator',
+    'eventtype'
 ];
 
 var deps = ['ember'];
