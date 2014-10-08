@@ -275,6 +275,30 @@ def get_user_rights():
             'data': [u_rights]}
 
 
+@put('/account/action')
+@post('/account/action')
+def create_action():
+
+    items = request.body.readline()
+
+    try:
+        items = loads(items)
+    except Exception as err:
+        logger.error("PUT: Impossible to parse data ({})".format(err))
+        return HTTPError(500, "Impossible to parse data")
+
+    item = items[0]
+
+
+    a_id = item.get('action_id')
+    a_desc = item.get('action_desc')
+
+    if not right_module.add(a_id, a_desc):
+        return ROUTE_FAIL
+
+    return ROUTE_SUCCESS
+
+
 #### GET Me
 @get('/account/me')
 def account_get_me():
