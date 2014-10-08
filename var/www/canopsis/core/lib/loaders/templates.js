@@ -42,6 +42,7 @@ var templates = [
     { name: 'consolemanagerstatusmenu' },
     { name: 'promisemanagerstatusmenu' },
     { name: 'presettoolbar' },
+    { name: 'rightschecksumbuttons' },
 
     { name: 'actionbutton-edit', classes: ["action"], icon : "pencil", label : "Edit"},
     { name: 'actionbutton-ack', classes: ["action", "toolbar"], icon : "ok", label : "Ack"},
@@ -87,14 +88,14 @@ define(deps, function(Ember) {
     templatesLoaded.all = [];
     templatesLoaded.byClass = Ember.Object.create();
 
-    for (var i = depsSize; i < arguments.length; i++) {
+    for (var i = depsSize, li = arguments.length; i < li; i++) {
         var currentTemplate = templates[i - depsSize];
         Ember.TEMPLATES[currentTemplate.name] = Ember.Handlebars.compile(arguments[i]);
 
         currentTemplate.fileContent = arguments[i];
 
         if (currentTemplate.classes !== undefined) {
-            for (var j = 0; j < currentTemplate.classes.length; j++) {
+            for (var j = 0, lj = currentTemplate.classes.length; j < lj; j++) {
                 var currentClass = currentTemplate.classes[j];
 
                 if (templatesLoaded.byClass[currentClass] === undefined) {

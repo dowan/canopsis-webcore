@@ -33,19 +33,20 @@ var mixinsArray = [
 var deps = ['app/lib/mixinsregistry'];
 var depsSize = deps.length;
 
-for (var i = 0; i < mixinsArray.length; i++) {
+for (var i = 0, l = mixinsArray.length; i < l; i++) {
     var mixinUrl = 'app/mixins/' + mixinsArray[i].name;
     deps.push(mixinUrl);
 }
 
 define(deps, function(mixinsregistry) {
+    console.tags.add('loader');
 
     console.log("Begin load mixins", arguments);
-    for (var i = depsSize, l = arguments.length; i < l; i++) {
+    for (var i = depsSize, li = arguments.length; i < li; i++) {
         var currentMixin = mixinsArray[i - depsSize];
 
         if (currentMixin.classes !== undefined) {
-            for (var j = 0; j < currentMixin.classes.length; j++) {
+            for (var j = 0, lj = currentMixin.classes.length; j < lj; j++) {
                 var currentClass = currentMixin.classes[j];
 
                 if (mixinsregistry.byClass[currentClass] === undefined) {
@@ -57,6 +58,8 @@ define(deps, function(mixinsregistry) {
         }
         mixinsregistry.all.push(currentMixin);
     }
+
+    console.tags.remove('loader');
 
     return mixinsregistry;
 });

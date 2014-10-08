@@ -22,16 +22,13 @@ define(['ember'], function(Ember) {
 
     var widgetsUtils = {
         getParentViewForWidget: function(widget) {
-            console.group('getParentViewForWidget');
+            console.log('getParentViewForWidget', widget);
 
             var currentItem = widget;
-            console.log(currentItem);
 
             while (get(currentItem, 'crecord_type') !== 'view') {
-                console.log(currentItem, get(currentItem, 'parentController'), get(currentItem, 'target'));
                 currentItem = get(currentItem, 'target');
             }
-            console.groupEnd();
 
             return currentItem;
         }

@@ -17,29 +17,19 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
- define([
-    'app/application',
-    'app/view/arraytocollectioncontrol'
-], function(Application, ArraytocollectioncontrolView) {
-    var get = Ember.get,
-        set = Ember.set;
+define(['ember'], function(Ember) {
 
-    var view = ArraytocollectioncontrolView.extend({
+    var set = Ember.set;
 
-        init: function() {
-            var value = this.getValue();
-            var contentREF = this.getContent();
+    var debugUtils = Ember.Object.create({
+        inspectObject: function(object) {
+            window.$E = object;
 
-            var readTemplate = {name : "r", icon : "eye-open" , label : "Read" };
-            var writeTemplate = {name : "w", icon : "pencil", label : "Write" };
-            this.addTemplate(readTemplate, value, contentREF);
-            this.addTemplate(writeTemplate, value, contentREF);
+            set(this, 'inspectedObject', object);
 
-            this._super(true);
+            console.info('--- inspect object :', this.inspectedObject);
         }
     });
 
-    Application.RightView = view;
-
-    return view;
+    return debugUtils;
 });

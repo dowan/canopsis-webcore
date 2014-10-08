@@ -22,8 +22,9 @@ define([
     'ember',
     'app/application',
     'app/lib/utils/forms',
+    'app/lib/utils/debug',
     'app/lib/loaders/schemas',
-], function($, Ember, Application, formUtils) {
+], function($, Ember, Application, formUtils, debugUtils) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -143,9 +144,9 @@ define([
                 console.group('inspectForm');
                 console.log('form:', this);
 
-                window.$F = get(this, 'categorized_attributes');
+                debugUtils.inspectObject(get(this, 'categorized_attributes'));
 
-                console.log('categorized_attributes available in $F');
+                console.log('categorized_attributes available in $E');
 
                 console.groupEnd();
             }

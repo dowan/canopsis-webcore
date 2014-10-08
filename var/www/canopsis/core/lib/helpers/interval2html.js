@@ -17,19 +17,29 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'app/application',
-    'ember-data',
-    'app/lib/loaders/schemas'
-], function(Application, DS) {
+define(['ember', 'utils'], function(Ember, utils) {
 
-    var adapter = DS.FixtureAdapter.extend();
+    var set = Ember.set;
 
-    if(Application.Notification) {
-        Application.Notification.FIXTURES = [];
-    }
+    Ember.Handlebars.helper('interval2html', function(target, from , to) {
 
-    Application.NotificationAdapter = adapter;
+        var html = '<div style="min-width:200px"></div>';
 
-    return adapter;
+        if(!Ember.isNone(from)) {
+            html += __('From') + ' ' + utils.dates.timestamp2String(from, 'day');
+        }
+
+        if(!Ember.isNone(from) && !Ember.isNone(to)) {
+            html += '<br />';
+        }
+
+        if(!Ember.isNone(to)) {
+            html += __('to') + ' ' + utils.dates.timestamp2String(to, 'day');
+        }
+
+        set(target, 'interval2html', html);
+
+        return '';
+    });
+
 });

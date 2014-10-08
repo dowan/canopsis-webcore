@@ -41,6 +41,7 @@ define([
      * @author Gwenael Pluchon <info@gwenp.fr>
      */
     function Widget(widgetName, classdict, options) {
+        console.tags.add('factory');
         console.group("widget factory call", arguments);
 
         var extendArguments = [];
@@ -113,6 +114,7 @@ define([
         WidgetsRegistry.all.push(registryEntry);
 
         console.groupEnd();
+        console.tags.remove('factory');
 
         return Application[widgetControllerName];
     }

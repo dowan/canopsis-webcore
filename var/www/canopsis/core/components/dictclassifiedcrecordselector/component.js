@@ -22,6 +22,7 @@ define([
     'app/application',
     'app/components/classifiedcrecordselector/component'
 ], function(Ember, Application, Classifiedcrecordselector) {
+
     var get = Ember.get,
         set = Ember.set;
 

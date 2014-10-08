@@ -69,13 +69,17 @@ define([
                 set(applicationController, 'fullscreenMode', updatedFullscreenMode);
             },
 
+            stopLiveReporting: function () {
+                this.setReportingInterval(undefined);
+            },
+
             /**
             * Display a pop up allowing customer to set view time
             * parameters that will affect all widget data selection.
             **/
             displayLiveReporting: function () {
 
-                var controller = this.controllerFor('userview');
+                var userview = this;
 
                 var record = dataUtils.getStore().createRecord('livereporting', {
                     crecord_type: 'livereporting'
@@ -87,31 +91,11 @@ define([
 
                 recordWizard.submit.then(function(form) {
 
-                    var rootWidget = get(controller, 'content.containerwidget');
-                    var children = widgetSelectorsUtils.children(rootWidget);
-
                     record = get(form, 'formContext');
                     var interval = get(record, 'dateinterval');
-
-                    //Set filter as void instead undefined
-                    if (Ember.isNone(interval)) {
-                        interval = {};
-                    }
-
-                    console.debug('record generated', get(record, 'dateinterval'));
-                    var len = children.length;
-                    for (var i = 0, l = len; i < l; i++) {
-
-                        console.debug('Child widget', get(children[i], 'id'), children[i]);
-                        var widgetController = get(children[i], 'controllerInstance');
-
-                        if (!Ember.isNone(widgetController)) {
-                            //each widget takes responsibility to refresh or not once update interval is called
-                            widgetController.updateInterval(interval);
-                        } else {
-                            console.error('Unable to find controller instance for widget', get(children[i], 'id'));
-                        }
-                    }
+                    set(userview.controllerFor('application'), 'interval', interval);
+                    userview.setReportingInterval(interval);
+                    console.debug('setting interval to value', interval);
                 });
             },
 
@@ -121,6 +105,35 @@ define([
                 console.log('refresh', this);
                 this.refresh();
                 userviewController.send('refreshView');
+            }
+        },
+
+        setReportingInterval: function (interval) {
+
+            set(this.controllerFor('application'), 'interval', interval);
+
+            var controller = this.controllerFor('userview');
+            var rootWidget = get(controller, 'content.containerwidget');
+            var children = widgetSelectorsUtils.children(rootWidget);
+
+
+            //Set filter as void instead undefined
+            if (Ember.isNone(interval)) {
+                interval = {};
+            }
+
+            var len = children.length;
+            for (var i = 0, l = len; i < l; i++) {
+
+                console.debug('Child widget', get(children[i], 'id'), children[i]);
+                var widgetController = get(children[i], 'controllerInstance');
+
+                if (!Ember.isNone(widgetController)) {
+                    //each widget takes responsibility to refresh or not once update interval is called
+                    widgetController.updateInterval(interval);
+                } else {
+                    console.error('Unable to find controller instance for widget', get(children[i], 'id'));
+                }
             }
         },
 
