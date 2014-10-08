@@ -23,14 +23,18 @@ define([
     'app/lib/formsregistry'
 ], function(Ember, Application, formsregistry) {
 
+    var get = Ember.get,
+        set = Ember.set;
+
     var mixin = Ember.Mixin.create({
 
         onInit : function ( contentREF , _self ){
             var formController  =  formsregistry.formwrapper.form;
             // not really needed since error should have already been threw
-            if ( formController ){
-                var schemaName = formController.get("formContext._data.listed_crecord_type");
-                if (schemaName){
+            if (formController) {
+                var schemaName = get(formController, 'formContext._data.listed_crecord_type');
+
+                if (schemaName) {
                     schemaName = schemaName.substr(0,1).toUpperCase() + schemaName.substr(1,schemaName.length).toLowerCase();
                     // get model (array of string (field))
                     //var model = Application[schemaName]; var prototypef = model.prototype;
@@ -38,8 +42,8 @@ define([
                     //for each field create object with :  name =  field and push them on content
                     for (var attribut in model) {
                         if (model.hasOwnProperty(attribut)) {
-                            var Template = { name : attribut };
-                            contentREF.push(Template);
+                            var template = { name : attribut };
+                            contentREF.pushObject(template);
                         }
                     }
                 }

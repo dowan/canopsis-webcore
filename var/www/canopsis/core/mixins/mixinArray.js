@@ -30,7 +30,7 @@ define([
 
             function getAndPushMixinNames(classToGet , contentREF){
                 var currentClass = mixinsregistry.byClass[classToGet];
-                for ( var i = 0 ; i < currentClass.length ; i++ ) {
+                for (var i = 0, l = currentClass.length; i < l ; i++) {
                     var nameMixin = { name : currentClass[i] };
                     contentREF.push(nameMixin);
                 }

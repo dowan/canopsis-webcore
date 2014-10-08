@@ -42,7 +42,7 @@ var depsSize = deps.length;
 
 
 //generate deps
-for (var i = 0; i < widgetsTemplates.length; i++) {
+for (var i = 0, l = widgetsTemplates.length; i < l; i++) {
     deps.push('text!' + widgetsTemplates[i].url + '/template.html');
 
     if (widgetsTemplates[i].hasJSPart === true) {
@@ -53,7 +53,7 @@ for (var i = 0; i < widgetsTemplates.length; i++) {
     }
 }
 
-for (i = 0; i < jsDeps.length; i++) {
+for (i = 0, l = jsDeps.length; i < l; i++) {
     deps.push(jsDeps[i]);
 }
 

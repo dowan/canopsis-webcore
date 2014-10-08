@@ -47,12 +47,12 @@ var renderersTemplates = [
 var deps = ['ember'];
 var depsSize = deps.length;
 
-for (var i = 0; i < renderersTemplates.length; i++) {
+for (var i = 0, l = renderersTemplates.length; i < l; i++) {
     deps.push('text!app/renderers/' + renderersTemplates[i] + '/template.html');
 }
 
 define(deps, function(Ember) {
-    for (var i = depsSize; i < arguments.length; i++) {
+    for (var i = depsSize, l = arguments.length; i < l; i++) {
         var templateName = "renderer-" + renderersTemplates[i - depsSize];
         Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i]);
     }

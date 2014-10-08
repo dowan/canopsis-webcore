@@ -17,22 +17,25 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember', 'utils'], function(Ember, utils) {
+define(['ember', 'app/lib/utils/dates'], function(Ember, datesUtils) {
+
+    var set = Ember.set,
+        isNone = Ember.isNone;
 
     Ember.Handlebars.helper('interval2html', function(from , to) {
 
         var html = '';//'<div style="min-width:200px"></div>';
 
-        if(!Ember.isNone(from)) {
-            html += __('From') + ' ' + utils.dates.timestamp2String(from);
+        if(!isNone(from)) {
+            html += __('From') + ' ' + datesUtils.timestamp2String(from);
         }
 
-        if(!Ember.isNone(from) && !Ember.isNone(to)) {
+        if(!isNone(from) && !isNone(to)) {
             html += ' ';
         }
 
-        if(!Ember.isNone(to)) {
-            html += __('to') + ' ' + utils.dates.timestamp2String(to);
+        if(!isNone(to)) {
+            html += __('to') + ' ' + datesUtils.timestamp2String(to);
         }
 
         console.debug('generated html form interval2html is', html);
