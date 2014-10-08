@@ -34,44 +34,43 @@ define([
     var widget = WidgetFactory('timegraph', {
         needs: ['serie'],
         chartOptions: undefined,
-        dataSeries: [],
+        flotSeries: {},
+
+        dataSeries: function() {
+            var flotSeries = get(this, 'flotSeries');
+            var series = [];
+
+            var serieIds = Object.keys(flotSeries);
+
+            for(var i = 0, l = serieIds.length; i < l; i++) {
+                var serieId = serieIds[i];
+
+                series.push(flotSeries[serieId]);
+            }
+
+            return series;
+        }.property('flotSeries'),
 
         timenav: false,
 
         init: function() {
-            this._super();
-
-            var me = this;
-            var now = +new Date();
-            var config = get(this, 'config');
+            /* needed to be declared here, because findItems() is called
+             * in parent constructor.
+             */
             var store = DS.Store.create({
                 container: get(this, 'container')
             });
 
             set(this, 'widgetDataStore', store);
 
+            this._super();
+
+            var now = +new Date();
+            var config = get(this, 'config');
+
             console.group('timegraph init');
 
-            var stylizedseries = get(config, 'series');
-
-            var serieIds = [];
-            for(var i = 0, l = stylizedseries.length; i < l; i++) {
-                serieIds.push(stylizedseries[i].serie);
-            }
-
-            console.log('Fetch series:', serieIds);
-            serieIds = JSON.stringify(serieIds);
-
-            store.findQuery('serie', {ids: serieIds}).then(function(result) {
-                var series = [];
-                set(me, 'series', series);
-
-                for(var i, l = result.meta.total; i < l; i++) {
-                    var serie = result.content[i];
-                    series.pushObject(serie);
-                }
-            });
-
+            // fill chart options
             set(this, 'timenav', get(config, 'timenav'));
 
             chartOptions = get(this, 'chartOptions') || {};
@@ -120,6 +119,141 @@ define([
 
             console.log('Configure chart:', chartOptions);
             set(this, 'chartOptions', chartOptions);
+
+            console.groupEnd();
+        },
+
+        findItems: function() {
+            console.group('Fetch series:');
+
+            var me = this;
+
+            var replace = false;
+            var from = get(this, 'lastRefresh');
+            var to = +new Date() - get(this, 'config.time_window_offset');
+
+            if(from === null) {
+                replace = true;
+                from = to - get(this, 'config.time_window') * 1000;
+            }
+
+            console.log('refresh:', from, to, replace);
+
+            var store = get(this, 'widgetDataStore');
+
+            /* fetch stylized series */
+            var stylizedseries = get(this, 'config.series');
+            var series = {};
+            var curveIds = [];
+
+            for(var i = 0, l = stylizedseries.length; i < l; i++) {
+                var serieId = stylizedseries[i].serie;
+
+                series[serieId] = stylizedseries[i];
+                curveIds.push(stylizedseries[i].curve);
+            }
+
+            var serieIds = JSON.stringify(Object.keys(series));
+            curveIds = JSON.stringify(curveIds);
+
+            console.log('series:', serieIds);
+            console.log('curves:', curveIds);
+
+            console.groupEnd();
+
+            /* load series configuration */
+            $.when(
+                store.findQuery('serie', {ids: serieIds}),
+                store.findQuery('curve', {ids: curveIds})
+            ).then(function(p1args, p2args) {
+                console.group('Generate FlotChart series');
+
+                var serieResult = p1args[0]; // arguments of first promise
+                var curveResult = p2args[1]; // arguments of second promise
+
+                var i, l;
+
+                console.log('Fetch curves');
+                for(i = 0, l = curveResult.length; i < l; i++) {
+                    var curve = curveResult.content[i];
+
+                    for(var j = 0, l2 = serieResult.length; j < l2; j++) {
+                        var serieconf = serieResult.content[j];
+
+                        var serieId = serieconf.id;
+
+                        if(series[serieId] !== undefined) {
+                            var stylizedserie = series[serieId];
+
+                            if(stylizedserie.curve === curve.id) {
+                                stylizedserie.curve = curve;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                console.log('Fetch series');
+                for(i = 0, l = serieResult.meta.total; i < l; i++) {
+                    var serieconf = serieResult.content[i];
+
+                    var serieId = serieconf.id;
+
+                    if(series[serieId] !== undefined) {
+                        var stylizedserie = series[serieId];
+                        stylizedserie.serie = serieconf;
+
+                        me.genFlotSerie(stylizedserie, from, to);
+                    }
+                }
+
+                console.groupEnd();
+            });
+        },
+
+        genFlotSerie: function(stylizedserie, from, to, replace) {
+            console.group('Generating FlotChart serie:', stylizedserie);
+
+            var flotSerie = {
+                label: stylizedserie.serie.crecord_name,
+                color: stylizedserie.color,
+                lines: {
+                    show: stylizedserie.curve.lines,
+                    lineWidth: stylizedserie.curve.line_width,
+                    fill: (stylizedserie.curve.areas ? stylizedserie.curve.area_opacity : false)
+                },
+                bars: {
+                    show: stylizedserie.curve.bars,
+                    barWidth: stylizedserie.curve.bar_width
+                },
+                points: {
+                    show: stylizedserie.curve.points,
+                    symbol: stylizedserie.curve.point_shape
+                },
+                xaxis: stylizedserie.xaxis,
+                yaxis: stylizedserie.yaxis,
+                clickable: true,
+                hoverable: true
+            };
+
+            var oldSerie = get(this, 'flotSeries.' + stylizedserie.serie.id);
+
+            if(oldSerie !== undefined && !replace) {
+                flotSerie.data = oldSerie.data;
+            }
+            else {
+                flotSerie.data = [];
+            }
+
+            console.log('flotserie:', flotSerie);
+            console.log('Fetch perfdata and compute serie');
+
+            var ctrl = get(this, 'controllers.serie');
+            ctrl.getDataSerie(serieconf, from, to).then(function(data) {
+                flotSerie.data = flotSerie.concat(data);
+
+                set(me, 'flotSeries.' + stylizedserie.serie.id, flotSerie);
+            });
 
             console.groupEnd();
         }

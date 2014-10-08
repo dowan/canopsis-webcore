@@ -106,6 +106,7 @@ define([
 
         startRefresh: function () {
             set(this, 'isRefreshable', true);
+            set(this, 'lastRefresh', null);
         },
 
         isRollbackable: function() {
@@ -313,6 +314,8 @@ define([
             this._super();
 
             this.findItems();
+
+            set(this, 'lastRefresh', +new Date());
         },
 
         findItems: function() {

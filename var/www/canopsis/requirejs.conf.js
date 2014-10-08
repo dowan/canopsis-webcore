@@ -41,6 +41,7 @@ require.config({
         'utils': 'canopsis/core/lib/loaders/utils',
         'lodash': 'webcore-libs/dev/lodash.compat',
         'css3-mediaqueries': 'webcore-libs/min/css3-mediaqueries',
+        'math': 'webcore-libs/dev/math',
 
         'flotchart': 'webcore-libs/flot/jquery.flot',
         'flotchart-canvas': 'webcore-libs/flot/jquery.flot.canvas',
@@ -195,6 +196,11 @@ require.config({
     }
 });
 
-define(["canopsis/file_loader", 'seeds/RoutesLoader', 'app/lib/wrappers/console'], function () {
+define([
+    'canopsis/file_loader',
+    'seeds/RoutesLoader',
+    'app/lib/wrappers/console',
+    'app/lib/wrappers/extend'
+], function () {
     require(['canopsis/main']);
 });

@@ -80,17 +80,7 @@ def perfdata(
                 "points": ret
             })
 
-    if len(result) == 1:
-        if with_meta:
-            result = (result[0]['points'], result[0]['meta'])
-
-        else:
-            result = result[0]
-
-    else:
-        result = (result, len(result))
-
-    return result
+    return (result, len(result))
 
 
 @route(post, payload=['timewindow', 'limit', 'sort'])

@@ -22,8 +22,9 @@ define([
     'ember',
     'ember-data',
     'app/application',
+    'math',
     'app/controller/perfdata'
-], function($, Ember, DS, Application) {
+], function($, Ember, DS, Application, math) {
 
     var controller = Ember.ObjectController.extend({
         needs: ['perfdata'],
@@ -41,39 +42,101 @@ define([
                 console.log('serie:', serie);
                 console.log('aggregation: average - 60s');
 
-                serie.aggregate_method = 'average';
-                serie.aggregate_interval = 60;
+                set(serie, 'aggregate_method', 'average');
+                set(serie, 'aggregate_interval', 60);
 
                 console.groupEnd();
             }
 
-            if(serie.aggregate_method === 'none') {
-
-                var promise = get(this, 'perfdata').fetchMany(serie.metrics, from, to);
-
-                promise.then(function() {
-                    var results = arguments;
-
-                    for(var i = 0, l = results.length; i < l; i++) {
-                        var result = results[i];
-                    }
-                });
+            if(get(serie, 'aggregate_method') === 'none') {
+                var promise = get(this, 'perfdata').fetchMany(
+                    get(serie, 'metrics'),
+                    from, to
+                );
             }
             else {
                 var promise = get(this, 'perfdata').aggregateMany(
-                    serie.metrics,
+                    get(serie, 'metrics'),
                     from, to,
-                    serie.aggregate_method, serie.aggregate_interval
+                    get(serie, 'aggregate_method'),
+                    get(serie, 'aggregate_interval')
                 );
-
-                promise.then(function() {
-                    var results = arguments;
-
-                    for(var i = 0, l = results.length; i < l; i++) {
-                        var result = results[i];
-                    }
-                });
             }
+
+            var formula = serie.formula;
+
+            promise.then(function(result) {
+                console.group('Computing serie:', formula);
+
+                var nmetric = result.meta.total;
+                var metrics = result.content;
+
+                // build points dictionnary
+                var points = {};
+                var length = false;
+                var i;
+
+                for(i = 0; i < nmetric; i++) {
+                    var metric = metrics[i];
+
+                    var mname = metric.meta[1].metric;
+                    var mid = 'metric_' + metric.meta[2];
+
+                    // replace metric name in formula by the unique id
+                    formula = formula.replaceAll(mname, mid);
+
+                    points[mid] = metric.points;
+
+                    /* make sure we treat the same amount of points by selecting
+                     * the metric with less points.
+                     */
+                    if(!length || metric.points.length < length) {
+                        length = metric.points.length;
+                    }
+                }
+
+                console.log('points:', points);
+
+                var metrics = Object.keys(points);
+                var finalSerie = [];
+
+                // now loop over all points to calculate the final serie
+                for(i = 0; i < length; i++) {
+                    var data = {};
+                    var ts = 0;
+                    var j, l;
+
+                    for(j = 0, l = metrics.length; j < l; j++) {
+                        var mid = metrics[j];
+
+                        // get point value at timestamp "i" for metric "mid"
+                        data[mid] = points[mid][i][1];
+
+                        // set timestamp
+                        ts = points[mid][i][0];
+                    }
+
+                    // import data in math context
+                    math.import(data);
+                    var pointval = math.eval(formula);
+
+                    // remove data from math context
+                    for(j = 0, l = metrics.length; j < l; j++) {
+                        var mid = metrics[j];
+                        delete math[mid];
+                    }
+
+                    // push computed point in serie
+                    finalSerie.push([ts, pointval]);
+                }
+
+                console.log('finalserie:', finalSerie);
+                console.groupEnd();
+
+                return finalSerie;
+            });
+
+            return promise;
         }
     });
 
