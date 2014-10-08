@@ -38,7 +38,10 @@ define([
      * @author Gwenael Pluchon <info@gwenp.fr>
      */
     function Form(formName, classdict, options) {
-        console.log("new form", arguments);
+
+        console.tags.add('factory');
+
+        console.group("form factory call", arguments);
 
         var extendArguments = [];
 
@@ -51,7 +54,7 @@ define([
         }
 
         if (options.mixins !== undefined) {
-            for (var i = 0; i < options.mixins.length; i++) {
+            for (var i = 0, l = options.mixins.length; i < l; i++) {
                 extendArguments.push(options.mixins[i]);
             }
         }
@@ -59,6 +62,8 @@ define([
         set(classdict, 'formName', formName);
 
         extendArguments.push(classdict);
+
+        Ember.assert('formName must be a string', typeof formName === 'string');
 
         var formControllerName = formName.camelize().capitalize() + "Controller";
         var formViewName = formName.camelize().capitalize() + "View";
@@ -72,10 +77,11 @@ define([
             EmberClass: Application[formControllerName]
         };
 
+        console.groupEnd();
+        console.tags.remove('factory');
+
         return Application[formControllerName];
     }
-
-    console.log("factory form loaded");
 
     return Form;
 });

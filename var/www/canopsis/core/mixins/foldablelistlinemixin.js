@@ -25,23 +25,16 @@ define([
 
     var mixin = Ember.Mixin.create({
             actions: {
-                unfold_action:function(record){
-                    debugger;
-                    console.warn('unfold');
-                    var value = !record.content.get("unfolded");
-                    Ember.set(record.content,"unfolded", value);
-                    if(!record.content.loaded)
-                        this.ajaxCall(record);
+                unfold_action:function(listline_controller){
+                    var value = !listline_controller.content.get("unfolded");
+                    Ember.set(listline_controller.content,"unfolded", value);
+                    if(!listline_controller.content.loaded)
+                        this.ajaxCall(listline_controller);
                 }
             },
 
-            ajaxCall :function(record  , params){
-                // action must be take in count here
-                params = params || "";
-               // var id = record.content.get("id");
-                //{"event_type":"eue","uniqueKey":"892af02377233e5ec34f32951f450c6b","type_message":"step"}
-                // filter : even_type: eue , uniqueKey; $uniqueKey , type_message:"step"
-                var uniqueKey = record.content._data.uniqueKey;
+            ajaxCall :function(listline_controller){
+                var uniqueKey = listline_controller.content._data.uniqueKey;
                 var url = '/rest/events?filter={"$and":[{"$or":[{"event_type":"eue","uniqueKey":"'+uniqueKey+'","type_message":"step"}]},{}]}';
 
                 var ajaxDeffered = $.ajax({ url: url,
@@ -50,17 +43,14 @@ define([
                     error: this.ajaxError
                 })
                 ajaxDeffered.args = arguments;
-                    //ajaxDeffered.ajaxanswer = ajaxanswer;
             },
 
 
             ajaxSuccess: function(response , textStatus, deffered){
                 var args = deffered.args;
-                var record = args[0];
-                var line_controller = record;
+                var line_controller = args[0];
 
                 var nmbr_colonne = this.get("nmbr_colonne");
-                var shown_columns = this.get('shown_columns');
                 var step_template = this.get('step_template');
 
                 if (step_template)
@@ -70,48 +60,34 @@ define([
                     Ember.set(this, "steps", response.data);
 
                    // var step_template_cel = step_template.slice(43, length - 16);
-                   debugger;
-                    step_template_cel = step_template.replace('<tr>','<tr style="font-weight:initial; text-align:left;">');
+                   // step_template_cel = step_template.replace('<tr>','<tr style="font-weight:initial; text-align:left;">');
                     var template_columns ="";
-
-                    var columns = this.params_from_template(step_template_cel);
+                    var columns = this.params_from_template(step_template);
                     for (var i=0; i<columns.length ; i++){
                         var column = columns[i];
                         template_columns += '<td style="background-color: papayawhip;">' + column +'</td>';
                     }
 
-                    template_columns = template_columns;
-
-                    var source  = '<th COLSPAN=2></th><th COLSPAN='+ nmbr_colonne +'><table class="table table-bordered"><tbody>' + template_columns + step_template + '</tbody></table></th>';
-
-                   // var source = '<td> hello</td>';
+                    var source  = '<th COLSPAN=2></th><th COLSPAN=' + nmbr_colonne + '><table class="table table-bordered"><tbody style="text-align:left">' + template_columns + step_template + '</tbody></table></th>';
                     var html = Ember.Handlebars.compile(source);
 
                     Ember.set(Ember.TEMPLATES, "testTemplate", html);
-
-
-                    Ember.set(record.content,"loaded",true);
+                    Ember.set(line_controller.content,"loaded",true);
                 }
                 else
                 {
                    // Ember.set(record,'loaded',true);
                     nmbr_colonne+= 2;
-                    Ember.set(record,'html','<th COLSPAN=' + nmbr_colonne + '>No template was found</th>');
+                    Ember.set(line_controller,'html','<th COLSPAN=' + nmbr_colonne + '>No template was found</th>');
                 }
             },
 
             ajaxError: function(response ,textStatus, deffered){
                 var callbackName = "";
-                var tesData;
-                $( "#toremove" ).remove();
-            //  var ajaxanswer = response.ajaxanswer ;
                 var responseText = response.responseText;
                 var html = $.parseHTML( responseText );
                 var errorNode = html[9];
                 var errorMessage = errorNode.innerText;
-                Canopsis.ajaxanswer.set("message" , errorMessage);
-
-                //$(".modal-body").append( errorNode );
             },
 
         params_from_template: function(str){
@@ -127,7 +103,6 @@ define([
                     if (param.indexOf("each") == -1){
                         var endOfWord = param.indexOf(" ");
                         if (endOfWord != -1){
-                            debugger;
                             var firstWord = param.slice(0, endOfWord);
                             result.push(firstWord);
                         }
@@ -143,24 +118,21 @@ define([
         },
 
         partials: {
-            testou:["actionbutton-foldable"]
+            columnsLine:["actionbutton-foldable"],
+            columnsHead:["column-unfold"]
         },
 
-        colonne_header: {
-            testou:["plus-sign"]
-        },
 
         testTemplate :function(){
          //   debugger;
             return "testTemplate";
         },
         nmbr_colonne: function(){
-          //  debugger;
             var shown_columns = this.get("shown_columns");
             var nmbr_colonne = (shown_columns)? shown_columns.length : 0;
 
             return nmbr_colonne;
-        }.property()
+        }.property("shown_columns")
     });
 
 

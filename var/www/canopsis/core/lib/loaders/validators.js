@@ -35,14 +35,21 @@ for (var i = 0; i < validatorsArray.length; i++) {
 }
 
 define(deps, function(Ember) {
+    console.tags.add('loader');
+
     var validators = {};
     console.log("Begin load validators", arguments);
-    for (var i = 1; i < arguments.length; i++) {
+
+    for (var i = 1, l = arguments.length; i < l; i++) {
         var validatorName = validatorsArray[i-1];
         console.log("load validator", validatorName);
         validators[validatorName] = arguments[i];
     }
+
     Ember.validators = validators;
+
+    console.tags.remove('loader');
+
     return validators;
 
 });

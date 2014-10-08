@@ -32,18 +32,26 @@ var utilsFiles = [
 
 var deps = [];
 
-for (var i = 0; i < utilsFiles.length; i++) {
+for (var i = 0, l = utilsFiles.length; i < l; i++) {
     deps.push('app/lib/utils/' + utilsFiles[i]);
 }
 
 define(deps, function() {
     var utils = {};
-    console.log("Begin load utils", arguments);
-    for (var i = 0; i < arguments.length; i++) {
+
+    console.tags.add('loader');
+
+    console.group("Begin load utils", arguments);
+
+    for (var i = 0, l = arguments.length; i < l; i++) {
         var utilName = utilsFiles[i];
         console.log("load util", utilName);
         utils[utilName] = arguments[i];
     }
-    window.ctools = utils;
+
+    console.groupEnd();
+
+    console.tags.remove('loader');
+
     return utils;
 });

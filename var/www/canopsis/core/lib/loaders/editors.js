@@ -102,13 +102,14 @@ for (var i = 0, l = editorsTemplates.length; i < l; i++) {
 
     tmplPos = deps.push('text!app/editors/' + name + '/template.html');
     depsTemplates.push({name: 'editor-' + name, pos: tmplPos});
-
 }
 
 console.log({"editors dependencies": deps});
 
 define(deps, function(Ember) {
-    console.log("load editors", arguments);
+    console.tags.add('loader');
+
+    console.group("load editors", arguments);
 
     for (var i = 0; i < depsTemplates.length; i++) {
         var tmplInfo = depsTemplates[i];
@@ -119,5 +120,9 @@ define(deps, function(Ember) {
 
         Ember.TEMPLATES[tmplInfo.name] = Ember.Handlebars.compile(template);
     }
+
+    console.groupEnd();
+
+    console.tags.remove('loader');
 });
 
