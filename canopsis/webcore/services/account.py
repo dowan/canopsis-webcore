@@ -49,26 +49,27 @@ ROUTE_FAIL = {
     'total': 1,
     'success': False,
     'data': []
-    }
+}
 
 ROUTE_SUCCESS = {
     'total': 1,
     'success': True,
     'data': []
-    }
+}
 
 rights_module_actions = {
     'remove': {
         'profile': right_module.remove_profile,
-        'group': right_module.remove_group,
+        'composite': right_module.remove_composite,
         'rights': right_module.remove_right
-        },
+    },
     'add': {
         'profile': right_module.add_profile,
-        'group': right_module.add_group,
+        'composite': right_module.add_composite,
         'rights': right_module.add_right
-        }
+    }
 }
+
 
 def update_field(e_id, e_type, new_elems, elem_type, entity):
     if entity and elem_type in entity:
@@ -83,19 +84,22 @@ def update_field(e_id, e_type, new_elems, elem_type, entity):
             if not rights_module_actions['add'][elem_type](e_id, elem):
                 return ROUTE_FAIL
 
+
 def update_rights(e_id, e_type, e_rights, entity):
     update_field(e_id, e_type, e_rights, 'rights', entity)
+
 
 def update_profile(e_id, e_type, profiles, entity):
     update_field(e_id, e_type, profiles, 'profile', entity)
 
-def update_comp(e_id, e_type, groups, entity):
-    update_field(e_id, e_type, groups, 'group', entity)
+
+def update_comp(e_id, e_type, composites, entity):
+    update_field(e_id, e_type, composites, 'composite', entity)
 
 
-@post('/account/group/:_id') #the id param is only here to make a quick hack
-@put('/account/group/:_id') #the id param is only here to make a quick hack
-def create_group(_id=None):
+@put('/account/group/:_id')
+@post('/account/group/:_id')  # the id param is only here to make a quick hack
+def create_composite(_id=None):
 
     items = request.body.readline()
 
@@ -110,28 +114,27 @@ def create_group(_id=None):
     c_name = _id
     c_rights = item.get('rights')
 
-    group = right_module.get_group(c_name)
+    composite = right_module.get_composite(c_name)
 
-    if not group and not right_module.create_group(c_name, c_rights):
+    if not composite and not right_module.create_composite(c_name, c_rights):
         return ROUTE_FAIL
 
-    if not update_rights(c_name, 'group', c_rights, group):
+    if not update_rights(c_name, 'composite', c_rights, composite):
         return ROUTE_FAIL
 
     return ROUTE_SUCCESS
 
 
 @delete('/account/group')
-def delete_group():
+def delete_composite():
     c_name = request.params.get('group_name')
 
     return {'total': 1,
-            'success': right_module.delete_group(c_name),
+            'success': right_module.delete_composite(c_name),
             'data': []}
 
 
-@post('/account/profile/:_id') #the id param is only here to make a quick hack
-@put('/account/profile/:_id') #the id param is only here to make a quick hack
+@put('/account/profile/:_id')  # the id param is only here to make a quick hack
 def update_profile(_id=None):
     items = request.body.readline()
 
@@ -171,6 +174,7 @@ def delete_profile():
             'data': []}
 
 
+@put('/account/role')
 @post('/account/role')
 def update_role():
 
@@ -187,7 +191,7 @@ def update_role():
     r_id = item.get('role_name')
     r_comp = item.get('role_groups')
     r_rights = item.get('role_rights')
-    r_profiles = item.get('role_profile')
+    r_profile = item.get('role_profile')
 
     role = right_module.get_role(r_id)
 
@@ -215,6 +219,7 @@ def delete_role():
             'data': []}
 
 
+@put('/account/user')
 @post('/account/user')
 def create_user():
 
@@ -239,7 +244,7 @@ def create_user():
     if not user and not right_module.create_user(u_id, u_role,
                                                  contact=u_contact,
                                                  rights=u_rights,
-                                                 groups=u_comp):
+                                                 composites=u_comp):
         return ROUTE_FAIL
 
     if not update_comp(u_id, 'user', u_comp, user):
