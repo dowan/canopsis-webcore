@@ -32,7 +32,8 @@ define([
 ], function($, Ember, Application, PartialslotAbleController, userConfiguration, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, utils) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     var controller = PartialslotAbleController.extend({
         needs: ['application', 'login'],
@@ -67,7 +68,7 @@ define([
             this.startRefresh();
 
             //setting default/minimal reload delay for current widget
-            if (get(this, 'refreshInterval') <= 10 || Ember.isNone(get(this, 'refreshInterval'))) {
+            if (get(this, 'refreshInterval') <= 10 || isNone(get(this, 'refreshInterval'))) {
                 set(this, 'refreshInterval', 10);
             }
 
@@ -80,7 +81,7 @@ define([
         },
 
         getSchema: function() {
-            return Application[get(this, 'xtype').capitalize()].proto().categories;
+            return get(Application, get(this, 'xtype').capitalize()).proto().categories;
         },
 
         onReload: function () {
@@ -132,7 +133,7 @@ define([
             do: function(action) {
                 var params = [];
                 for (var i = 1, l = arguments.length; i < l; i++) {
-                    params.push(arguments[i]);
+                    params.pushObject(arguments[i]);
                 }
 
                 this.send(action, params);
@@ -151,7 +152,7 @@ define([
             editWidget: function (widget) {
                 console.info("edit widget", widget);
 
-                var widgetWizard = utils.forms.showNew('modelform', widget, { title: __("Edit widget") });
+                var widgetWizard = formsUtils.showNew('modelform', widget, { title: __("Edit widget") });
                 console.log("widgetWizard", widgetWizard);
 
                 var widgetController = this;
@@ -160,7 +161,9 @@ define([
                     console.log('record going to be saved', widget);
 
                     var userview = get(widgetController, 'viewController').get('content');
+
                     userview.save();
+
                     console.log("triggering refresh");
                     widgetController.trigger('refresh');
                 });
@@ -174,6 +177,7 @@ define([
 
                 for (var i = 0, l = itemsContent.length; i < l; i++) {
                     console.log(get(this, 'content.items.content')[i]);
+
                     if (get(itemsContent[i], 'widget') === widget) {
                         itemsContent.removeAt(i);
                         console.log("deleteRecord ok");
@@ -198,6 +202,7 @@ define([
                     title: __(label),
                     userPreferencesOnly: true
                 });
+
                 console.log("widgetWizard", widgetWizard);
 
                 widgetWizard.submit.then(function(form) {
@@ -219,13 +224,14 @@ define([
                     var foundElementIndex,
                         nextElementIndex;
 
-
                     var itemsContent = get(this, 'content.items.content');
 
                     for (var i = 0, l = itemsContent.length; i < l; i++) {
+
                         console.log('loop', i, itemsContent[i], widgetwrapper);
                         console.log(itemsContent[i] === widgetwrapper);
-                        if (foundElementIndex !== undefined && nextElementIndex === undefined) {
+
+                        if (!isNone(foundElementIndex) && !isNone(nextElementIndex)) {
                             nextElementIndex = i;
                             console.log('next element found');
                         }
@@ -236,7 +242,7 @@ define([
                         }
                     }
 
-                    if (foundElementIndex !== undefined && nextElementIndex !== undefined) {
+                    if (!isNone(foundElementIndex) && !isNone(nextElementIndex)) {
                         //swap objects
                         var array = itemsContent;
                         console.log('swap objects', array);
@@ -251,6 +257,7 @@ define([
                         set(this, 'content.items.content', array);
 
                         var userview = get(this, 'viewController.content');
+
                         userview.save();
                     }
                 } catch (e) {
@@ -274,7 +281,7 @@ define([
                         console.log('loop', i, itemsContent[i], widgetwrapper);
                         console.log(itemsContent[i] === widgetwrapper);
 
-                        if (foundElementIndex !== undefined && nextElementIndex === undefined) {
+                        if (!isNone(foundElementIndex) && !isNone(nextElementIndex)) {
                             nextElementIndex = i;
                             console.log('next element found');
                         }
@@ -287,7 +294,7 @@ define([
 
                     console.log('indexes to swap', foundElementIndex, nextElementIndex);
 
-                    if (foundElementIndex !== undefined && nextElementIndex !== undefined) {
+                    if (!isNone(foundElementIndex) && !isNone(nextElementIndex)) {
                         //swap objects
                         var array = get(this, 'content.items.content');
                         console.log('swap objects', array);
@@ -352,7 +359,7 @@ define([
                 var currentButton = buttons[i];
 
                 if(Ember.TEMPLATES[currentButton] !== undefined) {
-                    res.push(currentButton);
+                    res.pushObject(currentButton);
                 } else {
                     //TODO manage this with utils.problems
                     console.warn('template not found', currentButton);
