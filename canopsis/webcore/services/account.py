@@ -57,55 +57,40 @@ ROUTE_SUCCESS = {
     'data': []
     }
 
+rights_module_actions = {
+    'remove': {
+        'profile': right_module.remove_profile,
+        'composite': right_module.remove_composite,
+        'rights': right_module.remove_right
+        },
+    'add': {
+        'profile': right_module.add_profile,
+        'composite': right_module.add_composite,
+        'rights': right_module.add_right
+        }
+}
 
+def update_field(e_id, e_type, new_elems, elem_type, entity):
+    if entity and elem_type in entity:
+        to_remove = entity[elem_type]
+        if new_elems:
+            to_remove = set(entity[elem_type]) - set(new_elems)
+        for elem in to_remove:
+            if not rights_module_actions['remove'][elem_type](e_id, elem):
+                return ROUTE_FAIL
+    if new_elems:
+        for elem in new_elems:
+            if not rights_module_actions['add'][elem_type](e_id, elem):
+                return ROUTE_FAIL
 
 def update_rights(e_id, e_type, e_rights, entity):
-    if entity and 'rights' in entity:
-        to_remove = entity['rights'].keys()
-        if e_rights:
-            to_remove = set(entity['rights'].keys()) - set(e_rights.keys())
-        for right in to_remove:
-            if not right_module.remove_right(
-                e_id, e_type, right, entity['rights'][right]['checksum']
-                ):
-                return False
-
-    if e_rights:
-        for right in e_rights:
-            if not right_module.add_right(
-                e_id, e_type, right, e_rights['checksum']
-                ):
-                return False
-    return True
-
+    update_field(e_id, e_type, e_rights, 'rights', entity)
 
 def update_profile(e_id, e_type, profiles, entity):
-    if entity and 'profile' in entity:
-        to_remove = entity['profile']
-        if profiles:
-            to_remove = set(entity['profile']) - set(profiles)
-        for profile in to_remove:
-            if not right_module.remove_profile(e_id, profile):
-                return ROUTE_FAIL
-    if profiles:
-        for profile in profiles:
-            if not right_module.add_profile(r_id, profile):
-                return ROUTE_FAIL
-
+    update_field(e_id, e_type, profiles, 'profile', entity)
 
 def update_comp(e_id, e_type, composites, entity):
-    if entity and 'composites' in entity:
-        to_remove = entity['composites']
-        if composites:
-            to_remove = set(entity['composites']) - set(composites)
-        for comp in to_remove:
-            if not right_module.remove_composite(e_id, e_type, comp):
-                return False
-    if composites:
-        for comp in composites:
-            if not right_module.add_composite(e_id, e_type, comp):
-                return False
-    return True
+    update_field(e_id, e_type, composites, 'composite', entity)
 
 
 @post('/account/group/:_id') #the id param is only here to make a quick hack
