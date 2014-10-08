@@ -61,7 +61,7 @@ var helpers = [
 var deps = ['app/application', 'app/lib/wrappers/swag'];
 
 for (var i = 0, l = helpers.length; i < l; i++) {
-    deps.push("app/lib/helpers/" + helpers[i]);
+    deps.push('app/lib/helpers/' + helpers[i]);
 }
 
 define(deps, function() {

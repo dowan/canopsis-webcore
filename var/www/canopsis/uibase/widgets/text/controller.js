@@ -49,12 +49,16 @@ define([
             var viewElementId = get(this, 'viewElementId');
 
             var template = get(this, 'html');
-            var templateName = 'dynamic-' + viewElementId;
-            console.log('setting dynamic template for widget', templateName, this);
-            var tpl = Ember.Handlebars.compile(template);
-            set(Ember.TEMPLATES, templateName, tpl);
 
-            return templateName;
+            if (typeof template === "string") {
+                var templateName = 'dynamic-' + viewElementId;
+                console.log('setting dynamic template for widget', templateName, this);
+                var tpl = Ember.Handlebars.compile(template);
+                set(Ember.TEMPLATES, templateName, tpl);
+
+                return templateName;
+            }
+
         }.property('viewElementId'),
 
         unloadGeneratedTemplate: function() {
