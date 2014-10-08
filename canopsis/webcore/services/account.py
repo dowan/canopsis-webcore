@@ -49,16 +49,16 @@ ROUTE_FAIL = {
     'total': 1,
     'success': False,
     'data': []
-    }
+}
 
 ROUTE_SUCCESS = {
     'total': 1,
     'success': True,
     'data': []
-    }
+}
 
 
-
+@put('/account/right')
 def update_rights(e_id, e_type, e_rights):
     if e_rights:
         for right in e_rights:
@@ -67,6 +67,7 @@ def update_rights(e_id, e_type, e_rights):
     return True
 
 
+@put('/account/composite')
 def update_comp(e_id, e_type, composites):
     if composites:
         for comp in composites:
@@ -74,7 +75,8 @@ def update_comp(e_id, e_type, composites):
                 return False
     return True
 
-@post('/account/group')
+
+@put('/account/group')
 def create_composite():
     c_name = request.params.get('group_name')
     c_rights = request.params.get('group_rights')
@@ -90,7 +92,7 @@ def create_composite():
     return ROUTE_SUCCESS
 
 
-@post('/account/group/delete')
+@delete('/account/group/delete')
 def delete_composite():
     c_name = request.params.get('group_name')
 
@@ -99,7 +101,7 @@ def delete_composite():
             'data': []}
 
 
-@get('/account/profile')
+@post('/account/profile')
 def get_profile():
     profiles_id = request.params.get('profiles_id')
     len_data = 0
@@ -118,7 +120,7 @@ def get_profile():
             'data': data}
 
 
-@post('/account/profile')
+@put('/account/profile')
 def update_profile():
     p_id = request.params.get('profile_name')
     p_comp = request.params.get('profile_groups')
@@ -138,7 +140,7 @@ def update_profile():
     return ROUTE_SUCCESS
 
 
-@post('/account/profile/delete')
+@delete('/account/profile/delete')
 def delete_profile():
     p_name = request.params.get('profile_name')
 
@@ -147,7 +149,7 @@ def delete_profile():
             'data': []}
 
 
-@post('/account/profile/rmgroup')
+@delete('/account/profile/rmgroup')
 def rmcomposite_profile():
     c_name = request.params.get('group_name')
     p_name = request.params.get('profile_name')
@@ -157,7 +159,7 @@ def rmcomposite_profile():
             'data': []}
 
 
-@post('/account/role')
+@put('/account/role')
 def update_role():
     r_id = request.params.get('role_name')
     r_comp = request.params.get('role_groups')
@@ -183,7 +185,7 @@ def update_role():
     return ROUTE_SUCCESS
 
 
-@post('/account/role/rmgroup')
+@delete('/account/role/rmgroup')
 def rmcomposite_role():
     c_name = request.params.get('group_name')
     r_name = request.params.get('role_name')
@@ -193,7 +195,7 @@ def rmcomposite_role():
             'data': []}
 
 
-@post('/account/role/rmprofile')
+@delete('/account/role/rmprofile')
 def rmprofile_role():
     r_name = request.params.get('role_name')
     p_name = request.params.get('profile_name')
@@ -203,7 +205,7 @@ def rmprofile_role():
             'data': []}
 
 
-@post('/account/role/delete')
+@delete('/account/role/delete')
 def delete_role():
     r_name = request.params.get('role_name')
 
@@ -212,7 +214,7 @@ def delete_role():
             'data': []}
 
 
-@get('/account/role')
+@post('/account/role')
 def get_role():
     roles_id = request.params.get('roles_id')
     len_data = 0
@@ -232,7 +234,7 @@ def get_role():
             'data': data}
 
 
-@post('/account/user')
+@put('/account/user')
 def create_user():
     u_id = request.params.get('user_name')
     u_role = request.params.get('user_role')
@@ -260,7 +262,7 @@ def create_user():
     return ROUTE_SUCCESS
 
 
-@get('/account/user')
+@post('/account/user')
 def get_user():
     users_id = request.params.get('users_id')
     len_data = 0
@@ -278,7 +280,7 @@ def get_user():
             'data': data}
 
 
-@get('/account/user/rights')
+@post('/account/user/rights')
 def get_user_rights():
     u_id = request.params.get('user_id')
     u_rights = right_module.get_user_rights(u_id)
