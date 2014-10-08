@@ -17,33 +17,19 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['jquery', 'ember', 'jquery.md5'], function($, Ember) {
+define([], function() {
+    Function.prototype.bind = function(context) {
+        var func = this;
 
-    var hash = {
-        generate_GUID: function() {
-            //Generates a random GUID
-            var s4 = function () {
-                return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-            };
+        var decorator = function() {
+            return func.call(context, arguments);
+        };
 
-            var token = s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-
-            return token;
-        },
-        generateId: function(prefix) {
-
-            var token = hash.generate_GUID();
-
-            if(!Ember.isNone(prefix)) {
-                token = prefix + '_' + token;
-            }
-            return token;
-        },
-
-        md5: function(data) {
-            return $.md5(data);
-        }
+        return decorator;
     };
 
-    return hash;
+    String.prototype.replaceAll = function(find, replace) {
+        var escaped = find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+        return this.replace(new RegExp(escaped, 'g'), replace);
+    };
 });
