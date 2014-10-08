@@ -72,13 +72,15 @@ define([
 
             console.debug('loading configuration');
             //TODO @eric use an adapter
+            var user = get(this, 'widget.controllers.login.record.user');
+
             $.ajax({
                 url: '/rest/userpreferences/userpreferences',
                 async: false,
                 data: {
                     limit: 1,
                     filter: JSON.stringify({
-                        crecord_name: utils.session.user,
+                        crecord_name: user,
                         widget_id: this.get('widget.id')
                     })
                 },
