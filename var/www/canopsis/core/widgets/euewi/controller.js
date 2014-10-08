@@ -11,7 +11,7 @@ define([
         ],
         subclass:ListController
     };
-    var widget = WidgetFactory('eue', {
+    var widget = WidgetFactory('euewi', {
 
 
     },listOptions);

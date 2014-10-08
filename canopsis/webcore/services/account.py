@@ -74,14 +74,27 @@ def update_comp(e_id, e_type, composites):
                 return False
     return True
 
-@post('/account/group')
-def create_composite():
-    c_name = request.params.get('group_name')
-    c_rights = request.params.get('group_rights')
+
+@post('/account/group/:_id') #the id param is only here to make a quick hack
+@put('/account/group/:_id') #the id param is only here to make a quick hack
+def create_composite(_id=None):
+
+    items = request.body.readline()
+
+    try:
+        items = loads(items)
+    except Exception as err:
+        logger.error("PUT: Impossible to parse data ({})".format(err))
+        return HTTPError(500, "Impossible to parse data")
+
+    item = items[0]
+
+    c_name = _id
+    c_rights = item.get('rights')
 
     composite = right_module.get_composite(c_name)
 
-    if not composite or not right_module.create_composite(c_name, c_rights):
+    if not composite and not right_module.create_composite(c_name, c_rights):
         return ROUTE_FAIL
 
     if not update_rights(c_name, 'composite', c_rights):
@@ -99,30 +112,23 @@ def delete_composite():
             'data': []}
 
 
-@get('/account/profile')
-def get_profile():
-    profiles_id = request.params.get('profiles_id')
-    len_data = 0
-    data = []
+@post('/account/profile/:_id') #the id param is only here to make a quick hack
+@put('/account/profile/:_id') #the id param is only here to make a quick hack
+def update_profile(_id=None):
+    items = request.body.readline()
 
-    for p_id in profiles_id:
-        p_comp = right_module.get_profile_composites(p_id)
-        if len(p_comp):
-            len_data += 1
-            data.append({'name': p_id,
-                         'rights': right_module.get_profile_rights(p_id),
-                         'composites': p_comp})
+    try:
+        items = loads(items)
+    except Exception as err:
+        logger.error("POST: Impossible to parse data ({})".format(err))
+        return HTTPError(500, "Impossible to parse data")
 
-    return {'total': len_data,
-            'success': not not len_data,
-            'data': data}
+    item = items[0]
 
+    p_id = _id
 
-@post('/account/profile')
-def update_profile():
-    p_id = request.params.get('profile_name')
-    p_comp = request.params.get('profile_groups')
-    p_rights = request.params.get('profile_rights')
+    p_comp = item.get('profile_groups')
+    p_rights = item.get('profile_rights')
 
     profile = right_module.get_profile(p_id)
 
@@ -159,10 +165,21 @@ def rmcomposite_profile():
 
 @post('/account/role')
 def update_role():
-    r_id = request.params.get('role_name')
-    r_comp = request.params.get('role_groups')
-    r_rights = request.params.get('role_rights')
-    r_profiles = request.params.get('role_profile')
+
+    items = request.body.readline()
+
+    try:
+        items = loads(items)
+    except Exception as err:
+        logger.error("POST: Impossible to parse data ({})".format(err))
+        return HTTPError(500, "Impossible to parse data")
+
+    item = items[0]
+
+    r_id = item.get('role_name')
+    r_comp = item.get('role_groups')
+    r_rights = item.get('role_rights')
+    r_profiles = item.get('role_profile')
 
     role = right_module.get_role(r_id)
 
@@ -212,33 +229,24 @@ def delete_role():
             'data': []}
 
 
-@get('/account/role')
-def get_role():
-    roles_id = request.params.get('roles_id')
-    len_data = 0
-    data = []
-
-    for r_id in roles_id:
-        r_profile = right_module.get_role_profile(r_id)
-
-        if len(r_profile):
-            len_data += 1
-            data.append({'name': r_id,
-                         'rights': right_module.get_role_rights(r_id),
-                         'profile': r_profile})
-
-    return {'total': len_data,
-            'success': not not len_data,
-            'data': data}
-
-
 @post('/account/user')
 def create_user():
-    u_id = request.params.get('user_name')
-    u_role = request.params.get('user_role')
-    u_contact = request.params.get('user_contact')
-    u_rights = request.params.get('user_rights')
-    u_comp = request.params.get('user_groups')
+
+    items = request.body.readline()
+
+    try:
+        items = loads(items)
+    except Exception as err:
+        logger.error("PUT: Impossible to parse data ({})".format(err))
+        return HTTPError(500, "Impossible to parse data")
+
+    item = items[0]
+
+    u_id = item.get('user_name')
+    u_role = item.get('user_role')
+    u_contact = item.get('user_contact')
+    u_rights = item.get('user_rights')
+    u_comp = item.get('user_groups')
 
     user = right_module.get_user(u_id)
 
@@ -258,24 +266,6 @@ def create_user():
         return ROUTE_FAIL
 
     return ROUTE_SUCCESS
-
-
-@get('/account/user')
-def get_user():
-    users_id = request.params.get('users_id')
-    len_data = 0
-    data = []
-
-    for u_id in users_id:
-        user = right_module.get_user(u_id)
-
-        if user:
-            len_data += 1
-            data.append(user)
-
-    return {'total': len_data,
-            'success': not not len_data,
-            'data': data}
 
 
 @get('/account/user/rights')

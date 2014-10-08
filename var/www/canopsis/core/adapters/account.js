@@ -22,13 +22,6 @@ define([
         'app/adapters/application'
 ], function(Application, ApplicationAdapter) {
 
-    var adapter = ApplicationAdapter.extend({
-        buildURL: function() {
-            return this._super.apply(this, arguments);
-        }
-    });
-
-    Application.AccountAdapter = adapter;
 
     return adapter;
 });

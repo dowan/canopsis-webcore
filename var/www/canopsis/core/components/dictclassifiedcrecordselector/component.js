@@ -22,31 +22,15 @@ define([
     'app/application',
     'app/components/classifiedcrecordselector/component'
 ], function(Ember, Application, Classifiedcrecordselector) {
+
     var get = Ember.get,
         set = Ember.set;
 
     var component = Classifiedcrecordselector.extend({
-        multiselect:false,
-
-        selectionChanged: function(){
-            var selectionUnprepared = get(this, 'selectionUnprepared')[0];
-            var res;
-
-            var valueKey = get(this, 'valueKey');
-
-            if(!Ember.isNone(selectionUnprepared)) {
-                if(valueKey) {
-                    res = get(selectionUnprepared, 'value');
-                } else {
-                    res = get(selectionUnprepared, 'name');
-                }
-                console.log('selection changed', res);
-            }
-            set(this, 'selection', res);
-        }.observes('selectionUnprepared', 'selectionUnprepared.@each')
+        multiselect: true
     });
 
-    Application.ComponentStringclassifiedcrecordselectorComponent = component;
+    Application.ComponentDictclassifiedcrecordselectorComponent = component;
 
     return component;
 });

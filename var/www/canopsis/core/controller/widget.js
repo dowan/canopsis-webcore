@@ -23,12 +23,14 @@ define([
     'app/application',
     'app/controller/partialslotablecontroller',
     'app/lib/utils/userconfiguration',
+    'canopsis/canopsisConfiguration',
     'app/lib/utils/widgets',
     'app/lib/utils/routes',
     'app/lib/utils/forms',
-    'utils',
+    'app/lib/utils/debug',
+    'utils'
+], function($, Ember, Application, PartialslotAbleController, userConfiguration, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, utils) {
 
-], function($, Ember, Application, PartialslotAbleController, userConfiguration, widgetUtils, routesUtils, formsUtils, utils) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -40,13 +42,14 @@ define([
          */
         abstractType: "widget",
 
+        canopsisConfiguration: canopsisConfiguration,
+        debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
+
         userParams: {},
 
         editMode : Ember.computed.alias('controllers.application.editMode'),
 
         init: function () {
-
-
             console.log('widget init');
 
             set(this, 'model.controllerInstance', this);
@@ -120,6 +123,13 @@ define([
 
 
         actions: {
+            /**
+             * Show debug info in console and put widget var in window.$E
+             */
+            inspect: function (widget) {
+                debugUtils.inspectObject(this);
+            },
+
             do: function(action) {
                 var params = [];
                 for (var i = 1, l = arguments.length; i < l; i++) {
@@ -128,6 +138,7 @@ define([
 
                 this.send(action, params);
             },
+
             creationForm: function(itemType) {
                 formsUtils.addRecord(itemType);
             },

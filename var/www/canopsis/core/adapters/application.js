@@ -23,6 +23,7 @@ define([
     'app/application',
     'app/lib/promisesmanager'
 ], function(Ember, DS, Application, promisesmanager) {
+
     var get = Ember.get,
         set = Ember.set;
 
@@ -60,20 +61,20 @@ define([
             var data = {};
             var serializer = store.serializerFor(type.typeKey);
 
-            data = serializer.serializeIntoHash(data, type, record, "POST", { includeId: true });
+            data = serializer.serializeIntoHash(data, type, record, 'POST', { includeId: true });
 
-            return this.ajax(this.buildURL(type.typeKey, record.id), "POST", { data: data });
+            return this.ajax(this.buildURL(type.typeKey, record.id, undefined, 'POST'), 'POST', { data: data });
         },
 
         updateRecord: function(store, type, record) {
             var data = {};
             var serializer = store.serializerFor(type.typeKey);
 
-            data = serializer.serializeIntoHash(data, type, record, "PUT");
+            data = serializer.serializeIntoHash(data, type, record, 'PUT');
 
             var id = Ember.get(record, 'id');
 
-            return this.ajax(this.buildURL(type.typeKey, id), "PUT", { data: data });
+            return this.ajax(this.buildURL(type.typeKey, id, undefined, 'PUT'), 'PUT', { data: data });
         }
     });
 

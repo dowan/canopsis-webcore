@@ -42,7 +42,8 @@ define([
     'app/view/listline',
     'app/lib/wrappers/datatables',
     'app/lib/loaders/components',
-    'app/lib/wrappers/bootstrap-contextmenu'
+    'app/lib/wrappers/bootstrap-contextmenu',
+    'app/adapters/group'
 ], function(Ember, DS, WidgetFactory, PaginationMixin, InspectableArrayMixin,
         ArraySearchMixin, SortableArrayMixin, HistoryMixin, AckMixin, InfobuttonMixin, SendEventMixin, CustomFilterManagerMixin, utils, domUtils, routesUtils, formsUtils, FoldableListLineMixin) {
 
@@ -146,6 +147,7 @@ define([
 
                     console.debug('Template is ', template);
 
+                    //FIXME @eric WTF is that?!?
                     var recorddisplayerController = get(dest, 'controllerInstance.controllers.recorddisplayer');
 
                     var recorddisplayerController = this.get('controllers.recorddisplayer');

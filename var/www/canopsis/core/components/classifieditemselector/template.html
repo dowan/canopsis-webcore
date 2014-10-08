@@ -65,6 +65,10 @@
                                     {{/if}}
                                 {{/if}}
                                 {{item.name}} ({{item.value}})
+
+                                {{#if selectedItemPartial}}
+                                    {{partial selectedItemPartial}}
+                                {{/if}}
                             </a>
                         </li>
                     {{else}}

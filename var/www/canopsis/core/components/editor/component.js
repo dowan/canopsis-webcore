@@ -21,8 +21,10 @@ define([
     'ember',
     'app/application',
     'canopsis/canopsisConfiguration',
+    'app/lib/utils/debug',
     'app/lib/helpers/validationtextfield'
-], function(Ember, Application, canopsisConfiguration) {
+], function(Ember, Application, canopsisConfiguration, debugUtils) {
+
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone;
@@ -39,6 +41,12 @@ define([
             this._super();
 
             set(this, 'templateData.keywords.attr', Ember.computed.alias('content'));
+        },
+
+        actions: {
+            inspect: function() {
+                debugUtils.inspectObject(get(this, 'content'));
+            }
         },
 
         editorType: function() {

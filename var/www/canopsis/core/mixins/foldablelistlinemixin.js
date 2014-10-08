@@ -26,10 +26,11 @@ define([
     var mixin = Ember.Mixin.create({
             actions: {
                 unfold_action:function(record){
+                    debugger;
                     console.warn('unfold');
-                    var value = !record.get("unfolded");
-                    Ember.set(record,"unfolded", value);
-                    if(!record.loaded)
+                    var value = !record.content.get("unfolded");
+                    Ember.set(record.content,"unfolded", value);
+                    if(!record.content.loaded)
                         this.ajaxCall(record);
                 }
             },
@@ -37,10 +38,10 @@ define([
             ajaxCall :function(record  , params){
                 // action must be take in count here
                 params = params || "";
-                var id = record.get("id");
+               // var id = record.content.get("id");
                 //{"event_type":"eue","uniqueKey":"892af02377233e5ec34f32951f450c6b","type_message":"step"}
                 // filter : even_type: eue , uniqueKey; $uniqueKey , type_message:"step"
-                var uniqueKey = record._data.uniqueKey;
+                var uniqueKey = record.content._data.uniqueKey;
                 var url = '/rest/events?filter={"$and":[{"$or":[{"event_type":"eue","uniqueKey":"'+uniqueKey+'","type_message":"step"}]},{}]}';
 
                 var ajaxDeffered = $.ajax({ url: url,
@@ -55,53 +56,48 @@ define([
 
             ajaxSuccess: function(response , textStatus, deffered){
                 var args = deffered.args;
-            //    var action = args[0];
                 var record = args[0];
-
+                var line_controller = record;
 
                 var nmbr_colonne = this.get("nmbr_colonne");
                 var shown_columns = this.get('shown_columns');
                 var step_template = this.get('step_template');
 
-                var class_unused='style="background-color:white"; COLSPAN=2"';
-                var cltd='style="background-color:beige"';
-               // var source ='{{#steps}}<tr><th '+class_unused+'></th><td '+ cltd +'>{{event_type}}</td><td '+cltd+'>{{output}}</td><td '+cltd+'>{{connector}}</td></tr>{{/steps}}';
-                var columns = "";
-              //  var entete = '<tr>{{#shown_columns}}<th>{{field}}</th>{{/shown_columns}}</tr>';
-                for ( var i=0; i<shown_columns.length ; i++){
-                    var column = shown_columns[i].field;
-                    columns += '<td '+cltd+'>{{'+ column +'}}</td>';
-                  //  "<td '+ cltd +'>{{event_type}}</td><td '+cltd+'>{{output}}</td><td '+cltd+'>{{connector}}</td>"
+                if (step_template)
+                {
+                    Ember.set(line_controller.content, "steps", response.data);
+                    Ember.set(line_controller, "steps", response.data);
+                    Ember.set(this, "steps", response.data);
+
+                   // var step_template_cel = step_template.slice(43, length - 16);
+                   debugger;
+                    step_template_cel = step_template.replace('<tr>','<tr style="font-weight:initial; text-align:left;">');
+                    var template_columns ="";
+
+                    var columns = this.params_from_template(step_template_cel);
+                    for (var i=0; i<columns.length ; i++){
+                        var column = columns[i];
+                        template_columns += '<td style="background-color: papayawhip;">' + column +'</td>';
+                    }
+
+                    template_columns = template_columns;
+
+                    var source  = '<th COLSPAN=2></th><th COLSPAN='+ nmbr_colonne +'><table class="table table-bordered"><tbody>' + template_columns + step_template + '</tbody></table></th>';
+
+                   // var source = '<td> hello</td>';
+                    var html = Ember.Handlebars.compile(source);
+
+                    Ember.set(Ember.TEMPLATES, "testTemplate", html);
+
+
+                    Ember.set(record.content,"loaded",true);
                 }
-                //var source ='{{#steps}}<tr><th '+class_unused+'>'+ columns +'</th></tr>{{/steps}}';
-              //  var source = '{{#steps}}<tr><th '+class_unused+'><th ' + step_template +'</th></tr>{{/steps}}';
-               // var source = '{{#steps}}<tr><th '+class_unused+'><td>{{output}}</td></tr>{{/steps}}';
-               // var source = '<th COLSPAN=10>{{#steps}}<table class="table table-bordered"><tbody><tr><td>{{output}}</td></tr></tbody></table>{{/steps}}</th>';
-               // var source = '<th COLSPAN=10>{{#steps}}' + step_template + '{{/steps}}</th>';
-                var length = step_template.length;
-                var step_template_cel = step_template.slice(43, length - 16);
-                step_template_cel = step_template_cel.replace('<tr>','<tr style="font-weight:initial; text-align:left;">');
-                var columns = this.params_from_template(step_template_cel);
-
-                var template_columns = "";
-
-                for (var i=0; i<columns.length ; i++){
-                    var column = columns[i];
-                    template_columns += '<td style="background-color: papayawhip;">' + column +'</td>';
-                  //  "<td '+ cltd +'>{{event_type}}</td><td '+cltd+'>{{output}}</td><td '+cltd+'>{{connector}}</td>"
+                else
+                {
+                   // Ember.set(record,'loaded',true);
+                    nmbr_colonne+= 2;
+                    Ember.set(record,'html','<th COLSPAN=' + nmbr_colonne + '>No template was found</th>');
                 }
-
-                template_columns = '<th COLSPAN=2></th><th COLSPAN=9><table class="table table-bordered"><tbody>' + template_columns;
-               // var source = template_columns + '<th COLSPAN=10><table class="table table-bordered">{{#steps}}' + step_template_cel + '{{/steps}}</table></th>';
-                var source = '{{#steps}}' + step_template_cel + '{{/steps}}</th>';
-
-                var template = Handlebars.compile(source);
-                var context = {steps:response.data , shown_columns:shown_columns};
-                var html    = template(context);
-
-                template_columns += html + '</tbody></table></th>' ;
-                Ember.set(record,"loaded",true);
-                Ember.set(record,"html",template_columns);
             },
 
             ajaxError: function(response ,textStatus, deffered){
@@ -128,7 +124,18 @@ define([
                 if (start != -1){
                     end = str.search("}}");
                     var param = str.slice(start + 2, end);
-                    result.push(param);
+                    if (param.indexOf("each") == -1){
+                        var endOfWord = param.indexOf(" ");
+                        if (endOfWord != -1){
+                            debugger;
+                            var firstWord = param.slice(0, endOfWord);
+                            result.push(firstWord);
+                        }
+                        else
+                        {
+                            result.push(param);
+                        }
+                    }
                     str = str.slice(end + 2);
                 }
             }
@@ -143,9 +150,16 @@ define([
             testou:["plus-sign"]
         },
 
+        testTemplate :function(){
+         //   debugger;
+            return "testTemplate";
+        },
         nmbr_colonne: function(){
-            //debugger;
-            return 13;
+          //  debugger;
+            var shown_columns = this.get("shown_columns");
+            var nmbr_colonne = (shown_columns)? shown_columns.length : 0;
+
+            return nmbr_colonne;
         }.property()
     });
 

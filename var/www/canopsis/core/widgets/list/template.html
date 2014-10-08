@@ -60,7 +60,10 @@
 
                         {{#if unfolded}}
                             {{#if loaded}}
-                                {{{html}}}
+                                {{ partial "testTemplate"}}
+                                {{#each steps}}
+                                    {{log "hello"}}
+                                {{/each}}
                             {{else}}
                                 <tr>
                                     <td COLSPAN=5>

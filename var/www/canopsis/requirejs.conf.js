@@ -200,7 +200,8 @@ define([
     'canopsis/file_loader',
     'seeds/RoutesLoader',
     'app/lib/wrappers/console',
-    'app/lib/wrappers/extend'
+    'app/lib/wrappers/extend',
+    'app/lib/helpers/i18n'
 ], function () {
     require(['canopsis/main']);
 });

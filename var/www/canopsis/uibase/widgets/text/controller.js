@@ -51,8 +51,10 @@ define([
             var template = get(this, 'html');
             var templateName = 'dynamic-' + viewElementId;
             console.log('setting template', templateName, template);
-            set(Ember.TEMPLATES, templateName, Ember.Handlebars.compile(template));
+            var tpl = Ember.Handlebars.compile(template);
+            set(Ember.TEMPLATES, templateName, tpl);
 
+            console.log('tempalte set.', tpl, Ember.TEMPLATES[templateName]);
             return templateName;
         }.property('viewElementId'),
 
