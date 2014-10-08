@@ -118,12 +118,10 @@ define([
         },
 
         partials: {
-            testou:["actionbutton-foldable"]
+            columnsLine:["actionbutton-foldable"],
+            columnsHead:["column-unfold"]
         },
 
-        colonne_header: {
-            testou:["plus-sign"]
-        },
 
         testTemplate :function(){
          //   debugger;

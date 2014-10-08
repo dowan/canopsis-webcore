@@ -73,7 +73,9 @@ var templates = [
     { name: 'titlebarbutton-moveleft', classes: ["titlebarbutton"] },
     { name: 'titlebarbutton-moveright', classes: ["titlebarbutton"] },
     { name: 'titlebarbutton-minimize', classes: ["titlebarbutton"] },
-    { name: 'actionbutton-foldable' ,  classes: ["foldable"]}
+
+    { name: 'actionbutton-foldable' ,  classes: ["foldable"]},
+    { name: 'column-unfold' ,  classes: ["foldable"]},
 ];
 
 var deps = ['ember'];

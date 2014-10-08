@@ -23,9 +23,9 @@
                     <th class="checkboxes">
                         {{component-checkbox checked=controller.isAllSelected class="toggle"}}
                     </th>
-                    <th class="checkboxes">
-                           
-                    </th>
+                    {{#each column in controller._partials.columnsHead}}
+                        {{partial column}}
+                    {{/each}}
                     {{#each attr in controller.shown_columns}}
                         {{#group}}
                             {{#if attr.options.show}}
@@ -61,9 +61,6 @@
                         {{#if unfolded}}
                             {{#if loaded}}
                                 {{ partial "testTemplate"}}
-                                {{#each steps}}
-                                    {{log "hello"}}
-                                {{/each}}
                             {{else}}
                                 <tr>
                                     <td COLSPAN=5>
