@@ -21,6 +21,7 @@
 //TODO implement auto check for mvct file existence and require them automatically
 
 var componentsTemplates = [
+    'actionbutton',
     'arrayclassifiedcrecordselector',
     'checkbox',
     'classifiedcrecordselector',

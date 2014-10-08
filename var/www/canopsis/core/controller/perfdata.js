@@ -38,8 +38,8 @@ define([
                     data: {
                         'metric_id': metric_id,
                         'timewindow': JSON.stringify({
-                            'start': tstart,
-                            'stop': tend
+                            'start': tstart / 1000,
+                            'stop': tend / 1000
                         })
                     }
                 }).then(resolve, reject);
@@ -47,16 +47,7 @@ define([
         },
 
         fetchMany: function(metrics, tstart, tend) {
-            var promises = [];
-
-            for(var i = 0, l = metrics.length; i < l; i++) {
-                var metric = metrics[i];
-
-                var promise = this.fetch(metric, tstart, tend);
-                promises.push(promise);
-            }
-
-            return $.when.apply(this, promises);
+            return this.fetch(JSON.stringify(metrics), tstart, tend);
         },
 
         aggregate: function(metric_id, tstart, tend, method, interval) {
@@ -67,8 +58,8 @@ define([
                     data: {
                         'metric_id': metric_id,
                         'timewindow': JSON.stringify({
-                            'start': tstart,
-                            'stop': tstop
+                            'start': tstart / 1000,
+                            'stop': tend / 1000
                         }),
                         'timeserie': JSON.stringify({
                             'aggregation': method,
@@ -80,16 +71,7 @@ define([
         },
 
         aggregateMany: function(metrics, tstart, tend, method, interval) {
-            var promises = [];
-
-            for(var i = 0, l = metrics.length; i < l; i++) {
-                var metric = metrics[i];
-
-                var promise = this.aggregate(metric, tstart, tend, method, interval);
-                promises.push(promise);
-            }
-
-            return $.when.apply(this, promises);
+            return this.aggregate(JSON.stringify(metrics), tstart, tend, method, interval);
         }
     });
 

@@ -25,9 +25,10 @@ define([
     'app/lib/utils/data',
     'app/lib/utils/forms',
     'app/lib/utils/widgetSelectors',
+    'app/lib/utils/actions',
     'app/lib/loaders/schemas',
     'seeds/RoutesLoader'
-], function(Ember, Application, AuthenticatedRoute, utils, dataUtils, formUtils, widgetSelectorsUtils) {
+], function(Ember, Application, AuthenticatedRoute, utils, dataUtils, formUtils, widgetSelectorsUtils, actionsUtils) {
     var set = Ember.set,
         get = Ember.get;
 
@@ -140,6 +141,8 @@ define([
         setupController: function(controller, model) {
             console.log('UserviewRoute setupController', model, controller);
             set(this.controllerFor('application'), 'currentViewId', get(model, 'id'));
+
+            actionsUtils.setDefaultTarget(this);
 
             controller.setProperties({
                 'content': model,

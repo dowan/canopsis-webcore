@@ -17,33 +17,26 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['jquery', 'ember', 'jquery.md5'], function($, Ember) {
+define([
+    'ember',
+    'app/application'
+], function(Application) {
 
-    var hash = {
-        generate_GUID: function() {
-            //Generates a random GUID
-            var s4 = function () {
-                return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-            };
+    var actionsDefaultTarget;
 
-            var token = s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-
-            return token;
-        },
-        generateId: function(prefix) {
-
-            var token = hash.generate_GUID();
-
-            if(!Ember.isNone(prefix)) {
-                token = prefix + '_' + token;
-            }
-            return token;
+    var actionsUtils = {
+        setDefaultTarget: function (target) {
+            actionsDefaultTarget = target;
         },
 
-        md5: function(data) {
-            return $.md5(data);
+        /**
+         * send an action to the default target (usually ApplicationController instance)
+         */
+        doAction: function (actionName, actionParam) {
+            console.info('doAction');
+            actionsDefaultTarget.send.apply(actionsDefaultTarget, [actionName, actionParam]);
         }
     };
 
-    return hash;
+    return actionsUtils;
 });

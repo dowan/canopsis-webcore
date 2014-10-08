@@ -24,6 +24,8 @@ define([
     'utils'
 ], function(Ember, Application, hashUtils, utils) {
 
+    var get = Ember.get;
+
     var userConfiguration = Ember.ObjectController.extend({
 
         needs: ['login'],
@@ -42,10 +44,12 @@ define([
                 preference_id = hashUtils.generate_GUID();
             }
 
+            var user = get(this, 'widget.controllers.login.record.user');
+
             var userConfiguration = {
                 preferences_level: preferences_level,
                 widget_preferences: preferences,
-                crecord_name: utils.session.user,
+                crecord_name: user,
                 widget_id: this.get('widget.id'),
                 id: preference_id,
                 crecord_type: 'userpreferences'

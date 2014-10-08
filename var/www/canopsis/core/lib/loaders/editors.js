@@ -109,8 +109,6 @@ console.log({"editors dependencies": deps});
 define(deps, function(Ember) {
     console.tags.add('loader');
 
-    console.group("load editors", arguments);
-
     for (var i = 0; i < depsTemplates.length; i++) {
         var tmplInfo = depsTemplates[i];
 

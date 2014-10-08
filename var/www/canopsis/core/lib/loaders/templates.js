@@ -20,7 +20,6 @@
 var templates = [
     { name: 'application' },
     { name: 'index' },
-    { name: 'containerwidget' },
     { name: 'formwrapper' },
     { name: 'recorddisplayer' },
     { name: 'widgettitlebar' },

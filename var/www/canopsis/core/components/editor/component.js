@@ -54,7 +54,6 @@ define([
 
             var overrides = get(this, 'editorOverrides');
 
-
             var type = get(this, 'content.model.type');
             var role = get(this, 'content.model.options.role');
 
