@@ -136,7 +136,7 @@ define([
                     }
 
                     // push computed point in serie
-                    finalSerie.push([ts, pointval]);
+                    finalSerie.push([ts * 1000, pointval]);
                 }
 
                 console.log('finalserie:', finalSerie);

@@ -235,9 +235,6 @@ define([
             findItems: function() {
                 var me = this;
 
-<<<<<<< HEAD
-                var itemType = get(this, "itemType");
-=======
                 if (get(this, 'widgetDataStore') === undefined) {
                     set(this, 'widgetDataStore', DS.Store.create({
                         container: get(this, 'container')
@@ -245,7 +242,6 @@ define([
                 }
 
                 var itemType = get(this, 'itemType');
->>>>>>> 7bc492a59dda494c4bc5b93564f13dea1d64e653
 
                 console.log('findItems', itemType);
 
