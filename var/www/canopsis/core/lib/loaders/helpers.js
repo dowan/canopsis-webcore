@@ -60,7 +60,7 @@ var helpers = [
 
 var deps = ['app/application', 'app/lib/wrappers/swag'];
 
-for (var i = 0; i < helpers.length; i++) {
+for (var i = 0, l = helpers.length; i < l; i++) {
     deps.push("app/lib/helpers/" + helpers[i]);
 }
 
