@@ -24,11 +24,11 @@ define([
 
     var set = Ember.set;
 
-    Ember.Handlebars.helper('recordCanBeAck', function(crecord) {
+    Ember.Handlebars.helper('recordcanbeack', function(crecord) {
 
-        console.debug('in recordCanBeAck. record status is', crecord.get('status'));
-        recordCanBeAck = crecord.get('status') !== 0 && crecord.get('status') !== 2;
-        set(crecord, 'recordCanBeAck', recordCanBeAck);
+        console.debug('in recordcanbeack. record status is', crecord.get('status'));
+        recordcanbeack = crecord.get('status') !== 0 && crecord.get('status') !== 2;
+        set(crecord, 'recordcanbeack', recordcanbeack);
 
         return "";
     });

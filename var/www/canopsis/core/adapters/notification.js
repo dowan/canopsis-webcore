@@ -19,13 +19,13 @@
 
 define([
     'app/application',
+    'ember-data',
     'app/lib/loaders/schemas'
-], function(Application) {
+], function(Application, DS) {
 
     var adapter = DS.FixtureAdapter.extend();
 
     if(Application.Notification) {
-        console.error('trying to set notifications fixtures but the model is still not loaded');
         Application.Notification.FIXTURES = [];
     }
 

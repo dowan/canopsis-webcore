@@ -17,7 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember', 'utils'], function(Ember, utils) {
+define(['ember', 'app/lib/utils/dates'], function(Ember, datesUtils) {
 
     Ember.Handlebars.helper('timeSince', function(timestamp , record) {
 
@@ -26,7 +26,7 @@ define(['ember', 'utils'], function(Ember, utils) {
         var current = new Date().getTime();
         timestamp = record.timeStampState || timestamp;
         var a = new Date(timestamp * 1000);
-        var time = utils.dates.diffDate(a, current, "d") - 1;
+        var time = datesUtils.diffDate(a, current, "d") - 1;
 
         var newObject = Ember.Object.create({value : time , field : "time" });
         newObject.addObserver('timeStampState',record, function(sender, key , value) {

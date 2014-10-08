@@ -23,8 +23,9 @@ define([
     'app/application',
     'utils',
     'app/lib/utils/data',
-    'app/lib/utils/forms'
-], function(Ember, DS, Application, utils, dataUtils, formsUtils) {
+    'app/lib/utils/forms',
+    'app/lib/utils/notification'
+], function(Ember, DS, Application, utils, dataUtils, formsUtils, notificationUtils) {
 
     /**
       Implements Custom filter management for list
@@ -66,7 +67,7 @@ define([
                     record = form.get('formContext');
                     widgetController.get('custom_filters').pushObject(record);
                     console.log('Custom filter created', record, form);
-                    utils.notification.info(__('Custom filter created'));
+                    notificationUtils.info(__('Custom filter created'));
                     widgetController.set('userParams.custom_filters', widgetController.get('custom_filters'));
                     widgetController.get('userConfiguration').saveUserConfiguration();
 
@@ -95,7 +96,7 @@ define([
                     record = form.get('formContext');
                     widgetController.get('custom_filters').pushObject(record);
                     console.log('Custom filter created', record, form);
-                    utils.notification.info(__('Custom filter created'));
+                    notificationUtils.info(__('Custom filter created'));
                     widgetController.set('userParams.custom_filters', widgetController.get('custom_filters'));
                     widgetController.get('userConfiguration').saveUserConfiguration();
 
@@ -120,7 +121,7 @@ define([
 
                 recordWizard.submit.then(function(form) {
                     controller.get('custom_filters').removeObject(filter);
-                    utils.notification.info(__('Custom filter removed'));
+                    notificationUtils.info(__('Custom filter removed'));
                     controller.set('userParams.custom_filters', controller.get('custom_filters'));
                     controller.get('userConfiguration').saveUserConfiguration();
                 });

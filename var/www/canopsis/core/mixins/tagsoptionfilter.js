@@ -20,19 +20,18 @@
 define([
     'ember',
     'app/application',
-    'utils',
+    'app/lib/utils/filterObject',
     'app/lib/formsregistry'
-], function(Ember, Application , utils, formsregistry) {
+], function(Ember, Application , filterObjectUtils, formsregistry) {
 // TODO: just make a function from this
 
     var mixin = Ember.Mixin.create({
-
         onInit : function ( contentREF , _self ){
             var formController = formsregistry.formwrapper.form;
-            if ( formController ){
-                utils.filterObject.getFieldsByPrefix( "_opt_" , formController.formContext , function( attr , result  ){
+            if (formController) {
+                filterObjectUtils.getFieldsByPrefix( "_opt_" , formController.formContext , function( attr , result  ){
                     var nameMixin = { name : attr.slice(5) };
-                    result.push(nameMixin);
+                    result.pushObject(nameMixin);
                 } , contentREF);
             }
             _self.set("select", 0 );

@@ -18,6 +18,7 @@
 */
 
 define([
+    'jquery',
     'ember',
     'ember-data',
     'app/lib/factories/widget',
@@ -44,12 +45,9 @@ define([
     'app/lib/loaders/components',
     'app/lib/wrappers/bootstrap-contextmenu',
     'app/adapters/group'
-], function(Ember, DS, WidgetFactory,
-        PaginationMixin, InspectableArrayMixin,
-        ArraySearchMixin, SortableArrayMixin, HistoryMixin,
-        AckMixin, InfobuttonMixin, SendEventMixin, CustomFilterManagerMixin,
-        utils, domUtils, routesUtils, formsUtils, FoldableListLineMixin)
-{
+], function($, Ember, DS, WidgetFactory, PaginationMixin, InspectableArrayMixin,
+        ArraySearchMixin, SortableArrayMixin, HistoryMixin, AckMixin, InfobuttonMixin, SendEventMixin, CustomFilterManagerMixin, utils, domUtils, routesUtils, formsUtils, FoldableListLineMixin) {
+
     var get = Ember.get,
         set = Ember.set;
 
@@ -101,9 +99,9 @@ define([
 
                         var offset = td.offset();
 
-                        newDiv.css("padding", td.css('padding'));
-                        newDiv.css("backgroundColor", td.css('backgroundColor'));
-                        newDiv.css("position", "absolute");
+                        newDiv.css('padding', td.css('padding'));
+                        newDiv.css('backgroundColor', td.css('backgroundColor'));
+                        newDiv.css('position', 'absolute');
 
                         newDiv.offset(offset);
                         newDiv.html(element.html());
@@ -112,12 +110,12 @@ define([
                             divHeight = newDiv.height();
 
                         if(tdHeight > divHeight) {
-                            newDiv.css("height", tdHeight);
+                            newDiv.css('height', tdHeight);
                         } else {
-                            newDiv.css("height", divHeight);
+                            newDiv.css('height', divHeight);
                         }
 
-                        td.on("mouseleave", function(e) {
+                        td.on('mouseleave', function(e) {
                             newDiv.remove();
                         });
                    });
@@ -198,14 +196,14 @@ define([
             },
 
             itemType: function() {
-                var listed_crecord_type = get(this, "listed_crecord_type");
+                var listed_crecord_type = get(this, 'listed_crecord_type');
                 console.info('listed_crecord_type', listed_crecord_type);
                 if(listed_crecord_type !== undefined && listed_crecord_type !== null ) {
-                    return get(this, "listed_crecord_type");
+                    return get(this, 'listed_crecord_type');
                 } else {
                     return 'event';
                 }
-            }.property("listed_crecord_type"),
+            }.property('listed_crecord_type'),
 
             widgetData: [],
 
@@ -220,11 +218,11 @@ define([
 
             //Mixin aliases
             //history
-            historyMixinFindOptions: Ember.computed.alias("findOptions.useLogCollection"),
+            historyMixinFindOptions: Ember.computed.alias('findOptions.useLogCollection'),
             //inspectedDataItemMixin
-            inspectedDataArray: Ember.computed.alias("widgetData"),
+            inspectedDataArray: Ember.computed.alias('widgetData'),
             //pagination
-            paginationMixinFindOptions: Ember.computed.alias("findOptions"),
+            paginationMixinFindOptions: Ember.computed.alias('findOptions'),
 
             onReload: function (element) {
                 this._super();
@@ -237,12 +235,22 @@ define([
             findItems: function() {
                 var me = this;
 
+<<<<<<< HEAD
                 var itemType = get(this, "itemType");
+=======
+                if (get(this, 'widgetDataStore') === undefined) {
+                    set(this, 'widgetDataStore', DS.Store.create({
+                        container: get(this, 'container')
+                    }));
+                }
 
-                console.log("findItems", itemType);
+                var itemType = get(this, 'itemType');
+>>>>>>> 7bc492a59dda494c4bc5b93564f13dea1d64e653
+
+                console.log('findItems', itemType);
 
                 if (itemType === undefined || itemType === null) {
-                    console.error ("itemType is undefined for", this);
+                    console.error ('itemType is undefined for', this);
                     return;
                 }
 
@@ -256,21 +264,22 @@ define([
                         if (columnSort.direction === 'DESC' || columnSort.direction === 'ASC') {
                             direction = columnSort.direction;
                         }
+                        //Sort order has been found.
                         findParams.sort = JSON.stringify([{property: columnSort.property, direction: direction}]);
                     }
                 }
 
                 console.tags.add('data');
-                console.log("find items of type", itemType, "with options", findParams);
+                console.log('find items of type', itemType, 'with options', findParams);
                 console.tags.remove('data');
 
-                get(this, "widgetDataStore").findQuery(itemType, findParams).then(function(queryResults) {
+                get(this, 'widgetDataStore').findQuery(itemType, findParams).then(function(queryResults) {
                     console.tags.add('data');
-                    console.log("got results in widgetDataStore", itemType, "with options", findParams);
+                    console.log('got results in widgetDataStore', itemType, 'with options', findParams);
                     console.tags.remove('data');
 
                     //retreive the metas of the records
-                    set(me, "widgetDataMetas", get(me, "widgetDataStore").metadataFor(get(me, "listed_crecord_type")));
+                    set(me, 'widgetDataMetas', get(me, 'widgetDataStore').metadataFor(get(me, 'listed_crecord_type')));
                     me.extractItems.apply(me, [queryResults]);
                     set(me, 'loaded', true);
 
@@ -282,7 +291,7 @@ define([
 
                     me.trigger('refresh');
                 }).catch(function (promiseProxy) {
-                    console.warn("Catching error", promiseProxy);
+                    console.warn('Catching error', promiseProxy);
                     set(me, 'dataError', promiseProxy);
                 });
             },
@@ -304,7 +313,7 @@ define([
             }.property('attributesKeys'),
 
             shown_columns: function() {
-                console.log("compute shown_columns", get(this, 'sorted_columns'), get(this, 'attributesKeys'), get(this, 'sortedAttribute'));
+                console.log('compute shown_columns', get(this, 'sorted_columns'), get(this, 'attributesKeys'), get(this, 'sortedAttribute'));
 
                 //user preference for displayed columns.
                 if (this.get('user_show_columns') !== undefined) {
@@ -355,8 +364,9 @@ define([
                     }
                 }
 
-                if(get(this, 'maximized_column_index'))
+                if(get(this, 'maximized_column_index')) {
                     selected_columns[get(this, 'maximized_column_index')].maximized = true;
+                }
 
                 console.debug('selected cols', selected_columns);
 
@@ -421,10 +431,10 @@ define([
                 console.log('sortedAttribute', sortedAttribute);
 
                 if(isDefined(sortedAttribute)) {
-                    var direction = "ASC";
+                    var direction = 'ASC';
 
-                    if(sortedAttribute.headerClassName === "sorting_desc") {
-                        direction = "DESC";
+                    if(sortedAttribute.headerClassName === 'sorting_desc') {
+                        direction = 'DESC';
                     }
 
                     params.sort = [{ property : sortedAttribute.field, direction: direction }];

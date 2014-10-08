@@ -23,11 +23,12 @@ var schemaFiles = [
 
 var schemasDeps = ['ember-data', 'app/application', 'utils'];
 
-for (var i = 0; i < schemaFiles.length; i++) {
+for (var i = 0, l = schemaFiles.length; i < l; i++) {
     schemasDeps.push('text!schemas/' + schemaFiles[i] + '.json');
 }
 
 define(schemasDeps, function(DS, Application, utils) {
+    console.tags.add('loader');
 
     //TODO nuke this
     if (Application.allModels === undefined) {
@@ -74,7 +75,7 @@ define(schemasDeps, function(DS, Application, utils) {
     function loadSchemasFromJsonFiles(schemasDepsLength, schemaFiles, moduleArgs) {
         console.group("loadSchemasFromJsonFiles", arguments);
 
-        for (var i = schemasDepsLength; i < moduleArgs.length; i++) {
+        for (var i = schemasDepsLength, l = moduleArgs.length; i < l; i++) {
             var schemaIndex =  i - schemasDepsLength;
             console.groupCollapsed("loading schema", schemaFiles[schemaIndex]);
 
@@ -101,7 +102,7 @@ define(schemasDeps, function(DS, Application, utils) {
         var schemasDict = {};
         var schemaName;
 
-        for (var i=0; i<api_result.length; i++) {
+        for (var i = 0, l = api_result.length; i < l; i++) {
             var schema = api_result[i].schema;
             schemaName = api_result[i].id.capitalize();
             console.log('Loading schema...', schemaName);
@@ -357,8 +358,8 @@ define(schemasDeps, function(DS, Application, utils) {
         for (var options in oldOptions) {
             //if option isn't in current model's options
             if (oldOptions.hasOwnProperty(options) && newOptions[options] === undefined) {
-            newOptions[options] = oldOptions[options];
-            console.log ("Added "+ options + " = " + oldOptions[options] + " in "+ schemaName);
+                newOptions[options] = oldOptions[options];
+                console.log ("Added "+ options + " = " + oldOptions[options] + " in "+ schemaName);
             }
         }
         return newOptions ;
@@ -367,6 +368,7 @@ define(schemasDeps, function(DS, Application, utils) {
     var available_types = [];
 
     var shemasLimit = 1000;
+
     $.ajax({
         url: '/rest/schemas',
         data: {limit: shemasLimit},
@@ -387,6 +389,7 @@ define(schemasDeps, function(DS, Application, utils) {
         async: false
     });
 
+    console.tags.remove('loader');
 
     return available_types;
 });

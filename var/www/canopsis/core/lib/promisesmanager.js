@@ -35,7 +35,6 @@ define(['ember'], function(Ember) {
         handlePromise: function(promise) {
             var me = this;
             Ember.run.schedule('sync', this, function() {
-                console.log('manage promise', promise);
                 me.all.pushObject(promise);
                 me.pending.pushObject(promise);
                 set(me, 'pendingCount', me.pendingCount + 1);

@@ -19,44 +19,47 @@
 
 define([
     'ember',
-    'utils',
-], function(Ember, utils) {
+    'app/lib/utils/dates'
+], function(Ember, datesUtils) {
+
+    var get = Ember.get,
+        isNone = Ember.isNone;
 
     Ember.Handlebars.helper('ack', function(value, crecord) {
 
         //displays ticket information if any onto the status field
-        var ticket_declared_author = crecord.get('record.ticket_declared_author');
-        var ticket_declared_date = crecord.get('record.ticket_declared_date');
+        var ticket_declared_author = get(crecord, 'record.ticket_declared_author');
+        var ticket_declared_date = get(crecord, 'record.ticket_declared_date');
 
-        var ticketNumber = crecord.get('record.ticket');
-        var ticketDate = crecord.get('record.ticket_date');
+        var ticketNumber = get(crecord, 'record.ticket');
+        var ticketDate = get(crecord, 'record.ticket_date');
 
         ticketNumberHtml = '';
 
         //Generate ticket declared html information
-        if (!Ember.isNone(ticketNumber) && !Ember.isNone(ticketDate)) {
+        if (!isNone(ticketNumber) && !isNone(ticketDate)) {
             ticketNumberHtml = [
                 '<b>' + __('Ticket number') + '</b><br/>',
-                utils.dates.timestamp2String(ticketDate) +' <br/> ',
+                datesUtils.timestamp2String(ticketDate) +' <br/> ',
                 '<i>' + ticketNumber +'</i><br/> ',
             ].join('');
         }
 
         //Generate html display for ticket declared and ticket number when possible
-        if(!Ember.isNone(ticket_declared_date) && !Ember.isNone(ticket_declared_author)) {
+        if(!isNone(ticket_declared_date) && !isNone(ticket_declared_author)) {
             value.ticket = ['<center>',
                 '<b>' + __('Ticket declared') + '</b><br/>',
-                utils.dates.timestamp2String(ticket_declared_date) +' <br/> ',
+                datesUtils.timestamp2String(ticket_declared_date) +' <br/> ',
                 __('By') +' : ' + ticket_declared_author +' <br/><br/> ',
                 ticketNumberHtml,
                 "</center>"
             ].join('');
 
-        } else if (!Ember.isNone(ticketNumber) && !Ember.isNone(ticketDate)) {
+        } else if (!isNone(ticketNumber) && !isNone(ticketDate)) {
 
             //When no ticket declared, then ticket date was saved.
-            console.debug('ticket date is ', crecord.get('record.ticket_date'));
-            var date = utils.dates.timestamp2String(crecord.get('record.ticket_date'));
+            console.debug('ticket date is ', get(crecord, 'record.ticket_date'));
+            var date = datesUtils.timestamp2String(get(crecord, 'record.ticket_date'));
 
             value.ticket = ['<center>',
                 ticketNumberHtml,
@@ -69,7 +72,7 @@ define([
         value.html = ['<center>',
             '<b>' + __('Ack') + '</b><br/>',
             '<i>' + __('Date') + '</i> : <br/>',
-            utils.dates.timestamp2String(value.timestamp) +' <br/> ',
+            datesUtils.timestamp2String(value.timestamp) +' <br/> ',
             __('By') +' : ' + value.author +' <br/><br/> ',
             '<i>'+__('Comment') +' </i> : <br/>' + value.comment,
             "</center>"].join('');

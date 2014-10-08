@@ -42,7 +42,7 @@ var depsSize = deps.length;
 
 
 //generate deps
-for (var i = 0; i < widgetsTemplates.length; i++) {
+for (var i = 0, l = widgetsTemplates.length; i < l; i++) {
     deps.push('text!' + widgetsTemplates[i].url + '/template.html');
 
     if (widgetsTemplates[i].hasJSPart === true) {
@@ -53,14 +53,15 @@ for (var i = 0; i < widgetsTemplates.length; i++) {
     }
 }
 
-for (i = 0; i < jsDeps.length; i++) {
+for (i = 0, l = jsDeps.length; i < l; i++) {
     deps.push(jsDeps[i]);
 }
 
-console.log({"widget dependencies": deps});
 define(deps, function(Ember) {
+    console.tags.add('loader');
+
     console.log({"load widgets": arguments});
-    for (var i = 0; i < widgetsTemplates.length; i++) {
+    for (var i = 0, l = widgetsTemplates.length; i < l; i++) {
         var templateName = widgetsTemplates[i].name;
         var TEMPLATE = widgetsTemplates[i].TEMPLATE;
         if( !TEMPLATE )
@@ -69,5 +70,8 @@ define(deps, function(Ember) {
             Ember.TEMPLATES[templateName] = Ember.TEMPLATES[TEMPLATE];
         }
     }
+
+    console.tags.remove('loader');
+
 });
 

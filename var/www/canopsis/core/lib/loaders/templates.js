@@ -20,7 +20,6 @@
 var templates = [
     { name: 'application' },
     { name: 'index' },
-    { name: 'containerwidget' },
     { name: 'formwrapper' },
     { name: 'recorddisplayer' },
     { name: 'widgettitlebar' },
@@ -73,7 +72,9 @@ var templates = [
     { name: 'titlebarbutton-moveleft', classes: ["titlebarbutton"] },
     { name: 'titlebarbutton-moveright', classes: ["titlebarbutton"] },
     { name: 'titlebarbutton-minimize', classes: ["titlebarbutton"] },
-    { name: 'actionbutton-foldable' ,  classes: ["foldable"]}
+
+    { name: 'actionbutton-foldable' ,  classes: ["foldable"]},
+    { name: 'column-unfold' ,  classes: ["foldable"]},
 ];
 
 var deps = ['ember'];
@@ -88,14 +89,14 @@ define(deps, function(Ember) {
     templatesLoaded.all = [];
     templatesLoaded.byClass = Ember.Object.create();
 
-    for (var i = depsSize; i < arguments.length; i++) {
+    for (var i = depsSize, li = arguments.length; i < li; i++) {
         var currentTemplate = templates[i - depsSize];
         Ember.TEMPLATES[currentTemplate.name] = Ember.Handlebars.compile(arguments[i]);
 
         currentTemplate.fileContent = arguments[i];
 
         if (currentTemplate.classes !== undefined) {
-            for (var j = 0; j < currentTemplate.classes.length; j++) {
+            for (var j = 0, lj = currentTemplate.classes.length; j < lj; j++) {
                 var currentClass = currentTemplate.classes[j];
 
                 if (templatesLoaded.byClass[currentClass] === undefined) {

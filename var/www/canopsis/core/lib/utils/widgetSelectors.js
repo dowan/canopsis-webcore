@@ -20,7 +20,8 @@
 define(['ember'], function(Ember) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
 
     var widgetSelectors = {
@@ -28,7 +29,7 @@ define(['ember'], function(Ember) {
 
         toTree: function (widget) {
             //doesn't work yet
-            if (Ember.isNone(widget)) {
+            if (isNone(widget)) {
                 console.warn('Widget is undefined in widget selector toTree');
                 return {};
             }

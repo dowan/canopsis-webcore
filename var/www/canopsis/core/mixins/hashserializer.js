@@ -27,6 +27,7 @@ define([
             void (type);
             console.log("serializeIntoHash", arguments);
             hash = this.serialize(record, options);
+
             if (method === "PUT") {
                 return hash;
             } else if (method === "POST") {

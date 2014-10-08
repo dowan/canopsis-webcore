@@ -26,19 +26,22 @@ var factories = [
 var factoriesDeps = ['app/application'];
 var factoriesDepsSize = factoriesDeps.length;
 
-for (var i = 0; i < factories.length; i++) {
+for (var i = 0, l = factories.length; i < l; i++) {
     factoriesDeps.push(factories[i].url);
 }
 
 define(factoriesDeps, function(Application) {
-    console.log(arguments);
+    console.tags.add('loader');
+
     Application.factories = {};
 
     console.log("loading factories", factories, "into", Application.factories);
 
-    for (var i = 0; i < factories.length; i++) {
+    for (var i = 0, l = factories.length; i < l; i++) {
         Application.factories[factories[i].name.capitalize()] = arguments[i + factoriesDepsSize];
     }
 
+
+    console.tags.remove('loader');
     return Application.factories;
 });
