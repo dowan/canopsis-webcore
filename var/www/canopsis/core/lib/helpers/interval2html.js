@@ -19,27 +19,25 @@
 
 define(['ember', 'utils'], function(Ember, utils) {
 
-    var set = Ember.set;
+    Ember.Handlebars.helper('interval2html', function(from , to) {
 
-    Ember.Handlebars.helper('interval2html', function(target, from , to) {
-
-        var html = '<div style="min-width:200px"></div>';
+        var html = '';//'<div style="min-width:200px"></div>';
 
         if(!Ember.isNone(from)) {
-            html += __('From') + ' ' + utils.dates.timestamp2String(from, 'day');
+            html += __('From') + ' ' + utils.dates.timestamp2String(from);
         }
 
         if(!Ember.isNone(from) && !Ember.isNone(to)) {
-            html += '<br />';
+            html += ' ';
         }
 
         if(!Ember.isNone(to)) {
-            html += __('to') + ' ' + utils.dates.timestamp2String(to, 'day');
+            html += __('to') + ' ' + utils.dates.timestamp2String(to);
         }
 
-        set(target, 'interval2html', html);
+        console.debug('generated html form interval2html is', html);
 
-        return '';
+        return html;
     });
 
 });
