@@ -25,7 +25,7 @@ define([
     'app/lib/factories/widget',
     'app/components/flotchart/component',
     'app/controller/serie'
-], function($, Ember, DS, Application, WidgetFactory) {
+], function($, Ember, DS, Application, WidgetFactory, WidgetDataConsumerController) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -34,35 +34,12 @@ define([
     var widget = WidgetFactory('timegraph', {
         needs: ['serie'],
         chartOptions: undefined,
-        flotSeries: {},
-
-        dataSeries: function() {
-            var flotSeries = get(this, 'flotSeries');
-            var series = [];
-
-            var serieIds = Object.keys(flotSeries);
-
-            for(var i = 0, l = serieIds.length; i < l; i++) {
-                var serieId = serieIds[i];
-
-                series.push(flotSeries[serieId]);
-            }
-
-            return series;
-        }.property('flotSeries'),
+        flotSeries: Ember.Object.create({}),
+        dataSeries: Ember.A(),
 
         timenav: false,
 
         init: function() {
-            /* needed to be declared here, because findItems() is called
-             * in parent constructor.
-             */
-            var store = DS.Store.create({
-                container: get(this, 'container')
-            });
-
-            set(this, 'widgetDataStore', store);
-
             this._super();
 
             var now = +new Date();
@@ -162,22 +139,22 @@ define([
             console.groupEnd();
 
             /* load series configuration */
-            $.when(
+            Ember.RSVP.all([
                 store.findQuery('serie', {ids: serieIds}),
                 store.findQuery('curve', {ids: curveIds})
-            ).then(function(p1args, p2args) {
+            ]).then(function(pargs) {
                 console.group('Generate FlotChart series');
 
-                var serieResult = p1args[0]; // arguments of first promise
-                var curveResult = p2args[1]; // arguments of second promise
+                var serieResult = pargs[0]; // arguments of first promise
+                var curveResult = pargs[1]; // arguments of second promise
 
                 var i, l;
 
                 console.log('Fetch curves');
-                for(i = 0, l = curveResult.length; i < l; i++) {
+                for(i = 0, l = curveResult.meta.total; i < l; i++) {
                     var curve = curveResult.content[i];
 
-                    for(var j = 0, l2 = serieResult.length; j < l2; j++) {
+                    for(var j = 0, l2 = serieResult.meta.total; j < l2; j++) {
                         var serieconf = serieResult.content[j];
 
                         var serieId = serieconf.id;
@@ -185,8 +162,8 @@ define([
                         if(series[serieId] !== undefined) {
                             var stylizedserie = series[serieId];
 
-                            if(stylizedserie.curve === curve.id) {
-                                stylizedserie.curve = curve;
+                            if(get(stylizedserie, 'curve') === curve.id) {
+                                set(stylizedserie, 'curve', curve);
                                 break;
                             }
                         }
@@ -201,7 +178,7 @@ define([
 
                     if(series[serieId] !== undefined) {
                         var stylizedserie = series[serieId];
-                        stylizedserie.serie = serieconf;
+                        set(stylizedserie, 'serie', serieconf);
 
                         me.genFlotSerie(stylizedserie, from, to);
                     }
@@ -214,29 +191,31 @@ define([
         genFlotSerie: function(stylizedserie, from, to, replace) {
             console.group('Generating FlotChart serie:', stylizedserie);
 
+            var me = this;
+
             var flotSerie = {
-                label: stylizedserie.serie.crecord_name,
-                color: stylizedserie.color,
+                label: get(stylizedserie, 'serie.crecord_name'),
+                color: get(stylizedserie, 'color'),
                 lines: {
-                    show: stylizedserie.curve.lines,
-                    lineWidth: stylizedserie.curve.line_width,
-                    fill: (stylizedserie.curve.areas ? stylizedserie.curve.area_opacity : false)
+                    show: get(stylizedserie, 'curve.lines'),
+                    lineWidth: get(stylizedserie, 'curve.line_width'),
+                    fill: (get(stylizedserie, 'curve.areas') ? get(stylizedserie, 'curve.area_opacity') : false)
                 },
                 bars: {
-                    show: stylizedserie.curve.bars,
-                    barWidth: stylizedserie.curve.bar_width
+                    show: get(stylizedserie, 'curve.bars'),
+                    barWidth: get(stylizedserie, 'curve.bar_width')
                 },
                 points: {
-                    show: stylizedserie.curve.points,
-                    symbol: stylizedserie.curve.point_shape
+                    show: get(stylizedserie, 'curve.points'),
+                    symbol: get(stylizedserie, 'curve.point_shape')
                 },
-                xaxis: stylizedserie.xaxis,
-                yaxis: stylizedserie.yaxis,
+                xaxis: get(stylizedserie, 'xaxis'),
+                yaxis: get(stylizedserie, 'yaxis'),
                 clickable: true,
                 hoverable: true
             };
 
-            var oldSerie = get(this, 'flotSeries.' + stylizedserie.serie.id);
+            var oldSerie = get(this, 'flotSeries.' + get(stylizedserie, 'serie.id'));
 
             if(oldSerie !== undefined && !replace) {
                 flotSerie.data = oldSerie.data;
@@ -249,13 +228,32 @@ define([
             console.log('Fetch perfdata and compute serie');
 
             var ctrl = get(this, 'controllers.serie');
-            ctrl.getDataSerie(serieconf, from, to).then(function(data) {
-                flotSerie.data = flotSerie.concat(data);
+            ctrl.getDataSerie(get(stylizedserie, 'serie'), from, to).then(function(data) {
+                console.log('getDataSerie:', data);
 
-                set(me, 'flotSeries.' + stylizedserie.serie.id, flotSerie);
+                flotSerie.data = flotSerie.data.concat(data);
+
+                set(me, 'flotSeries.' + get(stylizedserie, 'serie.id'), flotSerie);
+                me.recomputeDataSeries();
             });
 
             console.groupEnd();
+        },
+
+        recomputeDataSeries: function() {
+            var flotSeries = get(this, 'flotSeries');
+            var series = [];
+
+            var serieIds = Object.keys(flotSeries);
+
+            for(var i = 0, l = serieIds.length; i < l; i++) {
+                var serieId = serieIds[i];
+
+                series.pushObject(flotSeries[serieId]);
+            }
+
+            console.log('dataSeries:', series);
+            set(this, 'dataSeries', series);
         }
     }, widgetOptions);
 

@@ -44,9 +44,12 @@ define([
     'app/lib/loaders/components',
     'app/lib/wrappers/bootstrap-contextmenu',
     'app/adapters/group'
-], function(Ember, DS, WidgetFactory, PaginationMixin, InspectableArrayMixin,
-        ArraySearchMixin, SortableArrayMixin, HistoryMixin, AckMixin, InfobuttonMixin, SendEventMixin, CustomFilterManagerMixin, utils, domUtils, routesUtils, formsUtils, FoldableListLineMixin) {
-
+], function(Ember, DS, WidgetFactory,
+        PaginationMixin, InspectableArrayMixin,
+        ArraySearchMixin, SortableArrayMixin, HistoryMixin,
+        AckMixin, InfobuttonMixin, SendEventMixin, CustomFilterManagerMixin,
+        utils, domUtils, routesUtils, formsUtils, FoldableListLineMixin)
+{
     var get = Ember.get,
         set = Ember.set;
 
@@ -233,12 +236,6 @@ define([
 
             findItems: function() {
                 var me = this;
-
-                if (get(this, "widgetDataStore") === undefined) {
-                    set(this, "widgetDataStore", DS.Store.create({
-                        container: get(this, "container")
-                    }));
-                }
 
                 var itemType = get(this, "itemType");
 

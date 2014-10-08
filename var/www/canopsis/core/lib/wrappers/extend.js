@@ -29,7 +29,7 @@ define([], function() {
     };
 
     String.prototype.replaceAll = function(find, replace) {
-        var escaped = this.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+        var escaped = find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
         return this.replace(new RegExp(escaped, 'g'), replace);
     };
 });

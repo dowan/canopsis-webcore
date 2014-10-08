@@ -23,8 +23,12 @@ define([
     'ember-data',
     'app/application',
     'math',
+    'app/lib/utils/hash',
     'app/controller/perfdata'
-], function($, Ember, DS, Application, math) {
+], function($, Ember, DS, Application, math, hash) {
+
+    var get = Ember.get,
+        set = Ember.set;
 
     var controller = Ember.ObjectController.extend({
         needs: ['perfdata'],
@@ -36,7 +40,7 @@ define([
         },
 
         getDataSerie: function(serie, from, to) {
-            if(serie.metrics.length > 1 && serie.aggregate_method === 'none') {
+            if(get(serie, 'metrics.length') > 1 && get(serie, 'aggregate_method') === 'none') {
                 console.group('More than one metric in serie, performing an aggregation');
 
                 console.log('serie:', serie);
@@ -63,13 +67,14 @@ define([
                 );
             }
 
-            var formula = serie.formula;
+            var formula = get(serie, 'formula');
 
-            promise.then(function(result) {
+            return promise.then(function(result) {
                 console.group('Computing serie:', formula);
+                console.log(result);
 
-                var nmetric = result.meta.total;
-                var metrics = result.content;
+                var nmetric = result.total;
+                var metrics = result.data;
 
                 // build points dictionnary
                 var points = {};
@@ -79,11 +84,14 @@ define([
                 for(i = 0; i < nmetric; i++) {
                     var metric = metrics[i];
 
-                    var mname = metric.meta[1].metric;
-                    var mid = 'metric_' + metric.meta[2];
+                    var mname = metric.meta[0].value.metric;
+                    var data_id = metric.meta[0].data_id;
+                    var mid = 'metric_' + hash.md5(data_id);
 
                     // replace metric name in formula by the unique id
                     formula = formula.replaceAll(mname, mid);
+
+                    console.log('metric:', mname, mid);
 
                     points[mid] = metric.points;
 
@@ -95,9 +103,10 @@ define([
                     }
                 }
 
+                console.log('formula:', formula);
                 console.log('points:', points);
 
-                var metrics = Object.keys(points);
+                var mids = Object.keys(points);
                 var finalSerie = [];
 
                 // now loop over all points to calculate the final serie
@@ -106,8 +115,8 @@ define([
                     var ts = 0;
                     var j, l;
 
-                    for(j = 0, l = metrics.length; j < l; j++) {
-                        var mid = metrics[j];
+                    for(j = 0, l = mids.length; j < l; j++) {
+                        var mid = mids[j];
 
                         // get point value at timestamp "i" for metric "mid"
                         data[mid] = points[mid][i][1];
@@ -121,8 +130,8 @@ define([
                     var pointval = math.eval(formula);
 
                     // remove data from math context
-                    for(j = 0, l = metrics.length; j < l; j++) {
-                        var mid = metrics[j];
+                    for(j = 0, l = mids.length; j < l; j++) {
+                        var mid = mids[j];
                         delete math[mid];
                     }
 
@@ -135,8 +144,6 @@ define([
 
                 return finalSerie;
             });
-
-            return promise;
         }
     });
 

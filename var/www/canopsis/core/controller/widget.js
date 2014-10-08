@@ -20,6 +20,7 @@
 define([
     'jquery',
     'ember',
+    'ember-data',
     'app/application',
     'app/controller/partialslotablecontroller',
     'app/lib/utils/userconfiguration',
@@ -29,7 +30,7 @@ define([
     'app/lib/utils/forms',
     'app/lib/utils/debug',
     'utils'
-], function($, Ember, Application, PartialslotAbleController, userConfiguration, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, utils) {
+], function($, Ember, DS, Application, PartialslotAbleController, userConfiguration, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, utils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -63,6 +64,12 @@ define([
             set(this, 'userConfiguration', userConfiguration.create({widget: this}));
 
             set(this, "container", routesUtils.getCurrentRouteController().container);
+
+            var store = DS.Store.create({
+                container: get(this, 'container')
+            });
+
+            set(this, 'widgetDataStore', store);
 
             this.startRefresh();
 

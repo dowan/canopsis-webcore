@@ -38,8 +38,8 @@ define([
                     data: {
                         'metric_id': metric_id,
                         'timewindow': JSON.stringify({
-                            'start': tstart,
-                            'stop': tend
+                            'start': tstart / 1000,
+                            'stop': tend / 1000
                         })
                     }
                 }).then(resolve, reject);
@@ -58,8 +58,8 @@ define([
                     data: {
                         'metric_id': metric_id,
                         'timewindow': JSON.stringify({
-                            'start': tstart,
-                            'stop': tstop
+                            'start': tstart / 1000,
+                            'stop': tend / 1000
                         }),
                         'timeserie': JSON.stringify({
                             'aggregation': method,
