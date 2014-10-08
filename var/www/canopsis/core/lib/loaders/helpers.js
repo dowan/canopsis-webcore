@@ -55,7 +55,8 @@ var helpers = [
     'unset',
     'widgetslot',
     'recordcanbeack',
-    'interval2html'
+    'interval2html',
+    'eventtype'
 ];
 
 var deps = ['app/application', 'app/lib/wrappers/swag'];
