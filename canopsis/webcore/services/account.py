@@ -75,8 +75,9 @@ def update_comp(e_id, e_type, composites):
     return True
 
 
-@post('/account/group')
-def create_composite():
+@post('/account/group/:_id') #the id param is only here to make a quick hack
+@put('/account/group/:_id') #the id param is only here to make a quick hack
+def create_composite(_id=None):
 
     items = request.body.readline()
 
@@ -88,12 +89,12 @@ def create_composite():
 
     item = items[0]
 
-    c_name = item.get('crecord_name')
+    c_name = _id
     c_rights = item.get('rights')
 
     composite = right_module.get_composite(c_name)
 
-    if not composite or not right_module.create_composite(c_name, c_rights):
+    if not composite and not right_module.create_composite(c_name, c_rights):
         return ROUTE_FAIL
 
     if not update_rights(c_name, 'composite', c_rights):
@@ -111,8 +112,9 @@ def delete_composite():
             'data': []}
 
 
-@post('/account/profile')
-def update_profile():
+@post('/account/profile/:_id') #the id param is only here to make a quick hack
+@put('/account/profile/:_id') #the id param is only here to make a quick hack
+def update_profile(_id=None):
     items = request.body.readline()
 
     try:
@@ -123,7 +125,8 @@ def update_profile():
 
     item = items[0]
 
-    p_id = item.get('profile_name')
+    p_id = _id
+
     p_comp = item.get('profile_groups')
     p_rights = item.get('profile_rights')
 

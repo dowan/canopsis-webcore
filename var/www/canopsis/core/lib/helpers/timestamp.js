@@ -29,6 +29,7 @@ define(['ember', 'utils'], function(Ember, utils) {
 
         var current = new Date().getTime();
         var timestamp = new Date(value * 1000);
+
         var timeSince = utils.dates.diffDate(timestamp, current, 'd') - 1;
 
         var time ='';

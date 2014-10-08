@@ -20,8 +20,9 @@
 define([
     'ember',
     'app/application',
-    'app/lib/utils/forms'
-], function(Ember, Application, formsUtils) {
+    'app/lib/utils/forms',
+    'app/lib/utils/hash'
+], function(Ember, Application, formsUtils, hashUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -58,6 +59,15 @@ define([
 
                 recordWizard.submit.then(function(form) {
                     console.log('record going to be saved', record, form);
+
+                    //Dirty hack to make acl routes work
+                    if(get(record, 'crecord_type') === 'group') {
+                        set(record, 'id', hashUtils.generateId('group'));
+                    }
+                    if(get(record, 'crecord_type') === 'profile') {
+                        console.error('set id for profile', record);
+                        set(record, 'id', hashUtils.generateId('profile'));
+                    }
 
                     record = get(form, 'formContext');
 

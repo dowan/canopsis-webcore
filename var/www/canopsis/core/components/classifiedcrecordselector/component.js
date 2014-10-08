@@ -78,7 +78,8 @@ define([
 
                             for (var key in initialContent) {
                                 if (initialContent.hasOwnProperty(key)) {
-                                    buffer.pushObject({'name': key});
+                                    var data = this.deserializeAdditionnalData(get(initialContent, key));
+                                    buffer.pushObject({'name': key, 'data': additionnalData});
                                 }
                             }
 
@@ -112,6 +113,9 @@ define([
                     objDict.value = currentItem.get(valueKey);
                     console.log('objDict value', currentItem, currentItem.get(valueKey));
                 }
+
+                this.serializeAdditionnalData(currentItem, objDict);
+
                 res.all.pushObject(Ember.Object.create(objDict));
             }
 
@@ -221,6 +225,8 @@ define([
                         if (initialContent.hasOwnProperty(key)) {
 
                             correspondingExtractedItem = items.findBy('id', key);
+                            var data = this.deserializeAdditionnalData(get(correspondingExtractedItem, key));
+
                             var selectionObject = {
                                 name: get(correspondingExtractedItem, 'crecord_name'),
                                 value: get(correspondingExtractedItem, 'id')
@@ -235,6 +241,14 @@ define([
 
                 set(this, 'loadingInitialContent', false);
             }
+        },
+
+        deserializeAdditionnalData: function(additionnalData) {
+            console.log('deserializeAdditionnalData', arguments);
+        },
+
+        serializeAdditionnalData: function(additionnalData) {
+            console.log('serializeAdditionnalData', arguments);
         }
     });
 
