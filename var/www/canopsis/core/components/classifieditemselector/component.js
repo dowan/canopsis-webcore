@@ -177,7 +177,7 @@ define([
 
             var res = Ember.A();
 
-            for (var i = 0; i < classes.length; i++) {
+            for (var i = 0, l = classes.length; i < l; i++) {
                 var currentClass = Ember.Object.create({
                     key: classes[i].key,
                     items: classes[i].items,
@@ -190,7 +190,7 @@ define([
                 console.log("classItems", classItems);
                 if(searchFilter !== "") {
                     console.log('filter', classItems);
-                    classItems = classItems.filter(function(item, index, enumerable){
+                    classItems = classItems.filter(function(item, index, enumerable) {
                         var doesItStartsWithSearchFilter = item.name.indexOf(searchFilter) !== -1;
                         return doesItStartsWithSearchFilter;
                     });

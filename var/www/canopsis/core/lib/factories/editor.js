@@ -34,6 +34,10 @@ define([
      * @author Gwenael Pluchon <info@gwenp.fr>
      */
     function Editor(editorName, classdict, options) {
+        console.tags.add('factory');
+
+        console.group("editor factory call", arguments);
+
         if (options === undefined) {
             options = {};
         }
@@ -53,10 +57,11 @@ define([
         Application[editorViewName] = options.subclass.extend(classdict);
         Ember.Handlebars.helper('editor-' + editorName, Application[editorViewName]);
 
+        console.groupEnd();
+        console.tags.remove('factory');
+
         return Application[editorViewName];
     }
-
-    console.log("factory editor loaded");
 
     return Editor;
 });

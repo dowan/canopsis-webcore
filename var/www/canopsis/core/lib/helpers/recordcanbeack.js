@@ -18,18 +18,19 @@
 */
 
 define([
-    'app/application',
-    'ember-data',
-    'app/lib/loaders/schemas'
-], function(Application, DS) {
+    'ember',
+    'utils',
+], function(Ember, utils) {
 
-    var adapter = DS.FixtureAdapter.extend();
+    var set = Ember.set;
 
-    if(Application.Notification) {
-        Application.Notification.FIXTURES = [];
-    }
+    Ember.Handlebars.helper('recordcanbeack', function(crecord) {
 
-    Application.NotificationAdapter = adapter;
+        console.debug('in recordcanbeack. record status is', crecord.get('status'));
+        recordcanbeack = crecord.get('status') !== 0 && crecord.get('status') !== 2;
+        set(crecord, 'recordcanbeack', recordcanbeack);
 
-    return adapter;
+        return "";
+    });
+
 });

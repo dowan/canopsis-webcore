@@ -25,6 +25,9 @@ define([
     'app/lib/utils/notification'
 ], function(DS, Application, MetaSerializerMixin, HashSerializerMixin, notificationUtils) {
 
+    var get = Ember.get,
+        set = Ember.set;
+
     //TODO put this in a polyfill file
     if (!Array.isArray) {
         Array.isArray = function(arg) {

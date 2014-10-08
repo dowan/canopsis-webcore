@@ -23,8 +23,7 @@ define([
     'app/routes/authenticated',
     'app/lib/formsregistry',
     'app/lib/loaders/templates',
-    'app/lib/loaders/forms',
-    'app/lib/helpers/i18n'
+    'app/lib/loaders/forms'
 ], function(Ember, Application, AuthenticatedRoute, formsregistry) {
 
     var get = Ember.get,

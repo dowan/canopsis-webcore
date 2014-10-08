@@ -35,23 +35,27 @@ var depsSize = deps.length;
 
 
 //generate deps
-for (var i = 0; i < formsTemplates.length; i++) {
+for (var i = 0, l = formsTemplates.length; i < l; i++) {
     deps.push('text!app/forms/' + formsTemplates[i] + '/template.html');
 
     var controllerUrl = 'app/forms/' + formsTemplates[i] + '/controller';
     jsDeps.push(controllerUrl);
 }
 
-for (i = 0; i < jsDeps.length; i++) {
+for (i = 0, l = jsDeps.length; i < l; i++) {
     deps.push(jsDeps[i]);
 }
 
-console.log({"form dependencies": deps});
 define(deps, function(Ember) {
+    console.tags.add('loader');
+
     console.log("load forms", arguments);
-    for (var i = 0; i < formsTemplates.length; i++) {
+    for (var i = 0, l = formsTemplates.length; i < l; i++) {
         var templateName = formsTemplates[i];
         Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
     }
+
+    console.tags.remove('loader');
+
 });
 

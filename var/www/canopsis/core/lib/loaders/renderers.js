@@ -39,7 +39,8 @@ var renderersTemplates = [
     'status',
     'subprocess',
     'tags',
-    'timestamp'
+    'timestamp',
+    'translator'
 ];
 
 var deps = ['ember'];

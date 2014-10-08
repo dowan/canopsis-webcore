@@ -17,20 +17,19 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'utils',
-], function(Ember, utils) {
+define(['ember'], function(Ember) {
 
     var set = Ember.set;
 
-    Ember.Handlebars.helper('recordCanBeAck', function(crecord) {
+    var debugUtils = Ember.Object.create({
+        inspectObject: function(object) {
+            window.$E = object;
 
-        console.debug('in recordCanBeAck. record status is', crecord.get('status'));
-        recordCanBeAck = crecord.get('status') !== 0 && crecord.get('status') !== 2;
-        set(crecord, 'recordCanBeAck', recordCanBeAck);
+            set(this, 'inspectedObject', object);
 
-        return "";
+            console.info('--- inspect object :', this.inspectedObject);
+        }
     });
 
+    return debugUtils;
 });

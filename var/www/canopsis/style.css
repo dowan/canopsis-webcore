@@ -1,3 +1,7 @@
+.weatherminsize {
+	min-height: 100px;
+}
+
 .noyscroll{
 	overflow-y: hidden !important;
 }
@@ -6,6 +10,10 @@
 	margin-top:5%;
 	position:fixed;
 	z-index: 90;
+}
+
+.hand{
+	cursor:move;
 }
 
 #recorddisplayer .recorddisplayercontent {

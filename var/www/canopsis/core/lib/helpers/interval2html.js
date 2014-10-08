@@ -17,29 +17,27 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
- define([
-    'app/application',
-    'app/view/arraytocollectioncontrol'
-], function(Application, ArraytocollectioncontrolView) {
-    var get = Ember.get,
-        set = Ember.set;
+define(['ember', 'utils'], function(Ember, utils) {
 
-    var view = ArraytocollectioncontrolView.extend({
+    Ember.Handlebars.helper('interval2html', function(from , to) {
 
-        init: function() {
-            var value = this.getValue();
-            var contentREF = this.getContent();
+        var html = '';//'<div style="min-width:200px"></div>';
 
-            var readTemplate = {name : "r", icon : "eye-open" , label : "Read" };
-            var writeTemplate = {name : "w", icon : "pencil", label : "Write" };
-            this.addTemplate(readTemplate, value, contentREF);
-            this.addTemplate(writeTemplate, value, contentREF);
-
-            this._super(true);
+        if(!Ember.isNone(from)) {
+            html += __('From') + ' ' + utils.dates.timestamp2String(from);
         }
+
+        if(!Ember.isNone(from) && !Ember.isNone(to)) {
+            html += ' ';
+        }
+
+        if(!Ember.isNone(to)) {
+            html += __('to') + ' ' + utils.dates.timestamp2String(to);
+        }
+
+        console.debug('generated html form interval2html is', html);
+
+        return html;
     });
 
-    Application.RightView = view;
-
-    return view;
 });

@@ -57,42 +57,77 @@ ROUTE_SUCCESS = {
     'data': []
 }
 
+rights_module_actions = {
+    'remove': {
+        'profile': right_module.remove_profile,
+        'composite': right_module.remove_composite,
+        'rights': right_module.remove_right
+    },
+    'add': {
+        'profile': right_module.add_profile,
+        'composite': right_module.add_composite,
+        'rights': right_module.add_right
+    }
+}
 
-@put('/account/right')
-def update_rights(e_id, e_type, e_rights):
-    if e_rights:
-        for right in e_rights:
-            if not right_module.add_right(e_id, e_type, right, e_rights['checksum']):
-                return False
-    return True
+
+def update_field(e_id, e_type, new_elems, elem_type, entity):
+    if entity and elem_type in entity:
+        to_remove = entity[elem_type]
+        if new_elems:
+            to_remove = set(entity[elem_type]) - set(new_elems)
+        for elem in to_remove:
+            if not rights_module_actions['remove'][elem_type](e_id, elem):
+                return ROUTE_FAIL
+    if new_elems:
+        for elem in new_elems:
+            if not rights_module_actions['add'][elem_type](e_id, elem):
+                return ROUTE_FAIL
 
 
-@put('/account/composite')
-def update_comp(e_id, e_type, composites):
-    if composites:
-        for comp in composites:
-            if not right_module.add_composite(e_id, e_type, comp):
-                return False
-    return True
+@put('/account/rights')
+def update_rights(e_id, e_type, e_rights, entity):
+    update_field(e_id, e_type, e_rights, 'rights', entity)
+
+
+@put('/account/profile')
+def update_profile(e_id, e_type, profiles, entity):
+    update_field(e_id, e_type, profiles, 'profile', entity)
 
 
 @put('/account/group')
-def create_composite():
-    c_name = request.params.get('group_name')
-    c_rights = request.params.get('group_rights')
+def update_comp(e_id, e_type, composites, entity):
+    update_field(e_id, e_type, composites, 'composite', entity)
+
+
+@post('/account/group/:_id')  # the id param is only here to make a quick hack
+def create_composite(_id=None):
+
+    items = request.body.readline()
+
+    try:
+        items = loads(items)
+    except Exception as err:
+        logger.error("PUT: Impossible to parse data ({})".format(err))
+        return HTTPError(500, "Impossible to parse data")
+
+    item = items[0]
+
+    c_name = _id
+    c_rights = item.get('rights')
 
     composite = right_module.get_composite(c_name)
 
-    if not composite or not right_module.create_composite(c_name, c_rights):
+    if not composite and not right_module.create_composite(c_name, c_rights):
         return ROUTE_FAIL
 
-    if not update_rights(c_name, 'composite', c_rights):
+    if not update_rights(c_name, 'composite', c_rights, composite):
         return ROUTE_FAIL
 
     return ROUTE_SUCCESS
 
 
-@delete('/account/group/delete')
+@delete('/account/group')
 def delete_composite():
     c_name = request.params.get('group_name')
 
@@ -101,46 +136,38 @@ def delete_composite():
             'data': []}
 
 
-@post('/account/profile')
-def get_profile():
-    profiles_id = request.params.get('profiles_id')
-    len_data = 0
-    data = []
+@put('/account/profile/:_id')  # the id param is only here to make a quick hack
+def update_profile(_id=None):
+    items = request.body.readline()
 
-    for p_id in profiles_id:
-        p_comp = right_module.get_profile_composites(p_id)
-        if len(p_comp):
-            len_data += 1
-            data.append({'name': p_id,
-                         'rights': right_module.get_profile_rights(p_id),
-                         'composites': p_comp})
+    try:
+        items = loads(items)
+    except Exception as err:
+        logger.error("POST: Impossible to parse data ({})".format(err))
+        return HTTPError(500, "Impossible to parse data")
 
-    return {'total': len_data,
-            'success': not not len_data,
-            'data': data}
+    item = items[0]
 
+    p_id = _id
 
-@put('/account/profile')
-def update_profile():
-    p_id = request.params.get('profile_name')
-    p_comp = request.params.get('profile_groups')
-    p_rights = request.params.get('profile_rights')
+    p_comp = item.get('profile_groups')
+    p_rights = item.get('profile_rights')
 
     profile = right_module.get_profile(p_id)
 
     if not profile and not right_module.create_profile(p_id, p_comp):
         return ROUTE_FAIL
 
-    if not update_comp(p_id, 'profile', p_comp):
+    if not update_comp(p_id, 'profile', p_comp, profile):
         return ROUTE_FAIL
 
-    if not update_rights(p_id, 'profile', p_rights):
+    if not update_rights(p_id, 'profile', p_rights, profile):
         return ROUTE_FAIL
 
     return ROUTE_SUCCESS
 
 
-@delete('/account/profile/delete')
+@delete('/account/profile')
 def delete_profile():
     p_name = request.params.get('profile_name')
 
@@ -149,63 +176,42 @@ def delete_profile():
             'data': []}
 
 
-@delete('/account/profile/rmgroup')
-def rmcomposite_profile():
-    c_name = request.params.get('group_name')
-    p_name = request.params.get('profile_name')
-
-    return {'total': 1,
-            'success': right_module.rm_comp_profile(p_name, c_name),
-            'data': []}
-
-
-@put('/account/role')
+@post('/account/role')
 def update_role():
-    r_id = request.params.get('role_name')
-    r_comp = request.params.get('role_groups')
-    r_rights = request.params.get('role_rights')
-    r_profiles = request.params.get('role_profile')
+
+    items = request.body.readline()
+
+    try:
+        items = loads(items)
+    except Exception as err:
+        logger.error("POST: Impossible to parse data ({})".format(err))
+        return HTTPError(500, "Impossible to parse data")
+
+    item = items[0]
+
+    r_id = item.get('role_name')
+    r_comp = item.get('role_groups')
+    r_rights = item.get('role_rights')
+    r_profile = item.get('role_profile')
 
     role = right_module.get_role(r_id)
 
     if not role and not right_module.create_role(r_id, r_profile):
         return ROUTE_FAIL
 
-    for profile in r_profiles:
-        if 'profile' in role or not profile in role['profile']:
-            if not right_module.add_profile(r_id, profile):
-                return ROUTE_FAIL
-
-    if not update_comp(r_id, 'role', r_comp):
+    if not update_profile(r_id, 'role', r_comp, role):
         return ROUTE_FAIL
 
-    if not update_rights(r_id, 'role', r_rights):
+    if not update_comp(r_id, 'role', r_comp, role):
+        return ROUTE_FAIL
+
+    if not update_rights(r_id, 'role', r_rights, role):
         return ROUTE_FAIL
 
     return ROUTE_SUCCESS
 
 
-@delete('/account/role/rmgroup')
-def rmcomposite_role():
-    c_name = request.params.get('group_name')
-    r_name = request.params.get('role_name')
-
-    return {'total': 1,
-            'success': right_module.rm_comp_role(r_name, c_name),
-            'data': []}
-
-
-@delete('/account/role/rmprofile')
-def rmprofile_role():
-    r_name = request.params.get('role_name')
-    p_name = request.params.get('profile_name')
-
-    return {'total': 1,
-            'success': right_module.remove_profile(r_name, p_name),
-            'data': []}
-
-
-@delete('/account/role/delete')
+@delete('/account/role')
 def delete_role():
     r_name = request.params.get('role_name')
 
@@ -214,33 +220,24 @@ def delete_role():
             'data': []}
 
 
-@post('/account/role')
-def get_role():
-    roles_id = request.params.get('roles_id')
-    len_data = 0
-    data = []
-
-    for r_id in roles_id:
-        r_profile = right_module.get_role_profile(r_id)
-
-        if len(r_profile):
-            len_data += 1
-            data.append({'name': r_id,
-                         'rights': right_module.get_role_rights(r_id),
-                         'profile': r_profile})
-
-    return {'total': len_data,
-            'success': not not len_data,
-            'data': data}
-
-
-@put('/account/user')
+@post('/account/user')
 def create_user():
-    u_id = request.params.get('user_name')
-    u_role = request.params.get('user_role')
-    u_contact = request.params.get('user_contact')
-    u_rights = request.params.get('user_rights')
-    u_comp = request.params.get('user_groups')
+
+    items = request.body.readline()
+
+    try:
+        items = loads(items)
+    except Exception as err:
+        logger.error("PUT: Impossible to parse data ({})".format(err))
+        return HTTPError(500, "Impossible to parse data")
+
+    item = items[0]
+
+    u_id = item.get('user_name')
+    u_role = item.get('user_role')
+    u_contact = item.get('user_contact')
+    u_rights = item.get('user_rights')
+    u_comp = item.get('user_groups')
 
     user = right_module.get_user(u_id)
 
@@ -250,10 +247,10 @@ def create_user():
                                                  composites=u_comp):
         return ROUTE_FAIL
 
-    if not update_comp(u_id, 'user', u_comp):
+    if not update_comp(u_id, 'user', u_comp, user):
         return ROUTE_FAIL
 
-    if not update_rights(u_id, 'user', u_rights):
+    if not update_rights(u_id, 'user', u_rights, user):
         return ROUTE_FAIL
 
     if not right_module.add_role(u_id, u_role):
@@ -262,25 +259,7 @@ def create_user():
     return ROUTE_SUCCESS
 
 
-@post('/account/user')
-def get_user():
-    users_id = request.params.get('users_id')
-    len_data = 0
-    data = []
-
-    for u_id in users_id:
-        user = right_module.get_user(u_id)
-
-        if user:
-            len_data += 1
-            data.append(user)
-
-    return {'total': len_data,
-            'success': not not len_data,
-            'data': data}
-
-
-@post('/account/user/rights')
+@get('/account/user/rights')
 def get_user_rights():
     u_id = request.params.get('user_id')
     u_rights = right_module.get_user_rights(u_id)

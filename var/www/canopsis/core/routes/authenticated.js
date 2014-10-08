@@ -19,7 +19,8 @@
 
 define([
     'ember',
-    'app/application'
+    'app/application',
+    'app/controller/login'
 ], function(Ember, Application) {
 
     var route = Ember.Route.extend({
