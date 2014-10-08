@@ -22,25 +22,25 @@ define(['ember', 'app/lib/utils/dates'], function(Ember, datesUtils) {
     var set = Ember.set,
         isNone = Ember.isNone;
 
-    Ember.Handlebars.helper('interval2html', function(target, from , to) {
+    Ember.Handlebars.helper('interval2html', function(from , to) {
 
-        var html = '<div style="min-width:200px"></div>';
+        var html = '';//'<div style="min-width:200px"></div>';
 
         if(!isNone(from)) {
-            html += __('From') + ' ' + datesUtils.timestamp2String(from, 'day');
+            html += __('From') + ' ' + datesUtils.timestamp2String(from);
         }
 
         if(!isNone(from) && !isNone(to)) {
-            html += '<br />';
+            html += ' ';
         }
 
         if(!isNone(to)) {
-            html += __('to') + ' ' + datesUtils.timestamp2String(to, 'day');
+            html += __('to') + ' ' + datesUtils.timestamp2String(to);
         }
 
-        set(target, 'interval2html', html);
+        console.debug('generated html form interval2html is', html);
 
-        return '';
+        return html;
     });
 
 });

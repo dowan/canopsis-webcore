@@ -1,18 +1,16 @@
 {{#with controllers.application.currentViewId as currentViewId}}
     <div class="btn-group pull-right" style="clear:both; margin-top:5px; margin-bottom:5px">
         {{#if controllers.application.interval}}
-
-            {{interval2html controllers.application controllers.application.interval.timestamp.$gte controllers.application.interval.timestamp.$lte}}
-            <button class="btn btn-default btn-sm btn-warning" {{action 'stopLiveReporting'}} >
-                {{#component-tooltip placement="bottom" content=controllers.application.interval2html}}
-                    {{glyphicon "time"}}
-                {{/component-tooltip}}
-            </button>
-        {{else}}
-            <button class="btn btn-default btn-sm" {{action 'displayLiveReporting' this}} >
-                {{glyphicon "time"}}
-            </button>
+            <div>
+                <button class="btn btn-default btn-sm btn-warning" {{action 'stopLiveReporting'}} >
+                    {{glyphicon "remove"}}
+                    {{interval2html controllers.application.interval.timestamp.$gte controllers.application.interval.timestamp.$lte}}
+                </button>
+            </div>
         {{/if}}
+        <button class="btn btn-default btn-sm" {{action 'displayLiveReporting' this}} >
+            {{glyphicon "time"}}
+        </button>
 
         <button class="btn btn-default btn-sm" {{action 'toggleFullscreen' this}} >
             {{glyphicon "fullscreen"}}

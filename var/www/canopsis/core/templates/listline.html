@@ -6,9 +6,12 @@
     {{component-checkbox checked=isSelected class="toggle"}}
 </td>
 
-<td>
-    {{partialslot slot=controller.parentController._partials.testou}}
-</td>
+{{#each columns in controller.parentController._partials.columnsLine}}
+    <td>
+        {{partial columns}}
+    </td>
+{{/each}}
+
 
 {{#each attr in parentController.shown_columns}}
     {{#if attr.options.show}}

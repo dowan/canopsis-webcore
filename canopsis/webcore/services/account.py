@@ -57,27 +57,49 @@ ROUTE_SUCCESS = {
     'data': []
     }
 
+rights_module_actions = {
+    'remove': {
+        'profile': right_module.remove_profile,
+        'group': right_module.remove_group,
+        'rights': right_module.remove_right
+        },
+    'add': {
+        'profile': right_module.add_profile,
+        'group': right_module.add_group,
+        'rights': right_module.add_right
+        }
+    }
 
 
-def update_rights(e_id, e_type, e_rights):
-    if e_rights:
-        for right in e_rights:
-            if not right_module.add_right(e_id, e_type, right, e_rights['checksum']):
-                return False
-    return True
+def update_field(e_id, e_type, new_elems, elem_type, entity):
+    if entity and elem_type in entity:
+        to_remove = entity[elem_type]
+        if new_elems:
+            to_remove = set(entity[elem_type]) - set(new_elems)
+        for elem in to_remove:
+            if not rights_module_actions['remove'][elem_type](e_id, elem):
+                return ROUTE_FAIL
+    if new_elems:
+        for elem in new_elems:
+            if not rights_module_actions['add'][elem_type](e_id, elem):
+                return ROUTE_FAIL
 
 
-def update_comp(e_id, e_type, composites):
-    if composites:
-        for comp in composites:
-            if not right_module.add_composite(e_id, e_type, comp):
-                return False
-    return True
+def update_rights(e_id, e_type, e_rights, entity):
+    update_field(e_id, e_type, e_rights, 'rights', entity)
 
 
-@post('/account/group/:_id') #the id param is only here to make a quick hack
-@put('/account/group/:_id') #the id param is only here to make a quick hack
-def create_composite(_id=None):
+def update_profile(e_id, e_type, profiles, entity):
+    update_field(e_id, e_type, profiles, 'profile', entity)
+
+
+def update_comp(e_id, e_type, groups, entity):
+    update_field(e_id, e_type, groups, 'group', entity)
+
+
+@put('/account/group/:_id')
+@post('/account/group/:_id')  # the id param is only here to make a quick hack
+def create_group(_id=None):
 
     items = request.body.readline()
 
@@ -92,29 +114,29 @@ def create_composite(_id=None):
     c_name = _id
     c_rights = item.get('rights')
 
-    composite = right_module.get_composite(c_name)
+    group = right_module.get_group(c_name)
 
-    if not composite and not right_module.create_composite(c_name, c_rights):
+    if not group and not right_module.create_group(c_name, c_rights):
         return ROUTE_FAIL
 
-    if not update_rights(c_name, 'composite', c_rights):
+    if not update_rights(c_name, 'group', c_rights, group):
         return ROUTE_FAIL
 
     return ROUTE_SUCCESS
 
 
-@post('/account/group/delete')
-def delete_composite():
+@delete('/account/group')
+def delete_group():
     c_name = request.params.get('group_name')
 
     return {'total': 1,
-            'success': right_module.delete_composite(c_name),
+            'success': right_module.delete_group(c_name),
             'data': []}
 
 
-@post('/account/profile/:_id') #the id param is only here to make a quick hack
-@put('/account/profile/:_id') #the id param is only here to make a quick hack
-def update_profile(_id=None):
+@put('/account/profile/:_id')
+@post('/account/profile/:_id')  # the id param is only here to make a quick hack
+def post_profile(_id=None):
     items = request.body.readline()
 
     try:
@@ -135,16 +157,16 @@ def update_profile(_id=None):
     if not profile and not right_module.create_profile(p_id, p_comp):
         return ROUTE_FAIL
 
-    if not update_comp(p_id, 'profile', p_comp):
+    if not update_comp(p_id, 'profile', p_comp, profile):
         return ROUTE_FAIL
 
-    if not update_rights(p_id, 'profile', p_rights):
+    if not update_rights(p_id, 'profile', p_rights, profile):
         return ROUTE_FAIL
 
     return ROUTE_SUCCESS
 
 
-@post('/account/profile/delete')
+@delete('/account/profile')
 def delete_profile():
     p_name = request.params.get('profile_name')
 
@@ -153,16 +175,7 @@ def delete_profile():
             'data': []}
 
 
-@post('/account/profile/rmgroup')
-def rmcomposite_profile():
-    c_name = request.params.get('group_name')
-    p_name = request.params.get('profile_name')
-
-    return {'total': 1,
-            'success': right_module.rm_comp_profile(p_name, c_name),
-            'data': []}
-
-
+@put('/account/role')
 @post('/account/role')
 def update_role():
 
@@ -179,48 +192,26 @@ def update_role():
     r_id = item.get('role_name')
     r_comp = item.get('role_groups')
     r_rights = item.get('role_rights')
-    r_profiles = item.get('role_profile')
+    r_profile = item.get('role_profile')
 
     role = right_module.get_role(r_id)
 
     if not role and not right_module.create_role(r_id, r_profile):
         return ROUTE_FAIL
 
-    for profile in r_profiles:
-        if 'profile' in role or not profile in role['profile']:
-            if not right_module.add_profile(r_id, profile):
-                return ROUTE_FAIL
-
-    if not update_comp(r_id, 'role', r_comp):
+    if not update_profile(r_id, 'role', r_comp, role):
         return ROUTE_FAIL
 
-    if not update_rights(r_id, 'role', r_rights):
+    if not update_comp(r_id, 'role', r_comp, role):
+        return ROUTE_FAIL
+
+    if not update_rights(r_id, 'role', r_rights, role):
         return ROUTE_FAIL
 
     return ROUTE_SUCCESS
 
 
-@post('/account/role/rmgroup')
-def rmcomposite_role():
-    c_name = request.params.get('group_name')
-    r_name = request.params.get('role_name')
-
-    return {'total': 1,
-            'success': right_module.rm_comp_role(r_name, c_name),
-            'data': []}
-
-
-@post('/account/role/rmprofile')
-def rmprofile_role():
-    r_name = request.params.get('role_name')
-    p_name = request.params.get('profile_name')
-
-    return {'total': 1,
-            'success': right_module.remove_profile(r_name, p_name),
-            'data': []}
-
-
-@post('/account/role/delete')
+@delete('/account/role')
 def delete_role():
     r_name = request.params.get('role_name')
 
@@ -229,6 +220,7 @@ def delete_role():
             'data': []}
 
 
+@put('/account/user')
 @post('/account/user')
 def create_user():
 
@@ -253,13 +245,13 @@ def create_user():
     if not user and not right_module.create_user(u_id, u_role,
                                                  contact=u_contact,
                                                  rights=u_rights,
-                                                 composites=u_comp):
+                                                 groups=u_comp):
         return ROUTE_FAIL
 
-    if not update_comp(u_id, 'user', u_comp):
+    if not update_comp(u_id, 'user', u_comp, user):
         return ROUTE_FAIL
 
-    if not update_rights(u_id, 'user', u_rights):
+    if not update_rights(u_id, 'user', u_rights, user):
         return ROUTE_FAIL
 
     if not right_module.add_role(u_id, u_role):
@@ -281,7 +273,6 @@ def get_user_rights():
     return {'total': len(u_rights),
             'success': True,
             'data': [u_rights]}
-
 
 
 #### GET Me

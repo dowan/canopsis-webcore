@@ -54,7 +54,7 @@ var helpers = [
     'validationtextfield',
     'unset',
     'widgetslot',
-    'recordCanBeAck',
+    'recordcanbeack',
     'interval2html'
 ];
 
