@@ -51,6 +51,7 @@ define([
                 var record = get(this, "widgetDataStore").createRecord(recordType, {
                     crecord_type: recordType
                 });
+
                 console.log('temp record', record, formsUtils);
 
                 var recordWizard = formsUtils.showNew('modelform', record, { title: "Add " + recordType });

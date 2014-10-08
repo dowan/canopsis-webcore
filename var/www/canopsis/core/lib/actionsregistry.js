@@ -47,6 +47,9 @@ define([], function() {
         },{
             name: 'toggleFullscreen',
             actionData: ['toggleFullscreen']
+        },{
+            name: 'toggleDevTools',
+            actionData: ['toggleDevTools']
         }],
         byClass: {}
     };

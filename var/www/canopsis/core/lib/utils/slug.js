@@ -36,7 +36,7 @@ define(['app/application'], function(Application) {
             { re: /[\xF1]/g, ch:'n'}
         ];
 
-        for(var i = 0 ; i < rExps.length; i++) {
+        for(var i = 0, l = rExps.length; i < l; i++) {
             value = value.replace(rExps[i].re, rExps[i].ch);
         }
 

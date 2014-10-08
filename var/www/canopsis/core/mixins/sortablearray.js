@@ -71,7 +71,7 @@ define([
             console.log("sortedAttribute", sortedAttribute);
             if(sortedAttribute !== undefined)
             {
-                for (var i = 0; i < keys.length; i++) {
+                for (var i = 0, li = keys.length; i < li; i++) {
                     var currentKey = keys[i];
                     var sortedAttributeField = get(sortedAttribute, 'field');
                     var sortedAttributeHeaderClassName = get(sortedAttribute, 'headerClassName');
@@ -83,7 +83,7 @@ define([
                     }
                 }
             } else {
-                for (var j = 0; j < keys.length; j++) {
+                for (var j = 0, lj = keys.length; j < lj; j++) {
                     set(keys[j], 'headerClassName', 'sorting');
                 }
             }

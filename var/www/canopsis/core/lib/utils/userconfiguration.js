@@ -20,8 +20,9 @@
 define([
     'ember',
     'app/application',
+    'app/lib/utils/hash',
     'utils'
-], function(Ember, Application, utils) {
+], function(Ember, Application, hashUtils, utils) {
 
     var userConfiguration = Ember.ObjectController.extend({
 
@@ -38,7 +39,7 @@ define([
 
             var preference_id = this.get('preference_id');
             if (preference_id === undefined) {
-                preference_id = utils.hash.generate_GUID();
+                preference_id = hashUtils.generate_GUID();
             }
 
             var userConfiguration = {

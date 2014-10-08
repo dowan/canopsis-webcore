@@ -32,9 +32,8 @@ define([
         },
 
         updateInterval: function (interval, referer){
-            console.log('interval from mixin',interval);
+            console.log('interval from mixin', interval);
         }
-
     });
 
     Application.TimeintervalselectionMixin = mixin;

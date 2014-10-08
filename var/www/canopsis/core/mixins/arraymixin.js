@@ -24,7 +24,7 @@ define([
 ], function(Ember, Application, formsregistry) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = set;
 
     var mixin = Ember.Mixin.create({
         cssClass: "tooltiptable hint--rounded hint--top btn btn-",
@@ -64,15 +64,15 @@ define([
         },
 
         getValue: function() {
-            var value = this.get(this.get("valuePath"));
-            var valueRef = this.get(this.get("valueRefPath"));
+            var value = get(this, get(this, "valuePath"));
+            var valueRef = get(this, get(this, "valueRefPath"));
 
             console.log("valueRef", valueRef);
             if (valueRef === undefined) {
                 valueRef = [];
             }
             value = valueRef.slice(0);
-            this.set(this.get("valuePath"),value);
+            set(this, this.get("valuePath"),value);
 
             return value;
         },
@@ -84,7 +84,7 @@ define([
             var  contentREF = get(this, "content");
             // WARNING : clear content and content must be an array
             while(contentREF.length > 0) {
-            contentREF.pop();
+                contentREF.pop();
             }
 
             return contentREF;
@@ -106,7 +106,7 @@ define([
         },
 
         registerFieldWithController: function() {
-            var formController  =  formsregistry.formwrapper.form;
+            var formController  =  get(formsregistry, 'formwrapper.form');
             if (formController) {
                 var ArrayFields = get(formController, 'ArrayFields');
                 if (ArrayFields) {
@@ -117,7 +117,7 @@ define([
 
         changeCssClass : function(template,value) {
             var CSSclassToUse =  (this.checkIfAContainB(value,template))? this.cssClassON : this.cssClassOFF;
-            Ember.set(template, "CSSclass", this.cssClass+CSSclassToUse);
+            set(template, "CSSclass", this.cssClass + CSSclassToUse);
         },
 
         checkIfAContainB : function(value, template) {
@@ -127,17 +127,18 @@ define([
 
         //Called by controller when submit
         onUpdate: function() {
-            var formController  =  formsregistry.formwrapper.form;
-            var value =this.get(this.get("valuePath"));
+            var formController = get(formsregistry, 'formwrapper.form');
+            var value = get(this, get(this, "valuePath"));
             var field;
             if ( this.attr )
-                field = this.get("attr.field") ;
-            else if ( this.content )
-                field = this.get("content.field") ;
+                field = get(this, 'attr.field') ;
+            else if (this.content) {
+                field = get(this, 'content.field') ;
+            }
             if (field){
                 var attribut = "formContext." + field;
-                Ember.set(formController , attribut , value);
-                this.set(this.get("valueRefPath"), value);
+                set(formController , attribut , value);
+                set(this, get(this, "valueRefPath"), value);
             }
             else{
                 console.warn("content.field isn't defined ");
