@@ -166,6 +166,12 @@ define([
             var shown_columns = this.get("shown_columns");
             var nmbr_colonne = (shown_columns)? shown_columns.length : 0;
 
+            var item_actions = Ember.get(this.content._data, "item_actions");
+            if (item_actions && item_actions.length > 0)
+            {
+                nmbr_colonne++;
+            }
+
             return nmbr_colonne;
         }.property("shown_columns")
     });
