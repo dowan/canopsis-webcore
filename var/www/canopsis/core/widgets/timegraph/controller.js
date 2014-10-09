@@ -71,11 +71,18 @@ define([
                 },
 
                 xaxis: {
-                    min: now - (get(config, 'time_window_offset') + get(config, 'time_window')) * 1000,
-                    max: now - get(config, 'time_window') * 1000
+                    show: true,
+                    reserveSpace: true,/*
+                    min: now - (get(config, 'time_window_offset') + (get(config, 'time_window') * 1000)),
+                    max: now - get(config, 'time_window') * 1000,*/
+                    position: 'bottom',
+                    mode: 'time',
+                    timezone: 'browser'
                 },
 
                 yaxis: {
+                    show: true,
+                    reserveSpace: true
                 },
 
                 xaxes: [{
@@ -126,7 +133,12 @@ define([
             for(var i = 0, l = stylizedseries.length; i < l; i++) {
                 var serieId = stylizedseries[i].serie;
 
-                series[serieId] = stylizedseries[i];
+                series[serieId] = {
+                    style: stylizedseries[i],
+                    serie: undefined,
+                    curve: undefined
+                }
+
                 curveIds.push(stylizedseries[i].curve);
             }
 
@@ -160,10 +172,10 @@ define([
                         var serieId = serieconf.id;
 
                         if(series[serieId] !== undefined) {
-                            var stylizedserie = series[serieId];
+                            var config = series[serieId];
 
-                            if(get(stylizedserie, 'curve') === curve.id) {
-                                set(stylizedserie, 'curve', curve);
+                            if(get(config, 'style.curve') === curve.id) {
+                                set(config, 'curve', curve);
                                 break;
                             }
                         }
@@ -177,10 +189,10 @@ define([
                     var serieId = serieconf.id;
 
                     if(series[serieId] !== undefined) {
-                        var stylizedserie = series[serieId];
-                        set(stylizedserie, 'serie', serieconf);
+                        var config = series[serieId];
+                        set(config, 'serie', serieconf);
 
-                        me.genFlotSerie(stylizedserie, from, to);
+                        me.genFlotSerie(config, from, to);
                     }
                 }
 
@@ -188,34 +200,34 @@ define([
             });
         },
 
-        genFlotSerie: function(stylizedserie, from, to, replace) {
-            console.group('Generating FlotChart serie:', stylizedserie);
+        genFlotSerie: function(config, from, to, replace) {
+            console.group('Generating FlotChart serie:', config);
 
             var me = this;
 
             var flotSerie = {
-                label: get(stylizedserie, 'serie.crecord_name'),
-                color: get(stylizedserie, 'color'),
+                label: get(config, 'serie.crecord_name'),
+                color: get(config, 'style.color'),
                 lines: {
-                    show: get(stylizedserie, 'curve.lines'),
-                    lineWidth: get(stylizedserie, 'curve.line_width'),
-                    fill: (get(stylizedserie, 'curve.areas') ? get(stylizedserie, 'curve.area_opacity') : false)
+                    show: get(config, 'curve.lines'),
+                    lineWidth: get(config, 'curve.line_width'),
+                    fill: (get(config, 'curve.areas') ? get(config, 'curve.area_opacity') : false)
                 },
                 bars: {
-                    show: get(stylizedserie, 'curve.bars'),
-                    barWidth: get(stylizedserie, 'curve.bar_width')
+                    show: get(config, 'curve.bars'),
+                    barWidth: get(config, 'curve.bar_width')
                 },
                 points: {
-                    show: get(stylizedserie, 'curve.points'),
-                    symbol: get(stylizedserie, 'curve.point_shape')
+                    show: get(config, 'curve.points'),
+                    symbol: get(config, 'curve.point_shape')
                 },
-                xaxis: get(stylizedserie, 'xaxis'),
-                yaxis: get(stylizedserie, 'yaxis'),
+                xaxis: parseInt(get(config, 'style.xaxis')),
+                yaxis: parseInt(get(config, 'style.yaxis')),
                 clickable: true,
                 hoverable: true
             };
 
-            var oldSerie = get(this, 'flotSeries.' + get(stylizedserie, 'serie.id'));
+            var oldSerie = get(this, 'flotSeries.' + get(config, 'style.serie'));
 
             if(oldSerie !== undefined && !replace) {
                 flotSerie.data = oldSerie.data;
@@ -228,12 +240,12 @@ define([
             console.log('Fetch perfdata and compute serie');
 
             var ctrl = get(this, 'controllers.serie');
-            ctrl.getDataSerie(get(stylizedserie, 'serie'), from, to).then(function(data) {
+            ctrl.getDataSerie(get(config, 'serie'), from, to).then(function(data) {
                 console.log('getDataSerie:', data);
 
                 flotSerie.data = flotSerie.data.concat(data);
 
-                set(me, 'flotSeries.' + get(stylizedserie, 'serie.id'), flotSerie);
+                set(me, 'flotSeries.' + get(config, 'style.serie'), flotSerie);
                 me.recomputeDataSeries();
             });
 
@@ -249,7 +261,7 @@ define([
             for(var i = 0, l = serieIds.length; i < l; i++) {
                 var serieId = serieIds[i];
 
-                series.pushObject(flotSeries[serieId]);
+                series.push(flotSeries[serieId]);
             }
 
             console.log('dataSeries:', series);

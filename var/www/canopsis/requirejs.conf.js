@@ -42,6 +42,7 @@ require.config({
         'lodash': 'webcore-libs/dev/lodash.compat',
         'css3-mediaqueries': 'webcore-libs/min/css3-mediaqueries',
         'math': 'webcore-libs/dev/math',
+        'contextmenu': 'canopsis/core/lib/wrappers/bootstrap-contextmenu',
 
         'flotchart': 'webcore-libs/flot/jquery.flot',
         'flotchart-canvas': 'webcore-libs/flot/jquery.flot.canvas',
@@ -71,6 +72,10 @@ require.config({
         },
 
         'adminLTElib': {
+            deps: ['jquery']
+        },
+
+        'contextmenu': {
             deps: ['jquery']
         },
 

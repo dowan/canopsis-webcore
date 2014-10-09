@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # --------------------------------
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
@@ -49,26 +48,26 @@ ROUTE_FAIL = {
     'total': 1,
     'success': False,
     'data': []
-    }
+}
 
 ROUTE_SUCCESS = {
     'total': 1,
     'success': True,
     'data': []
-    }
+}
 
 rights_module_actions = {
     'remove': {
         'profile': right_module.remove_profile,
         'group': right_module.remove_group,
         'rights': right_module.remove_right
-        },
+    },
     'add': {
         'profile': right_module.add_profile,
         'group': right_module.add_group,
         'rights': right_module.add_right
-        }
     }
+}
 
 
 def update_field(e_id, e_type, new_elems, elem_type, entity):

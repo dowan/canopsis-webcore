@@ -473,3 +473,8 @@ th.timestamp {
 th.actions {
 	width:228px;
 }
+
+.subitems {
+    cursor: auto;
+    font-weight: initial;
+}
