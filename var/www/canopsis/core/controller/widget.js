@@ -58,6 +58,12 @@ define([
             console.log('viewController', widgetUtils.getParentViewForWidget(this));
             console.log('viewController', get(widgetUtils.getParentViewForWidget(this), 'isMainView'));
 
+            //Each widget knows what is it s view.
+
+            var viewId = get(widgetUtils.getParentViewForWidget(this), 'content.id');
+            console.debug('View id for current widget is ', viewId);
+            set(this, 'viewId', viewId);
+
             set(this, 'viewController', widgetUtils.getParentViewForWidget(this));
             set(this, 'isOnMainView', get(widgetUtils.getParentViewForWidget(this), 'isMainView'));
 

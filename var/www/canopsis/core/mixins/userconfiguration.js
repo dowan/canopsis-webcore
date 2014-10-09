@@ -57,6 +57,9 @@ define([
                 widget_preferences: preferences,
                 crecord_name: user,
                 widget_id: get(this, 'id'),
+                widgetXtype: get(this,'xtype'),
+                title: get(this,'title'),
+                viewId: get(this,'viewId'),
                 id: preference_id,
                 crecord_type: 'userpreferences'
             };
