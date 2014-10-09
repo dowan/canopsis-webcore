@@ -28,33 +28,43 @@ define([
 
     var component = Ember.Component.extend({
         didInsertElement: function(){
-            this.$('input').iCheck({
+            var $input = this.$('input');
+
+            Ember.assert('There is no checkbox in the DOM of the checkbox component.', !Ember.isNone($input));
+
+            $input.iCheck({
                 checkboxClass: 'icheckbox_minimal-grey',
                 radioClass: 'iradio_minimal-grey'
             });
 
             var checkboxComponent = this;
-            this.$('input').on('ifChecked', function(){
+            $input.on('ifChecked', function(){
                 set(checkboxComponent, 'checked', true);
             });
 
-            this.$('input').on('ifUnchecked', function(){
+            $input.on('ifUnchecked', function(){
                 set(checkboxComponent, 'checked', false);
             });
         },
 
         checkedChanged: function(){
             console.log('checked changed');
+            var $input = this.$('input');
+
             if(get(this, 'checked')) {
-                this.$('input').iCheck('check');
+                $input.iCheck('check');
             } else {
-                this.$('input').iCheck('uncheck');
+                $input.iCheck('uncheck');
             }
         }.observes('checked'),
 
         willRemoveElement: function() {
             console.log('destroy checkbox', this);
-            this.$('input').iCheck('destroy');
+            var $input = this.$('input');
+
+            Ember.assert('There is no checkbox in the DOM of the checkbox component.', !Ember.isNone($input));
+
+            $input.iCheck('destroy');
         }
     });
 

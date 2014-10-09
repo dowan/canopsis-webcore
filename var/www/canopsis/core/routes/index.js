@@ -20,15 +20,17 @@
 define([
     'app/application',
     'app/routes/authenticated',
-    'utils'
-], function(Application, AuthenticatedRoute, utils) {
+    'app/lib/utils/actions'
+], function(Application, AuthenticatedRoute, actionsUtils) {
     var set = Ember.set,
         get = Ember.get;
 
     var route = AuthenticatedRoute.extend({
 
-        setupController: function() {
+        setupController: function(controller) {
             this.controllerFor('application').onIndexRoute = true;
+            actionsUtils.setDefaultTarget(controller);
+
             console.log('beforemodel');
         }
     });

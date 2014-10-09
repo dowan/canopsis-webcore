@@ -80,7 +80,7 @@ define([
 
         //dynamically create an adapter that implements EmbeddedRecordMixin if a custom adapter is not already defined in Application
         if(isNone(get(Application, widgetSerializerName))) {
-            Application[widgetSerializerName] = UserviewSerializer;
+            Application[widgetSerializerName] = UserviewSerializer.extend();
         }
 
         console.log("widget", widgetName.camelize().capitalize(), Application[widgetName.camelize().capitalize()]);

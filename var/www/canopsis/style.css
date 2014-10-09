@@ -479,3 +479,74 @@ th.actions {
     cursor: auto;
     font-weight: initial;
 }
+
+.logger {
+	height: 300px;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+tr.logline {
+	font-family: Courier New, Courier, Prestige, monospace;
+	background-color: #292429;
+	color: white;
+	font-size: 9pt;
+	border-bottom: 1px solid #0F0E0F;
+	vertical-align: top;
+}
+
+.logauthor {
+	background-color: #0F0E0F;
+	color: #524F52;
+	text-align: right;
+	border: 0;
+	padding-right: 4px;
+}
+
+.logcontent {
+	border: 0;
+	padding-left: 4px;
+}
+
+td.logline {
+	width: 100%;
+}
+
+tr.logline i {
+	margin-left: 4px;
+	margin-right: 4px;
+}
+
+tr.logline i.block {
+	color: white;
+	font-weight: bold;
+}
+
+tr.logline i.block.object {
+	background-color: #356687;
+	border: 1px solid #0D71B6;
+}
+
+tr.logline i.block.widget {
+	background-color: #64874D;
+	border: 1px solid #57962F;
+}
+
+i.abstractType > i.widget {
+	background-color: #64874D;
+	border: 1px solid #57962F;
+}
+
+.debugmenu{
+	position:absolute;
+	left:0;
+	width: 100%;
+	height:300px;
+	border-bottom:4px solid green;
+	display:none;
+}
+
+.webconsole {
+	overflow: auto;
+	height:258px;
+}

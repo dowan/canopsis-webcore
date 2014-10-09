@@ -20,8 +20,8 @@
 define([
     'ember',
     'app/application',
-    'utils',
-], function(Ember, Application, utils) {
+    'app/lib/utils/hash',
+], function(Ember, Application, hashUtils) {
 
     function keyForRelationship(key, kind) {
         void (kind);
@@ -67,7 +67,7 @@ define([
 
                 // Missing an ID, give it one
                 if (typeof id === 'undefined') {
-                    id = utils.hash.generateId('item');
+                    id = hashUtils.generateId('item');
                     item[primaryKey] = id;
                 }
 
@@ -280,7 +280,7 @@ define([
 
             json[key] = [];
 
-            for (var i = 0; i < subDocuments.length; i++) {
+            for (var i = 0, l = subDocuments.length; i < l; i++) {
                 if (subDocuments[i] !== undefined && subDocuments[i] !== null) {
                     var serializedSubDocument = subDocuments[i].serialize({ lookForDocumentRoot : false });
                     serializedSubDocument.xtype = relationship.type.typeKey;

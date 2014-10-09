@@ -51,7 +51,8 @@ define([], function() {
             name: 'toggleDevTools',
             actionData: ['toggleDevTools']
         }],
-        byClass: {}
+        byClass: {},
+        tableColumns: [{title: 'name', name: 'name'}]
     };
 
     return actionsRegistry;

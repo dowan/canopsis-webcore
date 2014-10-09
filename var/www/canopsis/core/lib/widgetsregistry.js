@@ -21,7 +21,8 @@ define([], function() {
 
     var widgetsManager = {
         all: [],
-        byClass: {}
+        byClass: {},
+        tableColumns: [{title: 'icon', name: 'icon'}, {title: 'name', name: 'name'}]
     };
 
     return widgetsManager;

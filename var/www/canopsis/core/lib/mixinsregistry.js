@@ -21,7 +21,8 @@ define([], function() {
 
     var manager = {
         all: [],
-        byClass: {}
+        byClass: {},
+        tableColumns: [{title: 'name', name: 'name'}]
     };
 
     return manager;
