@@ -25,7 +25,7 @@ define(['ember', 'utils'], function(Ember,  utils) {
         var types = {
             check : {color: 'green', icon: 'certificate'},
             consolidation : {color: 'green', icon: 'cogs'},
-            log : {color: 'grey', icon: 'clock-o'},
+            log : {color: 'black', icon: 'clock-o'},
             perf : {color: 'grey', icon: 'pie-chart'},
             selector : {color: 'green', icon: 'eye'},
             sla : {color: 'green', icon: 'warning'},
