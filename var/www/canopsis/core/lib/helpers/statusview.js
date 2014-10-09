@@ -36,7 +36,7 @@ define(['ember', 'utils'], function(Ember, utils) {
             3: 'Bagot',
             4: 'Cancelled',
         };
-
+        status = status || Ember.get(crecord, "status");
         crecord.statusvalue = __(statuses[status]);
 
         if(status === 4) {
@@ -54,7 +54,6 @@ define(['ember', 'utils'], function(Ember, utils) {
             }
 
         }
-
         return "";
     });
 

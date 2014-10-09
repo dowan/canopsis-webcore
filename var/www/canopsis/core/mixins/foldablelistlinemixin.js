@@ -26,7 +26,6 @@ define([
     var mixin = Ember.Mixin.create({
         actions: {
             unfold_action:function(listline_view){
-                debugger;
                 var listline_controller = listline_view.controller;
 
                 var value = !listline_controller.content.get("unfolded");
@@ -81,7 +80,10 @@ define([
             var elementId = listline_view.get("elementId");
             var templateName = "dynamic-" + elementId;
             var template_columns ="";
-            var columns = this.params_from_template(step_template);
+            var tab = this.params_from_template(step_template);
+            var columns = tab[0];
+            step_template = tab[1];
+
             for (var i=0; i<columns.length ; i++){
                 var column = columns[i];
                 template_columns += '<td style="background-color: papayawhip;">' + column +'</td>';
@@ -116,10 +118,11 @@ define([
             var errorMessage = errorNode.innerText;
         },
 
-        params_from_template: function(str){
+        params_from_template: function(template){
             var start = 0;
             var end = 0;
             var result = [];
+            var str = template;
 
             while (start != -1){
                 start = str.search("{{");
@@ -127,20 +130,31 @@ define([
                     end = str.search("}}");
                     var param = str.slice(start + 2, end);
                     if (param.indexOf("each") == -1){
-                        var endOfWord = param.indexOf(" ");
-                        if (endOfWord != -1){
-                            var firstWord = param.slice(0, endOfWord);
-                            result.push(firstWord);
-                        }
-                        else
+                        var array = param.split(":");
+                        if (array.length > 1)
                         {
-                            result.push(param);
+                            var template_part = array[0];
+                            var alias = array[1];
+                            template = template.replace(param, template_part);
+                            result.push(alias);
+                        }
+                        else{
+                            var endOfWord = param.indexOf(" ");
+                            if (endOfWord != -1){
+                                var firstWord = param.slice(0, endOfWord);
+                                result.push(firstWord);
+                            }
+                            else
+                            {
+                                result.push(param);
+                            }
                         }
                     }
                     str = str.slice(end + 2);
                 }
             }
-            return result;
+            var tab = [result, template];
+            return tab;
         },
 
         partials: {
