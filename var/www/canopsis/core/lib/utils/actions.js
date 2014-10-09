@@ -33,7 +33,10 @@ define([
          * send an action to the default target (usually ApplicationController instance)
          */
         doAction: function (actionName, actionParam) {
-            console.info('doAction');
+            console.info('doAction', actionsDefaultTarget, actionName, actionParam);
+
+            Ember.assert('The actionsDefaultTarget variable is none', !Ember.isNone(actionsDefaultTarget));
+
             actionsDefaultTarget.send.apply(actionsDefaultTarget, [actionName, actionParam]);
         }
     };

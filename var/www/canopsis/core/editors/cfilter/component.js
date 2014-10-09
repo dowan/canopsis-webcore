@@ -129,7 +129,7 @@ define([
                 }
 
                 if (currentMfilterOr.$and !== undefined) {
-
+                    var currentField;
                     for (var j = 0, lj = currentMfilterOr.$and.length; j < lj; j++) {
 
                         var currentMfilterAnd = currentMfilterOr.$and[j];
@@ -160,12 +160,20 @@ define([
                             finalized: true
                         };
 
-                        var currentField = Ember.Object.create(field);
+                        currentField = Ember.Object.create(field);
 
                         console.log('field:', currentField);
                         // currentAnd.pushObject(currentField);
                         currentOr.and.pushObject(currentField);
                     }
+
+                    var useIndexes = get(this, 'onlyAllowRegisteredIndexes') === true;
+
+                    if(!useIndexes || get(currentField, 'options.available_indexes.length') > 0) {
+                        console.log ('append empty and clause');
+                        this.pushEmptyClause(currentOr);
+                    }
+
                     clauses.pushObject(currentOr);
                 }
 
@@ -373,7 +381,9 @@ define([
                 console.log('last and length', clauses);
                 console.log('last and length', lastOrClause);
                 console.log('last and length', lastOrClause.and.length);
-                if (lastOrClause.and.length <= 1) {
+                var lastAndQueryPart = lastOrClause.and[lastOrClause.and.length -1];
+                console.log('lastAndQueryPart', lastAndQueryPart, lastAndQueryPart.key);
+                if (lastOrClause.and.length <= 1 && (Ember.isNone(lastAndQueryPart.key) || Ember.isNone(lastAndQueryPart.value))) {
                     set(this, 'orButtonHidden', true);
                 } else {
                     set(this, 'orButtonHidden', false);

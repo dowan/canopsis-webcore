@@ -30,7 +30,8 @@ define([
     );
 
     Application.UserviewSerializer = serializerClass;
-    Application.WidgetwrapperSerializer = serializerClass;
+    Application.WidgetwrapperSerializer = serializerClass.extend();
+    Application.WidgetSerializer = serializerClass.extend();
 
     return serializerClass;
 });
