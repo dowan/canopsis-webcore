@@ -475,6 +475,7 @@ th.actions {
 }
 
 .subitems {
+	text-align: left;
     cursor: auto;
     font-weight: initial;
 }
