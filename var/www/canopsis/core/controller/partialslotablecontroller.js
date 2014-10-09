@@ -21,10 +21,9 @@ define([
     'jquery',
     'ember',
     'app/application',
-    'app/lib/utils/userconfiguration',
     'app/lib/utils/widgets',
     'app/lib/helpers/partialslot'
-], function($, Ember, Application, userConfiguration, widgetUtils) {
+], function($, Ember, Application, widgetUtils) {
 
     var get = Ember.get,
         set = Ember.set;

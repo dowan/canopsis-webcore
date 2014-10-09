@@ -1,5 +1,5 @@
 /*
-# Copyright (c) 2014 "Capensis" [http://www.capensis.com]
+# Copyright (c) 2014 'Capensis' [http://www.capensis.com]
 #
 # This file is part of Canopsis.
 #
@@ -23,14 +23,13 @@ define([
     'ember-data',
     'app/application',
     'app/controller/partialslotablecontroller',
-    'app/lib/utils/userconfiguration',
     'canopsis/canopsisConfiguration',
     'app/lib/utils/widgets',
     'app/lib/utils/routes',
     'app/lib/utils/forms',
     'app/lib/utils/debug',
     'utils'
-], function($, Ember, DS, Application, PartialslotAbleController, userConfiguration, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, utils) {
+], function($, Ember, DS, Application, PartialslotAbleController, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, utils) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -42,7 +41,7 @@ define([
         /**
          * This is useful mostly for debug, to know that a printend object is a widget
          */
-        abstractType: "widget",
+        abstractType: 'widget',
 
         canopsisConfiguration: canopsisConfiguration,
         debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
@@ -61,10 +60,8 @@ define([
 
             set(this, 'viewController', widgetUtils.getParentViewForWidget(this));
             set(this, 'isOnMainView', get(widgetUtils.getParentViewForWidget(this), 'isMainView'));
-            //manage user configuration
-            set(this, 'userConfiguration', userConfiguration.create({widget: this}));
 
-            set(this, "container", routesUtils.getCurrentRouteController().container);
+            set(this, 'container', routesUtils.getCurrentRouteController().container);
 
             var store = DS.Store.create({
                 container: get(this, 'container')
@@ -121,7 +118,7 @@ define([
         },
 
         isRollbackable: function() {
-            if(get(this, 'isDirty') && get(this, 'dirtyType') === "updated" && get(this, 'rollbackable') === true) {
+            if(get(this, 'isDirty') && get(this, 'dirtyType') === 'updated' && get(this, 'rollbackable') === true) {
                 return true;
             }
 
@@ -158,10 +155,10 @@ define([
             },
 
             editWidget: function (widget) {
-                console.info("edit widget", widget);
+                console.info('edit widget', widget);
 
-                var widgetWizard = formsUtils.showNew('modelform', widget, { title: __("Edit widget") });
-                console.log("widgetWizard", widgetWizard);
+                var widgetWizard = formsUtils.showNew('modelform', widget, { title: __('Edit widget') });
+                console.log('widgetWizard', widgetWizard);
 
                 var widgetController = this;
 
@@ -170,14 +167,14 @@ define([
 
                     var userview = get(widgetController, 'viewController').get('content');
                     userview.save();
-                    console.log("triggering refresh");
+                    console.log('triggering refresh');
                     widgetController.trigger('refresh');
                 });
             },
 
             removeWidget: function (widget) {
-                console.group("remove widget", widget);
-                console.log("parent container", this);
+                console.group('remove widget', widget);
+                console.log('parent container', this);
 
                 var itemsContent = get(this, 'content.items.content');
 
@@ -185,7 +182,7 @@ define([
                     console.log(get(this, 'content.items.content')[i]);
                     if (get(itemsContent[i], 'widget') === widget) {
                         itemsContent.removeAt(i);
-                        console.log("deleteRecord ok");
+                        console.log('deleteRecord ok');
                         break;
                     }
                 }
@@ -200,21 +197,21 @@ define([
 
                 var widgetController = this;
 
-                var label = "Edit your widget preferences";
+                var label = 'Edit your widget preferences';
                 console.info(label, widget);
 
                 var widgetWizard = formsUtils.showNew('modelform', widget, {
                     title: __(label),
                     userPreferencesOnly: true
                 });
-                console.log("widgetWizard", widgetWizard);
+                console.log('widgetWizard', widgetWizard);
 
                 widgetWizard.submit.then(function(form) {
 
-                    record = get(form, 'formContext');
+                    var record = get(form, 'formContext');
                     console.log('user param record', record);
                     //widgetController.set('userParams.filters', widgetController.get('filters'));
-                    //widgetController.get('userConfiguration').saveUserConfiguration();
+                    //widgetController.saveUserConfiguration();
 
                     widgetController.trigger('refresh');
                 });
@@ -322,7 +319,7 @@ define([
 
         },
 
-        config: Ember.computed.alias("content"),
+        config: Ember.computed.alias('content'),
 
         itemController: function() {
             if(get(this, 'itemType')) {
@@ -343,16 +340,16 @@ define([
         },
 
         extractItems: function(queryResult) {
-            console.log("extractItems", queryResult);
+            console.log('extractItems', queryResult);
 
             this._super(queryResult);
 
-            set(this, "widgetData", queryResult);
+            set(this, 'widgetData', queryResult);
         },
 
         availableTitlebarButtons: function(){
             var buttons = get(this, 'partials.titlebarsbuttons');
-            console.log("availableTitlebarPartialButtons CP");
+            console.log('availableTitlebarPartialButtons CP');
 
             if(buttons === undefined) {
                 return Ember.A();

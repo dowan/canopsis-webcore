@@ -69,7 +69,7 @@ define([
                     console.log('Custom filter created', record, form);
                     notificationUtils.info(__('Custom filter created'));
                     widgetController.set('userParams.custom_filters', widgetController.get('custom_filters'));
-                    widgetController.get('userConfiguration').saveUserConfiguration();
+                    widgetController.saveUserConfiguration();
 
                 });
 
@@ -98,7 +98,7 @@ define([
                     console.log('Custom filter created', record, form);
                     notificationUtils.info(__('Custom filter created'));
                     widgetController.set('userParams.custom_filters', widgetController.get('custom_filters'));
-                    widgetController.get('userConfiguration').saveUserConfiguration();
+                    widgetController.saveUserConfiguration();
 
                 });
 
@@ -123,13 +123,13 @@ define([
                     controller.get('custom_filters').removeObject(filter);
                     notificationUtils.info(__('Custom filter removed'));
                     controller.set('userParams.custom_filters', controller.get('custom_filters'));
-                    controller.get('userConfiguration').saveUserConfiguration();
+                    controller.saveUserConfiguration();
                 });
             }
         },
 
         default_filterChanged: function(){
-            console.log("default_filterChanged observer");
+            console.log('default_filterChanged observer');
             set(this, 'findParams_cfilterFilterPart', get(this, 'default_filter'));
             this.refreshContent();
         }.observes('default_filter'),

@@ -18,43 +18,48 @@
 */
 
 define([
+    'jquery',
     'ember',
     'app/application',
     'app/lib/utils/hash',
     'utils'
-], function(Ember, Application, hashUtils, utils) {
+], function($, Ember, Application, hashUtils, utils) {
 
-    var get = Ember.get;
+    var get = Ember.get,
+        set = Ember.set;
 
-    var userConfiguration = Ember.ObjectController.extend({
+    var mixin = Ember.Mixin.create({
 
         needs: ['login'],
+
         content: {},
+
         init: function () {
+            this._super();
             this.loadUserConfiguration();
+            console.debug('user configuration loaded for widget ' + get(this, 'title'));
         },
 
         saveUserConfiguration: function (preferences_level) {
 
-            var preferences = this.get('widget.userParams');
+            var preferences = get(this, 'userParams');
             console.debug('Ready to save user configuration', preferences);
 
-            var preference_id = this.get('preference_id');
+            var preference_id = get(this, 'preference_id');
             if (preference_id === undefined) {
                 preference_id = hashUtils.generate_GUID();
             }
 
-            var user = 'root';//get(this, 'widget.controllers.login.record.user');
+            var user = get(this, 'controllers.login.record.user');
 
             var userConfiguration = {
                 preferences_level: preferences_level,
                 widget_preferences: preferences,
                 crecord_name: user,
-                widget_id: this.get('widget.id'),
+                widget_id: get(this, 'id'),
                 id: preference_id,
                 crecord_type: 'userpreferences'
             };
-            //TODO @eric use an adapter
             $.ajax({
                 url: '/rest/userpreferences/userpreferences',
                 type: 'POST',
@@ -72,7 +77,7 @@ define([
 
             console.debug('loading configuration');
             //TODO @eric use an adapter
-            var user = 'root';//get(this, 'widget.controllers.login.record.user');
+            var user = get(this, 'controllers.login.record.user');
 
             $.ajax({
                 url: '/rest/userpreferences/userpreferences',
@@ -81,21 +86,24 @@ define([
                     limit: 1,
                     filter: JSON.stringify({
                         crecord_name: user,
-                        widget_id: this.get('widget.id')
+                        widget_id: get(this, 'id')
                     })
                 },
                 success: function(data) {
                     if (data.success && data.data.length && data.data[0].widget_preferences !== undefined) {
-                        console.log('User configuration for widget complete', data);
+                        console.log('User configuration load for widget complete', data);
                         var preferences = data.data[0].widget_preferences;
-                        userConfiguration.set('preference_id', data.data[0]._id);
-                        userConfiguration.set('widget.userParams', preferences);
+
+                        set(userConfiguration, 'preference_id', data.data[0]._id);
+                        set(userConfiguration, 'userParams', preferences);
+
                         for (var key in preferences) {
-                            console.debug('User preferences: will set key', key, 'in widget', userConfiguration.get('widget.title'));
-                            userConfiguration.set('widget.' + key, preferences[key]);
+                            console.debug('User preferences: will set key', key, 'in widget', get(userConfiguration, 'title'));
+                            userConfiguration.set(key, preferences[key]);
                         }
+
                     } else {
-                        console.debug('No user preference exists for widget' + userConfiguration.get('widget.title'));
+                        console.debug('No user preference exists for widget' + get(userConfiguration, 'title'));
                     }
                 }
             }).fail(
@@ -109,5 +117,7 @@ define([
     });
 
 
-    return userConfiguration;
+    Application.UserconfigurationMixin = mixin;
+
+    return mixin;
 });
