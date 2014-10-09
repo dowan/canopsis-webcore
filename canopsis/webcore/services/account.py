@@ -85,21 +85,19 @@ def update_field(e_id, e_type, new_elems, elem_type, entity):
                 return ROUTE_FAIL
 
 
-@put('/account/rights')
 def update_rights(e_id, e_type, e_rights, entity):
     update_field(e_id, e_type, e_rights, 'rights', entity)
 
 
-@put('/account/profile')
 def update_profile(e_id, e_type, profiles, entity):
     update_field(e_id, e_type, profiles, 'profile', entity)
 
 
-@put('/account/group')
 def update_comp(e_id, e_type, composites, entity):
     update_field(e_id, e_type, composites, 'composite', entity)
 
 
+@put('/account/group/:_id')
 @post('/account/group/:_id')  # the id param is only here to make a quick hack
 def create_composite(_id=None):
 
@@ -176,6 +174,7 @@ def delete_profile():
             'data': []}
 
 
+@put('/account/role')
 @post('/account/role')
 def update_role():
 
@@ -220,6 +219,7 @@ def delete_role():
             'data': []}
 
 
+@put('/account/user')
 @post('/account/user')
 def create_user():
 
