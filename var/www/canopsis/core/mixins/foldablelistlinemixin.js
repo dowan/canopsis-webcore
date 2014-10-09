@@ -90,7 +90,8 @@ define([
             }
 
 
-            var source  = '<th COLSPAN=2></th><th COLSPAN=' + nmbr_colonne + '><table class="table table-bordered"><tbody style="text-align:left">' + template_columns + step_template + '</tbody></table></th>';
+            var source  = '<th COLSPAN=2></th><th COLSPAN=' + nmbr_colonne + '><table class="table table-bordered"><tbody style="text-align:left">' + template_columns + "</tr>" + step_template + '</tbody></table></th>';
+
             var html = Ember.Handlebars.compile(source);
 
             Ember.set(Ember.TEMPLATES, templateName, html);
