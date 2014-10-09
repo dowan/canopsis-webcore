@@ -193,8 +193,6 @@ define([
             this.registerHooks();
             var result = this._super.apply(this, arguments);
             get(this, 'controller').onReload(this.$);
-            //TODO put this somewhere on list widget
-            // this.$('input').iCheck({checkboxClass: 'icheckbox_minimal-grey', radioClass: 'iradio_minimal-grey'});
 
             return result;
         },

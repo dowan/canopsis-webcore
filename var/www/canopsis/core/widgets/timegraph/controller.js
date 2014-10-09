@@ -25,32 +25,23 @@ define([
     'app/lib/factories/widget',
     'app/components/flotchart/component',
     'app/controller/serie'
-], function($, Ember, DS, Application, WidgetFactory, WidgetDataConsumerController) {
+], function($, Ember, DS, Application, WidgetFactory) {
     var get = Ember.get,
         set = Ember.set;
 
     var widgetOptions = {};
 
-    var widget = WidgetFactory('timegraph', {
-        needs: ['serie'],
-        chartOptions: undefined,
-        flotSeries: Ember.Object.create({}),
-        dataSeries: Ember.A(),
-
-        timenav: false,
-
-        init: function() {
-            this._super();
-
+    var FlotChartViewMixin = Ember.Mixin.create({
+        didInsertElement: function() {
             var now = +new Date();
-            var config = get(this, 'config');
+            var config = get(this, 'controller.config');
 
             console.group('timegraph init');
 
             // fill chart options
-            set(this, 'timenav', get(config, 'timenav'));
+            set(this, 'controller.timenav', get(config, 'timenav'));
 
-            chartOptions = get(this, 'chartOptions') || {};
+            chartOptions = get(this, 'controller.chartOptions') || {};
 
             $.extend(chartOptions, {
                 zoom: {
@@ -70,41 +61,54 @@ define([
                     clickable: true
                 },
 
-                xaxis: {
-                    show: true,
-                    reserveSpace: true,/*
-                    min: now - (get(config, 'time_window_offset') + (get(config, 'time_window') * 1000)),
-                    max: now - get(config, 'time_window') * 1000,*/
-                    position: 'bottom',
-                    mode: 'time',
-                    timezone: 'browser'
-                },
-
-                yaxis: {
-                    show: true,
-                    reserveSpace: true
-                },
-
                 xaxes: [{
+                    show: true,
+                    reserveSpace: true,
+                    min: now - get(config, 'time_window_offset') - get(config, 'time_window'),
+                    max: now - get(config, 'time_window_offset'),
                     position: 'bottom',
                     mode: 'time',
                     timezone: 'browser'
                 }],
 
-                yaxes: [],
+                yaxes: [{
+                    show: true,
+                    reserveSpace: true
+                }],
 
                 legend: {
                     hideable: true,
-                    legend: get(config, 'legend')
+                    legend: get(config, 'legend'),
+                    container: this.$('.flotchart-legend-container')
                 },
 
                 tooltip: get(config, 'tooltip')
             });
 
             console.log('Configure chart:', chartOptions);
-            set(this, 'chartOptions', chartOptions);
+            set(this, 'controller.chartOptions', chartOptions);
 
             console.groupEnd();
+
+            this._super.apply(this, arguments);
+        }
+    });
+
+    var widget = WidgetFactory('timegraph', {
+        needs: ['serie'],
+
+        viewMixins: [
+            FlotChartViewMixin
+        ],
+
+        chartOptions: undefined,
+        flotSeries: Ember.Object.create({}),
+        dataSeries: Ember.A(),
+
+        timenav: false,
+
+        init: function() {
+            this._super();
         },
 
         findItems: function() {
@@ -118,7 +122,7 @@ define([
 
             if(from === null) {
                 replace = true;
-                from = to - get(this, 'config.time_window') * 1000;
+                from = to - get(this, 'config.time_window') - get(this, 'config.time_window_offset');
             }
 
             console.log('refresh:', from, to, replace);
@@ -183,6 +187,8 @@ define([
                 }
 
                 console.log('Fetch series');
+                set(me, 'flotSeries', Ember.Object.create({}));
+
                 for(i = 0, l = serieResult.meta.total; i < l; i++) {
                     var serieconf = serieResult.content[i];
 
