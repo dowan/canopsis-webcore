@@ -17,30 +17,19 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember', 'app/lib/utils/dates'], function(Ember, datesUtils) {
+define([], function() {
+    Function.prototype.bind = function(context) {
+        var func = this;
 
-    var set = Ember.set,
-        isNone = Ember.isNone;
+        var decorator = function() {
+            return func.call(context, arguments);
+        };
 
-    Ember.Handlebars.helper('interval2html', function(from , to) {
+        return decorator;
+    };
 
-        var html = '';//'<div style="min-width:200px"></div>';
-
-        if(!isNone(from)) {
-            html += __('From') + ' ' + datesUtils.timestamp2String(from);
-        }
-
-        if(!isNone(from) && !isNone(to)) {
-            html += ' ';
-        }
-
-        if(!isNone(to)) {
-            html += __('to') + ' ' + datesUtils.timestamp2String(to);
-        }
-
-        console.debug('generated html form interval2html is', html);
-
-        return html;
-    });
-
+    String.prototype.replaceAll = function(find, replace) {
+        var escaped = find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+        return this.replace(new RegExp(escaped, 'g'), replace);
+    };
 });

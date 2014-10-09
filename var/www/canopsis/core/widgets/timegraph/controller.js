@@ -25,7 +25,7 @@ define([
     'app/lib/factories/widget',
     'app/components/flotchart/component',
     'app/controller/serie'
-], function($, Ember, DS, Application, WidgetFactory) {
+], function($, Ember, DS, Application, WidgetFactory, WidgetDataConsumerController) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -34,44 +34,20 @@ define([
     var widget = WidgetFactory('timegraph', {
         needs: ['serie'],
         chartOptions: undefined,
-        dataSeries: [],
+        flotSeries: Ember.Object.create({}),
+        dataSeries: Ember.A(),
 
         timenav: false,
 
         init: function() {
             this._super();
 
-            var me = this;
             var now = +new Date();
             var config = get(this, 'config');
-            var store = DS.Store.create({
-                container: get(this, 'container')
-            });
-
-            set(this, 'widgetDataStore', store);
 
             console.group('timegraph init');
 
-            var stylizedseries = get(config, 'series');
-
-            var serieIds = [];
-            for(var i = 0, l = stylizedseries.length; i < l; i++) {
-                serieIds.push(stylizedseries[i].serie);
-            }
-
-            console.log('Fetch series:', serieIds);
-            serieIds = JSON.stringify(serieIds);
-
-            store.findQuery('serie', {ids: serieIds}).then(function(result) {
-                var series = [];
-                set(me, 'series', series);
-
-                for(var i, l = result.meta.total; i < l; i++) {
-                    var serie = result.content[i];
-                    series.pushObject(serie);
-                }
-            });
-
+            // fill chart options
             set(this, 'timenav', get(config, 'timenav'));
 
             chartOptions = get(this, 'chartOptions') || {};
@@ -122,6 +98,162 @@ define([
             set(this, 'chartOptions', chartOptions);
 
             console.groupEnd();
+        },
+
+        findItems: function() {
+            console.group('Fetch series:');
+
+            var me = this;
+
+            var replace = false;
+            var from = get(this, 'lastRefresh');
+            var to = +new Date() - get(this, 'config.time_window_offset');
+
+            if(from === null) {
+                replace = true;
+                from = to - get(this, 'config.time_window') * 1000;
+            }
+
+            console.log('refresh:', from, to, replace);
+
+            var store = get(this, 'widgetDataStore');
+
+            /* fetch stylized series */
+            var stylizedseries = get(this, 'config.series');
+            var series = {};
+            var curveIds = [];
+
+            for(var i = 0, l = stylizedseries.length; i < l; i++) {
+                var serieId = stylizedseries[i].serie;
+
+                series[serieId] = stylizedseries[i];
+                curveIds.push(stylizedseries[i].curve);
+            }
+
+            var serieIds = JSON.stringify(Object.keys(series));
+            curveIds = JSON.stringify(curveIds);
+
+            console.log('series:', serieIds);
+            console.log('curves:', curveIds);
+
+            console.groupEnd();
+
+            /* load series configuration */
+            Ember.RSVP.all([
+                store.findQuery('serie', {ids: serieIds}),
+                store.findQuery('curve', {ids: curveIds})
+            ]).then(function(pargs) {
+                console.group('Generate FlotChart series');
+
+                var serieResult = pargs[0]; // arguments of first promise
+                var curveResult = pargs[1]; // arguments of second promise
+
+                var i, l;
+
+                console.log('Fetch curves');
+                for(i = 0, l = curveResult.meta.total; i < l; i++) {
+                    var curve = curveResult.content[i];
+
+                    for(var j = 0, l2 = serieResult.meta.total; j < l2; j++) {
+                        var serieconf = serieResult.content[j];
+
+                        var serieId = serieconf.id;
+
+                        if(series[serieId] !== undefined) {
+                            var stylizedserie = series[serieId];
+
+                            if(get(stylizedserie, 'curve') === curve.id) {
+                                set(stylizedserie, 'curve', curve);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                console.log('Fetch series');
+                for(i = 0, l = serieResult.meta.total; i < l; i++) {
+                    var serieconf = serieResult.content[i];
+
+                    var serieId = serieconf.id;
+
+                    if(series[serieId] !== undefined) {
+                        var stylizedserie = series[serieId];
+                        set(stylizedserie, 'serie', serieconf);
+
+                        me.genFlotSerie(stylizedserie, from, to);
+                    }
+                }
+
+                console.groupEnd();
+            });
+        },
+
+        genFlotSerie: function(stylizedserie, from, to, replace) {
+            console.group('Generating FlotChart serie:', stylizedserie);
+
+            var me = this;
+
+            var flotSerie = {
+                label: get(stylizedserie, 'serie.crecord_name'),
+                color: get(stylizedserie, 'color'),
+                lines: {
+                    show: get(stylizedserie, 'curve.lines'),
+                    lineWidth: get(stylizedserie, 'curve.line_width'),
+                    fill: (get(stylizedserie, 'curve.areas') ? get(stylizedserie, 'curve.area_opacity') : false)
+                },
+                bars: {
+                    show: get(stylizedserie, 'curve.bars'),
+                    barWidth: get(stylizedserie, 'curve.bar_width')
+                },
+                points: {
+                    show: get(stylizedserie, 'curve.points'),
+                    symbol: get(stylizedserie, 'curve.point_shape')
+                },
+                xaxis: get(stylizedserie, 'xaxis'),
+                yaxis: get(stylizedserie, 'yaxis'),
+                clickable: true,
+                hoverable: true
+            };
+
+            var oldSerie = get(this, 'flotSeries.' + get(stylizedserie, 'serie.id'));
+
+            if(oldSerie !== undefined && !replace) {
+                flotSerie.data = oldSerie.data;
+            }
+            else {
+                flotSerie.data = [];
+            }
+
+            console.log('flotserie:', flotSerie);
+            console.log('Fetch perfdata and compute serie');
+
+            var ctrl = get(this, 'controllers.serie');
+            ctrl.getDataSerie(get(stylizedserie, 'serie'), from, to).then(function(data) {
+                console.log('getDataSerie:', data);
+
+                flotSerie.data = flotSerie.data.concat(data);
+
+                set(me, 'flotSeries.' + get(stylizedserie, 'serie.id'), flotSerie);
+                me.recomputeDataSeries();
+            });
+
+            console.groupEnd();
+        },
+
+        recomputeDataSeries: function() {
+            var flotSeries = get(this, 'flotSeries');
+            var series = [];
+
+            var serieIds = Object.keys(flotSeries);
+
+            for(var i = 0, l = serieIds.length; i < l; i++) {
+                var serieId = serieIds[i];
+
+                series.pushObject(flotSeries[serieId]);
+            }
+
+            console.log('dataSeries:', series);
+            set(this, 'dataSeries', series);
         }
     }, widgetOptions);
 

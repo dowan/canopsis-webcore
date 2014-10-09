@@ -20,8 +20,11 @@
 define([
     'ember',
     'app/application',
+    'app/lib/utils/hash',
     'utils'
-], function(Ember, Application, utils) {
+], function(Ember, Application, hashUtils, utils) {
+
+    var get = Ember.get;
 
     var userConfiguration = Ember.ObjectController.extend({
 
@@ -38,13 +41,15 @@ define([
 
             var preference_id = this.get('preference_id');
             if (preference_id === undefined) {
-                preference_id = utils.hash.generate_GUID();
+                preference_id = hashUtils.generate_GUID();
             }
+
+            var user = 'root';//get(this, 'widget.controllers.login.record.user');
 
             var userConfiguration = {
                 preferences_level: preferences_level,
                 widget_preferences: preferences,
-                crecord_name: utils.session.user,
+                crecord_name: user,
                 widget_id: this.get('widget.id'),
                 id: preference_id,
                 crecord_type: 'userpreferences'
@@ -67,13 +72,15 @@ define([
 
             console.debug('loading configuration');
             //TODO @eric use an adapter
+            var user = 'root';//get(this, 'widget.controllers.login.record.user');
+
             $.ajax({
                 url: '/rest/userpreferences/userpreferences',
                 async: false,
                 data: {
                     limit: 1,
                     filter: JSON.stringify({
-                        crecord_name: utils.session.user,
+                        crecord_name: user,
                         widget_id: this.get('widget.id')
                     })
                 },

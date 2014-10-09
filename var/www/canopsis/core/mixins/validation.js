@@ -91,7 +91,7 @@ define([
             var form = this;
 
             if (validationFields) {
-                for (var z = 0; z < validationFields.length; z++) {
+                for (var z = 0, l = validationFields.length; z < l; z++) {
                     console.log("validate on : ", validationFields[z]);
                     var current = validationFields[z].validate();
 

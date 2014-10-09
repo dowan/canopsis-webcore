@@ -54,6 +54,7 @@ define([
             if (options === undefined) {
                 options = {};
             }
+
             var formwrapperController = formsregistry.formwrapper;
             if( formwrapperController ){
                 var oldform = formwrapperController.form;

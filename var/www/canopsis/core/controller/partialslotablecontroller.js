@@ -25,6 +25,7 @@ define([
     'app/lib/utils/widgets',
     'app/lib/helpers/partialslot'
 ], function($, Ember, Application, userConfiguration, widgetUtils) {
+
     var get = Ember.get,
         set = Ember.set;
 

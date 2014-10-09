@@ -20,8 +20,10 @@
 define([
     'ember',
     'app/application',
-    'utils'
-], function(Ember, Application, cutils) {
+    'app/lib/utils/forms',
+    'app/lib/utils/dates',
+    'app/lib/utils/notification'
+], function(Ember, Application, formsUtils, datesUtils, notificationUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -32,7 +34,7 @@ define([
 
         init: function (){
             this._super();
-            this.set('login', get(this, 'controllers.login.record'));
+            set(this, 'login', get(this, 'controllers.login.record'));
         },
 
         partials: {
@@ -49,9 +51,9 @@ define([
         * Pending status is defined for records that undergoes change and witch are not yet refreshed from server.
         **/
         setPendingOperation: function(crecords){
-            var safe_mode = this.get('controllers.application.frontendConfig.safe_mode');
+            var safe_mode = get(this, 'controllers.application.frontendConfig.safe_mode');
             if (safe_mode) {
-                for (var i=0; i<crecords.length; i++) {
+                for (var i = 0, l = crecords.length; i < l; i++) {
                     console.log('Pending operations on crecord',crecords[i]);
                     crecords[i].set('pendingOperation', true);
                 }
@@ -78,7 +80,7 @@ define([
                 state: get(crecord, 'state'),
                 state_type: get(crecord, 'state_type'),
                 crecord_type: event_type,
-                timestamp:  cutils.dates.getNow()
+                timestamp:  datesUtils.getNow()
             };
 
             if(record.source_type === 'resource') {
@@ -148,7 +150,7 @@ define([
         * Generates and displays a form for givent record type
         **/
         getEventForm: function(event_type, record, crecords, formbuttons) {
-            var wizard = cutils.forms.showNew('modelform', record, {
+            var wizard = formsUtils.showNew('modelform', record, {
                 title: __('Add event type: ') + event_type,
                 override_labels: {
                     output: 'comment'
@@ -170,7 +172,7 @@ define([
                 console.log('saveRecord:', record, form);
 
                 record = get(form, 'formContext');
-                cutils.notification.info(__('event sent: ') + event_type);
+                notificationUtils.info(__('event sent: ') + event_type);
                 me.submitEvents(crecords, record, event_type);
 
                 rollback();
@@ -219,7 +221,7 @@ define([
                 var topush = this.processEvent(event_type, 'filter', [record]);
 
                 if(topush) {
-                    selected.push(record);
+                    selected.pushObject(record);
                 }
             }
 
@@ -259,13 +261,13 @@ define([
                     console.log('transform method for ack -> crecords', crecord, 'record', record);
                     crecord.set('ack', {
                         comment: record.output,
-                        timestamp: cutils.dates.getNow(),
+                        timestamp: datesUtils.getNow(),
                         author: record.author,
                         isAck: true
                     });
                     if(!Ember.isNone(record.ticket)) {
                         crecord.set('ticket', record.ticket);
-                        crecord.set('ticket_date', cutils.dates.getNow());
+                        crecord.set('ticket_date', datesUtils.getNow());
                     }
                 }
             },
@@ -291,7 +293,7 @@ define([
                 handle: function(crecords) {
                     var record = this.getDisplayRecord('ackremove', crecords[0]);
 
-                    cutils.notification.info(__('event "ackremove" sent'));
+                    notificationUtils.info(__('event "ackremove" sent'));
                     this.submitEvents(crecords, record, 'ackremove');
                 },
 
@@ -331,7 +333,7 @@ define([
                 transform: function(crecord, record) {
                     console.log('transform method for declare ticket', crecord, record);
                     crecord.set('declare_ticket_author', record.author);
-                    crecord.set('declare_ticket_date', cutils.dates.getNow());
+                    crecord.set('declare_ticket_date', datesUtils.getNow());
                 }
 
             },
@@ -357,7 +359,7 @@ define([
                 transform: function(crecord, record) {
                     console.log('transform method for assoticket', crecord, record);
                     crecord.set('ticket', record.ticket);
-                    crecord.set('ticket_date', cutils.dates.getNow());
+                    crecord.set('ticket_date', datesUtils.getNow());
                 }
 
             },
@@ -389,7 +391,7 @@ define([
                     crecord.set('status', 4);
                     crecord.set('cancel',{
                         comment: record.output,
-                        timestamp: cutils.dates.getNow(),
+                        timestamp: datesUtils.getNow(),
                         author: record.author,
                         previous_status: record.state
                     });
@@ -428,7 +430,7 @@ define([
                 handle: function(crecords) {
                     var record = this.getDisplayRecord('uncancel', crecords[0]);
 
-                    cutils.notification.info(__('event "uncancel" sent'));
+                    notificationUtils.info(__('event "uncancel" sent'));
                     this.submitEvents(crecords, record, 'uncancel');
                 },
 
@@ -442,7 +444,7 @@ define([
                     if(Ember.isNone(crecord.get('ack'))) {
                         crecord.set('ack', {
                             comment: record.output,
-                            timestamp: cutils.dates.getNow(),
+                            timestamp: datesUtils.getNow(),
                             author: record.author,
                             isAck: true
                         });
@@ -505,7 +507,7 @@ define([
                 handle: function(crecords) {
                     var record = this.getDisplayRecord('user', crecords[0]);
 
-                    cutils.notification.info(__('event "user" sent'));
+                    notificationUtils.info(__('event "user" sent'));
                     this.submitEvents(crecords, record, 'user');
                 },
 
@@ -531,7 +533,7 @@ define([
                 handle: function(crecords) {
                     var record = this.getDisplayRecord('comment', crecords[0]);
 
-                    cutils.notification.info(__('event "comment" sent'));
+                    notificationUtils.info(__('event "comment" sent'));
                     this.submitEvents(crecords, record, 'comment');
                 },
 
@@ -587,7 +589,7 @@ define([
                     console.log('events:', event_type, crecords);
 
                     if(!crecords.length) {
-                        cutils.notification.warning(
+                        notificationUtils.warning(
                             'No matching event found for event:',
                             event_type
                         );

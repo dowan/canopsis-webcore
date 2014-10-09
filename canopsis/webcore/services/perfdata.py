@@ -22,6 +22,8 @@ from bottle import get, delete, put, post
 
 from canopsis.common.ws import route
 from canopsis.perfdata.manager import PerfData
+from canopsis.timeserie.timewindow import TimeWindow, Period
+from canopsis.timeserie import TimeSerie
 
 import logging
 
@@ -32,6 +34,11 @@ logger = logging.getLogger('webserver')
 
 @route(post, payload=['metric_id', 'timewindow', 'period'])
 def perfdata_count(metric_id, timewindow=None, period=None):
+    if timewindow is not None:
+        timewindow = TimeWindow(**timewindow)
+
+    if period is not None:
+        period = Period(**period)
 
     result = manager.count(
         metric_id=metric_id, timewindow=timewindow, period=period)
@@ -50,6 +57,14 @@ def perfdata(
     metric_id, timewindow=None, period=None, with_meta=True,
     limit=0, skip=0, timeserie=None
 ):
+    if timewindow is not None:
+        timewindow = TimeWindow(**timewindow)
+
+    if timeserie is not None:
+        timeserie = TimeSerie(**timeserie)
+
+    if period is not None:
+        period = Period(**period)
 
     if not isinstance(metric_id, list):
         metrics = [metric_id]
@@ -65,37 +80,31 @@ def perfdata(
             timewindow=timewindow, limit=limit, skip=skip)
 
         if timeserie is not None:
+            if with_meta:
+                _points = timeserie.calculate(ret[0], timewindow=timewindow)
+                ret = (_points,) + ret[1:]
 
-            _points = ret[0] if with_meta else ret
-            ret = timeserie.calculate(_points, timewindow=timewindow)
+            else:
+                ret = timeserie.calculate(ret, timewindow=timewindow)
 
         if with_meta:
             result.append({
                 "points": ret[0],
-                "length": ret[1]
+                "meta": ret[1]
             })
 
         else:
             result.append({
-                "points": ret,
-                "length": len(ret)
+                "points": ret
             })
 
-    if len(result) == 1:
-        if with_meta:
-            result = (result[0]['points'], result[0]['length'])
-
-        else:
-            result = result[0]
-
-    else:
-        result = (result, len(result))
-
-    return result
+    return (result, len(result))
 
 
 @route(post, payload=['timewindow', 'limit', 'sort'])
 def perfdata_meta(metric_id, timewindow=None, limit=0, sort=None):
+    if timewindow is not None:
+        timewindow = TimeWindow(**timewindow)
 
     result = manager.get_meta(
         metric_id=metric_id, timewindow=timewindow, limit=limit, sort=sort)
@@ -105,6 +114,8 @@ def perfdata_meta(metric_id, timewindow=None, limit=0, sort=None):
 
 @route(put, payload=['metric_id', 'points', 'meta', 'period'])
 def perfdata(metric_id, points, meta=None, period=None):
+    if period is not None:
+        period = Period(**period)
 
     manager.put(metric_id=metric_id, points=points, meta=meta, period=period)
 
@@ -115,6 +126,11 @@ def perfdata(metric_id, points, meta=None, period=None):
 
 @route(delete, payload=['metric_id', 'period', 'with_meta', 'timewindow'])
 def perfdata(metric_id, period=None, with_meta=False, timewindow=None):
+    if timewindow is not None:
+        timewindow = TimeWindow(**timewindow)
+
+    if period is not None:
+        period = Period(**period)
 
     manager.remove(
         metric_id=metric_id, period=period, with_meta=with_meta,

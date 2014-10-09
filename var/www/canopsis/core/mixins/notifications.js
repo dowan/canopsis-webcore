@@ -54,7 +54,7 @@ define([
         },
 
         notificationCount: function () {
-            return this.get('notifications.length');
+            return get(this, 'notifications.length');
         }.property('notifications.length')
     });
 

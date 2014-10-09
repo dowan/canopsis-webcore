@@ -17,30 +17,25 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember', 'app/lib/utils/dates'], function(Ember, datesUtils) {
+define([
+    'ember',
+    'app/application',
+    'app/lib/utils/actions',
+    'app/lib/wrappers/bootstrap'
+], function(Ember, Application, actionsUtils) {
 
-    var set = Ember.set,
-        isNone = Ember.isNone;
+    var get = Ember.get,
+        set = Ember.set;
 
-    Ember.Handlebars.helper('interval2html', function(from , to) {
-
-        var html = '';//'<div style="min-width:200px"></div>';
-
-        if(!isNone(from)) {
-            html += __('From') + ' ' + datesUtils.timestamp2String(from);
+    var component = Ember.Component.extend({
+        actions: {
+            doAction: function (actionName, param) {
+                actionsUtils.doAction(actionName, param);
+            }
         }
-
-        if(!isNone(from) && !isNone(to)) {
-            html += ' ';
-        }
-
-        if(!isNone(to)) {
-            html += __('to') + ' ' + datesUtils.timestamp2String(to);
-        }
-
-        console.debug('generated html form interval2html is', html);
-
-        return html;
     });
 
+    Application.ComponentActionbuttonComponent = component;
+
+    return component;
 });

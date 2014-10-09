@@ -21,6 +21,7 @@ define([
     'ember',
     'app/application'
 ], function(Ember, Application) {
+
     var get = Ember.get,
         set = Ember.set;
 
@@ -56,21 +57,21 @@ define([
 
         actions: {
             prevPage: function() {
-                if (this.get("currentPage") > 1) {
-                    this.set("currentPage", get(this, "currentPage") - 1);
+                if (get(this, 'currentPage') > 1) {
+                    set(this, 'currentPage', get(this, 'currentPage') - 1);
                 }
             },
             nextPage: function() {
-                if (get(this, "currentPage") < get(this, "totalPages")) {
-                    this.set("currentPage", get(this, "currentPage") + 1);
+                if (get(this, 'currentPage') < get(this, 'totalPages')) {
+                    set(this, 'currentPage', get(this, 'currentPage') + 1);
                 }
             },
             firstPage: function() {
-                this.set("currentPage", 1);
+                this.set('currentPage', 1);
             },
             lastPage: function() {
-                if (get(this, "currentPage") < get(this, "totalPages")) {
-                    this.set("currentPage", get(this, 'totalPages'));
+                if (get(this, 'currentPage') < get(this, 'totalPages')) {
+                    set(this, 'currentPage', get(this, 'totalPages'));
                 }
             }
         },
@@ -100,7 +101,7 @@ define([
         userDefinedItemsPerPage: 5,
 
         itemsPerPageChanged : function() {
-            this.set('currentPage', 1);
+            set(this, 'currentPage', 1);
             this.refreshContent();
         }.observes('itemsPerPage'),
 
@@ -113,8 +114,7 @@ define([
         }.observes('itemsPerPagePropositionSelected'),
 
         refreshContent: function() {
-            console.group("paginationMixin refreshContent", get(this, 'itemsPerPage'));
-
+            console.group('paginationMixin refreshContent', get(this, 'itemsPerPage'));
 
             if (get(this, 'paginationMixinFindOptions') === undefined) {
                 set(this, 'paginationMixinFindOptions', {});

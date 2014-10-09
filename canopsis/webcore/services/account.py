@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # --------------------------------
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
@@ -60,12 +59,12 @@ ROUTE_SUCCESS = {
 rights_module_actions = {
     'remove': {
         'profile': right_module.remove_profile,
-        'composite': right_module.remove_composite,
+        'group': right_module.remove_group,
         'rights': right_module.remove_right
     },
     'add': {
         'profile': right_module.add_profile,
-        'composite': right_module.add_composite,
+        'group': right_module.add_group,
         'rights': right_module.add_right
     }
 }
@@ -93,13 +92,13 @@ def update_profile(e_id, e_type, profiles, entity):
     update_field(e_id, e_type, profiles, 'profile', entity)
 
 
-def update_comp(e_id, e_type, composites, entity):
-    update_field(e_id, e_type, composites, 'composite', entity)
+def update_comp(e_id, e_type, groups, entity):
+    update_field(e_id, e_type, groups, 'group', entity)
 
 
 @put('/account/group/:_id')
 @post('/account/group/:_id')  # the id param is only here to make a quick hack
-def create_composite(_id=None):
+def create_group(_id=None):
 
     items = request.body.readline()
 
@@ -114,28 +113,29 @@ def create_composite(_id=None):
     c_name = _id
     c_rights = item.get('rights')
 
-    composite = right_module.get_composite(c_name)
+    group = right_module.get_group(c_name)
 
-    if not composite and not right_module.create_composite(c_name, c_rights):
+    if not group and not right_module.create_group(c_name, c_rights):
         return ROUTE_FAIL
 
-    if not update_rights(c_name, 'composite', c_rights, composite):
+    if not update_rights(c_name, 'group', c_rights, group):
         return ROUTE_FAIL
 
     return ROUTE_SUCCESS
 
 
 @delete('/account/group')
-def delete_composite():
+def delete_group():
     c_name = request.params.get('group_name')
 
     return {'total': 1,
-            'success': right_module.delete_composite(c_name),
+            'success': right_module.delete_group(c_name),
             'data': []}
 
 
-@put('/account/profile/:_id')  # the id param is only here to make a quick hack
-def update_profile(_id=None):
+@put('/account/profile/:_id')
+@post('/account/profile/:_id')  # the id param is only here to make a quick hack
+def post_profile(_id=None):
     items = request.body.readline()
 
     try:
@@ -244,7 +244,7 @@ def create_user():
     if not user and not right_module.create_user(u_id, u_role,
                                                  contact=u_contact,
                                                  rights=u_rights,
-                                                 composites=u_comp):
+                                                 groups=u_comp):
         return ROUTE_FAIL
 
     if not update_comp(u_id, 'user', u_comp, user):
@@ -273,6 +273,28 @@ def get_user_rights():
             'success': True,
             'data': [u_rights]}
 
+
+@put('/account/action')
+@post('/account/action')
+def create_action():
+
+    items = request.body.readline()
+
+    try:
+        items = loads(items)
+    except Exception as err:
+        logger.error("PUT: Impossible to parse data ({})".format(err))
+        return HTTPError(500, "Impossible to parse data")
+
+    item = items[0]
+
+    a_id = item.get('action_id')
+    a_desc = item.get('action_desc')
+
+    if not right_module.add(a_id, a_desc):
+        return ROUTE_FAIL
+
+    return ROUTE_SUCCESS
 
 
 #### GET Me

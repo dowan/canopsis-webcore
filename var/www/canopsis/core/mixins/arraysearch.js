@@ -46,8 +46,8 @@ define([
 
                 set(this, 'findOptions', findOptions);
 
-                if (this.currentPage !== undefined) {
-                    this.set("currentPage", 1);
+                if (get(this, currentPage) !== undefined) {
+                    set(this, 'currentPage', 1);
                 }
 
                 this.refreshContent();
@@ -99,9 +99,9 @@ define([
 
             var filter_orArray = [];
             for (var i = 0, l = searchableAttributes.length; i < l; i++) {
-                    var filter_orArrayItem = {};
-                    filter_orArrayItem[searchableAttributes[i]] = {"$regex": searchPhrase, "$options": "i"};
-                    filter_orArray.pushObject(filter_orArrayItem);
+                var filter_orArrayItem = {};
+                filter_orArrayItem[searchableAttributes[i]] = {"$regex": searchPhrase, "$options": "i"};
+                filter_orArray.pushObject(filter_orArrayItem);
             }
 
             return JSON.stringify({"$or": filter_orArray });
@@ -112,10 +112,11 @@ define([
 
             var searchableColumns = get(this, 'searchable_columns');
 
+            var searchableAttributes;
             if (Ember.isNone(searchableColumns)) {
                 //legacy search on all shown fields.
                 var shown_columns = get(this, 'shown_columns');
-                var searchableAttributes = Ember.A();
+                searchableAttributes = Ember.A();
 
                 for (var i = 0, l = shown_columns.length; i < l; i++) {
                     searchableAttributes.push(shown_columns[i].field);
@@ -125,19 +126,15 @@ define([
                 console.log('new searchableAttributes', searchableAttributes);
             } else {
                 //User or default configuration made searchable ordered fields that greatly should match database indexed fields.
-                var searchableAttributes = Ember.A();
+                searchableAttributes = Ember.A();
 
-                for (var i=0, l=searchableColumns.length; i < l; i++) {
-                        searchableAttributes.push(searchableColumns[i]);
+                for (var i = 0, l = searchableColumns.length; i < l; i++) {
+                    searchableAttributes.push(searchableColumns[i]);
                 }
 
                 set(this, 'searchableAttributes', searchableAttributes);
                 console.log('new searchableAttributes computed from widget parameters', searchableAttributes);
-
-
             }
-
-
         }.observes('shown_columns')
     });
 

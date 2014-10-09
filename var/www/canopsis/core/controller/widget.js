@@ -20,6 +20,7 @@
 define([
     'jquery',
     'ember',
+    'ember-data',
     'app/application',
     'app/controller/partialslotablecontroller',
     'app/lib/utils/userconfiguration',
@@ -29,10 +30,11 @@ define([
     'app/lib/utils/forms',
     'app/lib/utils/debug',
     'utils'
-], function($, Ember, Application, PartialslotAbleController, userConfiguration, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, utils) {
+], function($, Ember, DS, Application, PartialslotAbleController, userConfiguration, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, utils) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     var controller = PartialslotAbleController.extend({
         needs: ['application', 'login'],
@@ -64,10 +66,16 @@ define([
 
             set(this, "container", routesUtils.getCurrentRouteController().container);
 
+            var store = DS.Store.create({
+                container: get(this, 'container')
+            });
+
+            set(this, 'widgetDataStore', store);
+
             this.startRefresh();
 
             //setting default/minimal reload delay for current widget
-            if (get(this, 'refreshInterval') <= 10 || Ember.isNone(get(this, 'refreshInterval'))) {
+            if (get(this, 'refreshInterval') <= 10 || isNone(get(this, 'refreshInterval'))) {
                 set(this, 'refreshInterval', 10);
             }
 
@@ -109,6 +117,7 @@ define([
 
         startRefresh: function () {
             set(this, 'isRefreshable', true);
+            set(this, 'lastRefresh', null);
         },
 
         isRollbackable: function() {
@@ -151,7 +160,7 @@ define([
             editWidget: function (widget) {
                 console.info("edit widget", widget);
 
-                var widgetWizard = utils.forms.showNew('modelform', widget, { title: __("Edit widget") });
+                var widgetWizard = formsUtils.showNew('modelform', widget, { title: __("Edit widget") });
                 console.log("widgetWizard", widgetWizard);
 
                 var widgetController = this;
@@ -223,6 +232,7 @@ define([
                     var itemsContent = get(this, 'content.items.content');
 
                     for (var i = 0, l = itemsContent.length; i < l; i++) {
+
                         console.log('loop', i, itemsContent[i], widgetwrapper);
                         console.log(itemsContent[i] === widgetwrapper);
                         if (foundElementIndex !== undefined && nextElementIndex === undefined) {
@@ -324,6 +334,8 @@ define([
             this._super();
 
             this.findItems();
+
+            set(this, 'lastRefresh', +new Date());
         },
 
         findItems: function() {
@@ -352,7 +364,7 @@ define([
                 var currentButton = buttons[i];
 
                 if(Ember.TEMPLATES[currentButton] !== undefined) {
-                    res.push(currentButton);
+                    res.pushObject(currentButton);
                 } else {
                     //TODO manage this with utils.problems
                     console.warn('template not found', currentButton);
