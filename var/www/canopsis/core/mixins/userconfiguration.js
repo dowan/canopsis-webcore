@@ -50,7 +50,7 @@ define([
                 preference_id = hashUtils.generate_GUID();
             }
 
-            var user = get(this, 'controllers.login.record.user');
+            var user = get(this, 'controllers.login.record._id');
 
             var userConfiguration = {
                 preferences_level: preferences_level,
@@ -77,7 +77,7 @@ define([
 
             console.debug('loading configuration');
             //TODO @eric use an adapter
-            var user = get(this, 'controllers.login.record.user');
+            var user = get(this, 'controllers.login.record._id');
 
             $.ajax({
                 url: '/rest/userpreferences/userpreferences',
