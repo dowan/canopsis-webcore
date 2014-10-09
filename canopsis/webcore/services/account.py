@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # --------------------------------
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
@@ -49,26 +48,26 @@ ROUTE_FAIL = {
     'total': 1,
     'success': False,
     'data': []
-    }
+}
 
 ROUTE_SUCCESS = {
     'total': 1,
     'success': True,
     'data': []
-    }
+}
 
 rights_module_actions = {
     'remove': {
         'profile': right_module.remove_profile,
         'group': right_module.remove_group,
         'rights': right_module.remove_right
-        },
+    },
     'add': {
         'profile': right_module.add_profile,
         'group': right_module.add_group,
         'rights': right_module.add_right
-        }
     }
+}
 
 
 def update_field(e_id, e_type, new_elems, elem_type, entity):
@@ -78,11 +77,12 @@ def update_field(e_id, e_type, new_elems, elem_type, entity):
             to_remove = set(entity[elem_type]) - set(new_elems)
         for elem in to_remove:
             if not rights_module_actions['remove'][elem_type](e_id, elem):
-                return ROUTE_FAIL
+                return False
     if new_elems:
         for elem in new_elems:
             if not rights_module_actions['add'][elem_type](e_id, elem):
-                return ROUTE_FAIL
+                return False
+    return True
 
 
 def update_rights(e_id, e_type, e_rights, entity):
@@ -288,7 +288,6 @@ def create_action():
         return HTTPError(500, "Impossible to parse data")
 
     item = items[0]
-
 
     a_id = item.get('action_id')
     a_desc = item.get('action_desc')

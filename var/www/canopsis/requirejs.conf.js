@@ -42,6 +42,8 @@ require.config({
         'lodash': 'webcore-libs/dev/lodash.compat',
         'css3-mediaqueries': 'webcore-libs/min/css3-mediaqueries',
         'math': 'webcore-libs/dev/math',
+        'contextmenu': 'canopsis/core/lib/wrappers/bootstrap-contextmenu',
+        'dragtable': 'webcore-libs/dev/dragtable',
 
         'flotchart': 'webcore-libs/flot/jquery.flot',
         'flotchart-canvas': 'webcore-libs/flot/jquery.flot.canvas',
@@ -74,6 +76,10 @@ require.config({
             deps: ['jquery']
         },
 
+        'contextmenu': {
+            deps: ['jquery']
+        },
+
         'bootbox': {
             deps: ['jquery', 'bootstrap']
         },
@@ -95,7 +101,7 @@ require.config({
         },
 
         'consolejs': {
-            deps: ["ember"]
+            deps: ['ember']
         },
 
         'ember': {
