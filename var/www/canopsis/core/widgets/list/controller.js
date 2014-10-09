@@ -33,6 +33,7 @@ define([
     'app/mixins/customfilter',
     'app/mixins/userconfiguration',
     'utils',
+    'dragtable',
     'app/lib/utils/dom',
     'app/lib/utils/routes',
     'app/lib/utils/forms',
@@ -45,9 +46,9 @@ define([
     'app/lib/wrappers/datatables',
     'app/lib/loaders/components',
     'contextmenu',
-    'app/adapters/group'
+    'app/adapters/group',
 ], function($, Ember, DS, WidgetFactory, PaginationMixin, InspectableArrayMixin,
-        ArraySearchMixin, SortableArrayMixin, HistoryMixin, AckMixin, InfobuttonMixin, SendEventMixin, CustomFilterManagerMixin, userConfiguration, utils, domUtils, routesUtils, formsUtils, FoldableListLineMixin) {
+        ArraySearchMixin, SortableArrayMixin, HistoryMixin, AckMixin, InfobuttonMixin, SendEventMixin, CustomFilterManagerMixin, userConfiguration, utils, dragtable, domUtils, routesUtils, formsUtils, FoldableListLineMixin) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -231,7 +232,24 @@ define([
             },
 
             onDomReady: function (element) {
-                void(element);
+                console.log('on list dom ready', element);
+                var listController = this;
+
+                //column drag and drop management
+                dragtable.makeDraggable(element[0], function (startColumn, stopColumn){
+                    console.debug('permutation from list drag and drop -> start' ,startColumn, 'stop', stopColumn);
+                    var columns = listController.get('shown_columns');
+                    console.debug('showing selected columns', columns);
+
+                    if(startColumn !== 0 && stopColumn !== 0 && startColumn !== columns.length && stopColumn !== columns.length) {
+                        var permutation = columns[startColumn];
+                        columns[startColumn] = columns[stopColumn];
+                        columns[stopColumn] = permutation;
+                        set(listController, 'userParams.shown_columns', columns);
+                        listController.saveUserConfiguration();
+                    }
+
+                });
             },
 
             findItems: function() {
