@@ -60,12 +60,10 @@ rights_module_actions = {
     'remove': {
         'profile': right_module.remove_profile,
         'group': right_module.remove_group,
-        'rights': right_module.remove_right
     },
     'add': {
         'profile': right_module.add_profile,
         'group': right_module.add_group,
-        'rights': right_module.add_right
     }
 }
 
@@ -76,17 +74,33 @@ def update_field(e_id, e_type, new_elems, elem_type, entity):
         if new_elems:
             to_remove = set(entity[elem_type]) - set(new_elems)
         for elem in to_remove:
-            if not rights_module_actions['remove'][elem_type](e_id, elem):
+            if not rights_module_actions['remove'][elem_type](e_id, e_type, elem):
                 return False
     if new_elems:
         for elem in new_elems:
-            if not rights_module_actions['add'][elem_type](e_id, elem):
+            if not rights_module_actions['add'][elem_type](e_id, e_type, elem):
                 return False
     return True
 
 
 def update_rights(e_id, e_type, e_rights, entity):
-    update_field(e_id, e_type, e_rights, 'rights', entity)
+    if entity and 'rights' in entity:
+        to_remove = entity['rights']
+        if e_rights:
+            to_remove = set(entity['rights']) - set(e_rights)
+        logger.error(to_remove)
+        for right in to_remove:
+            if not right_module.remove_right(
+                e_id, e_type, right, to_remove[right]['checksum']
+                ):
+                return False
+    if e_rights:
+        for right in e_rights:
+            if not right_module.add_right(
+                e_id, e_type, right, e_rights[right]['checksum']
+                ):
+                return False
+    return True
 
 
 def update_profile(e_id, e_type, profiles, entity):
@@ -119,8 +133,7 @@ def create_group(_id=None):
     if not group and not right_module.create_group(c_name, c_rights):
         return ROUTE_FAIL
 
-    if not update_rights(c_name, 'group', c_rights, group):
-        return ROUTE_FAIL
+    update_rights(c_name, 'group', c_rights, group)
 
     return ROUTE_SUCCESS
 
@@ -157,11 +170,8 @@ def post_profile(_id=None):
     if not profile and not right_module.create_profile(p_id, p_comp):
         return ROUTE_FAIL
 
-    if not update_comp(p_id, 'profile', p_comp, profile):
-        return ROUTE_FAIL
-
-    if not update_rights(p_id, 'profile', p_rights, profile):
-        return ROUTE_FAIL
+    update_comp(p_id, 'profile', p_comp, profile)
+    update_rights(p_id, 'profile', p_rights, profile)
 
     return ROUTE_SUCCESS
 
@@ -199,14 +209,9 @@ def update_role():
     if not role and not right_module.create_role(r_id, r_profile):
         return ROUTE_FAIL
 
-    if not update_profile(r_id, 'role', r_comp, role):
-        return ROUTE_FAIL
-
-    if not update_comp(r_id, 'role', r_comp, role):
-        return ROUTE_FAIL
-
-    if not update_rights(r_id, 'role', r_rights, role):
-        return ROUTE_FAIL
+    update_profile(r_id, 'role', r_comp, role)
+    update_comp(r_id, 'role', r_comp, role)
+    update_rights(r_id, 'role', r_rights, role)
 
     return ROUTE_SUCCESS
 
@@ -248,11 +253,8 @@ def create_user():
                                                  groups=u_comp):
         return ROUTE_FAIL
 
-    if not update_comp(u_id, 'user', u_comp, user):
-        return ROUTE_FAIL
-
-    if not update_rights(u_id, 'user', u_rights, user):
-        return ROUTE_FAIL
+    update_comp(u_id, 'user', u_comp, user)
+    update_rights(u_id, 'user', u_rights, user)
 
     if not right_module.add_role(u_id, u_role):
         return ROUTE_FAIL
