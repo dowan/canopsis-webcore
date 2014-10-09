@@ -36,6 +36,7 @@ define([
 
         newModelSelected: function() {
             var model = get(this, 'selectedModel');
+            console.log('Select record:', model);
 
             set(this, 'content.value', model.id);
         }.observes('selectedModel'),

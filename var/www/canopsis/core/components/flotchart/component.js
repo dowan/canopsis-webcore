@@ -38,7 +38,7 @@ define([
             if(this.chart !== undefined) {
                 this.send('renderChart');
             }
-        }.observes('series'),
+        }.observes('series.@each'),
 
         init: function() {
             this._super(arguments);
@@ -65,6 +65,7 @@ define([
         actions: {
             renderChart: function() {
                 console.log('Render chart');
+                this.chart.setData(get(this, 'series'));
                 this.chart.setupGrid();
                 this.chart.draw();
             }
