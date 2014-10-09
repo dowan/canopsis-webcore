@@ -35,7 +35,6 @@ define([
     var initialLoadDone = false;
 
     var route = AuthenticatedRoute.extend({
-        needs: ['application'],
         actions: {
             loading: function() {
                 if(initialLoadDone === true) {
@@ -56,6 +55,22 @@ define([
                     console.error(error);
                     utils.notification.error(__('Impossible to load view.'));
                 }
+            },
+
+            toggleEditMode: function() {
+                var applicationController = this.controllerFor('application');
+                if (get(applicationController, 'editMode') === true) {
+                    console.info('Entering edit mode');
+                    set(applicationController, 'editMode', false);
+                } else {
+                    console.info('Leaving edit mode');
+                    set(applicationController, 'editMode', true);
+                }
+            },
+
+            toggleDevTools: function () {
+                //FIXME don't use jquery in here, it's for views !
+                $('.debugmenu').slideToggle(200);
             },
 
             /**
@@ -123,8 +138,7 @@ define([
                 interval = {};
             }
 
-            var len = children.length;
-            for (var i = 0, l = len; i < l; i++) {
+            for (var i = 0, l = children.length; i < l; i++) {
 
                 console.debug('Child widget', get(children[i], 'id'), children[i]);
                 var widgetController = get(children[i], 'controllerInstance');
@@ -140,18 +154,20 @@ define([
 
         setupController: function(controller, model) {
             console.log('UserviewRoute setupController', model, controller);
-            set(this.controllerFor('application'), 'currentViewId', get(model, 'id'));
 
-            actionsUtils.setDefaultTarget(this);
+            actionsUtils.setDefaultTarget(controller);
+
+            this._super.apply(this, arguments);
 
             controller.setProperties({
-                'content': model,
                 'isMainView': true
             });
 
             if(initialLoadDone === false) {
                 initialLoadDone = true;
             }
+
+            set(this.controllerFor('application'), 'currentViewId', get(model, 'id'));
 
             set(this.controllerFor('application'), 'isLoading', false);
             controller.trigger('refreshView');

@@ -31,11 +31,16 @@ define([
 
     var inflectionsManager = {
         all: [],
-        byClass: {}
+        byClass: {},
+        tableColumns: [{title: 'name', name: 'name'}, {title: 'Singular', name: 'singular'}, {title: 'Plural', name: 'plural'}]
     };
 
     for (var i = 0, l = inflexions.length; i < l; i++) {
-        inflectionsManager.all.pushObject(inflexions[i][0] + ' -> ' + inflexions[i][1]);
+        inflectionsManager.all.pushObject({
+            name: inflexions[i][0] + ' -> ' + inflexions[i][1],
+            singular: inflexions[i][0],
+            plural: inflexions[i][1]
+        });
         Ember.Inflector.inflector.irregular(inflexions[i][0], inflexions[i][1]);
     }
 
