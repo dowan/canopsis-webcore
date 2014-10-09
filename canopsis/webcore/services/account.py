@@ -78,11 +78,12 @@ def update_field(e_id, e_type, new_elems, elem_type, entity):
             to_remove = set(entity[elem_type]) - set(new_elems)
         for elem in to_remove:
             if not rights_module_actions['remove'][elem_type](e_id, elem):
-                return ROUTE_FAIL
+                return False
     if new_elems:
         for elem in new_elems:
             if not rights_module_actions['add'][elem_type](e_id, elem):
-                return ROUTE_FAIL
+                return False
+    return True
 
 
 def update_rights(e_id, e_type, e_rights, entity):
@@ -288,7 +289,6 @@ def create_action():
         return HTTPError(500, "Impossible to parse data")
 
     item = items[0]
-
 
     a_id = item.get('action_id')
     a_desc = item.get('action_desc')
