@@ -44,7 +44,7 @@ define([
     'app/view/listline',
     'app/lib/wrappers/datatables',
     'app/lib/loaders/components',
-    'app/lib/wrappers/bootstrap-contextmenu',
+    'contextmenu',
     'app/adapters/group'
 ], function($, Ember, DS, WidgetFactory, PaginationMixin, InspectableArrayMixin,
         ArraySearchMixin, SortableArrayMixin, HistoryMixin, AckMixin, InfobuttonMixin, SendEventMixin, CustomFilterManagerMixin, userConfiguration, utils, domUtils, routesUtils, formsUtils, FoldableListLineMixin) {
