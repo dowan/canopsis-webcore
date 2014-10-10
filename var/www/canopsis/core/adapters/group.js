@@ -31,7 +31,7 @@ define([
             }
 
             if(method === 'GET') {
-                return ('/rest/default_canopsis/' + type + (!!id ? '/' + id : ''));
+                return ('/rest/default_rights/' + type + (!!id ? '/' + id : ''));
             } else {
                 return ('/account/' + type + (!!id ? '/' + id : ''));
             }
@@ -53,6 +53,8 @@ define([
     Application.RoleAdapter = adapter;
     Application.GroupAdapter = adapter;
     Application.AccountAdapter = adapter;
+    Application.ActionAdapter = adapter;
+    Application.RoleAdapter = adapter;
     Application.RightAdapter = adapter;
     Application.ProfileAdapter = adapter;
 

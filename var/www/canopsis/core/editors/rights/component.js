@@ -29,6 +29,27 @@ define([
         isNone = Ember.isNone;
 
     var component = DictclassifiedcrecordselectorComponent.extend({
+        nameKey: '_id',
+        idKey: '_id',
+
+        recomputeValue: function(){
+            console.group('recomputeValue', get(this, 'selection'));
+
+            var selection = get(this, 'selection');
+
+            var buffer = {};
+            for (var i = 0, l = selection.length; i < l; i++) {
+                var currentItem = selection[i];
+                console.log('iteration', currentItem);
+                set(buffer, currentItem.name, {checksum: 1});
+            }
+
+            console.log('buffer', buffer);
+
+            set(this, 'content', buffer);
+            console.groupEnd();
+        }.observes('selection'),
+
         actions: {
             toggleRightChecksum: function(checksumFlag, item) {
                 console.info('toggleRightChecksum action', arguments);
@@ -50,6 +71,29 @@ define([
                     set(item, 'data.checksum.' + checksumFlag, true);
                 }
             }
+        },
+
+        findItems: function() {
+            var me = this;
+
+            var store = this.get('store_' + get(this, 'elementId'));
+
+            var query = {
+                start: 0,
+                limit: 10000
+            };
+
+            query.filter = JSON.stringify({'crecord_type': this.get('crecordtype')});
+            console.log('findItems', this.get('crecordtype'), query);
+
+            store.findQuery('action', query).then(function(result) {
+                me.set('widgetDataMetas', result.meta);
+                var items = result.get('content');
+                me.set('items', items);
+
+                Ember.run.scheduleOnce('afterRender', {}, function() { me.rerender(); });
+                me.extractItems(items);
+            });
         }
     });
 
