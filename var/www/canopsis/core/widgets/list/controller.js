@@ -241,14 +241,8 @@ define([
                     var columns = listController.get('shown_columns');
                     console.debug('showing selected columns', columns);
 
-                    if(startColumn !== 0 && stopColumn !== 0 && startColumn !== columns.length && stopColumn !== columns.length) {
-                        var permutation = columns[startColumn];
-                        columns[startColumn] = columns[stopColumn];
-                        columns[stopColumn] = permutation;
-                        set(listController, 'userParams.shown_columns', columns);
-                        listController.saveUserConfiguration();
-                    }
-
+                    var permutation = columns.splice(startColumn,1);
+                    columns.splice(stopColumn, 0, permutation);
                 });
             },
 
