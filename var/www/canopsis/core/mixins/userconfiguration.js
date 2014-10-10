@@ -40,7 +40,7 @@ define([
             console.debug('user configuration loaded for widget ' + get(this, 'title'));
         },
 
-        saveUserConfiguration: function (preferences_level) {
+        saveUserConfiguration: function (callback) {
 
             var preferences = get(this, 'userParams');
             console.debug('Ready to save user configuration', preferences);
@@ -53,7 +53,6 @@ define([
             var user = get(this, 'controllers.login.record._id');
 
             var userConfiguration = {
-                preferences_level: preferences_level,
                 widget_preferences: preferences,
                 crecord_name: user,
                 widget_id: get(this, 'id'),
@@ -70,6 +69,9 @@ define([
                 success: function(data) {
                     void (data);
                     console.log('User configuration save statement for widget complete');
+                    if (!Ember.isNone(callback)) {
+                        callback();
+                    }
                 }
             });
 
