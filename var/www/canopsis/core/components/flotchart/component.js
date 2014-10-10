@@ -40,11 +40,27 @@ define([
             }
         }.observes('series.@each'),
 
-        init: function() {
-            this._super(arguments);
-        },
+        onOptionsUpdate: function() {
+            if(this.chart !== undefined) {
+                this.chart.destroy();
+                this.createChart();
+            }
+        }.observes('options'),
 
         didInsertElement: function() {
+            this.createChart();
+        },
+
+        actions: {
+            renderChart: function() {
+                console.log('Render chart');
+                this.chart.setData(get(this, 'series'));
+                this.chart.setupGrid();
+                this.chart.draw();
+            }
+        },
+
+        createChart: function() {
             console.group('createChart');
 
             var plotcontainer = this.$();
@@ -60,15 +76,6 @@ define([
             this.send('renderChart');
 
             console.groupEnd();
-        },
-
-        actions: {
-            renderChart: function() {
-                console.log('Render chart');
-                this.chart.setData(get(this, 'series'));
-                this.chart.setupGrid();
-                this.chart.draw();
-            }
         }
     });
 
