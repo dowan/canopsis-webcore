@@ -69,7 +69,7 @@ rights_module_actions = {
         'profile': right_module.delete_profile,
         'group': right_module.delete_group,
         'user': right_module.delete_user,
-        'right': right_module.delete_right
+        'action': right_module.delete
         }
 }
 
