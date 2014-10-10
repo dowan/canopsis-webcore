@@ -71,7 +71,6 @@ define([
 
             return promise.then(function(result) {
                 console.group('Computing serie:', formula);
-                console.log(result);
 
                 var nmetric = result.total;
                 var metrics = result.data;
