@@ -325,7 +325,13 @@ def account_get_me():
     if record:
         data = record.dump(json=True)
         data['id'] = data['_id']
-        data['rights'] = right_module.get_user_rights(data['_id'])
+        if '.' in data['id']:
+            data['rights'] = right_module.get_user_rights(
+                data['id'].split('.')[1]
+                )
+        else:
+            data['rights'] = right_module.get_user_rights(data['id'])
+
         output = [data]
         reload_account(account._id)
 
