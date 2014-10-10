@@ -53,6 +53,7 @@ define([
     Application.RoleAdapter = adapter;
     Application.GroupAdapter = adapter;
     Application.AccountAdapter = adapter;
+    Application.UserAdapter = adapter;
     Application.ActionAdapter = adapter;
     Application.RoleAdapter = adapter;
     Application.RightAdapter = adapter;

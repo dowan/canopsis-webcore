@@ -197,7 +197,10 @@ def update_role():
         logger.error("POST: Impossible to parse data ({})".format(err))
         return HTTPError(500, "Impossible to parse data")
 
-    item = items[0]
+    if type(items) == dict:
+        item = items
+    else:
+        item = items[0]
 
     r_id = item.get('role_name')
     r_comp = item.get('role_groups')
@@ -225,9 +228,9 @@ def delete_role():
             'data': []}
 
 
-@put('/account/user')
-@post('/account/user')
-def create_user():
+@put('/account/user/:_id')
+@post('/account/user/:_id')
+def create_user(_id=None):
 
     items = request.body.readline()
 
@@ -237,12 +240,15 @@ def create_user():
         logger.error("PUT: Impossible to parse data ({})".format(err))
         return HTTPError(500, "Impossible to parse data")
 
-    item = items[0]
+    if type(items) == dict:
+        item = items
+    else:
+        item = items[0]
 
-    u_id = item.get('user_name')
+    u_id = _id
     u_role = item.get('user_role')
     u_contact = item.get('user_contact')
-    u_rights = item.get('user_rights')
+    u_rights = item.get('rights')
     u_comp = item.get('user_groups')
 
     user = right_module.get_user(u_id)
