@@ -68,8 +68,7 @@ rights_module_actions = {
     'delete': {
         'profile': right_module.delete_profile,
         'group': right_module.delete_group,
-        'user': right_module.delete_user,
-        'right': right_module.delete_right
+        'user': right_module.delete_user
         }
 }
 
@@ -172,26 +171,12 @@ def post_profile(_id=None):
     return ROUTE_SUCCESS
 
 
-@delete('/account/:e_type')
-def delete_entity(e_type):
-    items = request.body.readline()
-
-    try:
-        items = loads(items)
-    except Exception as err:
-        logger.error("POST: Impossible to parse data ({})".format(err))
-        return HTTPError(500, "Impossible to parse data")
-
-    if type(items) == dict:
-        item = items
-    else:
-        item = items[0]
+@delete('/account/:e_type/:_id')
+def delete_entity(e_type, _id = None):
 
     return {
         'total': 1,
-        'success': rights_module_actions['delete'][e_type](
-            item.get('crecord_name')
-            ),
+        'success': rights_module_actions['delete'][e_type](_id),
         'data': []
         }
 
