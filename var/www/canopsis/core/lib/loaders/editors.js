@@ -54,11 +54,12 @@ var editorsTemplates = [
     { name: 'dictclassifiedcrecordselector' },
     { name: 'stringclassifiedcrecordselector' },
     { name: 'stringpair'},
-    { name: 'tags' , js: "w" },
+    { name: 'tags' , js: 'w' },
 
-    { name: 'rights', js: "w" },
+    { name: 'rights', js: 'w' },
     { name: 'textarea' },
     { name: 'timeinterval', js: 'w' },
+    { name: 'userpreference', js: 'w' },
     { name: 'timestamp', js: 'w' },
     { name: 'modelselect', js: 'w' }
 ];
