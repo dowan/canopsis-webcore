@@ -88,7 +88,6 @@ def update_rights(e_id, e_type, e_rights, entity):
         to_remove = entity['rights']
         if e_rights:
             to_remove = set(entity['rights']) - set(e_rights)
-        logger.error(to_remove)
         for right in to_remove:
             if not right_module.remove_right(
                 e_id, e_type, right, entity['rights'][right]['checksum']
