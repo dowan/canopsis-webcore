@@ -32,6 +32,9 @@ define([
         modelfilter: undefined,
         data: undefined,
 
+        nameKey: 'crecord_name',
+        idKey: 'id',
+
         items: [],
 
         selectedValue: undefined,
@@ -78,7 +81,7 @@ define([
 
                             for (var key in initialContent) {
                                 if (initialContent.hasOwnProperty(key)) {
-                                    var data = this.deserializeAdditionnalData(get(initialContent, key));
+                                    var additionnalData = this.deserializeAdditionnalData(get(initialContent, key));
                                     buffer.pushObject({'name': key, 'data': additionnalData});
                                 }
                             }
@@ -107,7 +110,8 @@ define([
 
             for (var i = 0, l = items.length; i < l; i++) {
                 var currentItem = items[i];
-                var objDict = { name: currentItem.get('crecord_name') };
+                var nameKey = get(this, 'nameKey');
+                var objDict = { name: currentItem.get(nameKey) };
                 if(valueKey) {
                     console.log('add valueKey', currentItem.get(valueKey));
                     objDict.value = currentItem.get(valueKey);
@@ -123,6 +127,7 @@ define([
         }.property('items', 'items.@each'),
 
         selectionChanged: function(){
+            console.log('selectionChanged');
             var selectionUnprepared = get(this, 'selectionUnprepared');
             var res;
 
@@ -201,6 +206,9 @@ define([
 
         extractItems: function(items) {
             var valueKey = get(this, 'valueKey');
+            var idKey = get(this, 'idKey');
+            var nameKey = get(this, 'nameKey');
+
             var initialContent = get(this, 'content');
 
             console.log('extractItems', initialContent);
@@ -211,11 +219,12 @@ define([
                 if(typeof initialContent === "string") {
                     console.log('extractItems with valueKey', arguments, Ember.inspect(initialContent));
 
-                    correspondingExtractedItem = items.findBy('id', initialContent);
+                    correspondingExtractedItem = items.findBy(idKey, initialContent);
 
                     console.log('correspondingExtractedItem', correspondingExtractedItem);
                     if(correspondingExtractedItem !== undefined) {
-                        selectionUnprepared = [{ name: get(correspondingExtractedItem, 'crecord_name'), value: get(correspondingExtractedItem, 'id')}];
+
+                        selectionUnprepared = [{ name: get(correspondingExtractedItem, nameKey), value: get(correspondingExtractedItem, idKey)}];
                         set(this, 'selectionUnprepared', selectionUnprepared);
                     }
                 } else if( typeof initialContent === "object" && initialContent !== null) {
@@ -224,12 +233,12 @@ define([
                     for (var key in initialContent) {
                         if (initialContent.hasOwnProperty(key)) {
 
-                            correspondingExtractedItem = items.findBy('id', key);
+                            correspondingExtractedItem = items.findBy(idKey, key);
                             var data = this.deserializeAdditionnalData(get(correspondingExtractedItem, key));
 
                             var selectionObject = {
-                                name: get(correspondingExtractedItem, 'crecord_name'),
-                                value: get(correspondingExtractedItem, 'id')
+                                name: get(correspondingExtractedItem, nameKey),
+                                value: get(correspondingExtractedItem, idKey)
                             };
 
                             buffer.pushObject(selectionObject);
