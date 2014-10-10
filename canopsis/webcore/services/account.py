@@ -64,7 +64,13 @@ rights_module_actions = {
     'add': {
         'profile': right_module.add_profile,
         'group': right_module.add_group,
-    }
+    },
+    'delete': {
+        'profile': right_module.delete_profile,
+        'group': right_module.delete_group,
+        'user': right_module.delete_user,
+        'right': right_module.delete_right
+        }
 }
 
 
@@ -137,15 +143,6 @@ def create_group(_id=None):
     return ROUTE_SUCCESS
 
 
-@delete('/account/group')
-def delete_group():
-    c_name = request.params.get('group_name')
-
-    return {'total': 1,
-            'success': right_module.delete_group(c_name),
-            'data': []}
-
-
 @put('/account/profile/:_id')
 @post('/account/profile/:_id')  # the id param is only here to make a quick hack
 def post_profile(_id=None):
@@ -175,13 +172,28 @@ def post_profile(_id=None):
     return ROUTE_SUCCESS
 
 
-@delete('/account/profile')
-def delete_profile():
-    p_name = request.params.get('profile_name')
+@delete('/account/:e_type')
+def delete_entity(e_type):
+    items = request.body.readline()
 
-    return {'total': 1,
-            'success': right_module.delete_profile(p_name),
-            'data': []}
+    try:
+        items = loads(items)
+    except Exception as err:
+        logger.error("POST: Impossible to parse data ({})".format(err))
+        return HTTPError(500, "Impossible to parse data")
+
+    if type(items) == dict:
+        item = items
+    else:
+        item = items[0]
+
+    return {
+        'total': 1,
+        'success': rights_module_actions['delete'][e_type](
+            item.get('crecord_name')
+            ),
+        'data': []
+        }
 
 
 @put('/account/role')
@@ -216,15 +228,6 @@ def update_role():
     update_rights(r_id, 'role', r_rights, role)
 
     return ROUTE_SUCCESS
-
-
-@delete('/account/role')
-def delete_role():
-    r_name = request.params.get('role_name')
-
-    return {'total': 1,
-            'success': right_module.delete_role(r_name),
-            'data': []}
 
 
 @put('/account/user/:_id')
