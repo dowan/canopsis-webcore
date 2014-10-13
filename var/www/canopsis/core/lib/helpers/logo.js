@@ -24,7 +24,12 @@ define(['ember' , "app/application"], function(Ember , Application) {
         nagios : folderPath + 'nagioslogo.png',
         shinken : folderPath + 'shinkenlogo.png',
         schneider : folderPath + 'schneiderlogo.png',
-        collectd : folderPath + 'collectd.jpg'
+        collectd : folderPath + 'collectd.jpg',
+        sikuli: folderPath + 'sikulilogo.png',
+        cucumber: folderPath + 'cucumberlogo.png',
+        watir: folderPath + 'watirlogo.png',
+        jmeter: folderPath + 'jmeterlogo.jpg'
+
     };
 
     Ember.Handlebars.helper('logo', function(controller) {
@@ -50,10 +55,15 @@ define(['ember' , "app/application"], function(Ember , Application) {
     });
 
     Ember.Handlebars.helper('logofromstring', function(imageName) {
-
         var  logoPath = images[imageName];
 
         return new Ember.Handlebars.SafeString(logoPath);
+    });
+
+    Ember.Handlebars.helper('logofromstring2', function(imageName) {
+        var  logoPath = images[imageName];
+
+            return new Ember.Handlebars.SafeString('<img alt="Source" src="'+ logoPath + '"/>');
     });
 
 });
