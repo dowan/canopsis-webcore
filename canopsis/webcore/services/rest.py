@@ -49,7 +49,9 @@ ctype_to_group_access = {
 @get('/rest/indexes/:collection')
 def rest_get_db_indexes(collection):
 
-    storage = get_storage(namespace=collection, logging_level=logger.level).get_backend()
+    storage = get_storage(
+        namespace=collection, logging_level=logger.level
+        ).get_backend()
 
     indexes = storage.index_information()
 
@@ -58,8 +60,6 @@ def rest_get_db_indexes(collection):
     return {'collection': collection, 'indexes': indexes}
 
 
-#########################################################################
-#### GET Media
 @get('/rest/media/:namespace/:_id')
 def rest_get_media(namespace, _id):
     account = get_account()
@@ -68,7 +68,9 @@ def rest_get_media(namespace, _id):
     logger.debug("Get media '%s' from '%s':" % (_id, namespace))
 
     try:
-        raw = storage.get(_id, account=account, namespace=namespace, mfields=["media_bin", "media_name", "media_type"], ignore_bin=False)
+        raw = storage.get(_id, account=account, namespace=namespace,
+                          mfields=["media_bin", "media_name", "media_type"],
+                          ignore_bin=False)
 
         media_type = raw.get('media_type', None)
         media_name = raw.get('media_name', None)
@@ -100,7 +102,9 @@ def rest_trees_get(rk=None):
     """
 
     account = get_account()
-    storage = get_storage(logging_level=INFO, namespace='events_trees', account=account)
+    storage = get_storage(
+        logging_level=INFO, namespace='events_trees', account=account
+        )
 
     if not rk:
         logger.debug('Getting whole collection.')
@@ -124,7 +128,9 @@ def rest_trees_get(rk=None):
 
         if not record:
             logger.error('No matching root node for rk {0}'.format(rk))
-            return HTTPError(404, "There is no events tree matching the routing key")
+            return HTTPError(
+                404, "There is no events tree matching the routing key"
+                )
 
         # Now go to the matching node
         tree = record.dump(json=True)
@@ -151,7 +157,9 @@ def rest_trees_get(rk=None):
             # If not found, raise an error
             else:
                 logger.error('No matching node for rk {0}'.format(rk))
-                return HTTPError(404, "There is no events tree matching the routing key")
+                return HTTPError(
+                    404, "There is no events tree matching the routing key"
+                    )
 
         # Return the sub-tree
         return {
