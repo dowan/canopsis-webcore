@@ -8,6 +8,13 @@
                     <!-- Add the class icon to your logo image or logo icon to add the margining -->
                     <img src="/static/canopsis/media/canopsis.png" alt="canopsis"/>
                 </a>
+
+                <div class="debugmenu">
+                    {{#if devtoolsUserview}}
+                        {{render "userview" devtoolsUserview}}
+                    {{/if}}
+                </div>
+
                 <!-- Header Navbar: style can be found in header.less -->
                 <nav class="navbar navbar-static-top" role="navigation">
                     <!-- Sidebar toggle button-->
@@ -103,11 +110,6 @@
                                         </ul>
                                     </li>
                                 {{/if}}
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-road"></i> <span>{{tr 'Paths and ports'}}</span>
-                                    </a>
-                                </li>
                                 {{#if controller.utils.session.rights.pluginsconfig.checksum}}
                                     {{#each plugin in controller.plugins}}
                                         <li>

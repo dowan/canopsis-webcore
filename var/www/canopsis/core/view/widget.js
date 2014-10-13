@@ -65,10 +65,10 @@ define([
 
             this._super();
             if (!! get(this, 'widget')) {
-                this.setupController(this.widget);
+                this.intializeController(this.widget);
                 this.applyViewMixins();
             } else {
-                console.error("no correct widget found for view", this);
+                console.error("No correct widget found for view", this);
                 this.errorMessages.pushObject('No correct widget found');
             }
             if(get(this, 'widget.tagName')) {
@@ -113,7 +113,7 @@ define([
             console.groupEnd();
         },
 
-        setupController: function(widget) {
+        intializeController: function(widget) {
             console.group('set controller for widget', widget);
             set(this, "controller", this.instantiateCorrectController(widget));
             set(this, "templateName", get(widget, "xtype"));

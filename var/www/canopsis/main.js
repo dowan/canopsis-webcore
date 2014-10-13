@@ -35,7 +35,6 @@ define([
     'colorpicker',
     'gridster',
     'timepicker',
-    'icheck',
     'app/lib/wrappers/console',
     'app/lib/loaders/editors',
     'app/lib/loaders/renderers',

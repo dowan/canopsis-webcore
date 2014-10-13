@@ -26,11 +26,13 @@ define([
     'app/lib/utils/forms',
     'app/lib/utils/widgetSelectors',
     'app/lib/utils/actions',
+    'app/lib/utils/test',
     'app/lib/loaders/schemas',
     'seeds/RoutesLoader'
-], function(Ember, Application, AuthenticatedRoute, utils, dataUtils, formUtils, widgetSelectorsUtils, actionsUtils) {
+], function(Ember, Application, AuthenticatedRoute, utils, dataUtils, formUtils, widgetSelectorsUtils, actionsUtils, testUtils) {
     var set = Ember.set,
-        get = Ember.get;
+        get = Ember.get,
+        isNone = Ember.isNone;
 
     var initialLoadDone = false;
 
@@ -153,7 +155,13 @@ define([
         },
 
         setupController: function(controller, model) {
-            console.log('UserviewRoute setupController', model, controller);
+            testUtils.pre(this, function () {
+                var controller = get(this, 'controller');
+
+                Ember.assert('The controller should implement Ember.Evented', !isNone(controller.trigger));
+            });
+
+            console.log('UserviewRoute setupController', arguments);
 
             actionsUtils.setDefaultTarget(controller);
 

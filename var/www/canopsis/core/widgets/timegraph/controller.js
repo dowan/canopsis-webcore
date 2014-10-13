@@ -33,6 +33,7 @@ define([
 
     var FlotChartViewMixin = Ember.Mixin.create({
         didInsertElement: function() {
+            //get the timestamp, and not the date object
             var now = +new Date();
             var config = get(this, 'controller.config');
 
@@ -141,7 +142,7 @@ define([
                     style: stylizedseries[i],
                     serie: undefined,
                     curve: undefined
-                }
+                };
 
                 curveIds.push(stylizedseries[i].curve);
             }
@@ -164,13 +165,13 @@ define([
                 var serieResult = pargs[0]; // arguments of first promise
                 var curveResult = pargs[1]; // arguments of second promise
 
-                var i, l;
+                var i, li;
 
                 console.log('Fetch curves');
-                for(i = 0, l = curveResult.meta.total; i < l; i++) {
+                for(i = 0, li = curveResult.meta.total; i < li; i++) {
                     var curve = curveResult.content[i];
 
-                    for(var j = 0, l2 = serieResult.meta.total; j < l2; j++) {
+                    for(var j = 0, lj = serieResult.meta.total; j < lj; j++) {
                         var serieconf = serieResult.content[j];
 
                         var serieId = serieconf.id;
@@ -189,7 +190,7 @@ define([
                 console.log('Fetch series');
                 set(me, 'flotSeries', Ember.Object.create({}));
 
-                for(i = 0, l = serieResult.meta.total; i < l; i++) {
+                for(i = 0, li = serieResult.meta.total; i < li; i++) {
                     var serieconf = serieResult.content[i];
 
                     var serieId = serieconf.id;

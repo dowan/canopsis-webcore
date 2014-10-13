@@ -19,18 +19,28 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'ember-data',
+    'app/application',
+    'app/lib/utils/test'
+], function(Ember, DS, Application, testUtils) {
     var get = Ember.get,
         set = Ember.set;
+        assert = Ember.assert;
 
     var mixin = Ember.Mixin.create({
 
         notifications: function(){
+            testUtils.pre(this, function () {
+                assert('The notification store should be an instance of DS.Store', DS.Store.detectInstance(this.store));
+            });
+
             return this.store.find("notification");
         }.property(),
 
         createNotification: function (level, message) {
+            testUtils.pre(this, function () {
+                assert('The notification store should be an instance of DS.Store', DS.Store.detectInstance(this.store));
+            });
 
             var falevel = level;
 

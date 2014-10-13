@@ -28,9 +28,9 @@ define([
     var widget = WidgetFactory('progressbar', {
         init: function() {
             this._super();
-            this.set("value" , 26);
-            this.set("bad_when_full" , false);
-            this.set("ressource" , "cpu");
+            set(this, "value" , 26);
+            set(this, "bad_when_full" , false);
+            set(this, "ressource" , "cpu");
         },
 
         actions: {

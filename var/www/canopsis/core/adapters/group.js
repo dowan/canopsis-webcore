@@ -23,15 +23,21 @@ define([
     'app/adapters/application',
 ], function(Application, ApplicationAdapter) {
 
+    var get = Ember.get;
+
     var adapter = ApplicationAdapter.extend({
 
         buildURL: function(type, id, record_or_records, method) {
+            console.log('buildURL', arguments);
+
             if(type === "account") {
                 type = "user";
             }
 
             if(method === 'GET') {
                 return ('/rest/default_rights/' + type + (!!id ? '/' + id : ''));
+            } else if(method === 'DELETE') {
+                return ('/account/delete/' + type + (!!id ? '/' + id : ''));
             } else {
                 return ('/account/' + type + (!!id ? '/' + id : ''));
             }
@@ -47,6 +53,11 @@ define([
 
         findQuery: function(store, type, query) {
             return this.ajax(this.buildURL(type.typeKey, undefined, undefined, 'GET'), 'GET', { data: query });
+        },
+
+        deleteRecord: function(store, type, record) {
+            var id = get(record, 'id');
+            return this.ajax(this.buildURL(type.typeKey, id, record, 'DELETE'), "DELETE");
         }
     });
 

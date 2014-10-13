@@ -17,20 +17,9 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'canopsis/canopsisConfiguration'
-], function(canopsisConfiguration) {
+require([
+    'canopsis/development/lib/loaders/widgets'
+], function() {
 
-    var test = {
-        /**
-         * Perform precondition tests
-         */
-        pre: function(scope, assertsFunction) {
-            if(canopsisConfiguration.DEBUG) {
-                assertsFunction.apply(scope);
-            }
-        }
-    };
-
-    return test;
 });
+

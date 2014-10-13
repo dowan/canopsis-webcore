@@ -18,19 +18,18 @@
 */
 
 define([
-    'canopsis/canopsisConfiguration'
-], function(canopsisConfiguration) {
+    'app/lib/factories/widget',
+    'app/lib/utils/debug',
+    'app/lib/loaders/schemas'
+], function(WidgetFactory, debugUtils) {
+    var get = Ember.get,
+        set = Ember.set;
 
-    var test = {
-        /**
-         * Perform precondition tests
-         */
-        pre: function(scope, assertsFunction) {
-            if(canopsisConfiguration.DEBUG) {
-                assertsFunction.apply(scope);
-            }
-        }
-    };
+    var widget = WidgetFactory('objectinspector', {
+        debugUtils: debugUtils,
 
-    return test;
+        inspectedObject: Ember.computed.alias('debugUtils.inspectedObject')
+    });
+
+    return widget;
 });
