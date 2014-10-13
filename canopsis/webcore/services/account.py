@@ -173,7 +173,7 @@ def post_profile(_id=None):
     return ROUTE_SUCCESS
 
 
-@delete('/account/:e_type/:_id')
+@delete('/account/delete/:e_type/:_id')
 def delete_entity(e_type, _id = None):
 
     return {
