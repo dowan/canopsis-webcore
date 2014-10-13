@@ -18,11 +18,17 @@
 */
 
 define([
+    'jquery',
     'ember',
     'ember-data',
     'app/application',
     'canopsis/canopsisConfiguration',
     'app/controller/partialslotablecontroller',
+    'app/lib/widgetsregistry',
+    'app/lib/actionsregistry',
+    'app/lib/mixinsregistry',
+    'app/lib/formsregistry',
+    'app/lib/inflections',
     'app/mixins/usermenu',
     'app/mixins/schemamanager',
     'app/mixins/consolemanager',
@@ -34,7 +40,7 @@ define([
     'app/lib/utils/data',
     'app/lib/utils/hash',
     'app/lib/utils/notification',
-    'app/lib/actionsregistry',
+    'app/lib/utils/actions',
     'app/adapters/cservice',
     'app/adapters/notification',
     'app/serializers/cservice',
@@ -46,11 +52,17 @@ define([
     'app/lib/wrappers/mousetrap',
     'app/controller/recorddisplayer'
 ], function(
+    $,
     Ember,
     DS,
     Application,
     canopsisConfiguration,
     PartialslotAbleController,
+    widgetsRegistry,
+    actionsRegistry,
+    mixinsRegistry,
+    formsRegistry,
+    inflectionsRegistry,
     UsermenuMixin,
     SchemamanagerMixin,
     ConsolemanagerMixin,
@@ -62,7 +74,7 @@ define([
     dataUtils,
     hashUtils,
     notificationUtils,
-    actionsRegistry) {
+    actionsUtils) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -78,6 +90,13 @@ define([
         editMode: false,
 
         runtimeConfiguration: canopsisConfiguration,
+        debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
+
+        widgetsRegistry: widgetsRegistry,
+        actionsRegistry: actionsRegistry,
+        mixinsRegistry: mixinsRegistry,
+        inflectionsRegistry: inflectionsRegistry,
+        formsRegistry: formsRegistry,
 
         utils: utils,
 
@@ -117,6 +136,15 @@ define([
                 set(appController, 'headerUserview', queryResults);
             });
 
+
+            var devtoolsStore = DS.Store.create({
+                container: get(this, "container")
+            });
+
+            devtoolsStore.find('userview', 'view.app_devtools').then(function(queryResults) {
+                set(appController, 'devtoolsUserview', queryResults);
+            });
+
             var indexStore = DS.Store.create({
                 container: get(this, "container")
             });
@@ -142,7 +170,7 @@ define([
                     console.log('Mousetrap define', currentKeybinding);
 
                     Mousetrap.bind([currentKeybinding.label], function(e) {
-                        appController.send.apply(appController, [currentKeybinding.value]);
+                        actionsUtils.doAction(currentKeybinding.value);
                         return false;
                     });
                 }
@@ -285,12 +313,8 @@ define([
                                 'Interface language has changed, reload canopsis to apply changes ?'
                             );
                         }
-
-
                     });
                 });
-
-
             },
 
             editConfig: function() {
@@ -349,16 +373,6 @@ define([
                 editForm.submit.done(function() {
                     casConfig.save();
                 });
-            },
-
-            toggleEditMode: function() {
-                if (get(this, 'editMode') === true) {
-                    console.info('Entering edit mode');
-                    set(this, 'editMode', false);
-                } else {
-                    console.info('Leaving edit mode');
-                    set(this, 'editMode', true);
-                }
             },
 
             addNewView: function () {

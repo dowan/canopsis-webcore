@@ -487,7 +487,6 @@ th.actions {
 }
 
 .logger {
-	height: 300px;
 	overflow-x: hidden;
 	overflow-y: scroll;
 }
@@ -514,8 +513,17 @@ tr.logline {
 	padding-left: 4px;
 }
 
-td.logline {
+.logger table {
 	width: 100%;
+	background: #524F52;
+}
+
+.logger tr {
+	height:16px;
+}
+
+td.logline {
+	white-space: nowrap;
 }
 
 tr.logline i {
@@ -543,16 +551,23 @@ i.abstractType > i.widget {
 	border: 1px solid #57962F;
 }
 
+.placeddiv, .debugmenu {
+	z-index: 10000;
+}
+
 .debugmenu{
-	position:absolute;
+	position:fixed;
 	left:0;
 	width: 100%;
 	height:300px;
 	border-bottom:4px solid green;
 	display:none;
+	background: white;
 }
 
 .webconsole {
 	overflow: auto;
 	height:258px;
+	background: #292429;
 }
+

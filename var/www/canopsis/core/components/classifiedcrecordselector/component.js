@@ -32,7 +32,9 @@ define([
         modelfilter: undefined,
         data: undefined,
 
+        nameKeyDefault: 'crecord_name',
         nameKey: 'crecord_name',
+        idKeyDefault: 'id',
         idKey: 'id',
 
         items: [],
@@ -62,7 +64,7 @@ define([
         },
 
         setInitialContent: function(initialContent) {
-            var valueKey = get(this, 'valueKey');
+            var valueKey = get(this, 'valueKey') || get(this, 'valueKeyDefault');
 
             console.log('setInitialContent', valueKey);
             if(initialContent) {
@@ -101,7 +103,9 @@ define([
          */
         classifiedItems : function(){
             var items = get(this, 'items');
-            var valueKey = get(this, 'valueKey');
+            var valueKey = get(this, 'valueKey') || get(this, 'valueKeyDefault');
+            var nameKey = get(this, 'nameKey') || get(this, 'nameKeyDefault');
+
             console.log("recompute classifiedItems", get(this, 'items'), valueKey);
 
             var res = Ember.Object.create({
@@ -110,7 +114,6 @@ define([
 
             for (var i = 0, l = items.length; i < l; i++) {
                 var currentItem = items[i];
-                var nameKey = get(this, 'nameKey');
                 var objDict = { name: currentItem.get(nameKey) };
                 if(valueKey) {
                     console.log('add valueKey', currentItem.get(valueKey));
@@ -184,6 +187,8 @@ define([
             console.log('>>> findItems');
             var me = this;
 
+            var crecordtype = get(this, 'crecordtype');
+
             var store = this.get('store_' + get(this, 'elementId'));
 
             var query = {
@@ -194,7 +199,7 @@ define([
             query.filter = JSON.stringify({'crecord_type': this.get('crecordtype')});
             console.log('findItems', this.get('crecordtype'), query);
 
-            store.findQuery('crecord', query).then(function(result) {
+            store.findQuery(crecordtype, query).then(function(result) {
                 me.set('widgetDataMetas', result.meta);
                 var items = result.get('content');
                 me.set('items', items);
@@ -206,8 +211,8 @@ define([
 
         extractItems: function(items) {
             var valueKey = get(this, 'valueKey');
-            var idKey = get(this, 'idKey');
-            var nameKey = get(this, 'nameKey');
+            var idKey = get(this, 'idKey')  || get(this, 'idKeyDefault');
+            var nameKey = get(this, 'nameKey') || get(this, 'nameKeyDefault');
 
             var initialContent = get(this, 'content');
 

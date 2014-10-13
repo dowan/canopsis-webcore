@@ -25,6 +25,7 @@ define([
 
     var serializerClass = ApplicationSerializer.extend({
         extractRelationships: function(payload, item, type){
+            //TODO check if it's normal that there is no this._super. Are other extractRelationships still working?
             console.log('extractRelationships', arguments);
 
             void(payload);

@@ -123,21 +123,14 @@ define([
             if (this.get('formContext.xtype')) {
                 return get(this, 'formContext.xtype');
             } else {
+                if(get(this, 'formContext.crecord_type') === "user") {
+                    return "account";
+                }
                 return get(this, 'formContext.crecord_type') || get(this, 'formContext.connector_type')  ;
             }
 
         }.property('formContext'),
-/*
-        updateArray: function() {
-            var ArrayFields = this.get("ArrayFields");
-            if (ArrayFields !== undefined) {
-                for (var w = 0; w < this.ArrayFields.length; w++) {
-                    console.log("ArrayFields  : ", this.ArrayFields[w]);
-                    this.ArrayFields[w].onUpdate();
-                }
-            }
-        },
-*/
+
         actions: {
             submit: function() {
                 if (this.validation !== undefined && !this.validation()) {

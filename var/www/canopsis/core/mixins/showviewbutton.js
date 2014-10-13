@@ -20,11 +20,13 @@
 define([
     'ember',
     'app/application',
-    'app/lib/utils/routes'
-], function(Ember, Application, routesUtils) {
+    'app/lib/utils/routes',
+    'app/lib/utils/test'
+], function(Ember, Application, routesUtils, testUtils) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     var mixin = Ember.Mixin.create({
         partials: {
@@ -33,6 +35,10 @@ define([
 
         actions: {
             show: function(id) {
+                testUtils.pre(this, function () {
+                    Ember.assert('There should be an id passed as first argument', !isNone(id));
+                });
+
                 console.log("Show action", arguments);
                 routesUtils.getCurrentRouteController().send('showView', id);
             }

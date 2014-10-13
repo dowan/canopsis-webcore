@@ -40,9 +40,9 @@
                             {{/if}}
                         {{/group}}
                     {{/each}}
-                    {{#if controller.item_actions}}
+                    {{!#if controller.item_actions}}
                         <th class="actions">{{tr 'Actions'}}</th>
-                    {{/if}}
+                    {{!/if}}
                 </tr>
             </thead>
             {{#if controller.config.cloaking}}
@@ -60,7 +60,7 @@
 
                         {{#if unfolded}}
                             {{#if loaded}}
-                                {{ partial templateName}}
+                                {{partial templateName}}
                             {{else}}
                                 <tr>
                                     <td COLSPAN=5>

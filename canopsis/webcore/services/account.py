@@ -131,7 +131,7 @@ def create_group(_id=None):
 
     item = items[0]
 
-    c_name = _id
+    c_name = item.get('_id')
     c_rights = item.get('rights')
 
     group = right_module.get_group(c_name)
@@ -157,7 +157,7 @@ def post_profile(_id=None):
 
     item = items[0]
 
-    p_id = _id
+    p_id = item.get('_id')
 
     p_comp = item.get('profile_groups')
     p_rights = item.get('profile_rights')
@@ -184,9 +184,9 @@ def delete_entity(e_type, _id = None):
         }
 
 
-@put('/account/role')
+@put('/account/role/:_id')
 @post('/account/role')
-def update_role():
+def update_role(_id = None):
 
     items = request.body.readline()
 
@@ -202,9 +202,9 @@ def update_role():
         item = items[0]
 
     r_id = item.get('_id')
-    r_comp = item.get('role_groups')
-    r_rights = item.get('role_rights')
-    r_profile = item.get('role_profile')
+    r_comp = item.get('groups')
+    r_rights = item.get('rights')
+    r_profile = item.get('profile')
 
     role = right_module.get_role(r_id)
 
@@ -218,7 +218,7 @@ def update_role():
     return ROUTE_SUCCESS
 
 
-@put('/account/user')
+@put('/account/user/:_id')
 @post('/account/user')
 def create_user(_id=None):
 
@@ -236,7 +236,7 @@ def create_user(_id=None):
         item = items[0]
 
     u_id = item.get('_id')
-    u_role = item.get('user_role')
+    u_role = item.get('role')
     u_contact = item.get('user_contact')
     u_rights = item.get('rights')
     u_comp = item.get('user_groups')

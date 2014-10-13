@@ -19,10 +19,13 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/application',
+    'app/lib/utils/test',
+
+], function(Ember, Application, testUtils) {
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     var view = Ember.View.extend({
         actions: {
@@ -30,10 +33,15 @@ define([
                 this.rerender();
             }
         },
+
         hookRegistered: false,
 
         //Controller -> View Hooks
         registerHooks: function() {
+            testUtils.pre(this, function () {
+                var controller = get(this, 'controller');
+                Ember.assert('The controller should implement Ember.Evented', Ember.Evented.detect(controller));
+            });
 
             console.log("registerHooks", get(this, 'controller'), get(this, 'controller.on'));
             get(this, 'controller').on('refreshView', this, this.rerender);
@@ -43,6 +51,11 @@ define([
         },
 
         unregisterHooks: function() {
+            testUtils.pre(this, function () {
+                var controller = get(this, 'controller');
+                Ember.assert('The controller should implement Ember.Evented', Ember.Evented.detect(controller));
+            });
+
             get(this, 'controller').off('refreshView', this, this.rerender);
             // this.set('hookRegistered', false);
         },
