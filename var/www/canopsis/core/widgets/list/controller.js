@@ -132,7 +132,7 @@ define([
 
     var widget = WidgetFactory('list',
         {
-            needs: ['login', 'application', 'recorddisplayer'],
+            needs: ['login', 'application', 'recordinfopopup'],
 
             viewMixins: [
                 ListViewMixin
@@ -152,11 +152,11 @@ define([
                     console.debug('Template is ', template);
 
                     //FIXME @eric WTF is that?!?
-                    var recorddisplayerController = get(dest, 'controllerInstance.controllers.recorddisplayer');
+                    var recordinfopopupController = get(dest, 'controllerInstance.controllers.recordinfopopup');
 
-                    var recorddisplayerController = this.get('controllers.recorddisplayer');
+                    var recordinfopopupController = this.get('controllers.recordinfopopup');
 
-                    recorddisplayerController.send('show', record, template);
+                    recordinfopopupController.send('show', record, template);
                 }
             },
 

@@ -21,7 +21,7 @@ var templates = [
     { name: 'application' },
     { name: 'index' },
     { name: 'formwrapper' },
-    { name: 'recorddisplayer' },
+    { name: 'recordinfopopup' },
     { name: 'widgettitlebar' },
     { name: 'userview' },
     { name: 'widget' },

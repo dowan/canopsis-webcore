@@ -20,7 +20,7 @@
 define([
     'ember',
     'app/application',
-    'app/view/recorddisplayer'
+    'app/view/recordinfopopup'
 ], function(Ember, Application) {
     var get = Ember.get,
         set = Ember.set;
@@ -32,14 +32,14 @@ define([
         title:__('Information'),
 
         init: function () {
-            console.debug('initilizing recorddisplayer controller');
+            console.debug('initilizing recordinfopopup controller');
         },
 
 
         actions: {
 
             show: function(crecord, template) {
-                console.log('Show recorddisplayer', crecord, template);
+                console.log('Show recordinfopopup', crecord, template);
 
                 var html;
 
@@ -51,22 +51,22 @@ define([
 
                 set(this, 'content', new Ember.Handlebars.SafeString(html));
 
-                var left = ($(window).width() - $("#recorddisplayer").outerWidth()) / 2;
-                $("#recorddisplayer").css("left", left);
+                var left = ($(window).width() - $("#recordinfopopup").outerWidth()) / 2;
+                $("#recordinfopopup").css("left", left);
 
-                $("#recorddisplayer").fadeIn(500);
+                $("#recordinfopopup").fadeIn(500);
 
             },
 
             hide: function() {
-                console.log("hiding recorddisplayer");
-                $("#recorddisplayer").fadeOut(500);
+                console.log("hiding recordinfopopup");
+                $("#recordinfopopup").fadeOut(500);
             },
         }
 
     });
 
-    Application.RecorddisplayerController = controller;
+    Application.RecordinfopopupController = controller;
 
     return controller;
 });

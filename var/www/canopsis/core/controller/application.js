@@ -44,7 +44,7 @@ define([
     'app/lib/loaders/helpers',
     'app/lib/wrappers/bootstrap',
     'app/lib/wrappers/mousetrap',
-    'app/controller/recorddisplayer'
+    'app/controller/recordinfopopup'
 ], function(
     Ember,
     DS,
@@ -69,7 +69,7 @@ define([
     var controller = PartialslotAbleController.extend(
         SchemamanagerMixin, PromisemanagerMixin, ConsolemanagerMixin, NotificationsMixin, UsermenuMixin, {
 
-        needs: ['login', 'recorddisplayer'],
+        needs: ['login', 'recordinfopopup'],
 
         partials: {
             statusbar: ['schemamanagerstatusmenu', 'consolemanagerstatusmenu', 'notificationsstatusmenu', 'promisemanagerstatusmenu', 'userstatusmenu']
