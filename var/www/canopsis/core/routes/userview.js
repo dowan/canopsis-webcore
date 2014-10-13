@@ -153,7 +153,7 @@ define([
         },
 
         setupController: function(controller, model) {
-            console.log('UserviewRoute setupController', model, controller);
+            console.log('UserviewRoute setupController', arguments);
 
             actionsUtils.setDefaultTarget(controller);
 
