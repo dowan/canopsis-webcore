@@ -64,6 +64,12 @@ rights_module_actions = {
     'add': {
         'profile': right_module.add_profile,
         'group': right_module.add_group,
+    },
+    'delete': {
+        'profile': right_module.delete_profile,
+        'group': right_module.delete_group,
+        'user': right_module.delete_user,
+        'action': right_module.delete
     }
 }
 
@@ -88,10 +94,9 @@ def update_rights(e_id, e_type, e_rights, entity):
         to_remove = entity['rights']
         if e_rights:
             to_remove = set(entity['rights']) - set(e_rights)
-        logger.error(to_remove)
         for right in to_remove:
             if not right_module.remove_right(
-                e_id, e_type, right, to_remove[right]['checksum']
+                e_id, e_type, right, entity['rights'][right]['checksum']
                 ):
                 return False
     if e_rights:
@@ -138,15 +143,6 @@ def create_group(_id=None):
     return ROUTE_SUCCESS
 
 
-@delete('/account/group')
-def delete_group():
-    c_name = request.params.get('group_name')
-
-    return {'total': 1,
-            'success': right_module.delete_group(c_name),
-            'data': []}
-
-
 @put('/account/profile/:_id')
 @post('/account/profile/:_id')  # the id param is only here to make a quick hack
 def post_profile(_id=None):
@@ -176,13 +172,14 @@ def post_profile(_id=None):
     return ROUTE_SUCCESS
 
 
-@delete('/account/profile')
-def delete_profile():
-    p_name = request.params.get('profile_name')
+@delete('/account/:e_type/:_id')
+def delete_entity(e_type, _id = None):
 
-    return {'total': 1,
-            'success': right_module.delete_profile(p_name),
-            'data': []}
+    return {
+        'total': 1,
+        'success': rights_module_actions['delete'][e_type](_id),
+        'data': []
+        }
 
 
 @put('/account/role')
@@ -197,7 +194,10 @@ def update_role():
         logger.error("POST: Impossible to parse data ({})".format(err))
         return HTTPError(500, "Impossible to parse data")
 
-    item = items[0]
+    if type(items) == dict:
+        item = items
+    else:
+        item = items[0]
 
     r_id = item.get('role_name')
     r_comp = item.get('role_groups')
@@ -216,18 +216,9 @@ def update_role():
     return ROUTE_SUCCESS
 
 
-@delete('/account/role')
-def delete_role():
-    r_name = request.params.get('role_name')
-
-    return {'total': 1,
-            'success': right_module.delete_role(r_name),
-            'data': []}
-
-
-@put('/account/user')
-@post('/account/user')
-def create_user():
+@put('/account/user/:_id')
+@post('/account/user/:_id')
+def create_user(_id=None):
 
     items = request.body.readline()
 
@@ -237,12 +228,15 @@ def create_user():
         logger.error("PUT: Impossible to parse data ({})".format(err))
         return HTTPError(500, "Impossible to parse data")
 
-    item = items[0]
+    if type(items) == dict:
+        item = items
+    else:
+        item = items[0]
 
-    u_id = item.get('user_name')
+    u_id = _id
     u_role = item.get('user_role')
     u_contact = item.get('user_contact')
-    u_rights = item.get('user_rights')
+    u_rights = item.get('rights')
     u_comp = item.get('user_groups')
 
     user = right_module.get_user(u_id)
