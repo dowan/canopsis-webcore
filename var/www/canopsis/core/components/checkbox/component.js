@@ -20,7 +20,8 @@
 define([
     'ember',
     'ember-data',
-    'app/application'
+    'app/application',
+    'app/lib/wrappers/icheck'
 ], function(Ember, DS, Application) {
 
     var set = Ember.set,
