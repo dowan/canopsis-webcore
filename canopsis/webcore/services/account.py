@@ -69,6 +69,7 @@ rights_module_actions = {
         'profile': right_module.delete_profile,
         'group': right_module.delete_group,
         'user': right_module.delete_user,
+        'role': right_module.delete_role,
         'action': right_module.delete
     }
 }
@@ -177,7 +178,8 @@ def delete_entity(e_type, _id = None):
 
     return {
         'total': 1,
-        'success': rights_module_actions['delete'][e_type](_id),
+        'success': (False if not e_type in rights_module_actions['delete']
+                    else rights_module_actions['delete'][e_type](_id)),
         'data': []
         }
 
