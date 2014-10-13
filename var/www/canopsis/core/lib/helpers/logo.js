@@ -55,14 +55,12 @@ define(['ember' , "app/application"], function(Ember , Application) {
     });
 
     Ember.Handlebars.helper('logofromstring', function(imageName) {
-        debugger;
         var  logoPath = images[imageName];
 
         return new Ember.Handlebars.SafeString(logoPath);
     });
 
     Ember.Handlebars.helper('logofromstring2', function(imageName) {
-        debugger;
         var  logoPath = images[imageName];
 
             return new Ember.Handlebars.SafeString('<img alt="Source" src="'+ logoPath + '"/>');
