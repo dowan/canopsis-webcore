@@ -161,7 +161,7 @@ define([
                 Ember.assert('The controller should implement Ember.Evented', !isNone(controller.trigger));
             });
 
-            console.log('UserviewRoute setupController', model, controller);
+            console.log('UserviewRoute setupController', arguments);
 
             actionsUtils.setDefaultTarget(controller);
 

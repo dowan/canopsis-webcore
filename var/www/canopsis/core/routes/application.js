@@ -1,5 +1,5 @@
 /*
-# Copyright (c) 2014 "Capensis" [http://www.capensis.com]
+# Copyright (c) 2014 'Capensis' [http://www.capensis.com]
 #
 # This file is part of Canopsis.
 #
@@ -32,7 +32,7 @@ define([
     var route = AuthenticatedRoute.extend({
         actions: {
             showView: function(id) {
-                console.log("ShowView action", arguments);
+                console.log('ShowView action', arguments);
                 this.transitionTo('userview', id);
             },
 
@@ -44,7 +44,7 @@ define([
                 }
 
                 var formName = get(formController, 'formName');
-                console.log("showEditFormWithController", formController, formName, formContext, options);
+                console.log('showEditFormWithController', formController, formName, formContext, options);
 
                 var formwrapperController = this.controllerFor('formwrapper');
                 set(formsregistry, 'formwrapper', formwrapperController);
@@ -58,12 +58,6 @@ define([
 
                 return formController;
             },
-
-            recordDisplayShow: function (crecord) {
-                var recorddisplayController = this.controllerFor('login');
-                console.debug('from deep -> ', crecord, recorddisplayController);
-
-            }
 
         },
 
@@ -86,12 +80,12 @@ define([
                 controller: formwrapperController
             });
 
-            var recorddisplayerController = this.controllerFor('recorddisplayer');
+            var recordinfopopupController = this.controllerFor('recordinfopopup');
 
-            this.render('recorddisplayer', {
-                outlet: 'recorddisplayer',
+            this.render('recordinfopopup', {
+                outlet: 'recordinfopopup',
                 into: 'application',
-                controller: recorddisplayerController
+                controller: recordinfopopupController
             });
 
         }

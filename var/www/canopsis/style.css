@@ -12,7 +12,7 @@
 	overflow-y: hidden !important;
 }
 
-#recorddisplayer{
+#recordinfopopup{
 	margin-top:5%;
 	position:fixed;
 	z-index: 90;
@@ -22,7 +22,7 @@
 	cursor:move;
 }
 
-#recorddisplayer .recorddisplayercontent {
+#recordinfopopup .recordinfopopupcontent {
 	text-align:left;
 }
 

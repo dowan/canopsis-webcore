@@ -28,20 +28,20 @@ define([
     var view = Ember.View.extend({
         init: function() {
             this._super();
-            console.log("recorddisplayer view init", this, get(this, 'controller'));
+            console.log("recordinfopopup view init", this, get(this, 'controller'));
         },
 
         didInsertElement: function () {
-            console.debug('Recorddisplayer dom element', $("#recorddisplayer"));
-            //$("#recorddisplayer").hide();
+            console.debug('Recordinfopopup dom element', $("#recordinfopopup"));
+            //$("#recordinfopopup").hide();
             $( window ).resize( function () {
 
-                var left = ($(window).width() - $("#recorddisplayer").outerWidth()) / 2;
-                $("#recorddisplayer").css("left", left);
+                var left = ($(window).width() - $("#recordinfopopup").outerWidth()) / 2;
+                $("#recordinfopopup").css("left", left);
 
             });
-            $('#recorddisplayer').draggable({
-                handle: ".recorddisplayerhandle"
+            $('#recordinfopopup').draggable({
+                handle: ".recordinfopopuphandle"
             });
 
         },
@@ -49,7 +49,7 @@ define([
 
     });
 
-    Application.RecorddisplayerView = view;
+    Application.RecordinfopopupView = view;
 
     return view;
 });
