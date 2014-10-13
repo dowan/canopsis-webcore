@@ -199,7 +199,7 @@ def update_role():
     else:
         item = items[0]
 
-    r_id = item.get('role_name')
+    r_id = item.get('_id')
     r_comp = item.get('role_groups')
     r_rights = item.get('role_rights')
     r_profile = item.get('role_profile')
@@ -216,8 +216,8 @@ def update_role():
     return ROUTE_SUCCESS
 
 
-@put('/account/user/:_id')
-@post('/account/user/:_id')
+@put('/account/user')
+@post('/account/user')
 def create_user(_id=None):
 
     items = request.body.readline()
@@ -233,7 +233,7 @@ def create_user(_id=None):
     else:
         item = items[0]
 
-    u_id = _id
+    u_id = item.get('_id')
     u_role = item.get('user_role')
     u_contact = item.get('user_contact')
     u_rights = item.get('rights')
@@ -271,9 +271,9 @@ def get_user_rights():
             'data': [u_rights]}
 
 
-@put('/account/action')
-@post('/account/action')
-def create_action():
+@put('/account/action/:_id')
+@post('/account/action/:_id')
+def create_action(_id = None):
 
     items = request.body.readline()
 
@@ -285,7 +285,7 @@ def create_action():
 
     item = items[0]
 
-    a_id = item.get('action_id')
+    a_id = _id
     a_desc = item.get('action_desc')
 
     if not right_module.add(a_id, a_desc):
