@@ -29,6 +29,11 @@ define([
 
         init: function() {
             this._super();
+            set(this, 'previousContent', get(this, 'content'));
+            if(Ember.isNone(get(this, 'hidePrevious'))) {
+                //arbitrary default value currently used for change criticity action.
+                set(this, 'hidePrevious', true);
+            }
         },
 
         isInfo:function () {
@@ -46,6 +51,23 @@ define([
         isCritical:function () {
             return get(this, 'content') === 3;
         }.property('content'),
+
+
+        previousIsInfo:function () {
+            return get(this, 'hidePrevious') && get(this, 'previousContent') === 0;
+        }.property('previousContent'),
+
+        previousIsMinor:function () {
+            return get(this, 'hidePrevious') && get(this, 'previousContent') === 1;
+        }.property('previousContent'),
+
+        previousIsMajor:function () {
+            return get(this, 'hidePrevious') && get(this, 'previousContent') === 2;
+        }.property('previousContent'),
+
+        previousIsCritical:function () {
+            return get(this, 'hidePrevious') && get(this, 'previousContent') === 3;
+        }.property('previousContent'),
 
 
         actions: {
