@@ -20,7 +20,8 @@
 define([
     'ember',
     'app/application',
-    'app/controller/login'
+    'app/controller/login',
+    'app/lib/loaders/schemas'
 ], function(Ember, Application) {
 
     var route = Ember.Route.extend({

@@ -49,7 +49,6 @@ console.log({"development widget dependencies": deps});
 define(deps, function(Ember) {
     console.log("load widgets from development", arguments);
     for (var i = 0, l = developmentWidgetsTemplates.length; i < l; i++) {
-        console.error('load template');
         var templateName = developmentWidgetsTemplates[i].name;
         Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
     }

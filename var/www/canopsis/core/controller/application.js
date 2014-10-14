@@ -75,8 +75,18 @@ define([
     hashUtils,
     notificationUtils,
     actionsUtils) {
+
     var get = Ember.get,
         set = Ember.set;
+
+    function bindKey(keyCombination, actionName) {
+        Mousetrap.bind([keyCombination], function(e) {
+            console.log('binding', arguments);
+            actionsUtils.doAction(actionName);
+
+            return false;
+        });
+    }
 
     var controller = PartialslotAbleController.extend(
         SchemamanagerMixin, PromisemanagerMixin, ConsolemanagerMixin, NotificationsMixin, UsermenuMixin, {
@@ -169,10 +179,7 @@ define([
                     var currentKeybinding = keybindings[i];
                     console.log('Mousetrap define', currentKeybinding);
 
-                    Mousetrap.bind([currentKeybinding.label], function(e) {
-                        actionsUtils.doAction(currentKeybinding.value);
-                        return false;
-                    });
+                    bindKey(currentKeybinding.label, currentKeybinding.value);
                 }
 
                 if(get(appController, 'onIndexRoute') === true) {
