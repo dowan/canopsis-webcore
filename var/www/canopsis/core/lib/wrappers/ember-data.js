@@ -54,7 +54,7 @@ define([
             if (typeof serialized === "number") {
                 return serialized;
             } else {
-                console.warn("deserialized value is not a number as it is supposed to be", arguments);
+                // console.warn("deserialized value is not a number as it is supposed to be", arguments);
                 return 0;
             }
         },

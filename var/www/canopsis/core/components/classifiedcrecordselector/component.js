@@ -199,7 +199,10 @@ define([
             query.filter = JSON.stringify({'crecord_type': this.get('crecordtype')});
             console.log('findItems', this.get('crecordtype'), query);
 
-            store.findQuery("crecord", query).then(function(result) {
+            if(crecordtype === 'view')
+                crecordtype = 'userview';
+
+            store.findQuery(crecordtype, query).then(function(result) {
                 me.set('widgetDataMetas', result.meta);
                 var items = result.get('content');
                 me.set('items', items);

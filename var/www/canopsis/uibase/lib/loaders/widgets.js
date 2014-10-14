@@ -41,14 +41,12 @@ for (var i = 0; i < uibaseWidgetsTemplates.length; i++) {
     }
 }
 
-for (i = 0; i < jsDeps.length; i++) {
+for (i = 0, l = jsDeps.length; i < l; i++) {
     deps.push(jsDeps[i]);
 }
 
-console.log({"uibase widget dependencies": deps});
 define(deps, function(Ember) {
-    console.log("load widgets from uibase", arguments);
-    for (var i = 0; i < uibaseWidgetsTemplates.length; i++) {
+    for (var i = 0, l = uibaseWidgetsTemplates.length; i < l; i++) {
         var templateName = uibaseWidgetsTemplates[i].name;
         Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
     }

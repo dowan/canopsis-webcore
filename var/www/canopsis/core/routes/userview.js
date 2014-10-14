@@ -178,7 +178,9 @@ define([
             set(this.controllerFor('application'), 'currentViewId', get(model, 'id'));
 
             set(this.controllerFor('application'), 'isLoading', false);
-            controller.trigger('refreshView');
+            if(controller.trigger) {
+                controller.trigger('refreshView');
+            }
         }
     });
 

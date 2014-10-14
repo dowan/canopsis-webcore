@@ -9,12 +9,6 @@
                     <img src="/static/canopsis/media/canopsis.png" alt="canopsis"/>
                 </a>
 
-                <div class="debugmenu">
-                    {{#if devtoolsUserview}}
-                        {{render "userview" devtoolsUserview}}
-                    {{/if}}
-                </div>
-
                 <!-- Header Navbar: style can be found in header.less -->
                 <nav class="navbar navbar-static-top" role="navigation">
                     <!-- Sidebar toggle button-->
@@ -62,7 +56,7 @@
                                     <i class="fa fa-desktop"></i> <span>{{tr 'Dashboard'}}</span>
                                 </a>
                             </li>
-                                {{#if controller.utils.session.rights.aclconfig.checksum}}
+                                {{#if controller.utils.session.rights.menu_aclconfig.checksum}}
                                     <li class="treeview">
                                         <a href="#">
                                             <i class="fa fa-group"></i>
@@ -76,7 +70,7 @@
                                         </ul>
                                     </li>
                                 {{/if}}
-                                {{#if controller.utils.session.rights.authsystems.checksum}}
+                                {{#if controller.utils.session.rights.menu_authsystems.checksum}}
                                     <li class="treeview">
                                         <a href="#">
                                             <i class="fa fa-key"></i>
@@ -89,7 +83,7 @@
                                         </ul>
                                     </li>
                                 {{/if}}
-                                {{#if controller.utils.session.rights.enginesconfig.checksum}}
+                                {{#if controller.utils.session.rights.menu_enginesconfig.checksum}}
                                     <li class="treeview">
                                         <a href="#">
                                             <i class="fa fa-cogs"></i>
@@ -110,7 +104,7 @@
                                         </ul>
                                     </li>
                                 {{/if}}
-                                {{#if controller.utils.session.rights.pluginsconfig.checksum}}
+                                {{#if controller.utils.session.rights.menu_pluginsconfig.checksum}}
                                     {{#each plugin in controller.plugins}}
                                         <li>
                                             <a {{action plugin.action plugin.param}}>
@@ -119,7 +113,7 @@
                                         </li>
                                     {{/each}}
                                 {{/if}}
-                                {{#if controller.utils.session.rights.uisettings.checksum}}
+                                {{#if controller.utils.session.rights.menu_uisettings.checksum}}
                                     <li class="treeview">
                                         <a href="#">
                                             <i class="fa fa-cogs"></i>

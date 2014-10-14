@@ -55,11 +55,11 @@
 
             {{#each tab in controller.preparedTabs}}
                 <li {{bind-attr class="tab.isActive:active:"}}>
-                    {{!#ifUserCanDisplayView tab.value}}
+                    {{#ifUserCanDisplayView tab.value}}
                         <a {{action "showView" tab.value}} style="cursor:pointer">
                             {{tab.label}}
                         </a>
-                    {{!/ifUserCanDisplayView}}
+                    {{/ifUserCanDisplayView}}
                 </li>
             {{/each}}
         </ul>
