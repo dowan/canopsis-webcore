@@ -1,0 +1,35 @@
+<form role="form" class="well">
+
+    {{#if errorMessage}}
+        <div class="alert alert-warning ">
+            <i class="fa fa-warning"></i>
+            <b>{{tr 'Warning'}}!</b> {{errorMessage}}
+        </div>
+    {{/if}}
+
+    <div class="form-group">
+        <label>{{tr 'Perimeter'}}{{input type="text" class="form-control" value=perimeter}}</label>
+    </div>
+
+    <div class="form-group">
+        <label>{{tr 'Domain'}}{{input type="text" class="form-control" value=domain}}</label>
+    </div>
+
+    <div class="btn-group">
+
+        {{#component-tooltip content="Event is either ack or not ack"}}
+            <button type="button" {{bind-attr class=":btn :btn-default isackboth:active"}} {{action 'setAck' 'both'}}>{{tr 'both'}}</button>
+        {{/component-tooltip}}
+
+        {{#component-tooltip content="Event is ack"}}
+            <button type="button" {{bind-attr class=":btn :btn-default isacktrue:active"}} {{action 'setAck' true}}>{{tr 'ack'}}</button>
+        {{/component-tooltip}}
+
+        {{#component-tooltip content="Event is not ack"}}
+            <button type="button" {{bind-attr class=":btn :btn-default isackfalse:active"}} {{action 'setAck' false}}>{{tr 'not ack'}}</button>
+        {{/component-tooltip}}
+
+    </div>
+
+
+</form>

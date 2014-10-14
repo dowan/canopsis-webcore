@@ -27,6 +27,7 @@ var editorsTemplates = [
     { name: 'arrayclassifiedcrecordselector' },
     { name: 'boolean' },
     { name: 'cfilter', js: 'w' },
+    { name: 'cfilter3', js: 'w' },
     { name: 'cfilterwithproperties'},
     { name: 'cmetric', js: 'w' },
     { name: 'color' },
