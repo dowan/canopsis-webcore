@@ -202,6 +202,16 @@ require.config({
     }
 });
 
+if (navigator.appName.indexOf('Internet Explorer') !== -1) {
+    //this force console to use log method for early loaded
+    //modules that could use other console methods.
+    console.group = function () {};
+    console.groupEnd = function() {};
+    console.debug = console.log;
+    console.warning = console.log;
+    console.error = console.log;
+}
+
 define([
     'canopsis/file_loader',
     'seeds/RoutesLoader',
