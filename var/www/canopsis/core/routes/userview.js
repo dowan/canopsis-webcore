@@ -155,11 +155,11 @@ define([
         },
 
         setupController: function(controller, model) {
-            testUtils.pre(this, function () {
-                var controller = get(this, 'controller');
+            // testUtils.pre(this, function () {
+            //     var controller = get(this, 'controller');
 
-                Ember.assert('The controller should implement Ember.Evented', !isNone(controller.trigger));
-            });
+            //     Ember.assert('The controller should implement Ember.Evented', !isNone(controller.trigger));
+            // });
 
             console.log('UserviewRoute setupController', arguments);
 

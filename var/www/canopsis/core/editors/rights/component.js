@@ -31,6 +31,48 @@ define([
     var component = DictclassifiedcrecordselectorComponent.extend({
         nameKey: '_id',
         idKey: '_id',
+        /*
+         * Compute a structure with classified item each time the 'items' property changed
+         */
+        classifiedItems : function(){
+            var items = get(this, 'items');
+            var valueKey = get(this, 'valueKey') || get(this, 'valueKeyDefault');
+            var nameKey = get(this, 'nameKey') || get(this, 'nameKeyDefault');
+
+            console.log("recompute classifiedItems", get(this, 'items'), valueKey);
+
+            var res = Ember.Object.create({
+                all: Ember.A(),
+                byClass: {}
+            });
+
+            for (var i = 0, l = items.length; i < l; i++) {
+                var currentItem = items[i];
+                var objDict = { name: currentItem.get(nameKey) };
+                if(valueKey) {
+                    console.log('add valueKey', currentItem.get(valueKey));
+                    objDict.value = currentItem.get(valueKey);
+                    console.log('objDict value', objDict);
+                }
+
+                this.serializeAdditionnalData(currentItem, objDict);
+
+                res.all.pushObject(Ember.Object.create(objDict));
+
+                possibleClassSplit = objDict.name.split("_");
+                if(possibleClassSplit.length > 1) {
+                    var className = possibleClassSplit[0];
+
+                    if(isNone(res.byClass[className])) {
+                        res.byClass[className] = [];
+                    }
+
+                    res.byClass[className].pushObject(objDict);
+                }
+            }
+
+            return res;
+        }.property('items', 'items.@each'),
 
         recomputeValue: function(){
             console.group('recomputeValue', get(this, 'selection'));
