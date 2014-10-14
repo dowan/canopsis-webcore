@@ -20,14 +20,14 @@
 define([
     'ember',
     'app/application',
-    'app/lib/wrappers/dragtable'
-], function(Ember, Application, dragtable) {
+//    'app/lib/wrappers/dragtable'
+], function(Ember, Application) {
 
     var get = Ember.get,
         set = Ember.set;
 
     var mixin = Ember.Mixin.create({
-
+/*
         onDomReady: function (element) {
 
             this._super(arguments);
@@ -58,7 +58,7 @@ define([
                 }
             });
         }
-
+*/
 
     });
 

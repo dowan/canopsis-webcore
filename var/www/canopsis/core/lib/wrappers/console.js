@@ -1,18 +1,27 @@
-define(['consolejs'], function() {
+define([], function() {
 
     delete console.init;
 
     //add init tag that will encapsulate the webapp loading process
+    console.tags = {
+        add: function() {},
+        remove: function () {}
+    };
+
+    console.settings = {
+        save: function() {}
+    };
     console.tags.add('init');
 
-    console.debug = console.log;
+    //reactivate when console will be ready again
+    //if (navigator.appName.indexOf('Internet Explorer') !== -1) {
 
-    // console.log = function(){};
-    // console.debug = function(){};
-    // console.warn = function(){};
-    // console.group = function(){};
-    // console.groupEnd = function(){};
-    // console.info = function(){};
+        console.group = function () {};
+        console.groupEnd = function() {};
+        console.debug = console.log;
+        console.warning = console.log;
+        console.error = console.log;
+    //}
 
     return console;
 });
