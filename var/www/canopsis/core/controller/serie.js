@@ -84,8 +84,8 @@ define([
                     var metric = metrics[i];
 
                     var mname = metric.meta[0].value.metric;
-                    var data_id = metric.meta[0].data_id;
-                    var mid = 'metric_' + hash.md5(data_id);
+                    var cid = metric.meta[0].cid;
+                    var mid = 'metric_' + hash.md5(cid);
 
                     // replace metric name in formula by the unique id
                     formula = formula.replaceAll(mname, mid);
