@@ -1,5 +1,5 @@
 /*
-# Copyright (c) 2014 "Capensis" [http://www.capensis.com]
+# Copyright (c) 2014 'Capensis' [http://www.capensis.com]
 #
 # This file is part of Canopsis.
 #
@@ -21,6 +21,7 @@ define([
     'jquery',
     'ember',
     'app/application',
+    'jqueryui',
 ], function($, Ember, Application) {
     var get = Ember.get,
         set = Ember.set;
@@ -28,22 +29,19 @@ define([
     var view = Ember.View.extend({
         init: function() {
             this._super();
-            console.log("recordinfopopup view init", this, get(this, 'controller'));
+            console.log('recordinfopopup view init', this, get(this, 'controller'));
         },
 
         didInsertElement: function () {
-            console.debug('Recordinfopopup dom element', $("#recordinfopopup"));
-            //$("#recordinfopopup").hide();
-            $( window ).resize( function () {
-
-                var left = ($(window).width() - $("#recordinfopopup").outerWidth()) / 2;
-                $("#recordinfopopup").css("left", left);
-
+            console.log('Recordinfopopup dom element');
+            //$('#recordinfopopup').hide();
+            $( window ).on('resize', function () {
+                var left = ($(window).width() - $('#recordinfopopup').outerWidth()) / 2;
+                $('#recordinfopopup').css('left', left);
             });
             $('#recordinfopopup').draggable({
-                handle: ".recordinfopopuphandle"
+                handle: '.recordinfopopuphandle'
             });
-
         },
 
 
