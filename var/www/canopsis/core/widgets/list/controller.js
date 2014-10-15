@@ -159,6 +159,7 @@ define([
             },
 
 
+            user: Ember.computed.alias('controllers.login.record.user'),
             rights: Ember.computed.alias('controllers.login.record.rights'),
             safeMode: Ember.computed.alias('controllers.application.frontendConfig.safe_mode'),
 

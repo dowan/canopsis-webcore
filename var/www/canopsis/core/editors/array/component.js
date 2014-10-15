@@ -117,6 +117,9 @@ define([
             return editorName;
         }.property('content.model.options.items.type', 'content.model.options.items.role'),
 
+        /**
+         * Generates a virtual attribute that will be used to manipulate the array item data
+         */
         generateVirtualAttribute: function(itemIndex) {
             var values = get(this, 'value');
             var content = get(this, 'content.model.options.items');

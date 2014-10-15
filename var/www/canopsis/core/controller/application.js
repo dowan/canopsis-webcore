@@ -121,7 +121,7 @@ define([
 
         plugins:function(){
             var all_plugins = [];
-            var plugins = Application.plugins ;
+            var plugins = Application.plugins;
             for ( var pluginName in plugins ){
                 if( plugins.hasOwnProperty(pluginName)){
                     all_plugins.pushObject(plugins[pluginName] );

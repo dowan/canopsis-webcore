@@ -9,6 +9,8 @@
                 {{/component-tooltip}}
 
             {{/if}}
+        {{/if}}
+        {{#if controller.parentController.rights.actionbutton_uncancel.checksum}}
             {{#if this.ack.isCancel}}
                 {{#component-tooltip content="Undo remove"}}
                     <button class="btn btn-default btn-sm" {{action 'sendEvent' 'uncancel' this}}>
@@ -24,6 +26,8 @@
                     {{glyphicon "trash"}} {{tr 'Remove'}}
                 </button>
             {{/component-tooltip}}
+        {{/if}}
+        {{#if controller.rights.actionbutton_uncancel.checksum}}
             {{#component-tooltip content="Undo remove"}}
                 <button class="btn btn-default" {{action 'sendEvent' 'uncancel'}} >
                     {{glyphicon "share-alt"}} {{tr 'Undo remove'}}

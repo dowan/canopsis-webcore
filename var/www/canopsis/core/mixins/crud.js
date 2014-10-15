@@ -44,6 +44,46 @@ define([
             footer: []
         },
 
+        userCanReadRecord: function() {
+            if(get(this, 'user') === "root") {
+                return true;
+            }
+
+            var crecord_type = get(this, 'listed_crecord_type');
+
+            return get(this, 'rights.' + crecord_type + '_read.checksum');
+        }.property('config.listed_crecord_type'),
+
+        userCanCreateRecord: function() {
+            if(get(this, 'user') === "root") {
+                return true;
+            }
+
+            var crecord_type = get(this, 'listed_crecord_type');
+
+            return get(this, 'rights.' + crecord_type + '_create.checksum');
+        }.property('config.listed_crecord_type'),
+
+        userCanUpdateRecord: function() {
+            if(get(this, 'user') === "root") {
+                return true;
+            }
+
+            var crecord_type = get(this, 'listed_crecord_type');
+
+            return get(this, 'rights.' + crecord_type + '_update.checksum');
+        }.property('config.listed_crecord_type'),
+
+        userCanDeleteRecord: function() {
+            if(get(this, 'user') === "root") {
+                return true;
+            }
+
+            var crecord_type = get(this, 'listed_crecord_type');
+
+            return get(this, 'rights.' + crecord_type + '_delete.checksum');
+        }.property('config.listed_crecord_type'),
+
         actions: {
             add: function (recordType) {
                 console.log("add", recordType);
