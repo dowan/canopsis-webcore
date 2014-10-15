@@ -27,11 +27,26 @@ define([
         set = Ember.set;
 
 
-    var widget = WidgetFactory('uimaintabcollection',{
-        needs: ['application'],
+    var widget = WidgetFactory('uimaintabcollection', {
+        needs: ['application', 'login'],
 
         currentViewId: Ember.computed.alias('controllers.application.currentViewId'),
+
+        user: Ember.computed.alias('controllers.login.record.user'),
+        rights: Ember.computed.alias('controllers.login.record.rights'),
+
         tagName: 'span',
+
+        userCanUpdateRecord: function() {
+            if(get(this, 'user') === "root") {
+                return true;
+            }
+
+            var crecord_type = 'userview';
+
+            return get(this, 'rights.' + crecord_type + '_update.checksum');
+        }.property(),
+
 
         preparedTabs: function() {
             var uimaintabcollectionController = this;
