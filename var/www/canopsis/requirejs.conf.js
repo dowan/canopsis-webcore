@@ -1,5 +1,5 @@
 require.config({
-    waitSeconds: 20,
+    waitSeconds: 30,
     baseUrl: '/static/',
     paths: {
         'app': 'canopsis/core',
@@ -8,7 +8,7 @@ require.config({
         'etc': 'canopsis/etc',
         'lib': 'webcore-libs/dev',
         'text': 'webcore-libs/dev/text',
-        'jquery': 'webcore-libs/dev/jquery-1.10.2',
+        'jquery': 'webcore-libs/dev/jquery-2.1.1',
         'plugins': 'webcore-libs/plugins/plugin',
         'consolejs': 'webcore-libs/console.js/console',
         'ember-cloaking': 'canopsis/core/lib/wrappers/ember-cloaking',
