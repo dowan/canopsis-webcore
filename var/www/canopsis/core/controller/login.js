@@ -48,14 +48,17 @@ define([
                     if (data.success) {
                         var login = Ember.Object.create(data.data[0]);
                         set(controller, 'record', login);
+                        set(utils, 'session', get(controller, 'record'));
                     }
-                    set(utils, 'session', get(controller, 'record'));
+                    else {
+                        utils.notification.error('Impossible to get user account');
+                    }
+
+
                 },
                 async: false
             });
-
         },
-
 
         reset: function() {
             this.setProperties({
