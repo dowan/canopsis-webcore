@@ -22,7 +22,7 @@ from canopsis.configuration.parameters import Parameter, ParamList
 from canopsis.configuration.configurable.decorator import conf_paths
 from canopsis.configuration.configurable.decorator import add_config
 from canopsis.configuration.configurable import Configurable
-from canopsis.common.utils import dictproperty
+from canopsis.common.utils import ensure_iterable
 
 from bottle import default_app as BottleApplication
 
@@ -38,7 +38,7 @@ config = {
         Parameter('root_directory', parser=Parameter.path)
     ),
     'auth': (
-        Parameter('providers', parser=Parameter.array())
+        Parameter('providers', parser=Parameter.array(), critical=True)
     ),
     'session': (
         Parameter('cookie_expires', parser=int),
@@ -53,26 +53,40 @@ config = {
 @add_config(config)
 @conf_paths('webserver.conf')
 class WebServer(Configurable):
-    @dictproperty
+    @property
     def webservices(self):
         if not hasattr(self, '_webservices'):
             self._webservices = {}
 
         return self._webservices
 
-    @dictproperty
+    @property
     def webservice_paths(self):
         if not hasattr(self, '_webservice_paths'):
             self._webservice_paths = {}
 
         return self._webservice_paths
 
+    @property
+    def providers(self):
+        if not hasattr(self, '_providers'):
+            self._providers = []
+
+        return self._providers
+
+    @providers.setter
+    def providers(self, value):
+        self._providers = value
+
     def __init__(self, *args, **kwargs):
         super(WebServer, self).__init__(*args, **kwargs)
 
+    def __call__(self):
         self.app = BottleApplication()
         self.load_webservices()
         self.load_backends()
+
+        return self
 
     def load_webservices(self):
         self.webmodules = {}
@@ -152,5 +166,5 @@ class WebServer(Configurable):
 
 
 # Declare WSGI application
-ws = WebServer()
+ws = WebServer()()
 app = ws.application
