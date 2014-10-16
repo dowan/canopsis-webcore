@@ -1,0 +1,101 @@
+<ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+    <li class="active"><a href="#clauseEditor" data-toggle="tab">{{tr 'Clause editor'}}</a></li>
+    <li><a href="#queryEditor" data-toggle="tab">{{tr 'Query editor'}}</a></li>
+</ul>
+<div id="my-tab-content" class="tab-content">
+    <div class="tab-pane active" id="clauseEditor">
+
+
+        <div class="form-group">
+            <div class="btn-group">
+                {{#each field in selectableProperties}}
+                    <button type="button" {{bind-attr class=":btn :btn-default :btn-sm"}} {{action 'setProperty' field}}>{{field}}</button>
+
+                {{/each}}
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div class="btn-group">
+                {{#each operation in operations}}
+                    {{#component-tooltip content=operation.label}}
+                        <button type="button" class="btn btn-default" {{action 'setOperation' operation}}>{{operation.symbol}}</button>
+                    {{/component-tooltip}}
+                {{/each}}
+            </div>
+
+        </div>
+
+        <div class="form-group">
+           {{component-typedvalue content=propertyValue}}
+        </div>
+
+
+        <div class="form-group">
+
+            {{#if errorMessage}}
+                <div class="alert alert-warning alert-dismissable">
+                    <i class="fa fa-warning"></i>
+                    <b>Warning!</b> {{errorMessage}}
+                </div>
+            {{/if}}
+
+        </div>
+
+        <div class="form-group">
+
+            <div class="well">
+                {{selectedProperty}} -> {{selectedOperation.label}} = {{propertyValue}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button type="button" class="btn btn-success" {{action 'addClause'}}>{{tr 'Add clause'}}</button>
+        </div>
+
+
+        <ul class="list-group">
+            {{#each clause in clauses}}
+                <li class="list-group-item">
+                    <table>
+                        <tr>
+                            <td>
+                                <button class="btn btn-default" {{action 'removeClause' clause}}>
+                                    {{glyphicon 'minus'}} {{tr 'Remove'}}
+                                </button>
+                            </td>
+                            <td class="noyscroll">
+                                {{json2html clause.display}}
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+
+
+
+    <div class="tab-pane" id="queryEditor">
+
+
+        <div class="form-group">
+            <div class="btn-group">
+                {{#each clause in clauses}}
+                    {{json2html clause.display clause}}
+                    {{#component-tooltip content=clause.json2html htmlEnabled=true noTranslation=true}}
+                        <button type="button" {{bind-attr class=":btn :btn-default :btn-sm"}}>{{clause.property}}</button>
+                    {{/component-tooltip}}
+                {{/each}}
+            </div>
+        </div>
+
+        <div class="well">
+            {{component-listtree content=query}}
+        </div>
+
+    </div>
+
+
+</div>
