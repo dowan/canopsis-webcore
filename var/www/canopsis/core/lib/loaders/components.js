@@ -46,7 +46,8 @@ var componentsTemplates = [
     'templateselector',
     'wrapper',
     'typedvalue',
-    'listtree'
+    'listtree',
+    'eventkey'
 ];
 
 var deps = ['ember'];

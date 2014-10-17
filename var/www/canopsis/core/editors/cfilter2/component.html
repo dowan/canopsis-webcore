@@ -6,14 +6,7 @@
     <div class="tab-pane active" id="clauseEditor">
 
 
-        <div class="form-group">
-            <div class="btn-group">
-                {{#each field in selectableProperties}}
-                    <button type="button" {{bind-attr class=":btn :btn-default :btn-sm"}} {{action 'setProperty' field}}>{{field}}</button>
-
-                {{/each}}
-            </div>
-        </div>
+        {{component-eventkey content=selectedProperty}}
 
         <div class="form-group">
 

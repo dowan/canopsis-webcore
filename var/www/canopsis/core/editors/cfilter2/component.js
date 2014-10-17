@@ -30,16 +30,7 @@ define([
 
     var component = Ember.Component.extend({
 
-        'selectableProperties': [
-            'connector',
-            'component',
-            'resource',
-            'perimeter',
-            'domain',
-            'state',
-            'status',
-            'timestamp',
-        ],
+
 
         'clauses': [],
 
@@ -153,34 +144,6 @@ define([
             set(this, 'query', condition);
 
         },
-
-        parseJson: function(object) {
-            var html = '';
-            if (Ember.isArray(object)) {
-                html += '<ul class="jsonUl">';
-                for (var element in  object) {
-                    html += '<li class="jsonLi">' + this.parseJson(object[element]) + '</li>';
-                }
-                html += '</ul>';
-            } else if (typeof object === 'object') {
-                for (var key in object) {
-                    html += '<ul class="jsonUl"><li class="jsonLi">';
-                    html += '<span class="label label-primary">'+ key +'</span>';
-                    if (typeof object[key] === 'object' || Ember.isArray(object[key])) {
-                        html += this.parseJson(object[key]);
-                    } else {
-                        html +=  '&nbsp;<span class="glyphicon glyphicon-arrow-right" style="display:inline"></span><span class="label label-warning">'+ object[key] +'</span>' ;
-                    }
-                    html += '</li></ul>';
-                }
-            }
-            return html;
-        },
-
-        query2html: function () {
-            var html = this.parseJson(get(this, 'query'));
-            return new Ember.Handlebars.SafeString(html);
-        }.property(),
 
 
         actions: {
