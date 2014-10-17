@@ -20,23 +20,112 @@
 
 from canopsis.organisation.rights import Rights
 from canopsis.common.ws import route
-from bottle import get, HTTPError
+
+from bottle import get, post, put, delete
+from bottle import HTTPError
 
 
-module = None
+rights = None
 
 
 def get_manager():
-    global module
+    global rights
 
-    if not module:
-        module = Rights()
+    if not rights:
+        rights = Rights()
 
-    return module
+    return rights
+
+
+def save_group(ws, group):
+    cname = group['_id']
+    crights = group['rights']
+
+    group = rights.get_group(cname)
+
+    if not group and not rights.create_group(cname, crights):
+        raise ws.Error('Impossible to create group')
+
+    rights.update_rights(cname, 'group', crights, group)
+
+    return group
+
+
+def save_profile(ws, profile):
+    pid = profile['_id']
+    pcomp = profile['profile_groups']
+    prights = profile['profile_rights']
+
+    profile = rights.get_profile(pid)
+
+    if not profile and not rights.create_profile(pid, pcomp):
+        raise ws.Error('Impossible to create profile')
+
+    rights.update_comp(pid, 'profile', pcomp, profile)
+    rights.update_rights(pid, 'profile', prights, profile)
+
+    return profile
+
+
+def save_role(ws, role):
+    rid = role['_id']
+    rcomp = role['groups']
+    rrights = role['rights']
+    rprofile = role['profile']
+
+    role = rights.get_role(rid)
+
+    if not role and not rights.create_role(rid, rprofile):
+        raise ws.Error('Impossible to create role')
+
+    rights.update_profile(rid, 'role', rcomp, role)
+    rights.update_comp(rid, 'role', rcomp, role)
+    rights.update_rights(rid, 'role', rrights, role)
+
+    return role
+
+
+def save_user(ws, user):
+    uid = user['_id']
+    urole = user['role']
+    ucontact = user['contact']
+    urights = user['rights']
+    ucomp = user['user_groups']
+
+    user = rights.get_user(uid)
+
+    if not user:
+        ret = rights.create_user(
+            uid, urole,
+            contact=ucontact,
+            rights=urights,
+            groups=ucomp
+        )
+
+        if not ret:
+            raise ws.Error('Impossible to create user')
+
+    rights.update_comp(uid, 'user', ucomp, user)
+    rights.update_rights(uid, 'user', urights, user)
+
+    if not rights.add_role(uid, urole):
+        raise ws.Error('Impossible to add user to role')
+
+    return user
 
 
 def exports(ws):
     rights = get_manager()
+
+    rights_actions = {
+        'delete': {
+            'profile': rights.delete_profile,
+            'group': rights.delete_group,
+            'user': rights.delete_user,
+            'role': rights.delete_role,
+            'action': rights.delete
+        }
+    }
 
     @route(get)
     def rights(uid):
@@ -47,3 +136,43 @@ def exports(ws):
 
         else:
             return urights
+
+    @route(post, name='account/group', payload=['group'])
+    def create_group(group):
+        return save_group(ws, group)
+
+    @route(put, name='account/group', payload=['group'])
+    def update_group(_id, group):
+        return save_group(ws, group)
+
+    @route(post, name='account/profile', payload=['profile'])
+    def create_profile(profile):
+        return save_profile(ws, profile)
+
+    @route(put, name='account/profile', payload=['profile'])
+    def update_profile(_id, profile):
+        return save_profile(ws, profile)
+
+    @route(post, name='account/role', payload=['role'])
+    def create_role(role):
+        return save_role(ws, role)
+
+    @route(put, name='account/role', payload=['role'])
+    def update_role(_id, role):
+        return save_role(ws, role)
+
+    @route(post, name='account/user', payload=['user'])
+    def create_user(user):
+        return save_user(ws, user)
+
+    @route(put, name='account/user', payload=['user'])
+    def update_user(_id, user):
+        return save_user(ws, user)
+
+    @route(delete, name='account/delete')
+    def delete_entity(etype, _id):
+        if not etype in rights_actions['delete']:
+            raise ws.Error('Unknown entity type: {0}'.format(etype))
+
+        else:
+            rights_actions['delete'][etype](_id)

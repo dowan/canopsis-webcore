@@ -19,45 +19,46 @@
 # ---------------------------------
 
 from canopsis.old.template import Template
-from bottle import route, static_file, request, redirect
+from bottle import get, static_file, request, redirect
 import os
 
 
 def exports(ws):
     session = ws.require('session')
+    auth = ws.require('auth')
 
-    @route('/:lang/static/canopsis/index.html')
-    @route('/static/canopsis/index.html')
+    @get('/:lang/static/canopsis/index.html')
+    @get('/static/canopsis/index.html')
     def index(lang='en'):
         return static_file('canopsis/index.html', root=ws.root_directory)
 
-    @route('/:lang/static/:path#.+#', skip=ws.auth_backends.keys())
-    @route('/static/:path#.+#', skip=ws.auth_backends.keys())
+    @get('/:lang/static/:path#.+#', skip=ws.skip_login)
+    @get('/static/:path#.+#', skip=ws.skip_login)
     def server_static(path, lang='en'):
         key = request.params.get('authkey', default=None)
         if key:
-            session.autoLogin(key)
+            auth.autoLogin(key)
 
         return static_file(path, root=ws.root_directory)
 
-    @route('/favicon.ico', skip=ws.auth_backends.keys())
+    @get('/favicon.ico', skip=ws.skip_login)
     def favicon():
         return
 
-    @route('/', skip=ws.auth_backends.keys())
-    @route('/:key', skip=ws.auth_backends.keys())
-    @route('/:lang/', skip=ws.auth_backends.keys())
-    @route('/:lang/:key', skip=ws.auth_backends.keys())
-    @route('/index.html', skip=ws.auth_backends.keys())
-    @route('/:lang/index.html', skip=ws.auth_backends.keys())
+    @get('/', skip=ws.skip_login)
+    @get('/:key', skip=ws.skip_login)
+    @get('/:lang/', skip=ws.skip_login)
+    @get('/:lang/:key', skip=ws.skip_login)
+    @get('/index.html', skip=ws.skip_login)
+    @get('/:lang/index.html', skip=ws.skip_login)
     def loginpage(key=None, lang='en'):
-        s = request.environ.get('beaker.session')
+        s = session.get()
 
         # Try to authenticate user
         key = key or request.params.get('authkey', default=None)
 
         if key:
-            session.autoLogin(key)
+            auth.autoLogin(key)
 
         ticket = request.params.get('ticket', default=None)
 

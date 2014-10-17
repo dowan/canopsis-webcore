@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# --------------------------------
+# -*- coding: utf-8 -*-
+#--------------------------------
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
 #
 # This file is part of Canopsis.
@@ -18,317 +18,318 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-import ConfigParser
-import logging
-import time
+import gevent
+from gevent import monkey
+monkey.patch_all()
+
+from bottle import default_app as BottleApplication, request, HTTPError
+from beaker.middleware import SessionMiddleware
+import mongodb_beaker  # needed by beaker
+
+from canopsis.configuration.parameters import Parameter, ParamList
+from canopsis.configuration.configurable.decorator import conf_paths
+from canopsis.configuration.configurable.decorator import add_config
+from canopsis.configuration.configurable import Configurable
+from canopsis.common.utils import setdefaultattr
+
+# TODO: replace with canopsis.mongo.MongoStorage
+from canopsis.old.storage import get_storage
+from canopsis.old.account import Account
+
+from signal import SIGTERM, SIGINT
+
+import importlib
+import imp
 import sys
 import os
 
-from importlib import import_module
 
-import bottle
-from bottle import route, run, static_file, redirect, request, response, hook
-
-from canopsis.old.template import Template
-from canopsis.old.storage import get_storage
-from canopsis.old.account import Account
-from canopsis.webcore.services import auth
-
-import gevent
-import signal
-
-## Hack: Prevent "ExtractionError: Can't extract file(s) to egg cache" when 2
-#process extract egg at the same time ...
-try:
-    from beaker.middleware import SessionMiddleware
-
-except:
-    time.sleep(2)
-    from beaker.middleware import SessionMiddleware
-
-# Reduce beaker verbose
-import mongodb_beaker
-mongodb_beaker.log.setLevel(logging.INFO)
-
-#from gevent import monkey; monkey.patch_all()
-
-## Configurations
-config_filename = os.path.expanduser('~/etc/webserver.conf')
-config = ConfigParser.RawConfigParser()
-config.read(config_filename)
-
-#put config in builtins to make it readable from modules in
-#canopsis.webcore.services
-__builtins__["config"] = config
-
-mongo_config_file = os.path.expanduser('~/etc/cstorage.conf')
-mongo_config = ConfigParser.RawConfigParser()
-mongo_config.read(mongo_config_file)
-
-## default config
-debug = False
-
-#mongo config
-mongo_host = mongo_config.get("master", "host")
-mongo_port = mongo_config.getint("master", "port")
-mongo_userid = mongo_config.get("master", "userid")
-mongo_password = mongo_config.get("master", "password")
-mongo_db = mongo_config.get("master", "db")
-
-session_cookie_expires = 300
-session_secret = 'canopsis'
-session_lock_dir = os.path.expanduser('~/tmp/webcore_cache')
-root_directory = os.path.expanduser("~/var/www/")
-
-if mongo_userid and mongo_password:
-    session_mongo_url = 'mongodb://{0}:{1}@{2}:{3}/{4}.beaker'.format(
-        mongo_userid,
-        mongo_password,
-        mongo_host,
-        mongo_port,
-        mongo_db
-    )
-
-else:
-    session_mongo_url = 'mongodb://{0}:{1}/{2}.beaker'.format(
-        mongo_host,
-        mongo_port,
-        mongo_db
-    )
-
-try:
-    ## get config
-    debug = config.getboolean('server', "debug")
-    root_directory = os.path.expanduser(config.get('server', "root_directory"))
-
-    session_cookie_expires = config.getint('session', "cookie_expires")
-    session_secret = config.get('session', "secret")
-    session_data_dir = os.path.expanduser(config.get('session', "data_dir"))
-
-except Exception as err:
-    print("Error when reading '%s' (%s)" % (config_filename, err))
-
-## Logger
-logging_level = logging.DEBUG if debug else logging.INFO
-
-logging.basicConfig(
-    format=r"%(asctime)s [%(process)d] [%(name)s] [%(levelname)s] %(message)s",
-    datefmt=r"%Y-%m-%d %H:%M:%S", level=logging_level)
-logger = logging.getLogger("webserver")
-
-webservices = []
-webservice_paths = {}
-webservices_mods = {}
-
-try:
-    for webservice, enabled in config.items('webservices'):
-        enabled = int(enabled)
-
-        if enabled and webservice not in webservices:
-            webservices.append(webservice)
-
-except ConfigParser.NoSectionError:
-    logger.warning('No webservice found')
-
-try:
-    for webservice, path in config.items('webservice_paths'):
-        if webservice not in webservice_paths:
-            logger.info("Add webservice path: {0} - {1}".format(
-                webservice,
-                path
-            ))
-
-            webservice_paths[webservice] = path
-
-except ConfigParser.NoSectionError:
-    logger.warning("No webservice paths found")
-
-
-## load and unload webservices
-def load_webservices():
-    for webservice in webservices:
-        logger.info('Loading webservice: {0}'.format(webservice))
-
-        if webservice in webservice_paths:
-            path = webservice_paths[webservice]
-            sys.path.insert(0, path)
-            modname = webservice
-
-        else:
-            modname = 'canopsis.webcore.services.{0}'.format(webservice)
-
-        try:
-            mod = import_module(modname)
-
-            if hasattr(mod, 'logger'):
-                mod.logger.setLevel(logging_level)
-
-            if hasattr(mod, 'load'):
-                mod.load()
-
-            webservices_mods[modname] = mod
-
-        except Exception as err:
-            logger.error('Impossible to load webservice {0}: {1}'.format(
-                modname, err))
-
-
-def unload_webservices():
-    logger.info("Unload webservices.")
-
-    for webservice in webservices_mods:
-        module = webservices_mods[webservice]
-
-        if hasattr(module, 'unload'):
-            logger.info('Unloading module {0}'.format(webservice))
-            module.unload()
-
-
-def autoLogin(key=None):
-    if key and len(key) == 56:
-        logger.debug('Autologin:')
-        output = auth.autoLogin(key)
-
-        if output['success']:
-            logger.info(' + Success')
-            return True
-
-        else:
-            logger.info(' + Failed')
-            return False
-
-## Bind signals
-stop_in_progress = False
-
-
-def signal_handler():
-    global stop_in_progress
-
-    if not stop_in_progress:
-        stop_in_progress = True
-        logger.info("Receive signal to stop worker ...")
-        unload_webservices()
-        logger.info("Ready to stop.")
-        sys.exit(0)
-
-gevent.signal(signal.SIGTERM, signal_handler)
-gevent.signal(signal.SIGINT, signal_handler)
-
-## Bottle App
-app = bottle.default_app()
-
-load_webservices()
-
-## Install plugins
-
-if config.has_option('auth', 'providers'):
-    providers = config.get('auth', 'providers').split(',')
-
-    for provider in providers:
-        logger.info('Loading authentication provider: {0}'.format(provider))
-
-        modname = 'canopsis.auth.{0}'.format(provider)
-
-        try:
-            mod = import_module(modname)
-
-        except ImportError as err:
-            logger.error(
-                'Impossible to load authentication backend {0}: {1}'.format(
-                    modname, err))
-
-        else:
-            bottle.install(mod.get_backend())
-
-else:
-    providers = []
-
-bottle.install(auth.EnsureAuthenticated())
-
-## Session system with beaker
-session_opts = {
-    'session.type': 'mongodb',
-    'session.cookie_expires': session_cookie_expires,
-    'session.url': session_mongo_url,
-    'session.auto': True,
-    #'session.timeout': 300,
-    'session.secret': session_secret,
-    'session.lock_dir': session_lock_dir,
+config = {
+    'server': (
+        Parameter('debug', parser=Parameter.bool),
+        Parameter('enable_crossdomain_send_events', parser=Parameter.bool),
+        Parameter('root_directory', parser=Parameter.path)
+    ),
+    'auth': (
+        Parameter('providers', parser=Parameter.array(), critical=True)
+    ),
+    'session': (
+        Parameter('cookie_expires', parser=int),
+        Parameter('secret'),
+        Parameter('data_dir', parser=Parameter.path)
+    ),
+    'webservices': ParamList(parser=Parameter.bool),
+    'webservice_paths': ParamList()
 }
 
 
-## Basic Handler
-@route('/:lang/static/canopsis/index.html')
-@route('/static/canopsis/index.html')
-def index(lang='en'):
-    return static_file('canopsis/index.html', root=root_directory)
+class EnsureAuthenticated(object):
+    name = 'EnsureAuthenticated'
+    handle_logout = False
+
+    def __init__(self, ws, *args, **kwargs):
+        super(EnsureAuthenticated, self).__init__(*args, **kwargs)
+
+        self.ws = ws
+        self.session = ws.require('session')
+
+    def apply(self, callback, context):
+        def decorated(*args, **kwargs):
+            s = self.session.get()
+
+            if not s.get('auth_on', False):
+                return HTTPError(401, 'Not authorized')
+
+            return callback(*args, **kwargs)
+
+        return decorated
 
 
-@route('/:lang/static/canopsis/index.debug.html')
-@route('/static/canopsis/index.debug.html')
-def index_debug(lang='en'):
-    return static_file('canopsis/index.debug.html', root=root_directory)
+@add_config(config)
+@conf_paths('webserver.conf')
+class WebServer(Configurable):
+    @property
+    def debug(self):
+        return setdefaultattr(self, '_debug', False)
 
+    @debug.setter
+    def debug(self, value):
+        self._debug = value
 
-@route('/:lang/static/:path#.+#', skip=auth.auth_backends)
-@route('/static/:path#.+#', skip=auth.auth_backends)
-def server_static(path, lang='en'):
-    key = request.params.get('authkey', default=None)
-    if key:
-        autoLogin(key)
+    @property
+    def enable_crossdomain_send_events(self):
+        return setdefaultattr(self, '_crossdomain_evt', False)
 
-    return static_file(path, root=root_directory)
+    @enable_crossdomain_send_events.setter
+    def enable_crossdomain_send_events(self, value):
+        self._crossdomain_evt = value
 
+    @property
+    def root_directory(self):
+        return setdefaultattr(
+            self, '_rootdir',
+            os.path.expanduser('~/var/www/')
+        )
 
-@route('/favicon.ico', skip=[auth.auth_backends])
-def favicon():
-    return
+    @root_directory.setter
+    def root_directory(self, value):
+        value = os.path.expanduser(value)
 
+        if os.path.exists(value):
+            self._rootdir = value
 
-@route('/', skip=auth.auth_backends)
-@route('/:key', skip=auth.auth_backends)
-@route('/:lang/', skip=auth.auth_backends)
-@route('/:lang/:key', skip=auth.auth_backends)
-@route('/index.html', skip=auth.auth_backends)
-@route('/:lang/index.html', skip=auth.auth_backends)
-def loginpage(key=None, lang='en'):
-    s = request.environ.get('beaker.session')
+    @property
+    def providers(self):
+        return setdefaultattr(self, '_providers', [])
 
-    key = key or request.params.get('authkey', default=None)
+    @providers.setter
+    def providers(self, value):
+        self._providers = value
 
-    if key:
-        autoLogin(key)
+    @property
+    def cookie_expires(self):
+        return setdefaultattr(self, '_cookie', 300)
 
-    ticket = request.params.get('ticket', default=None)
+    @cookie_expires.setter
+    def cookie_expires(self, value):
+        self._cookie = value
 
-    if not ticket and not s.get('auth_on', False):
-        st = get_storage('object', account=Account(user='root', group='root'))
+    @property
+    def secret(self):
+        return setdefaultattr(self, '_secret', 'canopsis')
 
-        cservices = {
-            'webserver': {provider: 1 for provider in providers}
-        }
-        wanted_cservices = ['frontend', 'ticket', 'casconfig']
+    @secret.setter
+    def secret(self, value):
+        self._secret = value
 
-        for cservice in wanted_cservices:
-            try:
-                record = st.get('cservice.{0}'.format(cservice))
-                record = record.dump()
+    @property
+    def data_dir(self):
+        return setdefaultattr(
+            self, '_datadir',
+            os.path.expanduser('~/var/cache/canopsis/webcore/')
+        )
 
-            except KeyError:
-                record = {}
+    @data_dir.setter
+    def data_dir(self, value):
+        value = os.path.expanduser(value)
 
-            cservices[cservice] = record
+        if os.path.exists(value):
+            self._datadir = value
 
-        del st
+    # dict properties do not need setters
 
-        with open(os.path.join(root_directory, 'login', 'index.html')) as src:
-            tmplsrc = src.read()
+    @property
+    def webservices(self):
+        if not hasattr(self, '_webservices'):
+            self._webservices = {}
 
-        tmpl = Template(tmplsrc)
-        return tmpl(cservices)
+        return self._webservices
 
-    else:
-        redirect('/{0}/static/canopsis/index.html'.format(lang))
+    @property
+    def webservice_paths(self):
+        if not hasattr(self, '_webservice_paths'):
+            self._webservice_paths = {}
 
-## Install session Middleware
-app = SessionMiddleware(app, session_opts)
+        return self._webservice_paths
+
+    @property
+    def beaker_url(self):
+        return '{0}.beaker'.format(self.db.uri)
+
+    def __init__(self, *args, **kwargs):
+        super(WebServer, self).__init__(*args, **kwargs)
+
+        # TODO: Replace with MongoStorage
+        self.db = get_storage(account=Account(user='root', group='root'))
+        self.stopping = False
+
+    def __call__(self):
+        gevent.signal(SIGTERM, self.exit)
+        gevent.signal(SIGINT, self.exit)
+
+        self.app = BottleApplication()
+        self.load_webservices()
+        self.load_auth_backends()
+        self.load_session()
+
+        return self
+
+    def _load_webservice(self, name):
+        self.logger.info('Loading webservice: {0}'.format(name))
+        modname = 'canopsis.webcore.services.{0}'.format(name)
+
+        try:
+            # TODO: Remove webservice_paths
+            # You should always distribute webservices via Python
+            # package canopsis.webcore.services, since it was made
+            # for this use.
+            if name in self.webservice_paths:
+                path = self.webservice_paths[name]
+                mod = imp.load_source(
+                    modname,
+                    os.path.join(path, '{0}.py'.format(name))
+                )
+
+            else:
+                mod = importlib.import_module(modname)
+
+        except ImportError as err:
+            self.logger.error(
+                'Impossible to load webservice {0}: {1}'.format(name, err)
+            )
+
+            return False
+
+        else:
+            if hasattr(mod, 'exports'):
+                self.webmodules[name] = mod
+                mod.exports(self)
+
+            else:
+                self.logger.error(
+                    'Invalid module {0}, no exports()'.format(name)
+                )
+
+                return False
+
+        return True
+
+    def load_webservices(self):
+        self.webmodules = {}
+
+        for webservice in self.webservices:
+            if self.webservices[webservice]:
+                self._load_webservice(webservice)
+
+    def _load_auth_backend(self, name):
+        modname = 'canopsis.auth.{0}'.format(name)
+
+        try:
+            mod = importlib.import_module(modname)
+
+        except ImportError as err:
+            self.logger.error(
+                'Impossible to load authentication backend {}: {}'.format(
+                    name, err
+                )
+            )
+
+            return False
+
+        else:
+            backend = mod.get_backend(self)
+            self.auth_backends[backend.__name__] = backend
+            self.app.install(backend)
+
+        return True
+
+    def load_auth_backends(self):
+        self.auth_backends = {}
+
+        for provider in self.providers:
+            self._load_auth_backend(provider)
+
+        # Always add this backend which returns 401 when the login fails
+        backend = EnsureAuthenticated(self)
+        self.auth_backends[backend.__name__] = backend
+        self.app.install(backend)
+
+    def load_session(self):
+        self.app = SessionMiddleware(self.app, {
+            'session.type': 'mongodb',
+            'session.cookie_expires': self.cookie_expires,
+            'session.url': self.beaker_url,
+            'session.secret': self.secret,
+            'session.lock_dir': self.data_dir
+        })
+
+    def unload_session(self):
+        pass
+
+    def unload_auth_backends(self):
+        pass
+
+    def unload_webservices(self):
+        pass
+
+    def exit(self):
+        if not self.stopping:
+            self.stopping = True
+
+            self.unload_session()
+            self.unload_auth_backends()
+            self.unload_webservices()
+
+            sys.exit(0)
+
+    @property
+    def application(self):
+        return self.app
+
+    @property
+    def skip_login(self):
+        return [bname for bname in self.auth_backends.keys()]
+
+    @property
+    def skip_logout(self):
+        return [
+            bname
+            for bname in self.auth_backends.keys()
+            if not self.auth_backends[bname].handle_logout
+        ]
+
+    def require(self, modname):
+        if modname not in self.webmodules:
+            if not self._load_webservice(modname):
+                raise ImportError(
+                    'Impossible to import webservice: {0}'.format(modname)
+                )
+
+        return self.webmodules[modname]
+
+    class Error(Exception):
+        pass
+
+# Declare WSGI application
+ws = WebServer()()
+app = ws.application
