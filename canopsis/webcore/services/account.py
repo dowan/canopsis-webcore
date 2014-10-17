@@ -96,7 +96,7 @@ def create_group(_id=None):
 
 @put('/account/profile/:_id')
 @post('/account/profile/:_id')  # the id param is only here to make a quick hack
-def post_profile(_id=None):
+def update_profile(_id=None):
     items = request.body.readline()
 
     try:
@@ -170,7 +170,7 @@ def update_role(_id = None):
 
 @put('/account/user/:_id')
 @post('/account/user')
-def create_user(_id=None):
+def update_user(_id=None):
 
     items = request.body.readline()
 
@@ -187,9 +187,10 @@ def create_user(_id=None):
 
     u_id = item.get('_id')
     u_role = item.get('role')
-    u_contact = item.get('user_contact')
+    u_contact = item.get('contact')
     u_rights = item.get('rights')
-    u_comp = item.get('user_groups')
+    u_comp = item.get('groups')
+    u_enable = item.get('enable')
 
     user = right_module.get_user(u_id)
 
@@ -201,6 +202,9 @@ def create_user(_id=None):
 
     right_module.update_comp(u_id, 'user', u_comp, user)
     right_module.update_rights(u_id, 'user', u_rights, user)
+    right_module.update_fields(
+        u_id, 'user', {'contact': u_contact, 'enable': u_enable}
+        )
 
     if not right_module.add_role(u_id, u_role):
         return ROUTE_FAIL
@@ -210,7 +214,7 @@ def create_user(_id=None):
 
 @get('/account/user/rights')
 def get_user_rights():
-    u_id = request.params.get('user_id')
+    u_id = request.params.get('_id')
     u_rights = right_module.get_user_rights(u_id)
 
     if not u_rights:
