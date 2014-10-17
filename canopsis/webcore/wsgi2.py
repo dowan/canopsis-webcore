@@ -22,19 +22,19 @@ import gevent
 from gevent import monkey
 monkey.patch_all()
 
-from bottle import default_app as BottleApplication
+from bottle import default_app as BottleApplication, request, HTTPError
 from beaker.middleware import SessionMiddleware
-import mongodb_beaker # needed by beaker
+import mongodb_beaker  # needed by beaker
 
 from canopsis.configuration.parameters import Parameter, ParamList
 from canopsis.configuration.configurable.decorator import conf_paths
 from canopsis.configuration.configurable.decorator import add_config
 from canopsis.configuration.configurable import Configurable
 from canopsis.common.utils import setdefaultattr
-from canopsis.auth import EnsureAuthenticated
 
 # TODO: replace with canopsis.mongo.MongoStorage
 from canopsis.old.storage import get_storage
+from canopsis.old.account import Account
 
 from signal import SIGTERM, SIGINT
 
@@ -61,6 +61,21 @@ config = {
     'webservices': ParamList(parser=Parameter.bool),
     'webservice_paths': ParamList()
 }
+
+
+class EnsureAuthenticated(object):
+    name = 'EnsureAuthenticated'
+
+    def apply(self, callback, context):
+        def decorated(*args, **kwargs):
+            s = request.environ.get('beaker.session')
+
+            if not s.get('auth_on', False):
+                return HTTPError(401, 'Not authorized')
+
+            return callback(*args, **kwargs)
+
+        return decorated
 
 
 @add_config(config)
@@ -157,7 +172,8 @@ class WebServer(Configurable):
     def __init__(self, *args, **kwargs):
         super(WebServer, self).__init__(*args, **kwargs)
 
-        self.db = get_storage()
+        # TODO: Replace with MongoStorage
+        self.db = get_storage(account=Account(user='root', group='root'))
         self.stopping = False
 
     def __call__(self):
@@ -166,7 +182,7 @@ class WebServer(Configurable):
 
         self.app = BottleApplication()
         self.load_webservices()
-        self.load_backends()
+        self.load_auth_backends()
         self.load_session()
 
         return self
@@ -192,7 +208,7 @@ class WebServer(Configurable):
 
         except ImportError as err:
             self.logger.error(
-                'Impossible to load webservice {0}: {1}'.format(name , err)
+                'Impossible to load webservice {0}: {1}'.format(name, err)
             )
 
             return False
@@ -218,7 +234,7 @@ class WebServer(Configurable):
             if self.webservices[webservice]:
                 self._load_webservice(webservice)
 
-    def _load_backend(self, name):
+    def _load_auth_backend(self, name):
         modname = 'canopsis.auth.{0}'.format(name)
 
         try:
@@ -235,18 +251,18 @@ class WebServer(Configurable):
 
         else:
             backend = mod.get_backend(self)
-            self.backends[backend.__name__] = backend
+            self.auth_backends[backend.__name__] = backend
             self.app.install(backend)
 
         return True
 
-    def load_backends(self):
-        self.backends = {}
+    def load_auth_backends(self):
+        self.auth_backends = {}
 
         for provider in self.providers:
-            self._load_backend(provider)
+            self._load_auth_backend(provider)
 
-        self.app.install(EnsureAuthenticated(self))
+        self.app.install(EnsureAuthenticated())
 
     def load_session(self):
         self.app = SessionMiddleware(self.app, {
@@ -260,7 +276,7 @@ class WebServer(Configurable):
     def unload_session(self):
         pass
 
-    def unload_backends(self):
+    def unload_auth_backends(self):
         pass
 
     def unload_webservices(self):
@@ -271,7 +287,7 @@ class WebServer(Configurable):
             self.stopping = True
 
             self.unload_session()
-            self.unload_backends()
+            self.unload_auth_backends()
             self.unload_webservices()
 
             sys.exit(0)

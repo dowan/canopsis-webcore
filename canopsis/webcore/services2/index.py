@@ -31,8 +31,8 @@ def exports(ws):
     def index(lang='en'):
         return static_file('canopsis/index.html', root=ws.root_directory)
 
-    @route('/:lang/static/:path#.+#', skip=ws.backends.keys())
-    @route('/static/:path#.+#', skip=ws.backends.keys())
+    @route('/:lang/static/:path#.+#', skip=ws.auth_backends.keys())
+    @route('/static/:path#.+#', skip=ws.auth_backends.keys())
     def server_static(path, lang='en'):
         key = request.params.get('authkey', default=None)
         if key:
@@ -40,16 +40,16 @@ def exports(ws):
 
         return static_file(path, root=ws.root_directory)
 
-    @route('/favicon.ico', skip=ws.backends.keys())
+    @route('/favicon.ico', skip=ws.auth_backends.keys())
     def favicon():
         return
 
-    @route('/', skip=ws.backends.keys())
-    @route('/:key', skip=ws.backends.keys())
-    @route('/:lang/', skip=ws.backends.keys())
-    @route('/:lang/:key', skip=ws.backends.keys())
-    @route('/index.html', skip=ws.backends.keys())
-    @route('/:lang/index.html', skip=ws.backends.keys())
+    @route('/', skip=ws.auth_backends.keys())
+    @route('/:key', skip=ws.auth_backends.keys())
+    @route('/:lang/', skip=ws.auth_backends.keys())
+    @route('/:lang/:key', skip=ws.auth_backends.keys())
+    @route('/index.html', skip=ws.auth_backends.keys())
+    @route('/:lang/index.html', skip=ws.auth_backends.keys())
     def loginpage(key=None, lang='en'):
         s = request.environ.get('beaker.session')
 
@@ -76,7 +76,7 @@ def exports(ws):
 
             for cservice in records:
                 cname = cservice._id[prefix:]
-                cservices[cname] = cservice
+                cservices[cname] = cservice.dump()
 
             # Compile template
             login_page = os.path.join(ws.root_directory, 'login', 'index.html')
