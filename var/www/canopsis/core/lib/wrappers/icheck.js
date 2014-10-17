@@ -21,7 +21,7 @@ var DS;
 define([
     'jquery',
     'app/lib/factories/wrapper',
-    'webcore-libs/icheck/icheck'
+    'webcore-libs/iCheck/icheck'
 ], function($, Wrapper) {
 
     return Wrapper("icheck", undefined, arguments, undefined);

@@ -21,6 +21,7 @@ define([
     'jquery',
     'ember',
     'ember-data',
+    'app/application',
     'app/lib/factories/widget',
     'app/mixins/pagination',
     'app/mixins/inspectablearray',
@@ -38,17 +39,17 @@ define([
     'app/lib/utils/routes',
     'app/lib/utils/forms',
     'app/mixins/foldablelistlinemixin',
+    'app/controller/listline',
+    'app/view/listline',
     'app/lib/loaders/schemas',
     'app/adapters/event',
     'app/adapters/userview',
     'canopsis/core/lib/wrappers/ember-cloaking',
-    'app/view/listline',
     'app/lib/wrappers/datatables',
     'app/lib/loaders/components',
-    'contextmenu',
     'app/adapters/group',
-], function($, Ember, DS, WidgetFactory, PaginationMixin, InspectableArrayMixin,
-        ArraySearchMixin, SortableArrayMixin, HistoryMixin, AckMixin, InfobuttonMixin, SendEventMixin, CustomFilterManagerMixin, UserConfigurationMixin, DraggableColumnsMixin, utils, domUtils, routesUtils, formsUtils, FoldableListLineMixin) {
+], function($, Ember, DS, Application, WidgetFactory, PaginationMixin, InspectableArrayMixin,
+        ArraySearchMixin, SortableArrayMixin, HistoryMixin, AckMixin, InfobuttonMixin, SendEventMixin, CustomFilterManagerMixin, UserConfigurationMixin, DraggableColumnsMixin, utils, domUtils, routesUtils, formsUtils, FoldableListLineMixin, ListlineController) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -138,6 +139,9 @@ define([
             viewMixins: [
                 ListViewMixin
             ],
+
+            //TODO test if this is needed (used in cloaked mode)
+            listlineControllerClass: Application.ListlineController,
 
             actions: {
                 sendDisplayRecord: function (dest, record) {

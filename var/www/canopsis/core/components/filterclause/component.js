@@ -91,38 +91,38 @@ define([
             },
 
             validateClause: function(thisElement) {
-                var inputValue = this.get('content.value');
-                var inputKey = this.get('content.key');
+                var inputValue = get(this, 'content.value');
+                var inputKey = get(this, 'content.key');
 
                 var andClausePart = thisElement.templateData.keywords.andClausePart;
 
                 console.log("focusOutInput", arguments);
                 if (inputValue !== undefined && inputValue !== null && inputValue !== '') {
-                    var clauses = this.get('clauses');
-                    var currentClauseIndex = this.get('currentClauseIndex');
+                    var clauses = get(this, 'clauses');
+                    var currentClauseIndex = get(this, 'currentClauseIndex');
 
                     if (currentClauseIndex >= 0 && this.keyIsValid(inputKey, andClausePart)) {
                         var currentClause = clauses.objectAt(currentClauseIndex);
                         console.log('focusOutInput', currentClause);
-                        this.set('content.value', inputValue);
-                        this.set('content.finalized', true);
-                        this.set('content.filling', false);
+                        set(this, 'content.value', inputValue);
+                        set(this, 'content.finalized', true);
+                        set(this, 'content.filling', false);
 
-                        var wasFinalized = this.get('finalized');
-                        this.set('finalized', true);
+                        var wasFinalized = get(this, 'finalized');
+                        set(this, 'finalized', true);
 
-                        this.get('parent').send('addAndClause', wasFinalized);
+                        get(this, 'parent').send('addAndClause', wasFinalized);
 
-                        this.set('editionMode', false);
+                        set(this, 'editionMode', false);
                     }
                 }
             }
         },
 
         keyIsValid: function(inputValue, andClausePart) {
-            var currentClauseIndex = this.get('currentClauseIndex');
+            var currentClauseIndex = get(this, 'currentClauseIndex');
 
-            var clauses = this.get('clauses');
+            var clauses = get(this, 'clauses');
             var currentClause = clauses.objectAt(currentClauseIndex);
 
             console.log("keyIsValid", inputValue, currentClauseIndex, currentClause, andClausePart);

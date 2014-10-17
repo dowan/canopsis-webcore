@@ -20,7 +20,7 @@
 define([
     'app/lib/factories/wrapper',
     'jquery',
-    'webcore-libs/codemirror/codemirror'
+    'webcore-libs/codemirror/lib/codemirror'
 ], function(Wrapper, $) {
 
     return Wrapper("codemirror", undefined, arguments);

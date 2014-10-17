@@ -27,10 +27,9 @@ define([
             this._super();
             console.debug('initialized list line controller');
         }
-
     });
 
-    Application.ListLineController = controller;
+    Application.ListlineController = controller;
 
     return controller;
 });
