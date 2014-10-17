@@ -17,11 +17,26 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'app/lib/factories/wrapper',
-    'jquery',
-    'webcore-libs/mmenu/js/jquery.mmenu.min.all'
-], function(Wrapper, $) {
+define(['ember'], function(Ember) {
+    var get = Ember.get,
+        set = Ember.set;
 
-    return Wrapper("mmenu", $.fn.mmenu, arguments);
+    var Clause = Ember.Object.extend({
+
+        isLeave: true,
+
+        display: function (){
+            var clause = this;
+            var jsonclause =  {
+                'property': get(clause, 'property'),
+                'operation': get(clause, 'operation.label') + ' (' + get(clause, 'operation.symbol') + ')',
+                'value': get(clause, 'value'),
+            };
+            console.log('build json clause', jsonclause);
+            return jsonclause;
+        }.property(),
+
+    });
+
+    return Clause;
 });

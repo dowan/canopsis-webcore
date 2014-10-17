@@ -44,7 +44,10 @@ var componentsTemplates = [
     'flotchart',
     'progressbar',
     'templateselector',
-    'wrapper'
+    'wrapper',
+    'typedvalue',
+    'listtree',
+    'eventkey'
 ];
 
 var deps = ['ember'];

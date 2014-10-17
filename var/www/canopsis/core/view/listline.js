@@ -36,7 +36,6 @@ define([
 
         init: function() {
             this._super.apply(this, arguments);
-            set(this, 'controller', ListLineController.create());
         },
 
         checkChanged: function() {

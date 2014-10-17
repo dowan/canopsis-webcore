@@ -92,6 +92,8 @@
                                         </a>
                                         <ul class="treeview-menu">
                                             {{#each engineview in controller.enginesviews}}
+                                                {{clog "enginevalue"}}
+                                                {{clog engineview.value}}
                                                 {{#ifUserCanDisplayView engineview.value}}
                                                     <li>
                                                         <a {{action 'showView' engineview.value}}>

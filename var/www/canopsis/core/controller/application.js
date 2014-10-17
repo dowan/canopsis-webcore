@@ -34,7 +34,6 @@ define([
     'app/mixins/consolemanager',
     'app/mixins/promisemanager',
     'app/mixins/notifications',
-    'app/routes/application',
     'utils',
     'app/lib/utils/forms',
     'app/lib/utils/data',
@@ -68,7 +67,6 @@ define([
     ConsolemanagerMixin,
     PromisemanagerMixin,
     NotificationsMixin,
-    ApplicationRoute,
     utils,
     formsUtils,
     dataUtils,
@@ -87,6 +85,8 @@ define([
             return false;
         });
     }
+
+    Application.IndexController = Ember.Controller.extend(Ember.Evented, {});
 
     var controller = PartialslotAbleController.extend(
         SchemamanagerMixin, PromisemanagerMixin, ConsolemanagerMixin, NotificationsMixin, UsermenuMixin, {

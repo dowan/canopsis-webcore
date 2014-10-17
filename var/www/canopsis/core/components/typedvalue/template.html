@@ -1,0 +1,24 @@
+<div class="form-inline">
+    <div class="form-group">
+        {{view Ember.Select
+            content=controller.valuesTypes
+            value=controller.selectedValueType
+            class="form-control"
+        }}
+    </div>
+    <div class="form-group">
+        {{#if controller.useTextField}}
+            {{input type="text" class="form-control" value=controller.content placeholder=controller.placeholder}}
+        {{/if}}
+        {{#if controller.useBoolean}}
+            <button {{bind-attr class=":btn :btn-default controller.content:active"}} {{action controller.switchContentValue}}>
+                {{#if controller.content}}
+                    True
+                {{else}}
+                    False
+                {{/if}}
+            </button>
+        {{/if}}
+
+    </div>
+</div>

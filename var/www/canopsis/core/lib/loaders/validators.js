@@ -35,7 +35,6 @@ for (var i = 0; i < validatorsArray.length; i++) {
 }
 
 define(deps, function(Ember) {
-    console.tags.add('loader');
 
     var validators = {};
     console.log("Begin load validators", arguments);
@@ -47,8 +46,6 @@ define(deps, function(Ember) {
     }
 
     Ember.validators = validators;
-
-    console.tags.remove('loader');
 
     return validators;
 

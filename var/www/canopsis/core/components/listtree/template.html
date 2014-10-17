@@ -1,0 +1,18 @@
+<ul class="jsonUl">
+    <span class="label label-primary">{{content.label}}</span>
+    &nbsp;<span class="glyphicon glyphicon-arrow-right" style="display:inline"></span>
+    <span class="label label-warning">
+        {{#each child in content.leaves}}
+            {{json2html child.display child}}
+            {{#component-tooltip content=child.json2html htmlEnabled=true noTranslation=true}}
+                <button type="button" class="btn btn-default btn-xs">{{child.property}}</button>
+            {{/component-tooltip}}
+        {{/each}}
+        {{#each child in content.notleaves}}
+            <li class="jsonLi">
+                pwoute
+            </li>
+        {{/each}}
+    </span>
+</ul>
+

@@ -16,12 +16,30 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
-define([
-    'app/lib/factories/wrapper',
-    'adminLTElib'
-], function(Wrapper, AdminLteJs) {
 
-    console.log('AdminLTE wrapper', AdminLteJs);
+define(['ember'], function(Ember) {
+    var get = Ember.get,
+        set = Ember.set;
 
-    return Wrapper("AdminLTE", AdminLteJs, arguments, "0.1");
+    var Condition = Ember.Object.extend({
+
+        children: [],
+
+        isLeave: false,
+
+        leaves: function () {
+            var children = get(this, 'children');
+            return children.filterBy('isLeave', true);
+        }.property('children.@each.isLeave'),
+
+        notleaves: function () {
+            var children = get(this, 'children');
+            //testing false value can be error prone as false must be explicitly set in leaves
+            return children.filterBy('isLeave', false);
+        }.property('children.@each.isLeave'),
+
+    });
+
+
+    return Condition;
 });

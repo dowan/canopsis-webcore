@@ -16,12 +16,12 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
+
 define([
     'app/lib/factories/wrapper',
-    'adminLTElib'
-], function(Wrapper, AdminLteJs) {
+    'webcore-libs/jquery/dist/jquery'
+], function(Wrapper) {
 
-    console.log('AdminLTE wrapper', AdminLteJs);
-
-    return Wrapper("AdminLTE", AdminLteJs, arguments, "0.1");
+    Wrapper("jquery", $, arguments, '2.1.1');
+    return $;
 });

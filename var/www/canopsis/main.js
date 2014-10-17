@@ -32,8 +32,6 @@ define([
     'app/adapters/cservice',
     'app/serializers/application',
     'bootstrap',
-    'colorpicker',
-    'gridster',
     'timepicker',
     'app/lib/wrappers/console',
     'app/lib/loaders/editors',
@@ -57,5 +55,4 @@ define([
     Application.connector = [ { name : "nagios" }, { name : "shinken" } , { name : "schneider" } , { name : "collectd" }];
 
     Application.manifest = routes;
-
 });

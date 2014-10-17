@@ -19,7 +19,7 @@
 
 define([
     'app/lib/factories/wrapper',
-    'webcore-libs/swag/swag'
+    'webcore-libs/swag/lib/swag'
 ], function(Wrapper) {
     Swag.registerHelpers();
     return Wrapper("swag", Swag, undefined, "0.7.0");

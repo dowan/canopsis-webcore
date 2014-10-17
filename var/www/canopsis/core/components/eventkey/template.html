@@ -1,0 +1,24 @@
+<div class="form-group">
+    <div class="form-inline">
+        <div class="form-group">
+            {{view Ember.Select
+                content=modes
+                value=selectedMode
+                class="form-control"
+            }}
+        </div>
+        <div class="form-group">
+            {{#if useTextField}}
+                {{input type="text" class="form-control" value=content placeholder=placeholder}}
+            {{/if}}
+            {{#if useList}}
+                <div class="btn-group">
+                    {{#each field in selectableProperties}}
+                        <button type="button" class="btn btn-default btn-sm" {{action 'setProperty' field}}>{{tr field}}</button>
+                    {{/each}}
+                </div>
+            {{/if}}
+
+        </div>
+    </div>
+</div>

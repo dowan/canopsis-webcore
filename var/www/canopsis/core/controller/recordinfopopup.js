@@ -32,7 +32,7 @@ define([
         title:__('Information'),
 
         init: function () {
-            console.debug('initilizing recordinfopopup controller');
+            console.log('initilizing recordinfopopup controller');
         },
 
 
@@ -51,16 +51,16 @@ define([
 
                 set(this, 'content', new Ember.Handlebars.SafeString(html));
 
-                var left = ($(window).width() - $("#recordinfopopup").outerWidth()) / 2;
-                $("#recordinfopopup").css("left", left);
+                var left = ($(window).width() - $('#recordinfopopup').outerWidth()) / 2;
+                $('#recordinfopopup').css('left', left);
 
-                $("#recordinfopopup").fadeIn(500);
+                $('#recordinfopopup').fadeIn(500);
 
             },
 
             hide: function() {
-                console.log("hiding recordinfopopup");
-                $("#recordinfopopup").fadeOut(500);
+                console.log('hiding recordinfopopup');
+                $('#recordinfopopup').fadeOut(500);
             },
         }
 

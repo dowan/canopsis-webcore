@@ -61,7 +61,7 @@ define([
             return [
                 {name: 'component', title: 'Component'},
                 {name: 'resource', title: 'Resource'},
-                {name: 'data_id', title: 'Metric'},
+                {name: 'cid', title: 'Metric'},
                 {
                     action: 'select',
                     actionAll: 'selectAll',
@@ -75,7 +75,7 @@ define([
             return [
                 {name: 'component', title: 'Component'},
                 {name: 'resource', title: 'Resource'},
-                {name: 'data_id', title: 'Metric'},
+                {name: 'cid', title: 'Metric'},
                 {
                     action: 'unselect',
                     actionAll: 'unselectAll',
@@ -126,7 +126,7 @@ define([
             var patterns = {
                 component: [],
                 resource: [],
-                data_id: []
+                cid: []
             };
 
             for(i = 0; i < conditions.length; i++) {
@@ -142,10 +142,10 @@ define([
                         patterns.resource.push(regex);
                     }
                     else if(condition.indexOf('me:') === 0) {
-                        patterns.data_id.push(regex);
+                        patterns.cid.push(regex);
                     }
                     else {
-                        patterns.data_id.push(condition);
+                        patterns.cid.push(condition);
                     }
                 }
             }
@@ -154,7 +154,7 @@ define([
             var filters = {
                 component: {'$or': []},
                 resource: {'$or': []},
-                data_id: {'$or': []}
+                cid: {'$or': []}
             };
 
             for(var key in filters) {

@@ -16,12 +16,24 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
+
 define([
-    'jquery',
-    'app/lib/factories/wrapper',
-    'webcore-libs/bootstrap-contextmenu/bootstrap-contextmenu'
-], function($, Wrapper) {
+    'ember',
+    'app/application',
+    'app/lib/wrappers/bootstrap'
+], function(Ember, Application) {
 
-    return Wrapper("bootstrap-contextmenu", undefined, arguments, undefined);
+    var get = Ember.get,
+        set = Ember.set;
 
+    var component = Ember.Component.extend({
+
+        didInsertElement: function() {
+
+        }
+    });
+
+    Application.ComponentListtreeComponent = component;
+
+    return component;
 });

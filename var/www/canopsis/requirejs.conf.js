@@ -1,5 +1,5 @@
 require.config({
-    waitSeconds: 20,
+    waitSeconds: 40,
     baseUrl: '/static/',
     paths: {
         'app': 'canopsis/core',
@@ -7,42 +7,33 @@ require.config({
         'schemas': 'canopsis/schemas',
         'etc': 'canopsis/etc',
         'lib': 'webcore-libs/dev',
-        'text': 'webcore-libs/dev/text',
-        'jquery': 'webcore-libs/dev/jquery-1.10.2',
+        'text': 'webcore-libs/requirejs-text/text',
+        'jquery': 'canopsis/core/lib/wrappers/jquery',
         'plugins': 'webcore-libs/plugins/plugin',
         'consolejs': 'webcore-libs/console.js/console',
         'ember-cloaking': 'canopsis/core/lib/wrappers/ember-cloaking',
-        'codemirror': 'webcore-libs/codemirror/codemirror',
-        'colorpicker': 'webcore-libs/colorpicker/js/spectrum',
-        'colorselector': 'webcore-libs/colorselector/js/bootstrap-colorselector',
+        'codemirror': 'webcore-libs/codemirror/lib/codemirror',
         'seeds': 'webcore-libs/seeds',
         'jquery.encoding.digests.sha1': 'webcore-libs/jQuery.encoding.digests.sha1',
         'jquery.md5': 'webcore-libs/jquery.md5',
-        'handlebars': 'webcore-libs/dev/handlebars-v1.3.0',
+        'handlebars': 'webcore-libs/handlebars/handlebars',
         'ember': 'canopsis/core/lib/wrappers/ember',
-        'mmenu': 'canopsis/core/lib/wrappers/mmenu',
         'jsonselect': 'canopsis/core/lib/wrappers/jsonselect',
-        'gridster': 'webcore-libs/dev/gridster/jquery.gridster',
-        'timepicker': 'webcore-libs/dev/timepicker/bootstrap-datetimepicker.min',
-        'moment': 'webcore-libs/dev/moment-with-langs.min',
+        'timepicker': 'webcore-libs/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min',
+        'moment': 'webcore-libs/moment/min/moment-with-locales.min',
         'ember-data': 'canopsis/core/lib/wrappers/ember-data',
-        'ember-listview': 'webcore-libs/dev/ember-list-view',
-        'ember-widgets': 'webcore-libs/ember-widgets/js/ember-widgets',
-        'bootstrap': 'webcore-libs/bootstrap/current/js/bootstrap.min',
-        'daterangepicker': 'webcore-libs/dev/daterangepicker',
-        'jqueryui': 'webcore-libs/dev/jquery-ui-1.10.3',
-        'bootbox': 'webcore-libs/dev/bootbox',
-        'icheck': 'webcore-libs/icheck/icheck',
-        'jquerydatatables': 'webcore-libs/dev/jquery.dataTables',
-        'bootstrapdatatables': 'webcore-libs/dev/dataTables.bootstrap',
-        'colreorder': 'webcore-libs/dev/ColReorder',
-        'adminLTElib': 'webcore-libs/dev/AdminLTE',
+        'ember-listview': 'webcore-libs/ember-list-view/list-view',
+        'ember-widgets': 'webcore-libs/ember-widgets/js/ember-widgets', //TODO nuke this
+        'bootstrap': 'webcore-libs/bootstrap/dist/js/bootstrap.min',
+        'daterangepicker': 'webcore-libs/bootstrap-daterangepicker/daterangepicker',
+        'jqueryui': 'webcore-libs/jquery-ui/jquery-ui.min',
+        'icheck': 'webcore-libs/iCheck/icheck',
+        'adminLTElib': 'webcore-libs/dev/AdminLTE', //TODO make a bower package for this
         'adminLTE': 'canopsis/core/lib/wrappers/adminLTE',
         'utils': 'canopsis/core/lib/loaders/utils',
-        'lodash': 'webcore-libs/dev/lodash.compat',
+        'lodash': 'webcore-libs/lodash/dist/lodash.compat',
         'css3-mediaqueries': 'webcore-libs/min/css3-mediaqueries',
-        'math': 'webcore-libs/dev/math',
-        'contextmenu': 'canopsis/core/lib/wrappers/bootstrap-contextmenu',
+        'math': 'webcore-libs/mathjs/dist/math',
         'dragtable': 'webcore-libs/dev/dragtable',
 
         'flotchart': 'webcore-libs/flot/jquery.flot',
@@ -60,7 +51,6 @@ require.config({
         'flotchart-symbol': 'webcore-libs/flot/jquery.flot.symbol',
         'flotchart-threshold': 'webcore-libs/flot/jquery.flot.threshold',
         'flotchart-time': 'webcore-libs/flot/jquery.flot.time'
-
     },
 
     shim: {
@@ -80,20 +70,8 @@ require.config({
             deps: ['jquery']
         },
 
-        'bootbox': {
-            deps: ['jquery', 'bootstrap']
-        },
-
-        'jquerydatatables': {
-            deps: ['jquery']
-        },
-
         'icheck': {
             deps: ['jquery']
-        },
-
-        'bootstrapdatatables': {
-            deps: ['jquery', 'jquerydatatables']
         },
 
         'jqueryui': {
@@ -125,14 +103,6 @@ require.config({
         },
 
         'bootstrap': {
-            deps: ['jquery']
-        },
-
-        'colorpicker': {
-            deps: ['jquery']
-        },
-
-        'gridster': {
             deps: ['jquery']
         },
 
@@ -202,7 +172,11 @@ require.config({
     }
 });
 
-if (navigator.appName.indexOf('Internet Explorer') !== -1) {
+
+window.isIE = navigator.appName.indexOf('Internet Explorer') !== -1;
+
+if (isIE) {
+
     //this force console to use log method for early loaded
     //modules that could use other console methods.
     console.group = function () {};
@@ -210,6 +184,15 @@ if (navigator.appName.indexOf('Internet Explorer') !== -1) {
     console.debug = console.log;
     console.warning = console.log;
     console.error = console.log;
+    console.tags = {
+        add: function() {},
+        remove: function () {}
+    };
+
+    console.settings = {
+        save: function() {}
+    };
+
 }
 
 define([
@@ -221,3 +204,5 @@ define([
 ], function () {
     require(['canopsis/main']);
 });
+
+
