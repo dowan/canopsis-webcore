@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # --------------------------------
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
 #
@@ -18,490 +18,296 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-from logging import getLogger, INFO
-from json import loads
+from bottle import get, post, put, delete, HTTPError, response
+from canopsis.common.ws import route
 
-from bottle import get, put, delete, request, HTTPError, post, response
-## Canopsis
-from canopsis.old.account import Account
-from canopsis.old.storage import get_storage
+from canopsis.common.utils import ensure_iterable
 from canopsis.old.record import Record
+
 from base64 import b64decode
-
-#import protection function
-from canopsis.webcore.services.auth import get_account, check_group_rights
-
-logger = getLogger("rest")
-logger.setLevel('DEBUG')
-db = get_storage(account=Account(user='root', group='root'))
-
-ctype_to_group_access = {
-                            'schedule': 'group.CPS_schedule_admin',
-                            'curve': 'group.CPS_curve_admin',
-                            'account': 'group.CPS_account_admin',
-                            'group': 'group.CPS_account_admin',
-                            'selector': 'group.CPS_selector_admin',
-                            'derogation': 'group.CPS_derogation_admin',
-                            'consolidation': 'group.CPS_consolidation_admin'
-                        }
+import json
 
 
-@get('/rest/indexes/:collection')
-def rest_get_db_indexes(collection):
+def get_records(ws, namespace, ctype=None, _id=None, **params):
+    options = {
+        'limit': 20,
+        'start': 0,
+        'search': None,
+        'filter': None,
+        'sort': None,
+        'query': None,
+        'onlyWritable': False,
+        'noInternal': False,
+        'ids': [],
+        'multi': None,
+        'fields': {}
+    }
 
-    storage = get_storage(
-        namespace=collection, logging_level=logger.level
-        ).get_backend()
+    for key in options.keys():
+        options[key] = params.get(key, default=options[key])
 
-    indexes = storage.index_information()
+    # Ensure sort always evaluates to list
+    sort = options['sort']
 
-    logger.info('Get indexes from collection {}'.format(collection))
-
-    return {'collection': collection, 'indexes': indexes}
-
-
-@get('/rest/media/:namespace/:_id')
-def rest_get_media(namespace, _id):
-    account = get_account()
-    storage = get_storage(namespace=namespace, logging_level=logger.level)
-
-    logger.debug("Get media '%s' from '%s':" % (_id, namespace))
-
-    try:
-        raw = storage.get(_id, account=account, namespace=namespace,
-                          mfields=["media_bin", "media_name", "media_type"],
-                          ignore_bin=False)
-
-        media_type = raw.get('media_type', None)
-        media_name = raw.get('media_name', None)
-        media_bin = raw.get('media_bin', None)
-
-    except Exception as err:
-        logger.error(err)
-        return HTTPError(404, err)
-
-    if not media_type or not media_name or not media_bin:
-        logger.error("Insufficient field in record")
-        return HTTPError(404, "Insufficient field in record")
-
-    logger.debug(" + media_type: %s" % media_type)
-    logger.debug(" + media_name: %s" % media_name)
-    logger.debug(" + media_bin:  %s" % len(media_bin))
-
-    response.headers['Content-Disposition'] = 'attachment; filename="%s"' % media_name
-    response.headers['Content-Type'] = media_type
-
-    return b64decode(media_bin)
-
-
-@get('/rest/events_trees/:rk')
-@get('/rest/events_trees')
-def rest_trees_get(rk=None):
-    """
-        REST API Handler to get events trees.
-    """
-
-    account = get_account()
-    storage = get_storage(
-        logging_level=INFO, namespace='events_trees', account=account
-        )
-
-    if not rk:
-        logger.debug('Getting whole collection.')
-
-        records = storage.find()
-
-        return {
-            'total': len(records),
-            'success': True,
-            'data': [r.dump() for r in records]
-        }
+    if not sort:
+        sort = []
 
     else:
-        logger.debug("Getting tree matching rk '{0}'".format(rk))
+        sort = ensure_iterable(sort)
 
-        # Get Routing Key components
-        rkcomps = rk.split('.')
+    # Generate MongoDB sorting query
+    msort = [
+        (
+            item['property'],
+            1 if item['direction'] == 'DESC' else -1
+        )
+        for item in sort
+    ]
 
-        # Fetch root tree
-        record = storage.find_one(mfilter={'rk': rkcomps[0]})
-
-        if not record:
-            logger.error('No matching root node for rk {0}'.format(rk))
-            return HTTPError(
-                404, "There is no events tree matching the routing key"
-                )
-
-        # Now go to the matching node
-        tree = record.dump(json=True)
-
-        if rk == tree['rk']:
-            return {
-                'total': 1,
-                'success': True,
-                'data': tree
-            }
-
-        current_node = tree
-        current_rk = rkcomps[0]
-
-        for rkcomp in rkcomps[1:]:
-            current_rk = '{0}.{1}'.format(current_rk, rkcomp)
-
-            # Find the node in the children list
-            for child in current_node['child_nodes']:
-                if child['rk'] == current_rk:
-                    current_node = child
-                    break
-
-            # If not found, raise an error
-            else:
-                logger.error('No matching node for rk {0}'.format(rk))
-                return HTTPError(
-                    404, "There is no events tree matching the routing key"
-                    )
-
-        # Return the sub-tree
-        return {
-            'total': 1,
-            'success': True,
-            'data': current_node
-        }
-
-
-def rest_get(namespace, ctype=None, _id=None, params=None):
-    #get the session (security)
-    account = get_account()
-    logger.debug('params')
-
-    logger.debug(dict(params))
-    limit = int(params.get('limit', default=20))
-    start = int(params.get('start', default=0))
-    groups = params.get('groups', default=None)
-    search = params.get('search', default=None)
-    filter = params.get('filter', default=None)
-    sort = params.get('sort', default=None)
-    query = params.get('query', default=None)
-    onlyWritable = params.get('onlyWritable', default=False)
-    noInternal = params.get('noInternal', default=False)
-    ids = params.get('ids', default=[])
-    multi = params.get('multi', default=None)
-
-    get_id = request.params.get('_id', default=None)
-
-    fields = request.params.get('fields', default=None)
-
-    if not _id and get_id:
-        _id = get_id
-
-    if not isinstance(ids, list):
-        try:
-            ids = loads(ids)
-        except Exception as err:
-            logger.error("Impossible to decode ids: %s: %s" % (ids, err))
-
-    if filter:
-        try:
-            filter = loads(filter)
-        except Exception as err:
-            logger.error("Impossible to decode filter: %s: %s" % (filter, err))
-            filter = None
-
-    msort = []
-    if sort:
-        #[{"property":"timestamp","direction":"DESC"}]
-        sort = loads(sort)
-        for item in sort:
-            direction = 1
-            if str(item['direction']) == "DESC":
-                direction = -1
-
-            msort.append((str(item['property']), direction))
-
-    logger.debug("GET:")
-
-    logger.debug(" + User: " + str(account.user))
-    logger.debug(" + Group(s): " + str(account.groups))
-    logger.debug(" + namespace: " + str(namespace))
-    logger.debug(" + Ctype: " + str(ctype))
-    logger.debug(" + _id: " + str(_id))
-    logger.debug(" + ids: " + str(ids))
-    logger.debug(" + Limit: " + str(limit))
-    logger.debug(" + Start: " + str(start))
-    logger.debug(" + Groups: " + str(groups))
-    logger.debug(" + onlyWritable: " + str(onlyWritable))
-    logger.debug(" + Sort: " + str(sort))
-    logger.debug(" + MSort: " + str(msort))
-    logger.debug(" + Search: " + str(search))
-    logger.debug(" + filter: " + str(filter))
-    logger.debug(" + query: " + str(query))
-    logger.debug(" + multi: " + str(multi))
-
-    storage = get_storage(namespace=namespace, logging_level=logger.level)
-
-    total = 0
-
+    # Generate MongoDB filter
     mfilter = {}
-    if isinstance(filter, list):
-        for item in filter:
+
+    if isinstance(options['filter'], list):
+        for item in options['filter']:
             mfilter[item['property']] = item['value']
 
-    elif isinstance(filter, dict):
-        mfilter = filter
+    elif isinstance(options['filter'], dict):
+        mfilter = options['filter']
 
+    if options['multi']:
+        mfilter['crecord_type'] = {
+            '$in': options['multi'].split(',')
+        }
+
+    elif ctype:
+        mfilter['crecord_type'] = ctype
+
+    if options['query']:
+        # FIXME: bad query can't be indexed
+        mfilter['crecord_name'] = {
+            '$regex': '.*{0}.*'.format(options['query']),
+            '$options': 'i'
+        }
+
+    if options['search']:
+        # FIXME: bad query can't be indexed
+        mfilter['_id'] = {
+            '$regex': '.*{0}.*'.format(options['search']),
+            '$options': 'i'
+        }
+
+    ids = options['ids'] if not _id else _id.split(',')
+
+    # Perform query
+    total = 0
     records = []
-    if multi:
-        test = multi.split(',')
-        mfilter["crecord_type"] = {'$in': test}
 
-    else:
-        if ctype:
-            if mfilter:
-                mfilter['crecord_type'] = ctype
-            else:
-                mfilter = {'crecord_type': ctype}
-
-    if query:
-        if mfilter:
-            mfilter['crecord_name'] = {'$regex': '.*%s.*' % query,
-            '$options': 'i'}
-        else:
-            mfilter = {'crecord_name':
-            {'$regex': '.*%s.*' % query, '$options': 'i'}}
-
-    if _id:
-        ids = _id.split(',')
-
-    if ids:
+    if len(ids) > 0:
         try:
-            records = storage.get(ids, account=account)
-            if isinstance(records, Record):
-                records = [records]
-                total = 1
-            elif isinstance(records, list):
-                total = len(records)
-            else:
-                total = 0
-        except Exception as err:
-            logger.debug('Error: %s' % err)
+            records = ws.db.get(ids, namespace=namespace)
+
+        except KeyError:
+            records = []
+
+        if isinstance(records, Record):
+            records = [records]
+            total = 1
+
+        elif isinstance(records, list):
+            total = len(records)
+
+        else:
             total = 0
 
         if total == 0:
-            return HTTPError(404, str(ids) + " Not Found")
+            return HTTPError(404, 'IDs not found: {0}'.format(ids))
 
     else:
-        if search:
-            mfilter['_id'] = {'$regex': '.*%s.*' % search, '$options': 'i'}
+        records, total = ws.db.find(
+            mfilter,
+            sort=msort,
+            limit=options['limit'],
+            offset=options['start'],
+            with_total=True,
+            namespace=namespace
+        )
 
-        logger.debug(" + mfilter: " + str(mfilter))
-        logger.debug(" + mfilter: " + str(mfilter))
-
-        #clean mfilter
-        #mfilter = clean_mfilter(mfilter)
-
-        records, total = storage.find(
-            mfilter, sort=msort, limit=limit, offset=start, account=account,
-            with_total=True, namespace=namespace)
-
+    # Generate output
     output = []
+    noInternal = options['noInternal']
 
-    #----------------dump record and post filtering-------
     for record in records:
         if record:
-            do_dump = True
+            # TODO: make use of onlyWritable
+            # This can be done with canopsis.old.account, but the goal is to
+            # use the new permissions/rights system to do it.
 
-            if onlyWritable:
-                if not record.check_write(account=account):
-                    do_dump = False
+            dump = record.data.get('internal', False) if noInternal else True
 
-            if noInternal:
-                if 'internal' in record.data and record.data['internal']:
-                    do_dump = False
-
-            if do_dump:
+            if dump:
                 data = record.dump(json=True)
                 data['id'] = data['_id']
+
                 if 'next_run_time' in data:
                     data['next_run_time'] = str(data['next_run_time'])
 
-                #Clean non wanted field
-                if fields:
-                    fields_to_delete = []
-                    for item in data:
-                        if not item in fields:
-                            fields_to_delete.append(item)
-                    for field in fields_to_delete:
-                        del data[field]
+                # TODO: Handle projection in ws.db.find()
+                if options['fields']:
+                    for item in data.keys():
+                        if item not in options['fields']:
+                            del data[item]
 
                 output.append(data)
 
-    output = {'total': total, 'success': True, 'data': output}
-
-    return output
+    return output, total
 
 
-@get('/rest/:namespace/:ctype/:_id')
-@get('/rest/:namespace/:ctype')
-@get('/rest/:namespace')
-def rest_get_route(namespace, ctype=None, _id=None):
-    return rest_get(namespace, ctype, _id, request.params)
+def exports(ws):
+    @route(get, name='rest/indexes', response=lambda r: r)
+    def indexes(collection):
+        storage = ws.db.get_backend(collection)
+        indexes = storage.index_information()
 
+        return {'collection': collection, 'indexes': indexes}
 
-@put('/rest/:namespace/:ctype/:_id')
-@put('/rest/:namespace/:ctype')
-@post('/rest/:namespace/:ctype/:_id')
-@post('/rest/:namespace/:ctype')
-def rest_post(namespace, ctype, _id=None):
-    #get the session (security)
-    account = get_account()
-    storage = get_storage(namespace=namespace, logging_level=logger.level)
-
-    #check rights on specific ctype (check ctype_to_group_access variable below)
-    if ctype in ctype_to_group_access:
-        if not check_group_rights(account, ctype_to_group_access[ctype]):
-            return HTTPError(403, 'Insufficient rights')
-
-    logger.debug("POST:")
-
-    items = request.body.readline()
-    if not items:
-        return HTTPError(400, "No data received")
-
-    logger.debug(" + data: %s" % items)
-    logger.debug(" + data-type: %s" % type(items))
-
-    if isinstance(items, str):
+    @route(get, name='rest/media', response=lambda r: r)
+    def media(namespace, _id):
         try:
-            items = loads(items)
-        except Exception as err:
-            logger.error("PUT: Impossible to parse data ({})".format(err))
-            return HTTPError(500, "Impossible to parse data")
+            raw = ws.db.get(
+                _id,
+                namespace=namespace,
+                mfields=[
+                    'media_bin',
+                    'media_name',
+                    'media_type'
+                ],
+                ignore_bin=False
+            )
 
-    if not isinstance(items, list):
-        items = [items]
+        except KeyError as err:
+            return HTTPError(404, str(err))
 
-    for data in items:
-    ##  data['crecord_type'] = ctype
+        try:
+            media_type = raw['media_type']
+            media_name = raw['media_name']
+            media_bin = raw['media_bin']
 
-        if not _id:
-            _id = data.get('_id', None)
+        except KeyError as err:
+            return HTTPError(500, str(err))
 
-            if not _id:
-                _id = data.get('id', None)
+        cdisp = 'attachment; filename="{0}"'.format(media_name)
+        response.headers['Content-Disposition'] = cdisp
+        response.headers['Content-Type'] = media_type
 
+        return b64decode(media_bin)
+
+    @route(get, payload=[
+        'limit',
+        'start',
+        'search',
+        'filter',
+        'sort',
+        'query',
+        'onlyWritable',
+        'noInternal',
+        'ids',
+        'multi',
+        'fields'
+    ])
+    def rest(namespace, ctype=None, _id=None, **params):
+        return get_records(ws, namespace, ctype=ctype, _id=_id, **params)
+
+    @route(put, raw_body=True)
+    @route(post, raw_body=True)
+    def rest(namespace, ctype, _id=None, body=None):
+        if not body:
+            body = '[]'
+
+        else:  # body is a File-like object
+            body = body.readline() or '[]'
+
+        try:
+            items = ensure_iterable(json.loads(body))
+
+        except ValueError as err:
+            return HTTPError(500, 'Impossible to parse body: {0}'.format(err))
+
+        for data in items:
+            m_id = data.pop('_id', None)
+            mid = data.pop('id', None)
+            _id = m_id or mid
+
+            record = None
+
+            # Try to fetch existing record for update
             if _id:
-                _id = str(_id)
+                try:
+                    record = ws.db.get(_id, namespace=namespace)
 
-        ## Clean data
-        try:
-            del data['_id']
-        except:
-            pass
+                except KeyError:
+                    pass  # record is None here
 
-        try:
-            del data['id']
-        except:
-            pass
+            if record:
+                for key in data.keys():
+                    record.data[key] = data[key]
 
-        logger.debug(" + _id:   %s" % _id)
-        logger.debug(" + ctype: %s" % ctype)
-        logger.debug(" + Data:  %s" % data)
+                record.name = data.get('crecord_name', record.name)
 
-        ## Set group
-        if 'aaa_group' in data:
-            group = data['aaa_group']
-        else:
-            group = account.group
+            else:
+                record = Record(_id=_id, data=data, _type=ctype)
 
-        record = None
-        if _id:
             try:
-                record = storage.get(_id, account=account)
-                logger.debug('Update record %s' % _id)
-            except:
-                logger.debug('Create record %s' % _id)
+                ws.db.put(record, namespace=namespace)
 
-        if record:
-            for key in dict(data).keys():
-                record.data[key] = data[key]
+            except Exception as err:
+                return HTTPError(500, 'Impossible to save record: {0}'.format(
+                    err
+                ))
 
-            # Update Name
-            try:
-                record.name = data['crecord_name']
-            except:
-                pass
+    @route(delete, raw_body=True)
+    def rest(namespace, ctype, _id=None, body=None):
+        if not body:
+            body = '[]'
 
-        else:
-            raw_record = Record(_id=_id, _type=str(ctype)).dump()
-            logger.debug(' + raw_record: %s' % raw_record)
+        else:  # body is a File-like object
+            body = body.readline() or '[]'
 
-            #logger.debug(' + _id: %s (%s)' % (raw_record['_id'], type(raw_record['_id'])))
-
-            for key in dict(data).keys():
-                raw_record[key] = data[key]
-
-            record = Record(raw_record=raw_record)
-            logger.debug(' + dump record: %s' % record.dump())
-
-            record.chown(account.user)
-            record.chgrp(group)
-            #if ctype in ctype_to_group_access:
-                #record.admin_group = ctype_to_group_access[ctype]
-
-        logger.debug(' + Record: %s' % record.dump())
         try:
-            storage.put(record, namespace=namespace, account=account)
+            data = json.loads(body)
 
-        except Exception as err:
-            logger.error('Impossible to put ({})'.format(err))
-            return HTTPError(403, "Access denied")
-
-
-@delete('/rest/:namespace/:ctype/:_id')
-@delete('/rest/:namespace/:ctype')
-def rest_delete(namespace, ctype, _id=None):
-    account = get_account()
-    storage = get_storage(namespace=namespace, logging_level=logger.level)
-
-    logger.debug("DELETE:")
-
-    data = request.body.readline()
-    if data:
-        try:
-            data = loads(data)
-        except:
-            logger.warning('Invalid data in request payload')
+        except ValueError as err:
             data = None
 
-    if data:
-        logger.debug(" + Data: %s" % data)
+        if data:
+            if isinstance(data, list):
+                ids = []
 
-        if isinstance(data, list):
-            logger.debug(" + Attempt to remove %i item from db" % len(data))
-            _id = []
+                for item in data:
+                    if isinstance(item, basestring):
+                        ids.append(item)
 
-            for item in data:
-                if isinstance(item, str):
-                    _id.append(item)
+                    elif isinstance(item, dict):
+                        item_id = item.get('_id', item.get('id', None))
 
-                if isinstance(item, dict):
-                    item_id = item.get('_id', item.get('id', None))
-                    if item_id:
-                        _id.append(item_id)
+                        if item_id:
+                            ids.append(item_id)
 
-        if isinstance(data, str):
-            _id = data
+            elif isinstance(data, str):
+                ids = data
 
-        if isinstance(data, dict):
-            _id = data.get('_id', data.get('id', None))
+            elif isinstance(data, dict):
+                ids = data.get('_id', data.get('id', None))
 
-    if not _id:
-        logger.error("DELETE: No '_id' field in header ...")
-        return HTTPError(404, "No '_id' field in header ...")
+        elif _id:
+            ids = [_id]
 
-    logger.debug(" + _id: %s" % _id)
+        else:
+            return HTTPError(400, 'Missing ids in request')
 
-    try:
-        storage.remove(_id, account=account)
-    except:
-        return HTTPError(404, _id + " Not Found")
+        try:
+            ws.db.remove(ids, namespace=namespace)
+
+        except Exception as err:
+            return HTTPError(500, 'Impossible to remove documents: {0}'.format(
+                err
+            ))

@@ -32,14 +32,15 @@ def exports(ws):
     def index(lang='en'):
         return static_file('canopsis/index.html', root=ws.root_directory)
 
-    @get('/:lang/static/:path#.+#', skip=ws.skip_login)
-    @get('/static/:path#.+#', skip=ws.skip_login)
-    def server_static(path, lang='en'):
+    @get('/:lang/static/<filename:path>', skip=ws.skip_login)
+    @get('/static/<filename:path>', skip=ws.skip_login)
+    def server_static(filename, lang='en'):
         key = request.params.get('authkey', default=None)
+
         if key:
             auth.autoLogin(key)
 
-        return static_file(path, root=ws.root_directory)
+        return static_file(filename, root=ws.root_directory)
 
     @get('/favicon.ico', skip=ws.skip_login)
     def favicon():

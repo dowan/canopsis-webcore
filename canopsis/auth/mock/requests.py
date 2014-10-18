@@ -1,5 +1,6 @@
+#!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
-#--------------------------------
+# --------------------------------
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
 #
 # This file is part of Canopsis.
@@ -18,6 +19,15 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-# attach this project to canopsis package
-from pkgutil import extend_path
-__path__ = extend_path(__path__, __name__)
+"""
+    Mock for requests module.
+"""
+
+
+class Response:
+    status_code = 200
+    content = None
+
+
+def get(self, url):
+    return Response()

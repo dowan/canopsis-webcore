@@ -22,7 +22,7 @@ import gevent
 from gevent import monkey
 monkey.patch_all()
 
-from bottle import default_app as BottleApplication, request, HTTPError
+from bottle import default_app as BottleApplication, HTTPError
 from beaker.middleware import SessionMiddleware
 import mongodb_beaker  # needed by beaker
 
@@ -35,6 +35,7 @@ from canopsis.common.utils import setdefaultattr
 # TODO: replace with canopsis.mongo.MongoStorage
 from canopsis.old.storage import get_storage
 from canopsis.old.account import Account
+from canopsis.old.rabbitmq import Amqp
 
 from signal import SIGTERM, SIGINT
 
@@ -181,11 +182,14 @@ class WebServer(Configurable):
 
         # TODO: Replace with MongoStorage
         self.db = get_storage(account=Account(user='root', group='root'))
+        self.amqp = Amqp()
         self.stopping = False
 
     def __call__(self):
         gevent.signal(SIGTERM, self.exit)
         gevent.signal(SIGINT, self.exit)
+
+        self.amqp.start()
 
         self.app = BottleApplication()
         self.load_webservices()
@@ -299,6 +303,9 @@ class WebServer(Configurable):
             self.unload_session()
             self.unload_auth_backends()
             self.unload_webservices()
+
+            self.amqp.stop()
+            # TODO: self.amqp.wait() not implemented
 
             sys.exit(0)
 
