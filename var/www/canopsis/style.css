@@ -66,6 +66,11 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
 	display: block;
 }
 
+.canopsis-toolbar {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
 .canopsis-icon {
 	display: inline-block;
 	margin: auto;

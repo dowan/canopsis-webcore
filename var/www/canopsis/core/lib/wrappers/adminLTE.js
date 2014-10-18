@@ -18,8 +18,7 @@
 */
 define([
     'app/lib/factories/wrapper',
-    'adminLTElib',
-    'webcore-libs/dev/plugins/AdminLTE/app'
+    'adminLTElib'
 ], function(Wrapper, AdminLteJs) {
 
     console.log('AdminLTE wrapper', AdminLteJs);

@@ -16,12 +16,12 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
+
 define([
-    'jquery',
     'app/lib/factories/wrapper',
-    'webcore-libs/bootstrap-contextmenu/bootstrap-contextmenu'
-], function($, Wrapper) {
+    'webcore-libs/jquery/dist/jquery'
+], function(Wrapper) {
 
-    return Wrapper("bootstrap-contextmenu", undefined, arguments, undefined);
-
+    Wrapper("jquery", $, arguments, '2.1.1');
+    return $;
 });

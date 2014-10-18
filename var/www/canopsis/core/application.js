@@ -21,9 +21,10 @@ define([
     'ember',
     'ember-data',
     //FIXME: why does it work only here ?
+    'webcore-libs/requirejs-domready/domReady',
     'ember-widgets',
     'jsonselect'
-], function(Ember, DS) {
+], function(Ember, DS, domReady) {
 
     var Application = Ember.Application.create({
         LOG_ACTIVE_GENERATION: false,
@@ -34,6 +35,8 @@ define([
         rootElement: '#applicationdiv'
     });
 
+    Application.deferReadiness();
+
     Application.Router.map(function() {
         this.resource('userview', { path: '/userview/:userview_id' });
     });
@@ -41,7 +44,7 @@ define([
     Application.initializer({
         name:"RESTAdaptertransforms",
         after: "transforms",
-        initialize: function(container,application) {
+        initialize: function(container, application) {
             void (container);
             application.register('transform:array', DS.ArrayTransform);
             application.register('transform:integer', DS.IntegerTransform);
@@ -49,5 +52,8 @@ define([
         }
     });
 
+    domReady(function () {
+        Application.advanceReadiness();
+    });
     return Application;
 });
