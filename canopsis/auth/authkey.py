@@ -34,7 +34,7 @@ class AuthKeyBackend(BaseBackend):
         self.setup_config(context)
 
         def decorated(*args, **kwargs):
-            s = request.environ.get('beaker.session')
+            s = self.session.get()
 
             if not s.get('auth_on', False):
                 user = self.do_auth()
@@ -74,4 +74,4 @@ class AuthKeyBackend(BaseBackend):
 
 
 def get_backend(ws):
-    return AuthKeyBackend(ws)
+    return AuthKeyBackend(ws.logger)

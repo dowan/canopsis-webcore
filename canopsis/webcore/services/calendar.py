@@ -19,7 +19,6 @@
 # ---------------------------------
 
 from canopsis.common.ws import route
-from bottle import get
 
 from dateutil.rrule import rrulestr
 from datetime import datetime
@@ -29,7 +28,7 @@ from time import mktime
 def exports(ws):
     rest = ws.require('rest')
 
-    @route(get)
+    @route(ws.application.get)
     def cal(source, interval_start, interval_end):
         params = {
             'filter': {

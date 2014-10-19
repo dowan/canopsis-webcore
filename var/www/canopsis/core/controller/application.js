@@ -271,56 +271,40 @@ define([
             },
 
             showUserProfile: function (){
-
                 var applicationController = this;
 
-                var username = get(utils.session, 'user');
-
-                var dataStore = DS.Store.create({
-                    container: get(this, "container")
+                var ouser = get(utils, 'session');
+                var recordWizard = formsUtils.showNew('modelform', ouser, {
+                    title: ouser.id + ' ' + __('profile')
                 });
 
-                var record = dataStore.findQuery('loggedaccount', {
-                    filter: JSON.stringify({
-                        user: username
-                    })
-                }).then(function(queryResults) {
+                recordWizard.submit.then(function(form) {
+                    console.group('submit form:', form);
 
-                    console.log('query result', queryResults);
+                    console.log('save record:', record);
 
-                    var record = queryResults.get('content')[0];
-                    var previousUiLanguage = get(record, 'ui_language');
+                    //generated data by user form fill
+                    record = form.get('formContext');
 
-                    set(record, 'crecord_type', 'loggedaccount');
+                    set(record, 'crecord_type', 'user');
+                    record.save();
 
-                    console.log('previousUiLanguage', previousUiLanguage);
+                    notificationUtils.info(__('profile') + ' ' +__('updated'));
 
-                    //generating form from record model
-                    var recordWizard = formsUtils.showNew('modelform', record, {
-                        title: username + ' ' +__('profile'),
-                    });
+                    uilang = get(record, 'ui_language');
+                    ouilang = get(ouser, 'ui_language');
 
-                    //submit form and it s callback
-                    recordWizard.submit.then(function(form) {
-                        console.log('record going to be saved', record, form);
+                    console.log('Lang:', uilang, ouilang);
 
-                        //generated data by user form fill
-                        record = form.get('formContext');
+                    if (uilang !== ouilang) {
+                        console.log('Language changed, will prompt for application reload');
+                        applicationController.send(
+                            'promptReloadApplication',
+                            'Interface language has changed, reload canopsis to apply changes ?'
+                        );
+                    }
 
-                        set(record, 'crecord_type', 'account');
-
-                        record.save();
-
-                        notificationUtils.info(__('profile') + ' ' +__('updated'));
-                        console.log(get(record, 'ui_language') , previousUiLanguage);
-                        if (get(record, 'ui_language') !== previousUiLanguage) {
-                            console.log('Language changed, will prompt for application reload');
-                            applicationController.send(
-                                'promptReloadApplication',
-                                'Interface language has changed, reload canopsis to apply changes ?'
-                            );
-                        }
-                    });
+                    console.groupEnd();
                 });
             },
 

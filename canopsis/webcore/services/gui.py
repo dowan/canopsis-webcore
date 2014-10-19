@@ -19,7 +19,7 @@
 # ---------------------------------
 
 from canopsis.old.template import Template
-from bottle import get, static_file, request, redirect
+from bottle import static_file, request, redirect
 import os
 
 
@@ -27,13 +27,19 @@ def exports(ws):
     session = ws.require('session')
     auth = ws.require('auth')
 
-    @get('/:lang/static/canopsis/index.html')
-    @get('/static/canopsis/index.html')
+    skip_login = ws.skip_login
+
+    @ws.application.get('/:lang/static/canopsis/index.html', skip=skip_login)
+    @ws.application.get('/static/canopsis/index.html', skip=skip_login)
     def index(lang='en'):
+        # Redirect user if not logged in
+        if not session.get_user():
+            redirect('/')
+
         return static_file('canopsis/index.html', root=ws.root_directory)
 
-    @get('/:lang/static/<filename:path>', skip=ws.skip_login)
-    @get('/static/<filename:path>', skip=ws.skip_login)
+    @ws.application.get('/:lang/static/<filename:path>', skip=skip_login)
+    @ws.application.get('/static/<filename:path>', skip=skip_login)
     def server_static(filename, lang='en'):
         key = request.params.get('authkey', default=None)
 
@@ -42,17 +48,17 @@ def exports(ws):
 
         return static_file(filename, root=ws.root_directory)
 
-    @get('/favicon.ico', skip=ws.skip_login)
+    @ws.application.get('/favicon.ico', skip=skip_login)
     def favicon():
         return
 
-    @get('/', skip=ws.skip_login)
-    @get('/:key', skip=ws.skip_login)
-    @get('/:lang/', skip=ws.skip_login)
-    @get('/:lang/:key', skip=ws.skip_login)
-    @get('/index.html', skip=ws.skip_login)
-    @get('/:lang/index.html', skip=ws.skip_login)
-    def loginpage(key=None, lang='en'):
+    @ws.application.get('/', skip=skip_login)
+    @ws.application.get('/index.html', skip=skip_login)
+    @ws.application.get('/:lang/', skip=skip_login)
+    @ws.application.get('/:lang/index.html', skip=skip_login)
+    @ws.application.get('/:lang/:key/', skip=skip_login)
+    @ws.application.get('/:lang/:key/index.html', skip=skip_login)
+    def loginpage(lang='en', key=None):
         s = session.get()
 
         # Try to authenticate user

@@ -21,20 +21,21 @@
 
 import logging
 
+from canopsis.webcore.services import auth, session, rights
+
 
 class BaseBackend(object):
     name = 'base'
     handle_logout = False
 
-    def __init__(self, ws, *args, **kwargs):
+    def __init__(self, logger, *args, **kwargs):
         super(BaseBackend, self).__init__(*args, **kwargs)
 
-        self.ws = ws
-        self.session = ws.require('session')
-        self.rights = ws.require('rights')
-        self.auth = ws.require('auth')
+        self.auth = auth
+        self.session = session
+        self.rights = rights
 
-        self.logger = logging.getLogger('auth.backend.{0}'.format(self.name))
+        self.logger = logger
 
         self._perms = []
 

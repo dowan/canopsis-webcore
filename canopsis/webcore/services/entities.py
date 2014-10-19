@@ -19,11 +19,15 @@
 # ---------------------------------
 
 from canopsis.common.ws import route
-from bottle import get, post
 
 
-def get_entities_from_db(ws, mfilter, skip=0, limit=0):
-    backend = ws.db.get_backend('object')
+def get_entity(ws, mfilter):
+    backend = ws.db.get_backend('entities')
+    return backend.find_one(mfilter)
+
+
+def get_entities(ws, mfilter, skip=0, limit=0):
+    backend = ws.db.get_backend('entities')
 
     entities = backend.find(mfilter, skip=skip, limit=limit)
 
@@ -40,7 +44,7 @@ def get_entities_from_db(ws, mfilter, skip=0, limit=0):
 
 
 def exports(ws):
-    @route(get, payload=['start', 'limit'])
+    @route(ws.application.get, payload=['start', 'limit'])
     def entities(etype=None, ename=None, start=0, limit=0):
         efilter = {}
 
@@ -59,8 +63,8 @@ def exports(ws):
 
                 efilter[identifier] = ename
 
-        return get_entities_from_db(ws, efilter, skip=start, limit=limit)
+        return get_entities(ws, efilter, skip=start, limit=limit)
 
-    @route(post, payload=['filter', 'start', 'limit'])
+    @route(ws.application.post, payload=['filter', 'start', 'limit'])
     def entities(filter, start=0, limit=0):
-        return get_entities_from_db(ws, filter, skip=start, limit=limit)
+        return get_entities(ws, filter, skip=start, limit=limit)

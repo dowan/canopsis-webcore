@@ -18,8 +18,6 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-from bottle import get, delete, put, post
-
 from canopsis.common.ws import route
 from canopsis.context.manager import Context
 
@@ -27,7 +25,7 @@ from canopsis.context.manager import Context
 def exports(ws):
     manager = Context()
 
-    @route(get)
+    @route(ws.application.get)
     def context(_type, names=None, context=None, extended=None):
         if names:
             names = [n.strip() for n in names.split(',')]
@@ -37,7 +35,7 @@ def exports(ws):
 
         return result
 
-    @route(post, payload=['limit', 'skip', 'sort', '_filter'])
+    @route(ws.application.post, payload=['limit', 'skip', 'sort', '_filter'])
     def context(
         _type=None, context=None, _filter=None, extended=False,
         limit=0, skip=0, sort=None
@@ -56,7 +54,9 @@ def exports(ws):
 
         return result
 
-    @route(put, payload=['_type', 'entity', 'context', 'extended_id'])
+    @route(ws.application.put, payload=[
+        '_type', 'entity', 'context', 'extended_id'
+    ])
     def context(_type, entity, context=None, extended_id=None):
         manager.put(
             _type=_type,
@@ -67,7 +67,9 @@ def exports(ws):
 
         return entity
 
-    @route(delete, payload=['context', 'ids', '_type', 'extended'])
+    @route(ws.application.delete, payload=[
+        'context', 'ids', '_type', 'extended'
+    ])
     def context(ids=None, _type=None, context=None, extended=False):
         manager.remove(
             ids=ids,
@@ -76,7 +78,7 @@ def exports(ws):
             extended=extended
         )
 
-    @route(post, payload=['entities', 'extended'])
+    @route(ws.application.post, payload=['entities', 'extended'])
     def unify(entities, extended=False):
         result = manager.unify_entities(entities=entities, extended=extended)
 

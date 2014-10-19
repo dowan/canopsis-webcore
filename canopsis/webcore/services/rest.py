@@ -18,7 +18,7 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-from bottle import get, post, put, delete, HTTPError, response
+from bottle import HTTPError, response
 from canopsis.common.ws import route
 
 from canopsis.common.utils import ensure_iterable
@@ -44,7 +44,7 @@ def get_records(ws, namespace, ctype=None, _id=None, **params):
     }
 
     for key in options.keys():
-        options[key] = params.get(key, default=options[key])
+        options[key] = params.get(key, options[key])
 
     # Ensure sort always evaluates to list
     sort = options['sort']
@@ -163,14 +163,14 @@ def get_records(ws, namespace, ctype=None, _id=None, **params):
 
 
 def exports(ws):
-    @route(get, name='rest/indexes', response=lambda r: r)
+    @route(ws.application.get, name='rest/indexes', response=lambda r: r)
     def indexes(collection):
         storage = ws.db.get_backend(collection)
         indexes = storage.index_information()
 
         return {'collection': collection, 'indexes': indexes}
 
-    @route(get, name='rest/media', response=lambda r: r)
+    @route(ws.application.get, name='rest/media', response=lambda r: r)
     def media(namespace, _id):
         try:
             raw = ws.db.get(
@@ -201,24 +201,28 @@ def exports(ws):
 
         return b64decode(media_bin)
 
-    @route(get, payload=[
-        'limit',
-        'start',
-        'search',
-        'filter',
-        'sort',
-        'query',
-        'onlyWritable',
-        'noInternal',
-        'ids',
-        'multi',
-        'fields'
-    ])
+    @route(
+        ws.application.get,
+        payload=[
+            'limit',
+            'start',
+            'search',
+            'filter',
+            'sort',
+            'query',
+            'onlyWritable',
+            'noInternal',
+            'ids',
+            'multi',
+            'fields'
+        ],
+        adapt=False
+    )
     def rest(namespace, ctype=None, _id=None, **params):
         return get_records(ws, namespace, ctype=ctype, _id=_id, **params)
 
-    @route(put, raw_body=True)
-    @route(post, raw_body=True)
+    @route(ws.application.put, raw_body=True, adapt=False)
+    @route(ws.application.post, raw_body=True, adapt=False)
     def rest(namespace, ctype, _id=None, body=None):
         if not body:
             body = '[]'
@@ -264,7 +268,7 @@ def exports(ws):
                     err
                 ))
 
-    @route(delete, raw_body=True)
+    @route(ws.application.delete, raw_body=True, adapt=False)
     def rest(namespace, ctype, _id=None, body=None):
         if not body:
             body = '[]'

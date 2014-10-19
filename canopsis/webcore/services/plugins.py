@@ -18,7 +18,7 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-from bottle import get, static_file, HTTPError
+from bottle import static_file, HTTPError
 
 import sys
 import os
@@ -28,7 +28,7 @@ def exports(ws):
     plugins_dir = os.path.join(sys.prefix, 'var', 'lib', 'canopsis', 'plugins')
     allowed_extensions = ['.json', '.js', '.html']
 
-    @get('/plugins/<filename:path>')
+    @ws.application.get('/plugins/<filename:path>')
     def get_externals_files(filename):
         if os.path.exists(plugins_dir):
             ext = os.path.splitext(filename)[1]

@@ -137,7 +137,7 @@ class CASBackend(BaseBackend):
                     'enable': True
                 }
 
-                self.rights.create_user(record)
+                self.rights.save_user(record)
 
             self.logger.info(
                 'Authentication validated by CAS server for user {0}'.format(
@@ -195,4 +195,4 @@ class CASBackend(BaseBackend):
 
 
 def get_backend(ws):
-    return CASBackend(ws)
+    return CASBackend(ws.logger)

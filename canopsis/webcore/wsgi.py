@@ -185,22 +185,33 @@ class WebServer(Configurable):
         self.amqp = Amqp()
         self.stopping = False
 
+        self.webmodules = {}
+        self.auth_backends = {}
+
     def __call__(self):
+        self.logger.info('Initialize gevent signal-handlers')
         gevent.signal(SIGTERM, self.exit)
         gevent.signal(SIGINT, self.exit)
 
+        self.logger.info('Start AMQP thread')
         self.amqp.start()
 
+        self.logger.info('Initialize WSGI Application')
         self.app = BottleApplication()
-        self.load_webservices()
+
         self.load_auth_backends()
+        self.load_webservices()
         self.load_session()
 
         return self
 
     def _load_webservice(self, name):
-        self.logger.info('Loading webservice: {0}'.format(name))
         modname = 'canopsis.webcore.services.{0}'.format(name)
+
+        if name in self.webmodules:
+            return True
+
+        self.logger.info('Loading webservice: {0}'.format(name))
 
         try:
             # TODO: Remove webservice_paths
@@ -239,14 +250,17 @@ class WebServer(Configurable):
         return True
 
     def load_webservices(self):
-        self.webmodules = {}
-
         for webservice in self.webservices:
             if self.webservices[webservice]:
                 self._load_webservice(webservice)
 
     def _load_auth_backend(self, name):
         modname = 'canopsis.auth.{0}'.format(name)
+
+        if name in self.auth_backends:
+            return True
+
+        self.logger.info('Load authentication backend: {0}'.format(name))
 
         try:
             mod = importlib.import_module(modname)
@@ -262,20 +276,18 @@ class WebServer(Configurable):
 
         else:
             backend = mod.get_backend(self)
-            self.auth_backends[backend.__name__] = backend
+            self.auth_backends[backend.name] = backend
             self.app.install(backend)
 
         return True
 
     def load_auth_backends(self):
-        self.auth_backends = {}
-
         for provider in self.providers:
             self._load_auth_backend(provider)
 
         # Always add this backend which returns 401 when the login fails
         backend = EnsureAuthenticated(self)
-        self.auth_backends[backend.__name__] = backend
+        self.auth_backends[backend.name] = backend
         self.app.install(backend)
 
     def load_session(self):
@@ -301,8 +313,8 @@ class WebServer(Configurable):
             self.stopping = True
 
             self.unload_session()
-            self.unload_auth_backends()
             self.unload_webservices()
+            self.unload_auth_backends()
 
             self.amqp.stop()
             # TODO: self.amqp.wait() not implemented
@@ -326,11 +338,10 @@ class WebServer(Configurable):
         ]
 
     def require(self, modname):
-        if modname not in self.webmodules:
-            if not self._load_webservice(modname):
-                raise ImportError(
-                    'Impossible to import webservice: {0}'.format(modname)
-                )
+        if not self._load_webservice(modname):
+            raise ImportError(
+                'Impossible to import webservice: {0}'.format(modname)
+            )
 
         return self.webmodules[modname]
 

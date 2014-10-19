@@ -39,7 +39,12 @@ def get_user(_id=None):
         return None
 
     else:
-        return get_rights().get_user(_id)
+        rights = get_rights()
+
+        user = rights.get_user(_id)
+        user['rights'] = rights.get_user_rights(_id)
+
+        return user
 
 
 def create(user):
@@ -57,6 +62,6 @@ def delete():
 
 
 def exports(ws):
-    @route(get, name='account/me')
+    @route(ws.application.get, name='account/me')
     def get_me():
         return get_user()

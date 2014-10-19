@@ -22,9 +22,6 @@
 from bottle import request, HTTPError
 import ldap
 
-from canopsis.old.storage import get_storage
-from canopsis.old.account import Account
-
 from canopsis.webcore.services.account import create_account
 from canopsis.auth.base import BaseBackend
 
@@ -44,7 +41,7 @@ class LDAPBackend(BaseBackend):
         self.setup_config(context)
 
         def decorated(*args, **kwargs):
-            s = request.environ.get('beaker.session')
+            s = self.session.get()
 
             if not s.get('auth_on', False):
                 user = self.do_auth()
@@ -134,6 +131,7 @@ class LDAPBackend(BaseBackend):
             # TODO: Replace this with crecord.user
             if result:
                 dn, data = result[0]
+                info = {}
 
                 for field in ['firstname', 'lastname', 'mail']:
                     val = data.get(config[field], None)

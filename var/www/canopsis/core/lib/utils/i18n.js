@@ -85,7 +85,7 @@ define([
         downloadDefinitions: function () {
 
             $.ajax({
-                url: '/files/i18n/' + i18n.lang,
+                url: '/i18n/' + i18n.lang,
                 success: function(data) {
                     if (data.success) {
                         i18n.translations[i18n.lang] = data.data;
@@ -99,7 +99,7 @@ define([
 
             if (conf.DEBUG && conf.TRANSLATE) {
                 $.ajax({
-                    url: '/rest/misc/i18n',
+                    url: '/rest/object/i18n',
                     success: function(data) {
                         if (data.success && data.data && data.data.length) {
                             for (var item in data.data[0].todo) {

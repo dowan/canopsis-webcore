@@ -20,7 +20,6 @@
 
 from canopsis.common.ws import route
 from bottle import redirect, response, HTTPError, urlencode
-from bottle import get, post
 
 from hashlib import sha1
 from time import time
@@ -99,25 +98,26 @@ def autoLogin(key):
 
 def exports(ws):
     session = ws.require('session')
+    rights = ws.require('rights').get_manager()
 
     @route(
-        post,
+        ws.application.post,
         name='auth',
         wsgi_params={
             'skip': ws.skip_login
         },
         payload=[
-            'login', 'password',
+            'username', 'password',
             'shadow', 'crypted'
         ],
         response=lambda data: data
     )
     def auth_route(
-        login=None, password=None,
+        username=None, password=None,
         shadow=False, crypted=False
     ):
-        if not login or not password:
-            return HTTPError(400, 'Missing login/password')
+        if not username or not password:
+            return HTTPError(400, 'Missing username/password')
 
         mode = 'plain'
 
@@ -128,17 +128,17 @@ def exports(ws):
             mode = 'crypted'
 
         # Try to find user in database
-        user = rights.get_user(login)
+        user = rights.get_user(username)
 
         # No such user, or it's an external one
-        if not user or user['external']:
+        if not user or user.get('external', False):
             # Try to redirect authentication to the external backend
             if mode == 'plain':
                 response.status = 307
                 response.set_header('Location', '/auth/external')
 
                 return 'username={0}&password={1}'.format(
-                    urlencode(login),
+                    urlencode(username),
                     urlencode(password)
                 )
 
@@ -149,28 +149,30 @@ def exports(ws):
         if not user.get('enable', False):
             return HTTPError(403, 'This account is not enabled')
 
-        if not check(mode=mode, user=user, password=password):
+        user = check(mode=mode, user=user, password=password)
+
+        if not user:
             return HTTPError(403, 'Forbidden')
 
         session.create(user)
         redirect('/')
 
-    @route(post, name='auth/external')
+    @route(ws.application.post, name='auth/external')
     def auth_external():
         # When we arrive here, the Bottle plugins in charge of authentication
         # have initialized the session, we just need to redirect to the index.
         redirect('/static/canopsis/index.html')
 
-    @route(get, name='logged_in')
+    @route(ws.application.get, name='logged_in')
     def logged_in():
         # Route used when came back from auth backend
         redirect('/static/canopsis/index.html')
 
-    @route(get, wsgi_params={'skip': ws.skip_login})
+    @route(ws.application.get, wsgi_params={'skip': ws.skip_login})
     def autologin(key):
         return autoLogin(key)
 
-    @route(get, wsgi_params={'skip': ws.skip_logout})
+    @route(ws.application.get, wsgi_params={'skip': ws.skip_logout})
     def logout():
         session.delete()
         redirect('/')

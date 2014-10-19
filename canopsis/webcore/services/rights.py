@@ -20,8 +20,6 @@
 
 from canopsis.organisation.rights import Rights
 from canopsis.common.ws import route
-
-from bottle import get, post, put, delete
 from bottle import HTTPError
 
 
@@ -136,7 +134,7 @@ def exports(ws):
         }
     }
 
-    @route(get)
+    @route(ws.application.get)
     def rights(uid):
         urights = rights.get_user_rights(uid)
 
@@ -146,39 +144,39 @@ def exports(ws):
         else:
             return urights
 
-    @route(post, name='account/group', payload=['group'])
+    @route(ws.application.post, name='account/group', payload=['group'])
     def create_group(group):
         return save_group(ws, group)
 
-    @route(put, name='account/group', payload=['group'])
+    @route(ws.application.put, name='account/group', payload=['group'])
     def update_group(_id, group):
         return save_group(ws, group)
 
-    @route(post, name='account/profile', payload=['profile'])
+    @route(ws.application.post, name='account/profile', payload=['profile'])
     def create_profile(profile):
         return save_profile(ws, profile)
 
-    @route(put, name='account/profile', payload=['profile'])
+    @route(ws.application.put, name='account/profile', payload=['profile'])
     def update_profile(_id, profile):
         return save_profile(ws, profile)
 
-    @route(post, name='account/role', payload=['role'])
+    @route(ws.application.post, name='account/role', payload=['role'])
     def create_role(role):
         return save_role(ws, role)
 
-    @route(put, name='account/role', payload=['role'])
+    @route(ws.application.put, name='account/role', payload=['role'])
     def update_role(_id, role):
         return save_role(ws, role)
 
-    @route(post, name='account/user', payload=['user'])
+    @route(ws.application.post, name='account/user', payload=['user'])
     def create_user(user):
         return save_user(ws, user)
 
-    @route(put, name='account/user', payload=['user'])
+    @route(ws.application.put, name='account/user', payload=['user'])
     def update_user(_id, user):
         return save_user(ws, user)
 
-    @route(delete, name='account/delete')
+    @route(ws.application.delete, name='account/delete')
     def delete_entity(etype, _id):
         if not etype in rights_actions['delete']:
             raise ws.Error('Unknown entity type: {0}'.format(etype))

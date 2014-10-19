@@ -19,7 +19,7 @@
 # ---------------------------------
 
 from canopsis.common.ws import route
-from bottle import get, HTTPError
+from bottle import HTTPError
 
 import polib
 import sys
@@ -27,7 +27,7 @@ import os
 
 
 def exports(ws):
-    @route(get)
+    @route(ws.application.get)
     def i18n(lang='en'):
         lang_file = os.path.join(sys.prefix, 'locale', lang, 'ui_lang.po')
         translations = {}

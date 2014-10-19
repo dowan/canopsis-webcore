@@ -22,14 +22,14 @@ from canopsis.common.utils import ensure_iterable
 from canopsis.common.ws import route
 from canopsis import schema
 
-from bottle import post, put, HTTPError
+from bottle import HTTPError
 import requests
 import json
 
 
 def exports(ws):
-    @route(post, name='event', payload=['event', 'url'])
-    @route(put, name='event', payload=['event', 'url'])
+    @route(ws.application.post, name='event', payload=['event', 'url'])
+    @route(ws.application.put, name='event', payload=['event', 'url'])
     def send_event(event, url=None):
         if ws.enable_crossdomain_send_events and url is not None:
             payload = {

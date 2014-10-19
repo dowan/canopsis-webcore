@@ -29,7 +29,7 @@ from canopsis.timeserie import TimeSerie
 def exports(ws):
     manager = PerfData()
 
-    @route(post, payload=['metric_id', 'timewindow', 'period'])
+    @route(ws.application.post, payload=['metric_id', 'timewindow', 'period'])
     def perfdata_count(metric_id, timewindow=None, period=None):
         if timewindow is not None:
             timewindow = TimeWindow(**timewindow)
@@ -44,7 +44,7 @@ def exports(ws):
         return result
 
     @route(
-        post,
+        ws.application.post,
         payload=[
             'metric_id', 'with_meta',
             'limit', 'skip',
@@ -98,7 +98,7 @@ def exports(ws):
 
         return (result, len(result))
 
-    @route(post, payload=['timewindow', 'limit', 'sort'])
+    @route(ws.application.post, payload=['timewindow', 'limit', 'sort'])
     def perfdata_meta(metric_id, timewindow=None, limit=0, sort=None):
         if timewindow is not None:
             timewindow = TimeWindow(**timewindow)
@@ -109,7 +109,9 @@ def exports(ws):
 
         return result
 
-    @route(put, payload=['metric_id', 'points', 'meta', 'period'])
+    @route(ws.application.put, payload=[
+        'metric_id', 'points', 'meta', 'period'
+    ])
     def perfdata(metric_id, points, meta=None, period=None):
         if period is not None:
             period = Period(**period)
@@ -122,7 +124,9 @@ def exports(ws):
 
         return result
 
-    @route(delete, payload=['metric_id', 'period', 'with_meta', 'timewindow'])
+    @route(ws.application.delete, payload=[
+        'metric_id', 'period', 'with_meta', 'timewindow'
+    ])
     def perfdata(metric_id, period=None, with_meta=False, timewindow=None):
         if timewindow is not None:
             timewindow = TimeWindow(**timewindow)
@@ -140,7 +144,7 @@ def exports(ws):
         return result
 
 
-    @route(put, payload=['metric_id', 'meta', 'timestamp'])
+    @route(ws.application.put, payload=['metric_id', 'meta', 'timestamp'])
     def perfdata_meta(metric_id, meta, timestamp=None):
         result = manager.put_meta(
             metric_id=metric_id, meta=meta, timestamp=timestamp
@@ -148,13 +152,13 @@ def exports(ws):
 
         return result
 
-    @route(get)
+    @route(ws.application.get)
     def perfdata_period(metric_id):
         result = manager.get_period(metric_id)
 
         return result
 
-    @route(get)
+    @route(ws.application.get)
     def perfdata_internal(metric):
         result = manager.is_internal(metric)
 

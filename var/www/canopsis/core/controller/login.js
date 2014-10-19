@@ -65,7 +65,7 @@ define([
                 username: "",
                 password: "",
                 shadow: "",
-                cryptedkey: "",
+                crypted: "",
                 authkey: get(this, 'authkey')
             });
         },
