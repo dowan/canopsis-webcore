@@ -50,7 +50,7 @@ def exports(ws):
             }
         }
 
-        events = rest.get_records('events', **params)
+        events = rest.get_records(ws, 'events', **params)
 
         params['filter'] = {
             '$and': [
@@ -60,7 +60,7 @@ def exports(ws):
             ]
         }
 
-        recurrent_events = rest.get_records('events', **params)
+        recurrent_events = rest.get_records(ws, 'events', **params)
 
         for event in recurrent_events['data']:
             try:
