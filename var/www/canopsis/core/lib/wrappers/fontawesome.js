@@ -16,12 +16,10 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
-
 define([
     'app/lib/factories/wrapper',
-    'bootstrap',
-    'link!webcore-libs/bootstrap/dist/css/bootstrap.min.css'
-], function(Wrapper) {
+    'link!webcore-libs/fontawesome/css/font-awesome.min.css'
+], function(Wrapper, $) {
 
-    return Wrapper("bootstrap", $, arguments, "3");
+    return Wrapper("fontawesome", undefined, arguments);
 });

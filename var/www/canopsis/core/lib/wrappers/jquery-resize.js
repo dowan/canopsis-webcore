@@ -19,9 +19,10 @@
 
 define([
     'app/lib/factories/wrapper',
-    'bootstrap',
-    'link!webcore-libs/bootstrap/dist/css/bootstrap.min.css'
+    'app/lib/wrappers/jquery',
+    'webcore-libs/jquery-resize/jquery.ba-resize.min'
 ], function(Wrapper) {
 
-    return Wrapper("bootstrap", $, arguments, "3");
+    Wrapper("jquery", $, arguments, '2.1.1');
+    return $;
 });

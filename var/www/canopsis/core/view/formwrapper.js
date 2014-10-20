@@ -71,17 +71,14 @@ define([
         //regular methods
         showPopup: function() {
             console.log("view showPopup");
-            if (! this.hooksRegistered) {
+            if(!this.hooksRegistered) {
                 this.registerHooks();
             }
 
             $("#formwrapper").modal('show');
-            if (get(this, 'controller.form')) {
+            if(get(this, 'controller.form')) {
                 get(this, 'controller.form').send('show');
             }
-
-            var popupLeft = ($(window).width() - $("#formwrapper > .modal-dialog").outerWidth()) / 2;
-            $("#formwrapper").css("left", popupLeft);
         },
 
         hidePopup: function() {
