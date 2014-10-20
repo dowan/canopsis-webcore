@@ -49,6 +49,10 @@ define([
             }
         },
 
+        description: function () {
+            return get(this, 'content.model.options.description');
+        }.property(),
+
         editorType: function() {
             console.group('editorType');
 
