@@ -293,16 +293,14 @@ table.dataTable>thead>tr>th {
 }
 
 #formwrapper{
-	margin-left: auto;
 	margin-right: auto;
 	width:300%;
 	margin-left: -100%;
-	padding-left: 100%;
 }
-.modal
-{
-	right: auto;
+.modal {
+	right: auto !importants;
 }
+
 .modal-header {
 	cursor: move;
 }
@@ -337,7 +335,7 @@ td, th {
 }
 
 th.checkboxes {
-	width:20px;
+	width:26px;
 }
 
 table.sortable th {
@@ -348,11 +346,14 @@ table.sortable th {
 	padding: 7px !important;
 }
 
+.canopsis-toolbar {
+	margin:0 !important;
+}
+
 .table>thead:first-child>tr:first-child>th {
 	padding-left: 3px;
 	padding-right: 3px;
 }
-
 
 .popover {
     background: black !important;
@@ -431,7 +432,7 @@ td.overflowed > .placeddiv {
 }
 
 table.dataTable tbody th, table.dataTable tbody td {
-	padding: 4px 5px;
+	padding: 3px !important;
 }
 
 .progress-label {

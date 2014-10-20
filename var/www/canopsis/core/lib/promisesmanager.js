@@ -17,11 +17,16 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
+define([
+    'ember',
+    'app/lib/abstractclassregistry'
+], function(Ember, Abstractclassregistry) {
     var get = Ember.get,
         set = Ember.set;
 
-    var PromiseManager = Ember.Object.extend({
+    var promiseManager = Abstractclassregistry.create({
+        name: 'promises',
+
         all: [],
 
         pending: Ember.A(),
@@ -70,5 +75,5 @@ define(['ember'], function(Ember) {
     });
 
 
-    return PromiseManager.create();
+    return promiseManager;
 });

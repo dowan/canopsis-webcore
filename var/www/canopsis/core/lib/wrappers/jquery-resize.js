@@ -17,12 +17,12 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
+define([
+    'app/lib/factories/wrapper',
+    'app/lib/wrappers/jquery',
+    'webcore-libs/jquery-resize/jquery.ba-resize.min'
+], function(Wrapper) {
 
-    var manager = {
-        all: [],
-        byClass: {}
-    };
-
-    return manager;
+    Wrapper("jquery", $, arguments, '2.1.1');
+    return $;
 });

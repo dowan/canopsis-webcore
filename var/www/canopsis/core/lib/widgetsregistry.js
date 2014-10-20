@@ -17,13 +17,17 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
+define([
+    'app/lib/abstractclassregistry'
+], function(Abstractclassregistry) {
 
-    var widgetsManager = {
+    var widgetsManager = Abstractclassregistry.create({
+        name: 'widgets',
+
         all: [],
         byClass: {},
         tableColumns: [{title: 'icon', name: 'icon'}, {title: 'name', name: 'name'}]
-    };
+    });
 
     return widgetsManager;
 });

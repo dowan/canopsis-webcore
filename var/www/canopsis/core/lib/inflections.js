@@ -19,9 +19,9 @@
 
 define([
     'ember',
-    'app/lib/abstractclassmanager',
+    'app/lib/abstractclassregistry',
     'app/application'
-], function(Ember, Abstractclassmanager) {
+], function(Ember, Abstractclassregistry) {
 
     var inflexions = [
         ['nagios' , 'nagios'],
@@ -29,11 +29,13 @@ define([
         ['serie', 'serie']
     ];
 
-    var inflectionsManager = {
+    var inflectionsManager = Abstractclassregistry.create({
+        name: 'inflections',
+
         all: [],
         byClass: {},
         tableColumns: [{title: 'name', name: 'name'}, {title: 'Singular', name: 'singular'}, {title: 'Plural', name: 'plural'}]
-    };
+    });
 
     for (var i = 0, l = inflexions.length; i < l; i++) {
         inflectionsManager.all.pushObject({

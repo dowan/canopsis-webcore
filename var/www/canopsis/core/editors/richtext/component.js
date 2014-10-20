@@ -20,7 +20,8 @@
 define([
     'ember',
     'app/application',
-    'app/lib/wrappers/summernote'
+    'app/lib/wrappers/summernote',
+    'app/lib/wrappers/codemirror'
 ], function(Ember, Application) {
     var get = Ember.get,
         set = Ember.set;

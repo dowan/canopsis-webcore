@@ -19,9 +19,9 @@
 
 define([
     'app/lib/factories/wrapper',
-    'bootstrap',
-    'link!webcore-libs/bootstrap/dist/css/bootstrap.min.css'
+    'ember-widgets',
+    'link!webcore-libs/ember-widgets/css/ember-widgets.css'
 ], function(Wrapper) {
 
-    return Wrapper("bootstrap", $, arguments, "3");
+    return Wrapper("ember-widgets", $, arguments, undefined);
 });

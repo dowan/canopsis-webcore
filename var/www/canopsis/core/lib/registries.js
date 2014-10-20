@@ -17,11 +17,9 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'app/lib/factories/wrapper',
-    'bootstrap',
-    'link!webcore-libs/bootstrap/dist/css/bootstrap.min.css'
-], function(Wrapper) {
+define([], function() {
 
-    return Wrapper("bootstrap", $, arguments, "3");
+    var registries = {};
+
+    return registries;
 });

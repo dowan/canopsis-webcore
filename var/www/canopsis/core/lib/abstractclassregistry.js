@@ -18,10 +18,26 @@
 */
 
 define([
-    'app/lib/factories/wrapper',
-    'bootstrap',
-    'link!webcore-libs/bootstrap/dist/css/bootstrap.min.css'
-], function(Wrapper) {
+    'ember',
+    'app/lib/registries'
+], function(Ember, registries) {
 
-    return Wrapper("bootstrap", $, arguments, "3");
+    var get = Ember.get;
+
+    //TODO manage element with add and remove methods
+
+    var manager = Ember.Object.extend({
+        init: function() {
+            this._super.apply(this, arguments);
+
+            //put the initialized registry into the registry list
+            var name = get(this, 'name');
+            registries[name] = this;
+        },
+
+        all: [],
+        byClass: {}
+    });
+
+    return manager;
 });

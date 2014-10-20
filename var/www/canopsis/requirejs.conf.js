@@ -8,6 +8,7 @@ require.config({
         'etc': 'canopsis/etc',
         'lib': 'webcore-libs/dev',
         'text': 'webcore-libs/requirejs-text/text',
+        'link': 'webcore-libs/requirejs-link/link',
         'jquery': 'canopsis/core/lib/wrappers/jquery',
         'plugins': 'webcore-libs/plugins/plugin',
         'consolejs': 'webcore-libs/console.js/console',
@@ -200,7 +201,8 @@ define([
     'seeds/RoutesLoader',
     'app/lib/wrappers/console',
     'app/lib/wrappers/extend',
-    'app/lib/helpers/i18n'
+    'app/lib/helpers/i18n',
+    'link'
 ], function () {
     require(['canopsis/main']);
 });

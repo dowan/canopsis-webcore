@@ -47,7 +47,7 @@ define([
     'canopsis/core/lib/wrappers/ember-cloaking',
     'app/lib/wrappers/datatables',
     'app/lib/loaders/components',
-    'app/adapters/group',
+    'app/adapters/acl',
 ], function($, Ember, DS, Application, WidgetFactory, PaginationMixin, InspectableArrayMixin,
         ArraySearchMixin, SortableArrayMixin, HistoryMixin, AckMixin, InfobuttonMixin, SendEventMixin, CustomFilterManagerMixin, UserConfigurationMixin, DraggableColumnsMixin, utils, domUtils, routesUtils, formsUtils, FoldableListLineMixin, ListlineController) {
 
@@ -236,7 +236,6 @@ define([
 
             onDomReady: function (element) {
                 console.log('on list dom ready', element);
-
             },
 
             findItems: function() {
