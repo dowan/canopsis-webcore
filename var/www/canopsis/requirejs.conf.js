@@ -173,13 +173,10 @@ require.config({
 });
 
 
-// var old_require = require;
-// require = function() {
-//     console.log('require', arguments);
-//     return old_require.apply(this, arguments);
-// };
+window.isIE = navigator.appName.indexOf('Internet Explorer') !== -1;
 
-if (navigator.appName.indexOf('Internet Explorer') !== -1) {
+if (isIE) {
+
     //this force console to use log method for early loaded
     //modules that could use other console methods.
     console.group = function () {};
@@ -187,6 +184,15 @@ if (navigator.appName.indexOf('Internet Explorer') !== -1) {
     console.debug = console.log;
     console.warning = console.log;
     console.error = console.log;
+    console.tags = {
+        add: function() {},
+        remove: function () {}
+    };
+
+    console.settings = {
+        save: function() {}
+    };
+
 }
 
 define([
