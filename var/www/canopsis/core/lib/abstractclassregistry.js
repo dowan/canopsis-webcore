@@ -17,12 +17,27 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
+define([
+    'ember',
+    'app/lib/registries'
+], function(Ember, registries) {
 
-    var manager = {
+    var get = Ember.get;
+
+    //TODO manage element with add and remove methods
+
+    var manager = Ember.Object.extend({
+        init: function() {
+            this._super.apply(this, arguments);
+
+            //put the initialized registry into the registry list
+            var name = get(this, 'name');
+            registries[name] = this;
+        },
+
         all: [],
         byClass: {}
-    };
+    });
 
     return manager;
 });

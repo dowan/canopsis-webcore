@@ -17,9 +17,13 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
+define([
+    'app/lib/abstractclassregistry'
+], function(Abstractclassregistry) {
 
-    var actionsRegistry = {
+    var actionsRegistry = Abstractclassregistry.create({
+        name: 'actions',
+
         all: [{
             name: 'gotoEventView',
             actionData: ['showView', 'view.event']
@@ -53,7 +57,7 @@ define([], function() {
         }],
         byClass: {},
         tableColumns: [{title: 'name', name: 'name'}]
-    };
+    });
 
     return actionsRegistry;
 });
