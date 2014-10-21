@@ -170,22 +170,22 @@ define([
                         filter[key] = null;
                     }
 
-                    filters[key]['$or'].push(filter)
+                    filters[key].$or.push(filter)
                 }
 
-                var len = filters[key]['$or'].length;
+                var len = filters[key].$or.length;
 
                 if(len === 1) {
-                    filters[key] = filters[key]['$or'][0];
+                    filters[key] = filters[key].$or[0];
                 }
 
                 if(len > 0) {
-                    mfilter['$and'].push(filters[key]);
+                    mfilter.$and.push(filters[key]);
                 }
             }
 
-            if(mfilter['$and'].length === 1) {
-                mfilter = mfilter['$and'][0];
+            if(mfilter.$and.length === 1) {
+                mfilter = mfilter.$and[0];
             }
 
             return mfilter;
@@ -243,5 +243,5 @@ define([
         }
     });
 
-    return Application.ComponentCmetricComponent;
+    return Application.ComponentMetricselectorComponent;
 });

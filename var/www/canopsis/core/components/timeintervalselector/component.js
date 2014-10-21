@@ -111,7 +111,7 @@ define([
         }
     });
 
-    Application.ComponentTimeintervalComponent = component;
+    Application.ComponentTimeintervalselectorComponent = component;
 
     return component;
 });

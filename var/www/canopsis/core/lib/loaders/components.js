@@ -49,6 +49,8 @@ var componentsTemplates = [
     'searchbar',
     'stateeditor',
     'eventselector',
+    'metricselector',
+    'timeintervalselector',
     'simpledicteditor',
     'stringclassifiedcrecordselector',
     'table',
