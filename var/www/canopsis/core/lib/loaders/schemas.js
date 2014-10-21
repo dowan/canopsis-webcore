@@ -220,7 +220,7 @@ define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
 
         modelDict = inheritance(modelDict, parentModelClassName, schemaName);
 
-        schemasRegistry.push(modelDict, schemaName);
+        schemasRegistry.add(modelDict, schemaName);
         Application.allModels[schemaName] = modelDict;
         var newModel = parentModelClass.extend(modelDict);
 

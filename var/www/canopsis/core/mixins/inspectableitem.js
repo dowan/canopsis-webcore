@@ -66,7 +66,7 @@ define([
 
         //getting attributes (keys and values as seen on the form)
         categorized_attributes: function() {
-            var inspectedDataItem =  get(this, 'inspectedDataItem');
+            var inspectedDataItem = get(this, 'inspectedDataItem');
             console.log("recompute categorized_attributes", inspectedDataItem );
             if (inspectedDataItem !== undefined) {
 

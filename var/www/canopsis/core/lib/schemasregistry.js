@@ -29,7 +29,7 @@ define([
         /**
          * Appends the item into the "all" array, and into the corresponding class arrays in the "byClass" dict
          */
-        push: function(item, name) {
+        add: function(item, name) {
             this.all[name] = item;
         },
 

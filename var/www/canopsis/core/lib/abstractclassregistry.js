@@ -23,6 +23,7 @@ define([
 ], function(Ember, registries) {
 
     var get = Ember.get,
+        set = Ember.set,
         isNone = Ember.isNone;
         isArray = Ember.isArray;
 
@@ -55,13 +56,17 @@ define([
         /**
          * Appends the item into the "all" array, and into the corresponding class arrays in the "byClass" dict
          */
-        push: function(item, name, classes) {
+        add: function(item, name, classes) {
             if(isNone(name)) {
                 name = get(item, 'name');
+            } else {
+                set(item, 'name', name);
             }
 
             if(isNone(classes)) {
                 classes = get(item, 'classes');
+            } else {
+                set(item, 'classes', classes);
             }
 
             console.log('registering item', get(item, 'name'), 'into registry', name, 'with classes', classes);

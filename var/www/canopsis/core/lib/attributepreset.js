@@ -24,7 +24,7 @@ define([
     var Attributepreset = Ember.Object.extend({
         init: function(){
             this._super.apply(this, arguments);
-            attributepresetregistry.push(this);
+            attributepresetregistry.add(this);
         },
 
         /**

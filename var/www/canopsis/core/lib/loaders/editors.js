@@ -67,7 +67,7 @@ var editorsTemplates = [
     { name: 'modelselect', js: 'w' }
 ];
 
-var deps = ['ember', 'app/routes/userview'];
+var deps = ['ember', 'app/lib/editorregistry'];
 
 var depsTemplates = [];
 
@@ -110,7 +110,7 @@ for (var i = 0, l = editorsTemplates.length; i < l; i++) {
 
 console.log({"editors dependencies": deps});
 
-define(deps, function(Ember) {
+define(deps, function(Ember, editorRegistry) {
     console.tags.add('loader');
 
     for (var i = 0; i < depsTemplates.length; i++) {
@@ -119,6 +119,8 @@ define(deps, function(Ember) {
         var template = arguments[tmplInfo.pos - 1];
 
         console.log("new editor", tmplInfo.name);
+
+        editorRegistry.add({template: template}, tmplInfo.name);
 
         Ember.TEMPLATES[tmplInfo.name] = Ember.Handlebars.compile(template);
     }
