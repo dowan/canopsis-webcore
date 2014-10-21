@@ -21,6 +21,7 @@ define([
     'ember',
     'app/application',
 ], function(Ember, Application) {
+
     var get = Ember.get,
         set = Ember.set;
 
@@ -81,5 +82,6 @@ define([
     });
 
     Application.ComponentModelselectComponent = component;
+
     return component;
 });

@@ -43,7 +43,7 @@ var editorsTemplates = [
     { name: 'integer' },
     { name: 'mail' },
     { name: 'mixinchooser', js: 'w'},
-    { name: 'richtext', js: 'w' },
+    { name: 'richtext' },
 
     { name: 'templateselector' },
     { name: 'separator' },
@@ -64,7 +64,7 @@ var editorsTemplates = [
     { name: 'timeinterval', js: 'w' },
     { name: 'userpreference', js: 'w' },
     { name: 'timestamp', js: 'w' },
-    { name: 'modelselect', js: 'w' }
+    { name: 'modelselect' }
 ];
 
 var deps = ['ember', 'app/lib/editorregistry'];
