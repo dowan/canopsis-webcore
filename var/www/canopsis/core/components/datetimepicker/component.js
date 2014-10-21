@@ -55,7 +55,7 @@ define([
         }
     });
 
-    Application.ComponentTimestampComponent = component;
+    Application.ComponentDatetimepickerComponent = component;
 
     return component;
 });

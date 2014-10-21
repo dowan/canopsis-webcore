@@ -37,7 +37,7 @@ var editorsTemplates = [
     { name: 'dateinterval' },
     { name: 'defaultpropertyeditor' },
     { name: 'dictclassifiedcrecordselector' },
-    { name: 'duration', js: 'w' },
+    { name: 'duration' },
     { name: 'eventselector', js: 'w' },
     { name: 'group', js: 'c' },
     { name: 'integer' },
@@ -60,7 +60,7 @@ var editorsTemplates = [
     { name: 'templateselector' },
     { name: 'textarea' },
     { name: 'timeinterval', js: 'w' },
-    { name: 'timestamp', js: 'w' },
+    { name: 'timestamp' },
     { name: 'userpreference', js: 'w' }
 ];
 

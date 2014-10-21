@@ -24,7 +24,8 @@ define([
 ], function(Ember, Application) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     var component = Ember.Component.extend({
         init: function () {
@@ -35,7 +36,7 @@ define([
             var unformattedDuration = parseInt(get(this, 'content'), 10);
             var conversionOperand = get(this, 'convertDuration').get(durationType);
             var res = unformattedDuration / conversionOperand;
-            if (Ember.isNone(res) || isNaN(res)) {
+            if (isNone(res) || isNaN(res)) {
                 res = 0;
             }
             set(this, 'shownDuration', res);
@@ -94,7 +95,7 @@ define([
         ]
     });
 
-    Application.ComponentDurationComponent = component;
+    Application.ComponentDurationcomboComponent = component;
 
     return component;
 });
