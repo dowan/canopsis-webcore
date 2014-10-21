@@ -139,7 +139,7 @@ define([
         }
     });
 
-    Application.ComponentRightsComponent = component;
+    Application.ComponentRightsselectorComponent = component;
 
     return component;
 });

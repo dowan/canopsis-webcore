@@ -78,7 +78,7 @@ define([
         }
     });
 
-    Application.ComponentSimpledictComponent = component;
+    Application.ComponentSimpledicteditorComponent = component;
 
     return component;
 });
