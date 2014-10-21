@@ -23,14 +23,15 @@ define([
     'app/application',
 ], function(Ember, Application) {
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     var component = Ember.Component.extend({
 
         init: function() {
             this._super();
             set(this, 'previousContent', get(this, 'content'));
-            if(Ember.isNone(get(this, 'hidePrevious'))) {
+            if(isNone(get(this, 'hidePrevious'))) {
                 //arbitrary default value currently used for change criticity action.
                 set(this, 'hidePrevious', true);
             }
@@ -78,7 +79,7 @@ define([
 
     });
 
-    Application.ComponentStateComponent = component;
+    Application.ComponentStateeditorComponent = component;
 
     return component;
 });

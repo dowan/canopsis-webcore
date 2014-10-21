@@ -47,6 +47,8 @@ var componentsTemplates = [
     'renderer',
     'rightsselector',
     'searchbar',
+    'stateeditor',
+    'eventselector',
     'simpledicteditor',
     'stringclassifiedcrecordselector',
     'table',
