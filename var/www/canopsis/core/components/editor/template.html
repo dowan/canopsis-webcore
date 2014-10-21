@@ -1,3 +1,10 @@
+{{#if description}}
+    {{#component-tooltip content=description}}
+        <span class="badge bg-blue">
+            <i class="fa fa-question-circle"></i>
+        </span>
+    {{/component-tooltip}}
+{{/if}}
 {{#if debug}}
 <code>
     {{this.editorType}}

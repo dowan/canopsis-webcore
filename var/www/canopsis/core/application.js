@@ -60,8 +60,5 @@ define([
         }
     };
     setTimeout(checkIfLoadIsDone, 2000);
-    domReady(function () {
-        Application.advanceReadiness();
-    });
     return Application;
 });
