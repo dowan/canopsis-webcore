@@ -29,6 +29,8 @@ var componentsTemplates = [
     'checkbox',
     'classifiedcrecordselector',
     'classifieditemselector',
+    'criticity',
+    'dateinterval',
     'dictclassifiedcrecordselector',
     'editor',
     'eventkey',

@@ -24,6 +24,7 @@ define([
     'app/lib/utils/hash',
     'app/adapters/context'
 ], function(Ember, DS, Application, hash) {
+
     var get = Ember.get,
         set = Ember.set;
 

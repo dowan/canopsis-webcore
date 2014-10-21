@@ -24,8 +24,8 @@ var editorsTemplates = [
      */
     { name: 'actionfilter' },
     { name: 'array', js: 'w'},
-    { name: 'attributepreset' },
     { name: 'arrayclassifiedcrecordselector' },
+    { name: 'attributepreset' },
     { name: 'boolean' },
     { name: 'cfilter', js: 'w' },
     { name: 'cfilter2', js: 'w' },
@@ -33,43 +33,40 @@ var editorsTemplates = [
     { name: 'cfilterwithproperties'},
     { name: 'cmetric', js: 'w' },
     { name: 'color' },
-    { name: 'criticity', js: 'w' },
-    { name: 'dateinterval', js: 'w' },
+    { name: 'criticity' },
+    { name: 'dateinterval' },
     { name: 'defaultpropertyeditor' },
+    { name: 'dictclassifiedcrecordselector' },
     { name: 'duration', js: 'w' },
-    { name: 'sortable' },
     { name: 'eventselector', js: 'w' },
     { name: 'group', js: 'c' },
     { name: 'integer' },
     { name: 'mail' },
     { name: 'mixinchooser', js: 'w'},
+    { name: 'modelselect' },
     { name: 'richtext' },
-
-    { name: 'templateselector' },
+    { name: 'rights', js: 'w' },
     { name: 'separator' },
     { name: 'serieitem', js: 'w'},
     { name: 'session', js: 'w' },
-
     { name: 'simpledict', js: 'w' },
-    { name: 'simplelist', js: 'v' },
+    { name: 'simplelist' },
+    { name: 'sortable' },
     { name: 'source', js: 'v' },
     { name: 'state', js: 'w' },
-    { name: 'dictclassifiedcrecordselector' },
     { name: 'stringclassifiedcrecordselector' },
     { name: 'stringpair'},
     { name: 'tags' , js: 'w' },
-
-    { name: 'rights', js: 'w' },
+    { name: 'templateselector' },
     { name: 'textarea' },
     { name: 'timeinterval', js: 'w' },
-    { name: 'userpreference', js: 'w' },
     { name: 'timestamp', js: 'w' },
-    { name: 'modelselect' }
+    { name: 'userpreference', js: 'w' }
 ];
 
-var deps = ['ember', 'app/lib/editorregistry'];
+var editorsDeps = ['ember', 'app/lib/editorregistry'];
 
-var depsTemplates = [];
+var editorDepsTemplates = [];
 
 //generate deps
 for (var i = 0, l = editorsTemplates.length; i < l; i++) {
@@ -84,37 +81,37 @@ for (var i = 0, l = editorsTemplates.length; i < l; i++) {
         if (files.indexOf('c') >= 0) {
             url = 'app/editors/' + name + '/controller';
 
-            deps.push(url);
+            editorsDeps.push(url);
         }
 
         if (files.indexOf('v') >= 0) {
             url = 'app/editors/' + name + '/view';
 
-            deps.push(url);
+            editorsDeps.push(url);
         }
 
         if (files.indexOf('w') >= 0) {
             url = 'text!app/editors/' + name + '/component.html';
 
-            tmplPos = deps.push(url);
-            depsTemplates.push({name: 'components/component-' + name, pos: tmplPos});
+            tmplPos = editorsDeps.push(url);
+            editorDepsTemplates.push({name: 'components/component-' + name, pos: tmplPos});
 
             url = 'app/editors/' + name + '/component';
-            deps.push(url);
+            editorsDeps.push(url);
         }
     }
 
-    tmplPos = deps.push('text!app/editors/' + name + '/template.html');
-    depsTemplates.push({name: 'editor-' + name, pos: tmplPos});
+    tmplPos = editorsDeps.push('text!app/editors/' + name + '/template.html');
+    editorDepsTemplates.push({name: 'editor-' + name, pos: tmplPos});
 }
 
-console.log({"editors dependencies": deps});
+console.log({"editors dependencies": editorsDeps});
 
-define(deps, function(Ember, editorRegistry) {
+define(editorsDeps, function(Ember, editorRegistry) {
     console.tags.add('loader');
 
-    for (var i = 0; i < depsTemplates.length; i++) {
-        var tmplInfo = depsTemplates[i];
+    for (var i = 0; i < editorDepsTemplates.length; i++) {
+        var tmplInfo = editorDepsTemplates[i];
 
         var template = arguments[tmplInfo.pos - 1];
 

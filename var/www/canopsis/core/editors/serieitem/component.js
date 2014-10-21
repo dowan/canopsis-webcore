@@ -21,7 +21,7 @@
 define([
     'ember',
     'app/application',
-    'app/editors/modelselect/component'
+    'app/components/modelselect/component'
 ], function(Ember, Application) {
 
     var get = Ember.get,
