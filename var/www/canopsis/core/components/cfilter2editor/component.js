@@ -187,7 +187,7 @@ define([
 
     });
 
-    Application.ComponentCfilter2Component = component;
+    Application.ComponentCfilter2editorComponent = component;
 
     return component;
 });

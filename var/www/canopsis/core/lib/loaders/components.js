@@ -60,6 +60,8 @@ var componentsTemplates = [
     'serieitemeditor',
     'sessioneditor',
     'cfiltereditor',
+    'cfilter2editor',
+    'cfilter3editor',
     'mixinselector',
     'textwithsortoption',
     'tooltip',

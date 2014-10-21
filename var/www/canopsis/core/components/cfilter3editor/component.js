@@ -104,7 +104,7 @@ define([
 
     });
 
-    Application.ComponentCfilter3Component = component;
+    Application.ComponentCfilter3editorComponent = component;
 
     return component;
 });
