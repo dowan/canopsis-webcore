@@ -23,7 +23,7 @@ var editorsTemplates = [
      * js = 'w' : the editor have a Webcomponent
      */
     { name: 'actionfilter' },
-    { name: 'array', js: 'w'},
+    { name: 'array' },
     { name: 'arrayclassifiedcrecordselector' },
     { name: 'attributepreset' },
     { name: 'boolean' },
@@ -60,7 +60,7 @@ var editorsTemplates = [
     { name: 'textarea' },
     { name: 'timeinterval' },
     { name: 'timestamp' },
-    { name: 'userpreference', js: 'w' }
+    { name: 'userpreference' }
 ];
 
 var editorsDeps = ['ember', 'app/lib/editorregistry'];

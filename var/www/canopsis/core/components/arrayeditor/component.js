@@ -235,7 +235,7 @@ define([
         }
     });
 
-    Application.ComponentArrayComponent = component;
+    Application.ComponentArrayeditorComponent = component;
 
     return component;
 });

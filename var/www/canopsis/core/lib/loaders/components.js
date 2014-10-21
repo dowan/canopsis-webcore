@@ -23,6 +23,7 @@
 var componentsTemplates = [
     'actionbutton',
     'actionfilter',
+    'arrayeditor',
     'arrayclassifiedcrecordselector',
     'attributepreset',
     'checkbox',
@@ -58,6 +59,7 @@ var componentsTemplates = [
     'textwithsortoption',
     'tooltip',
     'typedvalue',
+    'userpreferencesmanager',
     'wrapper'
 ];
 

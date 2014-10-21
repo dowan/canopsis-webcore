@@ -116,7 +116,7 @@ define([
 
     });
 
-    Application.ComponentUserpreferenceComponent = component;
+    Application.ComponentUserpreferencesmanagerComponent = component;
 
     return component;
 });
