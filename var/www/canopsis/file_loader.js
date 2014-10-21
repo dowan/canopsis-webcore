@@ -56,6 +56,5 @@ require([
     }
 
     load_("canopsis/");
-    load_("/plugins/");
 });
 

@@ -18,10 +18,10 @@
 */
 
 
-var developmentWidgetsTemplates = [
-    { name:'webconsole', url:'canopsis/development/widgets/webconsole', hasJSPart: true },
-    { name:'requestsmanager', url:'canopsis/development/widgets/requestsmanager', hasJSPart: true },
-    { name:'objectinspector', url:'canopsis/development/widgets/objectinspector', hasJSPart: true }
+var widgets = [
+    { name:'webconsole', hasJSPart: true },
+    { name:'requestsmanager', hasJSPart: true },
+    { name:'objectinspector', hasJSPart: true }
 ];
 
 var deps = ['ember'];
@@ -29,13 +29,12 @@ var jsDeps = [];
 var depsSize = deps.length;
 
 //generate deps
-for (var i = 0, l = developmentWidgetsTemplates.length; i < l; i++) {
-    console.log(developmentWidgetsTemplates, i);
-    deps.push('text!' + developmentWidgetsTemplates[i].url + '/template.html');
+for (var i = 0, l = widgets.length; i < l; i++) {
+    console.log(widgets, i);
+    deps.push('text!canopsis/development/widgets/' + widgets[i].name + '/template.html');
 
-    if (developmentWidgetsTemplates[i].hasJSPart === true) {
-        var viewUrl = developmentWidgetsTemplates[i].url + '/controller';
-        console.log("adding view", viewUrl);
+    if (widgets[i].hasJSPart === true) {
+        var viewUrl = 'canopsis/development/widgets/' + widgets[i].name + '/controller';
 
         jsDeps.push(viewUrl);
     }
@@ -45,11 +44,10 @@ for (i = 0, l = jsDeps.length; i < l; i++) {
     deps.push(jsDeps[i]);
 }
 
-console.log({"development widget dependencies": deps});
 define(deps, function(Ember) {
     console.log("load widgets from development", arguments);
-    for (var i = 0, l = developmentWidgetsTemplates.length; i < l; i++) {
-        var templateName = developmentWidgetsTemplates[i].name;
+    for (var i = 0, l = widgets.length; i < l; i++) {
+        var templateName = widgets[i].name;
         Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
     }
 });

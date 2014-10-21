@@ -59,8 +59,7 @@ config = {
         Parameter('secret'),
         Parameter('data_dir', parser=Parameter.path)
     ),
-    'webservices': ParamList(parser=Parameter.bool),
-    'webservice_paths': ParamList()
+    'webservices': ParamList(parser=Parameter.bool)
 }
 
 
@@ -167,13 +166,6 @@ class WebServer(Configurable):
         return self._webservices
 
     @property
-    def webservice_paths(self):
-        if not hasattr(self, '_webservice_paths'):
-            self._webservice_paths = {}
-
-        return self._webservice_paths
-
-    @property
     def beaker_url(self):
         return '{0}.beaker'.format(self.db.uri)
 
@@ -214,19 +206,7 @@ class WebServer(Configurable):
         self.logger.info('Loading webservice: {0}'.format(name))
 
         try:
-            # TODO: Remove webservice_paths
-            # You should always distribute webservices via Python
-            # package canopsis.webcore.services, since it was made
-            # for this use.
-            if name in self.webservice_paths:
-                path = self.webservice_paths[name]
-                mod = imp.load_source(
-                    modname,
-                    os.path.join(path, '{0}.py'.format(name))
-                )
-
-            else:
-                mod = importlib.import_module(modname)
+            mod = importlib.import_module(modname)
 
         except ImportError as err:
             self.logger.error(
