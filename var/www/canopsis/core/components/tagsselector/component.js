@@ -5,6 +5,7 @@ define([
     'app/lib/formsregistry',
     'app/components/multiselect/component'
 ], function(Application , Arraymixin, mixinsregistry, formsregistry) {
+
     var get = Ember.get,
         set = Ember.set;
 
@@ -86,7 +87,7 @@ define([
         }
     });
 
-    Application.ComponentTagsComponent = component;
+    Application.ComponentTagsselectorComponent = component;
 
     return component;
 });

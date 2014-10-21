@@ -73,7 +73,7 @@ define([
         }
     });
 
-    Application.ComponentSerieitemComponent = component;
+    Application.ComponentSerieitemeditorComponent = component;
 
     return component;
 });

@@ -56,6 +56,8 @@ var componentsTemplates = [
     'stringclassifiedcrecordselector',
     'table',
     'templateselector',
+    'tagsselector',
+    'serieitemeditor',
     'textwithsortoption',
     'tooltip',
     'typedvalue',
