@@ -79,7 +79,7 @@ define([
             return [
                 'ion-ios7-sunny-outline',
                 'ion-ios7-cloudy-outline',
-                'ion-ios7-thunderstorm-outline',
+                'ion-ios7-cloudy-outline',
                 'ion-ios7-thunderstorm-outline',
                 'ion-checkmark-round'][status];
         } ,
@@ -93,8 +93,8 @@ define([
         class_background: function (status) {
             return [
                 'bg-green',
+                'bg-yellow',
                 'bg-orange',
-                'bg-red',
                 'bg-red',
                 'bg-purple'][status];
         },
