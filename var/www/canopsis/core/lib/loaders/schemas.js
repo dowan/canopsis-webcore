@@ -21,13 +21,13 @@
 var schemaFiles = [
 ];
 
-var schemasDeps = ['ember-data', 'app/application', 'utils'];
+var schemasDeps = ['ember-data', 'app/application', 'utils', 'app/lib/schemasregistry'];
 
 for (var i = 0, l = schemaFiles.length; i < l; i++) {
     schemasDeps.push('text!schemas/' + schemaFiles[i] + '.json');
 }
 
-define(schemasDeps, function(DS, Application, utils) {
+define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
     console.tags.add('loader');
 
     //TODO nuke this
@@ -220,6 +220,7 @@ define(schemasDeps, function(DS, Application, utils) {
 
         modelDict = inheritance(modelDict, parentModelClassName, schemaName);
 
+        schemasRegistry.add(modelDict, schemaName);
         Application.allModels[schemaName] = modelDict;
         var newModel = parentModelClass.extend(modelDict);
 

@@ -18,16 +18,23 @@
 */
 
 define([
-    'app/lib/factories/editor'
-], function(EditorFactory) {
+    'app/lib/attributepresetregistry'
+], function(attributepresetregistry) {
 
-    var defaultpropertyeditor = EditorFactory("defaultpropertyeditor", {
-        init: function() {
-            console.log("EditorDefaultPropertyEditorView init");
-            console.log(this, arguments);
-            this._super();
-        }
+    var Attributepreset = Ember.Object.extend({
+        init: function(){
+            this._super.apply(this, arguments);
+            attributepresetregistry.add(this);
+        },
+
+        /**
+         * This boolean value is a constant that allows to recognize presets amongst regular dict and objects
+         * @see Transforms in ember-data wrapper
+         */
+        isAPreset: true,
+        name:'unnamed attribute',
+        value: undefined
     });
 
-    return defaultpropertyeditor;
+    return Attributepreset;
 });

@@ -18,16 +18,16 @@
 */
 
 define([
-    'app/lib/factories/editor'
-], function(EditorFactory) {
+    'app/lib/abstractclassregistry'
+], function(Abstractclassregistry) {
 
-    var defaultpropertyeditor = EditorFactory("defaultpropertyeditor", {
-        init: function() {
-            console.log("EditorDefaultPropertyEditorView init");
-            console.log(this, arguments);
-            this._super();
-        }
+    var manager = Abstractclassregistry.create({
+        name: 'editors',
+
+        all: [],
+        byClass: {},
+        tableColumns: [{title: 'name', name: 'name'}]
     });
 
-    return defaultpropertyeditor;
+    return manager;
 });

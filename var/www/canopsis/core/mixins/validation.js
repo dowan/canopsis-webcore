@@ -24,6 +24,9 @@ define([
     'app/lib/utils/slug'
 ], function(Ember, Application , formUtils , slugify) {
 
+    var get = Ember.get,
+        set = Ember.set;
+
     /**
      * Implements Validation in form
      * You should define on the validationFields
@@ -38,18 +41,18 @@ define([
         },
 
         changeTAB: function( name , active){
-            var toFind = "#"+name+"_tab";
+            var toFind = "#" + name + "_tab";
             if(active)
-                $( toFind ).addClass("active");
+                $(toFind).addClass("active");
             else
-                $( toFind ).removeClass("active");
+                $(toFind).removeClass("active");
 
 
-            var id = "#"+name;
+            var id = "#" + name;
             if(active)
-                $( id ).addClass("active");
+                $(id).addClass("active");
             else
-                $( id ).removeClass("active");
+                $(id).removeClass("active");
         },
 
         set_tab: function(last_field_error){
@@ -83,21 +86,21 @@ define([
         },
 
         validation: function() {
-            console.log("Enter validation MIXIN");
-            var validationFields = this.get("validationFields");
+            console.group("Form validation");
+            var validationFields = get(this, "validationFields");
             var isValid = true;
             var error_array = [];
-            var last_field_error ="";
+            var last_field_error = "";
             var form = this;
 
             if (validationFields) {
                 for (var z = 0, l = validationFields.length; z < l; z++) {
-                    console.log("validate on : ", validationFields[z]);
+                    console.log("check if field is valid", get(validationFields[z], 'attr.field'));
                     var current = validationFields[z].validate();
 
                     if (current.valid !== true) {
                         error_array.push(current);
-                        console.log("Can't validate on attr ",validationFields[z]);
+                        console.log("Attribute not valid", validationFields[z]);
                         last_field_error = validationFields[z].attr.field || validationFields[z].attr.parent.attr.field;
                         isValid =  false ;
 
@@ -111,8 +114,11 @@ define([
                 }
             }
             if( !isValid ){
+                console.log('form not valid');
                 this.set_tab(last_field_error);
             }
+
+            console.groupEnd();
             return isValid;
         }
     });

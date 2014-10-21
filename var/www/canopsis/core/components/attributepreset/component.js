@@ -18,16 +18,31 @@
 */
 
 define([
-    'app/lib/factories/editor'
-], function(EditorFactory) {
+    'ember',
+    'app/application',
+    'app/lib/attributepresetregistry'
+], function(Ember, Application, attributepresetRegistry) {
 
-    var defaultpropertyeditor = EditorFactory("defaultpropertyeditor", {
-        init: function() {
-            console.log("EditorDefaultPropertyEditorView init");
-            console.log(this, arguments);
-            this._super();
-        }
+    var get = Ember.get,
+        set = Ember.set;
+
+    var component = Ember.Component.extend({
+
+        value: undefined,
+        field: undefined,
+
+        choices: function(){
+            var field = get(this, 'field');
+
+            var presets = attributepresetRegistry.getByClassName(field);
+            console.log('choices CP presets', presets);
+
+            return presets;
+
+        }.property('field')
     });
 
-    return defaultpropertyeditor;
+    Application.ComponentAttributepresetComponent = component;
+
+    return component;
 });

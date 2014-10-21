@@ -60,6 +60,7 @@ define([
 
             var type = get(this, 'content.model.type');
             var role = get(this, 'content.model.options.role');
+            var field = get(this, 'content.field');
 
 
             console.log('content:', get(this, 'content'));
@@ -69,17 +70,21 @@ define([
 
             var editorName;
 
-            if (role) {
-                if(!isNone(overrides) && get(overrides, role)) {
-                    editorName = 'editor-' + get(overrides, role);
-                } else {
-                    editorName = 'editor-' + role;
-                }
+            if(!isNone(overrides) && get(overrides, field)) {
+                editorName = 'editor-' + get(overrides, field);
             } else {
-                if(!isNone(overrides) && get(overrides, type)) {
-                    editorName = 'editor-' + get(overrides, type);
+                if (role) {
+                    if(!isNone(overrides) && get(overrides, role)) {
+                        editorName = 'editor-' + get(overrides, role);
+                    } else {
+                        editorName = 'editor-' + role;
+                    }
                 } else {
-                    editorName = 'editor-' + type;
+                    if(!isNone(overrides) && get(overrides, type)) {
+                        editorName = 'editor-' + get(overrides, type);
+                    } else {
+                        editorName = 'editor-' + type;
+                    }
                 }
             }
 

@@ -22,7 +22,10 @@ define([
     'app/lib/registries'
 ], function(Ember, registries) {
 
-    var get = Ember.get;
+    var get = Ember.get,
+        set = Ember.set,
+        isNone = Ember.isNone;
+        isArray = Ember.isArray;
 
     //TODO manage element with add and remove methods
 
@@ -35,8 +38,72 @@ define([
             registries[name] = this;
         },
 
+        /**
+         * The name of the registry
+         * @type {string}
+         */
+        name: 'unnamed registry',
+
         all: [],
-        byClass: {}
+        byClass: {},
+
+        /**
+         * Aims to provide a way to inspect and display items
+         * Strictly typed object, at term, will not need this anymore
+         */
+        tableColumns: [{title: 'name', name: 'name'}],
+
+        /**
+         * Appends the item into the "all" array, and into the corresponding class arrays in the "byClass" dict
+         */
+        add: function(item, name, classes) {
+            if(isNone(name)) {
+                name = get(item, 'name');
+            } else {
+                set(item, 'name', name);
+            }
+
+            if(isNone(classes)) {
+                classes = get(item, 'classes');
+            } else {
+                set(item, 'classes', classes);
+            }
+
+            console.log('registering item', get(item, 'name'), 'into registry', name, 'with classes', classes);
+            this.all.pushObject(item);
+
+            if(isArray(classes)) {
+                for (var i = 0, l = classes.length; i < l; i++) {
+                    if(isNone(this.byClass[classes[i]])) {
+                        this.byClass[classes[i]] = Ember.A();
+                    }
+
+                    this.byClass[classes[i]].pushObject(item);
+                }
+            }
+        },
+
+        /**
+         * Get an item by its name. Implemented because all must be migrated from an array to a dict
+         *
+         * @param {name} the name of the item to get
+         */
+        getByName: function(name) {
+            for (var i = 0, l = this.all.length; i < l; i++) {
+                if(get(this.all[i], 'name') === name) {
+                    return this.all[i];
+                }
+            }
+        },
+
+        /**
+         * Get a list of item that are registered in the specified class
+         *
+         * @param {name} the name of the class
+         */
+        getByClassName: function(name) {
+            return get(this.byClass, name);
+        }
     });
 
     return manager;
