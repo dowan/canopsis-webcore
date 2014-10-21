@@ -17,14 +17,16 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember', 'app/lib/abstractclassmanager'], function(Ember, Abstractclassmanager) {
+define([
+    'ember',
+    'app/lib/abstractclassregistry'
+], function(Ember, Abstractclassregistry) {
 
-    var manager = {
-        all: [],
-        byClass: {}
-    };
+    var manager = Abstractclassregistry.create({
+        name: 'indexes'
+    });
 
-    manager.all.pushObject(Ember.Object.create({
+    manager.add(Ember.Object.create({
         name: 'event',
         tree: {
             'component': {
@@ -57,7 +59,7 @@ define(['ember', 'app/lib/abstractclassmanager'], function(Ember, Abstractclassm
         }
     }));
 
-    manager.all.pushObject(Ember.Object.create({
+    manager.add(Ember.Object.create({
         name: 'crecord',
         tree: {
             'crecord_type': {

@@ -19,7 +19,8 @@
 
 define([
     'app/lib/factories/wrapper',
-    'bootstrap'
+    'bootstrap',
+    'link!webcore-libs/bootstrap/dist/css/bootstrap.min.css'
 ], function(Wrapper) {
 
     return Wrapper("bootstrap", $, arguments, "3");

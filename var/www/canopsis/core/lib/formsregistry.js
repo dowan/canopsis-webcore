@@ -17,14 +17,14 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/lib/abstractclassmanager'], function(Abstractclassmanager) {
+define(['app/lib/abstractclassregistry'], function(Abstractclassregistry) {
 
-    var formsManager = {
-        all: [],
-        byClass: {},
+    var formsManager = Abstractclassregistry.create({
+        name: 'forms',
+
         formwrapper: undefined,
         tableColumns: [{title: 'name', name: 'name'}]
-    };
+    });
 
     return formsManager;
 });

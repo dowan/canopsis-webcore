@@ -1,3 +1,8 @@
+{{#if description}}
+    {{#component-tooltip content=description}}
+        <i class="fa fa-question-circle"></i>
+    {{/component-tooltip}}
+{{/if}}
 {{#if debug}}
 <code>
     {{this.editorType}}

@@ -18,9 +18,10 @@
 */
 
 define([
+    'ember',
     'jquery',
     'app/lib/factories/widget'
-], function($, WidgetFactory) {
+], function(Ember, $, WidgetFactory) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -35,30 +36,30 @@ define([
 
         actions: {
             goToInfo: function(element) {
-                console.log("goToInfo", element);
-                var transition = this.transitionToRoute("/userview/" + get(this, 'config.destination_view'));
+                console.log('goToInfo', element);
+                var transition = this.transitionToRoute('/userview/' + get(this, 'config.destination_view'));
 
                 var filter_pattern = get(this, 'config.filter_pattern');
 
                 transition.promise.then(function(routeInfos){
-                    console.log("transition done", routeInfos);
+                    console.log('transition done', routeInfos);
                     var list = get(routeInfos, 'controller.content.containerwidget');
                     list = get(list, '_data.items')[0];
                     list = get(list, 'widget');
                     console.log(list);
 
-                    console.log("filter_pattern", filter_pattern);
+                    console.log('filter_pattern', filter_pattern);
 
                     var template = filter_pattern;
                     var context = element;
                     var compiledFilterPattern = Handlebars.compile(template)(context);
 
-                    console.log("compiledFilterPattern", compiledFilterPattern);
+                    console.log('compiledFilterPattern', compiledFilterPattern);
 
-                    if(compiledFilterPattern !== "") {
-                        set(list, "default_filter", compiledFilterPattern);
-                        set(list, "rollbackable", true);
-                        set(list, "title", "Info on events : " + element.title);
+                    if(compiledFilterPattern !== '') {
+                        set(list, 'default_filter', compiledFilterPattern);
+                        set(list, 'rollbackable', true);
+                        set(list, 'title', 'Info on events :', element.title);
                     }
                 });
             }
@@ -78,7 +79,7 @@ define([
             return [
                 'ion-ios7-sunny-outline',
                 'ion-ios7-cloudy-outline',
-                'ion-ios7-thunderstorm-outline',
+                'ion-ios7-cloudy-outline',
                 'ion-ios7-thunderstorm-outline',
                 'ion-checkmark-round'][status];
         } ,
@@ -92,8 +93,8 @@ define([
         class_background: function (status) {
             return [
                 'bg-green',
+                'bg-yellow',
                 'bg-orange',
-                'bg-red',
                 'bg-red',
                 'bg-purple'][status];
         },
@@ -140,7 +141,7 @@ define([
 
                 var currentData = data[i];
 
-                console.log("subweather event", currentData);
+                console.log('subweather event', currentData);
 
                 //compute wether or not each event were acknowleged for this weather
                 if (get(currentData, 'ack.isAck')) {
@@ -167,18 +168,24 @@ define([
 
                 console.log('computedState', computedState);
 
+                //special selector event case
+                var component_label = get(currentData, 'component');
+                if (component_label === 'selector') {
+                    component_label = '';
+                }
+
                 //building the data structure for sub parts of the weather
                 var subweatherDict = {
                     rk: currentData.rk,
                     event_type : get(currentData, 'event_type'),
-                    isSelector : get(currentData, 'event_type') === "selector",
+                    isSelector : get(currentData, 'event_type') === 'selector',
                     component: get(currentData, 'component'),
                     resource: get(currentData, 'resource'),
-                    title: get(currentData, 'component') + resource,
+                    title: component_label + ' ' + resource,
                     custom_class: this.class_background(computedState)
                 };
 
-                if(get(currentData, "event_type") === "selector") {
+                if(get(currentData, 'event_type') === 'selector') {
                     this.generateSelectorFilter(currentData, subweatherDict);
                 }
 
@@ -226,9 +233,9 @@ define([
                 url: '/rest/object',
                 data: params,
                 success: function(payload) {
-                    console.log("### SUCCESS", payload);
+                    console.log('### SUCCESS', payload);
                     if(payload.data.length >= 1) {
-                        var filter = {"$or" : []};
+                        var filter = {'$or' : []};
 
                         var selectorObject = payload.data[0];
                         var include_ids = get(selectorObject, 'include_ids');

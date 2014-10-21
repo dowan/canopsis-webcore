@@ -22,11 +22,14 @@ define([
     'canopsis/commit',
     'app/application',
     'utils',
+    'app/lib/registries',
     'app/lib/wrappersmanager',
     'app/lib/formsregistry',
     'app/lib/widgetsregistry',
     'app/lib/indexesregistry',
     'app/lib/actionsregistry',
+    'app/lib/schemasregistry',
+    'app/lib/attributepresetregistry',
     'app/lib/inflections',
     'app/lib/loaders/factories',
     'app/lib/loaders/helpers',
@@ -36,12 +39,15 @@ define([
 ], function(commit,
         Application,
         utils,
-        wrappersManager,
-        formsManager,
+        registries,
+        wrappersRegistry,
+        formsRegistry,
         widgetsRegistry,
-        indexesManager,
+        indexesRegistry,
         actionsRegistry,
-        inflectionsManager,
+        schemasRegistry,
+        attributepresetRegistry,
+        inflectionsRegistry,
         factories,
         helpers,
         templates,
@@ -50,14 +56,17 @@ define([
 
     var Canopsis = {};
 
+    Canopsis.registries = registries;
     Canopsis.tooltips = {};
     Canopsis.utils = utils;
-    Canopsis.wrappers = wrappersManager;
+    Canopsis.wrappers = wrappersRegistry;
     Canopsis.widgets = widgetsRegistry;
     Canopsis.actions = actionsRegistry;
-    Canopsis.indexes = indexesManager;
-    Canopsis.inflections = inflectionsManager;
-    Canopsis.forms = formsManager;
+    Canopsis.schemas = schemasRegistry;
+    Canopsis.indexes = indexesRegistry;
+    Canopsis.presets = attributepresetRegistry;
+    Canopsis.inflections = inflectionsRegistry;
+    Canopsis.forms = formsRegistry;
     Canopsis.manifest = Application.manifest;
     Canopsis.factories = factories;
     Canopsis.helpers = helpers;

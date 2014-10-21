@@ -20,9 +20,9 @@
 define([
     'ember',
     'ember-data',
-    //FIXME: why does it work only here ?
     'webcore-libs/requirejs-domready/domReady',
-    'ember-widgets',
+    //FIXME: why does it work only here ?
+    'app/lib/wrappers/ember-widgets',
     'jsonselect'
 ], function(Ember, DS, domReady) {
 
@@ -52,8 +52,13 @@ define([
         }
     });
 
-    domReady(function () {
-        Application.advanceReadiness();
-    });
+    var checkIfLoadIsDone = function() {
+        if(!!Application.ApplicationController && !!Application.ApplicationRoute) {
+            Application.advanceReadiness();
+        } else {
+            setTimeout(checkIfLoadIsDone, 2000);
+        }
+    };
+    setTimeout(checkIfLoadIsDone, 2000);
     return Application;
 });

@@ -44,16 +44,18 @@ var renderersTemplates = [
     'eventtype'
 ];
 
-var deps = ['ember'];
-var depsSize = deps.length;
+var rendererDeps = ['ember', 'app/lib/rendererregistry'];
+var rendererDepsSize = rendererDeps.length;
 
 for (var i = 0, l = renderersTemplates.length; i < l; i++) {
-    deps.push('text!app/renderers/' + renderersTemplates[i] + '/template.html');
+    rendererDeps.push('text!app/renderers/' + renderersTemplates[i] + '/template.html');
 }
 
-define(deps, function(Ember) {
-    for (var i = depsSize, l = arguments.length; i < l; i++) {
-        var templateName = "renderer-" + renderersTemplates[i - depsSize];
+define(rendererDeps, function(Ember, rendererRegistry) {
+    for (var i = rendererDepsSize, l = arguments.length; i < l; i++) {
+        var templateName = "renderer-" + renderersTemplates[i - rendererDepsSize];
+
+        rendererRegistry.add({template: arguments[i]}, templateName);
         Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i]);
     }
 });
