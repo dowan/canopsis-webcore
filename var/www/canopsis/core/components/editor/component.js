@@ -70,7 +70,7 @@ define([
 
             var editorName;
 
-            if(!isNone(overrides) && get(overrides, field)) {
+            if(!isNone(overrides) && !isNone(field) && get(overrides, field)) {
                 editorName = 'editor-' + get(overrides, field);
             } else {
                 if (role) {
