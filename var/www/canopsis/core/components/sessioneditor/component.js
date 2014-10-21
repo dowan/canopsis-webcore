@@ -51,7 +51,7 @@ define([
         }
     });
 
-    Application.ComponentSessionComponent = component;
+    Application.ComponentSessioneditorComponent = component;
 
     return component;
 });

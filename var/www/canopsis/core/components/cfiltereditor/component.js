@@ -664,7 +664,7 @@ define([
         }
     });
 
-    Application.ComponentCfilterComponent = component;
+    Application.ComponentCfiltereditorComponent = component;
 
     return component;
 });

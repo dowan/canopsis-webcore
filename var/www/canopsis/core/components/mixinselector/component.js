@@ -29,7 +29,7 @@ define([
         mixins: mixinsregistry
     });
 
-    Application.ComponentMixinchooserComponent = editor;
+    Application.ComponentMixinselectorComponent = editor;
 
     return editor;
 });
