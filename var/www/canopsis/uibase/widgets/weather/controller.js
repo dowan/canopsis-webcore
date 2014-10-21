@@ -179,9 +179,9 @@ define([
                     rk: currentData.rk,
                     event_type : get(currentData, 'event_type'),
                     isSelector : get(currentData, 'event_type') === 'selector',
-                    component: component_label,
+                    component: get(currentData, 'component'),
                     resource: get(currentData, 'resource'),
-                    title: get(currentData, 'component') + resource,
+                    title: component_label + ' ' + resource,
                     custom_class: this.class_background(computedState)
                 };
 
