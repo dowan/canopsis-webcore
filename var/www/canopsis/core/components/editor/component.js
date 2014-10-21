@@ -36,7 +36,7 @@ define([
         debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
 
         init: function() {
-            console.log("init editor compo");
+            console.log('init editor compo');
 
             this._super();
 
@@ -92,7 +92,7 @@ define([
             return editorName;
         }.property('content.type', 'content.role'),
 
-        attr: Ember.computed.alias("content")
+        attr: Ember.computed.alias('content')
     });
 
     Application.ComponentEditorComponent = component;
