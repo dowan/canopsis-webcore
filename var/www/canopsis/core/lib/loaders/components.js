@@ -22,6 +22,7 @@
 
 var componentsTemplates = [
     'actionbutton',
+    'attributepreset',
     'arrayclassifiedcrecordselector',
     'checkbox',
     'classifiedcrecordselector',

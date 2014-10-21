@@ -38,6 +38,7 @@ define([
     'app/lib/wrappers/ionicons',
     'app/lib/loaders/editors',
     'app/lib/loaders/renderers',
+    'app/lib/loaders/attributepresets',
     'app/lib/loaders/widgets',
     'app/lib/loaders/forms',
     'app/lib/loaders/validators',

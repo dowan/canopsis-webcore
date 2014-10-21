@@ -24,6 +24,7 @@ var editorsTemplates = [
      */
     { name: 'actionfilter', js: 'w' },
     { name: 'array', js: 'w'},
+    { name: 'attributepreset' },
     { name: 'arrayclassifiedcrecordselector' },
     { name: 'boolean' },
     { name: 'cfilter', js: 'w' },
