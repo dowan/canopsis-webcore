@@ -20,34 +20,32 @@
 define(['ember'], function(Ember) {
     Ember.Handlebars.helper('criticity', function(value, crecord) {
 
-        var span;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
+
 
         //displays keep status information if any onto the state field
         //keep state is generated when a user overrides the criticity of and acknowleged event
-        var record;
-        //Very bad way to access keep_state information ,but doesn't work with usual getters
-        //TODO refactor
-        if (crecord.contexts && crecord.contexts[0] && crecord.contexts[0].record) {
-            record = crecord.contexts[0].record;
-        }
-        if (record) {
+        var record = get(crecord, 'record.content');
+        window.$T = record;
+        console.log('tested record is ', record);
 
-            color = '';
-            switch(value) {
-                case 0: color = 'bg-green'; break;
-                case 1: color = 'bg-yellow'; break;
-                case 2: color = 'bg-orange'; break;
-                case 3: color = 'bg-red'; break;
-            }
+        var display_keep_state = '';
 
-            record = record.get('content');
-            display_keep_state = '';
-            if (record._data && record._data.keep_state) {
-                display_keep_state = '<span class="badge '+ color +'"><i class="fa fa-male"></i></span>';
-            }
+        var color = '';
+        switch(value) {
+            case 0: color = 'bg-green'; break;
+            case 1: color = 'bg-yellow'; break;
+            case 2: color = 'bg-orange'; break;
+            case 3: color = 'bg-red'; break;
         }
 
+        if (get(record, 'keep_state')) {
+            display_keep_state = '<span class="badge '+ color +'"><i class="fa fa-male"></i></span>';
+        }
 
+        var span;
         switch(value) {
             case 0: span = '<span class="badge bg-green">'+__('Info')+'</span>'; break;
             case 1: span = '<span class="badge bg-yellow">'+__('Minor')+'</span>'; break;
