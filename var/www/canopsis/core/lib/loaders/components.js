@@ -22,6 +22,7 @@
 
 var componentsTemplates = [
     'actionbutton',
+    'actionfilter',
     'attributepreset',
     'arrayclassifiedcrecordselector',
     'checkbox',
@@ -46,6 +47,7 @@ var componentsTemplates = [
     'progressbar',
     'templateselector',
     'wrapper',
+    'textwithsortoption',
     'typedvalue',
     'listtree',
     'eventkey'

@@ -22,7 +22,7 @@ var editorsTemplates = [
      * js = 'cv' : the editor have a Controller and a View
      * js = 'w' : the editor have a Webcomponent
      */
-    { name: 'actionfilter', js: 'w' },
+    { name: 'actionfilter' },
     { name: 'array', js: 'w'},
     { name: 'attributepreset' },
     { name: 'arrayclassifiedcrecordselector' },
@@ -35,9 +35,9 @@ var editorsTemplates = [
     { name: 'color' },
     { name: 'criticity', js: 'w' },
     { name: 'dateinterval', js: 'w' },
-    { name: 'defaultpropertyeditor', js: 'v' },
+    { name: 'defaultpropertyeditor' },
     { name: 'duration', js: 'w' },
-    { name: 'sortable', js: 'w' },
+    { name: 'sortable' },
     { name: 'eventselector', js: 'w' },
     { name: 'group', js: 'c' },
     { name: 'integer' },

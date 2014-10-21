@@ -24,7 +24,8 @@ define([
 ], function(Ember, Application) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     var component = Ember.Component.extend({
 
@@ -32,23 +33,23 @@ define([
 
         init: function () {
             this._super.apply(this, arguments);
-            if (!Ember.isNone(this.get('content'))) {
-                this.set('property', this.get('content.property'));
-                this.set('direction', this.get('content.direction'));
+            if (!isNone(this.get('content'))) {
+                set(this, 'property', get(this, 'content.property'));
+                set(this, 'direction', get(this, 'content.direction'));
             }
         },
 
         onUpdate: function() {
             this.set('content', {
-                property: this.get('property'),
-                direction: this.get('direction')
+                property: get(this, 'property'),
+                direction: get(this, 'direction')
             });
-            console.debug('update sortable content', this.get('content'));
+            console.debug('update sortable content', get(this, 'content'));
         }.observes('property', 'direction')
 
     });
 
-    Application.ComponentSortableComponent = component;
+    Application.ComponentTextwithsortoptionComponent = component;
 
     return component;
 });
