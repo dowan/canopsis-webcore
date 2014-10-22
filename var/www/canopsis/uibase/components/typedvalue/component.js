@@ -21,7 +21,6 @@ define([
     'ember',
     'app/application',
     'app/lib/utils/types'
-
 ], function(Ember, Application, typesUtils) {
 
     var get = Ember.get,

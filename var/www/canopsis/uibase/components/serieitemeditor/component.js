@@ -21,7 +21,7 @@
 define([
     'ember',
     'app/application',
-    'app/components/modelselect/component'
+    'canopsis/uibase/components/modelselect/component'
 ], function(Ember, Application) {
 
     var get = Ember.get,

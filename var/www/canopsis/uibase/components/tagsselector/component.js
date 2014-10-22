@@ -3,7 +3,7 @@ define([
     'app/mixins/arraymixin',
     'app/lib/mixinsregistry',
     'app/lib/formsregistry',
-    'app/components/multiselect/component'
+    'canopsis/uibase/components/multiselect/component'
 ], function(Application , Arraymixin, mixinsregistry, formsregistry) {
 
     var get = Ember.get,

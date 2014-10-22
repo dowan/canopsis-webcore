@@ -17,8 +17,6 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var widgets = [
-
-];
+var widgets = [];
 
 loader.loadWidgets(widgets);

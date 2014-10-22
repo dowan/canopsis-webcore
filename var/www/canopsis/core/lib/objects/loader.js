@@ -27,9 +27,9 @@ define([], function() {
 
             //generate deps
             for (var i = 0, l = components.length; i < l; i++) {
-                deps.push('text!app/components/' + components[i] + '/template.html');
+                deps.push('text!' + components[i].url + '/template.html');
 
-                var componentJsUrl = 'app/components/' + components[i] + '/component';
+                var componentJsUrl =  components[i].url + '/component';
                 jsDeps.push(componentJsUrl);
             }
 
@@ -43,8 +43,8 @@ define([], function() {
                 console.log("load components", arguments);
                 for (var i = 0, l = components.length; i < l; i++) {
 
-                    console.log('load component', components[i]);
-                    var templateName = 'components/component-' + components[i];
+                    console.log('load component', components[i].name);
+                    var templateName = 'components/component-' + components[i].name;
 
                     Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
                 }

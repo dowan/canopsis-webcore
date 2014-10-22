@@ -23,7 +23,7 @@ define([
     'ember-data',
     'app/application',
     'app/lib/factories/widget',
-    'app/components/flotchart/component',
+    'canopsis/uibase/components/flotchart/component',
     'app/controller/serie'
 ], function($, Ember, DS, Application, WidgetFactory) {
     var get = Ember.get,

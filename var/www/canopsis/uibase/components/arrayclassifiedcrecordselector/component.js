@@ -20,7 +20,7 @@
 define([
     'ember',
     'app/application',
-    'app/components/classifiedcrecordselector/component'
+    'canopsis/uibase/components/classifiedcrecordselector/component'
 ], function(Ember, Application, Classifiedcrecordselector) {
 
     var get = Ember.get,

@@ -21,7 +21,7 @@
 define([
     'ember',
     'app/application',
-    'app/components/dictclassifiedcrecordselector/component'
+    'canopsis/uibase/components/dictclassifiedcrecordselector/component'
 ], function(Ember, Application, DictclassifiedcrecordselectorComponent) {
 
     var get = Ember.get,
