@@ -70,35 +70,8 @@ var editorDepsTemplates = [];
 //generate deps
 for (var i = 0, l = editorsTemplates.length; i < l; i++) {
     var name = editorsTemplates[i].name;
-    var files = editorsTemplates[i].js;
 
     var tmplPos;
-
-    if (files !== undefined) {
-        var url;
-
-        if (files.indexOf('c') >= 0) {
-            url = 'app/editors/' + name + '/controller';
-
-            editorsDeps.push(url);
-        }
-
-        if (files.indexOf('v') >= 0) {
-            url = 'app/editors/' + name + '/view';
-
-            editorsDeps.push(url);
-        }
-
-        if (files.indexOf('w') >= 0) {
-            url = 'text!app/editors/' + name + '/component.html';
-
-            tmplPos = editorsDeps.push(url);
-            editorDepsTemplates.push({name: 'components/component-' + name, pos: tmplPos});
-
-            url = 'app/editors/' + name + '/component';
-            editorsDeps.push(url);
-        }
-    }
 
     tmplPos = editorsDeps.push('text!app/editors/' + name + '/template.html');
     editorDepsTemplates.push({name: 'editor-' + name, pos: tmplPos});
