@@ -127,17 +127,18 @@ class CASBackend(BaseBackend):
             if not record:
                 self.logger.info('Creating user {0} in database'.format(user))
 
-                # TODO: set missing fields
                 record = {
                     '_id': user,
-                    'crecord_type': 'user',
-                    'firstname': user,
-                    'lastname': '',
                     'external': True,
-                    'enable': True
+                    'enable': True,
+                    'contact': {
+                        'firstname': user,
+                        'lastname': '',
+                        'mail': None
+                    }
                 }
 
-                self.rights.save_user(record)
+                record = self.rights.save_user(record)
 
             self.logger.info(
                 'Authentication validated by CAS server for user {0}'.format(

@@ -22,7 +22,6 @@
 from bottle import request, HTTPError
 import ldap
 
-from canopsis.webcore.services.account import create_account
 from canopsis.auth.base import BaseBackend
 
 
@@ -131,7 +130,12 @@ class LDAPBackend(BaseBackend):
             # TODO: Replace this with crecord.user
             if result:
                 dn, data = result[0]
-                info = {}
+                info = {
+                    '_id': user,
+                    'external': True,
+                    'enable': True,
+                    'contact': {}
+                }
 
                 for field in ['firstname', 'lastname', 'mail']:
                     val = data.get(config[field], None)
@@ -139,31 +143,23 @@ class LDAPBackend(BaseBackend):
                     if val and isinstance(val, list):
                         val = val[0]
 
-                    info[field] = val
+                    info['contact'][field] = val
 
-                info['firstname'] = info['firstname'].title()
-                info['lastname'] = info['lastname'].title()
-                info['user'] = user
-                info['passwd'] = passwd
-                info['external'] = True
-                info['aaa_group'] = 'group.Canopsis'
-                info['groups'] = ['group.CPS_view']
-
-                account = create_account(info)
+                account = self.rights.save_user(info)
 
             else:
                 info = {
-                    'user': user,
-                    'passwd': passwd,
-                    'firstname': user,
-                    'lastname': '',
-                    'mail': None,
+                    '_id': user,
                     'external': True,
-                    'aaa_group': 'group.Canopsis',
-                    'groups': ['group.CPS_view']
+                    'enable': True,
+                    'contact': {
+                        'firstname': user,
+                        'lastname': '',
+                        'mail': None
+                    }
                 }
 
-                account = create_account(info)
+                account = self.rights.save_user(info)
 
         return account
 
