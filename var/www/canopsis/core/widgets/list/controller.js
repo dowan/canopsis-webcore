@@ -58,8 +58,7 @@ define([
         mixins: [
             InspectableArrayMixin,
             PaginationMixin,
-            UserConfigurationMixin,
-            DraggableColumnsMixin
+            UserConfigurationMixin
         ],
     };
 
@@ -137,7 +136,8 @@ define([
             needs: ['login', 'application', 'recordinfopopup'],
 
             viewMixins: [
-                ListViewMixin
+                ListViewMixin,
+                DraggableColumnsMixin
             ],
 
             //TODO test if this is needed (used in cloaked mode)
