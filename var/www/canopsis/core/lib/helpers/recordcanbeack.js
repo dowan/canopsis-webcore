@@ -22,12 +22,13 @@ define([
     'utils',
 ], function(Ember, utils) {
 
-    var set = Ember.set;
+    var get = Ember.get,
+        set = Ember.set;
 
     Ember.Handlebars.helper('recordcanbeack', function(crecord) {
 
-        console.debug('in recordcanbeack. record status is', crecord.get('status'));
-        recordcanbeack = crecord.get('status') !== 0 && crecord.get('status') !== 2;
+        console.debug('in recordcanbeack. record status is', get(crecord, 'status'));
+        recordcanbeack = get(crecord, 'status') !== 0 && get(crecord, 'status') !== 2;
         set(crecord, 'recordcanbeack', recordcanbeack);
 
         return "";
