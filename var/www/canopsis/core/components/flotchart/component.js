@@ -69,7 +69,9 @@ define([
             var options = get(this, 'options');
 
             this.chart = $.plot(plotcontainer, series, options);
-            this.$().UseTooltip();
+            if (options && options.tooltip){
+                this.$().UseTooltip();
+            }
             this.send('renderChart');
             console.groupEnd();
         }
