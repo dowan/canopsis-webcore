@@ -17,7 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var mixinsArray = [
+var mixins = [
     { name: 'validation', classes: ["action"]},
     { name: 'modelDict', classes: ["action"]},
     { name: 'mixinArray', classes: ["test"]},
@@ -30,36 +30,4 @@ var mixinsArray = [
     { name: 'showviewbutton', classes: ['widget', 'userviews']}
 ];
 
-var deps = ['app/lib/mixinsregistry'];
-var depsSize = deps.length;
-
-for (var i = 0, l = mixinsArray.length; i < l; i++) {
-    var mixinUrl = 'app/mixins/' + mixinsArray[i].name;
-    deps.push(mixinUrl);
-}
-
-define(deps, function(mixinsregistry) {
-    console.tags.add('loader');
-
-    console.log("Begin load mixins", arguments);
-    for (var i = depsSize, li = arguments.length; i < li; i++) {
-        var currentMixin = mixinsArray[i - depsSize];
-
-        if (currentMixin.classes !== undefined) {
-            for (var j = 0, lj = currentMixin.classes.length; j < lj; j++) {
-                var currentClass = currentMixin.classes[j];
-
-                if (mixinsregistry.byClass[currentClass] === undefined) {
-                    mixinsregistry.byClass[currentClass] = [];
-                }
-
-                mixinsregistry.byClass[currentClass].push(currentMixin.name);
-            }
-        }
-        mixinsregistry.all.push(currentMixin);
-    }
-
-    console.tags.remove('loader');
-
-    return mixinsregistry;
-});
+loader.loadMixins(mixins);

@@ -58,12 +58,4 @@ var helpers = [
     'eventtype'
 ];
 
-var deps = ['app/application'];
-
-for (var i = 0, l = helpers.length; i < l; i++) {
-    deps.push('app/lib/helpers/' + helpers[i]);
-}
-
-define(deps, function() {
-    return helpers;
-});
+loader.loadHelpers(helpers);

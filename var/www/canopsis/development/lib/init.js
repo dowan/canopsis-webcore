@@ -17,9 +17,8 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-require([
-    'canopsis/development/lib/loaders/widgets'
-], function() {
-
-});
-
+loader.loadWidgets([
+    { name:'webconsole', url:'canopsis/development/widgets/webconsole' },
+    { name:'requestsmanager', url:'canopsis/development/widgets/requestsmanager' },
+    { name:'objectinspector', url:'canopsis/development/widgets/objectinspector' }
+]);

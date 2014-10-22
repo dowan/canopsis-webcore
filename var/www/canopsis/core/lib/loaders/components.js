@@ -20,7 +20,7 @@
 
 //TODO implement auto check for mvct file existence and require them automatically
 
-var componentsTemplates = [
+var components = [
     'actionbutton',
     'actionfilter',
     'arrayeditor',
@@ -70,33 +70,4 @@ var componentsTemplates = [
     'wrapper'
 ];
 
-var deps = ['ember'];
-var jsDeps = [];
-var depsSize = deps.length;
-
-//generate deps
-for (var i = 0, l = componentsTemplates.length; i < l; i++) {
-    deps.push('text!app/components/' + componentsTemplates[i] + '/template.html');
-
-    var componentJsUrl = 'app/components/' + componentsTemplates[i] + '/component';
-    jsDeps.push(componentJsUrl);
-}
-
-for (i = 0; i < jsDeps.length; i++) {
-    deps.push(jsDeps[i]);
-}
-
-define(deps, function(Ember) {
-    console.tags.add('loader');
-
-    console.log("load components", arguments);
-    for (var i = 0, l = componentsTemplates.length; i < l; i++) {
-
-        console.log('load component', componentsTemplates[i]);
-        var templateName = 'components/component-' + componentsTemplates[i];
-
-        Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
-    }
-
-    console.tags.remove('loader');
-});
+loader.loadComponents(components);

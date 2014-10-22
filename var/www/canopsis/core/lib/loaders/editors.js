@@ -17,11 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var editorsTemplates = [
-    /* js = 'cvw' : the editor have a Controller, a View and a Webcomponent
-     * js = 'cv' : the editor have a Controller and a View
-     * js = 'w' : the editor have a Webcomponent
-     */
+var editors = [
     { name: 'actionfilter' },
     { name: 'array' },
     { name: 'arrayclassifiedcrecordselector' },
@@ -63,39 +59,4 @@ var editorsTemplates = [
     { name: 'userpreference' }
 ];
 
-var editorsDeps = ['ember', 'app/lib/editorregistry'];
-
-var editorDepsTemplates = [];
-
-//generate deps
-for (var i = 0, l = editorsTemplates.length; i < l; i++) {
-    var name = editorsTemplates[i].name;
-
-    var tmplPos;
-
-    tmplPos = editorsDeps.push('text!app/editors/' + name + '/template.html');
-    editorDepsTemplates.push({name: 'editor-' + name, pos: tmplPos});
-}
-
-console.log({"editors dependencies": editorsDeps});
-
-define(editorsDeps, function(Ember, editorRegistry) {
-    console.tags.add('loader');
-
-    for (var i = 0; i < editorDepsTemplates.length; i++) {
-        var tmplInfo = editorDepsTemplates[i];
-
-        var template = arguments[tmplInfo.pos - 1];
-
-        console.log("new editor", tmplInfo.name);
-
-        editorRegistry.add({template: template}, tmplInfo.name);
-
-        Ember.TEMPLATES[tmplInfo.name] = Ember.Handlebars.compile(template);
-    }
-
-    console.groupEnd();
-
-    console.tags.remove('loader');
-});
-
+loader.loadEditors(editors);

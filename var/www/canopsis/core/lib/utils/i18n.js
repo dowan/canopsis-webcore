@@ -18,9 +18,9 @@
 */
 
 define([
-    'canopsis/canopsisConfiguration',
-    'app/application'
-], function(conf) {
+    'jquery',
+    'canopsis/canopsisConfiguration'
+], function($, conf) {
 
     var i18n = {
         todo: [],

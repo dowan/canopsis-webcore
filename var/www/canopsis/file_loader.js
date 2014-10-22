@@ -33,9 +33,8 @@ require([
     'text!canopsis/core/files/routes.json',
     'text!canopsis/core/files/files.json'
 ], function(plugins_tool , plugins_loader) {
-    var arguments = arguments;
     routes = [];
-    function load_( path ){
+    function load_(path) {
         var files;
         var plugins = [];
 

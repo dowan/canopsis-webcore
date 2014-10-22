@@ -17,61 +17,23 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var widgetsTemplates = [
-    { name:'list', url:'app/widgets/list', hasJSPart: true },
-    { name:'canvas', url:'app/widgets/canvas', hasJSPart: true },
-    { name:'verticalbox', url:'app/widgets/verticalbox', hasJSPart: true },
-    { name:'horizontalbox', url:'app/widgets/horizontalbox', hasJSPart: true },
-    { name:'lighthbox', url:'app/widgets/lighthbox', hasJSPart: true },
-    { name:'tabmanager', url:'app/widgets/tabmanager', hasJSPart: true },
-    { name:'uiactionbutton', url:'app/widgets/uiactionbutton', hasJSPart: true },
-    { name:'uimaintabcollection', url:'app/widgets/uimaintabcollection', hasJSPart: true },
-    { name:'uimaindropdown', url:'app/widgets/uimaindropdown', hasJSPart: true },
-//    { name:'multicrecordlist', url:'app/widgets/multicrecordlist', hasJSPart: true , TEMPLATE:'list'},
-    { name:'jobmanager', url:'app/widgets/jobmanager', hasJSPart: true, TEMPLATE: 'list' },
-    { name:'euewi', url:'app/widgets/euewi', hasJSPart: true, TEMPLATE: 'list' },
-    { name:'timegraph', url:'app/widgets/timegraph', hasJSPart: true},
-    { name:'progressbar', url:'app/widgets/progressbar', hasJSPart: true},
-    { name:'graph', url:'app/widgets/graph', hasJSPart: true},
-  //  { name:'gauge', url:'app/widgets/gauge', hasJSPart: true}
+var widgets = [
+    { name:'list', url:'app/widgets/list' },
+    { name:'canvas', url:'app/widgets/canvas' },
+    { name:'verticalbox', url:'app/widgets/verticalbox' },
+    { name:'horizontalbox', url:'app/widgets/horizontalbox' },
+    { name:'lighthbox', url:'app/widgets/lighthbox' },
+    { name:'tabmanager', url:'app/widgets/tabmanager' },
+    { name:'uiactionbutton', url:'app/widgets/uiactionbutton' },
+    { name:'uimaintabcollection', url:'app/widgets/uimaintabcollection' },
+    { name:'uimaindropdown', url:'app/widgets/uimaindropdown' },
+//    { name:'multicrecordlist', url:'app/widgets/multicrecordlist' , TEMPLATE:'list'},
+    { name:'jobmanager', url:'app/widgets/jobmanager', TEMPLATE: 'list' },
+    { name:'euewi', url:'app/widgets/euewi', TEMPLATE: 'list' },
+    { name:'timegraph', url:'app/widgets/timegraph'},
+    { name:'progressbar', url:'app/widgets/progressbar'},
+    { name:'graph', url:'app/widgets/graph'},
+  //  { name:'gauge', url:'app/widgets/gauge'}
 ];
 
-var deps = ['ember'];
-var jsDeps = [];
-var depsSize = deps.length;
-
-
-//generate deps
-for (var i = 0, l = widgetsTemplates.length; i < l; i++) {
-    deps.push('text!' + widgetsTemplates[i].url + '/template.html');
-
-    if (widgetsTemplates[i].hasJSPart === true) {
-        var viewUrl = widgetsTemplates[i].url + '/controller';
-        console.log("adding view", viewUrl);
-
-        jsDeps.push(viewUrl);
-    }
-}
-
-for (i = 0, l = jsDeps.length; i < l; i++) {
-    deps.push(jsDeps[i]);
-}
-
-define(deps, function(Ember) {
-    console.tags.add('loader');
-
-    console.log({"load widgets": arguments});
-    for (var i = 0, l = widgetsTemplates.length; i < l; i++) {
-        var templateName = widgetsTemplates[i].name;
-        var TEMPLATE = widgetsTemplates[i].TEMPLATE;
-        if( !TEMPLATE )
-            Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
-        else{
-            Ember.TEMPLATES[templateName] = Ember.TEMPLATES[TEMPLATE];
-        }
-    }
-
-    console.tags.remove('loader');
-
-});
-
+loader.loadWidgets(widgets);

@@ -17,38 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-//TODO implement auto check for mvct file existence and require them automatically
-
-var uibaseWidgetsTemplates = [
-    { name:'weather', url:'canopsis/uibase/widgets/weather', hasJSPart: true },
-    { name:'text', url:'canopsis/uibase/widgets/text', hasJSPart: true }
-];
-
-var deps = ['ember'];
-var jsDeps = [];
-var depsSize = deps.length;
-
-//generate deps
-for (var i = 0; i < uibaseWidgetsTemplates.length; i++) {
-    deps.push('text!' + uibaseWidgetsTemplates[i].url + '/template.html');
-
-    if (uibaseWidgetsTemplates[i].hasJSPart === true) {
-        var viewUrl = uibaseWidgetsTemplates[i].url + '/controller';
-        console.log("adding view", viewUrl);
-
-        jsDeps.push(viewUrl);
-    }
-}
-
-for (i = 0, l = jsDeps.length; i < l; i++) {
-    deps.push(jsDeps[i]);
-}
-
-define(deps, function(Ember) {
-    for (var i = 0, l = uibaseWidgetsTemplates.length; i < l; i++) {
-        var templateName = uibaseWidgetsTemplates[i].name;
-        Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
-    }
-});
-
+loader.loadWidgets([
+    { name:'weather', url:'canopsis/uibase/widgets/weather' },
+    { name:'text', url:'canopsis/uibase/widgets/text' }
+]);

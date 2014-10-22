@@ -197,13 +197,14 @@ if (isIE) {
 }
 
 define([
+    'app/lib/objects/loader',
     'canopsis/file_loader',
     'seeds/RoutesLoader',
     'app/lib/wrappers/console',
     'app/lib/wrappers/extend',
-    'app/lib/helpers/i18n',
+    'app/lib/utils/i18n',
     'link'
-], function () {
+], function (loader) {
     require(['canopsis/main']);
 });
 
