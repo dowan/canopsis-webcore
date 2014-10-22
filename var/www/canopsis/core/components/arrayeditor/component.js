@@ -25,8 +25,10 @@ define([
     'app/lib/utils/forms',
     'app/mixins/validationfield'
 ], function($, Ember, Application, formsUtils, validationfield) {
+
     var get = Ember.get,
         set = Ember.set;
+
 
     var component = Ember.Component.extend(Application.ValidationFieldMixin, {
         valueRefPath: "content.value",

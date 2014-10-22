@@ -27,6 +27,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+
     var component = Ember.Component.extend({
         actions: {
             doAction: function (actionName, param) {

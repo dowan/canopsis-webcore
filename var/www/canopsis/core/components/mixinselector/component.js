@@ -22,8 +22,10 @@ define([
     'app/application',
     'app/lib/mixinsregistry'
 ], function(Ember, Application, mixinsregistry) {
+
     var get = Ember.get,
         set = Ember.set;
+
 
     var editor = Ember.Component.extend({
         mixins: mixinsregistry

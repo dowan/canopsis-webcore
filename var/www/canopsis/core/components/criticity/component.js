@@ -22,6 +22,7 @@ define([
     'ember',
     'app/application',
 ], function(Ember, Application) {
+
     var get = Ember.get,
         set = Ember.set;
 

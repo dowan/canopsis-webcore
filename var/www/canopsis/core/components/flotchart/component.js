@@ -25,6 +25,7 @@ define([
     'app/lib/wrappers/flotchart',
     'webcore-libs/flot-plugins/custom/jquery.flot.tooltip'
 ], function($, Ember, Application, hashUtils) {
+
     var get = Ember.get,
         set = Ember.set;
 

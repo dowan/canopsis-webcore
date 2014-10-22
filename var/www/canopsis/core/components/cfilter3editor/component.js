@@ -27,6 +27,7 @@ define([
         get = Ember.get,
         isNone = Ember.isNone;
 
+
     var component = Ember.Component.extend({
         init: function() {
             this._super();
