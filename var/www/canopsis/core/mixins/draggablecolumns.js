@@ -20,49 +20,80 @@
 define([
     'ember',
     'app/application',
-//    'app/lib/wrappers/dragtable'
-], function(Ember, Application) {
+    'app/lib/wrappers/dragtable'
+], function(Ember, Application, dragtable) {
 
     var get = Ember.get,
         set = Ember.set;
 
     var mixin = Ember.Mixin.create({
-/*
-        onDomReady: function (element) {
 
-            this._super(arguments);
+        init:function () {
+            this._super();
+            console.log('draggable mixin ready');
+        },
 
-            console.debug('will add dragtable to the list');
 
-            var listController = this;
+        didInsertElement: function() {
+
+            var table = this.$('table');
+
+            console.debug('will add dragtable to the list', table);
+
+            var controller = get(this, 'controller');
+            var view = this;
+
             //column drag and drop management
-            dragtable.makeDraggable(element[0], function (startColumn, stopColumn){
+            dragtable.makeDraggable(table[0], function (startColumn, stopColumn){
+
+                //compute permutation from plugin given information
                 var startIndex = startColumn - 1;
                 var endIndex = stopColumn - 1;
 
-                console.debug('permutation from list drag and drop -> start' ,startIndex, 'stop', endIndex);
-                var columns = listController.get('displayed_columns');
-                console.debug('showing selected columns', columns);
+                var columns = view.getColumns();
+                console.debug('columns before drag', columns);
 
                 var permutation = columns.splice(startIndex,1)[0];
+
+                //exchange dragged column place in model as it is done in the view.
                 if (!Ember.isNone(permutation)) {
                     console.debug('permutation is', permutation);
                     console.debug('permutation is replaced between', columns[endIndex -1], 'and', columns[endIndex]);
-                    console.debug(columns);
                     columns.splice(endIndex, 0, permutation);
 
-                    console.debug('Will permute cols', columns[startIndex], 'and', columns[endIndex]);
+                    console.debug('columns after drag', columns);
 
-                    set(listController, 'userParams.displayed_columns', columns);
-                    listController.saveUserConfiguration();
+                    //Synchornize view and model
+                    set(controller, 'userParams.displayed_columns', columns);
+                    set(controller, 'displayed_columns', columns);
+
+                    controller.saveUserConfiguration();
                 }
             });
+            this._super();
+
+        },
+
+        getColumns: function() {
+            //find better column order depending on available information source.
+            var columns = get(this,'controller.displayed_columns');
+            if (Ember.isNone(columns)) {
+                var shown_columns = get(this, 'controller.shown_columns');
+                console.debug('using shown_columns property', shown_columns);
+                columns = [];
+                for (var i=0; i<shown_columns.length; i++) {
+                    columns.push(get(shown_columns[i], 'field'));
+                }
+            } else {
+                console.debug('using displayed_columns property');
+            }
+            return columns;
         }
-*/
+
 
     });
 
-    Application.Draggablecolumns = mixin;
+    Application.DraggablecolumnsMixin = mixin;
 
     return mixin;
 });

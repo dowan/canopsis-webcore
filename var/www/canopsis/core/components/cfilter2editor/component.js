@@ -32,10 +32,7 @@ define([
     var component = Ember.Component.extend({
 
 
-
-        'clauses': [],
-
-        'operations': [
+        operations: [
             {
                 label: __('equal'),
                 value: '$eq',
@@ -81,7 +78,7 @@ define([
             }
         ],
 
-        'query': {'$and': [
+        query: {'$and': [
             {'plop': 1 },
             {'$or': [1,2,3]}
         ]},
@@ -100,47 +97,27 @@ define([
 
         initializeEditor: function () {
             //TEMP TO REMOVE MOCK VALUES
+            var condition = Condition.create({
+                label: 'AND',
+                value: '$and',
+            });
+
             for (var i = 0; i < 2; i++) {
                 var clause = Clause.create({
                     'property': 'property' + i,
                     'operation': {label:'operation' + i},
                     'value': 'value' + i,
                 });
-                get(this, 'clauses').pushObject(clause);
+                get(condition, 'clauses').pushObject(clause);
             }
 
-            var condition = Condition.create({
-                children: get(this, 'clauses'),
-                label: 'AND',
-                value: '$and',
-            });
 
             var condition1 = Condition.create({
-                children: get(this, 'clauses'),
                 label: 'OR',
                 value: '$or',
             });
-/*
-            for (var i = 0; i < 2; i++) {
-                var clause = Clause.create({
-                    'property': 'property' + i,
-                    'operation': {label:'operation' + i},
-                    'value': 'value' + i,
-                });
-                get(condition1, 'children').pushObject(clause);
-            }
-*/
+            get(condition, 'conditions').pushObject(condition1);
 
-            var condition2 = Condition.create({
-                children: get(this, 'clauses'),
-                label: 'AND',
-                value: '$and',
-            });
-
-            get(condition,'children').pushObject(condition1);
-            //get(condition,'children').pushObject(condition2);
-
-            console.log('set root condition', condition);
 
             set(this, 'query', condition);
 

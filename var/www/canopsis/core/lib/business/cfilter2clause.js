@@ -27,8 +27,6 @@ define([
 
     var Clause = Ember.Object.extend({
 
-        isLeave: true,
-
         display: function (){
             var clause = this;
             var jsonclause =  {
