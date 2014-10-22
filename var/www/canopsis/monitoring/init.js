@@ -18,5 +18,5 @@
 */
 
 loader.loadWidgets([
-    { name:'text', url:'canopsis/uibase/widgets/text' }
+    { name:'weather', url:'canopsis/monitoring/widgets/weather' }
 ]);
