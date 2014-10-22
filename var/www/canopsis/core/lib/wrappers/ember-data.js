@@ -21,8 +21,11 @@ var DS;
 define([
     'ember',
     'app/lib/factories/wrapper',
+    'app/lib/schemasregistry',
     'webcore-libs/dev/ember-data'
-], function(Ember, Wrapper) {
+], function(Ember, Wrapper, schemasRegistry) {
+
+    var get = Ember.get;
 
     DS.ArrayTransform = DS.Transform.extend({
         deserialize: function(serialized) {
@@ -76,14 +79,13 @@ define([
         serialize: function(deserialized) {
             var type = Ember.typeOf(deserialized);
 
-            if (type === 'object') {
+            if (type === 'object' || type === 'instance') {
                 return Ember.Object.create(deserialized);
-
-            } else if (type === 'string') {
-                console.log("bad format");
+            } else {
+                console.warn("bad format", type, deserialized);
             }
 
-            return Ember.Object.create({});
+            return null;
         }
     });
 

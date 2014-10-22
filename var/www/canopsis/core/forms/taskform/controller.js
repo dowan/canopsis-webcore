@@ -22,9 +22,12 @@ define([
     'app/application',
     'app/lib/factories/form',
     'app/forms/modelform/controller',
-    'utils',
     'app/lib/utils/forms'
 ], function(Ember, Application, FormFactory, ModelFormController, formsUtils) {
+
+    var get = Ember.get,
+        set = Ember.set;
+
     var formOptions = {
         subclass: ModelFormController
     };

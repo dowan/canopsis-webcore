@@ -36,7 +36,7 @@ define([
         debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
 
         init: function() {
-            console.log("init editor compo");
+            console.log('init editor compo');
 
             this._super();
 
@@ -49,6 +49,10 @@ define([
             }
         },
 
+        description: function () {
+            return get(this, 'content.model.options.description');
+        }.property(),
+
         editorType: function() {
             console.group('editorType');
 
@@ -56,6 +60,7 @@ define([
 
             var type = get(this, 'content.model.type');
             var role = get(this, 'content.model.options.role');
+            var field = get(this, 'content.field');
 
 
             console.log('content:', get(this, 'content'));
@@ -65,17 +70,21 @@ define([
 
             var editorName;
 
-            if (role) {
-                if(!isNone(overrides) && get(overrides, role)) {
-                    editorName = 'editor-' + get(overrides, role);
-                } else {
-                    editorName = 'editor-' + role;
-                }
+            if(!isNone(overrides) && !isNone(field) && get(overrides, field)) {
+                editorName = 'editor-' + get(overrides, field);
             } else {
-                if(!isNone(overrides) && get(overrides, type)) {
-                    editorName = 'editor-' + get(overrides, type);
+                if (role) {
+                    if(!isNone(overrides) && get(overrides, role)) {
+                        editorName = 'editor-' + get(overrides, role);
+                    } else {
+                        editorName = 'editor-' + role;
+                    }
                 } else {
-                    editorName = 'editor-' + type;
+                    if(!isNone(overrides) && get(overrides, type)) {
+                        editorName = 'editor-' + get(overrides, type);
+                    } else {
+                        editorName = 'editor-' + type;
+                    }
                 }
             }
 
@@ -88,7 +97,7 @@ define([
             return editorName;
         }.property('content.type', 'content.role'),
 
-        attr: Ember.computed.alias("content")
+        attr: Ember.computed.alias('content')
     });
 
     Application.ComponentEditorComponent = component;

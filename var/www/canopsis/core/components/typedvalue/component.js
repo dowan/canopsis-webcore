@@ -44,14 +44,14 @@ define([
 
         },
 
-
+        /*
         content: function () {
             console.log('get content from typed value:', get(this, 'content'));
             var value = typesUtils.castValue(get(this, 'content'), get(this, 'selectedValueType'));
             console.log('computed content from typed value:', value);
             return value;
         }.property(),
-
+        */
 
         placeholder: function () {
 
@@ -71,16 +71,16 @@ define([
             var type = get(this, 'selectedValueType');
 
             if (type === 'String') {
-                set(this, 'content', '');
+                set(this, 'value', '');
             }
             if (type === 'Number') {
-                set(this, 'content', 0);
+                set(this, 'value', 0);
             }
             if (type === 'Boolean') {
-                set(this, 'content', true);
+                set(this, 'value', true);
             }
             if (type === 'Array') {
-                set(this, 'content', []);
+                set(this, 'value', []);
             }
 
             console.log('updated content type with value', get(this, 'content'));
@@ -100,11 +100,19 @@ define([
             return get(this, 'selectedValueType') === 'Array';
         }.property('selectedValueType'),
 
-
+        /*
+        content: function () {
+            console.log('updated content value', get(this, 'value'));
+        }.observes('value'),
+        */
         actions : {
             switchContentValue: function () {
-                set(this, 'content', !get(this, 'content'));
-                console.log('switched boolean value', get(this, 'content'));
+                set(this, 'value', !get(this, 'content'));
+                console.log('switched boolean value', get(this, 'value'));
+            },
+
+            addListElement:function (){
+                get(this, 'content').pushObject('');
             }
         }
 

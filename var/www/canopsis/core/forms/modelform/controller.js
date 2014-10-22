@@ -21,12 +21,13 @@ define([
     'ember',
     'app/application',
     'app/lib/factories/form',
+    'app/lib/schemasregistry',
     'app/mixins/inspectableitem',
     'app/mixins/validation',
     'app/mixins/recordpreset',
     'app/lib/utils/slug',
     'app/lib/loaders/schemas'
-], function(Ember, Application, FormFactory, InspectableitemMixin, ValidationMixin, RecordpresetMixin, slugUtils) {
+], function(Ember, Application, FormFactory, schemasRegistry, InspectableitemMixin, ValidationMixin, RecordpresetMixin, slugUtils) {
     var set = Ember.set,
         get = Ember.get,
         isNone = Ember.isNone;
@@ -83,6 +84,7 @@ define([
 
                     category.slug = slugUtils(category.title);
                     console.log('current category', category);
+
                     if (get(this, 'filterFieldByKey') || get(this, 'userPreferencesOnly')) {
                         //filter on user preferences fields only
                         //if (category)
@@ -144,7 +146,10 @@ define([
                 if(this.isOnCreate && this.modelname){
 
                     var stringtype = this.modelname.charAt(0).toUpperCase() + this.modelname.slice(1);
-                    var model = Application.allModels[stringtype];
+
+                    //TODO use the real schema, not the dict used to create it
+                    //retreive the corresponding schema dict
+                    var model = schemasRegistry.getByName(stringtype);
 
                     if(model) {
                         for(var fieldName in model){

@@ -52,16 +52,13 @@ define([
         }
     });
 
-    var checkIfLoadIsDone = function() { 
-        if(!!Application.ApplicationController && !!Application.ApplicationRoute) { 
-            Application.advanceReadiness(); 
-        } else { 
-            setTimeout(checkIfLoadIsDone, 2000); 
+    var checkIfLoadIsDone = function() {
+        if(!!Application.ApplicationController && !!Application.ApplicationRoute) {
+            Application.advanceReadiness();
+        } else {
+            setTimeout(checkIfLoadIsDone, 2000);
         }
     };
-    setTimeout(checkIfLoadIsDone, 2000); 
-    domReady(function () {
-        Application.advanceReadiness();
-    });
+    setTimeout(checkIfLoadIsDone, 2000);
     return Application;
 });

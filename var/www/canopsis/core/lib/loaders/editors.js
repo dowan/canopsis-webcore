@@ -22,53 +22,50 @@ var editorsTemplates = [
      * js = 'cv' : the editor have a Controller and a View
      * js = 'w' : the editor have a Webcomponent
      */
-    { name: 'actionfilter', js: 'w' },
-    { name: 'array', js: 'w'},
+    { name: 'actionfilter' },
+    { name: 'array' },
     { name: 'arrayclassifiedcrecordselector' },
+    { name: 'attributepreset' },
     { name: 'boolean' },
-    { name: 'cfilter', js: 'w' },
-    { name: 'cfilter2', js: 'w' },
-    { name: 'cfilter3', js: 'w' },
+    { name: 'cfilter' },
+    { name: 'cfilter2' },
+    { name: 'cfilter3' },
     { name: 'cfilterwithproperties'},
-    { name: 'cmetric', js: 'w' },
+    { name: 'cmetric'},
     { name: 'color' },
-    { name: 'criticity', js: 'w' },
-    { name: 'dateinterval', js: 'w' },
-    { name: 'defaultpropertyeditor', js: 'v' },
-    { name: 'duration', js: 'w' },
-    { name: 'sortable', js: 'w' },
-    { name: 'eventselector', js: 'w' },
-    { name: 'group', js: 'c' },
+    { name: 'criticity' },
+    { name: 'dateinterval' },
+    { name: 'defaultpropertyeditor' },
+    { name: 'dictclassifiedcrecordselector' },
+    { name: 'duration' },
+    { name: 'eventselector' },
     { name: 'integer' },
     { name: 'mail' },
-    { name: 'mixinchooser', js: 'w'},
-    { name: 'richtext', js: 'w' },
-
-    { name: 'templateselector' },
+    { name: 'mixinchooser' },
+    { name: 'modelselect' },
+    { name: 'richtext' },
+    { name: 'rights' },
     { name: 'separator' },
-    { name: 'serieitem', js: 'w'},
-    { name: 'session', js: 'w' },
-
-    { name: 'simpledict', js: 'w' },
-    { name: 'simplelist', js: 'v' },
-    { name: 'source', js: 'v' },
-    { name: 'state', js: 'w' },
-    { name: 'dictclassifiedcrecordselector' },
+    { name: 'serieitem'},
+    { name: 'session' },
+    { name: 'simpledict' },
+    { name: 'simplelist' },
+    { name: 'sortable' },
+    { name: 'source' },
+    { name: 'state' },
     { name: 'stringclassifiedcrecordselector' },
-    { name: 'stringpair'},
-    { name: 'tags' , js: 'w' },
-
-    { name: 'rights', js: 'w' },
+    { name: 'stringpair' },
+    { name: 'tags' },
+    { name: 'templateselector' },
     { name: 'textarea' },
-    { name: 'timeinterval', js: 'w' },
-    { name: 'userpreference', js: 'w' },
-    { name: 'timestamp', js: 'w' },
-    { name: 'modelselect', js: 'w' }
+    { name: 'timeinterval' },
+    { name: 'timestamp' },
+    { name: 'userpreference' }
 ];
 
-var deps = ['ember', 'app/routes/userview'];
+var editorsDeps = ['ember', 'app/lib/editorregistry'];
 
-var depsTemplates = [];
+var editorDepsTemplates = [];
 
 //generate deps
 for (var i = 0, l = editorsTemplates.length; i < l; i++) {
@@ -83,41 +80,43 @@ for (var i = 0, l = editorsTemplates.length; i < l; i++) {
         if (files.indexOf('c') >= 0) {
             url = 'app/editors/' + name + '/controller';
 
-            deps.push(url);
+            editorsDeps.push(url);
         }
 
         if (files.indexOf('v') >= 0) {
             url = 'app/editors/' + name + '/view';
 
-            deps.push(url);
+            editorsDeps.push(url);
         }
 
         if (files.indexOf('w') >= 0) {
             url = 'text!app/editors/' + name + '/component.html';
 
-            tmplPos = deps.push(url);
-            depsTemplates.push({name: 'components/component-' + name, pos: tmplPos});
+            tmplPos = editorsDeps.push(url);
+            editorDepsTemplates.push({name: 'components/component-' + name, pos: tmplPos});
 
             url = 'app/editors/' + name + '/component';
-            deps.push(url);
+            editorsDeps.push(url);
         }
     }
 
-    tmplPos = deps.push('text!app/editors/' + name + '/template.html');
-    depsTemplates.push({name: 'editor-' + name, pos: tmplPos});
+    tmplPos = editorsDeps.push('text!app/editors/' + name + '/template.html');
+    editorDepsTemplates.push({name: 'editor-' + name, pos: tmplPos});
 }
 
-console.log({"editors dependencies": deps});
+console.log({"editors dependencies": editorsDeps});
 
-define(deps, function(Ember) {
+define(editorsDeps, function(Ember, editorRegistry) {
     console.tags.add('loader');
 
-    for (var i = 0; i < depsTemplates.length; i++) {
-        var tmplInfo = depsTemplates[i];
+    for (var i = 0; i < editorDepsTemplates.length; i++) {
+        var tmplInfo = editorDepsTemplates[i];
 
         var template = arguments[tmplInfo.pos - 1];
 
         console.log("new editor", tmplInfo.name);
+
+        editorRegistry.add({template: template}, tmplInfo.name);
 
         Ember.TEMPLATES[tmplInfo.name] = Ember.Handlebars.compile(template);
     }

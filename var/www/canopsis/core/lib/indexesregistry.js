@@ -26,7 +26,7 @@ define([
         name: 'indexes'
     });
 
-    manager.all.pushObject(Ember.Object.create({
+    manager.add(Ember.Object.create({
         name: 'event',
         tree: {
             'component': {
@@ -59,7 +59,7 @@ define([
         }
     }));
 
-    manager.all.pushObject(Ember.Object.create({
+    manager.add(Ember.Object.create({
         name: 'crecord',
         tree: {
             'crecord_type': {

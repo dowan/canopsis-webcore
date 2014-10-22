@@ -25,6 +25,7 @@ define([
     'app/lib/utils/forms',
     'app/lib/utils/hash'
 ], function(Ember, Application, FormFactory, utils, formsUtils, hashUtils) {
+
     var get = Ember.get,
         set = Ember.set;
 
