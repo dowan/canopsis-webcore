@@ -20,7 +20,7 @@
 define([
     'ember',
     'app/lib/factories/widget',
-    'app/widgets/list/controller',
+    'canopsis/uibase/widgets/list/controller',
     'app/lib/utils/forms',
     'app/lib/utils/hash',
     'app/serializers/job'

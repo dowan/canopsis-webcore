@@ -196,14 +196,13 @@ if (isIE) {
 
 }
 
-define(['text!canopsis/enabled.json'], function(enabledPlugins) {
+define(['text!canopsis/enabled.json', 'app/lib/wrappers/console'], function(enabledPlugins) {
     enabledPlugins = JSON.parse(enabledPlugins);
 
     var deps = [
         'app/lib/objects/loader',
         'canopsis/file_loader',
         'seeds/RoutesLoader',
-        'app/lib/wrappers/console',
         'app/lib/wrappers/extend',
         'app/lib/utils/i18n',
         'link'

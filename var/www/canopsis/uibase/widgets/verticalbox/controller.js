@@ -20,7 +20,7 @@
 define([
     'app/application',
     'app/lib/factories/widget',
-    'app/widgets/canvas/controller'
+    'canopsis/uibase/widgets/canvas/controller'
 ], function(Application, WidgetFactory) {
 
     var widget = WidgetFactory('verticalbox', {

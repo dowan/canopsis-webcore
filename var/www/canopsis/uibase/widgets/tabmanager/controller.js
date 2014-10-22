@@ -19,7 +19,7 @@
 
 define([
     'app/lib/factories/widget',
-    'app/widgets/canvas/controller'
+    'canopsis/uibase/widgets/canvas/controller'
 ], function(WidgetFactory) {
 
     var set = Ember.set,
