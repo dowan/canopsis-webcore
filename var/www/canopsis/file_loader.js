@@ -21,9 +21,9 @@ var routes;
 
 require([
     'plugins',
-    '/plugins/plugin_loader.js',
-    'text!canopsis/enabled.json'
+    '/plugins/plugin_loader.js'
 ], function(plugins_tool , plugins_loader) {
+
     routes = [];
     function load_(path) {
         var files;

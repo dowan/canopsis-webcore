@@ -210,13 +210,18 @@ define(['text!canopsis/enabled.json'], function(enabledPlugins) {
     ];
 
     for (var i = 0; i < enabledPlugins.length; i++) {
-        deps.push('text!canopsis/'+ enabledPlugins[i] +'/files/routes.json');
-        deps.push('text!canopsis/'+ enabledPlugins[i] +'/files/files.json');
-        deps.push('text!canopsis/'+ enabledPlugins[i] +'/files/manifest.json');
+        var currentPlugin = enabledPlugins[i];
+
+        deps.push('text!canopsis/'+ currentPlugin +'/files/routes.json');
+        deps.push('text!canopsis/'+ currentPlugin +'/files/files.json');
+        deps.push('text!canopsis/'+ currentPlugin +'/files/manifest.json');
+
+        if(currentPlugin !== 'core')
+        deps.push('canopsis/'+ currentPlugin +'/init');
     }
 
     require(deps, function() {
-        require(['canopsis/main']);
+        require(['app/init']);
     });
 });
 
