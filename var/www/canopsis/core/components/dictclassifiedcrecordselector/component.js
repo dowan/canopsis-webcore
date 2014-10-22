@@ -26,6 +26,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+
     var component = Classifiedcrecordselector.extend({
         multiselect: true
     });

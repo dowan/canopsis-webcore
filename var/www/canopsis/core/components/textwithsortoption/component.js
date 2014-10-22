@@ -27,6 +27,7 @@ define([
         set = Ember.set,
         isNone = Ember.isNone;
 
+
     var component = Ember.Component.extend({
 
         directionTypes: ['ASC', 'DESC'],

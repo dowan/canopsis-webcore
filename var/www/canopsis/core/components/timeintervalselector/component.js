@@ -24,7 +24,9 @@ define([
 ], function(Ember, Application) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
+
 
     var component = Ember.Component.extend({
         init: function () {
@@ -33,7 +35,7 @@ define([
 
             set(this, 'durationType', 'duration');
 
-            if (Ember.isNone(get(this, 'content'))) {
+            if (isNone(get(this, 'content'))) {
                 set(this, 'content',
                     {
                         startDate: 0,

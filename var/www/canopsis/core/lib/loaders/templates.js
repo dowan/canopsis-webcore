@@ -74,7 +74,7 @@ var templates = [
     { name: 'titlebarbutton-minimize', classes: ["titlebarbutton"] },
 
     { name: 'actionbutton-foldable' ,  classes: ["foldable"]},
-    { name: 'column-unfold' ,  classes: ["foldable"]},
+    { name: 'column-unfold' ,  classes: ["foldable"]}
 ];
 
 var deps = ['ember'];

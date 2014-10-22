@@ -23,8 +23,10 @@ define([
     'app/lib/wrappers/summernote',
     'app/lib/wrappers/codemirror'
 ], function(Ember, Application) {
+
     var get = Ember.get,
         set = Ember.set;
+
 
     var editor = Ember.Component.extend({
         classNames: ['wysiwyg-editor'],

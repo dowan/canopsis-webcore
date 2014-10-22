@@ -23,6 +23,10 @@ define([
     'ember'
 ], function(Application, templates , Ember){
 
+    var get = Ember.get,
+        set = Ember.set;
+
+
     Application.ComponentTemplateselectorComponent = Ember.Component.extend({
         cssClass: "tooltiptable hint--rounded hint--top btn btn-",
         cssClassON : "success",

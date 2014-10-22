@@ -17,32 +17,37 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember', 'utils'], function(Ember, utils) {
+define([
+    'ember',
+    'app/lib/utils/dates'
+], function(Ember, datesUtils) {
 
-    var get = Ember.get;
+    var get = Ember.get,
+        isNone = Ember.isNone;
+
 
     Ember.Handlebars.helper('timestamp', function(value, attr, record) {
 
-        if (!Ember.isNone(record)) {
+        if (!isNone(record)) {
             value = get(record, 'timeStampState') || value;
         }
 
         var current = new Date().getTime();
         var timestamp = new Date(value * 1000);
 
-        var timeSince = utils.dates.diffDate(timestamp, current, 'd') - 1;
+        var timeSince = datesUtils.diffDate(timestamp, current, 'd') - 1;
 
         var time ='';
         var format;
 
-        if(value && !Ember.isNone(attr)) {
+        if(value && !isNone(attr)) {
             format = get(attr, 'options.format');
         }
 
         if (timeSince === 0) {
             format = 'timeOnly';
         }
-        time = utils.dates.timestamp2String(value, format, true);
+        time = datesUtils.timestamp2String(value, format, true);
 
         return new Ember.Handlebars.SafeString(time);
     });

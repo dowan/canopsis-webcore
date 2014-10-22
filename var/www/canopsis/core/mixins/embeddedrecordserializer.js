@@ -23,12 +23,34 @@ define([
     'app/lib/utils/hash',
 ], function(Ember, Application, hashUtils) {
 
+    var isNone = Ember.isNone;
+
     function keyForRelationship(key, kind) {
         void (kind);
 
         key = key.decamelize();
         return key;
     }
+
+    /**
+     * Test routine, every widget should implement this, as userview and widgetwrapper
+     *
+     * var c = getCanopsis();
+     * var widgets = c.registries.widgets;
+     *
+     * for(var i = 0; i<widgets.length; i++) {
+     *    var n = widgets[i].name;
+     *    console.log(n.capitalize());
+     *    var s = c.Application[n.capitalize() + "Serializer"].create();
+     *    console.log(c.Application.EmbeddedRecordSerializerMixin.detect(s));
+     *    if(!c.Application.EmbeddedRecordSerializerMixin.detect(s)) alert("stop");
+     * }
+     *
+     * var s = c.Application.UserviewSerializer.create();
+     * if(!c.Application.EmbeddedRecordSerializerMixin.detect(s)) alert("stop");
+     * var s = c.Application.WidgetwrapperSerializer.create();
+     * if(!c.Application.EmbeddedRecordSerializerMixin.detect(s)) alert("stop");
+     */
 
     var mixin = Ember.Mixin.create({
 
@@ -66,12 +88,12 @@ define([
                 console.log("sideloadKey", sideloadKey);
 
                 // Missing an ID, give it one
-                if (typeof id === 'undefined') {
+                if (isNone(id)) {
                     id = hashUtils.generateId('item');
                     item[primaryKey] = id;
                 }
 
-                if (Ember.isNone(item.meta)) {
+                if (isNone(item.meta)) {
                     item.meta = {};
                 }
 
@@ -80,14 +102,14 @@ define([
                 item.meta.embeddedRecord = true;
                 item.meta.parentId = parentJSON.id;
 
-                if (!Ember.isNone(parentJSON.xtype)) {
+                if (!isNone(parentJSON.xtype)) {
                     item.meta.parentType = parentJSON.xtype;
-                } else if (!Ember.isNone(parentJSON.crecord_type)) {
+                } else if (!isNone(parentJSON.crecord_type)) {
                     item.meta.parentType = parentJSON.crecord_type;
                 }
 
                 // Don't add if already side loaded
-                if (!Ember.isNone(sideloadArr.findBy('id', id))) {
+                if (!isNone(sideloadArr.findBy('id', id))) {
                     return payload;
                 }
 

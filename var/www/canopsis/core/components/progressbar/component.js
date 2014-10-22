@@ -4,6 +4,10 @@
   'app/application'
 ], function($, Ember, Application) {
 
+    var get = Ember.get,
+        set = Ember.set;
+
+
     Application.ComponentProgressbarComponent = Ember.Component.extend({
     classNames: 'progress',
     inline:false,

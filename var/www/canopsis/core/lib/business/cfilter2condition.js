@@ -18,13 +18,14 @@
 */
 
 define(['ember'], function(Ember) {
+
     var get = Ember.get,
         set = Ember.set;
+
 
     var Condition = Ember.Object.extend({
 
         children: [],
-
         isLeave: false,
 
         leaves: function () {

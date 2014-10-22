@@ -87,6 +87,7 @@ define([
 
         validation: function() {
             console.group("Form validation");
+
             var validationFields = get(this, "validationFields");
             var isValid = true;
             var error_array = [];

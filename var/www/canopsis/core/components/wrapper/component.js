@@ -22,16 +22,20 @@ define([
     'app/application'
 ], function(Ember, Application) {
 
-//{{component-editor attr=attr form=this}}
+    var get = Ember.get,
+        set = Ember.set,
+        isNone = Ember.isNone;
+
+    //{{component-editor attr=attr form=this}}
 
     var component = Ember.Component.extend({
         tagName: 'span',
         init: function() {
             this._super();
             console.log("init wrapper component");
-            console.log("wrapper component type", this.get('editor-type'));
+            console.log("wrapper component type", get(this, 'editor-type'));
             //mock attr
-            this.set('attr', {
+            set(this, 'attr', {
                 model: {
                     options:{}
                 }
@@ -40,16 +44,16 @@ define([
 
         onContentUpdate: function(){
 
-            var callback = this.get('callback');
+            var callback = get(this, 'callback');
 
-            var referer = this.get('referer');
+            var referer = get(this, 'referer');
 
-            if (Ember.isNone(referer)) {
+            if (isNone(referer)) {
                 console.warn('Referer not defined in component template. callbacks cannot work');
             }
 
-            if (!Ember.isNone(callback)) {
-                callback(this.get('attr.value'), referer);
+            if (!isNone(callback)) {
+                callback(get(this, 'attr.value'), referer);
             } else {
                 console.log('Callback is not valid : ', callback, this);
             }
@@ -58,7 +62,7 @@ define([
 
         editorType: function() {
 
-            var type = this.get('editor-type');
+            var type = get(this, 'editor-type');
 
             console.log('editor-type:', type);
 
@@ -71,7 +75,6 @@ define([
             return editorName;
 
         }.property('editor-type'),
-
     });
 
     Application.ComponentWrapperComponent = component;

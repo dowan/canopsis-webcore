@@ -28,6 +28,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+
     Application.ComponentCmetricComponent = Ember.Component.extend({
         selectedMetrics: undefined,
         metricSearch: null,

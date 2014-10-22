@@ -24,8 +24,10 @@ define([
     'app/mixins/pagination',
     'app/adapters/crecord'
 ], function($, Ember, Application, PaginationMixin) {
+
     var get = Ember.get,
         set = Ember.set;
+
 
     var component = Ember.Component.extend({
         model: undefined,

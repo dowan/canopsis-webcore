@@ -28,6 +28,7 @@ define([
         set = Ember.set,
         isNone = Ember.isNone;
 
+
     var component = DictclassifiedcrecordselectorComponent.extend({
         nameKey: '_id',
         idKey: '_id',

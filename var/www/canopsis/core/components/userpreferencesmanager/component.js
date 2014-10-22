@@ -29,6 +29,7 @@ define([
     var set = Ember.set,
         get = Ember.get;
 
+
     var component = Ember.Component.extend({
         init: function() {
             this._super();

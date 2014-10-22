@@ -22,6 +22,7 @@ define([
     'app/application',
     'app/adapters/entity',
 ], function(Application, EntityAdapter) {
+
     var adapter = EntityAdapter.extend({
 
         buildURL: function(type, id) {

@@ -22,8 +22,10 @@ define([
     'ember',
     'app/application',
     'app/lib/utils/hash',
-    'app/lib/wrappers/flotchart'
+    'app/lib/wrappers/flotchart',
+    'webcore-libs/flot-plugins/custom/jquery.flot.tooltip'
 ], function($, Ember, Application, hashUtils) {
+
     var get = Ember.get,
         set = Ember.set;
 
@@ -62,19 +64,16 @@ define([
 
         createChart: function() {
             console.group('createChart');
-
             var plotcontainer = this.$();
 
             var series = get(this, 'series');
             var options = get(this, 'options');
-            console.log('container:', plotcontainer);
-            console.log('series:', series);
-            console.log('options:', options);
 
             this.chart = $.plot(plotcontainer, series, options);
-
+            if (options && options.tooltip){
+                this.$().UseTooltip();
+            }
             this.send('renderChart');
-
             console.groupEnd();
         }
     });

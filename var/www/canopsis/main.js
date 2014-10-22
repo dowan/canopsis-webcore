@@ -33,6 +33,7 @@ define([
     'app/serializers/application',
     'app/lib/wrappers/bootstrap',
     'app/lib/wrappers/hint',
+    'app/lib/wrappers/swag',
     'timepicker',
     'app/lib/wrappers/console',
     'app/lib/wrappers/ionicons',
