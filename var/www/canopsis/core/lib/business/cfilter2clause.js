@@ -17,9 +17,13 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
+define([
+    'ember'
+], function(Ember) {
+
     var get = Ember.get,
         set = Ember.set;
+
 
     var Clause = Ember.Object.extend({
 

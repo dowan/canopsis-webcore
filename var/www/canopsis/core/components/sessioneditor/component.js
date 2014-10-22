@@ -22,8 +22,10 @@ define([
     'app/application',
     'utils'
 ], function(Ember, Application, cutils) {
+
     var get = Ember.get,
         set = Ember.set;
+
 
     var component = Ember.Component.extend({
         fieldValue: function() {

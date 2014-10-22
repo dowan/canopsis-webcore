@@ -21,6 +21,7 @@ define([
     'ember',
     'app/application'
 ], function(Ember, Application) {
+
     var get = Ember.get,
         set = Ember.set;
 
@@ -44,7 +45,7 @@ define([
                       .replace(/^\n/g, "")
                       .replace(/\n$/g, "")
                       .split("\n");
-        
+
         var sum = 0,
             row, cut, add,
             tagMatch,

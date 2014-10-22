@@ -24,8 +24,10 @@ define([
     'ember',
     'app/application'
 ], function(Ember, Application) {
+
     var set = Ember.set,
         get = Ember.get;
+
 
     var component = Ember.Component.extend({
 

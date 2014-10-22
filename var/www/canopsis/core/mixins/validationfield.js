@@ -23,6 +23,10 @@ define([
     'app/lib/formsregistry'
 ], function($, Ember, Application, formsregistry) {
 
+    var get = Ember.get,
+        set = Ember.set,
+        isNone = Ember.isNone;
+
     /**
      * Use Component-> validators -> validate (Ember.validators["validate"]) for validation
      */
@@ -37,19 +41,19 @@ define([
 
         init: function(){
             var form  =  formsregistry.formwrapper.form;
-            this.set('form' , form );
+            set(this, 'form', form );
 
             var attributes = this.attr || this.content;
-            this.set("attr" , attributes );
+            set(this, "attr", attributes );
 
             var model = attributes.model;
 
-            if (Ember.isNone(this.get('value')) && !Ember.isNone(this.get('attr.model.options.defaultValue'))) {
-                this.set('value', this.get('attr.model.options.defaultValue'));
+            if (isNone(get(this, 'value')) && !isNone(get(this, 'attr.model.options.defaultValue'))) {
+                this.set('value', get(this, 'attr.model.options.defaultValue'));
             }
 
             var type =  model.options.input_type || model.type;
-            type = (type === 'string')? 'text' : type;
+            type = (type === 'string') ? 'text' : type;
             // this.type = type;
             this._super();
         },
@@ -57,7 +61,7 @@ define([
         registerFieldWithController: function() {
             var formController  =  formsregistry.formwrapper.form;
             if ( formController ){
-                var validationFields = formController.get('validationFields');
+                var validationFields = get(formController, 'validationFields');
                 if (validationFields){
                     validationFields.pushObject(this);
                 }
@@ -73,10 +77,13 @@ define([
 
         validate : function() {
             var formController  = formsregistry.formwrapper.form;
-            var FCValidation    = formController.get('validation');
-            if ( FCValidation  !== undefined ) {
-                var attr = this.get('attr') ;
+            var FCValidation    = get(formController, 'validation');
+
+            if(FCValidation !== undefined) {
+
+                var attr = get(this, 'attr') ;
                 var valideStruct =  Ember.validators.validate(attr);
+
                 console.log('valideStruct',valideStruct);
 
                 if (!this.removedFromDOM){
@@ -89,7 +96,8 @@ define([
                         selector.closest('div').removeClass('has-error');
                     }
                 }
-            return valideStruct;
+
+                return valideStruct;
             }
         }
     });

@@ -21,7 +21,6 @@ define(['ember'], function(Ember) {
 
     Ember.Handlebars.helper('sorticon', function(cssClass) {
 
-
         var state_template;
         if(cssClass === "sorting_desc") {
             sortTemplate = '<i class="fa fa-caret-down"></i>';

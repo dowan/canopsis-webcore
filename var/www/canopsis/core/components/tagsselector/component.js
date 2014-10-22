@@ -9,6 +9,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+
     var component = Ember.Component.extend({
         contentREF:[],
         name : "",

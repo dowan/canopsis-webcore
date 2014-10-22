@@ -216,7 +216,7 @@ define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
             console.groupEnd();
         }
 
-        console.log(schemaName, "inherits from",parentModelClass);
+        console.log(schemaName, 'inherits from',parentModelClass);
 
         modelDict = inheritance(modelDict, parentModelClassName, schemaName);
 
@@ -224,7 +224,7 @@ define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
         Application.allModels[schemaName] = modelDict;
         var newModel = parentModelClass.extend(modelDict);
 
-        console.log("newModel store", newModel.store);
+        console.log('newModel store', newModel.store);
         console.groupEnd();
 
         return newModel;
@@ -247,23 +247,23 @@ define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
                 {
                     var val = Application.allModels[parentModelClassName][keys]._meta.options;
 
-                    if (val.relationship === "hasMany" && val.model !== undefined) {
-                        console.log("Add hasMany relationship : " + keys +' = ', val, Application.allModels[parentModelClassName][keys]._meta.type);
+                    if (val.relationship === 'hasMany' && val.model !== undefined) {
+                        console.log('Add hasMany relationship : ' + keys +' = ', val, Application.allModels[parentModelClassName][keys]._meta.type);
                         modelDict[keys] = DS.hasMany(val.model, val);
-                    } else if (val.relationship === "belongsTo" && val.model !== undefined) {
-                        console.log("Add belongsTo relationship : " + keys +' = ', val, Application.allModels[parentModelClassName][keys]._meta.type);
+                    } else if (val.relationship === 'belongsTo' && val.model !== undefined) {
+                        console.log('Add belongsTo relationship : ' + keys +' = ', val, Application.allModels[parentModelClassName][keys]._meta.type);
                         modelDict[keys] = DS.belongsTo(val.model, val);
                     } else {
-                        console.log("Add attribute : " + keys +' = ', val, Application.allModels[parentModelClassName][keys]._meta.type);
+                        console.log('Add attribute : ' + keys +' = ', val, Application.allModels[parentModelClassName][keys]._meta.type);
                         modelDict[keys] = DS.attr(Application.allModels[parentModelClassName][keys]._meta.type, val);
                     }
 
-                } else if (modelDict[keys] !== undefined && keys !== "categories" && keys !== "metadata") {
+                } else if (modelDict[keys] !== undefined && keys !== 'categories' && keys !== 'metadata') {
 
                     var oldkeys = Application.allModels[parentModelClassName][keys];
                     var newkeys = modelDict[keys];
 
-                    console.log("oldkeys", oldkeys, "newkeys", newkeys);
+                    console.log('oldkeys', oldkeys, 'newkeys', newkeys);
                     if (oldkeys !== undefined) {
 
                         var oldkeysAttribute = oldkeys._meta;
@@ -277,7 +277,7 @@ define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
                             oldOptions = oldkeysAttribute.options;
                         }
 
-                        console.log("modelDict keys !== undefined : ", parentModelClassName, Application.allModels[parentModelClassName], keys);
+                        console.log('modelDict keys !== undefined : ', parentModelClassName, Application.allModels[parentModelClassName], keys);
 
                         var newOptions;
                         if(newkeysAttribute !== undefined) {
@@ -304,10 +304,10 @@ define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
     *    Processes loaded schemas and adds them to the application scope
     */
     function addSchema(schemaInheritance, schemaName, schema) {
-        console.log("addSchema", schemaName, schemaInheritance, schema);
+        console.log('addSchema', schemaName, schemaInheritance, schema);
 
         var parentModelClass;
-        var parentModelClassName = "";
+        var parentModelClassName = '';
 
         if (utils.schemaList === undefined) {
             utils.schemaList = {};
@@ -360,7 +360,7 @@ define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
             //if option isn't in current model's options
             if (oldOptions.hasOwnProperty(options) && newOptions[options] === undefined) {
                 newOptions[options] = oldOptions[options];
-                console.log ("Added "+ options + " = " + oldOptions[options] + " in "+ schemaName);
+                console.log ('Added '+ options + ' = ' + oldOptions[options] + ' in ' + schemaName);
             }
         }
         return newOptions ;

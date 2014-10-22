@@ -22,6 +22,10 @@ define([
     'app/application'
 ], function(Ember, Application) {
 
+    var get = Ember.get,
+        set = Ember.set;
+
+
     var component = Ember.Component.extend({
         tagName: 'span',
         classNames: 'filterclause',

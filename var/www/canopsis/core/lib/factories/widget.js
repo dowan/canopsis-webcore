@@ -70,48 +70,46 @@ define([
 
         if(isNone(widgetModel)) {
             notificationUtils.error('No model found for the widget ' + widgetName + '. There might be no schema concerning this widget on the database');
-            return;
-        }
+        } else {
+            console.log("extendArguments", extendArguments);
+            console.log("subclass", options.subclass);
 
-        console.log("extendArguments", extendArguments);
-        console.log("subclass", options.subclass);
+            Application[widgetControllerName] = options.subclass.extend.apply(options.subclass, extendArguments);
 
-        Application[widgetControllerName] = options.subclass.extend.apply(options.subclass, extendArguments);
-
-        //dynamically create an adapter that implements EmbeddedRecordMixin if a custom adapter is not already defined in Application
-        if(isNone(get(Application, widgetSerializerName))) {
-            Application[widgetSerializerName] = UserviewSerializer.extend();
-        }
-
-        console.log("widget", widgetName.camelize().capitalize(), Application[widgetName.camelize().capitalize()]);
-        var metadataDict = Application[widgetName.camelize().capitalize()].proto().metadata;
-
-        console.log("metadataDict", widgetName, metadataDict);
-
-        var registryEntry = Ember.Object.create({
-            name: widgetName,
-            EmberClass: Application[widgetControllerName]
-        });
-
-        if(!isNone(metadataDict)) {
-            if(metadataDict.icon) {
-                registryEntry.set('icon', metadataDict.icon);
+            //dynamically create an adapter that implements EmbeddedRecordMixin if a custom adapter is not already defined in Application
+            if(isNone(get(Application, widgetSerializerName))) {
+                Application[widgetSerializerName] = UserviewSerializer.extend();
             }
-            if(metadataDict.classes) {
-                var classes = metadataDict.classes;
-                for (var j = 0, lj = classes.length; j < lj; j++) {
-                    var currentClass = classes[j];
-                    if(!Ember.isArray(get( WidgetsRegistry.byClass, currentClass))) {
-                        set(WidgetsRegistry.byClass, currentClass, Ember.A());
-                    }
 
-                    get(WidgetsRegistry.byClass, currentClass).push(registryEntry);
+            console.log("widget", widgetName.camelize().capitalize(), Application[widgetName.camelize().capitalize()]);
+            var metadataDict = Application[widgetName.camelize().capitalize()].proto().metadata;
+
+            console.log("metadataDict", widgetName, metadataDict);
+
+            var registryEntry = Ember.Object.create({
+                name: widgetName,
+                EmberClass: Application[widgetControllerName]
+            });
+
+            if(!isNone(metadataDict)) {
+                if(metadataDict.icon) {
+                    registryEntry.set('icon', metadataDict.icon);
+                }
+                if(metadataDict.classes) {
+                    var classes = metadataDict.classes;
+                    for (var j = 0, lj = classes.length; j < lj; j++) {
+                        var currentClass = classes[j];
+                        if(!Ember.isArray(get( WidgetsRegistry.byClass, currentClass))) {
+                            set(WidgetsRegistry.byClass, currentClass, Ember.A());
+                        }
+
+                        get(WidgetsRegistry.byClass, currentClass).push(registryEntry);
+                    }
                 }
             }
+
+            WidgetsRegistry.all.push(registryEntry);
         }
-
-
-        WidgetsRegistry.all.push(registryEntry);
 
         console.groupEnd();
         console.tags.remove('factory');

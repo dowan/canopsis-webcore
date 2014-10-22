@@ -25,6 +25,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+
     var component = Ember.Component.extend({
         model: function() {
             var model = get(this, 'content.model.options.model');

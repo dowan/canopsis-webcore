@@ -18,13 +18,13 @@
 */
 
 define(['ember'], function(Ember) {
+
+    var get = Ember.get,
+        set = Ember.set,
+        isNone = Ember.isNone;
+
+
     Ember.Handlebars.helper('criticity', function(value, crecord) {
-
-        var get = Ember.get,
-            set = Ember.set,
-            isNone = Ember.isNone;
-
-
         //displays keep status information if any onto the state field
         //keep state is generated when a user overrides the criticity of and acknowleged event
         var record = get(crecord, 'record.content');

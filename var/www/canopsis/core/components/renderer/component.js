@@ -22,7 +22,9 @@ define([
     'app/application',
     'app/lib/loaders/renderers'
 ], function(Ember, Application) {
+
     var get = Ember.get;
+
 
     var component = Ember.Component.extend({
 

@@ -24,6 +24,10 @@ define([
     'app/lib/utils/forms'
 ], function(Ember, Application, formsregistry, formsUtils) {
 
+    var get = Ember.get,
+        set = Ember.set;
+
+
     var component = Ember.Widgets.MultiSelectComponent.extend({
         selectionItemView: Ember.Widgets.MultiSelectOptionView,
         select:0,

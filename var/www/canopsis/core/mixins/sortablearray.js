@@ -57,7 +57,10 @@ define([
                     this.findOptions = {};
                 }
 
-                this.findOptions.sort = JSON.stringify([{"property": attribute.field,"direction": direction}]);
+                this.findOptions.sort = JSON.stringify([{
+                    property: attribute.field,
+                    direction: direction
+                }]);
 
                 this.refreshContent();
             }

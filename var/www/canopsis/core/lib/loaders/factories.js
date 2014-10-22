@@ -23,28 +23,4 @@ var factories = [
     { name:'form', url: 'app/lib/factories/form' }
 ];
 
-var factoriesDeps = ['app/application', 'app/lib/factoryregistry'];
-var factoriesDepsSize = factoriesDeps.length;
-
-for (var i = 0, l = factories.length; i < l; i++) {
-    factoriesDeps.push(factories[i].url);
-}
-
-define(factoriesDeps, function(Application, factoryRegistry) {
-    console.tags.add('loader');
-
-    Application.factories = {};
-
-    console.log("loading factories", factories, "into", Application.factories);
-
-    for (var i = 0, l = factories.length; i < l; i++) {
-        factoryRegistry.add({
-            name: factories[i].name.capitalize(),
-            factory: arguments[i + factoriesDepsSize]
-        });
-    }
-
-
-    console.tags.remove('loader');
-    return Application.factories;
-});
+loader.loadFactories(factories);

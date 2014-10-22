@@ -17,7 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var renderersTemplates = [
+var renderers = [
     'ack',
     'actionfilter',
     'boolean',
@@ -44,18 +44,4 @@ var renderersTemplates = [
     'eventtype'
 ];
 
-var rendererDeps = ['ember', 'app/lib/rendererregistry'];
-var rendererDepsSize = rendererDeps.length;
-
-for (var i = 0, l = renderersTemplates.length; i < l; i++) {
-    rendererDeps.push('text!app/renderers/' + renderersTemplates[i] + '/template.html');
-}
-
-define(rendererDeps, function(Ember, rendererRegistry) {
-    for (var i = rendererDepsSize, l = arguments.length; i < l; i++) {
-        var templateName = "renderer-" + renderersTemplates[i - rendererDepsSize];
-
-        rendererRegistry.add({template: arguments[i]}, templateName);
-        Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i]);
-    }
-});
+loader.loadRenderers(renderers);

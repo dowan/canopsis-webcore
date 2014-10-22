@@ -23,6 +23,10 @@ define([
     'app/application'
 ], function(Ember, Application) {
 
+    var get = Ember.get,
+        set = Ember.set;
+
+
     var component = Ember.Component.extend({
         init: function() {
             this._super();
@@ -33,16 +37,16 @@ define([
 
             this.set('selectedEvents', []);
 
-            if (this.get('content') !== undefined) {
+            if (get(this, 'content') !== undefined) {
                 this.initializeEvents();
             }
         },
 
         initializeEvents: function () {
-            rks = this.get('content');
+            rks = get(this, 'content');
 
             var that = this;
-            var query = this.get("componentDataStore").findQuery(
+            var query = get(this, "componentDataStore").findQuery(
                 'event',
                 {
                     filter: JSON.stringify({_id: {'$in': rks}}),
@@ -52,7 +56,7 @@ define([
             ).then(
                 function (data) {
                     console.log('Fetched initialization data from events', data.content);
-                    that.set('selectedEvents', data.content);
+                    set(that, 'selectedEvents', data.content);
                 }
             );
             void (query);
@@ -96,7 +100,7 @@ define([
                 }
             }
 
-            var query = this.get("componentDataStore").findQuery(
+            var query = get(this, "componentDataStore").findQuery(
                 'event',
                 {
                     filter: JSON.stringify(filter),

@@ -17,9 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-require([
-    'canopsis/uibase/lib/loaders/widgets'
-], function() {
-
-});
-
+loader.loadWidgets([
+    { name:'weather', url:'canopsis/uibase/widgets/weather' },
+    { name:'text', url:'canopsis/uibase/widgets/text' }
+]);

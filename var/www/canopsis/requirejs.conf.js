@@ -196,15 +196,33 @@ if (isIE) {
 
 }
 
-define([
-    'canopsis/file_loader',
-    'seeds/RoutesLoader',
-    'app/lib/wrappers/console',
-    'app/lib/wrappers/extend',
-    'app/lib/helpers/i18n',
-    'link'
-], function () {
-    require(['canopsis/main']);
+define(['text!canopsis/enabled.json'], function(enabledPlugins) {
+    enabledPlugins = JSON.parse(enabledPlugins);
+
+    var deps = [
+        'app/lib/objects/loader',
+        'canopsis/file_loader',
+        'seeds/RoutesLoader',
+        'app/lib/wrappers/console',
+        'app/lib/wrappers/extend',
+        'app/lib/utils/i18n',
+        'link'
+    ];
+
+    for (var i = 0; i < enabledPlugins.length; i++) {
+        var currentPlugin = enabledPlugins[i];
+
+        deps.push('text!canopsis/'+ currentPlugin +'/files/routes.json');
+        deps.push('text!canopsis/'+ currentPlugin +'/files/files.json');
+        deps.push('text!canopsis/'+ currentPlugin +'/files/manifest.json');
+
+        if(currentPlugin !== 'core')
+        deps.push('canopsis/'+ currentPlugin +'/init');
+    }
+
+    require(deps, function() {
+        require(['app/init']);
+    });
 });
 
 

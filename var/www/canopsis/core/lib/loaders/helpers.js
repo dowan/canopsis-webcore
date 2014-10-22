@@ -25,7 +25,6 @@ var helpers = [
     'criticity',
     'date-fromnow',
     'duration',
-    'editor',
     'enableview',
     'format-date',
     'formview',
@@ -59,13 +58,4 @@ var helpers = [
     'eventtype'
 ];
 
-var deps = ['app/application', 'app/lib/wrappers/swag'];
-
-for (var i = 0, l = helpers.length; i < l; i++) {
-    deps.push('app/lib/helpers/' + helpers[i]);
-}
-
-define(deps, function() {
-
-    return helpers;
-});
+loader.loadHelpers(helpers);
