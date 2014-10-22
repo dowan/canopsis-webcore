@@ -34,6 +34,7 @@ define([
     var FlotChartViewMixin = Ember.Mixin.create({
         didInsertElement: function() {
             //get the timestamp, and not the date object
+
             var now = +new Date();
             var config = get(this, 'controller.config');
 
@@ -43,7 +44,6 @@ define([
             set(this, 'controller.timenav', get(config, 'timenav'));
 
             chartOptions = get(this, 'controller.chartOptions') || {};
-
             $.extend(chartOptions, {
                 zoom: {
                     interactive: false
@@ -211,8 +211,8 @@ define([
             console.group('Generating FlotChart serie:', config);
 
             var me = this;
-
             var flotSerie = {
+                template_tooltip: "<strong> #label </strong><br> : <strong> #y </strong>(USD)",
                 label: get(config, 'serie.crecord_name'),
                 color: get(config, 'style.color'),
                 lines: {

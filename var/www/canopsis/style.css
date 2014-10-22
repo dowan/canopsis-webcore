@@ -576,4 +576,13 @@ i.abstractType > i.widget {
 	height:258px;
 	background: #292429;
 }
-
+.time-tooltip {
+	position: absolute;
+   	display: none;
+  	padding: 3px;
+   	font-size: 9px;
+    border-radius: 5px;
+  	background-color: #fff;
+  	font-family: Verdana, Arial, Helvetica, Tahoma, sans-serif;
+   	opacity: 0.9;
+}
