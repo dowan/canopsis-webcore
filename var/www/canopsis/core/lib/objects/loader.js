@@ -97,10 +97,11 @@ define([], function() {
             //generate deps
             for (var i = 0, l = editors.length; i < l; i++) {
                 var name = editors[i].name;
+                var url = editors[i].url;
 
                 var tmplPos;
 
-                tmplPos = deps.push('text!app/editors/' + name + '/template.html');
+                tmplPos = deps.push('text!' + url + '/template.html');
                 editorsDeps.push({name: 'editor-' + name, pos: tmplPos});
             }
 
@@ -247,6 +248,45 @@ define([], function() {
                     rendererRegistry.add({template: arguments[i]}, templateName);
                     Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i]);
                 }
+            });
+
+        },
+
+        loadTemplates: function() {
+            var deps = ['ember'];
+            var depsSize = deps.length;
+
+            for (var i = 0; i < templates.length; i++) {
+                deps.push('text!' + templates[i].url + '.html');
+            }
+
+            define(deps, function(Ember) {
+                templatesLoaded = Ember.Object.create();
+                templatesLoaded.all = [];
+                templatesLoaded.byClass = Ember.Object.create();
+
+                for (var i = depsSize, li = arguments.length; i < li; i++) {
+                    var currentTemplate = templates[i - depsSize];
+                    Ember.TEMPLATES[currentTemplate.name] = Ember.Handlebars.compile(arguments[i]);
+
+                    currentTemplate.fileContent = arguments[i];
+
+                    if (currentTemplate.classes !== undefined) {
+                        for (var j = 0, lj = currentTemplate.classes.length; j < lj; j++) {
+                            var currentClass = currentTemplate.classes[j];
+
+                            if (templatesLoaded.byClass[currentClass] === undefined) {
+                                templatesLoaded.byClass[currentClass] = [];
+                            }
+
+                            templatesLoaded.byClass[currentClass].push(currentTemplate);
+                        }
+                    }
+
+                    templatesLoaded.all.push(currentTemplate);
+                }
+
+                return templatesLoaded;
             });
 
         }

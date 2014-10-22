@@ -25,13 +25,17 @@ define([
     'app/lib/utils/hash',
     'app/serializers/job'
 ], function(Ember, WidgetFactory, WidgetListController, formsUtils, hashUtils) {
+
     var get = Ember.get,
         set = Ember.set;
+
 
     var widgetOptions = {
         subclass: WidgetListController
     };
 
+
+    //TODO refactor jobform to be able to nuke this widget, or eventually use a mixin to override action
     var widget = WidgetFactory('jobmanager', {
         listed_crecord_type: 'job',
 

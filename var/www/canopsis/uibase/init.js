@@ -17,22 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-loader.loadWidgets([
-    { name:'text', url:'canopsis/uibase/widgets/text' },
-    { name:'list', url:'canopsis/uibase/widgets/list' },
-    { name:'canvas', url:'canopsis/uibase/widgets/canvas' },
-    { name:'verticalbox', url:'canopsis/uibase/widgets/verticalbox' },
-    { name:'horizontalbox', url:'canopsis/uibase/widgets/horizontalbox' },
-    { name:'lighthbox', url:'canopsis/uibase/widgets/lighthbox' },
-    { name:'tabmanager', url:'canopsis/uibase/widgets/tabmanager' },
-    { name:'uiactionbutton', url:'canopsis/uibase/widgets/uiactionbutton' },
-    { name:'uimaintabcollection', url:'canopsis/uibase/widgets/uimaintabcollection' },
-    { name:'uimaindropdown', url:'canopsis/uibase/widgets/uimaindropdown' },
-    //{ name:'multicrecordlist', url:'canopsis/uibase/widgets/multicrecordlist' , TEMPLATE:'list'},
-    { name:'jobmanager', url:'canopsis/uibase/widgets/jobmanager', TEMPLATE: 'list' },
-    { name:'euewi', url:'canopsis/uibase/widgets/euewi', TEMPLATE: 'list' },
-    { name:'timegraph', url:'canopsis/uibase/widgets/timegraph'},
-    { name:'progressbar', url:'canopsis/uibase/widgets/progressbar'},
-    { name:'graph', url:'canopsis/uibase/widgets/graph'}
-    //{ name:'gauge', url:'canopsis/uibase/widgets/gauge'}
-]);
+define([
+    'canopsis/uibase/lib/loaders/editors',
+    'canopsis/uibase/lib/loaders/widgets'
+], function () {});
