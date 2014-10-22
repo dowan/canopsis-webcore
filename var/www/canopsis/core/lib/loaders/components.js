@@ -23,7 +23,7 @@
 var components = [
     { name: 'editor', url: 'app/components/editor' },
     { name: 'renderer', url: 'app/components/renderer' },
-    { name: 'wrapper', url: 'app/components/wrapper' }
+    { name: 'wrapper', url: 'app/components/wrapper' },
     { name: 'attributepreset', url: 'app/components/attributepreset' }
 ];
 
