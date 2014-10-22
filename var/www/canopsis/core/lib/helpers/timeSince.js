@@ -30,15 +30,15 @@ define(['ember', 'app/lib/utils/dates'], function(Ember, datesUtils) {
 
             var newObject = Ember.Object.create({value : time , field : "time" });
             newObject.addObserver('timeStampState',record, function(sender, key , value) {
-                console.log("test");
+                console.log('test');
             });
 
             var icon = '<span class=glyphicon glyphicon-time ></span>';
             if(time !== 0) {
-                return new Ember.Handlebars.SafeString(time + " " + __("days ago"));
+                return new Ember.Handlebars.SafeString(time + ' ' + __('days ago'));
             }
 
-            return new Ember.Handlebars.SafeString(__("Today"));
+            return new Ember.Handlebars.SafeString(__('Today'));
         } else {
             return "";
         }

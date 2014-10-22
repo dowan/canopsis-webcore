@@ -17,7 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var formsTemplates = [
+var forms = [
     'modelform',
     'widgetform',
     'arrayitemform',
@@ -29,33 +29,4 @@ var formsTemplates = [
     //"confirmform"
 ];
 
-var deps = ['ember'];
-var jsDeps = [];
-var depsSize = deps.length;
-
-
-//generate deps
-for (var i = 0, l = formsTemplates.length; i < l; i++) {
-    deps.push('text!app/forms/' + formsTemplates[i] + '/template.html');
-
-    var controllerUrl = 'app/forms/' + formsTemplates[i] + '/controller';
-    jsDeps.push(controllerUrl);
-}
-
-for (i = 0, l = jsDeps.length; i < l; i++) {
-    deps.push(jsDeps[i]);
-}
-
-define(deps, function(Ember) {
-    console.tags.add('loader');
-
-    console.log("load forms", arguments);
-    for (var i = 0, l = formsTemplates.length; i < l; i++) {
-        var templateName = formsTemplates[i];
-        Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
-    }
-
-    console.tags.remove('loader');
-
-});
-
+loader.loadForms(forms);

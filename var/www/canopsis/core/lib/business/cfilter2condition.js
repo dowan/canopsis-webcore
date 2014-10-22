@@ -25,19 +25,8 @@ define(['ember'], function(Ember) {
 
     var Condition = Ember.Object.extend({
 
-        children: [],
-        isLeave: false,
-
-        leaves: function () {
-            var children = get(this, 'children');
-            return children.filterBy('isLeave', true);
-        }.property('children.@each.isLeave'),
-
-        notleaves: function () {
-            var children = get(this, 'children');
-            //testing false value can be error prone as false must be explicitly set in leaves
-            return children.filterBy('isLeave', false);
-        }.property('children.@each.isLeave'),
+        conditions: [],
+        clauses: [],
 
     });
 

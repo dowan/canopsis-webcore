@@ -24,7 +24,6 @@ define([
     'app/controller/listline'
 ], function(Ember, Application, JSONSelect, ListLineController) {
 
-
     var set = Ember.set,
         get = Ember.get;
 

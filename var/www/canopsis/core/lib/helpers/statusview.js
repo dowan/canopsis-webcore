@@ -44,7 +44,7 @@ define([
             4: 'Cancelled',
         };
 
-        if (Ember.isNone(status)) {
+        if (isNone(status)) {
             status = get(crecord, 'status');
         }
 

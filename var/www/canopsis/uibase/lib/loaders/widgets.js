@@ -17,38 +17,22 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-//TODO implement auto check for mvct file existence and require them automatically
-
-var uibaseWidgetsTemplates = [
-    { name:'weather', url:'canopsis/uibase/widgets/weather', hasJSPart: true },
-    { name:'text', url:'canopsis/uibase/widgets/text', hasJSPart: true }
-];
-
-var deps = ['ember'];
-var jsDeps = [];
-var depsSize = deps.length;
-
-//generate deps
-for (var i = 0; i < uibaseWidgetsTemplates.length; i++) {
-    deps.push('text!' + uibaseWidgetsTemplates[i].url + '/template.html');
-
-    if (uibaseWidgetsTemplates[i].hasJSPart === true) {
-        var viewUrl = uibaseWidgetsTemplates[i].url + '/controller';
-        console.log("adding view", viewUrl);
-
-        jsDeps.push(viewUrl);
-    }
-}
-
-for (i = 0, l = jsDeps.length; i < l; i++) {
-    deps.push(jsDeps[i]);
-}
-
-define(deps, function(Ember) {
-    for (var i = 0, l = uibaseWidgetsTemplates.length; i < l; i++) {
-        var templateName = uibaseWidgetsTemplates[i].name;
-        Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
-    }
-});
-
+loader.loadWidgets([
+    { name:'text', url:'canopsis/uibase/widgets/text' },
+    { name:'list', url:'canopsis/uibase/widgets/list' },
+    { name:'canvas', url:'canopsis/uibase/widgets/canvas' },
+    { name:'verticalbox', url:'canopsis/uibase/widgets/verticalbox' },
+    { name:'horizontalbox', url:'canopsis/uibase/widgets/horizontalbox' },
+    { name:'lighthbox', url:'canopsis/uibase/widgets/lighthbox' },
+    { name:'tabmanager', url:'canopsis/uibase/widgets/tabmanager' },
+    { name:'uiactionbutton', url:'canopsis/uibase/widgets/uiactionbutton' },
+    { name:'uimaintabcollection', url:'canopsis/uibase/widgets/uimaintabcollection' },
+    { name:'uimaindropdown', url:'canopsis/uibase/widgets/uimaindropdown' },
+    //{ name:'multicrecordlist', url:'canopsis/uibase/widgets/multicrecordlist' , TEMPLATE:'list'},
+    { name:'jobmanager', url:'canopsis/uibase/widgets/jobmanager', TEMPLATE: 'list' },
+    { name:'euewi', url:'canopsis/uibase/widgets/euewi', TEMPLATE: 'list' },
+    { name:'timegraph', url:'canopsis/uibase/widgets/timegraph'},
+    { name:'progressbar', url:'canopsis/uibase/widgets/progressbar'},
+    { name:'graph', url:'canopsis/uibase/widgets/graph'}
+    //{ name:'gauge', url:'canopsis/uibase/widgets/gauge'}
+]);

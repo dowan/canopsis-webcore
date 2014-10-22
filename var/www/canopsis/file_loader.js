@@ -12,6 +12,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
+
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
@@ -19,22 +20,10 @@
 
 var routes;
 
-require([
-    'plugins',
-    'text!canopsis/enabled.json',
-    'text!canopsis/uibase/files/manifest.json',
-    'text!canopsis/uibase/files/routes.json',
-    'text!canopsis/uibase/files/files.json',
-    'text!canopsis/development/files/manifest.json',
-    'text!canopsis/development/files/routes.json',
-    'text!canopsis/development/files/files.json',
-    'text!canopsis/core/files/manifest.json',
-    'text!canopsis/core/files/routes.json',
-    'text!canopsis/core/files/files.json'
-], function(plugins_tool) {
-    var arguments = arguments;
+require(['plugins'], function(plugins_tool) {
     routes = [];
-    function load_( path ){
+
+    function load_(path) {
         var files;
         var plugins = [];
 
@@ -48,9 +37,11 @@ require([
         var routes_plugins = plugins_tool.Manifest.fetchRoutes(plugins, path);
         routes = routes.concat(routes_plugins);
         files = plugins_tool.Manifest.fetchFiles(plugins, path);
+
         files = files.map(function(e) {
             return e.replace("canopsis/core/", "app/");
         });
+
         require(files);
     }
 

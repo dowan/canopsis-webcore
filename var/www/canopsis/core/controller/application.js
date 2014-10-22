@@ -77,6 +77,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+
     function bindKey(keyCombination, actionName) {
         Mousetrap.bind([keyCombination], function(e) {
             console.log('binding', arguments);
