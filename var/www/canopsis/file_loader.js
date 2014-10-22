@@ -22,16 +22,7 @@ var routes;
 require([
     'plugins',
     '/plugins/plugin_loader.js',
-    'text!canopsis/enabled.json',
-    'text!canopsis/uibase/files/manifest.json',
-    'text!canopsis/uibase/files/routes.json',
-    'text!canopsis/uibase/files/files.json',
-    'text!canopsis/development/files/manifest.json',
-    'text!canopsis/development/files/routes.json',
-    'text!canopsis/development/files/files.json',
-    'text!canopsis/core/files/manifest.json',
-    'text!canopsis/core/files/routes.json',
-    'text!canopsis/core/files/files.json'
+    'text!canopsis/enabled.json'
 ], function(plugins_tool , plugins_loader) {
     routes = [];
     function load_(path) {
