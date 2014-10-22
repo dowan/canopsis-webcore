@@ -158,7 +158,6 @@ define([], function() {
             var jsDeps = [];
             var depsSize = deps.length;
 
-
             //generate deps
             for (var i = 0, l = forms.length; i < l; i++) {
                 deps.push('text!app/forms/' + forms[i] + '/template.html');
@@ -238,18 +237,17 @@ define([], function() {
             var rendererDepsSize = rendererDeps.length;
 
             for (var i = 0, l = renderers.length; i < l; i++) {
-                rendererDeps.push('text!app/renderers/' + renderers[i] + '/template.html');
+                rendererDeps.push('text!' + renderers[i].url + '/template.html');
             }
 
             define(rendererDeps, function(Ember, rendererRegistry) {
                 for (var i = rendererDepsSize, l = arguments.length; i < l; i++) {
-                    var templateName = 'renderer-' + renderers[i - rendererDepsSize];
+                    var templateName = 'renderer-' + renderers[i - rendererDepsSize].name;
 
                     rendererRegistry.add({template: arguments[i]}, templateName);
                     Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i]);
                 }
             });
-
         },
 
         loadTemplates: function() {
