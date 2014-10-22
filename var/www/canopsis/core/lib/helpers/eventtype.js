@@ -19,8 +19,10 @@
 
 define(['ember', 'utils'], function(Ember,  utils) {
 
-    Ember.Handlebars.helper('eventtype', function(eventType) {
+    var isNone = Ember.isNone;
 
+
+    Ember.Handlebars.helper('eventtype', function(eventType) {
 
         var types = {
             check : {color: 'green', icon: 'certificate'},
@@ -44,7 +46,7 @@ define(['ember', 'utils'], function(Ember,  utils) {
         };
 
 
-        if (Ember.isNone(types[eventType])) {
+        if (isNone(types[eventType])) {
             return eventType;
         }
 

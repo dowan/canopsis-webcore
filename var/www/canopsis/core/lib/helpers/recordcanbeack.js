@@ -25,6 +25,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+
     Ember.Handlebars.helper('recordcanbeack', function(crecord) {
 
         console.debug('in recordcanbeack. record status is', get(crecord, 'status'));

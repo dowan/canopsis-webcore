@@ -25,13 +25,14 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+
     Ember.Handlebars.registerHelper('ifUserCanDisplayView', function(viewId, options) {
 
         if(get(utils, 'session.user') === "root") {
             return options.fn(this);
         }
 
-        viewId = Ember.get(options, 'data.keywords.' + viewId);
+        viewId = get(options, 'data.keywords.' + viewId);
 
         if (get(utils, 'session.rights.showview_' + viewId.replace('.', '_'))) {
             return options.fn(this);

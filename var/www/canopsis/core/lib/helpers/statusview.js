@@ -17,7 +17,14 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember', 'utils'], function(Ember, utils) {
+define([
+    'ember',
+    'app/lib/utils/dates'
+], function(Ember, datesUtils) {
+
+    var get = Ember.get,
+        isNone = Ember.isNone;
+
 
     Ember.Handlebars.helper('statusview', function(status, crecord) {
         /**
@@ -38,19 +45,19 @@ define(['ember', 'utils'], function(Ember, utils) {
         };
 
         if (Ember.isNone(status)) {
-            status = Ember.get(crecord, 'status');
+            status = get(crecord, 'status');
         }
 
         crecord.statusvalue = __(statuses[status]);
 
         if(status === 4) {
             //displays cancel information if any onto the status field
-            var value = crecord.get('record.cancel');
-            if(!Ember.isNone(value.timestamp)) {
+            var value = get(crecord, 'record.cancel');
+            if(!isNone(value.timestamp)) {
                 crecord.statushtml = [
                     '<center>',
                     '<i>' , __('Date') , '</i> : <br/>',
-                    utils.dates.timestamp2String(value.timestamp) ,' <br/> ',
+                    datesUtils.timestamp2String(value.timestamp) ,' <br/> ',
                     __('By'), ' : ' , value.author ,' <br/><br/> ',
                     '<i>', __('Comment') ,'</i> : <br/>' , value.comment,
                     '</center>'
