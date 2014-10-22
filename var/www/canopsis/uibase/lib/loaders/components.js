@@ -25,7 +25,6 @@ var components = [
     { name: 'actionfilter', url: 'canopsis/uibase/components/actionfilter' },
     { name: 'arrayeditor', url: 'canopsis/uibase/components/arrayeditor' },
     { name: 'arrayclassifiedcrecordselector', url: 'canopsis/uibase/components/arrayclassifiedcrecordselector' },
-    { name: 'attributepreset', url: 'canopsis/uibase/components/attributepreset' },
     { name: 'checkbox', url: 'canopsis/uibase/components/checkbox' },
     { name: 'classifiedcrecordselector', url: 'canopsis/uibase/components/classifiedcrecordselector' },
     { name: 'classifieditemselector', url: 'canopsis/uibase/components/classifieditemselector' },
@@ -34,7 +33,6 @@ var components = [
     { name: 'datetimepicker', url: 'canopsis/uibase/components/datetimepicker' },
     { name: 'dictclassifiedcrecordselector', url: 'canopsis/uibase/components/dictclassifiedcrecordselector' },
     { name: 'durationcombo', url: 'canopsis/uibase/components/durationcombo' },
-    { name: 'editor', url: 'canopsis/uibase/components/editor' },
     { name: 'eventkey', url: 'canopsis/uibase/components/eventkey' },
     { name: 'expandableaddbutton', url: 'canopsis/uibase/components/expandableaddbutton' },
     { name: 'expandabletext', url: 'canopsis/uibase/components/expandabletext' },
@@ -45,7 +43,6 @@ var components = [
     { name: 'modelselect', url: 'canopsis/uibase/components/modelselect' },
     { name: 'progressbar', url: 'canopsis/uibase/components/progressbar' },
     { name: 'richtext', url: 'canopsis/uibase/components/richtext' },
-    { name: 'renderer', url: 'canopsis/uibase/components/renderer' },
     { name: 'rightsselector', url: 'canopsis/uibase/components/rightsselector' },
     { name: 'searchbar', url: 'canopsis/uibase/components/searchbar' },
     { name: 'stateeditor', url: 'canopsis/uibase/components/stateeditor' },
@@ -67,7 +64,6 @@ var components = [
     { name: 'tooltip', url: 'canopsis/uibase/components/tooltip' },
     { name: 'typedvalue', url: 'canopsis/uibase/components/typedvalue' },
     { name: 'userpreferencesmanager', url: 'canopsis/uibase/components/userpreferencesmanager' },
-    { name: 'wrapper', url: 'canopsis/uibase/components/wrapper' }
 ];
 
 loader.loadComponents(components);
