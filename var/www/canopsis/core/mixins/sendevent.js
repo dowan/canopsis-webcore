@@ -19,11 +19,12 @@
 
 define([
     'ember',
+    'jquery',
     'app/application',
     'app/lib/utils/forms',
     'app/lib/utils/dates',
     'app/lib/utils/notification'
-], function(Ember, Application, formsUtils, datesUtils, notificationUtils) {
+], function(Ember, $, Application, formsUtils, datesUtils, notificationUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -66,7 +67,7 @@ define([
 
         getDataFromRecord: function(event_type, crecord, formRecord) {
             console.group('getDataFromRecord');
-            console.log('get data from record:', event_type, record, formRecord);
+            console.log('get data from record:', event_type, formRecord);
 
             var record = {
                 authkey: get(this, 'login.authkey'),
@@ -82,6 +83,15 @@ define([
                 crecord_type: event_type,
                 timestamp:  datesUtils.getNow()
             };
+
+            var extra_fields = ['domain', 'perimeter', 'resource'];
+
+            for (var i=0; i<extra_fields.length; i++) {
+                var field = extra_fields[i];
+                if (!Ember.isNone(get(crecord, field))) {
+                    set(record, field, get(crecord, field));
+                }
+            }
 
             if(record.source_type === 'resource') {
                 record.resource = get(crecord, 'resource');
@@ -489,6 +499,8 @@ define([
                     } else {
                         crecord.set('cancel', undefined);
                     }
+                    set(crecord, 'change_state_output', get(record, 'output'));
+                    set(crecord, 'keep_state', true);
                 }
 
             },
