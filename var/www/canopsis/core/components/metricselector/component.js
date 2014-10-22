@@ -29,7 +29,7 @@ define([
         set = Ember.set;
 
 
-    Application.ComponentCmetricComponent = Ember.Component.extend({
+    var component = Ember.Component.extend({
         selectedMetrics: undefined,
         metricSearch: null,
 
@@ -244,5 +244,7 @@ define([
         }
     });
 
-    return Application.ComponentMetricselectorComponent;
+    Application.ComponentMetricselectorComponent = component;
+
+    return component;
 });
