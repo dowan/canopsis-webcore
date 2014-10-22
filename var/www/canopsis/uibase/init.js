@@ -20,5 +20,6 @@
 define([
     'canopsis/uibase/lib/loaders/editors',
     'canopsis/uibase/lib/loaders/widgets',
+    'canopsis/uibase/lib/loaders/renderers',
     'canopsis/uibase/lib/loaders/templates'
 ], function () {});
