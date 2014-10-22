@@ -163,14 +163,14 @@ def get_records(ws, namespace, ctype=None, _id=None, **params):
 
 
 def exports(ws):
-    @route(ws.application.get, name='rest/indexes', response=lambda r: r)
+    @route(ws.application.get, name='rest/indexes', response=lambda r, adapt: r)
     def indexes(collection):
         storage = ws.db.get_backend(collection)
         indexes = storage.index_information()
 
         return {'collection': collection, 'indexes': indexes}
 
-    @route(ws.application.get, name='rest/media', response=lambda r: r)
+    @route(ws.application.get, name='rest/media', response=lambda r, adapt: r)
     def media(namespace, _id):
         try:
             raw = ws.db.get(

@@ -30,20 +30,20 @@ from . import rights
 
 def check(mode='authkey', user=None, password=None):
     def _check_shadow(user, key):
-        if user and user['shadowpass'].upper() == key.upper():
+        if user and user['shadowpasswd'].upper() == key.upper():
             return user
 
         return None
 
     def _check_plain(user, key):
-        shadowpass = sha1(key).hexdigest()
-        return _check_shadow(user, shadowpass)
+        shadowpasswd = sha1(key).hexdigest()
+        return _check_shadow(user, shadowpasswd)
 
     def _check_crypted(user, key):
         if user:
-            shadowpass = user['shadowpass'].upper()
+            shadowpasswd = user['shadowpasswd'].upper()
             ts = str(int(time() / 10) * 10)
-            tmpKey = '{0}{1}'.format(shadowpass, ts)
+            tmpKey = '{0}{1}'.format(shadowpasswd, ts)
 
             cryptedKey = sha1(tmpKey).hexdigest().upper()
 
@@ -110,7 +110,7 @@ def exports(ws):
             'username', 'password',
             'shadow', 'crypted'
         ],
-        response=lambda data: data
+        response=lambda data, adapt: data
     )
     def auth_route(
         username=None, password=None,

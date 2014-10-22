@@ -21,7 +21,6 @@ var routes;
 
 require([
     'plugins',
-    '/plugins/plugin_loader.js',
     'text!canopsis/enabled.json',
     'text!canopsis/uibase/files/manifest.json',
     'text!canopsis/uibase/files/routes.json',
@@ -32,7 +31,7 @@ require([
     'text!canopsis/core/files/manifest.json',
     'text!canopsis/core/files/routes.json',
     'text!canopsis/core/files/files.json'
-], function(plugins_tool , plugins_loader) {
+], function(plugins_tool) {
     var arguments = arguments;
     routes = [];
     function load_( path ){
