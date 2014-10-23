@@ -19,7 +19,7 @@
 
 define([
     'app/application',
-    'app/lib/loaders/templates',
+    'app/lib/templateregistry',
     'ember'
 ], function(Application, templates , Ember){
 
@@ -39,13 +39,13 @@ define([
 
             var classToGet = this.templateData.keywords.controller.content.model.options.templateClass;
             if(classToGet !== undefined) {
-                for (var i=0 ; i < templates.byClass[classToGet].length ; i++) {
+                for (var i = 0, li = templates.byClass[classToGet].length; i < li; i++) {
                     this.addTemplate(templates.byClass[classToGet][i], value, contentREF);
                 }
             }
             else{
-                for (var i=0 ; i < templates.all.length ; i++) {
-                    this.addTemplate(templates.all[i], value, contentREF);
+                for (var j = 0, lj = templates.all.length; j < lj; j++) {
+                    this.addTemplate(templates.all[j], value, contentREF);
                 }
             }
 
@@ -99,7 +99,8 @@ define([
                 this.changeCssClass(template,value);
             }
         }
-    })
+    });
+
     return Application.ComponentTemplateselectorComponent;
 });
 
