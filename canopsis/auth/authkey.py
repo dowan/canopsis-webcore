@@ -74,4 +74,4 @@ class AuthKeyBackend(BaseBackend):
 
 
 def get_backend(ws):
-    return AuthKeyBackend(ws.logger)
+    return AuthKeyBackend(ws)
