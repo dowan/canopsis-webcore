@@ -30,28 +30,89 @@ define([
     var component = Ember.Component.extend({
 
 
-        'selectedValueType': 'String',
-        'valuesTypes': [
-            'String',
-            'Number',
-            'Boolean',
-            'Array',
-        ],
 
         init: function () {
+            this._super();
+            set(this, 'selectedValueType','String');
+            set(this, 'valuesTypes',[
+                'String',
+                'Number',
+                'Boolean',
+                //'Array',
+            ]);
 
-            console.log('initialized typed value component', this);
+            var startValue;
+            var startContent;
+
+            console.log('Init content for typed value is', get(this, 'content'));
+
+            if (Ember.isNone(get(this, 'content'))) {
+
+                startValue = '';
+                startContent = '';
+
+            } else {
+
+                startContent = startValue = get(this, 'content');
+                //Intialize type value from content type
+                var valueType = (typeof startValue).capitalize();
+/* TODO complete or change array management
+
+                //User translation... tranform array data to match typed array system
+                if (valueType === 'Object') {
+
+                    valueType = 'Array';
+                    var newStartValue = [];
+
+                    //Making an object list instead a string list (required for ember template)
+                    for(var i=0; i<startValue.length; i++) {
+                        newStartValue.push({
+                            value: startValue[i]
+                        });
+                    }
+                    //When new object array ready, just replace
+                    startValue = newStartValue;
+                }
+*/
+                set(this, 'selectedValueType', valueType);
+            }
+
+            set(this, 'content', startContent);
+            set(this, 'value', startValue);
 
         },
 
-        /*
-        content: function () {
-            console.log('get content from typed value:', get(this, 'content'));
-            var value = typesUtils.castValue(get(this, 'content'), get(this, 'selectedValueType'));
-            console.log('computed content from typed value:', value);
-            return value;
-        }.property(),
-        */
+
+
+        updateContent: function () {
+            console.log('get content from typed value:', get(this, 'value'));
+
+            //Transform value to right typed value depending on wished type
+            var value = typesUtils.castValue(
+                get(this, 'value'),
+                get(this, 'selectedValueType')
+            );
+
+            /*
+            //Transform typedvalue object array to simple string array.
+            var userArray = [];
+            if(typeof value === 'object') {
+                console.log('we have an array type, let convert typed value to simple string array');
+                for (var i=0; i<value.length; i++) {
+                    console.log('Array value is', value[i].value);
+                    userArray.push(value[i].value);
+                }
+                console.log('computed array is', userArray);
+                value = userArray;
+            }
+            */
+            set(this, 'content', value);
+
+            //contentType value is for debug purpose
+            set(this, 'contentType', typeof value);
+
+
+        }.observes('value'),
 
         placeholder: function () {
 
@@ -80,10 +141,10 @@ define([
                 set(this, 'value', true);
             }
             if (type === 'Array') {
-                set(this, 'value', []);
+                set(this, 'value', ['']);
             }
 
-            console.log('updated content type with value', get(this, 'content'));
+            console.log('updated content type with value', get(this, 'value'));
 
         }.observes('selectedValueType'),
 
@@ -100,20 +161,21 @@ define([
             return get(this, 'selectedValueType') === 'Array';
         }.property('selectedValueType'),
 
-        /*
-        content: function () {
-            console.log('updated content value', get(this, 'value'));
-        }.observes('value'),
-        */
         actions : {
+
             switchContentValue: function () {
-                set(this, 'value', !get(this, 'content'));
+                set(this, 'value', !get(this, 'value'));
                 console.log('switched boolean value', get(this, 'value'));
             },
 
             addListElement:function (){
-                get(this, 'content').pushObject('');
-            }
+                get(this, 'value').pushObject('');
+            },
+
+            removeItem: function (listElement) {
+                get(this, 'value').removeObject(listElement);
+            },
+
         }
 
     });

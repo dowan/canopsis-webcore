@@ -25,8 +25,11 @@ define(['ember'], function(Ember) {
 
     var Condition = Ember.Object.extend({
 
-        conditions: [],
-        clauses: [],
+
+        init: function () {
+            set(this, 'conditions', []);
+            set(this, 'clauses', []);
+        }
 
     });
 

@@ -1,9 +1,5 @@
 <form role="form" class="well">
 
-    <center>
-        <h3>{{tr title}}</h3>
-    </center>
-
     <div class="form-group">
         {{view Ember.Select
             content=availableactions
@@ -17,7 +13,7 @@
         <label>{{tr 'Field to override'}}</label>
             {{input class="form-control" value=field}}
             <label>{{tr 'Value to set'}}</label>
-            {{input class="form-control" value=value}}
+            {{component-typedvalue content=value}}
         {{/if}}
 
         {{#if isRemove}}

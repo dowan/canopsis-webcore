@@ -39,6 +39,9 @@ define([
                 } catch (err) {
                     console.wanr('unable to case to number value', value);
                 }
+                if (isNaN(value)) {
+                    return 0;
+                }
                 return value;
             }
             if (type === 'boolean') {
@@ -59,7 +62,7 @@ define([
                 try {
                     value = value.split(',');
                 } catch (err) {
-                    console.wanr('unable to case to array value', value);
+                    console.warn('unable to case to array value', value);
                 }
                 return value;
             }

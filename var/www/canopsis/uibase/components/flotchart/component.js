@@ -16,7 +16,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
-
 define([
     'jquery',
     'ember',
@@ -28,6 +27,28 @@ define([
 
     var get = Ember.get,
         set = Ember.set;
+
+    enableSerie = function(seriesIdx, id, selector){
+        var currentPlot = PLOTS[id];
+        var disabledColor = "red";
+        var enabledColor = "black";
+        var currentSeries = currentPlot.getData();
+
+        for (var i=0; i < currentSeries.length; i++){
+            var serie = currentSeries[i];
+            if (serie.label == seriesIdx){
+                if (serie.points.used)
+                    serie.points.show = !serie.points.show;
+                if (serie.lines.used)
+                    serie.lines.show = !serie.lines.show;
+                if (serie.bars.used)
+                    serie.bars.show = !serie.bars.show;
+            }
+        }
+        selector.style.color = (selector.style.color == disabledColor)? enabledColor : disabledColor;
+        currentPlot.setData(currentSeries);
+        currentPlot.draw();
+    };
 
     var component = Ember.Component.extend({
         tagName: 'div',
@@ -65,16 +86,31 @@ define([
         createChart: function() {
             console.group('createChart');
             var plotcontainer = this.$();
-
             var series = get(this, 'series');
             var options = get(this, 'options');
 
             this.chart = $.plot(plotcontainer, series, options);
+
+            var parentController = this.get("parentController");
+            parentController.chart = this.chart;
+
             if (options && options.tooltip){
                 this.$().UseTooltip();
             }
             this.send('renderChart');
+            this.managePlots();
             console.groupEnd();
+        },
+
+        managePlots: function() {
+            if (!window.PLOTS){
+                PLOTS = [];
+            }
+            if (!this.chart.id){
+                var plotLength = PLOTS.length;
+                this.chart.id = plotLength;
+                PLOTS[plotLength] = this.chart;
+            }
         }
     });
 
