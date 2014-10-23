@@ -19,14 +19,15 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/application',
+    'app/lib/factories/mixin'
+], function(Ember, Application, Mixin) {
 
     /**
      * @mixin This mixin should be used with serializers
      * It aims to handle request metadata (total, errors, ...)
      */
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('metaSerializer', {
         extractMeta: function(store, type, payload) {
             console.log("extractMeta", store, type, payload);
             if (payload.meta === undefined) {
@@ -73,7 +74,6 @@ define([
 
     });
 
-    Application.MetaSerializerMixin = mixin;
 
     return mixin;
 });

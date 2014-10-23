@@ -18,15 +18,15 @@
 */
 
 var forms = [
-    'modelform',
-    'widgetform',
-    'arrayitemform',
-    'jobform',
-    'taskform',
-    'scheduleform',
-    'confirmform',
+    { name: 'modelform', url: 'app/forms/modelform/controller', template: 'app/forms/modelform/template.html' },
+    { name: 'widgetform', url: 'app/forms/widgetform/controller', template: 'app/forms/widgetform/template.html' },
+    { name: 'arrayitemform', url: 'app/forms/arrayitemform/controller', template: 'app/forms/arrayitemform/template.html' },
+    { name: 'jobform', url: 'app/forms/jobform/controller', template: 'app/forms/jobform/template.html' },
+    { name: 'taskform', url: 'app/forms/taskform/controller', template: 'app/forms/taskform/template.html' },
+    { name: 'scheduleform', url: 'app/forms/scheduleform/controller', template: 'app/forms/scheduleform/template.html' },
+    { name: 'confirmform', url: 'app/forms/confirmform/controller', template: 'app/forms/confirmform/template.html' },
     //'connectorform',
     //"confirmform"
 ];
 
-loader.loadForms(forms);
+loader.loadWithTemplates(forms);

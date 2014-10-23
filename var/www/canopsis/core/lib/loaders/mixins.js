@@ -18,16 +18,16 @@
 */
 
 var mixins = [
-    { name: 'validation', classes: ["action"]},
-    { name: 'modelDict', classes: ["action"]},
-    { name: 'mixinArray', classes: ["test"]},
-    { name: 'pagination', classes: ["widget"]},
-    { name: 'tagsoptionfilter', classes: ["widget"]},
-    { name: 'arraysearch', classes: ['widget']},
-    { name: 'history', classes: ['widget']},
-    { name: 'sendevent', classes: ['widget']},
-    { name: 'crud', classes: ['widget']},
-    { name: 'showviewbutton', classes: ['widget', 'userviews']}
+    { name: 'validation', url: 'app/mixins/validation', classes: ["action"]},
+    { name: 'modelDict', url: 'app/mixins/modelDict', classes: ["action"]},
+    { name: 'mixinArray', url: 'app/mixins/mixinArray', classes: ["test"]},
+    { name: 'pagination', url: 'app/mixins/pagination', classes: ["widget"]},
+    { name: 'tagsoptionfilter', url: 'app/mixins/tagsoptionfilter', classes: ["widget"]},
+    { name: 'arraysearch', url: 'app/mixins/arraysearch', classes: ['widget']},
+    { name: 'history', url: 'app/mixins/history', classes: ['widget']},
+    { name: 'sendevent', url: 'app/mixins/sendevent', classes: ['widget']},
+    { name: 'crud', url: 'app/mixins/crud', classes: ['widget']},
+    { name: 'showviewbutton', url: 'app/mixins/showviewbutton', classes: ['widget', 'userviews']}
 ];
 
-loader.loadMixins(mixins);
+loader.loadWithTemplates(mixins);

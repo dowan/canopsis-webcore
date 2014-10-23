@@ -21,15 +21,16 @@ define([
     'ember',
     'app/application',
     'app/lib/utils/forms',
-    'app/lib/utils/data'
-], function(Ember, Application, formUtils, dataUtils) {
+    'app/lib/utils/data',
+    'app/lib/factories/mixin'
+], function(Ember, Application, formUtils, dataUtils, Mixin) {
     var get = Ember.get,
         set = Ember.set;
 
     /**
      * Mixins allowing console and various js runtime settings
     */
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('consolemanager', {
         partials: {},
 
         actions: {
@@ -60,8 +61,6 @@ define([
             return __("custom");
         }.property()
     });
-
-    Application.ConsolemanagerMixin = mixin;
 
     return mixin;
 });

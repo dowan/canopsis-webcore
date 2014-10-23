@@ -20,12 +20,13 @@
 define([
     'ember',
     'app/application',
-    'utils'
-], function(Ember, Application, utils) {
+    'utils',
+    'app/lib/factories/mixin'
+], function(Ember, Application, utils, Mixin) {
     var get = Ember.get,
         set = Ember.set;
 
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('Timeintervalselection', {
 
         partials: {
             header: ['timeintervalselection']
@@ -36,7 +37,6 @@ define([
         }
     });
 
-    Application.TimeintervalselectionMixin = mixin;
 
     return mixin;
 });

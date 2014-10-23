@@ -17,22 +17,24 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-loader.loadWidgets([
-    { name:'text', url:'canopsis/uibase/widgets/text' },
-    { name:'list', url:'canopsis/uibase/widgets/list' },
-    { name:'canvas', url:'canopsis/uibase/widgets/canvas' },
-    { name:'verticalbox', url:'canopsis/uibase/widgets/verticalbox' },
-    { name:'horizontalbox', url:'canopsis/uibase/widgets/horizontalbox' },
-    { name:'lighthbox', url:'canopsis/uibase/widgets/lighthbox' },
-    { name:'tabmanager', url:'canopsis/uibase/widgets/tabmanager' },
-    { name:'uiactionbutton', url:'canopsis/uibase/widgets/uiactionbutton' },
-    { name:'uimaintabcollection', url:'canopsis/uibase/widgets/uimaintabcollection' },
-    { name:'uimaindropdown', url:'canopsis/uibase/widgets/uimaindropdown' },
-    //{ name:'multicrecordlist', url:'canopsis/uibase/widgets/multicrecordlist' , TEMPLATE:'list'},
-    { name:'jobmanager', url:'canopsis/uibase/widgets/jobmanager', TEMPLATE: 'list' },
-    { name:'euewi', url:'canopsis/uibase/widgets/euewi', TEMPLATE: 'list' },
-    { name:'timegraph', url:'canopsis/uibase/widgets/timegraph'},
-    { name:'progressbar', url:'canopsis/uibase/widgets/progressbar'},
-    { name:'graph', url:'canopsis/uibase/widgets/graph'}
+var widgets = [
+    { name:'text', url:'canopsis/uibase/widgets/text/controller', template:'canopsis/uibase/widgets/text/template.html' },
+    { name:'list', url:'canopsis/uibase/widgets/list/controller', template:'canopsis/uibase/widgets/list/template.html' },
+    { name:'canvas', url:'canopsis/uibase/widgets/canvas/controller', template:'canopsis/uibase/widgets/canvas/template.html' },
+    { name:'verticalbox', url:'canopsis/uibase/widgets/verticalbox/controller', template:'canopsis/uibase/widgets/verticalbox/template.html' },
+    { name:'horizontalbox', url:'canopsis/uibase/widgets/horizontalbox/controller', template:'canopsis/uibase/widgets/horizontalbox/template.html' },
+    { name:'lighthbox', url:'canopsis/uibase/widgets/lighthbox/controller', template:'canopsis/uibase/widgets/lighthbox/template.html' },
+    { name:'tabmanager', url:'canopsis/uibase/widgets/tabmanager/controller', template:'canopsis/uibase/widgets/tabmanager/template.html' },
+    { name:'uiactionbutton', url:'canopsis/uibase/widgets/uiactionbutton/controller', template:'canopsis/uibase/widgets/uiactionbutton/template.html' },
+    { name:'uimaintabcollection', url:'canopsis/uibase/widgets/uimaintabcollection/controller', template:'canopsis/uibase/widgets/uimaintabcollection/template.html' },
+    { name:'uimaindropdown', url:'canopsis/uibase/widgets/uimaindropdown/controller', template:'canopsis/uibase/widgets/uimaindropdown/template.html' },
+    //{ name:'multicrecordlist', url:'canopsis/uibase/widgets/multicrecordlist/controller', template:'canopsis/uibase/widgets/multicrecordlist/template.html' , TEMPLATE:'list'},
+    { name:'jobmanager', url:'canopsis/uibase/widgets/jobmanager/controller', template:'canopsis/uibase/widgets/jobmanager/template.html', TEMPLATE: 'list' },
+    { name:'euewi', url:'canopsis/uibase/widgets/euewi/controller', template:'canopsis/uibase/widgets/euewi/template.html', TEMPLATE: 'list' },
+    { name:'timegraph', url:'canopsis/uibase/widgets/timegraph/controller', template:'canopsis/uibase/widgets/timegraph/template.html'},
+    { name:'progressbar', url:'canopsis/uibase/widgets/progressbar/controller', template:'canopsis/uibase/widgets/progressbar/template.html'},
+    { name:'graph', url:'canopsis/uibase/widgets/graph/controller', template:'canopsis/uibase/widgets/graph/template.html'}
     //{ name:'gauge', url:'canopsis/uibase/widgets/gauge'}
-]);
+];
+
+loader.loadWithTemplates(widgets);

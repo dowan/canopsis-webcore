@@ -19,8 +19,9 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/application',
+    'app/lib/factories/mixin'
+], function(Ember, Application, Mixin) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -34,7 +35,7 @@ define([
      *
      * @mixin
      */
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('arraysearch', {
         partials: {
             header: ['search']
         },
@@ -138,7 +139,6 @@ define([
         }.observes('shown_columns')
     });
 
-    Application.ArraysearchMixin = mixin;
 
     return mixin;
 });

@@ -19,8 +19,9 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/application',
+    'app/lib/factories/mixin'
+], function(Ember, Application, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -33,7 +34,7 @@ define([
           - the `findItems()` method
 
     */
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('pagination', {
         partials: {
             subHeader: ['itemsperpage'],
             footer: ['pagination']
@@ -177,7 +178,6 @@ define([
         }
     });
 
-    Application.PaginationMixin = mixin;
 
     return mixin;
 });

@@ -40,8 +40,9 @@ define(['ember'], function(Ember) {
             var html = '';
             if (isArray(object)) {
                 html += '<ul class="jsonUl">';
-                for (var element in  object) {
-                    html += '<li class="jsonLi">' + parseJson(object[element]) + '</li>';
+                var len = object.length;
+                for (var i=0; i<len; i++) {
+                    html += '<li class="jsonLi">' + parseJson(object[i]) + '</li>';
                 }
                 html += '</ul>';
             } else if (typeof object === 'object') {
@@ -56,17 +57,22 @@ define(['ember'], function(Ember) {
                     html += '</li></ul>';
                 }
             }
-
-            if(isNone(settableObject)) {
-                return html;
-            } else {
-                set(settableObject, 'json2html', html);
-                return '';
-            }
+            return html;
 
         }
 
         var html = parseJson(json);
+
+        console.info('json2html', {'data': json, 'settable object:': settableObject, 'html': html, 'arguments': arguments});
+
+        //argument with json param and options only will have a length of 2
+        if(!isNone(settableObject) && arguments.length > 2) {
+            //Set html to object
+            console.log('processing set html to the settable item');
+            set(settableObject, 'json2html', html);
+            //Do not print html
+            html = '';
+        }
 
         return new Ember.Handlebars.SafeString(html);
     });

@@ -19,8 +19,9 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/application',
+    'app/lib/factories/mixin'
+], function(Ember, Application, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -29,7 +30,7 @@ define([
      * Implements configuration management for controllers
      * @mixin
      */
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('configurable', {
         init: function() {
             console.log("init");
             this.refreshConfiguration();
@@ -50,8 +51,6 @@ define([
             }
         }
     });
-
-    Application.ConfigurableMixin = mixin;
 
     return mixin;
 });
