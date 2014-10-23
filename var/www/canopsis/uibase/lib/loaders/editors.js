@@ -56,6 +56,7 @@ loader.loadEditors([
     { name: 'textarea', url: 'canopsis/uibase/editors/textarea' },
     { name: 'timeinterval', url: 'canopsis/uibase/editors/timeinterval' },
     { name: 'timestamp', url: 'canopsis/uibase/editors/timestamp' },
-    { name: 'userpreference', url: 'canopsis/uibase/editors/userpreference' }
+    { name: 'userpreference', url: 'canopsis/uibase/editors/userpreference' },
+    { name: 'typedvalue', url: 'canopsis/uibase/editors/typedvalue' }
 ]);
 
