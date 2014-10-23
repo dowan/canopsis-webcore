@@ -21,6 +21,7 @@ define([
     'app/lib/abstractclassregistry'
 ], function(Abstractclassregistry) {
 
+    //Not used at the moment
     var manager = Abstractclassregistry.create({
         name: 'renderers',
 

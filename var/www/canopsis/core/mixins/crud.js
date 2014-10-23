@@ -21,13 +21,14 @@ define([
     'ember',
     'app/application',
     'app/lib/utils/forms',
-    'app/lib/utils/hash'
-], function(Ember, Application, formsUtils, hashUtils) {
+    'app/lib/utils/hash',
+    'app/lib/factories/mixin'
+], function(Ember, Application, formsUtils, hashUtils, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
 
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('crud', {
         partials: {
             selectionToolbarButtons: [
                 'actionbutton-removeselection'
@@ -158,8 +159,6 @@ define([
             }
         }
     });
-
-    Application.CrudMixin = mixin;
 
     return mixin;
 });

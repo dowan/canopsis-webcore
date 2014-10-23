@@ -21,8 +21,9 @@ define([
     'jquery',
     'ember',
     'app/application',
-    'app/lib/utils/notification'
-], function($, Ember, Application, notificationUtils) {
+    'app/lib/utils/notification',
+    'app/lib/factories/mixin'
+], function($, Ember, Application, notificationUtils, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -35,7 +36,7 @@ define([
      * @mixin
      */
 
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('inspectableItem', {
 
         /**
             @required
@@ -219,7 +220,6 @@ define([
         }.property("inspectedDataItem", "inspectedItemType")
     });
 
-    Application.InspectableItemMixin = mixin;
 
     return mixin;
 });

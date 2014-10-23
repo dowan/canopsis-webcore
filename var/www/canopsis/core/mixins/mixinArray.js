@@ -21,10 +21,11 @@ define([
     'ember',
     'app/application',
     'app/lib/formsregistry',
-    'app/lib/mixinsregistry'
-], function(Ember, Application, formsregistry, mixinsregistry) {
+    'app/lib/mixinsregistry',
+    'app/lib/factories/mixin'
+], function(Ember, Application, formsregistry, mixinsregistry, Mixin) {
 // TODO: just make a function from this
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('mixinArray', {
 
         onInit : function (contentREF , _self){
 
@@ -56,7 +57,6 @@ define([
         }
     });
 
-    Application.mixinArrayMixin = mixin;
 
     return mixin;
 });

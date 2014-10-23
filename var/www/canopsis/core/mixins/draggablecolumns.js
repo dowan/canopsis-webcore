@@ -20,14 +20,15 @@
 define([
     'ember',
     'app/application',
-    'app/lib/wrappers/dragtable'
-], function(Ember, Application, dragtable) {
+    'app/lib/wrappers/dragtable',
+    'app/lib/factories/mixin'
+], function(Ember, Application, dragtable, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
 
 
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('draggablecolumns', {
 
         init:function () {
             this._super();
@@ -90,11 +91,8 @@ define([
             }
             return columns;
         }
-
-
     });
 
-    Application.DraggablecolumnsMixin = mixin;
 
     return mixin;
 });

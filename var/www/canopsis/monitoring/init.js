@@ -17,6 +17,6 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-loader.loadWidgets([
-    { name:'weather', url:'canopsis/monitoring/widgets/weather' }
+loader.loadWithTemplates([
+    { name:'weather', url:'canopsis/monitoring/widgets/weather/controller', template:'canopsis/monitoring/widgets/weather/template.html' }
 ]);

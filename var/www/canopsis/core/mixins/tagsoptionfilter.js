@@ -21,11 +21,12 @@ define([
     'ember',
     'app/application',
     'app/lib/utils/filterObject',
-    'app/lib/formsregistry'
-], function(Ember, Application , filterObjectUtils, formsregistry) {
+    'app/lib/formsregistry',
+    'app/lib/factories/mixin'
+], function(Ember, Application , filterObjectUtils, formsregistry, Mixin) {
 // TODO: just make a function from this
 
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('tagsoptionfilter', {
         onInit : function ( contentREF , _self ){
             var formController = formsregistry.formwrapper.form;
             if (formController) {
@@ -38,7 +39,6 @@ define([
         }
     });
 
-    Application.TagsoptionfilterMixin = mixin;
 
     return mixin;
 });

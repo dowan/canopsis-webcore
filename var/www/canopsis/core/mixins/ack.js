@@ -19,16 +19,15 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/application',
+    'app/lib/factories/mixin'
+], function(Ember, Application, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
 
-    var mixin = Ember.Mixin.create({
-    });
+    var mixin = Mixin('ack', {});
 
-    Application.AckMixin = mixin;
 
     return mixin;
 });

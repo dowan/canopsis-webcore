@@ -19,14 +19,15 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/application',
+    'app/lib/factories/mixin'
+], function(Ember, Application, Mixin) {
 
     /**
       Implements history collection finder
     */
 
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('history', {
 
         historyMixinFindOptions: function () {
             console.warn('this should be overriden');
@@ -44,7 +45,6 @@ define([
         }
     });
 
-    Application.HistoryMixin = mixin;
 
     return mixin;
 });

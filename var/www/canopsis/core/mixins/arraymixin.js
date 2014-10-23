@@ -20,13 +20,14 @@
 define([
     'ember',
     'app/application',
-    'app/lib/formsregistry'
-], function(Ember, Application, formsregistry) {
+    'app/lib/formsregistry',
+    'app/lib/factories/mixin'
+], function(Ember, Application, formsregistry, Mixin) {
 
     var get = Ember.get,
         set = set;
 
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('array', {
         cssClass: "tooltiptable hint--rounded hint--top btn btn-",
         cssClassON : "success",
         cssClassOFF : "danger",
@@ -146,7 +147,6 @@ define([
         }
     });
 
-    Application.ArrayMixin = mixin;
 
     return mixin;
 });
