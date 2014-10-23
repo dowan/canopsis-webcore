@@ -251,17 +251,14 @@ define([], function() {
         },
 
         loadTemplates: function() {
-            var deps = ['ember'];
+            var deps = ['ember', 'app/lib/templateregistry'];
             var depsSize = deps.length;
 
             for (var i = 0; i < templates.length; i++) {
                 deps.push('text!' + templates[i].url + '.html');
             }
 
-            define(deps, function(Ember) {
-                templatesLoaded = Ember.Object.create();
-                templatesLoaded.all = [];
-                templatesLoaded.byClass = Ember.Object.create();
+            define(deps, function(Ember, templateRegistry) {
 
                 for (var i = depsSize, li = arguments.length; i < li; i++) {
                     var currentTemplate = templates[i - depsSize];
@@ -273,18 +270,18 @@ define([], function() {
                         for (var j = 0, lj = currentTemplate.classes.length; j < lj; j++) {
                             var currentClass = currentTemplate.classes[j];
 
-                            if (templatesLoaded.byClass[currentClass] === undefined) {
-                                templatesLoaded.byClass[currentClass] = [];
+                            if (templateRegistry.byClass[currentClass] === undefined) {
+                                templateRegistry.byClass[currentClass] = [];
                             }
 
-                            templatesLoaded.byClass[currentClass].push(currentTemplate);
+                            templateRegistry.byClass[currentClass].push(currentTemplate);
                         }
                     }
 
-                    templatesLoaded.all.push(currentTemplate);
+                    templateRegistry.all.push(currentTemplate);
                 }
 
-                return templatesLoaded;
+                return templateRegistry;
             });
 
         }

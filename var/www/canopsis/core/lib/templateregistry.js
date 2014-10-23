@@ -17,22 +17,17 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
+define([
+    'app/lib/abstractclassregistry'
+], function(Abstractclassregistry) {
 
-    var get = Ember.get,
-        set = Ember.set;
+    var manager = Abstractclassregistry.create({
+        name: 'templates',
 
-
-    var Condition = Ember.Object.extend({
-
-
-        init: function () {
-            set(this, 'conditions', []);
-            set(this, 'clauses', []);
-        }
-
+        all: [],
+        byClass: {},
+        tableColumns: [{title: 'name', name: 'name'}]
     });
 
-
-    return Condition;
+    return manager;
 });
