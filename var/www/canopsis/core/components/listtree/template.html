@@ -9,13 +9,10 @@
             {{/component-tooltip}}
         {{/each}}
     </span>
+
     {{#each child in content.conditions}}
         <li class="jsonLi">
-            <span class="label label-primary">
-                {{clog 'this is my condition child'}}
-                {{clog child}}
-                {{child.label}}
-            </span>
+            {{component-listtree content=child}}
         </li>
     {{/each}}
 </ul>

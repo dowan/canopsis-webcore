@@ -1,17 +1,17 @@
 <div class="form-inline">
     <div class="form-group">
         {{view Ember.Select
-            content=controller.valuesTypes
-            value=controller.selectedValueType
+            content=valuesTypes
+            value=selectedValueType
             class="form-control"
         }}
     </div>
     <div class="form-group">
-        {{#if controller.useTextField}}
-            {{input type="text" class="form-control" value=value placeholder=controller.placeholder}}
+        {{#if useTextField}}
+            {{input type="text" class="form-control" value=value placeholder=placeholder}}
         {{/if}}
-        {{#if controller.useBoolean}}
-            <button {{bind-attr class=":btn :btn-default controller.content:active"}} {{action switchContentValue target=controller}}>
+        {{#if useBoolean}}
+            <button {{bind-attr class=":btn :btn-default value:active"}} {{action switchContentValue}}>
                 {{#if value}}
                     True
                 {{else}}
@@ -19,15 +19,27 @@
                 {{/if}}
             </button>
         {{/if}}
-        {{#if controller.useArray}}
-            {{#each element in controller.content}}
-                {{input type="text" class="form-control" value=element}}
-            {{/each}}
-            <button {{bind-attr class=":btn :btn-primary controller.content:active"}} {{action addListElement target=controller}}>
-                {{glyphicon 'plus'}} {{tr 'Add element'}}
-            </button>
-        {{/if}}
-
-
     </div>
+
+    <br/>
+    <br/>
+    content [{{content}}], value [{{value}}], type [{{contentType}}] , selectedValueType [{{selectedValueType}}]
+
 </div>
+{{#if useArray}}
+    {{#each element in value}}
+        <div class="form-group">
+            <div class="input-group">
+                {{input type="text" class="form-control" action="updateValue" value=element.value}}
+                <div class="input-group-btn">
+                    <button class="btn btn-default" {{action removeItem element}}>{{glyphicon 'remove-circle'}}</button>
+                </div>
+            </div>
+        </div>
+    {{/each}}
+    <div class="form-group">
+        <button class="btn btn-primary" {{action addListElement}}>
+            {{glyphicon 'plus'}} {{tr 'Add element'}}
+        </button>
+    </div>
+{{/if}}

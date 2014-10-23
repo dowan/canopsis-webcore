@@ -56,7 +56,8 @@ var editors = [
     { name: 'textarea' },
     { name: 'timeinterval' },
     { name: 'timestamp' },
-    { name: 'userpreference' }
+    { name: 'userpreference' },
+    { name: 'typedvalue' }
 ];
 
 loader.loadEditors(editors);
