@@ -17,7 +17,10 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-loader.loadWidgets([
-    { name:'weather', url:'canopsis/uibase/widgets/weather' },
-    { name:'text', url:'canopsis/uibase/widgets/text' }
-]);
+define([
+    'canopsis/uibase/lib/loaders/editors',
+    'canopsis/uibase/lib/loaders/widgets',
+    'canopsis/uibase/lib/loaders/components',
+    'canopsis/uibase/lib/loaders/renderers',
+    'canopsis/uibase/lib/loaders/templates'
+], function () {});

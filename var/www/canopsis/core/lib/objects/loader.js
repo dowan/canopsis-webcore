@@ -27,9 +27,9 @@ define([], function() {
 
             //generate deps
             for (var i = 0, l = components.length; i < l; i++) {
-                deps.push('text!app/components/' + components[i] + '/template.html');
+                deps.push('text!' + components[i].url + '/template.html');
 
-                var componentJsUrl = 'app/components/' + components[i] + '/component';
+                var componentJsUrl =  components[i].url + '/component';
                 jsDeps.push(componentJsUrl);
             }
 
@@ -43,8 +43,8 @@ define([], function() {
                 console.log("load components", arguments);
                 for (var i = 0, l = components.length; i < l; i++) {
 
-                    console.log('load component', components[i]);
-                    var templateName = 'components/component-' + components[i];
+                    console.log('load component', components[i].name);
+                    var templateName = 'components/component-' + components[i].name;
 
                     Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
                 }
@@ -97,10 +97,11 @@ define([], function() {
             //generate deps
             for (var i = 0, l = editors.length; i < l; i++) {
                 var name = editors[i].name;
+                var url = editors[i].url;
 
                 var tmplPos;
 
-                tmplPos = deps.push('text!app/editors/' + name + '/template.html');
+                tmplPos = deps.push('text!' + url + '/template.html');
                 editorsDeps.push({name: 'editor-' + name, pos: tmplPos});
             }
 
@@ -156,7 +157,6 @@ define([], function() {
             var deps = ['ember'];
             var jsDeps = [];
             var depsSize = deps.length;
-
 
             //generate deps
             for (var i = 0, l = forms.length; i < l; i++) {
@@ -237,16 +237,51 @@ define([], function() {
             var rendererDepsSize = rendererDeps.length;
 
             for (var i = 0, l = renderers.length; i < l; i++) {
-                rendererDeps.push('text!app/renderers/' + renderers[i] + '/template.html');
+                rendererDeps.push('text!' + renderers[i].url + '/template.html');
             }
 
             define(rendererDeps, function(Ember, rendererRegistry) {
                 for (var i = rendererDepsSize, l = arguments.length; i < l; i++) {
-                    var templateName = 'renderer-' + renderers[i - rendererDepsSize];
+                    var templateName = 'renderer-' + renderers[i - rendererDepsSize].name;
 
                     rendererRegistry.add({template: arguments[i]}, templateName);
                     Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i]);
                 }
+            });
+        },
+
+        loadTemplates: function() {
+            var deps = ['ember', 'app/lib/templateregistry'];
+            var depsSize = deps.length;
+
+            for (var i = 0; i < templates.length; i++) {
+                deps.push('text!' + templates[i].url + '.html');
+            }
+
+            define(deps, function(Ember, templateRegistry) {
+
+                for (var i = depsSize, li = arguments.length; i < li; i++) {
+                    var currentTemplate = templates[i - depsSize];
+                    Ember.TEMPLATES[currentTemplate.name] = Ember.Handlebars.compile(arguments[i]);
+
+                    currentTemplate.fileContent = arguments[i];
+
+                    if (currentTemplate.classes !== undefined) {
+                        for (var j = 0, lj = currentTemplate.classes.length; j < lj; j++) {
+                            var currentClass = currentTemplate.classes[j];
+
+                            if (templateRegistry.byClass[currentClass] === undefined) {
+                                templateRegistry.byClass[currentClass] = [];
+                            }
+
+                            templateRegistry.byClass[currentClass].push(currentTemplate);
+                        }
+                    }
+
+                    templateRegistry.all.push(currentTemplate);
+                }
+
+                return templateRegistry;
             });
 
         }

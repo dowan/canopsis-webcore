@@ -18,34 +18,16 @@
 */
 
 define([
-    'ember',
     'app/application',
-    'jsonselect',
-    'app/controller/listline'
-], function(Ember, Application, JSONSelect, ListLineController) {
+    'app/lib/factories/widget',
+    'canopsis/uibase/widgets/canvas/controller'
+], function(Application, WidgetFactory) {
 
-    var set = Ember.set,
-        get = Ember.get;
+    var widget = WidgetFactory('verticalbox', {
+        partials: {
+            titlebarsbuttons : ["titlebarbutton-minimize", "titlebarbutton-moveup","titlebarbutton-movedown"]
+        }
+    }, {subclass: Application.CanvasController});
 
-
-    var view = Ember.View.extend({
-        tagName:'tr',
-        templateName: 'listline',
-        classNames: ['listline'],
-
-        init: function() {
-            this._super.apply(this, arguments);
-        },
-
-        checkChanged: function() {
-            var checkbox = this.$('.toggle');
-            if(checkbox !== undefined) {
-                checkbox.iCheck('check');
-            }
-        }.observes('controller.isAllSelected')
-    });
-
-    Application.ListlineView = view;
-
-    return view;
+    return widget;
 });

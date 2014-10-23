@@ -17,23 +17,6 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var widgets = [
-    { name:'list', url:'app/widgets/list' },
-    { name:'canvas', url:'app/widgets/canvas' },
-    { name:'verticalbox', url:'app/widgets/verticalbox' },
-    { name:'horizontalbox', url:'app/widgets/horizontalbox' },
-    { name:'lighthbox', url:'app/widgets/lighthbox' },
-    { name:'tabmanager', url:'app/widgets/tabmanager' },
-    { name:'uiactionbutton', url:'app/widgets/uiactionbutton' },
-    { name:'uimaintabcollection', url:'app/widgets/uimaintabcollection' },
-    { name:'uimaindropdown', url:'app/widgets/uimaindropdown' },
-//    { name:'multicrecordlist', url:'app/widgets/multicrecordlist' , TEMPLATE:'list'},
-    { name:'jobmanager', url:'app/widgets/jobmanager', TEMPLATE: 'list' },
-    { name:'euewi', url:'app/widgets/euewi', TEMPLATE: 'list' },
-    { name:'timegraph', url:'app/widgets/timegraph'},
-    { name:'progressbar', url:'app/widgets/progressbar'},
-    { name:'graph', url:'app/widgets/graph'},
-  //  { name:'gauge', url:'app/widgets/gauge'}
-];
+var widgets = [];
 
 loader.loadWidgets(widgets);

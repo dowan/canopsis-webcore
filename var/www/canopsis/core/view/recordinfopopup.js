@@ -23,6 +23,7 @@ define([
     'app/application',
     'jqueryui',
 ], function($, Ember, Application) {
+
     var get = Ember.get,
         set = Ember.set;
 

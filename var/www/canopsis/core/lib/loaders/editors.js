@@ -17,47 +17,6 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var editors = [
-    { name: 'actionfilter' },
-    { name: 'array' },
-    { name: 'arrayclassifiedcrecordselector' },
-    { name: 'attributepreset' },
-    { name: 'boolean' },
-    { name: 'cfilter' },
-    { name: 'cfilter2' },
-    { name: 'cfilter3' },
-    { name: 'cfilterwithproperties'},
-    { name: 'cmetric'},
-    { name: 'color' },
-    { name: 'criticity' },
-    { name: 'dateinterval' },
-    { name: 'defaultpropertyeditor' },
-    { name: 'dictclassifiedcrecordselector' },
-    { name: 'duration' },
-    { name: 'eventselector' },
-    { name: 'integer' },
-    { name: 'mail' },
-    { name: 'mixinchooser' },
-    { name: 'modelselect' },
-    { name: 'richtext' },
-    { name: 'rights' },
-    { name: 'separator' },
-    { name: 'serieitem'},
-    { name: 'session' },
-    { name: 'simpledict' },
-    { name: 'simplelist' },
-    { name: 'sortable' },
-    { name: 'source' },
-    { name: 'state' },
-    { name: 'stringclassifiedcrecordselector' },
-    { name: 'stringpair' },
-    { name: 'tags' },
-    { name: 'templateselector' },
-    { name: 'textarea' },
-    { name: 'timeinterval' },
-    { name: 'timestamp' },
-    { name: 'userpreference' },
-    { name: 'typedvalue' }
-];
+var editors = [];
 
 loader.loadEditors(editors);

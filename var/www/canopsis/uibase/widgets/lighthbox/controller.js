@@ -18,34 +18,29 @@
 */
 
 define([
-    'ember',
     'app/application',
-    'jsonselect',
-    'app/controller/listline'
-], function(Ember, Application, JSONSelect, ListLineController) {
+    'app/lib/factories/widget',
+    'canopsis/uibase/widgets/canvas/controller'
+], function(Application, WidgetFactory) {
 
-    var set = Ember.set,
-        get = Ember.get;
+    var get = Ember.get,
+        set = Ember.set;
 
-
-    var view = Ember.View.extend({
-        tagName:'tr',
-        templateName: 'listline',
-        classNames: ['listline'],
-
-        init: function() {
-            this._super.apply(this, arguments);
+    var widget = WidgetFactory('lighthbox', {
+        partials: {
+            titlebarsbuttons : ["titlebarbutton-moveright", "titlebarbutton-moveleft"]
         },
 
-        checkChanged: function() {
-            var checkbox = this.$('.toggle');
-            if(checkbox !== undefined) {
-                checkbox.iCheck('check');
+        itemCssClassArray: function() {
+            var itemCssClass = get(this, 'content.itemCssClass');
+            if(itemCssClass !== undefined && itemCssClass !== null)
+                return itemCssClass.split(',');
+            else {
+                console.log('empty itemCssClassArray for lighthbox');
+                return [];
             }
-        }.observes('controller.isAllSelected')
-    });
+        }.property('content.itemCssClass')
+    }, {subclass: Application.CanvasController});
 
-    Application.ListlineView = view;
-
-    return view;
+    return widget;
 });

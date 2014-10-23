@@ -23,6 +23,7 @@ define([
     'app/lib/utils/test',
 
 ], function(Ember, Application, testUtils) {
+
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone;

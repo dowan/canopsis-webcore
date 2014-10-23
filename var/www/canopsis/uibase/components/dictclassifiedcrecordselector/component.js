@@ -20,32 +20,18 @@
 define([
     'ember',
     'app/application',
-    'jsonselect',
-    'app/controller/listline'
-], function(Ember, Application, JSONSelect, ListLineController) {
+    'canopsis/uibase/components/classifiedcrecordselector/component'
+], function(Ember, Application, Classifiedcrecordselector) {
 
-    var set = Ember.set,
-        get = Ember.get;
+    var get = Ember.get,
+        set = Ember.set;
 
 
-    var view = Ember.View.extend({
-        tagName:'tr',
-        templateName: 'listline',
-        classNames: ['listline'],
-
-        init: function() {
-            this._super.apply(this, arguments);
-        },
-
-        checkChanged: function() {
-            var checkbox = this.$('.toggle');
-            if(checkbox !== undefined) {
-                checkbox.iCheck('check');
-            }
-        }.observes('controller.isAllSelected')
+    var component = Classifiedcrecordselector.extend({
+        multiselect: true
     });
 
-    Application.ListlineView = view;
+    Application.ComponentDictclassifiedcrecordselectorComponent = component;
 
-    return view;
+    return component;
 });

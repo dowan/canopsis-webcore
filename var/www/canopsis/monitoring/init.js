@@ -17,35 +17,6 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/application',
-    'jsonselect',
-    'app/controller/listline'
-], function(Ember, Application, JSONSelect, ListLineController) {
-
-    var set = Ember.set,
-        get = Ember.get;
-
-
-    var view = Ember.View.extend({
-        tagName:'tr',
-        templateName: 'listline',
-        classNames: ['listline'],
-
-        init: function() {
-            this._super.apply(this, arguments);
-        },
-
-        checkChanged: function() {
-            var checkbox = this.$('.toggle');
-            if(checkbox !== undefined) {
-                checkbox.iCheck('check');
-            }
-        }.observes('controller.isAllSelected')
-    });
-
-    Application.ListlineView = view;
-
-    return view;
-});
+loader.loadWidgets([
+    { name:'weather', url:'canopsis/monitoring/widgets/weather' }
+]);

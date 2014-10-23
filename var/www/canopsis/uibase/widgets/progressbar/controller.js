@@ -18,34 +18,34 @@
 */
 
 define([
-    'ember',
-    'app/application',
-    'jsonselect',
-    'app/controller/listline'
-], function(Ember, Application, JSONSelect, ListLineController) {
+    'jquery',
+    'app/lib/factories/widget',
+    'canopsis/uibase/components/progressbar/component'
+], function($, WidgetFactory) {
+    var get = Ember.get,
+        set = Ember.set;
 
-    var set = Ember.set,
-        get = Ember.get;
-
-
-    var view = Ember.View.extend({
-        tagName:'tr',
-        templateName: 'listline',
-        classNames: ['listline'],
-
+    var widget = WidgetFactory('progressbar', {
         init: function() {
-            this._super.apply(this, arguments);
+            this._super();
+            set(this, "value" , 26);
+            set(this, "bad_when_full" , false);
+            set(this, "ressource" , "cpu");
         },
 
-        checkChanged: function() {
-            var checkbox = this.$('.toggle');
-            if(checkbox !== undefined) {
-                checkbox.iCheck('check');
+        actions: {
+            changevalue:function(){
+                var value = $('#changevalue').val();
+                var test = $('#bad_when_full');
+                var bad_when_full = $('#bad_when_full')[0].checked ;
+
+                set(this, "value", value);
+                set(this, "bad_when_full", bad_when_full);
+
             }
-        }.observes('controller.isAllSelected')
+        }
+
     });
 
-    Application.ListlineView = view;
-
-    return view;
+    return widget;
 });

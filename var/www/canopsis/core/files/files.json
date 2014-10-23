@@ -21,9 +21,7 @@
     "files": [
         {"name": "application"},
         {"name": "formwrapper"},
-        {"name": "crecords"},
         {"name": "editor"},
-        {"name": "event"},
         {"name": "widget"},
         {"name": "validationtextfield"},
         {"name": "validationtextarea"}
