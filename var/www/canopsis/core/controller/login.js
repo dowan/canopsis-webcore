@@ -22,7 +22,6 @@ define([
     'ember',
     'app/application',
     'utils',
-    'jquery.encoding.digests.sha1'
 ], function($, Ember, Application, utils) {
     var set = Ember.set,
         get = Ember.get;
@@ -39,14 +38,25 @@ define([
     var controller = Ember.ObjectController.extend({
         content: {},
 
+        init: function() {
+            this._super.apply(this, arguments);
+
+            var store = DS.Store.create({
+                container: get(this, "container")
+            });
+
+            set(this, 'store', store);
+        },
+
         getUser: function () {
             var controller = this;
+            var store = get(this, 'store');
 
             $.ajax({
                 url: '/account/me',
                 success: function(data) {
                     if (data.success) {
-                        var login = Ember.Object.create(data.data[0]);
+                        var login = store.createRecord('user', data.data[0]);
                         set(controller, 'record', login);
                         set(utils, 'session', get(controller, 'record'));
                     }

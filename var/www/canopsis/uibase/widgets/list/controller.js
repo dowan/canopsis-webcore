@@ -95,7 +95,7 @@ define([
             },
 
 
-            user: Ember.computed.alias('controllers.login.record.user'),
+            user: Ember.computed.alias('controllers.login.record._id'),
             rights: Ember.computed.alias('controllers.login.record.rights'),
             safeMode: Ember.computed.alias('controllers.application.frontendConfig.safe_mode'),
 

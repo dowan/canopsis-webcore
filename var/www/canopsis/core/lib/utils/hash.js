@@ -17,7 +17,12 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['jquery', 'ember', 'jquery.md5'], function($, Ember) {
+define([
+    'jquery',
+    'ember',
+    'jquery.md5',
+    'jquery.encoding.digests.sha1'
+], function($, Ember) {
 
     var hash = {
         generate_GUID: function() {
@@ -42,6 +47,10 @@ define(['jquery', 'ember', 'jquery.md5'], function($, Ember) {
 
         md5: function(data) {
             return $.md5(data);
+        },
+
+        sha1: function(data) {
+            return $.sha1(data);
         }
     };
 

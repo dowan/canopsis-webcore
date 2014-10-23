@@ -32,7 +32,7 @@ define([
 
         currentViewId: Ember.computed.alias('controllers.application.currentViewId'),
 
-        user: Ember.computed.alias('controllers.login.record.user'),
+        user: Ember.computed.alias('controllers.login.record._id'),
         rights: Ember.computed.alias('controllers.login.record.rights'),
 
         tagName: 'span',

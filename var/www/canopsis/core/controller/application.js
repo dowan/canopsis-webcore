@@ -276,16 +276,15 @@ define([
 
                 var ouser = get(utils, 'session');
                 var recordWizard = formsUtils.showNew('modelform', ouser, {
-                    title: ouser.id + ' ' + __('profile')
+                    title: ouser._id + ' ' + __('profile')
                 });
 
                 recordWizard.submit.then(function(form) {
                     console.group('submit form:', form);
 
-                    console.log('save record:', record);
-
                     //generated data by user form fill
                     record = form.get('formContext');
+                    console.log('save record:', record);
 
                     set(record, 'crecord_type', 'user');
                     record.save();

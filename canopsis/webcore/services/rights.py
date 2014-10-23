@@ -83,15 +83,12 @@ def save_role(ws, role):
     return role
 
 
-def save_user(ws, user):
-    uid = user['_id']
-    urole = user['role']
-    ucontact = user['contact']
-    urights = user['rights']
-    ucomp = user['groups']
-    uenable = user['enable']
-    uexternal = user['external']
-    ushadowpass = user['shadowpass']
+def save_user(ws, record):
+    uid = record.pop('_id')
+    urole = record.pop('role')
+    ucontact = record.pop('contact')
+    urights = record.pop('rights')
+    ucomp = record.pop('groups')
 
     user = rights.get_user(uid)
 
@@ -108,12 +105,7 @@ def save_user(ws, user):
 
     rights.update_comp(uid, 'user', ucomp, user)
     rights.update_rights(uid, 'user', urights, user)
-    rights.update_fields(uid, 'user', {
-        'contact': ucontact,
-        'external': uexternal,
-        'enable': uenable,
-        'shadowpasswd': ushadowpass
-    })
+    rights.update_fields(uid, 'user', record)
 
     if not rights.add_role(uid, urole):
         raise ws.Error('Impossible to add user to role')
