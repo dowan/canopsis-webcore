@@ -18,7 +18,7 @@
 */
 
 define([
-'text!/plugins/enabled.json',
+    'text!/plugins/enabled.json',
 ], function() {
 	return  arguments ;
 });

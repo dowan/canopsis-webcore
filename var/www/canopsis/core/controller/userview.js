@@ -27,8 +27,10 @@ define([
     'app/serializers/userview',
     'app/lib/loaders/widgets'
 ], function(Ember, Application, CrecordController, formUtils) {
+
     var get = Ember.get,
         set = Ember.set;
+
 
     var controller = CrecordController.extend(Ember.Evented, {
         needs: ['application'],

@@ -19,29 +19,29 @@
 
 var presets = [
     { name: 'No loading info', classes: ['selected_tags'], value: [
-        "helpers/renderer.js",
-        "mixins/inspectablearray.js",
-        "mixins/embeddedrecordserializer.js",
-        "loaders/editors.js",
-        "loaders/schema-manager.js",
-        "loaders/utils.js",
-        "helpers/i18n.js",
-        "loaders/utils.js",
-        "factories/widget.js",
-        "loaders/schemas.js",
-        "editor/component.js",
-        "mixins/metaserializer.js",
-        "lib/promisesmanager.js",
-        "array/component.js",
-        "filterclause/component.js",
-        "modelform/controller.js",
-        "utils/i18n.js",
-        "view/widget.js",
-        "init",
-        "wrappers/ember-data.js",
-        "routes/application.js",
-        "routes/application.js",
-        "loader"
+        'helpers/renderer.js',
+        'mixins/inspectablearray.js',
+        'mixins/embeddedrecordserializer.js',
+        'loaders/editors.js',
+        'loaders/schema-manager.js',
+        'loaders/utils.js',
+        'helpers/i18n.js',
+        'loaders/utils.js',
+        'factories/widget.js',
+        'loaders/schemas.js',
+        'editor/component.js',
+        'mixins/metaserializer.js',
+        'lib/promisesmanager.js',
+        'array/component.js',
+        'filterclause/component.js',
+        'modelform/controller.js',
+        'utils/i18n.js',
+        'view/widget.js',
+        'init',
+        'wrappers/ember-data.js',
+        'routes/application.js',
+        'routes/application.js',
+        'loader'
     ]}, { name: 'All', classes: ['selected_tags'], value: []}
 
 ];
@@ -50,7 +50,7 @@ var presetsDeps = ['app/application', 'app/lib/attributepreset'];
 var presetsDepsSize = presetsDeps.length;
 
 define(presetsDeps, function(Application, Attributepreset) {
-    console.log("loading presets", presets, "into", Application.presets);
+    console.log('loading presets', presets, 'into', Application.presets);
 
     for (var i = 0, l = presets.length; i < l; i++) {
         var attr = Attributepreset.create(presets[i]);

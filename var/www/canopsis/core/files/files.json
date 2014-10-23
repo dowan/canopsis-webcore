@@ -5,7 +5,6 @@
     "files": [
         {"name": "application"},
         {"name": "formwrapper"},
-        {"name": "editor"},
         {"name": "login"},
         {"name": "notifications"},
         {"name": "userview"},
@@ -22,9 +21,7 @@
     "files": [
         {"name": "application"},
         {"name": "formwrapper"},
-        {"name": "crecords"},
         {"name": "editor"},
-        {"name": "event"},
         {"name": "widget"},
         {"name": "validationtextfield"},
         {"name": "validationtextarea"}

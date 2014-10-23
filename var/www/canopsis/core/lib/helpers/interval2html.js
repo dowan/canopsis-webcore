@@ -22,6 +22,7 @@ define(['ember', 'app/lib/utils/dates'], function(Ember, datesUtils) {
     var set = Ember.set,
         isNone = Ember.isNone;
 
+
     Ember.Handlebars.helper('interval2html', function(from , to) {
 
         var html = '';//'<div style="min-width:200px"></div>';

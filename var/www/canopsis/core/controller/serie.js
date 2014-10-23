@@ -30,6 +30,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+
     var controller = Ember.ObjectController.extend({
         needs: ['perfdata'],
 

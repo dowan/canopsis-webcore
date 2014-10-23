@@ -18,7 +18,9 @@
 */
 
 define(['ember'], function(Ember) {
+
     var get = Ember.get;
+
 
     Ember.Handlebars.helper('getfield', function(ctx, fieldname) {
         var field = get(ctx, fieldname) || '';

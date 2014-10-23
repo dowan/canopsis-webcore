@@ -19,6 +19,11 @@
 
 define(['ember'], function(Ember) {
 
+    var set = Ember.set,
+        isNone = Ember.isNone,
+        isArray = Ember.isArray;
+
+
     //TODO check if it used or not
     Ember.Handlebars.helper('json2html', function(json, settableObject) {
         if (typeof json === 'string') {
@@ -33,7 +38,7 @@ define(['ember'], function(Ember) {
 
         function parseJson(object) {
             var html = '';
-            if (Ember.isArray(object)) {
+            if (isArray(object)) {
                 html += '<ul class="jsonUl">';
                 for (var element in  object) {
                     html += '<li class="jsonLi">' + parseJson(object[element]) + '</li>';
@@ -43,7 +48,7 @@ define(['ember'], function(Ember) {
                 for (var key in object) {
                     html += '<ul class="jsonUl"><li class="jsonLi">';
                     html += '<span class="label label-primary">'+ key +'</span>';
-                    if (typeof object[key] === 'object' || Ember.isArray(object[key])) {
+                    if (typeof object[key] === 'object' || isArray(object[key])) {
                         html += parseJson(object[key]);
                     } else {
                         html +=  '&nbsp;<span class="glyphicon glyphicon-arrow-right" style="display:inline"></span><span class="label label-warning">'+ object[key] +'</span>' ;
@@ -52,10 +57,10 @@ define(['ember'], function(Ember) {
                 }
             }
 
-            if(Ember.isNone(settableObject)) {
+            if(isNone(settableObject)) {
                 return html;
             } else {
-                Ember.set(settableObject, 'json2html', html);
+                set(settableObject, 'json2html', html);
                 return '';
             }
 

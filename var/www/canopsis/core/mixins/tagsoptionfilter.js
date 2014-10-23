@@ -32,7 +32,7 @@ define([
                 filterObjectUtils.getFieldsByPrefix( "_opt_" , formController.formContext , function( attr , result  ){
                     var nameMixin = { name : attr.slice(5) };
                     result.pushObject(nameMixin);
-                } , contentREF);
+                }, contentREF);
             }
             _self.set("select", 0 );
         }

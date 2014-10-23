@@ -23,6 +23,7 @@ define([
     'canopsis/canopsisConfiguration',
     'app/lib/loaders/schemas'
 ], function(Ember, Application, canopsisConfiguration, available_types) {
+
     var get = Ember.get,
         set = Ember.set;
 

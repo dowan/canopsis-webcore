@@ -22,8 +22,10 @@ define([
     'app/application',
     'app/view/recordinfopopup'
 ], function(Ember, Application) {
+
     var get = Ember.get,
         set = Ember.set;
+
 
     var eventedController = Ember.Controller.extend(Ember.Evented);
 

@@ -26,32 +26,33 @@ define([
 // TODO: just make a function from this
     var mixin = Ember.Mixin.create({
 
-        onInit : function ( contentREF , _self ){
+        onInit : function (contentREF , _self){
 
             function getAndPushMixinNames(classToGet , contentREF){
                 var currentClass = mixinsregistry.byClass[classToGet];
+
                 for (var i = 0, l = currentClass.length; i < l ; i++) {
                     var nameMixin = { name : currentClass[i] };
                     contentREF.push(nameMixin);
                 }
             }
 
-            var formController  =  formsregistry.formwrapper.form;
+            var formController = formsregistry.formwrapper.form;
             if ( formController ){
                 var classToGet = _self.templateData.keywords.controller.content.model.options.mixinClass;
 
                 if (classToGet !== undefined) {
-                    getAndPushMixinNames( classToGet , contentREF );
+                    getAndPushMixinNames(classToGet, contentREF);
                 }
                 else {
                     for ( var attribut in mixinsregistry.byClass ) {
-                        if ( mixinsregistry.byClass.hasOwnProperty( attribut ) ) {
-                            getAndPushMixinNames( attribut , contentREF );
+                        if(mixinsregistry.byClass.hasOwnProperty(attribut)) {
+                            getAndPushMixinNames(attribut, contentREF);
                         }
                     }
                 }
             }
-            _self.set("select", 1 );
+            _self.set("select", 1);
         }
     });
 
