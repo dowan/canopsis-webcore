@@ -19,8 +19,6 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-import logging
-
 from canopsis.webcore.services import auth, session, rights
 
 
@@ -28,14 +26,15 @@ class BaseBackend(object):
     name = 'base'
     handle_logout = False
 
-    def __init__(self, logger, *args, **kwargs):
+    def __init__(self, ws, *args, **kwargs):
         super(BaseBackend, self).__init__(*args, **kwargs)
 
+        self.ws = ws
         self.auth = auth
         self.session = session
         self.rights = rights
 
-        self.logger = logger
+        self.logger = ws.logger
 
         self._perms = []
 

@@ -196,4 +196,4 @@ class CASBackend(BaseBackend):
 
 
 def get_backend(ws):
-    return CASBackend(ws.logger)
+    return CASBackend(ws)

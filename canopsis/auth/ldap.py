@@ -164,5 +164,5 @@ class LDAPBackend(BaseBackend):
         return account
 
 
-def get_backend():
-    return LDAPBackend()
+def get_backend(ws):
+    return LDAPBackend(ws)
