@@ -30,7 +30,6 @@ define([
         set = Ember.set;
 
     var widgetOptions = {};
-
     var FlotChartViewMixin = Ember.Mixin.create({
         didInsertElement: function() {
             //get the timestamp, and not the date object
@@ -80,9 +79,18 @@ define([
                 legend: {
                     hideable: true,
                     legend: get(config, 'legend'),
-                    container: this.$('.flotchart-legend-container')
+                    container: this.$('.flotchart-legend-container'),
+                    labelFormatter: function(label, series){
+                        var id = series.chart.id;
+                        return '<span style="text-decoration: underline;" onClick="enableSerie(\''+ label +'\', \''+ id +'\' , this); return false;">'+label+'</span>';
+                    }
                 },
-
+/*
+                tooltip: {
+                    show: get(config, 'tooltip'),
+                    template_tooltip: "<strong> #label </strong><br> : <strong> #y </strong>(USD)"
+                }
+*/
                 tooltip: get(config, 'tooltip')
             });
 
@@ -181,7 +189,10 @@ define([
 
                             if(get(config, 'style.curve') === curve.id) {
                                 set(config, 'curve', curve);
-                                break;
+                                /*when a filter mongo contain serveral times the same id, only one instance of this object will be returned.
+                                So, if two series use the same curve, only one curve will be returned by "store.findQuery('curve', {ids: curveIds})"
+                                Since there will be only one instance of each used curve, we have to find for each curve all series that use it.*/
+                               //break;
                             }
                         }
                     }
@@ -209,23 +220,26 @@ define([
 
         genFlotSerie: function(config, from, to, replace) {
             console.group('Generating FlotChart serie:', config);
-
             var me = this;
             var flotSerie = {
                 template_tooltip: "<strong> #label </strong><br> : <strong> #y </strong>(USD)",
+                chart: this.get("chart"),
                 label: get(config, 'serie.crecord_name'),
                 color: get(config, 'style.color'),
                 lines: {
                     show: get(config, 'curve.lines'),
+                    used: get(config, 'curve.lines'),
                     lineWidth: get(config, 'curve.line_width'),
                     fill: (get(config, 'curve.areas') ? get(config, 'curve.area_opacity') : false)
                 },
                 bars: {
                     show: get(config, 'curve.bars'),
+                    used: get(config, 'curve.bars'),
                     barWidth: get(config, 'curve.bar_width')
                 },
                 points: {
                     show: get(config, 'curve.points'),
+                    used: get(config, 'curve.points'),
                     symbol: get(config, 'curve.point_shape')
                 },
                 xaxis: parseInt(get(config, 'style.xaxis')),
