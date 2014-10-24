@@ -19,48 +19,54 @@
 
 define([], function() {
 
-    var makeDeps = function(deps, requirementList) {
+    var makeDeps = function(requirementList) {
+
         var jsDeps = [];
-        //generate deps
+        var htmlDeps = [];
+        var htmlNames = [];
+        //ember is requied here and works with arguments + 1 in loadwithtemplates function
+        var deps = ['ember'];
+
+        //building html and js dependencies
+
         for (var i = 0, l = requirementList.length; i < l; i++) {
 
-            var requirementTemplate = requirementList[i].template;
-            if(requirementTemplate) {
-                deps.push('text!' + requirementList[i].template);
+            if(requirementList[i].template) {
+                htmlDeps.push('text!' + requirementList[i].template);
+                htmlNames.push(requirementList[i].name);
             }
 
-            var requirementUrl = requirementList[i].url;
-            if(requirementUrl) {
-                jsDeps.push(requirementUrl);
+            if(requirementList[i].url) {
+                jsDeps.push(requirementList[i].url);
             }
         }
 
-        for (i = 0; i < jsDeps.length; i++) {
-            deps.push(jsDeps[i]);
-        }
 
-        return deps;
+        deps = deps.concat(htmlDeps);
+        deps = deps.concat(jsDeps);
+
+        //computed data information
+        return {
+            deps: deps,
+            htmlDeps: htmlDeps,
+            htmlNames: htmlNames,
+        };
     };
 
 
     var loader = {
         loadWithTemplates: function(items) {
-            var deps = ['ember'];
-            var depsSize = deps.length;
 
-            deps = makeDeps(deps, items);
+            var info = makeDeps(items);
 
-            define(deps, function(Ember) {
-                for (var i = depsSize, l = items.length, j = depsSize; i < l; i++, j++) {
+            define(info.deps, function(Ember) {
 
-                    if(items[i - depsSize].template !== undefined) {
-                        var templateName = items[i - depsSize].name;
+                var len = info.htmlNames.length;
 
-                        Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[j]);
-                    } else {
-                        j--;
-                    }
+                for (var i=0; i<len; i++) {
+                    Ember.TEMPLATES[info.htmlNames[i]] = Ember.Handlebars.compile(arguments[i + 1]);
                 }
+
             });
         }
     };
