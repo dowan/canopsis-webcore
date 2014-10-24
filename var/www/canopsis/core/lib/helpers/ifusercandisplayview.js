@@ -28,7 +28,7 @@ define([
 
     Ember.Handlebars.registerHelper('ifUserCanDisplayView', function(viewId, options) {
 
-        if(get(utils, 'session.id') === "root") {
+        if(get(utils, 'session._id') === "root") {
             return options.fn(this);
         }
 

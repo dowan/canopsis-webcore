@@ -38,7 +38,7 @@ define([
             var value = this.get("attr.value") || [];
 
             var classToGet = this.templateData.keywords.controller.content.model.options.templateClass;
-            if(classToGet !== undefined) {
+            if(classToGet !== undefined && templates.byClass[classToGet] !== undefined) {
                 for (var i = 0, li = templates.byClass[classToGet].length; i < li; i++) {
                     this.addTemplate(templates.byClass[classToGet][i], value, contentREF);
                 }

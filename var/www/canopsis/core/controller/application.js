@@ -276,7 +276,7 @@ define([
 
                 var ouser = get(utils, 'session');
                 var recordWizard = formsUtils.showNew('modelform', ouser, {
-                    title: ouser._id + ' ' + __('profile')
+                    title: get(ouser, '_id') + ' ' + __('profile')
                 });
 
                 recordWizard.submit.then(function(form) {
