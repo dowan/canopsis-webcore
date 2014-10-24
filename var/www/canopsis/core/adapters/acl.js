@@ -19,11 +19,13 @@
 
 
 define([
+    'ember',
     'app/application',
     'app/adapters/application',
-], function(Application, ApplicationAdapter) {
+], function(Ember, Application, ApplicationAdapter) {
 
-    var get = Ember.get;
+    var get = Ember.get,
+        set = Ember.set;
 
     var adapter = ApplicationAdapter.extend({
 
@@ -53,6 +55,20 @@ define([
 
         findQuery: function(store, type, query) {
             return this.ajax(this.buildURL(type.typeKey, undefined, undefined, 'GET'), 'GET', { data: query });
+        },
+
+        createRecord: function(store, type, record) {
+            var url = this.buildURL(type.typeKey, undefined, record, 'POST');
+            var hash = this.serialize(record, {includeId: true});
+
+            return this.ajax(url, 'POST', {type.typeKey: JSON.stringify(hash)});
+        },
+
+        updateRecord: function(store, type, record) {
+            var url = this.buildURL(type.typeKey, undefined, record, 'POST');
+            var hash = this.serialize(record, {includeId: true});
+
+            return this.ajax(url, 'POST', {type.typeKey: JSON.stringify(hash)});
         },
 
         deleteRecord: function(store, type, record) {
