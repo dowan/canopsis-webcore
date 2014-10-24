@@ -64,6 +64,7 @@ var components = [
     { name: 'tooltip', url: 'canopsis/uibase/components/tooltip' },
     { name: 'typedvalue', url: 'canopsis/uibase/components/typedvalue' },
     { name: 'userpreferencesmanager', url: 'canopsis/uibase/components/userpreferencesmanager' },
+    { name: 'draggablebutton', url: 'canopsis/uibase/components/draggablebutton' },
 ];
 
 loader.loadComponents(components);

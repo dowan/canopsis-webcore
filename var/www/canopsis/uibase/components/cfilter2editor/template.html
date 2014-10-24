@@ -78,7 +78,7 @@
                 {{#each clause in clauses}}
                     {{json2html clause.display clause}}
                     {{#component-tooltip content=clause.json2html htmlEnabled=true noTranslation=true}}
-                        <button type="button" {{bind-attr class=":btn :btn-default :btn-sm"}}>{{clause.property}}</button>
+                        {{component-draggablebutton content=clause label=clause.property}}
                     {{/component-tooltip}}
                 {{/each}}
             </div>

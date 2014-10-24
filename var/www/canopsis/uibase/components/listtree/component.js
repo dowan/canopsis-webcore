@@ -27,7 +27,56 @@ define([
         set = Ember.set;
 
 
-    var component = Ember.Component.extend({
+var DragNDrop = Ember.Namespace.create();
+
+DragNDrop.cancel = function(event) {
+    event.preventDefault();
+    return false;
+};
+/*
+DragNDrop.Dragable = Ember.Mixin.create({
+    attributeBindings: 'draggable',
+    draggable: 'true',
+    dragStart: function(event) {
+        console.log('drag started !');
+        var dataTransfer = event.originalEvent.dataTransfer;
+        dataTransfer.setData(
+            'elementId', this.get('elementId'),
+            'content', get(this, 'content')
+        );
+
+    }
+});
+*/
+DragNDrop.Droppable = Ember.Mixin.create({
+    dragEnter: DragNDrop.cancel,
+    dragOver: DragNDrop.cancel,
+    drop: function(event, ui) {
+
+        console.log('ui element dropped', ui);
+
+        var viewId = event.originalEvent.dataTransfer.getData('elementId');
+        var content = event.originalEvent.dataTransfer.getData('content');
+
+        console.log('drop done !');
+
+        console.log('viewId', viewId);
+        console.log('content', content);
+
+
+        Ember.View.views[viewId].destroy();
+
+        event.preventDefault();
+
+        return false;
+    }
+});
+
+//App.Box = Ember.View.extend(DragNDrop.Dragable);
+//App.DropTarget = Ember.View.extend(DragNDrop.Droppable);​
+
+
+    var component = Ember.Component.extend(/*DragNDrop.Dragable,*/ DragNDrop.Droppable, {
 
         didInsertElement: function() {
 
