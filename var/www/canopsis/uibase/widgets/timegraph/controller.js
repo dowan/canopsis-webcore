@@ -24,10 +24,14 @@ define([
     'app/application',
     'app/lib/factories/widget',
     'canopsis/uibase/components/flotchart/component',
+    'webcore-libs/flot-plugins/custom/jquery.flot.valuelabel',
     'app/controller/serie'
 ], function($, Ember, DS, Application, WidgetFactory) {
     var get = Ember.get,
         set = Ember.set;
+
+
+
 
     var widgetOptions = {};
     var FlotChartViewMixin = Ember.Mixin.create({
@@ -85,12 +89,6 @@ define([
                         return '<span style="text-decoration: underline;" onClick="enableSerie(\''+ label +'\', \''+ id +'\' , this); return false;">'+label+'</span>';
                     }
                 },
-/*
-                tooltip: {
-                    show: get(config, 'tooltip'),
-                    template_tooltip: "<strong> #label </strong><br> : <strong> #y </strong>(USD)"
-                }
-*/
                 tooltip: get(config, 'tooltip')
             });
 
@@ -236,6 +234,14 @@ define([
                     show: get(config, 'curve.bars'),
                     used: get(config, 'curve.bars'),
                     barWidth: get(config, 'curve.bar_width')
+                },
+                valueLabels: {
+                    show: get(config, 'curve.valueLabels'),
+                    align: 'center',
+                    showAsHtml: true,
+                    labelFormatter: function (v) {
+                        return v;
+                    }
                 },
                 points: {
                     show: get(config, 'curve.points'),
