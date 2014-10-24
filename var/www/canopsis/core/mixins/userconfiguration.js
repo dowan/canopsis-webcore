@@ -22,13 +22,14 @@ define([
     'ember',
     'app/application',
     'app/lib/utils/hash',
-    'utils'
-], function($, Ember, Application, hashUtils, utils) {
+    'utils',
+    'app/lib/factories/mixin'
+], function($, Ember, Application, hashUtils, utils, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
 
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('userconfiguration', {
 
         needs: ['login'],
 
@@ -121,8 +122,6 @@ define([
 
     });
 
-
-    Application.UserconfigurationMixin = mixin;
 
     return mixin;
 });

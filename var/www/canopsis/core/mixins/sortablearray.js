@@ -19,8 +19,9 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/application',
+    'app/lib/factories/mixin'
+], function(Ember, Application, Mixin) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -32,7 +33,7 @@ define([
           - the `refreshContent()` method
 
     */
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('sortablearray', {
 
         sort_direction: false,
 
@@ -94,7 +95,6 @@ define([
         }.property("inspectedProperty", "inspectedDataArray"),
     });
 
-    Application.SortablearrayMixin = mixin;
 
     return mixin;
 });

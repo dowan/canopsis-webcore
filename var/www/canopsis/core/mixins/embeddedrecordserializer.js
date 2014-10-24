@@ -21,7 +21,8 @@ define([
     'ember',
     'app/application',
     'app/lib/utils/hash',
-], function(Ember, Application, hashUtils) {
+    'app/lib/factories/mixin'
+], function(Ember, Application, hashUtils, Mixin) {
 
     var isNone = Ember.isNone;
 
@@ -52,7 +53,7 @@ define([
      * if(!c.Application.EmbeddedRecordSerializerMixin.detect(s)) alert("stop");
      */
 
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('embeddedRecordSerializer', {
 
         /**
          Sideload a JSON object to the payload
@@ -314,7 +315,6 @@ define([
         }
     });
 
-    Application.EmbeddedRecordSerializerMixin = mixin;
 
     return mixin;
 });

@@ -17,8 +17,8 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-loader.loadWidgets([
-    { name:'webconsole', url:'canopsis/development/widgets/webconsole' },
-    { name:'requestsmanager', url:'canopsis/development/widgets/requestsmanager' },
-    { name:'objectinspector', url:'canopsis/development/widgets/objectinspector' }
+loader.loadWithTemplates([
+    { name:'webconsole', url:'canopsis/development/widgets/webconsole/controller', template:'canopsis/development/widgets/webconsole/template.html' },
+    { name:'requestsmanager', url:'canopsis/development/widgets/requestsmanager/controller', template:'canopsis/development/widgets/requestsmanager/template.html' },
+    { name:'objectinspector', url:'canopsis/development/widgets/objectinspector/controller', template:'canopsis/development/widgets/objectinspector/template.html' }
 ]);

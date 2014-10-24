@@ -23,4 +23,4 @@ var factories = [
     { name:'form', url: 'app/lib/factories/form' }
 ];
 
-loader.loadFactories(factories);
+loader.loadWithTemplates(factories);

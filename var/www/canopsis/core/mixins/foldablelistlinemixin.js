@@ -20,10 +20,11 @@ define([
     'jquery',
     'ember',
     'app/application',
-    'app/lib/formsregistry'
-], function($, Ember, Application, formsregistry) {
+    'app/lib/formsregistry',
+    'app/lib/factories/mixin'
+], function($, Ember, Application, formsregistry, Mixin) {
 
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('foldablelistline', {
         actions: {
             unfold_action:function(listline_view){
                 var listline_controller = listline_view.controller;
@@ -45,7 +46,7 @@ define([
                 context: this,
                 success: this.ajaxSuccess,
                 error: this.ajaxError
-            })
+            });
             ajaxDeffered.args = arguments;
         },
 
@@ -139,15 +140,13 @@ define([
                             template = template.replace(param, template_part);
                             result.push(alias);
                         }
-                        else{
+                        else {
                             var endOfWord = param.indexOf(" ");
                             if (endOfWord != -1){
                                 var firstWord = param.slice(0, endOfWord);
                                 result.push(firstWord);
-                            }
-                            else
-                            {
-                                result.push(param);
+                            } else {
+                                result.pushObject(param);
                             }
                         }
                     }
@@ -177,8 +176,6 @@ define([
         }.property("shown_columns")
     });
 
-
-    Application.FoldablelistlineMixin = mixin;
 
     return mixin;
 });

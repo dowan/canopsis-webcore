@@ -19,271 +19,49 @@
 
 define([], function() {
 
+    var makeDeps = function(deps, requirementList) {
+        var jsDeps = [];
+        //generate deps
+        for (var i = 0, l = requirementList.length; i < l; i++) {
+
+            var requirementTemplate = requirementList[i].template;
+            if(requirementTemplate) {
+                deps.push('text!' + requirementList[i].template);
+            }
+
+            var requirementUrl = requirementList[i].url;
+            if(requirementUrl) {
+                jsDeps.push(requirementUrl);
+            }
+        }
+
+        for (i = 0; i < jsDeps.length; i++) {
+            deps.push(jsDeps[i]);
+        }
+
+        return deps;
+    };
+
+
     var loader = {
-        loadComponents: function(components) {
+        loadWithTemplates: function(items) {
             var deps = ['ember'];
             var depsSize = deps.length;
-            var jsDeps = [];
 
-            //generate deps
-            for (var i = 0, l = components.length; i < l; i++) {
-                deps.push('text!' + components[i].url + '/template.html');
-
-                var componentJsUrl =  components[i].url + '/component';
-                jsDeps.push(componentJsUrl);
-            }
-
-            for (i = 0; i < jsDeps.length; i++) {
-                deps.push(jsDeps[i]);
-            }
+            deps = makeDeps(deps, items);
 
             define(deps, function(Ember) {
-                console.tags.add('loader');
+                for (var i = depsSize, l = items.length, j = depsSize; i < l; i++, j++) {
 
-                console.log("load components", arguments);
-                for (var i = 0, l = components.length; i < l; i++) {
+                    if(items[i - depsSize].template !== undefined) {
+                        var templateName = items[i - depsSize].name;
 
-                    console.log('load component', components[i].name);
-                    var templateName = 'components/component-' + components[i].name;
-
-                    Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
-                }
-
-                console.tags.remove('loader');
-            });
-        },
-
-        loadWidgets: function(widgets) {
-            var deps = ['ember'];
-            var depsSize = deps.length;
-            var jsDeps = [];
-
-
-            //generate deps
-            for (var i = 0, l = widgets.length; i < l; i++) {
-                deps.push('text!' + widgets[i].url + '/template.html');
-
-                var viewUrl = widgets[i].url + '/controller';
-                console.log("adding view", viewUrl);
-
-                jsDeps.push(viewUrl);
-            }
-
-            for (i = 0, l = jsDeps.length; i < l; i++) {
-                deps.push(jsDeps[i]);
-            }
-
-
-            define(deps, function(Ember) {
-                console.tags.add('loader');
-
-                console.log({"load widgets": arguments});
-                for (var i = 0, l = widgets.length; i < l; i++) {
-                    var templateName = widgets[i].name;
-
-                    var templateFileContent = arguments[i + depsSize];
-                    Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(templateFileContent);
-                }
-
-                console.tags.remove('loader');
-            });
-        },
-
-        loadEditors: function(editors) {
-            var deps = ['ember', 'app/lib/editorregistry'];
-            var depsSize = deps.length;
-            var editorsDeps = [];
-
-            //generate deps
-            for (var i = 0, l = editors.length; i < l; i++) {
-                var name = editors[i].name;
-                var url = editors[i].url;
-
-                var tmplPos;
-
-                tmplPos = deps.push('text!' + url + '/template.html');
-                editorsDeps.push({name: 'editor-' + name, pos: tmplPos});
-            }
-
-            define(deps, function(Ember, editorRegistry) {
-                console.tags.add('loader');
-
-                for (var i = 0; i < editorsDeps.length; i++) {
-                    var tmplInfo = editorsDeps[i];
-
-                    var template = arguments[tmplInfo.pos - 1];
-
-                    console.log('new editor', tmplInfo.name);
-
-                    editorRegistry.add({template: template}, tmplInfo.name);
-
-                    Ember.TEMPLATES[tmplInfo.name] = Ember.Handlebars.compile(template);
-                }
-
-                console.groupEnd();
-
-                console.tags.remove('loader');
-            });
-        },
-
-        loadFactories: function(factories) {
-            var factoriesDeps = ['app/application', 'app/lib/factoryregistry'];
-            var factoriesDepsSize = factoriesDeps.length;
-
-            for (var i = 0, l = factories.length; i < l; i++) {
-                factoriesDeps.push(factories[i].url);
-            }
-
-            define(factoriesDeps, function(Application, factoryRegistry) {
-                console.tags.add('loader');
-
-                Application.factories = {};
-
-                console.log('loading factories', factories, 'into', Application.factories);
-
-                for (var i = 0, l = factories.length; i < l; i++) {
-                    factoryRegistry.add({
-                        name: factories[i].name.capitalize(),
-                        factory: arguments[i + factoriesDepsSize]
-                    });
-                }
-
-                console.tags.remove('loader');
-                return Application.factories;
-            });
-        },
-
-        loadForms: function(forms) {
-            var deps = ['ember'];
-            var jsDeps = [];
-            var depsSize = deps.length;
-
-            //generate deps
-            for (var i = 0, l = forms.length; i < l; i++) {
-                deps.push('text!app/forms/' + forms[i] + '/template.html');
-
-                var controllerUrl = 'app/forms/' + forms[i] + '/controller';
-                jsDeps.push(controllerUrl);
-            }
-
-            for (i = 0, l = jsDeps.length; i < l; i++) {
-                deps.push(jsDeps[i]);
-            }
-
-            define(deps, function(Ember) {
-                console.tags.add('loader');
-
-                console.log("load forms", arguments);
-                for (var i = 0, l = forms.length; i < l; i++) {
-                    var templateName = forms[i];
-                    Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i + depsSize]);
-                }
-
-                console.tags.remove('loader');
-
-            });
-        },
-
-        loadHelpers: function(helpers) {
-            var deps = ['app/application'];
-
-            for (var i = 0, l = helpers.length; i < l; i++) {
-                deps.push('app/lib/helpers/' + helpers[i]);
-            }
-
-            define(deps, function() {
-                return helpers;
-            });
-        },
-
-        loadMixins: function(mixins) {
-            var deps = ['app/lib/mixinsregistry'];
-            var depsSize = deps.length;
-
-            for (var i = 0, l = mixins.length; i < l; i++) {
-                var mixinUrl = 'app/mixins/' + mixins[i].name;
-                deps.push(mixinUrl);
-            }
-
-            define(deps, function(mixinsregistry) {
-                console.tags.add('loader');
-
-                console.log('Begin load mixins', arguments);
-                for (var i = depsSize, li = arguments.length; i < li; i++) {
-                    var currentMixin = mixins[i - depsSize];
-
-                    if (currentMixin.classes !== undefined) {
-                        for (var j = 0, lj = currentMixin.classes.length; j < lj; j++) {
-                            var currentClass = currentMixin.classes[j];
-
-                            if (mixinsregistry.byClass[currentClass] === undefined) {
-                                mixinsregistry.byClass[currentClass] = [];
-                            }
-
-                            mixinsregistry.byClass[currentClass].push(currentMixin.name);
-                        }
+                        Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[j]);
+                    } else {
+                        j--;
                     }
-                    mixinsregistry.all.push(currentMixin);
-                }
-
-                console.tags.remove('loader');
-
-                return mixinsregistry;
-            });
-        },
-
-        loadRenderers: function(renderers) {
-            var rendererDeps = ['ember', 'app/lib/rendererregistry'];
-            var rendererDepsSize = rendererDeps.length;
-
-            for (var i = 0, l = renderers.length; i < l; i++) {
-                rendererDeps.push('text!' + renderers[i].url + '/template.html');
-            }
-
-            define(rendererDeps, function(Ember, rendererRegistry) {
-                for (var i = rendererDepsSize, l = arguments.length; i < l; i++) {
-                    var templateName = 'renderer-' + renderers[i - rendererDepsSize].name;
-
-                    rendererRegistry.add({template: arguments[i]}, templateName);
-                    Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i]);
                 }
             });
-        },
-
-        loadTemplates: function() {
-            var deps = ['ember', 'app/lib/templateregistry'];
-            var depsSize = deps.length;
-
-            for (var i = 0; i < templates.length; i++) {
-                deps.push('text!' + templates[i].url + '.html');
-            }
-
-            define(deps, function(Ember, templateRegistry) {
-
-                for (var i = depsSize, li = arguments.length; i < li; i++) {
-                    var currentTemplate = templates[i - depsSize];
-                    Ember.TEMPLATES[currentTemplate.name] = Ember.Handlebars.compile(arguments[i]);
-
-                    currentTemplate.fileContent = arguments[i];
-
-                    if (currentTemplate.classes !== undefined) {
-                        for (var j = 0, lj = currentTemplate.classes.length; j < lj; j++) {
-                            var currentClass = currentTemplate.classes[j];
-
-                            if (templateRegistry.byClass[currentClass] === undefined) {
-                                templateRegistry.byClass[currentClass] = [];
-                            }
-
-                            templateRegistry.byClass[currentClass].push(currentTemplate);
-                        }
-                    }
-
-                    templateRegistry.all.push(currentTemplate);
-                }
-
-                return templateRegistry;
-            });
-
         }
     };
 
