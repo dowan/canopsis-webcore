@@ -24,8 +24,9 @@ define([
     'utils',
     'app/lib/utils/data',
     'app/lib/utils/forms',
-    'app/lib/utils/notification'
-], function(Ember, DS, Application, utils, dataUtils, formsUtils, notificationUtils) {
+    'app/lib/utils/notification',
+    'app/lib/factories/mixin'
+], function(Ember, DS, Application, utils, dataUtils, formsUtils, notificationUtils, Mixin) {
 
     /**
       Implements Custom filter management for list
@@ -36,7 +37,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('customfilter', {
         partials: {
             subHeader: ['customfilters']
         },
@@ -135,8 +136,6 @@ define([
         }.observes('default_filter'),
 
     });
-
-    Application.CustomfilterMixin = mixin;
 
     return mixin;
 });

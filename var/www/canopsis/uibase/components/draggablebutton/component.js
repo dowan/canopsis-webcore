@@ -20,23 +20,39 @@
 define([
     'ember',
     'app/application',
-    'utils',
-    'app/lib/factories/mixin'
-], function(Ember, Application, utils, Mixin) {
+    'app/lib/wrappers/bootstrap'
+], function(Ember, Application) {
+
     var get = Ember.get,
         set = Ember.set;
 
-    var mixin = Mixin('Timeintervalselection', {
 
-        partials: {
-            header: ['timeintervalselection']
-        },
+    var DragNDrop = Ember.Namespace.create();
 
-        updateInterval: function (interval, referer){
-            console.log('interval from mixin', interval);
+    DragNDrop.Dragable = Ember.Mixin.create({
+        attributeBindings: 'draggable',
+        draggable: 'true',
+        dragStart: function(event) {
+
+            console.log('drag started !');
+
+            var dataTransfer = event.originalEvent.dataTransfer;
+
+            dataTransfer.setData('elementId', get(this,'elementId'));
+
+            this.send('dragStarted', get(this,'content'));
         }
     });
 
 
-    return mixin;
+    var component = Ember.Component.extend(DragNDrop.Dragable, {
+
+        didInsertElement: function() {
+
+        }
+    });
+
+    Application.ComponentDraggablebuttonComponent = component;
+
+    return component;
 });

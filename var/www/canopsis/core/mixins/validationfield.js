@@ -20,8 +20,9 @@ define([
     'jquery',
     'ember',
     'app/application',
-    'app/lib/formsregistry'
-], function($, Ember, Application, formsregistry) {
+    'app/lib/formsregistry',
+    'app/lib/factories/mixin'
+], function($, Ember, Application, formsregistry, Mixin) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -30,7 +31,7 @@ define([
     /**
      * Use Component-> validators -> validate (Ember.validators["validate"]) for validation
      */
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('validationField', {
         attr : "",
 
         willDestroyElement:function(){
@@ -102,7 +103,6 @@ define([
         }
     });
 
-    Application.ValidationFieldMixin = mixin;
 
     return mixin;
 });

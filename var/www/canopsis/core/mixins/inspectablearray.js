@@ -19,10 +19,11 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/application',
+    'app/lib/factories/mixin'
+], function(Ember, Application, Mixin) {
 
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('InspectableArray', {
         attributesKeys: function() {
             var attributes = [];
 
@@ -52,7 +53,6 @@ define([
         inspectedDataArray: function() { console.error("This must be defined on the base class"); }.property()
     });
 
-    Application.InspectableArrayMixin = mixin;
 
     return mixin;
 });

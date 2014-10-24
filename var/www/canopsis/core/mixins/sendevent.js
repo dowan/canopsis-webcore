@@ -23,13 +23,14 @@ define([
     'app/application',
     'app/lib/utils/forms',
     'app/lib/utils/dates',
-    'app/lib/utils/notification'
-], function(Ember, $, Application, formsUtils, datesUtils, notificationUtils) {
+    'app/lib/utils/notification',
+    'app/lib/factories/mixin'
+], function(Ember, $, Application, formsUtils, datesUtils, notificationUtils, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
 
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('sendevent', {
 
         needs: ['application'],
 
@@ -618,7 +619,6 @@ define([
         }
     });
 
-    Application.SendeventMixin = mixin;
 
     return mixin;
 });

@@ -21,8 +21,9 @@ define([
     'ember',
     'app/application',
     'app/lib/utils/forms',
-    'app/lib/utils/slug'
-], function(Ember, Application , formUtils , slugify) {
+    'app/lib/utils/slug',
+    'app/lib/factories/mixin'
+], function(Ember, Application , formUtils , slugify, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -32,7 +33,7 @@ define([
      * You should define on the validationFields
      * @mixin
      */
-    var mixin = Ember.Mixin.create({
+    var mixin = Mixin('validation', {
 
         validationFields: function() {
             console.warn("Property \"validationFields\" must be defined on the concrete class.");
@@ -124,6 +125,6 @@ define([
         }
     });
 
-    Application.ValidationMixin = mixin;
+
     return mixin;
 });

@@ -78,15 +78,11 @@ define([
             }
         ],
 
-        query: {'$and': [
-            {'plop': 1 },
-            {'$or': [1,2,3]}
-        ]},
-
 
         init: function() {
             this._super();
 
+            set(this, 'clauses', []);
 
             //if (!Ember.isNone(this.get('content'))) {
                 this.initializeEditor();
@@ -158,8 +154,15 @@ define([
             removeClause: function (clause) {
                 console.log('clause to delete', clause);
                 get(this, 'clauses').removeObject(clause);
-            }
+            },
 
+            dragStarted: function (element) {
+                console.log('in drag started', element);
+            },
+
+            dropDone: function (element) {
+                console.log('in drag started', element);
+            }
 
         }
 

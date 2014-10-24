@@ -21,10 +21,10 @@
 //TODO implement auto check for mvct file existence and require them automatically
 
 var components = [
-    { name: 'editor', url: 'app/components/editor' },
-    { name: 'renderer', url: 'app/components/renderer' },
-    { name: 'wrapper', url: 'app/components/wrapper' },
-    { name: 'attributepreset', url: 'app/components/attributepreset' }
+    { name: 'components/component-editor', url: 'app/components/editor/component', template: 'app/components/editor/template.html' },
+    { name: 'components/component-renderer', url: 'app/components/renderer/component', template: 'app/components/renderer/template.html' },
+    { name: 'components/component-wrapper', url: 'app/components/wrapper/component', template: 'app/components/wrapper/template.html' },
+    { name: 'components/component-attributepreset', url: 'app/components/attributepreset/component', template: 'app/components/attributepreset/template.html' }
 ];
 
-loader.loadComponents(components);
+loader.loadWithTemplates(components);
