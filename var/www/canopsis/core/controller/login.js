@@ -22,6 +22,7 @@ define([
     'ember',
     'app/application',
     'utils',
+    'app/adapters/acl'
 ], function($, Ember, Application, utils) {
     var set = Ember.set,
         get = Ember.get;

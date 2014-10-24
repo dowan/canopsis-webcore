@@ -40,7 +40,6 @@ from canopsis.old.rabbitmq import Amqp
 from signal import SIGTERM, SIGINT
 
 import importlib
-import imp
 import sys
 import os
 
@@ -171,6 +170,8 @@ class WebServer(Configurable):
 
     def __init__(self, *args, **kwargs):
         super(WebServer, self).__init__(*args, **kwargs)
+
+        self.log_name = 'webserver'
 
         # TODO: Replace with MongoStorage
         self.db = get_storage(account=Account(user='root', group='root'))

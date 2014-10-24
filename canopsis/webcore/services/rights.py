@@ -86,9 +86,18 @@ def save_role(ws, role):
 def save_user(ws, record):
     uid = record.pop('_id')
     urole = record.pop('role')
-    ucontact = record.pop('contact')
+    ucontact = record.pop('contact', None)
     urights = record.pop('rights')
-    ucomp = record.pop('groups')
+    ucomp = record.pop('groups', None)
+
+    if ucontact is None:
+        ucontact = {
+            'name': '{0} {1}'.format(
+                record.get('firstname', ''),
+                record.get('lastname', ''),
+            ),
+            'email': record.get('mail', '')
+        }
 
     user = rights.get_user(uid)
 
@@ -103,7 +112,9 @@ def save_user(ws, record):
         if not user:
             raise ws.Error('Impossible to create user')
 
-    rights.update_comp(uid, 'user', ucomp, user)
+    if ucomp is not None:
+        rights.update_comp(uid, 'user', ucomp, user)
+
     rights.update_rights(uid, 'user', urights, user)
     rights.update_fields(uid, 'user', record)
 

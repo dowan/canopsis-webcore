@@ -58,17 +58,39 @@ define([
         },
 
         createRecord: function(store, type, record) {
-            var url = this.buildURL(type.typeKey, undefined, record, 'POST');
-            var hash = this.serialize(record, {includeId: true});
+            var me = this;
 
-            return this.ajax(url, 'POST', {type.typeKey: JSON.stringify(hash)});
+            return new Ember.RSVP.Promise(function(resolve, reject) {
+                var url = me.buildURL(type.typeKey, undefined, record, 'POST');
+                var hash = me.serialize(record, {includeId: true});
+
+                var data = {};
+                data[type.typeKey] = JSON.stringify(hash);
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data
+                });
+            });
         },
 
         updateRecord: function(store, type, record) {
-            var url = this.buildURL(type.typeKey, undefined, record, 'POST');
-            var hash = this.serialize(record, {includeId: true});
+            var me = this;
 
-            return this.ajax(url, 'POST', {type.typeKey: JSON.stringify(hash)});
+            return new Ember.RSVP.Promise(function(resolve, reject) {
+                var url = me.buildURL(type.typeKey, undefined, record, 'POST');
+                var hash = me.serialize(record, {includeId: true});
+
+                var data = {};
+                data[type.typeKey] = JSON.stringify(hash);
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data
+                });
+            });
         },
 
         deleteRecord: function(store, type, record) {
