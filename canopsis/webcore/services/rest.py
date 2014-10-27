@@ -162,6 +162,87 @@ def get_records(ws, namespace, ctype=None, _id=None, **params):
     return output, total
 
 
+def save_records(ws, namespace, ctype, _id, items):
+    records = []
+
+    for data in items:
+        m_id = data.pop('_id', None)
+        mid = data.pop('id', None)
+        _id = m_id or mid
+
+        record = None
+
+        # Try to fetch existing record for update
+        if _id:
+            try:
+                record = ws.db.get(_id, namespace=namespace)
+
+            except KeyError:
+                pass  # record is None here
+
+        if record:
+            for key in data.keys():
+                record.data[key] = data[key]
+
+            record.name = data.get('crecord_name', record.name)
+
+        else:
+            cname = data.pop('crecord_name', 'noname')
+            record = Record(_id=_id, data=data, name=cname, _type=ctype)
+
+        try:
+            ws.db.put(record, namespace=namespace)
+
+            drecord = record.dump()
+            drecord.pop('id', None)
+            records.append(drecord)
+
+        except Exception as err:
+            ws.logger.error('Impossible to save record: {0}'.format(
+                err
+            ))
+
+    return records
+
+
+def delete_records(ws, namespace, ctype, _id, data):
+    if data:
+        if isinstance(data, list):
+            ids = []
+
+            for item in data:
+                if isinstance(item, basestring):
+                    ids.append(item)
+
+                elif isinstance(item, dict):
+                    item_id = item.get('_id', item.get('id', None))
+
+                    if item_id:
+                        ids.append(item_id)
+
+        elif isinstance(data, str):
+            ids = data
+
+        elif isinstance(data, dict):
+            ids = data.get('_id', data.get('id', None))
+
+    elif _id:
+        ids = [_id]
+
+    else:
+        return HTTPError(400, 'Missing ids in request')
+
+    try:
+        ws.db.remove(ids, namespace=namespace)
+
+    except Exception as err:
+        return HTTPError(500, 'Impossible to remove documents: {0}'.format(
+            err
+        ))
+
+    return ids
+
+
 def exports(ws):
     @route(ws.application.get, name='rest/indexes', response=lambda r, adapt: r)
     def indexes(collection):
@@ -222,6 +303,21 @@ def exports(ws):
         return get_records(ws, namespace, ctype=ctype, _id=_id, **params)
 
     @route(ws.application.put, raw_body=True, adapt=False)
+    def rest(namespace, ctype, _id=None, body=None):
+        if not body:
+            body = '[]'
+
+        else:  # body is a File-like object
+            body = body.readline() or '[]'
+
+        try:
+            items = ensure_iterable(json.loads(body))
+
+        except ValueError as err:
+            return HTTPError(500, 'Impossible to parse body: {0}'.format(err))
+
+        return save_records(ws, namespace, ctype, _id, items)
+
     @route(ws.application.post, raw_body=True, adapt=False)
     def rest(namespace, ctype, _id=None, body=None):
         if not body:
@@ -236,37 +332,7 @@ def exports(ws):
         except ValueError as err:
             return HTTPError(500, 'Impossible to parse body: {0}'.format(err))
 
-        for data in items:
-            m_id = data.pop('_id', None)
-            mid = data.pop('id', None)
-            _id = m_id or mid
-
-            record = None
-
-            # Try to fetch existing record for update
-            if _id:
-                try:
-                    record = ws.db.get(_id, namespace=namespace)
-
-                except KeyError:
-                    pass  # record is None here
-
-            if record:
-                for key in data.keys():
-                    record.data[key] = data[key]
-
-                record.name = data.get('crecord_name', record.name)
-
-            else:
-                record = Record(_id=_id, data=data, _type=ctype)
-
-            try:
-                ws.db.put(record, namespace=namespace)
-
-            except Exception as err:
-                return HTTPError(500, 'Impossible to save record: {0}'.format(
-                    err
-                ))
+        return save_records(ws, namespace, ctype, _id, items)
 
     @route(ws.application.delete, raw_body=True, adapt=False)
     def rest(namespace, ctype, _id=None, body=None):
@@ -282,36 +348,4 @@ def exports(ws):
         except ValueError as err:
             data = None
 
-        if data:
-            if isinstance(data, list):
-                ids = []
-
-                for item in data:
-                    if isinstance(item, basestring):
-                        ids.append(item)
-
-                    elif isinstance(item, dict):
-                        item_id = item.get('_id', item.get('id', None))
-
-                        if item_id:
-                            ids.append(item_id)
-
-            elif isinstance(data, str):
-                ids = data
-
-            elif isinstance(data, dict):
-                ids = data.get('_id', data.get('id', None))
-
-        elif _id:
-            ids = [_id]
-
-        else:
-            return HTTPError(400, 'Missing ids in request')
-
-        try:
-            ws.db.remove(ids, namespace=namespace)
-
-        except Exception as err:
-            return HTTPError(500, 'Impossible to remove documents: {0}'.format(
-                err
-            ))
+        return delete_records(ws, namespace, ctype, _id, data)
