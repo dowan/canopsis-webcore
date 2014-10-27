@@ -127,16 +127,6 @@ def save_user(ws, record):
 def exports(ws):
     rights = get_manager()
 
-    rights_actions = {
-        'delete': {
-            'profile': rights.delete_profile,
-            'group': rights.delete_group,
-            'user': rights.delete_user,
-            'role': rights.delete_role,
-            'action': rights.delete
-        }
-    }
-
     @route(ws.application.get)
     def rights(uid):
         urights = rights.get_user_rights(uid)
@@ -181,8 +171,5 @@ def exports(ws):
 
     @route(ws.application.delete, name='account/delete')
     def delete_entity(etype, _id):
-        if not etype in rights_actions['delete']:
+        if not rights.delete(etype, _id):
             raise ws.Error('Unknown entity type: {0}'.format(etype))
-
-        else:
-            rights_actions['delete'][etype](_id)
