@@ -168,7 +168,7 @@ def save_records(ws, namespace, ctype, _id, items):
     for data in items:
         m_id = data.pop('_id', None)
         mid = data.pop('id', None)
-        _id = m_id or mid
+        _id = m_id or mid or _id
 
         record = None
 
@@ -191,10 +191,11 @@ def save_records(ws, namespace, ctype, _id, items):
             record = Record(_id=_id, data=data, name=cname, _type=ctype)
 
         try:
-            ws.db.put(record, namespace=namespace)
+            _id = ws.db.put(record, namespace=namespace)
 
             drecord = record.dump()
-            drecord.pop('id', None)
+            drecord['_id'] = str(_id)
+            drecord['id'] = drecord['_id']
             records.append(drecord)
 
         except Exception as err:
@@ -244,14 +245,14 @@ def delete_records(ws, namespace, ctype, _id, data):
 
 
 def exports(ws):
-    @route(ws.application.get, name='rest/indexes', response=lambda r, adapt: r)
+    @route(ws.application.get, name='rest/indexes', response=lambda r, a: r)
     def indexes(collection):
         storage = ws.db.get_backend(collection)
         indexes = storage.index_information()
 
         return {'collection': collection, 'indexes': indexes}
 
-    @route(ws.application.get, name='rest/media', response=lambda r, adapt: r)
+    @route(ws.application.get, name='rest/media', response=lambda r, a: r)
     def media(namespace, _id):
         try:
             raw = ws.db.get(
@@ -345,7 +346,7 @@ def exports(ws):
         try:
             data = json.loads(body)
 
-        except ValueError as err:
+        except ValueError:
             data = None
 
         return delete_records(ws, namespace, ctype, _id, data)
