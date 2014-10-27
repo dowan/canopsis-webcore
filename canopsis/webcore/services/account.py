@@ -98,15 +98,15 @@ def update_profile(_id=None):
 
     p_id = item.get('_id')
 
-    p_comp = item.get('profile_groups')
+    p_group = item.get('profile_groups')
     p_rights = item.get('profile_rights')
 
     profile = right_module.get_profile(p_id)
 
-    if not profile and not right_module.create_profile(p_id, p_comp):
+    if not profile and not right_module.create_profile(p_id, p_group):
         return ROUTE_FAIL
 
-    right_module.update_comp(p_id, 'profile', p_comp, profile)
+    right_module.update_group(p_id, 'profile', p_group, profile)
     right_module.update_rights(p_id, 'profile', p_rights, profile)
 
     return ROUTE_SUCCESS
@@ -140,7 +140,7 @@ def update_role(_id = None):
         item = items[0]
 
     r_id = item.get('_id')
-    r_comp = item.get('groups')
+    r_group = item.get('groups')
     r_rights = item.get('rights')
     r_profile = item.get('profile')
 
@@ -149,8 +149,8 @@ def update_role(_id = None):
     if not role and not right_module.create_role(r_id, r_profile):
         return ROUTE_FAIL
 
-    right_module.update_profile(r_id, 'role', r_comp, role)
-    right_module.update_comp(r_id, 'role', r_comp, role)
+    right_module.update_profile(r_id, 'role', r_group, role)
+    right_module.update_group(r_id, 'role', r_group, role)
     right_module.update_rights(r_id, 'role', r_rights, role)
 
     return ROUTE_SUCCESS
@@ -177,7 +177,7 @@ def update_user(_id=None):
     u_role = item.get('role')
     u_contact = item.get('contact')
     u_rights = item.get('rights')
-    u_comp = item.get('groups')
+    u_group = item.get('groups')
     u_enable = item.get('enable')
 
     user = right_module.get_user(u_id)
@@ -185,10 +185,10 @@ def update_user(_id=None):
     if not user and not right_module.create_user(u_id, u_role,
                                                  contact=u_contact,
                                                  rights=u_rights,
-                                                 groups=u_comp):
+                                                 groups=u_group):
         return ROUTE_FAIL
 
-    right_module.update_comp(u_id, 'user', u_comp, user)
+    right_module.update_group(u_id, 'user', u_group, user)
     right_module.update_rights(u_id, 'user', u_rights, user)
     right_module.update_fields(
         u_id, 'user', {'contact': u_contact, 'enable': u_enable}
