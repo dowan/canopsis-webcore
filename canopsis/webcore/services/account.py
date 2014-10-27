@@ -56,17 +56,6 @@ ROUTE_SUCCESS = {
     'data': []
 }
 
-rights_module_actions = {
-    'delete': {
-        'profile': right_module.delete_profile,
-        'group': right_module.delete_group,
-        'user': right_module.delete_user,
-        'role': right_module.delete_role,
-        'action': right_module.delete
-    }
-}
-
-
 @put('/account/group/:_id')
 @post('/account/group/:_id')  # the id param is only here to make a quick hack
 def create_group(_id=None):
@@ -128,8 +117,7 @@ def delete_entity(e_type, _id = None):
 
     return {
         'total': 1,
-        'success': (False if not e_type in rights_module_actions['delete']
-                    else rights_module_actions['delete'][e_type](_id)),
+        'success': right_module.delete(e_type, _id),
         'data': []
         }
 
