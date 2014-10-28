@@ -42,8 +42,6 @@ define([
             console.group('timegraph init');
 
             // fill chart options
-            set(this, 'controller.timenav', get(config, 'timenav'));
-
             chartOptions = get(this, 'controller.chartOptions') || {};
             $.extend(chartOptions, {
                 zoom: {
@@ -89,6 +87,54 @@ define([
             console.log('Configure chart:', chartOptions);
             set(this, 'controller.chartOptions', chartOptions);
 
+            var timenav = get(config, 'timenav');
+            set(this, 'controller.timenav', timenav);
+
+            if(timenav) {
+                chartOptions = get(this, 'controller.timenavOptions') || {};
+                $.extend(chartOptions, {
+                    zoom: {
+                        interactive: false
+                    },
+
+                    selection: {
+                        mode: 'x'
+                    },
+
+                    crosshair: {
+                        mode: 'x'
+                    },
+
+                    grid: {
+                        hoverable: true,
+                        clickable: true
+                    },
+
+                    xaxes: [{
+                        show: false,
+                        reserveSpace: true,
+                        min: now - get(this, 'controller.time_window_offset') - get(this, 'controller.timenav_window'),
+                        max: now - get(this, 'controller.time_window_offset'),
+                        position: 'bottom',
+                        mode: 'time',
+                        timezone: 'browser'
+                    }],
+
+                    yaxes: [{
+                        show: false,
+                        reserveSpace: true
+                    }],
+
+                    legend: {
+                        show: false
+                    },
+                    tooltip: false
+                });
+
+                console.log('Configure time navigation:', chartOptions);
+                set(this, 'controller.timenavOptions', chartOptions);
+            }
+
             console.groupEnd();
 
             this._super.apply(this, arguments);
@@ -116,6 +162,15 @@ define([
             return get(this, 'config.time_window_offset') * 1000;
         }.property('config.time_window_offset'),
 
+        timenav_window: function() {
+            if(get(this, 'timenav')) {
+                return get(this, 'config.timenav_window') * 1000;
+            }
+            else {
+                return get(this, 'time_window');
+            }
+        }.property('config.timenav_window'),
+
         init: function() {
             this._super();
         },
@@ -131,7 +186,7 @@ define([
 
             if(from === null) {
                 replace = true;
-                from = to - get(this, 'time_window') - get(this, 'time_window_offset');
+                from = to - get(this, 'timenav_window') - get(this, 'time_window_offset');
             }
 
             console.log('refresh:', from, to, replace);
