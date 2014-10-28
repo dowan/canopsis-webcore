@@ -31,17 +31,39 @@ define([
     var component = Ember.Component.extend({
         init: function () {
             this._super.apply(this, arguments);
+
             console.log('formattedDuration CP');
-            var durationType = get(this, 'selectedDurationType');
+            var durationType = 'second';
+
+            set(this, 'content', 3650 * 2);
 
             var unformattedDuration = parseInt(get(this, 'content'), 10);
+            var convert = get(this, 'convertDuration');
+
+            for (var durationUnit in convert) {
+
+                console.log('testing duration unit', durationUnit);
+                var unitValue = convert[durationUnit];
+                if (unitValue > unformattedDuration) {
+                    break;
+                } else {
+                    durationType = durationUnit;
+                }
+            }
+
+            console.log('selected unit value is', durationType);
+            set(this, 'selectedDurationType', durationType);
+
             var conversionOperand = get(this, 'convertDuration').get(durationType);
-            var res = unformattedDuration / conversionOperand;
+            var res = parseInt(unformattedDuration / conversionOperand);
             if (isNone(res) || isNaN(res)) {
                 res = 0;
             }
             set(this, 'shownDuration', res);
             console.debug('shown duration initialized to ', this.get('shownDuration') ,res);
+
+            //initilizes content with computed value
+            this.shownDurationChanged();
         },
 
         shownDurationChanged: function () {
@@ -50,7 +72,13 @@ define([
             var conversionOperand = get(this, 'convertDuration').get(durationType);
             var value = get(this, 'shownDuration');
 
-            set(this, 'content', value * conversionOperand);
+            var computedValue = parseInt(value * conversionOperand);
+            if (isNaN(computedValue)) {
+                computedValue = 0;
+            }
+            console.log('computed value in content is', computedValue);
+
+            set(this, 'content', computedValue);
         }.observes('shownDuration'),
 
         selectedDurationTypeChanged: function () {
