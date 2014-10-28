@@ -24,16 +24,14 @@ define([
     'app/application',
     'app/lib/factories/widget',
     'canopsis/uibase/components/flotchart/component',
-    'webcore-libs/flot-plugins/custom/jquery.flot.valuelabel',
     'app/controller/serie'
 ], function($, Ember, DS, Application, WidgetFactory) {
+
     var get = Ember.get,
         set = Ember.set;
 
-
-
-
     var widgetOptions = {};
+
     var FlotChartViewMixin = Ember.Mixin.create({
         didInsertElement: function() {
             //get the timestamp, and not the date object
@@ -68,8 +66,8 @@ define([
                 xaxes: [{
                     show: true,
                     reserveSpace: true,
-                    min: now - get(config, 'time_window_offset') - get(config, 'time_window'),
-                    max: now - get(config, 'time_window_offset'),
+                    min: now - get(this, 'controller.time_window_offset') - get(this, 'controller.time_window'),
+                    max: now - get(this, 'controller.time_window_offset'),
                     position: 'bottom',
                     mode: 'time',
                     timezone: 'browser'
@@ -84,10 +82,6 @@ define([
                     hideable: true,
                     legend: get(config, 'legend'),
                     container: this.$('.flotchart-legend-container'),
-                    labelFormatter: function(label, series){
-                        var id = series.chart.id;
-                        return '<span style="text-decoration: underline;" onClick="enableSerie(\''+ label +'\', \''+ id +'\' , this); return false;">'+label+'</span>';
-                    }
                 },
                 tooltip: get(config, 'tooltip')
             });
@@ -114,6 +108,14 @@ define([
 
         timenav: false,
 
+        time_window: function() {
+            return get(this, 'config.time_window') * 1000;
+        }.property('config.time_window'),
+
+        time_window_offset: function() {
+            return get(this, 'config.time_window_offset') * 1000;
+        }.property('config.time_window_offset'),
+
         init: function() {
             this._super();
         },
@@ -125,11 +127,11 @@ define([
 
             var replace = false;
             var from = get(this, 'lastRefresh');
-            var to = +new Date() - get(this, 'config.time_window_offset');
+            var to = +new Date() - get(this, 'time_window_offset');
 
             if(from === null) {
                 replace = true;
-                from = to - get(this, 'config.time_window') - get(this, 'config.time_window_offset');
+                from = to - get(this, 'time_window') - get(this, 'time_window_offset');
             }
 
             console.log('refresh:', from, to, replace);
@@ -218,10 +220,10 @@ define([
 
         genFlotSerie: function(config, from, to, replace) {
             console.group('Generating FlotChart serie:', config);
+
             var me = this;
+
             var flotSerie = {
-                template_tooltip: "<strong> #label </strong><br> : <strong> #y </strong>(USD)",
-                chart: this.get("chart"),
                 label: get(config, 'serie.crecord_name'),
                 color: get(config, 'style.color'),
                 lines: {
@@ -234,14 +236,6 @@ define([
                     show: get(config, 'curve.bars'),
                     used: get(config, 'curve.bars'),
                     barWidth: get(config, 'curve.bar_width')
-                },
-                valueLabels: {
-                    show: get(config, 'curve.valueLabels'),
-                    align: 'center',
-                    showAsHtml: true,
-                    labelFormatter: function (v) {
-                        return v;
-                    }
                 },
                 points: {
                     show: get(config, 'curve.points'),

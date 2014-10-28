@@ -51,7 +51,9 @@ require.config({
         'flotchart-stack': 'webcore-libs/flot/jquery.flot.stack',
         'flotchart-symbol': 'webcore-libs/flot/jquery.flot.symbol',
         'flotchart-threshold': 'webcore-libs/flot/jquery.flot.threshold',
-        'flotchart-time': 'webcore-libs/flot/jquery.flot.time'
+        'flotchart-time': 'webcore-libs/flot/jquery.flot.time',
+        'flotchart-valuelabel': 'webcore-libs/flot-plugins/custom/jquery.flot.valuelabel',
+        'flotchart-tooltip': 'webcore-libs/flot-plugins/custom/jquery.flot.tooltip'
     },
 
     shim: {
@@ -168,6 +170,14 @@ require.config({
         },
 
         'flotchart-time': {
+            deps: ['jquery', 'flotchart']
+        },
+
+        'flotchart-valuelabel': {
+            deps: ['jquery', 'flotchart']
+        },
+
+        'flotchart-tooltip': {
             deps: ['jquery', 'flotchart']
         }
     }

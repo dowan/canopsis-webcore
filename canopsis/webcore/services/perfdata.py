@@ -27,16 +27,13 @@ from canopsis.timeserie import TimeSerie
 def exports(ws):
     manager = PerfData()
 
-    @route(ws.application.post, payload=['metric_id', 'timewindow', 'period'])
-    def perfdata_count(metric_id, timewindow=None, period=None):
+    @route(ws.application.post, payload=['metric_id', 'timewindow'])
+    def perfdata_count(metric_id, timewindow=None):
         if timewindow is not None:
             timewindow = TimeWindow(**timewindow)
 
-        if period is not None:
-            period = Period(**period)
-
         result = manager.count(
-            metric_id=metric_id, timewindow=timewindow, period=period
+            metric_id=metric_id, timewindow=timewindow
         )
 
         return result
@@ -55,11 +52,12 @@ def exports(ws):
         if timewindow is not None:
             timewindow = TimeWindow(**timewindow)
 
-        if timeserie is not None:
-            timeserie = TimeSerie(**timeserie)
-
         if period is not None:
             period = Period(**period)
+
+        if timeserie is not None:
+            timeserie = TimeSerie(**timeserie)
+            timeserie.period = period
 
         if not isinstance(metric_id, list):
             metrics = [metric_id]
@@ -71,7 +69,7 @@ def exports(ws):
 
         for metric_id in metrics:
             ret = manager.get(
-                metric_id=metric_id, period=period, with_meta=with_meta,
+                metric_id=metric_id, with_meta=with_meta,
                 timewindow=timewindow, limit=limit, skip=skip
             )
 
@@ -108,14 +106,11 @@ def exports(ws):
         return result
 
     @route(ws.application.put, payload=[
-        'metric_id', 'points', 'meta', 'period'
+        'metric_id', 'points', 'meta'
     ])
-    def perfdata(metric_id, points, meta=None, period=None):
-        if period is not None:
-            period = Period(**period)
-
+    def perfdata(metric_id, points, meta=None):
         manager.put(
-            metric_id=metric_id, points=points, meta=meta, period=period
+            metric_id=metric_id, points=points, meta=meta
         )
 
         result = points
@@ -123,24 +118,20 @@ def exports(ws):
         return result
 
     @route(ws.application.delete, payload=[
-        'metric_id', 'period', 'with_meta', 'timewindow'
+        'metric_id', 'with_meta', 'timewindow'
     ])
-    def perfdata(metric_id, period=None, with_meta=False, timewindow=None):
+    def perfdata(metric_id, with_meta=False, timewindow=None):
         if timewindow is not None:
             timewindow = TimeWindow(**timewindow)
 
-        if period is not None:
-            period = Period(**period)
-
         manager.remove(
-            metric_id=metric_id, period=period, with_meta=with_meta,
+            metric_id=metric_id, with_meta=with_meta,
             timewindow=timewindow
         )
 
         result = None
 
         return result
-
 
     @route(ws.application.put, payload=['metric_id', 'meta', 'timestamp'])
     def perfdata_meta(metric_id, meta, timestamp=None):
