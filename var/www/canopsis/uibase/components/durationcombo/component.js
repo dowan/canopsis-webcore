@@ -35,8 +35,6 @@ define([
             console.log('formattedDuration CP');
             var durationType = 'second';
 
-            set(this, 'content', 3650 * 2);
-
             var unformattedDuration = parseInt(get(this, 'content'), 10);
             var convert = get(this, 'convertDuration');
 
@@ -56,6 +54,14 @@ define([
 
             var conversionOperand = get(this, 'convertDuration').get(durationType);
             var res = parseInt(unformattedDuration / conversionOperand);
+
+            console.log(
+                'conversion operand is', conversionOperand, 
+                'unformattedDuration', unformattedDuration, 
+                'conversionOperand', conversionOperand, 
+                'res', res
+            );
+
             if (isNone(res) || isNaN(res)) {
                 res = 0;
             }
