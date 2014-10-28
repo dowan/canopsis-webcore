@@ -97,12 +97,21 @@
                                                 {{#ifUserCanDisplayView engineview.value}}
                                                     <li>
                                                         <a {{action 'showView' engineview.value}}>
-                                                            <i class="fa fa-angle-double-right"></i> 
+                                                            <i class="fa fa-angle-double-right"></i>
                                                             {{engineview.label}}
                                                         </a>
                                                     </li>
                                                 {{/ifUserCanDisplayView}}
                                             {{/each}}
+                                            {{#ifUserCanDisplayView engineview.value}}
+                                                <hr/>
+                                                <li>
+                                                    <a {{action 'editEventSettings'}}>
+                                                        <i class="fa fa-angle-double-right"></i>
+                                                        {{tr 'Events settings'}}
+                                                    </a>
+                                                </li>
+                                            {{/ifUserCanDisplayView}}
                                         </ul>
                                     </li>
                                 {{/if}}
