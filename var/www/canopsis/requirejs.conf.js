@@ -230,7 +230,9 @@ define(['text!canopsis/enabled.json', 'app/lib/wrappers/console'], function(enab
     }
 
     require(deps, function() {
-        require(['app/init']);
+        require(['app/init'], function() {
+            getCanopsis().Application.advanceReadiness();
+        });
     });
 });
 

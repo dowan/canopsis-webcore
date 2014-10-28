@@ -29,8 +29,8 @@ var widgets = [
     { name:'uimaintabcollection', url:'canopsis/uibase/widgets/uimaintabcollection/controller', template:'canopsis/uibase/widgets/uimaintabcollection/template.html' },
     { name:'uimaindropdown', url:'canopsis/uibase/widgets/uimaindropdown/controller', template:'canopsis/uibase/widgets/uimaindropdown/template.html' },
     //{ name:'multicrecordlist', url:'canopsis/uibase/widgets/multicrecordlist/controller', template:'canopsis/uibase/widgets/multicrecordlist/template.html' , TEMPLATE:'list'},
-    { name:'jobmanager', url:'canopsis/uibase/widgets/jobmanager/controller', template:'canopsis/uibase/widgets/jobmanager/template.html', TEMPLATE: 'list' },
-    { name:'euewi', url:'canopsis/uibase/widgets/euewi/controller', template:'canopsis/uibase/widgets/euewi/template.html', TEMPLATE: 'list' },
+    { name:'jobmanager', url:'canopsis/uibase/widgets/jobmanager/controller', template:'canopsis/uibase/widgets/list/template.html', TEMPLATE: 'list' },
+    { name:'euewi', url:'canopsis/uibase/widgets/euewi/controller', template:'canopsis/uibase/widgets/list/template.html', TEMPLATE: 'list' },
     { name:'timegraph', url:'canopsis/uibase/widgets/timegraph/controller', template:'canopsis/uibase/widgets/timegraph/template.html'},
     { name:'progressbar', url:'canopsis/uibase/widgets/progressbar/controller', template:'canopsis/uibase/widgets/progressbar/template.html'},
     { name:'graph', url:'canopsis/uibase/widgets/graph/controller', template:'canopsis/uibase/widgets/graph/template.html'}

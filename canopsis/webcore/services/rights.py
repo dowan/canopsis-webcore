@@ -51,15 +51,15 @@ def save_group(ws, group):
 
 def save_profile(ws, profile):
     pid = profile['_id']
-    pcomp = profile['profile_groups']
+    pgroup = profile['profile_groups']
     prights = profile['profile_rights']
 
     profile = rights.get_profile(pid)
 
-    if not profile and not rights.create_profile(pid, pcomp):
+    if not profile and not rights.create_profile(pid, pgroup):
         raise ws.Error('Impossible to create profile')
 
-    rights.update_comp(pid, 'profile', pcomp, profile)
+    rights.update_group(pid, 'profile', pgroup, profile)
     rights.update_rights(pid, 'profile', prights, profile)
 
     return profile
@@ -67,7 +67,7 @@ def save_profile(ws, profile):
 
 def save_role(ws, role):
     rid = role['_id']
-    rcomp = role['groups']
+    rgroup = role['groups']
     rrights = role['rights']
     rprofile = role['profile']
 
@@ -76,8 +76,8 @@ def save_role(ws, role):
     if not role and not rights.create_role(rid, rprofile):
         raise ws.Error('Impossible to create role')
 
-    rights.update_profile(rid, 'role', rcomp, role)
-    rights.update_comp(rid, 'role', rcomp, role)
+    rights.update_profile(rid, 'role', rgroup, role)
+    rights.update_group(rid, 'role', rgroup, role)
     rights.update_rights(rid, 'role', rrights, role)
 
     return role
@@ -88,7 +88,7 @@ def save_user(ws, record):
     urole = record.pop('role')
     ucontact = record.pop('contact', None)
     urights = record.pop('rights')
-    ucomp = record.pop('groups', None)
+    ugroup = record.pop('groups', None)
 
     if ucontact is None:
         ucontact = {
@@ -106,14 +106,14 @@ def save_user(ws, record):
             uid, urole,
             contact=ucontact,
             rights=urights,
-            groups=ucomp
+            groups=ugroup
         )
 
         if not user:
             raise ws.Error('Impossible to create user')
 
-    if ucomp is not None:
-        rights.update_comp(uid, 'user', ucomp, user)
+    if ugroup is not None:
+        rights.update_group(uid, 'user', ugroup, user)
 
     rights.update_rights(uid, 'user', urights, user)
     rights.update_fields(uid, 'user', record)
