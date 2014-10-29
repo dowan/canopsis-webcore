@@ -36,10 +36,18 @@ define([
             var durationType = 'second';
 
             var unformattedDuration = parseInt(get(this, 'content'), 10);
+
+            if (isNaN(unformattedDuration)) {
+                unformattedDuration = 0;
+            }
+
             var convert = get(this, 'convertDuration');
+            var durationUnits = get(this, 'durationType');
+            var durationUnitsLen = durationUnits.length;
 
-            for (var durationUnit in convert) {
+            for (var i=0; i<durationUnitsLen; i++) {
 
+                var durationUnit = durationUnits[i];
                 console.log('testing duration unit', durationUnit);
                 var unitValue = convert[durationUnit];
                 if (unitValue > unformattedDuration) {
