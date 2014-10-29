@@ -18,11 +18,12 @@
 */
 
 define([
-    'ember',
-    'app/application'
-], function(Ember, Application) {
+    'ember'
+], function(Ember) {
+
     var get = Ember.get,
         set = Ember.set;
+
 
     var controller = Ember.Controller.extend({
         needs: ['login'],
@@ -60,7 +61,8 @@ define([
         }
     });
 
-    Application.JournalController = controller;
+
+    loader.register('controller:journal', controller);
 
     return controller;
 });

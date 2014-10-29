@@ -20,10 +20,9 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/business/cfilter2clause',
     'app/lib/business/cfilter2condition',
-], function(Ember, Application, Clause, Condition) {
+], function(Ember, Clause, Condition) {
 
     var set = Ember.set,
         get = Ember.get;
@@ -168,7 +167,12 @@ define([
 
     });
 
-    Application.ComponentCfilter2editorComponent = component;
+    Ember.Application.initializer({
+        name:"component-cfilter2editor",
+        initialize: function(container, application) {
+            application.register('component:component-cfilter2editor', component);
+        }
+    });
 
     return component;
 });

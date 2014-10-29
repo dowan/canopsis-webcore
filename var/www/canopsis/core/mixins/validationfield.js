@@ -19,14 +19,14 @@
 define([
     'jquery',
     'ember',
-    'app/application',
     'app/lib/formsregistry',
     'app/lib/factories/mixin'
-], function($, Ember, Application, formsregistry, Mixin) {
+], function($, Ember, formsregistry, Mixin) {
 
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone;
+
 
     /**
      * Use Component-> validators -> validate (Ember.validators["validate"]) for validation
@@ -103,6 +103,8 @@ define([
         }
     });
 
+
+    loader.register('mixin:validation-field', mixin);
 
     return mixin;
 });

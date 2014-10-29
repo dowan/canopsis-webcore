@@ -74,7 +74,13 @@ define([
         }
     });
 
-    Application.ComponentSerieitemeditorComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-serieitemeditor",
+        initialize: function(container, application) {
+            application.register('component:component-serieitemeditor', component);
+        }
+    });
 
     return component;
 });

@@ -19,10 +19,9 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/factories/form',
     'app/lib/loaders/schemas'
-], function(Ember, Application, FormFactory) {
+], function(Ember, FormFactory) {
 
     var form = FormFactory('arrayitemform', {
         needs: ['journal'],

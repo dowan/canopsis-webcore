@@ -19,9 +19,8 @@
 
 
 define([
-    'ember',
-    'app/application'
-], function(Ember, Application) {
+    'ember'
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -92,7 +91,13 @@ define([
 
     });
 
-    Application.ComponentActionfilterComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-actionfilter",
+        initialize: function(container, application) {
+            application.register('component:component-actionfilter', component);
+        }
+    });
 
     return component;
 });

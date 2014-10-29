@@ -19,8 +19,7 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -77,7 +76,13 @@ define([
         }.property('editor-type'),
     });
 
-    Application.ComponentWrapperComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-wrapper",
+        initialize: function(container, application) {
+            application.register('component:component-wrapper', component);
+        }
+    });
 
     return component;
 });

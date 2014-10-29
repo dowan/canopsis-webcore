@@ -20,10 +20,9 @@
 
 define([
     'ember',
-    'app/application',
-    'utils',
+    'app/lib/utils/hash',
     'daterangepicker'
-], function(Ember, Application, utils) {
+], function(Ember, hashUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -33,7 +32,7 @@ define([
 
         init: function () {
             this._super.apply(this, arguments);
-            set(this, 'id', utils.hash.generate_GUID());
+            set(this, 'id', hashUtils.generate_GUID());
         },
 
         didInsertElement: function (){
@@ -104,7 +103,13 @@ define([
         }
     });
 
-    Application.ComponentDateintervalComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-dateinterval",
+        initialize: function(container, application) {
+            application.register('component:component-dateinterval', component);
+        }
+    });
 
     return component;
 });

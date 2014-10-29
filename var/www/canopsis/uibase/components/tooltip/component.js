@@ -19,9 +19,8 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/wrappers/bootstrap'
-], function(Ember, Application) {
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -73,7 +72,12 @@ define([
         }
     });
 
-    Application.ComponentTooltipComponent = component;
+    Ember.Application.initializer({
+        name:"component-tooltip",
+        initialize: function(container, application) {
+            application.register('component:component-tooltip', component);
+        }
+    });
 
     return component;
 });

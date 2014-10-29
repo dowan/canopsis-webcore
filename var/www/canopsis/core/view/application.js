@@ -20,10 +20,9 @@
 define([
     'jquery',
     'ember',
-    'app/application',
     'app/controller/application',
     'app/lib/wrappers/adminLTE'
-], function($, Ember, Application, ApplicationController, adminLTE) {
+], function($, Ember, ApplicationController, adminLTE) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -157,7 +156,8 @@ define([
         }
     });
 
-    Application.ApplicationView = view;
+
+    loader.register('view:application', view);
 
     return view;
 });

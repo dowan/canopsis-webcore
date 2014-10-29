@@ -20,17 +20,16 @@
 define([
     'jquery',
     'ember',
-    'app/application',
     'app/mixins/arraymixin',
     'app/lib/utils/forms',
     'app/mixins/validationfield'
-], function($, Ember, Application, formsUtils, validationfield) {
+], function($, Ember, formsUtils, ValidationFieldMixin) {
 
     var get = Ember.get,
         set = Ember.set;
 
 
-    var component = Ember.Component.extend(Application.ValidationFieldMixin, {
+    var component = Ember.Component.extend(ValidationFieldMixin, {
         valueRefPath: "content.value",
         valuePath: "value",
 
@@ -237,7 +236,13 @@ define([
         }
     });
 
-    Application.ComponentArrayeditorComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-arrayeditor",
+        initialize: function(container, application) {
+            application.register('component:component-arrayeditor', component);
+        }
+    });
 
     return component;
 });

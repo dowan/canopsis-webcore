@@ -19,10 +19,9 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/formsregistry',
     'app/lib/utils/forms'
-], function(Ember, Application, formsregistry, formsUtils) {
+], function(Ember, formsregistry, formsUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -152,7 +151,7 @@ define([
 
     Ember.Widgets.MultiSelectOptionViewMY = Ember.Widgets.MultiSelectOptionView.extend({
           templateName: 'multi_select_itemMY',
-    }),
+    });
 
     Ember.TEMPLATES.multi_select_itemMY = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
         this.compilerInfo = [4,'>= 1.0.0'];
@@ -174,7 +173,12 @@ define([
         return buffer;
     });
 
-    Application.ComponentMultiselectComponent = component;
+    Ember.Application.initializer({
+        name:"component-multiselect",
+        initialize: function(container, application) {
+            application.register('component:component-multiselect', component);
+        }
+    });
 
     return component;
 });

@@ -24,7 +24,8 @@ define([
 
     var adapter = EntityAdapter.extend({});
 
-    Application.MetricAdapter = adapter;
+
+    loader.register('adapter:metric', adapter);
 
     return adapter;
 });

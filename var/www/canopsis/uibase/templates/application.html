@@ -4,7 +4,7 @@
         <!-- header logo: style can be found in heaader.less -->
         {{#unless controller.fullscreenMode}}
             <header class="header">
-                <a href="index.html" class="logo">
+                <a {{action 'showView' controller.frontendConfig.defaultview}} class="logo">
                     <!-- Add the class icon to your logo image or logo icon to add the margining -->
                     <img src="/static/canopsis/media/canopsis.png" alt="canopsis"/>
                 </a>

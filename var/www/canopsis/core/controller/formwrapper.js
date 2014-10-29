@@ -19,12 +19,13 @@
 
 define([
     'ember',
-    'app/application',
     'canopsis/canopsisConfiguration',
     'app/lib/loaders/schemas',
     'app/view/formwrapper'
-], function(Ember, Application, canopsisConfiguration) {
+], function(Ember, canopsisConfiguration) {
+
     var get = Ember.get;
+
 
     var eventedController = Ember.Controller.extend(Ember.Evented);
 
@@ -41,7 +42,7 @@ define([
         }
     });
 
-    Application.FormwrapperController = controller;
+    loader.register('controller:formwrapper', controller);
 
     return controller;
 });

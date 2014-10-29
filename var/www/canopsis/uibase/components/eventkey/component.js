@@ -19,10 +19,9 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/utils/types'
 
-], function(Ember, Application, typesUtils) {
+], function(Ember, typesUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -66,7 +65,12 @@ define([
 
     });
 
-    Application.ComponentEventkeyComponent = component;
+    Ember.Application.initializer({
+        name:"component-eventkey",
+        initialize: function(container, application) {
+            application.register('component:component-eventkey', component);
+        }
+    });
 
     return component;
 });

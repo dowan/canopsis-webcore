@@ -19,9 +19,8 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/factories/mixin'
-], function(Ember, Application, Mixin) {
+], function(Ember, Mixin) {
 
     /**
       Implements history collection finder
@@ -45,6 +44,7 @@ define([
         }
     });
 
+    loader.register('mixin:history', mixin);
 
     return mixin;
 });

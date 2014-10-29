@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
-    'app/application'
-], function(Ember, Application) {
+    'ember'
+], function(Ember) {
 
     var view = Ember.View.extend({
         templateName: 'partialslot',
@@ -29,7 +28,8 @@ define([
         slot: Ember.required()
     });
 
-    Application.partialslotView = view;
+
+    loader.register('view:partialslot', view);
 
     return view;
 });

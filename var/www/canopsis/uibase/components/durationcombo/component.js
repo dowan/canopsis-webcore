@@ -19,9 +19,8 @@
 
 
 define([
-    'ember',
-    'app/application'
-], function(Ember, Application) {
+    'ember'
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -96,7 +95,13 @@ define([
         ]
     });
 
-    Application.ComponentDurationcomboComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-durationcombo",
+        initialize: function(container, application) {
+            application.register('component:component-durationcombo', component);
+        }
+    });
 
     return component;
 });

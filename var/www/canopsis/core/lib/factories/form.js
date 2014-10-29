@@ -18,11 +18,10 @@
 */
 
 define([
-    'app/application',
     'app/controller/form',
     "app/lib/formsregistry",
     'app/view/form'
-], function(Application, FormController, formsregistry, FormView) {
+], function(FormController, formsregistry, FormView) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -65,22 +64,25 @@ define([
 
         Ember.assert('formName must be a string', typeof formName === 'string');
 
-        var formControllerName = formName.camelize().capitalize() + "Controller";
-        var formViewName = formName.camelize().capitalize() + "View";
+        var formControllerName = formName.dasherize();
+        var formViewName = formName.dasherize();
         console.log("extendArguments", extendArguments);
         console.log("subclass", options.subclass);
 
-        Application[formViewName] = FormView.extend();
-        Application[formControllerName] = options.subclass.extend.apply(options.subclass, extendArguments);
+
+        var controllerClass = options.subclass.extend.apply(options.subclass, extendArguments);
+        loader.register('view:' + formViewName, FormView.extend());
+        loader.register('controller:' + formControllerName, controllerClass);
+
 
         formsregistry.all[formName] = {
-            EmberClass: Application[formControllerName]
+            EmberClass: controllerClass
         };
 
         console.groupEnd();
         console.tags.remove('factory');
 
-        return Application[formControllerName];
+        return controllerClass;
     }
 
     return Form;

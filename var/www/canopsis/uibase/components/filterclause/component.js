@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
-    'app/application'
-], function(Ember, Application) {
+    'ember'
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -152,7 +151,13 @@ define([
         }
     });
 
-    Application.ComponentFilterclauseComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-filterclause",
+        initialize: function(container, application) {
+            application.register('component:component-filterclause', component);
+        }
+    });
 
     return component;
 });

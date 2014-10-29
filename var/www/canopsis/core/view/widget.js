@@ -24,6 +24,7 @@ define([
     'app/lib/mixinsregistry',
     'app/controller/widget'
 ], function(Ember, Application, canopsisConfiguration, mixinsregistry, WidgetController) {
+
     var get = Ember.get,
         set = Ember.set;
 
@@ -204,7 +205,8 @@ define([
 
     });
 
-    Application.WidgetView = view;
+
+    loader.register('view:widget', view);
 
     return view;
 });

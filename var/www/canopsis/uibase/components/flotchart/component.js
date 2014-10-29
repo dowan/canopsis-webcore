@@ -19,11 +19,10 @@
 define([
     'jquery',
     'ember',
-    'app/application',
     'app/lib/utils/hash',
     'app/lib/wrappers/flotchart',
     'webcore-libs/flot-plugins/custom/jquery.flot.tooltip'
-], function($, Ember, Application, hashUtils) {
+], function($, Ember, hashUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -114,7 +113,12 @@ define([
         }
     });
 
-    Application.ComponentFlotchartComponent = component;
+    Ember.Application.initializer({
+        name:"component-flotchart",
+        initialize: function(container, application) {
+            application.register('component:component-flotchart', component);
+        }
+    });
 
     return component;
 });

@@ -19,10 +19,9 @@
 define([
     'jquery',
     'ember',
-    'app/application',
     'app/lib/formsregistry',
     'app/lib/factories/mixin'
-], function($, Ember, Application, formsregistry, Mixin) {
+], function($, Ember, formsregistry, Mixin) {
 
     var mixin = Mixin('foldablelistline', {
         actions: {
@@ -176,6 +175,8 @@ define([
         }.property("shown_columns")
     });
 
+
+    loader.register('mixin:foldablelistline', mixin);
 
     return mixin;
 });

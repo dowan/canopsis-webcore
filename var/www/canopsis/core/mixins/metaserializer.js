@@ -19,9 +19,8 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/factories/mixin'
-], function(Ember, Application, Mixin) {
+], function(Ember, Mixin) {
 
     /**
      * @mixin This mixin should be used with serializers
@@ -74,6 +73,8 @@ define([
 
     });
 
+
+    loader.register('mixin:meta-serializer', mixin);
 
     return mixin;
 });

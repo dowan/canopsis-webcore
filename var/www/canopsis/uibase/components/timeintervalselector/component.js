@@ -19,9 +19,8 @@
 
 
 define([
-    'ember',
-    'app/application'
-], function(Ember, Application) {
+    'ember'
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -113,7 +112,12 @@ define([
         }
     });
 
-    Application.ComponentTimeintervalselectorComponent = component;
+    Ember.Application.initializer({
+        name:"component-timeintervalselector",
+        initialize: function(container, application) {
+            application.register('component:component-timeintervalselector', component);
+        }
+    });
 
     return component;
 });

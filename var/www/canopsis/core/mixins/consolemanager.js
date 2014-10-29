@@ -19,11 +19,11 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/utils/forms',
     'app/lib/utils/data',
     'app/lib/factories/mixin'
-], function(Ember, Application, formUtils, dataUtils, Mixin) {
+], function(Ember, formUtils, dataUtils, Mixin) {
+
     var get = Ember.get,
         set = Ember.set;
 
@@ -61,6 +61,9 @@ define([
             return __("custom");
         }.property()
     });
+
+
+    loader.register('mixin:consolemanager', mixin);
 
     return mixin;
 });

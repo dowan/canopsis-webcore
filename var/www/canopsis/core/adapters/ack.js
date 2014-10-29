@@ -39,7 +39,8 @@ define([
         }
     });
 
-    Application.AckAdapter = adapter;
+
+    loader.register('adapter:ack', adapter);
 
     return adapter;
 });

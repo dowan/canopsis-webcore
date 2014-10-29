@@ -40,7 +40,8 @@ define([
         }
     });
 
-    Application.CrecordAdapter = adapter;
+
+    loader.register('adapter:crecord', adapter);
 
     return adapter;
 });

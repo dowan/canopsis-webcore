@@ -19,9 +19,8 @@
 
 define([
     'ember',
-    'jquery',
-    'app/application',
-], function(Ember, $, Application) {
+    'jquery'
+], function(Ember, $) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -96,7 +95,8 @@ define([
         }
     });
 
-    Application.ExpandablecellMixin = mixin;
+
+    loader.register('mixin:expandablecell', mixin);
 
     return mixin;
 });

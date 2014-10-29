@@ -19,19 +19,19 @@
 
 define([
     'ember-data',
-    'app/application',
     'app/serializers/application',
     'app/mixins/embeddedrecordserializer'
-], function(DS, Application, ApplicationSerializer, EmbeddedRecordSerializerMixin) {
+], function(DS, ApplicationSerializer, EmbeddedRecordSerializerMixin) {
 
     var serializerClass = ApplicationSerializer.extend(
         EmbeddedRecordSerializerMixin,
         {}
     );
 
-    Application.UserviewSerializer = serializerClass;
-    Application.WidgetwrapperSerializer = serializerClass.extend();
-    Application.WidgetSerializer = serializerClass.extend();
+
+    loader.register('serializer:userview', serializerClass);
+    loader.register('serializer:widgetwrapper', serializerClass.extend());
+    loader.register('serializer:widget', serializerClass.extend());
 
     return serializerClass;
 });

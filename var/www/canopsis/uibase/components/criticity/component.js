@@ -19,9 +19,8 @@
 
 
 define([
-    'ember',
-    'app/application',
-], function(Ember, Application) {
+    'ember'
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -76,7 +75,12 @@ define([
 
     });
 
-    Application.ComponentCriticityComponent = component;
+    Ember.Application.initializer({
+        name:"component-criticity",
+        initialize: function(container, application) {
+            application.register('component:component-criticity', component);
+        }
+    });
 
     return component;
 });

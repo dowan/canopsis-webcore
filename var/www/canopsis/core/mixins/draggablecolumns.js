@@ -19,10 +19,9 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/wrappers/dragtable',
     'app/lib/factories/mixin'
-], function(Ember, Application, dragtable, Mixin) {
+], function(Ember, dragtable, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -93,6 +92,8 @@ define([
         }
     });
 
+
+    loader.register('mixin:draggablecolumns', mixin);
 
     return mixin;
 });

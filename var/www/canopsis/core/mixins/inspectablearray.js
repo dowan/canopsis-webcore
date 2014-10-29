@@ -19,9 +19,8 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/factories/mixin'
-], function(Ember, Application, Mixin) {
+], function(Ember, Mixin) {
 
     var mixin = Mixin('InspectableArray', {
         attributesKeys: function() {
@@ -53,6 +52,8 @@ define([
         inspectedDataArray: function() { console.error("This must be defined on the base class"); }.property()
     });
 
+
+    loader.register('mixin:inspectable-array', mixin);
 
     return mixin;
 });

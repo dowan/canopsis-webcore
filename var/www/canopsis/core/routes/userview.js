@@ -19,7 +19,6 @@
 
 define([
     'ember',
-    'app/application',
     'app/routes/authenticated',
     'utils',
     'app/lib/utils/data',
@@ -31,7 +30,8 @@ define([
     'seeds/RoutesLoader',
     'app/serializers/userview',
     'app/adapters/userview'
-], function(Ember, Application, AuthenticatedRoute, utils, dataUtils, formUtils, widgetSelectorsUtils, actionsUtils, testUtils) {
+], function(Ember, AuthenticatedRoute, utils, dataUtils, formUtils, widgetSelectorsUtils, actionsUtils, testUtils) {
+
     var set = Ember.set,
         get = Ember.get,
         isNone = Ember.isNone;
@@ -180,13 +180,15 @@ define([
             set(this.controllerFor('application'), 'currentViewId', get(model, 'id'));
 
             set(this.controllerFor('application'), 'isLoading', false);
+
             if(controller.trigger) {
                 controller.trigger('refreshView');
             }
         }
     });
 
-    Application.UserviewRoute = route;
+
+    loader.register('route:userview', route);
 
     return route;
 });

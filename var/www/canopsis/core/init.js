@@ -37,10 +37,7 @@ define([
     'timepicker',
     'app/lib/wrappers/console',
     'app/lib/wrappers/ionicons',
-    'app/lib/loaders/editors',
-    'app/lib/loaders/renderers',
     'app/lib/loaders/attributepresets',
-    'app/lib/loaders/widgets',
     'app/lib/loaders/forms',
     'app/lib/loaders/validators',
     'app/lib/loaders/mixins',
@@ -59,4 +56,6 @@ define([
     Application.connector = [ { name : "nagios" }, { name : "shinken" } , { name : "schneider" } , { name : "collectd" }];
 
     Application.manifest = routes;
+
+    return Application;
 });

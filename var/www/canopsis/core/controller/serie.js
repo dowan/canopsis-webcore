@@ -21,11 +21,10 @@ define([
     'jquery',
     'ember',
     'ember-data',
-    'app/application',
     'math',
     'app/lib/utils/hash',
     'app/controller/perfdata'
-], function($, Ember, DS, Application, math, hash) {
+], function($, Ember, DS, math, hash) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -147,7 +146,7 @@ define([
         }
     });
 
-    Application.SerieController = controller;
+    loader.register('controller:serie', controller);
 
     return controller;
 });

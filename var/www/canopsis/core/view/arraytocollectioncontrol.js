@@ -19,10 +19,9 @@
 
 define([
     'ember',
-    'app/application',
     'app/mixins/arraymixin',
     'app/view/crecords'
-], function(Ember, Application, ArrayMixin) {
+], function(Ember, ArrayMixin) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -78,7 +77,7 @@ define([
         }
     });
 
-    Application.ArrayToCollectionControlView = view;
+    loader.register('view:array-to-collection-control', view);
 
     return view;
 });

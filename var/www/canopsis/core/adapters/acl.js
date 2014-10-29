@@ -61,14 +61,15 @@ define([
         }
     });
 
-    Application.RoleAdapter = adapter;
-    Application.GroupAdapter = adapter;
-    Application.AccountAdapter = adapter;
-    Application.UserAdapter = adapter;
-    Application.ActionAdapter = adapter;
-    Application.RoleAdapter = adapter;
-    Application.RightAdapter = adapter;
-    Application.ProfileAdapter = adapter;
+
+    loader.register('adapter:role', adapter);
+    loader.register('adapter:group', adapter);
+    loader.register('adapter:account', adapter);
+    loader.register('adapter:user', adapter);
+    loader.register('adapter:action', adapter);
+    loader.register('adapter:role', adapter);
+    loader.register('adapter:right', adapter);
+    loader.register('adapter:profile', adapter);
 
     return adapter;
 });

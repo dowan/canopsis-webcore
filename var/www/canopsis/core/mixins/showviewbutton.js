@@ -19,15 +19,15 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/utils/routes',
     'app/lib/utils/test',
     'app/lib/factories/mixin'
-], function(Ember, Application, routesUtils, testUtils, Mixin) {
+], function(Ember, routesUtils, testUtils, Mixin) {
 
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone;
+
 
     var mixin = Mixin('showviewbutton', {
         partials: {
@@ -46,6 +46,8 @@ define([
         }
     });
 
+
+    loader.register('mixin:showviewbutton', mixin);
 
     return mixin;
 });

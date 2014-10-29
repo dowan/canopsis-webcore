@@ -18,10 +18,8 @@
 */
 
 define([
-    'ember',
-    'app/application',
-    'app/lib/loaders/renderers'
-], function(Ember, Application) {
+    'ember'
+], function(Ember) {
 
     var get = Ember.get;
 
@@ -59,7 +57,13 @@ define([
 
     });
 
-    Application.ComponentRendererComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-renderer",
+        initialize: function(container, application) {
+            application.register('component:component-renderer', component);
+        }
+    });
 
     return component;
 });

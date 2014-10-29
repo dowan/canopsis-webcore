@@ -19,9 +19,8 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/factories/mixin'
-], function(Ember, Application, Mixin) {
+], function(Ember, Mixin) {
 
     var mixin = Mixin('hashSerializer', {
         serializeIntoHash: function(hash, type, record, method, options) {
@@ -38,6 +37,8 @@ define([
         }
     });
 
+
+    loader.register('mixin:hash-serializer', mixin);
 
     return mixin;
 });
