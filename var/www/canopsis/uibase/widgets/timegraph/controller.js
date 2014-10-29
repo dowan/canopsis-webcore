@@ -37,12 +37,13 @@ define([
             //get the timestamp, and not the date object
 
             var now = +new Date();
-            var config = get(this, 'controller.config');
+            var controller = get(this, 'controller');
+            var config = get(controller, 'config');
 
             console.group('timegraph init');
 
             // fill chart options
-            chartOptions = get(this, 'controller.chartOptions') || {};
+            chartOptions = get(controller, 'chartOptions') || {};
             $.extend(chartOptions, {
                 zoom: {
                     interactive: false
@@ -61,11 +62,14 @@ define([
                     clickable: true
                 },
 
+                xaxis: {
+                    min: now - get(controller, 'time_window_offset') - get(controller, 'time_window'),
+                    max: now - get(controller, 'time_window_offset')
+                },
+
                 xaxes: [{
                     show: true,
                     reserveSpace: true,
-                    min: now - get(this, 'controller.time_window_offset') - get(this, 'controller.time_window'),
-                    max: now - get(this, 'controller.time_window_offset'),
                     position: 'bottom',
                     mode: 'time',
                     timezone: 'browser'
@@ -85,13 +89,12 @@ define([
             });
 
             console.log('Configure chart:', chartOptions);
-            set(this, 'controller.chartOptions', chartOptions);
+            set(controller, 'chartOptions', chartOptions);
 
             var timenav = get(config, 'timenav');
-            set(this, 'controller.timenav', timenav);
 
             if(timenav) {
-                chartOptions = get(this, 'controller.timenavOptions') || {};
+                chartOptions = get(controller, 'timenavOptions') || {};
                 $.extend(chartOptions, {
                     zoom: {
                         interactive: false
@@ -110,18 +113,21 @@ define([
                         clickable: true
                     },
 
+                    xaxis: {
+                        min: now - get(controller, 'time_window_offset') - get(controller, 'timenav_window'),
+                        max: now - get(controller, 'time_window_offset')
+                    },
+
                     xaxes: [{
-                        show: false,
+                        show: true,
                         reserveSpace: true,
-                        min: now - get(this, 'controller.time_window_offset') - get(this, 'controller.timenav_window'),
-                        max: now - get(this, 'controller.time_window_offset'),
                         position: 'bottom',
                         mode: 'time',
                         timezone: 'browser'
                     }],
 
                     yaxes: [{
-                        show: false,
+                        show: true,
                         reserveSpace: true
                     }],
 
@@ -132,7 +138,20 @@ define([
                 });
 
                 console.log('Configure time navigation:', chartOptions);
-                set(this, 'controller.timenavOptions', chartOptions);
+                set(controller, 'timenavOptions', chartOptions);
+
+                var timecontainer = this.$('.flotchart-preview-container .flotchart');
+                console.log('Bind event handlers', timecontainer);
+
+                timecontainer.bind('plotselected', function(evt, ranges) {
+                    console.log('Redefine X axes limits');
+                    var opts = {};
+                    $.extend(opts, chartOptions);
+
+                    set(opts, 'xaxis.min', ranges.xaxis.from);
+                    set(opts, 'xaxis.max', ranges.xaxis.to);
+                    set(controller, 'chartOptions', opts);
+                });
             }
 
             console.groupEnd();
@@ -152,8 +171,6 @@ define([
         flotSeries: Ember.Object.create({}),
         dataSeries: Ember.A(),
 
-        timenav: false,
-
         time_window: function() {
             return get(this, 'config.time_window') * 1000;
         }.property('config.time_window'),
@@ -163,7 +180,7 @@ define([
         }.property('config.time_window_offset'),
 
         timenav_window: function() {
-            if(get(this, 'timenav')) {
+            if(get(this, 'config.timenav')) {
                 return get(this, 'config.timenav_window') * 1000;
             }
             else {
@@ -199,7 +216,7 @@ define([
             var curveIds = [];
 
             for(var i = 0, l = stylizedseries.length; i < l; i++) {
-                var serieId = stylizedseries[i].serie;
+                var serieId = get(stylizedseries[i], 'serie');
 
                 series[serieId] = {
                     style: stylizedseries[i],
@@ -228,49 +245,44 @@ define([
                 var serieResult = pargs[0]; // arguments of first promise
                 var curveResult = pargs[1]; // arguments of second promise
 
-                var i, li;
+                var i, l;
 
-                console.log('Fetch curves');
-                for(i = 0, li = curveResult.meta.total; i < li; i++) {
+                console.group('Fetch curves:');
+                var curvesById = {};
+
+                for(i = 0, l = curveResult.meta.total; i < l; i++) {
                     var curve = curveResult.content[i];
-
-                    for(var j = 0, lj = serieResult.meta.total; j < lj; j++) {
-                        var serieconf = serieResult.content[j];
-
-                        var serieId = serieconf.id;
-
-                        if(series[serieId] !== undefined) {
-                            var config = series[serieId];
-
-                            if(get(config, 'style.curve') === curve.id) {
-                                set(config, 'curve', curve);
-                                /*when a filter mongo contain serveral times the same id, only one instance of this object will be returned.
-                                So, if two series use the same curve, only one curve will be returned by "store.findQuery('curve', {ids: curveIds})"
-                                Since there will be only one instance of each used curve, we have to find for each curve all series that use it.*/
-                               //break;
-                            }
-                        }
-                    }
+                    curvesById[curve.id] = curve;
                 }
 
-                console.log('Fetch series');
-                set(me, 'flotSeries', Ember.Object.create({}));
+                console.log(curvesById)
+                console.groupEnd();
 
-                for(i = 0, li = serieResult.meta.total; i < li; i++) {
+                console.group('Fetch series:');
+                for(i = 0, l = serieResult.meta.total; i < l; i++) {
                     var serieconf = serieResult.content[i];
-
                     var serieId = serieconf.id;
 
                     if(series[serieId] !== undefined) {
                         var config = series[serieId];
-                        set(config, 'serie', serieconf);
+                        var curveId = get(config, 'style.curve');
 
+                        if(curvesById[curveId] !== undefined) {
+                            set(config, 'curve', curve);
+                        }
+
+                        set(config, 'serie', serieconf);
                         me.genFlotSerie(config, from, to);
                     }
                 }
 
+                console.log('stylizedseries:', series);
+                console.groupEnd();
+
                 console.groupEnd();
             });
+
+            set(this, 'lastRefresh', +new Date());
         },
 
         genFlotSerie: function(config, from, to, replace) {

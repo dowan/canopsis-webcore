@@ -20,9 +20,8 @@ define([
     'jquery',
     'ember',
     'app/application',
-    'app/lib/utils/hash',
     'app/lib/wrappers/flotchart'
-], function($, Ember, Application, hashUtils) {
+], function($, Ember, Application) {
 
     var get = Ember.get,
         set = Ember.set;

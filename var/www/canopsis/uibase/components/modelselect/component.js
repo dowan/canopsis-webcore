@@ -40,7 +40,7 @@ define([
             var model = get(this, 'selectedModel');
             console.log('Select record:', model);
 
-            set(this, 'content.value', model.id);
+            set(this, 'content.value', get(model, 'id'));
         }.observes('selectedModel'),
 
         availableModels: function() {
@@ -64,6 +64,8 @@ define([
             var me = this;
 
             if(selectedId) {
+                console.log('Select model instance:', selectedId);
+
                 var model = get(this, 'model');
                 promise = store.find(model, selectedId);
 
@@ -71,6 +73,7 @@ define([
                     set(me, 'selectedModel', record);
                 });
             } else {
+                console.log('Select first available model');
                 promise = get(this, 'availableModels');
 
                 promise.then(function(result) {
