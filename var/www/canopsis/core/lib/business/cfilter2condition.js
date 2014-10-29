@@ -29,7 +29,44 @@ define(['ember'], function(Ember) {
         init: function () {
             set(this, 'conditions', []);
             set(this, 'clauses', []);
-        }
+        },
+
+        jsonstring: function () {
+            var json = get(this, 'json');
+            json = JSON.stringify(json, undefined, 2);
+            return json;
+        }.property('json'),
+
+        json: function () {
+
+            var json = {
+                conditions: [],
+                clauses: [],
+                label: get(this, 'label'),
+                value: get(this, 'value'),
+            };
+
+            var itemList = ['conditions', 'clauses'];
+            var listlen = itemList.length;
+
+
+            for (var j=0; j<listlen; j++) {
+
+                var selectedItem = itemList[j];
+                var itemArray = get(this, selectedItem);
+                var len = itemArray.length;
+
+                for (var i=0; i<len;i++) {
+                    var treeNode = itemArray[i];
+                    json[selectedItem].push(get(treeNode, 'json'));
+                }
+            }
+
+            console.log('condition json', json);
+
+            return json;
+
+        }.property('conditions', 'clauses')
 
     });
 

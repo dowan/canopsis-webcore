@@ -50,36 +50,33 @@ DragNDrop.Dragable = Ember.Mixin.create({
 DragNDrop.Droppable = Ember.Mixin.create({
     dragEnter: DragNDrop.cancel,
     dragOver: DragNDrop.cancel,
-    drop: function(event, ui) {
-
-        console.log('ui element dropped', ui);
-
-        var viewId = event.originalEvent.dataTransfer.getData('elementId');
-        var content = event.originalEvent.dataTransfer.getData('content');
+    drop: function(event) {
 
         console.log('drop done !');
 
-        console.log('viewId', viewId);
-        console.log('content', content);
+        var viewId = event.originalEvent.dataTransfer.getData('elementId');
+        var draggableView = Ember.View.views[viewId];
+        var treeElement = get(draggableView, 'content');
+        var condition = get(this, 'content');
+
+        console.log('clause',treeElement);
+        console.log('condition', condition);
+
+        treeElement.detach();
+        treeElement.attach(condition);
 
 
-        Ember.View.views[viewId].destroy();
 
+        draggableView.destroy();
         event.preventDefault();
 
         return false;
     }
 });
 
-//App.Box = Ember.View.extend(DragNDrop.Dragable);
-//App.DropTarget = Ember.View.extend(DragNDrop.Droppable);​
-
 
     var component = Ember.Component.extend(/*DragNDrop.Dragable,*/ DragNDrop.Droppable, {
 
-        didInsertElement: function() {
-
-        }
     });
 
 

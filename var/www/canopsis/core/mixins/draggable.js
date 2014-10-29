@@ -19,16 +19,15 @@
 
 define([
     'ember',
-    'app/lib/wrappers/bootstrap'
-], function(Ember) {
+    'jquery',
+], function(Ember, $) {
 
     var get = Ember.get,
         set = Ember.set;
 
+    var mixin = Ember.Namespace.create();
 
-    var DragNDrop = Ember.Namespace.create();
-
-    DragNDrop.Dragable = Ember.Mixin.create({
+    mixin.Dragable = Mixin('draggable', {
         attributeBindings: 'draggable',
         draggable: 'true',
         dragStart: function(event) {
@@ -43,19 +42,5 @@ define([
     });
 
 
-    var component = Ember.Component.extend(DragNDrop.Dragable, {
-        didInsertElement: function (){
-            this.$().css('display', 'inline').css('width', '5px');
-        }
-    });
-
-
-    Ember.Application.initializer({
-        name:"component-draggablebutton",
-        initialize: function(container, application) {
-            application.register('component:component-draggablebutton', component);
-        }
-    });
-
-    return component;
+    return mixin;
 });
