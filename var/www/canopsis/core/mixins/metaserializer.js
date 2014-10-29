@@ -74,7 +74,5 @@ define([
     });
 
 
-    loader.register('mixin:meta-serializer', mixin);
-
     return mixin;
 });

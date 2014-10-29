@@ -315,7 +315,5 @@ define([
         }
     });
 
-    loader.register('mixin:embedded-record-serializer', mixin);
-
     return mixin;
 });

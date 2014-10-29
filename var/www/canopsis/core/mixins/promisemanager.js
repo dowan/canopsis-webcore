@@ -30,7 +30,5 @@ define([
     });
 
 
-    loader.register('mixin:promisesmanager', mixin);
-
     return mixin;
 });

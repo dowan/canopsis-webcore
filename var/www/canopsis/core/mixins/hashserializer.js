@@ -38,7 +38,5 @@ define([
     });
 
 
-    loader.register('mixin:hash-serializer', mixin);
-
     return mixin;
 });

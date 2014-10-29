@@ -53,7 +53,5 @@ define([
     });
 
 
-    loader.register('mixin:inspectable-array', mixin);
-
     return mixin;
 });

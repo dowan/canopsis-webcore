@@ -47,7 +47,5 @@ define([
     });
 
 
-    loader.register('mixin:showviewbutton', mixin);
-
     return mixin;
 });

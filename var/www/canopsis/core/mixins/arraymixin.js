@@ -146,8 +146,5 @@ define([
         }
     });
 
-
-    loader.register('mixin:array', mixin);
-
     return mixin;
 });

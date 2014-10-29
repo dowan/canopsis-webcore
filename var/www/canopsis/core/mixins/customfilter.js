@@ -137,8 +137,5 @@ define([
 
     });
 
-
-    loader.register('mixin:customfilter', mixin);
-
     return mixin;
 });

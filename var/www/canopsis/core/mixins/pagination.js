@@ -179,7 +179,5 @@ define([
     });
 
 
-    loader.register('mixin:pagination', mixin);
-
     return mixin;
 });

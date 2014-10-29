@@ -44,7 +44,6 @@ define([
         }
     });
 
-    loader.register('mixin:history', mixin);
 
     return mixin;
 });
