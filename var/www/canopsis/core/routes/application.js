@@ -19,15 +19,14 @@
 
 define([
     'ember',
-    'app/application',
     'app/routes/authenticated',
     'app/lib/formsregistry',
-    'app/lib/loaders/templates',
     'app/lib/loaders/forms'
-], function(Ember, Application, AuthenticatedRoute, formsregistry) {
+], function(Ember, AuthenticatedRoute, formsregistry) {
 
     var get = Ember.get,
         set = Ember.set;
+
 
     var route = AuthenticatedRoute.extend({
         actions: {
@@ -91,7 +90,8 @@ define([
         }
     });
 
-    Application.ApplicationRoute = route;
+
+    loader.register('route:application', route);
 
     return route;
 });

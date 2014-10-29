@@ -57,5 +57,7 @@ define([
     });
 
 
+    loader.register('mixin:model-dict', mixin);
+
     return mixin;
 });

@@ -20,9 +20,8 @@
 define([
     'jquery',
     'ember',
-    'app/application',
     'jqueryui',
-], function($, Ember, Application) {
+], function($, Ember) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -48,7 +47,8 @@ define([
 
     });
 
-    Application.RecordinfopopupView = view;
+
+    loader.register('view:recordinfopopup', view);
 
     return view;
 });

@@ -44,7 +44,6 @@ define([
     'app/adapters/notification',
     'app/serializers/cservice',
     'app/lib/loaders/helpers',
-    'app/lib/loaders/widgets',
     'app/adapters/loggedaccount',
     'app/lib/loaders/helpers',
     'app/lib/wrappers/bootstrap',
@@ -465,7 +464,7 @@ define([
 
     });
 
-    Application.ApplicationController = controller;
+    loader.register('controller:application', controller);
 
     void (utils);
     return controller;

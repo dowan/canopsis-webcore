@@ -19,9 +19,8 @@
 
 define([
     'ember-data',
-    'app/application',
     'app/serializers/application'
-], function(DS, Application, ApplicationSerializer) {
+], function(DS, ApplicationSerializer) {
 
     var serializerClass = ApplicationSerializer.extend({
         extractRelationships: function(payload, item, type){
@@ -38,7 +37,8 @@ define([
         }
     });
 
-    Application.EventlogSerializer = serializerClass;
+
+    loader.register('serializer:eventlog', serializerClass);
 
     return serializerClass;
 });

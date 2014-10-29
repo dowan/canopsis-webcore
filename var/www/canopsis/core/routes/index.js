@@ -18,15 +18,15 @@
 */
 
 define([
-    'app/application',
     'app/routes/authenticated',
     'app/lib/utils/actions'
-], function(Application, AuthenticatedRoute, actionsUtils) {
+], function(AuthenticatedRoute, actionsUtils) {
+
     var set = Ember.set,
         get = Ember.get;
 
-    var route = AuthenticatedRoute.extend({
 
+    var route = AuthenticatedRoute.extend({
         setupController: function(controller) {
             this.controllerFor('application').onIndexRoute = true;
             actionsUtils.setDefaultTarget(controller);
@@ -35,7 +35,8 @@ define([
         }
     });
 
-    Application.IndexRoute = route;
+
+    loader.register('route:index', route);
 
     return route;
 });

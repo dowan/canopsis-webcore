@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
-    'app/application'
-], function(Ember, Application) {
+    'ember'
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -52,19 +51,19 @@ define([
             tagName,
             tagStack = [],
             more = false;
-                                                             
+
         for(var i = 0; i < arr.length; i++){
-        
+
             row = arr[i].replace(/[ ]+/g, ' ');
-        
+
             if(!row.length){
               continue;
             }
 
             if(row[0] !== "<"){
-            
+
                 if(sum >= limit){
-                    row = "";   
+                    row = "";
                 }else if((sum + row.length) >= limit) {
 
                     cut = limit - sum;
@@ -119,7 +118,7 @@ define([
 
             arr[i] = row;
         }
-        
+
         return {
           html: arr.join("\n").replace(/\n/g, ""),
           more: more
@@ -155,7 +154,12 @@ define([
         }.property('content')
     });
 
-    Application.ComponentExpandabletextComponent = component;
+    Ember.Application.initializer({
+        name:"component-expandabletext",
+        initialize: function(container, application) {
+            application.register('component:component-expandabletext', component);
+        }
+    });
 
     return component;
 });

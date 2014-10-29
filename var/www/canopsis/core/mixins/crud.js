@@ -19,14 +19,14 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/utils/forms',
     'app/lib/utils/hash',
     'app/lib/factories/mixin'
-], function(Ember, Application, formsUtils, hashUtils, Mixin) {
+], function(Ember, formsUtils, hashUtils, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
+
 
     var mixin = Mixin('crud', {
         partials: {
@@ -159,6 +159,9 @@ define([
             }
         }
     });
+
+
+    loader.register('mixin:crud', mixin);
 
     return mixin;
 });

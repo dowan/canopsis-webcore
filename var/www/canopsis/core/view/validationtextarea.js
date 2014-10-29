@@ -1,12 +1,14 @@
   define([
   'ember',
-  'app/application',
   'app/mixins/validationfield'
-], function(Ember, Application, ValidationFieldMixin) {
+], function(Ember, ValidationFieldMixin) {
 
-    var view = Ember.TextArea.extend(ValidationFieldMixin, {});
+    //TODO move this to components dir
 
-    Application.ComponentValidationtextareaComponent = view;
+    var component = Ember.TextArea.extend(ValidationFieldMixin, {});
 
-    return view;
+
+    loader.register('component:component-validationtextarea', component);
+
+    return component;
 });

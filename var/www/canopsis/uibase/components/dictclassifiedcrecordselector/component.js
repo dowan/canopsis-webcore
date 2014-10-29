@@ -19,9 +19,8 @@
 
 define([
     'ember',
-    'app/application',
     'canopsis/uibase/components/classifiedcrecordselector/component'
-], function(Ember, Application, Classifiedcrecordselector) {
+], function(Ember, Classifiedcrecordselector) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -31,7 +30,13 @@ define([
         multiselect: true
     });
 
-    Application.ComponentDictclassifiedcrecordselectorComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-dictclassifiedcrecordselector",
+        initialize: function(container, application) {
+            application.register('component:component-dictclassifiedcrecordselector', component);
+        }
+    });
 
     return component;
 });

@@ -19,11 +19,10 @@
 
 define([
     'ember-data',
-    'app/application',
     'app/mixins/metaserializer',
     'app/mixins/hashserializer',
     'app/lib/utils/notification'
-], function(DS, Application, MetaSerializerMixin, HashSerializerMixin, notificationUtils) {
+], function(DS, MetaSerializerMixin, HashSerializerMixin, notificationUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -60,7 +59,8 @@ define([
         }
     );
 
-    Application.ApplicationSerializer = serializer;
+    loader.register('serializer:application', serializer);
+
     // Application.RoleSerializer = serializer.extend({
     //     normalize: function (type, hash, prop) {
     //         var id = get(hash, '_id');

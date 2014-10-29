@@ -19,9 +19,8 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/wrappers/bootstrap'
-], function(Ember, Application) {
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -50,7 +49,13 @@ define([
         }
     });
 
-    Application.ComponentDraggablebuttonComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-draggablebutton",
+        initialize: function(container, application) {
+            application.register('component:component-draggablebutton', component);
+        }
+    });
 
     return component;
 });

@@ -19,10 +19,9 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/utils/actions',
     'app/lib/wrappers/bootstrap'
-], function(Ember, Application, actionsUtils) {
+], function(Ember, actionsUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -36,7 +35,13 @@ define([
         }
     });
 
-    Application.ComponentActionbuttonComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-actionbutton",
+        initialize: function(container, application) {
+            application.register('component:component-actionbutton', component);
+        }
+    });
 
     return component;
 });

@@ -19,10 +19,9 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/factories/form',
     'app/forms/modelform/controller'
-], function(Ember, Application, FormFactory, ModelFormController) {
+], function(Ember, FormFactory, ModelFormController) {
     var formOptions = {
         subclass: ModelFormController
     };

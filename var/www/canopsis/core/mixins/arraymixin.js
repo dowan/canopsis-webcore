@@ -19,10 +19,9 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/formsregistry',
     'app/lib/factories/mixin'
-], function(Ember, Application, formsregistry, Mixin) {
+], function(Ember, formsregistry, Mixin) {
 
     var get = Ember.get,
         set = set;
@@ -147,6 +146,8 @@ define([
         }
     });
 
+
+    loader.register('mixin:array', mixin);
 
     return mixin;
 });

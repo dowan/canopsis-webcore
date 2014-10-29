@@ -24,7 +24,8 @@ define([
 
     var adapter = EntityAdapter.extend({});
 
-    Application.ResourceAdapter = adapter;
+
+    loader.register('adapter:resource', adapter);
 
     return adapter;
 });

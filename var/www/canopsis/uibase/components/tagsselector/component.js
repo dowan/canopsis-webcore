@@ -88,7 +88,12 @@ define([
         }
     });
 
-    Application.ComponentTagsselectorComponent = component;
+    Ember.Application.initializer({
+        name:"component-tagsselector",
+        initialize: function(container, application) {
+            application.register('component:component-tagsselector', component);
+        }
+    });
 
     return component;
 });

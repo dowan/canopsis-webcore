@@ -19,10 +19,9 @@
 
 define([
     'ember',
-    'app/application',
     'app/mixins/inspectableitem',
     'app/lib/loaders/schemas'
-], function(Ember, Application, InspectableItem) {
+], function(Ember, InspectableItem) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -41,7 +40,7 @@ define([
         }.property('widgetData')
     });
 
-    Application.CrecordController = controller;
+    loader.register('controller:crecord', controller);
 
     return controller;
 });

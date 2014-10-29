@@ -19,11 +19,10 @@
 
 define([
     'ember',
-    'app/application',
     'canopsis/canopsisConfiguration',
     'app/lib/utils/debug',
     'app/lib/helpers/validationtextfield'
-], function(Ember, Application, canopsisConfiguration, debugUtils) {
+], function(Ember, canopsisConfiguration, debugUtils) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -101,7 +100,12 @@ define([
         attr: Ember.computed.alias('content')
     });
 
-    Application.ComponentEditorComponent = component;
+    Ember.Application.initializer({
+        name:"component-editor",
+        initialize: function(container, application) {
+            application.register('component:component-editor', component);
+        }
+    });
 
     return component;
 });

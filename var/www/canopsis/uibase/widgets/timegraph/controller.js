@@ -21,12 +21,10 @@ define([
     'jquery',
     'ember',
     'ember-data',
-    'app/application',
     'app/lib/factories/widget',
     'canopsis/uibase/components/flotchart/component',
     'app/controller/serie'
-], function($, Ember, DS, Application, WidgetFactory) {
-
+], function($, Ember, DS, WidgetFactory) {
     var get = Ember.get,
         set = Ember.set;
 

@@ -41,7 +41,8 @@ define([
         }
     });
 
-    Application.EventAdapter = adapter;
+
+    loader.register('adapter:event', adapter);
 
     return adapter;
 });

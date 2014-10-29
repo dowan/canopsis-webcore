@@ -20,13 +20,14 @@
 define([
     'ember',
     'ember-data',
-    'app/application',
     'app/lib/utils/test',
     'app/lib/factories/mixin'
-], function(Ember, DS, Application, testUtils, Mixin) {
+], function(Ember, DS, testUtils, Mixin) {
+
     var get = Ember.get,
         set = Ember.set;
         assert = Ember.assert;
+
 
     var mixin = Mixin('notifications', {
 
@@ -69,6 +70,8 @@ define([
         }.property('notifications.length')
     });
 
+
+    loader.register('mixin:notifications', mixin);
 
     return mixin;
 });

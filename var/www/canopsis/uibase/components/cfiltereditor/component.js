@@ -20,10 +20,9 @@
 define([
     'jquery',
     'ember',
-    'app/application',
     'app/lib/indexesregistry',
     'runtime.conf'
-], function($, Ember, Application, indexesregistry, Canopsis) {
+], function($, Ember, indexesregistry, Canopsis) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -664,7 +663,13 @@ define([
         }
     });
 
-    Application.ComponentCfiltereditorComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-cfiltereditor",
+        initialize: function(container, application) {
+            application.register('component:component-cfiltereditor', component);
+        }
+    });
 
     return component;
 });

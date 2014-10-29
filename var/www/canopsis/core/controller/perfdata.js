@@ -20,9 +20,8 @@
 define([
     'jquery',
     'ember',
-    'ember-data',
-    'app/application'
-], function($, Ember, DS, Application) {
+    'ember-data'
+], function($, Ember, DS) {
 
     var controller = Ember.ObjectController.extend({
 
@@ -77,7 +76,8 @@ define([
         }
     });
 
-    Application.PerfdataController = controller;
+
+    loader.register('controller:perfdata', controller);
 
     return controller;
 });

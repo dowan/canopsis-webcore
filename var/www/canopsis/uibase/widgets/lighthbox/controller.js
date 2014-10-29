@@ -18,13 +18,13 @@
 */
 
 define([
-    'app/application',
     'app/lib/factories/widget',
     'canopsis/uibase/widgets/canvas/controller'
-], function(Application, WidgetFactory) {
+], function(WidgetFactory, CanvasController) {
 
     var get = Ember.get,
         set = Ember.set;
+
 
     var widget = WidgetFactory('lighthbox', {
         partials: {
@@ -40,7 +40,7 @@ define([
                 return [];
             }
         }.property('content.itemCssClass')
-    }, {subclass: Application.CanvasController});
+    }, {subclass: CanvasController});
 
     return widget;
 });

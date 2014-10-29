@@ -20,21 +20,21 @@
 define([
     'jquery',
     'ember',
-    'app/application',
     'utils',
     'app/adapters/acl'
-], function($, Ember, Application, utils) {
+], function($, Ember, utils) {
     var set = Ember.set,
         get = Ember.get;
 
-    Application.LoginRoute = Ember.Route.extend({
+    loader.register('route:login', Ember.Route.extend({
         setupController: function(controller, model) {
             void(model);
 
             controller.reset();
             //prevents from getting a string into the authkey
         }
-    });
+    }));
+
 
     var controller = Ember.ObjectController.extend({
         content: {},
@@ -94,7 +94,7 @@ define([
         }.observes('authkey')
     });
 
-    Application.LoginController = controller;
+    loader.register('controller:login', controller);
 
     return controller;
 });

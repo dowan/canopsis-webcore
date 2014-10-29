@@ -19,9 +19,8 @@
 define([
     'jquery',
     'ember',
-    'app/application',
     'app/lib/wrappers/flotchart'
-], function($, Ember, Application) {
+], function($, Ember) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -77,7 +76,12 @@ define([
         }
     });
 
-    Application.ComponentFlotchartComponent = component;
+    Ember.Application.initializer({
+        name:"component-flotchart",
+        initialize: function(container, application) {
+            application.register('component:component-flotchart', component);
+        }
+    });
 
     return component;
 });

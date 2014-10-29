@@ -19,14 +19,12 @@
 
 define([
     'ember',
-    'app/application',
     'app/controller/crecord',
     'app/lib/utils/forms',
     'app/routes/userview',
     'app/view/userview',
-    'app/serializers/userview',
-    'app/lib/loaders/widgets'
-], function(Ember, Application, CrecordController, formUtils) {
+    'app/serializers/userview'
+], function(Ember, CrecordController, formUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -67,7 +65,7 @@ define([
         }
     });
 
-    Application.UserviewController = controller;
+    loader.register('controller:userview', controller);
 
     return controller;
 });

@@ -18,10 +18,9 @@
 */
 
 define([
-    'app/application',
     'app/lib/factories/widget',
     'canopsis/uibase/widgets/canvas/controller'
-], function(Application, WidgetFactory) {
+], function(WidgetFactory, CanvasController) {
 
     var widget = WidgetFactory('horizontalbox', {
         partials: {
@@ -35,7 +34,7 @@ define([
             return 'col-lg-3 col-md-6 col-xs-12';
         }.property()
 
-    }, {subclass: Application.CanvasController});
+    }, {subclass: CanvasController});
 
     return widget;
 });

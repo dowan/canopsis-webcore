@@ -19,11 +19,10 @@
 
 define([
     'ember',
-    'app/application',
     'app/controller/application',
     'app/controller/login',
     'app/lib/loaders/schemas'
-], function(Ember, Application, ApplicationController) {
+], function(Ember, ApplicationController) {
 
     var route = Ember.Route.extend({
 
@@ -67,7 +66,8 @@ define([
         }
     });
 
-    Application.AuthenticatedRoute = route;
+
+    loader.register('route:authenticated', route);
 
     return route;
 });

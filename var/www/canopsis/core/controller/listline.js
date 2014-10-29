@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
-    'app/application'
-], function(Ember, Application) {
+    'ember'
+], function(Ember) {
 
     var controller = Ember.ObjectController.extend({
         init: function () {
@@ -29,7 +28,8 @@ define([
         }
     });
 
-    Application.ListlineController = controller;
+
+    loader.register('controller:listline', controller);
 
     return controller;
 });

@@ -78,7 +78,8 @@ define([
         }
     });
 
-    Application.ApplicationAdapter = adapter;
+
+    loader.register('adapter:application', adapter);
 
     return adapter;
 });

@@ -19,9 +19,8 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/wrappers/bootstrap'
-], function(Ember, Application) {
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -80,7 +79,13 @@ DragNDrop.Droppable = Ember.Mixin.create({
 
     });
 
-    Application.ComponentListtreeComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-listtree",
+        initialize: function(container, application) {
+            application.register('component:component-listtree', component);
+        }
+    });
 
     return component;
 });

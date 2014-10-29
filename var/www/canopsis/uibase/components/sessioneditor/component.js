@@ -19,9 +19,8 @@
 
 define([
     'ember',
-    'app/application',
     'utils'
-], function(Ember, Application, cutils) {
+], function(Ember, cutils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -53,7 +52,13 @@ define([
         }
     });
 
-    Application.ComponentSessioneditorComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-sessioneditor",
+        initialize: function(container, application) {
+            application.register('component:component-sessioneditor', component);
+        }
+    });
 
     return component;
 });

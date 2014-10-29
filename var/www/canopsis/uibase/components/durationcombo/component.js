@@ -19,9 +19,8 @@
 
 
 define([
-    'ember',
-    'app/application'
-], function(Ember, Application) {
+    'ember'
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -36,10 +35,18 @@ define([
             var durationType = 'second';
 
             var unformattedDuration = parseInt(get(this, 'content'), 10);
+
+            if (isNaN(unformattedDuration)) {
+                unformattedDuration = 0;
+            }
+
             var convert = get(this, 'convertDuration');
+            var durationUnits = get(this, 'durationType');
+            var durationUnitsLen = durationUnits.length;
 
-            for (var durationUnit in convert) {
+            for (var i=0; i<durationUnitsLen; i++) {
 
+                var durationUnit = durationUnits[i];
                 console.log('testing duration unit', durationUnit);
                 var unitValue = convert[durationUnit];
                 if (unitValue > unformattedDuration) {
@@ -130,7 +137,13 @@ define([
         ]
     });
 
-    Application.ComponentDurationcomboComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-durationcombo",
+        initialize: function(container, application) {
+            application.register('component:component-durationcombo', component);
+        }
+    });
 
     return component;
 });

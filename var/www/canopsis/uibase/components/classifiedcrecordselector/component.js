@@ -20,10 +20,9 @@
 define([
     'jquery',
     'ember',
-    'app/application',
     'app/mixins/pagination',
     'app/adapters/crecord'
-], function($, Ember, Application, PaginationMixin) {
+], function($, Ember, PaginationMixin) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -271,7 +270,12 @@ define([
         }
     });
 
-    Application.ComponentClassifiedcrecordselectorComponent = component;
+    Ember.Application.initializer({
+        name:"component-classifiedcrecordselector",
+        initialize: function(container, application) {
+            application.register('component:component-classifiedcrecordselector', component);
+        }
+    });
 
     return component;
 });

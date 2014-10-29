@@ -20,9 +20,8 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/utils/hash'
-], function(Ember, Application, hashUtils) {
+], function(Ember, hashUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -56,7 +55,12 @@ define([
         }
     });
 
-    Application.ComponentDatetimepickerComponent = component;
+    Ember.Application.initializer({
+        name:"component-datetimepicker",
+        initialize: function(container, application) {
+            application.register('component:component-datetimepicker', component);
+        }
+    });
 
     return component;
 });

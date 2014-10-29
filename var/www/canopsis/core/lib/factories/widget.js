@@ -64,9 +64,10 @@ define([
 
         extendArguments.push(classdict);
 
-        var widgetControllerName = widgetName.camelize().capitalize() + "Controller";
-        var widgetSerializerName = widgetName.camelize().capitalize() + "Serializer";
+        var widgetControllerName = widgetName.dasherize();
+        var widgetSerializerName = widgetName.dasherize();
         var widgetModel = Application[widgetName.camelize().capitalize()];
+        var controllerClass = options.subclass.extend.apply(options.subclass, extendArguments);
 
         if(isNone(widgetModel)) {
             notificationUtils.error('No model found for the widget ' + widgetName + '. There might be no schema concerning this widget on the database');
@@ -74,11 +75,12 @@ define([
             console.log("extendArguments", extendArguments);
             console.log("subclass", options.subclass);
 
-            Application[widgetControllerName] = options.subclass.extend.apply(options.subclass, extendArguments);
+
+            loader.register('controller:' + widgetControllerName, controllerClass);
 
             //dynamically create an adapter that implements EmbeddedRecordMixin if a custom adapter is not already defined in Application
             if(isNone(get(Application, widgetSerializerName))) {
-                Application[widgetSerializerName] = UserviewSerializer.extend();
+                loader.register('serializer:' + widgetSerializerName, UserviewSerializer.extend());
             }
 
             console.log("widget", widgetName.camelize().capitalize(), Application[widgetName.camelize().capitalize()]);
@@ -88,7 +90,7 @@ define([
 
             var registryEntry = Ember.Object.create({
                 name: widgetName,
-                EmberClass: Application[widgetControllerName]
+                EmberClass: controllerClass
             });
 
             if(!isNone(metadataDict)) {
@@ -114,7 +116,7 @@ define([
         console.groupEnd();
         console.tags.remove('factory');
 
-        return Application[widgetControllerName];
+        return controllerClass;
     }
 
     return Widget;

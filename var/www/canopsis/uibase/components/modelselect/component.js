@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
-    'app/application',
-], function(Ember, Application) {
+    'ember'
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -55,12 +54,12 @@ define([
 
             var store = DS.Store.create({
                 container: get(this, "container")
-            })
+            });
 
             set(this, "componentDataStore", store);
 
             var selectedId = get(this, 'content.value');
-            var promise = undefined;
+            var promise;
             var me = this;
 
             if(selectedId) {
@@ -85,7 +84,13 @@ define([
         }
     });
 
-    Application.ComponentModelselectComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-modelselect",
+        initialize: function(container, application) {
+            application.register('component:component-modelselect', component);
+        }
+    });
 
     return component;
 });

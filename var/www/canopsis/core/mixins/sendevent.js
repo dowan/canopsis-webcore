@@ -20,12 +20,11 @@
 define([
     'ember',
     'jquery',
-    'app/application',
     'app/lib/utils/forms',
     'app/lib/utils/dates',
     'app/lib/utils/notification',
     'app/lib/factories/mixin'
-], function(Ember, $, Application, formsUtils, datesUtils, notificationUtils, Mixin) {
+], function(Ember, $, formsUtils, datesUtils, notificationUtils, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -619,6 +618,7 @@ define([
         }
     });
 
+    loader.register('mixin:sendevent', mixin);
 
     return mixin;
 });

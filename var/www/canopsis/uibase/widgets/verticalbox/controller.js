@@ -18,16 +18,15 @@
 */
 
 define([
-    'app/application',
     'app/lib/factories/widget',
     'canopsis/uibase/widgets/canvas/controller'
-], function(Application, WidgetFactory) {
+], function(WidgetFactory, CanvasController) {
 
     var widget = WidgetFactory('verticalbox', {
         partials: {
             titlebarsbuttons : ["titlebarbutton-minimize", "titlebarbutton-moveup","titlebarbutton-movedown"]
         }
-    }, {subclass: Application.CanvasController});
+    }, {subclass: CanvasController});
 
     return widget;
 });

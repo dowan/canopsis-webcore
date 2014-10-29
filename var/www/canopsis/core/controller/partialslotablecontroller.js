@@ -105,7 +105,7 @@ define([
         }
     });
 
-    Application.PartialslotAbleController = controller;
+    loader.register('controller:partialslot-able', controller);
 
     return controller;
 });

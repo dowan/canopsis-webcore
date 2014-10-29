@@ -40,8 +40,10 @@ define([
             return this.ajax(this.buildURL(type.typeKey, record.id), "POST", { data: data });
         }
     });
-    Application.ConnectorAdapter = adapter;
-    Application.NagiosAdapter = adapter;
+
+
+    loader.register('adapter:connector', adapter);
+    loader.register('adapter:nagios', adapter);
 
     return adapter;
 });

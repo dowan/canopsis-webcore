@@ -379,7 +379,7 @@ define([
         }.property()
     });
 
-    Application.WidgetController = controller;
+    loader.register('controller:widget', controller);
 
     return controller;
 });

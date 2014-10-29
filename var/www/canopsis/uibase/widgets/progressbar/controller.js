@@ -22,8 +22,10 @@ define([
     'app/lib/factories/widget',
     'canopsis/uibase/components/progressbar/component'
 ], function($, WidgetFactory) {
+
     var get = Ember.get,
         set = Ember.set;
+
 
     var widget = WidgetFactory('progressbar', {
         init: function() {

@@ -20,13 +20,12 @@
 define([
     'ember',
     'ember-data',
-    'app/application',
     'utils',
     'app/lib/utils/data',
     'app/lib/utils/forms',
     'app/lib/utils/notification',
     'app/lib/factories/mixin'
-], function(Ember, DS, Application, utils, dataUtils, formsUtils, notificationUtils, Mixin) {
+], function(Ember, DS, utils, dataUtils, formsUtils, notificationUtils, Mixin) {
 
     /**
       Implements Custom filter management for list
@@ -36,6 +35,7 @@ define([
 
     var get = Ember.get,
         set = Ember.set;
+
 
     var mixin = Mixin('customfilter', {
         partials: {
@@ -136,6 +136,9 @@ define([
         }.observes('default_filter'),
 
     });
+
+
+    loader.register('mixin:customfilter', mixin);
 
     return mixin;
 });

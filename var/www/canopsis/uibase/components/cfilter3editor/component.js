@@ -20,8 +20,7 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+], function(Ember) {
 
     var set = Ember.set,
         get = Ember.get,
@@ -105,7 +104,13 @@ define([
 
     });
 
-    Application.ComponentCfilter3editorComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-cfilter3editor",
+        initialize: function(container, application) {
+            application.register('component:component-cfilter3editor', component);
+        }
+    });
 
     return component;
 });
