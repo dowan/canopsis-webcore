@@ -8,6 +8,7 @@ define(deps, function() {
     delete console.init;
 
     if(!isIE) {
+        console.group('init');
         console.tags.add('init');
     }
 

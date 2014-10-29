@@ -27,7 +27,5 @@ define([
 
     var mixin = Mixin('ack', {});
 
-    loader.register('mixin:ack', mixin);
-
     return mixin;
 });

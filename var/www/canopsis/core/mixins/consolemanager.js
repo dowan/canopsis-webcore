@@ -62,8 +62,5 @@ define([
         }.property()
     });
 
-
-    loader.register('mixin:consolemanager', mixin);
-
     return mixin;
 });

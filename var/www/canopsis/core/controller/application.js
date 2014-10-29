@@ -247,6 +247,9 @@ define([
             console.groupEnd();
             this._super.apply(this, arguments);
             this.refreshPartialsList();
+
+            //close the init group
+            console.groupEnd();
             console.tags.remove('init');
 
         },

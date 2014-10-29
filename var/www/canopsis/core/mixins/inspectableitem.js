@@ -221,7 +221,5 @@ define([
     });
 
 
-    loader.register('mixin:inspectable-item', mixin);
-
     return mixin;
 });

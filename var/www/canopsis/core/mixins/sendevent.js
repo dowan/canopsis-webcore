@@ -618,7 +618,6 @@ define([
         }
     });
 
-    loader.register('mixin:sendevent', mixin);
 
     return mixin;
 });

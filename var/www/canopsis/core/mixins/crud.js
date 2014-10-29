@@ -160,8 +160,5 @@ define([
         }
     });
 
-
-    loader.register('mixin:crud', mixin);
-
     return mixin;
 });

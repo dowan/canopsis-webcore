@@ -57,7 +57,5 @@ define([
     });
 
 
-    loader.register('mixin:mixin-array', mixin);
-
     return mixin;
 });

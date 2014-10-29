@@ -121,7 +121,5 @@ define([
     });
 
 
-    loader.register('mixin:userconfiguration', mixin);
-
     return mixin;
 });

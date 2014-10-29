@@ -18,26 +18,14 @@
 */
 
 define([
-    'ember',
-    'app/lib/utils/filterObject',
-    'app/lib/formsregistry',
-    'app/lib/factories/mixin'
-], function(Ember , filterObjectUtils, formsregistry, Mixin) {
-// TODO: just make a function from this
+    'app/lib/factories/wrapper',
+    'webcore-libs/jsoneditor/jsoneditor',
+    'link!webcore-libs/jsoneditor/jsoneditor.css'
+], function(Wrapper, jsoneditor) {
 
-    var mixin = Mixin('tagsoptionfilter', {
-        onInit : function ( contentREF , _self ){
-            var formController = formsregistry.formwrapper.form;
-            if (formController) {
-                filterObjectUtils.getFieldsByPrefix( "_opt_" , formController.formContext , function( attr , result  ){
-                    var nameMixin = { name : attr.slice(5) };
-                    result.pushObject(nameMixin);
-                }, contentREF);
-            }
-            _self.set("select", 0 );
-        }
+    window.jsoneditor = { JSONEditor: jsoneditor };
+
+    require(['ember-jsoneditor-lib'], function() {
+        return Wrapper("ember-jsoneditor", undefined, arguments, "0.1.0");
     });
-
-
-    return mixin;
 });

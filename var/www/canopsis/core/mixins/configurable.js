@@ -52,8 +52,5 @@ define([
         }
     });
 
-
-    loader.register('mixin:configurable', mixin);
-
     return mixin;
 });

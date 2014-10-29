@@ -19,25 +19,28 @@
 
 define([
     'ember',
-    'app/lib/utils/filterObject',
-    'app/lib/formsregistry',
-    'app/lib/factories/mixin'
-], function(Ember , filterObjectUtils, formsregistry, Mixin) {
-// TODO: just make a function from this
+], function(Ember) {
 
-    var mixin = Mixin('tagsoptionfilter', {
-        onInit : function ( contentREF , _self ){
-            var formController = formsregistry.formwrapper.form;
-            if (formController) {
-                filterObjectUtils.getFieldsByPrefix( "_opt_" , formController.formContext , function( attr , result  ){
-                    var nameMixin = { name : attr.slice(5) };
-                    result.pushObject(nameMixin);
-                }, contentREF);
-            }
-            _self.set("select", 0 );
-        }
+    var get = Ember.get,
+        set = Ember.set,
+        isNone = Ember.isNone;
+
+
+    var component = Ember.Component.extend({
+        contentAsDict: function() {
+            var content = get(this, 'content');
+
+            return JSON.parse(content);
+        }.property('content')
     });
 
 
-    return mixin;
+    Ember.Application.initializer({
+        name: 'component-texttodict',
+        initialize: function(container, application) {
+            application.register('component:component-texttodict', component);
+        }
+    });
+
+    return component;
 });

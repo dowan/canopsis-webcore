@@ -95,7 +95,5 @@ define([
     });
 
 
-    loader.register('mixin:sortablearray', mixin);
-
     return mixin;
 });

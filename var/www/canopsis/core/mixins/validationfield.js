@@ -104,7 +104,5 @@ define([
     });
 
 
-    loader.register('mixin:validation-field', mixin);
-
     return mixin;
 });

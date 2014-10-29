@@ -18,26 +18,12 @@
 */
 
 define([
-    'ember',
-    'app/lib/utils/filterObject',
-    'app/lib/formsregistry',
-    'app/lib/factories/mixin'
-], function(Ember , filterObjectUtils, formsregistry, Mixin) {
-// TODO: just make a function from this
+    'app/lib/factories/wrapper',
+    'webcore-libs/selectize/dist/js/selectize',
+    'link!webcore-libs/selectize/dist/css/selectize.bootstrap3.css'
+], function(Wrapper, $) {
 
-    var mixin = Mixin('tagsoptionfilter', {
-        onInit : function ( contentREF , _self ){
-            var formController = formsregistry.formwrapper.form;
-            if (formController) {
-                filterObjectUtils.getFieldsByPrefix( "_opt_" , formController.formContext , function( attr , result  ){
-                    var nameMixin = { name : attr.slice(5) };
-                    result.pushObject(nameMixin);
-                }, contentREF);
-            }
-            _self.set("select", 0 );
-        }
+    require(['webcore-libs/ember-selectize/src/ember.selectize'], function() {
+        return Wrapper("ember-selectize", undefined, arguments);
     });
-
-
-    return mixin;
 });

@@ -176,7 +176,5 @@ define([
     });
 
 
-    loader.register('mixin:foldablelistline', mixin);
-
     return mixin;
 });
