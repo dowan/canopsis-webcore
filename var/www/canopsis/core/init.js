@@ -37,6 +37,7 @@ define([
     'timepicker',
     'app/lib/wrappers/console',
     'app/lib/wrappers/ionicons',
+    'app/lib/wrappers/jsoneditor',
     'app/lib/loaders/attributepresets',
     'app/lib/loaders/forms',
     'app/lib/loaders/validators',
