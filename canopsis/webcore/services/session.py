@@ -18,7 +18,50 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-# attach this project to canopsis package
-from pkgutil import extend_path
-__path__ = extend_path(__path__, __name__)
-__version__ = '0.8'
+from canopsis.common.ws import route
+from bottle import request
+from .rights import get_manager as get_rights
+
+
+def get():
+    return request.environ.get('beaker.session')
+
+
+def get_user(_id=None):
+    s = get()
+
+    user = s.get('user', {})
+
+    if not _id:
+        _id = user.get('_id', None)
+
+    if not _id:
+        return None
+
+    else:
+        rights = get_rights()
+
+        user = rights.get_user(_id)
+        user['rights'] = rights.get_user_rights(_id)
+
+        return user
+
+
+def create(user):
+    s = get()
+    s['user'] = user
+    s['auth_on'] = True
+    s.save()
+
+    return s
+
+
+def delete():
+    s = get()
+    s.delete()
+
+
+def exports(ws):
+    @route(ws.application.get, name='account/me')
+    def get_me():
+        return get_user()

@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #--------------------------------
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
@@ -18,7 +19,4 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-# attach this project to canopsis package
-from pkgutil import extend_path
-__path__ = extend_path(__path__, __name__)
-__version__ = '0.8'
+__version__ = '0.1'

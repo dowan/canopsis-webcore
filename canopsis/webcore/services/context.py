@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # --------------------------------
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
 #
@@ -18,56 +18,68 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-from bottle import get, delete, put, post
-
 from canopsis.common.ws import route
 from canopsis.context.manager import Context
 
-manager = Context()
 
+def exports(ws):
+    manager = Context()
 
-@route(get)
-def context(_type, names=None, context=None, extended=None):
-    if names:
-        names = [n.strip() for n in names.split(',')]
+    @route(ws.application.get)
+    def context(_type, names=None, context=None, extended=None):
+        if names:
+            names = [n.strip() for n in names.split(',')]
 
-    result = manager.get(
-        _type=_type, names=names, context=context, extended=extended)
+        result = manager.get(
+            _type=_type, names=names, context=context, extended=extended)
 
-    return result
+        return result
 
+    @route(ws.application.post, payload=['limit', 'skip', 'sort', '_filter'])
+    def context(
+        _type=None, context=None, _filter=None, extended=False,
+        limit=0, skip=0, sort=None
+    ):
 
-@route(post, payload=['limit', 'skip', 'sort', '_filter'])
-def context(
-    _type=None, context=None, _filter=None, extended=False,
-    limit=0, skip=0, sort=None
-):
+        result = manager.find(
+            _type=_type,
+            context=context,
+            _filter=_filter,
+            extended=extended,
+            limit=limit,
+            skip=skip,
+            sort=sort,
+            with_count=True
+        )
 
-    result = manager.find(
-        _type=_type, context=context, _filter=_filter, extended=extended,
-        limit=limit, skip=skip, sort=sort, with_count=True)
+        return result
 
-    return result
+    @route(ws.application.put, payload=[
+        '_type', 'entity', 'context', 'extended_id'
+    ])
+    def context(_type, entity, context=None, extended_id=None):
+        manager.put(
+            _type=_type,
+            entity=entity,
+            context=context,
+            extended_id=extended_id
+        )
 
+        return entity
 
-@route(put, payload=['_type', 'entity', 'context', 'extended_id'])
-def context(_type, entity, context=None, extended_id=None):
+    @route(ws.application.delete, payload=[
+        'context', 'ids', '_type', 'extended'
+    ])
+    def context(ids=None, _type=None, context=None, extended=False):
+        manager.remove(
+            ids=ids,
+            _type=_type,
+            context=context,
+            extended=extended
+        )
 
-    manager.put(
-        _type=_type, entity=entity, context=context, extended_id=extended_id)
+    @route(ws.application.post, payload=['entities', 'extended'])
+    def unify(entities, extended=False):
+        result = manager.unify_entities(entities=entities, extended=extended)
 
-    return entity
-
-
-@route(delete, payload=['context', 'ids', '_type', 'extended'])
-def context(ids=None, _type=None, context=None, extended=False):
-
-    manager.remove(ids=ids, _type=_type, context=context, extended=extended)
-
-
-@route(post, payload=['entities', 'extended'])
-def unify(entities, extended=False):
-
-    result = manager.unify_entities(entities=entities, extended=extended)
-
-    return result
+        return result

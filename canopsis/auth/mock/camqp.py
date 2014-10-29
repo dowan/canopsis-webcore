@@ -1,5 +1,6 @@
+#!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
-#--------------------------------
+# --------------------------------
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
 #
 # This file is part of Canopsis.
@@ -18,7 +19,23 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-# attach this project to canopsis package
-from pkgutil import extend_path
-__path__ = extend_path(__path__, __name__)
-__version__ = '0.8'
+import logging
+
+
+class CamqpMock(object):
+
+    exchange_name_alerts = 'mock_exchange_name_alerts'
+
+    def __init__(self, logging_level=logging.INFO, logging_name="%s-amqp_mock", on_ready=None):
+
+        self.exchange_name_events = 'camqpMock'
+        self.logger = logging.getLogger(self.exchange_name_events)
+        self.events = []
+
+    def publish(self, event, rk, exchange_name):
+        self.events.append(event)
+
+    def clean(self):
+        self.events = []
+
+    #TODO some other mock methods

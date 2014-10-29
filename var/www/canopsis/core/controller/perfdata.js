@@ -61,8 +61,10 @@ define([
                             'stop': tend / 1000
                         }),
                         'timeserie': JSON.stringify({
-                            'aggregation': method,
-                            'period': interval
+                            'aggregation': method
+                        }),
+                        'period': JSON.stringify({
+                            'second': interval
                         })
                     }
                 }).then(resolve, reject);

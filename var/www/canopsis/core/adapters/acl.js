@@ -19,11 +19,13 @@
 
 
 define([
+    'ember',
     'app/application',
     'app/adapters/application',
-], function(Application, ApplicationAdapter) {
+], function(Ember, Application, ApplicationAdapter) {
 
-    var get = Ember.get;
+    var get = Ember.get,
+        set = Ember.set;
 
     var adapter = ApplicationAdapter.extend({
 
@@ -53,6 +55,42 @@ define([
 
         findQuery: function(store, type, query) {
             return this.ajax(this.buildURL(type.typeKey, undefined, undefined, 'GET'), 'GET', { data: query });
+        },
+
+        createRecord: function(store, type, record) {
+            var me = this;
+
+            return new Ember.RSVP.Promise(function(resolve, reject) {
+                var url = me.buildURL(type.typeKey, undefined, record, 'POST');
+                var hash = me.serialize(record, {includeId: true});
+
+                var data = {};
+                data[type.typeKey] = JSON.stringify(hash);
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data
+                });
+            });
+        },
+
+        updateRecord: function(store, type, record) {
+            var me = this;
+
+            return new Ember.RSVP.Promise(function(resolve, reject) {
+                var url = me.buildURL(type.typeKey, undefined, record, 'POST');
+                var hash = me.serialize(record, {includeId: true});
+
+                var data = {};
+                data[type.typeKey] = JSON.stringify(hash);
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data
+                });
+            });
         },
 
         deleteRecord: function(store, type, record) {

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # --------------------------------
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
 #
@@ -18,149 +18,137 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-from bottle import get, delete, put, post
-
 from canopsis.common.ws import route
 from canopsis.perfdata.manager import PerfData
 from canopsis.timeserie.timewindow import TimeWindow, Period
 from canopsis.timeserie import TimeSerie
 
-import logging
 
+def exports(ws):
+    manager = PerfData()
 
-manager = PerfData()
-logger = logging.getLogger('webserver')
+    @route(ws.application.post, payload=['metric_id', 'timewindow'])
+    def perfdata_count(metric_id, timewindow=None):
+        if timewindow is not None:
+            timewindow = TimeWindow(**timewindow)
 
+        result = manager.count(
+            metric_id=metric_id, timewindow=timewindow
+        )
 
-@route(post, payload=['metric_id', 'timewindow', 'period'])
-def perfdata_count(metric_id, timewindow=None, period=None):
-    if timewindow is not None:
-        timewindow = TimeWindow(**timewindow)
+        return result
 
-    if period is not None:
-        period = Period(**period)
+    @route(
+        ws.application.post,
+        payload=[
+            'metric_id', 'with_meta',
+            'limit', 'skip',
+            'timewindow', 'period', 'timeserie'
+        ])
+    def perfdata(
+        metric_id, timewindow=None, period=None, with_meta=True,
+        limit=0, skip=0, timeserie=None
+    ):
+        if timewindow is not None:
+            timewindow = TimeWindow(**timewindow)
 
-    result = manager.count(
-        metric_id=metric_id, timewindow=timewindow, period=period)
-
-    return result
-
-
-@route(
-    post,
-    payload=[
-        'metric_id', 'with_meta',
-        'limit', 'skip',
-        'timewindow', 'period', 'timeserie'
-    ])
-def perfdata(
-    metric_id, timewindow=None, period=None, with_meta=True,
-    limit=0, skip=0, timeserie=None
-):
-    if timewindow is not None:
-        timewindow = TimeWindow(**timewindow)
-
-    if timeserie is not None:
-        timeserie = TimeSerie(**timeserie)
-
-    if period is not None:
-        period = Period(**period)
-
-    if not isinstance(metric_id, list):
-        metrics = [metric_id]
-
-    else:
-        metrics = metric_id
-
-    result = []
-
-    for metric_id in metrics:
-        ret = manager.get(
-            metric_id=metric_id, period=period, with_meta=with_meta,
-            timewindow=timewindow, limit=limit, skip=skip)
+        if period is not None:
+            period = Period(**period)
 
         if timeserie is not None:
-            if with_meta:
-                _points = timeserie.calculate(ret[0], timewindow=timewindow)
-                ret = (_points,) + ret[1:]
+            timeserie = TimeSerie(**timeserie)
+            timeserie.period = period
 
-            else:
-                ret = timeserie.calculate(ret, timewindow=timewindow)
-
-        if with_meta:
-            result.append({
-                "points": ret[0],
-                "meta": ret[1]
-            })
+        if not isinstance(metric_id, list):
+            metrics = [metric_id]
 
         else:
-            result.append({
-                "points": ret
-            })
+            metrics = metric_id
 
-    return (result, len(result))
+        result = []
 
+        for metric_id in metrics:
+            ret = manager.get(
+                metric_id=metric_id, with_meta=with_meta,
+                timewindow=timewindow, limit=limit, skip=skip
+            )
 
-@route(post, payload=['timewindow', 'limit', 'sort'])
-def perfdata_meta(metric_id, timewindow=None, limit=0, sort=None):
-    if timewindow is not None:
-        timewindow = TimeWindow(**timewindow)
+            if timeserie is not None:
+                if with_meta:
+                    pts = timeserie.calculate(ret[0], timewindow=timewindow)
+                    ret = (pts,) + ret[1:]
 
-    result = manager.get_meta(
-        metric_id=metric_id, timewindow=timewindow, limit=limit, sort=sort)
+                else:
+                    ret = timeserie.calculate(ret, timewindow=timewindow)
 
-    return result
+            if with_meta:
+                result.append({
+                    "points": ret[0],
+                    "meta": ret[1]
+                })
 
+            else:
+                result.append({
+                    "points": ret
+                })
 
-@route(put, payload=['metric_id', 'points', 'meta', 'period'])
-def perfdata(metric_id, points, meta=None, period=None):
-    if period is not None:
-        period = Period(**period)
+        return (result, len(result))
 
-    manager.put(metric_id=metric_id, points=points, meta=meta, period=period)
+    @route(ws.application.post, payload=['timewindow', 'limit', 'sort'])
+    def perfdata_meta(metric_id, timewindow=None, limit=0, sort=None):
+        if timewindow is not None:
+            timewindow = TimeWindow(**timewindow)
 
-    result = points
+        result = manager.get_meta(
+            metric_id=metric_id, timewindow=timewindow, limit=limit, sort=sort
+        )
 
-    return result
+        return result
 
+    @route(ws.application.put, payload=[
+        'metric_id', 'points', 'meta'
+    ])
+    def perfdata(metric_id, points, meta=None):
+        manager.put(
+            metric_id=metric_id, points=points, meta=meta
+        )
 
-@route(delete, payload=['metric_id', 'period', 'with_meta', 'timewindow'])
-def perfdata(metric_id, period=None, with_meta=False, timewindow=None):
-    if timewindow is not None:
-        timewindow = TimeWindow(**timewindow)
+        result = points
 
-    if period is not None:
-        period = Period(**period)
+        return result
 
-    manager.remove(
-        metric_id=metric_id, period=period, with_meta=with_meta,
-        timewindow=timewindow)
+    @route(ws.application.delete, payload=[
+        'metric_id', 'with_meta', 'timewindow'
+    ])
+    def perfdata(metric_id, with_meta=False, timewindow=None):
+        if timewindow is not None:
+            timewindow = TimeWindow(**timewindow)
 
-    result = None
+        manager.remove(
+            metric_id=metric_id, with_meta=with_meta,
+            timewindow=timewindow
+        )
 
-    return result
+        result = None
 
+        return result
 
-@route(put, payload=['metric_id', 'meta', 'timestamp'])
-def perfdata_meta(metric_id, meta, timestamp=None):
+    @route(ws.application.put, payload=['metric_id', 'meta', 'timestamp'])
+    def perfdata_meta(metric_id, meta, timestamp=None):
+        result = manager.put_meta(
+            metric_id=metric_id, meta=meta, timestamp=timestamp
+        )
 
-    result = manager.put_meta(
-        metric_id=metric_id, meta=meta, timestamp=timestamp)
+        return result
 
-    return result
+    @route(ws.application.get)
+    def perfdata_period(metric_id):
+        result = manager.get_period(metric_id)
 
+        return result
 
-@route(get)
-def perfdata_period(metric_id):
+    @route(ws.application.get)
+    def perfdata_internal(metric):
+        result = manager.is_internal(metric)
 
-    result = manager.get_period(metric_id)
-
-    return result
-
-
-@route(get)
-def perfdata_internal(metric):
-
-    result = manager.is_internal(metric)
-
-    return result
+        return result

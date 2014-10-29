@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # --------------------------------
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
 #
@@ -18,182 +18,62 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-from logging import getLogger, INFO
-from json import loads, dumps
-from time import time
+from canopsis.common.utils import ensure_iterable
+from canopsis.common.ws import route
+from canopsis import schema
 
-from bottle import put, request, HTTPError, post
-
-## Canopsis
-from canopsis.old.rabbitmq import Amqp
-import canopsis.old.event as cevent
+from bottle import HTTPError
 import requests
-
-logger = getLogger('Event')
-logger.setLevel(INFO)
-
-group_managing_access = 'group.CPS_event_admin'
-
-enable_crossdomain_send_events = False
-
-try:
-    enable_crossdomain_send_events = config.getboolean(
-        'server', "enable_crossdomain_send_events")
-except Exception as e:
-    logger.info("Setting \"enable_crossdomain_send_events\" does not seems to appear on webserver configuration. Using False as default value")
-    logger.debug(str(e))
-
-print("enable_crossdomain_send_events")
-print(enable_crossdomain_send_events)
+import json
 
 
-def load_amqp(host="localhost"):
-    amqp = Amqp(logging_name="Event-amqp", host=host)
-    amqp.start()
-    return amqp
+def exports(ws):
+    @route(ws.application.post, name='event', payload=['event', 'url'])
+    @route(ws.application.put, name='event', payload=['event', 'url'])
+    def send_event(event, url=None):
+        if ws.enable_crossdomain_send_events and url is not None:
+            payload = {
+                'event': json.dumps(event)
+            }
 
+            response = requests.post(url, data=payload)
+            
+            if response.status_code != 200:
+                api_response = json.loads(response.text)
 
-def unload_amqp(amqp):
-    if amqp:
-        amqp.stop()
-        amqp.join()
-
-
-## Handlers
-@post('/event')
-@put('/event')
-def send_event_route():
-
-    items = request.params.get('event', '[]')
-    if isinstance(items, str):
-        try:
-            items = loads(items)
-
-            if not isinstance(items, list):
-                items = [items]
-
-        except Exception as err:
-            logger.error("PUT: Impossible to parse data ({})".format(err))
-            return HTTPError(500, "Impossible to parse data")
-
-    host = request.params.get("host", "localhost")
-
-    messages = []
-    success = True
-    total = 0
-    for event in items:
-        result = send_event(event, host)
-        total += result['total']
-        success = success and result['success']
-        messages.append({
-            'event': cevent.get_routingkey(event),
-            'message': result['data']['message']
-        })
-
-    return {'total': total, 'success': success, 'messages': messages}
-
-
-def send_event(event, host):
-
-    timestamp = event.get('timestamp', time())
-
-    if timestamp is None:
-        timestamp = int(time())
-
-    if not isinstance(timestamp, int):
-        event['timestamp'] = int(timestamp)
-
-    mandatory_fields = ['connector', 'connector_name', 'event_type', 'source_type', 'component', 'state']
-    missing_fields = []
-
-    for field in mandatory_fields:
-        if event.get(field, None) is None:
-            missing_fields.append(field)
-
-    if missing_fields:
-        message = 'Missing {} argument in payload'.format(missing_fields)
-        logger.error(message)
-        return {'total': 0, 'success': False, 'data': {'message': message}}
-
-    if event.get('state_type', None) is None:
-        event['state_type'] = 1
-
-    def json2py(data, key):
-        value = data.get(key, None)
-        if value:
-            try:
-                value = loads(value)
-            except Exception as err:
-                logger.error("Impossible to parse '{0}' ({1})".format(key, err))
-
-        if not isinstance(value, list):
-            value = []
-        data[key] = value
-
-    json2py(event, 'tags')
-    json2py(event, 'perf_data_array')
-
-    forged_event = cevent.forger(
-        connector=event.get('connector', None),
-        connector_name=event.get('connector_name', None),
-        event_type=event.get('event_type', None),
-        source_type=event.get('source_type', None),
-        component=event.get('component', None),
-        resource=event.get('resource', None),
-        state=int(event.get('state', None)),
-        state_type=int(event.get('state_type', None)),
-        output=event.get('output', None),
-        long_output=event.get('long_output', None),
-        perf_data=event.get('perf_data', None),
-        perf_data_array=event.get('perf_data_array', None),
-        timestamp=event.get('timestamp', None),
-        display_name=event.get('display_name', None),
-        tags=event.get('tags', None),
-        ticket=event.get('ticket', None),
-        ref_rk=event.get('ref_rk', None),
-        author=event.get('author', None),
-        keep_state=event.get('keep_state', None)
-    )
-
-    logger.debug('Event crafted {}'.format(forged_event))
-
-    if host == "localhost":
-
-        key = cevent.get_routingkey(forged_event)
-
-        logger.info("now send event to amqp")
-
-        amqp = load_amqp(host)
-        amqp.publish(forged_event, key, amqp.exchange_name_events)
-        unload_amqp(amqp)
-
-        logger.debug('Amqp event published')
-
-        return {'total': 1, 'success': True, 'data':
-        {'message': 'Event send completed successfully'}}
-
-    else:
-        global enable_crossdomain_send_events
-
-        logger.info("sending event to host: " + host)
-        if enable_crossdomain_send_events is True:
-
-            payload = { 'event': dumps(forged_event)}
-
-            response = requests.post(host, data=payload)
-            if response.status_code == 200:
-
-                try:
-                    response = loads(response.text)
-                    if response['success']:
-                        response = 'Event send to remote host {} completed successfully'.format(host)
-                except Exception:
-                    response = 'error while parsing return valure from remote host {} event sent is uncertain'.format(host)
-                return {'total': 1, 'success': True, 'data': {'message': response}}
+                return (api_response['data'], api_response['total'])
 
             else:
-                return {'total': 0, 'success': False, 'data': {'message':'was unable to follow event @ {}'.format(host)}}
+                return HTTPError(response.status_code, response.text)
 
         else:
-            logger.info("Cross domain send_events are not authorized on the webserver, please check your webserver config file")
-            return HTTPError(403, "Cross domain send_events are not authorized on the webserver")
+            events = ensure_iterable(event)
+            exchange = ws.amqp.exchange_name_events
+
+            for event in events:
+                if schema.validate(event, 'cevent'):
+                    sname = 'cevent.{0}'.format(event['event_type'])
+
+                    if schema.validate(event, sname):
+                        if event['event_type'] == 'eue':
+                            sname = 'cevent.eue.{0}'.format(
+                                event['type_message']
+                            )
+
+                            if not schema.validate(event, sname):
+                                continue
+
+                        rk = '{0}.{1}.{2}.{3}.{4}'.format(
+                            event['connector'],
+                            event['connector_name'],
+                            event['event_type'],
+                            event['source_type'],
+                            event['component']
+                        )
+
+                        if event['source_type'] == 'resource':
+                            rk = '{0}.{1}'.format(rk, event['resource'])
+
+                        ws.amqp.publish(event, rk, exchange)
+
+            return events

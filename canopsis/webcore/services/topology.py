@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # --------------------------------
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
 #
@@ -23,97 +23,58 @@ from bottle import get, delete, put, post
 from canopsis.common.ws import route
 from canopsis.topology.manager import Topology
 
-manager = Topology()
 
+def exports(ws):
+    manager = Topology()
 
-@route(get)
-def topology(ids=None, add_nodes=True):
+    @route(get)
+    def topology(ids=None, add_nodes=True):
+        # converts possible [] into None
+        if not ids:
+            ids = None
 
-    if not ids:
-        ids = None
+        return manager.get(ids=ids, add_nodes=add_nodes)
 
-    result = manager.get(ids=ids, add_nodes=add_nodes)
+    @route(post, payload=('ids', 'add_nodes'))
+    def topology(ids=None, add_nodes=True):
+        # converts possible [] into None
+        if not ids:
+            ids = None
 
-    return result
+        return manager.get(ids=ids, add_nodes=add_nodes)
 
-@route(post, payload=('ids', 'add_nodes'))
-def topology(ids=None, add_nodes=True):
+    @route(get)
+    def topology_find(regex=None, add_nodes=False):
+        return manager.find(regex=regex, add_nodes=add_nodes)
 
-    if not ids:
-        ids = None
+    @route(put, payload='topology')
+    def topology(topology=None):
+        manager.put(topology=topology)
+        return topology
 
-    result = manager.get(ids=ids, add_nodes=add_nodes)
+    @route(delete)
+    def topology(ids=None):
+        manager.remove(ids=ids)
+        return ids
 
-    return result
+    @route(get)
+    def topology_nodes(ids=None):
+        return manager.get_nodes(ids=ids)
 
+    @route(post, payload='ids')
+    def topology_nodes(ids=None):
+        return manager.get_nodes(ids=ids)
 
-@route(get)
-def topology_find(regex=None, add_nodes=False):
+    @route(get)
+    def topology_nodes_find(entity_id=None):
+        return manager.find_nodes_by_entity_id(entity_id=entity_id)
 
-    result = manager.find(regex=regex, add_nodes=add_nodes)
+    @route(delete)
+    def topology_nodes(ids=None):
+        manager.remove_nodes(ids=ids)
+        return ids
 
-    return result
-
-
-@route(put, payload='topology')
-def topology(topology=None):
-
-    manager.put(topology=topology)
-
-    result = topology
-
-    return result
-
-
-@route(delete)
-def topology(ids=None):
-
-    manager.remove(ids=ids)
-
-    result = ids
-
-    return result
-
-
-@route(get)
-def topology_nodes(ids=None):
-
-    result = manager.get_nodes(ids=ids)
-
-    return result
-
-
-@route(post, payload='ids')
-def topology_nodes(ids=None):
-
-    result = manager.get_nodes(ids=ids)
-
-    return result
-
-
-@route(get)
-def topology_nodes_find(entity_id=None):
-
-    result = manager.find_nodes_by_entity_id(entity_id=entity_id)
-
-    return result
-
-
-@route(delete)
-def topology_nodes(ids=None):
-
-    manager.remove_nodes(ids=ids)
-
-    result = ids
-
-    return result
-
-
-@route(put, payload='topology_node')
-def topology_node(topology_node):
-
-    manager.put_node(topology_node=topology_node)
-
-    result = topology_node
-
-    return result
+    @route(put, payload='topology_node')
+    def topology_node(topology_node):
+        manager.put_node(topology_node=topology_node)
+        return topology_node

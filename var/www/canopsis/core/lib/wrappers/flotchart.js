@@ -34,7 +34,9 @@ define([
     'flotchart-stack',
     'flotchart-symbol',
     'flotchart-threshold',
-    'flotchart-time'
+    'flotchart-time',
+    'flotchart-valuelabel',
+    'flotchart-tooltip'
 ], function(Wrapper, $) {
     return Wrapper("flotchart", $, arguments, '0.8.3-alpha');
 });

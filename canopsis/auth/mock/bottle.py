@@ -1,5 +1,6 @@
+#!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
-#--------------------------------
+# --------------------------------
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
 #
 # This file is part of Canopsis.
@@ -18,7 +19,37 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-# attach this project to canopsis package
-from pkgutil import extend_path
-__path__ = extend_path(__path__, __name__)
-__version__ = '0.8'
+"""
+    Mock for bottle module.
+"""
+
+
+class MockSession(dict):
+    def save(self):
+        pass
+
+
+class MockRequest(object):
+    def __init__(self, *args, **kwargs):
+        super(MockRequest, self).__init__(*args, **kwargs)
+
+        self.params = {}
+        self.environ = {}
+
+
+class MockResponse(object):
+    def __init__(self, *args, **kwargs):
+        super(MockResponse, self).__init__(*args, **kwargs)
+
+        self.status = 200
+        self.headers = {}
+
+    def set_header(self, header, val):
+        self.headers[header] = val
+
+    def header(self, name):
+        return self.headers.get(name, None)
+
+
+def mock_redirect(url):
+    pass
