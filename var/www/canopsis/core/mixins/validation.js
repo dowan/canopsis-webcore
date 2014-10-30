@@ -57,11 +57,11 @@ define([
 
         set_tab: function(last_field_error){
             var categories = this.categories;
-            /* //@TODO MOMO
+
             for (var i = 0 ; i < categories.length ; i++){
                 var current = categories[i];
                 this.changeTAB( current.slug , false );
-                current.set("isDefault", false);
+                Ember.set(current, "isDefault", false);
             }
     outer:  for (var i = 0 ; i < categories.length ; i++){
                 var current = categories[i];
@@ -72,13 +72,12 @@ define([
 
                     if (field === last_field_error ){
                         this.changeTAB( current.slug , true );
-                        current.set("isDefault", true);
+                        Ember.set(current, "isDefault", true);
 
                         break outer;
                     }
                 }
             }
-            */
         },
 
         empty_validationFields: function() {

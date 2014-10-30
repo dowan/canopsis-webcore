@@ -44,6 +44,7 @@ define([
 
     loader.register('adapter:connector', adapter);
     loader.register('adapter:nagios', adapter);
+    loader.register('adapter:shinken', adapter);
 
     return adapter;
 });
