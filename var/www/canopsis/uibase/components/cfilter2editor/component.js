@@ -25,7 +25,8 @@ define([
 ], function(Ember, Clause, Condition) {
 
     var set = Ember.set,
-        get = Ember.get;
+        get = Ember.get,
+        __ = Ember.String.loc;
 
 
     var component = Ember.Component.extend({

@@ -24,7 +24,8 @@ define([
 
     var get = Ember.get,
         set = Ember.set,
-        isNone = Ember.isNone;
+        isNone = Ember.isNone,
+        __ = Ember.String.loc;
 
 
     var component = Ember.Component.extend({
@@ -63,9 +64,9 @@ define([
             var res = parseInt(unformattedDuration / conversionOperand);
 
             console.log(
-                'conversion operand is', conversionOperand, 
-                'unformattedDuration', unformattedDuration, 
-                'conversionOperand', conversionOperand, 
+                'conversion operand is', conversionOperand,
+                'unformattedDuration', unformattedDuration,
+                'conversionOperand', conversionOperand,
                 'res', res
             );
 
