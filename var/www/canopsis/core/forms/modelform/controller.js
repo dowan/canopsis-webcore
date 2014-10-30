@@ -19,6 +19,7 @@
 
 define([
     'ember',
+    'app/application',
     'app/lib/factories/form',
     'app/lib/schemasregistry',
     'app/mixins/inspectableitem',
@@ -26,7 +27,7 @@ define([
     'app/mixins/recordpreset',
     'app/lib/utils/slug',
     'app/lib/loaders/schemas'
-], function(Ember, FormFactory, schemasRegistry, InspectableitemMixin, ValidationMixin, RecordpresetMixin, slugUtils) {
+], function(Ember, Application, FormFactory, schemasRegistry, InspectableitemMixin, ValidationMixin, RecordpresetMixin, slugUtils) {
     var set = Ember.set,
         get = Ember.get,
         isNone = Ember.isNone;
@@ -137,7 +138,7 @@ define([
                 if (this.validation !== undefined && !this.validation()) {
                     return;
                 }
-
+                debugger;
                 console.log('submit action');
 
                 var override_inverse = {};
@@ -157,7 +158,7 @@ define([
                                 if(field && field._meta &&  field._meta.options){
                                     var metaoptions = field._meta.options;
                                     if( 'setOnCreate' in metaoptions){
-                                        var value = options.setOnCreate;
+                                        var value = metaoptions.setOnCreate;
                                         set(this, 'formContext.' + fieldName, value);
                                     }
                                 }
