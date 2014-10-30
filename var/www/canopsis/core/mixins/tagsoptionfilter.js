@@ -39,7 +39,5 @@ define([
     });
 
 
-    loader.register('mixin:tagsoptionfilter', mixin);
-
     return mixin;
 });

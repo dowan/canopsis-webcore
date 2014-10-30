@@ -27,7 +27,8 @@ var utilsFiles = [
     'dates',
     'indexes',
     'filterObject',
-    'widgetSelectors'
+    'widgetSelectors',
+    'dom'
 ];
 
 var deps = [];

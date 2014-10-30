@@ -125,7 +125,5 @@ define([
     });
 
 
-    loader.register('mixin:validation', mixin);
-
     return mixin;
 });

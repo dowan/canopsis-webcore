@@ -26,7 +26,6 @@ define([
     'jsonselect'
 ], function(Ember, DS, domReady) {
 
-    console.log('====================================== Application');
     var Application = Ember.Application.create({
         LOG_ACTIVE_GENERATION: false,
         LOG_TRANSITIONS: false,

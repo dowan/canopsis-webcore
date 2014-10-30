@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # --------------------------------
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
 #
@@ -18,82 +18,53 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-import logging
-
-from bottle import get, post, request, HTTPError
-
-from canopsis.old.storage import get_storage
-
-from canopsis.webcore.services.auth import get_account
-
-import json
+from canopsis.common.ws import route
 
 
-logger = logging.getLogger('Entities')
+def get_entity(ws, mfilter):
+    backend = ws.db.get_backend('entities')
+    return backend.find_one(mfilter)
 
 
-def get_entities_from_db(mfilter, skip=0, limit=0):
-	account = get_account()
-	storage = get_storage(namespace='entities', account=account)
-	backend = storage.get_backend()
+def get_entities(ws, mfilter, skip=0, limit=0):
+    backend = ws.db.get_backend('entities')
 
-	entities = backend.find(mfilter, skip=skip, limit=limit)
+    entities = backend.find(mfilter, skip=skip, limit=limit)
 
-	response = {
-		'total': entities.count(),
-		'data': [],
-		'success': True
-	}
+    total = entities.count()
+    data = []
 
-	for entity in entities:
-		tmp = entity
-		tmp['_id'] = str(tmp['_id'])
+    for entity in entities:
+        tmp = entity
+        tmp['_id'] = str(tmp['_id'])
 
-		response['data'].append(tmp)
+        data.append(tmp)
 
-	return response
+    return (data, total)
 
-@get('/entities/')
-def get_all_entities():
-	return get_entities_from_db({})
 
-@get('/entities/:etype')
-def get_all_typed_entities(etype):
-	return get_entities_from_db({
-		'type': etype
-	})
+def exports(ws):
+    @route(ws.application.get, payload=['start', 'limit'])
+    def entities(etype=None, ename=None, start=0, limit=0):
+        efilter = {}
 
-@get('/entities/:etype/:ename')
-def get_specific_entity(etype, ename):
-	identifier = 'name'
+        if etype is not None:
+            efilter['type'] = etype
 
-	# Specific cases :
-	if etype == 'downtime':
-		identifier = 'id'
+            if ename is not None:
+                identifier = 'name'
 
-	elif etype == 'ack':
-		identifier = 'timestamp'
+                # Specific cases :
+                if etype == 'downtime':
+                    identifier = 'id'
 
-	return get_entities_from_db({
-		'type': etype,
-		identifier: ename
-	})
+                elif etype == 'ack':
+                    identifier = 'timestamp'
 
-@post('/entities/')
-def get_entities_with_custom_filter():
-	if 'filter' not in request.params:
-		return HTTPError(500, json.dumps({
-			'total': 0,
-			'data': [],
-			'success': False,
-			'error': str(err)
-		}))
+                efilter[identifier] = ename
 
-	mfilter = json.loads(request.params['filter'])
+        return get_entities(ws, efilter, skip=start, limit=limit)
 
-	start = int(request.params.get('start', 0))
-	limit = int(request.params.get('limit', 0))
-
-	logger.debug('Start: {0}, Limit: {1}, Filter: {2}'.format(start, limit, mfilter))
-
-	return get_entities_from_db(mfilter, skip=start, limit=limit)
+    @route(ws.application.post, payload=['filter', 'start', 'limit'])
+    def entities(filter, start=0, limit=0):
+        return get_entities(ws, filter, skip=start, limit=limit)

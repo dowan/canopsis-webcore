@@ -46,7 +46,5 @@ define([
     });
 
 
-    loader.register('mixin:infobutton', mixin);
-
     return mixin;
 });

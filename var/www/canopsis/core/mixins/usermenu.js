@@ -29,7 +29,5 @@ define([
     var mixin = Mixin('usermenu', {});
 
 
-    loader.register('mixin:usermenu', mixin);
-
     return mixin;
 });

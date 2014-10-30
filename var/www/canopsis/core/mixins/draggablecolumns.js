@@ -92,8 +92,5 @@ define([
         }
     });
 
-
-    loader.register('mixin:draggablecolumns', mixin);
-
     return mixin;
 });

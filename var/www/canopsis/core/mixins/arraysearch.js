@@ -139,8 +139,5 @@ define([
         }.observes('shown_columns')
     });
 
-
-    loader.register('mixin:arraysearch', mixin);
-
     return mixin;
 });

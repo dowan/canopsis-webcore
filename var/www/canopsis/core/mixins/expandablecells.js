@@ -95,8 +95,5 @@ define([
         }
     });
 
-
-    loader.register('mixin:expandablecell', mixin);
-
     return mixin;
 });

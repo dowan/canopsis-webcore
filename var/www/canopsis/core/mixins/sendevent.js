@@ -71,7 +71,7 @@ define([
 
             var record = {
                 authkey: get(this, 'login.authkey'),
-                author: get(this, 'login.user'),
+                author: get(this, 'login._id'),
                 id: get(crecord, 'id'),
                 connector: get(crecord, 'connector'),
                 connector_name: get(crecord, 'connector_name'),
@@ -618,7 +618,6 @@ define([
         }
     });
 
-    loader.register('mixin:sendevent', mixin);
 
     return mixin;
 });

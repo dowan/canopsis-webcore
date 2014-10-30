@@ -34,7 +34,5 @@ define([
     });
 
 
-    loader.register('mixin:schemamanager', mixin);
-
     return mixin;
 });

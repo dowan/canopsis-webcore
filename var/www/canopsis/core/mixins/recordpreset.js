@@ -33,7 +33,5 @@ define([
     });
 
 
-    loader.register('mixin:recordpreset', mixin);
-
     return mixin;
 });

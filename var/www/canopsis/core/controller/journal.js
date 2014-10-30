@@ -34,7 +34,7 @@ define([
 
         actions: {
             publish: function(action, component) {
-                var user = get(this, 'controllers.login.record.user');
+                var user = get(this, 'controllers.login.record._id');
 
                 var ev = {
                     timestamp: Date.now() / 1000,

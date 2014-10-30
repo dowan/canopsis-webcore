@@ -9,10 +9,11 @@ define([], function () {
         DEBUG: true,
         VERBOSE: 1,
         DISPLAY_SCHEMA_MANAGER: true,
-        REFRESH_ALL_WIDGETS: false,
+        REFRESH_ALL_WIDGETS: true,
         TRANSLATE: true,
         SHOW_TRANSLATIONS: false
     };
+
 
     if(canopsisConfiguration.DEBUG === false) {
         console.log = function() {};

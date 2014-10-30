@@ -20,7 +20,7 @@ define(['ember', 'utils'], function(Ember, utils) {
 
     Ember.Handlebars.helper('tr', function(value) {
 
-        var translation = utils.i18n._(value);
+        var translation = Ember.String.loc(value);
 
         console.log('translating', value, 'into', translation);
 

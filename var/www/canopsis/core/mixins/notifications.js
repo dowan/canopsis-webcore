@@ -71,7 +71,5 @@ define([
     });
 
 
-    loader.register('mixin:notifications', mixin);
-
     return mixin;
 });

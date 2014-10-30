@@ -76,8 +76,7 @@ define([
             setState:function (state) {
                 set(this, 'content', parseInt(state));
             }
-        },
-
+        }
     });
 
 

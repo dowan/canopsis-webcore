@@ -36,7 +36,5 @@ define([
     });
 
 
-    loader.register('mixin:timeintervalselection', mixin);
-
     return mixin;
 });
