@@ -20,11 +20,27 @@
 define(['ember' , 'utils'], function(Ember , utils) {
 
     Ember.Handlebars.helper('conf', function( controller ) {
+        function convertDictToArray(dict) {
+            var fieldsArray = Ember.A();
+            for (var attr in dict){
+                if (dict.hasOwnProperty(attr)) {
+                    var newObject = Ember.Object.create({value : dict[attr] , field : attr });
+                    fieldsArray.pushObject(newObject);
+                    console.log ( "Added "+ attr + " = " + dict[attr] +" newObject = " + newObject[attr]);
+                }
+            }
+            return fieldsArray;
+        };
 
         var options_filter =  this.record.get("options_filter");
+        var options_filter_string = Ember.A();
+        options_filter.filter(function(element){
+            options_filter_string.pushObject(element.name);
+        });
+
         var options = utils.filterObject.getFieldsByPrefix( "_opt_" , this.record.content , function( attr , result ,record ){
             var field = attr.slice(5);
-            if ( options_filter.contains ( field )){
+            if ( options_filter_string.contains ( field )){
                 var value = record.get( attr );
                 var option = Ember.Object.create({ value : value , field : field });
                 result.pushObject( option );

@@ -42,17 +42,20 @@ define([
             contentREF.push(template);
         },
 
+
         getAndApplyMixin:function( MixinName , _self ){
         //    var MixinName = this.get("MixinName");
             Ember.assert('You Must pass a valid _self on ComponentTags', !Ember.isEmpty( _self ));
 
             var initMixin ;
-            if ( !Ember.isEmpty( MixinName ) ){
-                initMixin = mixinsregistry.all[ MixinName ];
+            if (!Ember.isEmpty(MixinName)){
+                initMixin = mixinsregistry.all.filter(function(element){
+                    return element.name === MixinName;
+                });
                 Ember.assert('no mixin found ', !Ember.isEmpty( initMixin ));
 
-                initMixin.apply( _self );
-                initMixin.detect(_self);
+                initMixin[0].EmberClass.mixins[0].apply(_self);
+                initMixin[0].EmberClass.mixins[0].detect(_self);
             }
         },
 
