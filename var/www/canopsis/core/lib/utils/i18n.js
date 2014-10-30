@@ -19,12 +19,9 @@
 
 define([
     'jquery',
-    'ember',
     'canopsis/canopsisConfiguration'
-], function($, Ember, conf) {
+], function($, conf) {
 
-    var get = Ember.get,
-        set = Ember.set;
 
     var i18n = {
         todo: [],
@@ -39,7 +36,7 @@ define([
                 //This is just a number, it is useless to translate it.
                 return word;
             } else {
-                translated = get(i18n.translations, i18n.lang + '.' + word);
+                translated = i18n.translations[i18n.lang][word];
 
                 if (translated) {
                     return i18n.showTranslation(translated);
@@ -70,6 +67,7 @@ define([
                 return word;
             }
         },
+
         uploadDefinitions: function () {
 
             $.ajax({
@@ -88,6 +86,7 @@ define([
                 async: false
             });
         },
+
         downloadDefinitions: function () {
 
             $.ajax({
@@ -119,6 +118,7 @@ define([
                 });
             }
         },
+
         getUserLanguage: function(){
             $.ajax({
                 url: '/account/me',
