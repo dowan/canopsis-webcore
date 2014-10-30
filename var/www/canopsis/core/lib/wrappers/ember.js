@@ -20,10 +20,11 @@ var Ember;
 
 define([
     'app/lib/factories/wrapper',
+    'app/lib/utils/i18n',
+    'app/lib/utils/notification',
     'webcore-libs/dev/ember',
-    'webcore-libs/jquery-resize/jquery.ba-resize',
-    'app/lib/utils/notification'
-], function(Wrapper, notificationUtils) {
+    'webcore-libs/jquery-resize/jquery.ba-resize'
+], function(Wrapper, i18n, notificationUtils) {
 
     var get = Ember.get;
 
@@ -44,6 +45,8 @@ define([
             this._super.apply(this, arguments);
         }
     };
+
+    Ember.STRINGS = i18n.translations[i18n.lang];
 
     Ember.Controller.reopen(controllerDict);
     Ember.ArrayController.reopen(controllerDict);
