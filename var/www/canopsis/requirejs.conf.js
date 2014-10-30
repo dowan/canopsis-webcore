@@ -54,7 +54,11 @@ require.config({
         'flotchart-threshold': 'webcore-libs/flot/jquery.flot.threshold',
         'flotchart-time': 'webcore-libs/flot/jquery.flot.time',
         'flotchart-valuelabel': 'webcore-libs/flot-plugins/custom/jquery.flot.valuelabel',
-        'flotchart-tooltip': 'webcore-libs/flot-plugins/custom/jquery.flot.tooltip'
+        'flotchart-tooltip': 'webcore-libs/flot-plugins/custom/jquery.flot.tooltip',
+
+        'jsplumb': 'webcore-libs/jsplumb/dist/js/jquery.jsPlumb-1.6.4',
+        'd3': 'webcore-libs/d3/d3',
+        'cy': 'webcore-libs/cytoscape/dist/cytoscape'
     },
 
     shim: {
@@ -180,6 +184,10 @@ require.config({
 
         'flotchart-tooltip': {
             deps: ['jquery', 'flotchart']
+        },
+
+        'jsplumb': {
+            deps: ['jquery']
         }
     }
 });
