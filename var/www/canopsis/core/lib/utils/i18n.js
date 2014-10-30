@@ -30,7 +30,7 @@ define([
         _: function(word) {
 
             if(Ember) {
-                Ember.deprecate('You should not use i18n tools directly when ember is loaded. Please consider using Ember.String.loc instead. '+ conf.EmberIsLoaded, !conf.EmberIsLoaded);
+                Ember.deprecate('You should not use i18n tools directly when ember is loaded. Please consider using Ember.String.loc instead. ', !conf.EmberIsLoaded);
             }
 
             if (typeof word !== 'string') {

@@ -240,13 +240,12 @@ var setLoadingInfo = function(text, icon) {
     }
 };
 
-define(['text!canopsis/enabled.json', 'app/lib/wrappers/console'], function(enabledPlugins) {
+define(['text!canopsis/enabled.json', 'app/lib/wrappers/console', 'app/lib/objects/loader'], function(enabledPlugins) {
     enabledPlugins = JSON.parse(enabledPlugins);
 
     setLoadingInfo('Fetching frontend plugin-ins', 'fa-cubes');
 
     var deps = [
-        'app/lib/objects/loader',
         'canopsis/file_loader',
         'seeds/RoutesLoader',
         'app/lib/wrappers/extend',
