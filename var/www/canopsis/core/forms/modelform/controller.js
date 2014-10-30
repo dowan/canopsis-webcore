@@ -19,7 +19,6 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/factories/form',
     'app/lib/schemasregistry',
     'app/mixins/inspectableitem',
@@ -27,7 +26,7 @@ define([
     'app/mixins/recordpreset',
     'app/lib/utils/slug',
     'app/lib/loaders/schemas'
-], function(Ember, Application, FormFactory, schemasRegistry, InspectableitemMixin, ValidationMixin, RecordpresetMixin, slugUtils) {
+], function(Ember, FormFactory, schemasRegistry, InspectableitemMixin, ValidationMixin, RecordpresetMixin, slugUtils) {
     var set = Ember.set,
         get = Ember.get,
         isNone = Ember.isNone;
@@ -138,7 +137,6 @@ define([
                 if (this.validation !== undefined && !this.validation()) {
                     return;
                 }
-                debugger;
                 console.log('submit action');
 
                 var override_inverse = {};
