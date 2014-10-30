@@ -36,6 +36,7 @@ def topology(ids=None, add_nodes=True):
 
     return result
 
+
 @route(post, payload=('ids', 'add_nodes'))
 def topology(ids=None, add_nodes=True):
 
@@ -76,17 +77,17 @@ def topology(ids=None):
 
 
 @route(get)
-def topology_nodes(ids=None):
+def topology_nodes(topology_id=None, ids=None):
 
-    result = manager.get_nodes(ids=ids)
+    result = manager.get_nodes(topology_id=topology_id, ids=ids)
 
     return result
 
 
-@route(post, payload='ids')
-def topology_nodes(ids=None):
+@route(post, payload=['topology_id', 'ids'])
+def topology_nodes(topology_id=None, ids=None):
 
-    result = manager.get_nodes(ids=ids)
+    result = manager.get_nodes(topology_id=topology_id, ids=ids)
 
     return result
 

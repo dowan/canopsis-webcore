@@ -63,7 +63,7 @@ var components = [
     { name: 'components/component-textwithsortoption', url: 'canopsis/uibase/components/textwithsortoption/component', template: 'canopsis/uibase/components/textwithsortoption/template.html' },
     { name: 'components/component-tooltip', url: 'canopsis/uibase/components/tooltip/component', template: 'canopsis/uibase/components/tooltip/template.html' },
     { name: 'components/component-typedvalue', url: 'canopsis/uibase/components/typedvalue/component', template: 'canopsis/uibase/components/typedvalue/template.html' },
-    { name: 'components/component-userpreferencesmanager', url: 'canopsis/uibase/components/userpreferencesmanager/component', template: 'canopsis/uibase/components/userpreferencesmanager/template.html' },
+    { name: 'components/component-userpreferencesmanager', url: 'canopsis/uibase/components/userpreferencesmanager/component', template: 'canopsis/uibase/components/userpreferencesmanager/template.html' }
 ];
 
 loader.loadWithTemplates(components);
