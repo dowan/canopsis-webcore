@@ -54,7 +54,7 @@ define([
     };
 
     //TEMP
-    Application.connector = [ { name : "nagios" }, { name : "shinken" } , { name : "schneider" } , { name : "collectd" }];
+    Application.connector = [{ name : "nagios" }, { name : "shinken" } , { name : "schneider" } , { name : "collectd" }];
 
     Application.manifest = routes;
 
