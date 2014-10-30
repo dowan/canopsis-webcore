@@ -19,9 +19,8 @@
 
 
 define([
-    'ember',
-    'app/application'
-], function(Ember, Application) {
+    'ember'
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -170,7 +169,13 @@ define([
         }
     });
 
-    Application.ComponentEventselectorComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-eventselector",
+        initialize: function(container, application) {
+            application.register('component:component-eventselector', component);
+        }
+    });
 
     return component;
 });

@@ -20,9 +20,8 @@
 define([
     'ember',
     'ember-data',
-    'app/application',
     'app/lib/wrappers/icheck'
-], function(Ember, DS, Application) {
+], function(Ember, DS) {
 
     var set = Ember.set,
         get = Ember.get;
@@ -70,7 +69,13 @@ define([
         }
     });
 
-    Application.ComponentCheckboxComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-checkbox",
+        initialize: function(container, application) {
+            application.register('component:component-checkbox', component);
+        }
+    });
 
     return component;
 });

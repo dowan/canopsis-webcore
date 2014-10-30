@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
-    'app/application'
-], function(Ember, Application) {
+    'ember'
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -62,7 +61,12 @@ define([
         }
     });
 
-    Application.ComponentExpandableaddbuttonComponent = component;
+    Ember.Application.initializer({
+        name:"component-expandableaddbutton",
+        initialize: function(container, application) {
+            application.register('component:component-expandableaddbutton', component);
+        }
+    });
 
     return component;
 });

@@ -19,12 +19,11 @@
 
 define([
     'ember-data',
-    'app/application',
     'app/serializers/application',
     'app/mixins/embeddedrecordserializer',
     'utils',
     'app/lib/loaders/schemas'
-], function(DS, Application, ApplicationSerializer, EmbeddedRecordSerializerMixin, cutils) {
+], function(DS, ApplicationSerializer, EmbeddedRecordSerializerMixin, cutils) {
 
     var serializer = ApplicationSerializer.extend(
         EmbeddedRecordSerializerMixin,
@@ -36,14 +35,14 @@ define([
             var xtype = sname.slice('Crecord.cservice.'.length);
             var modelname = xtype[0].toUpperCase() + xtype.slice(1);
 
-            var serializerName = modelname + 'Serializer';
+            var serializerName = modelname.dasherize();
             console.log('Add serializer:', serializerName);
 
-            Application[serializerName] = serializer.extend({});
+            loader.register('serializer:' + serializerName, serializer.extend({}));
         }
     }
 
-    Application.CserviceSerializer = serializer;
+    loader.register('serializer:cservice', serializer);
 
     return serializer;
 });

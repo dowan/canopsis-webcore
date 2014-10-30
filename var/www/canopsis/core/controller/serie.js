@@ -21,11 +21,10 @@ define([
     'jquery',
     'ember',
     'ember-data',
-    'app/application',
     'math',
     'app/lib/utils/hash',
     'app/controller/perfdata'
-], function($, Ember, DS, Application, math, hash) {
+], function($, Ember, DS, math, hash) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -84,9 +83,9 @@ define([
                 for(i = 0; i < nmetric; i++) {
                     var metric = metrics[i];
 
-                    var mname = metric.meta[0].value.metric;
-                    var cid = metric.meta[0].cid;
+                    var cid = metric.meta[0].data_id;
                     var mid = 'metric_' + hash.md5(cid);
+                    var mname = '/' + cid.split('/').slice(4).join('/');
 
                     // replace metric name in formula by the unique id
                     formula = formula.replaceAll(mname, mid);
@@ -147,7 +146,7 @@ define([
         }
     });
 
-    Application.SerieController = controller;
+    loader.register('controller:serie', controller);
 
     return controller;
 });

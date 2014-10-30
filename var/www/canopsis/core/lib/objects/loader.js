@@ -19,6 +19,8 @@
 
 define([], function() {
 
+    var appInstance;
+
     var makeDeps = function(requirementList) {
 
         var jsDeps = [];
@@ -68,6 +70,37 @@ define([], function() {
                 }
 
             });
+        },
+
+        /**
+         * register the Application instance for the #register function
+         */
+        setApplication: function(app) {
+            appInstance = app;
+        },
+
+        /*
+         * a function used to deprecate the standard used for dependancy injection in favor of Ember regular dep injection
+         * @see http://emberjs.com/guides/understanding-ember/dependency-injection-and-service-lookup/#toc_dependency-management-in-ember-js for more details of the future usage
+         * @argument name {string} the full name (something like 'component:my-component' or 'controller:application')
+         * @argument classToRegister {object} the Ember class to register
+         */
+        register: function(name, classToRegister) {
+                var splittedName = name.split(':');
+
+                var dasherizedName = splittedName[1] + '-' + splittedName[0];
+                var classifiedName = dasherizedName.classify();
+
+            if(appInstance) {
+                appInstance[classifiedName] = classToRegister;
+            } else {
+                Ember.Application.initializer({
+                    name: name,
+                    initialize: function(container, application) {
+                        application.register(name, classToRegister);
+                    }
+                });
+            }
         }
     };
 

@@ -19,9 +19,8 @@
 
 
 define([
-    'ember',
-    'app/application',
-], function(Ember, Application) {
+    'ember'
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -77,11 +76,16 @@ define([
             setState:function (state) {
                 set(this, 'content', parseInt(state));
             }
-        },
-
+        }
     });
 
-    Application.ComponentStateeditorComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-stateeditor",
+        initialize: function(container, application) {
+            application.register('component:component-stateeditor', component);
+        }
+    });
 
     return component;
 });

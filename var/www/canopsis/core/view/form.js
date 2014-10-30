@@ -18,13 +18,12 @@
 */
 
 define([
-    'ember',
-    'app/application'
-], function(Ember, Application) {
+    'ember'
+], function(Ember) {
 
     var view = Ember.View.extend({});
 
-    Application.FormView = view;
+    loader.register('view:form', view);
 
     return view;
 });

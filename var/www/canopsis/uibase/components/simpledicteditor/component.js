@@ -19,9 +19,8 @@
 
 define([
     'jquery',
-    'ember',
-    'app/application'
-], function($, Ember, Application) {
+    'ember'
+], function($, Ember) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -80,7 +79,13 @@ define([
         }
     });
 
-    Application.ComponentSimpledicteditorComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-simpledicteditor",
+        initialize: function(container, application) {
+            application.register('component:component-simpledicteditor', component);
+        }
+    });
 
     return component;
 });

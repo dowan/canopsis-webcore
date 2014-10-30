@@ -20,13 +20,13 @@
 define([
     'jquery',
     'ember',
-    'app/application',
     'app/lib/utils/forms',
-    'app/lib/utils/debug',
-    'app/lib/loaders/schemas',
-], function($, Ember, Application, formUtils, debugUtils) {
+    'app/lib/utils/debug'
+], function($, Ember, formUtils, debugUtils) {
+
     var get = Ember.get,
         set = Ember.set;
+
 
     var eventedController = Ember.Controller.extend(Ember.Evented, {
 
@@ -164,7 +164,7 @@ define([
         }.property()
     });
 
-    Application.FormController = controller;
+    loader.register('controller:form', controller);
 
     return controller;
 });

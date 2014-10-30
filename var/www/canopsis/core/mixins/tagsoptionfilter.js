@@ -19,11 +19,10 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/utils/filterObject',
     'app/lib/formsregistry',
     'app/lib/factories/mixin'
-], function(Ember, Application , filterObjectUtils, formsregistry, Mixin) {
+], function(Ember , filterObjectUtils, formsregistry, Mixin) {
 // TODO: just make a function from this
 
     var mixin = Mixin('tagsoptionfilter', {

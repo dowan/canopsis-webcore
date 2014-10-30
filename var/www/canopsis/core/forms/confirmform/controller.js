@@ -19,9 +19,8 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/factories/form',
-], function(Ember, Application, FormFactory) {
+], function(Ember, FormFactory) {
 
     var formOptions = {};
     var form = FormFactory('confirmform', {

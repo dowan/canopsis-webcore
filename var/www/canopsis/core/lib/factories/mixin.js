@@ -47,7 +47,6 @@ define([
             EmberClass: Application[mixinName]
         });
 
-
         mixinsRegistry.all.push(registryEntry);
 
         console.groupEnd();

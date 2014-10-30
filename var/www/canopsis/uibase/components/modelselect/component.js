@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
-    'app/application',
-], function(Ember, Application) {
+    'ember'
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -40,7 +39,7 @@ define([
             var model = get(this, 'selectedModel');
             console.log('Select record:', model);
 
-            set(this, 'content.value', model.id);
+            set(this, 'content.value', get(model, 'id'));
         }.observes('selectedModel'),
 
         availableModels: function() {
@@ -55,15 +54,17 @@ define([
 
             var store = DS.Store.create({
                 container: get(this, "container")
-            })
+            });
 
             set(this, "componentDataStore", store);
 
             var selectedId = get(this, 'content.value');
-            var promise = undefined;
+            var promise;
             var me = this;
 
             if(selectedId) {
+                console.log('Select model instance:', selectedId);
+
                 var model = get(this, 'model');
                 promise = store.find(model, selectedId);
 
@@ -71,6 +72,7 @@ define([
                     set(me, 'selectedModel', record);
                 });
             } else {
+                console.log('Select first available model');
                 promise = get(this, 'availableModels');
 
                 promise.then(function(result) {
@@ -82,7 +84,13 @@ define([
         }
     });
 
-    Application.ComponentModelselectComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-modelselect",
+        initialize: function(container, application) {
+            application.register('component:component-modelselect', component);
+        }
+    });
 
     return component;
 });

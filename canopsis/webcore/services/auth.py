@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# --------------------------------
+# -*- coding: utf-8 -*-
+#--------------------------------
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
 #
 # This file is part of Canopsis.
@@ -18,307 +18,161 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-import logging
+from canopsis.common.ws import route
+from bottle import redirect, response, HTTPError, urlencode
 
-from bottle import \
-    get, request, response, post, HTTPError, redirect
+from hashlib import sha1
+from time import time
 
-## Canopsis
-from canopsis.old.account import Account
-from canopsis.old.storage import get_storage
-
-logger = logging.getLogger("auth")
-logger.setLevel(logging.INFO)
-
-#session variable
-session_accounts = {
-    'anonymous': Account()
-}
-
-# List of plugins to skip
-# CAS will handle the logout method
-auth_backends = ['AuthKeyBackend', 'LDAPBackend', 'CASBackend',
-'EnsureAuthenticated']
-auth_backends_logout = ['AuthKeyBackend', 'LDAPBackend', 'EnsureAuthenticated']
+from . import session
+from . import rights
 
 
-class EnsureAuthenticated(object):
-    name = 'EnsureAuthenticated'
+def check(mode='authkey', user=None, password=None):
+    def _check_shadow(user, key):
+        if user and user['shadowpasswd'].upper() == key.upper():
+            return user
 
-    def apply(self, callback, context):
-        def decorated(*args, **kwargs):
-            s = request.environ.get('beaker.session')
+        return None
 
-            if not s.get('auth_on', False):
-                return HTTPError(401, 'Not authorized')
+    def _check_plain(user, key):
+        shadowpasswd = sha1(key).hexdigest()
+        return _check_shadow(user, shadowpasswd)
 
-            return callback(*args, **kwargs)
+    def _check_crypted(user, key):
+        if user:
+            shadowpasswd = user['shadowpasswd'].upper()
+            ts = str(int(time() / 10) * 10)
+            tmpKey = '{0}{1}'.format(shadowpasswd, ts)
 
-        return decorated
+            cryptedKey = sha1(tmpKey).hexdigest().upper()
 
+            if cryptedKey == key.upper():
+                return user
 
-@post('/auth', skip=auth_backends)
-def auth():
-    login = request.params.get('username', default=None)
-    password = request.params.get('password', default=None)
+        return None
 
-    if not login or not password:
-        return HTTPError(400, "Invalid arguments")
+    def _check_authkey(user, key):
+        manager = rights.get_manager()
 
-    mode = 'plain'
+        if not user:
+            user = manager.user_storage.get_elements(
+                query={
+                    'crecord_type': 'user',
+                    'authkey': key
+                }
+            )
 
-    if request.params.get('shadow', default=False):
-        mode = 'shadow'
-
-    if request.params.get('cryptedKey', default=False) or request.params.get('crypted', default=False):
-        mode = 'crypted'
-
-    _id = "account.%s" % login
-
-    logger.debug(" + _id:      %s" % _id)
-    logger.debug(" + Login:    %s" % login)
-    logger.debug(" + Mode:     %s" % mode)
-
-    storage = get_storage(namespace='object')
-    account = None
-
-    ## Local
-    try:
-        account = Account(storage.get(_id, account=Account(user=login)))
-    except Exception as err:
-        logger.error(err)
-
-    ## Check
-    if not account or account.external:
-        if mode == 'plain':
-            response.status = 307
-            response.set_header('Location', '/auth/external')
-
-            return 'username={0}&password={1}'.format(login, password)
+        if user and user['authkey'] == key:
+            return user
 
         else:
-            return HTTPError(403, 'Plain authentication required')
+            return None
 
-    if not account.is_enable():
-        return HTTPError(403, "This account is not enabled")
-
-    logger.debug(" + Check with local db")
-    access = False
-
-    if mode == 'plain':
-        access = account.check_passwd(password)
-
-    elif mode == 'shadow':
-        access = account.check_shadowpasswd(password)
-
-    elif mode == 'crypted':
-        access = account.check_tmp_cryptedKey(password)
-
-    if not access:
-        logger.debug(" + Invalid password ...")
-        return HTTPError(403, "Forbidden")
-
-    create_session(account)
-
-    redirect('/')
-
-
-@post('/auth/external')
-def doauth():
-    # When we arrive here, the Bottle plugins in charge of authentication have
-    # initialized the session, we just need to redirect to the index.
-    redirect('/static/canopsis/index.html')
-
-
-@get('/logged_in')
-def logged_in():
-    # Route used when came back from CAS or any other external backend
-    redirect('/static/canopsis/index.html')
-
-
-@get('/autoLogin/:key', skip=auth_backends)
-def autoLogin(key=None):
-    if not key:
-        return HTTPError(400, "No key provided")
-
-    account = check_authkey(key)
-
-    if not account:
-        return HTTPError(403, "Forbidden")
-
-    if not account.is_enable():
-        logger.debug(" + Account is disabled")
-        return HTTPError(403, "Account is disabled")
-
-    create_session(account)
-
-    return {'total': 1, 'data': [account.dump()], 'success': True}
-
-
-@get('/logout', skip=auth_backends_logout)
-@get('/disconnect', skip=auth_backends_logout)
-def disconnect():
-    s = request.environ.get('beaker.session')
-    user = s.get('account_user', None)
-
-    if not user:
-        return HTTPError(403, "Forbidden")
-
-    logger.debug("Disconnect '%s'" % user)
-    delete_session()
-
-    redirect('/')
-    # return {'total': 0, 'success': True, 'data': []}
-
-
-def get_account(_id=None):
-    """
-    find the account in memory, or try to find it from database,
-    if not in db log anon
-    """
-    logger.debug("Get Account:")
-
-    s = request.environ.get('beaker.session')
-
-    if not _id:
-        _id = s.get('account_id', None)
-
-    logger.debug(" + _id: %s" % _id)
-
-    if not _id:
-        logger.debug("  + Failed")
-        return session_accounts['anonymous']
-
-    logger.debug("Load account from cache")
-    account = session_accounts.get(_id, None)
-
-    if account:
-        return account
-
-    logger.debug("  + Failed")
-
-    logger.debug("Load account from DB")
-
-    try:
-        storage = get_storage(namespace='object')
-        account = Account(storage.get(_id, account=Account(user='root')))
-    except Exception as err:
-        logger.debug("  + Failed: %s" % err)
-        return session_accounts['anonymous']
-
-    session_accounts[_id] = account
-    return account
-
-
-def reload_account(_id):
-    """
-    cache is cool, but when you change rights, cache still have old rights,
-    so reload
-    """
-    logger.info('Reload cache and session')
-
-    try:
-        account = get_account()
-        storage = get_storage(namespace='object')
-        record = storage.get(_id, account=account)
-    except Exception as err:
-        logger.error('Impossible to load record: %s' % err)
-        return False
-
-    account = Account(record)
-
-    if not account:
-        logger.error('Impossible to load account')
-        return False
-
-    session_accounts[account._id] = account
-
-    logger.debug(' + Session and cache are reloaded')
-    return True
-
-
-def check_authkey(key, account=None):
-    storage = get_storage(namespace='object')
-
-    mfilter = {
-        'crecord_type': 'account',
-        'authkey': key,
+    handlers = {
+        'plain': _check_plain,
+        'shadow': _check_shadow,
+        'crypted': _check_crypted,
+        'authkey': _check_authkey
     }
 
-    logger.debug("Search authkey: '%s'" % key)
+    if mode in handlers:
+        return handlers[mode](user, password)
 
-    record = storage.find_one(mfilter=mfilter, account=Account(user='root'))
-
-    if not record:
-        return None
-
-    logger.debug(" + Done")
-    key_account = Account(record)
-
-    if account and account._id != key_account._id:
-        logger.debug(" + Account missmatch")
-        return None
-
-    return key_account
+    return None
 
 
-def check_root(account):
-    if account._id == 'account.root' or account.group == 'group.CPS_root':
-        return True
+def autoLogin(key):
+    user = check(mode='authkey', password=key)
 
-    if 'group.CPS_root' in account.groups:
-        return True
+    if not user:
+        return HTTPError(403, 'Forbidden')
 
-    return False
+    if not user.get('enable', False):
+        return HTTPError(403, 'Account is disabled')
 
+    session.create(user)
 
-def check_group_rights(account, group_id):
-    if check_root(account):
-        return True
-
-    if group_id == account.group:
-        return True
-
-    if group_id in account.groups:
-        return True
-
-    logger.debug("'%s' is not in '%s'" % (account.user, group_id))
-    return False
+    return user
 
 
-def create_session(account):
-    session_accounts[account._id] = account
+def exports(ws):
+    session = ws.require('session')
+    rights = ws.require('rights').get_manager()
 
-    s = request.environ.get('beaker.session')
-    s['account_id'] = account._id
-    s['account_user'] = account.user
-    s['account_group'] = account.group
-    s['account_groups'] = account.groups
-    s['auth_on'] = True
-    s.save()
+    @route(
+        ws.application.post,
+        name='auth',
+        wsgi_params={
+            'skip': ws.skip_login
+        },
+        payload=[
+            'username', 'password',
+            'shadow', 'crypted'
+        ],
+        response=lambda data, adapt: data
+    )
+    def auth_route(
+        username=None, password=None,
+        shadow=False, crypted=False
+    ):
+        if not username or not password:
+            return HTTPError(400, 'Missing username/password')
 
-    return s
+        mode = 'plain'
 
+        if shadow:
+            mode = 'shadow'
 
-def delete_session(_id=None):
-    account = get_account()
+        if crypted:
+            mode = 'crypted'
 
-    if not _id:
-        _id = account._id
+        # Try to find user in database
+        user = rights.get_user(username)
 
-    if isinstance(_id, list):
-        ids = _id
-    else:
-        ids = [_id]
+        # No such user, or it's an external one
+        if not user or user.get('external', False):
+            # Try to redirect authentication to the external backend
+            if mode == 'plain':
+                response.status = 307
+                response.set_header('Location', '/auth/external')
 
-    logger.debug("Delete session '%s'" % ids)
+                return 'username={0}&password={1}'.format(
+                    urlencode(username),
+                    urlencode(password)
+                )
 
-    for _id in ids:
-        try:
-            del session_accounts[_id]
-        except:
-            pass
+            else:
+                return HTTPError(403, 'Plain authentication required')
 
-    if account._id in ids:
-        s = request.environ.get('beaker.session')
-        s.delete()
+        # Local authentication: check if account is activated
+        if not user.get('enable', False):
+            return HTTPError(403, 'This account is not enabled')
+
+        user = check(mode=mode, user=user, password=password)
+
+        if not user:
+            return HTTPError(403, 'Forbidden')
+
+        session.create(user)
+        redirect('/')
+
+    @route(ws.application.post, name='auth/external')
+    def auth_external():
+        # When we arrive here, the Bottle plugins in charge of authentication
+        # have initialized the session, we just need to redirect to the index.
+        redirect('/static/canopsis/index.html')
+
+    @route(ws.application.get, name='logged_in')
+    def logged_in():
+        # Route used when came back from auth backend
+        redirect('/static/canopsis/index.html')
+
+    @route(ws.application.get, wsgi_params={'skip': ws.skip_login})
+    def autologin(key):
+        return autoLogin(key)
+
+    @route(ws.application.get, wsgi_params={'skip': ws.skip_logout})
+    def logout():
+        session.delete()
+        redirect('/')

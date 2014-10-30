@@ -24,7 +24,7 @@ define([
 
     var adapter = EntityAdapter.extend({});
 
-    Application.DowntimeAdapter = adapter;
+    loader.register('adapter:downtime', adapter);
 
     return adapter;
 });

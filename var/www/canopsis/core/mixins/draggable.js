@@ -16,3 +16,31 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
+
+define([
+    'ember',
+    'jquery',
+], function(Ember, $) {
+
+    var get = Ember.get,
+        set = Ember.set;
+
+    var mixin = Ember.Namespace.create();
+
+    mixin.Dragable = Mixin('draggable', {
+        attributeBindings: 'draggable',
+        draggable: 'true',
+        dragStart: function(event) {
+
+            console.log('drag started !');
+
+            var dataTransfer = event.originalEvent.dataTransfer;
+
+            dataTransfer.setData('elementId', get(this,'elementId'));
+
+        }
+    });
+
+
+    return mixin;
+});

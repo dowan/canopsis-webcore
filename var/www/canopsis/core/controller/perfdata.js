@@ -20,9 +20,8 @@
 define([
     'jquery',
     'ember',
-    'ember-data',
-    'app/application'
-], function($, Ember, DS, Application) {
+    'ember-data'
+], function($, Ember, DS) {
 
     var controller = Ember.ObjectController.extend({
 
@@ -62,8 +61,10 @@ define([
                             'stop': tend / 1000
                         }),
                         'timeserie': JSON.stringify({
-                            'aggregation': method,
-                            'period': interval
+                            'aggregation': method
+                        }),
+                        'period': JSON.stringify({
+                            'second': interval
                         })
                     }
                 }).then(resolve, reject);
@@ -75,7 +76,8 @@ define([
         }
     });
 
-    Application.PerfdataController = controller;
+
+    loader.register('controller:perfdata', controller);
 
     return controller;
 });

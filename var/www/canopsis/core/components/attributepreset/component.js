@@ -19,9 +19,8 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/attributepresetregistry'
-], function(Ember, Application, attributepresetRegistry) {
+], function(Ember, attributepresetRegistry) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -43,7 +42,13 @@ define([
         }.property('field')
     });
 
-    Application.ComponentAttributepresetComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-attributepreset",
+        initialize: function(container, application) {
+            application.register('component:component-attributepreset', component);
+        }
+    });
 
     return component;
 });

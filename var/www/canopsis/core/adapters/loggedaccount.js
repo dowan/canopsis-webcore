@@ -28,7 +28,8 @@ define([
         }
     });
 
-    Application.LoggedaccountAdapter = adapter;
+
+    loader.register('adapter:loggedaccount', adapter);
 
     return adapter;
 });

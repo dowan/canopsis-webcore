@@ -20,49 +20,63 @@
 define([
     'jquery',
     'ember',
-    'app/application',
     'utils',
-    'jquery.encoding.digests.sha1'
-], function($, Ember, Application, utils) {
+    'app/adapters/acl'
+], function($, Ember, utils) {
     var set = Ember.set,
         get = Ember.get;
 
-    Application.LoginRoute = Ember.Route.extend({
+    loader.register('route:login', Ember.Route.extend({
         setupController: function(controller, model) {
             void(model);
 
             controller.reset();
             //prevents from getting a string into the authkey
         }
-    });
+    }));
+
 
     var controller = Ember.ObjectController.extend({
         content: {},
 
+        init: function() {
+            this._super.apply(this, arguments);
+
+            var store = DS.Store.create({
+                container: get(this, "container")
+            });
+
+            set(this, 'store', store);
+        },
+
         getUser: function () {
             var controller = this;
+            var store = get(this, 'store');
 
             $.ajax({
                 url: '/account/me',
                 success: function(data) {
                     if (data.success) {
-                        var login = Ember.Object.create(data.data[0]);
+                        var login = store.createRecord('user', data.data[0]);
                         set(controller, 'record', login);
+                        set(utils, 'session', get(controller, 'record'));
                     }
-                    set(utils, 'session', get(controller, 'record'));
+                    else {
+                        utils.notification.error('Impossible to get user account');
+                    }
+
+
                 },
                 async: false
             });
-
         },
-
 
         reset: function() {
             this.setProperties({
                 username: "",
                 password: "",
                 shadow: "",
-                cryptedkey: "",
+                crypted: "",
                 authkey: get(this, 'authkey')
             });
         },
@@ -80,7 +94,7 @@ define([
         }.observes('authkey')
     });
 
-    Application.LoginController = controller;
+    loader.register('controller:login', controller);
 
     return controller;
 });

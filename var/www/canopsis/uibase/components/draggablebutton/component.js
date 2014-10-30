@@ -19,9 +19,8 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/wrappers/bootstrap'
-], function(Ember, Application) {
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -40,19 +39,23 @@ define([
 
             dataTransfer.setData('elementId', get(this,'elementId'));
 
-            this.send('dragStarted', get(this,'content'));
         }
     });
 
 
     var component = Ember.Component.extend(DragNDrop.Dragable, {
-
-        didInsertElement: function() {
-
+        didInsertElement: function (){
+            this.$().css('display', 'inline').css('width', '5px');
         }
     });
 
-    Application.ComponentDraggablebuttonComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-draggablebutton",
+        initialize: function(container, application) {
+            application.register('component:component-draggablebutton', component);
+        }
+    });
 
     return component;
 });

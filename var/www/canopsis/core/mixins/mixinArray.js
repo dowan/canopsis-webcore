@@ -19,11 +19,10 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/formsregistry',
     'app/lib/mixinsregistry',
     'app/lib/factories/mixin'
-], function(Ember, Application, formsregistry, mixinsregistry, Mixin) {
+], function(Ember, formsregistry, mixinsregistry, Mixin) {
 // TODO: just make a function from this
     var mixin = Mixin('mixinArray', {
 

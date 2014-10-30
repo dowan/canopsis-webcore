@@ -18,12 +18,12 @@
 */
 
 define([
-    'ember',
-    'app/application'
-], function(Ember, Application) {
+    'ember'
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set;
+
 
     var view = Ember.View.extend({
         init: function() {
@@ -52,7 +52,8 @@ define([
         }
     });
 
-    Application.WidgetslotView = view;
+
+    loader.register('view:widgetslot', view);
 
     return view;
 });

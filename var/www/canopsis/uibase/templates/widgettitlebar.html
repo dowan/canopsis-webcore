@@ -26,6 +26,15 @@
             {{/if}}
         {{unset 'minified'}}
     </div>
+    <!--
+    <div class="pull-right">
+        Here, widget is the model (this.config in the controller)
+        controller is the userview controller
+
+        TODO: add possibility for widget to add action buttons in titlebar
+        {partialslot slot=widgetController._partials.widgetActionButtons}
+    </div>
+    -->
     <h3 class="box-title">
         {{#unless controller.hide_titles}}
             {{widget.title}}

@@ -17,3 +17,15 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+define([
+    'app/lib/factories/wrapper',
+    'webcore-libs/jsoneditor/jsoneditor',
+    'link!webcore-libs/jsoneditor/jsoneditor.css'
+], function(Wrapper, jsoneditor) {
+
+    window.jsoneditor = { JSONEditor: jsoneditor };
+
+    require(['ember-jsoneditor-lib'], function() {
+        return Wrapper("ember-jsoneditor", undefined, arguments, "0.1.0");
+    });
+});

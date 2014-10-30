@@ -20,11 +20,12 @@
 define([
     'jquery',
     'ember',
-    'app/application',
     'app/view/form'
-], function($, Ember, Application, FormView) {
+], function($, Ember, FormView) {
+
     var get = Ember.get,
         set = Ember.set;
+
 
     var view = Ember.View.extend({
         init: function() {
@@ -95,7 +96,8 @@ define([
         }
     });
 
-    Application.FormwrapperView = view;
+
+    loader.register('view:formwrapper', view);
 
     return view;
 });

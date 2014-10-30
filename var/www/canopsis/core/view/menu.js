@@ -73,7 +73,8 @@ define([
         }
     });
 
-    Application.MenuView = view;
+
+    loader.register('view:menu', view);
 
     return view;
 });

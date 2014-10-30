@@ -19,19 +19,24 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/mixinsregistry'
-], function(Ember, Application, mixinsregistry) {
+], function(Ember, mixinsregistry) {
 
     var get = Ember.get,
         set = Ember.set;
 
 
-    var editor = Ember.Component.extend({
+    var component = Ember.Component.extend({
         mixins: mixinsregistry
     });
 
-    Application.ComponentMixinselectorComponent = editor;
 
-    return editor;
+    Ember.Application.initializer({
+        name:"component-mixinselector",
+        initialize: function(container, application) {
+            application.register('component:component-mixinselector', component);
+        }
+    });
+
+    return component;
 });

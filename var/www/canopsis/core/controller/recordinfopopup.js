@@ -19,9 +19,8 @@
 
 define([
     'ember',
-    'app/application',
     'app/view/recordinfopopup'
-], function(Ember, Application) {
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -68,7 +67,7 @@ define([
 
     });
 
-    Application.RecordinfopopupController = controller;
+    loader.register('controller:recordinfopopup', controller);
 
     return controller;
 });

@@ -20,12 +20,11 @@
 define([
     'ember',
     'jquery',
-    'app/application',
     'app/lib/utils/forms',
     'app/lib/utils/dates',
     'app/lib/utils/notification',
     'app/lib/factories/mixin'
-], function(Ember, $, Application, formsUtils, datesUtils, notificationUtils, Mixin) {
+], function(Ember, $, formsUtils, datesUtils, notificationUtils, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -72,7 +71,7 @@ define([
 
             var record = {
                 authkey: get(this, 'login.authkey'),
-                author: get(this, 'login.user'),
+                author: get(this, 'login._id'),
                 id: get(crecord, 'id'),
                 connector: get(crecord, 'connector'),
                 connector_name: get(crecord, 'connector_name'),

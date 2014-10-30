@@ -21,10 +21,9 @@
 define([
     'jquery',
     'ember',
-    'app/application',
     'utils',
     'app/lib/utils/notification',
-], function($, Ember, Application, utils, notification) {
+], function($, Ember, utils, notification) {
 
     var set = Ember.set,
         get = Ember.get;
@@ -117,7 +116,12 @@ define([
 
     });
 
-    Application.ComponentUserpreferencesmanagerComponent = component;
+    Ember.Application.initializer({
+        name:"component-userpreferencesmanager",
+        initialize: function(container, application) {
+            application.register('component:component-userpreferencesmanager', component);
+        }
+    });
 
     return component;
 });
