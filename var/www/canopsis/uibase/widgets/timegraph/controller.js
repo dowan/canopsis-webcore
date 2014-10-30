@@ -46,6 +46,8 @@ define([
                 set(opts, 'xaxis.min', ranges.xaxis.from);
                 set(opts, 'xaxis.max', ranges.xaxis.to);
                 set(ctrl, 'chartOptions', opts);
+
+                set(ctrl, 'zooming', true);
             };
 
             // fill chart options
@@ -73,7 +75,8 @@ define([
             var ctrl = get(this, 'controller');
             var config = get(ctrl, 'config');
 
-            var chartOptions = get(ctrl, 'chartOptions') || {};
+            var chartOptions = {};
+            $.extend(chartOptions, get(ctrl, 'chartOptions'));
             $.extend(chartOptions, {
                 zoom: {
                     interactive: false
@@ -128,7 +131,8 @@ define([
             var ctrl = get(this, 'controller');
             var config = get(ctrl, 'config');
 
-            var chartOptions = get(ctrl, 'timenavOptions') || {};
+            var chartOptions = {};
+            $.extend(chartOptions, get(ctrl, 'timenavOptions'));
             $.extend(chartOptions, {
                 zoom: {
                     interactive: false
@@ -182,8 +186,33 @@ define([
                 this.setDefaultChartOptions();
                 this.setDefaultTimenavOptions();
 
-                ctrl.notifyPropertyChange('chartOptions');
-                ctrl.notifyPropertyChange('timenavOptions');
+                set(ctrl, 'zooming', false);
+            },
+
+            stepBack: function() {
+                var ctrl = get(this, 'controller');
+                var step = get(ctrl, 'timestep');
+
+                var opts = {};
+                $.extend(opts, get(ctrl, 'chartOptions'));
+
+                opts.xaxis.min -= step;
+                opts.xaxis.max -= step;
+
+                set(ctrl, 'chartOptions', opts);
+            },
+
+            stepForward: function() {
+                var ctrl = get(this, 'controller');
+                var step = get(ctrl, 'timestep');
+
+                var opts = {};
+                $.extend(opts, get(ctrl, 'chartOptions'));
+
+                opts.xaxis.min += step;
+                opts.xaxis.max += step;
+
+                set(ctrl, 'chartOptions', opts);
             }
         }
     });
@@ -201,6 +230,7 @@ define([
             ]
         },
 
+        zooming: false,
         chartOptions: undefined,
         timenavOptions: undefined,
         flotSeries: Ember.Object.create({}),
@@ -223,6 +253,10 @@ define([
             }
         }.property('config.timenav_window'),
 
+        timestep: function() {
+            return get(this, 'config.timestep') * 1000;
+        }.property('config.timestep'),
+
         init: function() {
             this._super();
         },
@@ -242,6 +276,29 @@ define([
             }
 
             console.log('refresh:', from, to, replace);
+
+            /* update axis limits */
+            if(!get(this, 'zooming')) {
+                var opts = {};
+                $.extend(opts, get(this, 'chartOptions'));
+                $.extend(opts, {
+                    min: to - get(this, 'time_window') - get(this, 'time_window_offset'),
+                    max: to
+                });
+
+                set(this, 'chartOptions', opts);
+
+                if(get(this, 'timenav')) {
+                    opts = {};
+                    $.extend(opts, get(this, 'timenavOptions'));
+                    $.extend(opts, {
+                        min: from,
+                        max: to
+                    });
+
+                    set(this, 'timenavOptions', opts);
+                }
+            }
 
             var store = get(this, 'widgetDataStore');
 

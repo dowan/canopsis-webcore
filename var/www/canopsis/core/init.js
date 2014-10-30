@@ -34,7 +34,6 @@ define([
     'app/lib/wrappers/bootstrap',
     'app/lib/wrappers/hint',
     'app/lib/wrappers/swag',
-    'timepicker',
     'app/lib/wrappers/console',
     'app/lib/wrappers/ionicons',
     'app/lib/wrappers/jsoneditor',
@@ -54,7 +53,7 @@ define([
     };
 
     //TEMP
-    Application.connector = [ { name : "nagios" }, { name : "shinken" } , { name : "schneider" } , { name : "collectd" }];
+    Application.connector = [{ name : "nagios" }, { name : "shinken" } , { name : "schneider" } , { name : "collectd" }];
 
     Application.manifest = routes;
 

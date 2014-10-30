@@ -25,7 +25,8 @@ define([
 ], function(Ember, formUtils, dataUtils, Mixin) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        __ = Ember.String.loc;
 
     /**
      * Mixins allowing console and various js runtime settings

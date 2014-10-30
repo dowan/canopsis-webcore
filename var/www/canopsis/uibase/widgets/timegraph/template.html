@@ -18,5 +18,15 @@
         <button type="button" class="btn btn-info btn-sm pull-right" {{action resetZoom target=view}}>
             <i class="fa fa-undo"></i>
         </button>
+
+        {{#if controller.timenav}}
+            <button type="button" class="btn btn-info btn-sm pull-right" {{action stepForward target=view}}>
+                <i class="fa fa-step-forward"></i>
+            </button>
+
+            <button type="button" class="btn btn-info btn-sm pull-right" {{action stepBack target=view}}>
+                <i class="fa fa-step-backward"></i>
+            </button>
+        {{/if}}
     </div>
 </div>

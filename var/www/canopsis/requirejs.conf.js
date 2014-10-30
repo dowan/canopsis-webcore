@@ -20,7 +20,7 @@ require.config({
         'handlebars': 'webcore-libs/handlebars/handlebars',
         'ember': 'canopsis/core/lib/wrappers/ember',
         'jsonselect': 'canopsis/core/lib/wrappers/jsonselect',
-        'timepicker': 'webcore-libs/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min',
+        'datetimepicker': 'webcore-libs/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min',
         'moment': 'webcore-libs/moment/min/moment-with-locales.min',
         'ember-data': 'canopsis/core/lib/wrappers/ember-data',
         'ember-listview': 'webcore-libs/ember-list-view/list-view',
@@ -36,6 +36,7 @@ require.config({
         'css3-mediaqueries': 'webcore-libs/min/css3-mediaqueries',
         'math': 'webcore-libs/mathjs/dist/math',
         'dragtable': 'webcore-libs/dev/dragtable',
+        'underscore' : 'canopsis/core/lib/wrappers/underscore',
         'ember-jsoneditor-lib': 'webcore-libs/ember-jsoneditor/build/lib',
 
         'flotchart': 'webcore-libs/flot/jquery.flot',
@@ -56,12 +57,24 @@ require.config({
         'flotchart-valuelabel': 'webcore-libs/flot-plugins/custom/jquery.flot.valuelabel',
         'flotchart-tooltip': 'webcore-libs/flot-plugins/custom/jquery.flot.tooltip',
 
+        'rrule': 'webcore-libs/kb-rrule/lib/rrule',
+        'nlp': 'webcore-libs/kb-rrule/lib/nlp',
+
         'jsplumb': 'webcore-libs/jsplumb/dist/js/jquery.jsPlumb-1.6.4',
         'd3': 'webcore-libs/d3/d3',
         'cy': 'webcore-libs/cytoscape/dist/cytoscape'
     },
 
     shim: {
+
+        'rrule': {
+             deps: ['jquery', 'underscore']
+        },
+
+        'nlp': {
+             deps: ['jquery', 'rrule', 'underscore']
+        },
+
         'jquery.encoding.digests.sha1': {
              deps: ['jquery']
         },
@@ -114,8 +127,8 @@ require.config({
             deps: ['jquery']
         },
 
-        'timepicker': {
-            deps: ['jquery']
+        'datetimepicker': {
+            deps: ['jquery', 'moment', 'bootstrap']
         },
 
         'flotchart': {
@@ -215,8 +228,22 @@ if (isIE) {
 
 }
 
+var setLoadingInfo = function(text, icon) {
+    if(window.__) {
+        text = window.__(text);
+    }
+
+    $('#loadingInfo').html(text);
+
+    if(icon) {
+        $('#loading').append('<i class="fa '+ icon +'"></i>');
+    }
+};
+
 define(['text!canopsis/enabled.json', 'app/lib/wrappers/console'], function(enabledPlugins) {
     enabledPlugins = JSON.parse(enabledPlugins);
+
+    setLoadingInfo('Fetching frontend plugin-ins', 'fa-cubes');
 
     var deps = [
         'app/lib/objects/loader',
@@ -239,7 +266,10 @@ define(['text!canopsis/enabled.json', 'app/lib/wrappers/console'], function(enab
     }
 
     require(deps, function() {
+        setLoadingInfo('Fetching application starting point', 'fa-plug');
         require(['app/init'], function(Application) {
+            setLoadingInfo('Initializing user interface', 'fa-desktop');
+
             Application.advanceReadiness();
         });
     });

@@ -41,7 +41,7 @@ define([
             }
         },
 
-        selectedAction: 'pwoute',
+        selectedAction: 'pass',
         availableactions: ['pass','drop','override','remove'],
 
         isOverride: function () {

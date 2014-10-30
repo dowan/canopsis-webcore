@@ -30,9 +30,8 @@ define([
     var GraphViewMixin = Ember.Mixin.create({
         didInsertElement: function() {
             // call controller.findItems function when the template is loaded
-            var findItems = get(this, 'controller.findItems');
-            findItems();
-
+            //this.controller.findItems();//var findItems = get(this, 'controller.findItems');
+            //findItems();
             this._super.apply(this, arguments);
         }
     });

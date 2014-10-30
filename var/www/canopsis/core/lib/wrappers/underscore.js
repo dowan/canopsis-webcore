@@ -17,13 +17,18 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+//plugin compatibility
+
+$.browser = {msie: isIE};
+
 define([
-    'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/lib/factories/wrapper',
+    'webcore-libs/underscore/underscore'
+], function(Wrapper) {
 
-    Application.RendererTagsView = Ember.View.extend({
-    });
 
-    return Application.RendererTagsView;
+
+    console.log('underscore wrapper');
+
+    return Wrapper("underscore", _, arguments, "1.7.0");
 });
