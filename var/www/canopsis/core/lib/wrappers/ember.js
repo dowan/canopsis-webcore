@@ -47,7 +47,13 @@ define([
         }
     };
 
-    Ember.STRINGS = i18n.translations[i18n.lang];
+    var language = i18n.lang;
+
+    if(!!language) {
+        language = 'en';
+    }
+
+    Ember.STRINGS = i18n.translations[language] || {};
 
     Ember.Controller.reopen(controllerDict);
     Ember.ArrayController.reopen(controllerDict);

@@ -215,8 +215,22 @@ if (isIE) {
 
 }
 
+var setLoadingInfo = function(text, icon) {
+    if(window.__) {
+        text = window.__(text);
+    }
+
+    $('#loadingInfo').html(text);
+
+    if(icon) {
+        $('#loading').append('<i class="fa '+ icon +'"></i>');
+    }
+};
+
 define(['text!canopsis/enabled.json', 'app/lib/wrappers/console'], function(enabledPlugins) {
     enabledPlugins = JSON.parse(enabledPlugins);
+
+    setLoadingInfo('Fetching frontend plugin-ins', 'fa-cubes');
 
     var deps = [
         'app/lib/objects/loader',
@@ -239,7 +253,10 @@ define(['text!canopsis/enabled.json', 'app/lib/wrappers/console'], function(enab
     }
 
     require(deps, function() {
+        setLoadingInfo('Fetching application starting point', 'fa-plug');
         require(['app/init'], function(Application) {
+            setLoadingInfo('Initializing user interface', 'fa-desktop');
+
             Application.advanceReadiness();
         });
     });
