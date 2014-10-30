@@ -21,9 +21,8 @@
 //TODO hover effect
 
 define([
-    'ember',
-    'app/application'
-], function(Ember, Application) {
+    'ember'
+], function(Ember) {
 
     var set = Ember.set,
         get = Ember.get;
@@ -237,7 +236,13 @@ define([
         }.property('content')
     });
 
-    Application.ComponentClassifieditemselectorComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-classifieditemselector",
+        initialize: function(container, application) {
+            application.register('component:component-classifieditemselector', component);
+        }
+    });
 
     return component;
 });

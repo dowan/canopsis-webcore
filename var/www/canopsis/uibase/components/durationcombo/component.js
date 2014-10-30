@@ -19,9 +19,8 @@
 
 
 define([
-    'ember',
-    'app/application'
-], function(Ember, Application) {
+    'ember'
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -31,17 +30,53 @@ define([
     var component = Ember.Component.extend({
         init: function () {
             this._super.apply(this, arguments);
+
             console.log('formattedDuration CP');
-            var durationType = get(this, 'selectedDurationType');
+            var durationType = 'second';
 
             var unformattedDuration = parseInt(get(this, 'content'), 10);
+
+            if (isNaN(unformattedDuration)) {
+                unformattedDuration = 0;
+            }
+
+            var convert = get(this, 'convertDuration');
+            var durationUnits = get(this, 'durationType');
+            var durationUnitsLen = durationUnits.length;
+
+            for (var i=0; i<durationUnitsLen; i++) {
+
+                var durationUnit = durationUnits[i];
+                console.log('testing duration unit', durationUnit);
+                var unitValue = convert[durationUnit];
+                if (unitValue > unformattedDuration) {
+                    break;
+                } else {
+                    durationType = durationUnit;
+                }
+            }
+
+            console.log('selected unit value is', durationType);
+            set(this, 'selectedDurationType', durationType);
+
             var conversionOperand = get(this, 'convertDuration').get(durationType);
-            var res = unformattedDuration / conversionOperand;
+            var res = parseInt(unformattedDuration / conversionOperand);
+
+            console.log(
+                'conversion operand is', conversionOperand, 
+                'unformattedDuration', unformattedDuration, 
+                'conversionOperand', conversionOperand, 
+                'res', res
+            );
+
             if (isNone(res) || isNaN(res)) {
                 res = 0;
             }
             set(this, 'shownDuration', res);
             console.debug('shown duration initialized to ', this.get('shownDuration') ,res);
+
+            //initilizes content with computed value
+            this.shownDurationChanged();
         },
 
         shownDurationChanged: function () {
@@ -50,7 +85,13 @@ define([
             var conversionOperand = get(this, 'convertDuration').get(durationType);
             var value = get(this, 'shownDuration');
 
-            set(this, 'content', value * conversionOperand);
+            var computedValue = parseInt(value * conversionOperand);
+            if (isNaN(computedValue)) {
+                computedValue = 0;
+            }
+            console.log('computed value in content is', computedValue);
+
+            set(this, 'content', computedValue);
         }.observes('shownDuration'),
 
         selectedDurationTypeChanged: function () {
@@ -96,7 +137,13 @@ define([
         ]
     });
 
-    Application.ComponentDurationcomboComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-durationcombo",
+        initialize: function(container, application) {
+            application.register('component:component-durationcombo', component);
+        }
+    });
 
     return component;
 });

@@ -142,7 +142,8 @@ define([
         }
     });
 
-    Application.EntityAdapter = adapter;
+
+    loader.register('adapter:entity', adapter);
 
     return adapter;
 });

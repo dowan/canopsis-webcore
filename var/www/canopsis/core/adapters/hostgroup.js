@@ -24,7 +24,8 @@ define([
 
     var adapter = EntityAdapter.extend({});
 
-    Application.HostgroupAdapter = adapter;
+
+    loader.register('adapter:hostgroup', adapter);
 
     return adapter;
 });

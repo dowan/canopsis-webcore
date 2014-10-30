@@ -38,7 +38,8 @@ define([
         }
     });
 
-    Application.EventlogAdapter = adapter;
+
+    loader.register('adapter:eventlog', adapter);
 
     return adapter;
 });

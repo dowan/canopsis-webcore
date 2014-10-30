@@ -19,49 +19,88 @@
 
 define([], function() {
 
-    var makeDeps = function(deps, requirementList) {
+    var appInstance;
+
+    var makeDeps = function(requirementList) {
+
         var jsDeps = [];
-        //generate deps
+        var htmlDeps = [];
+        var htmlNames = [];
+        //ember is requied here and works with arguments + 1 in loadwithtemplates function
+        var deps = ['ember'];
+
+        //building html and js dependencies
+
         for (var i = 0, l = requirementList.length; i < l; i++) {
 
-            var requirementTemplate = requirementList[i].template;
-            if(requirementTemplate) {
-                deps.push('text!' + requirementList[i].template);
+            if(requirementList[i].template) {
+                htmlDeps.push('text!' + requirementList[i].template);
+                htmlNames.push(requirementList[i].name);
             }
 
-            var requirementUrl = requirementList[i].url;
-            if(requirementUrl) {
-                jsDeps.push(requirementUrl);
+            if(requirementList[i].url) {
+                jsDeps.push(requirementList[i].url);
             }
         }
 
-        for (i = 0; i < jsDeps.length; i++) {
-            deps.push(jsDeps[i]);
-        }
 
-        return deps;
+        deps = deps.concat(htmlDeps);
+        deps = deps.concat(jsDeps);
+
+        //computed data information
+        return {
+            deps: deps,
+            htmlDeps: htmlDeps,
+            htmlNames: htmlNames,
+        };
     };
 
 
     var loader = {
         loadWithTemplates: function(items) {
-            var deps = ['ember'];
-            var depsSize = deps.length;
 
-            deps = makeDeps(deps, items);
+            var info = makeDeps(items);
 
-            define(deps, function(Ember) {
-                for (var i = depsSize, l = items.length, j = depsSize; i < l; i++, j++) {
+            define(info.deps, function(Ember) {
 
-                    if(items[i - depsSize].template !== undefined) {
-                        var templateName = items[i - depsSize].name;
+                var len = info.htmlNames.length;
 
-                        Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[j]);
-                    } else {
-                        j--;
-                    }
+                for (var i=0; i<len; i++) {
+                    Ember.TEMPLATES[info.htmlNames[i]] = Ember.Handlebars.compile(arguments[i + 1]);
                 }
+
             });
+        },
+
+        /**
+         * register the Application instance for the #register function
+         */
+        setApplication: function(app) {
+            appInstance = app;
+        },
+
+        /*
+         * a function used to deprecate the standard used for dependancy injection in favor of Ember regular dep injection
+         * @see http://emberjs.com/guides/understanding-ember/dependency-injection-and-service-lookup/#toc_dependency-management-in-ember-js for more details of the future usage
+         * @argument name {string} the full name (something like 'component:my-component' or 'controller:application')
+         * @argument classToRegister {object} the Ember class to register
+         */
+        register: function(name, classToRegister) {
+                var splittedName = name.split(':');
+
+                var dasherizedName = splittedName[1] + '-' + splittedName[0];
+                var classifiedName = dasherizedName.classify();
+
+            if(appInstance) {
+                appInstance[classifiedName] = classToRegister;
+            } else {
+                Ember.Application.initializer({
+                    name: name,
+                    initialize: function(container, application) {
+                        application.register(name, classToRegister);
+                    }
+                });
+            }
         }
     };
 

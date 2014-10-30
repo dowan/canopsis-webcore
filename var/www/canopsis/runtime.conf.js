@@ -31,9 +31,7 @@ define([
     'app/lib/schemasregistry',
     'app/lib/attributepresetregistry',
     'app/lib/inflections',
-    'app/lib/loaders/factories',
     'app/lib/loaders/helpers',
-    'app/lib/loaders/templates',
     'app/lib/loaders/components',
     'canopsis/canopsisConfiguration',
 ], function(commit,
@@ -48,7 +46,6 @@ define([
         schemasRegistry,
         attributepresetRegistry,
         inflectionsRegistry,
-        factories,
         helpers,
         templates,
         components,
@@ -68,7 +65,6 @@ define([
     Canopsis.inflections = inflectionsRegistry;
     Canopsis.forms = formsRegistry;
     Canopsis.manifest = Application.manifest;
-    Canopsis.factories = factories;
     Canopsis.helpers = helpers;
     Canopsis.templates = templates;
     Canopsis.components = components;

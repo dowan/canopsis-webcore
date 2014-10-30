@@ -4,7 +4,7 @@
         <!-- header logo: style can be found in heaader.less -->
         {{#unless controller.fullscreenMode}}
             <header class="header">
-                <a href="index.html" class="logo">
+                <a {{action 'showView' controller.frontendConfig.defaultview}} class="logo">
                     <!-- Add the class icon to your logo image or logo icon to add the margining -->
                     <img src="/static/canopsis/media/canopsis.png" alt="canopsis"/>
                 </a>
@@ -97,12 +97,21 @@
                                                 {{#ifUserCanDisplayView engineview.value}}
                                                     <li>
                                                         <a {{action 'showView' engineview.value}}>
-                                                            <i class="fa fa-angle-double-right"></i> 
+                                                            <i class="fa fa-angle-double-right"></i>
                                                             {{engineview.label}}
                                                         </a>
                                                     </li>
                                                 {{/ifUserCanDisplayView}}
                                             {{/each}}
+                                            {{#ifUserCanDisplayView engineview.value}}
+                                                <hr/>
+                                                <li>
+                                                    <a {{action 'editEventSettings'}}>
+                                                        <i class="fa fa-angle-double-right"></i>
+                                                        {{tr 'Events settings'}}
+                                                    </a>
+                                                </li>
+                                            {{/ifUserCanDisplayView}}
                                         </ul>
                                     </li>
                                 {{/if}}

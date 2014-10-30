@@ -24,7 +24,7 @@ define([
 
     var adapter = EventAdapter.extend({});
 
-    Application.CancelAdapter = adapter;
+    loader.register('adapter:cancel', adapter);
 
     return adapter;
 });

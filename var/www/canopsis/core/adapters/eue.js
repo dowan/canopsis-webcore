@@ -24,7 +24,8 @@ define([
 
     var adapter = EventAdapter;
 
-    Application.EueAdapter = adapter;
+
+    loader.register('adapter:eue', adapter);
 
     return adapter;
 });

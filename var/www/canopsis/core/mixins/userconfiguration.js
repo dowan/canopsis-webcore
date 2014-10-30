@@ -20,11 +20,9 @@
 define([
     'jquery',
     'ember',
-    'app/application',
     'app/lib/utils/hash',
-    'utils',
     'app/lib/factories/mixin'
-], function($, Ember, Application, hashUtils, utils, Mixin) {
+], function($, Ember, hashUtils, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;

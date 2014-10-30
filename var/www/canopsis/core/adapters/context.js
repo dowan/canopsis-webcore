@@ -134,49 +134,50 @@ define([
         }
     });
 
-    Application.ContextAdapter = adapter;
+    loader.register('adapter:context', adapter);
 
-    Application.CtxconnectorAdapter = adapter.extend({
+    loader.register('adapter:ctxconnector', adapter.extend({
         buildURL: function(type, id) {
             return '/context/connector' + (id ? ('/' + id) : '');
         }
-    });
+    }));
 
-    Application.CtxconnectornameAdapter = adapter.extend({
+
+    loader.register('adapter:ctxconnectorname', adapter.extend({
         buildURL: function(type, id) {
             return '/context/connector_name' + (id ? ('/' + id) : '');
         }
-    });
+    }));
 
-    Application.CtxcomponentAdapter = adapter.extend({
+    loader.register('adapter:ctxcomponent', adapter.extend({
         buildURL: function(type, id) {
             return '/context/component' + (id ? ('/' + id) : '');
         }
-    });
+    }));
 
-    Application.CtxresourceAdapter = adapter.extend({
+    loader.register('adapter:ctxresource', adapter.extend({
         buildURL: function(type, id) {
             return '/context/resource' + (id ? ('/' + id) : '');
         }
-    });
+    }));
 
-    Application.CtxmetricAdapter = adapter.extend({
+    loader.register('adapter:ctxmetric', adapter.extend({
         buildURL: function(type, id) {
             return '/context/metric' + (id ? ('/' + id) : '');
         }
-    });
+    }));
 
-    Application.CtxhostgroupAdapter = adapter.extend({
+    loader.register('adapter:ctxhostgroup', adapter.extend({
         buildURL: function(type, id) {
             return '/context/hostgroup' + (id ? ('/' + id) : '');
         }
-    });
+    }));
 
-    Application.CtxservicegroupAdapter = adapter.extend({
+    loader.register('adapter:ctxservicegroup', adapter.extend({
         buildURL: function(type, id) {
             return '/context/servicegroup' + (id ? ('/' + id) : '');
         }
-    });
+    }));
 
     return adapter;
 });

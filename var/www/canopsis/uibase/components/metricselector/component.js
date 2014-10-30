@@ -20,10 +20,9 @@
 define([
     'ember',
     'ember-data',
-    'app/application',
     'app/lib/utils/hash',
     'app/adapters/context'
-], function(Ember, DS, Application, hash) {
+], function(Ember, DS, hash) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -244,7 +243,13 @@ define([
         }
     });
 
-    Application.ComponentMetricselectorComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-metricselector",
+        initialize: function(container, application) {
+            application.register('component:component-metricselector', component);
+        }
+    });
 
     return component;
 });

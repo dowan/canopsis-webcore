@@ -1,6 +1,6 @@
-#!/usr/bin/env python
-# --------------------------------
-# Copyright (c) 2014 "Capensis" [http://www.capensis.com]
+# -*- coding: utf-8 -*-
+#--------------------------------
+# Copyright (c) 2014 'Capensis' [http://www.capensis.com]
 #
 # This file is part of Canopsis.
 #
@@ -18,72 +18,158 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-from logging import getLogger, DEBUG
-from json import loads
-
-from bottle import put, request, HTTPError, get
-
-## Canopsis
-from canopsis.old.storage import get_storage
-from canopsis.old.record import Record
-
-#import protection function
-from canopsis.webcore.services.auth import get_account
-
-logger = getLogger("rights")
+from canopsis.organisation.rights import Rights
+from canopsis.common.ws import route
+from bottle import HTTPError
 
 
-@get('/rights/:user_id')
-def get_user_rights(user_id):
-    rights = {
-        "1234.ack": {"checksum": 15},
-        "1235.user_view": {"checksum": 2},
-        "cancel.12123": {"checksum": 8},
-        "12344.": {"checksum": 12},
-        "0093.manage_user": {"checksum": 13,
-                             "context": "list_managers"},
-        "121-84.user_conf": {"checksum": 0},
-        "cfilter.1296734": {"checksum": 1}}
+rights = None
+
+
+def get_manager():
+    global rights
+
+    if not rights:
+        rights = Rights()
+
     return rights
 
 
-@put('/rights/:namespace/:crecord_id')
-def change_rights(namespace, crecord_id=None):
-    account = get_account()
-    storage = get_storage(
-        namespace=namespace, account=account, logging_level=DEBUG)
-    #get put data
-    aaa_owner = request.params.get('aaa_owner', default=None)
-    aaa_group = request.params.get('aaa_group', default=None)
-    aaa_access_owner = request.params.get('aaa_access_owner', default=None)
-    aaa_access_group = request.params.get('aaa_access_group', default=None)
-    aaa_access_other = request.params.get('aaa_access_other', default=None)
+def save_group(ws, group):
+    cname = group['_id']
+    crights = group['rights']
 
-    if(crecord_id is not None):
-        record = storage.get(crecord_id, account=account)
+    group = rights.get_group(cname)
 
-    if isinstance(record, Record):
-        logger.debug('record found, changing rights/owner')
-        #change owner and group
-        if aaa_owner is not None:
-            record.chown(aaa_owner)
-        if aaa_group is not None:
-            record.chgrp(aaa_group)
+    if not group and not rights.create_group(cname, crights):
+        raise ws.Error('Impossible to create group')
 
-        #change rights
-        if aaa_access_owner is not None:
-            record.access_owner = loads(aaa_access_owner)
-        if aaa_access_group is not None:
-            record.access_group = loads(aaa_access_group)
-        if aaa_access_other is not None:
-            record.access_other = loads(aaa_access_other)
+    rights.update_rights(cname, 'group', crights, group)
 
-        #logger.debug(dumps(record.dump(json=True), sort_keys=True, indent=4))
-        try:
-            storage.put(record, account=account)
-        except:
-            logger.error('Access denied')
-            return HTTPError(403, "Access denied")
+    return group
 
-    else:
-        logger.warning('The record doesn\'t exist')
+
+def save_profile(ws, profile):
+    pid = profile['_id']
+    pgroup = profile['profile_groups']
+    prights = profile['profile_rights']
+
+    profile = rights.get_profile(pid)
+
+    if not profile and not rights.create_profile(pid, pgroup):
+        raise ws.Error('Impossible to create profile')
+
+    rights.update_group(pid, 'profile', pgroup, profile)
+    rights.update_rights(pid, 'profile', prights, profile)
+
+    return profile
+
+
+def save_role(ws, role):
+    rid = role['_id']
+    rgroup = role['groups']
+    rrights = role['rights']
+    rprofile = role['profile']
+
+    role = rights.get_role(rid)
+
+    if not role and not rights.create_role(rid, rprofile):
+        raise ws.Error('Impossible to create role')
+
+    rights.update_profile(rid, 'role', rgroup, role)
+    rights.update_group(rid, 'role', rgroup, role)
+    rights.update_rights(rid, 'role', rrights, role)
+
+    return role
+
+
+def save_user(ws, record):
+    uid = record.pop('_id')
+    urole = record.pop('role')
+    ucontact = record.pop('contact', None)
+    urights = record.pop('rights')
+    ugroup = record.pop('groups', None)
+
+    if ucontact is None:
+        ucontact = {
+            'name': '{0} {1}'.format(
+                record.get('firstname', ''),
+                record.get('lastname', ''),
+            ),
+            'email': record.get('mail', '')
+        }
+
+    user = rights.get_user(uid)
+
+    if not user:
+        user = rights.create_user(
+            uid, urole,
+            contact=ucontact,
+            rights=urights,
+            groups=ugroup
+        )
+
+        if not user:
+            raise ws.Error('Impossible to create user')
+
+    if ugroup is not None:
+        rights.update_group(uid, 'user', ugroup, user)
+
+    rights.update_rights(uid, 'user', urights, user)
+    rights.update_fields(uid, 'user', record)
+
+    if not rights.add_role(uid, urole):
+        raise ws.Error('Impossible to add user to role')
+
+    return user
+
+
+def exports(ws):
+    rights = get_manager()
+
+    @route(ws.application.get)
+    def rights(uid):
+        urights = rights.get_user_rights(uid)
+
+        if not urights:
+            raise HTTPError(404, 'No rights found for user: {0}'.format(uid))
+
+        else:
+            return urights
+
+    @route(ws.application.post, name='account/group', payload=['group'])
+    def create_group(group):
+        return save_group(ws, group)
+
+    @route(ws.application.put, name='account/group', payload=['group'])
+    def update_group(_id, group):
+        return save_group(ws, group)
+
+    @route(ws.application.post, name='account/profile', payload=['profile'])
+    def create_profile(profile):
+        return save_profile(ws, profile)
+
+    @route(ws.application.put, name='account/profile', payload=['profile'])
+    def update_profile(_id, profile):
+        return save_profile(ws, profile)
+
+    @route(ws.application.post, name='account/role', payload=['role'])
+    def create_role(role):
+        return save_role(ws, role)
+
+    @route(ws.application.put, name='account/role', payload=['role'])
+    def update_role(_id, role):
+        return save_role(ws, role)
+
+    @route(ws.application.post, name='account/user', payload=['user'])
+    def create_user(user):
+        return save_user(ws, user)
+
+    @route(ws.application.put, name='account/user', payload=['user'])
+    def update_user(_id, user):
+        return save_user(ws, user)
+
+    @route(ws.application.delete, name='account/delete')
+    def delete_entity(etype, _id):
+        if not rights.delete(etype, _id):
+            raise ws.Error('Unknown entity type: {0}'.format(etype))

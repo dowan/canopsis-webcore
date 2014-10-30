@@ -19,16 +19,15 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/wrappers/summernote',
     'app/lib/wrappers/codemirror'
-], function(Ember, Application) {
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set;
 
 
-    var editor = Ember.Component.extend({
+    var component = Ember.Component.extend({
         classNames: ['wysiwyg-editor'],
         btnSize: 'btn-xs',
         height: 120,
@@ -81,7 +80,13 @@ define([
         }
     });
 
-    Application.ComponentRichtextComponent = editor;
 
-    return editor;
+    Ember.Application.initializer({
+        name:"component-richtext",
+        initialize: function(container, application) {
+            application.register('component:component-richtext', component);
+        }
+    });
+
+    return component;
 });

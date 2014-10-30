@@ -20,10 +20,9 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/business/cfilter2clause',
     'app/lib/business/cfilter2condition',
-], function(Ember, Application, Clause, Condition) {
+], function(Ember, Clause, Condition) {
 
     var set = Ember.set,
         get = Ember.get;
@@ -78,15 +77,11 @@ define([
             }
         ],
 
-        query: {'$and': [
-            {'plop': 1 },
-            {'$or': [1,2,3]}
-        ]},
-
 
         init: function() {
             this._super();
 
+            set(this, 'clauses', []);
 
             //if (!Ember.isNone(this.get('content'))) {
                 this.initializeEditor();
@@ -158,14 +153,26 @@ define([
             removeClause: function (clause) {
                 console.log('clause to delete', clause);
                 get(this, 'clauses').removeObject(clause);
-            }
+            },
 
+            dragStarted: function (element) {
+                console.log('in drag started', element);
+            },
+
+            dropDone: function (element) {
+                console.log('in drag started', element);
+            }
 
         }
 
     });
 
-    Application.ComponentCfilter2editorComponent = component;
+    Ember.Application.initializer({
+        name:"component-cfilter2editor",
+        initialize: function(container, application) {
+            application.register('component:component-cfilter2editor', component);
+        }
+    });
 
     return component;
 });

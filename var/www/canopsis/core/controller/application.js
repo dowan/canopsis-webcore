@@ -44,7 +44,6 @@ define([
     'app/adapters/notification',
     'app/serializers/cservice',
     'app/lib/loaders/helpers',
-    'app/lib/loaders/widgets',
     'app/adapters/loggedaccount',
     'app/lib/loaders/helpers',
     'app/lib/wrappers/bootstrap',
@@ -248,6 +247,9 @@ define([
             console.groupEnd();
             this._super.apply(this, arguments);
             this.refreshPartialsList();
+
+            //close the init group
+            console.groupEnd();
             console.tags.remove('init');
 
         },
@@ -272,33 +274,60 @@ define([
             },
 
             showUserProfile: function (){
+                var applicationController = this;
+
+                var ouser = get(utils, 'session');
+                var recordWizard = formsUtils.showNew('modelform', ouser, {
+                    title: get(ouser, '_id') + ' ' + __('profile')
+                });
+
+                recordWizard.submit.then(function(form) {
+                    console.group('submit form:', form);
+
+                    //generated data by user form fill
+                    record = form.get('formContext');
+                    console.log('save record:', record);
+
+                    set(record, 'crecord_type', 'user');
+                    record.save();
+
+                    notificationUtils.info(__('profile') + ' ' +__('updated'));
+
+                    uilang = get(record, 'ui_language');
+                    ouilang = get(ouser, 'ui_language');
+
+                    console.log('Lang:', uilang, ouilang);
+
+                    if (uilang !== ouilang) {
+                        console.log('Language changed, will prompt for application reload');
+                        applicationController.send(
+                            'promptReloadApplication',
+                            'Interface language has changed, reload canopsis to apply changes ?'
+                        );
+                    }
+
+                    console.groupEnd();
+                });
+            },
+
+            editEventSettings: function () {
 
                 var applicationController = this;
 
-                var username = get(utils.session, 'user');
 
                 var dataStore = DS.Store.create({
                     container: get(this, "container")
                 });
 
-                var record = dataStore.findQuery('loggedaccount', {
-                    filter: JSON.stringify({
-                        user: username
-                    })
-                }).then(function(queryResults) {
+                var record = dataStore.findQuery('statusmanagement', {}).then(function(queryResults) {
 
-                    console.log('query result', queryResults);
+                    console.log('queryResults', queryResults);
 
-                    var record = queryResults.get('content')[0];
-                    var previousUiLanguage = get(record, 'ui_language');
-
-                    set(record, 'crecord_type', 'loggedaccount');
-
-                    console.log('previousUiLanguage', previousUiLanguage);
+                    var record = get(queryResults, 'content')[0];
 
                     //generating form from record model
                     var recordWizard = formsUtils.showNew('modelform', record, {
-                        title: username + ' ' +__('profile'),
+                        title: __('Event settings edition'),
                     });
 
                     //submit form and it s callback
@@ -307,20 +336,8 @@ define([
 
                         //generated data by user form fill
                         record = form.get('formContext');
-
-                        set(record, 'crecord_type', 'account');
-
                         record.save();
 
-                        notificationUtils.info(__('profile') + ' ' +__('updated'));
-                        console.log(get(record, 'ui_language') , previousUiLanguage);
-                        if (get(record, 'ui_language') !== previousUiLanguage) {
-                            console.log('Language changed, will prompt for application reload');
-                            applicationController.send(
-                                'promptReloadApplication',
-                                'Interface language has changed, reload canopsis to apply changes ?'
-                            );
-                        }
                     });
                 });
             },
@@ -450,7 +467,7 @@ define([
 
     });
 
-    Application.ApplicationController = controller;
+    loader.register('controller:application', controller);
 
     void (utils);
     return controller;

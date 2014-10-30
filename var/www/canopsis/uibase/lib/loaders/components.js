@@ -21,6 +21,7 @@
 //TODO implement auto check for mvct file existence and require them automatically
 
 var components = [
+
     { name: 'components/component-actionbutton', url: 'canopsis/uibase/components/actionbutton/component', template: 'canopsis/uibase/components/actionbutton/template.html' },
     { name: 'components/component-actionfilter', url: 'canopsis/uibase/components/actionfilter/component', template: 'canopsis/uibase/components/actionfilter/template.html' },
     { name: 'components/component-arrayeditor', url: 'canopsis/uibase/components/arrayeditor/component', template: 'canopsis/uibase/components/arrayeditor/template.html' },
@@ -63,7 +64,8 @@ var components = [
     { name: 'components/component-textwithsortoption', url: 'canopsis/uibase/components/textwithsortoption/component', template: 'canopsis/uibase/components/textwithsortoption/template.html' },
     { name: 'components/component-tooltip', url: 'canopsis/uibase/components/tooltip/component', template: 'canopsis/uibase/components/tooltip/template.html' },
     { name: 'components/component-typedvalue', url: 'canopsis/uibase/components/typedvalue/component', template: 'canopsis/uibase/components/typedvalue/template.html' },
-    { name: 'components/component-userpreferencesmanager', url: 'canopsis/uibase/components/userpreferencesmanager/component', template: 'canopsis/uibase/components/userpreferencesmanager/template.html' }
+    { name: 'components/component-userpreferencesmanager', url: 'canopsis/uibase/components/userpreferencesmanager/component', template: 'canopsis/uibase/components/userpreferencesmanager/template.html' },
+    { name: 'components/component-draggablebutton', url: 'canopsis/uibase/components/draggablebutton/component', template: 'canopsis/uibase/components/draggablebutton/template.html'  }
 ];
 
 loader.loadWithTemplates(components);

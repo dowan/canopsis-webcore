@@ -19,10 +19,8 @@
 
 define([
     'ember',
-    'app/application',
-    'app/lib/utils/test',
-
-], function(Ember, Application, testUtils) {
+    'app/lib/utils/test'
+], function(Ember, testUtils) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -84,7 +82,8 @@ define([
         }
     });
 
-    Application.UserviewView = view;
+
+    loader.register('view:userview', view);
 
     return view;
 });

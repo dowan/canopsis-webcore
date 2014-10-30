@@ -24,7 +24,8 @@ define([
 
     var adapter = EntityAdapter.extend({});
 
-    Application.ServicegroupAdapter = adapter;
+
+    loader.register('adapter:servicegroup', adapter);
 
     return adapter;
 });

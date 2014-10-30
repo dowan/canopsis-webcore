@@ -19,17 +19,14 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/utils/types'
-], function(Ember, Application, typesUtils) {
+], function(Ember, typesUtils) {
 
     var get = Ember.get,
         set = Ember.set;
 
 
     var component = Ember.Component.extend({
-
-
 
         init: function () {
             this._super();
@@ -180,7 +177,12 @@ define([
 
     });
 
-    Application.ComponentTypedvalueComponent = component;
+    Ember.Application.initializer({
+        name:"component-typedvalue",
+        initialize: function(container, application) {
+            application.register('component:component-typedvalue', component);
+        }
+    });
 
     return component;
 });

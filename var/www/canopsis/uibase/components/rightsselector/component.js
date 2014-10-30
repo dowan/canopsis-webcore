@@ -20,9 +20,8 @@
 
 define([
     'ember',
-    'app/application',
     'canopsis/uibase/components/dictclassifiedcrecordselector/component'
-], function(Ember, Application, DictclassifiedcrecordselectorComponent) {
+], function(Ember, DictclassifiedcrecordselectorComponent) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -140,7 +139,13 @@ define([
         }
     });
 
-    Application.ComponentRightsselectorComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-rightsselector",
+        initialize: function(container, application) {
+            application.register('component:component-rightsselector', component);
+        }
+    });
 
     return component;
 });

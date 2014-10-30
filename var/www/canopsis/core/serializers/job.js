@@ -19,18 +19,18 @@
 
 define([
     'ember-data',
-    'app/application',
     'app/serializers/application',
     'app/mixins/embeddedrecordserializer',
     'app/serializers/task'
-], function(DS, Application, ApplicationSerializer, EmbeddedRecordSerializerMixin) {
+], function(DS, ApplicationSerializer, EmbeddedRecordSerializerMixin) {
 
     var serializer = ApplicationSerializer.extend(
         EmbeddedRecordSerializerMixin,
         {}
     );
 
-    Application.JobSerializer = serializer;
+
+    loader.register('serializer:job', serializer);
 
     return serializer;
 });

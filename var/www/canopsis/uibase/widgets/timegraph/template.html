@@ -1,14 +1,22 @@
 <div class="flotchart-container">
     <div class="flotchart-plot-container">
-        {{component-flotchart options=controller.chartOptions series=controller.dataSeries parentController=controller}}
+        {{component-flotchart options=controller.chartOptions series=controller.dataSeries}}
     </div>
 
     {{#if controller.timenav}}
         <div class="flotchart-preview-container">
-            {{component-flotchart options=controller.timenavOptions series=controller.dataSeries parentController=controller}}
+            <p><strong>Time navigation:</strong></p>
+
+            {{component-flotchart options=controller.timenavOptions series=controller.dataSeries}}
         </div>
     {{/if}}
 
     <div class="flotchart-legend-container">
+    </div>
+
+    <div class="pull-right">
+        <button type="button" class="btn btn-info btn-sm pull-right" {{action resetZoom target=view}}>
+            <i class="fa fa-undo"></i>
+        </button>
     </div>
 </div>

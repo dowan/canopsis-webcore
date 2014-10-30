@@ -19,10 +19,9 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/promisesmanager',
     'app/lib/factories/mixin'
-], function(Ember, Application, promisesmanager, Mixin) {
+], function(Ember, promisesmanager, Mixin) {
     var get = Ember.get,
         set = Ember.set;
 

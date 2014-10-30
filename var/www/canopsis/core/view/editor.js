@@ -19,9 +19,8 @@
 
 define([
     'ember',
-    'app/application',
     'utils'
-], function(Ember, Application, utils) {
+], function(Ember, utils) {
 
     var view = Ember.View.extend({
         attrBinding: "templateData.keywords.attr.value",
@@ -34,7 +33,7 @@ define([
         }
     });
 
-    Application.EditorView = view;
+    loader.register('view:editor', view);
 
     return view;
 });

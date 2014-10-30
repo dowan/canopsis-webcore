@@ -21,7 +21,6 @@ define([
     'jquery',
     'ember',
     'ember-data',
-    'app/application',
     'app/lib/factories/widget',
     'app/mixins/pagination',
     'app/mixins/inspectablearray',
@@ -49,11 +48,12 @@ define([
     'app/lib/wrappers/datatables',
     'app/lib/loaders/components',
     'app/adapters/acl',
-], function($, Ember, DS, Application, WidgetFactory, PaginationMixin, InspectableArrayMixin,
+], function($, Ember, DS, WidgetFactory, PaginationMixin, InspectableArrayMixin,
         ArraySearchMixin, SortableArrayMixin, HistoryMixin, AckMixin, InfobuttonMixin, SendEventMixin, CustomFilterManagerMixin, UserConfigurationMixin, ExpandablecellMixin, DraggableColumnsMixin, utils, domUtils, routesUtils, formsUtils, FoldableListLineMixin, ListlineController) {
 
     var get = Ember.get,
         set = Ember.set;
+
 
     var listOptions = {
         mixins: [
@@ -73,7 +73,7 @@ define([
             ],
 
             //TODO test if this is needed (used in cloaked mode)
-            listlineControllerClass: Application.ListlineController,
+            listlineControllerClass: ListlineController,
 
             actions: {
                 sendDisplayRecord: function (dest, record) {
@@ -95,7 +95,7 @@ define([
             },
 
 
-            user: Ember.computed.alias('controllers.login.record.user'),
+            user: Ember.computed.alias('controllers.login.record._id'),
             rights: Ember.computed.alias('controllers.login.record.rights'),
             safeMode: Ember.computed.alias('controllers.application.frontendConfig.safe_mode'),
 

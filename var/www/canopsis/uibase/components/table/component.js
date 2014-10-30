@@ -20,9 +20,8 @@
 define([
     'ember',
     'ember-data',
-    'app/application',
     'app/mixins/pagination'
-], function(Ember, DS, Application, PaginationMixin) {
+], function(Ember, DS, PaginationMixin) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -133,7 +132,13 @@ define([
         }
     });
 
-    Application.ComponentTableComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-table",
+        initialize: function(container, application) {
+            application.register('component:component-table', component);
+        }
+    });
 
     return component;
 });

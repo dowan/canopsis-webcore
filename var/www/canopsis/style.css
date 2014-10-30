@@ -1,3 +1,8 @@
+.canopsisDraggable:hover {
+	box-shadow: 0px 0px 10px #888888;
+	cursor:pointer;
+}
+
 .emphasis{
 	font-weight:bold !important;
 	text-decoration: underline !important;
@@ -585,4 +590,19 @@ i.abstractType > i.widget {
   	background-color: #fff;
   	font-family: Verdana, Arial, Helvetica, Tahoma, sans-serif;
    	opacity: 0.9;
+}
+
+.valueLabels {
+    font-size:70%;
+    color:black;
+}
+div.valueLabelLight {
+    opacity:0.5;
+    background-color: white;
+    border:none;
+    position:absolute;
+}
+div.valueLabel {
+    position:absolute;
+    border:none;
 }

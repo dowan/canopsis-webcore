@@ -19,16 +19,16 @@
 
 define([
     'ember',
-    'app/application',
     'canopsis/canopsisConfiguration',
     'app/lib/loaders/schemas',
     'app/lib/factories/mixin'
-], function(Ember, Application, canopsisConfiguration, available_types, Mixin) {
+], function(Ember, canopsisConfiguration, available_types, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
 
-    var mixin = Mixin('Schemamanager', {
+
+    var mixin = Mixin('schemamanager', {
         configuration: canopsisConfiguration,
         available_types : available_types
     });

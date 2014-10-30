@@ -36,6 +36,7 @@ require.config({
         'css3-mediaqueries': 'webcore-libs/min/css3-mediaqueries',
         'math': 'webcore-libs/mathjs/dist/math',
         'dragtable': 'webcore-libs/dev/dragtable',
+        'ember-jsoneditor-lib': 'webcore-libs/ember-jsoneditor/build/lib',
 
         'flotchart': 'webcore-libs/flot/jquery.flot',
         'flotchart-canvas': 'webcore-libs/flot/jquery.flot.canvas',
@@ -52,6 +53,8 @@ require.config({
         'flotchart-symbol': 'webcore-libs/flot/jquery.flot.symbol',
         'flotchart-threshold': 'webcore-libs/flot/jquery.flot.threshold',
         'flotchart-time': 'webcore-libs/flot/jquery.flot.time',
+        'flotchart-valuelabel': 'webcore-libs/flot-plugins/custom/jquery.flot.valuelabel',
+        'flotchart-tooltip': 'webcore-libs/flot-plugins/custom/jquery.flot.tooltip'
 
         'jsplumb': 'webcore-libs/jsplumb/dist/js/jquery.jsPlumb-1.6.4',
         'd3': 'webcore-libs/d3/d3',
@@ -175,6 +178,14 @@ require.config({
             deps: ['jquery', 'flotchart']
         },
 
+        'flotchart-valuelabel': {
+            deps: ['jquery', 'flotchart']
+        },
+
+        'flotchart-tooltip': {
+            deps: ['jquery', 'flotchart']
+        },
+
         'jsplumb': {
             deps: ['jquery']
         }
@@ -228,8 +239,9 @@ define(['text!canopsis/enabled.json', 'app/lib/wrappers/console'], function(enab
     }
 
     require(deps, function() {
-        require(['app/init']);
+        require(['app/init'], function(Application) {
+            Application.advanceReadiness();
+        });
     });
 });
-
 

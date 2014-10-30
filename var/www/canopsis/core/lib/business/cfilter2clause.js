@@ -30,13 +30,39 @@ define([
         display: function (){
             var clause = this;
             var jsonclause =  {
-                'property': get(clause, 'property'),
-                'operation': get(clause, 'operation.label') + ' (' + get(clause, 'operation.symbol') + ')',
-                'value': get(clause, 'value'),
+                property: get(clause, 'property'),
+                operation: get(clause, 'operation.label') + ' (' + get(clause, 'operation.symbol') + ')',
+                value: get(clause, 'value'),
             };
             console.log('build json clause', jsonclause);
             return jsonclause;
         }.property(),
+
+        attach: function (condition) {
+            set(this, 'target', condition);
+            get(condition, 'clauses').pushObject(this);
+            console.log('attached', this, 'to', condition);
+        },
+
+        detach: function () {
+            var condition = get(this, 'target');
+            if (!Ember.isNone(condition)) {
+                get(condition, 'clauses').removeObject(this);
+            }
+        },
+
+        json: function () {
+            var clause = this;
+            var json = {
+                property: get(clause, 'property'),
+                operation: get(clause, 'operation'),
+                value: get(clause, 'value'),
+            };
+
+            console.log('clause json', json);
+            return json;
+
+        }.property('property', 'operation', 'value')
 
     });
 

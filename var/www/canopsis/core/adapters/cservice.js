@@ -39,16 +39,16 @@ define([
             var xtype = sname.slice('Crecord.cservice.'.length);
             var modelname = xtype[0].toUpperCase() + xtype.slice(1);
 
-            var adapterName = modelname + 'Adapter';
+            var adapterName = modelname.dasherize();
             console.log('Add adapter:', adapterName);
 
-            Application[adapterName] = adapter.extend({});
+            loader.register('adapter:' + adapterName, adapter.extend());
         }
     }
 
     console.groupEnd();
 
-    Application.CserviceAdapter = adapter;
+    loader.register('adapter:cservice', adapter);
 
     return adapter;
 });

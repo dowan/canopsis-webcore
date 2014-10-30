@@ -26,6 +26,7 @@ define([
     'jsonselect'
 ], function(Ember, DS, domReady) {
 
+    console.log('====================================== Application');
     var Application = Ember.Application.create({
         LOG_ACTIVE_GENERATION: false,
         LOG_TRANSITIONS: false,
@@ -41,7 +42,9 @@ define([
         this.resource('userview', { path: '/userview/:userview_id' });
     });
 
-    Application.initializer({
+    loader.setApplication(Application);
+
+    Ember.Application.initializer({
         name:"RESTAdaptertransforms",
         after: "transforms",
         initialize: function(container, application) {
@@ -52,13 +55,5 @@ define([
         }
     });
 
-    var checkIfLoadIsDone = function() {
-        if(!!Application.ApplicationController && !!Application.ApplicationRoute) {
-            Application.advanceReadiness();
-        } else {
-            setTimeout(checkIfLoadIsDone, 2000);
-        }
-    };
-    setTimeout(checkIfLoadIsDone, 2000);
     return Application;
 });

@@ -30,7 +30,8 @@ define([
         }
     });
 
-    Application.UserviewAdapter = adapter;
+
+    loader.register('adapter:userview', adapter);
 
     return adapter;
 });

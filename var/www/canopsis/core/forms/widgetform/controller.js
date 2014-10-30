@@ -19,16 +19,17 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/factories/form',
     'app/lib/utils/forms',
     'app/lib/utils/hash',
     'app/lib/widgetsregistry',
     'app/lib/loaders/schemas',
     'app/controller/journal'
-], function(Ember, Application, FormFactory, formsUtils, hashUtils, widgets) {
+], function(Ember, FormFactory, formsUtils, hashUtils, widgets) {
+
     var get = Ember.get,
         set = Ember.set;
+
 
     var form = FormFactory('widgetform', {
         needs: ['journal'],

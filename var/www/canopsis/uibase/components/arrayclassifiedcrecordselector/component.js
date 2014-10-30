@@ -19,9 +19,8 @@
 
 define([
     'ember',
-    'app/application',
     'canopsis/uibase/components/classifiedcrecordselector/component'
-], function(Ember, Application, Classifiedcrecordselector) {
+], function(Ember, Classifiedcrecordselector) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -72,7 +71,12 @@ define([
         }
     });
 
-    Application.ComponentArrayclassifiedcrecordselectorComponent = component;
+    Ember.Application.initializer({
+        name:"component-arrayclassifiedcrecordselector",
+        initialize: function(container, application) {
+            application.register('component:component-arrayclassifiedcrecordselector', component);
+        }
+    });
 
     return component;
 });

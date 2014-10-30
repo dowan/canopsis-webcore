@@ -19,9 +19,8 @@
 
 define([
     'ember',
-    'app/application',
     'canopsis/uibase/components/classifiedcrecordselector/component'
-], function(Ember, Application, Classifiedcrecordselector) {
+], function(Ember, Classifiedcrecordselector) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -48,7 +47,13 @@ define([
         }.observes('selectionUnprepared', 'selectionUnprepared.@each')
     });
 
-    Application.ComponentStringclassifiedcrecordselectorComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-stringclassifiedcrecordselector",
+        initialize: function(container, application) {
+            application.register('component:component-stringclassifiedcrecordselector', component);
+        }
+    });
 
     return component;
 });

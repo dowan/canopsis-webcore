@@ -29,7 +29,8 @@ define([
         Application.Notification.FIXTURES = [];
     }
 
-    Application.NotificationAdapter = adapter;
+
+    loader.register('adapter:notification', adapter);
 
     return adapter;
 });

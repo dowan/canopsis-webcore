@@ -19,22 +19,73 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/wrappers/bootstrap'
-], function(Ember, Application) {
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set;
 
 
-    var component = Ember.Component.extend({
+var DragNDrop = Ember.Namespace.create();
 
-        didInsertElement: function() {
+DragNDrop.cancel = function(event) {
+    event.preventDefault();
+    return false;
+};
+/*
+DragNDrop.Dragable = Ember.Mixin.create({
+    attributeBindings: 'draggable',
+    draggable: 'true',
+    dragStart: function(event) {
+        console.log('drag started !');
+        var dataTransfer = event.originalEvent.dataTransfer;
+        dataTransfer.setData(
+            'elementId', this.get('elementId'),
+            'content', get(this, 'content')
+        );
 
-        }
+    }
+});
+*/
+DragNDrop.Droppable = Ember.Mixin.create({
+    dragEnter: DragNDrop.cancel,
+    dragOver: DragNDrop.cancel,
+    drop: function(event) {
+
+        console.log('drop done !');
+
+        var viewId = event.originalEvent.dataTransfer.getData('elementId');
+        var draggableView = Ember.View.views[viewId];
+        var treeElement = get(draggableView, 'content');
+        var condition = get(this, 'content');
+
+        console.log('clause',treeElement);
+        console.log('condition', condition);
+
+        treeElement.detach();
+        treeElement.attach(condition);
+
+
+
+        draggableView.destroy();
+        event.preventDefault();
+
+        return false;
+    }
+});
+
+
+    var component = Ember.Component.extend(/*DragNDrop.Dragable,*/ DragNDrop.Droppable, {
+
     });
 
-    Application.ComponentListtreeComponent = component;
+
+    Ember.Application.initializer({
+        name:"component-listtree",
+        initialize: function(container, application) {
+            application.register('component:component-listtree', component);
+        }
+    });
 
     return component;
 });

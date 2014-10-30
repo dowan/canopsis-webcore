@@ -19,36 +19,11 @@
 define([
     'jquery',
     'ember',
-    'app/application',
-    'app/lib/utils/hash',
-    'app/lib/wrappers/flotchart',
-    'webcore-libs/flot-plugins/custom/jquery.flot.tooltip'
-], function($, Ember, Application, hashUtils) {
+    'app/lib/wrappers/flotchart'
+], function($, Ember) {
 
     var get = Ember.get,
         set = Ember.set;
-
-    enableSerie = function(seriesIdx, id, selector){
-        var currentPlot = PLOTS[id];
-        var disabledColor = "red";
-        var enabledColor = "black";
-        var currentSeries = currentPlot.getData();
-
-        for (var i=0; i < currentSeries.length; i++){
-            var serie = currentSeries[i];
-            if (serie.label == seriesIdx){
-                if (serie.points.used)
-                    serie.points.show = !serie.points.show;
-                if (serie.lines.used)
-                    serie.lines.show = !serie.lines.show;
-                if (serie.bars.used)
-                    serie.bars.show = !serie.bars.show;
-            }
-        }
-        selector.style.color = (selector.style.color == disabledColor)? enabledColor : disabledColor;
-        currentPlot.setData(currentSeries);
-        currentPlot.draw();
-    };
 
     var component = Ember.Component.extend({
         tagName: 'div',
@@ -58,63 +33,61 @@ define([
         series: undefined,
 
         onDataUpdate: function() {
-            if(this.chart !== undefined) {
+            var chart = get(this, 'chart');
+
+            if(chart !== undefined) {
                 this.send('renderChart');
             }
         }.observes('series.@each'),
 
         onOptionsUpdate: function() {
-            if(this.chart !== undefined) {
-                this.chart.destroy();
-                this.createChart();
+            var chart = get(this, 'chart');
+
+            if(chart !== undefined) {
+                chart.destroy();
+
+                set(this, 'chart', undefined);
+                this.send('renderChart');
             }
         }.observes('options'),
 
         didInsertElement: function() {
-            this.createChart();
+            this.send('renderChart');
         },
 
         actions: {
             renderChart: function() {
-                console.log('Render chart');
-                this.chart.setData(get(this, 'series'));
-                this.chart.setupGrid();
-                this.chart.draw();
+                var chart = get(this, 'chart');
+
+                if(chart !== undefined) {
+                    console.log('Render chart');
+                    chart.setData(get(this, 'series'));
+                    chart.setupGrid();
+                    chart.draw();
+                }
+                else {
+                    this.createChart();
+                }
             }
         },
 
         createChart: function() {
-            console.group('createChart');
+            console.log('createChart');
+
             var plotcontainer = this.$();
             var series = get(this, 'series');
             var options = get(this, 'options');
 
-            this.chart = $.plot(plotcontainer, series, options);
-
-            var parentController = this.get("parentController");
-            parentController.chart = this.chart;
-
-            if (options && options.tooltip){
-                this.$().UseTooltip();
-            }
-            this.send('renderChart');
-            this.managePlots();
-            console.groupEnd();
-        },
-
-        managePlots: function() {
-            if (!window.PLOTS){
-                PLOTS = [];
-            }
-            if (!this.chart.id){
-                var plotLength = PLOTS.length;
-                this.chart.id = plotLength;
-                PLOTS[plotLength] = this.chart;
-            }
+            set(this, 'chart', $.plot(plotcontainer, series, options));
         }
     });
 
-    Application.ComponentFlotchartComponent = component;
+    Ember.Application.initializer({
+        name: 'component-flotchart',
+        initialize: function(container, application) {
+            application.register('component:component-flotchart', component);
+        }
+    });
 
     return component;
 });

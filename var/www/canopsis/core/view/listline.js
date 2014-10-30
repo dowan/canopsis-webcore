@@ -19,10 +19,9 @@
 
 define([
     'ember',
-    'app/application',
     'jsonselect',
     'app/controller/listline'
-], function(Ember, Application, JSONSelect, ListLineController) {
+], function(Ember, JSONSelect, ListLineController) {
 
     var set = Ember.set,
         get = Ember.get;
@@ -45,7 +44,8 @@ define([
         }.observes('controller.isAllSelected')
     });
 
-    Application.ListlineView = view;
+
+    loader.register('view:listline', view);
 
     return view;
 });

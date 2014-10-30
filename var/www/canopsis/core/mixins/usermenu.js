@@ -19,9 +19,8 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/factories/mixin'
-], function(Ember, Application, Mixin) {
+], function(Ember, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
