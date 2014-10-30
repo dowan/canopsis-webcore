@@ -57,7 +57,8 @@ var editors = [
     { name: 'editor-timeinterval', template: 'canopsis/uibase/editors/timeinterval/template.html' },
     { name: 'editor-timestamp', template: 'canopsis/uibase/editors/timestamp/template.html' },
     { name: 'editor-userpreference', template: 'canopsis/uibase/editors/userpreference/template.html' },
-    { name: 'editor-typedvalue', template: 'canopsis/uibase/editors/typedvalue/template.html' }
+    { name: 'editor-typedvalue', template: 'canopsis/uibase/editors/typedvalue/template.html' },
+    { name: 'editor-rrule', template: 'canopsis/uibase/editors/rrule/template.html' }
 ];
 
 loader.loadWithTemplates(editors);

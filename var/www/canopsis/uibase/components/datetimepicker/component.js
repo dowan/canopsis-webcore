@@ -20,22 +20,21 @@
 
 define([
     'ember',
-    'app/lib/utils/hash'
-], function(Ember, hashUtils) {
+    'canopsis/core/lib/wrappers/datetimepicker'
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set;
 
-
     var component = Ember.Component.extend({
+
         init: function () {
             this._super.apply(this, arguments);
-            set(this, 'id', hashUtils.generate_GUID());
         },
 
         didInsertElement: function (){
             //@doc http://eonasdan.github.io/bootstrap-datetimepicker/
-            var timepicker = $('#' + get(this, 'id'));
+            var timepicker = this.$();
 
             var timepickerComponent = this;
 

@@ -20,7 +20,7 @@ require.config({
         'handlebars': 'webcore-libs/handlebars/handlebars',
         'ember': 'canopsis/core/lib/wrappers/ember',
         'jsonselect': 'canopsis/core/lib/wrappers/jsonselect',
-        'timepicker': 'webcore-libs/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min',
+        'datetimepicker': 'webcore-libs/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min',
         'moment': 'webcore-libs/moment/min/moment-with-locales.min',
         'ember-data': 'canopsis/core/lib/wrappers/ember-data',
         'ember-listview': 'webcore-libs/ember-list-view/list-view',
@@ -36,6 +36,7 @@ require.config({
         'css3-mediaqueries': 'webcore-libs/min/css3-mediaqueries',
         'math': 'webcore-libs/mathjs/dist/math',
         'dragtable': 'webcore-libs/dev/dragtable',
+        'underscore' : 'canopsis/core/lib/wrappers/underscore',
 
         'flotchart': 'webcore-libs/flot/jquery.flot',
         'flotchart-canvas': 'webcore-libs/flot/jquery.flot.canvas',
@@ -51,10 +52,23 @@ require.config({
         'flotchart-stack': 'webcore-libs/flot/jquery.flot.stack',
         'flotchart-symbol': 'webcore-libs/flot/jquery.flot.symbol',
         'flotchart-threshold': 'webcore-libs/flot/jquery.flot.threshold',
-        'flotchart-time': 'webcore-libs/flot/jquery.flot.time'
+        'flotchart-time': 'webcore-libs/flot/jquery.flot.time',
+
+        'rrule': 'webcore-libs/kb-rrule/lib/rrule',
+        'nlp': 'webcore-libs/kb-rrule/lib/nlp',
+
     },
 
     shim: {
+
+        'rrule': {
+             deps: ['jquery', 'underscore']
+        },
+
+        'nlp': {
+             deps: ['jquery', 'rrule', 'underscore']
+        },
+
         'jquery.encoding.digests.sha1': {
              deps: ['jquery']
         },
@@ -107,8 +121,8 @@ require.config({
             deps: ['jquery']
         },
 
-        'timepicker': {
-            deps: ['jquery']
+        'datetimepicker': {
+            deps: ['jquery', 'moment', 'bootstrap']
         },
 
         'flotchart': {
