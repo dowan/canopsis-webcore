@@ -19,9 +19,9 @@
 
 define([
     'app/lib/factories/wrapper',
-    'timepicker',
-    'link!webcore-libs/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css'
+    // 'timepicker',
+    // 'link!webcore-libs/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css'
 ], function(Wrapper) {
 
-    return Wrapper("bootstrap-datetimepicker", $, arguments, undefined);
+    // return Wrapper("bootstrap-datetimepicker", $, arguments, undefined);
 });
