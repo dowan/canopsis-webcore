@@ -33,22 +33,11 @@ define([
         series: undefined,
 
         onDataUpdate: function() {
-            var chart = get(this, 'chart');
-
-            if(chart !== undefined) {
-                this.send('renderChart');
-            }
+            this.send('renderChart');
         }.observes('series.@each'),
 
         onOptionsUpdate: function() {
-            var chart = get(this, 'chart');
-
-            if(chart !== undefined) {
-                chart.destroy();
-
-                set(this, 'chart', undefined);
-                this.send('renderChart');
-            }
+            this.send('renderChart');
         }.observes('options'),
 
         didInsertElement: function() {
@@ -60,14 +49,11 @@ define([
                 var chart = get(this, 'chart');
 
                 if(chart !== undefined) {
-                    console.log('Render chart');
-                    chart.setData(get(this, 'series'));
-                    chart.setupGrid();
-                    chart.draw();
+                    console.log('Destroy chart');
+                    chart.destroy();
                 }
-                else {
-                    this.createChart();
-                }
+
+                this.createChart();
             }
         },
 
@@ -80,6 +66,9 @@ define([
 
             if(options && options.legend && options.legend.show && options.legend.labelFormatter === undefined) {
                 options.legend.labelFormatter = function(label, serie) {
+                    console.log('Format label for serie:', label, serie);
+
+
                     return label;
                 };
             }

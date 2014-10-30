@@ -75,7 +75,8 @@ define([
             var ctrl = get(this, 'controller');
             var config = get(ctrl, 'config');
 
-            var chartOptions = get(ctrl, 'chartOptions') || {};
+            var chartOptions = {};
+            $.extend(chartOptions, get(ctrl, 'chartOptions'));
             $.extend(chartOptions, {
                 zoom: {
                     interactive: false
@@ -130,7 +131,8 @@ define([
             var ctrl = get(this, 'controller');
             var config = get(ctrl, 'config');
 
-            var chartOptions = get(ctrl, 'timenavOptions') || {};
+            var chartOptions = {};
+            $.extend(chartOptions, get(ctrl, 'timenavOptions'));
             $.extend(chartOptions, {
                 zoom: {
                     interactive: false
@@ -253,7 +255,7 @@ define([
 
         timestep: function() {
             return get(this, 'config.timestep') * 1000;
-        },
+        }.property('config.timestep'),
 
         init: function() {
             this._super();
@@ -279,18 +281,20 @@ define([
             if(!get(this, 'zooming')) {
                 var opts = {};
                 $.extend(opts, get(this, 'chartOptions'));
-
-                opts.xaxis.min = to - get(this, 'time_window') - get(this, 'time_window_offset');
-                opts.xaxis.max = to;
+                $.extend(opts, {
+                    min: to - get(this, 'time_window') - get(this, 'time_window_offset'),
+                    max: to
+                });
 
                 set(this, 'chartOptions', opts);
 
                 if(get(this, 'timenav')) {
                     opts = {};
                     $.extend(opts, get(this, 'timenavOptions'));
-
-                    opts.xaxis.min = from;
-                    opts.xaxis.max = to;
+                    $.extend(opts, {
+                        min: from,
+                        max: to
+                    });
 
                     set(this, 'timenavOptions', opts);
                 }
