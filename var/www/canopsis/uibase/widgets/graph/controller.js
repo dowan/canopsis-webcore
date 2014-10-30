@@ -42,6 +42,11 @@ define([
         nodes: null,  // graph nodes
         selected: {}, // selected nodes
 
+        overlay: [1],  // is overlay displayed
+        svg: true, // is svg loaded
+
+        graph: null,  // graph
+
         viewMixins: [
             GraphViewMixin
         ],
@@ -82,17 +87,20 @@ define([
                     // load the right display method
                     var displayFunction = me.get('display' + library);
                     // with nodes in parameters
-                    displayFunction.call(this, nodes);
+                    displayFunction.call(me, nodes);
                 });
             }
         },
 
         displayd3: function(nodes) {
             // construct a d3 graph data
-            var graph = {
-                'nodes': nodes,
-                'links': []
-            };
+            var graph = this.graph;
+            if (graph === null) {
+                graph = {
+                    'nodes': nodes,
+                    'links': []
+                };
+            }
 
             // fill graph.links
             for(var i=0; i<nodes.length; i++) {
@@ -106,7 +114,17 @@ define([
                             var next_node = nodes[k];
                             if (node_id === next_node['cid']) {
                                 var link = {'source': i, 'target': k};
-                                graph.links.push(link);
+                                var isFound = false;
+                                for (var l=0; l<graph.links.length; l++) {
+                                    _link = graph.links[l];
+                                    isFound = (link.source === _link.source && link.target === _link.target);
+                                    if (isFound) {
+                                        break;
+                                    }
+                                }
+                                if (! isFound) {
+                                    graph.links.push(link);
+                                }
                             }
                         }
                     }
@@ -139,10 +157,14 @@ define([
                     ;
             }
 
-            svg.append("rect")
-                .attr("class", "overlay")
-                .attr("width", width)
-                .attr("height", height);
+            var overlay = svg.select('.overlay');
+            if (overlay.size() === 0) {
+                svg.append("rect")
+                    .attr("class", "overlay")
+                    .attr("width", width)
+                    .attr("height", height)
+                ;
+            }
 
             // load nodes and links into force
             force.nodes(graph.nodes).links(graph.links).start();
@@ -152,7 +174,7 @@ define([
                 .append('line')
                     .attr('class', 'link')
                     .style('stroke', 'green');
-
+            link = svg.selectAll('.link');
             function select(d) {
                 if (d.selected) {
                     d.selected = false;
@@ -200,23 +222,23 @@ define([
                         }
                     )
                 ;
-
+            node = svg.selectAll('.node');
             force.on('tick', function() {
-                link.attr('x1', function(d) {return d.source.x;})
+                svg.selectAll('.link').attr('x1', function(d) {return d.source.x;})
                     .attr('y1', function(d) {return d.source.y;})
                     .attr('x2', function(d) {return d.target.x;})
                     .attr('y2', function(d) {return d.target.y;});
 
-                node.attr('cx', function(d) {return d.x;})
+                svg.selectAll('.node').attr('cx', function(d) {return d.x;})
                     .attr('cy', function(d) {return d.y;});
             });
 
             function playtransition() {
-                node.transition().duration(1000).style('fill',
+                svg.selectAll('.node').transition().duration(1000).style('fill',
                     function(d, i) {
                         return (Math.random() > 0.5) ? 'green' : 'red';
                     });
-                link.transition().duration(1000).style('stroke',
+                svg.selectAll('.link').transition().duration(1000).style('stroke',
                     function(d, i) {
                         return (Math.random() > 0.5) ? 'green' : 'red';
                     });
