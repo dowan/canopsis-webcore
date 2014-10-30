@@ -78,6 +78,12 @@ define([
             var series = get(this, 'series');
             var options = get(this, 'options');
 
+            if(options && options.legend && options.legend.show && options.legend.labelFormatter === undefined) {
+                options.legend.labelFormatter = function(label, serie) {
+                    return label;
+                };
+            }
+
             set(this, 'chart', $.plot(plotcontainer, series, options));
         }
     });
