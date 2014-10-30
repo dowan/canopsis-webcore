@@ -1,5 +1,22 @@
-{{!view Ember.Select
-       content=optionlist
-       value=optionlistvalue
-       class="form-control"
-}}
+<style>
+.node {
+    cursor: move;
+    stroke: black;
+}
+.node.toolbox {
+    fill: red;
+}
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+</style>
+<defs>
+    <marker id="markerArrow" markerWidth="13" markerHeight="13" refx="2" refy="6"
+           orient="auto">
+        <path d="M2,2 L2,11 L10,6 L2,2" style="fill: #000000;" />
+    </marker>
+</defs>
+<div class="graph">
+    <button class='graphplay'>Change state</button>
+</div>

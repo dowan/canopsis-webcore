@@ -32,16 +32,50 @@ define([
 
     var FlotChartViewMixin = Ember.Mixin.create({
         didInsertElement: function() {
-            //get the timestamp, and not the date object
-
-            var now = +new Date();
-            var controller = get(this, 'controller');
-            var config = get(controller, 'config');
+            var ctrl = get(this, 'controller');
 
             console.group('timegraph init');
 
+            var updateGrid = function(evt, ranges) {
+                // little hack so chartOptions will always notify its observers
+                var chartOptions = get(ctrl, 'chartOptions');
+
+                var opts = {};
+                $.extend(opts, chartOptions);
+
+                set(opts, 'xaxis.min', ranges.xaxis.from);
+                set(opts, 'xaxis.max', ranges.xaxis.to);
+                set(ctrl, 'chartOptions', opts);
+
+                set(ctrl, 'zooming', true);
+            };
+
             // fill chart options
-            chartOptions = get(controller, 'chartOptions') || {};
+            this.setDefaultChartOptions();
+
+            var graphcontainer = this.$('.flotchart-plot-container .flotchart');
+            graphcontainer.bind('plotselected', updateGrid);
+
+            if(get(this, 'controller.config.timenav')) {
+                this.setDefaultTimenavOptions();
+
+                var timecontainer = this.$('.flotchart-preview-container .flotchart');
+                timecontainer.bind('plotselected', updateGrid);
+            }
+
+            console.groupEnd();
+
+            this._super.apply(this, arguments);
+        },
+
+        setDefaultChartOptions: function() {
+            //get the timestamp, and not the date object
+            var now = +new Date();
+
+            var ctrl = get(this, 'controller');
+            var config = get(ctrl, 'config');
+
+            var chartOptions = get(ctrl, 'chartOptions') || {};
             $.extend(chartOptions, {
                 zoom: {
                     interactive: false
@@ -61,8 +95,8 @@ define([
                 },
 
                 xaxis: {
-                    min: now - get(controller, 'time_window_offset') - get(controller, 'time_window'),
-                    max: now - get(controller, 'time_window_offset')
+                    min: now - get(ctrl, 'time_window_offset') - get(ctrl, 'time_window'),
+                    max: now - get(ctrl, 'time_window_offset')
                 },
 
                 xaxes: [{
@@ -81,80 +115,103 @@ define([
                 legend: {
                     hideable: true,
                     legend: get(config, 'legend'),
-                    container: this.$('.flotchart-legend-container'),
+                    container: this.$('.flotchart-legend-container')
                 },
                 tooltip: get(config, 'tooltip')
             });
 
             console.log('Configure chart:', chartOptions);
-            set(controller, 'chartOptions', chartOptions);
+            set(ctrl, 'chartOptions', chartOptions);
+        },
 
-            var timenav = get(config, 'timenav');
+        setDefaultTimenavOptions: function() {
+            //get the timestamp, and not the date object
+            var now = +new Date();
+            var ctrl = get(this, 'controller');
+            var config = get(ctrl, 'config');
 
-            if(timenav) {
-                chartOptions = get(controller, 'timenavOptions') || {};
-                $.extend(chartOptions, {
-                    zoom: {
-                        interactive: false
-                    },
+            var chartOptions = get(ctrl, 'timenavOptions') || {};
+            $.extend(chartOptions, {
+                zoom: {
+                    interactive: false
+                },
 
-                    selection: {
-                        mode: 'x'
-                    },
+                selection: {
+                    mode: 'x'
+                },
 
-                    crosshair: {
-                        mode: 'x'
-                    },
+                crosshair: {
+                    mode: 'x'
+                },
 
-                    grid: {
-                        hoverable: true,
-                        clickable: true
-                    },
+                grid: {
+                    hoverable: true,
+                    clickable: true
+                },
 
-                    xaxis: {
-                        min: now - get(controller, 'time_window_offset') - get(controller, 'timenav_window'),
-                        max: now - get(controller, 'time_window_offset')
-                    },
+                xaxis: {
+                    min: now - get(ctrl, 'time_window_offset') - get(ctrl, 'timenav_window'),
+                    max: now - get(ctrl, 'time_window_offset')
+                },
 
-                    xaxes: [{
-                        show: true,
-                        reserveSpace: true,
-                        position: 'bottom',
-                        mode: 'time',
-                        timezone: 'browser'
-                    }],
+                xaxes: [{
+                    show: true,
+                    reserveSpace: true,
+                    position: 'bottom',
+                    mode: 'time',
+                    timezone: 'browser'
+                }],
 
-                    yaxes: [{
-                        show: true,
-                        reserveSpace: true
-                    }],
+                yaxes: [{
+                    show: true,
+                    reserveSpace: true
+                }],
 
-                    legend: {
-                        show: false
-                    },
-                    tooltip: false
-                });
+                legend: {
+                    show: false
+                },
+                tooltip: false
+            });
 
-                console.log('Configure time navigation:', chartOptions);
-                set(controller, 'timenavOptions', chartOptions);
+            console.log('Configure time navigation:', chartOptions);
+            set(ctrl, 'timenavOptions', chartOptions);
+        },
 
-                var timecontainer = this.$('.flotchart-preview-container .flotchart');
-                console.log('Bind event handlers', timecontainer);
+        actions: {
+            resetZoom: function() {
+                var ctrl = get(this, 'controller');
 
-                timecontainer.bind('plotselected', function(evt, ranges) {
-                    console.log('Redefine X axes limits');
-                    var opts = {};
-                    $.extend(opts, chartOptions);
+                this.setDefaultChartOptions();
+                this.setDefaultTimenavOptions();
 
-                    set(opts, 'xaxis.min', ranges.xaxis.from);
-                    set(opts, 'xaxis.max', ranges.xaxis.to);
-                    set(controller, 'chartOptions', opts);
-                });
+                set(ctrl, 'zooming', false);
+            },
+
+            stepBack: function() {
+                var ctrl = get(this, 'controller');
+                var step = get(ctrl, 'timestep');
+
+                var opts = {};
+                $.extend(opts, get(ctrl, 'chartOptions'));
+
+                opts.xaxis.min -= step;
+                opts.xaxis.max -= step;
+
+                set(ctrl, 'chartOptions', opts);
+            },
+
+            stepForward: function() {
+                var ctrl = get(this, 'controller');
+                var step = get(ctrl, 'timestep');
+
+                var opts = {};
+                $.extend(opts, get(ctrl, 'chartOptions'));
+
+                opts.xaxis.min += step;
+                opts.xaxis.max += step;
+
+                set(ctrl, 'chartOptions', opts);
             }
-
-            console.groupEnd();
-
-            this._super.apply(this, arguments);
         }
     });
 
@@ -165,7 +222,15 @@ define([
             FlotChartViewMixin
         ],
 
+        partials: {
+            widgetActionButtons: [
+                'timegraphbutton-resetzoom'
+            ]
+        },
+
+        zooming: false,
         chartOptions: undefined,
+        timenavOptions: undefined,
         flotSeries: Ember.Object.create({}),
         dataSeries: Ember.A(),
 
@@ -186,6 +251,10 @@ define([
             }
         }.property('config.timenav_window'),
 
+        timestep: function() {
+            return get(this, 'config.timestep') * 1000;
+        },
+
         init: function() {
             this._super();
         },
@@ -205,6 +274,27 @@ define([
             }
 
             console.log('refresh:', from, to, replace);
+
+            /* update axis limits */
+            if(!get(this, 'zooming')) {
+                var opts = {};
+                $.extend(opts, get(this, 'chartOptions'));
+
+                opts.xaxis.min = to - get(this, 'time_window') - get(this, 'time_window_offset');
+                opts.xaxis.max = to;
+
+                set(this, 'chartOptions', opts);
+
+                if(get(this, 'timenav')) {
+                    opts = {};
+                    $.extend(opts, get(this, 'timenavOptions'));
+
+                    opts.xaxis.min = from;
+                    opts.xaxis.max = to;
+
+                    set(this, 'timenavOptions', opts);
+                }
+            }
 
             var store = get(this, 'widgetDataStore');
 

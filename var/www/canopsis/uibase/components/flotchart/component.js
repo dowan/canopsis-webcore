@@ -33,16 +33,20 @@ define([
         series: undefined,
 
         onDataUpdate: function() {
-            if(this.chart !== undefined) {
+            var chart = get(this, 'chart');
+
+            if(chart !== undefined) {
                 this.send('renderChart');
             }
         }.observes('series.@each'),
 
         onOptionsUpdate: function() {
-            if(this.chart !== undefined) {
-                this.chart.destroy();
-                this.chart = undefined;
+            var chart = get(this, 'chart');
 
+            if(chart !== undefined) {
+                chart.destroy();
+
+                set(this, 'chart', undefined);
                 this.send('renderChart');
             }
         }.observes('options'),
@@ -53,11 +57,13 @@ define([
 
         actions: {
             renderChart: function() {
-                if(this.chart !== undefined) {
+                var chart = get(this, 'chart');
+
+                if(chart !== undefined) {
                     console.log('Render chart');
-                    this.chart.setData(get(this, 'series'));
-                    this.chart.setupGrid();
-                    this.chart.draw();
+                    chart.setData(get(this, 'series'));
+                    chart.setupGrid();
+                    chart.draw();
                 }
                 else {
                     this.createChart();
@@ -72,12 +78,18 @@ define([
             var series = get(this, 'series');
             var options = get(this, 'options');
 
-            this.chart = $.plot(plotcontainer, series, options);
+            if(options && options.legend && options.legend.show && options.legend.labelFormatter === undefined) {
+                options.legend.labelFormatter = function(label, serie) {
+                    return label;
+                };
+            }
+
+            set(this, 'chart', $.plot(plotcontainer, series, options));
         }
     });
 
     Ember.Application.initializer({
-        name:"component-flotchart",
+        name: 'component-flotchart',
         initialize: function(container, application) {
             application.register('component:component-flotchart', component);
         }

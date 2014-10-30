@@ -58,12 +58,12 @@ def exports(ws):
         return ids
 
     @route(get)
-    def topology_nodes(ids=None):
-        return manager.get_nodes(ids=ids)
+    def topology_nodes(topology_id=None, ids=None):
+        return manager.get_nodes(topology_id=topology_id, ids=ids)
 
-    @route(post, payload='ids')
-    def topology_nodes(ids=None):
-        return manager.get_nodes(ids=ids)
+    @route(post, payload=['topology_id', 'ids'])
+    def topology_nodes(topology_id=None, ids=None):
+        return manager.get_nodes(topology_id=topology_id, ids=ids)
 
     @route(get)
     def topology_nodes_find(entity_id=None):

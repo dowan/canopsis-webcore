@@ -35,6 +35,8 @@ define([
 
         var mixinArray = [];
 
+        console.log('computeMixinsArray', mixinsNames);
+
         if(mixinsNames) {
             for (var i = 0, l = mixinsNames.length; i < l; i++) {
                 var currentName = mixinsNames[i];
@@ -64,6 +66,7 @@ define([
          * Used to visually display error messages to the user (in the widget template)
          */
         errorMessages : Ember.A(),
+        widgetController: undefined,
 
         init: function() {
             console.warn('widget view init', this);
@@ -174,8 +177,7 @@ define([
                 widgetClass = WidgetController;
             }
 
-            widgetControllerInstance =  widgetClass.createWithMixins.apply(widgetClass, mixins);
-
+            widgetControllerInstance = widgetClass.createWithMixins.apply(widgetClass, mixins);
             widgetControllerInstance.refreshPartialsList();
 
             var mixinsName = widget._data.mixins;
