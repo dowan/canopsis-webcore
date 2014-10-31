@@ -19,8 +19,9 @@
 define([
     'jquery',
     'ember',
+    'app/lib/utils/dom',
     'app/lib/wrappers/flotchart'
-], function($, Ember) {
+], function($, Ember, DOM) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -54,35 +55,127 @@ define([
                 }
 
                 this.createChart();
+            },
+
+            toggleSerie: function(config) {
+                var label = config[0];
+                var serieIndex = config[1];
+
+                var series = get(this, 'series');
+                var serie = series[serieIndex];
+
+                console.log('Toggling serie:', label, serieIndex, serie);
+
+                if(serie.config.lines && serie.lines) {
+                    serie.lines.show = !serie.lines.show;
+                }
+
+                if(serie.config.bars && serie.bars) {
+                    serie.bars.show = !serie.bars.show;
+                }
+
+                if(serie.config.points && serie.points) {
+                    serie.points.show = !serie.points.show;
+                }
+
+                serie.hidden = !serie.hidden;
+
+                if(serie.hidden) {
+                    serie.color = '#CCCCCC';
+                }
+                else {
+                    serie.color = serie.config.color;
+                }
+
+                // refresh chart
+                set(this, 'series', series);
+                this.refreshChart();
             }
         },
 
         createChart: function() {
             console.log('createChart');
 
+            var me = this;
             var plotcontainer = this.$();
             var series = get(this, 'series');
             var options = get(this, 'options');
+
+            var seriesByAxis = {
+                x: {},
+                y: {}
+            };
+
+            for(var i = 0, l = series.length; i < l; i++) {
+                var serie = series[i];
+
+                serie.index = i;
+
+                if(seriesByAxis.x[serie.xaxis] === undefined) {
+                    seriesByAxis.x[serie.xaxis] = [];
+                }
+
+                seriesByAxis.x[serie.xaxis].push(serie);
+
+                if(seriesByAxis.y[serie.yaxis] === undefined) {
+                    seriesByAxis.y[serie.yaxis] = [];
+                }
+
+                seriesByAxis.y[serie.yaxis].push(serie);
+            }
 
             if(options && options.legend && options.legend.show && options.legend.labelFormatter === undefined) {
                 options.legend.labelFormatter = function(label, serie) {
                     console.log('Format label for serie:', label, serie);
 
+                    var style = undefined;
 
-                    return label;
+                    if(serie.hidden) {
+                        style = 'font-style: italic;';
+                    }
+
+                    var clickableLabel = $('<span/>', {
+                        style: style,
+                        onclick: [
+                            'Ember.View.views["', me.elementId, '"].send("toggleSerie", [',
+                                '"', label, '",',
+                                serie.index,
+                            ']);'
+                        ].join(''),
+                        text: label
+                    });
+
+                    var tmpContainer = $('<div/>');
+                    tmpContainer.append(clickableLabel);
+
+                    return tmpContainer.html();
                 };
             }
 
             set(this, 'chart', $.plot(plotcontainer, series, options));
+        },
+
+        refreshChart: function() {
+            var chart = get(this, 'chart');
+            var series = get(this, 'series');
+
+            chart.setData(series);
+            chart.setupGrid();
+            chart.draw();
         }
     });
 
+
+    loader.register('component:component-flotchart', component);
+
+    /* TODO: use this snippet instead of loader.register, but this is still buggy
     Ember.Application.initializer({
         name: 'component-flotchart',
         initialize: function(container, application) {
             application.register('component:component-flotchart', component);
         }
     });
+    */
 
     return component;
 });
