@@ -137,7 +137,6 @@ define([
                 if (this.validation !== undefined && !this.validation()) {
                     return;
                 }
-
                 console.log('submit action');
 
                 var override_inverse = {};
@@ -157,7 +156,7 @@ define([
                                 if(field && field._meta &&  field._meta.options){
                                     var metaoptions = field._meta.options;
                                     if( 'setOnCreate' in metaoptions){
-                                        var value = options.setOnCreate;
+                                        var value = metaoptions.setOnCreate;
                                         set(this, 'formContext.' + fieldName, value);
                                     }
                                 }

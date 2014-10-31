@@ -17,42 +17,13 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var utilsFiles = [
-    'forms',
-    'routes',
-    'data',
-    'notification',
-    'i18n',
-    'hash',
-    'dates',
-    'indexes',
-    'filterObject',
-    'widgetSelectors',
-    'dom'
-];
+define([
+    'app/lib/factories/wrapper',
+    'link!webcore-libs/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
+    'datetimepicker'
+], function(Wrapper) {
 
-var deps = [];
+    console.log('datetimepicker wrapper');
 
-for (var i = 0, l = utilsFiles.length; i < l; i++) {
-    deps.push('app/lib/utils/' + utilsFiles[i]);
-}
-
-define(deps, function() {
-    var utils = {};
-
-    console.tags.add('loader');
-
-    console.group("Begin load utils", arguments);
-
-    for (var i = 0, l = arguments.length; i < l; i++) {
-        var utilName = utilsFiles[i];
-        console.log("load util", utilName);
-        utils[utilName] = arguments[i];
-    }
-
-    console.groupEnd();
-
-    console.tags.remove('loader');
-
-    return utils;
+    return Wrapper("datetimepicker", undefined, arguments, "3.1.3");
 });

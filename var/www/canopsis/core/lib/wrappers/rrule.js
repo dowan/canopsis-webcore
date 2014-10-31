@@ -17,42 +17,20 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var utilsFiles = [
-    'forms',
-    'routes',
-    'data',
-    'notification',
-    'i18n',
-    'hash',
-    'dates',
-    'indexes',
-    'filterObject',
-    'widgetSelectors',
-    'dom'
-];
+//plugin compatibility
 
-var deps = [];
+$.browser = {msie: isIE};
 
-for (var i = 0, l = utilsFiles.length; i < l; i++) {
-    deps.push('app/lib/utils/' + utilsFiles[i]);
-}
+define([
+    'app/lib/factories/wrapper',
+    'underscore',
+    'nlp'
+], function(Wrapper, underscore) {
 
-define(deps, function() {
-    var utils = {};
 
-    console.tags.add('loader');
+    require(['rrule'], function (rrule) {
+        console.log('rrule wrapper');
+    });
 
-    console.group("Begin load utils", arguments);
-
-    for (var i = 0, l = arguments.length; i < l; i++) {
-        var utilName = utilsFiles[i];
-        console.log("load util", utilName);
-        utils[utilName] = arguments[i];
-    }
-
-    console.groupEnd();
-
-    console.tags.remove('loader');
-
-    return utils;
+//    return Wrapper("rrule", undefined, arguments, "1.0.2");
 });

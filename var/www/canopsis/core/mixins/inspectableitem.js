@@ -194,7 +194,7 @@ define([
                                         editor: editorName
                                     };
 
-                                    var value = (!this.isOnCreate)? get(inspectedDataItem, key) : attr.options["default"];
+                                    var value = (!this.isOnCreate)? get(inspectedDataItem, key) : attr.options["defaultValue"];
 
                                     if (attr.type === "array"){
                                         var value_temp = Ember.copy(value , true);

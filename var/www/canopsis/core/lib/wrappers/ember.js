@@ -16,15 +16,16 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
+
 var Ember;
 
 define([
     'app/lib/factories/wrapper',
     'app/lib/utils/i18n',
-    'app/lib/utils/notification',
+    'canopsis/canopsisConfiguration',
     'webcore-libs/dev/ember',
     'webcore-libs/jquery-resize/jquery.ba-resize'
-], function(Wrapper, i18n, notificationUtils) {
+], function(Wrapper, i18n, canopsisConfiguration) {
 
     var get = Ember.get;
 
@@ -46,11 +47,18 @@ define([
         }
     };
 
-    Ember.STRINGS = i18n.translations[i18n.lang];
+    var language = i18n.lang;
+
+    if(!!language) {
+        language = 'en';
+    }
+
+    Ember.STRINGS = i18n.translations[language] || {};
 
     Ember.Controller.reopen(controllerDict);
     Ember.ArrayController.reopen(controllerDict);
     Ember.ObjectController.reopen(controllerDict);
+    canopsisConfiguration.EmberIsLoaded = true;
 
     return Wrapper("ember", Ember, arguments, Ember.VERSION);
 });

@@ -17,7 +17,11 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
+define([
+    'ember'
+], function(Ember) {
+
+    var __ = Ember.String.loc;
 
     var dates = {
 
@@ -50,7 +54,7 @@ define([], function() {
                 __("December")
             ];
             if (!Ember.isNone(shortDate)) {
-                var months = [
+                months = [
                     __("Jan"),
                     __("Feb"),
                     __("Mar"),

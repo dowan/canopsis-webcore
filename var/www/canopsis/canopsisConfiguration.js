@@ -14,6 +14,7 @@ define([], function () {
         SHOW_TRANSLATIONS: false
     };
 
+
     if(canopsisConfiguration.DEBUG === false) {
         console.log = function() {};
         console.warn = function() {};
