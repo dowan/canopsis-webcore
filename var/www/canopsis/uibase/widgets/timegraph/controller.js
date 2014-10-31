@@ -114,7 +114,7 @@ define([
                 }],
 
                 legend: {
-                    hideable: true,
+                    show: true,
                     legend: get(config, 'legend'),
                     container: this.$('.flotchart-legend-container')
                 },
@@ -267,7 +267,7 @@ define([
             var me = this;
 
             var replace = false;
-            var from = get(this, 'lastRefresh');
+            var from = null; //get(this, 'lastRefresh');
             var to = +new Date() - get(this, 'time_window_offset');
 
             if(from === null) {
@@ -386,7 +386,7 @@ define([
                 label: get(config, 'serie.crecord_name'),
                 color: get(config, 'style.color'),
                 lines: {
-                    show: get(config, 'curve.lines'),
+                    show: get(config, 'curve.lines') || get(config, 'curve.areas'),
                     used: get(config, 'curve.lines'),
                     lineWidth: get(config, 'curve.line_width'),
                     fill: (get(config, 'curve.areas') ? get(config, 'curve.area_opacity') : false)
@@ -404,7 +404,15 @@ define([
                 xaxis: parseInt(get(config, 'style.xaxis')),
                 yaxis: parseInt(get(config, 'style.yaxis')),
                 clickable: true,
-                hoverable: true
+                hoverable: true,
+
+                hidden: false,
+                config: {
+                    color: get(config, 'style.color'),
+                    lines: get(config, 'curve.lines') || get(config, 'curve.areas'),
+                    bars: get(config, 'curve.bars'),
+                    points: get(config, 'curve.points')
+                }
             };
 
             var oldSerie = get(this, 'flotSeries.' + get(config, 'style.serie'));

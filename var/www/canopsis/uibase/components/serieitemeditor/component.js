@@ -70,7 +70,7 @@ define([
 
             console.groupEnd();
 
-            set(this, 'item', item);
+            set(this, 'item', Ember.Object.create(item));
         }
     });
 
