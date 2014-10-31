@@ -1,7 +1,7 @@
 {{#if controller.loaded}}
     <div class="btn-toolbar canopsis-toolbar" role="toolbar">
         <div class="pull-left">
-            {{#if controller.selection_toolbar}}
+            {{#if controller._partials.selectionToolbarButtons}}
                 {{tr 'For the selection'}} :
             {{/if}}
             {{partialslot slot=controller._partials.selectionToolbarButtons}}
@@ -17,7 +17,7 @@
         {{partialslot slot=controller._partials.subHeader}}
     </div>
     <div class="table-responsive">
-        <table {{bind-attr id="controller.id"}} class="table table-striped table-bordered table-hover dataTable sortable">
+        <table {{bind-attr id="controller.id"}} {{bind-attr class="controller.css"}} >
             <thead>
                 <tr>
                     <th class="checkboxes">
@@ -85,9 +85,9 @@
         {{partialslot slot=controller._partials.footer}}
         <div style="clear:both"></div>
         <div class="pull-left">
-            {{#if controller.selection_toolbar}}
+            {{#if controller._partials.selectionToolbarButtons}}
                 {{tr 'For the selection'}} :
-                {{#each toolitem in controller.selection_toolbar}}
+                {{#each toolitem in controller._partials.selectionToolbarButtons}}
                     {{partial toolitem}}
                 {{/each}}
             {{/if}}
