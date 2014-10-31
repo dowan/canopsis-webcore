@@ -137,17 +137,6 @@ define([
 
             var appController = this;
 
-            var headerStore = DS.Store.create({
-                container: get(this, "container")
-            });
-
-            set(this, "headerViewStore", headerStore);
-
-            headerStore.find('userview', 'view.app_header').then(function(queryResults) {
-                set(appController, 'headerUserview', queryResults);
-            });
-
-
             var devtoolsStore = DS.Store.create({
                 container: get(this, "container")
             });
@@ -156,18 +145,8 @@ define([
                 set(appController, 'devtoolsUserview', queryResults);
             });
 
-            var indexStore = DS.Store.create({
-                container: get(this, "container")
-            });
-
-            set(this, "indexViewStore", indexStore);
-
-            indexStore.find('userview', 'view.app_index').then(function(queryResults) {
-                set(appController, 'indexUserview', queryResults);
-            });
-
             console.log('finding cservices config');
-            headerStore.find('frontend', 'cservice.frontend').then(function(queryResults) {
+            devtoolsStore.find('frontend', 'cservice.frontend').then(function(queryResults) {
                 console.log('frontend config found');
                 set(appController, 'frontendConfig', queryResults);
                 // set(Canopsis, 'conf.frontendConfig', queryResults);
@@ -194,7 +173,7 @@ define([
                 }
             });
 
-            headerStore.find('ticket', 'cservice.ticket').then(function(queryResults) {
+            devtoolsStore.find('ticket', 'cservice.ticket').then(function(queryResults) {
                 console.log('ticket config found');
                 set(appController, 'ticketConfig', queryResults);
                 // set(Canopsis, 'conf.ticketConfig', queryResults);
@@ -202,14 +181,14 @@ define([
 
             console.log('finding authentication backends config');
 
-            headerStore.find('ldapconfig', 'cservice.ldapconfig').then(function(queryResults) {
+            devtoolsStore.find('ldapconfig', 'cservice.ldapconfig').then(function(queryResults) {
                 console.log('ldap config found');
                 set(appController, 'ldapConfig', queryResults);
                 // set(Canopsis, 'conf.ldapConfig', queryResults);
             }, function() {
                 console.log('create base ldap config');
 
-                var record = headerStore.createRecord('ldapconfig', {
+                var record = devtoolsStore.createRecord('ldapconfig', {
                     crecord_type: 'ldapconfig'
                 });
 
@@ -219,14 +198,14 @@ define([
                 // set(Canopsis, 'conf.ldapConfig', record);
             });
 
-            headerStore.find('casconfig', 'cservice.casconfig').then(function(queryResults) {
+            devtoolsStore.find('casconfig', 'cservice.casconfig').then(function(queryResults) {
                 console.log('cas config found');
                 set(appController, 'casConfig', queryResults);
                 // set(Canopsis, 'conf.casConfig', queryResults);
             }, function() {
                 console.log('create base cas config');
 
-                var record = headerStore.createRecord('casconfig', {
+                var record = devtoolsStore.createRecord('casconfig', {
                     crecord_type: 'casconfig'
                 });
 
@@ -245,9 +224,20 @@ define([
                 set(appController, 'footerUserview', queryResults);
             });
 
-            console.groupEnd();
-            this._super.apply(this, arguments);
+            var headerStore = DS.Store.create({
+                container: get(this, "container")
+            });
+
+            set(this, "headerViewStore", headerStore);
+
+            headerStore.find('userview', 'view.app_header').then(function(queryResults) {
+                set(appController, 'headerUserview', queryResults);
+            });
+
+
+            // console.groupEnd();
             this.refreshPartialsList();
+            this._super.apply(this, arguments);
 
             //close the init group
             console.groupEnd();
