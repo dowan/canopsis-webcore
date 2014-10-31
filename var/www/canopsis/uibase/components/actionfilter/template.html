@@ -11,7 +11,7 @@
     <div class="form-group">
         {{#if isOverride}}
         <label>{{tr 'Field to override'}}</label>
-            {{input class="form-control" value=field}}
+            {{component-eventkey content=field}}
             <label>{{tr 'Value to set'}}</label>
             {{component-typedvalue content=value}}
         {{/if}}
