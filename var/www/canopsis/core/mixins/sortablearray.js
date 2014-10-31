@@ -86,8 +86,12 @@ define([
                     }
                 }
             } else {
-                for (var j = 0, lj = keys.length; j < lj; j++) {
-                    set(keys[j], 'headerClassName', 'sorting');
+                if(!keys) {
+                    return [];
+                } else {
+                    for (var j = 0, lj = keys.length; j < lj; j++) {
+                        set(keys[j], 'headerClassName', 'sorting');
+                    }
                 }
             }
             return keys;

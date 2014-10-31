@@ -65,6 +65,7 @@ define([
 
     var widget = WidgetFactory('list',
         {
+            css :"table table-striped table-bordered table-hover dataTable sortable",
             needs: ['login', 'application', 'recordinfopopup'],
 
             viewMixins: [
@@ -192,7 +193,8 @@ define([
 
                 //Setting default sort order param to the query depending on widget configuration
                 var columnSort = this.get('default_column_sort');
-                if (Ember.isNone(findParams.sort) && !Ember.isNone(columnSort)) {
+
+                if (findParams !== undefined && findParams.sort !== undefined && columnSort !== undefined) {
                     if (!Ember.isNone(columnSort.property)){
                         var direction = 'DESC';
                         if (columnSort.direction === 'DESC' || columnSort.direction === 'ASC') {

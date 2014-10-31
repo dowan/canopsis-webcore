@@ -39,6 +39,7 @@ require.config({
         'underscore' : 'canopsis/core/lib/wrappers/underscore',
         'ember-jsoneditor-lib': 'webcore-libs/ember-jsoneditor/build/lib',
 
+
         'flotchart': 'webcore-libs/flot/jquery.flot',
         'flotchart-canvas': 'webcore-libs/flot/jquery.flot.canvas',
         'flotchart-categories': 'webcore-libs/flot/jquery.flot.categories',

@@ -156,18 +156,15 @@
             <aside {{bind-attr class=view.rightSideCssClasses}}>
                 {{outlet formwrapper}}
 
-                {{#if headerUserview}}
-                    {{render "userview" headerUserview}}
-                {{/if}}
+                {{render "userview" headerUserview}}
+
                 <section class="content tab-content">
                     <div class="content">
                         {{outlet}}
                     </div>
                 </section>
-                {{#if footerUserview}}
-                    {{render "userview" footerUserview}}
-                {{/if}}
 
+                {{render "userview" footerUserview}}
             </aside>
         </div>
     </section><!-- /.content -->
