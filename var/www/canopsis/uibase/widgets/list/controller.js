@@ -65,6 +65,7 @@ define([
 
     var widget = WidgetFactory('list',
         {
+            css :"table table-striped table-bordered table-hover dataTable sortable",
             needs: ['login', 'application', 'recordinfopopup'],
 
             viewMixins: [

@@ -606,3 +606,8 @@ div.valueLabel {
     position:absolute;
     border:none;
 }
+
+table.dataTableConnector {
+	font-size:90%;
+	white-space: nowrap;
+}

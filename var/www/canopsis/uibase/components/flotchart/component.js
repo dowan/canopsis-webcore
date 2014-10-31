@@ -101,8 +101,27 @@ define([
             var series = get(this, 'series');
             var options = get(this, 'options');
 
+            var seriesByAxis = {
+                x: {},
+                y: {}
+            };
+
             for(var i = 0, l = series.length; i < l; i++) {
-                series[i].index = i;
+                var serie = series[i];
+
+                serie.index = i;
+
+                if(seriesByAxis.x[serie.xaxis] === undefined) {
+                    seriesByAxis.x[serie.xaxis] = [];
+                }
+
+                seriesByAxis.x[serie.xaxis].push(serie);
+
+                if(seriesByAxis.y[serie.yaxis] === undefined) {
+                    seriesByAxis.y[serie.yaxis] = [];
+                }
+
+                seriesByAxis.y[serie.yaxis].push(serie);
             }
 
             if(options && options.legend && options.legend.show && options.legend.labelFormatter === undefined) {
@@ -146,12 +165,17 @@ define([
         }
     });
 
+
+    loader.register('component:component-flotchart', component);
+
+    /* TODO: use this snippet instead of loader.register, but this is still buggy
     Ember.Application.initializer({
         name: 'component-flotchart',
         initialize: function(container, application) {
             application.register('component:component-flotchart', component);
         }
     });
+    */
 
     return component;
 });

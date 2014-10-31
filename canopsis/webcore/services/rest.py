@@ -27,7 +27,6 @@ from canopsis.old.record import Record
 from base64 import b64decode
 import json
 
-
 def get_records(ws, namespace, ctype=None, _id=None, **params):
     options = {
         'limit': 20,

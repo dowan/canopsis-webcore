@@ -267,7 +267,7 @@ define([
             var me = this;
 
             var replace = false;
-            var from = null; //get(this, 'lastRefresh');
+            var from = get(this, 'lastRefresh');
             var to = +new Date() - get(this, 'time_window_offset');
 
             if(from === null) {
@@ -282,8 +282,10 @@ define([
                 var opts = {};
                 $.extend(opts, get(this, 'chartOptions'));
                 $.extend(opts, {
-                    min: to - get(this, 'time_window') - get(this, 'time_window_offset'),
-                    max: to
+                    xaxis: {
+                        min: to - get(this, 'time_window') - get(this, 'time_window_offset'),
+                        max: to
+                    }
                 });
 
                 set(this, 'chartOptions', opts);
@@ -292,8 +294,10 @@ define([
                     opts = {};
                     $.extend(opts, get(this, 'timenavOptions'));
                     $.extend(opts, {
-                        min: from,
-                        max: to
+                        xaxis: {
+                            min: from,
+                            max: to
+                        }
                     });
 
                     set(this, 'timenavOptions', opts);
@@ -358,9 +362,10 @@ define([
                     if(series[serieId] !== undefined) {
                         var config = series[serieId];
                         var curveId = get(config, 'style.curve');
+                        var curveconf = curvesById[curveId];
 
-                        if(curvesById[curveId] !== undefined) {
-                            set(config, 'curve', curve);
+                        if(curveconf !== undefined) {
+                            set(config, 'curve', curveconf);
                         }
 
                         set(config, 'serie', serieconf);
@@ -373,8 +378,6 @@ define([
 
                 console.groupEnd();
             });
-
-            set(this, 'lastRefresh', +new Date());
         },
 
         genFlotSerie: function(config, from, to, replace) {
@@ -442,14 +445,14 @@ define([
 
         recomputeDataSeries: function() {
             var flotSeries = get(this, 'flotSeries');
-            var series = [];
+            var series = Ember.A();
 
             var serieIds = Object.keys(flotSeries);
 
             for(var i = 0, l = serieIds.length; i < l; i++) {
                 var serieId = serieIds[i];
 
-                series.push(flotSeries[serieId]);
+                series.pushObject(flotSeries[serieId]);
             }
 
             console.log('dataSeries:', series);
