@@ -26,9 +26,7 @@ define([
 
     var isNone = Ember.isNone;
 
-    function keyForRelationship(key, kind) {
-        void (kind);
-
+    function keyForRelationship(key) {
         key = key.decamelize();
         return key;
     }
@@ -122,7 +120,7 @@ define([
 
                 return payload;
             } catch (e) {
-                console.log(e.message, e.stack);
+                console.error(e.message, e.stack);
             }
         },
 
@@ -142,7 +140,7 @@ define([
             try {
                 console.log("payload before extractRelationships", payload);
 
-                if (primaryType.store === undefined) {
+                if (isNone(primaryType.store)) {
                     primaryType.store = parentType.store;
                 }
 
@@ -152,7 +150,7 @@ define([
                     primaryType = concreteWidgetType;
                 }
 
-                if (primaryType.store === undefined) {
+                if (isNone(primaryType.store)) {
                     primaryType.store = parentType.store;
                 }
 
@@ -180,7 +178,7 @@ define([
                             // Sideload the object to the payload
                             var sideloadItemResult = this.sideloadItem(payload, type, related, recordJSON);
 
-                            if(sideloadItemResult !== undefined) {
+                            if(!isNone(sideloadItemResult)) {
                                 // Replace object with ID
                                 recordJSON[key] = related.id;
                                 recordJSON[key + "Type"] = related.xtype;
@@ -202,7 +200,7 @@ define([
                                 // Sideload the object to the payload
                                 var sideloadItemResult = this.sideloadItem(payload, type, item, recordJSON);
 
-                                if(sideloadItemResult !== undefined) {
+                                if(!isNone(sideloadItemResult)) {
                                     // Replace object with ID
                                     related[index] = item.id;
 
@@ -219,14 +217,14 @@ define([
 
                 return payload;
             } catch (e) {
-                console.log(e.message, e.stack);
                 console.groupEnd();
+                console.error(e.message, e.stack);
             }
         },
 
         isRecordEmbedded: function(record) {
             var res;
-            if (record._data.meta !== undefined && record._data.meta.embeddedRecord === true) {
+            if (!isNone(record._data.meta) && record._data.meta.embeddedRecord === true) {
                 res = true;
             } else {
                 res = false;
@@ -261,7 +259,7 @@ define([
             console.log("serialize", record);
             var lookForDocumentRoot = true;
 
-            if (options !== undefined && options.lookForDocumentRoot === false) {
+            if (!isNone(options) && options.lookForDocumentRoot === false) {
                 lookForDocumentRoot = false;
             }
 
@@ -269,6 +267,7 @@ define([
                 this.getTopmostNotEmbeddedRecordFor(record).save(options);
                 return;
             }
+            console.log(' - serialized record', record);
             return this._super(record, options);
         },
 
@@ -278,36 +277,45 @@ define([
             var attr = relationship.key;
             console.log('serializeBelongsTo', relationship, record);
 
-            var key = keyForRelationship(attr, relationship.kind);
+            var key = keyForRelationship(attr);
             console.log("key", key);
 
-            if (record.get(key) !== undefined && record.get(key) !== null) {
-                var serializedSubDocument = record.get(key).serialize({ lookForDocumentRoot : false });
+            var content = record.get(key);
+
+            if (!isNone(content)) {
+                var serializedSubDocument = content.serialize({ lookForDocumentRoot : false });
                 console.log("serializedSubDocument", serializedSubDocument);
                 json[key] = serializedSubDocument;
+            } else {
+                console.error('Content is empty', content);
+                debugger;
             }
 
         },
 
         serializeHasMany: function(record, json, relationship) {
-            console.log('serializeHasMany', arguments);
 
             var attr = relationship.key;
-            console.log('serializeHasMany', relationship, record);
+            console.log('serializeHasMany', relationship, record, json, attr);
 
-            var key = keyForRelationship(attr, relationship.kind);
-            console.log("key", key);
+            var key = keyForRelationship(attr);
+            console.log("keyForRelationship", key);
 
             var subDocuments = record.get(key).get('content');
             console.log("subDocuments", subDocuments);
 
             json[key] = [];
 
-            for (var i = 0, l = subDocuments.length; i < l; i++) {
-                if (subDocuments[i] !== undefined && subDocuments[i] !== null) {
+            var sublen = subDocuments.length;
+
+            for (var i = 0, l = sublen; i < l; i++) {
+                if (!isNone(subDocuments[i])) {
                     var serializedSubDocument = subDocuments[i].serialize({ lookForDocumentRoot : false });
                     serializedSubDocument.xtype = relationship.type.typeKey;
                     json[key].push(serializedSubDocument);
+                } else {
+                    console.error('subdocument is none for index', i, subDocuments);
+                    debugger;
                 }
             }
 
