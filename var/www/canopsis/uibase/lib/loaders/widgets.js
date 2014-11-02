@@ -33,7 +33,6 @@ var widgets = [
     { name:'euewi', url:'canopsis/uibase/widgets/euewi/controller', template:'canopsis/uibase/widgets/list/template.html', TEMPLATE: 'list' },
     { name:'timegraph', url:'canopsis/uibase/widgets/timegraph/controller', template:'canopsis/uibase/widgets/timegraph/template.html'},
     { name:'progressbar', url:'canopsis/uibase/widgets/progressbar/controller', template:'canopsis/uibase/widgets/progressbar/template.html'},
-    { name:'graph', url:'canopsis/uibase/widgets/graph/controller', template:'canopsis/uibase/widgets/graph/template.html' },
     { name:'graph', url:'canopsis/uibase/widgets/graph/controller', template:'canopsis/uibase/widgets/graph/template.html' }
     //{ name:'gauge', url:'canopsis/uibase/widgets/gauge'}
 
