@@ -21,10 +21,11 @@ define([
     'app/application',
     'app/controller/widget',
     "app/lib/widgetsregistry",
+    "app/lib/schemasregistry",
     "app/serializers/userview",
     'app/lib/utils/notification',
     "app/lib/loaders/schemas"
-], function(Application, WidgetController, WidgetsRegistry, UserviewSerializer, notificationUtils) {
+], function(Application, WidgetController, WidgetsRegistry, schemasRegistry, UserviewSerializer, notificationUtils) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -66,7 +67,7 @@ define([
 
         var widgetControllerName = widgetName.dasherize();
         var widgetSerializerName = widgetName.dasherize();
-        var widgetModel = Application[widgetName.camelize().capitalize()];
+        var widgetModel = schemasRegistry.getByName(widgetName.camelize().capitalize()).EmberModel;
         var controllerClass = options.subclass.extend.apply(options.subclass, extendArguments);
 
         if(isNone(widgetModel)) {
@@ -83,8 +84,8 @@ define([
                 loader.register('serializer:' + widgetSerializerName, UserviewSerializer.extend());
             }
 
-            console.log("widget", widgetName.camelize().capitalize(), Application[widgetName.camelize().capitalize()]);
-            var metadataDict = Application[widgetName.camelize().capitalize()].proto().metadata;
+            console.log("widget", widgetName.camelize().capitalize(), widgetModel);
+            var metadataDict = widgetModel.proto().metadata;
 
             console.log("metadataDict", widgetName, metadataDict);
 
@@ -101,7 +102,7 @@ define([
                     var classes = metadataDict.classes;
                     for (var j = 0, lj = classes.length; j < lj; j++) {
                         var currentClass = classes[j];
-                        if(!Ember.isArray(get( WidgetsRegistry.byClass, currentClass))) {
+                        if(!Ember.isArray(get(WidgetsRegistry.byClass, currentClass))) {
                             set(WidgetsRegistry.byClass, currentClass, Ember.A());
                         }
 

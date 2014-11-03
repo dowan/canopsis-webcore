@@ -22,8 +22,9 @@ define([
     'ember',
     'app/application',
     'app/lib/utils/widgets',
+    'app/lib/mixinsregistry',
     'app/lib/helpers/partialslot'
-], function($, Ember, Application, widgetUtils) {
+], function($, Ember, Application, widgetUtils, mixinsRegistry) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -34,7 +35,7 @@ define([
 
         var partials = get(widget, '_partials');
 
-        var partialsToRemove = get(Application, mixinName + 'Mixin.mixins')[0].properties.partials;
+        var partialsToRemove = mixinsRegistry.getByName(mixinName.decamelize()).get('EmberClass.mixins')[0].properties.partials;
 
         for (var k in partialsToRemove) {
             if (partialsToRemove.hasOwnProperty(k)) {
@@ -89,8 +90,8 @@ define([
             var me = this;
 
             console.log("mergeMixinPartials mixin:", Mixin);
-            if(Application[Mixin + 'Mixin']) {
-                var partialsToAdd = Application[Mixin + 'Mixin'].mixins[0].properties.partials;
+            if(mixinsRegistry.getByName(Mixin.decamelize())) {
+                var partialsToAdd = mixinsRegistry.getByName(Mixin.decamelize()).EmberClass.mixins[0].properties.partials;
 
                 for (var k in partialsToAdd) {
                     if (partialsToAdd.hasOwnProperty(k)) {
