@@ -288,7 +288,6 @@ define([
                 json[key] = serializedSubDocument;
             } else {
                 console.error('Content is empty', content);
-                debugger;
             }
 
         },
@@ -315,7 +314,6 @@ define([
                     json[key].push(serializedSubDocument);
                 } else {
                     console.error('subdocument is none for index', i, subDocuments);
-                    debugger;
                 }
             }
 

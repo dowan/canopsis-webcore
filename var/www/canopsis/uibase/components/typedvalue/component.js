@@ -35,7 +35,7 @@ define([
                 'String',
                 'Number',
                 'Boolean',
-                //'Array',
+                //'Array',//Not ready yet
             ]);
 
             var startValue;
@@ -53,24 +53,7 @@ define([
                 startContent = startValue = get(this, 'content');
                 //Intialize type value from content type
                 var valueType = (typeof startValue).capitalize();
-/* TODO complete or change array management
 
-                //User translation... tranform array data to match typed array system
-                if (valueType === 'Object') {
-
-                    valueType = 'Array';
-                    var newStartValue = [];
-
-                    //Making an object list instead a string list (required for ember template)
-                    for(var i=0; i<startValue.length; i++) {
-                        newStartValue.push({
-                            value: startValue[i]
-                        });
-                    }
-                    //When new object array ready, just replace
-                    startValue = newStartValue;
-                }
-*/
                 set(this, 'selectedValueType', valueType);
             }
 
@@ -90,19 +73,6 @@ define([
                 get(this, 'selectedValueType')
             );
 
-            /*
-            //Transform typedvalue object array to simple string array.
-            var userArray = [];
-            if(typeof value === 'object') {
-                console.log('we have an array type, let convert typed value to simple string array');
-                for (var i=0; i<value.length; i++) {
-                    console.log('Array value is', value[i].value);
-                    userArray.push(value[i].value);
-                }
-                console.log('computed array is', userArray);
-                value = userArray;
-            }
-            */
             set(this, 'content', value);
 
             //contentType value is for debug purpose
@@ -115,9 +85,8 @@ define([
 
             var text = 'Type a value';
             switch (get(this, 'selectedValueType')) {
-                case 'Boolean':text = 'Use either "true" or "false"';break;
                 case 'Number':text = 'Use an integer value or a decimal';break;
-                case 'Array':text = 'Use comma separated values';break;
+                case 'String':text = 'Type a value';break;
             }
 
             return __(text);
@@ -138,7 +107,7 @@ define([
                 set(this, 'value', true);
             }
             if (type === 'Array') {
-                set(this, 'value', ['']);
+                set(this, 'value', {value : ['toto']});
             }
 
             console.log('updated content type with value', get(this, 'value'));

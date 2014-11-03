@@ -26,19 +26,6 @@
 
 </div>
 {{#if useArray}}
-    {{#each element in value}}
-        <div class="form-group">
-            <div class="input-group">
-                {{input type="text" class="form-control" action="updateValue" value=element.value}}
-                <div class="input-group-btn">
-                    <button class="btn btn-default" {{action removeItem element}}>{{glyphicon 'remove-circle'}}</button>
-                </div>
-            </div>
-        </div>
-    {{/each}}
-    <div class="form-group">
-        <button class="btn btn-primary" {{action addListElement}}>
-            {{glyphicon 'plus'}} {{tr 'Add element'}}
-        </button>
-    </div>
+    <!--TODO retrive array value to typed value content value-->
+    {{component-arrayeditor content=value}}
 {{/if}}
