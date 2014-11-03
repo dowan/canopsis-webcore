@@ -32,7 +32,6 @@ require.config({
         'adminLTElib': 'webcore-libs/dev/AdminLTE', //TODO make a bower package for this
         'adminLTE': 'canopsis/core/lib/wrappers/adminLTE',
         'utils': 'canopsis/core/lib/loaders/utils',
-        'lodash': 'webcore-libs/lodash/dist/lodash.compat',
         'css3-mediaqueries': 'webcore-libs/min/css3-mediaqueries',
         'math': 'webcore-libs/mathjs/dist/math',
         'dragtable': 'webcore-libs/dev/dragtable',
@@ -121,7 +120,7 @@ require.config({
         },
 
         'ember-widgets': {
-            deps: ['ember', 'lodash', 'jqueryui', 'ember-listview']
+            deps: ['ember', 'jqueryui', 'ember-listview']
         },
 
         'bootstrap': {
