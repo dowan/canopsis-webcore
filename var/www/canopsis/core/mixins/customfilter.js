@@ -42,9 +42,40 @@ define([
             subHeader: ['customfilters']
         },
 
+        isSelectedFilter: function (filterList) {
+            var filterLen = filterList.length;
+            var currentTitle = get(this, 'currentFilter.title');
+            for (var i=0; i<filterLen; i++) {
+
+                var compareTitle = get(filterList[i], 'title');
+
+                console.log('compare filters',currentTitle, compareTitle);
+
+                if (currentTitle === compareTitle) {
+                    set(filterList[i], 'isActive', true);
+                } else {
+                    set(filterList[i], 'isActive', false);
+                }
+
+            }
+
+            return filterList;
+        },
+
+        filters_list: function () {
+            return this.isSelectedFilter(get(this, 'filters'));
+        }.property('filters', 'currentFilter'),
+
+        custom_filters_list: function () {
+            return this.isSelectedFilter(get(this, 'custom_filters'));
+        }.property('custom_filters', 'currentFilter'),
+
+
         actions: {
             setFilter: function (filter) {
-                set(this, 'findParams_cfilterFilterPart', filter);
+                set(this, 'findParams_cfilterFilterPart', get(filter, 'filter'));
+                set(this, 'currentFilter', filter);
+                console.log('currentFilter', get(this, 'currentFilter'));
 
                 if (get(this, 'currentPage') !== undefined) {
                     set(this, 'currentPage', 1);
@@ -52,6 +83,8 @@ define([
 
                 this.refreshContent();
             },
+
+
 
             addUserFilter: function () {
                 var widgetController = this;
