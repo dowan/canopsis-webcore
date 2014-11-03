@@ -42,7 +42,9 @@ def get_user(_id=None):
         rights = get_rights()
 
         user = rights.get_user(_id)
-        user['rights'] = rights.get_user_rights(_id)
+
+        if user:
+            user['rights'] = rights.get_user_rights(_id)
 
         return user
 

@@ -163,7 +163,7 @@ def exports(ws):
         # have initialized the session, we just need to redirect to the index.
         redirect('/static/canopsis/index.html')
 
-    @route(ws.application.get, name='logged_in')
+    @ws.application.get('/logged_in')
     def logged_in():
         # Route used when came back from auth backend
         redirect('/static/canopsis/index.html')

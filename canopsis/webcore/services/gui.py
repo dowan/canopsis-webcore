@@ -84,7 +84,12 @@ def exports(ws):
 
             for cservice in records:
                 cname = cservice._id[prefix:]
-                cservices[cname] = cservice.dump()
+                cservice = cservice.dump()
+                cservices[cname] = cservice
+
+                if cname == 'casconfig':
+                    cservice['server'] = cservice['server'].rstrip('/')
+                    cservice['service'] = cservice['service'].rstrip('/')
 
             # Compile template
             login_page = os.path.join(ws.root_directory, 'login', 'index.html')
