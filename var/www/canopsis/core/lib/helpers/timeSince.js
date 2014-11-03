@@ -19,7 +19,7 @@
 
 define(['ember', 'app/lib/utils/dates'], function(Ember, datesUtils) {
 
-    var __ = Ember.String.log;
+    var __ = Ember.String.lox;
 
     Ember.Handlebars.helper('timeSince', function(timestamp , record) {
 
