@@ -39,7 +39,7 @@ require.config({
         'dragtable': 'webcore-libs/dev/dragtable',
         'underscore' : 'canopsis/core/lib/wrappers/underscore',
         'ember-jsoneditor-lib': 'webcore-libs/ember-jsoneditor/build/lib',
-
+        'lodash': 'webcore-libs/lodash/dist/lodash.compat',
 
         'flotchart': 'webcore-libs/flot/jquery.flot',
         'flotchart-canvas': 'webcore-libs/flot/jquery.flot.canvas',
@@ -122,7 +122,7 @@ require.config({
         },
 
         'ember-widgets': {
-            deps: ['ember', 'jqueryui', 'ember-listview']
+            deps: ['ember', 'lodash', 'jqueryui', 'ember-listview']
         },
 
         'bootstrap': {
