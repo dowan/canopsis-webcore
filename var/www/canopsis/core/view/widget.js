@@ -22,9 +22,10 @@ define([
     'app/application',
     'canopsis/canopsisConfiguration',
     'app/lib/mixinsregistry',
+    'app/lib/widgetsregistry',
     'app/controller/widget',
     'app/lib/loaders/mixins'
-], function(Ember, Application, canopsisConfiguration, mixinsregistry, WidgetController) {
+], function(Ember, Application, canopsisConfiguration, mixinsregistry, widgetsregistry, WidgetController) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -164,15 +165,12 @@ define([
                 target: get(this, 'target')
             });
 
-            var controllerName = get(widget, "xtype").capitalize() + "Controller";
             var widgetControllerInstance;
 
-            console.log("controllerName", controllerName, Application[controllerName], get(this, 'target'));
+            var widgetClass = widgetsregistry.getByName(get(widget, "xtype"));
 
-            var widgetClass;
-
-            if (Application[controllerName] !== undefined) {
-                widgetClass = Application[controllerName];
+            if(widgetClass !== undefined) {
+                widgetClass = widgetClass.EmberClass;
             } else {
                 widgetClass = WidgetController;
             }

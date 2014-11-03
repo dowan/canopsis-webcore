@@ -14,6 +14,8 @@ require.config({
         'consolejs': 'webcore-libs/console.js/console',
         'ember-cloaking': 'canopsis/core/lib/wrappers/ember-cloaking',
         'codemirror': 'webcore-libs/codemirror/lib/codemirror',
+        'summernote': 'webcore-libs/summernote/summernote',
+        'ember-summernote': 'webcore-libs/ember-summernote/lib/component',
         'seeds': 'webcore-libs/seeds',
         'jquery.encoding.digests.sha1': 'webcore-libs/jQuery.encoding.digests.sha1',
         'jquery.md5': 'webcore-libs/jquery.md5',
@@ -32,7 +34,6 @@ require.config({
         'adminLTElib': 'webcore-libs/dev/AdminLTE', //TODO make a bower package for this
         'adminLTE': 'canopsis/core/lib/wrappers/adminLTE',
         'utils': 'canopsis/core/lib/loaders/utils',
-        'lodash': 'webcore-libs/lodash/dist/lodash.compat',
         'css3-mediaqueries': 'webcore-libs/min/css3-mediaqueries',
         'math': 'webcore-libs/mathjs/dist/math',
         'dragtable': 'webcore-libs/dev/dragtable',
@@ -121,7 +122,7 @@ require.config({
         },
 
         'ember-widgets': {
-            deps: ['ember', 'lodash', 'jqueryui', 'ember-listview']
+            deps: ['ember', 'jqueryui', 'ember-listview']
         },
 
         'bootstrap': {

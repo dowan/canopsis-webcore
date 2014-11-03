@@ -30,6 +30,10 @@ define([
     var entities = ["nagios","shinken"];
 
     var adapter = DS.RESTAdapter.extend({
+
+        /**
+         * Override allowing to use the promisemanager
+         */
         ajax: function(url, type, hash) {
             var promise = this._super(url, type, hash);
 
