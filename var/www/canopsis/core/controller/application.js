@@ -347,6 +347,7 @@ define([
                 console.group('editTicketJob');
 
                 var ticketConfig = get(this, 'ticketConfig');
+                set(ticketConfig, 'crecord_type', 'ticketconfig');
 
                 console.log('ticketConfig:', ticketConfig);
 
@@ -375,6 +376,7 @@ define([
                 console.log('editLdapConfig');
 
                 var ldapConfig = get(this, 'ldapConfig');
+                set(ldapConfig, 'crecord_type', 'ldapconfig');
                 var editForm = formsUtils.showNew('modelform', ldapConfig, { title: __('Edit LDAP configuration') });
                 editForm.submit.done(function() {
                     ldapConfig.save();
@@ -385,6 +387,7 @@ define([
                 console.log('editCasConfig');
 
                 var casConfig = get(this, 'casConfig');
+                set(casConfig, 'crecord_type', 'casconfig');
                 var editForm = formsUtils.showNew('modelform', casConfig, { title: __('Edit CAS configuration') });
                 editForm.submit.done(function() {
                     casConfig.save();

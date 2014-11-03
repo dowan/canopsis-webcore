@@ -60,15 +60,12 @@ class CASBackend(BaseBackend):
 
             server = config.get('server')
             service = config.get('service')
+            default_role = config.get('default_role')
 
-            if service[-1] == '/':
-                service += 'logged_in'
-
-            else:
-                service += '/logged_in'
+            service = '{0}/logged_in'.format(service.rstrip('/'))
 
             if not s.get('auth_on', False):
-                res = self.do_auth(s, server, service)
+                res = self.do_auth(s, server, service, default_role)
 
                 if isinstance(res, basestring):
                     return res
@@ -83,7 +80,7 @@ class CASBackend(BaseBackend):
 
         return decorated
 
-    def do_auth(self, session, cas_server, service_url):
+    def do_auth(self, session, cas_server, service_url, default_role):
         if 'ticket' in request.params:
             self.logger.info(
                 'Received ticket from CAS server, start validation'
@@ -92,7 +89,7 @@ class CASBackend(BaseBackend):
             ticket = request.params.get('ticket')
 
             validate_url = '{0}/serviceValidate?ticket={1}&service={2}'.format(
-                cas_server,
+                cas_server.rstrip('/'),
                 quote_plus(ticket),
                 quote_plus(service_url)
             )
@@ -135,10 +132,11 @@ class CASBackend(BaseBackend):
                         'firstname': user,
                         'lastname': '',
                         'mail': None
-                    }
+                    },
+                    'role': default_role
                 }
 
-                record = self.rights.save_user(record)
+                record = self.rights.save_user(self.ws, record)
 
             self.logger.info(
                 'Authentication validated by CAS server for user {0}'.format(
@@ -160,7 +158,7 @@ class CASBackend(BaseBackend):
             )
 
             url = '{0}/login?service={1}'.format(
-                cas_server,
+                cas_server.rstrip('/'),
                 quote_plus(service_url)
             )
 
@@ -188,7 +186,7 @@ class CASBackend(BaseBackend):
             self.session.delete()
 
             url = '{0}/logout?service={1}&url={1}'.format(
-                cas_server,
+                cas_server.rstrip('/'),
                 quote_plus(service_url)
             )
 
