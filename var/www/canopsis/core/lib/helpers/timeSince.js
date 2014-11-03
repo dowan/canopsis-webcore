@@ -17,7 +17,10 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember', 'app/lib/utils/dates'], function(Ember, datesUtils) {
+define([
+    'ember',
+    'app/lib/utils/dates'
+], function(Ember, datesUtils) {
 
     var __ = Ember.String.log;
 
@@ -31,9 +34,6 @@ define(['ember', 'app/lib/utils/dates'], function(Ember, datesUtils) {
             var time = datesUtils.diffDate(a, current, "d") - 1;
 
             var newObject = Ember.Object.create({value : time , field : "time" });
-            newObject.addObserver('timeStampState',record, function(sender, key , value) {
-                console.log('test');
-            });
 
             var icon = '<span class=glyphicon glyphicon-time ></span>';
             if(time !== 0) {
