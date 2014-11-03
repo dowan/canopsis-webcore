@@ -22,7 +22,8 @@ define([
     'jquery',
     'webcore-libs/summernote/summernote.min',
     // 'link!webcore-libs/summernote/summernote-bs3.css'
-    'link!webcore-libs/summernote/summernote.css'
+    'link!webcore-libs/summernote/summernote.css',
+    'ember-summernote'
 ], function(Wrapper, $) {
 
     return Wrapper("summernote", undefined, arguments);

@@ -43,7 +43,6 @@ var components = [
     { name: 'components/component-listtree', url: 'canopsis/uibase/components/listtree/component', template: 'canopsis/uibase/components/listtree/template.html' },
     { name: 'components/component-modelselect', url: 'canopsis/uibase/components/modelselect/component', template: 'canopsis/uibase/components/modelselect/template.html' },
     { name: 'components/component-progressbar', url: 'canopsis/uibase/components/progressbar/component', template: 'canopsis/uibase/components/progressbar/template.html' },
-    { name: 'components/component-richtext', url: 'canopsis/uibase/components/richtext/component', template: 'canopsis/uibase/components/richtext/template.html' },
     { name: 'components/component-rightsselector', url: 'canopsis/uibase/components/rightsselector/component', template: 'canopsis/uibase/components/rightsselector/template.html' },
     { name: 'components/component-searchbar', url: 'canopsis/uibase/components/searchbar/component', template: 'canopsis/uibase/components/searchbar/template.html' },
     { name: 'components/component-stateeditor', url: 'canopsis/uibase/components/stateeditor/component', template: 'canopsis/uibase/components/stateeditor/template.html' },

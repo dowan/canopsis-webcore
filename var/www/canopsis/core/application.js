@@ -23,6 +23,7 @@ define([
     'webcore-libs/requirejs-domready/domReady',
     //FIXME: why does it work only here ?
     'app/lib/wrappers/ember-widgets',
+    'app/lib/wrappers/summernote',
     'jsonselect'
 ], function(Ember, DS, domReady) {
 
