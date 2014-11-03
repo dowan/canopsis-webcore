@@ -14,6 +14,8 @@ require.config({
         'consolejs': 'webcore-libs/console.js/console',
         'ember-cloaking': 'canopsis/core/lib/wrappers/ember-cloaking',
         'codemirror': 'webcore-libs/codemirror/lib/codemirror',
+        'summernote': 'webcore-libs/summernote/summernote',
+        'ember-summernote': 'webcore-libs/ember-summernote/lib/component',
         'seeds': 'webcore-libs/seeds',
         'jquery.encoding.digests.sha1': 'webcore-libs/jQuery.encoding.digests.sha1',
         'jquery.md5': 'webcore-libs/jquery.md5',
