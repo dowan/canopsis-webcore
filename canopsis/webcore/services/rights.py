@@ -123,8 +123,6 @@ def save_user(ws, record):
     if not rights.add_role(uid, urole):
         raise ws.Error('Impossible to add user to role')
 
-    user['_id'] = uid
-
     return user
 
 
