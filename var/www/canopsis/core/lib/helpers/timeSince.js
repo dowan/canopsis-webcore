@@ -19,6 +19,8 @@
 
 define(['ember', 'app/lib/utils/dates'], function(Ember, datesUtils) {
 
+    var __ = Ember.String.log;
+
     Ember.Handlebars.helper('timeSince', function(timestamp , record) {
 
         if(timestamp || record.timeStampState) {
