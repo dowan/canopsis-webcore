@@ -126,7 +126,7 @@ define([
             'minute' : 60,
             'hour' : 3600,
             'day' : 3600 * 24,
-            'year' : 3600 * 24 * 12
+            'year' : 3600 * 24 * 365
         }),
 
         durationType: [
