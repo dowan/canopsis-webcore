@@ -20,31 +20,32 @@
 
 var routes;
 
-require(['plugins'], function(plugins_tool) {
+define(['text!../../rest/object/cservice/cservice.frontend', 'plugins'], function(frontendConfig, plugins_tool) {
     routes = [];
+
+    frontendConfig = JSON.parse(frontendConfig);
+    var enabledPlugins = JSON.stringify(frontendConfig.data[0].enabled_plugins);
+
+    plugins_tool.Plugins.setEnabled('canopsis/', enabledPlugins);
 
     function load_(path) {
         var files;
         var plugins = [];
 
-        try {
-            plugins = plugins_tool.Plugins.getPlugins(path);
-            plugins = plugins_tool.Plugins.resolveDependancies(plugins);
-        } catch (e) {
-            console.log("PluginError: " + e);
-        }
+        plugins = plugins_tool.Plugins.getPlugins(path);
+        plugins = plugins_tool.Plugins.resolveDependancies(plugins);
 
         var routes_plugins = plugins_tool.Manifest.fetchRoutes(plugins, path);
         routes = routes.concat(routes_plugins);
         files = plugins_tool.Manifest.fetchFiles(plugins, path);
 
         files = files.map(function(e) {
-            return e.replace("canopsis/core/", "app/");
+            return e.replace('canopsis/core/', 'app/');
         });
 
         require(files);
     }
 
-    load_("canopsis/");
+    load_('canopsis/');
 });
 
