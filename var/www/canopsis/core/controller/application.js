@@ -324,7 +324,41 @@ define([
                     //submit form and it s callback
                     recordWizard.submit.then(function(form) {
                         console.log('record going to be saved', record, form);
+                        notificationUtils.info(__('Status management information') + ' ' +__('updated'));
 
+                        //generated data by user form fill
+                        record = form.get('formContext');
+                        record.save();
+
+                    });
+                });
+            },
+
+            editDataclean: function () {
+
+                var applicationController = this;
+
+
+                var dataStore = DS.Store.create({
+                    container: get(this, "container")
+                });
+
+                var record = dataStore.findQuery('datacleaner', {}).then(function(queryResults) {
+
+                    console.log('queryResults', queryResults);
+
+                    var record = get(queryResults, 'content')[0];
+
+                    //generating form from record model
+                    var recordWizard = formsUtils.showNew('modelform', record, {
+                        title: __('Data clean edition'),
+                    });
+
+                    //submit form and it s callback
+                    recordWizard.submit.then(function(form) {
+                        console.log('record going to be saved', record, form);
+
+                        notificationUtils.info(__('Engine data clean information') + ' ' +__('updated'));
                         //generated data by user form fill
                         record = form.get('formContext');
                         record.save();
@@ -347,6 +381,7 @@ define([
                 console.group('editTicketJob');
 
                 var ticketConfig = get(this, 'ticketConfig');
+                set(ticketConfig, 'crecord_type', 'ticketconfig');
 
                 console.log('ticketConfig:', ticketConfig);
 
@@ -375,6 +410,7 @@ define([
                 console.log('editLdapConfig');
 
                 var ldapConfig = get(this, 'ldapConfig');
+                set(ldapConfig, 'crecord_type', 'ldapconfig');
                 var editForm = formsUtils.showNew('modelform', ldapConfig, { title: __('Edit LDAP configuration') });
                 editForm.submit.done(function() {
                     ldapConfig.save();
@@ -385,6 +421,7 @@ define([
                 console.log('editCasConfig');
 
                 var casConfig = get(this, 'casConfig');
+                set(casConfig, 'crecord_type', 'casconfig');
                 var editForm = formsUtils.showNew('modelform', casConfig, { title: __('Edit CAS configuration') });
                 editForm.submit.done(function() {
                     casConfig.save();

@@ -59,7 +59,7 @@ var editors = [
     { name: 'editor-userpreference', template: 'canopsis/uibase/editors/userpreference.html' },
     { name: 'editor-json', template: 'canopsis/uibase/editors/json.html' },
     { name: 'editor-typedvalue', template: 'canopsis/uibase/editors/typedvalue.html' },
-    { name: 'editor-rrule', template: 'canopsis/uibase/editors/rrule/template.html' }
+    { name: 'editor-rrule', template: 'canopsis/uibase/editors/rrule.html' }
 ];
 
 loader.loadWithTemplates(editors);

@@ -34,13 +34,12 @@ require.config({
         'adminLTElib': 'webcore-libs/dev/AdminLTE', //TODO make a bower package for this
         'adminLTE': 'canopsis/core/lib/wrappers/adminLTE',
         'utils': 'canopsis/core/lib/loaders/utils',
-        'lodash': 'webcore-libs/lodash/dist/lodash.compat',
         'css3-mediaqueries': 'webcore-libs/min/css3-mediaqueries',
         'math': 'webcore-libs/mathjs/dist/math',
         'dragtable': 'webcore-libs/dev/dragtable',
         'underscore' : 'canopsis/core/lib/wrappers/underscore',
         'ember-jsoneditor-lib': 'webcore-libs/ember-jsoneditor/build/lib',
-
+        'lodash': 'webcore-libs/lodash/dist/lodash.compat',
 
         'flotchart': 'webcore-libs/flot/jquery.flot',
         'flotchart-canvas': 'webcore-libs/flot/jquery.flot.canvas',

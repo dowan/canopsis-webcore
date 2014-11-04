@@ -87,7 +87,7 @@ def save_user(ws, record):
     uid = record.pop('_id')
     urole = record.pop('role')
     ucontact = record.pop('contact', None)
-    urights = record.pop('rights')
+    urights = record.pop('rights', None)
     ugroup = record.pop('groups', None)
 
     if ucontact is None:
@@ -115,7 +115,9 @@ def save_user(ws, record):
     if ugroup is not None:
         rights.update_group(uid, 'user', ugroup, user)
 
-    rights.update_rights(uid, 'user', urights, user)
+    if urights is not None:
+        rights.update_rights(uid, 'user', urights, user)
+
     rights.update_fields(uid, 'user', record)
 
     if not rights.add_role(uid, urole):

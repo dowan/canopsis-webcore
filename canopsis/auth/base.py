@@ -41,20 +41,20 @@ class BaseBackend(object):
     def setup_config(self, context):
         self.permissions = context['config'].get('permissions', self._perms)
 
-    def install_account(self, user):
+    def install_account(self, uid, user):
         mgr = self.rights.get_manager()
 
         self.logger.debug('Ensure user {0} has sufficient rights'.format(
-            user['_id']
+            uid
         ))
 
         for p in self.permissions:
             right_id, checksum = p
 
-            if not mgr.check_rights(user['_id'], right_id, checksum):
+            if not mgr.check_rights(uid, right_id, checksum):
                 return False
 
-        self.logger.debug('Creating session for user {0}'.format(user['_id']))
+        self.logger.debug('Creating session for user {0}'.format(uid))
 
         self.session.create(user)
 
