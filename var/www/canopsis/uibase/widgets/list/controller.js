@@ -152,7 +152,7 @@ define([
 
             isAllSelectedChanged: function(){
                 console.log('toggle isAllSelected');
-                this.get('widgetData').content.setEach('isSelected', get(this, 'isAllSelected'));
+                get(this, 'widgetData').content.setEach('isSelected', get(this, 'isAllSelected'));
             }.observes('isAllSelected'),
 
             //Mixin aliases
@@ -162,14 +162,6 @@ define([
             inspectedDataArray: Ember.computed.alias('widgetData'),
             //pagination
             paginationMixinFindOptions: Ember.computed.alias('findOptions'),
-
-            onReload: function (element) {
-                this._super();
-            },
-
-            onDomReady: function (element) {
-                console.log('on list dom ready', element);
-            },
 
             findItems: function() {
                 var me = this;
@@ -185,14 +177,14 @@ define([
                 console.log('findItems', itemType);
 
                 if (itemType === undefined || itemType === null) {
-                    console.error ('itemType is undefined for', this);
+                    console.error('itemType is undefined for', this);
                     return;
                 }
 
                 var findParams = this.computeFindParams();
 
                 //Setting default sort order param to the query depending on widget configuration
-                var columnSort = this.get('default_column_sort');
+                var columnSort = get(this, 'default_column_sort');
 
                 if (findParams !== undefined && findParams.sort !== undefined && columnSort !== undefined) {
                     if (!Ember.isNone(columnSort.property)){
@@ -205,21 +197,12 @@ define([
                     }
                 }
 
-                console.tags.add('data');
-                console.log('find items of type', itemType, 'with options', findParams);
-                console.tags.remove('data');
-
                 get(this, 'widgetDataStore').findQuery(itemType, findParams).then(function(queryResults) {
-                    console.tags.add('data');
-                    console.log('got results in widgetDataStore', itemType, 'with options', findParams);
-                    console.tags.remove('data');
-
                     //retreive the metas of the records
                     set(me, 'widgetDataMetas', get(me, 'widgetDataStore').metadataFor(get(me, 'listed_crecord_type')));
                     me.extractItems.apply(me, [queryResults]);
                     set(me, 'loaded', true);
 
-                    console.log('Initializing special fields in list records',queryResults);
                     for(var i = 0, l = queryResults.content.length; i < l; i++) {
                         //This value reset spiner display for record in flight status
                         queryResults.content[i].set('pendingOperation', false);

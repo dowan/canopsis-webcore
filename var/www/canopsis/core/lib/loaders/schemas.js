@@ -49,11 +49,6 @@ define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
 
         schemasRegistry.add(registryEntry, name);
         available_types.push(name);
-
-        //FIXME use loader.register instead of Application[name] = emberModel
-        // loader.register('model:' + name.decamelize(), emberModel);
-        Application[name] = emberModel;
-        utils.schemaList[name] = schema;
     }
 
     /**
@@ -142,7 +137,7 @@ define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
     /**
     *    Allow solving dependancies if any
     */
-    function solveDependancy(currentSchemaName, schemasDict) {
+    function solveDependancy (currentSchemaName, schemasDict) {
 
         console.log("solveDependancy", currentSchemaName, schemasDict);
         if(schemasDict[currentSchemaName] === undefined) {
@@ -236,7 +231,7 @@ define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
             console.groupEnd();
         }
 
-        console.log(schemaName, 'inherits from',parentModelClass);
+        console.log(schemaName, 'inherits from', parentModelClass);
 
         modelDict = inheritance(modelDict, parentModelClassName, schemaName);
 
@@ -244,7 +239,6 @@ define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
 
         registerSchema(modelDict, newModel, schema, schemaName);
 
-        console.log('newModel store', newModel.store);
         console.groupEnd();
 
         return newModel;
@@ -258,40 +252,36 @@ define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
      */
     function inheritance(modelDict, parentModelClassName, schemaName) {
 
+        console.group('inherited attributes and relationships');
 
-        var parentModelDict = schemasRegistry.getByName(parentModelClassName);
-        if(parentModelDict !== undefined) {
-            parentModelDict = parentModelDict.modelDict;
-        }
+        var parentModelDict = Application.allModels[parentModelClassName];
 
-        console.group('inherited attributes and relationships', parentModelClassName, parentModelDict);
-
-        for (var key in parentModelDict) {
-            if (parentModelDict.hasOwnProperty(key)) {
-                if (!modelDict.hasOwnProperty(key)) {
-                    var val = parentModelDict[key]._meta.options;
+        for (var keys in parentModelDict) {
+            if (parentModelDict.hasOwnProperty(keys)) {
+                if (!modelDict.hasOwnProperty(keys)) {
+                    var val = parentModelDict[keys]._meta.options;
 
                     if (val.relationship === 'hasMany' && val.model !== undefined) {
-                        // console.log('Add hasMany relationship : ' + key +' = ', val, Application.allModels[parentModelClassName][key]._meta.type);
-                        modelDict[key] = DS.hasMany(val.model, val);
+                        // console.log('Add hasMany relationship : ' + keys +' = ', val, Application.allModels[parentModelClassName][keys]._meta.type);
+                        modelDict[keys] = DS.hasMany(val.model, val);
                     } else if (val.relationship === 'belongsTo' && val.model !== undefined) {
-                        // console.log('Add belongsTo relationship : ' + key +' = ', val, Application.allModels[parentModelClassName][key]._meta.type);
-                        modelDict[key] = DS.belongsTo(val.model, val);
+                        // console.log('Add belongsTo relationship : ' + keys +' = ', val, Application.allModels[parentModelClassName][keys]._meta.type);
+                        modelDict[keys] = DS.belongsTo(val.model, val);
                     } else {
-                        // console.log('Add attribute : ' + key +' = ', val, Application.allModels[parentModelClassName][key]._meta.type);
-                        modelDict[key] = DS.attr(parentModelDict[key]._meta.type, val);
+                        // console.log('Add attribute : ' + keys +' = ', val, Application.allModels[parentModelClassName][keys]._meta.type);
+                        modelDict[keys] = DS.attr(parentModelDict[keys]._meta.type, val);
                     }
 
-                } else if (modelDict[key] !== undefined && key !== 'categories' && key !== 'metadata') {
+                } else if (modelDict[keys] !== undefined && keys !== 'categories' && keys !== 'metadata') {
 
-                    var oldkey = parentModelDict[key];
-                    var newkey = modelDict[key];
+                    var oldkeys = parentModelDict[keys];
+                    var newkeys = modelDict[keys];
 
-                    // console.log('oldkey', oldkey, 'newkey', newkey);
-                    if (oldkey !== undefined) {
+                    // console.log('oldkeys', oldkeys, 'newkeys', newkeys);
+                    if (oldkeys !== undefined) {
 
-                        var oldkeysAttribute = oldkey._meta;
-                        var newkeysAttribute = newkey._meta;
+                        var oldkeysAttribute = oldkeys._meta;
+                        var newkeysAttribute = newkeys._meta;
 
                         var oldOptions;
 
@@ -301,17 +291,17 @@ define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
                             oldOptions = oldkeysAttribute.options;
                         }
 
-                        // console.log('modelDict key !== undefined : ', parentModelClassName, Application.allModels[parentModelClassName], key);
+                        // console.log('modelDict keys !== undefined : ', parentModelClassName, Application.allModels[parentModelClassName], keys);
 
                         var newOptions;
                         if(newkeysAttribute !== undefined) {
                             newOptions = newkeysAttribute.options;
                             newOptions = merge(oldOptions, newOptions, schemaName);
 
-                            modelDict[key] = DS.attr(newkeysAttribute.type, newOptions);
+                            modelDict[keys] = DS.attr(newkeysAttribute.type, newOptions);
                         } else {
                             newOptions = oldOptions;
-                            modelDict[key] = DS.attr(oldkeysAttribute.type, newOptions);
+                            modelDict[keys] = DS.attr(oldkeysAttribute.type, newOptions);
                         }
 
                     }
@@ -337,6 +327,8 @@ define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
             utils.schemaList = {};
         }
 
+        utils.schemaList[schemaName] = schema;
+
         //retreive the good model class the new model should inherit from
         if (schemaInheritance.length > 1) {
             parentModelClassName = schemaInheritance[schemaInheritance.length - 2].capitalize();
@@ -348,11 +340,6 @@ define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
             parentModelClass = DS.Model;
         }
 
-        //does schema already exists ?
-        if (Application[schemaName]) {
-            console.warn('schema already registered', schemaName);
-        }
-
         //overrided by default following main thread rules (schema load order)
         console.log(
             'Adding schema', {
@@ -361,7 +348,7 @@ define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
                 parentModelClassName: parentModelClassName
             }, schema);
 
-        generateEmberModelFromSchema(
+        Application[schemaName] = generateEmberModelFromSchema(
             schema,
             schemaName,
             parentModelClass,

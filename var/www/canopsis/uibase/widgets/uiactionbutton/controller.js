@@ -31,9 +31,6 @@ define([
                 }
 
                 this.send(action, params);
-            },
-            testAction: function() {
-                console.log('testAction');
             }
         }
     });

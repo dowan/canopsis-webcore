@@ -105,14 +105,7 @@ define([
                 } else {
                     set(this, 'domReadyCount', get(this, 'domReadyCount') + 1);
                 }
-
-                this.onDomReady($('#' + get(this, 'id')));
             }
-        },
-
-        onDomReady: function() {
-            console.log(get(this, 'title'), 'widget dom load complete');
-            //To override
         },
 
         stopRefresh: function () {
