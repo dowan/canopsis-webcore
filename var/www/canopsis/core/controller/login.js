@@ -21,12 +21,10 @@ define([
     'jquery',
     'ember',
     'utils',
-    'app/adapters/acl',
-], function($, Ember, utils, accountMe) {
+    'app/adapters/acl'
+], function($, Ember, utils) {
     var set = Ember.set,
         get = Ember.get;
-
-    accountMe = window.loggedAccount;
 
     loader.register('route:login', Ember.Route.extend({
         setupController: function(controller, model) {
@@ -55,9 +53,22 @@ define([
             var controller = this;
             var store = get(this, 'store');
 
-            var login = store.createRecord('user', accountMe);
-            set(controller, 'record', login);
-            set(utils, 'session', get(controller, 'record'));
+            $.ajax({
+                url: '/account/me',
+                success: function(data) {
+                    if (data.success) {
+                        var login = store.createRecord('user', data.data[0]);
+                        set(controller, 'record', login);
+                        set(utils, 'session', get(controller, 'record'));
+                    }
+                    else {
+                        utils.notification.error('Impossible to get user account');
+                    }
+
+
+                },
+                async: false
+            });
         },
 
         reset: function() {

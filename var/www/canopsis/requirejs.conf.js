@@ -242,16 +242,8 @@ var setLoadingInfo = function(text, icon) {
     }
 };
 
-define([
-    'text!../rest/object/cservice/cservice.frontend',
-    'text!../account/me',
-    'app/lib/wrappers/console',
-    'app/lib/objects/loader'
-], function(frontendConfig, loggedAccount) {
-
-    window.frontendConfig = JSON.parse(frontendConfig).data[0];
-    window.loggedAccount = JSON.parse(loggedAccount).data[0];
-    var enabledPlugins = window.frontendConfig.enabled_plugins;
+define(['text!canopsis/enabled.json', 'app/lib/wrappers/console', 'app/lib/objects/loader'], function(enabledPlugins) {
+    enabledPlugins = JSON.parse(enabledPlugins);
 
     setLoadingInfo('Fetching frontend plugin-ins', 'fa-cubes');
 
@@ -263,16 +255,15 @@ define([
         'link'
     ];
 
-    for (var i = 0, l = enabledPlugins.length; i < l; i++) {
+    for (var i = 0; i < enabledPlugins.length; i++) {
         var currentPlugin = enabledPlugins[i];
 
         deps.push('text!canopsis/'+ currentPlugin +'/files/routes.json');
         deps.push('text!canopsis/'+ currentPlugin +'/files/files.json');
         deps.push('text!canopsis/'+ currentPlugin +'/files/manifest.json');
 
-        if(currentPlugin !== 'core') {
-           deps.push('canopsis/'+ currentPlugin +'/init');
-        }
+        if(currentPlugin !== 'core')
+        deps.push('canopsis/'+ currentPlugin +'/init');
     }
 
     require(deps, function() {
