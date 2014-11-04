@@ -17,7 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/application', 'app/routes/userview', 'app/routes/application'], function(Application) {
+define(['app/application'], function(Application) {
 
     var routesUtils = {
         getCurrentRouteController: function() {
