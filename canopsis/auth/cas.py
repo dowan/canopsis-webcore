@@ -147,7 +147,7 @@ class CASBackend(BaseBackend):
             session['auth_cas'] = True
             session.save()
 
-            return self.install_account(record)
+            return self.install_account(user, record)
 
         else:
             self.logger.info(

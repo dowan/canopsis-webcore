@@ -43,9 +43,9 @@ class LDAPBackend(BaseBackend):
             s = self.session.get()
 
             if not s.get('auth_on', False):
-                user = self.do_auth()
+                user, record = self.do_auth()
 
-                if user and not self.install_account(user):
+                if user and record and not self.install_account(user, record):
                     return HTTPError(403, 'Forbidden')
 
             return callback(*args, **kwargs)
@@ -134,7 +134,8 @@ class LDAPBackend(BaseBackend):
                     '_id': user,
                     'external': True,
                     'enable': True,
-                    'contact': {}
+                    'contact': {},
+                    'role': config.get('default_role')
                 }
 
                 for field in ['firstname', 'lastname', 'mail']:
@@ -145,7 +146,7 @@ class LDAPBackend(BaseBackend):
 
                     info['contact'][field] = val
 
-                account = self.rights.save_user(info)
+                account = self.rights.save_user(self.ws, info)
 
             else:
                 info = {
@@ -156,12 +157,13 @@ class LDAPBackend(BaseBackend):
                         'firstname': user,
                         'lastname': '',
                         'mail': None
-                    }
+                    },
+                    'role': config.get('default_role')
                 }
 
-                account = self.rights.save_user(info)
+                account = self.rights.save_user(self.ws, info)
 
-        return account
+        return user, account
 
 
 def get_backend(ws):
