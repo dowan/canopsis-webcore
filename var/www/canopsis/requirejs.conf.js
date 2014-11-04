@@ -22,7 +22,7 @@ require.config({
         'handlebars': 'webcore-libs/handlebars/handlebars',
         'ember': 'canopsis/core/lib/wrappers/ember',
         'jsonselect': 'canopsis/core/lib/wrappers/jsonselect',
-        'datetimepicker': 'webcore-libs/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min',
+        'datetimepicker': 'canopsis/core/lib/wrappers/datetimepicker',
         'moment': 'webcore-libs/moment/min/moment-with-locales.min',
         'ember-data': 'canopsis/core/lib/wrappers/ember-data',
         'ember-listview': 'webcore-libs/ember-list-view/list-view',

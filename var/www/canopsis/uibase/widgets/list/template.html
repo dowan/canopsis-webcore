@@ -7,9 +7,6 @@
             {{partialslot slot=controller._partials.selectionToolbarButtons}}
         </div>
         <div class="pull-right btn-group" data-toggle="btn-toggle">
-            {{#each toolitem in controller.actions_toolbar}}
-                {{partial toolitem}}
-            {{/each}}
             {{partialslot slot=controller._partials.actionToolbarButtons}}
         </div>
         {{partialslot slot=controller._partials.header}}
@@ -23,9 +20,8 @@
                     <th class="checkboxes">
                         {{component-checkbox checked=controller.isAllSelected class="toggle"}}
                     </th>
-                    {{#each column in controller._partials.columnsHead}}
-                        {{partial column}}
-                    {{/each}}
+                    {{partialslot slot=controller._partials.columnsHead}}
+
                     {{#each attr in controller.shown_columns}}
                         {{#group}}
                             {{#if attr.options.show}}
@@ -40,19 +36,11 @@
                             {{/if}}
                         {{/group}}
                     {{/each}}
-                    {{!#if controller.item_actions}}
+                    {{#if controller._partials.itemactionbuttons}}
                         <th class="actions">{{tr 'Actions'}}</th>
-                    {{!/if}}
+                    {{/if}}
                 </tr>
             </thead>
-            {{#if controller.config.cloaking}}
-                {{cloaked-collection
-                    cloakView="listline"
-                    content=controller.widgetData
-                    tagName='tbody'
-                    itemController=controller.listlineControllerClass
-                    parentController=this}}
-            {{else}}
                 <tbody>
                     {{#each controller.widgetData}}
                         {{render "listline" this
@@ -73,9 +61,8 @@
                                 </tr>
                             {{/if}}
                         {{/if}}
-                    {{/each}}
-                </tbody>
-            {{/if}}
+                {{/each}}
+            </tbody>
         </table>
         {{#unless controller.widgetData.content.length}}
             <div class="noRecordsFound">{{tr 'No matching records found'}}</div>
@@ -87,9 +74,7 @@
         <div class="pull-left">
             {{#if controller._partials.selectionToolbarButtons}}
                 {{tr 'For the selection'}} :
-                {{#each toolitem in controller._partials.selectionToolbarButtons}}
-                    {{partial toolitem}}
-                {{/each}}
+                {{partialslot slot=controller._partials.selectionToolbarButtons}}
             {{/if}}
         </div>
     </div>

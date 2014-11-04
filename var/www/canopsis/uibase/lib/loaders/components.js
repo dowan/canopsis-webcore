@@ -27,7 +27,6 @@ var components = [
     { name: 'components/component-classifieditemselector', url: 'canopsis/uibase/components/classifieditemselector/component', template: 'canopsis/uibase/components/classifieditemselector/template.html' },
     { name: 'components/component-criticity', url: 'canopsis/uibase/components/criticity/component', template: 'canopsis/uibase/components/criticity/template.html' },
     { name: 'components/component-dateinterval', url: 'canopsis/uibase/components/dateinterval/component', template: 'canopsis/uibase/components/dateinterval/template.html' },
-    { name: 'components/component-datetimepicker', url: 'canopsis/uibase/components/datetimepicker/component', template: 'canopsis/uibase/components/datetimepicker/template.html' },
     { name: 'components/component-dictclassifiedcrecordselector', url: 'canopsis/uibase/components/dictclassifiedcrecordselector/component', template: 'canopsis/uibase/components/dictclassifiedcrecordselector/template.html' },
     { name: 'components/component-eventkey', url: 'canopsis/uibase/components/eventkey/component', template: 'canopsis/uibase/components/eventkey/template.html' },
     { name: 'components/component-expandableaddbutton', url: 'canopsis/uibase/components/expandableaddbutton/component', template: 'canopsis/uibase/components/expandableaddbutton/template.html' },

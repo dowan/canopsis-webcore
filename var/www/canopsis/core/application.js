@@ -27,6 +27,7 @@ define([
     'jsonselect',
     'webcore-libs/ember-icheck/lib/component',
     'webcore-libs/ember-tooltip/lib/component',
+    'webcore-libs/ember-datetimepicker/lib/component',
     'webcore-libs/ember-durationcombo/lib/component'
 ], function(Ember, DS, domReady) {
 

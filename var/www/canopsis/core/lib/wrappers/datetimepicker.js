@@ -20,7 +20,7 @@
 define([
     'app/lib/factories/wrapper',
     'link!webcore-libs/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
-    'datetimepicker'
+    'webcore-libs/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min'
 ], function(Wrapper) {
 
     console.log('datetimepicker wrapper');
