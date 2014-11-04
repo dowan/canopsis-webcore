@@ -17,8 +17,7 @@ require.config({
         'summernote': 'webcore-libs/summernote/summernote',
         'ember-summernote': 'webcore-libs/ember-summernote/lib/component',
         'seeds': 'webcore-libs/seeds',
-        'jquery.encoding.digests.sha1': 'webcore-libs/jQuery.encoding.digests.sha1',
-        'jquery.md5': 'webcore-libs/jquery.md5',
+        'hashes': 'webcore-libs/jshashes/hashes',
         'handlebars': 'webcore-libs/handlebars/handlebars',
         'ember': 'canopsis/core/lib/wrappers/ember',
         'jsonselect': 'canopsis/core/lib/wrappers/jsonselect',
@@ -75,10 +74,6 @@ require.config({
 
         'nlp': {
              deps: ['jquery', 'rrule', 'underscore']
-        },
-
-        'jquery.encoding.digests.sha1': {
-             deps: ['jquery']
         },
 
         'adminLTE': {

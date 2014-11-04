@@ -20,9 +20,8 @@
 define([
     'jquery',
     'ember',
-    'jquery.md5',
-    'jquery.encoding.digests.sha1'
-], function($, Ember) {
+    'hashes'
+], function($, Ember, Hashes) {
 
     var hash = {
         generate_GUID: function() {
@@ -35,6 +34,7 @@ define([
 
             return token;
         },
+
         generateId: function(prefix) {
 
             var token = hash.generate_GUID();
@@ -46,11 +46,13 @@ define([
         },
 
         md5: function(data) {
-            return $.md5(data);
+            var md5 = new Hashes.MD5();
+            return md5.hex(data);
         },
 
         sha1: function(data) {
-            return $.sha1(data);
+            var sha1 = new Hashes.SHA1();
+            return sha1.hex(data);
         }
     };
 

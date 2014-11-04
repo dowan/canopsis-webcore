@@ -59,7 +59,9 @@ var editors = [
     { name: 'editor-userpreference', template: 'canopsis/uibase/editors/userpreference.html' },
     { name: 'editor-json', template: 'canopsis/uibase/editors/json.html' },
     { name: 'editor-typedvalue', template: 'canopsis/uibase/editors/typedvalue.html' },
-    { name: 'editor-rrule', template: 'canopsis/uibase/editors/rrule.html' }
+    { name: 'editor-rrule', template: 'canopsis/uibase/editors/rrule.html' },
+    { name: 'editor-passwordmd5', template: 'canopsis/uibase/editors/passwordmd5.html' },
+    { name: 'editor-passwordsha1', template: 'canopsis/uibase/editors/passwordsha1.html' },
 ];
 
 loader.loadWithTemplates(editors);

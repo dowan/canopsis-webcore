@@ -64,8 +64,9 @@ var components = [
     { name: 'components/component-tooltip', url: 'canopsis/uibase/components/tooltip/component', template: 'canopsis/uibase/components/tooltip/template.html' },
     { name: 'components/component-typedvalue', url: 'canopsis/uibase/components/typedvalue/component', template: 'canopsis/uibase/components/typedvalue/template.html' },
     { name: 'components/component-userpreferencesmanager', url: 'canopsis/uibase/components/userpreferencesmanager/component', template: 'canopsis/uibase/components/userpreferencesmanager/template.html' },
-    { name: 'components/component-draggablebutton', url: 'canopsis/uibase/components/draggablebutton/component', template: 'canopsis/uibase/components/draggablebutton/template.html'  },
-    { name: 'components/component-rrule', url: 'canopsis/uibase/components/rrule/component', template: 'canopsis/uibase/components/rrule/template.html'  },
+    { name: 'components/component-draggablebutton', url: 'canopsis/uibase/components/draggablebutton/component', template: 'canopsis/uibase/components/draggablebutton/template.html' },
+    { name: 'components/component-rrule', url: 'canopsis/uibase/components/rrule/component', template: 'canopsis/uibase/components/rrule/template.html' },
+    { name: 'components/component-password', url: 'canopsis/uibase/components/password/component', template: 'canopsis/uibase/components/password/template.html' },
 ];
 
 loader.loadWithTemplates(components);
