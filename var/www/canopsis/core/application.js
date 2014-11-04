@@ -24,7 +24,10 @@ define([
     //FIXME: why does it work only here ?
     'app/lib/wrappers/ember-widgets',
     'app/lib/wrappers/summernote',
-    'jsonselect'
+    'jsonselect',
+    'webcore-libs/ember-icheck/lib/component',
+    'webcore-libs/ember-tooltip/lib/component',
+    'webcore-libs/ember-durationcombo/lib/component'
 ], function(Ember, DS, domReady) {
 
     var Application = Ember.Application.create({

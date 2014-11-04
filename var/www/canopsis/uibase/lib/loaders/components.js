@@ -18,26 +18,20 @@
 */
 
 
-//TODO implement auto check for mvct file existence and require them automatically
-
 var components = [
-
     { name: 'components/component-actionbutton', url: 'canopsis/uibase/components/actionbutton/component', template: 'canopsis/uibase/components/actionbutton/template.html' },
     { name: 'components/component-actionfilter', url: 'canopsis/uibase/components/actionfilter/component', template: 'canopsis/uibase/components/actionfilter/template.html' },
     { name: 'components/component-arrayeditor', url: 'canopsis/uibase/components/arrayeditor/component', template: 'canopsis/uibase/components/arrayeditor/template.html' },
     { name: 'components/component-arrayclassifiedcrecordselector', url: 'canopsis/uibase/components/arrayclassifiedcrecordselector/component', template: 'canopsis/uibase/components/arrayclassifiedcrecordselector/template.html' },
-    { name: 'components/component-checkbox', url: 'canopsis/uibase/components/checkbox/component', template: 'canopsis/uibase/components/checkbox/template.html' },
     { name: 'components/component-classifiedcrecordselector', url: 'canopsis/uibase/components/classifiedcrecordselector/component', template: 'canopsis/uibase/components/classifiedcrecordselector/template.html' },
     { name: 'components/component-classifieditemselector', url: 'canopsis/uibase/components/classifieditemselector/component', template: 'canopsis/uibase/components/classifieditemselector/template.html' },
     { name: 'components/component-criticity', url: 'canopsis/uibase/components/criticity/component', template: 'canopsis/uibase/components/criticity/template.html' },
     { name: 'components/component-dateinterval', url: 'canopsis/uibase/components/dateinterval/component', template: 'canopsis/uibase/components/dateinterval/template.html' },
     { name: 'components/component-datetimepicker', url: 'canopsis/uibase/components/datetimepicker/component', template: 'canopsis/uibase/components/datetimepicker/template.html' },
     { name: 'components/component-dictclassifiedcrecordselector', url: 'canopsis/uibase/components/dictclassifiedcrecordselector/component', template: 'canopsis/uibase/components/dictclassifiedcrecordselector/template.html' },
-    { name: 'components/component-durationcombo', url: 'canopsis/uibase/components/durationcombo/component', template: 'canopsis/uibase/components/durationcombo/template.html' },
     { name: 'components/component-eventkey', url: 'canopsis/uibase/components/eventkey/component', template: 'canopsis/uibase/components/eventkey/template.html' },
     { name: 'components/component-expandableaddbutton', url: 'canopsis/uibase/components/expandableaddbutton/component', template: 'canopsis/uibase/components/expandableaddbutton/template.html' },
     { name: 'components/component-expandabletext', url: 'canopsis/uibase/components/expandabletext/component', template: 'canopsis/uibase/components/expandabletext/template.html' },
-    { name: 'components/component-filterclause', url: 'canopsis/uibase/components/filterclause/component', template: 'canopsis/uibase/components/filterclause/template.html' },
     { name: 'components/component-filterclause', url: 'canopsis/uibase/components/filterclause/component', template: 'canopsis/uibase/components/filterclause/template.html' },
     { name: 'components/component-flotchart', url: 'canopsis/uibase/components/flotchart/component', template: 'canopsis/uibase/components/flotchart/template.html' },
     { name: 'components/component-listtree', url: 'canopsis/uibase/components/listtree/component', template: 'canopsis/uibase/components/listtree/template.html' },
@@ -61,7 +55,6 @@ var components = [
     { name: 'components/component-cfilter3editor', url: 'canopsis/uibase/components/cfilter3editor/component', template: 'canopsis/uibase/components/cfilter3editor/template.html' },
     { name: 'components/component-mixinselector', url: 'canopsis/uibase/components/mixinselector/component', template: 'canopsis/uibase/components/mixinselector/template.html' },
     { name: 'components/component-textwithsortoption', url: 'canopsis/uibase/components/textwithsortoption/component', template: 'canopsis/uibase/components/textwithsortoption/template.html' },
-    { name: 'components/component-tooltip', url: 'canopsis/uibase/components/tooltip/component', template: 'canopsis/uibase/components/tooltip/template.html' },
     { name: 'components/component-typedvalue', url: 'canopsis/uibase/components/typedvalue/component', template: 'canopsis/uibase/components/typedvalue/template.html' },
     { name: 'components/component-userpreferencesmanager', url: 'canopsis/uibase/components/userpreferencesmanager/component', template: 'canopsis/uibase/components/userpreferencesmanager/template.html' },
     { name: 'components/component-draggablebutton', url: 'canopsis/uibase/components/draggablebutton/component', template: 'canopsis/uibase/components/draggablebutton/template.html'  },
