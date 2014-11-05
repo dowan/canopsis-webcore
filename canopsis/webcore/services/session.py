@@ -64,6 +64,9 @@ def delete():
 
 
 def exports(ws):
-    @route(ws.application.get, name='account/me')
+    @route(ws.application.get, name='account/me', adapt=False)
     def get_me():
-        return get_user()
+        user = get_user()
+        user.pop('id', None)
+        user.pop('eid', None)
+        return user
