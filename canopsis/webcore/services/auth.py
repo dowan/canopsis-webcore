@@ -30,7 +30,7 @@ from . import rights
 
 def check(mode='authkey', user=None, password=None):
     def _check_shadow(user, key):
-        if user and user['shadowpass'].upper() == key.upper():
+        if user and user['shadowpasswd'].upper() == key.upper():
             return user
 
         return None
@@ -41,7 +41,7 @@ def check(mode='authkey', user=None, password=None):
 
     def _check_crypted(user, key):
         if user:
-            shadowpasswd = user['shadowpass'].upper()
+            shadowpasswd = user['shadowpasswd'].upper()
             ts = str(int(time() / 10) * 10)
             tmpKey = '{0}{1}'.format(shadowpasswd, ts)
 
