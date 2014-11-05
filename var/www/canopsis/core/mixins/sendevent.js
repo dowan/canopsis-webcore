@@ -279,6 +279,7 @@ define([
                         crecord.set('ticket', record.ticket);
                         crecord.set('ticket_date', datesUtils.getNow());
                     }
+                    crecord.set('ack_remove', undefined);
                 }
             },
 
@@ -303,8 +304,8 @@ define([
                 handle: function(crecords) {
                     var record = this.getDisplayRecord('ackremove', crecords[0]);
 
-                    notificationUtils.info(__('event "ackremove" sent'));
-                    this.submitEvents(crecords, record, 'ackremove');
+                    this.getEventForm('ackremove', record, crecords);
+
                 },
 
                 transform: function(crecord, record) {
@@ -314,6 +315,11 @@ define([
                     crecord.set('declare_ticket_date', undefined);
                     crecord.set('ticket', undefined);
                     crecord.set('ticket_date', undefined);
+                    crecord.set('ack_remove', Ember.Object.create({
+                        comment: record.output,
+                        timestamp: datesUtils.getNow(),
+                        author: record.author
+                    }));
                 }
 
             },
