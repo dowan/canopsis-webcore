@@ -27,7 +27,9 @@ var mixins = [
     { name: 'history', url: 'app/mixins/history', classes: ['widget']},
     { name: 'sendevent', url: 'app/mixins/sendevent', classes: ['widget']},
     { name: 'crud', url: 'app/mixins/crud', classes: ['widget']},
-    { name: 'showviewbutton', url: 'app/mixins/showviewbutton', classes: ['widget', 'userviews']}
+    { name: 'showviewbutton', url: 'app/mixins/showviewbutton', classes: ['widget', 'userviews']},
+    { name: 'eventnavigation', url: 'app/mixins/eventnavigation', classes: ['widget', 'events']},
+    { name: 'eventhistory', url: 'app/mixins/eventhistory', classes: ['widget', 'events']}
 ];
 
 loader.loadWithTemplates(mixins);

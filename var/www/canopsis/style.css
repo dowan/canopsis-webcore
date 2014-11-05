@@ -566,7 +566,7 @@ i.abstractType > i.widget {
 	z-index: 10000;
 }
 
-.debugmenu{
+.debugmenu {
 	position:fixed;
 	left:0;
 	width: 100%;
@@ -581,6 +581,7 @@ i.abstractType > i.widget {
 	height:258px;
 	background: #292429;
 }
+
 .time-tooltip {
 	position: absolute;
    	display: none;

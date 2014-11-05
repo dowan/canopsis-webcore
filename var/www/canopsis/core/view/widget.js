@@ -70,7 +70,6 @@ define([
         widgetController: undefined,
 
         init: function() {
-            console.warn('widget view init', this);
             console.group('widget initialisation :', get(this.widget, "xtype"), this.widget, get(this, 'widget.tagName'));
             set(this, 'target', get(this, 'controller'));
 
