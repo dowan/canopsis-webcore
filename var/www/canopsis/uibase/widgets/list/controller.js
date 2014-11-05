@@ -83,7 +83,7 @@ define([
                     console.debug('sendDisplayRecord action called with params', dest, record);
 
                     var template = get(dest, 'record_template');
-                    if (Ember.isNone(template)){
+                    if (Ember.isNone(template)) {
                         template = '';
                     }
 
@@ -151,7 +151,6 @@ define([
             loaded: false,
 
             isAllSelectedChanged: function(){
-                console.log('toggle isAllSelected');
                 get(this, 'widgetData').content.setEach('isSelected', get(this, 'isAllSelected'));
             }.observes('isAllSelected'),
 

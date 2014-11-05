@@ -257,10 +257,6 @@ define([
             return get(this, 'config.timestep') * 1000;
         }.property('config.timestep'),
 
-        init: function() {
-            this._super();
-        },
-
         findItems: function() {
             console.group('Fetch series:');
 
@@ -351,7 +347,7 @@ define([
                     curvesById[curve.id] = curve;
                 }
 
-                console.log(curvesById)
+                console.log(curvesById);
                 console.groupEnd();
 
                 console.group('Fetch series:');

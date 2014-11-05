@@ -18,22 +18,23 @@
 */
 
 define([
-    'jquery',
-    'app/lib/factories/widget'
-], function($, WidgetFactory) {
+    'ember',
+    'app/lib/utils/forms',
+    'app/lib/utils/hash',
+    'app/lib/factories/mixin'
+], function(Ember, formsUtils, hashUtils, Mixin) {
 
-    var widget = WidgetFactory('uimaindropdown',{
-        tagName: 'span',
-        actions: {
-            do: function(action, params) {
-                if(params === undefined || params === null){
-                    params = [];
-                }
+    var get = Ember.get,
+        set = Ember.set;
 
-                this.send(action, params);
-            }
+
+    var mixin = Mixin('eventnavigation', {
+        partials: {
+            actionToolbarButtons: [
+                'actionbutton-history'
+            ]
         }
     });
 
-    return widget;
+    return mixin;
 });
