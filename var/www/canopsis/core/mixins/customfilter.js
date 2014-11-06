@@ -73,9 +73,15 @@ define([
 
         actions: {
             setFilter: function (filter) {
-                set(this, 'findParams_cfilterFilterPart', get(filter, 'filter'));
+                var query = get(filter, 'filter');
+                set(this, 'findParams_cfilterFilterPart', query);
                 set(this, 'currentFilter', filter);
                 console.log('currentFilter', get(this, 'currentFilter'));
+
+                set(this, 'userParams.findParams_cfilterFilterPart', query);
+                set(this, 'userParams.currentFilter', filter);
+                this.saveUserConfiguration();
+
 
                 if (get(this, 'currentPage') !== undefined) {
                     set(this, 'currentPage', 1);
