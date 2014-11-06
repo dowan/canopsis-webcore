@@ -38,6 +38,11 @@ define([
             set(this, 'allCollapsed', true);
         },
 
+
+        selectionChanged: function() {
+            console.log('selectionChanged');
+        }.observes('selection'),
+
         actions: {
             setListMode: function() {
                 set(this, 'mode', 'list');
@@ -49,6 +54,10 @@ define([
 
             unselectItem: function (item) {
                 get(this, "selection").removeObject(item);
+
+                if(get(this, 'target')) {
+                    get(this, 'target').send('unselectItem', item.name);
+                }
             },
 
             selectItem: function(item) {
@@ -57,6 +66,7 @@ define([
                     set(this, 'selection', [item]);
                 } else {
                     if(!Ember.isArray(get(this, 'selection'))) {
+                        console.warn('override selection property');
                         set(this, 'selection', Ember.A());
                     }
 

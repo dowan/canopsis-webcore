@@ -41,7 +41,15 @@ define([
         if(mixinsNames) {
             for (var i = 0, l = mixinsNames.length; i < l; i++) {
                 var currentName = mixinsNames[i];
-                var currentClass = get(Application, currentName + "Mixin");
+
+                //DEPRECATE handle progressive deprecation of mixins as strings
+                if(typeof currentName === 'string') {
+                    Ember.deprecate('Defining mixins as strings is deprecated. The new format is : \'{ name: "mixinName" }\'. This is required by the mixin options system.');
+                } else {
+                    currentName = currentName.name.camelize();
+                }
+
+                var currentClass = get(Application, currentName.capitalize() + 'Mixin');
                 console.log('find mixin', currentName, currentClass);
 
                 if(currentClass) {

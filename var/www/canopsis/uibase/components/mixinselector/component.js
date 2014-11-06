@@ -17,17 +17,69 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+
 define([
     'ember',
     'app/lib/mixinsregistry'
-], function(Ember, mixinsregistry) {
+], function(Ember, mixinsRegistry) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
 
     var component = Ember.Component.extend({
-        mixins: mixinsregistry
+
+        selectionPreparedCount: 0,
+
+        init: function() {
+            this._super.apply(this, arguments);
+
+            set(this, 'selectionPrepared', Ember.A());
+
+            var content = get(this, 'content');
+
+            for (var i = 0, l = content.length; i < l; i++) {
+                var currentName = content[i];
+                //DEPRECATE handle progressive deprecation of mixins as strings
+                if(typeof currentName === 'string') {
+                    Ember.deprecate('Defining mixins as strings is deprecated. The new format is : \'{ name: "mixinName" }\'. This is required by the mixin options system.');
+                } else {
+                    currentName = currentName.name;
+                }
+                currentName = currentName.camelize();
+
+                get(this, 'selectionPrepared').pushObject(mixinsRegistry.getByName(currentName));
+            }
+        },
+
+        /*
+         * Compute a structure with classified item each time the 'items' property changed
+         */
+        classifiedItems: mixinsRegistry,
+        selectionUnprepared: Ember.computed.alias('content'),
+
+        recomputeSelection: function() {
+            var selection = get(this, 'selectionPrepared');
+            var resBuffer = Ember.A();
+            for (var i = 0, l = selection.length; i < l; i++) {
+                var currentItem = selection[i];
+                resBuffer.pushObject({
+                    name: get(currentItem, 'name')
+                });
+            }
+
+            set(this, 'content', resBuffer);
+        },
+
+        actions: {
+            selectItem: function() {
+                this.recomputeSelection();
+            },
+            unselectItem: function(){
+                this.recomputeSelection();
+            }
+        }
     });
 
 

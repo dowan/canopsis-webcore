@@ -64,7 +64,7 @@
                                         {{glyphicon defaultIcon}} 
                                     {{/if}}
                                 {{/if}}
-                                {{item.name}} ({{item.value}})
+                                {{item.name}} {{#if item.value}}({{item.value}}){{/if}}
 
                                 {{#if selectedItemPartial}}
                                     {{partial selectedItemPartial}}

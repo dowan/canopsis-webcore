@@ -17,20 +17,24 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
-    var get = Ember.get;
+define([
+    'ember',
+    'app/lib/utils/forms',
+    'app/lib/utils/hash',
+    'app/lib/factories/mixin'
+], function(Ember, formsUtils, hashUtils, Mixin) {
 
-    var widgetsUtils = {
-        getParentViewForWidget: function(widget) {
-            var currentItem = widget;
+    var get = Ember.get,
+        set = Ember.set;
 
-            while (get(currentItem, 'crecord_type') !== 'view') {
-                currentItem = get(currentItem, 'target');
-            }
 
-            return currentItem;
+    var mixin = Mixin('eventnavigation', {
+        partials: {
+            actionToolbarButtons: [
+                'actionbutton-history'
+            ]
         }
-    };
+    });
 
-    return widgetsUtils;
+    return mixin;
 });
