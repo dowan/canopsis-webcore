@@ -310,27 +310,37 @@ define([
                     container: get(this, "container")
                 });
 
+
                 var record = dataStore.findQuery('statusmanagement', {}).then(function(queryResults) {
 
                     console.log('queryResults', queryResults);
 
                     var record = get(queryResults, 'content')[0];
 
-                    //generating form from record model
-                    var recordWizard = formsUtils.showNew('modelform', record, {
-                        title: __('Event settings edition'),
-                    });
+                    //it is always translated this way
+                    var errorMessage = __('Status management information not registered in database.') +
+                        ' ' + __('Please contact your administrator.');
 
-                    //submit form and it s callback
-                    recordWizard.submit.then(function(form) {
-                        console.log('record going to be saved', record, form);
-                        notificationUtils.info(__('Status management information') + ' ' +__('updated'));
+                    if (record) {
 
-                        //generated data by user form fill
-                        record = form.get('formContext');
-                        record.save();
+                        //generating form from record model
+                        var recordWizard = formsUtils.showNew('modelform', record, {
+                            title: __('Event settings edition'),
+                        });
 
-                    });
+                        //submit form and it s callback
+                        recordWizard.submit.then(function(form) {
+                            console.log('record going to be saved', record, form);
+                            notificationUtils.info(__('Status management information') + ' ' +__('updated'));
+
+                            //generated data by user form fill
+                            record = form.get('formContext');
+                            record.save();
+
+                        });
+                    } else {
+                        notificationUtils.error(errorMessage);
+                    }
                 });
             },
 
@@ -348,6 +358,10 @@ define([
                     console.log('queryResults', queryResults);
 
                     var record = get(queryResults, 'content')[0];
+
+                    //it is always translated this way
+                    var errorMessage = __('Engine data cleaner information not registered in database.') +
+                        ' ' + __('Please contact your administrator.');
 
                     //generating form from record model
                     var recordWizard = formsUtils.showNew('modelform', record, {

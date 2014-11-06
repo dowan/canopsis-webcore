@@ -23,7 +23,8 @@ define([
 ], function(Ember, datesUtils) {
 
     var get = Ember.get,
-        isNone = Ember.isNone;
+        isNone = Ember.isNone,
+         __ = Ember.String.loc;
 
     Ember.Handlebars.helper('ack', function(value, crecord) {
 

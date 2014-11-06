@@ -21,7 +21,8 @@ define(['ember'], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set,
-        isNone = Ember.isNone;
+        isNone = Ember.isNone,
+         __ = Ember.String.loc;
 
 
     Ember.Handlebars.helper('criticity', function(value, crecord) {

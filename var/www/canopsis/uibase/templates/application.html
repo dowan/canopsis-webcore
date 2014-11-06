@@ -103,19 +103,6 @@
                                                     </li>
                                                 {{/ifUserCanDisplayView}}
                                             {{/each}}
-                                            <hr/>
-                                            <li>
-                                                <a {{action 'editEventSettings'}}>
-                                                    <i class="fa fa-angle-double-right"></i>
-                                                    {{tr 'Events settings'}}
-                                                </a>
-                                            </li>
-                                             <li>
-                                                <a {{action 'editDataclean'}}>
-                                                    <i class="fa fa-angle-double-right"></i>
-                                                    {{tr 'Cleaner settings'}}
-                                                </a>
-                                            </li>
                                         </ul>
                                     </li>
                                 {{/if}}
@@ -148,6 +135,20 @@
                                                     {{tr 'Ticket'}}
                                                 </a>
                                             </li>
+                                            {{#if controller.utils.session.rights.menu_enginesconfig.checksum}}
+                                            <li>
+                                                <a {{action 'editEventSettings'}}>
+                                                    <i class="fa fa-angle-double-right"></i>
+                                                    {{tr 'Events statuses'}}
+                                                </a>
+                                            </li>
+                                             <li>
+                                                <a {{action 'editDataclean'}}>
+                                                    <i class="fa fa-angle-double-right"></i>
+                                                    {{tr 'Data cleaner'}}
+                                                </a>
+                                            </li>
+                                            {{/if}}
                                         </ul>
                                     </li>
                                 {{/if}}
