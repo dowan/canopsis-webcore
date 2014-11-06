@@ -269,7 +269,15 @@ define([
 
                 var ouser = get(utils, 'session');
                 var recordWizard = formsUtils.showNew('modelform', ouser, {
-                    title: get(ouser, '_id') + ' ' + __('profile')
+                    title: get(ouser, '_id') + ' ' + __('profile'),
+                    filterFieldByKey: {
+                        authkey: {readOnly: true},
+                        firstname: {readOnly: true},
+                        lastname: {readOnly: true},
+                        authkey: {readOnly: true},
+                        ui_language: true,
+                        mail: true,
+                    }
                 });
 
                 recordWizard.submit.then(function(form) {
