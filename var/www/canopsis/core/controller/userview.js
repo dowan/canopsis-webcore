@@ -27,7 +27,8 @@ define([
 ], function(Ember, CrecordController, formUtils) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+         __ = Ember.String.loc;
 
 
     var controller = CrecordController.extend(Ember.Evented, {

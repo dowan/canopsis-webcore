@@ -103,7 +103,6 @@ define([
                 async: false
             }).fail(function () {
                 console.log('initialization case. translation is now ready');
-                i18n.uploadDefinitions();
             });
 
             if (conf.DEBUG && conf.TRANSLATE) {
