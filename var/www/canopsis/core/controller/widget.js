@@ -76,6 +76,14 @@ define([
 
             set(this, 'widgetDataStore', store);
 
+            //User preference are called just before the refresh to ensure
+            //refresh takes care of user information and widget general preference is overriden
+            //All widget may not have this mixin, so it's existance is tested
+            if (!isNone(this.loadUserConfiguration)) {
+                this.loadUserConfiguration();
+            }
+            console.debug('user configuration loaded for widget ' + get(this, 'title'));
+
             this.startRefresh();
 
             //setting default/minimal reload delay for current widget

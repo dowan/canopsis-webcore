@@ -97,9 +97,6 @@ define([
             return res;
         }.property('itemsPerPagePropositionSelected'),
 
-        //FIXME as this is always defined, it might always override the widget's settings
-        //FIXME when fixing this, be careful to avoid multiple list refreshes
-        userDefinedItemsPerPage: 5,
 
         itemsPerPageChanged : function() {
             set(this, 'currentPage', 1);
@@ -111,7 +108,11 @@ define([
         }.observes('currentPage'),
 
         itemsPerPagePropositionSelectedChanged: function() {
-            set(this, 'itemsPerPage', get(this, 'itemsPerPagePropositionSelected'));
+            var userSelection = get(this, 'itemsPerPagePropositionSelected');
+            set(this, 'itemsPerPage', userSelection);
+            set(this, 'userParams.itemsPerPage', userSelection);
+            this.saveUserConfiguration();
+
         }.observes('itemsPerPagePropositionSelected'),
 
         refreshContent: function() {
@@ -122,6 +123,8 @@ define([
             }
 
             var itemsPerPage = get(this, 'itemsPerPage');
+
+            console.log('itemsPerPage is', itemsPerPage, 'type', typeof itemsPerPage);
 
             if(itemsPerPage === undefined || itemsPerPage === 0) {
                 set(this, 'dataError', { statusText: __('List option "itemsPerPage" should not be set up to 0') });
@@ -143,7 +146,7 @@ define([
 
             var start = itemsPerPage * (this.currentPage - 1);
             console.log("start", start);
-
+            set(this, 'itemsPerPagePropositionSelected', itemsPerPage);
             set(this, 'paginationMixinFindOptions.start', start);
             set(this, 'paginationFirstItemIndex', start + 1);
             set(this, 'paginationLastItemIndex', start + itemsPerPage);
