@@ -378,6 +378,12 @@ table.sortable th {
     border-top-color: black!important;
 }
 
+#loadingInfo {
+	position:absolute;
+	top: 45%;
+	left: 45%
+}
+
 #loading {
 	position:absolute;
 	top: 50%;
