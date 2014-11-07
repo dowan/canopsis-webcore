@@ -27,12 +27,12 @@
     {{/if}}
 {{/each}}
 
-{{!#if parentController.item_actions}}
+{{#if parentController._partials.itemactionbuttons}}
     <td style="padding-left:0; padding-right:0">
         <div style="display:flex">
             {{set 'minified' true}}
             {{partialslot slot=controller.parentController._partials.itemactionbuttons}}
         </div>
     </td>
-{{!/if}}
+{{/if}}
 

@@ -48,7 +48,8 @@ define([
     'app/lib/loaders/helpers',
     'app/lib/wrappers/bootstrap',
     'app/lib/wrappers/mousetrap',
-    'app/controller/recordinfopopup'
+    'app/controller/recordinfopopup',
+    'app/controller/formwrapper'
 ], function(
     $,
     Ember,
@@ -123,9 +124,9 @@ define([
         plugins:function(){
             var all_plugins = [];
             var plugins = Application.plugins;
-            for ( var pluginName in plugins ){
-                if( plugins.hasOwnProperty(pluginName)){
-                    all_plugins.pushObject(plugins[pluginName] );
+            for(var pluginName in plugins) {
+                if(plugins.hasOwnProperty(pluginName)){
+                    all_plugins.pushObject(plugins[pluginName]);
                 }
             }
             return all_plugins;

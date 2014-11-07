@@ -39,11 +39,13 @@ define([
         },
 
         partials: {
-            itemactionbuttons: ['actionbutton-ack',
-                                'actionbutton-cancel',
-                                'actionbutton-incident',
-                                'actionbutton-changestate',
-                                'actionbutton-ticketnumber'],
+            itemactionbuttons: [
+                'actionbutton-ack',
+                'actionbutton-cancel',
+                'actionbutton-incident',
+                'actionbutton-changestate',
+                'actionbutton-ticketnumber'
+            ],
             selectionToolbarButtons: ['actionbutton-cancel', 'actionbutton-ack']
         },
 
@@ -248,6 +250,7 @@ define([
                 extract: function(record, crecord, formRecord) {
                     record.ref_rk = get(crecord, 'id');
                     record.state = 0;
+                    record.state_type = 1;
                     record.id = this.getRoutingKey(record);
                 },
 
@@ -294,6 +297,7 @@ define([
 
                     record.ref_rk = get(crecord, 'id');
                     record.state = 0;
+                    record.state_type = 1;
                     record.id = this.getRoutingKey(record);
                 },
 
@@ -328,6 +332,7 @@ define([
                 extract: function(record, crecord, formRecord) {
                     record.ref_rk = get(crecord, 'id');
                     record.state = 0;
+                    record.state_type = 1;
                     record.id = this.getRoutingKey(record);
                 },
 
@@ -358,6 +363,7 @@ define([
                 extract: function(record, crecord, formRecord) {
                     record.ref_rk = get(crecord, 'id');
                     record.state = 0;
+                    record.state_type = 1;
                     record.id = this.getRoutingKey(record);
                     record.output = __('Associated ticket number');
                 },
