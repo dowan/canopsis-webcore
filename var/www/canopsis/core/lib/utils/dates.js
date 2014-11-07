@@ -45,8 +45,19 @@ define([
             var minutes = parseInt( totalSec / 60 ) % 60;
             var seconds = totalSec % 60;
 
-            var result = (hours < 10 ? "0" + hours : hours) + 'h ' +
-                (minutes < 10 ? "0" + minutes : minutes) + 'm ' +
+            var displayHours = '';
+            if (hours) {
+                displayHours = (hours < 10 ? "0" + hours : hours) + 'h ';
+            }
+
+            var displayMinutes = '';
+            if (minutes) {
+                displayMinutes = (minutes < 10 ? "0" + minutes : minutes) + 'm ';
+            }
+
+
+            var result = displayHours +
+                displayMinutes +
                 (seconds  < 10 ? "0" + seconds : seconds) + 's';
 
             if (!isNaN(days) && days !== 0) {

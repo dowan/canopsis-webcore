@@ -381,7 +381,8 @@ table.sortable th {
 #loadingInfo {
 	position:absolute;
 	top: 45%;
-	left: 45%
+	width:100%;
+	text-align:center;
 }
 
 #loading {
