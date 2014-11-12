@@ -1,34 +1,8 @@
-{{#if eventstate}}
-    {{#if optionaltimestamp}}
-        {{#component-tooltip content=showMainTimestamp htmlEnabled=true noTranslation=true}}
-            {{#unless hideDate}}
-                {{timestamp optionaltimestamp}}
-                <br>
-            {{/unless}}
-            {{#if agoformat}}
-                    <small class="text-muted">
-                        {{glyphicon "time"}}
-                        {{timeSince optionaltimestamp}}
-                    </small>
-                </br>
-            {{/if}}
-        {{/component-tooltip}}
-    {{else}}
-        <!--event in alert-->
-        {{#unless hideDate}}
-            {{timestamp maintimestamp}}
-            <br>
-        {{/unless}}
-        {{#if agoformat}}
-                <small class="text-muted">
-                    {{glyphicon "time"}}
-                    {{timeSince maintimestamp}}
-                </small>
-            </br>
-        {{/if}}
-    {{/if}}
+{{#if specialDisplay}}
+    {{#component-tooltip content=showMainTimestamp htmlEnabled=true noTranslation=true}}
+        {{showOptionalElapsed}}
+    {{/component-tooltip}}
 {{else}}
-    <!--event off-->
     {{#unless hideDate}}
         {{timestamp maintimestamp}}
         <br>

@@ -31,8 +31,20 @@ define([
         showMainTimestamp :function () {
             var maintitle = get(this, 'maintitle');
             var timestamp = get(this, 'maintimestamp');
-            return __(maintitle) + ' ' + dateUtils.timestamp2String(timestamp);
+            return __(maintitle) + '<br/><i>' +
+                dateUtils.timestamp2String(timestamp) + '</i>';
+        }.property(),
+
+        showOptionalElapsed: function () {
+            var optionaltimestamp = get(this, 'optionaltimestamp');
+            return dateUtils.durationFromNow(optionaltimestamp);
+        }.property(),
+
+        specialDisplay: function () {
+            console.log('special display', get(this, 'eventstate'), get(this, 'optionaltimestamp'))
+            return get(this, 'eventstate') && get(this, 'optionaltimestamp');
         }.property()
+
 
     });
 

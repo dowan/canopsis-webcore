@@ -33,6 +33,40 @@ define([
             return dates.timestamp2String(dates.getNow(), format, shortDate);
         },
 
+        durationFromNow: function (timestamp) {
+            var delta = dates.getNow() - timestamp;
+            return dates.second2Duration(delta);
+        },
+
+        second2Duration: function (totalSec) {
+
+            var days = parseInt( totalSec / (3600 * 24) );
+            var hours = parseInt( totalSec / 3600 ) % 24;
+            var minutes = parseInt( totalSec / 60 ) % 60;
+            var seconds = totalSec % 60;
+
+            var displayHours = '';
+            if (hours) {
+                displayHours = (hours < 10 ? "0" + hours : hours) + 'h ';
+            }
+
+            var displayMinutes = '';
+            if (minutes) {
+                displayMinutes = (minutes < 10 ? "0" + minutes : minutes) + 'm ';
+            }
+
+
+            var result = displayHours +
+                displayMinutes +
+                (seconds  < 10 ? "0" + seconds : seconds) + 's';
+
+            if (!isNaN(days) && days !== 0) {
+                result = days + 'd ' + result;
+            }
+
+            return result;
+        },
+
         timestamp2String: function (value, format, shortDate) {
             function addZero(i) {
                 return (i < 10 ? '0'+ i +'' : i +'');

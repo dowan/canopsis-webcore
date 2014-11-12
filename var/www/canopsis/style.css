@@ -378,6 +378,13 @@ table.sortable th {
     border-top-color: black!important;
 }
 
+#loadingInfo {
+	position:absolute;
+	top: 45%;
+	width:100%;
+	text-align:center;
+}
+
 #loading {
 	position:absolute;
 	top: 50%;
