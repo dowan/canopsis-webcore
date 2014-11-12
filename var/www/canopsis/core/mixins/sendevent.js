@@ -252,6 +252,10 @@ define([
                     record.state = 0;
                     record.state_type = 1;
                     record.id = this.getRoutingKey(record);
+                    if (formRecord !== undefined) {
+                        record.ticket = get(formRecord, 'ticket');
+                        record.output = get(formRecord, 'output');
+                    }
                 },
 
                 filter: function(record) {
@@ -288,11 +292,15 @@ define([
 
             ackremove: {
                 extract: function(record, crecord, formRecord) {
-                    record.output = __('Removed ack for event:');
-                    record.output += ' ' + record.component;
+                    if (formRecord === undefined) {
+                        record.output = __('Removed ack for event:');
+                        record.output += ' ' + record.component;
 
-                    if(record.source_type === 'resource') {
-                        record.output += ' ' + record.resource;
+                        if(record.source_type === 'resource') {
+                            record.output += ' ' + record.resource;
+                        }
+                    } else {
+                        record.output = get(formRecord, 'output');
                     }
 
                     record.ref_rk = get(crecord, 'id');
@@ -334,6 +342,7 @@ define([
                     record.state = 0;
                     record.state_type = 1;
                     record.id = this.getRoutingKey(record);
+                    record.output = 'declare ticket';
                 },
 
                 filter: function(record) {
@@ -365,7 +374,12 @@ define([
                     record.state = 0;
                     record.state_type = 1;
                     record.id = this.getRoutingKey(record);
-                    record.output = __('Associated ticket number');
+                    if (formRecord === undefined) {
+                        record.output = __('Associated ticket number');
+                    } else {
+                        record.output = get(formRecord, 'output');
+                        record.ticket = get(formRecord, 'ticket');
+                    }
                 },
 
                 filter: function(record) {
@@ -389,6 +403,11 @@ define([
             cancel: {
                 extract: function(record, crecord, formRecord) {
                     record.ref_rk = get(crecord, 'id');
+                    record.state = 0;
+                    record.state_type = 1;
+                    if (formRecord !== undefined) {
+                        record.output = get(formRecord, 'output');
+                    }
                 },
 
                 filter: function(record) {
@@ -481,10 +500,12 @@ define([
                 extract: function(record, crecord, formRecord) {
                     if(!Ember.isNone(formRecord)) {
                         record.state = get(formRecord, 'state');
+                        record.output = get(formRecord, 'output');
                     }
 
                     record.event_type = 'check';
                     record.keep_state = true;
+                    record.state_type = 1;
                 },
 
                 filter: function(record) {
