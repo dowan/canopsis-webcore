@@ -297,6 +297,7 @@ define([
 
                 var searchFilterPart = get(this, 'findParams_searchFilterPart');
                 var cfilterFilterPart = get(this, 'findParams_cfilterFilterPart');
+                var additionalFilterPart = get(this, 'additional_filter');
 
                 var filter;
 
@@ -311,7 +312,8 @@ define([
                 var sourceFilter = [
                     searchFilterPart,
                     cfilterFilterPart,
-                    this.getTimeInterval()
+                    this.getTimeInterval(),
+                    additionalFilterPart
                 ];
 
                 var filters = [];
