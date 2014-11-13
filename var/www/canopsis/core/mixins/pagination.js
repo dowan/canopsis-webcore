@@ -110,8 +110,11 @@ define([
         itemsPerPagePropositionSelectedChanged: function() {
             var userSelection = get(this, 'itemsPerPagePropositionSelected');
             set(this, 'itemsPerPage', userSelection);
-            set(this, 'userParams.itemsPerPage', userSelection);
-            this.saveUserConfiguration();
+
+            if(get(this, 'userParams') !== undefined) {
+                set(this, 'userParams.itemsPerPage', userSelection);
+                this.saveUserConfiguration();
+            }
 
         }.observes('itemsPerPagePropositionSelected'),
 
