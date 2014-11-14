@@ -467,7 +467,11 @@ define([
                     record.state = 0;
                     record.cancel = 0;
                     if (formRecord !== undefined) {
-                        record.output = get(formRecord, 'output');
+                        output = get(formRecord, 'output');
+                        if (! output) {
+                            output = ' ';
+                        }
+                        record.output = output;
                     }
                 },
 
