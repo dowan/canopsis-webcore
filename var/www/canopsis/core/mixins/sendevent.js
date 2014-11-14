@@ -464,6 +464,7 @@ define([
                 extract: function(record, crecord, formRecord) {
                     record.ref_rk = get(crecord, 'id');
                     record.state_type = 1;
+                    record.state = 0;
                     record.cancel = 0;
                     if (formRecord !== undefined) {
                         record.output = get(formRecord, 'output');
