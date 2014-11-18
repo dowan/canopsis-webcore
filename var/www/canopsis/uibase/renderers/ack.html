@@ -13,11 +13,3 @@
         </span>
     {{/component-tooltip}}
 {{/if}}
-{{#if this.record.content.ack_remove.author}}
-    {{ackremove this.record.content.ack_remove this}}
-    {{#component-tooltip content=this.ack_remove_tooltip htmlEnabled=true noTranslation=true}}
-        <span class="badge">
-            <i class="fa fa-check"></i>
-        </span>
-    {{/component-tooltip}}
-{{/if}}
