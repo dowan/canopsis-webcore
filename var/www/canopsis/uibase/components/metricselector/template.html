@@ -1,6 +1,6 @@
 <fieldset>
     <div style="float: right;">
-        Search: {{input action="search"}}
+        {{tr 'Search'}}: {{input action="search"}}
 
         <a data-toggle="popover"
            data-html="true"
@@ -10,7 +10,7 @@
         </a>
     </div>
 
-    <b>Available:</b>
+    <b>{{tr 'Available'}}:</b>
 
     {{component-table model="ctxmetric" modelfilter=metricSearch columns=select_cols targetObject=this}}
 

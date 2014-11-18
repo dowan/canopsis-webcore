@@ -25,8 +25,8 @@ define([
 ], function(Ember, DS, hash) {
 
     var get = Ember.get,
-        set = Ember.set;
-
+        set = Ember.set,
+        __ = Ember.String.loc;
 
     var component = Ember.Component.extend({
         selectedMetrics: undefined,
@@ -45,14 +45,14 @@ define([
         }.observes('selectedMetrics.@each'),
 
         helpModal: {
-            title: 'Syntax',
-            content: "<ul>"
-                + "<li><code>co:regex</code> : look for a component</li>"
-                + "<li><code>re:regex</code> : look for a resource</li>"
-                + "<li><code>me:regex</code> : look for a metric (<code>me:</code> isn't needed for this one)</li>"
-                + "<li>combine all of them to improve your search : <code>co:regex re:regex me:regex</code></li>"
-                + "<li><code>co:</code>, <code>re:</code>, <code>me:</code> : look for non-existant field</li>"
-                + "</ul>",
+            title: __('Syntax'),
+            content: ['<ul>',
+                '<li><code>co:regex</code> : look for a component</li>',
+                '<li><code>re:regex</code> : look for a resource</li>' ,
+                '<li><code>me:regex</code> : ' , __('look for a metric') , '(<code>me:</code>' , __(' isn\'t needed for this one') , ')</li>' ,
+                '<li>', __('combine all of them to improve your search'),' : <code>co:regex re:regex me:regex</code></li>' ,
+                '<li><code>co:</code>, <code>re:</code>, <code>me:</code> : ', __('look for non-existant field') , '</li>' ,
+                '</ul>'].join(''),
 
             id: hash.generateId('cmetric-help-modal'),
             label: hash.generateId('cmetric-help-modal-label')
@@ -60,9 +60,9 @@ define([
 
         select_cols: function() {
             return [
-                {name: 'component', title: 'Component'},
-                {name: 'resource', title: 'Resource'},
-                {name: 'cid', title: 'Metric'},
+                {name: 'component', title: __('Component')},
+                {name: 'resource', title: __('Resource')},
+                {name: 'cid', title: __('Metric')},
                 {
                     action: 'select',
                     actionAll: 'selectAll',
@@ -74,9 +74,9 @@ define([
 
         unselect_cols: function() {
             return [
-                {name: 'component', title: 'Component'},
-                {name: 'resource', title: 'Resource'},
-                {name: 'cid', title: 'Metric'},
+                {name: 'component', title: __('Component')},
+                {name: 'resource', title: __('Resource')},
+                {name: 'cid', title: __('Metric')},
                 {
                     action: 'unselect',
                     actionAll: 'unselectAll',
