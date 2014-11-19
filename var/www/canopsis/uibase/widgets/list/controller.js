@@ -185,16 +185,19 @@ define([
                 //Setting default sort order param to the query depending on widget configuration
                 var columnSort = get(this, 'default_column_sort');
 
+
                 if (findParams !== undefined && findParams.sort !== undefined && columnSort !== undefined) {
-                    if (!Ember.isNone(columnSort.property)){
+                    if (!Ember.isNone(columnSort.property) && Ember.isNone(findParams.sort)){
                         var direction = 'DESC';
                         if (columnSort.direction === 'DESC' || columnSort.direction === 'ASC') {
                             direction = columnSort.direction;
                         }
                         //Sort order has been found.
                         findParams.sort = JSON.stringify([{property: columnSort.property, direction: direction}]);
+                        console.log('use default sort',findParams.sort);
                     }
                 }
+                console.log('findParams.sort',findParams.sort);
 
                 get(this, 'widgetDataStore').findQuery(itemType, findParams).then(function(queryResults) {
                     //retreive the metas of the records
