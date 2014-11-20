@@ -29,6 +29,12 @@ define([
 
     var get = Ember.get;
 
+    Ember.Object.reopen({
+        toJson: function() {
+            return JSON.parse(JSON.stringify(this));
+        }
+    });
+
     var controllerDict = {
         init: function() {
             if(get(this, 'isGenerated')) {
