@@ -56,6 +56,8 @@ define(['ember'], function(Ember) {
                     }
                     html += '</li></ul>';
                 }
+            } else {
+                html +=  '&nbsp;<span class="glyphicon glyphicon-arrow-right" style="display:inline"></span><span class="label label-warning">'+ object +'</span>' ;
             }
             return html;
 
