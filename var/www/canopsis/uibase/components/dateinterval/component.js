@@ -21,8 +21,9 @@
 define([
     'ember',
     'app/lib/utils/hash',
+    'app/lib/utils/dates',
     'daterangepicker'
-], function(Ember, hashUtils) {
+], function(Ember, hashUtils, datesUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -63,12 +64,7 @@ define([
 
                     if (startTimestamp === stopTimestamp) {
                         console.log('We are on the same day, let compute the start of the day');
-                        var startDateOfTheDay = new Date(start);
-                        startDateOfTheDay.setHours(0);
-                        startDateOfTheDay.setMinutes(0);
-                        startDateOfTheDay.setSeconds(0);
-                        startDateOfTheDay.setMilliseconds(0);
-                        startTimestamp = parseInt(startDateOfTheDay.getTime() / 1000);
+                        startTimestamp = datesUtils.startOfTheDay();
                         console.log('NEW -> startTimestamp',startTimestamp,'stopTimestamp',stopTimestamp);
                     }
 

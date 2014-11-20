@@ -21,7 +21,8 @@ define([
     'ember'
 ], function(Ember) {
 
-    var __ = Ember.String.loc;
+    var __ = Ember.String.loc,
+        isNone = Ember.isNone;
 
     var dates = {
 
@@ -87,7 +88,7 @@ define([
                 __("November"),
                 __("December")
             ];
-            if (!Ember.isNone(shortDate)) {
+            if (!isNone(shortDate)) {
                 months = [
                     __("Jan"),
                     __("Feb"),
@@ -142,6 +143,31 @@ define([
                 dates.month = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Octobre', 'Novembre', 'Décembre'];
                 dates.days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
             }
+        },
+
+        /**
+            Computes for a timestamp the timestamp at midnight of it's day.
+            the computation day from timestamp depends on if a timestamp is given.
+            when given start of the day is computed from timestamp, otherwise it is done from now timestamp
+        **/
+        startOfTheDay: function (aTimestamp) {
+            if (isNone(aTimestamp)) {
+                aTimestamp = dates.getNow();
+                console.log('got date from now as no param given', aTimestamp);
+            }
+            aTimestamp *= 1000;
+            var startDateOfTheDay = new Date(aTimestamp);
+            startDateOfTheDay.setHours(0,0,0,0);
+            return parseInt(startDateOfTheDay.getTime()/1000);
+        },
+
+        /**
+            Boolean value determining wether the given date included in today
+            Value depends on the client clock
+        **/
+        isToday: function (timestamp) {
+            var startOfTheDay = dates.startOfTheDay(timestamp);
+            return dates.getNow() < startOfTheDay + 3600 * 24;
         },
 
         dateFormat:'YYYY/MM/DD',

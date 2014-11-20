@@ -28,21 +28,21 @@ define([
 
         if(timestamp || record.timeStampState) {
 
-            var current = new Date().getTime();
+
             timestamp = record.timeStampState || timestamp;
-            var a = new Date(timestamp * 1000);
-            var time = datesUtils.diffDate(a, current, "d") - 1;
 
-            var newObject = Ember.Object.create({value : time , field : "time" });
 
-            var icon = '<span class=glyphicon glyphicon-time ></span>';
-            if(time !== 0) {
-                return new Ember.Handlebars.SafeString(time + ' ' + __('days ago'));
+            if (datesUtils.isToday(timestamp)) {
+                //This is today
+                return new Ember.Handlebars.SafeString(__('Today'));
+            } else {
+                var time = datesUtils.durationFromNow(timestamp);
+                return new Ember.Handlebars.SafeString(time);
             }
 
-            return new Ember.Handlebars.SafeString(__('Today'));
+
         } else {
-            return "";
+            return '';
         }
     });
 });
