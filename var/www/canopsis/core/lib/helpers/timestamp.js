@@ -32,22 +32,16 @@ define([
             value = get(record, 'timeStampState') || value;
         }
 
-        var current = new Date().getTime();
-        var timestamp = new Date(value * 1000);
-
-        var timeSince = datesUtils.diffDate(timestamp, current, 'd') - 1;
-
-        var time ='';
-        var format;
-
         if(value && !isNone(attr)) {
             format = get(attr, 'options.format');
         }
 
-        if (timeSince === 0) {
+        var format;
+        if (datesUtils.isToday(value)) {
             format = 'timeOnly';
         }
-        time = datesUtils.timestamp2String(value, format, true);
+
+        var time = datesUtils.timestamp2String(value, format, true);
 
         return new Ember.Handlebars.SafeString(time);
     });
