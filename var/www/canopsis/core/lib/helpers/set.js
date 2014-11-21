@@ -20,7 +20,13 @@
 define(['ember'], function(Ember) {
 
     Ember.Handlebars.helper('set', function(name, value, options) {
-        options.data.keywords[name] = value;
+        console.log('will set name', name, 'with value', value, 'in object', options);
+        if (arguments.length === 4) {
+            //option is the settable in this case
+            Ember.set(options, name, value);
+        } else {
+            options.data.keywords[name] = value;
+        }
     });
 
 });
