@@ -340,7 +340,7 @@ define([
 
             this.findItems();
 
-            set(this, 'lastRefresh', +new Date());
+            set(this, 'lastRefresh', new Date().getTime());
         },
 
         findItems: function() {

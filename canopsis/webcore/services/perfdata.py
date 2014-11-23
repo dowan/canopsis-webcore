@@ -68,28 +68,23 @@ def exports(ws):
         result = []
 
         for metric_id in metrics:
-            ret = manager.get(
-                metric_id=metric_id, with_meta=with_meta,
+            pts, meta = manager.get(
+                metric_id=metric_id, with_meta=True,
                 timewindow=timewindow, limit=limit, skip=skip
             )
 
             if timeserie is not None:
-                if with_meta:
-                    pts = timeserie.calculate(ret[0], timewindow=timewindow)
-                    ret = (pts,) + ret[1:]
-
-                else:
-                    ret = timeserie.calculate(ret, timewindow=timewindow)
+                pts = timeserie.calculate(pts, meta=meta, timewindow=timewindow)
 
             if with_meta:
                 result.append({
-                    "points": ret[0],
-                    "meta": ret[1]
+                    "points": pts,
+                    "meta": meta
                 })
 
             else:
                 result.append({
-                    "points": ret
+                    "points": pts
                 })
 
         return (result, len(result))
