@@ -68,8 +68,14 @@ define([
             css :"table table-striped table-bordered table-hover dataTable sortable",
             needs: ['login', 'application', 'recordinfopopup'],
 
+            /**
+             * Whether to display the list as the regular table or not.
+             * Used with mixin that fill the partial slot "alternativeListDisplay", this can help to provide alternative displays
+             */
+            standardListDisplay: true,
+
             viewMixins: [
-                ExpandablecellMixin,
+                // ExpandablecellMixin,
                 DraggableColumnsMixin
             ],
 
@@ -282,8 +288,9 @@ define([
                     }
                 }
 
-                if(get(this, 'maximized_column_index')) {
-                    selected_columns[get(this, 'maximized_column_index')].maximized = true;
+                var maximized_column_index = get(this, 'maximized_column_index');
+                if(maximized_column_index && selected_columns && selected_columns[maximized_column_index]) {
+                    selected_columns[maximized_column_index].maximized = true;
                 }
 
                 console.debug('selected cols', selected_columns);

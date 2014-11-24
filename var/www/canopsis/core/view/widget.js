@@ -76,7 +76,7 @@ define([
             this._super();
             if (!! get(this, 'widget')) {
                 this.intializeController(this.widget);
-                this.applyViewMixins();
+                this.applyAllViewMixins();
             } else {
                 console.error("No correct widget found for view", this);
                 this.errorMessages.pushObject('No correct widget found');
@@ -109,7 +109,7 @@ define([
             console.groupEnd();
         },
 
-        applyViewMixins: function(){
+        applyAllViewMixins: function(){
             var controller = get(this, 'controller');
             console.group('apply widget view mixins');
             if(controller.viewMixins !== undefined) {
@@ -138,10 +138,7 @@ define([
         },
 
         unregisterHooks: function() {
-        },
-
-        willDestroyElement: function () {
-            clearInterval(get(this, 'widgetRefreshInterval'));
+            get(this, "controller").off('refresh', this, this.rerender);
         },
 
         rerender: function() {
@@ -204,11 +201,13 @@ define([
             return result;
         },
 
-        willClearRender: function() {
+        willDestroyElement: function () {
+            clearInterval(get(this, 'widgetRefreshInterval'));
+
             this.unregisterHooks();
+
             return this._super.apply(this, arguments);
         }
-
     });
 
 

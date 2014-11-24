@@ -1,0 +1,11 @@
+{{#if view.parentView.groupedColumns}}
+    <td></td>
+    <td colspan="8">
+        {{#each attr in view.parentView.groupedColumns}}
+            {{#if attr.options.show}}
+                    {{attr.field}} : {{component-renderer attr=attr record=this}}
+                    <br/>
+            {{/if}}
+        {{/each}}
+    </td>
+{{/if}}

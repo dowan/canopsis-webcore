@@ -1,0 +1,30 @@
+<table class="table table-bordered dataTable">
+    {{#eachIndexed controller.widgetData}}
+
+        {{#each columns in controller._partials.columnsLine}}
+            <tr>
+                <td></td>
+                <td>
+                    {{partial columns}}
+                </td>
+            </tr>
+        {{/each}}
+
+        {{render "groupedrowslistlinelayout" this
+            parentController=controller even=even}}
+
+        {{#if controller._partials.itemactionbuttons}}
+            <tr>
+                <td class="grouped-cell-label">
+                    {{tr 'Actions'}}
+                </td>
+                <td>
+                    <div style="display:flex">
+                        {{set 'minified' true}}
+                        {{partialslot slot=controller._partials.itemactionbuttons}}
+                    </div>
+                </td>
+            </tr>
+        {{/if}}
+    {{/eachIndexed}}
+</table>

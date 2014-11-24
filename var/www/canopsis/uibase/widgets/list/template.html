@@ -14,16 +14,16 @@
         {{partialslot slot=controller._partials.subHeader}}
     </div>
     <div class="table-responsive">
-        <table {{bind-attr id="controller.id"}} {{bind-attr class="controller.css"}} >
-            <thead>
-                <tr>
-                    <th class="checkboxes">
-                        {{component-checkbox checked=controller.isAllSelected class="toggle"}}
-                    </th>
-                    {{partialslot slot=controller._partials.columnsHead}}
+        {{#if controller.standardListDisplay}}
+            <table {{bind-attr id="controller.id"}} {{bind-attr class="controller.css"}} >
+                <thead>
+                    <tr>
+                        <th class="checkboxes">
+                            {{component-checkbox checked=controller.isAllSelected class="toggle"}}
+                        </th>
+                        {{partialslot slot=controller._partials.columnsHead}}
 
-                    {{#each attr in controller.shown_columns}}
-                        {{#group}}
+                        {{#each attr in controller.shown_columns}}
                             {{#if attr.options.show}}
                                 <th {{action sort attr}} {{bind-attr class=attr.field}}>
                                     {{#if attr.options.label}}
@@ -34,39 +34,44 @@
                                     {{sorticon attr.headerClassName}}
                                 </th>
                             {{/if}}
-                        {{/group}}
-                    {{/each}}
-                    {{#if controller._partials.itemactionbuttons}}
-                        <th class="actions">{{tr 'Actions'}}</th>
-                    {{/if}}
-                </tr>
-            </thead>
-                <tbody>
-                    {{#each controller.widgetData}}
-                        {{render "listline" this
-                            parentController=controller}}
-
-                        {{#if unfolded}}
-                            {{#if loaded}}
-                                {{partial templateName}}
-                            {{else}}
-                                <tr>
-                                    <td COLSPAN=5>
-                                        <li class="dropdown tasks-menu">
-                                            <a href="#">
-                                                <i class="fa fa-refresh fa-spin"></i>
-                                            </a>
-                                        </li>
-                                    </td>
-                                </tr>
-                            {{/if}}
+                        {{/each}}
+                        {{#if controller._partials.itemactionbuttons}}
+                            <th class="actions">{{tr 'Actions'}}</th>
                         {{/if}}
-                {{/each}}
-            </tbody>
-        </table>
-        {{#unless controller.widgetData.content.length}}
-            <div class="noRecordsFound">{{tr 'No matching records found'}}</div>
-        {{/unless}}
+                    </tr>
+                </thead>
+                    <tbody>
+                        {{#each controller.widgetData}}
+                            {{render "listline" this
+                                parentController=controller}}
+
+                            {{#if unfolded}}
+                                {{#if loaded}}
+                                    {{partial templateName}}
+                                {{else}}
+                                    <tr>
+                                        <td colspan=5>
+                                            <li class="dropdown tasks-menu">
+                                                <a href="#">
+                                                    <i class="fa fa-refresh fa-spin"></i>
+                                                </a>
+                                            </li>
+                                        </td>
+                                    </tr>
+                                {{/if}}
+                            {{/if}}
+
+                            {{partialslot slot=controller._partials.subRowInformation tagName='tr'}}
+
+                    {{/each}}
+                </tbody>
+            </table>
+            {{#unless controller.widgetData.content.length}}
+                <div class="noRecordsFound">{{tr 'No matching records found'}}</div>
+            {{/unless}}
+        {{else}}
+            {{partialslot slot=controller._partials.alternativeListDisplay}}
+        {{/if}}
     </div>
     <div class="btn-toolbar canopsis-toolbar" role="toolbar">
         {{partialslot slot=controller._partials.footer}}

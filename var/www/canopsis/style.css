@@ -287,6 +287,7 @@ table.dataTable {
 
 table.dataTable>thead>tr>th {
 	border-bottom: 2px solid #ddd;
+	width: 0px;
 }
 
 .label .glyphicon {
@@ -402,9 +403,7 @@ a {
 }
 
 table.dataTable {
-	table-layout:fixed;
 	font-size:90%;
-	white-space: nowrap;
 }
 
 .table-striped > tbody > tr > td.overflowed {
@@ -618,4 +617,14 @@ div.valueLabel {
 table.dataTableConnector {
 	font-size:90%;
 	white-space: nowrap;
+}
+
+.grouped-cell-label, .grouped-cell-label-even {
+	text-align: right;
+	padding-right: 10px;
+	padding-left: 10px;s
+}
+
+.grouped-cell-label {
+	background-color: #CCCCCC;
 }

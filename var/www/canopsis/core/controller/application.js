@@ -235,7 +235,6 @@ define([
                 set(appController, 'headerUserview', queryResults);
             });
 
-
             // console.groupEnd();
             this.refreshPartialsList();
             this._super.apply(this, arguments);
@@ -272,7 +271,6 @@ define([
                 var recordWizard = formsUtils.showNew('modelform', ouser, {
                     title: get(ouser, '_id') + ' ' + __('profile'),
                     filterFieldByKey: {
-                        authkey: {readOnly: true},
                         firstname: {readOnly: true},
                         lastname: {readOnly: true},
                         authkey: {readOnly: true},
