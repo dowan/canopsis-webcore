@@ -105,7 +105,7 @@ define([
                     reserveSpace: true,
                     position: 'bottom',
                     mode: 'time',
-                    timezone: 'browser'
+                    timezone: 'utc'
                 }],
 
                 yaxes: [{
@@ -161,7 +161,7 @@ define([
                     reserveSpace: true,
                     position: 'bottom',
                     mode: 'time',
-                    timezone: 'browser'
+                    timezone: 'utc'
                 }],
 
                 yaxes: [{
@@ -264,7 +264,8 @@ define([
 
             var replace = false;
             var from = get(this, 'lastRefresh');
-            var to = +new Date() - get(this, 'time_window_offset');
+            var now = new Date().getTime();
+            var to = now - get(this, 'time_window_offset');
 
             if(from === null) {
                 replace = true;
@@ -316,7 +317,7 @@ define([
                     curve: undefined
                 };
 
-                curveIds.push(stylizedseries[i].curve);
+                curveIds.push(get(stylizedseries[i], 'curve'));
             }
 
             var serieIds = JSON.stringify(Object.keys(series));
@@ -427,6 +428,19 @@ define([
             console.log('Fetch perfdata and compute serie');
 
             var ctrl = get(this, 'controllers.serie');
+
+            var aggregation = (
+                (get(config, 'serie.aggregate_method') !== 'none')
+                ||
+                (get(config, 'serie.metrics.length') > 0)
+            );
+
+            if(aggregation) {
+                from = get(this, 'timenavOptions.xaxis.min');
+                to = get(this, 'timenavOptions.xaxis.max');
+                flotSerie.data = [];
+            }
+
             ctrl.getDataSerie(get(config, 'serie'), from, to).then(function(data) {
                 console.log('getDataSerie:', data);
 
@@ -455,6 +469,7 @@ define([
             set(this, 'dataSeries', series);
         }
     }, widgetOptions);
+
 
     return widget;
 });

@@ -18,32 +18,31 @@
 */
 
 define([
-    'ember',
-    'app/lib/utils/dates'
-], function(Ember, datesUtils) {
+    'ember'
+], function(Ember) {
 
     var get = Ember.get,
+        set = Ember.set,
         isNone = Ember.isNone;
 
 
-    Ember.Handlebars.helper('timestamp', function(value, attr, record) {
-
-        if (!isNone(record)) {
-            value = get(record, 'timeStampState') || value;
+    var component = Ember.Component.extend({
+        init: function () {
+            if (!isNone(get(this, 'forcedvalue'))) {
+                console.log('setting', get(this, 'content.value'),'to', get(this,'forcedvalue'));
+                set(this, 'content.value', get(this, 'forcedvalue'));
+            } else {
+                console.error('forced value is undefined for this component');
+            }
         }
-
-        if(value && !isNone(attr)) {
-            format = get(attr, 'options.format');
-        }
-
-        var format;
-        if (datesUtils.isToday(value)) {
-            format = 'timeOnly';
-        }
-
-        var time = datesUtils.timestamp2String(value, format, true);
-
-        return new Ember.Handlebars.SafeString(time);
     });
 
+    Ember.Application.initializer({
+        name:"component-forcevalue",
+        initialize: function(container, application) {
+            application.register('component:component-forcevalue', component);
+        }
+    });
+
+    return component;
 });

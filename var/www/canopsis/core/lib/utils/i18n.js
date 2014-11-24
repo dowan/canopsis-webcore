@@ -27,9 +27,9 @@ define([
         todo: [],
         translations: {},
         newTranslations: true,
-        _: function(word) {
+        _: function(word, noDeprecation) {
 
-            if(Ember) {
+            if(Ember && noDeprecation === undefined) {
                 Ember.deprecate('You should not use i18n tools directly when ember is loaded. Please consider using Ember.String.loc instead. ', !conf.EmberIsLoaded);
             }
 

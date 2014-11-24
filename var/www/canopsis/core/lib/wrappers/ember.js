@@ -29,14 +29,11 @@ define([
 
     var get = Ember.get;
 
-    // Ember.onerror = function(error) {
-    //     console.error("Ember.onerror", error);
-    //     notificationUtils.error(error.message);
-    // };
-
-    // Ember.RSVP.configure('onerror', function(error) {
-    //     notificationUtils.error(error.message);
-    // });
+    Ember.Object.reopen({
+        toJson: function() {
+            return JSON.parse(JSON.stringify(this));
+        }
+    });
 
     var controllerDict = {
         init: function() {
@@ -53,6 +50,13 @@ define([
     if(!language) {
         language = 'en';
     }
+
+    var loc = Ember.String.loc;
+    Ember.String.loc = function (fieldToTranslate) {
+        i18n._(fieldToTranslate, true);
+        return loc(fieldToTranslate);
+    };
+
 
     console.log('i18n.translations', i18n.translations[language]);
     Ember.STRINGS = i18n.translations[language] || {};

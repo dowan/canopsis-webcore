@@ -27,7 +27,8 @@ define([
 ], function(Ember, $, formsUtils, datesUtils, notificationUtils, Mixin) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     var mixin = Mixin('sendevent', {
 
@@ -90,7 +91,7 @@ define([
 
             for (var i=0; i<extra_fields.length; i++) {
                 var field = extra_fields[i];
-                if (!Ember.isNone(get(crecord, field))) {
+                if (!isNone(get(crecord, field))) {
                     set(record, field, get(crecord, field));
                 }
             }
@@ -282,7 +283,7 @@ define([
                         author: record.author,
                         isAck: true
                     });
-                    if(!Ember.isNone(record.ticket)) {
+                    if(!isNone(record.ticket)) {
                         crecord.set('ticket', record.ticket);
                         crecord.set('ticket_date', datesUtils.getNow());
                     }
@@ -362,8 +363,8 @@ define([
 
                 transform: function(crecord, record) {
                     console.log('transform method for declare ticket', crecord, record);
-                    crecord.set('declare_ticket_author', record.author);
-                    crecord.set('declare_ticket_date', datesUtils.getNow());
+                    crecord.set('ticket_declared_author', record.author);
+                    crecord.set('ticket_declared_date', datesUtils.getNow());
                 }
 
             },
@@ -493,7 +494,7 @@ define([
                     crecord.set('status', crecord.get('cancel.previous_status'));
 
                     //reset the ack is a hack if ack is not set in the event, but there is no choice and this is a temp information
-                    if(Ember.isNone(crecord.get('ack'))) {
+                    if(isNone(crecord.get('ack'))) {
                         crecord.set('ack', {
                             comment: record.output,
                             timestamp: datesUtils.getNow(),
@@ -509,7 +510,7 @@ define([
 
             changestate: {
                 extract: function(record, crecord, formRecord) {
-                    if(!Ember.isNone(formRecord)) {
+                    if(!isNone(formRecord)) {
                         record.state = get(formRecord, 'state');
                         record.output = get(formRecord, 'output');
                     }
@@ -632,7 +633,7 @@ define([
 
                 var crecords = [];
 
-                if (!Ember.isNone(crecord)) {
+                if (!isNone(crecord)) {
                     console.log('event:', event_type, crecord);
                     crecords.push(crecord);
                 }

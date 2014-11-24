@@ -24,7 +24,8 @@ define([
 
     var set = Ember.set,
         get = Ember.get,
-        isNone = Ember.isNone;
+        isNone = Ember.isNone,
+        __ = Ember.String.loc;
 
 
     var component = Ember.Component.extend({
