@@ -31,7 +31,7 @@ require(['plugins'], function(plugins_tool) {
             plugins = plugins_tool.Plugins.getPlugins(path);
             plugins = plugins_tool.Plugins.resolveDependancies(plugins);
         } catch (e) {
-            console.log("PluginError: " + e);
+            console.warn("PluginError: " + e);
         }
 
         var routes_plugins = plugins_tool.Manifest.fetchRoutes(plugins, path);

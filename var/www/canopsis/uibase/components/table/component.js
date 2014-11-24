@@ -116,7 +116,7 @@ define([
                     });
                 }
             } catch(err) {
-                console.log('extractItems not updated:', err);
+                console.warn('extractItems not updated:', err);
 
                 this.extractItems({
                     meta: get(this, 'widgetDataMetas'),

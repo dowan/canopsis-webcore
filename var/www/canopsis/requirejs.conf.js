@@ -227,7 +227,7 @@ if (isIE) {
 
 var setLoadingInfo = function(text, icon) {
     if(window.__) {
-        text = window.__(text);
+        text = window.__(text, true);
     }
 
     $('#loadingInfo').html(text);
