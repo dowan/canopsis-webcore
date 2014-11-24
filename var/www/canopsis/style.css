@@ -628,3 +628,7 @@ table.dataTableConnector {
 .grouped-cell-label {
 	background-color: #CCCCCC;
 }
+
+.left-side {
+	z-index: 1000000;
+}
