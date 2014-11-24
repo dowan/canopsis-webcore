@@ -27,9 +27,8 @@ define([
     'app/lib/utils/widgets',
     'app/lib/utils/routes',
     'app/lib/utils/forms',
-    'app/lib/utils/debug',
-    'app/lib/utils/hash'
-], function($, Ember, DS, Application, PartialslotAbleController, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, hash) {
+    'app/lib/utils/debug'
+], function($, Ember, DS, Application, PartialslotAbleController, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils) {
 
     var get = Ember.get,
         set = Ember.set,
