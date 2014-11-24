@@ -77,7 +77,7 @@ var templates = [
     { name: 'column-unfold', template: 'canopsis/uibase/templates/column-unfold.html' ,  classes: ["foldable"]},
     { name: 'groupedrowslistlayout', template: 'canopsis/uibase/templates/groupedrowslistlayout.html' ,  classes: ["foldable"]},
     { name: 'groupedrowslistlinelayout', template: 'canopsis/uibase/templates/groupedrowslistlinelayout.html' ,  classes: ["foldable"]},
-    { name: 'stackedrows', template: 'canopsis/uibase/templates/stackedrows.html' ,  classes: ["foldable"]}
+    { name: 'stackedcolumns', template: 'canopsis/uibase/templates/stackedcolumns.html' ,  classes: ["foldable"]}
 ];
 
 loader.loadWithTemplates(templates);
