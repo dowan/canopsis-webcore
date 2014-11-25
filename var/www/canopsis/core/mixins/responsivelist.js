@@ -40,17 +40,19 @@ define([
         console.log('stackableColumnsPriority', stackableColumnsPriority, shownColumns);
         for (var i = 0, l = stackableColumnsPriority.length; i < l; i++) {
             var currentColumn = shownColumns.findBy('field', stackableColumnsPriority[i]);
-            console.log('currentColumn', currentColumn);
-            var columnIndex = Ember.get(currentColumn, 'index');
-            console.log('columnIndex', columnIndex);
-            columnStackingPriority.pushObject(columnIndex);
+            if(currentColumn !== undefined) {
+                console.log('currentColumn', currentColumn);
+                var columnIndex = Ember.get(currentColumn, 'index');
+                console.log('columnIndex', columnIndex);
+                columnStackingPriority.pushObject(columnIndex);
+            }
         }
 
         return columnStackingPriority;
     }
 
     function hideColumn(viewMixin, columnToHide) {
-        console.error('hideColumn', columnToHide);
+        console.log('hideColumn', columnToHide);
 
         if(!!columnToHide) {
             this.$('th.' + columnToHide.field).css("display", "none");
@@ -121,6 +123,14 @@ define([
     var viewMixin = Ember.Mixin.create({
         classNames: ['list'],
         groupedColumns: Ember.A(),
+
+        /**
+         * Indicates the number of invisible cells to generate in the stackedcolumns view, to prevent some draggableColumnsMixin bugs
+         */
+        invisibleCellsCount: function() {
+            var shownColumns = get(this, 'controller.shown_columns');
+            return shownColumns.length - 1;
+        }.property('controller.shown_columns'),
 
         init: function() {
             this._super.apply(this, arguments);
