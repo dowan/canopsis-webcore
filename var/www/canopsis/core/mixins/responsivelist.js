@@ -53,8 +53,8 @@ define([
         console.error('hideColumn', columnToHide);
 
         if(!!columnToHide) {
-            this.$('th.' + columnToHide.field).hide();
-            this.$('td.' + columnToHide.field).hide();
+            this.$('th.' + columnToHide.field).css("display", "none");
+            this.$('td.' + columnToHide.field).css("display", "none");
             get(viewMixin, 'groupedColumns').pushObject(columnToHide);
             viewMixin.notifyPropertyChange('groupedColumns');
         }

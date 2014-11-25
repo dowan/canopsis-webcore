@@ -173,6 +173,10 @@ define([
                 widgetWizard.submit.done(function() {
                     console.log('record going to be saved', widget);
 
+                    if(!get(widget, 'widgetId')) {
+                        set(widget, 'widgetId', get(widget,'id'));
+                    }
+
                     var userview = get(widgetController, 'viewController').get('content');
                     userview.save();
                     console.log('triggering refresh');

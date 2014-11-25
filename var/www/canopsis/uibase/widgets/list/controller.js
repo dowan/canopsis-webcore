@@ -48,8 +48,29 @@ define([
     'app/lib/wrappers/datatables',
     'app/lib/loaders/components',
     'app/adapters/acl',
-], function($, Ember, DS, WidgetFactory, PaginationMixin, InspectableArrayMixin,
-        ArraySearchMixin, SortableArrayMixin, HistoryMixin, AckMixin, InfobuttonMixin, SendEventMixin, CustomFilterManagerMixin, UserConfigurationMixin, ExpandablecellMixin, DraggableColumnsMixin, utils, domUtils, routesUtils, formsUtils, FoldableListLineMixin, ListlineController) {
+], function($,
+    Ember,
+    DS,
+    WidgetFactory,
+    PaginationMixin,
+    InspectableArrayMixin,
+    ArraySearchMixin,
+    SortableArrayMixin,
+    HistoryMixin,
+    AckMixin,
+    InfobuttonMixin,
+    SendEventMixin,
+    CustomFilterManagerMixin,
+    UserConfigurationMixin,
+    DraggableColumnsMixin,
+    ExpandablecellMixin,
+    utils,
+    domUtils,
+    routesUtils,
+    formsUtils,
+    FoldableListLineMixin,
+    ListlineController
+) {
 
     var get = Ember.get,
         set = Ember.set;
