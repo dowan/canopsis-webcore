@@ -135,6 +135,10 @@ define([
                 //prepare user configuration to fetch customer preference by reseting data.
                 //dont understand why without this reset, values same values are set into many list instances.
                 set(this, 'custom_filters', []);
+                set(this, 'widgetData', []);
+                set(this, 'findOptions', {});
+                set(this, 'loaded', false);
+
 
                 this._super.apply(this, arguments);
             },
@@ -171,11 +175,6 @@ define([
                 }
             }.property('listed_crecord_type'),
 
-            widgetData: [],
-
-            findOptions : {},
-
-            loaded: false,
 
             isAllSelectedChanged: function(){
                 get(this, 'widgetData').content.setEach('isSelected', get(this, 'isAllSelected'));
