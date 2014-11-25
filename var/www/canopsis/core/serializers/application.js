@@ -27,13 +27,6 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-    //TODO put this in a polyfill file
-    if (!Array.isArray) {
-        Array.isArray = function(arg) {
-            return Object.prototype.toString.call(arg) === '[object Array]';
-        };
-    }
-
     var serializer = DS.RESTSerializer.extend(
         MetaSerializerMixin,
         HashSerializerMixin,
