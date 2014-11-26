@@ -481,10 +481,15 @@ define([
                 },
 
                 handle: function(crecords) {
+
                     var record = this.getDisplayRecord('uncancel', crecords[0]);
 
-                    notificationUtils.info(__('event "uncancel" sent'));
-                    this.submitEvents(crecords, record, 'uncancel');
+                    var formbuttons = [
+                        'formbutton-cancel',
+                        'formbutton-submit'
+                    ];
+
+                    this.getEventForm('uncancel', record, crecords, formbuttons);
                 },
 
                 transform: function(crecord, record) {
