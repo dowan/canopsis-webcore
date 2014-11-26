@@ -177,9 +177,10 @@ define([
                     }
 
                     var userview = get(widgetController, 'viewController').get('content');
-                    userview.save();
-                    console.log('triggering refresh');
-                    widgetController.trigger('refresh');
+                    userview.save().then(function(){
+                        get(widgetController, 'viewController').send('refresh');
+                        console.log('triggering refresh', userview);
+                    });
                 });
             },
 
@@ -198,8 +199,11 @@ define([
                     }
                 }
 
+                var widgetController = this;
                 var userview = get(this, 'viewController.content');
-                userview.save();
+                userview.save().then(function() {
+                    get(widgetController, 'viewController').send('refresh');
+                });
 
                 console.groupEnd();
             },
@@ -268,8 +272,11 @@ define([
                         console.log('new array', array);
                         set(this, 'content.items.content', array);
 
+                        var widgetController = this;
                         var userview = get(this, 'viewController.content');
-                        userview.save();
+                        userview.save().then(function() {
+                            get(widgetController, 'viewController').send('refresh');
+                        });
                     }
                 } catch (e) {
                     console.error(e.stack, e.message);
@@ -319,8 +326,11 @@ define([
                         console.log('new array', array);
                         set(this, 'content.items.content', array);
 
+                        var widgetController = this;
                         var userview = get(widgetUtils.getParentViewForWidget(this), 'content');
-                        userview.save();
+                        userview.save().then(function() {
+                            get(widgetController, 'viewController').send('refresh');
+                        });
                     }
                 } catch (e) {
                     console.error(e.stack, e.message);
