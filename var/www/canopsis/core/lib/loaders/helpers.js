@@ -55,7 +55,8 @@ var helpers = [
     { name:'widgetslot', url:'app/lib/helpers/widgetslot' },
     { name:'recordcanbeack', url:'app/lib/helpers/recordcanbeack' },
     { name:'interval2html', url:'app/lib/helpers/interval2html' },
-    { name:'eventtype', url:'app/lib/helpers/eventtype' }
+    { name:'eventtype', url:'app/lib/helpers/eventtype' },
+    { name:'ackremove', url:'app/lib/helpers/ackremove' }
 ];
 
 loader.loadWithTemplates(helpers);

@@ -119,7 +119,7 @@ define([
                 var shown_columns = get(this, 'shown_columns');
                 searchableAttributes = Ember.A();
 
-                for (var i = 0, l = shown_columns.length; i < l; i++) {
+                for (var i = 0, li = shown_columns.length; i < li; i++) {
                     searchableAttributes.push(shown_columns[i].field);
                 }
 
@@ -129,8 +129,8 @@ define([
                 //User or default configuration made searchable ordered fields that greatly should match database indexed fields.
                 searchableAttributes = Ember.A();
 
-                for (var i = 0, l = searchableColumns.length; i < l; i++) {
-                    searchableAttributes.push(searchableColumns[i]);
+                for (var j = 0, lj = searchableColumns.length; j < lj; j++) {
+                    searchableAttributes.push(searchableColumns[j]);
                 }
 
                 set(this, 'searchableAttributes', searchableAttributes);

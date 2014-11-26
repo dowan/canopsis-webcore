@@ -21,7 +21,8 @@ define([
     'ember'
 ], function(Ember) {
 
-    var __ = Ember.String.loc;
+    var __ = Ember.String.loc,
+        isNone = Ember.isNone;
 
     var dates = {
 
@@ -31,6 +32,40 @@ define([
 
         getStringNow: function(format, shortDate) {
             return dates.timestamp2String(dates.getNow(), format, shortDate);
+        },
+
+        durationFromNow: function (timestamp) {
+            var delta = dates.getNow() - timestamp;
+            return dates.second2Duration(delta);
+        },
+
+        second2Duration: function (totalSec) {
+
+            var days = parseInt( totalSec / (3600 * 24) );
+            var hours = parseInt( totalSec / 3600 ) % 24;
+            var minutes = parseInt( totalSec / 60 ) % 60;
+            var seconds = totalSec % 60;
+
+            var displayHours = '';
+            if (hours) {
+                displayHours = (hours < 10 ? "0" + hours : hours) + 'h ';
+            }
+
+            var displayMinutes = '';
+            if (minutes) {
+                displayMinutes = (minutes < 10 ? "0" + minutes : minutes) + 'm ';
+            }
+
+
+            var result = displayHours +
+                displayMinutes +
+                (seconds  < 10 ? "0" + seconds : seconds) + 's';
+
+            if (!isNaN(days) && days !== 0) {
+                result = days + 'd ' + result;
+            }
+
+            return result;
         },
 
         timestamp2String: function (value, format, shortDate) {
@@ -53,7 +88,7 @@ define([
                 __("November"),
                 __("December")
             ];
-            if (!Ember.isNone(shortDate)) {
+            if (!isNone(shortDate)) {
                 months = [
                     __("Jan"),
                     __("Feb"),
@@ -108,6 +143,31 @@ define([
                 dates.month = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Octobre', 'Novembre', 'Décembre'];
                 dates.days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
             }
+        },
+
+        /**
+            Computes for a timestamp the timestamp at midnight of it's day.
+            the computation day from timestamp depends on if a timestamp is given.
+            when given start of the day is computed from timestamp, otherwise it is done from now timestamp
+        **/
+        startOfTheDay: function (aTimestamp) {
+            if (isNone(aTimestamp)) {
+                aTimestamp = dates.getNow();
+                console.log('got date from now as no param given', aTimestamp);
+            }
+            aTimestamp *= 1000;
+            var startDateOfTheDay = new Date(aTimestamp);
+            startDateOfTheDay.setHours(0,0,0,0);
+            return parseInt(startDateOfTheDay.getTime()/1000);
+        },
+
+        /**
+            Boolean value determining wether the given date included in today
+            Value depends on the client clock
+        **/
+        isToday: function (timestamp) {
+            var startOfTheDay = dates.startOfTheDay(timestamp);
+            return dates.getNow() < startOfTheDay + 3600 * 24;
         },
 
         dateFormat:'YYYY/MM/DD',

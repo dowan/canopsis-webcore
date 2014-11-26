@@ -19,6 +19,7 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
+from __future__ import absolute_import
 from bottle import request, HTTPError
 import ldap
 
@@ -54,6 +55,7 @@ class LDAPBackend(BaseBackend):
 
     def do_auth(self):
         self.logger.debug('Fetch LDAP configuration from database')
+        mgr = self.rights.get_manager()
 
         config = self.get_config()
 
@@ -102,7 +104,7 @@ class LDAPBackend(BaseBackend):
                 user
             ))
 
-            record = self.rights.get_user(user)
+            record = mgr.get_user(user)
 
         except KeyError:
             record = None
@@ -113,9 +115,9 @@ class LDAPBackend(BaseBackend):
             )
 
             attrs = [
-                config['firstname'],
-                config['lastname'],
-                config['mail']
+                config['firstname'].encode('utf-8'),
+                config['lastname'].encode('utf-8'),
+                config['mail'].encode('utf-8')
             ]
 
             ufilter = config['user_filter'] % user
@@ -161,7 +163,7 @@ class LDAPBackend(BaseBackend):
                     'role': config.get('default_role')
                 }
 
-                account = self.rights.save_user(self.ws, info)
+                account = mgr.save_user(self.ws, info)
 
         return user, account
 

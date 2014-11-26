@@ -57,7 +57,7 @@ define([
                     console.log('compiledFilterPattern', compiledFilterPattern);
 
                     if(compiledFilterPattern !== '') {
-                        set(list, 'default_filter', compiledFilterPattern);
+                        set(list, 'additional_filter', compiledFilterPattern);
                         set(list, 'rollbackable', true);
                         set(list, 'title', 'Info on events :', element.title);
                     }
@@ -92,11 +92,11 @@ define([
         //generate weather class depending on status
         class_background: function (status) {
             return [
-                'bg-green',
-                'bg-yellow',
-                'bg-orange',
-                'bg-red',
-                'bg-purple'][status];
+                'eventLikeGreen',
+                'eventLikeYellow',
+                'eventLikeOrange',
+                'eventLikeRed',
+                'eventLikePurple'][status];
         },
 
         fetchStates: function () {

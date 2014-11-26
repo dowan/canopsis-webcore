@@ -14,11 +14,10 @@
             {{#if useList}}
                 <div class="btn-group">
                     {{#each field in selectableProperties}}
-                        <button type="button" class="btn btn-default btn-sm" {{action 'setProperty' field}}>{{tr field}}</button>
+                        <button type="button" {{bind-attr class=":btn :btn-default :btn-sm field.isActive:active"}} {{action 'setProperty' field.field}}>{{field.field}}</button>
                     {{/each}}
                 </div>
             {{/if}}
-
         </div>
     </div>
 </div>

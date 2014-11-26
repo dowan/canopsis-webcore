@@ -27,9 +27,8 @@ define([
     'app/lib/utils/widgets',
     'app/lib/utils/routes',
     'app/lib/utils/forms',
-    'app/lib/utils/debug',
-    'utils'
-], function($, Ember, DS, Application, PartialslotAbleController, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, utils) {
+    'app/lib/utils/debug'
+], function($, Ember, DS, Application, PartialslotAbleController, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -75,6 +74,14 @@ define([
             });
 
             set(this, 'widgetDataStore', store);
+
+            //User preference are called just before the refresh to ensure
+            //refresh takes care of user information and widget general preference is overriden
+            //All widget may not have this mixin, so it's existance is tested
+            if (!isNone(this.loadUserConfiguration)) {
+                this.loadUserConfiguration();
+            }
+            console.debug('user configuration loaded for widget ' + get(this, 'title'));
 
             this.startRefresh();
 
@@ -165,10 +172,15 @@ define([
                 widgetWizard.submit.done(function() {
                     console.log('record going to be saved', widget);
 
+                    if(!get(widget, 'widgetId')) {
+                        set(widget, 'widgetId', get(widget,'id'));
+                    }
+
                     var userview = get(widgetController, 'viewController').get('content');
-                    userview.save();
-                    console.log('triggering refresh');
-                    widgetController.trigger('refresh');
+                    userview.save().then(function(){
+                        get(widgetController, 'viewController').send('refresh');
+                        console.log('triggering refresh', userview);
+                    });
                 });
             },
 
@@ -187,8 +199,11 @@ define([
                     }
                 }
 
+                var widgetController = this;
                 var userview = get(this, 'viewController.content');
-                userview.save();
+                userview.save().then(function() {
+                    get(widgetController, 'viewController').send('refresh');
+                });
 
                 console.groupEnd();
             },
@@ -257,8 +272,11 @@ define([
                         console.log('new array', array);
                         set(this, 'content.items.content', array);
 
+                        var widgetController = this;
                         var userview = get(this, 'viewController.content');
-                        userview.save();
+                        userview.save().then(function() {
+                            get(widgetController, 'viewController').send('refresh');
+                        });
                     }
                 } catch (e) {
                     console.error(e.stack, e.message);
@@ -308,8 +326,11 @@ define([
                         console.log('new array', array);
                         set(this, 'content.items.content', array);
 
+                        var widgetController = this;
                         var userview = get(widgetUtils.getParentViewForWidget(this), 'content');
-                        userview.save();
+                        userview.save().then(function() {
+                            get(widgetController, 'viewController').send('refresh');
+                        });
                     }
                 } catch (e) {
                     console.error(e.stack, e.message);
@@ -332,7 +353,7 @@ define([
 
             this.findItems();
 
-            set(this, 'lastRefresh', +new Date());
+            set(this, 'lastRefresh', new Date().getTime());
         },
 
         findItems: function() {

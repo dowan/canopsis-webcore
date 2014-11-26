@@ -27,7 +27,8 @@ define([
 ], function(Ember, $, formsUtils, datesUtils, notificationUtils, Mixin) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     var mixin = Mixin('sendevent', {
 
@@ -39,11 +40,13 @@ define([
         },
 
         partials: {
-            itemactionbuttons: ['actionbutton-ack',
-                                'actionbutton-cancel',
-                                'actionbutton-incident',
-                                'actionbutton-changestate',
-                                'actionbutton-ticketnumber'],
+            itemactionbuttons: [
+                'actionbutton-ack',
+                'actionbutton-cancel',
+                'actionbutton-incident',
+                'actionbutton-changestate',
+                'actionbutton-ticketnumber'
+            ],
             selectionToolbarButtons: ['actionbutton-cancel', 'actionbutton-ack']
         },
 
@@ -88,7 +91,7 @@ define([
 
             for (var i=0; i<extra_fields.length; i++) {
                 var field = extra_fields[i];
-                if (!Ember.isNone(get(crecord, field))) {
+                if (!isNone(get(crecord, field))) {
                     set(record, field, get(crecord, field));
                 }
             }
@@ -248,7 +251,12 @@ define([
                 extract: function(record, crecord, formRecord) {
                     record.ref_rk = get(crecord, 'id');
                     record.state = 0;
+                    record.state_type = 1;
                     record.id = this.getRoutingKey(record);
+                    if (formRecord !== undefined) {
+                        record.ticket = get(formRecord, 'ticket');
+                        record.output = get(formRecord, 'output');
+                    }
                 },
 
                 filter: function(record) {
@@ -275,24 +283,30 @@ define([
                         author: record.author,
                         isAck: true
                     });
-                    if(!Ember.isNone(record.ticket)) {
+                    if(!isNone(record.ticket)) {
                         crecord.set('ticket', record.ticket);
                         crecord.set('ticket_date', datesUtils.getNow());
                     }
+                    crecord.set('ack_remove', undefined);
                 }
             },
 
             ackremove: {
                 extract: function(record, crecord, formRecord) {
-                    record.output = __('Removed ack for event:');
-                    record.output += ' ' + record.component;
+                    if (formRecord === undefined) {
+                        record.output = __('Removed ack for event:');
+                        record.output += ' ' + record.component;
 
-                    if(record.source_type === 'resource') {
-                        record.output += ' ' + record.resource;
+                        if(record.source_type === 'resource') {
+                            record.output += ' ' + record.resource;
+                        }
+                    } else {
+                        record.output = get(formRecord, 'output');
                     }
 
                     record.ref_rk = get(crecord, 'id');
                     record.state = 0;
+                    record.state_type = 1;
                     record.id = this.getRoutingKey(record);
                 },
 
@@ -303,8 +317,8 @@ define([
                 handle: function(crecords) {
                     var record = this.getDisplayRecord('ackremove', crecords[0]);
 
-                    notificationUtils.info(__('event "ackremove" sent'));
-                    this.submitEvents(crecords, record, 'ackremove');
+                    this.getEventForm('ackremove', record, crecords);
+
                 },
 
                 transform: function(crecord, record) {
@@ -314,6 +328,11 @@ define([
                     crecord.set('declare_ticket_date', undefined);
                     crecord.set('ticket', undefined);
                     crecord.set('ticket_date', undefined);
+                    crecord.set('ack_remove', Ember.Object.create({
+                        comment: record.output,
+                        timestamp: datesUtils.getNow(),
+                        author: record.author
+                    }));
                 }
 
             },
@@ -322,7 +341,9 @@ define([
                 extract: function(record, crecord, formRecord) {
                     record.ref_rk = get(crecord, 'id');
                     record.state = 0;
+                    record.state_type = 1;
                     record.id = this.getRoutingKey(record);
+                    record.output = 'declare ticket';
                 },
 
                 filter: function(record) {
@@ -342,8 +363,8 @@ define([
 
                 transform: function(crecord, record) {
                     console.log('transform method for declare ticket', crecord, record);
-                    crecord.set('declare_ticket_author', record.author);
-                    crecord.set('declare_ticket_date', datesUtils.getNow());
+                    crecord.set('ticket_declared_author', record.author);
+                    crecord.set('ticket_declared_date', datesUtils.getNow());
                 }
 
             },
@@ -352,8 +373,14 @@ define([
                 extract: function(record, crecord, formRecord) {
                     record.ref_rk = get(crecord, 'id');
                     record.state = 0;
+                    record.state_type = 1;
                     record.id = this.getRoutingKey(record);
-                    record.output = __('Associated ticket number');
+                    if (formRecord === undefined) {
+                        record.output = __('Associated ticket number');
+                    } else {
+                        record.output = get(formRecord, 'output');
+                        record.ticket = get(formRecord, 'ticket');
+                    }
                 },
 
                 filter: function(record) {
@@ -377,6 +404,12 @@ define([
             cancel: {
                 extract: function(record, crecord, formRecord) {
                     record.ref_rk = get(crecord, 'id');
+                    record.state = 0;
+                    record.state_type = 1;
+                    if (formRecord !== undefined) {
+                        record.output = get(formRecord, 'output');
+                    }
+                    record.cancel = 1;
                 },
 
                 filter: function(record) {
@@ -431,6 +464,16 @@ define([
             uncancel: {
                 extract: function(record, crecord, formRecord) {
                     record.ref_rk = get(crecord, 'id');
+                    record.state_type = 1;
+                    record.state = 0;
+                    record.cancel = 0;
+                    if (formRecord !== undefined) {
+                        output = get(formRecord, 'output');
+                        if (! output) {
+                            output = ' ';
+                        }
+                        record.output = output;
+                    }
                 },
 
                 filter: function(record) {
@@ -438,10 +481,15 @@ define([
                 },
 
                 handle: function(crecords) {
+
                     var record = this.getDisplayRecord('uncancel', crecords[0]);
 
-                    notificationUtils.info(__('event "uncancel" sent'));
-                    this.submitEvents(crecords, record, 'uncancel');
+                    var formbuttons = [
+                        'formbutton-cancel',
+                        'formbutton-submit'
+                    ];
+
+                    this.getEventForm('uncancel', record, crecords, formbuttons);
                 },
 
                 transform: function(crecord, record) {
@@ -451,7 +499,7 @@ define([
                     crecord.set('status', crecord.get('cancel.previous_status'));
 
                     //reset the ack is a hack if ack is not set in the event, but there is no choice and this is a temp information
-                    if(Ember.isNone(crecord.get('ack'))) {
+                    if(isNone(crecord.get('ack'))) {
                         crecord.set('ack', {
                             comment: record.output,
                             timestamp: datesUtils.getNow(),
@@ -467,12 +515,14 @@ define([
 
             changestate: {
                 extract: function(record, crecord, formRecord) {
-                    if(!Ember.isNone(formRecord)) {
+                    if(!isNone(formRecord)) {
                         record.state = get(formRecord, 'state');
+                        record.output = get(formRecord, 'output');
                     }
 
                     record.event_type = 'check';
                     record.keep_state = true;
+                    record.state_type = 1;
                 },
 
                 filter: function(record) {
@@ -588,7 +638,7 @@ define([
 
                 var crecords = [];
 
-                if (!Ember.isNone(crecord)) {
+                if (!isNone(crecord)) {
                     console.log('event:', event_type, crecord);
                     crecords.push(crecord);
                 }

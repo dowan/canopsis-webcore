@@ -55,6 +55,7 @@ define([
                 console.warn('promise failed with error code 200, assuming it\'s a success');
                 this.promiseSuccess(promise);
             } else {
+                console.error('promise failed', promise, new Error().stack);
                 var me = this;
                 Ember.run.schedule('sync', this, function() {
                     console.error('promise failed', promise);

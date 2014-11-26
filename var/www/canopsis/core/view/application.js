@@ -39,15 +39,11 @@ define([
             }
         }.property('controller.fullscreenMode'),
 
-
-        willInsertElement: function() {
-            $("#loading").remove();
-        },
-
         willInsertElement: function() {
             $('#loading').remove();
             $('#loadingInfo').remove();
         },
+
         didInsertElement: function() {
             console.log('main template rendered, trigger $ documentready', adminLTE);
 

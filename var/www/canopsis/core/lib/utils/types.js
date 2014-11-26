@@ -37,7 +37,7 @@ define([
                 try {
                     value = parseFloat(value);
                 } catch (err) {
-                    console.wanr('unable to case to number value', value);
+                    console.warn('unable to case to number value', value);
                 }
                 if (isNaN(value)) {
                     return 0;
@@ -54,7 +54,7 @@ define([
                     }
                     value = !!value;
                 } catch (err) {
-                    console.wanr('unable to case to boolean value', value);
+                    console.warn('unable to case to boolean value', value);
                 }
                 return value;
             }

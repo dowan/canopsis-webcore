@@ -15,7 +15,7 @@
     {{#unless controller.onePageDisplay}}
         <ul class="nav nav-tabs">
             {{#each category in controller.categories}}
-                <li {{bind-attr class="category.isDefault:active"}} id="{{unbound category.slug}}_tab"><a href="#{{unbound category.slug}}" data-toggle="tab">{{unbound category.title}}</a></li>
+                <li {{bind-attr class="category.isDefault:active"}} id="{{unbound category.slug}}_tab"><a href="#{{unbound category.slug}}" data-toggle="tab">{{unbound tr category.title}}</a></li>
             {{/each}}
         </ul>
     {{/unless}}
@@ -25,7 +25,7 @@
 
             {{#if controller.onePageDisplay}}
                 <center>
-                    <h4>{{category.title}}</h4>
+                    <h4>{{tr category.title}}</h4>
                 </center>
 
                 {{#each attr in category.keys}}

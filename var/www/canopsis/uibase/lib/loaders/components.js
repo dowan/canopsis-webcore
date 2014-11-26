@@ -59,6 +59,9 @@ var components = [
     { name: 'components/component-draggablebutton', url: 'canopsis/uibase/components/draggablebutton/component', template: 'canopsis/uibase/components/draggablebutton/template.html' },
     { name: 'components/component-rrule', url: 'canopsis/uibase/components/rrule/component', template: 'canopsis/uibase/components/rrule/template.html' },
     { name: 'components/component-password', url: 'canopsis/uibase/components/password/component', template: 'canopsis/uibase/components/password/template.html' },
+    { name: 'components/component-timestamptooltiped', url: 'canopsis/uibase/components/timestamptooltiped/component', template: 'canopsis/uibase/components/timestamptooltiped/template.html' },
+    { name: 'components/component-forcevalue', url: 'canopsis/uibase/components/forcevalue/component', template: 'canopsis/uibase/components/forcevalue/template.html' },
+    { name: 'components/component-forcevaluerenderer', url: 'canopsis/uibase/components/forcevaluerenderer/component', template: 'canopsis/uibase/components/forcevaluerenderer/template.html' },
 ];
 
 loader.loadWithTemplates(components);

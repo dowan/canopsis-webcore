@@ -33,13 +33,7 @@ define([
 
         content: {},
 
-        init: function () {
-            this._super();
-            this.loadUserConfiguration();
-            console.debug('user configuration loaded for widget ' + get(this, 'title'));
-        },
-
-        saveUserConfiguration: function (callback) {
+         saveUserConfiguration: function (callback) {
 
             var preferences = get(this, 'userParams');
             console.debug('Ready to save user configuration', preferences);
@@ -54,7 +48,7 @@ define([
             var userConfiguration = {
                 widget_preferences: preferences,
                 crecord_name: user,
-                widget_id: get(this, 'id'),
+                widget_id: get(this, 'widgetId'),
                 widgetXtype: get(this,'xtype'),
                 title: get(this,'title'),
                 viewId: get(this,'viewId'),
@@ -90,7 +84,7 @@ define([
                     limit: 1,
                     filter: JSON.stringify({
                         crecord_name: user,
-                        widget_id: get(this, 'id')
+                        widget_id: get(this, 'widgetId')
                     })
                 },
                 success: function(data) {

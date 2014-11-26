@@ -48,8 +48,29 @@ define([
     'app/lib/wrappers/datatables',
     'app/lib/loaders/components',
     'app/adapters/acl',
-], function($, Ember, DS, WidgetFactory, PaginationMixin, InspectableArrayMixin,
-        ArraySearchMixin, SortableArrayMixin, HistoryMixin, AckMixin, InfobuttonMixin, SendEventMixin, CustomFilterManagerMixin, UserConfigurationMixin, ExpandablecellMixin, DraggableColumnsMixin, utils, domUtils, routesUtils, formsUtils, FoldableListLineMixin, ListlineController) {
+], function($,
+    Ember,
+    DS,
+    WidgetFactory,
+    PaginationMixin,
+    InspectableArrayMixin,
+    ArraySearchMixin,
+    SortableArrayMixin,
+    HistoryMixin,
+    AckMixin,
+    InfobuttonMixin,
+    SendEventMixin,
+    CustomFilterManagerMixin,
+    UserConfigurationMixin,
+    DraggableColumnsMixin,
+    ExpandablecellMixin,
+    utils,
+    domUtils,
+    routesUtils,
+    formsUtils,
+    FoldableListLineMixin,
+    ListlineController
+) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -68,8 +89,14 @@ define([
             css :"table table-striped table-bordered table-hover dataTable sortable",
             needs: ['login', 'application', 'recordinfopopup'],
 
+            /**
+             * Whether to display the list as the regular table or not.
+             * Used with mixin that fill the partial slot "alternativeListDisplay", this can help to provide alternative displays
+             */
+            standardListDisplay: true,
+
             viewMixins: [
-                ExpandablecellMixin,
+                // ExpandablecellMixin,
                 DraggableColumnsMixin
             ],
 
@@ -83,7 +110,7 @@ define([
                     console.debug('sendDisplayRecord action called with params', dest, record);
 
                     var template = get(dest, 'record_template');
-                    if (Ember.isNone(template)){
+                    if (Ember.isNone(template)) {
                         template = '';
                     }
 
@@ -108,6 +135,10 @@ define([
                 //prepare user configuration to fetch customer preference by reseting data.
                 //dont understand why without this reset, values same values are set into many list instances.
                 set(this, 'custom_filters', []);
+                set(this, 'widgetData', []);
+                set(this, 'findOptions', {});
+                set(this, 'loaded', false);
+
 
                 this._super.apply(this, arguments);
             },
@@ -144,14 +175,8 @@ define([
                 }
             }.property('listed_crecord_type'),
 
-            widgetData: [],
-
-            findOptions : {},
-
-            loaded: false,
 
             isAllSelectedChanged: function(){
-                console.log('toggle isAllSelected');
                 get(this, 'widgetData').content.setEach('isSelected', get(this, 'isAllSelected'));
             }.observes('isAllSelected'),
 
@@ -186,16 +211,19 @@ define([
                 //Setting default sort order param to the query depending on widget configuration
                 var columnSort = get(this, 'default_column_sort');
 
+
                 if (findParams !== undefined && findParams.sort !== undefined && columnSort !== undefined) {
-                    if (!Ember.isNone(columnSort.property)){
+                    if (!Ember.isNone(columnSort.property) && Ember.isNone(findParams.sort)){
                         var direction = 'DESC';
                         if (columnSort.direction === 'DESC' || columnSort.direction === 'ASC') {
                             direction = columnSort.direction;
                         }
                         //Sort order has been found.
                         findParams.sort = JSON.stringify([{property: columnSort.property, direction: direction}]);
+                        console.log('use default sort',findParams.sort);
                     }
                 }
+                console.log('findParams.sort',findParams.sort);
 
                 get(this, 'widgetDataStore').findQuery(itemType, findParams).then(function(queryResults) {
                     //retreive the metas of the records
@@ -283,8 +311,9 @@ define([
                     }
                 }
 
-                if(get(this, 'maximized_column_index')) {
-                    selected_columns[get(this, 'maximized_column_index')].maximized = true;
+                var maximized_column_index = get(this, 'maximized_column_index');
+                if(maximized_column_index && selected_columns && selected_columns[maximized_column_index]) {
+                    selected_columns[maximized_column_index].maximized = true;
                 }
 
                 console.debug('selected cols', selected_columns);
@@ -298,6 +327,7 @@ define([
 
                 var searchFilterPart = get(this, 'findParams_searchFilterPart');
                 var cfilterFilterPart = get(this, 'findParams_cfilterFilterPart');
+                var additionalFilterPart = get(this, 'additional_filter');
 
                 var filter;
 
@@ -312,7 +342,8 @@ define([
                 var sourceFilter = [
                     searchFilterPart,
                     cfilterFilterPart,
-                    this.getTimeInterval()
+                    this.getTimeInterval(),
+                    additionalFilterPart
                 ];
 
                 var filters = [];

@@ -20,11 +20,14 @@ define(['ember', 'utils'], function(Ember, utils) {
 
     Ember.Handlebars.helper('tr', function(value) {
 
-        var translation = Ember.String.loc(value);
+        var translation;
 
-        console.log('translating', value, 'into', translation);
+        if(!! value) {
+            translation = Ember.String.loc(value);
 
-        return new Ember.Handlebars.SafeString(translation);
+            console.log('translating', value, 'into', translation);
 
+            return new Ember.Handlebars.SafeString(translation);
+        }
     });
 });

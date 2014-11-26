@@ -29,7 +29,8 @@ define([
     'app/lib/loaders/schemas',
     'seeds/RoutesLoader',
     'app/serializers/userview',
-    'app/adapters/userview'
+    'app/adapters/userview',
+    'app/controller/userview',
 ], function(Ember, AuthenticatedRoute, utils, dataUtils, formUtils, widgetSelectorsUtils, actionsUtils, testUtils) {
 
     var set = Ember.set,

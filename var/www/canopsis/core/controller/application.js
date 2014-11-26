@@ -48,7 +48,8 @@ define([
     'app/lib/loaders/helpers',
     'app/lib/wrappers/bootstrap',
     'app/lib/wrappers/mousetrap',
-    'app/controller/recordinfopopup'
+    'app/controller/recordinfopopup',
+    'app/controller/formwrapper'
 ], function(
     $,
     Ember,
@@ -123,9 +124,9 @@ define([
         plugins:function(){
             var all_plugins = [];
             var plugins = Application.plugins;
-            for ( var pluginName in plugins ){
-                if( plugins.hasOwnProperty(pluginName)){
-                    all_plugins.pushObject(plugins[pluginName] );
+            for(var pluginName in plugins) {
+                if(plugins.hasOwnProperty(pluginName)){
+                    all_plugins.pushObject(plugins[pluginName]);
                 }
             }
             return all_plugins;
@@ -234,7 +235,6 @@ define([
                 set(appController, 'headerUserview', queryResults);
             });
 
-
             // console.groupEnd();
             this.refreshPartialsList();
             this._super.apply(this, arguments);
@@ -269,7 +269,14 @@ define([
 
                 var ouser = get(utils, 'session');
                 var recordWizard = formsUtils.showNew('modelform', ouser, {
-                    title: get(ouser, '_id') + ' ' + __('profile')
+                    title: get(ouser, '_id') + ' ' + __('profile'),
+                    filterFieldByKey: {
+                        firstname: {readOnly: true},
+                        lastname: {readOnly: true},
+                        authkey: {readOnly: true},
+                        ui_language: true,
+                        mail: true,
+                    }
                 });
 
                 recordWizard.submit.then(function(form) {
@@ -310,27 +317,37 @@ define([
                     container: get(this, "container")
                 });
 
+
                 var record = dataStore.findQuery('statusmanagement', {}).then(function(queryResults) {
 
                     console.log('queryResults', queryResults);
 
                     var record = get(queryResults, 'content')[0];
 
-                    //generating form from record model
-                    var recordWizard = formsUtils.showNew('modelform', record, {
-                        title: __('Event settings edition'),
-                    });
+                    //it is always translated this way
+                    var errorMessage = __('Status management information not registered in database.') +
+                        ' ' + __('Please contact your administrator.');
 
-                    //submit form and it s callback
-                    recordWizard.submit.then(function(form) {
-                        console.log('record going to be saved', record, form);
-                        notificationUtils.info(__('Status management information') + ' ' +__('updated'));
+                    if (record) {
 
-                        //generated data by user form fill
-                        record = form.get('formContext');
-                        record.save();
+                        //generating form from record model
+                        var recordWizard = formsUtils.showNew('modelform', record, {
+                            title: __('Event settings edition'),
+                        });
 
-                    });
+                        //submit form and it s callback
+                        recordWizard.submit.then(function(form) {
+                            console.log('record going to be saved', record, form);
+                            notificationUtils.info(__('Status management information') + ' ' +__('updated'));
+
+                            //generated data by user form fill
+                            record = form.get('formContext');
+                            record.save();
+
+                        });
+                    } else {
+                        notificationUtils.error(errorMessage);
+                    }
                 });
             },
 
@@ -348,6 +365,10 @@ define([
                     console.log('queryResults', queryResults);
 
                     var record = get(queryResults, 'content')[0];
+
+                    //it is always translated this way
+                    var errorMessage = __('Engine data cleaner information not registered in database.') +
+                        ' ' + __('Please contact your administrator.');
 
                     //generating form from record model
                     var recordWizard = formsUtils.showNew('modelform', record, {

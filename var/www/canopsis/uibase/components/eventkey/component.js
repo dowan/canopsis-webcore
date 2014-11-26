@@ -39,14 +39,14 @@ define([
         ],
 
         'selectableProperties': [
-            'connector',
-            'component',
-            'resource',
-            'perimeter',
-            'domain',
-            'state',
-            'status',
-            'timestamp',
+            {field:'connector'},
+            {field:'component'},
+            {field:'resource'},
+            {field:'perimeter'},
+            {field:'domain'},
+            {field:'state'},
+            {field:'status'},
+            {field:'timestamp'},
         ],
 
         useTextField: function () {
@@ -56,6 +56,16 @@ define([
         useList: function () {
             return get(this, 'selectedMode') === __('List');
         }.property('selectedMode'),
+
+        testActive: function () {
+            var properties = get(this, 'selectableProperties');
+            var len = properties.length;
+            for (var i=0; i<len; i++) {
+                var isActive = properties[i].field === get(this, 'content');
+                set(properties[i], 'isActive', isActive);
+                console.log('compare', properties[i].field ,'and',  get(this, 'content'));
+            }
+        }.observes('content'),
 
         actions : {
             setProperty: function (field) {
