@@ -63,6 +63,7 @@ define([
                     void (data);
                     console.log('User configuration save statement for widget complete');
                     if (!Ember.isNone(callback)) {
+                        console.log('found callback after save configuration, processing it.')
                         callback();
                     }
                 }
@@ -70,7 +71,7 @@ define([
 
         },
 
-        loadUserConfiguration: function() {
+        loadUserConfiguration: function(callback) {
             var userConfiguration = this;
 
             console.debug('loading configuration');
@@ -98,6 +99,10 @@ define([
                         for (var key in preferences) {
                             console.debug('User preferences: will set key', key, 'in widget', get(userConfiguration, 'title'));
                             userConfiguration.set(key, preferences[key]);
+                        }
+                        if (!Ember.isNone(callback)) {
+                           console.log('found callback after save configuration, processing it.')
+                            callback();
                         }
 
                     } else {
