@@ -271,4 +271,3 @@ define(['text!canopsis/enabled.json', 'app/lib/wrappers/console', 'app/lib/objec
 
     });
 });
-
