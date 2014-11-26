@@ -48,7 +48,7 @@ define([
             var userConfiguration = {
                 widget_preferences: preferences,
                 crecord_name: user,
-                widget_id: get(this, 'id'),
+                widget_id: get(this, 'widgetId'),
                 widgetXtype: get(this,'xtype'),
                 title: get(this,'title'),
                 viewId: get(this,'viewId'),
@@ -84,7 +84,7 @@ define([
                     limit: 1,
                     filter: JSON.stringify({
                         crecord_name: user,
-                        widget_id: get(this, 'id')
+                        widget_id: get(this, 'widgetId')
                     })
                 },
                 success: function(data) {
