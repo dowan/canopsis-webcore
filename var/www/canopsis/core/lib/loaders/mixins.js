@@ -19,7 +19,6 @@
 
 var mixins = [
     { name: 'validation', url: 'app/mixins/validation', classes: ["action"]},
-    { name: 'modelDict', url: 'app/mixins/modelDict', classes: ["action"]},
     { name: 'mixinArray', url: 'app/mixins/mixinArray', classes: ["test"]},
     { name: 'pagination', url: 'app/mixins/pagination', classes: ["widget"]},
     { name: 'tagsoptionfilter', url: 'app/mixins/tagsoptionfilter', classes: ["widget"]},

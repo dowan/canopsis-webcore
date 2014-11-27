@@ -20,8 +20,9 @@
 
 define([
     'ember',
-    'app/lib/mixinsregistry'
-], function(Ember, mixinsRegistry) {
+    'app/lib/mixinsregistry',
+    'app/lib/utils/forms'
+], function(Ember, mixinsRegistry, formsUtils) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -78,6 +79,13 @@ define([
             },
             unselectItem: function(){
                 this.recomputeSelection();
+            },
+            configureMixin: function(){
+                console.log('configureMixin action', arguments, this);
+                console.log('Show new form with context:', get(this, 'form.formContext'));
+                var oldContext = get(this, 'form.formContext');
+                console.log('oldContext', oldContext);
+                var recordWizard = formsUtils.showNew('mixinform', {}, { previousForm: oldContext });
             }
         }
     });

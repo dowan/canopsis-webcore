@@ -25,6 +25,7 @@ var forms = [
     { name: 'taskform', url: 'app/forms/taskform/controller', template: 'app/forms/taskform/template.html' },
     { name: 'scheduleform', url: 'app/forms/scheduleform/controller', template: 'app/forms/scheduleform/template.html' },
     { name: 'confirmform', url: 'app/forms/confirmform/controller', template: 'app/forms/confirmform/template.html' },
+    { name: 'mixinform', url: 'app/forms/mixinform/controller', template: 'app/forms/mixinform/template.html' }
     //'connectorform',
     //"confirmform"
 ];

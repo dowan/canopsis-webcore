@@ -56,6 +56,11 @@
                 <ul {{bind-attr class=listGroupClass}}>
                     {{#each item in selection}}
                         <li class="list-group-item">
+                            {{#if selectedItemPartial}}
+                                <span style="float:right;">
+                                    {{partial selectedItemPartial}}
+                                </span>
+                            {{/if}}
                             <a {{action unselectItem item}}>
                                 {{#if item.icon}}
                                     {{glyphicon item.icon}} 
@@ -65,11 +70,8 @@
                                     {{/if}}
                                 {{/if}}
                                 {{item.name}} {{#if item.value}}({{item.value}}){{/if}}
-
-                                {{#if selectedItemPartial}}
-                                    {{partial selectedItemPartial}}
-                                {{/if}}
                             </a>
+                            <span style="clear:both"></span>
                         </li>
                     {{else}}
                         <li><i>No values.</i></li>
