@@ -1,3 +1,7 @@
+html {
+    margin-left: 0 !important;
+}
+
 /*used in weather widget at least*/
 .eventLikeGreen {
     background-color :#00a65a !important;
