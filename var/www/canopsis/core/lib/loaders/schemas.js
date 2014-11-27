@@ -262,13 +262,10 @@ define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
                     var val = parentModelDict[keys]._meta.options;
 
                     if (val.relationship === 'hasMany' && val.model !== undefined) {
-                        // console.log('Add hasMany relationship : ' + keys +' = ', val, Application.allModels[parentModelClassName][keys]._meta.type);
                         modelDict[keys] = DS.hasMany(val.model, val);
                     } else if (val.relationship === 'belongsTo' && val.model !== undefined) {
-                        // console.log('Add belongsTo relationship : ' + keys +' = ', val, Application.allModels[parentModelClassName][keys]._meta.type);
                         modelDict[keys] = DS.belongsTo(val.model, val);
                     } else {
-                        // console.log('Add attribute : ' + keys +' = ', val, Application.allModels[parentModelClassName][keys]._meta.type);
                         modelDict[keys] = DS.attr(parentModelDict[keys]._meta.type, val);
                     }
 
@@ -290,8 +287,6 @@ define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
                         } else {
                             oldOptions = oldkeysAttribute.options;
                         }
-
-                        // console.log('modelDict keys !== undefined : ', parentModelClassName, Application.allModels[parentModelClassName], keys);
 
                         var newOptions;
                         if(newkeysAttribute !== undefined) {
