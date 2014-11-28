@@ -276,6 +276,7 @@ define([
                         authkey: {readOnly: true},
                         ui_language: true,
                         mail: true,
+                        userpreferences: true,
                     }
                 });
 

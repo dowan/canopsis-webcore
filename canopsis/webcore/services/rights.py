@@ -127,11 +127,11 @@ def save_user(ws, record):
 
 
 def exports(ws):
-    rights = get_manager()
+    mgr = get_manager()
 
     @route(ws.application.get)
     def rights(uid):
-        urights = rights.get_user_rights(uid)
+        urights = mgr.get_user_rights(uid)
 
         if not urights:
             raise HTTPError(404, 'No rights found for user: {0}'.format(uid))
@@ -173,5 +173,5 @@ def exports(ws):
 
     @route(ws.application.delete, name='account/delete')
     def delete_entity(etype, _id):
-        if not rights.delete(etype, _id):
+        if not mgr.delete(etype, _id):
             raise ws.Error('Unknown entity type: {0}'.format(etype))
