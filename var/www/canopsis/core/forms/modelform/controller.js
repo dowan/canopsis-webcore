@@ -45,6 +45,11 @@ define([
     var form = FormFactory('modelform', {
         needs: ['application'],
 
+        partials: {
+            buttons: ["formbutton-submit"],
+            debugButtons: ['formbutton-inspectform']
+        },
+
         validationFields: Ember.computed(function() {return Ember.A();}),
         ArrayFields: Ember.A(),
 

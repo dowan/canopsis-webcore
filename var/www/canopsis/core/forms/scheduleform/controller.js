@@ -29,13 +29,14 @@ define([
     var form = FormFactory('scheduleform', {
         title: 'Configure Schedule',
 
+        init: function() {
+            this.refreshPartialsList();
+            this._super();
+        },
+
         actions: {
             submit: function() {
-                console.group('submitSchedule');
-
                 console.log('context:', this.formContext);
-
-                console.groupEnd();
 
                 this._super(arguments);
             }

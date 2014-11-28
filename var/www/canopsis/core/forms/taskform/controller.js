@@ -40,8 +40,12 @@ define([
             this._super(arguments);
 
             if(this.scheduled === false) {
-                this.partials.buttons = ["formbutton-cancel", "formbutton-submit"];
+                this.partials.buttons = ["formbutton-next", "formbutton-close"];
+            } else {
+                this.partials.buttons = ["formbutton-cancel", "formbutton-close", "formbutton-submit"];
             }
+
+            this.refreshPartialsList();
         },
 
         actions: {

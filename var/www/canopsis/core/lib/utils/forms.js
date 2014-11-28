@@ -37,12 +37,11 @@ define([
             classDict.container = Application.__container__;
 
             var formController = formsregistry.all[formName].EmberClass.create(classDict);
-
+            formController.refreshPartialsList();
             return formController;
         },
 
         showInstance: function(formInstance) {
-            formsregistry.formwrapper.form.updateArray();
             formInstance.empty_validationFields();
 
             set(formsregistry.formwrapper, 'form.validateOnInsert', false);
@@ -53,14 +52,6 @@ define([
         showNew: function(formName, formContext, options) {
             if (options === undefined) {
                 options = {};
-            }
-
-            var formwrapperController = formsregistry.formwrapper;
-            if( formwrapperController ){
-                var oldform = formwrapperController.form;
-                if( oldform && oldform.updateArray ){
-                    //oldform.updateArray();
-                }
             }
 
             if (formContext.get && Ember.isNone(formContext.get('crecord_type'))) {
