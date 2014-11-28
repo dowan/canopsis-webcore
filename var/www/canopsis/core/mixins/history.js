@@ -25,7 +25,6 @@ define([
     /**
       Implements history collection finder
     */
-
     var mixin = Mixin('history', {
 
         historyMixinFindOptions: function () {

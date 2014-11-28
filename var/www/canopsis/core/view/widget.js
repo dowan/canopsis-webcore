@@ -30,7 +30,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-    function computeMixinsArray(widget) {
+    function computeMixinsArray(view, widget) {
         var mixinsNames = get(widget, 'mixins');
         console.log('computeMixinsArray', mixinsregistry);
 
@@ -47,6 +47,7 @@ define([
                 if(currentClass) {
                     mixinArray.pushObject(currentClass);
                 } else {
+                    get(view, 'displayedErrors').pushObject('mixin not found : ' + currentName);
                     console.error('mixin not found', currentName);
                 }
             }
@@ -74,6 +75,9 @@ define([
             set(this, 'target', get(this, 'controller'));
 
             this._super();
+
+            set(this, 'displayedErrors', Ember.A());
+
             if (!! get(this, 'widget')) {
                 this.intializeController(this.widget);
                 this.applyAllViewMixins();
@@ -154,7 +158,7 @@ define([
                 console.error('no xtype for widget', widget, this);
             }
 
-            var mixins = computeMixinsArray(widget);
+            var mixins = computeMixinsArray(this, widget);
 
             mixins.pushObject({
                 content: widget,
@@ -174,6 +178,8 @@ define([
             widgetControllerInstance = widgetClass.createWithMixins.apply(widgetClass, mixins);
             widgetControllerInstance.refreshPartialsList();
 
+            set(widgetControllerInstance, 'content.displayedErrors', get(this, 'displayedErrors'));
+
             var mixinsName = widget._data.mixins;
 
             if (mixinsName) {
@@ -186,7 +192,6 @@ define([
                     }
                 }
             }
-
 
             return widgetControllerInstance;
         },

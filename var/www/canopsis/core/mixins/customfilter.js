@@ -27,16 +27,17 @@ define([
     'app/lib/factories/mixin'
 ], function(Ember, DS, utils, dataUtils, formsUtils, notificationUtils, Mixin) {
 
-    /**
-      Implements Custom filter management for list
-      A filter is a combination of a cfilter and a title.
-      Custom cfilter allow perform selelection on a list with custom filter information.
-    */
+
 
     var get = Ember.get,
         set = Ember.set;
 
 
+    /**
+      * Implements Custom filter management for list
+      * A filter is a combination of a cfilter and a title.
+      * Custom cfilter allow perform selelection on a list with custom filter information.
+    */
     var mixin = Mixin('customfilter', {
         partials: {
             subHeader: ['customfilters']

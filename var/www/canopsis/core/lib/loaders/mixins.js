@@ -19,6 +19,10 @@
 
 var mixins = [
     { name: 'validation', url: 'app/mixins/validation', classes: ["action"]},
+    { name: 'customfilter', url: 'app/mixins/customfilter', classes: ["list"]},
+    { name: 'sortablearray', url: 'app/mixins/sortablearray', classes: ["list"]},
+    { name: 'arraysearch', url: 'app/mixins/arraysearch', classes: ["list"]},
+    { name: 'infobutton', url: 'app/mixins/infobutton', classes: ["list"]},
     { name: 'modelDict', url: 'app/mixins/modelDict', classes: ["action"]},
     { name: 'mixinArray', url: 'app/mixins/mixinArray', classes: ["test"]},
     { name: 'pagination', url: 'app/mixins/pagination', classes: ["widget"]},

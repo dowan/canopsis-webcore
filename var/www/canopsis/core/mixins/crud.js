@@ -27,7 +27,11 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-
+    /**
+     * Implement CRUD handling for widgets that manages collections
+     *
+     * Useful in lists for example, where it adds buttons to CRUD list elements
+     */
     var mixin = Mixin('crud', {
         partials: {
             selectionToolbarButtons: [

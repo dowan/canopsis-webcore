@@ -24,7 +24,7 @@ define([
 
     var widget = WidgetFactory('horizontalbox', {
         partials: {
-            titlebarsbuttons : ["titlebarbutton-moveright", "titlebarbutton-moveleft"]
+            titlebarsbuttons : ['titlebarbutton-moveright', 'titlebarbutton-moveleft', 'titlebarbutton-widgeterrors']
         },
 
         section : function () {
