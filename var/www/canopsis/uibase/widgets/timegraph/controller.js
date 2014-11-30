@@ -93,7 +93,8 @@ define([
 
                 grid: {
                     hoverable: true,
-                    clickable: true
+                    clickable: true,
+                    borderWidth: 2
                 },
 
                 xaxis: {
@@ -149,7 +150,8 @@ define([
 
                 grid: {
                     hoverable: true,
-                    clickable: true
+                    clickable: true,
+                    borderWidth: 2
                 },
 
                 xaxis: {
@@ -236,6 +238,9 @@ define([
         timenavOptions: undefined,
         chartSeries: Ember.Object.create({}),
         dataSeries: Ember.A(),
+        human_readable: function() {
+            return get(this, 'config.human_readable');
+        }.property('config.human_readable'),
 
         time_window: function() {
             return get(this, 'config.time_window') * 1000;
@@ -303,7 +308,7 @@ define([
                     $.extend(opts, get(this, 'timenavOptions'));
                     $.extend(opts, {
                         xaxis: {
-                            min: from,
+                            min: to - get(this, 'timenav_window') - get(this, 'time_window_offset'),
                             max: to
                         }
                     });
@@ -384,7 +389,8 @@ define([
                     virtual: true,
                     crecord_name: metricInfo.name,
                     metrics: [metricId],
-                    aggregate_method: 'none'
+                    aggregate_method: 'none',
+                    unit: get(stylizedmetrics[i], 'unit')
                 });
 
                 seriesById[metricId] = {
@@ -500,7 +506,8 @@ define([
                     lines: get(config, 'curve.lines') || get(config, 'curve.areas'),
                     bars: get(config, 'curve.bars'),
                     points: get(config, 'curve.points')
-                }
+                },
+                unit: get(config, 'serie.unit')
             };
 
             var oldSerie, ctrl, request;
