@@ -94,7 +94,7 @@ define([
         },
 
         createChart: function() {
-            console.log('createChart');
+            console.group('createChart:');
 
             var me = this;
             var plotcontainer = this.$();
@@ -152,13 +152,19 @@ define([
                 };
             }
 
+            console.log('series:', series);
+            console.log('options:', options);
+
             set(this, 'chart', $.plot(plotcontainer, series, options));
+
+            console.groupEnd();
         },
 
         refreshChart: function() {
             var chart = get(this, 'chart');
             var series = get(this, 'series');
 
+            console.log('flotchart refresh series:', series);
             chart.setData(series);
             chart.setupGrid();
             chart.draw();
