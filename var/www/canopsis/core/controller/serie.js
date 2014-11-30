@@ -39,7 +39,7 @@ define([
             this._super();
         },
 
-        getDataSerie: function(serie, from, to) {
+        fetch: function(serie, from, to) {
             if(get(serie, 'metrics.length') > 1 && get(serie, 'aggregate_method') === 'none') {
                 console.group('More than one metric in serie, performing an aggregation');
 
