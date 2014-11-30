@@ -56,7 +56,7 @@ require.config({
         'flotchart-threshold': 'webcore-libs/flot/jquery.flot.threshold',
         'flotchart-time': 'webcore-libs/flot/jquery.flot.time',
         'flotchart-valuelabel': 'webcore-libs/flot-plugins/custom/jquery.flot.valuelabel',
-        'flotchart-tooltip': 'webcore-libs/flot-plugins/custom/jquery.flot.tooltip',
+        'flotchart-tooltip': 'webcore-libs/flot.tooltip/js/jquery.flot.tooltip',
 
         'rrule': 'webcore-libs/kb-rrule/lib/rrule',
         'nlp': 'webcore-libs/kb-rrule/lib/nlp',

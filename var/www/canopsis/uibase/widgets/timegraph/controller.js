@@ -120,7 +120,15 @@ define([
                     legend: get(config, 'legend'),
                     container: this.$('.flotchart-legend-container')
                 },
-                tooltip: get(config, 'tooltip')
+                tooltip: get(config, 'tooltip'),
+                tooltipOpts: {
+                    id: this.$().closest('.ember-view').attr('id') + '-tooltip',
+                    content: '<p>%x</p><p><b>%s :</b> %y</p>',
+                    shifts: {
+                        x: -60,
+                        y: 25
+                    }
+                }
             });
 
             console.log('Configure chart:', chartOptions);
