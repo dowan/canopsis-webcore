@@ -21,7 +21,6 @@
 define([
     'ember',
     'app/application',
-    'canopsis/uibase/components/modelselect/component',
     'canopsis/uibase/components/stringclassifiedcrecordselector/component'
 ], function(Ember, Application) {
 
