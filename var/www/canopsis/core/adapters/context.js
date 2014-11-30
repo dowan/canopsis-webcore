@@ -124,7 +124,13 @@ define([
                 var funcrej = me.gen_reject(reject);
                 var url = me.buildURL(model.typeKey);
 
-                query._filter = JSON.stringify(query.filter);
+                if(typeof (query.filter) !== "string") {
+                    query._filter = JSON.stringify(query.filter);
+                }
+                else {
+                    query._filter = query.filter;
+                }
+
                 delete query.filter;
 
                 console.log('findQuery: ', query);
