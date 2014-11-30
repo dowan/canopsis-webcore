@@ -40,6 +40,9 @@ define([
                             'start': tstart / 1000,
                             'stop': tend / 1000,
                             'timezone': new Date().getTimezoneOffset()
+                        }),
+                        'timeserie': JSON.stringify({
+                            'aggregation': 'NONE'
                         })
                     }
                 }).then(resolve, reject);

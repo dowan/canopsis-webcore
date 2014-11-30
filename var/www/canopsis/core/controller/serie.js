@@ -83,7 +83,7 @@ define([
                 for(i = 0; i < nmetric; i++) {
                     var metric = metrics[i];
 
-                    var cid = metric.meta[0].data_id;
+                    var cid = metric.meta.data_id;
                     var mid = 'metric_' + hash.md5(cid);
                     var mname = '/' + cid.split('/').slice(4).join('/');
 
