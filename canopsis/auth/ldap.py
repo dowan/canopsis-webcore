@@ -54,6 +54,9 @@ class LDAPBackend(BaseBackend):
         return decorated
 
     def do_auth(self):
+
+        not_auth = None, None
+
         self.logger.debug('Fetch LDAP configuration from database')
         mgr = self.rights.get_manager()
 
@@ -61,7 +64,7 @@ class LDAPBackend(BaseBackend):
 
         if not config:
             self.logger.error('LDAP configuration not found')
-            return None
+            return not_auth
 
         user = request.params.get('username', default=None)
         passwd = request.params.get('password', default=None)
@@ -97,7 +100,7 @@ class LDAPBackend(BaseBackend):
             self.logger.error('Invalid credentials for user {0}'.format(user))
 
             # Will try with the next backend
-            return None
+            return not_auth
 
         try:
             self.logger.debug('Ensure user\'s presence in database: {}'.format(
