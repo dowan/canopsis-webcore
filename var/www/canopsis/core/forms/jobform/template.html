@@ -2,4 +2,6 @@
     <div>parent form: {{controller.formParent}}</div>
 {{/if}}
 
-{{component-classifieditemselector target=controller content=availableJobs}}
+<button class="btn btn-default" {{action 'selectItem' 'mail'}} >
+    {{glyphicon "enveloppe"}} {{tr 'Mail'}}
+</button>

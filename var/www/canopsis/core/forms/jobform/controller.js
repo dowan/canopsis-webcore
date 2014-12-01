@@ -23,8 +23,9 @@ define([
     'app/lib/factories/form',
     'utils',
     'app/lib/utils/forms',
-    'app/lib/utils/hash'
-], function(Ember, Application, FormFactory, utils, formsUtils, hashUtils) {
+    'app/lib/utils/hash',
+    'app/lib/schemasregistry'
+], function(Ember, Application, FormFactory, utils, formsUtils, hashUtils, schemasRegistry) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -33,20 +34,7 @@ define([
         title: 'Select task type',
         scheduled: true,
 
-        availableJobs: function() {
-            var job_types = [];
-
-            for(var sname in utils.schemaList) {
-                if(sname.indexOf('Task.') === 0) {
-                    job_types.pushObject({
-                        name: sname.slice(9),
-                        value: sname
-                    });
-                }
-            }
-
-            return { all : job_types, byClass: {}};
-        }.property('utils.schemaList'),
+        schemas: schemasRegistry.all,
 
         init: function() {
             this._super(arguments);
@@ -54,6 +42,19 @@ define([
             set(this, 'store', DS.Store.create({
                 container: get(this, "container")
             }));
+
+            var job_types = [];
+            console.log('availableJobs CP', get(this, 'schemas'));
+            for(var sname in get(this, 'schemas')) {
+                if(sname.indexOf('Task') === 0 && sname.length > 4) {
+                    job_types.pushObject({
+                        name: sname.slice(4),
+                        value: sname
+                    });
+                }
+            }
+
+            set(this, 'availableJobs', { all : job_types, byClass: {}});
         },
 
         actions: {
@@ -70,7 +71,7 @@ define([
                     }
                 }
 
-                var xtype = job.value.slice(5);
+                var xtype = job.value;
                 var modelname = xtype[0].toUpperCase() + xtype.slice(1);
                 var model = Application[modelname];
 

@@ -40,9 +40,9 @@ define([
             this._super(arguments);
 
             if(this.scheduled === false) {
-                this.partials.buttons = ["formbutton-next", "formbutton-close"];
+                this.partials.buttons = ["formbutton-next", "formbutton-cancel"];
             } else {
-                this.partials.buttons = ["formbutton-cancel", "formbutton-close", "formbutton-submit"];
+                this.partials.buttons = ["formbutton-cancel", "formbutton-submit"];
             }
 
             this.refreshPartialsList();
@@ -62,8 +62,7 @@ define([
                     });
 
                     set(this, 'nextForm', wizard);
-                }
-                else {
+                } else {
                     wizard = get(this, 'nextForm');
                     console.log('nextForm', wizard);
                     formsUtils.showInstance(wizard);
