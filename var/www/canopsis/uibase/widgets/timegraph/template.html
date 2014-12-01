@@ -1,13 +1,21 @@
 <div class="flotchart-container">
     <div class="flotchart-plot-container">
-        {{component-flotchart options=controller.chartOptions series=controller.dataSeries}}
+        {{component-flotchart
+            options=controller.chartOptions
+            series=controller.dataSeries
+            human=controller.human_readable
+        }}
     </div>
 
     {{#if controller.timenav}}
         <div class="flotchart-preview-container">
             <p><strong>Time navigation:</strong></p>
 
-            {{component-flotchart options=controller.timenavOptions series=controller.dataSeries}}
+            {{component-flotchart
+                options=controller.timenavOptions
+                series=controller.dataSeries
+                human=controller.human_readable
+            }}
         </div>
     {{/if}}
 

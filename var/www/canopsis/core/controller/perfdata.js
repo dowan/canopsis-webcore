@@ -38,7 +38,11 @@ define([
                         'metric_id': metric_id,
                         'timewindow': JSON.stringify({
                             'start': tstart / 1000,
-                            'stop': tend / 1000
+                            'stop': tend / 1000,
+                            'timezone': new Date().getTimezoneOffset()
+                        }),
+                        'timeserie': JSON.stringify({
+                            'aggregation': 'NONE'
                         })
                     }
                 }).then(resolve, reject);
@@ -58,7 +62,8 @@ define([
                         'metric_id': metric_id,
                         'timewindow': JSON.stringify({
                             'start': tstart / 1000,
-                            'stop': tend / 1000
+                            'stop': tend / 1000,
+                            'timezone': new Date().getTimezoneOffset()
                         }),
                         'timeserie': JSON.stringify({
                             'aggregation': method

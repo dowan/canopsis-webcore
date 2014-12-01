@@ -76,9 +76,9 @@ define([
 
 
     Ember.Application.initializer({
-        name:"component-serieitemeditor",
+        name:"component-metricitemeditor",
         initialize: function(container, application) {
-            application.register('component:component-serieitemeditor', component);
+            application.register('component:component-metricitemeditor', component);
         }
     });
 
