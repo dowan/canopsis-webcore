@@ -23,7 +23,8 @@ define([
     'ember-data',
     'app/lib/factories/widget',
     'canopsis/uibase/components/flotchart/component',
-    'app/controller/serie'
+    'app/controller/serie',
+    'app/controller/perfdata'
 ], function($, Ember, DS, WidgetFactory) {
     var get = Ember.get,
         set = Ember.set;
@@ -92,7 +93,8 @@ define([
 
                 grid: {
                     hoverable: true,
-                    clickable: true
+                    clickable: true,
+                    borderWidth: 2
                 },
 
                 xaxis: {
@@ -105,7 +107,7 @@ define([
                     reserveSpace: true,
                     position: 'bottom',
                     mode: 'time',
-                    timezone: 'utc'
+                    timezone: 'browser'
                 }],
 
                 yaxes: [{
@@ -118,7 +120,15 @@ define([
                     legend: get(config, 'legend'),
                     container: this.$('.flotchart-legend-container')
                 },
-                tooltip: get(config, 'tooltip')
+                tooltip: get(config, 'tooltip'),
+                tooltipOpts: {
+                    id: this.$().closest('.ember-view').attr('id') + '-tooltip',
+                    content: '<p>%x</p><p><b>%s :</b> %y</p>',
+                    shifts: {
+                        x: -60,
+                        y: 25
+                    }
+                }
             });
 
             console.log('Configure chart:', chartOptions);
@@ -148,7 +158,8 @@ define([
 
                 grid: {
                     hoverable: true,
-                    clickable: true
+                    clickable: true,
+                    borderWidth: 2
                 },
 
                 xaxis: {
@@ -161,7 +172,7 @@ define([
                     reserveSpace: true,
                     position: 'bottom',
                     mode: 'time',
-                    timezone: 'utc'
+                    timezone: 'browser'
                 }],
 
                 yaxes: [{
@@ -218,7 +229,7 @@ define([
     });
 
     var widget = WidgetFactory('timegraph', {
-        needs: ['serie'],
+        needs: ['serie', 'perfdata'],
 
         viewMixins: [
             FlotChartViewMixin
@@ -233,8 +244,11 @@ define([
         zooming: false,
         chartOptions: undefined,
         timenavOptions: undefined,
-        flotSeries: Ember.Object.create({}),
+        chartSeries: Ember.Object.create({}),
         dataSeries: Ember.A(),
+        human_readable: function() {
+            return get(this, 'config.human_readable');
+        }.property('config.human_readable'),
 
         time_window: function() {
             return get(this, 'config.time_window') * 1000;
@@ -258,8 +272,6 @@ define([
         }.property('config.timestep'),
 
         findItems: function() {
-            console.group('Fetch series:');
-
             var me = this;
 
             var replace = false;
@@ -274,6 +286,18 @@ define([
 
             console.log('refresh:', from, to, replace);
 
+            this.updateAxisLimits(from, to);
+
+            console.group('Load stylized series:');
+            this.fetchStylizedSeries(from, to, replace);
+            console.groupEnd();
+
+            console.group('Load stylized metrics:');
+            this.fetchStylizedMetrics(from, to, replace);
+            console.groupEnd();
+        },
+
+        updateAxisLimits: function(from, to) {
             /* update axis limits */
             if(!get(this, 'zooming')) {
                 var opts = {};
@@ -292,7 +316,7 @@ define([
                     $.extend(opts, get(this, 'timenavOptions'));
                     $.extend(opts, {
                         xaxis: {
-                            min: from,
+                            min: to - get(this, 'timenav_window') - get(this, 'time_window_offset'),
                             max: to
                         }
                     });
@@ -300,7 +324,9 @@ define([
                     set(this, 'timenavOptions', opts);
                 }
             }
+        },
 
+        fetchStylizedSeries: function(from, to, replace) {
             var store = get(this, 'widgetDataStore');
 
             /* fetch stylized series */
@@ -326,70 +352,146 @@ define([
             console.log('series:', serieIds);
             console.log('curves:', curveIds);
 
-            console.groupEnd();
-
             /* load series configuration */
+            var me = this;
+
             Ember.RSVP.all([
                 store.findQuery('serie', {ids: serieIds}),
                 store.findQuery('curve', {ids: curveIds})
             ]).then(function(pargs) {
-                console.group('Generate FlotChart series');
-
-                var serieResult = pargs[0]; // arguments of first promise
-                var curveResult = pargs[1]; // arguments of second promise
-
-                var i, l;
-
-                console.group('Fetch curves:');
-                var curvesById = {};
-
-                for(i = 0, l = curveResult.meta.total; i < l; i++) {
-                    var curve = curveResult.content[i];
-                    curvesById[curve.id] = curve;
-                }
-
-                console.log(curvesById);
-                console.groupEnd();
-
-                console.group('Fetch series:');
-                for(i = 0, l = serieResult.meta.total; i < l; i++) {
-                    var serieconf = serieResult.content[i];
-                    var serieId = serieconf.id;
-
-                    if(series[serieId] !== undefined) {
-                        var config = series[serieId];
-                        var curveId = get(config, 'style.curve');
-                        var curveconf = curvesById[curveId];
-
-                        if(curveconf !== undefined) {
-                            set(config, 'curve', curveconf);
-                        }
-
-                        set(config, 'serie', serieconf);
-                        me.genFlotSerie(config, from, to);
-                    }
-                }
-
-                console.log('stylizedseries:', series);
-                console.groupEnd();
-
-                console.groupEnd();
+                me.genChartConfig(pargs, series, from, to, replace);
             });
         },
 
-        genFlotSerie: function(config, from, to, replace) {
-            console.group('Generating FlotChart serie:', config);
+        fetchStylizedMetrics: function(from, to, replace) {
+            var store = get(this, 'widgetDataStore');
+
+            var stylizedmetrics = get(this, 'config.metrics');
+            var series = [];
+            var seriesById = {};
+            var curveIds = [];
+
+            for(var i = 0, l = stylizedmetrics.length ; i < l ; i++) {
+                var metricId = get(stylizedmetrics[i], 'metric');
+                var metricTuple = metricId.split('/');
+                metricTuple.shift();
+                var isComponentMetric = (metricTuple.length === 5);
+
+                var metricInfo = {
+                    connector: metricTuple[1],
+                    connector_name: metricTuple[2],
+                    component: metricTuple[3]
+                };
+
+                if(isComponentMetric) {
+                    metricInfo.resource = '';
+                    metricInfo.name = metricTuple[4];
+                }
+                else {
+                    metricInfo.resource = metricTuple[4];
+                    metricInfo.name = metricTuple[5];
+                }
+
+                var serieconf = Ember.Object.create({
+                    id: metricId,
+                    virtual: true,
+                    crecord_name: metricInfo.name,
+                    metrics: [metricId],
+                    aggregate_method: 'none',
+                    unit: get(stylizedmetrics[i], 'unit')
+                });
+
+                seriesById[metricId] = {
+                    style: stylizedmetrics[i],
+                    serie: serieconf,
+                    curve: undefined
+                }
+
+                series.push(serieconf);
+                curveIds.push(get(stylizedmetrics[i], 'curve'));
+            }
+
+            curveIds = JSON.stringify(curveIds);
+
+            console.log('series:', seriesById);
+            console.log('curves:', curveIds);
 
             var me = this;
 
-            var flotSerie = {
+            store.findQuery('curve', {ids: curveIds}).then(function(curveResult) {
+                var virtualResult = {
+                    meta: {
+                        total: series.length
+                    },
+                    content: series,
+                };
+
+                me.genChartConfig([virtualResult, curveResult], seriesById, from, to, replace);
+            });
+        },
+
+        genChartConfig: function(pargs, series, from, to, replace) {
+            console.group('Generate Chart series');
+
+            var serieResult = pargs[0]; // arguments of first promise
+            var curveResult = pargs[1]; // arguments of second promise
+
+            var i, l;
+
+            console.group('Fetch curves:');
+            var curvesById = {};
+
+            for(i = 0, l = curveResult.meta.total; i < l; i++) {
+                var curve = curveResult.content[i];
+                curvesById[curve.id] = curve;
+            }
+
+            console.log(curvesById);
+            console.groupEnd();
+
+            console.group('Fetch series:');
+            for(i = 0, l = serieResult.meta.total; i < l; i++) {
+                var serieconf = serieResult.content[i];
+                var serieId = serieconf.id;
+
+                console.log(serieconf, serieId);
+
+                if(series[serieId] !== undefined) {
+                    var config = series[serieId];
+                    var curveId = get(config, 'style.curve');
+                    var curveconf = curvesById[curveId];
+
+                    if(curveconf !== undefined) {
+                        set(config, 'curve', curveconf);
+                    }
+
+                    console.log(curveId, curveconf);
+
+                    set(config, 'serie', serieconf);
+                    this.genChartSerie(config, from, to, replace);
+                }
+            }
+
+            console.log('stylizedseries:', series);
+            console.groupEnd();
+
+            console.groupEnd();
+        },
+
+        genChartSerie: function(config, from, to, replace) {
+            console.group('Generating Chart serie:', config);
+
+            var me = this;
+
+            var chartSerie = {
                 label: get(config, 'serie.crecord_name'),
                 color: get(config, 'style.color'),
                 lines: {
                     show: get(config, 'curve.lines') || get(config, 'curve.areas'),
                     used: get(config, 'curve.lines'),
                     lineWidth: get(config, 'curve.line_width'),
-                    fill: (get(config, 'curve.areas') ? get(config, 'curve.area_opacity') : false)
+                    fill: (get(config, 'curve.areas') ? get(config, 'curve.area_opacity') : false),
+                    fillColor: (get(config, 'curve.areas') ? get(config, 'style.color') : null)
                 },
                 bars: {
                     show: get(config, 'curve.bars'),
@@ -412,41 +514,71 @@ define([
                     lines: get(config, 'curve.lines') || get(config, 'curve.areas'),
                     bars: get(config, 'curve.bars'),
                     points: get(config, 'curve.points')
-                }
+                },
+                unit: get(config, 'serie.unit')
             };
 
-            var oldSerie = get(this, 'flotSeries.' + get(config, 'style.serie'));
+            var oldSerie, ctrl, request;
 
-            if(oldSerie !== undefined && !replace) {
-                flotSerie.data = oldSerie.data;
+            if(get(config, 'serie.virtual') === true) {
+                ctrl = get(this, 'controllers.perfdata');
+                oldSerie = get(this, 'chartSeries')[get(config, 'style.metric')];
+                request = get(config, 'serie.id');
             }
             else {
-                flotSerie.data = [];
+                ctrl = get(this, 'controllers.serie');
+                oldSerie = get(this, 'chartSeries.' + get(config, 'style.serie'));
+                request = get(config, 'serie');
             }
 
-            console.log('flotserie:', flotSerie);
-            console.log('Fetch perfdata and compute serie');
+            if(oldSerie !== undefined && !replace) {
+                chartSerie.data = oldSerie.data;
+            }
+            else {
+                chartSerie.data = [];
+            }
 
-            var ctrl = get(this, 'controllers.serie');
+            console.log('chartserie:', chartSerie);
+            console.log('Fetch perfdata and compute serie');
 
             var aggregation = (
                 (get(config, 'serie.aggregate_method') !== 'none')
                 ||
-                (get(config, 'serie.metrics.length') > 0)
+                (get(config, 'serie.metrics.length') > 1)
             );
 
             if(aggregation) {
                 from = get(this, 'timenavOptions.xaxis.min');
                 to = get(this, 'timenavOptions.xaxis.max');
-                flotSerie.data = [];
+                chartSerie.data = [];
             }
 
-            ctrl.getDataSerie(get(config, 'serie'), from, to).then(function(data) {
-                console.log('getDataSerie:', data);
+            var me = this;
 
-                flotSerie.data = flotSerie.data.concat(data);
+            console.log('call controller fetch', request);
 
-                set(me, 'flotSeries.' + get(config, 'style.serie'), flotSerie);
+            ctrl.fetch(request, from, to).then(function(data) {
+                console.log('fetch:', data);
+
+                if(get(config, 'serie.virtual') === true) {
+                    var chartSeries = get(me, 'chartSeries');
+                    var points = data.data[0].points;
+
+                    for(var i = 0, l = points.length; i < l; i++) {
+                        points[i][0] = points[i][0] * 1000;
+                    }
+
+                    chartSerie.data = chartSerie.data.concat(points);
+                    chartSeries[get(config, 'style.metric')] = chartSerie;
+
+                    set(me, 'chartSeries', chartSeries);
+                }
+                else {
+                    chartSerie.data = chartSerie.data.concat(data);
+
+                    set(me, 'chartSeries.' + get(config, 'style.serie'), chartSerie);
+                }
+
                 me.recomputeDataSeries();
             });
 
@@ -454,15 +586,15 @@ define([
         },
 
         recomputeDataSeries: function() {
-            var flotSeries = get(this, 'flotSeries');
+            var chartSeries = get(this, 'chartSeries');
             var series = Ember.A();
 
-            var serieIds = Object.keys(flotSeries);
+            var serieIds = Object.keys(chartSeries);
 
             for(var i = 0, l = serieIds.length; i < l; i++) {
                 var serieId = serieIds[i];
 
-                series.pushObject(flotSeries[serieId]);
+                series.pushObject(chartSeries[serieId]);
             }
 
             console.log('dataSeries:', series);

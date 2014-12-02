@@ -192,6 +192,7 @@ define([
 
                 for (var i = 0, l = itemsContent.length; i < l; i++) {
                     console.log(get(this, 'content.items.content')[i]);
+
                     if (get(itemsContent[i], 'widget') === widget) {
                         itemsContent.removeAt(i);
                         console.log('deleteRecord ok');
@@ -369,8 +370,7 @@ define([
         },
 
         availableTitlebarButtons: function(){
-            var buttons = get(this, 'partials.titlebarsbuttons');
-            console.log('availableTitlebarPartialButtons CP');
+            var buttons = get(this, '_partials.titlebarsbuttons');
 
             if(buttons === undefined) {
                 return Ember.A();

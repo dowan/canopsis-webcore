@@ -20,8 +20,9 @@ define([
     'jquery',
     'ember',
     'app/lib/utils/dom',
+    'app/lib/utils/values',
     'app/lib/wrappers/flotchart'
-], function($, Ember, DOM) {
+], function($, Ember, DOM, values) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -32,6 +33,7 @@ define([
 
         options: undefined,
         series: undefined,
+        human: false,
 
         onDataUpdate: function() {
             this.send('renderChart');
@@ -94,7 +96,7 @@ define([
         },
 
         createChart: function() {
-            console.log('createChart');
+            console.group('createChart:');
 
             var me = this;
             var plotcontainer = this.$();
@@ -122,6 +124,53 @@ define([
                 }
 
                 seriesByAxis.y[serie.yaxis].push(serie);
+            }
+
+            var axis,
+                n_xaxes = Object.keys(seriesByAxis.x).length,
+                n_yaxes = Object.keys(seriesByAxis.y).length;
+
+            for(axis = 0 ; axis < n_xaxes ; axis++) {
+                var key = axis + 1;
+
+                if (options.xaxes[axis] === undefined) {
+                    options.xaxes[axis] = {
+                        show: true,
+                        reserveSpace: true,
+                        position: (axis % 2 == 0 ? 'bottom' : 'top'),
+                        color: seriesByAxis.x[key][0].color,
+                        font: {
+                            color: seriesByAxis.x[key][0].color
+                        }
+                    };
+                }
+            }
+
+            for(axis = 0 ; axis < n_yaxes ; axis++) {
+                var key = axis + 1;
+
+                if (options.yaxes[axis] === undefined) {
+                    var me = this;
+
+                    options.yaxes[axis] = {
+                        show: true,
+                        reserveSpace: true,
+                        position: (axis % 2 == 0 ? 'left' : 'right'),
+                        color: seriesByAxis.y[key][0].color,
+                        font: {
+                            color: seriesByAxis.y[key][0].color
+                        }
+                    };
+                }
+
+                options.yaxes[axis].tickFormatter = function(val, axis) {
+                    if(get(me, 'human') === true) {
+                        var unit = seriesByAxis.y[key][0].unit;
+                        val = values.humanize(val, unit);
+                    }
+
+                    return val;
+                };
             }
 
             if(options && options.legend && options.legend.show && options.legend.labelFormatter === undefined) {
@@ -152,13 +201,19 @@ define([
                 };
             }
 
+            console.log('series:', series);
+            console.log('options:', options);
+
             set(this, 'chart', $.plot(plotcontainer, series, options));
+
+            console.groupEnd();
         },
 
         refreshChart: function() {
             var chart = get(this, 'chart');
             var series = get(this, 'series');
 
+            console.log('flotchart refresh series:', series);
             chart.setData(series);
             chart.setupGrid();
             chart.draw();

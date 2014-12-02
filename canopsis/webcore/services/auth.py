@@ -110,7 +110,8 @@ def exports(ws):
             'username', 'password',
             'shadow', 'crypted'
         ],
-        response=lambda data, adapt: data
+        response=lambda data, adapt: data,
+        nolog=True
     )
     def auth_route(
         username=None, password=None,
@@ -157,7 +158,7 @@ def exports(ws):
         session.create(user)
         redirect('/')
 
-    @route(ws.application.post, name='auth/external')
+    @route(ws.application.post, name='auth/external', nolog=True)
     def auth_external():
         # When we arrive here, the Bottle plugins in charge of authentication
         # have initialized the session, we just need to redirect to the index.
@@ -168,7 +169,7 @@ def exports(ws):
         # Route used when came back from auth backend
         redirect('/static/canopsis/index.html')
 
-    @route(ws.application.get, wsgi_params={'skip': ws.skip_login})
+    @route(ws.application.get, wsgi_params={'skip': ws.skip_login}, nolog=True)
     def autologin(key):
         return autoLogin(key)
 

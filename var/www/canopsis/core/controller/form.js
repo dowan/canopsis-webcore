@@ -30,43 +30,43 @@ define([
 
     var eventedController = Ember.Controller.extend(Ember.Evented, {
 
+        mergedProperties: ['partials'],
+
         _partials: {},
 
-        /**
-         * Override of willmergemixin to merge mixin's partials with base partials
-         */
-        willMergeMixin: function(Mixin) {
-            this._super.apply(this, arguments);
+        refreshPartialsList: function() {
+            console.log('refreshPartialsList', get(this, 'partials'));
+            var partials = get(this, 'partials');
+            set(this, '_partials', partials);
+            var mixins = get(this, 'content.mixins');
 
-            //TODO put this in arrayutils
-            function union_arrays (x, y) {
-                var obj = {};
-                for (var i = x.length-1; i >= 0; -- i)
-                    obj[x[i]] = x[i];
-                for (var j = y.length-1; j >= 0; -- j)
-                    obj[y[j]] = y[j];
-                var res = [];
-                for (var k in obj) {
-                    if (obj.hasOwnProperty(k))  // <-- optional
-                        res.push(obj[k]);
+            if(Ember.isArray(mixins)) {
+                for (var i = 0, l = mixins.length; i < l; i++) {
+                    partials = this.mergeMixinPartials(mixins[i], partials);
                 }
-                return res;
             }
 
+            console.log('set partials for ', this, ' --> ', partials);
+            set(this, '_partials', partials);
+        },
+
+
+        mergeMixinPartials: function(Mixin, partials) {
             var me = this;
 
-            if(Mixin.partials !== undefined) {
-                Object.keys(Mixin.partials).forEach(function(key) {
-                    console.log(key, Mixin.partials[key]);
+            console.log("mergeMixinPartials mixin:", Mixin);
+            if(mixinsRegistry.getByName(Mixin.decamelize())) {
+                var partialsToAdd = mixinsRegistry.getByName(Mixin.decamelize()).EmberClass.mixins[0].properties.partials;
 
-                    var partialsKey = '_partials.' + key;
+                for (var k in partialsToAdd) {
+                    if (partialsToAdd.hasOwnProperty(k)) {
+                        var partialsArray = partialsToAdd[k];
 
-                    if(get(me, partialsKey) === undefined) {
-                        set(me, partialsKey, Ember.A());
+                        var partialKey = '_partials.' + k;
+                        set(this, partialKey, union_arrays(get(this, partialKey), partialsArray));
                     }
-
-                    set(me, partialsKey, union_arrays(get(me, partialsKey), Mixin.partials[key]));
-                });
+                }
+                return partials;
             }
         }
     });
@@ -153,7 +153,7 @@ define([
         },
 
         partials: {
-            buttons: ["formbutton-cancel", "formbutton-submit"],
+            buttons: ["formbutton-cancel"],
             debugButtons: ['formbutton-inspectform']
         },
 

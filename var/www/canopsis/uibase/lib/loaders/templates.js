@@ -72,6 +72,7 @@ var templates = [
     { name: 'titlebarbutton-moveleft', template: 'canopsis/uibase/templates/titlebarbutton-moveleft.html', classes: ["titlebarbutton"] },
     { name: 'titlebarbutton-moveright', template: 'canopsis/uibase/templates/titlebarbutton-moveright.html', classes: ["titlebarbutton"] },
     { name: 'titlebarbutton-minimize', template: 'canopsis/uibase/templates/titlebarbutton-minimize.html', classes: ["titlebarbutton"] },
+    { name: 'titlebarbutton-widgeterrors', template: 'canopsis/uibase/templates/titlebarbutton-widgeterrors.html', classes: ["titlebarbutton"] },
 
     { name: 'actionbutton-foldable', template: 'canopsis/uibase/templates/actionbutton-foldable.html' ,  classes: ["foldable"]},
     { name: 'column-unfold', template: 'canopsis/uibase/templates/column-unfold.html' ,  classes: ["foldable"]},

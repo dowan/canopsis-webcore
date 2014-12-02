@@ -56,7 +56,7 @@ require.config({
         'flotchart-threshold': 'webcore-libs/flot/jquery.flot.threshold',
         'flotchart-time': 'webcore-libs/flot/jquery.flot.time',
         'flotchart-valuelabel': 'webcore-libs/flot-plugins/custom/jquery.flot.valuelabel',
-        'flotchart-tooltip': 'webcore-libs/flot-plugins/custom/jquery.flot.tooltip',
+        'flotchart-tooltip': 'webcore-libs/flot.tooltip/js/jquery.flot.tooltip',
 
         'rrule': 'webcore-libs/kb-rrule/lib/rrule',
         'nlp': 'webcore-libs/kb-rrule/lib/nlp',
@@ -237,7 +237,7 @@ var setLoadingInfo = function(text, icon) {
     }
 };
 
-define(['text!canopsis/enabled.json', 'app/lib/wrappers/console', 'app/lib/objects/loader'], function(enabledPlugins) {
+define(['text!canopsis/enabled.json', 'app/lib/wrappers/console', 'app/lib/objects/loader', 'jquery'], function(enabledPlugins) {
     enabledPlugins = JSON.parse(enabledPlugins);
 
     setLoadingInfo('Fetching frontend plugin-ins', 'fa-cubes');
@@ -249,7 +249,6 @@ define(['text!canopsis/enabled.json', 'app/lib/wrappers/console', 'app/lib/objec
         'app/lib/utils/i18n',
         'link'
     ];
-
     for (var i = 0; i < enabledPlugins.length; i++) {
         var currentPlugin = enabledPlugins[i];
 
@@ -258,16 +257,17 @@ define(['text!canopsis/enabled.json', 'app/lib/wrappers/console', 'app/lib/objec
         deps.push('text!canopsis/'+ currentPlugin +'/files/manifest.json');
 
         if(currentPlugin !== 'core')
-        deps.push('canopsis/'+ currentPlugin +'/init');
+            deps.push('canopsis/'+ currentPlugin +'/init');
     }
 
     require(deps, function() {
+
         setLoadingInfo('Fetching application starting point', 'fa-plug');
         require(['app/init'], function(Application) {
             setLoadingInfo('Initializing user interface', 'fa-desktop');
 
             Application.advanceReadiness();
         });
+
     });
 });
-

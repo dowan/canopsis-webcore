@@ -20,7 +20,6 @@
 define([
     'jquery',
     'ember',
-    'app/mixins/arraymixin',
     'app/lib/utils/forms',
     'app/mixins/validationfield'
 ], function($, Ember, formsUtils, ValidationFieldMixin) {

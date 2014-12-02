@@ -72,9 +72,10 @@ def exports(ws):
                 metric_id=metric_id, with_meta=True,
                 timewindow=timewindow, limit=limit, skip=skip
             )
+            meta = meta[0]
 
             if timeserie is not None:
-                pts = timeserie.calculate(pts, meta=meta, timewindow=timewindow)
+                pts = timeserie.calculate(pts, timewindow, meta=meta)
 
             if with_meta:
                 result.append({

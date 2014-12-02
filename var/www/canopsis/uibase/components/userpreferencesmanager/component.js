@@ -21,9 +21,8 @@
 define([
     'jquery',
     'ember',
-    'utils',
     'app/lib/utils/notification',
-], function($, Ember, utils, notification) {
+], function($, Ember, notification) {
 
     var set = Ember.set,
         get = Ember.get;
@@ -38,11 +37,16 @@ define([
         getUserPreferences: function () {
             var userpreference = this;
 
-            var userId = utils.session.get('id');
+            var user = get(this, 'userId');
 
-            console.debug('loading configuration for user ' + userId);
+            if (Ember.isNone(user)) {
+                //no user id, nothing to do is it a normal case ?
+                console.warn('No user id found for user preferences');
+                return;
+            }
 
-            var user = get(this, 'controllers.login.record._id');
+            console.debug('loading configuration for user ' + user);
+
 
             $.ajax({
                 url: '/rest/userpreferences/userpreferences',

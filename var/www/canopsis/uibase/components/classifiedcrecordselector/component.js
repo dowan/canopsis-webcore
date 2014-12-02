@@ -197,7 +197,6 @@ define([
                 limit: 10000
             };
 
-            query.filter = JSON.stringify({'crecord_type': this.get('crecordtype')});
             console.log('findItems', this.get('crecordtype'), query);
 
             if(crecordtype === 'view')
@@ -220,7 +219,7 @@ define([
 
             var initialContent = get(this, 'content');
 
-            console.log('extractItems', initialContent);
+            console.log('extractItems', items, initialContent);
             if(valueKey) {
                 //Fetch values with ajax request content
                 var correspondingExtractedItem;
@@ -238,11 +237,16 @@ define([
                     }
                 } else if( typeof initialContent === "object" && initialContent !== null) {
                     var buffer = [];
+                    var keys = Ember.keys(initialContent);
 
-                    for (var key in initialContent) {
+                    for (var i = 0, l = keys.length ; i < l ; i++) {
+                        var key = keys[i];
+
                         if (initialContent.hasOwnProperty(key)) {
+                            var prop = get(initialContent, key);
+                            console.log('findBy', idKey, key, prop);
+                            correspondingExtractedItem = items.findBy(idKey, prop);
 
-                            correspondingExtractedItem = items.findBy(idKey, key);
                             var data = this.deserializeAdditionnalData(get(correspondingExtractedItem, key));
 
                             var selectionObject = {

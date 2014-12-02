@@ -25,13 +25,13 @@ define([
         set = Ember.set;
 
     /**
-      Implements sorting in arraycontrollers
-
-      You should define on the ArrayController:
-          - the `findOptions` property
-          - the `refreshContent()` method
-
-    */
+     * Implements sorting in arraycontrollers
+     *
+     * You should define on the ArrayController:
+     *     - the `findOptions` property
+     *     - the `refreshContent()` method
+     *
+     */
     var mixin = Mixin('sortablearray', {
 
         sort_direction: false,

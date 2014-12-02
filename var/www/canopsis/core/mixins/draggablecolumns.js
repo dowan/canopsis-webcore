@@ -19,9 +19,10 @@
 
 define([
     'ember',
-    'app/lib/wrappers/dragtable',
-    'app/lib/factories/mixin'
-], function(Ember, dragtable, Mixin) {
+    'app/lib/factories/mixin',
+    'jquery',
+    'jqueryui'
+], function(Ember, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -37,42 +38,86 @@ define([
 
         didInsertElement: function() {
 
-            var table = this.$('table');
-
-            console.debug('will add dragtable to the list', table);
-
-            var controller = get(this, 'controller');
             var view = this;
+            var table = $('table', this.$());
+            var tableId  = $(table).attr('id');
+            console.log('table id', tableId);
 
-            //column drag and drop management
-            dragtable.makeDraggable(table[0], function (startColumn, stopColumn){
+            // let the gallery items be draggable
+            $('th', table).draggable({
+                revert: "invalid",
+                containment: "document",
+                cursor: "move"
+            });
 
-                //compute permutation from plugin given information
-                var startIndex = startColumn - 1;
-                var endIndex = stopColumn - 1;
+            console.log('droppables ', $('th', table));
+            $('th', table).droppable({
+                accept: '#' + tableId + ' th',
+                activeClass: 'emphasis',
+                drop: function( event, ui ) {
 
-                var columns = view.getColumns();
-                console.debug('columns before drag', columns);
+                    var droppableIndex = view.getPosition($(this), table) - 1;
+                    console.log('droppable index', droppableIndex);
+                    var draggableIndex = view.getPosition(ui.draggable, table) - 1;
+                    console.log('draggable index', draggableIndex);
 
-                var permutation = columns.splice(startIndex,1)[0];
+                    view.permuteColumns(draggableIndex, droppableIndex);
 
-                //exchange dragged column place in model as it is done in the view.
-                if (!Ember.isNone(permutation)) {
-                    console.debug('permutation is', permutation);
-                    console.debug('permutation is replaced between', columns[endIndex -1], 'and', columns[endIndex]);
-                    columns.splice(endIndex, 0, permutation);
-
-                    console.debug('columns after drag', columns);
-
-                    //Synchornize view and model
-                    set(controller, 'userParams.displayed_columns', columns);
-                    set(controller, 'displayed_columns', columns);
-
-                    controller.saveUserConfiguration();
                 }
             });
             this._super();
+        },
 
+        getPosition: function (th, table) {
+            var position;
+            $('th', table).each(function (i) {
+                var equals = th[0] === $('th', table).eq(i)[0];
+                if (equals) {
+                    position = i;
+                    console.log('element position is', i);
+                    return false;
+                }
+            });
+            return position;
+        },
+
+        permuteColumns: function (startIndex, endIndex) {
+
+            //compute permutation from plugin given information
+            //var startIndex = startColumn - 1;
+            //var endIndex = stopColumn - 1;
+            var controller = get(this, 'controller');
+            var columns = this.getColumns();
+
+            if (startIndex === 0 || endIndex === 0) {
+                console.log('unable to perform drag and drop operation');
+                controller.send('refreshView');
+            }
+
+            console.debug('columns before drag', columns);
+
+            var permutation = columns.splice(startIndex,1)[0];
+
+
+            //exchange dragged column place in model as it is done in the view.
+            if (!Ember.isNone(permutation)) {
+                console.debug('permutation is', permutation);
+                console.debug('permutation is replaced between', columns[endIndex -1], 'and', columns[endIndex]);
+                columns.splice(endIndex, 0, permutation);
+
+                console.debug('columns after drag', columns);
+
+                //Synchornize view and model
+                set(controller, 'userParams.displayed_columns', columns);
+                set(controller, 'displayed_columns', columns);
+
+                controller.saveUserConfiguration(function () {
+                    controller.send('refreshView');
+                });
+            } else {
+                console.log('unable to perform drag and drop operation');
+                controller.send('refreshView');
+            }
         },
 
         getColumns: function() {

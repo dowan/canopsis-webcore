@@ -24,7 +24,7 @@ define([
 
     var widget = WidgetFactory('verticalbox', {
         partials: {
-            titlebarsbuttons : ["titlebarbutton-minimize", "titlebarbutton-moveup","titlebarbutton-movedown"]
+            titlebarsbuttons : ['titlebarbutton-minimize', 'titlebarbutton-moveup','titlebarbutton-movedown', 'titlebarbutton-widgeterrors']
         }
     }, {subclass: CanvasController});
 
