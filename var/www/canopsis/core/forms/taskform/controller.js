@@ -37,7 +37,7 @@ define([
         jobRecord: undefined,
 
         init: function() {
-            this._super(arguments);
+            this._super();
 
             if(this.scheduled === false) {
                 this.partials.buttons = ["formbutton-next", "formbutton-cancel"];

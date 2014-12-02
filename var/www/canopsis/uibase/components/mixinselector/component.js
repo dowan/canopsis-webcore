@@ -40,17 +40,19 @@ define([
 
             var content = get(this, 'content');
 
-            for (var i = 0, l = content.length; i < l; i++) {
-                var currentName = content[i];
-                //DEPRECATE handle progressive deprecation of mixins as strings
-                if(typeof currentName === 'string') {
-                    Ember.deprecate('Defining mixins as strings is deprecated. The new format is : \'{ name: "mixinName" }\'. This is required by the mixin options system.');
-                } else {
-                    currentName = currentName.name;
-                }
-                currentName = currentName.camelize();
+            if(Ember.isArray(content)) {
+                for (var i = 0, l = content.length; i < l; i++) {
+                    var currentName = content[i];
+                    //DEPRECATE handle progressive deprecation of mixins as strings
+                    if(typeof currentName === 'string') {
+                        Ember.deprecate('Defining mixins as strings is deprecated. The new format is : \'{ name: "mixinName" }\'. This is required by the mixin options system.');
+                    } else {
+                        currentName = currentName.name;
+                    }
+                    currentName = currentName.camelize();
 
-                get(this, 'selectionPrepared').pushObject(mixinsRegistry.getByName(currentName));
+                    get(this, 'selectionPrepared').pushObject(mixinsRegistry.getByName(currentName));
+                }
             }
         },
 
@@ -79,13 +81,6 @@ define([
             },
             unselectItem: function(){
                 this.recomputeSelection();
-            },
-            configureMixin: function(){
-                console.log('configureMixin action', arguments, this);
-                console.log('Show new form with context:', get(this, 'form.formContext'));
-                var oldContext = get(this, 'form.formContext');
-                console.log('oldContext', oldContext);
-                var recordWizard = formsUtils.showNew('mixinform', {}, { previousForm: oldContext });
             }
         }
     });
