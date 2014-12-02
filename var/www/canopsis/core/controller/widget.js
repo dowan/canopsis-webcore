@@ -82,6 +82,7 @@ define([
             if (!isNone(this.loadUserConfiguration)) {
                 this.loadUserConfiguration();
             }
+
             console.debug('user configuration loaded for widget ' + get(this, 'title'));
 
             this.startRefresh();
@@ -188,9 +189,8 @@ define([
             editMixin: function (widget, mixinName) {
                 console.info('edit mixin', widget, mixinName);
 
-                var mixinModelInstance = dataUtils.getStore().createRecord(mixinName, {
-                    itemsPerPageOption: 5
-                });
+                var mixinDict = get(widget, 'mixins').findBy('name', mixinName);
+                var mixinModelInstance = dataUtils.getStore().createRecord(mixinName, mixinDict);
 
                 var mixinForm = formsUtils.showNew('modelform', mixinModelInstance, { title: __('Edit mixin'), inspectedItemType: mixinName });
 
