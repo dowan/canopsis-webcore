@@ -26,8 +26,6 @@ define([
         set = Ember.set;
 
 
-    var mixinOptions;
-
     /**
       Implements pagination in ArrayControllers
 
@@ -45,9 +43,12 @@ define([
         init:function () {
             this.itemsPerPagePropositionSelected = get(this, 'content.itemsPerPage');
 
-            mixinOptions = get(this, 'content.mixins').findBy('name', 'pagination');
-            this.mixinOptions = Ember.Object.create();
-            this.mixinOptions.pagination = mixinOptions;
+            var mixinsOptions = get(this, 'content.mixins');
+
+            if(mixinsOptions) {
+                paginationOptions = get(this, 'content.mixins').findBy('name', 'pagination');
+                this.mixinOptions.pagination = paginationOptions;
+            }
 
             this._super.apply(this, arguments);
         },

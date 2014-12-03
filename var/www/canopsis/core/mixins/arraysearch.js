@@ -40,6 +40,17 @@ define([
             header: ['search']
         },
 
+        init:function () {
+            var mixinsOptions = get(this, 'content.mixins');
+
+            if(mixinsOptions) {
+                arraysearchOptions = get(this, 'content.mixins').findBy('name', 'arraysearch');
+                this.mixinOptions.arraysearch = arraysearchOptions;
+            }
+
+            this._super.apply(this, arguments);
+        },
+
         actions: {
             searchItems: function(findOptions) {
 
@@ -111,7 +122,7 @@ define([
         searchableAttributesUpdate: function(){
             console.log('shown_columnsChanged');
 
-            var searchableColumns = get(this, 'searchable_columns');
+            var searchableColumns = get(this, 'mixinOptions.arraysearch.searchable_columns');
 
             var searchableAttributes;
             if (Ember.isNone(searchableColumns)) {

@@ -69,6 +69,9 @@ define([
 
         _partials: {},
 
+        mixinOptions : {},
+
+
         refreshPartialsList: function() {
             console.log('refreshPartialsList', get(this, 'partials'));
             var partials = get(this, 'partials');

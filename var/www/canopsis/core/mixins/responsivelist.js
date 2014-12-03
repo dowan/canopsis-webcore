@@ -158,8 +158,6 @@ define([
             var tableWidth = viewMixin.$('.table-responsive table').width();
 
             checkToToggleStackedDisplay(viewMixin, thresholds, tableContainerWidth, tableWidth);
-            // checkToToggleStandardDisplay(viewMixin, 400);
-
         }
     });
 

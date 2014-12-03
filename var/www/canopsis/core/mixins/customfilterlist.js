@@ -38,12 +38,27 @@ define([
       * A filter is a combination of a cfilter and a title.
       * Custom cfilter allow perform selelection on a list with custom filter information.
     */
-    var mixin = Mixin('customfilter', {
+    var mixin = Mixin('customfilterlist', {
         partials: {
             subHeader: ['customfilters']
         },
 
+        init: function() {
+            var mixinsOptions = get(this, 'content.mixins');
+
+            if(mixinsOptions) {
+                customfilterlistOptions = get(this, 'content.mixins').findBy('name', 'customfilterlist');
+                this.mixinOptions.customfilterlist = customfilterlistOptions;
+            }
+
+            this._super();
+        },
+
         isSelectedFilter: function (filterList) {
+            if(!filterList || !filterList.length) {
+                return false;
+            }
+
             var filterLen = filterList.length;
             var currentTitle = get(this, 'currentFilter.title');
             for (var i=0; i<filterLen; i++) {
@@ -64,8 +79,8 @@ define([
         },
 
         filters_list: function () {
-            return this.isSelectedFilter(get(this, 'filters'));
-        }.property('filters', 'currentFilter'),
+            return this.isSelectedFilter(get(this, 'mixinOptions.customfilterlist.filters'));
+        }.property('mixinOptions.customfilterlist.filters', 'currentFilter'),
 
         custom_filters_list: function () {
             return this.isSelectedFilter(get(this, 'custom_filters'));
