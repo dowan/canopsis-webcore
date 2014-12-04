@@ -29,7 +29,7 @@ define([
 
 
     var viewMixin = Ember.Mixin.create({
-        mixinName: 'periodicrefresh viewMixin',
+
         willInsertElement: function() {
             console.log('init periodicrefresh viewMixin');
             this._super.apply(this, arguments);

@@ -115,6 +115,11 @@ define([
                     var mixinToApply = controller.viewMixins[i];
 
                     console.log('mixinToApply', mixinToApply);
+
+                    if(mixinToApply.mixins[0].properties.init !== undefined) {
+                        console.warn('The mixin', mixinToApply, 'have a init method. This practice is not encouraged for view mixin as they are applied at runtime and the init method will not be triggerred');
+                    }
+
                     mixinToApply.apply(this);
                 }
             }
