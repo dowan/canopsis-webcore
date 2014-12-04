@@ -104,26 +104,12 @@ define([
                 set(this, 'classNames', cssClasses.split(','));
             }
 
-            //widget refresh management
-            var widgetController = get(this, 'controller');
-            console.log('refreshInterval - > ', widgetController.get('refreshInterval'));
-            var interval = setInterval(function () {
-                if (canopsisConfiguration.REFRESH_ALL_WIDGETS) {
-                    if (get(widgetController,'isRefreshable') && get(widgetController, 'refreshableWidget')) {
-                        console.log('refreshing widget ' + get(widgetController, 'title'));
-                        widgetController.refreshContent();
-                    }
-                }
-            }, widgetController.get('refreshInterval') * 1000);
-
-            //keep track of this interval
-            this.set('widgetRefreshInterval', interval);
             console.groupEnd();
         },
 
         applyAllViewMixins: function(){
             var controller = get(this, 'controller');
-            console.group('apply widget view mixins');
+            console.group('apply widget view mixins', controller.viewMixins);
             if(controller.viewMixins !== undefined) {
                 for (var i = 0, mixinsLength = controller.viewMixins.length; i < mixinsLength; i++) {
                     var mixinToApply = controller.viewMixins[i];
@@ -141,21 +127,6 @@ define([
             set(this, "templateName", get(widget, "xtype"));
             this.registerHooks();
             console.groupEnd();
-        },
-
-        //Controller -> View Hooks
-        registerHooks: function() {
-            console.log("registerHooks", get(this, "controller"), get(this, "controller").on);
-            get(this, "controller").on('refresh', this, this.rerender);
-        },
-
-        unregisterHooks: function() {
-            get(this, "controller").off('refresh', this, this.rerender);
-        },
-
-        rerender: function() {
-            console.info('refreshing widget');
-            this._super.apply(this, arguments);
         },
 
         instantiateCorrectController: function(widget) {
@@ -220,7 +191,25 @@ define([
             this.unregisterHooks();
 
             return this._super.apply(this, arguments);
+        },
+
+        //Controller -> View Hooks
+        registerHooks: function() {
+            console.log("registerHooks", get(this, "controller"), get(this, "controller").on);
+            get(this, "controller").on('refresh', this, this.rerender);
+            return this._super();
+        },
+
+        unregisterHooks: function() {
+            get(this, "controller").off('refresh', this, this.rerender);
+            return this._super();
+        },
+
+        rerender: function() {
+            console.info('refreshing widget');
+            this._super.apply(this, arguments);
         }
+
     });
 
 

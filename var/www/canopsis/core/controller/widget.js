@@ -85,15 +85,7 @@ define([
 
             console.debug('user configuration loaded for widget ' + get(this, 'title'));
 
-            this.startRefresh();
-
-            //setting default/minimal reload delay for current widget
-            if (get(this, 'refreshInterval') <= 10 || isNone(get(this, 'refreshInterval'))) {
-                set(this, 'refreshInterval', 10);
-            }
-
             this.refreshContent();
-
         },
 
         updateInterval: function (interval){

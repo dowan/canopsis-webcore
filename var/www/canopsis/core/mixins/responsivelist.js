@@ -132,10 +132,6 @@ define([
             return shownColumns.length - 1;
         }.property('controller.shown_columns'),
 
-        init: function() {
-            this._super.apply(this, arguments);
-        },
-
         didInsertElement: function() {
             this._super.apply(this, arguments);
 
