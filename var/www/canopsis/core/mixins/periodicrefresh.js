@@ -37,6 +37,11 @@ define([
             //widget refresh management
             var widgetController = get(this, 'controller');
 
+            var previousInterval = get(this, 'widgetRefreshInterval');
+            if(previousInterval) {
+                clearInterval(previousInterval);
+            }
+
             console.log('refreshInterval - > ', widgetController.get('mixinOptions.periodicrefresh.refreshInterval'));
             var interval = setInterval(function () {
                 if (canopsisConfiguration.REFRESH_ALL_WIDGETS) {
