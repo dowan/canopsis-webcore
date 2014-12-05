@@ -6,11 +6,11 @@
             </button>
         {{/each}}
         {{#each filter in controller.custom_filters_list}}
-            <button type="button" {{bind-attr class=":btn :btn-default :editable filter.isActive:active  filter.isActive:emphasis"}} data-col="all" {{action setFilter filter}}>
+            <i type="button" {{bind-attr class=":btn :btn-default :editable filter.isActive:active  filter.isActive:emphasis"}} data-col="all" {{action setFilter filter}}>
                 {{filter.title}}
                 <small class="badge bg-blue" {{action editFilter filter}}> <i class="fa fa-wrench"></i></small>
                 <small class="badge bg-orange" {{action removeFilter filter}}> <i class="fa fa-minus"></i></small>
-            </button>
+            </i>
         {{/each}}
 
         <button type="button" class="btn btn-primary" {{action addUserFilter}} data-col="all">

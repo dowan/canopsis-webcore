@@ -25,6 +25,10 @@ define([
     var formOptions = {};
     var form = FormFactory('confirmform', {
 
+        partials: {
+            buttons: ["formbutton-cancel", "formbutton-submit"],
+        },
+
         confirmation: false,
         actions: {
             submit: function() {
