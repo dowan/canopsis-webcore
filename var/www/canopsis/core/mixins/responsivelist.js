@@ -31,20 +31,23 @@ define([
 
 
     function getColumnIndexesPriorities(viewMixin) {
-        var stackableColumnsPriority = get(viewMixin, 'controller.stackableColumnsPriority');
+        var stackableColumnsPriority = get(viewMixin, 'controller.mixinOptions.responsivelist.stackableColumnsPriority');
         var controller = get(viewMixin, 'controller');
         var shownColumns = get(controller, 'shown_columns');
 
         columnStackingPriority = Ember.A();
 
         console.log('stackableColumnsPriority', stackableColumnsPriority, shownColumns);
-        for (var i = 0, l = stackableColumnsPriority.length; i < l; i++) {
-            var currentColumn = shownColumns.findBy('field', stackableColumnsPriority[i]);
-            if(currentColumn !== undefined) {
-                console.log('currentColumn', currentColumn);
-                var columnIndex = Ember.get(currentColumn, 'index');
-                console.log('columnIndex', columnIndex);
-                columnStackingPriority.pushObject(columnIndex);
+
+        if(stackableColumnsPriority !== undefined) {
+            for (var i = 0, l = stackableColumnsPriority.length; i < l; i++) {
+                var currentColumn = shownColumns.findBy('field', stackableColumnsPriority[i]);
+                if(currentColumn !== undefined) {
+                    console.log('currentColumn', currentColumn);
+                    var columnIndex = Ember.get(currentColumn, 'index');
+                    console.log('columnIndex', columnIndex);
+                    columnStackingPriority.pushObject(columnIndex);
+                }
             }
         }
 
@@ -171,6 +174,14 @@ define([
         init:function() {
             console.log('init responsivelist');
             this.viewMixins.push(viewMixin);
+
+            var mixinsOptions = get(this, 'content.mixins');
+
+            if(mixinsOptions) {
+                responsivelistOptions = get(this, 'content.mixins').findBy('name', 'responsivelist');
+                this.mixinOptions.responsivelist = responsivelistOptions;
+            }
+
             this._super.apply(this, arguments);
         }
     });

@@ -40,20 +40,12 @@ define([
 
             var content = get(this, 'content');
 
-            if(Ember.isArray(content)) {
-                for (var i = 0, l = content.length; i < l; i++) {
-                    var currentName = content[i];
-                    //DEPRECATE handle progressive deprecation of mixins as strings
-                    if(typeof currentName === 'string') {
-                        Ember.deprecate('Defining mixins as strings is deprecated. The new format is : \'{ name: "mixinName" }\'. This is required by the mixin options system.');
-                    } else {
-                        currentName = currentName.name;
-                    }
-                    currentName = currentName.camelize();
-
-                    get(this, 'selectionPrepared').pushObject(mixinsRegistry.getByName(currentName));
+            for (var i = 0; i < content.length; i++) {
+                if(typeof content[i] === 'string') {
+                    content[i] = { name: content[i] };
                 }
             }
+            set(this, 'selectionPrepared', content);
         },
 
         /*
@@ -64,6 +56,8 @@ define([
 
         recomputeSelection: function() {
             var selection = get(this, 'selectionPrepared');
+            console.log('recomputeSelection', selection);
+
             var resBuffer = Ember.A();
             for (var i = 0, l = selection.length; i < l; i++) {
                 var currentItem = selection[i];

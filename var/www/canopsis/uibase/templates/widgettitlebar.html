@@ -1,26 +1,28 @@
 <div class="box-header">
     <div class="pull-right">
         {{#if controller.editMode}}
+            <div class="btn-group">
+                <button type="button" class="btn btn-info btn-sm" {{action 'editWidget' widget}}>
+                    {{glyphicon "edit"}}
+                </button>
+                {{#if widget.mixins}}
+                    <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        {{#each mixin in widget.mixins}}
+                            <li><a {{action 'editMixin' widget mixin.name}}>{{mixin.name}}</a></li>
+                        {{/each}}
+                    </ul>
+                {{/if}}
+            </div>
             <button type="button" class="btn btn-small btn-success btn-sm pull-right" {{action 'editWidgetPreferences' widget}}>
                 {{glyphicon "pencil"}}
             </button>
             <button type="button" class="btn btn-small btn-info btn-sm pull-right" {{action 'removeWidget' widget}}>
                 {{glyphicon "remove"}}
             </button>
-            <div class="btn-group">
-                <button type="button" class="btn btn-info btn-sm" {{action 'editWidget' widget}}>
-                    {{glyphicon "edit"}}
-                </button>
-                <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    {{#each mixin in widget.mixins}}
-                        <li><a {{action 'editMixin' widget mixin.name}}>{{mixin.name}}</a></li>
-                    {{/each}}
-                </ul>
-            </div>
         {{/if}}
     </div>
     <div class="pull-right">
