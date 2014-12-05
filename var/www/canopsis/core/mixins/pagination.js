@@ -56,7 +56,13 @@ define([
         itemsPerPage: function() {
             console.log('itemsperpage CP', this, this.mixinOptions.pagination, get(this, 'mixinOptions.pagination.itemsPerPage'));
 
-            return get(this, 'mixinOptions.pagination.itemsPerPage');
+            var itemsPerPage = get(this, 'mixinOptions.pagination.itemsPerPage');
+
+            if(!itemsPerPage) {
+                itemsPerPage = 5;
+            }
+
+            return itemsPerPage;
         }.property('mixinOptions.pagination.itemsPerPage'),
 
         paginationMixinContent: function() {
@@ -140,8 +146,7 @@ define([
             console.log('itemsPerPage is', itemsPerPage, 'type', typeof itemsPerPage);
 
             if(itemsPerPage === undefined || itemsPerPage === 0) {
-                set(this, 'dataError', { statusText: __('List option "itemsPerPage" should not be set up to 0') });
-                return;
+                itemsPerPage = 5;
             }
 
             //HACK when widget is saved and the app is not refreshed, itemsPerPage is a string!
