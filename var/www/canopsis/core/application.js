@@ -21,8 +21,6 @@ define([
     'ember',
     'ember-data',
     'webcore-libs/requirejs-domready/domReady',
-    //FIXME: why does it work only here ?
-    'app/lib/wrappers/ember-widgets',
     'app/lib/wrappers/summernote',
     'jsonselect',
     'webcore-libs/ember-icheck/lib/component',

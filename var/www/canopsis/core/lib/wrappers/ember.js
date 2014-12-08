@@ -23,7 +23,7 @@ define([
     'app/lib/factories/wrapper',
     'app/lib/utils/i18n',
     'canopsis/canopsisConfiguration',
-    'webcore-libs/dev/ember',
+    'webcore-libs/ember/ember',
     'webcore-libs/jquery-resize/jquery.ba-resize'
 ], function(Wrapper, i18n, canopsisConfiguration) {
 

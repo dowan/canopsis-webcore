@@ -46,7 +46,6 @@ var components = [
     { name: 'components/component-stringclassifiedcrecordselector', url: 'canopsis/uibase/components/stringclassifiedcrecordselector/component', template: 'canopsis/uibase/components/stringclassifiedcrecordselector/template.html' },
     { name: 'components/component-table', url: 'canopsis/uibase/components/table/component', template: 'canopsis/uibase/components/table/template.html' },
     { name: 'components/component-templateselector', url: 'canopsis/uibase/components/templateselector/component', template: 'canopsis/uibase/components/templateselector/template.html' },
-    { name: 'components/component-tagsselector', url: 'canopsis/uibase/components/tagsselector/component', template: 'canopsis/uibase/components/tagsselector/template.html' },
     { name: 'components/component-serieitemeditor', url: 'canopsis/uibase/components/serieitemeditor/component', template: 'canopsis/uibase/components/serieitemeditor/template.html' },
     { name: 'components/component-metricitemeditor', url: 'canopsis/uibase/components/metricitemeditor/component', template: 'canopsis/uibase/components/metricitemeditor/template.html' },
     { name: 'components/component-sessioneditor', url: 'canopsis/uibase/components/sessioneditor/component', template: 'canopsis/uibase/components/sessioneditor/template.html' },

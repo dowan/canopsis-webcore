@@ -84,7 +84,9 @@ define([
             }
 
             console.log("widget", widgetName.camelize().capitalize(), Application[widgetName.camelize().capitalize()]);
-            var metadataDict = Application[widgetName.camelize().capitalize()].proto().metadata;
+            var capitalizedWidgetName = widgetName.camelize().capitalize();
+            var t = Application[capitalizedWidgetName].proto();
+            var metadataDict = t.metadata;
 
             console.log("metadataDict", widgetName, metadataDict);
 
