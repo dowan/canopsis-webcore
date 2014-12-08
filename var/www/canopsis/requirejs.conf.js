@@ -25,7 +25,6 @@ require.config({
         'moment': 'webcore-libs/moment/min/moment-with-locales.min',
         'ember-data': 'canopsis/core/lib/wrappers/ember-data',
         'ember-listview': 'webcore-libs/ember-list-view/list-view',
-        'ember-widgets': 'webcore-libs/ember-widgets/js/ember-widgets', //TODO nuke this
         'bootstrap': 'webcore-libs/bootstrap/dist/js/bootstrap.min',
         'daterangepicker': 'webcore-libs/bootstrap-daterangepicker/daterangepicker',
         'jqueryui': 'webcore-libs/jquery-ui/jquery-ui.min',
@@ -114,10 +113,6 @@ require.config({
 
         'ember-listview': {
             deps: ['ember']
-        },
-
-        'ember-widgets': {
-            deps: ['ember', 'lodash', 'jqueryui', 'ember-listview']
         },
 
         'bootstrap': {
