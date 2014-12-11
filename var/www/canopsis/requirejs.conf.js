@@ -60,9 +60,7 @@ require.config({
         'rrule': 'webcore-libs/kb-rrule/lib/rrule',
         'nlp': 'webcore-libs/kb-rrule/lib/nlp',
 
-        'jsplumb': 'webcore-libs/jsplumb/dist/js/jquery.jsPlumb-1.6.4',
-        'd3': 'webcore-libs/d3/d3',
-        'cy': 'webcore-libs/cytoscape/dist/cytoscape'
+        'd3': 'webcore-libs/d3/d3'
     },
 
     shim: {
@@ -189,10 +187,6 @@ require.config({
 
         'flotchart-tooltip': {
             deps: ['jquery', 'flotchart']
-        },
-
-        'jsplumb': {
-            deps: ['jquery']
         }
     }
 });
