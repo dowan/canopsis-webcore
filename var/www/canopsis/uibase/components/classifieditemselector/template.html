@@ -28,10 +28,10 @@
 </style>
 
 <div class="btn-group pull-right" style="margin-left:6px">
-    <button type="button" {{bind-attr class=listModeButtonCssClass}} {{action setListMode}}>
+    <button type="button" {{bind-attr class=listModeButtonCssClass}} {{action "setListMode"}}>
         {{glyphicon 'list'}}
     </button>
-    <button type="button" {{bind-attr class=iconModeButtonCssClass}} {{action setIconMode}}>
+    <button type="button" {{bind-attr class=iconModeButtonCssClass}} {{action "setIconMode"}}>
         {{glyphicon 'th-large'}}
     </button>
 </div>
@@ -47,7 +47,7 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    <a {{action collapse "selection"}} style="cursor:pointer">
+                    <a {{action "collapse" "selection"}} style="cursor:pointer">
                         selection ({{selection.length}})
                     </a>
                 </h4>
@@ -56,7 +56,7 @@
                 <ul {{bind-attr class=listGroupClass}}>
                     {{#each item in selection}}
                         <li class="list-group-item">
-                            <a {{action unselectItem item}}>
+                            <a {{action "unselectItem" item}}>
                                 {{#if item.icon}}
                                     {{glyphicon item.icon}} 
                                 {{else}}
@@ -81,7 +81,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
-                <a {{action collapse "all"}} style="cursor:pointer">
+                <a {{action "collapse" "all"}} style="cursor:pointer">
                     All ({{allClasses.length}})
                 </a>
             </h4>
@@ -90,7 +90,7 @@
             <ul {{bind-attr class=listGroupClass}}>
                 {{#each item in allClasses}}
                     <li class="list-group-item">
-                        <a {{action selectItem item}}>
+                        <a {{action "selectItem" item}}>
                             {{#if item.icon}}
                                 {{glyphicon item.icon}} 
                             {{else}}
@@ -109,7 +109,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    <a {{action collapse class}}>
+                    <a {{action "collapse" class}}>
                         {{class.key}} ({{class.items.length}})
                     </a>
                 </h4>
@@ -118,7 +118,7 @@
                 <ul {{bind-attr class=listGroupClass}}>
                     {{#each item in class.items}}
                         <li class="list-group-item">
-                            <a {{action selectItem item}}>
+                            <a {{action "selectItem" item}}>
                                 {{#if item.icon}}
                                     {{glyphicon item.icon}} 
                                 {{else}}

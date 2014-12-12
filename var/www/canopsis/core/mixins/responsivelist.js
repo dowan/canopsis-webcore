@@ -38,13 +38,15 @@ define([
         columnStackingPriority = Ember.A();
 
         console.log('stackableColumnsPriority', stackableColumnsPriority, shownColumns);
-        for (var i = 0, l = stackableColumnsPriority.length; i < l; i++) {
-            var currentColumn = shownColumns.findBy('field', stackableColumnsPriority[i]);
-            if(currentColumn !== undefined) {
-                console.log('currentColumn', currentColumn);
-                var columnIndex = Ember.get(currentColumn, 'index');
-                console.log('columnIndex', columnIndex);
-                columnStackingPriority.pushObject(columnIndex);
+        if(stackableColumnsPriority) {
+            for (var i = 0, l = stackableColumnsPriority.length; i < l; i++) {
+                var currentColumn = shownColumns.findBy('field', stackableColumnsPriority[i]);
+                if(currentColumn !== undefined) {
+                    console.log('currentColumn', currentColumn);
+                    var columnIndex = Ember.get(currentColumn, 'index');
+                    console.log('columnIndex', columnIndex);
+                    columnStackingPriority.pushObject(columnIndex);
+                }
             }
         }
 

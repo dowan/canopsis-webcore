@@ -19,7 +19,7 @@
                             </div>
                         </td>
                         <td>
-                            <a {{action removeItem item}} class="btn btn-danger pull-right">
+                            <a {{action "removeItem" item}} class="btn btn-danger pull-right">
                                 {{glyphicon "remove"}}
                             </a>
                         </td>
@@ -32,6 +32,6 @@
     <div class="well"><i>No values.</i></div>
 
 {{/if}}
-<a {{action addItem}} class="btn btn-info">
+<a {{action "addItem"}} class="btn btn-info">
     {{glyphicon "plus"}} Add
 </a>

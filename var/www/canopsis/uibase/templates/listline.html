@@ -17,7 +17,7 @@
     {{#if attr.options.show}}
         <td {{bind-attr class=attr.field}}>
             {{#if attr.options.canUseDisplayRecord}}
-                <i class="handle underline" {{action sendDisplayRecord parentController.controllerInstance this}}>
+                <i class="handle underline" {{action "sendDisplayRecord" parentController.controllerInstance this}}>
                     {{component-renderer attr=attr record=this}}
                 </i>
             {{else}}

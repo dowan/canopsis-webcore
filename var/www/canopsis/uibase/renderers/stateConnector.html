@@ -16,12 +16,10 @@
       {{#group}}
         {{timestamp null attr  controller.record.content._data }}
         {{#if attr.options.canDisplayAgo}}
-                <br>
                     <small class="text-muted">
                         {{glyphicon "time"}}
                         {{timeSince null controller.record.content._data}}
                     </small>
-                </br>
             {{/if}}
     {{/group}}
 {{/if}}

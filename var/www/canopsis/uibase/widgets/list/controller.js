@@ -166,6 +166,8 @@ define([
             //pagination
             paginationMixinFindOptions: Ember.computed.alias('findOptions'),
 
+            widgetDataMetas: {},
+
             findItems: function() {
                 var me = this;
 
@@ -205,7 +207,10 @@ define([
 
                 get(this, 'widgetDataStore').findQuery(itemType, findParams).then(function(queryResults) {
                     //retreive the metas of the records
-                    set(me, 'widgetDataMetas', get(me, 'widgetDataStore').metadataFor(get(me, 'listed_crecord_type')));
+                    var listed_crecord_type = get(me, 'listed_crecord_type');
+                    var crecordTypeMetadata = get(me, 'widgetDataStore').metadataFor(listed_crecord_type);
+                    console.log('crecordTypeMetadata', crecordTypeMetadata);
+                    me.set('widgetDataMetas', crecordTypeMetadata);
                     me.extractItems.apply(me, [queryResults]);
                     set(me, 'loaded', true);
 

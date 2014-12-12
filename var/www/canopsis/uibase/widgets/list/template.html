@@ -25,7 +25,7 @@
 
                         {{#each attr in controller.shown_columns}}
                             {{#if attr.options.show}}
-                                <th {{action sort attr}} {{bind-attr class=attr.field}}>
+                                <th {{action "sort" attr}} {{bind-attr class=attr.field}}>
                                     {{#if attr.options.label}}
                                         {{tr attr.options.label}}
                                     {{else}}

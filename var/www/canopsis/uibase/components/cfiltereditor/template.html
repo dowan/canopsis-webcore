@@ -26,30 +26,29 @@
 </style>
 <fieldset>
     <div class="btn-group pull-right">
-
-    {{#if onlyAllowRegisteredIndexes}}
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-link"></i> {{selectedIndexName}} <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-            {{#each index in indexes.all}}
-                <li><a {{action selectIndexByName index.name}}>{{index.name}}</a></li>
-            {{/each}}
-        </ul>
-
-        {{#component-tooltip content="Unlock indexes. This might lead to huge performance issues!"}}
-            <button class="btn btn-default" {{action unlockIndexes}}>
-                <i class="fa fa-lock"></i>
+        {{#if onlyAllowRegisteredIndexes}}
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <i class="fa fa-link"></i> {{selectedIndexName}} <span class="caret"></span>
             </button>
-        {{/component-tooltip}}
+            <ul class="dropdown-menu" role="menu">
+                {{#each index in indexes.all}}
+                    <li><a {{action "selectIndexByName" index.name}}>{{index.name}}</a></li>
+                {{/each}}
+            </ul>
 
-    {{else}}
-        {{#component-tooltip content="Lock indexes"}}
-            <button class="btn btn-default" {{action lockIndexes}}>
-                <i class="fa fa-unlock"></i>
-            </button>
-        {{/component-tooltip}}
-    {{/if}}
+            {{#component-tooltip content="Unlock indexes. This might lead to huge performance issues!"}}
+                <button class="btn btn-default" {{action "unlockIndexes"}}>
+                    <i class="fa fa-lock"></i>
+                </button>
+            {{/component-tooltip}}
+
+        {{else}}
+            {{#component-tooltip content="Lock indexes"}}
+                <button class="btn btn-default" {{action "lockIndexes"}}>
+                    <i class="fa fa-unlock"></i>
+                </button>
+            {{/component-tooltip}}
+        {{/if}}
     </div>
 
     <ul class="nav nav-tabs" role="tablist">
@@ -82,7 +81,7 @@
                     </div>
                 {{/if}}
                 {{#each clause in clauses}}
-                    <div class="row-fluid" {{bind-attr class=clause.current:cfilter-active:cfilter-inactive}} {{action activate clause}}>
+                    <div class="row-fluid" {{bind-attr class=clause.current:cfilter-active:cfilter-inactive}} {{action "activate" clause}}>
                         {{#each andClausePart in clause.and}}
                             {{#if andClausePart.isFirst}}
                                 <div style="margin:3px">
@@ -90,11 +89,13 @@
                                         Or
                                     </span><br/>
                                     <span style="margin-right:54px"></span>
+                                </div>
                             {{else}}
                                 <div style="padding-left:10px; margin:3px">
                                     <span class="label label-info" style="margin-right:13px">
                                         And
                                     </span>
+                                </div>
                             {{/if}}
                             {{component-filterclause
                                     content=andClausePart
@@ -105,7 +106,6 @@
                                     onlyAllowRegisteredIndexes=../../onlyAllowRegisteredIndexes
                                     operators=../../operators
                                 }}
-                            </div>
                         {{/each}}
                     </div>
                 {{/each}}
