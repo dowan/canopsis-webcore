@@ -20,10 +20,8 @@
 define([
     'app/lib/factories/widget',
     'd3',
-    'jsplumb',
-    'cy',
     'app/lib/loaders/schemas'
-], function(WidgetFactory, d3, jsplumb, cy) {
+], function(WidgetFactory, d3) {
     var get = Ember.get,
         set = Ember.set;
 
