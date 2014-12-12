@@ -1,5 +1,5 @@
 
-{{outlet recordinfopopup}}
+{{outlet "recordinfopopup"}}
 
 <!-- header logo: style can be found in heaader.less -->
 {{#unless controller.fullscreenMode}}
@@ -158,8 +158,8 @@
         </aside>
     {{/unless}}
     <!-- Right side column. Contains the navbar and content of the page -->
-    <aside {{bind-attr class=view.rightSideCssClasses}}>
-        {{outlet formwrapper}}
+    <aside>
+        {{outlet "formwrapper"}}
 
         {{#if headerUserview}}
             {{render "userview" headerUserview}}
