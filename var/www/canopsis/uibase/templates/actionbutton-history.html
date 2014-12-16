@@ -1,6 +1,6 @@
 {{#if controller.rights.actionbutton_history.checksum}}
     <button type="button" class="btn btn-default" {{action 'showView' 'view.event-history'}}>
-        {{glyphicon "time"}}
+        <span class="glyphicon glyphicon-time"></span>
         {{#unless minified}}
             {{tr 'History'}}
         {{/unless}}

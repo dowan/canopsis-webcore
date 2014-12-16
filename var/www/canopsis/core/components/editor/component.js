@@ -40,7 +40,7 @@ define([
 
             this._super();
 
-            set(this, 'templateData.keywords.attr', Ember.computed.alias('content'));
+            // set(this, 'templateData.keywords.attr', Ember.computed.alias('content'));
         },
 
         actions: {

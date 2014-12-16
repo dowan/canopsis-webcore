@@ -43,7 +43,7 @@ define([
 
         var time = datesUtils.timestamp2String(value, format, true);
 
-        return new Ember.Handlebars.SafeString(time);
+        return time;
     });
 
 });

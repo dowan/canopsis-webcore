@@ -55,11 +55,11 @@ define([
 
             get(this, 'tabs').forEach(function(item, index) {
                 if(item.value === get(uimaintabcollectionController, 'currentViewId')) {
-                    item.isActive = true;
+                    set(item, 'isActive', true);
                 } else {
-                    item.isActive = false;
+                    set(item, 'isActive', false);
                 }
-                res.push(item);
+                res.pushObject(item);
             });
 
             return res;

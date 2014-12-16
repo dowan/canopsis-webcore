@@ -19,7 +19,8 @@
 
 define(['ember', 'utils'], function(Ember,  utils) {
 
-    var isNone = Ember.isNone;
+    var isNone = Ember.isNone,
+        __ = Ember.String.loc;
 
 
     Ember.Handlebars.helper('eventtype', function(eventType) {
@@ -57,7 +58,7 @@ define(['ember', 'utils'], function(Ember,  utils) {
             __(eventType)
         );
 
-        return new Ember.Handlebars.SafeString(html);
+        return html;
     });
 
 });

@@ -25,36 +25,7 @@ define([
 
 
     var component = Ember.Component.extend({
-
-        tagName: 'span',
-        classNames: ['renderer'],
-
-        value: function() {
-            return get(this, 'record.' + get(this, 'attr.field'));
-        }.property('attr.field', 'record'),
-
-        rendererType: function() {
-
-            var type = get(this, 'attr.type');
-            var role = get(this, 'attr.options.role');
-            if(get(this, 'attr.model.options.role')) {
-                role = get(this, 'attr.model.options.role');
-            }
-
-            var rendererName;
-            if (role) {
-                rendererName = 'renderer-' + role;
-            } else {
-                rendererName = 'renderer-' + type;
-            }
-
-            if (Ember.TEMPLATES[rendererName] === undefined) {
-                rendererName = undefined;
-            }
-
-            return rendererName;
-        }.property('attr.type', 'attr.role')
-
+        tagName: 'span'
     });
 
 

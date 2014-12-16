@@ -32,6 +32,14 @@ define(deps, function() {
         console.tags.add('init');
     }
 
+    console.log = function(){};
+    console.info = function(){};
+    console.error = function(){};
+    console.group = function(){};
+    console.groupEnd = function(){};
+    console.warn = function(){};
+    Ember.warn = function(){};
+    Ember.deprecate = function(){};
     console.debug = console.log;
 
     return console;

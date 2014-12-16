@@ -94,14 +94,14 @@
                                     {{#each engineview in controller.enginesviews}}
                                         {{clog "enginevalue"}}
                                         {{clog engineview.value}}
-                                        {{#ifUserCanDisplayView engineview.value}}
+                                        {{!#ifUserCanDisplayView engineview.value}}
                                             <li>
                                                 <a {{action 'showView' engineview.value}}>
                                                     <i class="fa fa-angle-double-right"></i>
                                                     {{engineview.label}}
                                                 </a>
                                             </li>
-                                        {{/ifUserCanDisplayView}}
+                                        {{!/ifUserCanDisplayView}}
                                     {{/each}}
                                 </ul>
                             </li>

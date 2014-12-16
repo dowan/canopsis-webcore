@@ -5,7 +5,7 @@
                 {{#if this.ack.isAck}}
                     {{#component-tooltip content="Cancel ack"}}
                         <button class="btn btn-default btn-sm" {{action 'sendEvent' 'ackremove' this}} >
-                            {{glyphicon "ban-circle"}}
+                            <span class="glyphicon glyphicon-ban-circle"></span>
                         </button>
                     {{/component-tooltip}}
                 {{/if}}
@@ -14,7 +14,7 @@
                 {{#if this.recordcanbeack}}
                     {{#component-tooltip content="Ack"}}
                         <button class="btn btn-default btn-sm" {{action 'sendEvent' 'ack' this}} >
-                            {{glyphicon "ok"}}
+                            <span class="glyphicon glyphicon-ok"></span>
                         </button>
                     {{/component-tooltip}}
                 {{/if}}
@@ -24,13 +24,15 @@
         {{#if controller.rights.actionbutton_ack.checksum}}
             {{#component-tooltip content="Ack"}}
                 <button class="btn btn-default" {{action 'sendEvent' 'ack'}} >
-                    {{glyphicon "ok"}} {{tr 'Ack'}}
+                    <span class="glyphicon glyphicon-ok"></span>
+                     {{tr 'Ack'}}
                 </button>
             {{/component-tooltip}}
 
             {{#component-tooltip content="Cancel ack"}}
                 <button class="btn btn-default" {{action 'sendEvent' 'ackremove'}} >
-                    {{glyphicon "ban-circle"}} {{tr 'Cancel ack'}}
+                    <span class="glyphicon glyphicon-ban-circle"></span>
+                     {{tr 'Cancel ack'}}
                 </button>
             {{/component-tooltip}}
         {{/if}}

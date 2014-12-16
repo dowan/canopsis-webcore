@@ -29,14 +29,14 @@ define([
     'flotchart-image',
 //    'flotchart-navigate',
     'flotchart-pie',
-    'flotchart-resize',
+    // 'flotchart-resize',
     'flotchart-selection',
     'flotchart-stack',
     'flotchart-symbol',
     'flotchart-threshold',
     'flotchart-time',
-    'flotchart-valuelabel',
-    'flotchart-tooltip'
+    'flotchart-valuelabel'
+    // 'flotchart-tooltip'
 ], function(Wrapper, $) {
     return Wrapper("flotchart", $, arguments, '0.8.3-alpha');
 });

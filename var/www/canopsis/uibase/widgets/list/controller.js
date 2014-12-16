@@ -108,17 +108,42 @@ define([
             custom_filters: [],
 
             init: function() {
-                set(this, 'findParams_cfilterFilterPart', get(this, 'default_filter'));
 
                 //prepare user configuration to fetch customer preference by reseting data.
                 //dont understand why without this reset, values same values are set into many list instances.
-                set(this, 'custom_filters', []);
-                set(this, 'widgetData', []);
-                set(this, 'findOptions', {});
-                set(this, 'loaded', false);
-
+                Ember.setProperties(this, {
+                    findParams_cfilterFilterPart: get(this, 'default_filter'),
+                    custom_filters: [],
+                    widgetData: [],
+                    findOptions: {},
+                    loaded: false
+                });
 
                 this._super.apply(this, arguments);
+            },
+
+            generateListlineTemplate: function (shown_columns) {
+                var html = '<tr><td>{{#if pendingOperation}}<i class="fa fa-cog fa-spin"></i>{{/if}}{{component-checkbox checked=isSelected class="toggle"}}</td>';
+
+                if(get(this, '_partials.columnsLine')) {
+                    html += '{{#each columns in controller.parentController._partials.columnsLine}}<td>{{partial columns}}</td>{{/each}}';
+                }
+
+                for (var i = 0, l = shown_columns.length; i < l; i++) {
+                    if(shown_columns[i].renderer) {
+                        html += '<td>{{component-renderer rendererType="' + shown_columns[i].renderer + '" value=this.'+ shown_columns[i].field +'}}</td>';
+                    } else {
+                        html += '<td>{{this.'+ shown_columns[i].field + '}}</td>';
+                    }
+                }
+
+                if(get(this, '_partials.itemactionbuttons')) {
+                    html += '<td style="padding-left:0; padding-right:0"><div style="display:flex">{{partialslot slot=controller.parentController._partials.itemactionbuttons}}</div></td>';
+                }
+
+                html += '</tr>';
+
+                return html;
             },
 
             /**
@@ -140,7 +165,6 @@ define([
                 } else {
                     return interval;
                 }
-
             },
 
             itemType: function() {
@@ -210,9 +234,13 @@ define([
                     var listed_crecord_type = get(me, 'listed_crecord_type');
                     var crecordTypeMetadata = get(me, 'widgetDataStore').metadataFor(listed_crecord_type);
                     console.log('crecordTypeMetadata', crecordTypeMetadata);
-                    me.set('widgetDataMetas', crecordTypeMetadata);
+
+                    Ember.setProperties(me, {
+                        widgetDataMetas: crecordTypeMetadata,
+                        loaded: true
+                    });
+
                     me.extractItems.apply(me, [queryResults]);
-                    set(me, 'loaded', true);
 
                     for(var i = 0, l = queryResults.content.length; i < l; i++) {
                         //This value reset spiner display for record in flight status
@@ -233,14 +261,38 @@ define([
 
                 for (var i = 0, l = attributesKeys.length; i < l; i++) {
                     if (sortedAttribute !== undefined && sortedAttribute.field === attributesKeys[i].field) {
+                        sortedAttribute.renderer = this.rendererFor(sortedAttribute);
                         res[attributesKeys[i].field] = sortedAttribute;
                     } else {
+                        attributesKeys[i].renderer = this.rendererFor(attributesKeys[i]);
                         res[attributesKeys[i].field] = attributesKeys[i];
                     }
                 }
 
                 return res;
             }.property('attributesKeys'),
+
+            rendererFor: function(attribute) {
+                console.log('rendererFor', attribute);
+                var type = get(attribute, 'type');
+                var role = get(attribute, 'options.role');
+                if(get(attribute, 'model.options.role')) {
+                    role = get(attribute, 'model.options.role');
+                }
+
+                var rendererName;
+                if (role) {
+                    rendererName = 'renderer-' + role;
+                } else {
+                    rendererName = 'renderer-' + type;
+                }
+
+                if (Ember.TEMPLATES[rendererName] === undefined) {
+                    rendererName = undefined;
+                }
+
+                return rendererName;
+            },
 
             shown_columns: function() {
                 console.log('compute shown_columns', get(this, 'sorted_columns'), get(this, 'attributesKeys'), get(this, 'sortedAttribute'));
@@ -262,7 +314,7 @@ define([
 
                     for (var i = 0, li = sorted_columns.length; i < li; i++) {
                         if (attributesKeysDict[sorted_columns[i]] !== undefined) {
-                            attributesKeysDict[sorted_columns[i]].options.show = true;
+                            set(attributesKeysDict[sorted_columns[i]].options, 'show', true);
                             shown_columns.push(attributesKeysDict[sorted_columns[i]]);
                         }
                     }
@@ -273,9 +325,6 @@ define([
 
                 var selected_columns = [];
                 for(var column=0, l = shown_columns.length; column < l; column++) {
-
-                    shown_columns[column].options.show = true;
-
                     //reset previous if any in case list configuration is updated
                     if (shown_columns[column].options.canUseDisplayRecord) {
                         delete shown_columns[column].options.canUseDisplayRecord;
@@ -294,12 +343,14 @@ define([
                     }
                 }
 
-                var maximized_column_index = get(this, 'maximized_column_index');
-                if(maximized_column_index && selected_columns && selected_columns[maximized_column_index]) {
-                    selected_columns[maximized_column_index].maximized = true;
-                }
-
                 console.debug('selected cols', selected_columns);
+
+                window._baseConsole.time('tpl compilation');
+
+                var tpl = Ember.Handlebars.compile(this.generateListlineTemplate(selected_columns));
+
+                Ember.TEMPLATES.listlineTest = tpl;
+
 
                 return selected_columns;
 

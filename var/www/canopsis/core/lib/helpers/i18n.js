@@ -27,7 +27,7 @@ define(['ember', 'utils'], function(Ember, utils) {
 
             console.log('translating', value, 'into', translation);
 
-            return new Ember.Handlebars.SafeString(translation);
+            return translation;
         }
     });
 });

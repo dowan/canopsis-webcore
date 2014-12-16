@@ -21,7 +21,7 @@
 
         {{input value=content.value class="form-control"}}
         <a {{action "validateClause" this}} class="btn btn-info btn-xs">
-            {{glyphicon "ok"}}
+            <span class="glyphicon glyphicon-ok"></span>
         </a>
     </span>
 {{else}}
@@ -30,7 +30,7 @@
                 {{content.key}} {{content.operator}} {{content.value}}
             </a>
             <a {{action "removeAndClause" clause content}} class="btn btn-danger btn-xs">
-                {{glyphicon "remove"}}
+                <span class="glyphicon glyphicon-remove"></span>
             </a>
     {{else}}
         <span style="display:inline-block">
@@ -52,11 +52,11 @@
 
                 {{input value=content.value class="form-control"}}
                 <a {{action "validateClause" this}} class="btn btn-info btn-xs">
-                    {{glyphicon "ok"}}
+                    <span class="glyphicon glyphicon-ok"></span>
                 </a>
             {{else}}
                 <a {{action "startEditClause"}} class="btn btn-info btn-xs">
-                    {{glyphicon "plus"}}
+                    <span class="glyphicon glyphicon-plus"></span>
                 </a>
             {{/if}}
         </span>

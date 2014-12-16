@@ -17,13 +17,23 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+window.useHtmlBars = true;
+
+var emberFile;
+
+if(window.useHtmlBars) {
+    emberFile = 'webcore-libs/min/ember';
+} else {
+    emberFile = 'webcore-libs/ember/ember';
+}
+
 var Ember;
 
 define([
     'app/lib/factories/wrapper',
     'app/lib/utils/i18n',
     'canopsis/canopsisConfiguration',
-    'webcore-libs/min/ember',
+    emberFile,
     'webcore-libs/jquery-resize/jquery.ba-resize'
 ], function(Wrapper, i18n, canopsisConfiguration) {
 

@@ -2,18 +2,18 @@
     <div class="pull-right">
         {{#if controller.editMode}}
             <button type="button" class="btn btn-small btn-success btn-sm pull-right" {{action 'editWidgetPreferences' widget}}>
-                {{glyphicon "pencil"}}
+                <span class="glyphicon glyphicon-pencil"></span>
             </button>
             <button type="button" class="btn btn-small btn-info btn-sm pull-right" {{action 'removeWidget' widget}}>
-                {{glyphicon "remove"}}
+                <span class="glyphicon glyphicon-remove"></span>
             </button>
             <button type="button" class="btn btn-small btn-info btn-sm pull-right" {{action 'editWidget' widget}}>
-                {{glyphicon "edit"}}
+                <span class="glyphicon glyphicon-edit"></span>
             </button>
         {{/if}}
     </div>
     <div class="pull-right">
-        {{set 'minified' true}}
+        {{!set 'minified' true}}
             {{partialslot slot=controller._partials.titlebarsbuttons}}
 
             {{#if widget.rollbackable}}
@@ -23,7 +23,7 @@
                     </button>
                 {{/if}}
             {{/if}}
-        {{unset 'minified'}}
+        {{!unset 'minified'}}
     </div>
     <!--
     <div class="pull-right">

@@ -4,7 +4,7 @@
             {{#if this.ack.isAck}}
                 {{#component-tooltip content="Remove"}}
                     <button class="btn btn-default btn-sm" {{action 'sendEvent' 'cancel' this}} >
-                        {{glyphicon "trash"}}
+                        <span class="glyphicon glyphicon-trash"></span>
                     </button>
                 {{/component-tooltip}}
 
@@ -14,7 +14,7 @@
             {{#if this.ack.isCancel}}
                 {{#component-tooltip content="Undo remove"}}
                     <button class="btn btn-default btn-sm" {{action 'sendEvent' 'uncancel' this}}>
-                        {{glyphicon "share-alt"}}
+                        <span class="glyphicon glyphicon-share-alt"></span>
                     </button>
                 {{/component-tooltip}}
             {{/if}}
@@ -23,14 +23,14 @@
         {{#if controller.rights.actionbutton_cancel.checksum}}
             {{#component-tooltip content="Remove"}}
                 <button class="btn btn-default" {{action 'sendEvent' 'cancel'}} >
-                    {{glyphicon "trash"}} {{tr 'Remove'}}
+                    <span class="glyphicon glyphicon-trash"></span> {{tr 'Remove'}}
                 </button>
             {{/component-tooltip}}
         {{/if}}
         {{#if controller.rights.actionbutton_uncancel.checksum}}
             {{#component-tooltip content="Undo remove"}}
                 <button class="btn btn-default" {{action 'sendEvent' 'uncancel'}} >
-                    {{glyphicon "share-alt"}} {{tr 'Undo remove'}}
+                    <span class="glyphicon glyphicon-share-alt"></span> {{tr 'Undo remove'}}
                 </button>
             {{/component-tooltip}}
         {{/if}}

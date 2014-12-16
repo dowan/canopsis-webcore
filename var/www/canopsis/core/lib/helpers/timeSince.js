@@ -27,20 +27,16 @@ define([
     Ember.Handlebars.helper('timeSince', function(timestamp , record) {
 
         if(timestamp || record.timeStampState) {
-
-
             timestamp = record.timeStampState || timestamp;
 
 
             if (datesUtils.isToday(timestamp)) {
                 //This is today
-                return new Ember.Handlebars.SafeString(__('Today'));
+                return __('Today');
             } else {
                 var time = datesUtils.durationFromNow(timestamp);
-                return new Ember.Handlebars.SafeString(time);
+                return time;
             }
-
-
         } else {
             return '';
         }

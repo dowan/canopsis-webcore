@@ -28,9 +28,7 @@ define(['ember'], function(Ember) {
     Ember.Handlebars.helper('criticity', function(value, crecord) {
         //displays keep status information if any onto the state field
         //keep state is generated when a user overrides the criticity of and acknowleged event
-        var record = get(crecord, 'record.content');
-        window.$T = record;
-        console.log('tested record is ', record);
+        // var record = get(crecord, 'record.content');
 
         var display_keep_state = '';
 
@@ -42,9 +40,10 @@ define(['ember'], function(Ember) {
             case 3: color = 'bg-red'; break;
         }
 
-        if (get(record, 'keep_state')) {
-            display_keep_state = '<span class="badge '+ color +'"><i class="fa fa-male"></i></span>';
-        }
+        //TODO reimplement this
+        // if (get(record, 'keep_state')) {
+        //     display_keep_state = '<span class="badge '+ color +'"><i class="fa fa-male"></i></span>';
+        // }
 
         var span;
         switch(value) {
@@ -54,7 +53,7 @@ define(['ember'], function(Ember) {
             case 3: span = '<span class="badge bg-red">'+__('Critical')+'</span>'; break;
             case 4: span = '<span class="badge">'+__('Unknown')+'</span>'; break;
         }
-        return new Ember.Handlebars.SafeString(span + display_keep_state);
+        return span + display_keep_state;
 
     });
 
