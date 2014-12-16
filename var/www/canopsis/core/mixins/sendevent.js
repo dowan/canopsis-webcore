@@ -317,7 +317,12 @@ define([
                 handle: function(crecords) {
                     var record = this.getDisplayRecord('ackremove', crecords[0]);
 
-                    this.getEventForm('ackremove', record, crecords);
+                    var formbuttons = [
+                        'formbutton-cancel',
+                        'formbutton-submit'
+                    ];
+
+                    this.getEventForm('ackremove', record, crecords, formbuttons);
 
                 },
 
