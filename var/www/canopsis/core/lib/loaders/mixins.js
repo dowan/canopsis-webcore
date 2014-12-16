@@ -19,7 +19,7 @@
 
 var mixins = [
     { name: 'validation', url: 'app/mixins/validation', classes: ["action"]},
-    { name: 'customfilter', url: 'app/mixins/customfilter', classes: ["list"]},
+    { name: 'customfilterlist', url: 'app/mixins/customfilterlist', classes: ["list"]},
     { name: 'sortablearray', url: 'app/mixins/sortablearray', classes: ["list"]},
     { name: 'arraysearch', url: 'app/mixins/arraysearch', classes: ["list"]},
     { name: 'infobutton', url: 'app/mixins/infobutton', classes: ["list"]},
@@ -34,7 +34,8 @@ var mixins = [
     { name: 'showviewbutton', url: 'app/mixins/showviewbutton', classes: ['widget', 'userviews']},
     { name: 'eventnavigation', url: 'app/mixins/eventnavigation', classes: ['widget', 'events']},
     { name: 'eventhistory', url: 'app/mixins/eventhistory', classes: ['widget', 'events']},
-    { name: 'responsivelist', url: 'app/mixins/responsivelist', classes: ['widget', 'events']}
+    { name: 'responsivelist', url: 'app/mixins/responsivelist', classes: ['widget', 'events']},
+    { name: 'periodicrefresh', url: 'app/mixins/periodicrefresh', classes: ['widget', 'events']}
 ];
 
 loader.loadWithTemplates(mixins);

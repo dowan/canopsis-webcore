@@ -28,7 +28,10 @@
     </div>
 
     <div class="form-group">
-        <button class="btn btn-default form-control" {{action "addAction"}}>{{glyphicon 'plus'}}{{tr 'Add action'}}</button>
+        <button class="btn btn-default form-control" {{action "addAction"}}>
+            <span class="glyphicon glyphicon-plus"></span>
+            {{tr 'Add action'}}
+        </button>
     </div>
 
     <hr/>
@@ -36,7 +39,11 @@
     <ul class="list-group">
     {{#each action in contentUnprepared}}
         <li class="list-group-item list-group-item-success">
-            <button class="btn btn-default" {{action "deleteAction" action}}>{{glyphicon 'minus'}}{{tr 'Remove'}}</button>&nbsp;{{json2html action}}
+            <button class="btn btn-default" {{action "deleteAction" action}}>
+                <span class="glyphicon glyphicon-minus"></span>
+                {{tr 'Remove'}}
+            </button>&nbsp;
+            {{json2html action}}
         </li>
     {{/each}}
     </ul>

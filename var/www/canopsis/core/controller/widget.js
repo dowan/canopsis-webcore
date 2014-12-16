@@ -27,8 +27,9 @@ define([
     'app/lib/utils/widgets',
     'app/lib/utils/routes',
     'app/lib/utils/forms',
-    'app/lib/utils/debug'
-], function($, Ember, DS, Application, PartialslotAbleController, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils) {
+    'app/lib/utils/debug',
+    'app/lib/utils/data'
+], function($, Ember, DS, Application, PartialslotAbleController, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, dataUtils) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -81,17 +82,10 @@ define([
             if (!isNone(this.loadUserConfiguration)) {
                 this.loadUserConfiguration();
             }
+
             console.debug('user configuration loaded for widget ' + get(this, 'title'));
 
-            this.startRefresh();
-
-            //setting default/minimal reload delay for current widget
-            if (get(this, 'refreshInterval') <= 10 || isNone(get(this, 'refreshInterval'))) {
-                set(this, 'refreshInterval', 10);
-            }
-
             this.refreshContent();
-
         },
 
         updateInterval: function (interval){
@@ -180,6 +174,43 @@ define([
                     userview.save().then(function(){
                         get(widgetController, 'viewController').send('refresh');
                         console.log('triggering refresh', userview);
+                    });
+                });
+            },
+
+            editMixin: function (widget, mixinName) {
+                console.info('edit mixin', widget, mixinName);
+
+                var mixinDict = get(widget, 'mixins').findBy('name', mixinName);
+                var mixinModelInstance = dataUtils.getStore().createRecord(mixinName, mixinDict);
+
+                var mixinForm = formsUtils.showNew('modelform', mixinModelInstance, { title: __('Edit mixin'), inspectedItemType: mixinName });
+
+                var mixinObject = get(widget, 'mixins').findBy('name', mixinName);
+
+                console.log('mixinObject', mixinObject);
+
+                var widgetController = this;
+
+                mixinForm.submit.done(function() {
+                    var referenceModel = Application[mixinName.capitalize()];
+                    var modelAttributes = get(referenceModel, 'attributes');
+
+                    console.log('attributes', modelAttributes);
+
+                    modelAttributes.forEach(function(propertyName) {
+                        console.log('each', arguments);
+                        var propertyValue = get(mixinModelInstance, propertyName);
+                        console.log('mixinObject', mixinObject);
+
+                        set(mixinObject, propertyName, propertyValue);
+                        console.log(widget.get('mixins'));
+
+                        var userview = get(widgetController, 'viewController').get('content');
+                        userview.save().then(function(){
+                            get(widgetController, 'viewController').send('refresh');
+                            console.log('triggering refresh', userview);
+                        });
                     });
                 });
             },

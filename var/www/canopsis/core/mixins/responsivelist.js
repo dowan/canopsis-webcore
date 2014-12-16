@@ -31,7 +31,7 @@ define([
 
 
     function getColumnIndexesPriorities(viewMixin) {
-        var stackableColumnsPriority = get(viewMixin, 'controller.stackableColumnsPriority');
+        var stackableColumnsPriority = get(viewMixin, 'controller.mixinOptions.responsivelist.stackableColumnsPriority');
         var controller = get(viewMixin, 'controller');
         var shownColumns = get(controller, 'shown_columns');
 
@@ -134,10 +134,6 @@ define([
             return shownColumns.length - 1;
         }.property('controller.shown_columns'),
 
-        init: function() {
-            this._super.apply(this, arguments);
-        },
-
         didInsertElement: function() {
             this._super.apply(this, arguments);
 
@@ -160,8 +156,6 @@ define([
             var tableWidth = viewMixin.$('.table-responsive table').width();
 
             checkToToggleStackedDisplay(viewMixin, thresholds, tableContainerWidth, tableWidth);
-            // checkToToggleStandardDisplay(viewMixin, 400);
-
         }
     });
 
@@ -179,6 +173,14 @@ define([
         init:function() {
             console.log('init responsivelist');
             this.viewMixins.push(viewMixin);
+
+            var mixinsOptions = get(this, 'content.mixins');
+
+            if(mixinsOptions) {
+                responsivelistOptions = get(this, 'content.mixins').findBy('name', 'responsivelist');
+                this.mixinOptions.responsivelist = responsivelistOptions;
+            }
+
             this._super.apply(this, arguments);
         }
     });

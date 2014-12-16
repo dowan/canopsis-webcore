@@ -1,14 +1,27 @@
 <div class="box-header">
     <div class="pull-right">
         {{#if controller.editMode}}
+            <div class="btn-group">
+                <button type="button" class="btn btn-info btn-sm" {{action 'editWidget' widget}}>
+                    <span class="glyphicon glyphicon-edit"></span>
+                </button>
+                {{#if widget.mixins}}
+                    <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        {{#each mixin in widget.mixins}}
+                            <li><a {{action 'editMixin' widget mixin.name}}>{{mixin.name}}</a></li>
+                        {{/each}}
+                    </ul>
+                {{/if}}
+            </div>
             <button type="button" class="btn btn-small btn-success btn-sm pull-right" {{action 'editWidgetPreferences' widget}}>
                 <span class="glyphicon glyphicon-pencil"></span>
             </button>
             <button type="button" class="btn btn-small btn-info btn-sm pull-right" {{action 'removeWidget' widget}}>
                 <span class="glyphicon glyphicon-remove"></span>
-            </button>
-            <button type="button" class="btn btn-small btn-info btn-sm pull-right" {{action 'editWidget' widget}}>
-                <span class="glyphicon glyphicon-edit"></span>
             </button>
         {{/if}}
     </div>

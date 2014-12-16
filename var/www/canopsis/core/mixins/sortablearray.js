@@ -34,6 +34,18 @@ define([
      */
     var mixin = Mixin('sortablearray', {
 
+        init: function () {
+            var mixinsOptions = get(this, 'content.mixins');
+
+            if(mixinsOptions) {
+                sortablearrayOptions = get(this, 'content.mixins').findBy('name', 'sortablearray');
+                this.mixinOptions.sortablearray = sortablearrayOptions;
+            }
+
+            this._super();
+        },
+
+
         sort_direction: false,
 
         actions: {
