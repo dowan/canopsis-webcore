@@ -60,15 +60,16 @@
                         <li class="list-group-item">
                             {{#if selectedItemPartial}}
                                 <span style="float:right;">
+
                                     {{partial selectedItemPartial}}
                                 </span>
                             {{/if}}
                             <a {{action "unselectItem" item}}>
                                 {{#if item.icon}}
-                                    {{glyphicon item.icon}} 
+                                    {{{glyphicon item.icon}}} 
                                 {{else}}
                                     {{#if defaultIcon}}
-                                        {{glyphicon defaultIcon}} 
+                                        {{{glyphicon defaultIcon}}} 
                                     {{/if}}
                                 {{/if}}
                                 {{item.name}} {{#if item.value}}({{item.value}}){{/if}}
@@ -96,10 +97,10 @@
                     <li class="list-group-item">
                         <a {{action "selectItem" item}}>
                             {{#if item.icon}}
-                                {{glyphicon item.icon}} 
+                                {{{glyphicon item.icon}}} 
                             {{else}}
                                 {{#if defaultIcon}}
-                                    {{glyphicon defaultIcon}} 
+                                    {{{glyphicon defaultIcon}}} 
                                 {{/if}}
                             {{/if}}
                             {{item.name}}
@@ -124,10 +125,10 @@
                         <li class="list-group-item">
                             <a {{action "selectItem" item}}>
                                 {{#if item.icon}}
-                                    {{glyphicon item.icon}} 
+                                    {{{glyphicon item.icon}}} 
                                 {{else}}
                                     {{#if defaultIcon}}
-                                        {{glyphicon defaultIcon}} 
+                                        {{{glyphicon defaultIcon}}} 
                                     {{/if}}
                                 {{/if}}
                                 {{item.name}}
