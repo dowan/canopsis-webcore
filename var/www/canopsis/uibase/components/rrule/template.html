@@ -70,7 +70,7 @@
         </div>
 
         <center>
-            <button class="btn btn-default" {{action addRule}}>{{tr 'Add rule'}}</button>
+            <button class="btn btn-default" {{action "addRule"}}>{{tr 'Add rule'}}</button>
         </center>
 
     </form>
@@ -81,7 +81,10 @@
     <ul class="list-group">
         {{#each rule in rules}}
             <li  class="list-group-item list-group-item-success">
-                <button {{action removeRule rule}} class="btn btn-default">{{glyphicon 'minus'}} {{tr 'Remove'}}</button>
+                <button {{action "removeRule" rule}} class="btn btn-default">
+                    <span class="glyphicon glyphicon-minus"></span>
+                     {{tr 'Remove'}}
+                </button>
                 {{rule.value}}
             </li>
         {{/each}}

@@ -39,7 +39,7 @@ define(['ember'], function(Ember) {
             result += icon_tag.fmt(color, icon[i]);
         });
 
-        return Ember.Handlebars.Utils.SafeString(result);
+        return result;
 
     });
 });

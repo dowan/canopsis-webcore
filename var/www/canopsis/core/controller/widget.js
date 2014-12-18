@@ -198,12 +198,12 @@ define([
 
                     console.log('attributes', modelAttributes);
 
-                    modelAttributes.forEach(function(propertyName) {
+                    modelAttributes.forEach(function(property) {
                         console.log('each', arguments);
-                        var propertyValue = get(mixinModelInstance, propertyName);
+                        var propertyValue = get(mixinModelInstance, property.name);
                         console.log('mixinObject', mixinObject);
 
-                        set(mixinObject, propertyName, propertyValue);
+                        set(mixinObject, property.name, propertyValue);
                         console.log(widget.get('mixins'));
 
                         var userview = get(widgetController, 'viewController').get('content');

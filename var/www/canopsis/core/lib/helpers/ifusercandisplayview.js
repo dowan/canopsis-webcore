@@ -25,4 +25,10 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+    Ember.HTMLBars.helpers.ifUserCanDisplayView = Ember.HTMLBars.makeViewHelper(function(params, hash, options, env) {
+        var template = options.template;
+
+        return template.render(this, env, options.morph.contextualElement);
+    });
+
 });

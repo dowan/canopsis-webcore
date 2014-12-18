@@ -42,14 +42,6 @@ define([
 
         init:function () {
             this.itemsPerPagePropositionSelected = get(this, 'content.itemsPerPage');
-
-            var mixinsOptions = get(this, 'content.mixins');
-
-            if(mixinsOptions) {
-                paginationOptions = get(this, 'content.mixins').findBy('name', 'pagination');
-                this.mixinOptions.pagination = paginationOptions;
-            }
-
             this._super.apply(this, arguments);
         },
 
@@ -99,7 +91,6 @@ define([
         paginationFirstItemIndex: 1,
         paginationLastItemIndex: 1,
 
-
         itemsDivided: function(){
             return get(this, 'itemsTotal') / get(this, 'mixinOptions.pagination.itemsPerPage');
 
@@ -112,7 +103,6 @@ define([
                 res.push(itemsPerPagePropositionSelected);
             return res;
         }.property('itemsPerPagePropositionSelected'),
-
 
         itemsPerPageChanged : function() {
             set(this, 'currentPage', 1);
@@ -194,7 +184,6 @@ define([
             this._super(queryResult);
         }
     });
-
 
     return mixin;
 });

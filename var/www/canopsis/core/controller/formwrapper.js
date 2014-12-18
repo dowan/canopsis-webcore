@@ -36,7 +36,7 @@ define([
 
         actions: {
             show: function() {
-                console.log("FormwrapperController show", this);
+                console.log("FormwrapperController show", this, get(this, 'widgetwrapperView'));
                 get(this, 'widgetwrapperView').showPopup();
             }
         }

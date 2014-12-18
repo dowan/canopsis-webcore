@@ -41,9 +41,10 @@
                 </thead>
                 <tbody>
                     {{#each controller.widgetData}}
-                        {{render "listlineTest" this
+                        {{!render "listlineTest" this
                             parentController=controller}}
 
+                        {{view "listline" templateName=controller.dynamicTemplateName parentController=controller tagName="tr"}}
                         {{#if unfolded}}
                             {{#if loaded}}
                                 {{partial templateName}}

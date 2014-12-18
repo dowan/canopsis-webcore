@@ -92,8 +92,6 @@
                                 </a>
                                 <ul class="treeview-menu">
                                     {{#each engineview in controller.enginesviews}}
-                                        {{clog "enginevalue"}}
-                                        {{clog engineview.value}}
                                         {{!#ifUserCanDisplayView engineview.value}}
                                             <li>
                                                 <a {{action 'showView' engineview.value}}>
@@ -158,7 +156,7 @@
         </aside>
     {{/unless}}
     <!-- Right side column. Contains the navbar and content of the page -->
-    <aside>
+    <aside class="right-side strech">
         {{outlet "formwrapper"}}
 
         {{#if headerUserview}}

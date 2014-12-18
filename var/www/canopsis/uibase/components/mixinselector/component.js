@@ -31,8 +31,6 @@ define([
 
     var component = Ember.Component.extend({
 
-        selectionPreparedCount: 0,
-
         init: function() {
             this._super.apply(this, arguments);
 

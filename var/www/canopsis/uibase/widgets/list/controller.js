@@ -54,6 +54,9 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+    Ember.Handlebars.registerBoundHelper('renderListline', function(callingContext, event, options) {
+        return Ember.Handlebars.helpers.render.helperFunction(callingContext, "listlineTest", 'event', options);
+    });
 
     var listOptions = {
         mixins: [
@@ -77,6 +80,8 @@ define([
             viewMixins: [
                 DraggableColumnsMixin
             ],
+
+            dynamicTemplateName: 'listlineTest',
 
             //TODO test if this is needed (used in cloaked mode)
             listlineControllerClass: ListlineController,
@@ -123,25 +128,28 @@ define([
             },
 
             generateListlineTemplate: function (shown_columns) {
-                var html = '<tr><td>{{#if pendingOperation}}<i class="fa fa-cog fa-spin"></i>{{/if}}{{component-checkbox checked=isSelected class="toggle"}}</td>';
+                var html = '<td>{{#if pendingOperation}}<i class="fa fa-cog fa-spin"></i>{{/if}}{{component-checkbox checked=isSelected class="toggle"}}</td>';
 
                 if(get(this, '_partials.columnsLine')) {
                     html += '{{#each columns in controller.parentController._partials.columnsLine}}<td>{{partial columns}}</td>{{/each}}';
                 }
 
                 for (var i = 0, l = shown_columns.length; i < l; i++) {
-                    if(shown_columns[i].renderer) {
-                        html += '<td>{{component-renderer rendererType="' + shown_columns[i].renderer + '" value=this.'+ shown_columns[i].field +'}}</td>';
-                    } else {
-                        html += '<td>{{this.'+ shown_columns[i].field + '}}</td>';
+                    var currentColumn = shown_columns[i];
+                    console.log('currentColumn', currentColumn);
+
+                    if(get(currentColumn, 'options.show')) {
+                        if(currentColumn.renderer) {
+                            html += '<td class="' + currentColumn.field + '">{{component-renderer rendererType="' + currentColumn.renderer + '" value=this.'+ currentColumn.field +'}}</td>';
+                        } else {
+                            html += '<td class="' + currentColumn.field + '">{{this.'+ currentColumn.field + '}}</td>';
+                        }
                     }
                 }
 
                 if(get(this, '_partials.itemactionbuttons')) {
                     html += '<td style="padding-left:0; padding-right:0"><div style="display:flex">{{partialslot slot=controller.parentController._partials.itemactionbuttons}}</div></td>';
                 }
-
-                html += '</tr>';
 
                 return html;
             },
@@ -273,7 +281,6 @@ define([
             }.property('attributesKeys'),
 
             rendererFor: function(attribute) {
-                console.log('rendererFor', attribute);
                 var type = get(attribute, 'type');
                 var role = get(attribute, 'options.role');
                 if(get(attribute, 'model.options.role')) {
@@ -349,8 +356,10 @@ define([
 
                 var tpl = Ember.Handlebars.compile(this.generateListlineTemplate(selected_columns));
 
-                Ember.TEMPLATES.listlineTest = tpl;
+                var dynamicTemplateName = 'dynamic-list' + Math.floor(Math.random() * 10000);
 
+                Ember.TEMPLATES[dynamicTemplateName] = tpl;
+                set(this, 'dynamicTemplateName', dynamicTemplateName);
 
                 return selected_columns;
 

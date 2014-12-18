@@ -32,13 +32,15 @@ define([
 
     function computeMixinsArray(view, widget) {
         var mixinsNames = get(widget, 'mixins');
-        console.log('computeMixinsArray', mixinsregistry);
 
         var mixinArray = [];
 
         console.log('computeMixinsArray', mixinsNames);
 
+        var mixinOptions = {};
+
         if(mixinsNames) {
+
             for (var i = 0, l = mixinsNames.length; i < l; i++) {
                 var currentName = mixinsNames[i];
 
@@ -48,6 +50,8 @@ define([
                 } else {
                     currentName = currentName.name.camelize();
                 }
+
+                mixinOptions[currentName] = mixinsNames[i];
 
                 var currentClass = get(Application, currentName.capitalize() + 'Mixin');
                 console.log('find mixin', currentName, currentClass);
@@ -59,12 +63,16 @@ define([
                     console.error('mixin not found', currentName);
                 }
             }
+            var controller = view.get('controller');
+
+            if(controller.onMixinsApplied) {
+                controller.onMixinsApplied();
+            }
         }
 
         mixinArray.pushObject(Ember.Evented);
 
-        console.warn('mixinArray for ', get(widget, 'title'), mixinArray);
-        return mixinArray;
+        return {array: mixinArray, mixinOptions: mixinOptions};
     }
 
 
@@ -144,7 +152,7 @@ define([
 
             var mixins = computeMixinsArray(this, widget);
 
-            mixins.pushObject({
+            mixins.array.pushObject({
                 content: widget,
                 target: get(this, 'target')
             });
@@ -159,10 +167,13 @@ define([
                 widgetClass = WidgetController;
             }
 
-            widgetControllerInstance = widgetClass.createWithMixins.apply(widgetClass, mixins);
+            widgetControllerInstance = widgetClass.createWithMixins.apply(widgetClass, mixins.array);
             widgetControllerInstance.refreshPartialsList();
 
-            set(widgetControllerInstance, 'content.displayedErrors', get(this, 'displayedErrors'));
+            Ember.setProperties(widgetControllerInstance, {
+                'content.displayedErrors': get(this, 'displayedErrors'),
+                'mixinOptions': mixins.mixinOptions
+            });
 
             var mixinsName = widget._data.mixins;
 

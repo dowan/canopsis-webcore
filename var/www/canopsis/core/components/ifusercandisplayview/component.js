@@ -17,10 +17,31 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
+define([
+    'ember',
+    'utils'
+], function(Ember, utils) {
 
-    Ember.Handlebars.helper('glyphicon', function(icon) {
-        return '<span class="glyphicon glyphicon-' + icon + '"></span>';
+    var get = Ember.get,
+        set = Ember.set,
+        isNone = Ember.isNone;
+
+
+    var component = Ember.Component.extend({
+        tagName: 'span',
+
+        displayYield: function() {
+                return true;
+        }.property('viewId')
     });
 
+
+    Ember.Application.initializer({
+        name:"component-ifusercandisplayview",
+        initialize: function(container, application) {
+            application.register('component:component-ifusercandisplayview', component);
+        }
+    });
+
+    return component;
 });
