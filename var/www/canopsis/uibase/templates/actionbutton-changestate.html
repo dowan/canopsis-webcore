@@ -1,17 +1,9 @@
-{{#if controller.parentController.rights.actionbutton_changestate.checksum}}
+{{#if controller.rights.actionbutton_changestate.checksum}}
     {{#unless controller.findOptions.useLogCollection}}
-        {{#if view.minified}}
-            {{#if this.ack.isAck}}
-                {{#component-tooltip content="Change criticity"}}
-                    <button class="btn btn-default btn-sm" {{action 'sendEvent' 'changestate' this}} >
-                        <i class="fa fa-exclamation-triangle"></i>
-                    </button>
-                {{/component-tooltip}}
-            {{/if}}
-        {{else}}
+        {{#if this.ack.isAck}}
             {{#component-tooltip content="Change criticity"}}
-                <button class="btn btn-default" {{action 'sendEvent' 'changestate'}} >
-                    <i class="fa fa-exclamation-triangle"></i> {{ tr 'Change criticity' }}
+                <button class="btn btn-default btn-sm" {{action 'sendEvent' 'changestate' this}} >
+                    <i class="fa fa-exclamation-triangle"></i>
                 </button>
             {{/component-tooltip}}
         {{/if}}

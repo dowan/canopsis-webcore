@@ -150,7 +150,13 @@ define([
                 var itemActionbuttons = get(this, '_partials.itemactionbuttons');
                 if(itemActionbuttons) {
                     console.log("itemactionbuttons", itemActionbuttons);
-                    html += '<td style="padding-left:0; padding-right:0"><div style="display:flex">{{partialslot slot=controller._partials.itemactionbuttons}}</div></td>';
+                    html += '<td style="padding-left:0; padding-right:0"><div style="display:flex">';
+
+                    for (var j = 0, lj = itemActionbuttons.length; j < lj; j++) {
+                        html += '{{partial "' + itemActionbuttons[j] + '"}}';
+                    }
+
+                    html += '</div></td>';
                 }
 
                 console.log('generatedListlineTemplate', html);

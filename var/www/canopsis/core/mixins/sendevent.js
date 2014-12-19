@@ -632,7 +632,7 @@ define([
             * Sends one or many event to the server depending on selected record and action performed.
             **/
             sendEvent: function(event_type, crecord) {
-                console.group('sendEvent:');
+                console.group('sendEvent:', arguments);
 
                 this.stopRefresh();
 
