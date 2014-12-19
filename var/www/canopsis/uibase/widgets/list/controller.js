@@ -147,10 +147,13 @@ define([
                     }
                 }
 
-                if(get(this, '_partials.itemactionbuttons')) {
-                    html += '<td style="padding-left:0; padding-right:0"><div style="display:flex">{{partialslot slot=controller.parentController._partials.itemactionbuttons}}</div></td>';
+                var itemActionbuttons = get(this, '_partials.itemactionbuttons');
+                if(itemActionbuttons) {
+                    console.log("itemactionbuttons", itemActionbuttons);
+                    html += '<td style="padding-left:0; padding-right:0"><div style="display:flex">{{partialslot slot=controller._partials.itemactionbuttons}}</div></td>';
                 }
 
+                console.log('generatedListlineTemplate', html);
                 return html;
             },
 
