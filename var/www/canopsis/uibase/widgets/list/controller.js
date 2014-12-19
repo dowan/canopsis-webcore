@@ -140,7 +140,7 @@ define([
 
                     if(get(currentColumn, 'options.show')) {
                         if(currentColumn.renderer) {
-                            html += '<td class="' + currentColumn.field + '">{{component-renderer rendererType="' + currentColumn.renderer + '" value=this.'+ currentColumn.field +'}}</td>';
+                            html += '<td class="' + currentColumn.field + '">{{component-renderer rendererType="' + currentColumn.renderer + '" value=this.'+ currentColumn.field +' record=this}}</td>';
                         } else {
                             html += '<td class="' + currentColumn.field + '">{{this.'+ currentColumn.field + '}}</td>';
                         }
