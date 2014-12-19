@@ -1,5 +1,5 @@
 {{#if controller.userCanCreateRecord}}
-    {{#if minified}}
+    {{#if view.minified}}
         {{#component-tooltip content="Add entry for current list"}}
             <button class="btn btn-default btn-sm" {{action 'add' controller.itemType}} >
                 <span class="glyphicon glyphicon-plus-sign"></span>

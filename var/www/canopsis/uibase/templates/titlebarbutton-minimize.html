@@ -1,12 +1,12 @@
 <button type="button" class="btn btn-info btn-sm pull-right" {{action 'minimize' this target=view}} >
     {{#if view.minimized}}
         <span class="glyphicon glyphicon-plus"></span>
-        {{#unless minified}}
+        {{#unless view.minified}}
             {{tr 'Maximize'}}
         {{/unless}}
     {{else}}
         <span class="glyphicon glyphicon-minus"></span>
-        {{#unless minified}}
+        {{#unless view.minified}}
             {{tr 'Minimize'}}
         {{/unless}}
     {{/if}}

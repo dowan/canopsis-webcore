@@ -1,4 +1,4 @@
-{{#if minified}}
+{{#if view.minified}}
     {{#if controller.parentController.rights.actionbutton_info.checksum}}
         {{#component-tooltip content="Redirection to the targeted address"}}
             <button {{action 'info' this}} class="btn btn-default btn-sm">

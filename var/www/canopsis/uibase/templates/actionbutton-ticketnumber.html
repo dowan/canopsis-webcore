@@ -4,7 +4,7 @@
             {{#component-tooltip content="Assign ticket number"}}
                 <button class="btn btn-default" {{action 'sendEvent' 'assocticket' this}} >
                     <i class="fa fa-thumb-tack"></i>
-                    {{#unless minified}}
+                    {{#unless view.minified}}
                         {{tr 'Assign a ticket number'}}
                     {{/unless}}
                 </button>

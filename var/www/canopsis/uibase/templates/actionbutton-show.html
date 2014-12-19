@@ -1,7 +1,7 @@
 {{#if controller.parentController.userCanReadRecord}}
     <button class="btn btn-default btn-sm" {{action 'show' this.id}} >
         <span class="glyphicon glyphicon-eye-open"></span>
-        {{#unless minified}}
+        {{#unless view.minified}}
             {{tr 'Show'}}
         {{/unless}}
     </button>

@@ -1,6 +1,6 @@
 {{#if this.state}}
     {{#if this.ack.author}}
-        {{#if minified}}
+        {{#if view.minified}}
             {{#if controller.parentController.rights.actionbutton_incident.checksum}}
                 {{#component-tooltip content="Declare an incident"}}
                     <button type="button" class="btn btn-default btn-sm" {{action 'sendEvent' 'declareticket' this}} >
