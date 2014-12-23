@@ -21,9 +21,10 @@
 from canopsis.common.ws import route
 from canopsis.context.manager import Context
 
+manager = Context()
+
 
 def exports(ws):
-    manager = Context()
 
     @route(ws.application.get)
     def context(_type, names=None, context=None, extended=None):

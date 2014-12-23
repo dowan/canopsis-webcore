@@ -19,32 +19,32 @@
 # ---------------------------------
 
 from canopsis.common.ws import route
-from canopsis.topology.manager import TopologyManager
+from canopsis.graph.manager import GraphManager
 
-manager = TopologyManager()
+manager = GraphManager()
 
 
 def exports(ws):
 
-    @route(ws.application.get, name='topology/elts')
+    @route(ws.application.get, name='graph/elts')
     @route(
         ws.application.post,
         payload=['ids', 'types', 'data', 'graph_ids', 'base_type', 'query'],
-        name='topology/elts'
+        name='graph/elts'
     )
     def get_elts(
         ids=None, types=None, graph_ids=None, data=None, base_type=None,
         query=None
     ):
         """
-        Get topology element(s) related to input ids, types and query.
+        Get graph element(s) related to input ids, types and query.
 
         :param ids: list of ids or id of element to retrieve. If None, get all
             elements. If str, get one element.
         :type ids: list or str
-        :param types: topology element types to retrieve.
+        :param types: graph element types to retrieve.
         :type types: list or str
-        :param graph_ids: topology ids from where find elts.
+        :param graph_ids: graph ids from where find elts.
         :type graph_ids: list or str
         :param data: data query
         :param dict query: element search query.
@@ -69,7 +69,7 @@ def exports(ws):
     @route(
         ws.application.delete,
         payload=['ids', 'types', 'query'],
-        name='topology/elts'
+        name='graph/elts'
     )
     def del_elts(ids=None, types=None, query=None, cache=False):
         """
@@ -89,7 +89,7 @@ def exports(ws):
     @route(
         ws.application.put,
         payload=['elt', 'graph_ids'],
-        name='topology/elt'
+        name='graph/elt'
     )
     def put_elt(elt, graph_ids=None, cache=False):
         """
@@ -97,7 +97,7 @@ def exports(ws):
 
         :param dict elt: element to put.
         :type elt: dict or GraphElement
-        :param str graph_ids: element topology id. None if elt is a topology.
+        :param str graph_ids: element graph id. None if elt is a graph.
         :param bool cache: use query cache if True (False by default).
         """
 
@@ -106,7 +106,7 @@ def exports(ws):
     @route(
         ws.application.delete,
         payload=['ids', 'graph_ids'],
-        name='topology/content'
+        name='graph/content'
     )
     def remove_elts(ids, graph_ids=None, cache=False):
         """
@@ -114,7 +114,7 @@ def exports(ws):
 
         :param ids: elt ids to remove from graph_ids.
         :type ids: list or str
-        :param graph_ids: topology ids from where remove self.
+        :param graph_ids: graph ids from where remove self.
         :type graph_ids: list or str
         """
 
@@ -123,7 +123,7 @@ def exports(ws):
     @route(
         ws.application.delete,
         payload=['ids', 'vids', 'sources', 'targets'],
-        name='topology/refs'
+        name='graph/refs'
     )
     def del_edge_refs(
         ids=None, vids=None, sources=None, targets=None, cache=False
@@ -144,13 +144,13 @@ def exports(ws):
         manager.del_edge_refs(
             ids=ids, vids=vids, sources=sources, targets=targets)
 
-    @route(ws.application.get, name='topology/graphs')
+    @route(ws.application.get, name='graph/graphs')
     @route(
         ws.application.post,
         payload=[
             'ids', 'graph_ids', 'types', 'elts', 'query', 'add_elts', 'data'
         ],
-        name='topology/graphs'
+        name='graph/graphs'
     )
     def get_graphs(
         ids=None, types=None, elts=None, graph_ids=None, data=None,
@@ -159,20 +159,20 @@ def exports(ws):
         """
         Get one or more graphs related to input ids, types and elts.
 
-        :param ids: topology ids to retrieve.
+        :param ids: graph ids to retrieve.
         :type ids: list or str
-        :param types: topology types to retrieve.
+        :param types: graph types to retrieve.
         :type types: list or str
         :param elts: elts embedded by graphs to retrieve.
         :type elts: list or str
-        :param graph_ids: topology ids from where get graphs.
+        :param graph_ids: graph ids from where get graphs.
         :type graph_ids: list or str
         :param data: data to find among graphs.
-        :param dict query: additional topology search query. Could help to search
+        :param dict query: additional graph search query. Could help to search
             specific data information.
         :param bool add_elts: (False by default) add elts in the result.
 
-        :return: topology(s) corresponding to input parameters.
+        :return: graph(s) corresponding to input parameters.
         :rtype: list or Graph
         """
 
@@ -191,7 +191,7 @@ def exports(ws):
 
         return result
 
-    @route(ws.application.get, name='topology/sources')
+    @route(ws.application.get, name='graph/sources')
     @route(
         ws.application.post,
         payload=[
@@ -204,7 +204,7 @@ def exports(ws):
             'edge_data',
             'query', 'edge_query', 'source_query', 'target_query'
         ],
-        name='topology/sources'
+        name='graph/sources'
     )
     def get_sources(
         ids=None, graph_ids=None, data=None, query=None, types=None,
@@ -228,7 +228,7 @@ def exports(ws):
 
         return result
 
-    @route(ws.application.get, name='topology/targets')
+    @route(ws.application.get, name='graph/targets')
     @route(
         ws.application.post,
         payload=[
@@ -241,7 +241,7 @@ def exports(ws):
             'edge_data',
             'query', 'edge_query', 'source_query', 'target_query'
         ],
-        name='topology/targets'
+        name='graph/targets'
     )
     def get_targets(
         ids=None, graph_ids=None, data=None, query=None, types=None,
@@ -265,7 +265,7 @@ def exports(ws):
 
         return result
 
-    @route(ws.application.get, name='topology/neighbourhood')
+    @route(ws.application.get, name='graph/neighbourhood')
     @route(
         ws.application.post,
         payload=[
@@ -278,7 +278,7 @@ def exports(ws):
             'edge_data',
             'query', 'edge_query', 'source_query', 'target_query'
         ],
-        name='topology/neighbourhood'
+        name='graph/neighbourhood'
     )
     def get_neighbourhood(
         ids=None, sources=False, targets=True,
@@ -299,7 +299,7 @@ def exports(ws):
         :type ids: list or str
         :param bool sources: if True (False by default) add source vertices.
         :param bool targets: if True (default) add target vertices.
-        :param graph_ids: vertice topology ids.
+        :param graph_ids: vertice graph ids.
         :type graph_ids: list or str
         :param dict data: neighbourhood data to find.
         :param dict source_data: source neighbourhood data to find.
@@ -347,21 +347,21 @@ def exports(ws):
 
         return result
 
-    @route(ws.application.get, name='topology/vertices')
+    @route(ws.application.get, name='graph/vertices')
     @route(
         ws.application.post,
         payload=['ids', 'graph_ids', 'types', 'data', 'query'],
-        name='topology/vertices'
+        name='graph/vertices'
     )
     def get_vertices(
         ids=None, graph_ids=None, types=None, data=None, query=None
     ):
         """
-        Get topology vertices related to some context property.
+        Get graph vertices related to some context property.
 
         :param ids: vertice ids to get.
         :type ids: list or str
-        :param graph_ids: vertice topology ids.
+        :param graph_ids: vertice graph ids.
         :type graph_ids: list or str
         :param types: vertice type(s).
         :type types: list or str
@@ -379,11 +379,11 @@ def exports(ws):
 
         return result
 
-    @route(ws.application.get, name='topology/edges')
+    @route(ws.application.get, name='graph/edges')
     @route(
         ws.application.post,
         payload=['elt', 'graph_ids'],
-        name='topology/edges'
+        name='graph/edges'
     )
     def get_edges(
         ids=None, types=None, sources=None, targets=None, graph_ids=None,
@@ -401,7 +401,7 @@ def exports(ws):
         :type sources: list or str
         :param targets: target edge attribute to find.
         :type targets: list or str
-        :param graph_ids: topology ids from where find edges.
+        :param graph_ids: graph ids from where find edges.
         :type graph_ids: list or str
         :param dict data: data to find.
         :param dict query: additional query.
