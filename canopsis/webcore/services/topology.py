@@ -168,8 +168,8 @@ def exports(ws):
         :param graph_ids: topology ids from where get graphs.
         :type graph_ids: list or str
         :param data: data to find among graphs.
-        :param dict query: additional topology search query. Could help to search
-            specific data information.
+        :param dict query: additional topology search query. Could help to
+            search specific data information.
         :param bool add_elts: (False by default) add elts in the result.
 
         :return: topology(s) corresponding to input parameters.
@@ -187,7 +187,12 @@ def exports(ws):
             serialize=False
         )
 
-        result = list(result)
+        if result is not None:
+            if isinstance(result, dict):
+                result['_delts'] = list(result['_delts'])
+            else:
+                for topology in result:
+                    topology['_delts'] = list(result['_delts'])
 
         return result
 

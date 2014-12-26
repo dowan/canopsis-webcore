@@ -187,7 +187,12 @@ def exports(ws):
             serialize=False
         )
 
-        result = list(result)
+        if result is not None:
+            if isinstance(result, dict):
+                result['_delts'] = list(result['_delts'])
+            else:
+                for graph in result:
+                    graph['_delts'] = list(result['_delts'])
 
         return result
 
