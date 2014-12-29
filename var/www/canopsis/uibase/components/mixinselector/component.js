@@ -38,9 +38,11 @@ define([
 
             var content = get(this, 'content');
 
-            for (var i = 0; i < content.length; i++) {
-                if(typeof content[i] === 'string') {
-                    content[i] = { name: content[i] };
+            if(content) {
+                for (var i = 0; i < content.length; i++) {
+                    if(typeof content[i] === 'string') {
+                        content[i] = { name: content[i] };
+                    }
                 }
             }
             set(this, 'selectionPrepared', content);

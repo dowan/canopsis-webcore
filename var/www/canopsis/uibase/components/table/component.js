@@ -37,6 +37,12 @@ define([
 
         itemsPerPage: 5,
 
+        mixinOptions: {
+            pagination: {
+                itemsPerPage: 5
+            }
+        },
+
         onDataChange: function() {
             this.refreshContent();
         }.observes('data.@each'),
