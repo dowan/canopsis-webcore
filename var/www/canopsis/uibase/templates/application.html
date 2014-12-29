@@ -92,14 +92,14 @@
                                 </a>
                                 <ul class="treeview-menu">
                                     {{#each engineview in controller.enginesviews}}
-                                        {{!#ifUserCanDisplayView engineview.value}}
+                                        {{#if engineview.displayable}}
                                             <li>
                                                 <a {{action 'showView' engineview.value}}>
                                                     <i class="fa fa-angle-double-right"></i>
                                                     {{engineview.label}}
                                                 </a>
                                             </li>
-                                        {{!/ifUserCanDisplayView}}
+                                        {{/if}}
                                     {{/each}}
                                 </ul>
                             </li>
