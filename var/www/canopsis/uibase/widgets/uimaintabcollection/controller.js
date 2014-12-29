@@ -20,8 +20,9 @@
 define([
     'jquery',
     'app/lib/factories/widget',
+    'utils',
     'app/lib/wrappers/bootstrap'
-], function($, WidgetFactory) {
+], function($, WidgetFactory, utils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -59,6 +60,20 @@ define([
                 } else {
                     set(item, 'isActive', false);
                 }
+
+
+                if(get(utils, 'session._id') === "root") {
+                    set(item, 'displayable', true);
+                } else {
+                    viewId = item.value;
+                    if (get(utils, 'session.rights.showview_' + viewId.replace('.', '_'))) {
+                        set(item, 'displayable', true);
+                    } else {
+                        set(item, 'displayable', false);
+                    }
+                }
+
+
                 res.pushObject(item);
             });
 
