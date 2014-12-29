@@ -33,7 +33,6 @@ var helpers = [
     { name:'group', url:'app/lib/helpers/group' },
     { name:'i18n', url:'app/lib/helpers/i18n' },
     { name:'ifcond', url:'app/lib/helpers/ifcond' },
-    { name:'ifusercandisplayview', url:'app/lib/helpers/ifusercandisplayview' },
     { name:'json2html', url:'app/lib/helpers/json2html' },
     { name:'log', url:'app/lib/helpers/log' },
     { name:'logo', url:'app/lib/helpers/logo' },

@@ -61,7 +61,7 @@ define([
                     set(item, 'isActive', false);
                 }
 
-
+                //FIXME stop using utils to store data!
                 if(get(utils, 'session._id') === "root") {
                     set(item, 'displayable', true);
                 } else {
@@ -72,7 +72,6 @@ define([
                         set(item, 'displayable', false);
                     }
                 }
-
 
                 res.pushObject(item);
             });
