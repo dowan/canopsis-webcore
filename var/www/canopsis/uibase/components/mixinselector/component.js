@@ -58,12 +58,23 @@ define([
             var selection = get(this, 'selectionPrepared');
             console.log('recomputeSelection', selection);
 
+            var content = get(this, 'content');
+
             var resBuffer = Ember.A();
             for (var i = 0, l = selection.length; i < l; i++) {
                 var currentItem = selection[i];
-                resBuffer.pushObject({
-                    name: get(currentItem, 'name')
-                });
+                var currentItemName = get(currentItem, 'name');
+                var newResBufferItem;
+
+                var existingContentItem = content.findBy('name', currentItemName);
+                if(existingContentItem) {
+                    newResBufferItem = existingContentItem;
+                } else {
+                    newResBufferItem = {
+                        name: currentItemName
+                    };
+                }
+                resBuffer.pushObject(newResBufferItem);
             }
 
             set(this, 'content', resBuffer);
