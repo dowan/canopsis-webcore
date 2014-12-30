@@ -52,7 +52,7 @@ define([
 
                     console.log("saving view");
                     get(userviewController, 'content').save().then(function() {
-                        userviewController.send('refresh');
+                        userviewController.trigger('refreshView');
                     });
                 });
 

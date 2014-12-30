@@ -37,25 +37,14 @@ define([
 
         //Controller -> View Hooks
         registerHooks: function() {
-            testUtils.pre(this, function () {
-                var controller = get(this, 'controller');
-                Ember.assert('The controller should implement Ember.Evented', Ember.Evented.detect(controller));
-            });
-
-            console.log("registerHooks", get(this, 'controller'), get(this, 'controller.on'));
-            get(this, 'controller').on('refreshView', this, this.rerender);
             // if (!get(this, 'hookRegistered')) {
+            //     get(this, 'controller').on('refreshView', this, this.rerender);
             //     this.set('hookRegistered', true);
             // }
         },
 
         unregisterHooks: function() {
-            testUtils.pre(this, function () {
-                var controller = get(this, 'controller');
-                Ember.assert('The controller should implement Ember.Evented', Ember.Evented.detect(controller));
-            });
-
-            get(this, 'controller').off('refreshView', this, this.rerender);
+            // get(this, 'controller').off('refreshView', this, this.rerender);
             // this.set('hookRegistered', false);
         },
 

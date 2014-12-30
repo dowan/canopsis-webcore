@@ -83,9 +83,6 @@ define([
 
             dynamicTemplateName: 'listlineTest',
 
-            //TODO test if this is needed (used in cloaked mode)
-            listlineControllerClass: ListlineController,
-
             actions: {
                 sendDisplayRecord: function (dest, record) {
                     //This method is not ugly TODO refactor, it would be better if event bubble until application directly
@@ -311,7 +308,7 @@ define([
             },
 
             shown_columns: function() {
-                console.log('compute shown_columns', get(this, 'sorted_columns'), get(this, 'attributesKeys'), get(this, 'sortedAttribute'));
+                console.log('compute shown_columns', get(this, 'sorted_columns'), get(this, 'sortedAttribute'));
 
                 //user preference for displayed columns.
                 if (this.get('user_show_columns') !== undefined) {
@@ -361,8 +358,6 @@ define([
 
                 console.debug('selected cols', selected_columns);
 
-                window._baseConsole.time('tpl compilation');
-
                 var tpl = Ember.Handlebars.compile(this.generateListlineTemplate(selected_columns));
 
                 var dynamicTemplateName = 'dynamic-list' + Math.floor(Math.random() * 10000);
@@ -372,7 +367,7 @@ define([
 
                 return selected_columns;
 
-            }.property('attributesKeysDict', 'attributesKeys', 'sorted_columns', 'maximized_column_index'),
+            }.property('attributesKeysDict', 'sorted_columns'),
 
             computeFindParams: function(){
                 console.group('computeFindParams');
