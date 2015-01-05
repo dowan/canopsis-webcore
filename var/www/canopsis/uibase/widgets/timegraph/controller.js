@@ -106,8 +106,7 @@ define([
                     show: true,
                     reserveSpace: true,
                     position: 'bottom',
-                    mode: 'time',
-                    timezone: 'browser'
+                    mode: 'time'
                 }],
 
                 yaxes: [{
@@ -241,11 +240,16 @@ define([
             ]
         },
 
-        zooming: false,
-        chartOptions: undefined,
-        timenavOptions: undefined,
-        chartSeries: Ember.Object.create({}),
-        dataSeries: Ember.A(),
+        init: function() {
+            set(this, 'zooming', false);
+            set(this, 'chartOptions', undefined);
+            set(this, 'timenavOptions', undefined);
+            set(this, 'chartSeries', Ember.Object.create({}));
+            set(this, 'dataSeries', Ember.A());
+
+            this._super.apply(this, arguments);
+        },
+
         human_readable: function() {
             return get(this, 'config.human_readable');
         }.property('config.human_readable'),
