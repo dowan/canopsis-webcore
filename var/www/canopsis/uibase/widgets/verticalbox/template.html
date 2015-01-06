@@ -7,8 +7,4 @@
     {{/if}}
 {{/if}}
 
-{{#each item in controller.items}}
-    <div>
-        {{widgetslot item=item}}
-    </div>
-{{/each}}
+{{partialslot slot=controller._partials.layout}}
