@@ -36,12 +36,12 @@ define([
         init: function(){
             this._super.apply(this, arguments);
             set(this, 'allCollapsed', true);
+
+            if(!Ember.isArray(get(this, 'selection'))) {
+                console.warn('override selection property');
+                set(this, 'selection', Ember.A());
+            }
         },
-
-
-        selectionChanged: function() {
-            console.log('selectionChanged');
-        }.observes('selection'),
 
         actions: {
             setListMode: function() {
@@ -65,11 +65,6 @@ define([
                 if(get(this, 'multiselect') === false) {
                     set(this, 'selection', [item]);
                 } else {
-                    if(!Ember.isArray(get(this, 'selection'))) {
-                        console.warn('override selection property');
-                        set(this, 'selection', Ember.A());
-                    }
-
                     var search = get(this, 'selection').filter(function(loopItem, index, enumerable){
                         return loopItem === item;
                     });
@@ -113,15 +108,15 @@ define([
             }
         },
 
-        searchFilter: "",
+        searchFilter: '',
 
         allCollapsed: false,
         selectionCollapsed: false,
         classesCollapsed: true,
 
-        mode: "list",
+        mode: 'list',
 
-        defaultIcon: "unchecked",
+        defaultIcon: 'unchecked',
 
         iconModeButtonCssClass: function(){
             if(get(this, 'mode') === 'icon')
@@ -132,10 +127,10 @@ define([
 
         listModeButtonCssClass: function(){
             if(get(this, 'mode') === 'list')
-                return "btn btn-default active";
+                return 'btn btn-default active';
             else
-                return "btn btn-default";
-        }.property("mode"),
+                return 'btn btn-default';
+        }.property('mode'),
 
         listGroupClass: function() {
             return 'list-group ' + get(this, 'mode');
@@ -146,14 +141,14 @@ define([
         }.property(),
 
         classAllPanelHref: function(){
-            return "#" + get(this, "classAllPanelId");
+            return '#' + get(this, 'classAllPanelId');
         }.property(),
 
         allClasses: function(){
             var searchFilter = get(this, 'searchFilter');
             var res;
 
-            if(searchFilter === "") {
+            if(searchFilter === '') {
                 res = get(this, 'content.all');
             } else {
                 res = get(this, 'content.all').filter(function(item, index, enumerable){
@@ -162,7 +157,7 @@ define([
                 });
             }
 
-            console.log("recompute allClasses", res);
+            console.log('recompute allClasses', res);
             return res;
         }.property('searchFilter'),
 
@@ -188,6 +183,11 @@ define([
 
             var res = Ember.A();
 
+            var filterFunction = function(item, index, enumerable) {
+                var doesItStartsWithSearchFilter = item.name.indexOf(searchFilter) !== -1;
+                return doesItStartsWithSearchFilter;
+            };
+
             for (var i = 0, l = classes.length; i < l; i++) {
                 var currentClass = Ember.Object.create({
                     key: classes[i].key,
@@ -201,10 +201,7 @@ define([
                 console.log("classItems", classItems);
                 if(searchFilter !== "") {
                     console.log('filter', classItems);
-                    classItems = classItems.filter(function(item, index, enumerable) {
-                        var doesItStartsWithSearchFilter = item.name.indexOf(searchFilter) !== -1;
-                        return doesItStartsWithSearchFilter;
-                    });
+                    classItems = classItems.filter(filterFunction);
 
                     currentClass.items = classItems;
 

@@ -37,15 +37,15 @@ define([
 
         //Controller -> View Hooks
         registerHooks: function() {
-            // if (!get(this, 'hookRegistered')) {
-            //     get(this, 'controller').on('refreshView', this, this.rerender);
-            //     this.set('hookRegistered', true);
-            // }
+            if (!get(this, 'hookRegistered')) {
+                get(this, 'controller').on('refreshView', this, this.rerender);
+                this.set('hookRegistered', true);
+            }
         },
 
         unregisterHooks: function() {
-            // get(this, 'controller').off('refreshView', this, this.rerender);
-            // this.set('hookRegistered', false);
+            get(this, 'controller').off('refreshView', this, this.rerender);
+            this.set('hookRegistered', false);
         },
 
         rerender: function() {

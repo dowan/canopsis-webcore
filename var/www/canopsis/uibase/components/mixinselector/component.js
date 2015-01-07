@@ -56,7 +56,7 @@ define([
 
         recomputeSelection: function() {
             var selection = get(this, 'selectionPrepared');
-            console.log('recomputeSelection', selection);
+            console.log('recomputeSelection', selection, get(this, 'selectionPrepared'));
 
             var content = get(this, 'content');
 

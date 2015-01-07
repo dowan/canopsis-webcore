@@ -6,7 +6,7 @@
         </a>
         <ul class="dropdown-menu">
         {{#each type in available_types}}
-            <li><a class="handle" {{action 'addModelInstance' type}}>{{type}}</a></li>
+            <li><a class="handle" {{action 'addModelInstance' type.name}}>{{type.name}}</a></li>
         {{/each}}
         </ul>
     </li>

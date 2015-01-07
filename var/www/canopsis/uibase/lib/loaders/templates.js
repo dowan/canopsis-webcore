@@ -81,7 +81,8 @@ var templates = [
     { name: 'stackedcolumns', template: 'canopsis/uibase/templates/stackedcolumns.html' ,  classes: ["foldable"]},
 
     { name: 'verticallayout', template: 'canopsis/uibase/templates/verticallayout.html' ,  classes: ["layout"]},
-    { name: 'lightlayout', template: 'canopsis/uibase/templates/lightlayout.html' ,  classes: ["layout"]}
+    { name: 'lightlayout', template: 'canopsis/uibase/templates/lightlayout.html' ,  classes: ["layout"]},
+    { name: 'mixineditdropdown', template: 'canopsis/uibase/templates/mixineditdropdown.html'}
 ];
 
 loader.loadWithTemplates(templates);
