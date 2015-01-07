@@ -28,8 +28,9 @@ define([
     'app/lib/utils/routes',
     'app/lib/utils/forms',
     'app/lib/utils/debug',
-    'app/lib/utils/data'
-], function($, Ember, DS, Application, PartialslotAbleController, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, dataUtils) {
+    'app/lib/utils/data',
+    'app/lib/schemasregistry'
+], function($, Ember, DS, Application, PartialslotAbleController, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, dataUtils, schemasRegistry) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -94,6 +95,18 @@ define([
 
         getSchema: function() {
             return Application[get(this, 'xtype').capitalize()].proto().categories;
+        },
+
+        editableEnabledMixins: function () {
+            var mixins = get(this, 'mixins');
+
+            for (var i = 0; i < mixins.length; i++) {
+                if(schemasRegistry.getByName(mixins[i].name)) {
+                    mixins[i].editable = true;
+                }
+            }
+
+            return mixins;
         },
 
         onReload: function () {

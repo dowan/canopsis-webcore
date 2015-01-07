@@ -22,7 +22,7 @@ define([
     'canopsis/uibase/widgets/canvas/controller'
 ], function(WidgetFactory, CanvasController) {
 
-    var widget = WidgetFactory('verticalbox', {
+    var widget = WidgetFactory('widgetcontainer', {
         partials: {
             titlebarsbuttons : ['titlebarbutton-minimize', 'titlebarbutton-moveup','titlebarbutton-movedown', 'titlebarbutton-widgeterrors']
         }

@@ -21,7 +21,7 @@ var widgets = [
     { name:'text', url:'canopsis/uibase/widgets/text/controller', template:'canopsis/uibase/widgets/text/template.html' },
     { name:'list', url:'canopsis/uibase/widgets/list/controller', template:'canopsis/uibase/widgets/list/template.html' },
     { name:'canvas', url:'canopsis/uibase/widgets/canvas/controller', template:'canopsis/uibase/widgets/canvas/template.html' },
-    { name:'verticalbox', url:'canopsis/uibase/widgets/verticalbox/controller', template:'canopsis/uibase/widgets/verticalbox/template.html' },
+    { name:'widgetcontainer', url:'canopsis/uibase/widgets/widgetcontainer/controller', template:'canopsis/uibase/widgets/widgetcontainer/template.html' },
     { name:'horizontalbox', url:'canopsis/uibase/widgets/horizontalbox/controller', template:'canopsis/uibase/widgets/horizontalbox/template.html' },
     { name:'lighthbox', url:'canopsis/uibase/widgets/lighthbox/controller', template:'canopsis/uibase/widgets/lighthbox/template.html' },
     { name:'tabmanager', url:'canopsis/uibase/widgets/tabmanager/controller', template:'canopsis/uibase/widgets/tabmanager/template.html' },

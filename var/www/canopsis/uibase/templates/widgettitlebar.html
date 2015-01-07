@@ -5,14 +5,16 @@
                 <button type="button" class="btn btn-info btn-sm" {{action 'editWidget' widget}}>
                     <span class="glyphicon glyphicon-edit"></span>
                 </button>
-                {{#if widget.mixins}}
+                {{#if widget.editableEnabledMixins.length}}
                     <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                         <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        {{#each mixin in widget.mixins}}
-                            <li><a {{action 'editMixin' widget mixin.name}}>{{mixin.name}}</a></li>
+                        {{#each mixin in widget.editableEnabledMixins}}
+                            {{#if mixin.editable}}
+                                <li><a {{action 'editMixin' widget mixin.name}}>{{mixin.name}}</a></li>
+                            {{/if}}
                         {{/each}}
                     </ul>
                 {{/if}}
@@ -31,7 +33,7 @@
         {{#if widget.rollbackable}}
             {{#if widget.isDirty}}
                 <button type="button" class="btn btn-small btn-danger btn-sm pull-right" {{action 'rollback' widget}}>
-                <i class="fa fa-undo"></i>
+                    <i class="fa fa-undo"></i>
                 </button>
             {{/if}}
         {{/if}}
