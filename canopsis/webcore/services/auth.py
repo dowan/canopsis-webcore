@@ -63,8 +63,8 @@ def check(mode='authkey', user=None, password=None):
                 }
             )
 
-        if user and user['authkey'] == key:
-            return user
+        if user and user[0]['authkey'] == key:
+            return user[0]
 
         else:
             return None
