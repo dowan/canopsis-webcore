@@ -33,6 +33,7 @@ define([
     function getColumnIndexesPriorities(viewMixin) {
         var stackableColumnsPriority = get(viewMixin, 'controller.mixinOptions.responsivelist.stackableColumnsPriority');
         var controller = get(viewMixin, 'controller');
+        //FIXME undefined
         var shownColumns = get(controller, 'shown_columns');
 
         columnStackingPriority = Ember.A();
@@ -41,6 +42,7 @@ define([
         if(stackableColumnsPriority) {
             for (var i = 0, l = stackableColumnsPriority.length; i < l; i++) {
                 var currentColumn = shownColumns.findBy('field', stackableColumnsPriority[i]);
+                console.log('currentColumn', currentColumn);
                 if(currentColumn !== undefined) {
                     console.log('currentColumn', currentColumn);
                     var columnIndex = Ember.get(currentColumn, 'index');
@@ -49,6 +51,8 @@ define([
                 }
             }
         }
+
+        console.log('stackableColumnsPriority@end', columnStackingPriority);
 
         return columnStackingPriority;
     }

@@ -35,7 +35,9 @@ var mixins = [
     { name: 'eventnavigation', url: 'app/mixins/eventnavigation', classes: ['widget', 'events']},
     { name: 'eventhistory', url: 'app/mixins/eventhistory', classes: ['widget', 'events']},
     { name: 'responsivelist', url: 'app/mixins/responsivelist', classes: ['widget', 'events']},
-    { name: 'periodicrefresh', url: 'app/mixins/periodicrefresh', classes: ['widget', 'events']}
+    { name: 'periodicrefresh', url: 'app/mixins/periodicrefresh', classes: ['widget', 'events']},
+    { name: 'verticallayout', url: 'app/mixins/verticallayout', classes: ['widget', 'events']},
+    { name: 'lightlayout', url: 'app/mixins/lightlayout', classes: ['widget', 'events']}
 ];
 
 loader.loadWithTemplates(mixins);

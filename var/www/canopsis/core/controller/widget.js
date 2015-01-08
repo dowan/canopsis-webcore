@@ -28,7 +28,8 @@ define([
     'app/lib/utils/routes',
     'app/lib/utils/forms',
     'app/lib/utils/debug',
-    'app/lib/utils/data'
+    'app/lib/utils/data',
+    'app/view/mixineditdropdown'
 ], function($, Ember, DS, Application, PartialslotAbleController, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, dataUtils) {
 
     var get = Ember.get,

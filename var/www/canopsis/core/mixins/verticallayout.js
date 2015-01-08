@@ -19,16 +19,14 @@
 
 define([
     'ember',
-    'utils'
-], function(Ember, utils) {
+    'app/lib/factories/mixin'
+], function(Ember, Mixin) {
 
-    var get = Ember.get,
-        set = Ember.set;
-
-    Ember.HTMLBars.helpers.ifUserCanDisplayView = Ember.HTMLBars.makeViewHelper(function(params, hash, options, env) {
-        var template = options.template;
-
-        return template.render(this, env, options.morph.contextualElement);
+    var mixin = Mixin('verticallayout', {
+        partials: {
+            layout: ['verticallayout']
+        }
     });
 
+    return mixin;
 });

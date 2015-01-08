@@ -35,7 +35,11 @@ define([
         columns: [],
         items: [],
 
-        itemsPerPage: 5,
+        mixinOptions: {
+            pagination: {
+                itemsPerPage: 5
+            }
+        },
 
         onDataChange: function() {
             this.refreshContent();

@@ -1,0 +1,11 @@
+{{#if view.editableEnabledMixins.length}}
+    <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <span class="caret"></span>
+        <span class="sr-only">Toggle Dropdown</span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        {{#each mixin in view.editableEnabledMixins}}
+            <li><a {{action 'editMixin' widget mixin.name}}>{{mixin.name}}</a></li>
+        {{/each}}
+    </ul>
+{{/if}}

@@ -18,30 +18,15 @@
 */
 
 define([
-    'ember',
-    'utils'
-], function(Ember, utils) {
+    'app/lib/factories/widget',
+    'canopsis/uibase/widgets/canvas/controller'
+], function(WidgetFactory, CanvasController) {
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
-
-
-    var component = Ember.Component.extend({
-        tagName: 'span',
-
-        displayYield: function() {
-                return true;
-        }.property('viewId')
-    });
-
-
-    Ember.Application.initializer({
-        name:"component-ifusercandisplayview",
-        initialize: function(container, application) {
-            application.register('component:component-ifusercandisplayview', component);
+    var widget = WidgetFactory('widgetcontainer', {
+        partials: {
+            titlebarsbuttons : ['titlebarbutton-minimize', 'titlebarbutton-moveup','titlebarbutton-movedown', 'titlebarbutton-widgeterrors']
         }
-    });
+    }, {subclass: CanvasController});
 
-    return component;
+    return widget;
 });
