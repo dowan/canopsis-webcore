@@ -25,15 +25,20 @@ define([
 ], function($, Ember, DOM, values) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     var component = Ember.Component.extend({
         tagName: 'div',
         classNames: 'flotchart',
 
-        options: undefined,
-        series: undefined,
-        human: false,
+        init: function() {
+            set(this, 'options', undefined);
+            set(this, 'series', undefined);
+            set(this, 'human', false);
+
+            this._super.apply(this, arguments);
+        },
 
         onDataUpdate: function() {
             this.send('renderChart');
