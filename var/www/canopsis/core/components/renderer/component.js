@@ -25,6 +25,16 @@ define([
 
 
     var component = Ember.Component.extend({
+        actions: {
+            do: function(action) {
+                var params = [];
+                for (var i = 1, l = arguments.length; i < l; i++) {
+                    params.push(arguments[i]);
+                }
+
+                get(this, 'parentView.controller').send(action, params);
+            }
+        },
         tagName: 'span'
     });
 

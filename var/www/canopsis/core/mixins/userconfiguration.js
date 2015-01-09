@@ -63,7 +63,7 @@ define([
                     void (data);
                     console.log('User configuration save statement for widget complete');
                     if (!Ember.isNone(callback)) {
-                        console.log('found callback after save configuration, processing it.')
+                        console.log('found callback after save configuration, processing it.');
                         callback();
                     }
                 }
@@ -101,7 +101,7 @@ define([
                             userConfiguration.set(key, preferences[key]);
                         }
                         if (!Ember.isNone(callback)) {
-                           console.log('found callback after save configuration, processing it.')
+                           console.log('found callback after save configuration, processing it.');
                             callback();
                         }
 
@@ -116,7 +116,6 @@ define([
                 }
             );
         }
-
     });
 
 

@@ -83,26 +83,6 @@ define([
 
             dynamicTemplateName: 'listlineTest',
 
-            actions: {
-                sendDisplayRecord: function (dest, record) {
-                    //This method is not ugly TODO refactor, it would be better if event bubble until application directly
-                    // but at the moment, event doen t bubble properly
-                    console.debug('sendDisplayRecord action called with params', dest, record);
-
-                    var template = get(dest, 'record_template');
-                    if (Ember.isNone(template)) {
-                        template = '';
-                    }
-
-                    console.debug('Template is ', template);
-
-                    var recordinfopopupController = get(this, 'controllers.recordinfopopup');
-
-                    recordinfopopupController.send('show', record, template);
-                }
-            },
-
-
             user: Ember.computed.alias('controllers.login.record._id'),
             rights: Ember.computed.alias('controllers.login.record.rights'),
             safeMode: Ember.computed.alias('controllers.application.frontendConfig.safe_mode'),
@@ -182,6 +162,7 @@ define([
             },
 
             itemType: function() {
+
                 var listed_crecord_type = get(this, 'listed_crecord_type');
                 console.info('listed_crecord_type', listed_crecord_type);
                 if(listed_crecord_type !== undefined && listed_crecord_type !== null ) {
