@@ -88,20 +88,20 @@ def exports(ws):
 
     @route(
         ws.application.put,
-        payload=['elt', 'graph_ids'],
-        name='graph/elt'
+        payload=['elts', 'graph_ids', 'cache'],
+        name='graph/elts'
     )
-    def put_elt(elt, graph_ids=None, cache=False):
+    def put_elts(elts, graph_ids=None, cache=False):
         """
-        Put an element.
+        Put graph elements in DB.
 
-        :param dict elt: element to put.
-        :type elt: dict or GraphElement
+        :param elts: graph elements to put in DB.
+        :type elts: dict, GraphElement or list of dict/GraphElement.
         :param str graph_ids: element graph id. None if elt is a graph.
         :param bool cache: use query cache if True (False by default).
         """
 
-        manager.put_elt(elt=elt, graph_ids=graph_ids)
+        manager.put_elts(elts=elts, graph_ids=graph_ids, cache=cache)
 
     @route(
         ws.application.delete,

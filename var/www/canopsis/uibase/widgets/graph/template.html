@@ -6,12 +6,25 @@
 .edgenode {
     stroke: none;
 }
-.node.toolbox {
+.toolbox {
     fill: red;
+    cursor: hand;
 }
 .overlay {
-  fill: none;
-  pointer-events: all;
+    fill: none;
+    pointer-events: all;
+    cursor: context-menu;
+}
+.selected {
+    stroke: green;
+    stroke-width: 2;
+}
+.over {
+    stroke: blue;
+    stroke-width: 2;
+}
+.tmplink {
+    stroke: red;
 }
 </style>
 <div class="graph">
