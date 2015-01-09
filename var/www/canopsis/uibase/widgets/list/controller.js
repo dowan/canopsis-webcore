@@ -264,6 +264,8 @@ define([
                     me.trigger('refresh');
                 }).catch(function (promiseProxy) {
                     console.warn('Catching error', promiseProxy);
+                    //TODO add an error in displayedErrors array, to warn the user that the data cannot be displayed
+                    get(this, 'content.displayedErrors').pushObject('There seems to be an error with listed data.');
                     set(me, 'dataError', promiseProxy);
                 });
             },

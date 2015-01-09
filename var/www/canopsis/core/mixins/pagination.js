@@ -93,7 +93,6 @@ define([
 
         itemsDivided: function(){
             return get(this, 'itemsTotal') / get(this, 'mixinOptions.pagination.itemsPerPage');
-
         }.property('itemsTotal', 'mixinOptions.pagination.itemsPerPage'),
 
         itemsPerPagePropositions : function() {
@@ -153,7 +152,7 @@ define([
             }
 
             var start = itemsPerPage * (this.currentPage - 1);
-            console.log("start", start);
+            console.log("start", start, itemsPerPage);
             set(this, 'itemsPerPagePropositionSelected', itemsPerPage);
             set(this, 'paginationMixinFindOptions.start', start);
             set(this, 'paginationFirstItemIndex', start + 1);
