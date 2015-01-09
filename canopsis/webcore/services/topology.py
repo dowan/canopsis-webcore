@@ -64,6 +64,9 @@ def exports(ws):
             serialize=False
         )
 
+        if result is not None and not isinstance(result, dict):
+            result = list(result)
+
         return result
 
     @route(
@@ -187,12 +190,8 @@ def exports(ws):
             serialize=False
         )
 
-        if result is not None:
-            if isinstance(result, dict):
-                result['_delts'] = list(result['_delts'])
-            else:
-                for topology in result:
-                    topology['_delts'] = list(result['_delts'])
+        if result is not None and not isinstance(result, dict):
+            result = list(result)
 
         return result
 
@@ -347,8 +346,12 @@ def exports(ws):
             target_edge_types=target_edge_types,
             edge_data=edge_data,
             query=query, edge_query=edge_query, source_query=source_query,
-            target_query=target_query
+            target_query=target_query,
+            serialize=False
         )
+
+        if result is not None and not isinstance(result, dict):
+            result = list(result)
 
         return result
 
@@ -379,8 +382,12 @@ def exports(ws):
         """
 
         result = manager.get_vertices(
-            ids=ids, graph_ids=graph_ids, types=types, data=data, query=query
+            ids=ids, graph_ids=graph_ids, types=types, data=data, query=query,
+            serialize=False
         )
+
+        if result is not None and not isinstance(result, dict):
+            result = list(result)
 
         return result
 
@@ -422,7 +429,11 @@ def exports(ws):
             targets=targets,
             graph_ids=graph_ids,
             data=data,
-            query=query
+            query=query,
+            serialize=False
         )
+
+        if result is not None and not isinstance(result, dict):
+            result = list(result)
 
         return result
