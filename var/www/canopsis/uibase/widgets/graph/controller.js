@@ -28,7 +28,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-    var GraphViewMixin = Ember.Mixin.create({
+    var widget = WidgetFactory('graph', {
 
         node_class: 'node', // node class name
         link_class: 'link', // link class name
@@ -39,45 +39,40 @@ define([
 
         panel: null, // display panel
 
-        /*
-        didInsertElement: function() {
-            var graph_div = this.$('div .graph');
-            // call controller.findItems function when the template is loaded
-            if (graph_div !== undefined) {
-                // save reference to controller
-                this.controller = this.get('controller');
-                this.controller.findItems();
-                this.stopRefresh();
-            }
-            this._super.apply(this, arguments);
-        },*/
+        firstCall: true, // flag while rerender has not been called
 
         rerender: function() {
+            var _this = this;
             this._super.apply(this, arguments);
-            this.d3_graph = this.controller.d3_graph;
-            var width = this.$().width(), height = this.$().height();
+            this.d3_graph = this.d3_graph;
+            var width = 1000, height = 1000;
             // apply force behavior
-            this.force = d3.layout.force().charge(-120).linkDistance(30).size([width, height]);
+            if (this.force === null) {
+                this.force = d3.layout.force().charge(-120).linkDistance(30);
+            } else {
+                // stop force while updating its properties
+                this.force.stop();
+            }
+            this.force.size([width, height]);
             // select svg
-            this.panel = d3.select('#' + this.elementId + ' svg g');
+            this.panel = d3.select('#' + this.get('id') + ' svg g');
             if (this.panel.size() === 0) {
                 /**
                 * zoom function.
                 */
                 function zoom() {
-                    this.panel.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+                    _this.panel.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
                 }
                 var zoom = d3.behavior.zoom()
                     //.scaleExtent([1, 8])
                     .on('zoom', zoom)
                 ;
-                var _this = this;
                 // or create it if it does not exist
-                this.panel = d3.select('#' + this.elementId + ' svg')
+                this.panel = d3.select('#' + this.get('id') + ' svg')
                     .attr('width', width)
                     .attr('height', height)
                     .append('g')
-                        .on('click', function(){return this.clickAction(_this);})
+                        .on('click', function(){return _this.clickAction(this);})
                         .call(zoom)
                 ;
             }
@@ -121,6 +116,9 @@ define([
             // refresh selected shapes
             this.refreshSelectedShapes();
 
+            if (! this.firstCall) {
+                //this.force.on('tick', null);
+            }
             this.force.on('tick', function() {
                 //this.panel.selectAll('.link')
                 link_model
@@ -135,7 +133,13 @@ define([
                     .attr('cy', function(d) {return d.y;})
                 ;
             });
-            this.force.start();
+            // disable first call
+            if (this.firstCall) {
+                this.firstCall = false;
+                this.force.start();
+            } else { // or resume force
+                this.force.start();
+            }
         },
 
         /**
@@ -147,7 +151,7 @@ define([
         * @param node
         */
         refreshSelectedShapes: function() {
-            var selected = this.controller.selected;
+            var selected = this.selected;
             if (selected.length > 0) {
                 // get a list of 'selected' items
                 var selected_shapes = this.panel.select('.shape')
@@ -164,40 +168,61 @@ define([
         * Show tool box related to input shape.
         */
         showToolBox: function(shape) {
-            if (d3.event.preventDefault()) {
+            if (d3.event.defaultPrevented) {
                 return;
             }
+            var data = shape.__data__;
             // if toolbox already exists, destroy it.
-            if (this.toolbox !== null) {
-                this.destroyToolBox();
-            }
+            //if (this.toolbox !== null) {
+            //    this.destroyToolBox(shape);
+            //}
             // add a new toolbox with specific node toolbox items
-            var toolbox_items = this.controller.getToolBoxItems(shape.__data__);
+            var toolbox_items = this.getToolBoxItems(data);
             // get coordinates
             var coordinates = d3.mouse(shape);
             var _this = this;
             // create generic toolbox
-            this.toolbox = this.panel.select(shape)
-                .data(toolbox_items, function(d) {return d;}).enter()
+            this.toolbox = this.panel.selectAll('.toolbox')
+                .data(toolbox_items, function(d) {return d;});
+            // add new toolbox items
+            this.toolbox.enter()
                     // add circles
                     .append('circle')
                         // with toolbox class
                         .classed('toolbox', true)
+                        // attach handlers
+                        .on('click', function(d){return _this[d+'Handler'](data);})
+                        .style("opacity", 0)
                         .attr(
                             {
-                                class: function(d) {return d+'-tb';}, // with specific class
-                                cx: function(d, i) {return coordinates[0] + Math.cos(i) * d.weight;},
-                                cy: function(d, i) {return coordinates[1] + Math.sin(i) * d.weight;},
-                                r: 2
+                                cx: coordinates[0],
+                                cy: coordinates[1],
+                                r: 0
                             }
                         )
-                        // attach handlers
-                        .on('click', function(d){return _this[d+'Handler'](_this)});
-                    ;
+                        // add text
+                        .append('title')
+                            .text(function(d) {return d;})
+                ;
+            // move all toolbox to mouse coordinates
             this.toolbox
-                // add text
-                .text(function(d) {return d;})
-            ;
+                .transition()
+                    .style("opacity", 1)
+                    .attr(
+                        {
+                            cx: function(d, i) {return coordinates[0] + Math.cos(2 * i * Math.PI / toolbox_items.length) * 10;},
+                            cy: function(d, i) {return coordinates[1] + Math.sin(2 * i * Math.PI / toolbox_items.length) * 10;},
+                            r: 5
+                        }
+                    )
+                ;
+            // delete old toolbox
+            this.toolbox.exit()
+                .transition()
+                    .duration(500)
+                    .style("opacity", 0)
+                    .remove()
+                ;
         },
 
         /**
@@ -208,49 +233,72 @@ define([
             if (this.toolbox !== null) {
                 this.toolbox
                     .transition()
-                        .duration(300)
+                        .duration(500)
+                        .style("opacity", 0)
                         .remove()
                     ;
             }
         },
 
-        closeHandler: function(view) {
-            view.destroyToolBox();
+        closeHandler: function(data) {
+            d3.event.stopPropagation();
+            this.destroyToolBox();
         },
-        editHandler: function(view, data) {
-            view.controller.edit(data);
+        editHandler: function(data) {
+            d3.event.stopPropagation();
+            this.edit(data);
+            this.destroyToolBox();
         },
-        deleteHandler: function(view, data) {
-            view.controller.delete(data);
+        deleteHandler: function(data) {
+            d3.event.stopPropagation();
+            this.delete(data);
+            this.destroyToolBox();
         },
-        linkHandler: function(view, data) {
-            view.addLink();
+        linkHandler: function(data) {
+            d3.event.stopPropagation();
+            this.addLink();
+            this.updateModel();
+            this.destroyToolBox();
         },
-        nodeHandler: function(view, data) {
-            view.addNode();
+        nodeHandler: function(data) {
+            d3.event.stopPropagation();
+            this.addNode();
+            this.updateModel();
+            this.destroyToolBox();
         },
-        unselectHandler: function(view, data) {
-            view.controller.unselect(data);
+        unselectHandler: function(data) {
+            d3.event.stopPropagation();
+            this.unselect(data);
+            this.destroyToolBox();
         },
-        selectHandler: function(view, data) {
-            view.controller.select(data);
+        selectHandler: function(data) {
+            d3.event.stopPropagation();
+            this.select(data);
+            this.destroyToolBox();
         },
-        unlockHandler: function(view, data) {
-            void(view);
+        unlockHandler: function(data) {
+            d3.event.stopPropagation();
             data.fixed = false;
+            d3.select('#'+data.id).classed('locked', false);
+            this.destroyToolBox();
         },
-        lockHandler: function(view, data) {
-            void(view);
+        lockHandler: function(data) {
+            d3.event.stopPropagation();
             data.fixed = true;
+            d3.select('#'+data.id).classed('locked', true);
+            this.destroyToolBox();
         },
-        eventpoolHandler: function(view, data) {
-            alert('go to event pool with ' + this.__data__.elt.entity);
+        eventpoolHandler: function(shape, data) {
+            d3.event.stopPropagation();
+            alert('go to event pool with ' + data.elt.entity);
+            this.destroyToolBox();
         },
 
         /**
         * called when adding nodes.
         */
         addNodes: function(nodes) {
+            var _this = this;
             // create the graphical element
             var shapes = nodes
                 .append('circle') // circle representation
@@ -261,13 +309,11 @@ define([
                             edge: function(d) {return d.elt.type === 'edge';}
                         }
                     )
-                ;
-            var _this = this;
-            shapes
-                .on('click', function() {return _this.clickNode(_this);})
-                .on('dblclick', function(){return _this.dblClickNode(_this);})  // add menu selection
-                .on('mouseover', function() {_this.panel.select(this).classed('over', true);})
-                .on('mouseout', function() {_this.panel.select(this).classed('over', false);})
+                    .attr('id', function(d) {return d.id;})
+                    .on('click', function() {return _this.clickAction(this);})
+                    .on('dblclick', function(){return _this.dblClickAction(this);})  // add menu selection
+                    .on('mouseover', function() {d3.select(this).classed('over', true);})
+                    .on('mouseout', function() {d3.select(this).classed('over', false);})
                 ;
             // add a title which is the entity id or graph element id
             shapes.append('title')
@@ -338,7 +384,7 @@ define([
                 )
                 .attr(
                     'r',
-                    function(d) { return d.id === topology.id? 5 : d.weight;}
+                    function(d) { return d.id === topology.id? 5 : d.elt.type === 'edge'? d.elt.weight : ((d.weight? d.weight : 0) + 1);}
                 )
             ;
         },
@@ -357,8 +403,11 @@ define([
                             link: true, // set class link
                         }
                     )
-                    .on('mouseover', function() {_this.panel.select(this).classed('over', true);})
-                    .on('mouseout', function() {_this.panel.select(this).classed('over', false);})
+                    .style('stroke-width', function(d) {return d.elt.weight;})
+                    .attr('id', function(d) {return d.id;})
+                    .on('click', function() {return _this.clickAction(this);})
+                    .on('mouseover', function() {d3.select(this).classed('over', true);})
+                    .on('mouseout', function() {d3.select(this).classed('over', false);})
             ;
         },
 
@@ -391,18 +440,19 @@ define([
             ;
         },
 
-
-        dblClickAction: function(view) {
-            if (d3.event.preventDefault()) return;
-            view.controller.edit(this);
+        dblClickAction: function(shape) {
+            if (d3.event.defaultPrevented) return;
+            d3.event.stopPropagation();
+            this.edit(shape.__data__);
         },
 
-        clickAction: function(view) {
-            if (d3.event.preventDefault()) return;
-            if (view.source === undefined) {
-                view.showToolBox(this);
+        clickAction: function(shape) {
+            if (d3.event.defaultPrevented) return;
+            d3.event.stopPropagation();
+            if (this.source === undefined) {
+                this.showToolBox(shape);
             } else {
-                view.addLink(view.source, this.__data__);
+                this.addLink(this.source, shape.__data__);
             }
         },
 
@@ -432,10 +482,6 @@ define([
             );
         },
 
-    });
-
-    var widget = WidgetFactory('graph', {
-
         graph: null, // canopsis graph model
         d3_graph: null, // d3 graph model
 
@@ -449,14 +495,6 @@ define([
         business: null, // business controller
 
         graph_div: null, // graph div markup
-
-        viewMixins: [
-            GraphViewMixin
-        ],
-
-        /*init: function() {
-            //this._super.apply(this, arguments);
-        },*/
 
         /**
         * Get request server url to get graph.
@@ -575,10 +613,12 @@ define([
                         {
                             elts: [],
                             _delts: {},
-                            _type: _this.graph_type,
+                            type: _this.graph_type,
+                            _type: 'graph',
                             _id: _this.graph_id, // mongo id
                             _cls: _this.graph_cls, // class
                             cid: _this.graph_id, // canopsis id
+                            _id: _this.graph_id,
                             data: {}
                         }
                         :
@@ -704,6 +744,24 @@ define([
                 this
             );
 
+            // resolve weight
+            this.d3_graph.nodes.forEach(
+                function(node) {
+                    if (node.elt.type === 'edge') {
+                        var source_id = node.elt.sources[0];
+                        var source_node = nodes_by_indexes[source_id];
+                        if (source_node.weight === undefined) {
+                            source_node.weight = 0;
+                        }
+                        source_node.weight += node.elt.weight;
+                    } else {
+                        if (node.weight === undefined) {
+                            node.weight = 0;
+                        }
+                    }
+                }
+            );
+
             // resolve sources and targets in links
             this.d3_graph.links.forEach(
                 function(link) {
@@ -728,8 +786,7 @@ define([
                             }
                         );
                     }
-                    _this.trigger('refresh');
-                    //_this.startRefresh();
+                    _this.rerender();
                 }
             );
         },
@@ -739,21 +796,20 @@ define([
         *
         * @param data data to edit. If undefined, data is this.__data__
         */
-        edit: function(data, widget) {
-            if (data === undefined) { // if handler result
-                elt = this.__data__;
-            } else { // if called by the controller
-                widget = this;
-            }
-            var elt = data.elt;
+        edit: function(data) {
+            var elt = data.elt, _this = this;
+            record = dataUtils.getStore().createRecord(
+                elt.type,
+                elt
+            );
             var recordWizard = formsUtils.showNew(
                 'modelform',
-                elt
+                record
             );
             recordWizard.submit.done(
                 function(form) {
-                    elt.save();
-                    this.updateModel();
+                    record.save();
+                    _this.updateModel();
                 }
             );
         },
@@ -765,14 +821,11 @@ define([
         delete: function(data) {
             var data_to_delete = data;
             // initialize data
-            if (data_to_delete === undefined) { // if data does not exist
-                data_to_delete = [this.__data__]; // get data from this
-            }
-            else if (typeof(data_to_delete) === 'string') { // if data is a string
-                data_to_delete = [data]; // transform it into an array
+            if (typeof(data_to_delete) === 'string') { // if data is a string
+                data_to_delete = [data_to_delete]; // transform it into an array
             }
             // start to delete data from model
-            data.forEach(
+            data_to_delete.forEach(
                 function(d) {
                     delete this.graph._delts[d.cid];
                 }
@@ -822,10 +875,11 @@ define([
             var vertice = {
                 cid: Math.random() + '',
                 type: 'node',
+                _type: 'vertice',
                 _cls: 'canopsis.topology.elements.Node'
             };
             this.graph._delts[vertice.cid] = vertice;
-            this.graph.elts.push(vertice);
+            this.graph.elts.push(vertice.cid);
             return result
         },
 
@@ -863,14 +917,11 @@ define([
             // default result
             var result = [
                 'close', // close toolbox
-                'edit', // edit node
                 // 'copy', // copy node
-                'delete' // delete node
             ];
 
-            if (data.elt) { // is it a node
-                result.push('link'); // new link
-                if ($.inArray(data.id, this.selected)) {
+            if (data !== undefined && data.elt) { // is it a node
+                if ($.inArray(data.id, this.selected) >= 0) {
                     result.push('unselect');
                 } else {
                     result.push('select');
@@ -882,6 +933,15 @@ define([
                 }
                 if (data.entity) {
                     result.push('eventpool');
+                }
+                if (data.id !== this.graph.cid) { // all nodes but topology
+                    if (data.elt.type !== 'edge') {
+                        result.push('link'); // new link
+                    }
+                    result.push('delete'); // elt deletion
+                }
+                if ($.inArray(data.elt.type, ['topology', 'edge']) === -1) { // all elts but topologies
+                    result.push('edit'); // edit elt
                 }
             } else {
                 result.push('node'); // new node
