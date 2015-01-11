@@ -8,8 +8,13 @@
 }
 .toolbox {
     fill: white;
-    cursor: hand;
+    cursor: pointer;
     stroke: black;
+}
+.toolbox text {
+    font-size: 5px;
+    text-anchor: middle;
+    baseline-shift: -0.5ex;
 }
 .overlay {
     fill: none;
@@ -28,8 +33,21 @@
     stroke: blue;
     stroke-width: 2;
 }
-.tmplink {
+.tmpLink {
+    opacity: 0.5;
+    pointer-events: all;
+    marker-end: url(#markerArrow);
+}
+#tmpLink {
+    cursor: copy;
+    stroke: green;
+}
+#wrongTmpLink {
+    cursor: no-drop;
     stroke: red;
+}
+.link {
+    cursor: alias;
 }
 </style>
 <div class="graph" {{bind-attr id=controller.id}}>

@@ -30,6 +30,8 @@ define([
 
     var widget = WidgetFactory('graph', {
 
+        d3_graph: {nodes: [], links: []}, // d3 graph with nodes and links
+
         node_class: 'node', // node class name
         link_class: 'link', // link class name
 
@@ -41,6 +43,74 @@ define([
 
         firstCall: true, // flag while rerender has not been called
 
+        source: null, // source link data
+
+        _size: [1, 1],
+        _charge: -120,
+        _chargeDistance: 500,
+        _linkDistance: 20,
+        _linkStrength: 1,
+        _friction: 0.9,
+        _theta: 0.8,
+        _gravity: 0.1,
+
+        size: function() {
+            return this._size;
+        },
+        sizeChanged: function() {
+            this._size = this.get('size');
+            this.force.size(size);
+        }.observes('size'),
+        charge: function() {
+            return this._charge;
+        },
+        chargeChanged: function() {
+            this._charge = this.get('charge');
+            this.force.charge(charge);
+        }.observes('charge'),
+        chargeDistance: function() {
+            return this._chargeDistance;
+        },
+        chargeDistanceChanged: function() {
+            this._chargeDistance = this.get('chargeDistance');
+            this.force.chargeDistance(chargeDistance);
+        }.observes('chargeDistance'),
+        linkDistance: function() {
+            return this._linkDistance;
+        },
+        linkDistanceChanged: function() {
+            this._linkDistance = this.get('linkDistance');
+            this.force.linkDistance(linkDistance);
+        }.observes('linkDistance'),
+        linkStrength: function() {
+            return this._linkStrength;
+        },
+        linkStrengthChanged: function() {
+            this._linkStrength = this.get('linkStrength');
+            this.force.linkStrength(linkStrength);
+        }.observes('linkStrength'),
+        friction: function() {
+            return this._friction;
+        },
+        frictionChanged: function() {
+            this._friction = this.get('friction');
+            this.force.friction(friction);
+        }.observes('friction'),
+        theta: function() {
+            return this._theta;
+        },
+        thetaChanged: function() {
+            this._theta = this.get('theta');
+            this.force.theta(theta);
+        }.observes('theta'),
+        gravity: function() {
+            return this._gravity;
+        },
+        gravityChanged: function() {
+            this._gravity = this.get('gravity');
+            this.force.gravity(gravity);
+        }.observes('gravity'),
+
         rerender: function() {
             var _this = this;
             this._super.apply(this, arguments);
@@ -48,7 +118,16 @@ define([
             var width = 1000, height = 1000;
             // apply force behavior
             if (this.force === null) {
-                this.force = d3.layout.force().charge(-120).linkDistance(30);
+                this.force = d3.layout.force()
+                    .size(this._size)
+                    .charge(this._charge)
+                    .chargeDistance(this._chargeDistance)
+                    .linkDistance(this._linkDistance)
+                    .linkStrength(this._linkStrength)
+                    .friction(this._friction)
+                    .theta(this._theta)
+                    .gravity(this._gravity)
+                    ;
             } else {
                 // stop force while updating its properties
                 this.force.stop();
@@ -64,15 +143,28 @@ define([
                     _this.panel.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
                 }
                 var zoom = d3.behavior.zoom()
-                    //.scaleExtent([1, 8])
+                    .scaleExtent([1.5, 10])
                     .on('zoom', zoom)
                 ;
                 // or create it if it does not exist
                 this.panel = d3.select('#' + this.get('id') + ' svg')
-                    .attr('width', width)
-                    .attr('height', height)
+                    .attr(
+                        {
+                            width: width,
+                            height: height
+                        }
+                    )
                     .append('g')
-                        .on('click', function(){return _this.clickAction(this);})
+                        .attr(
+                            {
+                                transform: 'scale(1.5)'
+                            }
+                        )
+                        .on('click', function(){ return _this.clickAction(this);})
+                        .on('mousemove', function() { return _this.moveAction(this);})
+                        //.on('mouseover', function() { return _this.overAction(this);})
+                        .on('mouseout', function() { return _this.overAction(this);})
+                        .on('dblclick', function() { return _this.addHandler();})
                         .call(zoom)
                 ;
             }
@@ -84,7 +176,7 @@ define([
                     .append("rect")
                         .classed("overlay", true)
                         .attr("width", width)
-                        .attr("height", height)
+                        .attr("height", height);
                 ;
             }
             // load nodes and links into force
@@ -116,21 +208,15 @@ define([
             // refresh selected shapes
             this.refreshSelectedShapes();
 
-            if (! this.firstCall) {
-                //this.force.on('tick', null);
-            }
             this.force.on('tick', function() {
-                //this.panel.selectAll('.link')
                 link_model
                     .attr('x1', function(d) {return d.source.x;})
                     .attr('y1', function(d) {return d.source.y;})
                     .attr('x2', function(d) {return d.target.x;})
                     .attr('y2', function(d) {return d.target.y;})
                 ;
-                //this.panel.selectAll('.node')
-                node_model
-                    .attr('cx', function(d) {return d.x;})
-                    .attr('cy', function(d) {return d.y;})
+            node_model
+                .attr("transform", function(d) { return "translate(" + (d.x) + "," + (d.y) + ")"; })
                 ;
             });
             // disable first call
@@ -151,15 +237,17 @@ define([
         * @param node
         */
         refreshSelectedShapes: function() {
-            var selected = this.selected;
-            if (selected.length > 0) {
+            var selected_id = Object.keys(this.selected);
+            if (selected_id.length > 0) {
                 // get a list of 'selected' items
-                var selected_shapes = this.panel.select('.shape')
-                    .data(selected, function(d){return d.id;});
+                var selected_shapes = this.panel.selectAll('.shapegroup')
+                    .data(selected_id, function(d){return d;});
                 // select newly selected items
-                selected_shapes.enter().transition().duration(300).classed('selected', true);
+                selected_shapes.classed('selected', true);
+                //selected_shapes.transition().duration(300).classed('selected', true);
                 // unselect unselected items
-                selected_shapes.exit().transition().duration(300).classed('selected', false);
+                //selected_shapes.exit().transition().duration(300).classed('selected', false);
+                selected_shapes.exit().classed('selected', false);
             }
         },
 
@@ -179,40 +267,58 @@ define([
             // add a new toolbox with specific node toolbox items
             var toolbox_items = this.getToolBoxItems(data);
             // get coordinates
-            var coordinates = d3.mouse(shape);
+            var coordinates = data? [data.x, data.y] : d3.mouse(shape);
             var _this = this;
             // create generic toolbox
             this.toolbox = this.panel.selectAll('.toolbox')
-                .data(toolbox_items, function(d) {return d;});
+                .data(toolbox_items, function(d) {return d.name;});
             // add new toolbox items
-            this.toolbox.enter()
-                    // add circles
-                    .append('circle')
-                        // with toolbox class
-                        .classed('toolbox', true)
-                        // attach handlers
-                        .on('click', function(d){return _this[d+'Handler'](data);})
-                        .style("opacity", 0)
-                        .attr(
-                            {
-                                cx: coordinates[0],
-                                cy: coordinates[1],
-                                r: 0
+            var new_toolbox = this.toolbox.enter()
+                .append('g')
+                    .style("opacity", 0) // generic style
+                    .attr(
+                        {
+                            id: function(d) { return 'toolbox_' + d.name;}, // id
+                            class: function(d) { return 'toolbox ' + d.name;}, // class
+                            transform: function(d, i) {
+                                var length = 2 * i * Math.PI / toolbox_items.length;
+                                var gap = 15;
+                                var x = coordinates[0] + Math.cos(length) * gap, y = coordinates[1] + Math.sin(length) * gap;
+                                return "translate(" + x + "," + y + ") " + (d.transform ? d.transform : '');
                             }
-                        )
-                        // add text
-                        .append('title')
-                            .text(function(d) {return d;})
+                        }
+                    )
+                    // attach handlers
+                    .on('click', function(d){return _this[d.name + 'Handler'](data, shape);})
                 ;
+            new_toolbox // add shape
+                .append('path')
+                    .attr(
+                        {
+                            d: function(d, i) {
+                                return d.symbol(d, i);
+                            }
+                        }
+                    )
+                    // add text
+                    .append('title')
+                        .text(function(d) {return d.name;})
+                ;
+            new_toolbox // add hyperlink with name
+                .append('text')
+                    .text(function(d) { return d.name});
             // move all toolbox to mouse coordinates
             this.toolbox
                 .transition()
-                    .style("opacity", 1)
-                    .attr(
+                    .style("opacity", 1) // show them
+                    .attr( // and move them
                         {
-                            cx: function(d, i) {return coordinates[0] + Math.cos(2 * i * Math.PI / toolbox_items.length) * 10;},
-                            cy: function(d, i) {return coordinates[1] + Math.sin(2 * i * Math.PI / toolbox_items.length) * 10;},
-                            r: 5
+                            transform: function(d, i) {
+                                var length = 2 * i * Math.PI / toolbox_items.length;
+                                var gap = 15;
+                                var x = coordinates[0] + Math.cos(length) * gap, y = coordinates[1] + Math.sin(length) * gap;
+                                return "translate(" + x + "," + y + ") " + (d.transform ? d.transform : '');
+                            }
                         }
                     )
                 ;
@@ -220,7 +326,7 @@ define([
             this.toolbox.exit()
                 .transition()
                     .duration(500)
-                    .style("opacity", 0)
+                    .style("opacity", 0) // generic exit
                     .remove()
                 ;
         },
@@ -254,15 +360,32 @@ define([
             this.delete(data);
             this.destroyToolBox();
         },
-        linkHandler: function(data) {
+        linkHandler: function(data, shape) {
             d3.event.stopPropagation();
-            this.addLink();
-            this.updateModel();
-            this.destroyToolBox();
+            this.source = data; // save link source
+            var coordinates = [data.x, data.y];
+            this.tmpLink = this.panel
+                .append('line')
+                    .attr(
+                        {
+                            id: 'tmpLink',
+                            x1: coordinates[0],
+                            y1: coordinates[1],
+                            x2: coordinates[0],
+                            y2: coordinates[1]
+                        }
+                    )
+                    .classed('tmpLink', true)
+                ;
         },
-        nodeHandler: function(data) {
+        addHandler: function(data) {
             d3.event.stopPropagation();
-            this.addNode();
+            var node = this.addNode(undefined, true);
+            var coordinates = d3.mouse(this.panel[0][0]);
+            node.x = coordinates[0];
+            node.y = coordinates[1];
+            node._weight = 1;
+            node.fixed = true;
             this.updateModel();
             this.destroyToolBox();
         },
@@ -279,19 +402,25 @@ define([
         unlockHandler: function(data) {
             d3.event.stopPropagation();
             data.fixed = false;
-            d3.select('#'+data.id).classed('locked', false);
+            this.panel.selectAll('.shapegroup').data([data], function(d) { return d.id;}).classed('locked', false);
             this.destroyToolBox();
         },
         lockHandler: function(data) {
             d3.event.stopPropagation();
             data.fixed = true;
-            d3.select('#'+data.id).classed('locked', true);
+            this.panel.selectAll('.shapegroup').data([data], function(d) { return d.id;}).classed('locked', true);
             this.destroyToolBox();
         },
-        eventpoolHandler: function(shape, data) {
+        cancelHandler: function(data) {
             d3.event.stopPropagation();
-            alert('go to event pool with ' + data.elt.entity);
+            this.removeTmpLink();
             this.destroyToolBox();
+        },
+
+        removeTmpLink: function() {
+            this.source = null;
+            this.tmpLink.remove();
+            this.tmpLink = null;
         },
 
         /**
@@ -301,25 +430,39 @@ define([
             var _this = this;
             // create the graphical element
             var shapes = nodes
-                .append('circle') // circle representation
+                .append('g')
                     .classed(
                         {
-                            shape: true,
+                            shapegroup: true,
                             node: true,
-                            edge: function(d) {return d.elt.type === 'edge';}
+                            edge: function(d) {return d.elt.get('type') === 'edge';},
+                            topology: function(d) { return d.elt.get('type') === 'topology';}
                         }
                     )
-                    .attr('id', function(d) {return d.id;})
+                    .attr(
+                        {
+                            id: function(d) {return d.id;}
+                        }
+                    )
                     .on('click', function() {return _this.clickAction(this);})
                     .on('dblclick', function(){return _this.dblClickAction(this);})  // add menu selection
-                    .on('mouseover', function() {d3.select(this).classed('over', true);})
-                    .on('mouseout', function() {d3.select(this).classed('over', false);})
+                    //.on('mouseover', function() {_this.overAction(this);})
+                    .on('mouseout', function() {_this.outAction(this);})
+                    .on('mousemove', function() {_this.moveAction(this);})
+                ;
+            shapes
+                .append('path')
+                    .classed(
+                        {
+                            shape: true
+                        }
+                    )
                 ;
             // add a title which is the entity id or graph element id
             shapes.append('title')
                 .text(
                     function(d) {
-                        return d.elt.entity ? d.elt.entity : d.id;
+                        return d.id;
                     }
                 )
             ;
@@ -357,36 +500,85 @@ define([
         */
         updateNodes: function(nodes) {
             var topology = this.d3_graph.nodes[0];
+            var _this = this;
             nodes
-                .style(
-                    'fill',
-                    function(d) { // set default color to green
-                        var result = 'green';
-                        if (d.elt.data) {
-                            switch(d.elt.type) {
-                                case 'node':
-                                case 'edge':
-                                    switch(d.elt.data.state) {
-                                        case 0: result = 'green'; break; // ok
-                                        case 1: result = 'yellow'; break; // warning
-                                        case 2: result = 'red'; break; // critical
-                                        case 3:
-                                        default: result = 'green'; // unknown
+                .select('path')
+                    .style(
+                        'fill',
+                        function(d) { // set default color to green
+                            var result = 'green';
+                            if (d.elt.get('info')) {
+                                switch(d.elt.get('type')) {
+                                    case 'node':
+                                    case 'edge':
+                                        switch(d.elt.get('info').state) {
+                                            case 0: result = 'green'; break; // ok
+                                            case 1: result = 'yellow'; break; // warning
+                                            case 2: result = 'red'; break; // critical
+                                            case 3:
+                                            default: result = 'green'; // unknown
+                                        }
+                                        break;
+                                    case 'operator': result = 'blue'; break;
+                                    case 'selector': result = 'gray'; break;
+                                    case 'topology': result = 'black'; break;
+                                }
+                            }
+                            return result;
+                        }
+                    )
+                    .attr(
+                        'd',
+                        function(d, i) {
+                            var f = d3.svg.symbol();
+                            if (d.x === undefined) {
+                                d.x = 0; d.y = 0;
+                            }
+                            switch(d.elt.get('type')) {
+                                case 'topology':
+                                    f = f.type('circle');
+                                    if (d.id === _this.graph.cid) {
+                                        f = f.size(5 * 64);
+                                    } else {
+                                        f = f.size((d._weight>=1? d._weight : 1) * 64);
                                     }
                                     break;
-                                case 'operator': result = 'blue'; break;
-                                case 'selector': result = 'gray'; break;
-                                case 'topology': result = 'black'; break;
+                                case 'edge': f = f.type('diamond').size(d._weight * 64); break;
+                                case 'node': f = f.type('square').size((d._weight>=1? d._weight : 1) * 64); break;
+                                default: f = f.type('triangle-down');
                             }
+                           var result = f(d, i);
+                           return result;
                         }
-                        return result;
+                    )
+            ;
+            nodes // add entity name redirection
+                .filter(
+                    function(d) {
+                        return d.elt && d.elt.get('entity')
                     }
                 )
-                .attr(
-                    'r',
-                    function(d) { return d.id === topology.id? 5 : d.elt.type === 'edge'? d.elt.weight : ((d.weight? d.weight : 0) + 1);}
-                )
+                .append('a')
+                    .attr(
+                        {
+                            'xlink:href': function(d) { return '/eventpool?' + d.elt.get('entity');},
+                            'target': '_blank'
+                        }
+                    )
+                    .append('text')
+                        .text(
+                            function(d) {
+                                return d.elt.get('entity') ? d.elt.get('entity') : d.id;
+                            }
+                        )
             ;
+            /*nodes // remove unused entity names
+                .filter(
+                    function(d) {
+                        return ! (d.elt && d.elt.get('entity'))
+                    }
+                )
+                .select('a').remove();*/
         },
 
         /**
@@ -403,11 +595,11 @@ define([
                             link: true, // set class link
                         }
                     )
-                    .style('stroke-width', function(d) {return d.elt.weight;})
                     .attr('id', function(d) {return d.id;})
                     .on('click', function() {return _this.clickAction(this);})
-                    .on('mouseover', function() {d3.select(this).classed('over', true);})
-                    .on('mouseout', function() {d3.select(this).classed('over', false);})
+                    //.on('mouseover', function() {_this.overAction(this);})
+                    .on('mouseout', function() {_this.outAction(this);})
+                    .on('mousemove', function() {_this.moveAction(this);})
             ;
         },
 
@@ -427,17 +619,69 @@ define([
         */
         updateLinks: function(links) {
             links
-                .classed('directed', function(d) {return d.elt.directed;})
+                .classed('directed', function(d) {return d.elt.get('directed');})
                 .style(
                     {
-                        'stroke-width': function(d) { return d.elt.weight;},
+                        'stroke-width': function(d) { return d._weight? d._weight : 1;},
                         'stroke': 'green',
                         'marker-end': function(d) {
-                            return (d.elt.directed && !d.isSource)? "url(#markerArrow)" : "";
+                            return (d.elt.get('directed') && !d.isSource)? "url(#markerArrow)" : "";
                         }
                     }
                 )
             ;
+        },
+
+        moveAction: function(shape) {
+            if (d3.event.defaultPrevented) return;
+            this.overAction(shape);
+        },
+
+        overAction: function(shape) {
+            if (d3.event.defaultPrevented) return;
+            var data = shape.__data__;
+            if (data !== undefined) {
+                d3_shape = d3.select(shape);
+                d3_shape.classed('over', true);
+            }
+            if (this.source !== null) {
+                console.log(data);
+                var coordinates = data? [data.x, data.y] : d3.mouse(this.panel[0][0]);
+                /*this.tmpLink.attr(
+                    {
+                        x2: coordinates[0],
+                        y2: coordinates[1]
+                    }
+                )*/
+                if (this.checkTargetLink(shape.__data__)) {
+                    this.tmpLink.attr(
+                        {
+                            id: 'tmpLink'
+                        }
+                    )
+                } else {
+                    this.tmpLink.attr(
+                        {
+                            id: 'wrongTmpLink'
+                        }
+                    )
+                }
+            }
+        },
+
+        /**
+        * Check if a shape is a good target for a new link.
+        *
+        * @param shape target shape.
+        */
+        checkTargetLink: function(data) {
+            var result = (data === undefined || (data.elt.get('type') !== 'edge' && data.id !== this.source.id));
+            return result;
+        },
+
+        outAction: function(shape) {
+            if (d3.event.defaultPrevented) return;
+            d3.select(shape).classed('over', false);
         },
 
         dblClickAction: function(shape) {
@@ -449,10 +693,12 @@ define([
         clickAction: function(shape) {
             if (d3.event.defaultPrevented) return;
             d3.event.stopPropagation();
-            if (this.source === undefined) {
+            if (this.source === null) {
                 this.showToolBox(shape);
-            } else {
-                this.addLink(this.source, shape.__data__);
+            } else if (this.checkTargetLink(shape.__data__)) {
+                this.addLink(this.source, shape.__data__, true);
+                this.removeTmpLink();
+                this.updateModel();
             }
         },
 
@@ -482,8 +728,11 @@ define([
             );
         },
 
+        /*******************************
+        * business part
+        */
+
         graph: null, // canopsis graph model
-        d3_graph: null, // d3 graph model
 
         graph_type: 'topology', // graph type
         graph_id: null,  // graph id
@@ -495,6 +744,8 @@ define([
         business: null, // business controller
 
         graph_div: null, // graph div markup
+
+        nodes_by_id: {}, // d3 graph node by id
 
         /**
         * Get request server url to get graph.
@@ -635,15 +886,21 @@ define([
         * @param graph vertice.
         * @return d3 node.
         */
-        vertice2Node: function(vertice, nodes_by_indexes, nodes_by_entity_ids) {
-            var d3_node = {
-                id: vertice.cid
-            };
-            // add d3_node in d3_graph nodes
-            this.d3_graph.nodes.push(d3_node);
-            // save vertice
-            d3_node.elt = vertice;
-            return d3_node;
+        vertice2Node: function(vertice) {
+            vertice = this.toRecord(vertice);
+            var result = this.nodes_by_id[vertice.get('cid')];
+            if (result === undefined) {
+                var result = {
+                    id: vertice.get('cid'),
+                    elt: vertice,
+                    index: this.d3_graph.nodes.length
+                };
+                // add result in d3_graph nodes
+                this.d3_graph.nodes.push(result);
+                // add node reference in nodes_by_id
+                this.nodes_by_id[result.id] = result;
+            }
+            return result;
         },
 
         /**
@@ -653,11 +910,13 @@ define([
         * @return edge node.
         */
         edge2Links: function(edge) {
+            var _this = this;
+            edge = this.toRecord(edge);
             // save count of link_id per targets/sources
             var link_id_count = {};
             // cause a d3 link has one source and one target, we may create as many link as there are composition of sources and targets.
-            var sources = edge.sources;
-            var targets = edge.targets;
+            var sources = edge.get('sources');
+            var targets = edge.get('targets');
             // add edge such as a node between all sources and targets
             var result = this.vertice2Node(edge);
             var d3_graph = this.d3_graph;
@@ -679,15 +938,19 @@ define([
                     link_id_count[link_id] = count;
                     link_id += '-' + count;
                     // create a post_link which links the edge to a target
-                    var link = {
-                        isSource: isSource,
-                        source: isSource? vertice_id : result.id,
-                        target: !isSource? vertice_id : result.id,
-                        elt: edge, // save edge
-                        pos: vertice_index, // pos in graph model
-                        id: link_id
-                    };
-                    d3_graph.links.push(link);
+                    var link = _this.nodes_by_id[link_id];
+                    if (link === undefined) {
+                        link = {
+                            isSource: isSource,
+                            source: isSource? vertice_id : result.id,
+                            target: !isSource? vertice_id : result.id,
+                            elt: edge, // save edge
+                            pos: vertice_index, // pos in graph model
+                            id: link_id
+                        };
+                        d3_graph.links.push(link);
+                        _this.nodes_by_id[link.id] = link;
+                    }
                 };
             };
             // add links for all sources
@@ -699,12 +962,6 @@ define([
 
         updateModel: function() {
             // add nodes and links in graph
-            this.d3_graph = {
-                nodes: [],
-                links: []
-            };
-            // used to save nodes by ids
-            var nodes_by_indexes = {};
             // contain nodes by entity_ids
             var nodes_by_entity_ids = {};
             /**
@@ -712,15 +969,13 @@ define([
             */
             var storeNode = function(node) {
                 // add reference between entity id and node
-                if (node.elt.entity) {
+                if (node.elt.get('entity')) {
                     if (nodes_by_entity_ids[node.elt.entity] === undefined) {
                         nodes_by_entity_ids[node.elt.entity] = [node];
                     } else {
                         nodes_by_entity_ids[node.elt.entity].push(node);
                     }
                 }
-                // order d3_node by id
-                nodes_by_indexes[node.id] = node;
             };
 
             // add the graph itself among nodes
@@ -740,6 +995,7 @@ define([
                         node = this.vertice2Node(elt); // add node in other cases.
                     }
                     storeNode(node); // register the node in memory
+                    node._weight = 0;
                 },
                 this
             );
@@ -747,27 +1003,32 @@ define([
             // resolve weight
             this.d3_graph.nodes.forEach(
                 function(node) {
-                    if (node.elt.type === 'edge') {
-                        var source_id = node.elt.sources[0];
-                        var source_node = nodes_by_indexes[source_id];
-                        if (source_node.weight === undefined) {
-                            source_node.weight = 0;
+                    if (node.elt.get('type') === 'edge') {
+                        node._weight = node.elt.get('weight');
+                        var source_id = node.elt.get('sources')[0];
+                        var source_node = this.nodes_by_id[source_id];
+                        if (source_node._weight === undefined) {
+                            source_node._weight = 0;
                         }
-                        source_node.weight += node.elt.weight;
+                        source_node._weight += node.elt.get('weight');
                     } else {
-                        if (node.weight === undefined) {
-                            node.weight = 0;
+                        if (node._weight === undefined) {
+                            node._weight = 0;
                         }
                     }
-                }
+                },
+                this
             );
 
             // resolve sources and targets in links
             this.d3_graph.links.forEach(
                 function(link) {
-                    link.source = nodes_by_indexes[link.source];
-                    link.target = nodes_by_indexes[link.target];
-                }
+                    if (typeof link.source === 'string') {
+                        link.source = this.nodes_by_id[link.source];
+                        link.target = this.nodes_by_id[link.target];
+                    }
+                },
+                this
             );
 
             // resolve entities
@@ -794,24 +1055,12 @@ define([
         /**
         * Edit input elt properties.
         *
-        * @param data data to edit. If undefined, data is this.__data__
+        * @param data data to edit.
         */
         edit: function(data) {
-            var elt = data.elt, _this = this;
-            record = dataUtils.getStore().createRecord(
-                elt.type,
-                elt
-            );
-            var recordWizard = formsUtils.showNew(
-                'modelform',
-                record
-            );
-            recordWizard.submit.done(
-                function(form) {
-                    record.save();
-                    _this.updateModel();
-                }
-            );
+            var elt = data.elt;
+            this.toRecord(elt, true);
+            this.rerender();
         },
 
         /**
@@ -819,16 +1068,39 @@ define([
         * @param data array of data to delete if not undefined.
         */
         delete: function(data) {
-            var data_to_delete = data;
-            // initialize data
-            if (typeof(data_to_delete) === 'string') { // if data is a string
-                data_to_delete = [data_to_delete]; // transform it into an array
+            // forbid to delete the main topology
+            if (data.id === this.graph.id) {
+                throw new Exception("Impossible to delete topology!");
+            }
+            //ensure data is an array of data
+            if (! Array.isArray(data)) {
+                data = [data];
             }
             // start to delete data from model
-            data_to_delete.forEach(
+            data.forEach(
                 function(d) {
-                    delete this.graph._delts[d.cid];
-                }
+                    delete this.graph._delts[d.id];
+                    var pos = this.graph.elts.indexOf(d.id);
+                    this.graph.elts.splice(pos);
+                    d.elt.destroyRecord();
+                    // delete view
+                    delete this.nodes_by_id[d.id];
+                    var d_type = d.elt.get('type');
+                    switch(d_type) {
+                        case 'node':
+                        case 'topology':
+                        case 'edge':
+                    }
+                    this.d3_graph.nodes.forEach(
+                        function(node, i) {
+                            if (i>d.index) {
+                                node.index--;
+                            }
+                        }
+                    );
+                    this.d3_graph.nodes.splice(d.index);
+                },
+                this
             );
             // then delete data from the view
             // select shapes to delete which corresponds to data or this if data is undefined
@@ -841,16 +1113,16 @@ define([
         * @param data array of data.
         */
         select: function(data) {
-            if (typeof data === 'string') {
+            if (! Array.isArray(data)) {
                 data = [data];
             }
             data.forEach(
                 function(d) {
-                    var selected_index = this.selected.indexOf(d.id);
-                    this.selected.splice(selected_index);
-                }
-            );
-            this.updateModel();
+                    this.selected[d.id] = d;
+                },
+                this
+            )
+            this.refreshSelectedShapes();
         },
 
         /**
@@ -859,54 +1131,138 @@ define([
         * @param data array of data.
         */
         unselect: function(data) {
-            if (typeof data === 'string') {
+            if (! Array.isArray(data)) {
                 data = [data];
             }
             data.forEach(
                 function(d) {
-                    var selected_index = this.selected.indexOf(d.id);
-                    this.selected.push(d.id);
-                }
+                    delete this.selected[d.id];
+                },
+                this
             );
-            this.updateModel();
+            this.refreshSelectedShapes();
         },
 
-        addNode: function() {
-            var vertice = {
-                cid: Math.random() + '',
-                type: 'node',
-                _type: 'vertice',
-                _cls: 'canopsis.topology.elements.Node'
-            };
-            this.graph._delts[vertice.cid] = vertice;
-            this.graph.elts.push(vertice.cid);
+        /**
+        * Convert input elt to a record, or returns it if already a record.
+        *
+        * @param elt element to convert.
+        * @param edit edit record with a form if true.
+        */
+        toRecord: function(elt, edit) {
+            var result = elt;
+            // if elt is a record
+            if (elt.store === undefined) {
+                if (elt.data !== undefined) {
+                    elt.info = elt.data;
+                    delete elt.data;
+                }
+                var result = dataUtils.getStore().createRecord(
+                    elt.type,
+                    elt
+                );
+            }
+            if (edit) {
+                var recordWizard = formsUtils.showNew(
+                    'modelform',
+                    result
+                );
+                recordWizard.submit.done(
+                    function(form) {
+                        result.save();
+                    }
+                );
+            }
+            return result;
+        },
+
+        /**
+        * Add a node with input configuration or from a form.
+        * @param conf default configuration.
+        * @param edit edit configuartion with a form.
+        * @return new vertice record.
+        */
+        addNode: function(conf, edit) {
+            // initialize the vertice data
+            if (!conf) {
+                var uuid = '' + Math.random();
+                conf = {
+                    _id: uuid,
+                    cid: uuid,
+                    type: 'node'
+                };
+            }
+            if(conf.cid === undefined) {
+                var uuid = '' + Math.random();
+                conf.cid = conf._id? conf._id : uuid;
+                if (conf._id === undefined) {
+                    conf._id = uuid;
+                }
+            }
+            if(conf.type === undefined) {
+                conf.type = 'node';
+            }
+            var record = this.toRecord(conf, edit);
+            // save result in model
+            this.graph._delts[record.get('cid')] = record;
+            this.graph.elts.push(record.get('cid'));
+            var result = this.vertice2Node(record);
             return result
         },
 
-        addLink: function(source, target) {
-            if (target.elt === undefined) {
+        /**
+        * Add a link.
+        *
+        * @param source source link.
+        * @param target optional target link.
+        * @param edit enable link properties edition.
+        */
+        addLink: function(source, target, edit) {
+            var source_type = source.elt.get('type');
+            // ensure source and target are ok
+            if (source.id === this.graph.cid || !this.checkTargetLink(target)) {
+                throw new Exception('Wrong parameters');
+            }
+            // first we need to get/create an edge
+            var edge = null;
+            // get a target
+            if (target === undefined) {
                 // create a node if target does not exist
-                target = this.addNode();
+                target = this.addNode(undefined, edit);
             }
-            if (source.elt.type === 'node') {
-                if (target.elt.type === 'node') {
-                    // create an edge
-                    var edge = {
-                        cid: Math.random() + '',
-                        source: source.id,
-                        target: target.id,
-                        _cls: 'canopsis.topology.elements.Edge'
-                    };
-                    this.graph._delts[edge.cid] = edge;
-                    this.graph.elts.push(edge.cid);
-                } else {
-                    // create a link
-                    target.elt.sources.push(source.id);
-                }
-            } else { // if source is an edge
-                // add target in edge targets
-                source.elt.targets.push(target.id);
+            // if source is an edge, then edge is source
+            if (source_type === 'edge') {
+                edge = source;
+                // and add right now the target
+                edge.elt.get('targets').push(target.id);
+            } else { // else create a new edge
+                edge = this.addNode(
+                    {
+                        type: 'edge',
+                        sources: [source.id],
+                        targets: [target.id],
+                        weight: 1
+                    },
+                    edit
+                );
             }
+            return edge;
+        },
+
+        /**
+        * Create a new toolbox item with a name, a symbol and a transformation.
+        * @param name toolbox item name
+        * @param symbol see d3.svg.symbol().type().
+        * @param transform transformation attribute.
+        */
+        newToolBoxItem: function(name, symbol, transform) {
+            var result = {
+                name: name,
+                symbol: d3.svg.symbol().type(symbol),
+                transform: transform,
+                type: 'toolbox'
+            };
+            return result
         },
 
         /**
@@ -914,37 +1270,39 @@ define([
         *
         */
         getToolBoxItems: function(data) {
-            // default result
-            var result = [
-                'close', // close toolbox
-                // 'copy', // copy node
-            ];
-
-            if (data !== undefined && data.elt) { // is it a node
-                if ($.inArray(data.id, this.selected) >= 0) {
-                    result.push('unselect');
-                } else {
-                    result.push('select');
-                }
-                if (data.fixed) {
-                    result.push('unlock');
-                } else {
-                    result.push('lock');
-                }
-                if (data.entity) {
-                    result.push('eventpool');
-                }
-                if (data.id !== this.graph.cid) { // all nodes but topology
-                    if (data.elt.type !== 'edge') {
-                        result.push('link'); // new link
-                    }
-                    result.push('delete'); // elt deletion
-                }
-                if ($.inArray(data.elt.type, ['topology', 'edge']) === -1) { // all elts but topologies
-                    result.push('edit'); // edit elt
-                }
+            var result = [];
+            if (this.source !== null) {
+                result.push(
+                    this.newToolBoxItem('cancel', 'cross', 'rotate(45)'),
+                    this.newToolBoxItem('add', 'cross')
+                )
             } else {
-                result.push('node'); // new node
+                // default result
+                result.push(
+                    this.newToolBoxItem('close', 'triangle-down')
+                );
+
+                if (data !== undefined && data.elt) { // is it a node
+                    if (this.selected[data.id] !== undefined) {
+                        result.push(this.newToolBoxItem('unselect'));
+                    } else {
+                        result.push(this.newToolBoxItem('select'));
+                    }
+                    if (data.fixed) {
+                        result.push(this.newToolBoxItem('unlock'));
+                    } else {
+                        result.push(this.newToolBoxItem('lock'));
+                    }
+                    if (data.id !== this.graph.cid) { // all nodes but topology
+                        result.push(this.newToolBoxItem('link', 'triangle-up')); // new link
+                        result.push(this.newToolBoxItem('delete', 'cross', 'rotate(45)')); // elt deletion
+                    }
+                    if (data.elt.get('type') !== 'topology') { // all elts but topologies
+                        result.push(this.newToolBoxItem('edit')); // edit elt
+                    }
+                } else {
+                    result.push(this.newToolBoxItem('add', 'cross')); // add elt
+                }
             }
 
             return result;
