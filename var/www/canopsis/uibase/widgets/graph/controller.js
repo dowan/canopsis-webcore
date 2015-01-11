@@ -45,6 +45,11 @@ define([
 
         source: null, // source link data
 
+        toolbox_gap: 50, // toolbox gap between shapes
+
+        _translate: [0, 0],
+        _scale: 1,
+
         _size: [1, 1],
         _charge: -120,
         _chargeDistance: 500,
@@ -53,6 +58,8 @@ define([
         _friction: 0.9,
         _theta: 0.8,
         _gravity: 0.1,
+
+        eventZoom: null, // last event zoom fired by d3
 
         size: function() {
             return this._size;
@@ -136,14 +143,40 @@ define([
             // select svg
             this.panel = d3.select('#' + this.get('id') + ' svg g');
             if (this.panel.size() === 0) {
+                this.eventZoom = {
+                    translate: this._translate,
+                    scale: this._scale
+                }
                 /**
                 * zoom function.
                 */
                 function zoom() {
-                    _this.panel.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-                }
+                    /*_this.eventZoom = d3.event;
+                    console.log(_this.eventZoom);
+                    if (d3.event.sourceEvent.type !== 'mousemove') {*/
+                        _this.panel.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+                    /*} else {
+                        var translate = [d3.event.translate[0] * d3.event.scale, d3.event.translate[1] * d3.event.scale];
+                        _this.panel.attr("transform", "translate(" + translate + ")scale(" + d3.event.scale + ")");
+                    }*/
+                };
+                function drag(){
+                    console.log(d3.event);
+                    var translate = [
+                        _this.eventZoom.translate[0] + d3.event.dx,
+                        _this.eventZoom.translate[1] + d3.event.dy
+                    ];
+                    _this.eventZoom.translate = translate;
+                    _this.panel.attr('transform', 'translate(' + translate + ') scale(' + _this.eventZoom.scale + ')');
+                };
+                var drag = d3.behavior.drag()
+                    //.on('drag',drag)
+                    ;
                 var zoom = d3.behavior.zoom()
-                    .scaleExtent([1.5, 10])
+                    //.translate([0, 0])
+                    //.scale(1)
+                    .scaleExtent([1.5, 8])
+                    //.scaleExtent([-10, 10])
                     .on('zoom', zoom)
                 ;
                 // or create it if it does not exist
@@ -157,7 +190,7 @@ define([
                     .append('g')
                         .attr(
                             {
-                                transform: 'scale(1.5)'
+                            //    transform: 'scale(1.5)'
                             }
                         )
                         .on('click', function(){ return _this.clickAction(this);})
@@ -166,6 +199,7 @@ define([
                         .on('mouseout', function() { return _this.overAction(this);})
                         .on('dblclick', function() { return _this.addHandler();})
                         .call(zoom)
+                        //.call(drag)
                 ;
             }
 
@@ -208,6 +242,9 @@ define([
             // refresh selected shapes
             this.refreshSelectedShapes();
 
+            // refresh locked shapes
+            this.refreshLockedShapes();
+
             this.force.on('tick', function() {
                 link_model
                     .attr('x1', function(d) {return d.source.x;})
@@ -230,11 +267,6 @@ define([
 
         /**
         * Refresh the view related to selected data.
-        *
-        * If node is already selected, unselect it.
-        *
-        * @param widget related caller.
-        * @param node
         */
         refreshSelectedShapes: function() {
             var selected_id = Object.keys(this.selected);
@@ -251,6 +283,21 @@ define([
             }
         },
 
+        /**
+        * Refresh the view related to locked data.
+        */
+        refreshLockedShapes: function() {
+            this.panel.selectAll('.shapegroup').filter(
+                function(d) {
+                    return d.fixed;
+                }
+            ).classed('locked', true);
+            this.panel.selectAll('.shapegroup').filter(
+                function(d) {
+                    return !d.fixed;
+                }
+            ).classed('locked', false);
+        },
 
         /**
         * Show tool box related to input shape.
@@ -282,9 +329,11 @@ define([
                             class: function(d) { return 'toolbox ' + d.name;}, // class
                             transform: function(d, i) {
                                 var length = 2 * i * Math.PI / toolbox_items.length;
-                                var gap = 15;
-                                var x = coordinates[0] + Math.cos(length) * gap, y = coordinates[1] + Math.sin(length) * gap;
-                                return "translate(" + x + "," + y + ") " + (d.transform ? d.transform : '');
+                                var x = coordinates[0] + Math.cos(length) * _this.toolbox_gap;
+                                var y = coordinates[1] + Math.sin(length) * _this.toolbox_gap;
+                                var translate = 'translate(' + x + ',' + y + ')';
+                                var scale = 'scale(' + (1 / _this.eventZoom.scale) + ')';
+                                return translate + scale + (d.transform ? d.transform : '');
                             }
                         }
                     )
@@ -296,7 +345,7 @@ define([
                     .attr(
                         {
                             d: function(d, i) {
-                                return d.symbol(d, i);
+                                return d.symbol.size(10 * 64)(d, i);
                             }
                         }
                     )
@@ -315,8 +364,8 @@ define([
                         {
                             transform: function(d, i) {
                                 var length = 2 * i * Math.PI / toolbox_items.length;
-                                var gap = 15;
-                                var x = coordinates[0] + Math.cos(length) * gap, y = coordinates[1] + Math.sin(length) * gap;
+                                var x = coordinates[0] + Math.cos(length) * _this.toolbox_gap;
+                                var y = coordinates[1] + Math.sin(length) * _this.toolbox_gap;
                                 return "translate(" + x + "," + y + ") " + (d.transform ? d.transform : '');
                             }
                         }
@@ -401,14 +450,12 @@ define([
         },
         unlockHandler: function(data) {
             d3.event.stopPropagation();
-            data.fixed = false;
-            this.panel.selectAll('.shapegroup').data([data], function(d) { return d.id;}).classed('locked', false);
+            this.lock(data);
             this.destroyToolBox();
         },
         lockHandler: function(data) {
             d3.event.stopPropagation();
-            data.fixed = true;
-            this.panel.selectAll('.shapegroup').data([data], function(d) { return d.id;}).classed('locked', true);
+            this.lock(data, true);
             this.destroyToolBox();
         },
         cancelHandler: function(data) {
@@ -421,6 +468,23 @@ define([
             this.source = null;
             this.tmpLink.remove();
             this.tmpLink = null;
+        },
+
+        /**
+        * lock shapes related to input data.
+        * @param data data to lock.
+        * @param enable if true, lock input data shapes.
+        */
+        lock: function(data, enable) {
+            if (!Array.isArray(data)) {
+                data = [data];
+            }
+            data.forEach(
+                function(d) {
+                    d.fixed = enable;
+                }
+            );
+            this.refreshLockedShapes();
         },
 
         /**
@@ -700,32 +764,6 @@ define([
                 this.removeTmpLink();
                 this.updateModel();
             }
-        },
-
-         /**
-        * Disable shapes auto-layout.
-        * @param shapes shapes to disable auto-layout.
-        */
-        lock: function(shapes) {
-            if (typeof shapes === 'string') {
-                shapes = [shapes];
-            }
-            shapes.forEach(
-                function(elt){elt.__data__.fixed = true;}
-            );
-        },
-
-        /**
-        * Enable shapes auto-layout.
-        * @param shapes shapes to enable auto-layout.
-        */
-        unlock: function(shapes) {
-            if (typeof shapes === 'string') {
-                shapes = [shapes];
-            }
-            shapes.forEach(
-                function(elt){elt.__data__.fixed = false;}
-            );
         },
 
         /*******************************
@@ -1076,13 +1114,15 @@ define([
             if (! Array.isArray(data)) {
                 data = [data];
             }
+            var removeLinks = function(boundData) {
+
+            }
             // start to delete data from model
             data.forEach(
                 function(d) {
+                    // remove references from the model
                     delete this.graph._delts[d.id];
-                    var pos = this.graph.elts.indexOf(d.id);
-                    this.graph.elts.splice(pos);
-                    d.elt.destroyRecord();
+                    this.graph.elts.splice(d.elt._pos);
                     // delete view
                     delete this.nodes_by_id[d.id];
                     var d_type = d.elt.get('type');
@@ -1091,16 +1131,16 @@ define([
                         case 'topology':
                         case 'edge':
                     }
-                    this.d3_graph.nodes.forEach(
-                        function(node, i) {
-                            if (i>d.index) {
-                                node.index--;
-                            }
-                        }
-                    );
                     this.d3_graph.nodes.splice(d.index);
+                    d.elt.destroyRecord();
                 },
                 this
+            );
+            // ensure right indexes
+            this.d3_graph.nodes.forEach(
+                function(node, i) {
+                    node.i;
+                }
             );
             // then delete data from the view
             // select shapes to delete which corresponds to data or this if data is undefined
@@ -1205,6 +1245,7 @@ define([
             var record = this.toRecord(conf, edit);
             // save result in model
             this.graph._delts[record.get('cid')] = record;
+            record._pos = this.graph.elts.length;
             this.graph.elts.push(record.get('cid'));
             var result = this.vertice2Node(record);
             return result
