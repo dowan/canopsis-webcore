@@ -1334,7 +1334,8 @@ define([
             if (edit) {
                 var recordWizard = formsUtils.showNew(
                     'modelform',
-                    result
+                    result,
+                    {inspectedItemType: elt.type}
                 );
                 recordWizard.submit.done(
                     function(form) {
