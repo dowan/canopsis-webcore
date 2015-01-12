@@ -829,10 +829,10 @@ define([
                 var promise = new Ember.RSVP.Promise(function(resolve, reject) {
                     $.ajax(
                         {
-                            url: '/context/',
+                            url: '/context/ids',
                             type: 'POST',
                             data: {
-                                '_filter': JSON.stringify({'_id': {'$in': entity_ids}}),
+                                'ids': JSON.stringify(entity_ids),
                             }
                         }
                     ).then(resolve, reject);
