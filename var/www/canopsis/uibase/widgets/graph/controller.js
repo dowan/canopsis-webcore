@@ -1136,7 +1136,7 @@ define([
         */
         edit: function(data) {
             var elt = data.elt;
-            this.toRecord(elt, true);
+            this.editRecord(elt);
             this.rerender();
         },
 
@@ -1332,20 +1332,28 @@ define([
                 );
             }
             if (edit) {
-                var recordWizard = formsUtils.showNew(
-                    'modelform',
-                    result,
-                    {inspectedItemType: elt.type}
-                );
-                recordWizard.submit.done(
-                    function(form) {
-                        result.save();
-                    }
-                );
+                this.editRecord(result);
             }
             return result;
         },
 
+        /**
+        * Edit a record.
+        *
+        * @param record record to edit.
+        */
+        editRecord: function(record) {
+            var recordWizard = formsUtils.showNew(
+                'modelform',
+                record,
+                {inspectedItemType: record.get('type')}
+            );
+            recordWizard.submit.done(
+                function(form) {
+                    record.save();
+                }
+            );
+        },
 
         /**
         * Add a node with input configuration or from a form.
