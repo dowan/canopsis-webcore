@@ -47,7 +47,9 @@
     stroke: red;
 }
 .link {
-    cursor: alias;
+}
+.targetLink {
+    cursor: context-menu;
 }
 </style>
 <div class="graph" {{bind-attr id=controller.id}}>
@@ -59,4 +61,8 @@
     </marker>
 </defs>
 </svg>
+Lock all: {{input name="lock_all" type="checkbox"
+ value=controller.lock_all}}
+Filter: {{input name="filter" type="text" enter="filter_enter" key-press="filter_press"}}
+<button {{action 'save'}}>Save</button>
 </div>
