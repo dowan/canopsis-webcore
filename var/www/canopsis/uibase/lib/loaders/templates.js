@@ -82,6 +82,7 @@ var templates = [
 
     { name: 'verticallayout', template: 'canopsis/uibase/templates/verticallayout.html' ,  classes: ["layout"]},
     { name: 'lightlayout', template: 'canopsis/uibase/templates/lightlayout.html' ,  classes: ["layout"]},
+    { name: 'tablayout', template: 'canopsis/uibase/templates/tablayout.html' ,  classes: ["layout"]},
     { name: 'mixineditdropdown', template: 'canopsis/uibase/templates/mixineditdropdown.html'}
 ];
 
