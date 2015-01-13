@@ -381,8 +381,6 @@ define([
                             }
                         }
                     )
-                    // attach handlers
-                    .on('click', function(d){return _this[d.name + 'Handler'](data, shape);})
                 ;
             new_toolbox // add shape
                 .append('path')
@@ -402,6 +400,8 @@ define([
                     .text(function(d) { return d.name});
             // move all toolbox to mouse coordinates
             this.toolbox
+            // attach handlers
+                .on('click', function(d){return _this[d.name + 'Handler'](data, shape);})
                 .transition()
                     .style("opacity", 1) // show them
                     .attr( // and move them
@@ -1437,7 +1437,7 @@ define([
                 );
             }
             // update model if asked
-            if (doNotUpdateModel) {
+            if (!doNotUpdateModel) {
                 this.updateModel();
             }
         },
