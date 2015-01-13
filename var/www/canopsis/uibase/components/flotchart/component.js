@@ -33,8 +33,8 @@ define([
         classNames: 'flotchart',
 
         init: function() {
-            set(this, 'options', undefined);
-            set(this, 'series', undefined);
+            set(this, 'options', {});
+            set(this, 'series', []);
             set(this, 'human', false);
 
             this._super.apply(this, arguments);
@@ -182,10 +182,10 @@ define([
                 options.legend.labelFormatter = function(label, serie) {
                     console.log('Format label for serie:', label, serie);
 
-                    var style = undefined;
+                    var style = 'cursor: pointer; margin-left: 5px;';
 
                     if(serie.hidden) {
-                        style = 'font-style: italic;';
+                        style += ' font-style: italic;';
                     }
 
                     var clickableLabel = $('<span/>', {
