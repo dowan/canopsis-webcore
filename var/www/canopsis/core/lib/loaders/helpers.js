@@ -18,7 +18,6 @@
 */
 
 var helpers = [
-    { name:'ack', url:'app/lib/helpers/ack' },
     { name:'color', url:'app/lib/helpers/color' },
     { name:'colorview', url:'app/lib/helpers/colorview' },
     { name:'conf', url:'app/lib/helpers/conf' },
