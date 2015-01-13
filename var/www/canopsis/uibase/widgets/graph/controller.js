@@ -23,6 +23,23 @@
 * Dom element to D3 element: field __data__
 * D3 element to canopsis record: elt
 * canopsis record to D3 element: d3_elt
+* All elements have the same uuid:
+* - id: Dom and D3 elements
+* - cid/_id: canopsis record.
+*
+* The process begins in executing the updateModel method.
+* This last aims to retrieve a graph with its elements.
+* Once the graph is retrieved, all elements including the graph, are
+* transformed into schemas records and saved in the dictionary graph._delts where keys are record uid.
+* A vertice becomes a node, an edge becomes a set of node and links, and the graph is a node as well.
+* Then, D3 elements are created related to those records, and saved in
+* this.d3_graph object.
+* This last contains two lists respectively for nodes and links of D3, and a
+* dictionary of D3 elements by id.
+* Finally, in order to retrieve quickly links from an edge node, the elt link
+* property refers to its edge. And an edge contains two dictionaries of dictionaries of links by id by neighbour id
+* respectivelly named 'sources' and 'targets'.
+* Each link knows its position in the d3_graph thanks to the view_pos field.
 */
 define([
     'jquery',
@@ -512,11 +529,13 @@ define([
             d3.event.stopPropagation();
             this.lock(data);
             this.destroyToolBox();
+            this.rerender();
         },
         lockHandler: function(data) {
             d3.event.stopPropagation();
             this.lock(data, true);
             this.destroyToolBox();
+            this.rerender();
         },
         cancelHandler: function(data) {
             d3.event.stopPropagation();
@@ -578,7 +597,7 @@ define([
                     )
                     .on('click', function() {return _this.clickAction(this);})
                     .on('dblclick', function(){return _this.dblClickAction(this);})  // add menu selection
-                    //.on('mouseover', function() {_this.overAction(this);})
+                    .on('mouseover', function() {_this.overAction(this);})
                     .on('mouseout', function() {_this.outAction(this);})
                     .on('mousemove', function() {_this.moveAction(this);})
                 ;
@@ -658,7 +677,7 @@ define([
                                 case 'topology':
                                     f = f.type('circle');
                                     if (d.id === _this.graph.get('cid')) {
-                                        f = f.size(5 * 64);
+                                        f = f.size(30 * 64);
                                     } else {
                                         f = f.size((d._weight>=1? d._weight : 1) * 64);
                                     }
@@ -723,6 +742,7 @@ define([
                     .on('click', function() {return _this.clickAction(this);})
                     .on('mouseout', function() {_this.outAction(this);})
                     .on('mousemove', function() {_this.moveAction(this);})
+                    .on('mouseover', function() { _this.overAction(this);})
             ;
         },
 
@@ -1109,27 +1129,30 @@ define([
                         // get d links
                         var links_by_id = d3_edge[key][d];
                         if (links_by_id === undefined) {
-                            var links_by_id = {};
+                            links_by_id = {};
                             d3_edge[key][d] = links_by_id;
                         }
                         // if a link is missing
-                        if (Object.keys(links_by_id).length < neighbour_count) {
+                        var links_by_id_length = Object.keys(links_by_id).length;
+                        if (links_by_id_length < neighbour_count) {
                             // create it
                             link = {
                                 isSource: isSource,
                                 source: isSource? d : d3_edge.id,
-                                target: !isSource? d : d3_edge.id,
+                                target: (!isSource)? d : d3_edge.id,
                                 elt: edge, // save edge
                                 id: this.uuid(), // uuid
                                 view_pos: d3_graph.links.length // pos in view
                             };
-                            d3_graph.links.push(link); // add in view
+                            // add in view
+                            d3_graph.links.push(link);
                             d3_graph.data_by_id[link.id] = link;
-                            // try to inject references to sources and targets
+                            // try to inject references to sources
                             var source = d3_graph.data_by_id[link.source];
                             if (source !== undefined) {
                                 link.source = source;
                             }
+                            // and targets
                             var target = d3_graph.data_by_id[link.target];
                             if (target !== undefined) {
                                 link.target = target;
@@ -1187,7 +1210,7 @@ define([
             // contain nodes by entity_ids
             var nodes_by_entity_ids = {};
             /**
-            * Save node in memory.
+            * Save node related to entity ids in memory.
             */
             function storeNode(node) {
                 // add reference between entity id and node
@@ -1211,31 +1234,34 @@ define([
             Object.keys(elts).forEach(
                 function(elt_id) {
                     var elt = elts[elt_id];
-                    // ensure elt is a record
+                    // get d3 node from elt in ensuring elt is a record
                     d3_node = this.vertice2D3Node(elt);
                     elt = d3_node.elt;
                     // update its reference in _delts
                     elts[elt_id] = elt;
                     var node = null;
                     if (elt.get('type') === 'edge') {
-                        this.weaveLinks(d3_node); // add links if elt is an edge.
+                        // add links if elt is an edge.
+                        this.weaveLinks(d3_node);
                     } else {
                         // initialize weight
                         d3_node._weight = 1;
                     }
-                    storeNode(d3_node); // register the node in memory
+                    // register the node in memory
+                    storeNode(d3_node);
                 },
                 this
             );
 
             // resolve weight
             this.d3_graph.nodes.forEach(
-                function(node) {
+                function(node, i) {
                     if (node.elt.get('type') === 'edge') {
                         var source_id = node.elt.get('sources')[0];
                         var source_node = this.d3_graph.data_by_id[source_id];
                         source_node._weight += node.elt.get('weight');
                     }
+                    node.index = i;
                 },
                 this
             );
@@ -1338,7 +1364,7 @@ define([
                             var link_data_to_delete = [];
                             ['sources', 'targets'].forEach(
                                 function(key) {
-                                    var neighbours = data.links[key];
+                                    var neighbours = data[key];
                                     Object.keys(neighbours).forEach(
                                         function(link) {
                                             links_pos_to_delete.push(link.view_pos); // save view pos
@@ -1514,7 +1540,7 @@ define([
         toRecord: function(elt, edit, success, failure, context) {
             var result = elt;
             if (!elt) {
-                var uuid = '' + Math.random();
+                var uuid = this.uuid();
                 elt = {
                     _id: uuid,
                     cid: uuid,
@@ -1530,7 +1556,7 @@ define([
             // if elt is a record
             if (elt.store === undefined) {
                 if (elt.cid === undefined) {
-                    var uuid = '' + Math.random();
+                    var uuid = this.uuid();
                     elt.cid = uuid;
                     elt._id = uuid;
                     if (!elt._type) {
