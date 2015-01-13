@@ -7,13 +7,23 @@
     stroke: none;
 }
 .toolbox {
-    fill: red;
-    cursor: hand;
+    fill: white;
+    cursor: pointer;
+    stroke: black;
+    font-color: black;
+}
+.toolbox text {
+    text-anchor: middle;
+    baseline-shift: -0.5ex;
 }
 .overlay {
     fill: none;
     pointer-events: all;
     cursor: context-menu;
+}
+.locked {
+    stroke: blue;
+    stroke-width: 2;
 }
 .selected {
     stroke: green;
@@ -23,11 +33,26 @@
     stroke: blue;
     stroke-width: 2;
 }
-.tmplink {
+.tmpLink {
+    opacity: 0.5;
+    pointer-events: all;
+    marker-end: url(#markerArrow);
+}
+#tmpLink {
+    cursor: copy;
+    stroke: green;
+}
+#wrongTmpLink {
+    cursor: no-drop;
     stroke: red;
 }
+.link {
+}
+.targetLink {
+    cursor: context-menu;
+}
 </style>
-<div class="graph">
+<div class="graph" {{bind-attr id=controller.id}}>
 <svg>
 <defs>
     <marker id="markerArrow" markerWidth="13" markerHeight="13" refx="2" refy="6"
@@ -36,4 +61,14 @@
     </marker>
 </defs>
 </svg>
+Lock all: {{input name="lock_all" type="checkbox"
+ value=controller.lock_all}}
+Filter: {{input name="filter" type="text" enter="filter_enter" key-press="filter_press"}}
+Charge: <input type="range" min="-200" max="200" step="10" {{bind-attr value=controller.charge}} />
+Link strength: <input type="range" min="0" max="1" step="0.1" {{bind-attr value=controller.linkStrength}} />
+LinkDistance: <input type="range" min="0" max="200" step="5" {{bind-attr value=controller.linkDistance}} />
+Friction: <input type="range" min="0" max="1" step="0.1" {{bind-attr value=controller.friction}} />
+Theta: <input type="range" min="0" max="1" step="0.1" {{bind-attr value=controller.theta}} />
+Gravity: <input type="range" min="0" max="1" step="0.1" {{bind-attr value=controller.gravity}} />
+<button {{action 'save'}}>Save</button>
 </div>
