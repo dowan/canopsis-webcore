@@ -17,13 +17,21 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+* This widget uses 3 layers of models:
+* - Dom element ---> D3 element (node and link) <--> canopsis record.
+* Dom element to D3 element: field __data__
+* D3 element to canopsis record: elt
+* canopsis record to D3 element: d3_elt
+*/
 define([
     'jquery',
     'app/lib/factories/widget',
     'd3',
     'app/lib/loaders/schemas',
     'app/lib/utils/forms',
-    'app/lib/utils/data'
+    'app/lib/utils/data',
+    'jqueryui'
 ], function($, WidgetFactory, d3, schemas, formsUtils, dataUtils) {
     var get = Ember.get,
         set = Ember.set;
@@ -45,8 +53,6 @@ define([
 
         panel: null, // display panel
 
-        firstCall: true, // flag while rerender has not been called
-
         source: null, // source link data
 
         toolbox_gap: 50, // toolbox gap between shapes
@@ -67,56 +73,56 @@ define([
 
         size: function() {
             return this._size;
-        },
+        }.property('size'),
         sizeChanged: function() {
             this._size = this.get('size');
             this.force.size(size);
         }.observes('size'),
         charge: function() {
             return this._charge;
-        },
+        }.property('charge'),
         chargeChanged: function() {
             this._charge = this.get('charge');
             this.force.charge(charge);
         }.observes('charge'),
         chargeDistance: function() {
             return this._chargeDistance;
-        },
+        }.property('chargeDistance'),
         chargeDistanceChanged: function() {
             this._chargeDistance = this.get('chargeDistance');
             this.force.chargeDistance(chargeDistance);
         }.observes('chargeDistance'),
         linkDistance: function() {
             return this._linkDistance;
-        },
+        }.property('linkDistance'),
         linkDistanceChanged: function() {
             this._linkDistance = this.get('linkDistance');
             this.force.linkDistance(linkDistance);
         }.observes('linkDistance'),
         linkStrength: function() {
             return this._linkStrength;
-        },
+        }.property('linkStrength'),
         linkStrengthChanged: function() {
             this._linkStrength = this.get('linkStrength');
             this.force.linkStrength(linkStrength);
         }.observes('linkStrength'),
         friction: function() {
             return this._friction;
-        },
+        }.property('friction'),
         frictionChanged: function() {
             this._friction = this.get('friction');
             this.force.friction(friction);
         }.observes('friction'),
         theta: function() {
             return this._theta;
-        },
+        }.property('theta'),
         thetaChanged: function() {
             this._theta = this.get('theta');
             this.force.theta(theta);
         }.observes('theta'),
         gravity: function() {
             return this._gravity;
-        },
+        }.property('gravity'),
         gravityChanged: function() {
             this._gravity = this.get('gravity');
             this.force.gravity(gravity);
@@ -138,7 +144,7 @@ define([
                     .friction(this._friction)
                     .theta(this._theta)
                     .gravity(this._gravity)
-                    ;
+                ;
             } else {
                 // stop force while updating its properties
                 this.force.stop();
@@ -251,22 +257,56 @@ define([
 
             this.force.on('tick', function() {
                 link_model
-                    .attr('x1', function(d) {return d.source.x;})
-                    .attr('y1', function(d) {return d.source.y;})
-                    .attr('x2', function(d) {return d.target.x;})
-                    .attr('y2', function(d) {return d.target.y;})
+                    .attr(
+                        'x1',
+                        function(d) {
+                            if (!d.source.x) {
+                                d.source.x = 1;
+                            }
+                            return d.source.x;
+                        }
+                    )
+                    .attr(
+                        'y1',
+                        function(d) {
+                            if (!d.source.y) {
+                                d.source.y = 1;
+                            }
+                            return d.source.y;
+                        }
+                    )
+                    .attr(
+                        'x2',
+                        function(d) {
+                            if (!d.target.x) {
+                                d.target.x = 1
+                            }
+                            return d.target.x;
+                        }
+                    )
+                    .attr(
+                        'y2',
+                        function(d) {
+                            if (!d.target.y) {
+                                d.target.y = 1;
+                            }
+                            return d.target.y;
+                        }
+                    )
                 ;
-            node_model
-                .attr("transform", function(d) { return "translate(" + (d.x) + "," + (d.y) + ")"; })
+                node_model
+                    .attr("transform", function(d) {
+                        if (!d.x) {
+                            d.x = 1;
+                        }
+                        if (!d.y) {
+                            d.y = 1;
+                        }
+                        return "translate(" + (d.x) + "," + (d.y) + ")"; }
+                    )
                 ;
             });
-            // disable first call
-            if (this.firstCall) {
-                this.firstCall = false;
-                this.force.start();
-            } else { // or resume force
-                this.force.start();
-            }
+            this.force.start();
         },
 
         /**
@@ -389,7 +429,7 @@ define([
         */
         destroyToolBox: function() {
             // delete old toolbox
-            if (this.toolbox !== null) {
+            if (this.toolbox) {
                 this.toolbox
                     .transition()
                         .duration(500)
@@ -412,13 +452,12 @@ define([
             d3.event.stopPropagation();
             this.delete(data);
             this.destroyToolBox();
-            this.updateModel();
         },
         linkHandler: function(data, shape) {
             d3.event.stopPropagation();
             this.source = data; // save link source
-            var coordinates = [data.x, data.y];
-            this.tmpLink = this.panel
+            //var coordinates = [data.x, data.y];
+            /*this.tmpLink = this.panel
                 .append('line')
                     .attr(
                         {
@@ -430,23 +469,34 @@ define([
                         }
                     )
                     .classed('tmpLink', true)
-                ;
+                ;*/
             this.destroyToolBox();
         },
         addHandler: function(data) {
             d3.event.stopPropagation();
             if (this.source === null) {
-                var node = this.addNode(undefined, true);
                 var coordinates = d3.mouse(this.panel[0][0]);
-                node.x = coordinates[0];
-                node.y = coordinates[1];
-                node.fixed = true;
+                function callback(record) {
+                    var node = record.d3_elt;
+                    node.x = coordinates[0];
+                    node.y = coordinates[1];
+                    node.px = node.x;
+                    node.py = node.y;
+                    node.fixed = true;
+                    this.updateModel();
+                }
+                this.vertice2D3Node(undefined, true, callback, undefined, this);
             } else {
-                this.addLink(this.source, data, true);
-                this.removeTmpLink();
+                function success2(record) {
+                    this.updateModel();
+                    this.removeTmpLink();
+                }
+                function failure2(record) {
+                    this.removeTmpLink();
+                }
+                this.addLink(this.source, data, true, success2, failure2, this);
             }
             this.destroyToolBox();
-            this.updateModel();
         },
         unselectHandler: function(data) {
             d3.event.stopPropagation();
@@ -473,10 +523,18 @@ define([
             this.removeTmpLink();
             this.destroyToolBox();
         },
+        eventpoolHandler: function(data) {
+            document.location.href = "/eventpool/?"+data.elt.get('info').entity;
+        },
 
+        /**
+        * Remove tmp link
+        */
         removeTmpLink: function() {
             this.source = null;
-            this.tmpLink.remove();
+            if (this.tmpLink) {
+                this.tmpLink.remove();
+            }
             this.tmpLink = null;
         },
 
@@ -532,14 +590,9 @@ define([
                         }
                     )
                 ;
-            // add a title which is the entity id or graph element id
-            shapes.append('title')
-                .text(
-                    function(d) {
-                        return d.id;
-                    }
-                )
-            ;
+            // add title
+            shapes.append('title');
+            shapes.append('text');// add entity name redirection
             // node drag
             var node_drag = this.force.drag
                 .on(
@@ -564,8 +617,10 @@ define([
         */
         delNodes: function(nodes) {
             nodes
-                .transition(500)
-                .remove()
+                .transition()
+                    .duration(500)
+                    .style('opacity', 0)
+                        .remove()
             ;
         },
 
@@ -617,25 +672,35 @@ define([
                         }
                     )
             ;
-            nodes // add entity name redirection
-                .filter(
-                    function(d) {
-                        return d.elt && d.elt.get('entity')
-                    }
-                )
-                .append('a')
-                    .attr(
-                        {
-                            'xlink:href': function(d) { return '/eventpool?' + d.elt.get('entity');},
-                            'target': '_blank'
+            // update a title which is the entity id or graph element id
+            nodes.select('title').text(
+                function (d) {
+                    var info = d.elt.get('info');
+                    return info? info.entity : '';
+                }
+            );
+            // update href to event pool
+            nodes
+                .select('text')
+                    .text(
+                        function(d) {
+                            var result = '';
+                            var type = d.elt.get('type');
+                            if (type === 'edge') {
+                                result = d.elt.get('weight');
+                            } else {
+                                var info = d.elt.get('info');
+                                if (info) {
+                                    var entity = info.entity;
+                                    if (entity) {
+                                        var last_index_of_slash = entity.lastIndexOf('/') + 1;
+                                        var result = entity.substring(last_index_of_slash);
+                                    }
+                                }
+                            }
+                            return result;
                         }
                     )
-                    .append('text')
-                        .text(
-                            function(d) {
-                                return d.elt.get('entity') ? d.elt.get('entity') : d.id;
-                            }
-                        )
             ;
         },
 
@@ -668,7 +733,8 @@ define([
             links
                 .transition()
                     .duration(500)
-                    .remove()
+                    .style('opacity', 0)
+                        .remove()
             ;
         },
 
@@ -692,8 +758,7 @@ define([
                                     case 0: result = 'green'; break; // ok
                                     case 1: result = 'yellow'; break; // warning
                                     case 2: result = 'red'; break; // critical
-                                    case 3:
-                                    default: result = 'white'; // unknown
+                                    case 3: result = 'white'; break; // unknown
                                 }
                             }
                             return result;
@@ -727,7 +792,7 @@ define([
                         x2: coordinates[0],
                         y2: coordinates[1]
                     }
-                )*/
+                )
                 if (this.checkTargetLink(shape.__data__)) {
                     this.tmpLink.attr(
                         {
@@ -740,7 +805,7 @@ define([
                             id: 'wrongTmpLink'
                         }
                     )
-                }
+                }*/
             }
         },
 
@@ -763,6 +828,7 @@ define([
             if (d3.event.defaultPrevented) return;
             d3.event.stopPropagation();
             this.edit(shape.__data__);
+            this.destroyToolBox();
         },
 
         clickAction: function(shape) {
@@ -781,6 +847,8 @@ define([
         graph_id: null,  // graph id
 
         graph_cls: 'canopsis.topology.elements.Topology', // default graph class
+
+        default_vertice_cls: 'canopsis.topology.elements.Node', // default vertice class
 
         selected: [], // selected items
 
@@ -859,7 +927,9 @@ define([
         */
         putGraphToServer: function(success, failure) {
             var _url = this.putGraphUrl();
-            var elts = [this.toElt(this.graph)];
+            var graph = this.toElt(this.graph);
+            graph.elts = [];
+            var elts = [graph];
             Object.keys(this.graph._delts).forEach(
                 function(elt_id) {
                     var record = this.graph._delts[elt_id];
@@ -867,6 +937,7 @@ define([
                     if (record.get('type') !== 'topology') {
                         var elt = this.toElt(record);
                         elts.push(elt);
+                        graph.elts.push(elt.cid);
                     }
                 },
                 this
@@ -887,6 +958,11 @@ define([
         * display nodes in the widget
         */
         findItems: function() {
+            $('.charge').slider(
+                {
+                    change: this.chargeChanged
+                }
+            );
             // get graph id and graph type
             this.graph_type = this.get('model.graph_type');
             if (!this.graph_type) this.graph_type = 'topology';
@@ -926,15 +1002,18 @@ define([
                         // if old graph exists
                         if (_this.graph !== null) {
                             // delete old elements
+                            var elts_to_delete = [];
                             Object.keys(_this.graph._delts).forEach(
                                 function(elt_id) {
                                     // in case of old element
                                     if (graph._delts[elt_id] === undefined) {
                                         var elt = _this.graph._delts[elt_id];
-                                        this.delete(elt.d3_elt);
+                                        elts_to_delete.push(elt.d3_elt);
                                     }
-                                }
+                                },
+                                this
                             );
+                            this.delete(elts_to_delete);
                         }
                     }
                     // convert graph such as a record
@@ -949,92 +1028,158 @@ define([
         /**
         * Convert a vertice to a node and add it in the graph model.
         *
-        * @param graph vertice.
+        * @param record ember record which corresponds to a vertice.
         * @return d3 node.
         */
-        vertice2Node: function(vertice) {
-            vertice = this.toRecord(vertice);
-            var result = this.d3_graph.data_by_id[vertice.get('cid')];
+        record2Node: function(record) {
+            var result = this.d3_graph.data_by_id[record.get('cid')];
             if (result === undefined) {
                 var result = {
-                    id: vertice.get('cid'),
-                    elt: vertice,
+                    id: record.get('cid'),
+                    elt: record,
                     index: this.d3_graph.nodes.length,
-                    _weight: 1
+                    _weight: 1,
+                    x: 0,
+                    y: 0,
+                    px: 0,
+                    py: 0
                 };
                 // add result in d3_graph nodes
                 this.d3_graph.nodes.push(result);
                 // add node reference in d3_graph.data_by_id
                 this.d3_graph.data_by_id[result.id] = result;
                 // add a reference to shape from vertice
-                vertice.d3_elt = result;
+                record.d3_elt = result;
             }
             return result;
         },
 
         /**
-        * Convert an edge to links and add them in d3_graph.
-        *
-        * @param edge graph edge.
-        * @return edge node.
+        * return unique id.
         */
-        edge2Links: function(edge) {
+        uuid: function() {
+            return '' + Math.random();
+        },
+
+        /**
+        * Weave edge links from a d3 elt.
+        *
+        * @param edge d3 graph edge.
+        */
+        weaveLinks: function(d3_edge) {
             var _this = this;
-            edge = this.toRecord(edge);
             // save count of link_id per targets/sources
             var link_id_count = {};
+            var edge = d3_edge.elt;
             // cause a d3 link has one source and one target, we may create as many link as there are composition of sources and targets.
             var sources = edge.get('sources');
             var targets = edge.get('targets');
-            // add edge such as a node between all sources and targets
-            var result = this.vertice2Node(edge);
             // update weight
-            result._weight = edge.get('weight');
-            // save links in edge links
-            if (result.links === undefined) {
-                result.links = {};
+            d3_edge._weight = edge.get('weight');
+            // save links in d3_edge links
+            if (d3_edge.sources === undefined) {
+                d3_edge.sources = {};
+                d3_edge.targets = {};
             }
-            var d3_graph = this.d3_graph;
-            /**
-            * Add a link to the d3 graph.
-            *
-            * @param isSource true if link is a source link
-            */
-            function addLink(isSource) {
-                return function(vertice_id, vertice_index) {
-                    // find the right id related to edge.id, target and count of (edge.id, target)
-                    var link_id = isSource + '-' + result.id + '-' + vertice_id;
-                    var count = link_id_count[link_id];
-                    if (count === undefined) {
-                        count = 0;
-                    } else {
-                        count++;
-                    }
-                    link_id_count[link_id] = count;
-                    link_id += '-' + count;
-                    // create a post_link which links the edge to a target
-                    var link = d3_graph.data_by_id[link_id];
-                    if (link === undefined) {
-                        link = {
-                            isSource: isSource,
-                            source: isSource? vertice_id : result.id,
-                            target: !isSource? vertice_id : result.id,
-                            elt: edge, // save edge
-                            model_pos: vertice_index, // pos in graph model
-                            id: link_id,
-                            view_pos: d3_graph.links.length // pos in view
-                        };
-                        d3_graph.links.push(link);
-                        d3_graph.data_by_id[link.id] = link;
-                        result.links[link.id] = link;
-                    }
-                };
+            var neighbour_counts = {
+                sources: {},
+                targets: {}
             };
+            var d3_graph = this.d3_graph;
+            // array of links view pos to delete at the end for better complexity time resolution
+            var link_pos_to_delete = [];
+            /**
+            * Add links in d3_edge.
+            * @param key value among targets and sources
+            */
+            function updateLinks(key) {
+                var isSource = key === 'sources';
+                var neighbours = edge.get(key);
+                neighbours.forEach(
+                    function(d) {
+                        // get number of time we meet d
+                        var neighbour_count = neighbour_counts[key][d];
+                        if (neighbour_count === undefined) {
+                            neighbour_count = 0;
+                            neighbour_counts[key][d] = neighbour_count;
+                        }
+                        // increment neighbour count
+                        neighbour_count++;
+                        neighbour_counts[key][d] = neighbour_count;
+                        // get d links
+                        var links_by_id = d3_edge[key][d];
+                        if (links_by_id === undefined) {
+                            var links_by_id = {};
+                            d3_edge[key][d] = links_by_id;
+                        }
+                        // if a link is missing
+                        if (Object.keys(links_by_id).length < neighbour_count) {
+                            // create it
+                            link = {
+                                isSource: isSource,
+                                source: isSource? d : d3_edge.id,
+                                target: !isSource? d : d3_edge.id,
+                                elt: edge, // save edge
+                                id: this.uuid(), // uuid
+                                view_pos: d3_graph.links.length // pos in view
+                            };
+                            d3_graph.links.push(link); // add in view
+                            d3_graph.data_by_id[link.id] = link;
+                            // try to inject references to sources and targets
+                            var source = d3_graph.data_by_id[link.source];
+                            if (source !== undefined) {
+                                link.source = source;
+                            }
+                            var target = d3_graph.data_by_id[link.target];
+                            if (target !== undefined) {
+                                link.target = target;
+                            }
+                            // push link in d3_edge model
+                            links_by_id[link.id] = link;
+                        }
+                    },
+                    this
+                );
+                // remove useless links
+                for (vertice_id in d3_edge[key]) {
+                    var neighbour_count = neighbour_counts[key][vertice_id];
+                    var index = 0; // index to start to remove links
+                    if (neighbour_count !== undefined) {
+                        index = neighbour_count;
+                    }
+                    // delete links from model
+                    var link_id_to_delete = Object.keys(d3_edge[key][vertice_id]).splice(index);
+                    link_id_to_delete.forEach(
+                        function(link_id) {
+                            var link = d3_graph.data_by_id[link_id];
+                            // delete from model
+                            delete d3_edge[key][vertice_id][link_id];
+                            // delete from view
+                            delete d3_graph.data_by_id[link_id];
+                            link_pos_to_delete.push(link.view_pos);
+                        },
+                        this
+                    );
+                }
+            }
             // add links for all sources
-            sources.forEach(addLink(true));
+            updateLinks.call(this, 'sources');
             // add links for all targets
-            targets.forEach(addLink(false));
-            return result;
+            updateLinks.call(this, 'targets');
+            // delete useless links from view
+            if (link_pos_to_delete.length > 0) {
+                link_pos_to_delete.sort();
+                link_pos_to_delete.forEach(
+                    function(d, i) {
+                        d3_graph.links.splice(d - i, 1);
+                    }
+                );
+                d3_graph.links.forEach(
+                    function(d, i) {
+                        d.view_pos = i;
+                    }
+                );
+            }
         },
 
         updateModel: function() {
@@ -1057,11 +1202,9 @@ define([
                     }
                 }
             };
-
             // add the graph itself among nodes
-            var node = this.vertice2Node(this.graph);
+            var node = this.vertice2D3Node(this.graph);
             storeNode(node);
-
             // get loaded graph elts
             var elts = this.graph._delts;
 
@@ -1069,18 +1212,18 @@ define([
                 function(elt_id) {
                     var elt = elts[elt_id];
                     // ensure elt is a record
-                    elt = this.toRecord(elt);
+                    d3_node = this.vertice2D3Node(elt);
+                    elt = d3_node.elt;
                     // update its reference in _delts
                     elts[elt_id] = elt;
                     var node = null;
                     if (elt.get('type') === 'edge') {
-                        node = this.edge2Links(elt); // add links if elt is an edge.
+                        this.weaveLinks(d3_node); // add links if elt is an edge.
                     } else {
-                        node = this.vertice2Node(elt); // add node in other cases.
                         // initialize weight
-                        node._weight = 1;
+                        d3_node._weight = 1;
                     }
-                    storeNode(node); // register the node in memory
+                    storeNode(d3_node); // register the node in memory
                 },
                 this
             );
@@ -1102,6 +1245,8 @@ define([
                 function(link) {
                     if (typeof link.source === 'string') {
                         link.source = this.d3_graph.data_by_id[link.source];
+                    }
+                    if (typeof link.target === 'string') {
                         link.target = this.d3_graph.data_by_id[link.target];
                     }
                 },
@@ -1134,74 +1279,86 @@ define([
         *
         * @param data data to edit.
         */
-        edit: function(data) {
+        edit: function(data, success, failure, context) {
+            function callback(record) {
+                this.updateModel();
+                if (success !== undefined) {
+                    success.call(context, record);
+                }
+            }
             var elt = data.elt;
-            this.editRecord(elt);
-            this.rerender();
+            if (elt.get('type') !== 'topology') {
+                this.editRecord(elt, callback, failure, this);
+            }
         },
 
         /**
         * Delete a selected element or all elements related to input data.
         * @param data array of data to delete if not undefined.
         */
-        delete: function(datum) {
+        delete: function(datum, doNotUpdateModel) {
             //ensure data is an array of data
             if (! Array.isArray(datum)) {
                 datum = [datum];
             }
+            // arrays of link/node pos to delete once at the end for better complexity time reasons
+            var links_pos_to_delete = [];
+            var nodes_pos_to_delete = [];
+
+            // start to delete all shapes
+            var nodes_to_delete = this.panel.selectAll('.node').data(datum, function(d) { return d.id;});
+            this.delNodes(nodes_to_delete);
+            var links_to_delete = this.panel.selectAll('.link').data(datum, function(d) { return d.id;});
+            this.delLinks(links_to_delete);
+
             datum.forEach(
                 function(data) {
                     // forbid to delete the main topology
-                    if (datum.id === this.graph.get('cid')) {
+                    if (data.id === this.graph.get('cid')) {
                         console.error('Impossible to delete the main topology');
                     } else if (data.isSource !== undefined) { // is data a target link ?
-                        // delete shape
-                        var links_to_delete = this.panel.selectAll('.link').filter(
-                            function(d) {
-                                return data.id === d.id;
-                            }
-                        );
                         this.delLinks(links_to_delete);
+                        var key = data.isSource? 'sources' : 'targets';
+                        var key_s = key.substring(0, key.length - 1);
                         // delete data from model
-                        var bound_nodes = data.elt.get(data.isSource ? 'sources' : 'targets');
-                        bound_nodes.splice(data.model_pos);
-                        delete data.node.links[data.id];
-                        // update bound_nodes pos
-                        var links = data.node.links;
-                        for (link_id in links) {
-                            var link = links[link_id];
-                            if ((link.isSource === data.isSource) && link.model_pos > data.model_pos) {
-                                link.model_pos--;
-                            }
-                        }
+                        // delete from sources/targets
+                        var bound_nodes = data.elt.get(key);
+                        var neighbour = data[key_s];
+                        var index = bound_nodes.indexOf(neighbour.id);
+                        bound_nodes.splice(index, 1);
                         // delete data from view
-                        this.d3_graph.links.splice(data.view_pos);
+                        delete data.elt.d3_elt[key][neighbour.id][data.id];
+                        links_pos_to_delete.push(data.view_pos);
                         delete this.d3_graph.data_by_id[data.id];
                     } else { // data is a node/edge/topology
-                        // del nodes
-                        var shapes_to_delete = this.panel.selectAll('.node').data(datum, function(d) { return d.id;});
-                        this.delNodes(shapes_to_delete);
                         // delete data from model
                         // delete nodes
                         if (data.elt.get('type') === 'edge') { // in case of an edge
                             // get all link_data
                             var link_data_to_delete = [];
-                            for (link_id in data.links) {
-                                var link_data = data.links[link_id];
-                                // delete reference of link
-                                this.d3_graph.links.splice(link_data.view_pos);
-                                delete this.d3_graph.data_by_id[link_id];
-                                // add link_data in link_data_to_delete
-                                link_data_to_delete.push(link_data);
-                            }
+                            ['sources', 'targets'].forEach(
+                                function(key) {
+                                    var neighbours = data.links[key];
+                                    Object.keys(neighbours).forEach(
+                                        function(link) {
+                                            links_pos_to_delete.push(link.view_pos); // save view pos
+                                            link_data_to_delete.push(link);
+                                            // delete from view
+                                            delete this.d3_graph.data_by_id[link.id];
+                                        },
+                                        this
+                                    )
+                                },
+                                this
+                            );
+                            // delete all shapes
                             var links_to_delete = this.panel.selectAll('.link').data(link_data_to_delete, function(d) { return d.id});
                             this.delLinks(links_to_delete);
                             // delete edge node
                             // from model
-                            this.graph.elts.splice(data.model_pos);
                             delete this.graph._delts[data.id];
                             // from view
-                            this.d3_graph.nodes.splice(data.index);
+                            this.d3_graph.nodes.splice(data.index, 1);
                             this.d3_graph.nodes.forEach(
                                 function(d, i) {
                                     d.index = i;
@@ -1212,6 +1369,7 @@ define([
                             // delete links from edges
                             // let's iterate on dict of data by id in the view
                             var data_by_id = this.d3_graph.data_by_id;
+                            var elts_to_delete = []; // for time execution reason, we save in memory all elts to delete in order to delete them once at the end
                             for (data_id in data_by_id) {
                                 var edge = data_by_id[data_id];
                                 // if elt is an edge
@@ -1223,31 +1381,65 @@ define([
                                         // if data is source/target, delete it
                                         if (link_data.source.id === data.id || link_data.target.id === data.id) {
                                             if (link_data.isSource) { // if link is a source, delete the edge
-                                                this.delete(edge);
+                                                elts_to_delete.push(edge);
                                             } else { // or only the target
-                                                this.delete(link_data);
+                                                elts_to_delete.push(link_data);
                                             }
                                         }
                                     }
                                 }
                             }
+                            // delete once edges and links
+                            if (elts_to_delete.length > 0) {
+                                this.delete(elts_to_delete, true);
+                            }
                             // once links are deleted, delete the node
                             // from model
-                            this.graph.elts.splice(data.model_pos);
                             delete this.graph._delts[data.id];
                             // from view
-                            this.d3_graph.nodes.splice(data.index);
-                            this.d3_graph.nodes.forEach(
-                                function(d, i) {
-                                    d.index = i;
-                                }
-                            );
-                            delete this.d3_graph.data_by_id[data.id]
+                            nodes_pos_to_delete.push(data.index);
+                            delete this.d3_graph.data_by_id[data.id];
                         }
                     }
                 },
                 this
             );
+            // delete link shapes from view once
+            if (links_pos_to_delete.length > 0) {
+                links_pos_to_delete.sort();
+                links_pos_to_delete.forEach(
+                    function(d, i) {
+                        this.d3_graph.links.splice(d - i, 1);
+                    },
+                    this
+                );
+                // update view pos (TODO: improve execution in starting with last view_pos)
+                this.d3_graph.links.forEach(
+                    function(d, i) {
+                        d.view_pos = i;
+                    }
+                );
+            }
+            // delete node shapes from view once
+            if (nodes_pos_to_delete.length > 0) {
+                nodes_pos_to_delete.sort();
+                nodes_pos_to_delete.forEach(
+                    function(d, i) {
+                        this.d3_graph.nodes.splice(d - i, 1);
+                    },
+                    this
+                );
+                // update index (TODO: improve execution in starting with last index)
+                this.d3_graph.nodes.forEach(
+                    function(d, i) {
+                        d.index = i;
+                    }
+                );
+            }
+            // update model if asked
+            if (doNotUpdateModel) {
+                this.updateModel();
+            }
         },
 
         /**
@@ -1298,7 +1490,8 @@ define([
                 cid: record.get('cid'),
                 _type: record.get('_type'),
                 type: record.get('type'),
-                _cls: record.get('_cls')
+                _cls: record.get('_cls'),
+                data: record.get('info')
             };
             var record_type = record.get('type');
             if (record_type === 'edge') {
@@ -1306,8 +1499,6 @@ define([
                 result.sources = record.get('sources');
                 result.targets = record.get('targets');
                 result.directed = record.get('directed');
-            } else if(record_type === 'topology') {
-                result.elts = record.get('elts')
             }
             return result;
         },
@@ -1315,24 +1506,56 @@ define([
         /**
         * Convert input elt to a record, or returns it if already a record.
         *
-        * @param elt element to convert.
+        * @param elt element to convert. If undefined, get default vertice element.
         * @param edit edit record with a form if true.
+        * @param success edition success callback. Takes record in parameter.
+        * @param failure edition failure callback. Takes record in parameter.
         */
-        toRecord: function(elt, edit) {
+        toRecord: function(elt, edit, success, failure, context) {
             var result = elt;
+            if (!elt) {
+                var uuid = '' + Math.random();
+                elt = {
+                    _id: uuid,
+                    cid: uuid,
+                    type: 'node',
+                    _type: 'vertice',
+                    _cls: 'canopsis.topology.elements.Node',
+                    data: {
+                        entity: '',
+                        operator: ''
+                    },
+                };
+            }
             // if elt is a record
             if (elt.store === undefined) {
-                if (elt.data !== undefined) {
-                    elt.info = elt.data;
-                    delete elt.data;
+                if (elt.cid === undefined) {
+                    var uuid = '' + Math.random();
+                    elt.cid = uuid;
+                    elt._id = uuid;
+                    if (!elt._type) {
+                        elt._type = 'node';
+                        elt.type = 'node';
+                    }
+                    if (!elt._cls) {
+                        elt._cls = this.default_vertice_cls;
+                    }
+                    if (!elt.data) {
+                        elt.data = {
+                            entity: '',
+                            operator: ''
+                        };
+                    }
                 }
+                elt.info = elt.data;
+                delete elt.data;
                 var result = dataUtils.getStore().createRecord(
                     elt.type,
                     elt
                 );
             }
             if (edit) {
-                this.editRecord(result);
+                this.editRecord(result, success, failure, context);
             }
             return result;
         },
@@ -1341,8 +1564,10 @@ define([
         * Edit a record.
         *
         * @param record record to edit.
+        * @param success edition success callback. Takes record in parameter.
+        * @param failure edition failure callback. Takes record in parameter.
         */
-        editRecord: function(record) {
+        editRecord: function(record, success, failure, context) {
             var recordWizard = formsUtils.showNew(
                 'modelform',
                 record,
@@ -1351,45 +1576,45 @@ define([
             recordWizard.submit.done(
                 function(form) {
                     record.save();
+                    if (success !== undefined) {
+                        success.call(context, record);
+                    }
+                }
+            );
+            recordWizard.submit.fail(
+                function(form) {
+                    if (failure !== undefined) {
+                        failure.call(context, record);
+                    }
                 }
             );
         },
 
         /**
-        * Add a node with input configuration or from a form.
-        * @param conf default configuration.
+        * Convert a vertice to D3 node.
+        *
+        * @param vertice vertice to convert.
         * @param edit edit configuartion with a form.
+        * @param success edition success callback. Takes record in parameter.
+        * @param failure edition failure callback. Takes record in parameter.
         * @return new vertice record.
         */
-        addNode: function(conf, edit) {
-            // initialize the vertice data
-            if (!conf) {
-                var uuid = '' + Math.random();
-                conf = {
-                    _id: uuid,
-                    cid: uuid,
-                    type: 'node',
-                    _type: 'vertice',
-                    _cls: 'canopsis.topology.elements.Node',
-                    data: {},
-                };
-            }
-            if(conf.cid === undefined) {
-                var uuid = '' + Math.random();
-                conf.cid = conf._id? conf._id : uuid;
-                if (conf._id === undefined) {
-                    conf._id = uuid;
+        vertice2D3Node: function(vertice, edit, success, failure, context) {
+            // define a callback
+            function processRecord(record) {
+                // save result in model
+                this.graph._delts[record.get('cid')] = record;
+                var result = this.record2Node(record);
+                if (success !== undefined) {
+                    success.call(context, record);
                 }
+                return result;
             }
-            if(conf.type === undefined) {
-                conf.type = 'node';
+            // initialize the vertice data
+            var record = this.toRecord(vertice, edit, processRecord, failure, this);
+            if (!edit) {
+                var result = processRecord.call(this, record);
             }
-            var record = this.toRecord(conf, edit);
-            // save result in model
-            this.graph._delts[record.get('cid')] = record;
-            record.model_pos = this.graph.get('elts').length;
-            this.graph.get('elts').push(record.get('cid'));
-            var result = this.vertice2Node(record);
             return result
         },
 
@@ -1399,9 +1624,12 @@ define([
         * @param source source link.
         * @param target optional target link.
         * @param edit enable link properties edition.
+        * @param success edition success callback. Takes record in parameter.
+        * @param failure edition failure callback. Takes record in parameter.
+        * @param callback execution context.
         * @return new edge node.
         */
-        addLink: function(source, target, edit) {
+        addLink: function(source, target, edit, success, failure, context) {
             var result = null;
             var source_type = source.elt.get('type');
             // ensure source and target are ok
@@ -1410,8 +1638,16 @@ define([
             }
             // get a target
             if (target === undefined) {
+                // create a callback
+                function callback(record) {
+                    this.addLink(source, record.d3_elt);
+                    if (success !== undefined) {
+                        success.call(context, record);
+                    }
+                }
                 // create a node if target does not exist
-                target = this.addNode(undefined, edit);
+                target = this.vertice2D3Node(undefined, edit, callback, failure, this);
+                if (edit) return;
             }
             // get result
             // if source is an edge, then edge is source
@@ -1419,8 +1655,16 @@ define([
                 result = source;
                 // and add right now the target
                 result.elt.get('targets').push(target.id);
+                this.weaveLinks(result);
             } else { // else create a new edge
-                var edge = this.addNode(
+                function callback2(record) {
+                    var edge = record.d3_elt;
+                    this.weaveLinks(edge);
+                    if (success !== undefined) {
+                        success.call(context, record);
+                    }
+                }
+                var edge = this.vertice2D3Node(
                     {
                         type: 'edge',
                         sources: [source.id],
@@ -1430,15 +1674,14 @@ define([
                         _type: 'edge',
                         _cls: 'canopsis.graph.elements.Edge'
                     },
-                    edit
+                    edit,
+                    callback2,
+                    failure,
+                    this
                 );
-                result = this.edge2Links(edge.elt);
-                // resolve weight
-                result._weight = edge.elt.get('weight');
-                if(source._weight === undefined) {
-                    source._weight = 0;
+                if (!edit) {
+                    callback2.call(this, edge.elt);
                 }
-                source._weight += 1;
             }
             return result;
         },
@@ -1478,6 +1721,12 @@ define([
                 );
 
                 if (data !== undefined && data.elt) { // is it a node
+                    var info = data.elt.get('info');
+                    if (info) {
+                        if (info.entity) {
+                            result.push(this.newToolBoxItem('eventpool', 'triangle-up'))
+                        }
+                    }
                     if (this.selected[data.id] !== undefined) {
                         result.push(this.newToolBoxItem('unselect', 'diamond'));
                     } else {
