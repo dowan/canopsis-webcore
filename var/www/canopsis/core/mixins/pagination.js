@@ -60,6 +60,7 @@ define([
         paginationMixinContent: function() {
             console.warn("paginationMixinContent should be defined on the concrete class");
         },
+
         paginationMixinFindOptions: function() {
             console.warn("paginationMixinFindOptions should be defined on the concrete class");
         },

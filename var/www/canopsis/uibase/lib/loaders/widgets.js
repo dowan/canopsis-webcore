@@ -24,7 +24,6 @@ var widgets = [
     { name:'widgetcontainer', url:'canopsis/uibase/widgets/widgetcontainer/controller', template:'canopsis/uibase/widgets/widgetcontainer/template.html' },
     { name:'horizontalbox', url:'canopsis/uibase/widgets/horizontalbox/controller', template:'canopsis/uibase/widgets/horizontalbox/template.html' },
     { name:'lighthbox', url:'canopsis/uibase/widgets/lighthbox/controller', template:'canopsis/uibase/widgets/lighthbox/template.html' },
-    { name:'tabmanager', url:'canopsis/uibase/widgets/tabmanager/controller', template:'canopsis/uibase/widgets/tabmanager/template.html' },
     { name:'uiactionbutton', url:'canopsis/uibase/widgets/uiactionbutton/controller', template:'canopsis/uibase/widgets/uiactionbutton/template.html' },
     { name:'uimaintabcollection', url:'canopsis/uibase/widgets/uimaintabcollection/controller', template:'canopsis/uibase/widgets/uimaintabcollection/template.html' },
     { name:'uimaindropdown', url:'canopsis/uibase/widgets/uimaindropdown/controller', template:'canopsis/uibase/widgets/uimaindropdown/template.html' },
@@ -36,7 +35,6 @@ var widgets = [
     { name:'graph', url:'canopsis/uibase/widgets/graph/controller', template:'canopsis/uibase/widgets/graph/template.html' }
     //{ name:'topology', url:'canopsis/uibase/widgets/topology/controller', template:'canopsis/uibase/widgets/topology/template.html' }
     //{ name:'gauge', url:'canopsis/uibase/widgets/gauge'}
-
 ];
 
 loader.loadWithTemplates(widgets);
