@@ -144,16 +144,19 @@ def exports(ws):
                 )
 
             else:
-                return HTTPError(403, 'Plain authentication required')
+                #return HTTPError(403, 'Plain authentication required')
+                redirect('/?logerror=3')
 
         # Local authentication: check if account is activated
         if not user.get('enable', False):
-            return HTTPError(403, 'This account is not enabled')
+            #return HTTPError(403, 'This account is not enabled')
+            redirect('/?logerror=2')
 
         user = check(mode=mode, user=user, password=password)
 
         if not user:
-            return HTTPError(403, 'Forbidden')
+            redirect('/?logerror=1')
+            #return HTTPError(403, 'Forbidden')
 
         session.create(user)
         redirect('/')
