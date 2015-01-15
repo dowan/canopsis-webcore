@@ -278,17 +278,23 @@ define([
         },
 
         getSerieBoundaries: function(serie) {
-            var min = null, max = null;
+            var min = null, max = null, options = get(this, 'options');
 
             for(var i = 0, l = serie.data.length; i < l; i++) {
                 var point = serie.data[i];
 
-                if (min === null || point[1] < min) {
-                    min = point[1];
+                /* skip points outside timewindow */
+                if (point[0] > options.xaxis.max) {
+                    break;
                 }
+                else if (point[0] >= options.xaxis.min) {
+                    if (min === null || point[1] < min) {
+                        min = point[1];
+                    }
 
-                if (max === null || point[1] > max) {
-                    max = point[1];
+                    if (max === null || point[1] > max) {
+                        max = point[1];
+                    }
                 }
             }
 
