@@ -168,7 +168,7 @@ define([
             get(this, 'paginationMixinContent');
             this.set('itemsTotal', get(this, 'widgetDataMetas').total);
 
-            var itemsPerPage = get(this, 'mixinOptions.pagination.itemsPerPage');
+            var itemsPerPage = get(this, 'userParams.itemsPerPage') || get(this, 'mixinOptions.pagination.itemsPerPage') || 5;
             if (itemsPerPage === 0) {
                 console.warn("itemsPerPage is 0 in widget", this);
                 console.warn("assuming itemsPerPage is 5");
