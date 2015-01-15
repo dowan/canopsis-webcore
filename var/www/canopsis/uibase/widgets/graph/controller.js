@@ -181,7 +181,9 @@ define([
                     /*_this.eventZoom = d3.event;
                     console.log(_this.eventZoom);
                     if (d3.event.sourceEvent.type !== 'mousemove') {*/
-                        _this.panel.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+                        if (!_this.dragging) {
+                            _this.panel.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+                        }
                     /*} else {
                         var translate = [d3.event.translate[0] * d3.event.scale, d3.event.translate[1] * d3.event.scale];
                         _this.panel.attr("transform", "translate(" + translate + ")scale(" + d3.event.scale + ")");
@@ -360,6 +362,10 @@ define([
             ).classed('locked', false);
         },
 
+        coordinates: function() {
+            return d3.mouse(this.panel[0][0]);
+        },
+
         /**
         * Show tool box related to input shape.
         */
@@ -375,7 +381,7 @@ define([
             // add a new toolbox with specific node toolbox items
             var toolbox_items = this.getToolBoxItems(data);
             // get coordinates
-            var coordinates = data? [data.x, data.y] : d3.mouse(shape);
+            var coordinates = data? [data.x, data.y] : this.coordinates();
             var _this = this;
             // create generic toolbox
             this.toolbox = this.panel.selectAll('.toolbox')
@@ -492,7 +498,7 @@ define([
         addHandler: function(data) {
             d3.event.stopPropagation();
             if (this.source === null) {
-                var coordinates = d3.mouse(this.panel[0][0]);
+                var coordinates = this.coordinates();
                 function callback(record) {
                     var node = record.d3_elt;
                     node.x = coordinates[0];
@@ -544,6 +550,14 @@ define([
         },
         eventpoolHandler: function(data) {
             document.location.href = "/eventpool/?"+data.elt.get('info').entity;
+            this.destroyToolBox();
+        },
+        saveHandler: function(data) {
+            var _this = this;
+            function success() {
+                _this.destroyToolBox();
+            }
+            this.putGraphToServer(success);
         },
 
         /**
@@ -586,7 +600,7 @@ define([
                         {
                             shapegroup: true,
                             node: true,
-                            edge: function(d) {return d.elt.get('type') === 'edge';},
+                            edge: function(d) {return d.elt.get('type') === 'topoedge';},
                             topology: function(d) { return d.elt.get('type') === 'topology';}
                         }
                     )
@@ -618,12 +632,14 @@ define([
                     'dragstart',
                     function (d) {
                         d3.event.sourceEvent.stopPropagation();
+                        _this.dragging = true;
                         _this.panel.select(this).classed("dragging", true);
                     }
                 )
                 .on(
                     'dragend',
                     function (d) {
+                        _this.dragging = false;
                         _this.panel.select(this).classed("dragging", false);
                     }
                 );
@@ -682,8 +698,8 @@ define([
                                         f = f.size((d._weight>=1? d._weight : 1) * 64);
                                     }
                                     break;
-                                case 'edge': f = f.type('diamond').size(d._weight * 64); break;
-                                case 'node': f = f.type('square').size((d._weight>=1? d._weight : 1) * 64); break;
+                                case 'topoedge': f = f.type('diamond').size(d._weight * 64); break;
+                                case 'toponode': f = f.type('square').size((d._weight>=1? d._weight : 1) * 64); break;
                                 default: f = f.type('triangle-down');
                             }
                            var result = f(d, i);
@@ -705,7 +721,7 @@ define([
                         function(d) {
                             var result = '';
                             var type = d.elt.get('type');
-                            if (type === 'edge') {
+                            if (type === 'topoedge') {
                                 result = d.elt.get('weight');
                             } else {
                                 var info = d.elt.get('info');
@@ -806,7 +822,7 @@ define([
             }
             if (this.source !== null) {
                 console.log(data);
-                var coordinates = data? [data.x, data.y] : d3.mouse(this.panel[0][0]);
+                var coordinates = data? [data.x, data.y] : this.coordinates();
                 /*this.tmpLink.attr(
                     {
                         x2: coordinates[0],
@@ -835,7 +851,7 @@ define([
         * @param shape target shape.
         */
         checkTargetLink: function(data) {
-            var result = (data === undefined || (data.elt.get('type') !== 'edge' && data.id !== this.source.id));
+            var result = (data === undefined || (data.elt.get('type') !== 'topoedge' && data.id !== this.source.id));
             return result;
         },
 
@@ -868,7 +884,8 @@ define([
 
         graph_cls: 'canopsis.topology.elements.Topology', // default graph class
 
-        default_vertice_cls: 'canopsis.topology.elements.Node', // default vertice class
+        default_vertice_cls: 'canopsis.topology.elements.TopoNode', // default vertice class
+        default_edge_cls: 'canopsis.topology.elements.TopoEdge', // default edge class
 
         selected: [], // selected items
 
@@ -1240,7 +1257,7 @@ define([
                     // update its reference in _delts
                     elts[elt_id] = elt;
                     var node = null;
-                    if (elt.get('type') === 'edge') {
+                    if (elt.get('type') === 'topoedge') {
                         // add links if elt is an edge.
                         this.weaveLinks(d3_node);
                     } else {
@@ -1256,7 +1273,7 @@ define([
             // resolve weight
             this.d3_graph.nodes.forEach(
                 function(node, i) {
-                    if (node.elt.get('type') === 'edge') {
+                    if (node.elt.get('type') === 'topoedge') {
                         var source_id = node.elt.get('sources')[0];
                         var source_node = this.d3_graph.data_by_id[source_id];
                         source_node._weight += node.elt.get('weight');
@@ -1280,6 +1297,7 @@ define([
             );
 
             // resolve entities
+            /*
             var _this = this;
             this.getEntitiesFromServer(
                 Object.keys(nodes_by_entity_ids),
@@ -1297,7 +1315,8 @@ define([
                     }
                     _this.rerender();
                 }
-            );
+            );*/
+            this.rerender();
         },
 
         /**
@@ -1327,15 +1346,9 @@ define([
             if (! Array.isArray(datum)) {
                 datum = [datum];
             }
-            // arrays of link/node pos to delete once at the end for better complexity time reasons
-            var links_pos_to_delete = [];
-            var nodes_pos_to_delete = [];
-
-            // start to delete all shapes
-            var nodes_to_delete = this.panel.selectAll('.node').data(datum, function(d) { return d.id;});
-            this.delNodes(nodes_to_delete);
-            var links_to_delete = this.panel.selectAll('.link').data(datum, function(d) { return d.id;});
-            this.delLinks(links_to_delete);
+            // arrays of link/node to delete once at the end for better complexity time reasons
+            var links_data_to_delete = [];
+            var nodes_data_to_delete = [];
 
             datum.forEach(
                 function(data) {
@@ -1343,10 +1356,8 @@ define([
                     if (data.id === this.graph.get('cid')) {
                         console.error('Impossible to delete the main topology');
                     } else if (data.isSource !== undefined) { // is data a target link ?
-                        this.delLinks(links_to_delete);
                         var key = data.isSource? 'sources' : 'targets';
                         var key_s = key.substring(0, key.length - 1);
-                        // delete data from model
                         // delete from sources/targets
                         var bound_nodes = data.elt.get(key);
                         var neighbour = data[key_s];
@@ -1354,113 +1365,125 @@ define([
                         bound_nodes.splice(index, 1);
                         // delete data from view
                         delete data.elt.d3_elt[key][neighbour.id][data.id];
-                        links_pos_to_delete.push(data.view_pos);
-                        delete this.d3_graph.data_by_id[data.id];
+                        // reference link position in d3_graph.links
+                        links_data_to_delete.push(data);
                     } else { // data is a node/edge/topology
-                        // delete data from model
+                        // add data into nodes_data_to_delete for future cleaning
+                        nodes_data_to_delete.push(data);
                         // delete nodes
-                        if (data.elt.get('type') === 'edge') { // in case of an edge
-                            // get all link_data
-                            var link_data_to_delete = [];
+                        if (data.elt.get('type') === 'topoedge') { // in case of an edge
+                            // get all link_data in order to remove them
                             ['sources', 'targets'].forEach(
                                 function(key) {
                                     var neighbours = data[key];
                                     Object.keys(neighbours).forEach(
-                                        function(link) {
-                                            links_pos_to_delete.push(link.view_pos); // save view pos
-                                            link_data_to_delete.push(link);
-                                            // delete from view
-                                            delete this.d3_graph.data_by_id[link.id];
-                                        },
-                                        this
-                                    )
+                                        function(neighbour_id) {
+                                            var links_by_id = neighbours[neighbour_id];
+                                            Object.keys(links_by_id).forEach(
+                                                function(link_id) {
+                                                    var link_data = links_by_id[link_id];
+                                                    // add link in the right to deleting them later
+                                                    links_data_to_delete.push(link_data);
+                                                }
+                                            );
+                                        }
+                                    );
                                 },
                                 this
                             );
-                            // delete all shapes
-                            var links_to_delete = this.panel.selectAll('.link').data(link_data_to_delete, function(d) { return d.id});
-                            this.delLinks(links_to_delete);
-                            // delete edge node
-                            // from model
-                            delete this.graph._delts[data.id];
-                            // from view
-                            this.d3_graph.nodes.splice(data.index, 1);
-                            this.d3_graph.nodes.forEach(
-                                function(d, i) {
-                                    d.index = i;
-                                }
-                            );
-                            delete this.d3_graph.data_by_id[data.id];
                         } else {
                             // delete links from edges
                             // let's iterate on dict of data by id in the view
-                            var data_by_id = this.d3_graph.data_by_id;
+                            var nodes = this.d3_graph.nodes;
                             var elts_to_delete = []; // for time execution reason, we save in memory all elts to delete in order to delete them once at the end
-                            for (data_id in data_by_id) {
-                                var edge = data_by_id[data_id];
-                                // if elt is an edge
-                                if (edge.elt.get('type') === 'edge') {
-                                    // iterate on links
-                                    var links = edge.links;
-                                    for (link_data_id in links) {
-                                        var link_data = links[link_data_id];
-                                        // if data is source/target, delete it
-                                        if (link_data.source.id === data.id || link_data.target.id === data.id) {
-                                            if (link_data.isSource) { // if link is a source, delete the edge
-                                                elts_to_delete.push(edge);
-                                            } else { // or only the target
-                                                elts_to_delete.push(link_data);
-                                            }
-                                        }
+                            nodes.forEach(
+                                function(edge) {
+                                    // if elt is an edge
+                                    if (edge.elt.get('type') === 'topoedge') {
+                                        // iterate on sources/targets
+                                        ['sources', 'targets'].forEach(
+                                            function(key) {
+                                                var links_by_id = edge[key][data.id];
+                                                if (links_by_id !== undefined) {
+                                                    var link_ids = Object.keys(links_by_id);
+                                                    var tmp_elts_to_delete = [];
+                                                    for (var index=0; index<link_ids.length; index++) {
+                                                        var link_id = link_ids[index];
+                                                        var link_data = links_by_id[link_id];
+                                                        if (link_data.isSource) {
+                                                            // if source, add edge and all links to delete
+                                                            tmp_elts_to_delete = [edge];
+                                                            break;
+                                                        } else {
+                                                            // if not source, add target link only
+                                                            tmp_elts_to_delete.push(link_data);
+                                                        }
+                                                    }
+                                                    // fill elts_to_delete with tmp_elts_to_delete
+                                                    tmp_elts_to_delete.forEach(
+                                                        function(d) {
+                                                            elts_to_delete.push(d);
+                                                        }
+                                                    );
+                                                }
+                                            },
+                                            this
+                                        );
                                     }
-                                }
-                            }
+                                },
+                                this
+                            );
                             // delete once edges and links
                             if (elts_to_delete.length > 0) {
+                                // without update the model at the end
                                 this.delete(elts_to_delete, true);
                             }
-                            // once links are deleted, delete the node
-                            // from model
-                            delete this.graph._delts[data.id];
-                            // from view
-                            nodes_pos_to_delete.push(data.index);
-                            delete this.d3_graph.data_by_id[data.id];
                         }
                     }
                 },
                 this
             );
             // delete link shapes from view once
-            if (links_pos_to_delete.length > 0) {
-                links_pos_to_delete.sort();
-                links_pos_to_delete.forEach(
+            if (links_data_to_delete.length > 0) {
+                links_data_to_delete.sort(function(a, b) { return a.view_pos - b.view_pos;});
+                links_data_to_delete.forEach(
                     function(d, i) {
-                        this.d3_graph.links.splice(d - i, 1);
+                        // delete link from view
+                        var pos = d.view_pos - i;
+                        this.d3_graph.links.splice(pos, 1);
+                        delete this.d3_graph.data_by_id[d.id];
                     },
                     this
                 );
-                // update view pos (TODO: improve execution in starting with last view_pos)
-                this.d3_graph.links.forEach(
-                    function(d, i) {
-                        d.view_pos = i;
-                    }
-                );
+                // delete shapes
+                //var links_to_delete = this.panel.selecAll('.'+this.link_class).data(links_data_to_delete, function(d) { return d.id});
+                //this.delLinks(links_to_delete);
+                // update view pos
+                for(pos = links_data_to_delete[0].view_pos; pos < this.d3_graph.links.length; pos++) {
+                    this.d3_graph.links[pos].view_pos = pos;
+                };
             }
             // delete node shapes from view once
-            if (nodes_pos_to_delete.length > 0) {
-                nodes_pos_to_delete.sort();
-                nodes_pos_to_delete.forEach(
+            if (nodes_data_to_delete.length > 0) {
+                nodes_data_to_delete.sort(function(a, b) { return a.index - b.index;});
+                nodes_data_to_delete.forEach(
                     function(d, i) {
-                        this.d3_graph.nodes.splice(d - i, 1);
+                        // delete node from model
+                        delete this.graph._delts[d.id];
+                        // and from view
+                        index = d.index - i;
+                        this.d3_graph.nodes.splice(index, 1);
+                        delete this.d3_graph.data_by_id[d.id];
                     },
                     this
                 );
-                // update index (TODO: improve execution in starting with last index)
-                this.d3_graph.nodes.forEach(
-                    function(d, i) {
-                        d.index = i;
-                    }
-                );
+                // delete shapes
+                //var nodes_to_delete = this.panel.selectAll('.'+this.node_class).data(nodes_data_to_delete, function(d) { return d.id});
+                //this.delNodes(nodes_to_delete);
+                // update indexes
+                for (index=nodes_data_to_delete[0].index; index < this.d3_graph.nodes.length; index++) {
+                    this.d3_graph.nodes[index].index = index;
+                }
             }
             // update model if asked
             if (!doNotUpdateModel) {
@@ -1520,7 +1543,7 @@ define([
                 data: record.get('info')
             };
             var record_type = record.get('type');
-            if (record_type === 'edge') {
+            if (record_type === 'topoedge') {
                 result.weight = record.get('weight');
                 result.sources = record.get('sources');
                 result.targets = record.get('targets');
@@ -1544,9 +1567,9 @@ define([
                 elt = {
                     _id: uuid,
                     cid: uuid,
-                    type: 'node',
+                    type: 'toponode',
                     _type: 'vertice',
-                    _cls: 'canopsis.topology.elements.Node',
+                    _cls: this.default_vertice_cls,
                     data: {
                         entity: '',
                         operator: ''
@@ -1560,8 +1583,8 @@ define([
                     elt.cid = uuid;
                     elt._id = uuid;
                     if (!elt._type) {
-                        elt._type = 'node';
-                        elt.type = 'node';
+                        elt._type = 'vertice';
+                        elt.type = 'toponode';
                     }
                     if (!elt._cls) {
                         elt._cls = this.default_vertice_cls;
@@ -1665,8 +1688,13 @@ define([
             // get a target
             if (target === undefined) {
                 // create a callback
+                var coordinates = this.coordinates();
                 function callback(record) {
                     this.addLink(source, record.d3_elt);
+                    var target = record.d3_elt;
+                    target.px = target.x = coordinates[0];
+                    target.py = target.y = coordinates[1];
+                    target.fixed = true;
                     if (success !== undefined) {
                         success.call(context, record);
                     }
@@ -1677,7 +1705,7 @@ define([
             }
             // get result
             // if source is an edge, then edge is source
-            if (source_type === 'edge') {
+            if (source_type === 'topoedge') {
                 result = source;
                 // and add right now the target
                 result.elt.get('targets').push(target.id);
@@ -1692,13 +1720,13 @@ define([
                 }
                 var edge = this.vertice2D3Node(
                     {
-                        type: 'edge',
+                        type: 'topoedge',
                         sources: [source.id],
                         targets: [target.id],
                         weight: 1,
                         directed: true,
                         _type: 'edge',
-                        _cls: 'canopsis.graph.elements.Edge'
+                        _cls: this.default_edge_cls
                     },
                     edit,
                     callback2,
@@ -1773,7 +1801,10 @@ define([
                         result.push(this.newToolBoxItem('edit', 'square')); // edit elt
                     }
                 } else {
-                    result.push(this.newToolBoxItem('add', 'cross')); // add elt
+                    result.push(
+                        this.newToolBoxItem('save', 'square'), // save model
+                        this.newToolBoxItem('add', 'cross') // add elt
+                    );
                 }
             }
 
