@@ -52,7 +52,8 @@ define([
 ) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
 
     var listOptions = {
@@ -88,7 +89,7 @@ define([
                     console.debug('sendDisplayRecord action called with params', dest, record);
 
                     var template = get(dest, 'record_template');
-                    if (Ember.isNone(template)) {
+                    if (isNone(template)) {
                         template = '';
                     }
 
@@ -135,7 +136,7 @@ define([
             **/
             getTimeInterval: function () {
                 var interval = get(this, 'timeIntervalFilter');
-                if (Ember.isNone(interval)) {
+                if (isNone(interval)) {
                     return {};
                 } else {
                     return interval;
@@ -190,8 +191,8 @@ define([
                 var columnSort = get(this, 'default_column_sort');
 
 
-                if (findParams !== undefined && findParams.sort !== undefined && columnSort !== undefined) {
-                    if (!Ember.isNone(columnSort.property) && Ember.isNone(findParams.sort)){
+                if (!isNone(findParams) && isNone(findParams.sort) && !isNone(columnSort)) {
+                    if (!isNone(columnSort.property) && isNone(findParams.sort)){
                         var direction = 'DESC';
                         if (columnSort.direction === 'DESC' || columnSort.direction === 'ASC') {
                             direction = columnSort.direction;
@@ -310,7 +311,7 @@ define([
                 var filter;
 
                 function isDefined(filterPart) {
-                    if(filterPart === {} || Ember.isNone(filterPart)) {
+                    if(filterPart === {} || isNone(filterPart)) {
                         return false;
                     }
 
