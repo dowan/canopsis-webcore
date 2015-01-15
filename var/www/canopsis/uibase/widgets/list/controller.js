@@ -52,7 +52,8 @@ define([
 ) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
 
     var listOptions = {
@@ -88,7 +89,7 @@ define([
                     console.debug('sendDisplayRecord action called with params', dest, record);
 
                     var template = get(dest, 'record_template');
-                    if (Ember.isNone(template)) {
+                    if (isNone(template)) {
                         template = '';
                     }
 
@@ -135,7 +136,7 @@ define([
             **/
             getTimeInterval: function () {
                 var interval = get(this, 'timeIntervalFilter');
-                if (Ember.isNone(interval)) {
+                if (isNone(interval)) {
                     return {};
                 } else {
                     return interval;
@@ -189,9 +190,9 @@ define([
                 //Setting default sort order param to the query depending on widget configuration
                 var columnSort = get(this, 'default_column_sort');
 
-
-                if (findParams !== undefined && findParams.sort !== undefined && columnSort !== undefined) {
-                    if (!Ember.isNone(columnSort.property) && Ember.isNone(findParams.sort)){
+                //when find params does not contains already a sort infomation, then apply default one if any
+                if (!isNone(findParams) && isNone(findParams.sort) && !isNone(columnSort)) {
+                    if (!isNone(columnSort.property) && isNone(findParams.sort)){
                         var direction = 'DESC';
                         if (columnSort.direction === 'DESC' || columnSort.direction === 'ASC') {
                             direction = columnSort.direction;
@@ -267,6 +268,8 @@ define([
                 }
 
                 var selected_columns = [];
+                var sortedAttribute = get(this, 'sortedAttribute');
+                var columnSort = get(this, 'default_column_sort');
                 for(var column=0, l = shown_columns.length; column < l; column++) {
 
                     shown_columns[column].options.show = true;
@@ -287,6 +290,16 @@ define([
                     if ($.inArray(shown_columns[column].field, get(this, 'hidden_columns')) === -1) {
                         selected_columns.pushObject(shown_columns[column]);
                     }
+
+                    //Manage sort icon from default sort
+                    if (!isNone(columnSort) &&
+                        columnSort.property === shown_columns[column].field &&
+                        !isNone(columnSort.direction) &&
+                        (isNone(sortedAttribute) || sortedAttribute === {})) {
+                        var headerClass = columnSort.direction === 'ASC' ? 'sorting_asc' : 'sorting_desc';
+                        shown_columns[column].headerClassName = headerClass;
+                    }
+
                 }
 
                 var maximized_column_index = get(this, 'maximized_column_index');
@@ -310,7 +323,7 @@ define([
                 var filter;
 
                 function isDefined(filterPart) {
-                    if(filterPart === {} || Ember.isNone(filterPart)) {
+                    if(filterPart === {} || isNone(filterPart)) {
                         return false;
                     }
 
