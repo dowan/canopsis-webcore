@@ -131,7 +131,7 @@ define([
                 set(this, 'paginationMixinFindOptions', {});
             }
 
-            var itemsPerPage = get(this, 'mixinOptions.pagination.itemsPerPage');
+            var itemsPerPage = get(this, 'userParams.itemsPerPage') || get(this, 'mixinOptions.pagination.itemsPerPage');
 
             console.log('itemsPerPage is', itemsPerPage, 'type', typeof itemsPerPage);
 
@@ -153,7 +153,7 @@ define([
             }
 
             var start = itemsPerPage * (this.currentPage - 1);
-            console.log("start", start, itemsPerPage);
+            console.log('start', start, itemsPerPage);
             set(this, 'itemsPerPagePropositionSelected', itemsPerPage);
             set(this, 'paginationMixinFindOptions.start', start);
             set(this, 'paginationFirstItemIndex', start + 1);
