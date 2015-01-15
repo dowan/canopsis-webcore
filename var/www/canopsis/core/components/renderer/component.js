@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
-    'canopsis/canopsisConfiguration'
-], function(Ember, canopsisConfiguration) {
+    'ember'
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -28,9 +27,6 @@ define([
 
 
     var component = Ember.Component.extend({
-
-        canopsisConfiguration: canopsisConfiguration,
-        debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
 
         actions: {
             do: function(action) {
