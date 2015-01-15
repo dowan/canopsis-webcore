@@ -63,6 +63,17 @@ def exports(ws):
 
         # Try to authenticate user
         key = key or request.params.get('authkey', default=None)
+        logerror = request.params.get('logerror', default=None)
+
+        if logerror in [None, '1', '2', '3']:
+            logmessage = {
+                None: '',
+                '1': 'Wrong login or password',
+                '2': 'Account disabled',
+                '3': 'Plain authentication required'
+            }[logerror]
+        else:
+            logmessage = None
 
         if key:
             auth.autoLogin(key)
@@ -72,7 +83,8 @@ def exports(ws):
         if not ticket and not s.get('auth_on', False):
             # Build cservice dict for login page templating
             cservices = {
-                'webserver': {provider: 1 for provider in ws.providers}
+                'webserver': {provider: 1 for provider in ws.providers},
+                'logmessage': logmessage
             }
 
             records = ws.db.find(
