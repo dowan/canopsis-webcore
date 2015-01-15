@@ -33,6 +33,7 @@ define([
         classNames: 'flotchart',
 
         init: function() {
+            set(this, 'chart', null);
             set(this, 'options', {});
             set(this, 'series', []);
             set(this, 'human', false);
@@ -56,7 +57,7 @@ define([
             renderChart: function() {
                 var chart = get(this, 'chart');
 
-                if(chart !== undefined) {
+                if(chart !== null) {
                     console.log('Destroy chart');
                     chart.destroy();
                 }
@@ -93,9 +94,10 @@ define([
                     serie.color = serie.config.color;
                 }
 
-                // refresh chart
-                set(this, 'series', series);
-                this.refreshChart();
+                this.send('renderChart');
+
+                // trigger event
+                this.$().trigger('toggleserie', [config]);
             }
         },
 
@@ -214,13 +216,13 @@ define([
         createChart: function() {
             console.group('createChart:');
 
-            var me = this,
-                plotcontainer = this.$(),
+            var plotcontainer = this.$(),
                 series = get(this, 'series'),
                 options = get(this, 'options');
 
             this.createAxes();
             this.createLegend();
+            this.autoscale();
 
             /* create plot */
             console.log('series:', series);
@@ -228,17 +230,14 @@ define([
 
             set(this, 'chart', $.plot(plotcontainer, series, options));
 
-            this.autoscale();
-
             console.groupEnd();
         },
 
         autoscale: function() {
             var seriesByAxis = get(this, 'classifiedSeries'),
-                chart = get(this, 'chart');
+                options = get(this, 'options');
 
-            var options = chart.getOptions(),
-                yaxes = Object.keys(seriesByAxis.y);
+            var yaxes = Object.keys(seriesByAxis.y);
 
             for(var axis = 0, l = yaxes.length; axis < l; axis++) {
                 var key = axis + 1;
@@ -272,11 +271,10 @@ define([
                 series = get(this, 'series');
 
             console.log('flotchart refresh series:', series);
+            this.autoscale();
             chart.setData(series);
             chart.setupGrid();
             chart.draw();
-
-            this.autoscale();
         },
 
         getSerieBoundaries: function(serie) {

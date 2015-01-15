@@ -62,6 +62,12 @@ define([
 
                 var timecontainer = this.$('.flotchart-preview-container .flotchart');
                 timecontainer.bind('plotselected', updateGrid);
+
+                var component = Ember.View.views[timecontainer.attr('id')];
+
+                graphcontainer.bind('toggleserie', function(evt, config) {
+                    component.send('renderChart');
+                });
             }
 
             console.groupEnd();
