@@ -190,7 +190,7 @@ define([
                 //Setting default sort order param to the query depending on widget configuration
                 var columnSort = get(this, 'default_column_sort');
 
-
+                //when find params does not contains already a sort infomation, then apply default one if any
                 if (!isNone(findParams) && isNone(findParams.sort) && !isNone(columnSort)) {
                     if (!isNone(columnSort.property) && isNone(findParams.sort)){
                         var direction = 'DESC';
@@ -268,6 +268,8 @@ define([
                 }
 
                 var selected_columns = [];
+                var sortedAttribute = get(this, 'sortedAttribute');
+                var columnSort = get(this, 'default_column_sort');
                 for(var column=0, l = shown_columns.length; column < l; column++) {
 
                     shown_columns[column].options.show = true;
@@ -288,6 +290,16 @@ define([
                     if ($.inArray(shown_columns[column].field, get(this, 'hidden_columns')) === -1) {
                         selected_columns.pushObject(shown_columns[column]);
                     }
+
+                    //Manage sort icon from default sort
+                    if (!isNone(columnSort) &&
+                        columnSort.property === shown_columns[column].field &&
+                        !isNone(columnSort.direction) &&
+                        (isNone(sortedAttribute) || sortedAttribute === {})) {
+                        var headerClass = columnSort.direction === 'ASC' ? 'sorting_asc' : 'sorting_desc';
+                        shown_columns[column].headerClassName = headerClass;
+                    }
+
                 }
 
                 var maximized_column_index = get(this, 'maximized_column_index');
