@@ -525,6 +525,13 @@ define([
                     used: get(config, 'curve.points'),
                     symbol: get(config, 'curve.point_shape')
                 },
+                values: {
+                    show: true,
+                    labelFormatter: function(series, text) {
+                        var n = parseFloat(text);
+                        return n.toFixed(2);
+                    }
+                },
                 xaxis: parseInt(get(config, 'style.xaxis')),
                 yaxis: parseInt(get(config, 'style.yaxis')),
                 clickable: true,
@@ -535,7 +542,8 @@ define([
                     color: get(config, 'style.color'),
                     lines: get(config, 'curve.lines') || get(config, 'curve.areas'),
                     bars: get(config, 'curve.bars'),
-                    points: get(config, 'curve.points')
+                    points: get(config, 'curve.points'),
+                    values: true
                 },
                 unit: get(config, 'serie.unit')
             };
@@ -629,6 +637,7 @@ define([
                         set(chartSerie, 'lines.show', false);
                         set(chartSerie, 'bars.show', false);
                         set(chartSerie, 'points.show', false);
+                        set(chartSerie, 'values.show', false);
                     }
                 }
             }

@@ -73,21 +73,25 @@ define([
 
                 console.log('Toggling serie:', label, serieIndex, serie);
 
-                if(serie.config.lines && serie.lines) {
+                if (serie.config.lines && serie.lines) {
                     serie.lines.show = !serie.lines.show;
                 }
 
-                if(serie.config.bars && serie.bars) {
+                if (serie.config.bars && serie.bars) {
                     serie.bars.show = !serie.bars.show;
                 }
 
-                if(serie.config.points && serie.points) {
+                if (serie.config.points && serie.points) {
                     serie.points.show = !serie.points.show;
+                }
+
+                if (serie.config.values && serie.values) {
+                    serie.values.show = !serie.values.show;
                 }
 
                 serie.hidden = !serie.hidden;
 
-                if(serie.hidden) {
+                if (serie.hidden) {
                     serie.color = '#CCCCCC';
                 }
                 else {
@@ -262,7 +266,7 @@ define([
                 }
 
                 options.yaxes[axis].min = min;
-                options.yaxes[axis].max = max;
+                options.yaxes[axis].max = max + 30;
             }
         },
 
