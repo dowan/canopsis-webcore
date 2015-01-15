@@ -63,7 +63,8 @@ var components = [
     { name: 'components/component-forcevalue', url: 'canopsis/uibase/components/forcevalue/component', template: 'canopsis/uibase/components/forcevalue/template.html' },
     { name: 'components/component-forcevaluerenderer', url: 'canopsis/uibase/components/forcevaluerenderer/component', template: 'canopsis/uibase/components/forcevaluerenderer/template.html' },
     { name: 'components/component-graph', url: 'canopsis/uibase/components/graph/component', template: 'canopsis/uibase/components/graph/template.html' },
-    { name: 'components/component-topology', url: 'canopsis/uibase/components/topology/component', template: 'canopsis/uibase/components/topology/template.html' }
+    { name: 'components/component-topology', url: 'canopsis/uibase/components/topology/component', template: 'canopsis/uibase/components/topology/template.html' },
+    { name: 'components/component-ack', url: 'canopsis/uibase/components/ack/component', template: 'canopsis/uibase/components/ack/template.html' }
 ];
 
 loader.loadWithTemplates(components);

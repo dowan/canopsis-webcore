@@ -1,15 +1,1 @@
-{{#if value.author}}
-    {{ack value this}}
-    {{#component-tooltip content=value.html htmlEnabled=true noTranslation=true}}
-        <span {{bind-attr class=":badge value.color"}} >
-            <i class="fa fa-check"></i>
-        </span>
-    {{/component-tooltip}}
-{{/if}}
-{{#if value.ticket}}
-    {{#component-tooltip content=value.ticket htmlEnabled=true noTranslation=true}}
-        <span class="badge bg-blue">
-            <i class="fa fa-ticket"></i>
-        </span>
-    {{/component-tooltip}}
-{{/if}}
+{{component-ack crecord=this value=value}}
