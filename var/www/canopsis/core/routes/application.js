@@ -56,8 +56,7 @@ define([
                 formwrapperController.send('show');
 
                 return formController;
-            },
-
+            }
         },
 
         model: function() {
@@ -86,7 +85,6 @@ define([
                 into: 'application',
                 controller: recordinfopopupController
             });
-
         }
     });
 
