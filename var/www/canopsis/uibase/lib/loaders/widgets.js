@@ -20,11 +20,11 @@
 var widgets = [
     { name:'text', url:'canopsis/uibase/widgets/text/controller', template:'canopsis/uibase/widgets/text/template.html' },
     { name:'list', url:'canopsis/uibase/widgets/list/controller', template:'canopsis/uibase/widgets/list/template.html' },
-    { name:'canvas', url:'canopsis/uibase/widgets/canvas/controller', template:'canopsis/uibase/widgets/canvas/template.html' },
+    //USELESS ATM { name:'canvas', url:'canopsis/uibase/widgets/canvas/controller', template:'canopsis/uibase/widgets/canvas/template.html' },
     { name:'widgetcontainer', url:'canopsis/uibase/widgets/widgetcontainer/controller', template:'canopsis/uibase/widgets/widgetcontainer/template.html' },
     { name:'uiactionbutton', url:'canopsis/uibase/widgets/uiactionbutton/controller', template:'canopsis/uibase/widgets/uiactionbutton/template.html' },
     { name:'uimaintabcollection', url:'canopsis/uibase/widgets/uimaintabcollection/controller', template:'canopsis/uibase/widgets/uimaintabcollection/template.html' },
-    { name:'uimaindropdown', url:'canopsis/uibase/widgets/uimaindropdown/controller', template:'canopsis/uibase/widgets/uimaindropdown/template.html' },
+    //USELESS ATM : { name:'uimaindropdown', url:'canopsis/uibase/widgets/uimaindropdown/controller', template:'canopsis/uibase/widgets/uimaindropdown/template.html' },
     //{ name:'multicrecordlist', url:'canopsis/uibase/widgets/multicrecordlist/controller', template:'canopsis/uibase/widgets/multicrecordlist/template.html' , TEMPLATE:'list'},
     { name:'jobmanager', url:'canopsis/uibase/widgets/jobmanager/controller', template:'canopsis/uibase/widgets/list/template.html', TEMPLATE: 'list' },
     { name:'euewi', url:'canopsis/uibase/widgets/euewi/controller', template:'canopsis/uibase/widgets/list/template.html', TEMPLATE: 'list' },
