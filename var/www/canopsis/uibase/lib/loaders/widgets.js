@@ -22,8 +22,6 @@ var widgets = [
     { name:'list', url:'canopsis/uibase/widgets/list/controller', template:'canopsis/uibase/widgets/list/template.html' },
     { name:'canvas', url:'canopsis/uibase/widgets/canvas/controller', template:'canopsis/uibase/widgets/canvas/template.html' },
     { name:'widgetcontainer', url:'canopsis/uibase/widgets/widgetcontainer/controller', template:'canopsis/uibase/widgets/widgetcontainer/template.html' },
-    { name:'horizontalbox', url:'canopsis/uibase/widgets/horizontalbox/controller', template:'canopsis/uibase/widgets/horizontalbox/template.html' },
-    { name:'lighthbox', url:'canopsis/uibase/widgets/lighthbox/controller', template:'canopsis/uibase/widgets/lighthbox/template.html' },
     { name:'uiactionbutton', url:'canopsis/uibase/widgets/uiactionbutton/controller', template:'canopsis/uibase/widgets/uiactionbutton/template.html' },
     { name:'uimaintabcollection', url:'canopsis/uibase/widgets/uimaintabcollection/controller', template:'canopsis/uibase/widgets/uimaintabcollection/template.html' },
     { name:'uimaindropdown', url:'canopsis/uibase/widgets/uimaindropdown/controller', template:'canopsis/uibase/widgets/uimaindropdown/template.html' },
