@@ -25,15 +25,21 @@ define([
 ], function($, Ember, DOM, values) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     var component = Ember.Component.extend({
         tagName: 'div',
         classNames: 'flotchart',
 
-        options: undefined,
-        series: undefined,
-        human: false,
+        init: function() {
+            set(this, 'chart', null);
+            set(this, 'options', {});
+            set(this, 'series', []);
+            set(this, 'human', false);
+
+            this._super.apply(this, arguments);
+        },
 
         onDataUpdate: function() {
             this.send('renderChart');
@@ -51,7 +57,7 @@ define([
             renderChart: function() {
                 var chart = get(this, 'chart');
 
-                if(chart !== undefined) {
+                if(chart !== null) {
                     console.log('Destroy chart');
                     chart.destroy();
                 }
@@ -60,8 +66,7 @@ define([
             },
 
             toggleSerie: function(config) {
-                var label = config[0];
-                var serieIndex = config[1];
+                var label = config[0], serieIndex = config[1];
 
                 var series = get(this, 'series');
                 var serie = series[serieIndex];
@@ -89,21 +94,16 @@ define([
                     serie.color = serie.config.color;
                 }
 
-                // refresh chart
-                set(this, 'series', series);
-                this.refreshChart();
+                this.send('renderChart');
+
+                // trigger event
+                this.$().trigger('toggleserie', [config]);
             }
         },
 
-        createChart: function() {
-            console.group('createChart:');
-
-            var me = this;
-            var plotcontainer = this.$();
-            var series = get(this, 'series');
-            var options = get(this, 'options');
-
-            var seriesByAxis = {
+        classifiedSeries: function() {
+            var series = get(this, 'series'),
+                seriesByAxis = {
                 x: {},
                 y: {}
             };
@@ -126,6 +126,13 @@ define([
                 seriesByAxis.y[serie.yaxis].push(serie);
             }
 
+            return seriesByAxis;
+        }.property('series.@each'),
+
+        createAxes: function() {
+            var options = get(this, 'options'),
+                seriesByAxis = get(this, 'classifiedSeries');
+
             var axis,
                 n_xaxes = Object.keys(seriesByAxis.x).length,
                 n_yaxes = Object.keys(seriesByAxis.y).length;
@@ -137,7 +144,7 @@ define([
                     options.xaxes[axis] = {
                         show: true,
                         reserveSpace: true,
-                        position: (axis % 2 == 0 ? 'bottom' : 'top'),
+                        position: (axis % 2 === 0 ? 'bottom' : 'top'),
                         color: seriesByAxis.x[key][0].color,
                         font: {
                             color: seriesByAxis.x[key][0].color
@@ -146,12 +153,11 @@ define([
                 }
             }
 
+            var me = this;
             for(axis = 0 ; axis < n_yaxes ; axis++) {
                 var key = axis + 1;
 
                 if (options.yaxes[axis] === undefined) {
-                    var me = this;
-
                     options.yaxes[axis] = {
                         show: true,
                         reserveSpace: true,
@@ -172,15 +178,20 @@ define([
                     return val;
                 };
             }
+        },
+
+        createLegend: function() {
+            var options = get(this, 'options'),
+                me = this;
 
             if(options && options.legend && options.legend.show && options.legend.labelFormatter === undefined) {
                 options.legend.labelFormatter = function(label, serie) {
                     console.log('Format label for serie:', label, serie);
 
-                    var style = undefined;
+                    var style = 'cursor: pointer; margin-left: 5px;';
 
                     if(serie.hidden) {
-                        style = 'font-style: italic;';
+                        style += ' font-style: italic;';
                     }
 
                     var clickableLabel = $('<span/>', {
@@ -200,7 +211,20 @@ define([
                     return tmpContainer.html();
                 };
             }
+        },
 
+        createChart: function() {
+            console.group('createChart:');
+
+            var plotcontainer = this.$(),
+                series = get(this, 'series'),
+                options = get(this, 'options');
+
+            this.createAxes();
+            this.createLegend();
+            this.autoscale();
+
+            /* create plot */
             console.log('series:', series);
             console.log('options:', options);
 
@@ -209,14 +233,66 @@ define([
             console.groupEnd();
         },
 
+        autoscale: function() {
+            var seriesByAxis = get(this, 'classifiedSeries'),
+                options = get(this, 'options');
+
+            var yaxes = Object.keys(seriesByAxis.y);
+
+            for(var axis = 0, l = yaxes.length; axis < l; axis++) {
+                var key = axis + 1;
+
+                var n_series = seriesByAxis.y[key].length,
+                    min = null, max = null;
+
+                for(var serieidx = 0; serieidx < n_series; serieidx++) {
+                    var serie = seriesByAxis.y[key][serieidx];
+
+                    if (!serie.hidden) {
+                        var boundaries = this.getSerieBoundaries(serie);
+
+                        if (min === null || boundaries[0] < min) {
+                            min = boundaries[0];
+                        }
+
+                        if (max === null || boundaries[1] > max) {
+                            max = boundaries[1];
+                        }
+                    }
+                }
+
+                options.yaxes[axis].min = min;
+                options.yaxes[axis].max = max;
+            }
+        },
+
         refreshChart: function() {
-            var chart = get(this, 'chart');
-            var series = get(this, 'series');
+            var chart = get(this, 'chart'),
+                series = get(this, 'series');
 
             console.log('flotchart refresh series:', series);
+            this.autoscale();
             chart.setData(series);
             chart.setupGrid();
             chart.draw();
+        },
+
+        getSerieBoundaries: function(serie) {
+            var min = null, max = null;
+
+            for(var i = 0, l = serie.data.length; i < l; i++) {
+                var point = serie.data[i];
+
+                if (min === null || point[1] < min) {
+                    min = point[1];
+                }
+
+                if (max === null || point[1] > max) {
+                    max = point[1];
+                }
+            }
+
+            return [min, max];
         }
     });
 

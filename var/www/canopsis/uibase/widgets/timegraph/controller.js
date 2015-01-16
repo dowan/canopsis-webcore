@@ -62,6 +62,12 @@ define([
 
                 var timecontainer = this.$('.flotchart-preview-container .flotchart');
                 timecontainer.bind('plotselected', updateGrid);
+
+                var component = Ember.View.views[timecontainer.attr('id')];
+
+                graphcontainer.bind('toggleserie', function(evt, config) {
+                    component.send('renderChart');
+                });
             }
 
             console.groupEnd();
@@ -487,6 +493,18 @@ define([
 
             var me = this;
 
+            var fillcolor = null;
+            var fillopacity = false;
+
+            if (get(config, 'curve.areas')) {
+                var spec = $.color.parse(get(config, 'style.color'));
+
+                fillopacity = get(config, 'curve.area_opacity');
+                spec.a = fillopacity;
+
+                fillcolor = spec.toString();
+            }
+
             var chartSerie = {
                 label: get(config, 'serie.crecord_name'),
                 color: get(config, 'style.color'),
@@ -494,8 +512,8 @@ define([
                     show: get(config, 'curve.lines') || get(config, 'curve.areas'),
                     used: get(config, 'curve.lines'),
                     lineWidth: get(config, 'curve.line_width'),
-                    fill: (get(config, 'curve.areas') ? get(config, 'curve.area_opacity') : false),
-                    fillColor: (get(config, 'curve.areas') ? get(config, 'style.color') : null)
+                    fill: fillopacity,
+                    fillColor: fillcolor
                 },
                 bars: {
                     show: get(config, 'curve.bars'),
@@ -522,16 +540,18 @@ define([
                 unit: get(config, 'serie.unit')
             };
 
-            var oldSerie, ctrl, request;
+            var oldSerieId, oldSerie, ctrl, request;
 
             if(get(config, 'serie.virtual') === true) {
                 ctrl = get(this, 'controllers.perfdata');
-                oldSerie = get(this, 'chartSeries')[get(config, 'style.metric')];
+                oldSerieId = get(config, 'style.metric');
+                oldSerie = get(this, 'chartSeries')[oldSerieId];
                 request = get(config, 'serie.id');
             }
             else {
                 ctrl = get(this, 'controllers.serie');
-                oldSerie = get(this, 'chartSeries.' + get(config, 'style.serie'));
+                oldSerieId = get(config, 'style.serie');
+                oldSerie = get(this, 'chartSeries.' + oldSerieId);
                 request = get(config, 'serie');
             }
 
@@ -541,6 +561,8 @@ define([
             else {
                 chartSerie.data = [];
             }
+
+            chartSerie.serie = oldSerieId;
 
             console.log('chartserie:', chartSerie);
             console.log('Fetch perfdata and compute serie');
@@ -591,8 +613,29 @@ define([
 
         recomputeDataSeries: function() {
             var chartSeries = get(this, 'chartSeries');
-            var series = Ember.A();
+            var oldSeries = get(this, 'dataSeries');
 
+            for(var i = 0, l = oldSeries.length; i < l; i++) {
+                var oldSerie = oldSeries[i];
+                var serieId = get(oldSerie, 'serie');
+                var chartSerie = get(chartSeries, serieId);
+
+                if (chartSerie !== undefined) {
+                    var hidden = get(oldSerie, 'hidden');
+                    set(chartSerie, 'hidden', hidden);
+
+                    if (hidden) {
+                        set(chartSerie, 'color', '#CCCCCC');
+                        set(chartSerie, 'lines.show', false);
+                        set(chartSerie, 'bars.show', false);
+                        set(chartSerie, 'points.show', false);
+                    }
+                }
+            }
+
+            delete oldSeries;
+
+            var series = Ember.A();
             var serieIds = Object.keys(chartSeries);
 
             for(var i = 0, l = serieIds.length; i < l; i++) {
@@ -602,6 +645,7 @@ define([
             }
 
             console.log('dataSeries:', series);
+
             set(this, 'dataSeries', series);
         }
     }, widgetOptions);

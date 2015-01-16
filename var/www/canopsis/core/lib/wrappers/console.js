@@ -18,18 +18,48 @@
 */
 
 
-var deps = [];
+var deps = ['canopsis/canopsisConfiguration',];
 if (!isIE) {
     deps.push('consolejs');
 }
 
-define(deps, function() {
+define(deps, function(conf) {
 
     delete console.init;
 
     if(!isIE) {
         console.group('init');
         console.tags.add('init');
+    } else {
+        if(conf.DEBUG) {
+            var baseconsole = console;
+            console = {
+                log: function (){
+                    var fileinfo = '';
+                    try {
+                        var arrayargs = [];
+                        for (var i=0; i<arguments.length; i++) {
+                            arrayargs.push(arguments[i]);
+                        }
+                        var args = JSON.stringify(arrayargs);
+                        baseconsole.log.apply(baseconsole, [fileinfo, args]);
+                    } catch (e) {
+                        Array.prototype.unshift.call(arguments, [' > unable to serialize next message']);
+                        Array.prototype.unshift.call(arguments, fileinfo);
+                    }
+                },
+                tags: {
+                    add: function (){},
+                    remove: function (){}
+                },
+                group: function () {},
+                groupEnd: function () {},
+                warn: function (){},
+                debug: function (){},
+                info: function (){},
+                error: function (){},
+            };
+        }
     }
 
     // console.log = function(){};

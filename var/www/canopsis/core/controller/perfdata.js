@@ -66,10 +66,10 @@ define([
                             'timezone': new Date().getTimezoneOffset()
                         }),
                         'timeserie': JSON.stringify({
-                            'aggregation': method
-                        }),
-                        'period': JSON.stringify({
-                            'second': interval
+                            'aggregation': method,
+                            'period': {
+                                'second': interval
+                            }
                         })
                     }
                 }).then(resolve, reject);

@@ -52,7 +52,8 @@ define([
 ) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     Ember.Handlebars.registerBoundHelper('renderListline', function(callingContext, event, options) {
         return Ember.Handlebars.helpers.render.helperFunction(callingContext, "listlineTest", 'event', options);
@@ -82,6 +83,28 @@ define([
             ],
 
             dynamicTemplateName: 'listlineTest',
+
+            //TODO test if this is needed (used in cloaked mode)
+            listlineControllerClass: ListlineController,
+
+            actions: {
+                sendDisplayRecord: function (dest, record) {
+                    //This method is not ugly TODO refactor, it would be better if event bubble until application directly
+                    // but at the moment, event doen t bubble properly
+                    console.debug('sendDisplayRecord action called with params', dest, record);
+
+                    var template = get(dest, 'record_template');
+                    if (isNone(template)) {
+                        template = '';
+                    }
+
+                    console.debug('Template is ', template);
+
+                    var recordinfopopupController = get(this, 'controllers.recordinfopopup');
+
+                    recordinfopopupController.send('show', record, template);
+                }
+            },
 
             user: Ember.computed.alias('controllers.login.record._id'),
             rights: Ember.computed.alias('controllers.login.record.rights'),
@@ -154,7 +177,7 @@ define([
             **/
             getTimeInterval: function () {
                 var interval = get(this, 'timeIntervalFilter');
-                if (Ember.isNone(interval)) {
+                if (isNone(interval)) {
                     return {};
                 } else {
                     return interval;
@@ -210,9 +233,9 @@ define([
                 //Setting default sort order param to the query depending on widget configuration
                 var columnSort = get(this, 'default_column_sort');
 
-
-                if (findParams !== undefined && findParams.sort !== undefined && columnSort !== undefined) {
-                    if (!Ember.isNone(columnSort.property) && Ember.isNone(findParams.sort)){
+                //when find params does not contains already a sort infomation, then apply default one if any
+                if (!isNone(findParams) && isNone(findParams.sort) && !isNone(columnSort)) {
+                    if (!isNone(columnSort.property) && isNone(findParams.sort)){
                         var direction = 'DESC';
                         if (columnSort.direction === 'DESC' || columnSort.direction === 'ASC') {
                             direction = columnSort.direction;
@@ -320,6 +343,8 @@ define([
                 }
 
                 var selected_columns = [];
+                var sortedAttribute = get(this, 'sortedAttribute');
+                var columnSort = get(this, 'default_column_sort');
                 for(var column=0, l = shown_columns.length; column < l; column++) {
                     //reset previous if any in case list configuration is updated
                     if (shown_columns[column].options.canUseDisplayRecord) {
@@ -337,6 +362,16 @@ define([
                     if ($.inArray(shown_columns[column].field, get(this, 'hidden_columns')) === -1) {
                         selected_columns.pushObject(shown_columns[column]);
                     }
+
+                    //Manage sort icon from default sort
+                    if (!isNone(columnSort) &&
+                        columnSort.property === shown_columns[column].field &&
+                        !isNone(columnSort.direction) &&
+                        (isNone(sortedAttribute) || sortedAttribute === {})) {
+                        var headerClass = columnSort.direction === 'ASC' ? 'sorting_asc' : 'sorting_desc';
+                        shown_columns[column].headerClassName = headerClass;
+                    }
+
                 }
 
                 console.debug('selected cols', selected_columns);
@@ -362,7 +397,7 @@ define([
                 var filter;
 
                 function isDefined(filterPart) {
-                    if(filterPart === {} || Ember.isNone(filterPart)) {
+                    if(filterPart === {} || isNone(filterPart)) {
                         return false;
                     }
 

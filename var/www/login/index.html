@@ -33,7 +33,6 @@
                 <div class="header">
                     <img src="/static/canopsis/media/canopsis.png" alt="Canopsis" />
                 </div>
-
                 {{#if webserver.cas}}
                     <div class="panel-group" id="loginboxes">
                         <div class="panel panel-default">
@@ -69,6 +68,9 @@
 
                 <form action="/auth" method="post">
                     <div class="body bg-gray">
+                        {{#if logmessage}}
+                            <div class="alert alert-warning" role="alert">{{logmessage}}</div>
+                        {{/if}}
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
                             <input name="username" type="text" class="form-control" placeholder="Login" />
