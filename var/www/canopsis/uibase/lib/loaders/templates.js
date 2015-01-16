@@ -83,6 +83,7 @@ var templates = [
     { name: 'stackedcolumns', template: 'canopsis/uibase/templates/stackedcolumns.html' ,  classes: ["foldable"]},
 
     { name: 'verticallayout', template: 'canopsis/uibase/templates/verticallayout.html' ,  classes: ["layout"]},
+    { name: 'horizontallayout', template: 'canopsis/uibase/templates/horizontallayout.html' ,  classes: ["layout"]},
     { name: 'lightlayout', template: 'canopsis/uibase/templates/lightlayout.html' ,  classes: ["layout"]},
     { name: 'tablayout', template: 'canopsis/uibase/templates/tablayout.html' ,  classes: ["layout"]},
     { name: 'mixineditdropdown', template: 'canopsis/uibase/templates/mixineditdropdown.html'}

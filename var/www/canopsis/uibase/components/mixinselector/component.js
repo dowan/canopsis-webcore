@@ -39,7 +39,7 @@ define([
             var content = get(this, 'content');
 
             if(content) {
-                for (var i = 0; i < content.length; i++) {
+                for (var i = 0, l = content.length; i < l; i++) {
                     if(typeof content[i] === 'string') {
                         content[i] = { name: content[i] };
                     }

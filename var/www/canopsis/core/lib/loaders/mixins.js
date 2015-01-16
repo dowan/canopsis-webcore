@@ -37,6 +37,7 @@ var mixins = [
     { name: 'responsivelist', url: 'app/mixins/responsivelist', classes: ['widget', 'events']},
     { name: 'periodicrefresh', url: 'app/mixins/periodicrefresh', classes: ['widget', 'events']},
     { name: 'verticallayout', url: 'app/mixins/verticallayout', classes: ['widget', 'events']},
+    { name: 'horizontallayout', url: 'app/mixins/horizontallayout', classes: ['widget', 'events']},
     { name: 'lightlayout', url: 'app/mixins/lightlayout', classes: ['widget', 'events']},
     { name: 'tablayout', url: 'app/mixins/tablayout', classes: ['widget', 'events']},
     { name: 'recordinfopopup', url: 'app/mixins/recordinfopopup', classes: ['widget', 'events']}
