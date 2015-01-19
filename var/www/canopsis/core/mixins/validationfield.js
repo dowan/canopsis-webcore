@@ -45,12 +45,12 @@ define([
             set(this, 'form', form );
 
             var attributes = this.attr || this.content;
-            set(this, "attr", attributes );
+            set(this, "attr", attributes);
 
             var model = attributes.model;
 
-            if (isNone(get(this, 'value')) && !isNone(get(this, 'attr.model.options.defaultValue'))) {
-                this.set('value', get(this, 'attr.model.options.defaultValue'));
+            if (isNone(get(this, 'value')) && !isNone(get(this, 'attr.model.options.default'))) {
+                this.set('value', get(this, 'attr.model.options.default'));
             }
 
             var type =  model.options.input_type || model.type;
