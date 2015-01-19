@@ -265,8 +265,32 @@ define([
                     }
                 }
 
-                options.yaxes[axis].min = min;
-                options.yaxes[axis].max = max + 30;
+                /* calculate new max with margin */
+                var inc = max + 30;
+                var incperc = (inc * 100.0) / max;
+
+                if (incperc > 105.0) {
+                    inc = (max * 105.0) / 100.0;
+                }
+
+                /* calculate new min with margin */
+                if(min < 0 || min > 30) {
+                    min = -min;
+                    var dec = min + 30;
+                    var decperc = (min * 100.0) / min;
+
+                    if (decperc > 105.0) {
+                        dec = (min * 105.0) / 100.0;
+                    }
+
+                    dec = -dec;
+                }
+                else {
+                    dec = 0;
+                }
+
+                options.yaxes[axis].min = dec;
+                options.yaxes[axis].max = inc;
             }
         },
 
