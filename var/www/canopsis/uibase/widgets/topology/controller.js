@@ -1015,57 +1015,57 @@ define([
                 // use graph id in getNodes method in order to get nodes
                 this.getGraphFromServer(
                     function(result) {
-                    // get graph or a default graph
-                    var graph = null;
-                    if (result.total === 0) {
-                        graph = {
-                            _delts: {},
-                            type: _this.graph_type,
-                            _type: 'graph',
-                            _id: _this.graph_id,
-                            cid: _this.graph_id,
-                            _cls: _this.graph_cls,
-                            data: {
-                                operator: {
-                                    id: 'canopsis.topology.rule.action.change_state',
-                                    params: {
-                                        update_entity: true
-                                    }
-                                }
-                            },
-                            elts: []
-                        };
-                        // reinitialize old view
-                        _this.d3_graph = {
-                            nodes: [],
-                            links: [],
-                            data_by_id: {}
-                        };
-                    } else {
-                        graph = result.data[0];
-                        // if old graph exists
-                        if (_this.graph !== null) {
-                            // delete old elements
-                            var elts_to_delete = [];
-                            Object.keys(_this.graph._delts).forEach(
-                                function(elt_id) {
-                                    // in case of old element
-                                    if (graph._delts[elt_id] === undefined) {
-                                        var elt = _this.graph._delts[elt_id];
-                                        elts_to_delete.push(elt.d3_elt);
+                        // get graph or a default graph
+                        var graph = null;
+                        if (result.total === 0) {
+                            graph = {
+                                _delts: {},
+                                type: _this.graph_type,
+                                _type: 'graph',
+                                _id: _this.graph_id,
+                                cid: _this.graph_id,
+                                _cls: _this.graph_cls,
+                                data: {
+                                    operator: {
+                                        id: 'canopsis.topology.rule.action.change_state',
+                                        params: {
+                                            update_entity: true
+                                        }
                                     }
                                 },
-                                this
-                            );
-                            this.delete(elts_to_delete);
+                                elts: []
+                            };
+                            // reinitialize old view
+                            _this.d3_graph = {
+                                nodes: [],
+                                links: [],
+                                data_by_id: {}
+                            };
+                        } else {
+                            graph = result.data[0];
+                            // if old graph exists
+                            if (_this.graph !== null) {
+                                // delete old elements
+                                var elts_to_delete = [];
+                                Object.keys(_this.graph._delts).forEach(
+                                    function(elt_id) {
+                                        // in case of old element
+                                        if (graph._delts[elt_id] === undefined) {
+                                            var elt = _this.graph._delts[elt_id];
+                                            elts_to_delete.push(elt.d3_elt);
+                                        }
+                                    },
+                                    this
+                                );
+                                this.delete(elts_to_delete);
+                            }
                         }
+                        // convert graph such as a record
+                        _this.graph = _this.toRecord(graph);
+                        // and update the model
+                        _this.updateModel();
                     }
-                    // convert graph such as a record
-                    _this.graph = _this.toRecord(graph);
-                    // and update the model
-                    _this.updateModel();
-                }
-            );
+                );
             }
         },
 
