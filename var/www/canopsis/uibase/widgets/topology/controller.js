@@ -1025,9 +1025,16 @@ define([
                             _id: _this.graph_id,
                             cid: _this.graph_id,
                             _cls: _this.graph_cls,
-                            data: {},
+                            data: {
+                                operator: {
+                                    id: 'canopsis.topology.rule.action.change_state',
+                                    params: {
+                                        update_entity: true
+                                    }
+                                }
+                            },
                             elts: []
-                        }
+                        };
                         // reinitialize old view
                         _this.d3_graph = {
                             nodes: [],
@@ -1332,9 +1339,7 @@ define([
                 }
             }
             var elt = data.elt;
-            if (elt.get('type') !== 'topology') {
-                this.editRecord(elt, callback, failure, this);
-            }
+            this.editRecord(elt, callback, failure, this);
         },
 
         /**
@@ -1797,9 +1802,9 @@ define([
                             this.newToolBoxItem('delete', 'cross', 'rotate(45)') // elt deletion
                         );
                     }
-                    if (data.elt.get('type') !== 'topology') { // all elts but topologies
+                    //if (data.elt.get('type') !== 'topology') { // all elts but topologies
                         result.push(this.newToolBoxItem('edit', 'square')); // edit elt
-                    }
+                    //}
                 } else {
                     result.push(
                         this.newToolBoxItem('save', 'square'), // save model
