@@ -52,6 +52,8 @@ define([
             }
 
             this._super();
+
+            set(this, 'findParams_cfilterFilterPart', get(this, 'mixinOptions.customfilterlist.default_filter'));
         },
 
         isSelectedFilter: function (filterList) {
@@ -124,7 +126,6 @@ define([
                     notificationUtils.info(__('Custom filter created'));
                     widgetController.set('userParams.custom_filters', widgetController.get('custom_filters'));
                     widgetController.saveUserConfiguration();
-
                 });
             },
 
