@@ -18,9 +18,15 @@
 */
 
 define([
+    'jquery',
+    'ember',
+    'ember-data',
     'app/lib/factories/widget',
-    'app/lib/loaders/schemas'
-], function(WidgetFactory) {
+    'app/controller/serie',
+    'canopsis/canopsisConfiguration',
+    'app/lib/loaders/schemas',
+    'app/controller/perfdata',
+], function($, Ember, DS, WidgetFactory, Serie, canopsisConfiguration) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -30,47 +36,127 @@ define([
 
     var TextViewMixin = Ember.Mixin.create({
         didInsertElement: function () {
-            set(this, 'controller.viewElementId', get(this, 'elementId'));
             this._super.apply(this, arguments);
         },
 
         willDestroyElement: function () {
-            get(this, 'controller').unloadGeneratedTemplate();
             this._super.apply(this, arguments);
         }
     });
 
     var widget = WidgetFactory('text', {
+
+        needs: ['serie', 'perfdata'],
+
         viewMixins: [
             TextViewMixin
         ],
 
-        generatedTemplateName: function() {
-            var viewElementId = get(this, 'viewElementId');
+        perfdata: Ember.computed.alias('controllers.perfdata'),
+
+        init: function() {
+            this._super.apply(this, arguments);
+            set(this, 'widgetDataStore', DS.Store.create({
+                container: get(this, "container")
+            }));
+        },
+
+        findItems: function() {
+
+            set(this, 'templateContext', Ember.Object.create({}));
+
+            var ctrl = this;
+            var seriesController = get(ctrl, 'controllers.serie');
+            var series;
+
+            var now = new Date().getTime();
+            var from = get(this, 'lastRefresh');
+            var to = now;
+            if (isNone(from)){
+                from = now - get(this, 'refreshInterval');
+            }
+            //When specific from / to dates specified into the controller,
+            //the widget will use them. This helps manage live reporting.
+            if (!isNone(get(this, 'from'))) {
+                from = get(this, 'from');
+            }
+            if (!isNone(get(this, 'to'))) {
+                to = get(this, 'to');
+            }
+
+
+            var seriesValues = get(this, 'series');
+            if (isNone(seriesValues)) {
+                //Series crecord_name properties to query on object collection.
+                seriesValues = [];
+            }
+
+            //Declared here for translation purposes
+            var valueNotDefined = __('Value not defined');
+
+            var seriesFilter = JSON.stringify({
+                crecord_name: {'$in': seriesValues}
+            });
+
+            console.log('widget text series duration queries', from, to, now);
+            get(this, 'widgetDataStore').findQuery(
+                'serie',
+                {filter: seriesFilter}
+                ).then(function(results) {
+
+                series = get(results, 'content');
+                console.log('series records', series);
+
+                var seriesQueries = [];
+                for (var i=0; i<series.length; i++) {
+                    seriesQueries.push(seriesController.fetch(
+                        series[i],
+                        from,
+                        to
+                    ));
+                }
+
+                console.log('seriesQueries', seriesQueries);
+
+                Ember.RSVP.all(seriesQueries).then(function(pargs) {
+                    for (var i=0; i<pargs.length; i++) {
+
+                        var data = pargs[i];
+                        console.log('series pargs', pargs);
+                        var displayValue = valueNotDefined;
+                        if (data.length) {
+                            //choosing the last point when any
+                            displayValue = data[data.length - 1];
+                        }
+                        var serieName = get(series[i], 'crecord_name');
+                        set(ctrl, 'templateContext.value_' + serieName, displayValue);
+                    }
+                    ctrl.renderTemplate();
+                });
+
+
+            });
+
+        },
+
+        renderTemplate: function (){
 
             var template = get(this, 'html');
 
-            if (typeof template === "string") {
-                var templateName = 'dynamic-' + viewElementId;
-                console.log('setting dynamic template for widget', templateName, this);
-                var tpl = Ember.Handlebars.compile(template);
-                set(Ember.TEMPLATES, templateName, tpl);
+            var html = 'Unable to render template.';
 
-                return templateName;
+            try {
+                html = Handlebars.compile(template)(get(this, 'templateContext'));
+            } catch (err) {
+                html = '<i>An error occured while compiling the template with the record.' +
+                ' please check if the template is correct</i>';
+                if (canopsisConfiguration.DEBUG) {
+                    html += '<p>' + err + '</p>';
+                }
             }
+            set(this, 'htmlRender', new Ember.Handlebars.SafeString(html));
+        },
 
-        }.property('viewElementId'),
-
-        unloadGeneratedTemplate: function() {
-            var generatedTemplateName = get(this, 'generatedTemplateName');
-            if(isNone(generatedTemplateName)) {
-                console.warn('no generated template found while destroying view', this);
-                return;
-            }
-
-            console.log('destroying generated template', generatedTemplateName);
-            delete Ember.TEMPLATES[generatedTemplateName];
-        }
     });
 
     return widget;
