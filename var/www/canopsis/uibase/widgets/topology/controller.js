@@ -53,7 +53,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-    var widget = WidgetFactory('wgraph', {
+    var widget = WidgetFactory('wtopology', {
 
         d3_graph: {
             nodes: [],
@@ -178,7 +178,8 @@ define([
                 * zoom function.
                 */
                 function zoom() {
-                    /*console.log(_this.eventZoom);
+                    /*_this.eventZoom = d3.event;
+                    console.log(_this.eventZoom);
                     if (d3.event.sourceEvent.type !== 'mousemove') {*/
                         if (!_this.dragging) {
                             _this.panel.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
@@ -187,7 +188,6 @@ define([
                         var translate = [d3.event.translate[0] * d3.event.scale, d3.event.translate[1] * d3.event.scale];
                         _this.panel.attr("transform", "translate(" + translate + ")scale(" + d3.event.scale + ")");
                     }*/
-                    _this.eventZoom = d3.event;
                 };
                 function drag(){
                     console.log(d3.event);
