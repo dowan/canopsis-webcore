@@ -281,7 +281,7 @@ define([
                 }, 1500);
             },
 
-            showUserProfile: function (){
+            showUserProfile: function () {
                 var applicationController = this;
 
                 var ouser = get(utils, 'session');
@@ -476,9 +476,9 @@ define([
 
                 var containerwidget = dataUtils.getStore().createRecord('widgetcontainer', {
                     xtype: 'widgetcontainer',
-                    mixins : {
+                    mixins : [{
                         name: 'verticallayout'
-                    },
+                    }],
                     id: containerwidgetId
                 });
 
