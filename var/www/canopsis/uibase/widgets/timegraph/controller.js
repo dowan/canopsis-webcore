@@ -168,6 +168,7 @@ define([
                 },
 
                 xaxis: {
+                    reserveSpace: true,
                     min: now - get(ctrl, 'time_window_offset') - get(ctrl, 'timenav_window'),
                     max: now - get(ctrl, 'time_window_offset')
                 },
@@ -518,7 +519,10 @@ define([
                 bars: {
                     show: get(config, 'curve.bars'),
                     used: get(config, 'curve.bars'),
-                    barWidth: get(config, 'curve.bar_width')
+                    lineWidth: get(config, 'curve.line_width'),
+                    barWidth: get(config, 'curve.bar_width') * 1000,
+                    fill: fillopacity,
+                    fillColor: fillcolor
                 },
                 points: {
                     show: get(config, 'curve.points'),
@@ -526,7 +530,7 @@ define([
                     symbol: get(config, 'curve.point_shape')
                 },
                 values: {
-                    show: true,
+                    show: get(config, 'curve.valueLabels'),
                     labelFormatter: function(series, text) {
                         var n = parseFloat(text);
                         return n.toFixed(2);
@@ -543,7 +547,7 @@ define([
                     lines: get(config, 'curve.lines') || get(config, 'curve.areas'),
                     bars: get(config, 'curve.bars'),
                     points: get(config, 'curve.points'),
-                    values: true
+                    values: get(config, 'curve.valueLabels')
                 },
                 unit: get(config, 'serie.unit')
             };

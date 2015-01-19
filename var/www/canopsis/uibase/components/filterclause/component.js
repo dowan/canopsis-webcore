@@ -97,9 +97,6 @@ define([
                 var inputValue = get(this, 'content.value');
                 var inputKey = get(this, 'content.key');
 
-                console.log("thisElement", thisElement);
-                window.$G = thisElement;
-
                 var andClausePart = thisElement.clause.and;
 
                 console.log("focusOutInput", arguments);

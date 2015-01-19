@@ -31,9 +31,9 @@ define([
 
     var controller = eventedController.extend({
 
-        title:__('Information'),
 
         init: function () {
+            set(this, 'title',__('Information'));
             console.log('initializing recordinfopopup controller');
         },
 
@@ -47,7 +47,7 @@ define([
                 try {
                     html = Handlebars.compile(template)(crecord[0]._data);
                 } catch (err) {
-                    html = '<i>An error occured while compiling the template with the record. please if the template is correct</i>';
+                    html = '<i>An error occured while compiling the template with the record. please if check the template is correct</i>';
                 }
 
                 set(this, 'content', new Ember.Handlebars.SafeString(html));
