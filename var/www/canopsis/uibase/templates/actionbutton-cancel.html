@@ -1,36 +1,18 @@
 {{#unless controller.findOptions.useLogCollection}}
-    {{#if minified}}
-        {{#if controller.parentController.rights.actionbutton_cancel.checksum}}
-            {{#if this.ack.isAck}}
-                {{#component-tooltip content="Remove"}}
-                    <button class="btn btn-default btn-sm" {{action 'sendEvent' 'cancel' this}} >
-                        {{glyphicon "trash"}}
-                    </button>
-                {{/component-tooltip}}
-
-            {{/if}}
-        {{/if}}
-        {{#if controller.parentController.rights.actionbutton_uncancel.checksum}}
-            {{#if this.ack.isCancel}}
-                {{#component-tooltip content="Undo remove"}}
-                    <button class="btn btn-default btn-sm" {{action 'sendEvent' 'uncancel' this}}>
-                        {{glyphicon "share-alt"}}
-                    </button>
-                {{/component-tooltip}}
-            {{/if}}
-        {{/if}}
-    {{else}}
-        {{#if controller.rights.actionbutton_cancel.checksum}}
+    {{#if controller.rights.actionbutton_cancel.checksum}}
+        {{#if this.ack.isAck}}
             {{#component-tooltip content="Remove"}}
-                <button class="btn btn-default" {{action 'sendEvent' 'cancel'}} >
-                    {{glyphicon "trash"}} {{tr 'Remove'}}
+                <button class="btn btn-default btn-sm" {{action 'sendEvent' 'cancel' this}} >
+                    <span class="glyphicon glyphicon-trash"></span>
                 </button>
             {{/component-tooltip}}
         {{/if}}
-        {{#if controller.rights.actionbutton_uncancel.checksum}}
+    {{/if}}
+    {{#if controller.rights.actionbutton_uncancel.checksum}}
+        {{#if this.ack.isCancel}}
             {{#component-tooltip content="Undo remove"}}
-                <button class="btn btn-default" {{action 'sendEvent' 'uncancel'}} >
-                    {{glyphicon "share-alt"}} {{tr 'Undo remove'}}
+                <button class="btn btn-default btn-sm" {{action 'sendEvent' 'uncancel' this}}>
+                    <span class="glyphicon glyphicon-share-alt"></span>
                 </button>
             {{/component-tooltip}}
         {{/if}}

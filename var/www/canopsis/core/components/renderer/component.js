@@ -21,39 +21,68 @@ define([
     'ember'
 ], function(Ember) {
 
-    var get = Ember.get;
+    var get = Ember.get,
+        set = Ember.set,
+        isNone = Ember.isNone;
 
 
     var component = Ember.Component.extend({
 
-        tagName: 'span',
-        classNames: ['renderer'],
+        actions: {
+            do: function(action) {
+                var params = [];
+                for (var i = 1, l = arguments.length; i < l; i++) {
+                    params.push(arguments[i]);
+                }
 
-        value: function() {
-            return get(this, 'record.' + get(this, 'attr.field'));
-        }.property('attr.field', 'record'),
+                get(this, 'parentView.controller').send(action, params);
+            }
+        },
+        tagName: 'span',
 
         rendererType: function() {
+            console.group('rendererType');
 
-            var type = get(this, 'attr.type');
-            var role = get(this, 'attr.options.role');
-            if(get(this, 'attr.model.options.role')) {
-                role = get(this, 'attr.model.options.role');
-            }
+            var overrides = get(this, 'rendererOverrides');
+
+            var type = get(this, 'content.model.type');
+            var role = get(this, 'content.model.options.role');
+            var field = get(this, 'content.field');
+
+
+            console.log('content:', get(this, 'content'));
+            console.log('type:', get(this, 'content.field'));
+            console.log('type:', type);
+            console.log('role:', role);
 
             var rendererName;
-            if (role) {
-                rendererName = 'renderer-' + role;
+
+            if(!isNone(overrides) && !isNone(field) && get(overrides, field)) {
+                rendererName = 'renderer-' + get(overrides, field);
             } else {
-                rendererName = 'renderer-' + type;
+                if (role) {
+                    if(!isNone(overrides) && get(overrides, role)) {
+                        rendererName = 'renderer-' + get(overrides, role);
+                    } else {
+                        rendererName = 'renderer-' + role;
+                    }
+                } else {
+                    if(!isNone(overrides) && get(overrides, type)) {
+                        rendererName = 'renderer-' + get(overrides, type);
+                    } else {
+                        rendererName = 'renderer-' + type;
+                    }
+                }
             }
 
             if (Ember.TEMPLATES[rendererName] === undefined) {
                 rendererName = undefined;
             }
 
+            console.groupEnd();
+
             return rendererName;
-        }.property('attr.type', 'attr.role')
+        }.property('content.type', 'content.role'),
 
     });
 

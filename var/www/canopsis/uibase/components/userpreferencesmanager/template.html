@@ -8,7 +8,9 @@
         </ul>
         {{#component-tooltip content="Remove this widget preference"}}
             <center>
-                <button class="btn btn-default" {{action removeUserPreference information.preferenceId}}>{{glyphicon 'remove'}}</button>
+                <button class="btn btn-default" {{action "removeUserPreference" information.preferenceId}}>
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
             </center>
         {{/component-tooltip}}
     </div>

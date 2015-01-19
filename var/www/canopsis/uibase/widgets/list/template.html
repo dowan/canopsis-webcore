@@ -21,17 +21,16 @@
                         <th class="checkboxes">
                             {{component-checkbox checked=controller.isAllSelected class="toggle"}}
                         </th>
-                        {{partialslot slot=controller._partials.columnsHead}}
 
                         {{#each attr in controller.shown_columns}}
                             {{#if attr.options.show}}
-                                <th {{action sort attr}} {{bind-attr class=attr.field}}>
+                                <th {{action "sort" attr}} {{bind-attr class=attr.field}}>
                                     {{#if attr.options.label}}
                                         {{tr attr.options.label}}
                                     {{else}}
                                         {{tr attr.field}}
                                     {{/if}}
-                                    {{sorticon attr.headerClassName}}
+                                    {{{sorticon attr.headerClassName}}}
                                 </th>
                             {{/if}}
                         {{/each}}
@@ -40,38 +39,30 @@
                         {{/if}}
                     </tr>
                 </thead>
-                    <tbody>
-                        {{#each controller.widgetData}}
-                            {{render "listline" this
-                                parentController=controller}}
-
-                            {{#if unfolded}}
-                                {{#if loaded}}
-                                    {{partial templateName}}
-                                {{else}}
-                                    <tr>
-                                        <td colspan=5>
-                                            <li class="dropdown tasks-menu">
-                                                <a href="#">
-                                                    <i class="fa fa-refresh fa-spin"></i>
-                                                </a>
-                                            </li>
-                                        </td>
-                                    </tr>
-                                {{/if}}
+                <tbody>
+                    {{#each controller.widgetData}}
+                        {{view "listline" templateName=controller.dynamicTemplateName parentController=controller tagName="tr"}}
+                        {{#if unfolded}}
+                            {{#if loaded}}
+                                {{partial templateName}}
+                            {{else}}
+                                <tr>
+                                    <td colspan=5>
+                                        <li class="dropdown tasks-menu">
+                                            <a href="#">
+                                                <i class="fa fa-refresh fa-spin"></i>
+                                            </a>
+                                        </li>
+                                    </td>
+                                </tr>
                             {{/if}}
-
-                            {{#if controller._partials.subRowInformation}}
-                                {{partialslot slot=controller._partials.subRowInformation tagName='tr'}}
-                            {{/if}}
+                        {{/if}}
                     {{/each}}
                 </tbody>
             </table>
             {{#unless controller.widgetData.content.length}}
                 <div class="noRecordsFound">{{tr 'No matching records found'}}</div>
             {{/unless}}
-        {{else}}
-            {{partialslot slot=controller._partials.alternativeListDisplay}}
         {{/if}}
     </div>
     <div class="btn-toolbar canopsis-toolbar" role="toolbar">

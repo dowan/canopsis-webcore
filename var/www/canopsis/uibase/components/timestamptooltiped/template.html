@@ -5,13 +5,11 @@
 {{else}}
     {{#unless hideDate}}
         {{timestamp maintimestamp}}
-        <br>
     {{/unless}}
     {{#if agoformat}}
             <small class="text-muted">
-                {{glyphicon "time"}}
+                <span class="glyphicon glyphicon-time"></span>
                 {{timeSince maintimestamp}}
             </small>
-        </br>
     {{/if}}
 {{/if}}

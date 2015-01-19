@@ -18,20 +18,26 @@
 */
 
 define([
-    'app/lib/factories/widget',
-    'canopsis/uibase/widgets/canvas/controller'
-], function(WidgetFactory, CanvasController) {
+    'ember'
+], function(Ember, hash) {
 
-    var widget = WidgetFactory('horizontalbox', {
-        partials: {
-            titlebarsbuttons : ['titlebarbutton-moveright', 'titlebarbutton-moveleft', 'titlebarbutton-widgeterrors']
-        },
+    var get = Ember.get,
+        set = Ember.set,
+        __ = Ember.String.loc;
 
-        section : function () {
-            return 'col-lg-3 col-md-6 col-xs-12';
-        }.property()
 
-    }, {subclass: CanvasController});
+    var component = Ember.Component.extend({
+        init: function () {
+            this._super();
+        }
+    });
 
-    return widget;
+    Ember.Application.initializer({
+        name:"component-topology",
+        initialize: function(container, application) {
+            application.register('component:component-topology', component);
+        }
+    });
+
+    return component;
 });

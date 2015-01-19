@@ -118,7 +118,7 @@ def exports(ws):
         shadow=False, crypted=False
     ):
         if not username or not password:
-            return HTTPError(400, 'Missing username/password')
+            redirect('/?logerror=1')
 
         mode = 'plain'
 

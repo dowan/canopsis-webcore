@@ -55,6 +55,9 @@ define([
         set = Ember.set,
         isNone = Ember.isNone;
 
+    Ember.Handlebars.registerBoundHelper('renderListline', function(callingContext, event, options) {
+        return Ember.Handlebars.helpers.render.helperFunction(callingContext, "listlineTest", 'event', options);
+    });
 
     var listOptions = {
         mixins: [
@@ -79,6 +82,8 @@ define([
                 DraggableColumnsMixin
             ],
 
+            dynamicTemplateName: 'listlineTest',
+
             //TODO test if this is needed (used in cloaked mode)
             listlineControllerClass: ListlineController,
 
@@ -101,7 +106,6 @@ define([
                 }
             },
 
-
             user: Ember.computed.alias('controllers.login.record._id'),
             rights: Ember.computed.alias('controllers.login.record.rights'),
             safeMode: Ember.computed.alias('controllers.application.frontendConfig.safe_mode'),
@@ -109,17 +113,54 @@ define([
             custom_filters: [],
 
             init: function() {
-                set(this, 'findParams_cfilterFilterPart', get(this, 'default_filter'));
 
                 //prepare user configuration to fetch customer preference by reseting data.
                 //dont understand why without this reset, values same values are set into many list instances.
-                set(this, 'custom_filters', []);
-                set(this, 'widgetData', []);
-                set(this, 'findOptions', {});
-                set(this, 'loaded', false);
-
+                Ember.setProperties(this, {
+                    findParams_cfilterFilterPart: get(this, 'default_filter'),
+                    custom_filters: [],
+                    widgetData: [],
+                    findOptions: {},
+                    loaded: false
+                });
 
                 this._super.apply(this, arguments);
+            },
+
+            generateListlineTemplate: function (shown_columns) {
+                var html = '<td>{{#if pendingOperation}}<i class="fa fa-cog fa-spin"></i>{{/if}}{{component-checkbox checked=isSelected class="toggle"}}</td>';
+
+                if(get(this, '_partials.columnsLine')) {
+                    html += '{{#each columns in controller.parentController._partials.columnsLine}}<td>{{partial columns}}</td>{{/each}}';
+                }
+
+                for (var i = 0, l = shown_columns.length; i < l; i++) {
+                    var currentColumn = shown_columns[i];
+                    console.log('currentColumn', currentColumn);
+
+                    if(get(currentColumn, 'options.show')) {
+                        if(currentColumn.renderer) {
+                            html += '<td class="' + currentColumn.field + '">{{component-renderer rendererType="' + currentColumn.renderer + '" value=this.'+ currentColumn.field +' record=this}}</td>';
+                        } else {
+                            html += '<td class="' + currentColumn.field + '">{{this.'+ currentColumn.field + '}}</td>';
+                        }
+                    }
+                }
+
+                var itemActionbuttons = get(this, '_partials.itemactionbuttons');
+                if(itemActionbuttons) {
+                    console.log("itemactionbuttons", itemActionbuttons);
+                    html += '<td style="padding-left:0; padding-right:0"><div style="display:flex">';
+
+                    for (var j = 0, lj = itemActionbuttons.length; j < lj; j++) {
+                        html += '{{partial "' + itemActionbuttons[j] + '"}}';
+                    }
+
+                    html += '</div></td>';
+                }
+
+                console.log('generatedListlineTemplate', html);
+                return html;
             },
 
             /**
@@ -141,10 +182,10 @@ define([
                 } else {
                     return interval;
                 }
-
             },
 
             itemType: function() {
+
                 var listed_crecord_type = get(this, 'listed_crecord_type');
                 console.info('listed_crecord_type', listed_crecord_type);
                 if(listed_crecord_type !== undefined && listed_crecord_type !== null ) {
@@ -166,6 +207,8 @@ define([
             inspectedDataArray: Ember.computed.alias('widgetData'),
             //pagination
             paginationMixinFindOptions: Ember.computed.alias('findOptions'),
+
+            widgetDataMetas: {},
 
             findItems: function() {
                 var me = this;
@@ -206,9 +249,16 @@ define([
 
                 get(this, 'widgetDataStore').findQuery(itemType, findParams).then(function(queryResults) {
                     //retreive the metas of the records
-                    set(me, 'widgetDataMetas', get(me, 'widgetDataStore').metadataFor(get(me, 'listed_crecord_type')));
+                    var listed_crecord_type = get(me, 'listed_crecord_type');
+                    var crecordTypeMetadata = get(me, 'widgetDataStore').metadataFor(listed_crecord_type);
+                    console.log('crecordTypeMetadata', crecordTypeMetadata);
+
+                    Ember.setProperties(me, {
+                        widgetDataMetas: crecordTypeMetadata,
+                        loaded: true
+                    });
+
                     me.extractItems.apply(me, [queryResults]);
-                    set(me, 'loaded', true);
 
                     for(var i = 0, l = queryResults.content.length; i < l; i++) {
                         //This value reset spiner display for record in flight status
@@ -218,6 +268,8 @@ define([
                     me.trigger('refresh');
                 }).catch(function (promiseProxy) {
                     console.warn('Catching error', promiseProxy);
+                    //TODO add an error in displayedErrors array, to warn the user that the data cannot be displayed
+                    get(this, 'content.displayedErrors').pushObject('There seems to be an error with listed data.');
                     set(me, 'dataError', promiseProxy);
                 });
             },
@@ -229,8 +281,10 @@ define([
 
                 for (var i = 0, l = attributesKeys.length; i < l; i++) {
                     if (sortedAttribute !== undefined && sortedAttribute.field === attributesKeys[i].field) {
+                        sortedAttribute.renderer = this.rendererFor(sortedAttribute);
                         res[attributesKeys[i].field] = sortedAttribute;
                     } else {
+                        attributesKeys[i].renderer = this.rendererFor(attributesKeys[i]);
                         res[attributesKeys[i].field] = attributesKeys[i];
                     }
                 }
@@ -238,8 +292,29 @@ define([
                 return res;
             }.property('attributesKeys'),
 
+            rendererFor: function(attribute) {
+                var type = get(attribute, 'type');
+                var role = get(attribute, 'options.role');
+                if(get(attribute, 'model.options.role')) {
+                    role = get(attribute, 'model.options.role');
+                }
+
+                var rendererName;
+                if (role) {
+                    rendererName = 'renderer-' + role;
+                } else {
+                    rendererName = 'renderer-' + type;
+                }
+
+                if (Ember.TEMPLATES[rendererName] === undefined) {
+                    rendererName = undefined;
+                }
+
+                return rendererName;
+            },
+
             shown_columns: function() {
-                console.log('compute shown_columns', get(this, 'sorted_columns'), get(this, 'attributesKeys'), get(this, 'sortedAttribute'));
+                console.log('compute shown_columns', get(this, 'sorted_columns'), get(this, 'sortedAttribute'));
 
                 //user preference for displayed columns.
                 if (this.get('user_show_columns') !== undefined) {
@@ -258,7 +333,7 @@ define([
 
                     for (var i = 0, li = sorted_columns.length; i < li; i++) {
                         if (attributesKeysDict[sorted_columns[i]] !== undefined) {
-                            attributesKeysDict[sorted_columns[i]].options.show = true;
+                            set(attributesKeysDict[sorted_columns[i]].options, 'show', true);
                             shown_columns.push(attributesKeysDict[sorted_columns[i]]);
                         }
                     }
@@ -271,9 +346,6 @@ define([
                 var sortedAttribute = get(this, 'sortedAttribute');
                 var columnSort = get(this, 'default_column_sort');
                 for(var column=0, l = shown_columns.length; column < l; column++) {
-
-                    shown_columns[column].options.show = true;
-
                     //reset previous if any in case list configuration is updated
                     if (shown_columns[column].options.canUseDisplayRecord) {
                         delete shown_columns[column].options.canUseDisplayRecord;
@@ -302,16 +374,18 @@ define([
 
                 }
 
-                var maximized_column_index = get(this, 'maximized_column_index');
-                if(maximized_column_index && selected_columns && selected_columns[maximized_column_index]) {
-                    selected_columns[maximized_column_index].maximized = true;
-                }
-
                 console.debug('selected cols', selected_columns);
+
+                var tpl = Ember.Handlebars.compile(this.generateListlineTemplate(selected_columns));
+
+                var dynamicTemplateName = 'dynamic-list' + Math.floor(Math.random() * 10000);
+
+                Ember.TEMPLATES[dynamicTemplateName] = tpl;
+                set(this, 'dynamicTemplateName', dynamicTemplateName);
 
                 return selected_columns;
 
-            }.property('attributesKeysDict', 'attributesKeys', 'sorted_columns', 'maximized_column_index'),
+            }.property('attributesKeysDict', 'sorted_columns'),
 
             computeFindParams: function(){
                 console.group('computeFindParams');

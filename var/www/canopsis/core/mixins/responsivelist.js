@@ -31,22 +31,28 @@ define([
 
 
     function getColumnIndexesPriorities(viewMixin) {
-        var stackableColumnsPriority = get(viewMixin, 'controller.stackableColumnsPriority');
+        var stackableColumnsPriority = get(viewMixin, 'controller.mixinOptions.responsivelist.stackableColumnsPriority');
         var controller = get(viewMixin, 'controller');
+        //FIXME undefined
         var shownColumns = get(controller, 'shown_columns');
 
         columnStackingPriority = Ember.A();
 
         console.log('stackableColumnsPriority', stackableColumnsPriority, shownColumns);
-        for (var i = 0, l = stackableColumnsPriority.length; i < l; i++) {
-            var currentColumn = shownColumns.findBy('field', stackableColumnsPriority[i]);
-            if(currentColumn !== undefined) {
+        if(stackableColumnsPriority) {
+            for (var i = 0, l = stackableColumnsPriority.length; i < l; i++) {
+                var currentColumn = shownColumns.findBy('field', stackableColumnsPriority[i]);
                 console.log('currentColumn', currentColumn);
-                var columnIndex = Ember.get(currentColumn, 'index');
-                console.log('columnIndex', columnIndex);
-                columnStackingPriority.pushObject(columnIndex);
+                if(currentColumn !== undefined) {
+                    console.log('currentColumn', currentColumn);
+                    var columnIndex = Ember.get(currentColumn, 'index');
+                    console.log('columnIndex', columnIndex);
+                    columnStackingPriority.pushObject(columnIndex);
+                }
             }
         }
+
+        console.log('stackableColumnsPriority@end', columnStackingPriority);
 
         return columnStackingPriority;
     }
@@ -132,10 +138,6 @@ define([
             return shownColumns.length - 1;
         }.property('controller.shown_columns'),
 
-        init: function() {
-            this._super.apply(this, arguments);
-        },
-
         didInsertElement: function() {
             this._super.apply(this, arguments);
 
@@ -158,8 +160,6 @@ define([
             var tableWidth = viewMixin.$('.table-responsive table').width();
 
             checkToToggleStackedDisplay(viewMixin, thresholds, tableContainerWidth, tableWidth);
-            // checkToToggleStandardDisplay(viewMixin, 400);
-
         }
     });
 
@@ -177,6 +177,14 @@ define([
         init:function() {
             console.log('init responsivelist');
             this.viewMixins.push(viewMixin);
+
+            var mixinsOptions = get(this, 'content.mixins');
+
+            if(mixinsOptions) {
+                responsivelistOptions = get(this, 'content.mixins').findBy('name', 'responsivelist');
+                this.mixinOptions.responsivelist = responsivelistOptions;
+            }
+
             this._super.apply(this, arguments);
         }
     });

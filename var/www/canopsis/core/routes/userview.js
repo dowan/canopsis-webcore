@@ -1,4 +1,4 @@
-    /*
+/*
 # Copyright (c) 2014 "Capensis" [http://www.capensis.com]
 #
 # This file is part of Canopsis.
@@ -158,12 +158,6 @@ define([
         },
 
         setupController: function(controller, model) {
-            // testUtils.pre(this, function () {
-            //     var controller = get(this, 'controller');
-
-            //     Ember.assert('The controller should implement Ember.Evented', !isNone(controller.trigger));
-            // });
-
             console.log('UserviewRoute setupController', arguments);
 
             actionsUtils.setDefaultTarget(controller);

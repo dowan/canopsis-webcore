@@ -235,6 +235,23 @@ define([
                 set(appController, 'headerUserview', queryResults);
             });
 
+            var enginesviews = get(this, 'enginesviews');
+
+            for (var i = 0, l = enginesviews.length; i < l; i++) {
+                var item = enginesviews[i];
+                //FIXME stop using utils to store data!
+                if(get(utils, 'session._id') === "root") {
+                    set(item, 'displayable', true);
+                } else {
+                    viewId = item.value;
+                    if (get(utils, 'session.rights.showview_' + viewId.replace('.', '_'))) {
+                        set(item, 'displayable', true);
+                    } else {
+                        set(item, 'displayable', false);
+                    }
+                }
+            }
+
             // console.groupEnd();
             this.refreshPartialsList();
             this._super.apply(this, arguments);
@@ -264,7 +281,7 @@ define([
                 }, 1500);
             },
 
-            showUserProfile: function (){
+            showUserProfile: function () {
                 var applicationController = this;
 
                 var ouser = get(utils, 'session');
@@ -457,8 +474,11 @@ define([
 
                 var containerwidgetId = hashUtils.generateId('container');
 
-                var containerwidget = dataUtils.getStore().createRecord('verticalbox', {
-                    xtype: 'verticalbox',
+                var containerwidget = dataUtils.getStore().createRecord('widgetcontainer', {
+                    xtype: 'widgetcontainer',
+                    mixins : [{
+                        name: 'verticallayout'
+                    }],
                     id: containerwidgetId
                 });
 
@@ -466,7 +486,7 @@ define([
                     id: hashUtils.generateId('userview'),
                     crecord_type: 'view',
                     containerwidget: containerwidgetId,
-                    containerwidgetType: 'verticalbox'
+                    containerwidgetType: 'widgetcontainer'
                 });
 
                 console.log('temp record', userview);

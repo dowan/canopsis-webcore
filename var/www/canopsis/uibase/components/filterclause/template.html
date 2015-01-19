@@ -20,17 +20,17 @@
         }}
 
         {{input value=content.value class="form-control"}}
-        <a {{action validateClause this}} class="btn btn-info btn-xs">
-            {{glyphicon "ok"}}
+        <a {{action "validateClause" this}} class="btn btn-info btn-xs">
+            <span class="glyphicon glyphicon-ok"></span>
         </a>
     </span>
 {{else}}
     {{#if finalized}}
-            <a {{action editAndClause clause content}} class="btn btn-warning btn-xs">
+            <a {{action "editAndClause" clause content}} class="btn btn-warning btn-xs">
                 {{content.key}} {{content.operator}} {{content.value}}
             </a>
-            <a {{action removeAndClause clause content}} class="btn btn-danger btn-xs">
-                {{glyphicon "remove"}}
+            <a {{action "removeAndClause" clause content}} class="btn btn-danger btn-xs">
+                <span class="glyphicon glyphicon-remove"></span>
             </a>
     {{else}}
         <span style="display:inline-block">
@@ -51,12 +51,12 @@
                 }}
 
                 {{input value=content.value class="form-control"}}
-                <a {{action validateClause this}} class="btn btn-info btn-xs">
-                    {{glyphicon "ok"}}
+                <a {{action "validateClause" this}} class="btn btn-info btn-xs">
+                    <span class="glyphicon glyphicon-ok"></span>
                 </a>
             {{else}}
-                <a {{action startEditClause}} class="btn btn-info btn-xs">
-                    {{glyphicon "plus"}}
+                <a {{action "startEditClause"}} class="btn btn-info btn-xs">
+                    <span class="glyphicon glyphicon-plus"></span>
                 </a>
             {{/if}}
         </span>

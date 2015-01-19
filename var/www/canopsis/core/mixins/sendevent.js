@@ -47,7 +47,7 @@ define([
                 'actionbutton-changestate',
                 'actionbutton-ticketnumber'
             ],
-            selectionToolbarButtons: ['actionbutton-cancel', 'actionbutton-ack']
+            selectionToolbarButtons: ['actionbutton-cancelselection', 'actionbutton-ackselection']
         },
 
         /**
@@ -89,7 +89,7 @@ define([
 
             var extra_fields = ['domain', 'perimeter', 'resource'];
 
-            for (var i=0; i<extra_fields.length; i++) {
+            for (var i = 0, l = extra_fields.length; i < l; i++) {
                 var field = extra_fields[i];
                 if (!isNone(get(crecord, field))) {
                     set(record, field, get(crecord, field));
@@ -637,7 +637,7 @@ define([
             * Sends one or many event to the server depending on selected record and action performed.
             **/
             sendEvent: function(event_type, crecord) {
-                console.group('sendEvent:');
+                console.group('sendEvent:', arguments);
 
                 this.stopRefresh();
 

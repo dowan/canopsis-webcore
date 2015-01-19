@@ -1,5 +1,4 @@
 {{#if value.length}}
-    {{log 'TODO test with group helpers'}}
     {{!#group}}
         <table class="table table-striped" style="width:100%">
             <thead></thead>
@@ -9,7 +8,7 @@
                         {{#if content.model.options.reorderable}}
                             <td>
                                 <a class="img-thumbnail handle" style="height:100%; color: black; vertical-align: middle">
-                                    {{glyphicon 'resize-vertical'}}
+                                    <span class="glyphicon glyphicon-resize-vertical"></span>
                                 </a>
                             </td>
                         {{/if}}
@@ -19,8 +18,8 @@
                             </div>
                         </td>
                         <td>
-                            <a {{action removeItem item}} class="btn btn-danger pull-right">
-                                {{glyphicon "remove"}}
+                            <a {{action "removeItem" item}} class="btn btn-danger pull-right">
+                                <span class="glyphicon glyphicon-remove"></span>
                             </a>
                         </td>
                     </tr>
@@ -32,6 +31,7 @@
     <div class="well"><i>No values.</i></div>
 
 {{/if}}
-<a {{action addItem}} class="btn btn-info">
-    {{glyphicon "plus"}} Add
+<a {{action "addItem"}} class="btn btn-info">
+    <span class="glyphicon glyphicon-plus"></span>
+     Add
 </a>

@@ -21,12 +21,7 @@ define([
     'ember'
 ], function(Ember) {
 
-    var controller = Ember.ObjectController.extend({
-        init: function () {
-            this._super();
-            console.debug('initialized list line controller');
-        }
-    });
+    var controller = Ember.ObjectController.extend({});
 
 
     loader.register('controller:listline', controller);

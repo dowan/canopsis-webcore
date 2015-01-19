@@ -17,10 +17,21 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
+define([
+    'ember',
+    'app/lib/factories/mixin'
+], function(Ember, Mixin) {
 
-    Ember.Handlebars.helper('unset', function(name, options) {
-        options.data.keywords[name] = undefined;
+    var mixin = Mixin('horizontallayout', {
+        partials: {
+            layout: ['horizontallayout']
+        },
+
+        section : function () {
+            return 'col-lg-3 col-md-6 col-xs-12';
+        }.property()
+
     });
 
+    return mixin;
 });

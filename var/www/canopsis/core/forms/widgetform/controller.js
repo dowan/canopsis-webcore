@@ -96,8 +96,7 @@ define([
                     'id': hashUtils.generateId('widgetwrapper'),
                     'xtype': 'widgetwrapper',
                     'title': 'wrapper',
-                    'widget': widgetId,
-                    'widgetType': widgetName,
+                    'widget': newWidget,
                     'meta': {
                         'embeddedRecord': true,
                         'parentType': get(containerwidget, 'xtype'),

@@ -27,13 +27,16 @@ define([
         set = Ember.set;
 
 
+    //FIXME is this still important to use Ember.Evented here?
+
     var view = Ember.View.extend({
         init: function() {
             this._super();
             console.log("formwrapper view init", this, get(this, 'controller'));
+
+            set(this,'controller.widgetwrapperView', this);
         },
 
-        hooksRegistered: false,
         formViewClass : FormView,
 
         didInsertElement: function () {
@@ -42,17 +45,11 @@ define([
             });
         },
 
-        controllerObserver: function() {
-            console.log('controller changed');
-            this.controller.widgetwrapperView = this;
-        }.observes('controller'),
-
         //Controller -> View Hooks
         registerHooks: function() {
             this.hooksRegistered = true;
 
             console.log("registerHooks", this);
-            this.get("controller").on('show', this, this.showPopup);
             this.get("controller").on('validate', this, this.hidePopup);
             this.get("controller").on('hide', this, this.hidePopup);
 
@@ -64,7 +61,6 @@ define([
         },
 
         unregisterHooks: function() {
-            this.get("controller").off('show', this, this.showPopup);
             this.get("controller").off('validate', this, this.hidePopup);
             this.get("controller").off('hide', this, this.hidePopup);
         },

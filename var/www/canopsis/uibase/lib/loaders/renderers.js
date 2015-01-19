@@ -43,7 +43,8 @@ var renderers = [
     { name: 'renderer-translator', template: 'canopsis/uibase/renderers/translator.html'},
     { name: 'renderer-eventtype', template: 'canopsis/uibase/renderers/eventtype.html'},
     { name: 'renderer-eventtimestamp', template: 'canopsis/uibase/renderers/eventtimestamp.html'},
-    { name: 'renderer-forcevalue', template: 'canopsis/uibase/renderers/forcevalue.html'}
+    { name: 'renderer-forcevalue', template: 'canopsis/uibase/renderers/forcevalue.html'},
+    { name: 'renderer-recordinfopopup', template: 'canopsis/uibase/renderers/recordinfopopup.html'}
 ];
 
 loader.loadWithTemplates(renderers);

@@ -28,373 +28,164 @@ for (var i = 0, l = schemaFiles.length; i < l; i++) {
 }
 
 define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
-    console.tags.add('loader');
-
-    //TODO nuke this
-    if (Application.allModels === undefined) {
-        Application.allModels = {};
-    }
+function compare(a,b) {
+  if (a.id < b.id) {
+     return -1;
+  }
+  if (a.id > b.id) {
+    return 1;
+  }
+  return 0;
+}
 
     /**
      * provides an abstraction to register schemas where they need to be
      */
     function registerSchema(modelDict, emberModel, schema, name) {
-        Application.allModels[name] = modelDict;
-
         var registryEntry = {
             modelDict: modelDict,
             EmberModel : emberModel,
             schema: schema
         };
 
+        Application[name.capitalize()] = emberModel;
         schemasRegistry.add(registryEntry, name);
-        available_types.push(name);
     }
 
-    /**
-     * Loop over localStorage's schemas
-     */
-    function loadSchemasFromLocalStorage() {
-        console.group("loadSchemasFromLocalStorage", arguments);
+    console.tags.add('loader');
+    var schemasLoader = Ember.Object.create({
+        generatedModels: Ember.A(),
 
-        if (typeof(Storage)==="undefined") {
-            console.warn("The browser is not supporting localStorage, don't try to load models from localStorage");
-        } else {
-            // Retrieve the models from the LS
-            var localStorageSchemas = localStorage.getItem("canopsis.schemas");
+        loadSchemas: function() {
+          var records = this.getSchemas();
 
-            if (localStorageSchemas !== undefined) {
-                //create Ember models from json
-                console.log("found schemas in localStorage");
-                console.log(localStorageSchemas);
-                localStorageSchemas = JSON.parse(localStorageSchemas);
+          records = records.sort(compare);
 
-                for (var key in localStorageSchemas) {
-                    var schema = localStorageSchemas[key];
-                    var schemaName = key;
+          for (var i = 0, l = records.length; i < l; i++) {
+            var schema = records[i].schema;
+            var schemaId = records[i].id;
+            this.loadSchema(schemaId, schema);
+          }
 
-                    var schemaInheritance = schemaName.split(".");
+          for (var k = 0, lk = this.generatedModels.length; k < lk; k++) {
+            var currentModel = this.generatedModels[k];
 
-                    addSchema(schemaInheritance, schemaName, schema);
-                }
-            }
-        }
-        console.groupEnd();
-    }
+            currentModel.model.reopen(currentModel.modelDict);
+            registerSchema(currentModel.modelDict, currentModel.model, currentModel.schema, currentModel.name);
+          }
 
-    /**
-     * Loop over json schemas stored as files to load them
-     * @param {json document} schemasDepsLength
-     * @param {string} schemaFiles
-     * @param {string} moduleArgs the list of files required by this module
-     */
-    function loadSchemasFromJsonFiles(schemasDepsLength, schemaFiles, moduleArgs) {
-        console.group("loadSchemasFromJsonFiles", arguments);
+          console.log('generatedModels', this.generatedModels);
+          window.$S = this.generatedModels;
+          this.loaded = true;
 
-        for (var i = schemasDepsLength, l = moduleArgs.length; i < l; i++) {
-            var schemaIndex =  i - schemasDepsLength;
-            console.groupCollapsed("loading schema", schemaFiles[schemaIndex]);
-
-            var schema = JSON.parse(moduleArgs[i]);
-            var schemaName = schemaFiles[schemaIndex].capitalize();
-            var schemaInheritance = schemaFiles[schemaIndex].split(".");
-
-            addSchema(schemaInheritance, schemaName, schema);
-        }
-
-        console.groupEnd();
-    }
-
-
-    /**
-     * Loop over json schemas stored as files to load them
-     * @param {api_result document} contains schemas and meta for schemas
-     */
-    function loadSchemasFromApiJson(api_result) {
-        console.group("loadSchemasFromApi", arguments);
-
-        //Object that contains both shema names as key and information about inheritance solver
-        var schemasDict = {};
-        var schemaName;
-
-        for (var i = 0, l = api_result.length; i < l; i++) {
-            var schema = api_result[i].schema;
-            schemaName = api_result[i].id.capitalize();
-            console.log('Loading schema...', schemaName);
-
-            schemasDict[schemaName] = {schema: schema, solved: false};
-        }
-
-        for (schemaName in schemasDict) {
-            solveDependancy(schemaName, schemasDict);
-        }
-
-
-        console.groupEnd("loadSchemasFromApi", arguments);
-    }
-
-
-    /**
-    *    Allow solving dependancies if any
-    */
-    function solveDependancy (currentSchemaName, schemasDict) {
-
-        console.log("solveDependancy", currentSchemaName, schemasDict);
-        if(schemasDict[currentSchemaName] === undefined) {
-            throw (currentSchemaName + ' not referenced in schemas dict');
-        }
-
-        var currentSchema = schemasDict[currentSchemaName].schema;
-
-        if (currentSchema.properties !== undefined) {
-            for (var propertyName in currentSchema.properties) {
-                var property = currentSchema.properties[propertyName];
-
-                if (property.relationship !== undefined && property.model !== undefined) {
-                    console.log(currentSchemaName, "has dependancy", property.model, "in its relationships");
-                    solveDependancy(property.model.capitalize(), schemasDict);
-                }
-            }
-        }
-
-        var schemaInheritanceStringList = currentSchemaName.split(".");
-
-        //if inheritance then try to solve
-        if (schemaInheritanceStringList.length > 1) {
-
-            //cut the head
-            var pop = schemaInheritanceStringList.pop();
-            var parentName = schemaInheritanceStringList.join('.');
-            if (schemasDict[parentName] && !schemasDict[parentName].solved) {
-                solveDependancy(parentName, schemasDict);
-            }
-            //if parent exists in schema objects
-            if (schemasDict[parentName] && schemasDict[parentName].solved) {
-                //Try to solve parent case
-                schemaInheritanceStringList.push(pop);
-                addSchema(schemaInheritanceStringList, currentSchemaName, currentSchema);
-                schemasDict[currentSchemaName].solved = true;
-            }
-        } else if (schemasDict[currentSchemaName]) {
-            addSchema(schemaInheritanceStringList, currentSchemaName, currentSchema);
-            schemasDict[currentSchemaName].solved = true;
-        }
-    }
-
-    /**
-     * Build an EmberJS model from a json schema
-     * @param {json document} schema
-     * @param {string} schemaName
-     * @param {DS.Model} parentModelClass the parent model
-     * @param {string} parentModelClassName name of the parent model
-     */
-    function generateEmberModelFromSchema(schema, schemaName, parentModelClass, parentModelClassName) {
-        console.group("generate model", schemaName, schema);
-
-        var modelDict = {
-            "categories": schema.categories,
-            "metadata": schema.metadata
-        };
-        //TODO check if relationship options are ok
-        for (var name in schema.properties) {
-
-            var property = schema.properties[name];
-            var propertyType = property.type;
-
-            property.defaultValue = property.default;
-            property.label = property.title;
-
-            delete property.default;
-
-            console.group('model\'s attributes and relationships');
-
-            if (property.relationship === undefined) {
-                //The property is not a relation
-                modelDict[name] = DS.attr(propertyType, property);
-            } else if (property.model === undefined) {
-                throw "property is relationship but no model defined";
-            } else {
-                var model = property.model;
-                model = model.split('.');
-                model = model[model.length - 1];
-
-                if (property.relationship === "belongsTo" && model !== undefined) {
-                    console.log("creating belongsTo with", property, model);
-                    modelDict[name] = DS.belongsTo(model, property);
-                }
-                if (property.relationship === "hasMany" && model !== undefined) {
-                    console.log("creating hasMany with", property, model);
-                    modelDict[name] = DS.hasMany(model, property);
-                }
-            }
-
-            console.groupEnd();
-        }
-
-        console.log(schemaName, 'inherits from', parentModelClass);
-
-        modelDict = inheritance(modelDict, parentModelClassName, schemaName);
-
-        var newModel = parentModelClass.extend(modelDict);
-
-        registerSchema(modelDict, newModel, schema, schemaName);
-
-        console.groupEnd();
-
-        return newModel;
-    }
-
-    /**
-     * Add attribute of a model in another one
-     * @param {} modelDict
-     * @param {string} parentModelClassName name of  the parent model
-     * @param {string}  schemaName of the schema
-     */
-    function inheritance(modelDict, parentModelClassName, schemaName) {
-
-        console.group('inherited attributes and relationships');
-
-        var parentModelDict = Application.allModels[parentModelClassName];
-
-        for (var keys in parentModelDict) {
-            if (parentModelDict.hasOwnProperty(keys)) {
-                if (!modelDict.hasOwnProperty(keys)) {
-                    var val = parentModelDict[keys]._meta.options;
-
-                    if (val.relationship === 'hasMany' && val.model !== undefined) {
-                        modelDict[keys] = DS.hasMany(val.model, val);
-                    } else if (val.relationship === 'belongsTo' && val.model !== undefined) {
-                        modelDict[keys] = DS.belongsTo(val.model, val);
-                    } else {
-                        modelDict[keys] = DS.attr(parentModelDict[keys]._meta.type, val);
-                    }
-
-                } else if (modelDict[keys] !== undefined && keys !== 'categories' && keys !== 'metadata') {
-
-                    var oldkeys = parentModelDict[keys];
-                    var newkeys = modelDict[keys];
-
-                    // console.log('oldkeys', oldkeys, 'newkeys', newkeys);
-                    if (oldkeys !== undefined) {
-
-                        var oldkeysAttribute = oldkeys._meta;
-                        var newkeysAttribute = newkeys._meta;
-
-                        var oldOptions;
-
-                        if(oldkeysAttribute === undefined) {
-                            oldOptions = {};
-                        } else {
-                            oldOptions = oldkeysAttribute.options;
-                        }
-
-                        var newOptions;
-                        if(newkeysAttribute !== undefined) {
-                            newOptions = newkeysAttribute.options;
-                            newOptions = merge(oldOptions, newOptions, schemaName);
-
-                            modelDict[keys] = DS.attr(newkeysAttribute.type, newOptions);
-                        } else {
-                            newOptions = oldOptions;
-                            modelDict[keys] = DS.attr(oldkeysAttribute.type, newOptions);
-                        }
-
-                    }
-                }
-            }
-        }
-
-        console.groupEnd();
-
-        return modelDict;
-     }
-
-    /**
-    *    Processes loaded schemas and adds them to the application scope
-    */
-    function addSchema(schemaInheritance, schemaName, schema) {
-        console.log('addSchema', schemaName, schemaInheritance, schema);
-
-        var parentModelClass;
-        var parentModelClassName = '';
-
-        if (utils.schemaList === undefined) {
-            utils.schemaList = {};
-        }
-
-        utils.schemaList[schemaName] = schema;
-
-        //retreive the good model class the new model should inherit from
-        if (schemaInheritance.length > 1) {
-            parentModelClassName = schemaInheritance[schemaInheritance.length - 2].capitalize();
-            parentModelClass = schemasRegistry.getByName(parentModelClassName).EmberModel;
-
-            schemaName = schemaInheritance[schemaInheritance.length - 1].capitalize();
-        }
-        else {
-            parentModelClass = DS.Model;
-        }
-
-        //overrided by default following main thread rules (schema load order)
-        console.log(
-            'Adding schema', {
-                schemaName: schemaName,
-                parentModelClass: parentModelClass,
-                parentModelClassName: parentModelClassName
-            }, schema);
-
-        Application[schemaName] = generateEmberModelFromSchema(
-            schema,
-            schemaName,
-            parentModelClass,
-            parentModelClassName);
-
-        console.groupEnd();
-    }
-
-
-    /**
-     * Merge options
-     * @param {string} OldOptions Parent model's options
-     * @param {string} NewOptions Current model's options
-     */
-    function merge(oldOptions, newOptions, schemaName) {
-
-        for (var options in oldOptions) {
-            //if option isn't in current model's options
-            if (oldOptions.hasOwnProperty(options) && newOptions[options] === undefined) {
-                newOptions[options] = oldOptions[options];
-                console.log ('Added '+ options + ' = ' + oldOptions[options] + ' in ' + schemaName);
-            }
-        }
-        return newOptions ;
-    }
-
-    var available_types = [];
-
-    var shemasLimit = 1000;
-
-    $.ajax({
-        url: '/rest/schemas',
-        data: {limit: shemasLimit},
-        success: function(data) {
-            if (data.success) {
-                if(data.total === 0) {
-                    console.warn('No schemas was imported from the backend, you might have nothing in your database, or a communication problem with the server');
-                } else if(data.total === shemasLimit) {
-                    console.warn('You loaded', shemasLimit, 'schemas. You might have some more on your database that were ignored.');
-                }
-
-                console.log('Api schema data',data);
-                loadSchemasFromApiJson(data.data);
-            } else {
-                console.error('Unable to load schemas from API');
-            }
+          return true;
         },
-        async: false
+
+        loadSchema: function(schemaId, schema) {
+          var schemaName = this.getSchemaName(schemaId, schema);
+          // console.log('schemaName', schemaName);
+
+          var parentModel = this.getParentModelForModelId(schemaId);
+          var modelDict = this.generateSchemaModelDict(schema, parentModel, schemaId);
+
+          console.log(schemaId, modelDict);
+
+          this.generatedModels.pushObject({
+            name: schemaName,
+            id: schemaId,
+            schema: schema,
+            model: parentModel.model.extend({}),
+            modelDict: modelDict
+          });
+        },
+
+        generateSchemaModelDict: function(schema, parentModel, modelId) {
+            var modelDict;
+                modelDict = Ember.copy(parentModel.modelDict);
+
+                console.log(modelId, 'parent dict', parentModel);
+
+            modelDict.categories = schema.categories;
+            modelDict.metadata = schema.metadata;
+
+
+            // console.log(modelId, 'dict:', modelDict, this.generatedModels.findBy('name', 'widget').modelDict);
+          if(schema.properties) {
+            var propertiesKeys = Ember.keys(schema.properties);
+            for (var i = 0; i < propertiesKeys.length; i++) {
+              var currentKey = propertiesKeys[i];
+              var currentProperty = schema.properties[currentKey];
+
+              if (currentProperty.relationship === 'hasMany' && currentProperty.model !== undefined) {
+                currentProperty.model = currentProperty.model.split('.');
+                currentProperty.model = currentProperty.model[currentProperty.model.length - 1];
+
+                modelDict[currentKey] = DS.hasMany(currentProperty.model, currentProperty);
+              } else if (currentProperty.relationship === 'belongsTo' && currentProperty.model !== undefined) {
+                currentProperty.model = currentProperty.model.split('.');
+                currentProperty.model = currentProperty.model[currentProperty.model.length - 1];
+
+                modelDict[currentKey] = DS.belongsTo(currentProperty.model, currentProperty);
+              } else {
+                modelDict[currentKey] = DS.attr(currentProperty.type, currentProperty);
+              }
+            }
+          }
+
+          return modelDict;
+        },
+
+        getParentModelForModelId: function(schemaId) {
+          var schemaInheritance = schemaId.split('.');
+
+          console.log('schemaInheritance', schemaInheritance, schemaInheritance.length);
+          if(schemaInheritance.length > 1) {
+            var parentClassName = schemaInheritance[schemaInheritance.length - 2];
+            console.log('parentClassName', parentClassName);
+            return this.generatedModels.findBy('name', parentClassName);
+          } else {
+            return {
+                model: DS.Model,
+                modelDict: {}
+            };
+          }
+        },
+
+        getSchemaName: function(schemaId) {
+          var schemaName = schemaId.split('.');
+          schemaName = schemaName[schemaName.length - 1];
+          return schemaName;
+        },
+
+        getSchemas: function() {
+            var schemasLoader = this;
+            var shemasLimit = 200;
+            $.ajax({
+                url: '/rest/schemas',
+                data: {limit: shemasLimit},
+                success: function(payload) {
+                if (payload.success) {
+                    if(payload.total === 0) {
+                        console.warn('No schemas was imported from the backend, you might have nothing in your database, or a communication problem with the server');
+                    } else if(payload.total === shemasLimit) {
+                        console.warn('You loaded', shemasLimit, 'schemas. You might have some more on your database that were ignored.');
+                    }
+                        console.log('Api schema data', payload);
+                        schemasLoader.__schemas__ = payload.data;
+                    } else {
+                        console.error('Unable to load schemas from API');
+                    }
+                },
+                async: false
+            });
+
+            return this.__schemas__;
+        }
     });
+
+    schemasLoader.loadSchemas();
 
     console.tags.remove('loader');
 
-    return available_types;
+    return schemasLoader.generatedModels;
 });

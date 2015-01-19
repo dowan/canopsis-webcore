@@ -18,10 +18,14 @@
 */
 
 define([
-    'ember'
-], function(Ember) {
+    'ember',
+    'canopsis/canopsisConfiguration'
+], function(Ember, canopsisConfiguration) {
 
     var view = Ember.View.extend({
+        canopsisConfiguration: canopsisConfiguration,
+        showPartialslots: Ember.computed.alias('canopsisConfiguration.showPartialslots'),
+
         templateName: 'partialslot',
         tagName: 'span',
 

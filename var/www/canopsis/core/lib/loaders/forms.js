@@ -24,9 +24,7 @@ var forms = [
     { name: 'jobform', url: 'app/forms/jobform/controller', template: 'app/forms/jobform/template.html' },
     { name: 'taskform', url: 'app/forms/taskform/controller', template: 'app/forms/taskform/template.html' },
     { name: 'scheduleform', url: 'app/forms/scheduleform/controller', template: 'app/forms/scheduleform/template.html' },
-    { name: 'confirmform', url: 'app/forms/confirmform/controller', template: 'app/forms/confirmform/template.html' },
-    //'connectorform',
-    //"confirmform"
+    { name: 'confirmform', url: 'app/forms/confirmform/controller', template: 'app/forms/confirmform/template.html' }
 ];
 
 loader.loadWithTemplates(forms);

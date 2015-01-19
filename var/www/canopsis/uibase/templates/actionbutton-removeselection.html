@@ -1,14 +1,5 @@
-{{#if minified}}
-    {{#if controller.parentController.userCanDeleteRecord}}
-        <button class="btn btn-default" {{action 'remove' this}} >
-            {{glyphicon "trash"}}
-        </button>
-    {{/if}}
-{{else}}
-    {{#if controller.userCanDeleteRecord}}
-        <button class="btn btn-default" {{action 'removeSelection'}} >
-            {{glyphicon "trash"}}
-            {{tr 'Remove selection'}}
-        </button>
-    {{/if}}
+{{#if controller.parentController.userCanDeleteRecord}}
+    <button class="btn btn-default" {{action 'remove' this}} >
+        <span class="glyphicon glyphicon-trash"></span>
+    </button>
 {{/if}}

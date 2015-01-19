@@ -34,19 +34,18 @@ define([
         title:__('Information'),
 
         init: function () {
-            console.log('initilizing recordinfopopup controller');
+            console.log('initializing recordinfopopup controller');
         },
 
 
         actions: {
-
             show: function(crecord, template) {
                 console.log('Show recordinfopopup', crecord, template);
 
                 var html;
 
                 try {
-                    html = Handlebars.compile(template)(crecord._data);
+                    html = Handlebars.compile(template)(crecord[0]._data);
                 } catch (err) {
                     html = '<i>An error occured while compiling the template with the record. please if the template is correct</i>';
                 }

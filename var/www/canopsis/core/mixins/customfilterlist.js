@@ -38,12 +38,33 @@ define([
       * A filter is a combination of a cfilter and a title.
       * Custom cfilter allow perform selelection on a list with custom filter information.
     */
-    var mixin = Mixin('customfilter', {
+    var mixin = Mixin('customfilterlist', {
         partials: {
             subHeader: ['customfilters']
         },
 
+        init: function() {
+            var mixinsOptions = get(this, 'content.mixins');
+
+            if(mixinsOptions) {
+                var customfilterlistOptions = get(this, 'content.mixins').findBy('name', 'customfilterlist');
+                this.mixinOptions.customfilterlist = customfilterlistOptions;
+            }
+
+            this._super();
+
+            if(!get(this, 'userParams.custom_filters')) {
+                set(this, 'userParams.custom_filters', Ember.A());
+            }
+
+            set(this, 'findParams_cfilterFilterPart', get(this, 'mixinOptions.customfilterlist.default_filter'));
+        },
+
         isSelectedFilter: function (filterList) {
+            if(!filterList || !filterList.length) {
+                return false;
+            }
+
             var filterLen = filterList.length;
             var currentTitle = get(this, 'currentFilter.title');
             for (var i=0; i<filterLen; i++) {
@@ -64,12 +85,12 @@ define([
         },
 
         filters_list: function () {
-            return this.isSelectedFilter(get(this, 'filters'));
-        }.property('filters', 'currentFilter'),
+            return this.isSelectedFilter(get(this, 'mixinOptions.customfilterlist.filters'));
+        }.property('mixinOptions.customfilterlist.filters', 'currentFilter'),
 
         custom_filters_list: function () {
-            return this.isSelectedFilter(get(this, 'custom_filters'));
-        }.property('custom_filters', 'currentFilter'),
+            return this.isSelectedFilter(get(this, 'userParams.custom_filters'));
+        }.property('userParams.custom_filters'),
 
 
         actions: {
@@ -91,8 +112,6 @@ define([
                 this.refreshContent();
             },
 
-
-
             addUserFilter: function () {
                 var widgetController = this;
 
@@ -106,14 +125,16 @@ define([
 
                 recordWizard.submit.then(function(form) {
                     record = form.get('formContext');
-                    widgetController.get('custom_filters').pushObject(record);
+
+
+                    get(widgetController, 'userParams.custom_filters').pushObject(record);
+
+                    widgetController.notifyPropertyChange('userParams.custom_filters');
+
                     console.log('Custom filter created', record, form);
                     notificationUtils.info(__('Custom filter created'));
-                    widgetController.set('userParams.custom_filters', widgetController.get('custom_filters'));
                     widgetController.saveUserConfiguration();
-
                 });
-
             },
 
             editFilter: function (filter) {
@@ -135,14 +156,12 @@ define([
                 recordWizard.submit.then(function(form) {
                     widgetController.get('custom_filters').removeObject(filter);
                     record = form.get('formContext');
-                    widgetController.get('custom_filters').pushObject(record);
+                    widgetController.get('userParams.custom_filters').pushObject(record);
                     console.log('Custom filter created', record, form);
                     notificationUtils.info(__('Custom filter created'));
-                    widgetController.set('userParams.custom_filters', widgetController.get('custom_filters'));
                     widgetController.saveUserConfiguration();
 
                 });
-
             },
 
             removeFilter: function (filter) {
@@ -171,9 +190,9 @@ define([
 
         default_filterChanged: function(){
             console.log('default_filterChanged observer');
-            set(this, 'findParams_cfilterFilterPart', get(this, 'default_filter'));
+            set(this, 'findParams_cfilterFilterPart', get(this, 'mixinOptions.customfilterlist.default_filter'));
             this.refreshContent();
-        }.observes('default_filter'),
+        }.observes('mixinOptions.customfilterlist.default_filter'),
 
     });
 

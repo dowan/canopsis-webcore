@@ -18,14 +18,14 @@
 */
 
 define([
-    'app/lib/factories/widget',
-    'canopsis/uibase/widgets/canvas/controller'
-], function(WidgetFactory) {
+    'ember',
+    'app/lib/factories/mixin'
+], function(Ember, Mixin) {
 
-    var set = Ember.set,
-        get = Ember.get;
+    var get = Ember.get,
+        set = Ember.set;
 
-    var widget = WidgetFactory('tabmanager', {
+    var mixin = Mixin('tablayout', {
         init: function() {
             if(get(this, 'items.content').length >= 0 && !Ember.isEmpty(get(this, 'items.content')[0])) {
                 console.log('init tabs', get(this, 'items.content')[0].get('widget'));
@@ -48,9 +48,9 @@ define([
         },
 
         partials: {
-            titlebarsbuttons : ["titlebarbutton-minimize", "titlebarbutton-moveup","titlebarbutton-movedown"]
+            layout: ['tablayout']
         }
     });
 
-    return widget;
+    return mixin;
 });

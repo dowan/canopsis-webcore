@@ -22,8 +22,6 @@ define(['ember'], function(Ember) {
 
     var widgetsUtils = {
         getParentViewForWidget: function(widget) {
-            console.log('getParentViewForWidget', widget);
-
             var currentItem = widget;
 
             while (get(currentItem, 'crecord_type') !== 'view') {

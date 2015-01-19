@@ -1,19 +1,19 @@
 {{#if controller.rights.list_filters.checksum}}
     <div class="pull-right btn-group" data-toggle="btn-toggle">
         {{#each filter in controller.filters_list}}
-            <button type="button" {{bind-attr class=":btn :btn-default :editable filter.isActive:active filter.isActive:emphasis"}} data-col="all" {{action setFilter filter}}>
+            <button type="button" {{bind-attr class=":btn :btn-default :editable filter.isActive:active filter.isActive:emphasis"}} data-col="all" {{action "setFilter" filter}}>
                 {{filter.title}}
             </button>
         {{/each}}
         {{#each filter in controller.custom_filters_list}}
-            <button type="button" {{bind-attr class=":btn :btn-default :editable filter.isActive:active  filter.isActive:emphasis"}} data-col="all" {{action setFilter filter}}>
+            <button type="button" {{bind-attr class=":btn :btn-default :editable filter.isActive:active  filter.isActive:emphasis"}} data-col="all" {{action "setFilter" filter}}>
                 {{filter.title}}
-                <small class="badge bg-blue" {{action editFilter filter}}> <i class="fa fa-wrench"></i></small>
-                <small class="badge bg-orange" {{action removeFilter filter}}> <i class="fa fa-minus"></i></small>
+                <small class="badge bg-blue" {{action "editFilter" filter}}> <i class="fa fa-wrench"></i></small>
+                <small class="badge bg-orange" {{action "removeFilter" filter}}> <i class="fa fa-minus"></i></small>
             </button>
         {{/each}}
 
-        <button type="button" class="btn btn-primary" {{action addUserFilter}} data-col="all">
+        <button type="button" class="btn btn-primary" {{action "addUserFilter"}} data-col="all">
             <i class="fa fa-plus"></i> {{tr 'Add filter'}}
         </button>
     </div>

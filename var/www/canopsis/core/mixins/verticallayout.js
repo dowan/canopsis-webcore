@@ -18,15 +18,15 @@
 */
 
 define([
-    'app/lib/factories/widget',
-    'canopsis/uibase/widgets/canvas/controller'
-], function(WidgetFactory, CanvasController) {
+    'ember',
+    'app/lib/factories/mixin'
+], function(Ember, Mixin) {
 
-    var widget = WidgetFactory('verticalbox', {
+    var mixin = Mixin('verticallayout', {
         partials: {
-            titlebarsbuttons : ['titlebarbutton-minimize', 'titlebarbutton-moveup','titlebarbutton-movedown', 'titlebarbutton-widgeterrors']
+            layout: ['verticallayout']
         }
-    }, {subclass: CanvasController});
+    });
 
-    return widget;
+    return mixin;
 });

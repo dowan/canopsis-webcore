@@ -29,7 +29,7 @@ define([
     'flotchart-image',
 //    'flotchart-navigate',
     'flotchart-pie',
-    'flotchart-resize',
+    // 'flotchart-resize',
     'flotchart-selection',
     'flotchart-stack',
     'flotchart-symbol',

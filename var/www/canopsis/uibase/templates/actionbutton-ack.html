@@ -1,38 +1,22 @@
 {{#unless controller.findOptions.useLogCollection}}
-    {{#if minified}}
-        {{#if controller.parentController.rights.actionbutton_ack.checksum}}
-            {{#if this.ack.author}}
-                {{#if this.ack.isAck}}
-                    {{#component-tooltip content="Cancel ack"}}
-                        <button class="btn btn-default btn-sm" {{action 'sendEvent' 'ackremove' this}} >
-                            {{glyphicon "ban-circle"}}
-                        </button>
-                    {{/component-tooltip}}
-                {{/if}}
-            {{else}}
-                {{recordcanbeack this}}
-                {{#if this.recordcanbeack}}
-                    {{#component-tooltip content="Ack"}}
-                        <button class="btn btn-default btn-sm" {{action 'sendEvent' 'ack' this}} >
-                            {{glyphicon "ok"}}
-                        </button>
-                    {{/component-tooltip}}
-                {{/if}}
+    {{#if controller.rights.actionbutton_ack.checksum}}
+        {{#if this.ack.author}}
+            {{#if this.ack.isAck}}
+                {{#component-tooltip content="Cancel ack"}}
+                    <button class="btn btn-default btn-sm" {{action 'sendEvent' 'ackremove' this}} >
+                        <span class="glyphicon glyphicon-ban-circle"></span>
+                    </button>
+                {{/component-tooltip}}
             {{/if}}
-        {{/if}}
-    {{else}}
-        {{#if controller.rights.actionbutton_ack.checksum}}
-            {{#component-tooltip content="Ack"}}
-                <button class="btn btn-default" {{action 'sendEvent' 'ack'}} >
-                    {{glyphicon "ok"}} {{tr 'Ack'}}
-                </button>
-            {{/component-tooltip}}
-
-            {{#component-tooltip content="Cancel ack"}}
-                <button class="btn btn-default" {{action 'sendEvent' 'ackremove'}} >
-                    {{glyphicon "ban-circle"}} {{tr 'Cancel ack'}}
-                </button>
-            {{/component-tooltip}}
+        {{else}}
+            {{recordcanbeack this}}
+            {{#if this.recordcanbeack}}
+                {{#component-tooltip content="Ack"}}
+                    <button class="btn btn-default btn-sm" {{action 'sendEvent' 'ack' this}} >
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </button>
+                {{/component-tooltip}}
+            {{/if}}
         {{/if}}
     {{/if}}
 {{/unless}}

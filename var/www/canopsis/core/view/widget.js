@@ -32,16 +32,28 @@ define([
 
     function computeMixinsArray(view, widget) {
         var mixinsNames = get(widget, 'mixins');
-        console.log('computeMixinsArray', mixinsregistry);
 
         var mixinArray = [];
 
         console.log('computeMixinsArray', mixinsNames);
 
+        var mixinOptions = {};
+
         if(mixinsNames) {
+
             for (var i = 0, l = mixinsNames.length; i < l; i++) {
                 var currentName = mixinsNames[i];
-                var currentClass = get(Application, currentName + "Mixin");
+
+                //DEPRECATE handle progressive deprecation of mixins as strings
+                if(typeof currentName === 'string') {
+                    Ember.deprecate('Defining mixins as strings is deprecated. The new format is : \'{ name: "mixinName" }\'. This is required by the mixin options system.');
+                } else {
+                    currentName = currentName.name.camelize();
+                }
+
+                mixinOptions[currentName] = mixinsNames[i];
+
+                var currentClass = get(Application, currentName.capitalize() + 'Mixin');
                 console.log('find mixin', currentName, currentClass);
 
                 if(currentClass) {
@@ -51,12 +63,16 @@ define([
                     console.error('mixin not found', currentName);
                 }
             }
+            var controller = view.get('controller');
+
+            if(controller.onMixinsApplied) {
+                controller.onMixinsApplied();
+            }
         }
 
         mixinArray.pushObject(Ember.Evented);
 
-        console.warn('mixinArray for ', get(widget, 'title'), mixinArray);
-        return mixinArray;
+        return {array: mixinArray, mixinOptions: mixinOptions};
     }
 
 
@@ -96,31 +112,22 @@ define([
                 set(this, 'classNames', cssClasses.split(','));
             }
 
-            //widget refresh management
-            var widgetController = get(this, 'controller');
-            console.log('refreshInterval - > ', widgetController.get('refreshInterval'));
-            var interval = setInterval(function () {
-                if (canopsisConfiguration.REFRESH_ALL_WIDGETS) {
-                    if (get(widgetController,'isRefreshable') && get(widgetController, 'refreshableWidget')) {
-                        console.log('refreshing widget ' + get(widgetController, 'title'));
-                        widgetController.refreshContent();
-                    }
-                }
-            }, widgetController.get('refreshInterval') * 1000);
-
-            //keep track of this interval
-            this.set('widgetRefreshInterval', interval);
             console.groupEnd();
         },
 
         applyAllViewMixins: function(){
             var controller = get(this, 'controller');
-            console.group('apply widget view mixins');
+            console.group('apply widget view mixins', controller.viewMixins);
             if(controller.viewMixins !== undefined) {
                 for (var i = 0, mixinsLength = controller.viewMixins.length; i < mixinsLength; i++) {
                     var mixinToApply = controller.viewMixins[i];
 
                     console.log('mixinToApply', mixinToApply);
+
+                    if(mixinToApply.mixins[0].properties.init !== undefined) {
+                        console.warn('The mixin', mixinToApply, 'have a init method. This practice is not encouraged for view mixin as they are applied at runtime and the init method will not be triggerred');
+                    }
+
                     mixinToApply.apply(this);
                 }
             }
@@ -135,21 +142,6 @@ define([
             console.groupEnd();
         },
 
-        //Controller -> View Hooks
-        registerHooks: function() {
-            console.log("registerHooks", get(this, "controller"), get(this, "controller").on);
-            get(this, "controller").on('refresh', this, this.rerender);
-        },
-
-        unregisterHooks: function() {
-            get(this, "controller").off('refresh', this, this.rerender);
-        },
-
-        rerender: function() {
-            console.info('refreshing widget');
-            this._super.apply(this, arguments);
-        },
-
         instantiateCorrectController: function(widget) {
             //for a widget that have xtype=widget, controllerName=WidgetController
             console.log('instantiateCorrectController', arguments);
@@ -160,7 +152,7 @@ define([
 
             var mixins = computeMixinsArray(this, widget);
 
-            mixins.pushObject({
+            mixins.array.pushObject({
                 content: widget,
                 target: get(this, 'target')
             });
@@ -175,10 +167,13 @@ define([
                 widgetClass = WidgetController;
             }
 
-            widgetControllerInstance = widgetClass.createWithMixins.apply(widgetClass, mixins);
+            widgetControllerInstance = widgetClass.createWithMixins.apply(widgetClass, mixins.array);
             widgetControllerInstance.refreshPartialsList();
 
-            set(widgetControllerInstance, 'content.displayedErrors', get(this, 'displayedErrors'));
+            Ember.setProperties(widgetControllerInstance, {
+                'content.displayedErrors': get(this, 'displayedErrors'),
+                'mixinOptions': mixins.mixinOptions
+            });
 
             var mixinsName = widget._data.mixins;
 
@@ -212,7 +207,25 @@ define([
             this.unregisterHooks();
 
             return this._super.apply(this, arguments);
+        },
+
+        //Controller -> View Hooks
+        registerHooks: function() {
+            console.log("registerHooks", get(this, "controller"), get(this, "controller").on);
+            get(this, "controller").on('refresh', this, this.rerender);
+            return this._super();
+        },
+
+        unregisterHooks: function() {
+            get(this, "controller").off('refresh', this, this.rerender);
+            return this._super();
+        },
+
+        rerender: function() {
+            console.info('refreshing widget');
+            this._super.apply(this, arguments);
         }
+
     });
 
 

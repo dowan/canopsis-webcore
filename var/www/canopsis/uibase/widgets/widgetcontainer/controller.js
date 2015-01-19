@@ -18,26 +18,15 @@
 */
 
 define([
-    'ember',
-    'utils'
-], function(Ember, utils) {
+    'app/lib/factories/widget',
+    'canopsis/uibase/widgets/canvas/controller'
+], function(WidgetFactory, CanvasController) {
 
-    var get = Ember.get,
-        set = Ember.set;
-
-
-    Ember.Handlebars.registerHelper('ifUserCanDisplayView', function(viewId, options) {
-
-        if(get(utils, 'session._id') === "root") {
-            return options.fn(this);
+    var widget = WidgetFactory('widgetcontainer', {
+        partials: {
+            titlebarsbuttons : ['titlebarbutton-minimize', 'titlebarbutton-moveup','titlebarbutton-movedown', 'titlebarbutton-widgeterrors']
         }
+    }, {subclass: CanvasController});
 
-        viewId = get(options, 'data.keywords.' + viewId);
-
-        if (get(utils, 'session.rights.showview_' + viewId.replace('.', '_'))) {
-            return options.fn(this);
-        }
-        return options.inverse(this);
-    });
-
+    return widget;
 });

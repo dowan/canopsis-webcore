@@ -46,12 +46,21 @@ define([
         },
 
         itemsPerPage: function() {
-            return get(this, 'content.itemsPerPage');
-        }.property('content.itemsPerPage'),
+            console.log('itemsperpage CP', this, this.mixinOptions.pagination, get(this, 'mixinOptions.pagination.itemsPerPage'));
+
+            var itemsPerPage = get(this, 'mixinOptions.pagination.itemsPerPage');
+
+            if(!itemsPerPage) {
+                itemsPerPage = 5;
+            }
+
+            return itemsPerPage;
+        }.property('mixinOptions.pagination.itemsPerPage'),
 
         paginationMixinContent: function() {
             console.warn("paginationMixinContent should be defined on the concrete class");
         },
+
         paginationMixinFindOptions: function() {
             console.warn("paginationMixinFindOptions should be defined on the concrete class");
         },
@@ -83,11 +92,9 @@ define([
         paginationFirstItemIndex: 1,
         paginationLastItemIndex: 1,
 
-
         itemsDivided: function(){
-            return get(this, 'itemsTotal') / get(this, 'itemsPerPage');
-
-        }.property('itemsTotal', 'itemsPerPage'),
+            return get(this, 'itemsTotal') / get(this, 'mixinOptions.pagination.itemsPerPage');
+        }.property('itemsTotal', 'mixinOptions.pagination.itemsPerPage'),
 
         itemsPerPagePropositions : function() {
             var res = [5, 10, 20, 50];
@@ -97,11 +104,10 @@ define([
             return res;
         }.property('itemsPerPagePropositionSelected'),
 
-
         itemsPerPageChanged : function() {
             set(this, 'currentPage', 1);
             this.refreshContent();
-        }.observes('itemsPerPage'),
+        }.observes('mixinOptions.pagination.itemsPerPage'),
 
         onCurrentPageChanges: function() {
             this.refreshContent();
@@ -109,7 +115,7 @@ define([
 
         itemsPerPagePropositionSelectedChanged: function() {
             var userSelection = get(this, 'itemsPerPagePropositionSelected');
-            set(this, 'itemsPerPage', userSelection);
+            set(this, 'mixinOptions.pagination.itemsPerPage', userSelection);
 
             if(get(this, 'userParams') !== undefined) {
                 set(this, 'userParams.itemsPerPage', userSelection);
@@ -119,19 +125,18 @@ define([
         }.observes('itemsPerPagePropositionSelected'),
 
         refreshContent: function() {
-            console.group('paginationMixin refreshContent', get(this, 'itemsPerPage'));
+            console.group('paginationMixin refreshContent', get(this, 'mixinOptions.pagination.itemsPerPage'));
 
             if (get(this, 'paginationMixinFindOptions') === undefined) {
                 set(this, 'paginationMixinFindOptions', {});
             }
 
-            var itemsPerPage = get(this, 'itemsPerPage');
+            var itemsPerPage = get(this, 'userParams.itemsPerPage') || get(this, 'mixinOptions.pagination.itemsPerPage');
 
             console.log('itemsPerPage is', itemsPerPage, 'type', typeof itemsPerPage);
 
             if(itemsPerPage === undefined || itemsPerPage === 0) {
-                set(this, 'dataError', { statusText: __('List option "itemsPerPage" should not be set up to 0') });
-                return;
+                itemsPerPage = 5;
             }
 
             //HACK when widget is saved and the app is not refreshed, itemsPerPage is a string!
@@ -148,7 +153,7 @@ define([
             }
 
             var start = itemsPerPage * (this.currentPage - 1);
-            console.log("start", start);
+            console.log('start', start, itemsPerPage);
             set(this, 'itemsPerPagePropositionSelected', itemsPerPage);
             set(this, 'paginationMixinFindOptions.start', start);
             set(this, 'paginationFirstItemIndex', start + 1);
@@ -163,7 +168,7 @@ define([
             get(this, 'paginationMixinContent');
             this.set('itemsTotal', get(this, 'widgetDataMetas').total);
 
-            var itemsPerPage = get(this, 'itemsPerPage');
+            var itemsPerPage = get(this, 'userParams.itemsPerPage') || get(this, 'mixinOptions.pagination.itemsPerPage') || 5;
             if (itemsPerPage === 0) {
                 console.warn("itemsPerPage is 0 in widget", this);
                 console.warn("assuming itemsPerPage is 5");
@@ -179,7 +184,6 @@ define([
             this._super(queryResult);
         }
     });
-
 
     return mixin;
 });

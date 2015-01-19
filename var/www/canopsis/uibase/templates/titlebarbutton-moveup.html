@@ -1,7 +1,7 @@
 {{#if controller.editMode}}
     <button type="button" class="btn btn-info btn-sm pull-right" {{action 'moveup' item}} >
-        {{glyphicon "arrow-up"}}
-        {{#unless minified}}
+        <span class="glyphicon glyphicon-arrow-up"></span>
+        {{#unless view.minified}}
             Move up
         {{/unless}}
     </button>

@@ -32,38 +32,27 @@ define(['ember' , "app/application"], function(Ember , Application) {
 
     };
 
-    Ember.Handlebars.helper('logo', function(controller) {
-
-        var field = controller.attr.field;
-        var value = controller.attr.value;
-
-        if(value === undefined) {
-            if(controller.record.content !== undefined) {
-                value = controller.record.content._data[field];
-            } else {
-                value = '';
-            }
-        }
+    Ember.Handlebars.helper('logo', function(value) {
 
         var logoPath = images[value];
 
         if(logoPath !== undefined) {
-            return new Ember.Handlebars.SafeString('<img alt="Source" src="'+ logoPath + '"/>');
+            return '<img alt="Source" src="'+ logoPath + '"/>';
         } else {
-            return new Ember.Handlebars.SafeString(value);
+            return value;
         }
     });
 
     Ember.Handlebars.helper('logofromstring', function(imageName) {
         var  logoPath = images[imageName];
 
-        return new Ember.Handlebars.SafeString(logoPath);
+        return logoPath;
     });
 
     Ember.Handlebars.helper('logofromstring2', function(imageName) {
         var  logoPath = images[imageName];
 
-            return new Ember.Handlebars.SafeString('<img alt="Source" src="'+ logoPath + '"/>');
+            return '<img alt="Source" src="'+ logoPath + '"/>';
     });
 
 });

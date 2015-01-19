@@ -1,7 +1,10 @@
 {{#if showSearchOptions}}
     <span class="input-group">
         <span class="input-group-btn">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{glyphicon 'wrench'}}<span class="caret"></span></button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-wrench"></span>
+                <span class="caret"></span>
+            </button>
             <div class="dropdown-menu" role="menu" style="width:400px">
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
@@ -34,7 +37,9 @@
     <div class="input-group">
         {{input type="text" placeholder=placeholder action="searchInputAction" class="form-control inlineInput" value=value}}
         <div class="input-group-btn">
-            <button class="btn btn-default" {{action 'clearSearch'}}>{{glyphicon 'remove-circle'}}</button>
+            <button class="btn btn-default" {{action 'clearSearch'}}>
+                <span class="glyphicon glyphicon-remove-circle"></span>
+            </button>
         </div>
     </div>
 

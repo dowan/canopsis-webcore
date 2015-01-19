@@ -1,6 +1,3 @@
-{{#if controller.editMode}}
-    <button type="button" class="btn btn-info btn-sm" {{action 'insertWidget' controller}} >{{glyphicon "plus-sign"}} {{tr 'Insert widget'}}</button>
-{{/if}}
 <section class="nav-tabs-custom">
     <ul class="nav nav-tabs ">
         {{#each item in controller.items.content}}
@@ -12,10 +9,10 @@
 
                         {{#if controller.editMode}}
                             <span class="badge" {{action 'editWidget' item.widget}}>
-                                {{glyphicon "edit"}}
+                                <span class="glyphicon glyphicon-edit"></span>
                             </span>
                             <span class="badge" {{action 'removeWidget' item.widget}}>
-                                {{glyphicon "trash"}}
+                                <span class="glyphicon glyphicon-trash"></span>
                             </span>
                         {{/if}}
                     </a>

@@ -108,7 +108,7 @@ define([
                         override_labels = options.override_labels;
                     }
 
-                    this.categories = [];
+                    set(this, 'categories', []);
 
                     var modelAttributes = get(referenceModel, 'attributes');
 

@@ -22,7 +22,7 @@ define([
     'ember',
     'app/lib/factories/wrapper',
     'app/lib/schemasregistry',
-    'webcore-libs/dev/ember-data'
+    'webcore-libs/min/ember-data'
 ], function(Ember, Wrapper, schemasRegistry) {
 
     var get = Ember.get;

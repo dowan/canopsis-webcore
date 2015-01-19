@@ -1,14 +1,14 @@
 {{#if controller.userCanCreateRecord}}
-    {{#if minified}}
+    {{#if view.minified}}
         {{#component-tooltip content="Add entry for current list"}}
             <button class="btn btn-default btn-sm" {{action 'add' controller.itemType}} >
-                {{glyphicon "plus-sign"}}
+                <span class="glyphicon glyphicon-plus-sign"></span>
             </button>
         {{/component-tooltip}}
     {{else}}
         {{#component-tooltip content="Add entry for current list"}}
             <button class="btn btn-default" {{action 'add' controller.itemType}} >
-                {{glyphicon "plus-sign"}}
+                <span class="glyphicon glyphicon-plus-sign"></span>
                     {{tr 'Create'}}
             </button>
         {{/component-tooltip}}

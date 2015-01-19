@@ -17,16 +17,16 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
+define([
+    'ember',
+    'app/lib/factories/mixin'
+], function(Ember, Mixin) {
 
-    Ember.Handlebars.helper('set', function(name, value, options) {
-        console.log('will set name', name, 'with value', value, 'in object', options);
-        if (arguments.length === 4) {
-            //option is the settable in this case
-            Ember.set(options, name, value);
-        } else {
-            options.data.keywords[name] = value;
+    var mixin = Mixin('lightlayout', {
+        partials: {
+            layout: ['lightlayout']
         }
     });
 
+    return mixin;
 });

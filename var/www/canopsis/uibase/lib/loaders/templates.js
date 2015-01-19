@@ -45,7 +45,9 @@ var templates = [
 
     { name: 'actionbutton-edit', template: 'canopsis/uibase/templates/actionbutton-edit.html', classes: ["action"], icon : "pencil", label : "Edit"},
     { name: 'actionbutton-ack', template: 'canopsis/uibase/templates/actionbutton-ack.html', classes: ["action", "toolbar"], icon : "ok", label : "Ack"},
+    { name: 'actionbutton-ackselection', template: 'canopsis/uibase/templates/actionbutton-ackselection.html', classes: ["action", "toolbar"], icon : "ok", label : "Ack selection"},
     { name: 'actionbutton-cancel', template: 'canopsis/uibase/templates/actionbutton-cancel.html', classes: ["action", "toolbar"], icon : "ban-circle", label : "Cancel"},
+    { name: 'actionbutton-cancelselection', template: 'canopsis/uibase/templates/actionbutton-cancelselection.html', classes: ["action", "toolbar"], icon : "ban-circle", label : "Cancel Selection"},
     { name: 'actionbutton-changestate', template: 'canopsis/uibase/templates/actionbutton-changestate.html', classes: ["action", "toolbar"],icon : "retweet", label : "Change criticity" },
     { name: 'actionbutton-show', template: 'canopsis/uibase/templates/actionbutton-show.html', classes: ["action"], icon : "eye-open",label : "Show" },
     { name: 'actionbutton-info', template: 'canopsis/uibase/templates/actionbutton-info.html', classes: ["action"], icon : "info-sign",label : "Info" },
@@ -78,7 +80,13 @@ var templates = [
     { name: 'column-unfold', template: 'canopsis/uibase/templates/column-unfold.html' ,  classes: ["foldable"]},
     { name: 'groupedrowslistlayout', template: 'canopsis/uibase/templates/groupedrowslistlayout.html' ,  classes: ["foldable"]},
     { name: 'groupedrowslistlinelayout', template: 'canopsis/uibase/templates/groupedrowslistlinelayout.html' ,  classes: ["foldable"]},
-    { name: 'stackedcolumns', template: 'canopsis/uibase/templates/stackedcolumns.html' ,  classes: ["foldable"]}
+    { name: 'stackedcolumns', template: 'canopsis/uibase/templates/stackedcolumns.html' ,  classes: ["foldable"]},
+
+    { name: 'verticallayout', template: 'canopsis/uibase/templates/verticallayout.html' ,  classes: ["layout"]},
+    { name: 'horizontallayout', template: 'canopsis/uibase/templates/horizontallayout.html' ,  classes: ["layout"]},
+    { name: 'lightlayout', template: 'canopsis/uibase/templates/lightlayout.html' ,  classes: ["layout"]},
+    { name: 'tablayout', template: 'canopsis/uibase/templates/tablayout.html' ,  classes: ["layout"]},
+    { name: 'mixineditdropdown', template: 'canopsis/uibase/templates/mixineditdropdown.html'}
 ];
 
 loader.loadWithTemplates(templates);

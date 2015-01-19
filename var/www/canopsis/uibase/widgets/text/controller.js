@@ -35,7 +35,7 @@ define([
         },
 
         willDestroyElement: function () {
-            this.controller.unloadGeneratedTemplate();
+            get(this, 'controller').unloadGeneratedTemplate();
             this._super.apply(this, arguments);
         }
     });

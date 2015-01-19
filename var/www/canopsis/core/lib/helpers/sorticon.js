@@ -30,7 +30,7 @@ define(['ember'], function(Ember) {
             return;
         }
 
-        return new Ember.Handlebars.SafeString(sortTemplate);
+        return sortTemplate;
     });
 
 });

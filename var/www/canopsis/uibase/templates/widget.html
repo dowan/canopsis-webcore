@@ -1,6 +1,9 @@
 {{#if view.errorMessages}}
     <div class="callout callout-danger">
-        <h4>{{glyphicon 'warning-sign'}} {{tr 'An error occured'}}</h4>
+        <h4>
+            <span class="glyphicon glyphicon-warning-sign"></span>
+            {{tr 'An error occured'}}
+        </h4>
         <p>
             {{tr 'An error occured while Canopsis was trying to display this widget'}}.
 
@@ -27,7 +30,10 @@
     </div>
 {{else}}
     <div class="callout callout-warning">
-        <h4>{{glyphicon 'warning-sign'}} {{tr 'Empty widget'}}</h4>
+        <h4>
+            <span class="glyphicon glyphicon-warning-sign"></span>
+            {{tr 'Empty widget'}}
+        </h4>
         <p>
             {{tr 'This is an empty widget and might indicate a problem in the widget\'s xtype'}}. {{tr 'Please check the view document'}}.
             <ul>

@@ -37,7 +37,7 @@ var editors = [
     { name: 'editor-eventselector', template: 'canopsis/uibase/editors/eventselector.html' },
     { name: 'editor-integer', template: 'canopsis/uibase/editors/integer.html' },
     { name: 'editor-mail', template: 'canopsis/uibase/editors/mail.html' },
-    { name: 'editor-mixinchooser', template: 'canopsis/uibase/editors/mixinchooser.html' },
+    { name: 'editor-mixins', template: 'canopsis/uibase/editors/mixins.html' },
     { name: 'editor-modelselect', template: 'canopsis/uibase/editors/modelselect.html' },
     { name: 'editor-richtext', template: 'canopsis/uibase/editors/richtext.html' },
     { name: 'editor-rights', template: 'canopsis/uibase/editors/rights.html' },

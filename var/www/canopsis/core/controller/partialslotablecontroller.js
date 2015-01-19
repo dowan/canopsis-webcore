@@ -69,6 +69,9 @@ define([
 
         _partials: {},
 
+        mixinOptions : {},
+
+
         refreshPartialsList: function() {
             console.log('refreshPartialsList', get(this, 'partials'));
             var partials = get(this, 'partials');
@@ -77,7 +80,16 @@ define([
 
             if(Ember.isArray(mixins)) {
                 for (var i = 0, l = mixins.length; i < l; i++) {
-                    partials = this.mergeMixinPartials(mixins[i], partials);
+                    var currentMixin = mixins[i];
+
+                    //DEPRECATE handle progressive deprecation of mixins as strings
+                    if(typeof currentMixin === 'string') {
+                        Ember.deprecate('Defining mixins as strings is deprecated. The new format is : \'{ name: "mixinName" }\'. This is required by the mixin options system.');
+                    } else {
+                        currentMixin = currentMixin.name.camelize();
+                    }
+
+                    partials = this.mergeMixinPartials(currentMixin, partials);
                 }
             }
 
@@ -88,10 +100,12 @@ define([
 
         mergeMixinPartials: function(Mixin, partials) {
             var me = this;
+            var mixinName = Mixin.decamelize();
+            var mixinRegistryEntry = mixinsRegistry.getByName(mixinName);
 
             console.log("mergeMixinPartials mixin:", Mixin);
-            if(mixinsRegistry.getByName(Mixin.decamelize())) {
-                var partialsToAdd = mixinsRegistry.getByName(Mixin.decamelize()).EmberClass.mixins[0].properties.partials;
+            if(mixinRegistryEntry) {
+                var partialsToAdd = mixinRegistryEntry.EmberClass.mixins[0].properties.partials;
 
                 for (var k in partialsToAdd) {
                     if (partialsToAdd.hasOwnProperty(k)) {

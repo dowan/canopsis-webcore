@@ -20,8 +20,9 @@
 define([
     'jquery',
     'app/lib/factories/widget',
+    'utils',
     'app/lib/wrappers/bootstrap'
-], function($, WidgetFactory) {
+], function($, WidgetFactory, utils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -55,11 +56,24 @@ define([
 
             get(this, 'tabs').forEach(function(item, index) {
                 if(item.value === get(uimaintabcollectionController, 'currentViewId')) {
-                    item.isActive = true;
+                    set(item, 'isActive', true);
                 } else {
-                    item.isActive = false;
+                    set(item, 'isActive', false);
                 }
-                res.push(item);
+
+                //FIXME stop using utils to store data!
+                if(get(utils, 'session._id') === "root") {
+                    set(item, 'displayable', true);
+                } else {
+                    viewId = item.value;
+                    if (get(utils, 'session.rights.showview_' + viewId.replace('.', '_'))) {
+                        set(item, 'displayable', true);
+                    } else {
+                        set(item, 'displayable', false);
+                    }
+                }
+
+                res.pushObject(item);
             });
 
             return res;
