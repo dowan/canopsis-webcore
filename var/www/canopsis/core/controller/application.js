@@ -281,7 +281,7 @@ define([
                 }, 1500);
             },
 
-            showUserProfile: function (){
+            showUserProfile: function () {
                 var applicationController = this;
 
                 var ouser = get(utils, 'session');
@@ -474,8 +474,11 @@ define([
 
                 var containerwidgetId = hashUtils.generateId('container');
 
-                var containerwidget = dataUtils.getStore().createRecord('verticalbox', {
-                    xtype: 'verticalbox',
+                var containerwidget = dataUtils.getStore().createRecord('widgetcontainer', {
+                    xtype: 'widgetcontainer',
+                    mixins : [{
+                        name: 'verticallayout'
+                    }],
                     id: containerwidgetId
                 });
 
@@ -483,7 +486,7 @@ define([
                     id: hashUtils.generateId('userview'),
                     crecord_type: 'view',
                     containerwidget: containerwidgetId,
-                    containerwidgetType: 'verticalbox'
+                    containerwidgetType: 'widgetcontainer'
                 });
 
                 console.log('temp record', userview);

@@ -52,6 +52,12 @@ define([
             }
 
             this._super();
+
+            if(!get(this, 'userParams.custom_filters')) {
+                set(this, 'userParams.custom_filters', Ember.A());
+            }
+
+            set(this, 'findParams_cfilterFilterPart', get(this, 'mixinOptions.customfilterlist.default_filter'));
         },
 
         isSelectedFilter: function (filterList) {
@@ -83,8 +89,8 @@ define([
         }.property('mixinOptions.customfilterlist.filters', 'currentFilter'),
 
         custom_filters_list: function () {
-            return this.isSelectedFilter(get(this, 'custom_filters'));
-        }.property('custom_filters', 'currentFilter'),
+            return this.isSelectedFilter(get(this, 'userParams.custom_filters'));
+        }.property('userParams.custom_filters'),
 
 
         actions: {
@@ -119,12 +125,15 @@ define([
 
                 recordWizard.submit.then(function(form) {
                     record = form.get('formContext');
-                    widgetController.get('custom_filters').pushObject(record);
+
+
+                    get(widgetController, 'userParams.custom_filters').pushObject(record);
+
+                    widgetController.notifyPropertyChange('userParams.custom_filters');
+
                     console.log('Custom filter created', record, form);
                     notificationUtils.info(__('Custom filter created'));
-                    widgetController.set('userParams.custom_filters', widgetController.get('custom_filters'));
                     widgetController.saveUserConfiguration();
-
                 });
             },
 
@@ -147,10 +156,9 @@ define([
                 recordWizard.submit.then(function(form) {
                     widgetController.get('custom_filters').removeObject(filter);
                     record = form.get('formContext');
-                    widgetController.get('custom_filters').pushObject(record);
+                    widgetController.get('userParams.custom_filters').pushObject(record);
                     console.log('Custom filter created', record, form);
                     notificationUtils.info(__('Custom filter created'));
-                    widgetController.set('userParams.custom_filters', widgetController.get('custom_filters'));
                     widgetController.saveUserConfiguration();
 
                 });

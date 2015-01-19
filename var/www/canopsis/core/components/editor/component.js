@@ -39,8 +39,6 @@ define([
             console.log('init editor compo');
 
             this._super();
-
-            // set(this, 'templateData.keywords.attr', Ember.computed.alias('content'));
         },
 
         actions: {

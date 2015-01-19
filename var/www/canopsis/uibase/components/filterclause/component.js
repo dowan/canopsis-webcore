@@ -97,7 +97,7 @@ define([
                 var inputValue = get(this, 'content.value');
                 var inputKey = get(this, 'content.key');
 
-                var andClausePart = thisElement.templateData.keywords.andClausePart;
+                var andClausePart = thisElement.clause.and;
 
                 console.log("focusOutInput", arguments);
                 if (inputValue !== undefined && inputValue !== null && inputValue !== '') {
@@ -133,7 +133,8 @@ define([
             if (this.get('onlyAllowRegisteredIndexes') === true && andClausePart.options.available_indexes !== undefined) {
                 //detect if inputValue is in available_indexes
                 console.group('onlyAllowRegisteredIndexes check');
-                for (var i = 0; i < andClausePart.options.available_indexes.length; i++) {
+
+                for (var i = 0, l = andClausePart.options.available_indexes.length; i < l; i++) {
                     var currentIndex = andClausePart.options.available_indexes[i];
                     console.log('currentIndex', currentIndex);
 
