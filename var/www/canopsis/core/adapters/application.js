@@ -65,7 +65,7 @@ define([
         createRecord: function(store, type, record) {
             var data = {};
             if (isNone(type) || isNone(type.typeKey)) {
-                console.log('Error while retrieving typeKey from type is it is none.');
+                console.error('Error while retrieving typeKey from type is it is none.');
             }
             var serializer = store.serializerFor(type.typeKey);
 
@@ -77,7 +77,7 @@ define([
         updateRecord: function(store, type, record) {
             var data = {};
             if (isNone(type) || isNone(type.typeKey)) {
-                console.log('Error while retrieving typeKey from type is it is none.');
+                console.error('Error while retrieving typeKey from type is it is none.');
             }
             var serializer = store.serializerFor(type.typeKey);
 

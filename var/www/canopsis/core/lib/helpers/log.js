@@ -36,7 +36,7 @@ define(['ember'], function(Ember) {
         typeKey = get(this, 'model.type.typeKey');
 
         if (isNone(typeKey)) {
-            console.log('Error while retrieving typeKey from model is it is none.');
+            console.error('Error while retrieving typeKey from model is it is none.');
         }
 
         console.tags.add(typeKey);
