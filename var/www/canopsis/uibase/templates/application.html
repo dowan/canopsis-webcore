@@ -19,18 +19,7 @@
                 <span class="icon-bar"></span>
             </a>
             <div class="navbar-right">
-                <ul class="nav navbar-nav">
-
-                    {{#if isLoading}}
-                    <li class="dropdown tasks-menu">
-                            <a href="#">
-                                <i class="fa fa-refresh fa-spin"></i>
-                            </a>
-                        </li>
-                    {{/if}}
-                </ul>
                 {{partialslot slot=controller._partials.statusbar tagname="ul" classNames="nav navbar-nav"}}
-
             </div>
         </nav>
     </header>
@@ -174,4 +163,8 @@
         {{/if}}
     </aside>
 </div>
-
+{{#if isLoading}}
+    <div class="loadtooltip">
+        <i class="fa fa-2x fa-spinner fa-spin fa-inverse"></i>
+    </div>
+{{/if}}

@@ -93,10 +93,10 @@ define([
         }.property('itemsTotal', 'mixinOptions.pagination.itemsPerPage'),
 
         itemsPerPagePropositions : function() {
-            var res = [5, 10, 20, 50];
+            var res = Ember.A([5, 10, 20, 50]);
             var itemsPerPagePropositionSelected = get(this, 'itemsPerPagePropositionSelected');
             if(itemsPerPagePropositionSelected !== 5 && itemsPerPagePropositionSelected !== 10 && itemsPerPagePropositionSelected !== 20 && itemsPerPagePropositionSelected !== 50)
-                res.push(itemsPerPagePropositionSelected);
+                res.pushObject(itemsPerPagePropositionSelected);
             return res;
         }.property('itemsPerPagePropositionSelected'),
 
