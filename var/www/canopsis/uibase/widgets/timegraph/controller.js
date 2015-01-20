@@ -536,8 +536,8 @@ define([
                         return n.toFixed(2);
                     }
                 },
-                xaxis: parseInt(get(config, 'style.xaxis')),
-                yaxis: parseInt(get(config, 'style.yaxis')),
+                xaxis: parseInt(get(config, 'style.xaxis')) || 1,
+                yaxis: parseInt(get(config, 'style.yaxis')) || 1,
                 clickable: true,
                 hoverable: true,
 
