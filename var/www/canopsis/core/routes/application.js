@@ -32,6 +32,9 @@ define([
         actions: {
             showView: function(id) {
                 console.log('ShowView action', arguments);
+                var app = this.controllerFor('application');
+                set(app, 'isLoading', get(app, 'isLoading') + 1);
+
                 this.transitionTo('userview', id);
             },
 

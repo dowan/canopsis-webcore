@@ -42,8 +42,9 @@ define([
     var route = AuthenticatedRoute.extend({
         actions: {
             loading: function() {
-                if(initialLoadDone === true) {
-                    set(this.controllerFor('application'), 'isLoading', true);
+                if(initialLoadDone === false) {
+                    var app = this.controllerFor('application');
+                    set(app, 'isLoading', get(app, 'isLoading') + 1);
                 }
             },
 
@@ -174,7 +175,8 @@ define([
 
             set(this.controllerFor('application'), 'currentViewId', get(model, 'id'));
 
-            set(this.controllerFor('application'), 'isLoading', false);
+            var app = this.controllerFor('application');
+            set(app, 'isLoading', get(app, 'isLoading') - 1);
 
             if(controller.trigger) {
                 controller.trigger('refreshView');
