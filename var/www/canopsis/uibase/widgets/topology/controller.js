@@ -53,7 +53,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-    var widget = WidgetFactory('wgraph', {
+    var widget = WidgetFactory('wtopology', {
 
         d3_graph: {
             nodes: [],
@@ -178,7 +178,8 @@ define([
                 * zoom function.
                 */
                 function zoom() {
-                    /*console.log(_this.eventZoom);
+                    /*_this.eventZoom = d3.event;
+                    console.log(_this.eventZoom);
                     if (d3.event.sourceEvent.type !== 'mousemove') {*/
                         if (!_this.dragging) {
                             _this.panel.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
@@ -187,7 +188,6 @@ define([
                         var translate = [d3.event.translate[0] * d3.event.scale, d3.event.translate[1] * d3.event.scale];
                         _this.panel.attr("transform", "translate(" + translate + ")scale(" + d3.event.scale + ")");
                     }*/
-                    _this.eventZoom = d3.event;
                 };
                 function drag(){
                     console.log(d3.event);
@@ -1015,50 +1015,57 @@ define([
                 // use graph id in getNodes method in order to get nodes
                 this.getGraphFromServer(
                     function(result) {
-                    // get graph or a default graph
-                    var graph = null;
-                    if (result.total === 0) {
-                        graph = {
-                            _delts: {},
-                            type: _this.graph_type,
-                            _type: 'graph',
-                            _id: _this.graph_id,
-                            cid: _this.graph_id,
-                            _cls: _this.graph_cls,
-                            data: {},
-                            elts: []
-                        }
-                        // reinitialize old view
-                        _this.d3_graph = {
-                            nodes: [],
-                            links: [],
-                            data_by_id: {}
-                        };
-                    } else {
-                        graph = result.data[0];
-                        // if old graph exists
-                        if (_this.graph !== null) {
-                            // delete old elements
-                            var elts_to_delete = [];
-                            Object.keys(_this.graph._delts).forEach(
-                                function(elt_id) {
-                                    // in case of old element
-                                    if (graph._delts[elt_id] === undefined) {
-                                        var elt = _this.graph._delts[elt_id];
-                                        elts_to_delete.push(elt.d3_elt);
+                        // get graph or a default graph
+                        var graph = null;
+                        if (result.total === 0) {
+                            graph = {
+                                _delts: {},
+                                type: _this.graph_type,
+                                _type: 'graph',
+                                _id: _this.graph_id,
+                                cid: _this.graph_id,
+                                _cls: _this.graph_cls,
+                                data: {
+                                    operator: {
+                                        id: 'canopsis.topology.rule.action.change_state',
+                                        params: {
+                                            update_entity: true
+                                        }
                                     }
                                 },
-                                this
-                            );
-                            this.delete(elts_to_delete);
+                                elts: []
+                            };
+                            // reinitialize old view
+                            _this.d3_graph = {
+                                nodes: [],
+                                links: [],
+                                data_by_id: {}
+                            };
+                        } else {
+                            graph = result.data[0];
+                            // if old graph exists
+                            if (_this.graph !== null) {
+                                // delete old elements
+                                var elts_to_delete = [];
+                                Object.keys(_this.graph._delts).forEach(
+                                    function(elt_id) {
+                                        // in case of old element
+                                        if (graph._delts[elt_id] === undefined) {
+                                            var elt = _this.graph._delts[elt_id];
+                                            elts_to_delete.push(elt.d3_elt);
+                                        }
+                                    },
+                                    this
+                                );
+                                this.delete(elts_to_delete);
+                            }
                         }
+                        // convert graph such as a record
+                        _this.graph = _this.toRecord(graph);
+                        // and update the model
+                        _this.updateModel();
                     }
-                    // convert graph such as a record
-                    _this.graph = _this.toRecord(graph);
-                    // and update the model
-                    _this.updateModel();
-                }
-            );
+                );
             }
         },
 
@@ -1332,9 +1339,7 @@ define([
                 }
             }
             var elt = data.elt;
-            if (elt.get('type') !== 'topology') {
-                this.editRecord(elt, callback, failure, this);
-            }
+            this.editRecord(elt, callback, failure, this);
         },
 
         /**
@@ -1797,9 +1802,9 @@ define([
                             this.newToolBoxItem('delete', 'cross', 'rotate(45)') // elt deletion
                         );
                     }
-                    if (data.elt.get('type') !== 'topology') { // all elts but topologies
+                    //if (data.elt.get('type') !== 'topology') { // all elts but topologies
                         result.push(this.newToolBoxItem('edit', 'square')); // edit elt
-                    }
+                    //}
                 } else {
                     result.push(
                         this.newToolBoxItem('save', 'square'), // save model

@@ -25,7 +25,8 @@ define([
 ], function(Ember, DS, Application, promisesmanager) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     var entities = ["nagios","shinken"];
 
@@ -63,6 +64,9 @@ define([
 
         createRecord: function(store, type, record) {
             var data = {};
+            if (isNone(type) || isNone(type.typeKey)) {
+                console.log('Error while retrieving typeKey from type is it is none.');
+            }
             var serializer = store.serializerFor(type.typeKey);
 
             data = serializer.serializeIntoHash(data, type, record, 'POST', { includeId: true });
@@ -72,6 +76,9 @@ define([
 
         updateRecord: function(store, type, record) {
             var data = {};
+            if (isNone(type) || isNone(type.typeKey)) {
+                console.log('Error while retrieving typeKey from type is it is none.');
+            }
             var serializer = store.serializerFor(type.typeKey);
 
             data = serializer.serializeIntoHash(data, type, record, 'PUT');
