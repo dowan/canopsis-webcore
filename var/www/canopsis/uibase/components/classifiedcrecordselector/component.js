@@ -135,6 +135,7 @@ define([
             var selectionUnprepared = get(this, 'selectionUnprepared');
             var res;
 
+            //witch value is used as data reference in the selection.
             var valueKey = get(this, 'valueKey');
 
             if(get(this, "multiselect")) {

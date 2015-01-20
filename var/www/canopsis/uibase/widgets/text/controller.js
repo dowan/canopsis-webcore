@@ -32,8 +32,6 @@ define([
         set = Ember.set,
         isNone = Ember.isNone;
 
-    var count = 0;
-
     var TextViewMixin = Ember.Mixin.create({
         didInsertElement: function () {
             this._super.apply(this, arguments);
@@ -63,7 +61,9 @@ define([
 
         findItems: function() {
 
-            set(this, 'templateContext', Ember.Object.create({}));
+            set(this, 'templateContext', Ember.Object.create({
+                serie: {},
+            }));
 
             var ctrl = this;
             var seriesController = get(ctrl, 'controllers.serie');
@@ -92,7 +92,7 @@ define([
             }
 
             //Declared here for translation purposes
-            var valueNotDefined = __('Value not defined');
+            var valueNotDefined = __('No data available');
 
             var seriesFilter = JSON.stringify({
                 crecord_name: {'$in': seriesValues}
@@ -125,11 +125,11 @@ define([
                         console.log('series pargs', pargs);
                         var displayValue = valueNotDefined;
                         if (data.length) {
-                            //choosing the last point when any
-                            displayValue = data[data.length - 1];
+                            //choosing the value for the last point when any
+                            displayValue = data[data.length - 1][1];
                         }
                         var serieName = get(series[i], 'crecord_name');
-                        set(ctrl, 'templateContext.value_' + serieName, displayValue);
+                        set(ctrl, 'templateContext.serie.' + serieName, displayValue);
                     }
                     ctrl.renderTemplate();
                 });

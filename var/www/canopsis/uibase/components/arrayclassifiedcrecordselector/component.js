@@ -23,7 +23,8 @@ define([
 ], function(Ember, Classifiedcrecordselector) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
 
     var component = Classifiedcrecordselector.extend({
@@ -46,6 +47,39 @@ define([
                 }
             }
         },
+
+        selectionChanged: function(){
+            this._super();
+            //additional code ensuring single item selection and use of possible custom valueKey.
+            var selection = get(this, 'selection');
+
+            var valueKey = get(this, 'valueKey');
+            if (isNone(valueKey)) {
+                valueKey = 'name';
+            }
+
+            //simple cache object to avoid duplicates values
+            var cache = {};
+            //no duplication selection list computation
+            var new_selection = [];
+            //simple content values computation
+            var content = [];
+
+            //iteraing over previous selection in order to recompute it.
+            for (var i=0; i<selection.length; i++) {
+                var value = get(selection[i], valueKey);
+                if (!cache[value]) {
+                    cache[value] = 1;
+                    content.push(value);
+                    new_selection.push(selection[i]);
+                }
+
+
+            }
+            set(this, 'selection', new_selection);
+            set(this, 'content', content);
+
+        }.observes('selectionUnprepared', 'selectionUnprepared.@each'),
 
         extractItems: function(items) {
             var valueKey = get(this, 'valueKey');

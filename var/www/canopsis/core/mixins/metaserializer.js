@@ -22,6 +22,8 @@ define([
     'app/lib/factories/mixin'
 ], function(Ember, Mixin) {
 
+    var isNone = Ember.isNone;
+
     /**
      * @mixin This mixin should be used with serializers
      * It aims to handle request metadata (total, errors, ...)
@@ -33,7 +35,7 @@ define([
                 payload.meta = {};
             }
 
-            if (payload && payload.total) {
+            if (payload && payload.total !== undefined) {
                 payload.meta.total = payload.total;
             }
 
@@ -46,6 +48,10 @@ define([
             delete payload.success;
 
             console.log('normalizePayload', arguments);
+
+            if (isNone(type) || isNone(type.typeKey)) {
+                console.log('Error while retrieving typeKey from model is it is none.');
+            }
 
             var typeKey = type.typeKey,
                 typeKeyPlural = typeKey.pluralize();

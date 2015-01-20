@@ -25,7 +25,8 @@ define([
 ], function(Ember, Application, ApplicationAdapter) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     var adapter = ApplicationAdapter.extend({
 
@@ -46,19 +47,31 @@ define([
         },
 
         find: function(store, type, id, record) {
+            if (isNone(type) || isNone(type.typeKey)) {
+                console.log('Error while retrieving typeKey from type is it is none.');
+            }
             return this.ajax(this.buildURL(type.typeKey, id, record, 'GET'), 'GET');
         },
 
         findMany: function(store, type, ids, records) {
+            if (isNone(type) || isNone(type.typeKey)) {
+                console.log('Error while retrieving typeKey from type is it is none.');
+            }
             return this.ajax(this.buildURL(type.typeKey, ids, records, 'GET'), 'GET', { data: { ids: ids } });
         },
 
         findQuery: function(store, type, query) {
+            if (isNone(type) || isNone(type.typeKey)) {
+                console.log('Error while retrieving typeKey from type is it is none.');
+            }
             return this.ajax(this.buildURL(type.typeKey, undefined, undefined, 'GET'), 'GET', { data: query });
         },
 
         createRecord: function(store, type, record) {
             var me = this;
+            if (isNone(type) || isNone(type.typeKey)) {
+                console.log('Error while retrieving typeKey from type is it is none.');
+            }
 
             return new Ember.RSVP.Promise(function(resolve, reject) {
                 var url = me.buildURL(type.typeKey, undefined, record, 'POST');
@@ -77,7 +90,9 @@ define([
 
         updateRecord: function(store, type, record) {
             var me = this;
-
+            if (isNone(type) || isNone(type.typeKey)) {
+                console.log('Error while retrieving typeKey from type is it is none.');
+            }
             return new Ember.RSVP.Promise(function(resolve, reject) {
                 var url = me.buildURL(type.typeKey, undefined, record, 'POST');
                 var hash = me.serialize(record, {includeId: true});
@@ -95,6 +110,9 @@ define([
 
         deleteRecord: function(store, type, record) {
             var id = get(record, 'id');
+            if (isNone(type) || isNone(type.typeKey)) {
+                console.log('Error while retrieving typeKey from type is it is none.');
+            }
             return this.ajax(this.buildURL(type.typeKey, id, record, 'DELETE'), "DELETE");
         }
     });

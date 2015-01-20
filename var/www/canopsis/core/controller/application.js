@@ -110,6 +110,8 @@ define([
         inflectionsRegistry: inflectionsRegistry,
         formsRegistry: formsRegistry,
 
+        isLoading:0,
+
         utils: utils,
 
         enginesviews: [

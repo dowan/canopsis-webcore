@@ -25,6 +25,8 @@ define([
     'app/lib/utils/notification'
 ], function(Ember, DS, Application, ApplicationAdapter, notificationUtils) {
 
+    var isNone = Ember.isNone;
+
     var adapter = ApplicationAdapter.extend({
         gen_resolve: function(callback) {
             return function(data) {
@@ -64,6 +66,10 @@ define([
             void(store);
             var me = this;
 
+            if (isNone(model) || isNone(model.typeKey)) {
+                console.log('Error while retrieving typeKey from model is it is none.');
+            }
+
             return new Ember.RSVP.Promise(function(resolve, reject) {
                 var url = me.buildURL(model.typeKey, id);
                 var funcres = me.gen_resolve(resolve);
@@ -77,6 +83,10 @@ define([
             void(store);
             var me = this;
 
+            if (isNone(model) || isNone(model.typeKey)) {
+                console.log('Error while retrieving typeKey from model is it is none.');
+            }
+
             return new Ember.RSVP.Promise(function(resolve, reject) {
                 var funcres = me.gen_resolve(resolve);
                 var funcrej = me.gen_reject(reject);
@@ -89,6 +99,10 @@ define([
         findAll: function(store, model, options) {
             void(store);
             var me = this;
+
+            if (isNone(model) || isNone(model.typeKey)) {
+                console.log('Error while retrieving typeKey from model is it is none.');
+            }
 
             return new Ember.RSVP.Promise(function(resolve, reject) {
                 var funcres = me.gen_resolve(resolve);
@@ -118,6 +132,10 @@ define([
         findQuery: function(store, model, query) {
             void(store);
             var me = this;
+
+            if (isNone(model) || isNone(model.typeKey)) {
+                console.log('Error while retrieving typeKey from model is it is none.');
+            }
 
             return new Ember.RSVP.Promise(function(resolve, reject) {
                 var funcres = me.gen_resolve(resolve);
