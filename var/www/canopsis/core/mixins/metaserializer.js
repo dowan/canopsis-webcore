@@ -33,7 +33,7 @@ define([
                 payload.meta = {};
             }
 
-            if (payload && payload.total) {
+            if (payload && payload.total !== undefined) {
                 payload.meta.total = payload.total;
             }
 

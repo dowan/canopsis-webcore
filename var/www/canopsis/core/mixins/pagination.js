@@ -86,11 +86,7 @@ define([
             }
         },
 
-        itemsTotal: 1,
         currentPage: 1,
-        totalPages: 1,
-        paginationFirstItemIndex: 1,
-        paginationLastItemIndex: 1,
 
         itemsDivided: function(){
             return get(this, 'itemsTotal') / get(this, 'mixinOptions.pagination.itemsPerPage');
@@ -157,28 +153,74 @@ define([
             set(this, 'itemsPerPagePropositionSelected', itemsPerPage);
             set(this, 'paginationMixinFindOptions.start', start);
             set(this, 'paginationFirstItemIndex', start + 1);
-            set(this, 'paginationLastItemIndex', start + itemsPerPage);
             set(this, 'paginationMixinFindOptions.limit', itemsPerPage);
             this._super.apply(this, arguments);
 
             console.groupEnd();
         },
 
+        getItemsPerPage: function() {
+            var itemsPerPage = get(this, 'userParams.itemsPerPage') || get(this, 'mixinOptions.pagination.itemsPerPage');
+
+            console.log('itemsPerPage is', itemsPerPage, 'type', typeof itemsPerPage);
+
+            if(itemsPerPage === undefined || itemsPerPage === 0) {
+                itemsPerPage = 5;
+            }
+
+            //HACK when widget is saved and the app is not refreshed, itemsPerPage is a string!
+            if (typeof itemsPerPage === 'string') {
+                itemsPerPage = parseInt(itemsPerPage, 10);
+            }
+            if (itemsPerPage === 0) {
+                console.warn("itemsPerPage is 0 in widget", this);
+                console.warn("assuming itemsPerPage is 5");
+                itemsPerPage = 5;
+            }
+            if (typeof itemsPerPage !== 'number' || itemsPerPage % 1 !== 0) {
+                itemsPerPage = 5;
+            }
+
+            return itemsPerPage;
+        },
+
+        paginationLastItemIndex: function () {
+            var itemsPerPage = this.getItemsPerPage();
+
+            var start = itemsPerPage * (this.currentPage - 1);
+
+            return start + itemsPerPage;
+        }.property('widgetData'),
+
+        paginationFirstItemIndex: function () {
+            var itemsPerPage = this.getItemsPerPage();
+
+            var start = itemsPerPage * (this.currentPage - 1);
+
+            return start + 1;
+        }.property('widgetData'),
+
+        itemsTotal: function() {
+            return get(this, 'widgetDataMetas').total;
+        }.property('widgetDataMetas', 'widgetData'),
+
+        totalPages: function() {
+            if (get(this, 'itemsTotal') === 0) {
+                return 0;
+            } else {
+                var itemsPerPage = this.getItemsPerPage();
+                return Math.ceil(get(this, 'itemsTotal') / itemsPerPage);
+            }
+        }.property('itemsTotal'),
+
         extractItems: function(queryResult) {
             get(this, 'paginationMixinContent');
-            this.set('itemsTotal', get(this, 'widgetDataMetas').total);
 
             var itemsPerPage = get(this, 'userParams.itemsPerPage') || get(this, 'mixinOptions.pagination.itemsPerPage') || 5;
             if (itemsPerPage === 0) {
                 console.warn("itemsPerPage is 0 in widget", this);
                 console.warn("assuming itemsPerPage is 5");
                 itemsPerPage = 5;
-            }
-
-            if (get(this, 'itemsTotal') === 0) {
-                set(this, 'totalPages', 0);
-            } else {
-                set(this, 'totalPages', Math.ceil(get(this, 'itemsTotal') / itemsPerPage));
             }
 
             this._super(queryResult);

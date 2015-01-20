@@ -34,12 +34,6 @@ define([
     var mixin = Mixin('validationField', {
         attr : "",
 
-        willDestroyElement:function(){
-            //TODO : find a better place
-           // var formController  =  formsregistry.formwrapper.form;
-           // formController.set('validationFields' , Ember.A() );
-        },
-
         init: function(){
             var form  =  formsregistry.formwrapper.form;
             set(this, 'form', form );
