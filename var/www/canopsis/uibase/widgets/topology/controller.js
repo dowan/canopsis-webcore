@@ -1597,7 +1597,8 @@ define([
                     if (!elt.data) {
                         elt.data = {
                             entity: '',
-                            operator: ''
+                            operator: '',
+                            state: 0
                         };
                     }
                 }

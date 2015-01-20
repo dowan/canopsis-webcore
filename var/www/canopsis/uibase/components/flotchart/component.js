@@ -247,7 +247,7 @@ define([
                 var key = axis + 1;
 
                 var n_series = seriesByAxis.y[key].length,
-                    min = null, max = null;
+                    min = null, max = null, valuesOnChart = false;
 
                 for(var serieidx = 0; serieidx < n_series; serieidx++) {
                     var serie = seriesByAxis.y[key][serieidx];
@@ -263,14 +263,20 @@ define([
                             max = boundaries[1];
                         }
                     }
+
+                    if(serie.values.show) {
+                        valuesOnChart = true;
+                    }
                 }
 
                 /* calculate new max with margin */
+                var margin = (valuesOnChart ? 115.0 : 105.0);
+
                 var inc = max + 30;
                 var incperc = (inc * 100.0) / max;
 
-                if (incperc > 105.0) {
-                    inc = (max * 105.0) / 100.0;
+                if (incperc > margin) {
+                    inc = (max * margin) / 100.0;
                 }
 
                 /* calculate new min with margin */
@@ -279,8 +285,8 @@ define([
                     var dec = min + 30;
                     var decperc = (min * 100.0) / min;
 
-                    if (decperc > 105.0) {
-                        dec = (min * 105.0) / 100.0;
+                    if (decperc > margin) {
+                        dec = (min * margin) / 100.0;
                     }
 
                     dec = -dec;
