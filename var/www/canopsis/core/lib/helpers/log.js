@@ -19,6 +19,9 @@
 
 define(['ember'], function(Ember) {
 
+    var get = Ember.get,
+        isNone = Ember.isNone;
+
     /**
      * Helper to log something into the console.
      *
@@ -30,18 +33,19 @@ define(['ember'], function(Ember) {
         console.tags.add("helper");
 
         var typeKey;
-        if (this.get !== undefined) {
-            typeKey = this.get('model.type.typeKey');
-            console.tags.add(typeKey);
+        typeKey = get(this, 'model.type.typeKey');
+
+        if (isNone(typeKey)) {
+            console.log('Error while retrieving typeKey from model is it is none.');
         }
+
+        console.tags.add(typeKey);
 
         console.log(message);
 
         console.tags.remove("helper");
 
-        if (this.get !== undefined) {
-            console.tags.remove(typeKey);
-        }
+        console.tags.remove(typeKey);
 
         return '';
     });

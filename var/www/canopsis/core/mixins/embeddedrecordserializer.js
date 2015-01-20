@@ -307,6 +307,10 @@ define([
 
             var sublen = subDocuments.length;
 
+            if (isNone(relationship) || isNone(relationship.type) || isNone(relationship.type.typeKey)) {
+                console.log('Error while retrieving typeKey from model is it is none.');
+            }
+
             for (var i = 0, l = sublen; i < l; i++) {
                 if (!isNone(subDocuments[i])) {
                     var serializedSubDocument = subDocuments[i].serialize({ lookForDocumentRoot : false });
