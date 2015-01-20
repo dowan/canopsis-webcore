@@ -213,6 +213,9 @@ define([
             findItems: function() {
                 var me = this;
 
+                var appController = get(this, 'controllers.application');
+                set(appController, 'isLoading', get(appController, 'isLoading') + 1);
+
                 if (get(this, 'widgetDataStore') === undefined) {
                     set(this, 'widgetDataStore', DS.Store.create({
                         container: get(this, 'container')
@@ -264,6 +267,8 @@ define([
                         //This value reset spiner display for record in flight status
                         queryResults.content[i].set('pendingOperation', false);
                     }
+
+                    set(appController, 'isLoading', get(appController, 'isLoading') - 1);
 
                     me.trigger('refresh');
                 }).catch(function (promiseProxy) {
