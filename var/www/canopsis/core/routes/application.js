@@ -51,10 +51,15 @@ define([
                 var formwrapperController = this.controllerFor('formwrapper');
                 set(formsregistry, 'formwrapper', formwrapperController);
 
-                set(formController, 'formwrapper', formwrapperController);
-                set(formController, 'formContext', formContext);
-                set(formwrapperController, 'form', formController);
-                set(formwrapperController, 'formName', formName);
+                formController.setProperties({
+                    'formwrapper': formwrapperController,
+                    'formContext': formContext
+                });
+
+                formwrapperController.setProperties({
+                   'form': formController,
+                   'formName': formName
+                });
 
                 formwrapperController.send('show');
 
