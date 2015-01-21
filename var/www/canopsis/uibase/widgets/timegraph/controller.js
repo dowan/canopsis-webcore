@@ -112,7 +112,8 @@ define([
                     show: true,
                     reserveSpace: true,
                     position: 'bottom',
-                    mode: 'time'
+                    mode: 'time',
+                    timezone: 'browser'
                 }],
 
                 yaxes: [{
