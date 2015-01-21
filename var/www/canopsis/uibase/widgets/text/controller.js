@@ -70,11 +70,10 @@ define([
             var series;
 
             var now = new Date().getTime();
-            var from = get(this, 'lastRefresh');
+            //fetch time window of 5 minutes hoping there are metrics since.
+            var from = now - 300000;
             var to = now;
-            if (isNone(from)){
-                from = now - get(this, 'refreshInterval');
-            }
+
             //When specific from / to dates specified into the controller,
             //the widget will use them. This helps manage live reporting.
             if (!isNone(get(this, 'from'))) {
