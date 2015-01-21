@@ -122,8 +122,7 @@ define([
                 }],
 
                 legend: {
-                    show: true,
-                    legend: get(config, 'legend'),
+                    show: get(config, 'legend'),
                     container: this.$('.flotchart-legend-container')
                 },
                 tooltip: get(config, 'tooltip'),
