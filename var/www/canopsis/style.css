@@ -333,6 +333,15 @@ table.dataTable>thead>tr>th {
     width:300%;
     margin-left: -100%;
 }
+
+@media (max-width: 768px) {
+    #formwrapper {
+        width: auto;
+        margin-left: 0;
+
+    }
+}
+
 .modal {
     right: auto !importants;
 }
