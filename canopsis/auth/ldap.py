@@ -168,6 +168,9 @@ class LDAPBackend(BaseBackend):
 
                 account = mgr.save_user(self.ws, info)
 
+        else:
+            account = record
+
         return user, account
 
 
