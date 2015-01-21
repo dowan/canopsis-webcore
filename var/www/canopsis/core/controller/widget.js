@@ -395,7 +395,7 @@ define([
         },
 
         findItems: function() {
-            console.warn('findItems not implemented');
+            console.warn('findItems not implemented', this);
         },
 
         extractItems: function(queryResult) {
