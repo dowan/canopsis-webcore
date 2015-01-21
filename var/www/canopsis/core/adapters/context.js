@@ -67,7 +67,7 @@ define([
             var me = this;
 
             if (isNone(model) || isNone(model.typeKey)) {
-                console.log('Error while retrieving typeKey from model is it is none.');
+                console.error('Error while retrieving typeKey from model is it is none.');
             }
 
             return new Ember.RSVP.Promise(function(resolve, reject) {
@@ -84,7 +84,7 @@ define([
             var me = this;
 
             if (isNone(model) || isNone(model.typeKey)) {
-                console.log('Error while retrieving typeKey from model is it is none.');
+                console.error('Error while retrieving typeKey from model is it is none.');
             }
 
             return new Ember.RSVP.Promise(function(resolve, reject) {
@@ -101,7 +101,7 @@ define([
             var me = this;
 
             if (isNone(model) || isNone(model.typeKey)) {
-                console.log('Error while retrieving typeKey from model is it is none.');
+                console.error('Error while retrieving typeKey from model is it is none.');
             }
 
             return new Ember.RSVP.Promise(function(resolve, reject) {
@@ -134,7 +134,7 @@ define([
             var me = this;
 
             if (isNone(model) || isNone(model.typeKey)) {
-                console.log('Error while retrieving typeKey from model is it is none.');
+                console.error('Error while retrieving typeKey from model is it is none.');
             }
 
             return new Ember.RSVP.Promise(function(resolve, reject) {

@@ -54,14 +54,5 @@ define([
 
     loader.register('serializer:application', serializer);
 
-    // Application.RoleSerializer = serializer.extend({
-    //     normalize: function (type, hash, prop) {
-    //         var id = get(hash, '_id');
-
-    //         set(hash, 'id', id);
-    //         this._super.apply(this, arguments);
-    //     }
-    // });
-
     return serializer;
 });

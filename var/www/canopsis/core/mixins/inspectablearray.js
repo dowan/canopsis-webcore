@@ -33,11 +33,12 @@ define([
                 var attr = attributesDict[key];
 
                 if (attr.options.hiddenInLists === false || attr.options.hiddenInLists === undefined) {
-                    attributes.push(Ember.Object.create({
+                    attributes.pushObject({
                         field: attr.name,
                         type: attr.type,
                         options: attr.options
-                    }));
+                    });
+
                     console.log("pushed attr", {
                         field: attr.name,
                         type: attr.type,
