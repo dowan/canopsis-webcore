@@ -150,10 +150,14 @@ define([
 
             var start = itemsPerPage * (this.currentPage - 1);
             console.log('start', start, itemsPerPage);
-            set(this, 'itemsPerPagePropositionSelected', itemsPerPage);
-            set(this, 'paginationMixinFindOptions.start', start);
-            set(this, 'paginationFirstItemIndex', start + 1);
-            set(this, 'paginationMixinFindOptions.limit', itemsPerPage);
+
+            this.setProperties({
+                'itemsPerPagePropositionSelected': itemsPerPage,
+                'paginationMixinFindOptions.start': start,
+                'paginationFirstItemIndex': start + 1,
+                'paginationMixinFindOptions.limit': itemsPerPage
+            });
+
             this._super.apply(this, arguments);
 
             console.groupEnd();

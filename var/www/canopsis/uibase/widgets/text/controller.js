@@ -46,7 +46,7 @@ define([
         },
 
         findItems: function() {
-
+            console.log('findItems');
             set(this, 'templateContext', Ember.Object.create({
                 serie: {},
             }));
@@ -62,8 +62,8 @@ define([
 
             var now = new Date().getTime();
             //fetch time window of 5 minutes hoping there are metrics since.
-            var from = now - 300000;
-            var to = now;
+            var from = now - 300000,
+                to = now;
 
             //When specific from / to dates specified into the controller,
             //the widget will use them. This helps manage live reporting.
@@ -113,6 +113,7 @@ define([
                         var data = pargs[i];
                         console.log('series pargs', pargs);
                         var displayValue = valueNotDefined;
+
                         if (data.length) {
                             //choosing the value for the last point when any
                             displayValue = data[data.length - 1][1];
@@ -122,17 +123,13 @@ define([
                     }
                     ctrl.renderTemplate();
                 });
-
-
             });
-
         },
 
         renderTemplate: function (){
 
-            var template = get(this, 'html');
-
-            var html = 'Unable to render template.';
+            var template = get(this, 'html'),
+                html = 'Unable to render template.';
 
             try {
                 html = Handlebars.compile(template)(get(this, 'templateContext'));
