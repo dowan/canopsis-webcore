@@ -6,7 +6,6 @@
         {"name": "application"},
         {"name": "formwrapper"},
         {"name": "login"},
-        {"name": "notifications"},
         {"name": "userview"},
         {"name": "widget"}
     ]
