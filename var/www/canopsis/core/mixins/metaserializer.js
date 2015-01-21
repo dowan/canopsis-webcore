@@ -50,7 +50,7 @@ define([
             console.log('normalizePayload', arguments);
 
             if (isNone(type) || isNone(type.typeKey)) {
-                console.log('Error while retrieving typeKey from model is it is none.');
+                console.error('Error while retrieving typeKey from model is it is none.');
             }
 
             var typeKey = type.typeKey,

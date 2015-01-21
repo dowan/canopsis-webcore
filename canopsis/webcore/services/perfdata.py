@@ -53,12 +53,14 @@ def exports(ws):
         if timewindow is not None:
             timewindow = TimeWindow(**timewindow)
 
-        if period is not None:
-            period = Period(**period)
-
         if timeserie is not None:
+            if period is None:
+                period = timeserie.pop('period', None)
+
             timeserie = TimeSerie(**timeserie)
-            timeserie.period = period
+
+            if period is not None:
+                timeserie.period = Period(**period)
 
         if not isinstance(metric_id, list):
             metrics = [metric_id]
