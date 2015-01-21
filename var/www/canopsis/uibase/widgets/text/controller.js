@@ -32,23 +32,9 @@ define([
         set = Ember.set,
         isNone = Ember.isNone;
 
-    var TextViewMixin = Ember.Mixin.create({
-        didInsertElement: function () {
-            this._super.apply(this, arguments);
-        },
-
-        willDestroyElement: function () {
-            this._super.apply(this, arguments);
-        }
-    });
-
     var widget = WidgetFactory('text', {
 
         needs: ['serie', 'perfdata'],
-
-        viewMixins: [
-            TextViewMixin
-        ],
 
         perfdata: Ember.computed.alias('controllers.perfdata'),
 
@@ -65,9 +51,14 @@ define([
                 serie: {},
             }));
 
-            var ctrl = this;
-            var seriesController = get(ctrl, 'controllers.serie');
-            var series;
+            var ctrl = this,
+                seriesController = get(ctrl, 'controllers.serie'),
+                series,
+
+                now = new Date().getTime(),
+                from = get(this, 'lastRefresh'),
+                to = now;
+
 
             var now = new Date().getTime();
             //fetch time window of 5 minutes hoping there are metrics since.
@@ -82,7 +73,6 @@ define([
             if (!isNone(get(this, 'to'))) {
                 to = get(this, 'to');
             }
-
 
             var seriesValues = get(this, 'series');
             if (isNone(seriesValues)) {
@@ -107,7 +97,7 @@ define([
                 console.log('series records', series);
 
                 var seriesQueries = [];
-                for (var i=0; i<series.length; i++) {
+                for (var i = 0, l = series.length; i < l; i++) {
                     seriesQueries.push(seriesController.fetch(
                         series[i],
                         from,
@@ -118,7 +108,7 @@ define([
                 console.log('seriesQueries', seriesQueries);
 
                 Ember.RSVP.all(seriesQueries).then(function(pargs) {
-                    for (var i=0; i<pargs.length; i++) {
+                    for (var i = 0, l = pargs.length; i < l; i++) {
 
                         var data = pargs[i];
                         console.log('series pargs', pargs);

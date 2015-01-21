@@ -32,7 +32,7 @@ define([
 
         willInsertElement: function() {
             console.log('init periodicrefresh viewMixin');
-            this._super.apply(this, arguments);
+            this._super();
 
             //widget refresh management
             var widgetController = get(this, 'controller');
@@ -52,7 +52,14 @@ define([
 
             //keep track of this interval
             this.set('widgetRefreshInterval', interval);
+        },
+
+        willDestroyElement: function() {
+            clearInterval(get(this, 'widgetRefreshInterval'));
+
+            this._super();
         }
+
     });
 
 

@@ -40,6 +40,8 @@ define([
     var controller = PartialslotAbleController.extend({
         needs: ['application', 'login'],
 
+        viewMixins: [],
+
         /**
          * This is useful mostly for debug, to know that a printend object is a widget
          */
