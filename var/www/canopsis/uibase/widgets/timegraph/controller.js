@@ -22,10 +22,12 @@ define([
     'ember',
     'ember-data',
     'app/lib/factories/widget',
+    'app/lib/utils/values',
+    'app/lib/utils/dates',
     'canopsis/uibase/components/flotchart/component',
     'app/controller/serie',
     'app/controller/perfdata'
-], function($, Ember, DS, WidgetFactory) {
+], function($, Ember, DS, WidgetFactory, values, dates) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -108,6 +110,8 @@ define([
                     max: now - get(ctrl, 'time_window_offset')
                 },
 
+                yaxis: {},
+
                 xaxes: [{
                     show: true,
                     reserveSpace: true,
@@ -128,7 +132,21 @@ define([
                 tooltip: get(config, 'tooltip'),
                 tooltipOpts: {
                     id: this.$().closest('.ember-view').attr('id') + '-tooltip',
-                    content: '<p>%x</p><p><b>%s :</b> %y</p>',
+                    content: function(label, xval, yval, item) {
+                        var date = dates.timestamp2String(xval, 'r', true);
+
+                        var html = '<p>' + date + '</p>';
+                        html += '<p><b>' + label + ' :</b> ';
+
+                        if (get(ctrl, 'human_readable') === true) {
+                            html += values.humanize(yval, item.series.unit);
+                        }
+                        else {
+                            html += yval + ' ' + item.unit;
+                        }
+
+                        return html;
+                    },
                     shifts: {
                         x: -60,
                         y: 25
@@ -172,6 +190,8 @@ define([
                     min: now - get(ctrl, 'time_window_offset') - get(ctrl, 'timenav_window'),
                     max: now - get(ctrl, 'time_window_offset')
                 },
+
+                yaxis: {},
 
                 xaxes: [{
                     show: true,

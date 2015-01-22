@@ -34,20 +34,32 @@ define([
 
         init: function() {
             set(this, 'chart', null);
-            set(this, 'options', {});
-            set(this, 'series', []);
-            set(this, 'human', false);
+
+            if (isNone(get(this, 'options'))) {
+                set(this, 'options', null);
+            }
+
+            if (isNone(get(this, 'series'))) {
+                set(this, 'series', []);
+            }
+
+            if (isNone(get(this, 'human'))) {
+                set(this, 'human', false);
+            }
 
             this._super.apply(this, arguments);
+
+            this.addObserver('series.@each', this.onDataUpdate);
+            this.addObserver('options', this.onOptionsUpdate);
         },
 
         onDataUpdate: function() {
             this.send('renderChart');
-        }.observes('series.@each'),
+        },
 
         onOptionsUpdate: function() {
             this.send('renderChart');
-        }.observes('options'),
+        },
 
         didInsertElement: function() {
             this.send('renderChart');
@@ -137,18 +149,19 @@ define([
             var options = get(this, 'options'),
                 seriesByAxis = get(this, 'classifiedSeries');
 
-            var axis,
-                n_xaxes = Object.keys(seriesByAxis.x).length,
-                n_yaxes = Object.keys(seriesByAxis.y).length;
+            var axis, l,
+                xaxes = Object.keys(seriesByAxis.x),
+                yaxes = Object.keys(seriesByAxis.y);
 
-            for(axis = 0 ; axis < n_xaxes ; axis++) {
-                var key = axis + 1;
+            for(axis = 0, l = xaxes.length ; axis < l ; axis++) {
+                var key = xaxes[axis];
+                var idx = key - 1;
 
-                if (options.xaxes[axis] === undefined) {
-                    options.xaxes[axis] = {
+                if (options.xaxes[idx] === undefined) {
+                    options.xaxes[idx] = {
                         show: true,
                         reserveSpace: true,
-                        position: (axis % 2 === 0 ? 'bottom' : 'top'),
+                        position: (idx % 2 === 0 ? 'bottom' : 'top'),
                         color: seriesByAxis.x[key][0].color,
                         font: {
                             color: seriesByAxis.x[key][0].color
@@ -158,14 +171,16 @@ define([
             }
 
             var me = this;
-            for(axis = 0 ; axis < n_yaxes ; axis++) {
-                var key = axis + 1;
 
-                if (options.yaxes[axis] === undefined) {
-                    options.yaxes[axis] = {
+            for(axis = 0, l = yaxes.length ; axis < l ; axis++) {
+                var key = yaxes[axis];
+                var idx = key - 1;
+
+                if (options.yaxes[idx] === undefined) {
+                    options.yaxes[idx] = {
                         show: true,
                         reserveSpace: true,
-                        position: (axis % 2 == 0 ? 'left' : 'right'),
+                        position: (idx % 2 == 0 ? 'left' : 'right'),
                         color: seriesByAxis.y[key][0].color,
                         font: {
                             color: seriesByAxis.y[key][0].color
@@ -173,9 +188,9 @@ define([
                     };
                 }
 
-                options.yaxes[axis].tickFormatter = function(val, axis) {
-                    if(get(me, 'human') === true) {
-                        var unit = seriesByAxis.y[key][0].unit;
+                options.yaxes[idx].tickFormatter = function(val, axis) {
+                    if (get(me, 'human') === true) {
+                        var unit = seriesByAxis.y[axis.n][0].unit || '';
                         val = values.humanize(val, unit);
                     }
 
@@ -224,15 +239,19 @@ define([
                 series = get(this, 'series'),
                 options = get(this, 'options');
 
-            this.createAxes();
-            this.createLegend();
-            this.autoscale();
+            console.log('options (before):', options);
 
-            /* create plot */
-            console.log('series:', series);
-            console.log('options:', options);
+            if (get(this, 'options') !== null) {
+                this.createAxes();
+                this.createLegend();
+                this.autoscale();
 
-            set(this, 'chart', $.plot(plotcontainer, series, options));
+                /* create plot */
+                console.log('series:', series);
+                console.log('options:', options);
+
+                set(this, 'chart', $.plot(plotcontainer, series, options));
+            }
 
             console.groupEnd();
         },
@@ -244,7 +263,8 @@ define([
             var yaxes = Object.keys(seriesByAxis.y);
 
             for(var axis = 0, l = yaxes.length; axis < l; axis++) {
-                var key = axis + 1;
+                var key = yaxes[axis];
+                var idx = key - 1;
 
                 var n_series = seriesByAxis.y[key].length,
                     min = null, max = null, valuesOnChart = false;
@@ -295,8 +315,8 @@ define([
                     dec = 0;
                 }
 
-                options.yaxes[axis].min = dec;
-                options.yaxes[axis].max = inc;
+                options.yaxes[idx].min = dec;
+                options.yaxes[idx].max = inc;
             }
         },
 

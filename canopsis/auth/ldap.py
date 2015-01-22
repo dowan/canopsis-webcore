@@ -111,7 +111,7 @@ class LDAPBackend(BaseBackend):
             self.logger.error("No match found for user: {0}".format(user))
             return not_auth
         
-        elif len(result) &gt; 1:
+        elif len(result) > 1:
             self.logger.warning("User matched multiple DN: {0}".format(
                 json.dumps([dn for dn, _ in result])
             ))
