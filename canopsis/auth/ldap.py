@@ -97,7 +97,7 @@ class LDAPBackend(BaseBackend):
 
         self.logger.info("Authenticate user {0} to LDAP Server".format(user))
 
-        attrs = config["attrs"].values()
+        attrs = [a.encode('utf-8') for a in config["attrs"].values()]
         ufilter = config["ufilter"] % user
 
         result = conn.search_s(
