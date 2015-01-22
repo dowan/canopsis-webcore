@@ -70,7 +70,7 @@ define([
 
         timestamp2String: function (value, format, shortDate) {
             function addZero(i) {
-                return (i < 10 ? '0'+ i +'' : i +'');
+                return (i < 10 ? '0'+ i : i.toString());
             }
 
             var a = new Date(value*1000);
@@ -88,7 +88,7 @@ define([
                 __("November"),
                 __("December")
             ];
-            if (!isNone(shortDate)) {
+            if (shortDate === true) {
                 months = [
                     __("Jan"),
                     __("Feb"),
