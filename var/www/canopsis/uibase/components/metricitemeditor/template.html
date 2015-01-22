@@ -1,12 +1,8 @@
 <p><b>{{tr "Metric"}}</b></p>
 
-{{component-stringclassifiedcrecordselector
+{{component-metricselector
     content=item.metric.value
-    crecordtype="ctxmetric"
-    modelfilter='{}'
-    selection=item.metric.value
-    valueKey="id"
-    nameKey="cid"
+    multiselect=false
 }}
 
 <p><b>{{tr "Curve"}}</b></p>

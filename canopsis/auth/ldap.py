@@ -1,7 +1,6 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # --------------------------------
-# Copyright (c) 2014 "Capensis" [http://www.capensis.com]
+# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
 #
 # This file is part of Canopsis.
 #
@@ -16,22 +15,23 @@
 # GNU Affero General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-# along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
+# along with Canopsis.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
 # ---------------------------------
 
 from __future__ import absolute_import
 from bottle import request, HTTPError
 import ldap
+import json
 
 from canopsis.auth.base import BaseBackend
 
 
 class LDAPBackend(BaseBackend):
-    name = 'LDAPBackend'
+    name = "LDAPBackend"
 
     def get_config(self):
         try:
-            record = self.ws.db.get('cservice.ldapconfig')
+            record = self.ws.db.get("cservice.ldapconfig")
             return record.dump()
 
         except KeyError:
@@ -43,11 +43,11 @@ class LDAPBackend(BaseBackend):
         def decorated(*args, **kwargs):
             s = self.session.get()
 
-            if not s.get('auth_on', False):
+            if not s.get("auth_on", False):
                 user, record = self.do_auth()
 
                 if user and record and not self.install_account(user, record):
-                    return HTTPError(403, 'Forbidden')
+                    return HTTPError(403, "Forbidden")
 
             return callback(*args, **kwargs)
 
@@ -57,119 +57,91 @@ class LDAPBackend(BaseBackend):
 
         not_auth = None, None
 
-        self.logger.debug('Fetch LDAP configuration from database')
+        self.logger.debug("Fetch LDAP configuration from database")
         mgr = self.rights.get_manager()
 
         config = self.get_config()
 
         if not config:
-            self.logger.error('LDAP configuration not found')
+            self.logger.error("LDAP configuration not found")
             return not_auth
 
-        user = request.params.get('username', default=None)
-        passwd = request.params.get('password', default=None)
+        user = request.params.get("username", default=None)
+        password = request.params.get("password", default=None)
 
-        dn = config.get('user_dn', None)
-
-        if dn:
-            try:
-                dn = dn % user
-
-            except TypeError:
-                pass
-
-        else:
-            dn = '{0}@{1}'.format(user, config['domain'])
-
-        self.logger.debug('Connecting to LDAP server: {0}'.format(
-            config['uri']
+        self.logger.debug("Connecting to LDAP server: {0}:{1}".format(
+            config["host"], config["port"]
         ))
 
-        conn = ldap.initialize(config['uri'])
+        conn = ldap.open(config["host"], config["port"])
         conn.set_option(ldap.OPT_REFERRALS, 0)
         conn.set_option(ldap.OPT_NETWORK_TIMEOUT, ldap.OPT_NETWORK_TIMEOUT)
 
-        try:
-            self.logger.info('Authenticate user {0} to LDAP server'.format(
-                user
+        if not conn:
+            self.logger.error("LDAP server unreachable: {0}:{1}".format(
+                config["host"], config["port"]
             ))
-
-            conn.simple_bind_s(dn, passwd)
-
-        except ldap.INVALID_CREDENTIALS:
-            self.logger.error('Invalid credentials for user {0}'.format(user))
 
             # Will try with the next backend
             return not_auth
 
         try:
-            self.logger.debug('Ensure user\'s presence in database: {}'.format(
-                user
+            self.logger.info("Authenticate to LDAP server")
+            conn.simple_bind_s(config["admin_dn", "admin_passwd"])
+
+        except ldap.INVALID_CREDENTIALS as err:
+            self.logger.error("Invalid credentials: {0}".format(err))
+
+            # Will try with the next backend
+            return not_auth
+
+        self.logger.info("Authenticate user {0} to LDAP Server".format(user))
+
+        attrs = config["attrs"].values()
+        ufilter = config["ufilter"] % user
+
+        result = conn.search_s(
+            config["user_dn"],
+            ldap.SCOPE_SUBTREE,
+            ufilter,
+            attrs
+        )
+
+        if not result:
+            self.logger.error("No match found for user: {0}".format(user))
+            return not_auth
+        
+        elif len(result) &gt; 1:
+            self.logger.warning("User matched multiple DN: {0}".format(
+                json.dumps([dn for dn, _ in result])
             ))
 
-            record = mgr.get_user(user)
+        dn, data = result[0]
 
-        except KeyError:
-            record = None
+        try:
+            conn.simple_bind_s(dn, password)
 
-        if not record:
-            self.logger.info(
-                'Account {0} not found in database, create it'.format(user)
-            )
+        except ldap.INVALID_CREDENTIALS as err:
+            self.logger.error("Invalid credentials: {0}".format(err))
+            return not_auth
 
-            attrs = [
-                config['firstname'].encode('utf-8'),
-                config['lastname'].encode('utf-8'),
-                config['mail'].encode('utf-8')
-            ]
+        info = {
+            "_id": user,
+            "external": True,
+            "enable": True,
+            "contact": {},
+            "role": config["default_role"]
+        }
 
-            ufilter = config['user_filter'] % user
+        for field in config["attrs"].keys():
+            val = data.get(config["attrs"][field], None)
 
-            result = conn.search_s(
-                config['base_dn'],
-                ldap.SCOPE_SUBTREE,
-                ufilter,
-                attrs
-            )
+            if val and isinstance(val, list):
+                val = val[0]
 
-            # TODO: Replace this with crecord.user
-            if result:
-                dn, data = result[0]
-                info = {
-                    '_id': user,
-                    'external': True,
-                    'enable': True,
-                    'contact': {},
-                    'role': config.get('default_role')
-                }
+            info["contact"][field] = val
 
-                for field in ['firstname', 'lastname', 'mail']:
-                    val = data.get(config[field], None)
-
-                    if val and isinstance(val, list):
-                        val = val[0]
-
-                    info['contact'][field] = val
-
-                account = self.rights.save_user(self.ws, info)
-
-            else:
-                info = {
-                    '_id': user,
-                    'external': True,
-                    'enable': True,
-                    'contact': {
-                        'firstname': user,
-                        'lastname': '',
-                        'mail': None
-                    },
-                    'role': config.get('default_role')
-                }
-
-                account = mgr.save_user(self.ws, info)
-
-        else:
-            account = record
+        account = self.rights.save_user(self.ws, info)
 
         return user, account
 
