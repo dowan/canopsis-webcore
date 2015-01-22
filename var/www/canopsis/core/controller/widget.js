@@ -57,27 +57,21 @@ define([
         init: function () {
             console.log('widget init');
 
-            set(this, 'model.controllerInstance', this);
-
-            console.log('viewController', widgetUtils.getParentViewForWidget(this));
-            console.log('viewController', get(widgetUtils.getParentViewForWidget(this), 'isMainView'));
-
-            //Each widget knows what is it s view.
-
             var viewId = get(widgetUtils.getParentViewForWidget(this), 'content.id');
-            console.debug('View id for current widget is ', viewId);
-            set(this, 'viewId', viewId);
-
-            set(this, 'viewController', widgetUtils.getParentViewForWidget(this));
-            set(this, 'isOnMainView', get(widgetUtils.getParentViewForWidget(this), 'isMainView'));
-
-            set(this, 'container', routesUtils.getCurrentRouteController().container);
-
+            var container = routesUtils.getCurrentRouteController().container;
             var store = DS.Store.create({
-                container: get(this, 'container')
+                container: container
             });
 
-            set(this, 'widgetDataStore', store);
+            console.debug('View id for current widget is ', viewId);
+            this.setProperties({
+                'model.controllerInstance': this,
+                'viewId': viewId,
+                'viewController': widgetUtils.getParentViewForWidget(this),
+                'isOnMainView': get(widgetUtils.getParentViewForWidget(this), 'isMainView'),
+                'container': container,
+                'widgetDataStore': store
+            });
 
             //User preference are called just before the refresh to ensure
             //refresh takes care of user information and widget general preference is overriden
@@ -117,8 +111,10 @@ define([
         },
 
         startRefresh: function () {
-            set(this, 'isRefreshable', true);
-            set(this, 'lastRefresh', null);
+            this.setProperties({
+                'isRefreshable': true,
+                'lastRefresh': null
+            });
         },
 
         isRollbackable: function() {
@@ -127,7 +123,6 @@ define([
             }
 
             return false;
-
         }.property('isDirty', 'dirtyType', 'rollbackable'),
 
 
@@ -141,6 +136,7 @@ define([
 
             do: function(action) {
                 var params = [];
+
                 for (var i = 1, l = arguments.length; i < l; i++) {
                     params.push(arguments[i]);
                 }
@@ -174,6 +170,7 @@ define([
                     }
 
                     var userview = get(widgetController, 'viewController').get('content');
+
                     userview.save().then(function(){
                         get(widgetController, 'viewController').send('refresh');
                         console.log('triggering refresh', userview);
@@ -184,8 +181,8 @@ define([
             editMixin: function (widget, mixinName) {
                 console.info('edit mixin', widget, mixinName);
 
-                var mixinDict = get(widget, 'mixins').findBy('name', mixinName);
-                var mixinModelInstance = dataUtils.getStore().createRecord(mixinName, mixinDict);
+                var mixinDict = get(widget, 'mixins').findBy('name', mixinName),
+                    mixinModelInstance = dataUtils.getStore().createRecord(mixinName, mixinDict);
 
                 var mixinForm = formsUtils.showNew('modelform', mixinModelInstance, { title: __('Edit mixin'), inspectedItemType: mixinName });
 
@@ -218,6 +215,10 @@ define([
                 });
             },
 
+
+            /**
+             * Deletes the widget from its parents saves the view, and refresh it
+             */
             removeWidget: function (widget) {
                 console.group('remove widget', widget);
                 console.log('parent container', this);
@@ -234,8 +235,9 @@ define([
                     }
                 }
 
-                var widgetController = this;
-                var userview = get(this, 'viewController.content');
+                var widgetController = this,
+                    userview = get(this, 'viewController.content');
+
                 userview.save().then(function() {
                     get(widgetController, 'viewController').send('refresh');
                 });
@@ -247,41 +249,40 @@ define([
 
                 var widgetController = this;
 
-                var label = 'Edit your widget preferences';
-                console.info(label, widget);
+                console.info('edit preferences', widget);
 
                 var widgetWizard = formsUtils.showNew('modelform', widget, {
-                    title: __(label),
+                    title: __('Edit your widget preferences'),
                     userPreferencesOnly: true
                 });
+
                 console.log('widgetWizard', widgetWizard);
 
                 widgetWizard.submit.then(function(form) {
 
                     var record = get(form, 'formContext');
                     console.log('user param record', record);
-                    //widgetController.set('userParams.filters', widgetController.get('filters'));
-                    //widgetController.saveUserConfiguration();
 
                     widgetController.trigger('refresh');
                 });
             },
 
+
+            /**
+             * Moves the widget under the next one, if any
+             */
             movedown: function(widgetwrapper) {
                 console.group('movedown', widgetwrapper);
+
                 try{
                     console.log('context', this);
 
                     var foundElementIndex,
-                        nextElementIndex;
-
-
-                    var itemsContent = get(this, 'content.items.content');
+                        nextElementIndex,
+                        itemsContent = get(this, 'content.items.content');
 
                     for (var i = 0, l = itemsContent.length; i < l; i++) {
 
-                        console.log('loop', i, itemsContent[i], widgetwrapper);
-                        console.log(itemsContent[i] === widgetwrapper);
                         if (foundElementIndex !== undefined && nextElementIndex === undefined) {
                             nextElementIndex = i;
                             console.log('next element found');
@@ -307,8 +308,9 @@ define([
                         console.log('new array', array);
                         set(this, 'content.items.content', array);
 
-                        var widgetController = this;
-                        var userview = get(this, 'viewController.content');
+                        var widgetController = this,
+                            userview = get(this, 'viewController.content');
+
                         userview.save().then(function() {
                             get(widgetController, 'viewController').send('refresh');
                         });
@@ -319,6 +321,9 @@ define([
                 console.groupEnd();
             },
 
+            /**
+             * Moves the widget above the previous one, if any
+             */
             moveup: function(widgetwrapper) {
                 console.group('moveup', widgetwrapper);
 
@@ -326,13 +331,10 @@ define([
                     console.log('context', this);
 
                     var foundElementIndex,
-                        nextElementIndex;
-
-                    var itemsContent = get(this, 'content.items.content');
+                        nextElementIndex,
+                        itemsContent = get(this, 'content.items.content');
 
                     for (var i = itemsContent.length; i >= 0 ; i--) {
-                        console.log('loop', i, itemsContent[i], widgetwrapper);
-                        console.log(itemsContent[i] === widgetwrapper);
 
                         if (foundElementIndex !== undefined && nextElementIndex === undefined) {
                             nextElementIndex = i;
@@ -361,8 +363,9 @@ define([
                         console.log('new array', array);
                         set(this, 'content.items.content', array);
 
-                        var widgetController = this;
-                        var userview = get(widgetUtils.getParentViewForWidget(this), 'content');
+                        var widgetController = this,
+                            userview = get(widgetUtils.getParentViewForWidget(this), 'content');
+
                         userview.save().then(function() {
                             get(widgetController, 'viewController').send('refresh');
                         });
@@ -392,7 +395,7 @@ define([
         },
 
         findItems: function() {
-            console.warn('findItems not implemented');
+            console.warn('findItems not implemented', this);
         },
 
         extractItems: function(queryResult) {

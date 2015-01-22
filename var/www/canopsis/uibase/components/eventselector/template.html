@@ -11,11 +11,11 @@
     </table>
     <div class="form-group">
         <label>{{tr 'Component'}}</label>
-        {{input type="text" value=component class="form-control" placeholder="Search a component"}}
+        {{input type="text" value=component class="form-control" placeholder=search_component}}
     </div>
     <div class="form-group">
         <label>{{tr 'Resource'}}</label>
-        {{input type="text" value=resource class="form-control" placeholder="Search a resource"}}
+        {{input type="text" value=resource class="form-control" placeholder=search_resource}}
     </div>
 
     <label>{{tr 'Event search'}}</label>
@@ -37,6 +37,10 @@
     {{#unless selectedEvents.length}}
         <div class="well">No event selected</div>
     {{/unless}}
+
+    {{#if labelled}}
+        <p><i>{{ tr 'Event labels aims to create shortcut in a templating system. They have to contains only chars, numbers or underscores.'}}</i></p>
+    {{/if}}
     <ul class="list-group">
     {{#each event in selectedEvents}}
         <li class="list-group-item list-group-item-success">
@@ -44,7 +48,21 @@
                 <span class="glyphicon glyphicon-minus"></span>
                 {{tr 'Remove'}}
             </button>&nbsp;{{event.component}} {{event.resource}}
+            {{#if labelled}}
+                {{input type="text" value=event.label class="form-control" placeholder=type_label class="pull-right"}}
+            {{/if}}
         </li>
     {{/each}}
     </ul>
+    {{#if labelled}}
+        <center>
+            <button class="btn btn-default" {{action "saveLabels"}}>
+                <span class="glyphicon glyphicon-plus"></span>
+                {{tr 'Save labels'}}
+                {{#if saveLabelsDone}}
+                    {{tr 'done'}}
+                {{/if}}
+            </button>
+        </center>
+    {{/if}}
 </form>

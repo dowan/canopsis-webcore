@@ -31,6 +31,7 @@ define([
     var component = Ember.Component.extend({
         selectedMetrics: undefined,
         metricSearch: null,
+        multiselect: true,
 
         valueChanged: function() {
             var metrics = get(this, 'selectedMetrics');
@@ -41,14 +42,19 @@ define([
                 ids.push(m_id);
             }
 
-            set(this, 'content', ids);
+            if (get(this, 'multiselect') === true) {
+                set(this, 'content', ids);
+            }
+            else {
+                set(this, 'content', ids[0]);
+            }
         }.observes('selectedMetrics.@each'),
 
         helpModal: {
             title: __('Syntax'),
             content: ['<ul>',
-                '<li><code>co:regex</code> : look for a component</li>',
-                '<li><code>re:regex</code> : look for a resource</li>' ,
+                '<li><code>co:regex</code> : ', __('look for a component'), '</li>',
+                '<li><code>re:regex</code> : ', __('look for a resource'), '</li>' ,
                 '<li><code>me:regex</code> : ' , __('look for a metric') , '(<code>me:</code>' , __(' isn\'t needed for this one') , ')</li>' ,
                 '<li>', __('combine all of them to improve your search'),' : <code>co:regex re:regex me:regex</code></li>' ,
                 '<li><code>co:</code>, <code>re:</code>, <code>me:</code> : ', __('look for non-existant field') , '</li>' ,
@@ -65,7 +71,7 @@ define([
                 {name: 'cid', title: __('Metric')},
                 {
                     action: 'select',
-                    actionAll: 'selectAll',
+                    actionAll: (get(this, 'multiselect') === true ? 'selectAll' : undefined),
                     title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-plus-sign"></span>'),
                     style: 'text-align: center;'
                 }
@@ -95,20 +101,20 @@ define([
 
             set(this, 'componentDataStore', store);
 
-            var content = get(this, 'content') || [];
-            var me = this;
+            var query = {filter: {_id: undefined}}, me = this;
 
-            var query = {
-                filter: {
-                    '_id': {'$in': content}
-                }
-            };
+            if (get(this, 'multiselect') === true) {
+                var content = get(this, 'content') || [];
+                query.filter._id = {'$in': content};
+            }
+            else {
+                query.filter._id = get(this, 'content');
+            }
 
             store.findQuery('ctxmetric', query).then(function(result) {
-                var metrics = get(me, 'selectedMetrics') || [];
-
-                var content = get(result, 'content');
-                var l = get(result, 'meta.total');
+                var metrics = get(me, 'selectedMetrics') || [],
+                    content = get(result, 'content'),
+                    l = get(result, 'meta.total');
 
                 console.log('Received data:', l, content, metrics);
 
@@ -197,7 +203,13 @@ define([
 
                 if (selected.indexOf(metric) < 0) {
                     console.log('Select metric:', metric);
-                    selected.pushObject(metric);
+
+                    if (get(this, 'multiselect') === true) {
+                        selected.pushObject(metric);
+                    }
+                    else {
+                        selected = [metric];
+                    }
                 }
 
                 set(this, 'selectedMetrics', selected);
@@ -217,10 +229,12 @@ define([
             },
 
             selectAll: function() {
-                var store = get(this, 'componentDataStore');
-                var metrics = store.findAll('ctxmetric');
+                if (get(this, 'multiselect') === true) {
+                    var store = get(this, 'componentDataStore');
+                    var metrics = store.findAll('ctxmetric');
 
-                set(this, 'selectedMetrics', metrics);
+                    set(this, 'selectedMetrics', metrics);
+                }
             },
 
             unselectAll: function() {

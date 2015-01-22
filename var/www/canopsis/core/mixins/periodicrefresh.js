@@ -37,21 +37,26 @@ define([
             //widget refresh management
             var widgetController = get(this, 'controller');
 
-            var previousInterval = get(this, 'widgetRefreshInterval');
+            var previousInterval = get(this, 'mixinOptions.periodicrefresh.refreshInterval');
             if(previousInterval) {
                 clearInterval(previousInterval);
             }
 
             console.log('refreshInterval - > ', widgetController.get('mixinOptions.periodicrefresh.refreshInterval'));
-            var interval = setInterval(function () {
-                if (canopsisConfiguration.REFRESH_ALL_WIDGETS) {
-                    console.log('refreshing widget ' + get(widgetController, 'title'));
-                    widgetController.refreshContent();
-                }
-            }, widgetController.get('mixinOptions.periodicrefresh.refreshInterval') * 1000);
 
-            //keep track of this interval
-            this.set('widgetRefreshInterval', interval);
+            var interval = get(this, 'widgetRefreshInterval');
+
+            if(interval === undefined && widgetController.get('mixinOptions.periodicrefresh.refreshInterval') !== undefined) {
+                interval = setInterval(function () {
+                    if (canopsisConfiguration.REFRESH_ALL_WIDGETS) {
+                        console.log('refreshing widget ' + get(widgetController, 'title'), widgetController.get('mixinOptions.periodicrefresh.refreshInterval'), widgetController);
+                        widgetController.refreshContent();
+                    }
+                }, widgetController.get('mixinOptions.periodicrefresh.refreshInterval') * 1000);
+
+                //keep track of this interval
+                this.set('widgetRefreshInterval', interval);
+            }
         },
 
         willDestroyElement: function() {
