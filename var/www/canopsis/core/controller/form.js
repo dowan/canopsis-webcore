@@ -36,9 +36,11 @@ define([
 
         refreshPartialsList: function() {
             console.log('refreshPartialsList', get(this, 'partials'));
-            var partials = get(this, 'partials');
+
+            var partials = get(this, 'partials'),
+                mixins = get(this, 'content.mixins');
+
             set(this, '_partials', partials);
-            var mixins = get(this, 'content.mixins');
 
             if(Ember.isArray(mixins)) {
                 for (var i = 0, l = mixins.length; i < l; i++) {
