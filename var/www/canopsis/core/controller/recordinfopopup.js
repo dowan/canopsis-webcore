@@ -52,6 +52,7 @@ define([
 
                 set(this, 'content', new Ember.Handlebars.SafeString(html));
 
+                //FIXME do not use jquery for that kind of things on a controller
                 var left = ($(window).width() - $('#recordinfopopup').outerWidth()) / 2;
                 $('#recordinfopopup').css('left', left);
 
