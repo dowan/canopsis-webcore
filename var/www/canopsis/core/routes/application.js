@@ -21,8 +21,9 @@ define([
     'ember',
     'app/routes/authenticated',
     'app/lib/formsregistry',
+    'app/lib/utils/routes',
     'app/lib/loaders/forms'
-], function(Ember, AuthenticatedRoute, formsregistry) {
+], function(Ember, AuthenticatedRoute, formsregistry, routesUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -33,7 +34,9 @@ define([
             showView: function(id) {
                 console.log('ShowView action', arguments);
                 var app = this.controllerFor('application');
-                set(app, 'isLoading', get(app, 'isLoading') + 1);
+                if(routesUtils.getCurrentViewId() !== id) {
+                    set(app, 'isLoading', get(app, 'isLoading') + 1);
+                }
 
                 this.transitionTo('userview', id);
             },

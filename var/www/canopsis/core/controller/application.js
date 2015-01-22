@@ -96,7 +96,7 @@ define([
         needs: ['login', 'recordinfopopup'],
 
         partials: {
-            statusbar: ['schemamanagerstatusmenu', 'consolemanagerstatusmenu', 'notificationsstatusmenu', 'promisemanagerstatusmenu', 'userstatusmenu']
+            statusbar: []
         },
 
         editMode: false,
@@ -137,6 +137,15 @@ define([
         init: function() {
             console.group('app init');
             notificationUtils.setController(this);
+
+            if(canopsisConfiguration.DEBUG) {
+                this.partials.statusbar.pushObject('schemamanagerstatusmenu');
+                this.partials.statusbar.pushObject('consolemanagerstatusmenu' );
+                this.partials.statusbar.pushObject('notificationsstatusmenu');
+                this.partials.statusbar.pushObject('promisemanagerstatusmenu');
+            }
+
+            this.partials.statusbar.pushObject('userstatusmenu');
 
             var appController = this;
 

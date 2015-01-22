@@ -28,7 +28,12 @@ define(['app/application'], function(Application) {
             console.log("currentRouteController", currentRouteController);
 
             return currentRouteController;
+        },
+
+        getCurrentViewId: function() {
+            return Application.__container__.lookup("router:main").router.currentHandlerInfos[1].params.userview_id;
         }
+
     };
 
     return routesUtils;
