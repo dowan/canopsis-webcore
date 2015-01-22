@@ -83,7 +83,7 @@ define([
             var res = get(this, 'categorized_attributes');
             var category_selection = [];
             if(res instanceof Array) {
-                for(var i = 0; i < res.length; i++) {
+                for(var i = 0, l = res.length; i < l; i++) {
                     var category = res[i];
 
                     category.slug = slugUtils(category.title);
@@ -126,7 +126,7 @@ define([
         inspectedItemType: function() {
             console.log('recompute inspectedItemType', get(this, 'formContext'));
 
-            if (this.get('formContext.xtype')) {
+            if (get(this, 'formContext.xtype')) {
                 return get(this, 'formContext.xtype');
             } else {
                 if(get(this, 'formContext.crecord_type') === "user") {

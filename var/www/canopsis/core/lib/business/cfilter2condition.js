@@ -27,8 +27,10 @@ define(['ember'], function(Ember) {
 
 
         init: function () {
-            set(this, 'conditions', []);
-            set(this, 'clauses', []);
+            this.setProperties({
+                'conditions': [],
+                'clauses': []
+            });
         },
 
         jsonstring: function () {

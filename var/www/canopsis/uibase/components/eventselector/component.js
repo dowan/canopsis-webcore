@@ -23,7 +23,9 @@ define([
 ], function(Ember) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone,
+        __ = Ember.String.loc;
 
 
     var component = Ember.Component.extend({
@@ -36,15 +38,34 @@ define([
 
             this.set('selectedEvents', []);
 
+            set(this, 'search_resource', __('Search for a resource'));
+            set(this, 'search_component', __('Search for a component'));
+            set(this, 'type_label', __('Associate a label to this event'));
+
             if (get(this, 'content') !== undefined) {
                 this.initializeEvents();
             }
         },
 
         initializeEvents: function () {
-            rks = get(this, 'content');
 
-            var that = this;
+            var rks = [];
+
+            var label_information = {};
+
+            //takes care of how the events are loaded when a label is given to them.
+            if (get(this, 'labelled')) {
+                var events_information = get(this, 'content');
+                var length = events_information.length;
+                for (var i=0; i<length; i++) {
+                    rks.push(events_information[i].rk);
+                    label_information[events_information[i].rk] = events_information[i].label;
+                }
+            } else {
+                rks = get(this, 'content');
+            }
+
+            var eventselectorController = this;
             var query = get(this, "componentDataStore").findQuery(
                 'event',
                 {
@@ -55,7 +76,18 @@ define([
             ).then(
                 function (data) {
                     console.log('Fetched initialization data from events', data.content);
-                    set(that, 'selectedEvents', data.content);
+
+                    //When labels are associated to events, they are set in them on load for this editor.
+                    if (get(eventselectorController, 'labelled')) {
+
+                        var length = data.content.length;
+                        for (var i=0; i<length; i++) {
+                            var rk = get(data.content[i], 'id');
+                            set(data.content[i], 'label', label_information[rk]);
+                        }
+
+                    }
+                    set(eventselectorController, 'selectedEvents', data.content);
                 }
             );
             void (query);
@@ -129,42 +161,68 @@ define([
             this.findEvents();
         }.observes('topologies'),
 
-        didInsertElement: function() {
-        },
-
         getSelectedRks: function() {
-            var selectedEvents = [];
-            if (this.get('selectedEvents') !== undefined) {
-                for (var i=0; i<this.get('selectedEvents').length; i++) {
-                    selectedEvents.push(this.get('selectedEvents')[i].id);
+
+            var selectedRks = [];
+            var isLabelled = get(this, 'labelled');
+            var selectedEvents = get(this, 'selectedEvents');
+
+            if (!isNone(selectedEvents)) {
+
+                var length = selectedEvents.length;
+
+                for (var i=0; i<length; i++) {
+
+                    if (isLabelled) {
+                        var label = get(selectedEvents[i], 'label');
+                        if (isNone(label)) {
+                            //auto name event
+                            label = 'default_' + i;
+                        } else {
+                            //avoid space in names
+                            label = label.replace(/ /g,'_');
+                        }
+                        selectedRks.push({
+                            rk: get(selectedEvents[i], 'id'),
+                            label: label,
+
+                        });
+
+                    } else {
+                        selectedRks.push(get(selectedEvents[i], 'id'));
+                    }
                 }
             }
-            return selectedEvents;
+            return selectedRks;
         },
 
         actions: {
 
+            saveLabels: function () {
+                set(this, 'content', this.getSelectedRks());
+                set(this, 'saveLabelsDone', true);
+                var eventselectorController = this;
+                setTimeout(function () {
+                    set(eventselectorController, 'saveLabelsDone', false);
+                }, 3000);
+            },
+
             add: function (event) {
                 console.log('Adding event', event);
-                this.get('selectedEvents').pushObject(event);
-                this.get('events').removeObject(event);
-                this.set('content', this.getSelectedRks());
-                if (!this.get('events').length) {
+                get(this, 'selectedEvents').pushObject(event);
+                get(this, 'events').removeObject(event);
+                set(this, 'content', this.getSelectedRks());
+
+                if (get(this,'events').length === 0) {
                     this.findEvents();
                 }
             },
 
             delete: function (event) {
                 console.log('Rk to delete', event.id);
-                for (var i=0; i<this.get('selectedEvents').length; i++) {
-                    if (event.id === this.get('selectedEvents')[i].id) {
-                        console.log('Removing event');
-                        this.get('selectedEvents').removeAt(i);
-                        break;
-                    }
-                }
+                get(this, 'selectedEvents').removeObject(event);
                 this.findEvents();
-                this.set('content', this.getSelectedRks());
+                set(this, 'content', this.getSelectedRks());
             }
         }
     });
