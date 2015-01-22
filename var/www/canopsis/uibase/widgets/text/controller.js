@@ -117,7 +117,7 @@ define([
                         var rk = get(data.content[i], 'id'),
                             label = labels_for_rk[rk];
                             if (!isNone(label)) {
-                                set(controller, 'templateContext.event.' + label, data.content[i]);
+                                set(controller, 'templateContext.event.' + label, data.content[i].toJson());
                             } else {
                                 console.warn('Event label not set, no render possible for rk ' + rk);
                             }
@@ -207,9 +207,8 @@ define([
 
         renderTemplate: function (){
 
-            var template = get(this, 'html');
-
-            var html = 'Unable to render template.';
+            var template = get(this, 'html'),
+                html = 'Unable to render template.';
 
             try {
                 html = Handlebars.compile(template)(get(this, 'templateContext'));

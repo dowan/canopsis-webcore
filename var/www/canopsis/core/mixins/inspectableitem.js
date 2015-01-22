@@ -93,13 +93,14 @@ define([
                         notificationUtils.error("No categories in the schema of" + itemType);
                     }
 
-                    var options = get(this, 'options');
-                    var filters = [];
+                    var options = get(this, 'options'),
+                        filters = [];
 
                     //Allows showing only some fields in the form.
                     if (options && options.filters) {
                         filters = options.filters;
                     }
+
                     console.log(' + filters ', filters);
 
                     //Enables field label override in form from options.
@@ -112,10 +113,11 @@ define([
 
                     var modelAttributes = get(referenceModel, 'attributes');
 
-                    for (var i = 0; referenceModel.proto().categories &&
-                         i < referenceModel.proto().categories.length; i++) {
-                        var category = referenceModel.proto().categories[i];
-                        var createdCategory = {};
+                    var refModelCategories = referenceModel.proto().categories;
+                    for (var i = 0, li = refModelCategories.length; refModelCategories && i < li; i++) {
+
+                        var category = refModelCategories[i],
+                        createdCategory = {};
                         createdCategory.title = category.title;
                         createdCategory.keys = [];
 
@@ -123,15 +125,15 @@ define([
                             var key = category.keys[j];
 
                             if(key === "separator") {
-                                createdCategory.keys[j] = Ember.Object.create({
+                                createdCategory.keys[j] = {
                                     type:'string',
-                                    model: Ember.Object.create({
-                                        options: Ember.Object.create({
+                                    model: {
+                                        options: {
                                             role:"separator"
-                                        })
-                                    }),
-                                    options: Ember.Object.create()
-                                });
+                                        }
+                                    },
+                                    options: {}
+                                };
                             } else {
                                 if (typeof key === "object") {
                                     key = key.field;
@@ -141,15 +143,15 @@ define([
                                     notificationUtils.error("An attribute that does not exists seems to be referenced in schema categories" + key, referenceModel);
 
                                     //break the iteration
-                                    createdCategory.keys[j] = Ember.Object.create({
+                                    createdCategory.keys[j] = {
                                         type:'string',
-                                        model: Ember.Object.create({
-                                            options: Ember.Object.create({
+                                        model: {
+                                            options: {
                                                 role:"separator"
-                                            })
-                                        }),
-                                        options: Ember.Object.create()
-                                    });
+                                            }
+                                        },
+                                        options: {}
+                                    };
 
                                     //break the iteration, insertinng a separator instead of a regular editor
                                     //TODO custom error readonly editor
