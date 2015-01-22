@@ -53,7 +53,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-    var widget = WidgetFactory('wtopology', {
+    var widget = WidgetFactory('topology', {
 
         d3_graph: {
             nodes: [],
@@ -601,7 +601,7 @@ define([
                             shapegroup: true,
                             node: true,
                             edge: function(d) {return d.elt.get('type') === 'topoedge';},
-                            topology: function(d) { return d.elt.get('type') === 'topology';}
+                            topology: function(d) { return d.elt.get('type') === 'topo';}
                         }
                     )
                     .attr(
@@ -690,7 +690,7 @@ define([
                                 d.x = 0; d.y = 0;
                             }
                             switch(d.elt.get('type')) {
-                                case 'topology':
+                                case 'topo':
                                     f = f.type('circle');
                                     if (d.id === _this.graph.get('cid')) {
                                         f = f.size(30 * 64);
@@ -971,7 +971,7 @@ define([
                 function(elt_id) {
                     var record = this.graph._delts[elt_id];
                     // push only nodes and edges
-                    if (record.get('type') !== 'topology') {
+                    if (record.get('type') !== 'topo') {
                         var elt = this.toElt(record);
                         elts.push(elt);
                         graph.elts.push(elt.cid);
@@ -1020,7 +1020,7 @@ define([
                         if (result.total === 0) {
                             graph = {
                                 _delts: {},
-                                type: _this.graph_type,
+                                type: 'topo',
                                 _type: 'graph',
                                 _id: _this.graph_id,
                                 cid: _this.graph_id,
