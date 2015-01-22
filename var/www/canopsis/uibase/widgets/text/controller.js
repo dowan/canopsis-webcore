@@ -24,9 +24,10 @@ define([
     'app/lib/factories/widget',
     'app/controller/serie',
     'canopsis/canopsisConfiguration',
+    'app/lib/utils/values',
     'app/lib/loaders/schemas',
     'app/controller/perfdata',
-], function($, Ember, DS, WidgetFactory, Serie, canopsisConfiguration) {
+], function($, Ember, DS, WidgetFactory, Serie, canopsisConfiguration, values) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -43,6 +44,7 @@ define([
             set(this, 'widgetDataStore', DS.Store.create({
                 container: get(this, "container")
             }));
+            this.registerHelpers();
         },
 
         findItems: function() {
@@ -178,7 +180,6 @@ define([
                     Ember.RSVP.all(seriesQueries).then(function(pargs) {
 
                         for (var i=0, l=pargs.length; i<l; i++) {
-
                             var data = pargs[i];
                             console.log('series pargs', pargs);
                             var displayValue = valueNotDefined;
@@ -210,10 +211,43 @@ define([
             console.log('widget ready', get(this, 'ready'), get(this, 'templateContext') );
         },
 
+        registerHelpers: function (){
+            var controller = this;
+
+            var invalidNumber = __('Not a valid number');
+
+            var helpers = {
+                hr: function (value) {
+                    var value = get(value, 'hash.value');
+                    if(isNaN(value)) {
+                        value = parseFloat(value);
+                        if(isNaN(value)) {
+                            return invalidNumber;
+                        }
+                    }
+                    value = values.humanize(value, '');
+                    return value;
+                },
+                action: function () {
+                    return 'action from helper';
+                },
+            };
+
+            for (var helper in helpers) {
+                Handlebars.registerHelper(helper, helpers[helper]);
+            }
+        },
+
+
         renderTemplate: function (){
 
             var template = get(this, 'html'),
                 html = 'Unable to render template.';
+
+            //Avoid give undefined template to the handlebars compilator.
+            if (isNone(template)) {
+                template = '';
+            }
 
             try {
                 html = Handlebars.compile(template)(get(this, 'templateContext'));
