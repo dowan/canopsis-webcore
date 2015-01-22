@@ -59,7 +59,7 @@ define([
             var graphcontainer = this.$('.flotchart-plot-container .flotchart');
             graphcontainer.bind('plotselected', updateGrid);
 
-            if(get(this, 'controller.config.timenav')) {
+            if (get(ctrl, 'config.timenav')) {
                 this.setDefaultTimenavOptions();
 
                 var timecontainer = this.$('.flotchart-preview-container .flotchart');
@@ -75,6 +75,17 @@ define([
             console.groupEnd();
 
             this._super.apply(this, arguments);
+        },
+
+        willDestroyElement: function() {
+            var graphcontainer = this.$('.flotchart-plot-container .flotchart');
+            graphcontainer.unbind('plotselected');
+
+            if (get(this, 'controller.config.timenav')) {
+                var timecontainer = this.$('.flotchart-preview-container .flotchart');
+                timecontainer.unbind('plotselected');
+                graphcontainer.unbind('toggleserie');
+            }
         },
 
         setDefaultChartOptions: function() {
