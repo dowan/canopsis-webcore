@@ -87,7 +87,7 @@ class LDAPBackend(BaseBackend):
 
         try:
             self.logger.info("Authenticate to LDAP server")
-            conn.simple_bind_s(config["admin_dn", "admin_passwd"])
+            conn.simple_bind_s(config["admin_dn"], config["admin_passwd"])
 
         except ldap.INVALID_CREDENTIALS as err:
             self.logger.error("Invalid credentials: {0}".format(err))
