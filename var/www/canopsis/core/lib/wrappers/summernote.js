@@ -21,8 +21,8 @@ define([
     'app/lib/factories/wrapper',
     'jquery',
     'webcore-libs/summernote/summernote.min',
-    // 'link!webcore-libs/summernote/summernote-bs3.css'
-    'link!webcore-libs/summernote/summernote.css',
+    'link!webcore-libs/codemirror/lib/codemirror.css',
+    'app/lib/wrappers/codemirror',
     'ember-summernote'
 ], function(Wrapper, $) {
 
