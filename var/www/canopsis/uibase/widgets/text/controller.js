@@ -82,10 +82,13 @@ define([
             var controller = this,
                 events_information = get(this, 'events'),
                 rks = [];
-            var events_information_length = events_information.length;
 
-            for(var i=0; i<events_information_length; i++) {
-                rks.push(events_information[i].rk);
+            if (!isNone(events_information)) {
+                var events_information_length = events_information.length;
+
+                for(var i=0; i<events_information_length; i++) {
+                    rks.push(events_information[i].rk);
+                }
             }
 
             if (rks.length) {
