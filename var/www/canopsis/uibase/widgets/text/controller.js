@@ -117,7 +117,9 @@ define([
                         var rk = get(data.content[i], 'id'),
                             label = labels_for_rk[rk];
                             if (!isNone(label)) {
-                                set(controller, 'templateContext.event.' + label, data.content[i].toJson());
+                                var eventjson = data.content[i].toJson();
+                                eventjson.id = get(data.content[i], 'id');
+                                set(controller, 'templateContext.event.' + label, eventjson);
                             } else {
                                 console.warn('Event label not set, no render possible for rk ' + rk);
                             }
