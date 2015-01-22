@@ -722,14 +722,19 @@ define([
                             var result = '';
                             var type = d.elt.get('type');
                             if (type === 'topoedge') {
-                                result = d.elt.get('weight');
+                                result += d.elt.get('weight');
                             } else {
                                 var info = d.elt.get('info');
                                 if (info) {
                                     var entity = info.entity;
                                     if (entity) {
                                         var last_index_of_slash = entity.lastIndexOf('/') + 1;
-                                        var result = entity.substring(last_index_of_slash);
+                                        result += entity.substring(last_index_of_slash);
+                                    }
+                                    var operator = info.operator;
+                                    if (operator) {
+                                        var id_operator = operator.id;
+                                        result += '/' + id_operator;
                                     }
                                 }
                             }
