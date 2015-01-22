@@ -87,7 +87,7 @@ class LDAPBackend(BaseBackend):
 
         try:
             self.logger.info("Authenticate to LDAP server")
-            conn.simple_bind_s(config["admin_dn", "admin_passwd"])
+            conn.simple_bind_s(config["admin_dn"], config["admin_passwd"])
 
         except ldap.INVALID_CREDENTIALS as err:
             self.logger.error("Invalid credentials: {0}".format(err))
@@ -111,7 +111,7 @@ class LDAPBackend(BaseBackend):
             self.logger.error("No match found for user: {0}".format(user))
             return not_auth
         
-        elif len(result) &gt; 1:
+        elif len(result) > 1:
             self.logger.warning("User matched multiple DN: {0}".format(
                 json.dumps([dn for dn, _ in result])
             ))

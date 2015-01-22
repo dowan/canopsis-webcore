@@ -26,13 +26,10 @@ define([
 
     var get = Ember.get,
         set = Ember.set,
+        isNone = Ember.isNone,
         __ = Ember.String.loc;
 
     var component = Ember.Component.extend({
-        selectedMetrics: undefined,
-        metricSearch: null,
-        multiselect: true,
-
         valueChanged: function() {
             var metrics = get(this, 'selectedMetrics');
             var ids = [];
@@ -93,7 +90,19 @@ define([
         }.property(),
 
         init: function() {
-            this._super(arguments);
+            if (isNone(get(this, 'selectedMetrics'))) {
+                set(this, 'selectedMetrics', []);
+            }
+
+            if (isNone(get(this, 'metricSearch'))) {
+                set(this, 'metricSearch', null);
+            }
+
+            if (isNone(get(this, 'multiselect'))) {
+                set(this, 'multiselect', true);
+            }
+
+            this._super.apply(this, arguments);
 
             var store = DS.Store.create({
                 container: this.get('container')
