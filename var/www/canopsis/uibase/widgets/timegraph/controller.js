@@ -133,13 +133,13 @@ define([
                 tooltipOpts: {
                     id: this.$().closest('.ember-view').attr('id') + '-tooltip',
                     content: function(label, xval, yval, item) {
-                        var date = dates.timestamp2String(xval, 'r', true);
+                        var date = dates.timestamp2String(xval / 1000, 'r', true);
 
                         var html = '<p>' + date + '</p>';
                         html += '<p><b>' + label + ' :</b> ';
 
                         if (get(ctrl, 'human_readable') === true) {
-                            html += values.humanize(yval, item.series.unit);
+                            html += values.humanize(yval, item.series.unit || '');
                         }
                         else {
                             html += yval + ' ' + item.unit;
