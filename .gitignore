@@ -15,7 +15,3 @@ pyperfstore2/*.egg*
 #####################
 *~
 
-#####################
-# Developer files
-#####################
-var/www/canopsis/canopsisConfiguration.js
