@@ -22,10 +22,13 @@ define([
     'app/lib/factories/mixin'
 ], function(Ember, Mixin) {
 
+    var set = Ember.set;
+
     var mixin = Mixin('minimizebutton', {
-        partials: {
-            titlebarsbuttons : ['titlebarbutton-minimize']
-        }
+        init: function() {
+            this._super();
+            set(this, 'model.isMinimizable', true);
+        },
     });
 
     return mixin;
