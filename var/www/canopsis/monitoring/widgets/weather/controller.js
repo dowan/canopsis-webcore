@@ -79,7 +79,7 @@ define([
             return [
                 'ion-ios7-sunny-outline',
                 'ion-ios7-cloudy-outline',
-                'ion-ios7-cloudy-outline',
+                'ion-ios7-rainy-outline',
                 'ion-ios7-thunderstorm-outline',
                 'ion-checkmark-round'][status];
         } ,
