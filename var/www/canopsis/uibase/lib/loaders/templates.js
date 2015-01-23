@@ -54,6 +54,7 @@ var templates = [
     { name: 'actionbutton-info', template: 'canopsis/uibase/templates/actionbutton-info.html', classes: ["action"], icon : "info-sign",label : "Info" },
     { name: 'actionbutton-create', template: 'canopsis/uibase/templates/actionbutton-create.html', classes: ["action", "toolbar"], icon : "plus-sign", label : "Create" },
     { name: 'actionbutton-removeselection', template: 'canopsis/uibase/templates/actionbutton-removeselection.html', classes: ["action", "toolbar"], icon : "trash", label : "Remove selection" },
+    { name: 'actionbutton-remove', template: 'canopsis/uibase/templates/actionbutton-remove.html', classes: ["action", "toolbar"], icon : "trash", label : "Remove" },
     { name: 'actionbutton-incident', template: 'canopsis/uibase/templates/actionbutton-incident.html', classes: ["action", "toolbar"],icon : "ticket", label : "Incident" },
     { name: 'actionbutton-ticketnumber', template: 'canopsis/uibase/templates/actionbutton-ticketnumber.html', classes: ["action", "toolbar"],icon : "ticket", label : "Ticket nummber" },
 
