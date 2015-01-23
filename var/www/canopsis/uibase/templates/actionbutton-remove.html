@@ -1,5 +1,7 @@
 {{#if controller.userCanDeleteRecord}}
-    <button class="btn btn-default" {{action 'remove' this}} >
-        <span class="glyphicon glyphicon-trash"></span>
-    </button>
+    {{#component-tooltip content="Remove current entry"}}
+        <button class="btn btn-default btn-xs" {{action 'remove' this}} >
+            <span class="glyphicon glyphicon-trash"></span>
+        </button>
+    {{/component-tooltip}}
 {{/if}}
