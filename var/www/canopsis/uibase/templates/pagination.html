@@ -2,20 +2,20 @@
     {{tr 'Showing'}} {{controller.paginationFirstItemIndex}} {{tr 'to'}} {{controller.paginationLastItemIndex}} {{tr 'of'}} {{controller.itemsTotal}} {{tr 'entries'}}
 </div>
 <div class="pull-right">
-    <button type="button" class="btn btn-small btn-default" {{action "firstPage"}}>
+    <button type="button" class="btn btn-sm btn-default" {{action "firstPage"}}>
         <span class="glyphicon glyphicon-step-backward"></span>
         {{tr 'First'}}
     </button>
-    <button type="button" class="btn btn-small btn-default" {{action "prevPage"}}>
+    <button type="button" class="btn btn-sm btn-default" {{action "prevPage"}}>
         <span class="glyphicon glyphicon-chevron-left"></span>
         {{tr 'Previous'}}
     </button>
     {{tr 'Page'}} {{controller.currentPage}} / {{controller.totalPages}}
-    <button type="button" class="btn btn-small btn-default" {{action "nextPage"}}>
+    <button type="button" class="btn btn-sm btn-default" {{action "nextPage"}}>
         {{tr 'Next'}}
         <span class="glyphicon glyphicon-chevron-right"></span>
     </button>
-    <button type="button" class="btn btn-small btn-default" {{action "lastPage"}}>
+    <button type="button" class="btn btn-sm btn-default" {{action "lastPage"}}>
         {{tr 'Last'}}
         <span class="glyphicon glyphicon-step-forward"></span>
     </button>
