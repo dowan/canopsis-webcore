@@ -1,7 +1,7 @@
 {{#unless controller.findOptions.useLogCollection}}
     {{#if controller.rights.actionbutton_cancel.checksum}}
         {{#component-tooltip content="Cancel"}}
-            <button class="btn btn-default btn-sm" {{action 'sendEvent' 'cancel'}} >
+            <button class="btn btn-default btn-xs" {{action 'sendEvent' 'cancel'}} >
                 <span class="glyphicon glyphicon-trash"></span>
                 Cancel
             </button>
@@ -9,7 +9,7 @@
     {{/if}}
     {{#if controller.rights.actionbutton_uncancel.checksum}}
         {{#component-tooltip content="Undo cancel"}}
-            <button class="btn btn-default btn-sm" {{action 'sendEvent' 'uncancel'}}>
+            <button class="btn btn-default btn-xs" {{action 'sendEvent' 'uncancel'}}>
                 <span class="glyphicon glyphicon-share-alt"></span>
                 Undo cancel
             </button>

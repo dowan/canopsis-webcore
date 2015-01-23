@@ -2,7 +2,7 @@
     {{#unless controller.findOptions.useLogCollection}}
         {{#if this.ack.isAck}}
             {{#component-tooltip content="Change criticity"}}
-                <button class="btn btn-default btn-sm" {{action 'sendEvent' 'changestate' this}} >
+                <button class="btn btn-default btn-xs" {{action 'sendEvent' 'changestate' this}} >
                     <i class="fa fa-exclamation-triangle"></i>
                 </button>
             {{/component-tooltip}}

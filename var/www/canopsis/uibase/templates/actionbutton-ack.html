@@ -3,7 +3,7 @@
         {{#if this.ack.author}}
             {{#if this.ack.isAck}}
                 {{#component-tooltip content="Cancel ack"}}
-                    <button class="btn btn-default btn-sm" {{action 'sendEvent' 'ackremove' this}} >
+                    <button class="btn btn-default btn-xs" {{action 'sendEvent' 'ackremove' this}} >
                         <span class="glyphicon glyphicon-ban-circle"></span>
                     </button>
                 {{/component-tooltip}}
@@ -12,7 +12,7 @@
             {{recordcanbeack this}}
             {{#if this.recordcanbeack}}
                 {{#component-tooltip content="Ack"}}
-                    <button class="btn btn-default btn-sm" {{action 'sendEvent' 'ack' this}} >
+                    <button class="btn btn-default btn-xs" {{action 'sendEvent' 'ack' this}} >
                         <span class="glyphicon glyphicon-ok"></span>
                     </button>
                 {{/component-tooltip}}
