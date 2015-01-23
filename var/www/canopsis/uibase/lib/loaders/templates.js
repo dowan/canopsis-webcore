@@ -28,6 +28,7 @@ var templates = [
     { name: 'listline', template: 'canopsis/uibase/templates/listline.html' },
     { name: 'widgetslot-default', template: 'canopsis/uibase/templates/widgetslot-default.html' },
     { name: 'widgetslot-grey', template: 'canopsis/uibase/templates/widgetslot-grey.html' },
+    { name: 'widgetslot-light', template: 'canopsis/uibase/templates/widgetslot-light.html' },
     { name: 'partialslot', template: 'canopsis/uibase/templates/partialslot.html' },
     { name: 'pagination', template: 'canopsis/uibase/templates/pagination.html' },
     { name: 'itemsperpage', template: 'canopsis/uibase/templates/itemsperpage.html' },
