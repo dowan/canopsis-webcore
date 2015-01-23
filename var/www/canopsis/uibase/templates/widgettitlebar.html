@@ -35,16 +35,16 @@
         {partialslot slot=widgetController._partials.widgetActionButtons}
     </div>
     -->
-    <h3 class="box-title">
-        {{#unless controller.hide_titles}}
-            {{widget.title}}
-            {{#if controller.editMode}}
-                {{#unless widget.title}}
-                    &lt; {{tr 'Untitled'}} {{widget.xtype}} widget &gt;
-                {{/unless}}
-            {{/if}}
-        {{/unless}}
-    </h3>
+    {{#unless controller.hide_titles}}
+        {{#if widget.title}}
+            <h3 class="box-title">{{widget.title}}</h3>
+        {{/if}}
+        {{#if controller.editMode}}
+            {{#unless widget.title}}
+                <h3 class="box-title">&lt; {{tr 'Untitled'}} {{widget.xtype}} widget &gt;</h3>
+            {{/unless}}
+        {{/if}}
+    {{/unless}}
     {{#if controller.debug}}
         <code>
             <a {{action "inspect" widget}} style="font-size:80%; font-weight: bold">&gt;$E</a>
