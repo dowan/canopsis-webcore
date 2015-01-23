@@ -34,13 +34,13 @@
     </span>
 {{else}}
 
-    <div class="input-group">
+    <div class="input-group input-group-sm">
         {{input type="text" placeholder=placeholder action="searchInputAction" class="form-control inlineInput" value=value}}
-        <div class="input-group-btn">
-            <button class="btn btn-default" {{action 'clearSearch'}}>
+        <span class="input-group-btn">
+            <button class="btn btn-danger btn-flat" {{action 'clearSearch'}}>
                 <span class="glyphicon glyphicon-remove-circle"></span>
             </button>
-        </div>
+        </span>
     </div>
 
 {{/if}}
