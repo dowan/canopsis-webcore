@@ -1,30 +1,27 @@
 <div class="box-header">
     <div class="pull-right">
-        {{#if controller.editMode}}
-            <div class="btn-group">
-                <button type="button" class="btn btn-info btn-xs" {{action 'editWidget' widget}}>
-                    <span class="glyphicon glyphicon-edit"></span>
+        {{partialslot slot=controller._partials.titlebarsbuttons minified=true class="btn-group" tagName="span"}}
+            {{#if controller.editMode}}
+                {{view "mixineditdropdown" mixins=widget.mixins class="btn-group"}}
+            {{/if}}
+        <div class="btn-group">
+            {{#if controller.editMode}}
+                <button type="button" class="btn btn-small btn-success btn-xs" {{action 'editWidgetPreferences' widget}}>
+                    <span class="glyphicon glyphicon-pencil"></span>
                 </button>
-                {{view "mixineditdropdown" mixins=widget.mixins}}
-            </div>
-            <button type="button" class="btn btn-small btn-success btn-xs pull-right" {{action 'editWidgetPreferences' widget}}>
-                <span class="glyphicon glyphicon-pencil"></span>
-            </button>
-            <button type="button" class="btn btn-small btn-info btn-xs pull-right" {{action 'removeWidget' widget}}>
-                <span class="glyphicon glyphicon-remove"></span>
-            </button>
-        {{/if}}
-    </div>
-    <div class="pull-right">
-        {{partialslot slot=controller._partials.titlebarsbuttons minified=true}}
-
-        {{#if widget.rollbackable}}
-            {{#if widget.isDirty}}
-                <button type="button" class="btn btn-small btn-danger btn-xs pull-right" {{action 'rollback' widget}}>
-                    <i class="fa fa-undo"></i>
+                <button type="button" class="btn btn-small btn-info btn-xs" {{action 'removeWidget' widget}}>
+                    <span class="glyphicon glyphicon-remove"></span>
                 </button>
             {{/if}}
-        {{/if}}
+
+            {{#if widget.rollbackable}}
+                {{#if widget.isDirty}}
+                    <button type="button" class="btn btn-small btn-danger btn-xs" {{action 'rollback' widget}}>
+                        <i class="fa fa-undo"></i>
+                    </button>
+                {{/if}}
+            {{/if}}
+        </div>
     </div>
     <!--
     <div class="pull-right">

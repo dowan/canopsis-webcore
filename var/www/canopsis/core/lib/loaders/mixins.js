@@ -39,7 +39,8 @@ var mixins = [
     { name: 'horizontallayout', url: 'app/mixins/horizontallayout', classes: ['widget', 'events']},
     { name: 'lightlayout', url: 'app/mixins/lightlayout', classes: ['widget', 'events']},
     { name: 'tablayout', url: 'app/mixins/tablayout', classes: ['widget', 'events']},
-    { name: 'recordinfopopup', url: 'app/mixins/recordinfopopup', classes: ['widget', 'events']}
+    { name: 'recordinfopopup', url: 'app/mixins/recordinfopopup', classes: ['widget', 'events']},
+    { name: 'minimizebutton', url: 'app/mixins/minimizebutton', classes: ['widget']}
 ];
 
 loader.loadWithTemplates(mixins);
