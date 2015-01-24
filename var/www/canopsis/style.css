@@ -700,3 +700,11 @@ table.dataTableConnector {
     margin-right: 2px;
     margin-left: 2px;
 }
+
+.list table {
+    margin-bottom: 0;
+}
+
+.list .canopsis-toolbar {
+    padding-top: 10px;
+}

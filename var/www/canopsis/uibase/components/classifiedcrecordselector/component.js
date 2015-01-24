@@ -41,11 +41,11 @@ define([
         items: [],
 
         selectedValue: undefined,
-        selectionUnprepared:  [],
 
         init: function() {
             this._super(arguments);
 
+            set(this, 'selectionUnprepared', Ember.A());
             this.set('store_' + get(this, 'elementId'), DS.Store.create({
                 container: this.get('container')
             }));

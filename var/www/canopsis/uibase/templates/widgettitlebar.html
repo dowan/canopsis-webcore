@@ -5,6 +5,10 @@
                 {{view "mixineditdropdown" mixins=widget.mixins class="btn-group"}}
             {{/if}}
         <div class="btn-group">
+            {{#if widget.isMinimizable}}
+                {{partial 'titlebarbutton-minimize'}}
+            {{/if}}
+
             {{#if controller.editMode}}
                 <button type="button" class="btn btn-small btn-success btn-xs" {{action 'editWidgetPreferences' widget}}>
                     <span class="glyphicon glyphicon-pencil"></span>
@@ -48,4 +52,3 @@
         </code>
     {{/if}}
 </div>
-

@@ -42,7 +42,7 @@ define([
             ],
             itemactionbuttons: [
                 'actionbutton-edit',
-                'actionbutton-removeselection'
+                'actionbutton-remove'
             ],
             header: [],
             subHeader: [],

@@ -150,7 +150,7 @@ define([
                 var itemActionbuttons = get(this, '_partials.itemactionbuttons');
                 if(itemActionbuttons) {
                     console.log("itemactionbuttons", itemActionbuttons);
-                    html += '<td style="padding-left:0; padding-right:0"><div style="display:flex">';
+                    html += '<td style="padding-left:0; padding-right:0"><div class="btn-group" style="display:flex">';
 
                     for (var j = 0, lj = itemActionbuttons.length; j < lj; j++) {
                         html += '{{partial "' + itemActionbuttons[j] + '"}}';
