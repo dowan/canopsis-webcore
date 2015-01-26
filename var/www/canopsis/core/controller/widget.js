@@ -81,7 +81,6 @@ define([
             }
 
             console.debug('user configuration loaded for widget ' + get(this, 'title'));
-
             this.refreshContent();
         },
 
@@ -387,11 +386,22 @@ define([
         }.property('itemType'),
 
         refreshContent: function() {
-            this._super();
+            //lock widget refresh for 1 second making some other refresh call useless.
+            //this aime to avoid duplicate computation.
+            var lastRefreshControl = get(this, 'lastRefreshControlDelay');
 
-            this.findItems();
+            if(!lastRefreshControl) {
 
-            set(this, 'lastRefresh', new Date().getTime());
+                this._super();
+                this.findItems();
+
+                set(this, 'lastRefresh', new Date().getTime());
+                set(this, 'lastRefreshControlDelay', true);
+                var widgetController = this;
+                setTimeout(function () {
+                    set(widgetController, 'lastRefreshControlDelay', false);
+                }, 1000);
+            }
         },
 
         findItems: function() {

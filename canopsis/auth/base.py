@@ -44,7 +44,7 @@ class BaseBackend(object):
     def install_account(self, uid, user):
         mgr = self.rights.get_manager()
 
-        self.logger.debug('Ensure user {0} has sufficient rights'.format(
+        self.logger.info('Ensure user {0} has sufficient rights'.format(
             uid
         ))
 
@@ -54,7 +54,7 @@ class BaseBackend(object):
             if not mgr.check_rights(uid, right_id, checksum):
                 return False
 
-        self.logger.debug('Creating session for user {0}'.format(uid))
+        self.logger.info('Creating session for user {0}'.format(uid))
 
         self.session.create(user)
 

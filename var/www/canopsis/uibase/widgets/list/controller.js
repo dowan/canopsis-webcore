@@ -216,7 +216,7 @@ define([
                 var appController = get(this, 'controllers.application');
                 set(appController, 'isLoading', get(appController, 'isLoading') + 1);
 
-                if (get(this, 'widgetDataStore') === undefined) {
+                if (isNone(get(this, 'widgetDataStore'))) {
                     set(this, 'widgetDataStore', DS.Store.create({
                         container: get(this, 'container')
                     }));
@@ -226,7 +226,7 @@ define([
 
                 console.log('findItems', itemType);
 
-                if (itemType === undefined || itemType === null) {
+                if (isNone(itemType)) {
                     console.error('itemType is undefined for', this);
                     return;
                 }
@@ -394,7 +394,6 @@ define([
 
             computeFindParams: function(){
                 console.group('computeFindParams');
-
                 var searchFilterPart = get(this, 'findParams_searchFilterPart');
                 var cfilterFilterPart = get(this, 'findParams_cfilterFilterPart');
                 var additionalFilterPart = get(this, 'additional_filter');

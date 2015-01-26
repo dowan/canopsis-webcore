@@ -24,6 +24,7 @@ define([
 
     var get = Ember.get,
         set = Ember.set,
+        isNone = Ember.isNone,
         __ = Ember.String.loc;
 
 
@@ -35,7 +36,7 @@ define([
             var allowed_methods = ['sha1', 'md5'];
             var method_name = get(this, 'method');
 
-            if (allowed_methods.indexOf(method_name) === -1 ) {
+            if (!isNone(method_name) && allowed_methods.indexOf(method_name) === -1) {
                 console.warning('Invalid method, using sha1:', method_name);
                 set(this, 'method', 'sha1');
             }
@@ -44,9 +45,13 @@ define([
         onUpdate: function () {
             var pass = get(this, 'password');
             var method_name = get(this, 'method');
-            var method = get(hash, method_name);
 
-            pass = method(pass);
+            if (!isNone(method_name)) {
+                var method = get(hash, method_name);
+
+                pass = method(pass);
+            }
+
             set(this, 'content', pass);
 
         }.observes('password')

@@ -60,11 +60,11 @@
     </marker>
 </defs>
 </svg>
+Auto-Layout: {{input name="autoLayout" type="checkbox" checked=controller.autoLayout}}
+Lock all: {{input name="lockAll" type="checkbox"
+ checked=controller.lockAll}}
+Filter: {{input name="filter" type="text" value="controller.filter" action="controller.filterChanged" on="key-press"}}
 <!--
-Auto-Layout: {{input name="auto_layout" type="checkbox" checked=controller.auto_layout}}
-Lock all: {{input name="lock_all" type="checkbox"
- checked=controller.lock_all}}
-Filter: {{input name="filter" type="text" enter="filter_enter" key-press="filter_press"}}
 Charge: <input type="range" min="-200" max="200" step="10" {{bind-attr value=controller.charge}} />
 Link strength: <input type="range" min="0" max="1" step="0.1" {{bind-attr value=controller.linkStrength}} />
 LinkDistance: <input type="range" min="0" max="200" step="5" {{bind-attr value=controller.linkDistance}} />

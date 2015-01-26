@@ -77,6 +77,8 @@ define([
         _translate: [0, 0],
         _scale: 1,
 
+        _autoLayout: true,
+
         _size: [1, 1],
         _charge: -120,
         _chargeDistance: 500,
@@ -88,6 +90,17 @@ define([
 
         eventZoom: null, // last event zoom fired by d3
 
+        autoLayout: function() {
+            return this._autoLayout;
+        }.property('autoLayout'),
+        autoLayoutChanged: function() {
+            var autoLayout = get(this, 'autoLayout');
+            if (autoLayout) {
+                this.force.start();
+            } else {
+                this.force.stop();
+            }
+        }.observes('autoLayout'),
         size: function() {
             return this._size;
         }.property('size'),
@@ -724,16 +737,16 @@ define([
                             if (type === 'topoedge') {
                                 result += d.elt.get('weight');
                             } else {
+                                var entity = d.entity;
+                                if (entity !== undefined) {
+                                    result += (entity.component? (entity.component + '.') : '') + entity.cid;
+                                }
                                 var info = d.elt.get('info');
                                 if (info) {
-                                    var entity = info.entity;
-                                    if (entity) {
-                                        var last_index_of_slash = entity.lastIndexOf('/') + 1;
-                                        result += entity.substring(last_index_of_slash);
-                                    }
                                     var operator = info.operator;
                                     if (operator) {
-                                        var id_operator = operator.id;
+                                        var id_operator = operator.cid;
+                                        id_operator = id_operator.substring(id_operator.lastIndexOf('.'));
                                         result += '/' + id_operator;
                                     }
                                 }
@@ -1291,6 +1304,7 @@ define([
                         source_node._weight += node.elt.get('weight');
                     }
                     node.index = i;
+                    node.entity = undefined;
                 },
                 this
             );
@@ -1309,7 +1323,6 @@ define([
             );
 
             // resolve entities
-            /*
             var _this = this;
             this.getEntitiesFromServer(
                 Object.keys(nodes_by_entity_ids),
@@ -1327,8 +1340,7 @@ define([
                     }
                     _this.rerender();
                 }
-            );*/
-            this.rerender();
+            );
         },
 
         /**
