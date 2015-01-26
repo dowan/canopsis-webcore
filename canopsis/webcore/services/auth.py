@@ -117,6 +117,8 @@ def exports(ws):
         username=None, password=None,
         shadow=False, crypted=False
     ):
+        ws.logger.info('/auth')
+
         if not username or not password:
             redirect('/?logerror=1')
 
@@ -163,6 +165,8 @@ def exports(ws):
 
     @route(ws.application.post, name='auth/external', nolog=True)
     def auth_external():
+        ws.logger.info('/auth/external')
+
         # When we arrive here, the Bottle plugins in charge of authentication
         # have initialized the session, we just need to redirect to the index.
         redirect('/static/canopsis/index.html')

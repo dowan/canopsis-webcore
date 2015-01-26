@@ -43,20 +43,15 @@ class LDAPBackend(BaseBackend):
         def decorated(*args, **kwargs):
             s = self.session.get()
 
-            if not s.get("auth_on", False):
-                user, record = self.do_auth()
-
-                if user and record and not self.install_account(user, record):
-                    return HTTPError(403, "Forbidden")
+            if not s.get("auth_on", False) and not self.do_auth(s):
+                self.logger.error('Impossible to authenticate user')
+                return HTTPError(403, "Forbidden")
 
             return callback(*args, **kwargs)
 
         return decorated
 
-    def do_auth(self):
-
-        not_auth = None, None
-
+    def do_auth(self, session):
         self.logger.debug("Fetch LDAP configuration from database")
         mgr = self.rights.get_manager()
 
@@ -64,7 +59,7 @@ class LDAPBackend(BaseBackend):
 
         if not config:
             self.logger.error("LDAP configuration not found")
-            return not_auth
+            return False
 
         user = request.params.get("username", default=None)
         password = request.params.get("password", default=None)
@@ -83,7 +78,7 @@ class LDAPBackend(BaseBackend):
             ))
 
             # Will try with the next backend
-            return not_auth
+            return False
 
         try:
             self.logger.info("Authenticate to LDAP server")
@@ -93,7 +88,7 @@ class LDAPBackend(BaseBackend):
             self.logger.error("Invalid credentials: {0}".format(err))
 
             # Will try with the next backend
-            return not_auth
+            return False
 
         self.logger.info("Authenticate user {0} to LDAP Server".format(user))
 
@@ -109,7 +104,7 @@ class LDAPBackend(BaseBackend):
 
         if not result:
             self.logger.error("No match found for user: {0}".format(user))
-            return not_auth
+            return False
         
         elif len(result) > 1:
             self.logger.warning("User matched multiple DN: {0}".format(
@@ -123,7 +118,7 @@ class LDAPBackend(BaseBackend):
 
         except ldap.INVALID_CREDENTIALS as err:
             self.logger.error("Invalid credentials: {0}".format(err))
-            return not_auth
+            return False
 
         info = {
             "_id": user,
@@ -142,8 +137,12 @@ class LDAPBackend(BaseBackend):
             info["contact"][field] = val
 
         account = self.rights.save_user(self.ws, info)
+        account['_id'] = user
 
-        return user, account
+        session['auth_ldap'] = True
+        session.save()
+
+        return self.install_account(user, account)
 
 
 def get_backend(ws):
