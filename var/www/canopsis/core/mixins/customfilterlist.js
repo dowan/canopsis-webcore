@@ -85,10 +85,12 @@ define([
         },
 
         filters_list: function () {
+            this.isSelectedFilter(get(this, 'userParams.custom_filters'));
             return this.isSelectedFilter(get(this, 'mixinOptions.customfilterlist.filters'));
         }.property('mixinOptions.customfilterlist.filters', 'currentFilter'),
 
         custom_filters_list: function () {
+            this.isSelectedFilter(get(this, 'mixinOptions.customfilterlist.filters'));
             return this.isSelectedFilter(get(this, 'userParams.custom_filters'));
         }.property('userParams.custom_filters'),
 

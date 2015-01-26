@@ -73,11 +73,8 @@ define([
 
         loadUserConfiguration: function(callback) {
             var userConfiguration = this;
-
             console.debug('loading configuration');
-            //TODO @eric use an adapter
             var user = get(this, 'controllers.login.record._id');
-
             $.ajax({
                 url: '/rest/userpreferences/userpreferences',
                 async: false,
