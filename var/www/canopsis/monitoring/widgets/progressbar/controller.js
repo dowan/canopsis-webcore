@@ -78,6 +78,8 @@ function($, WidgetFactory) {
 			var vals = [];
 			var cmpt = 0;
 
+			//test
+
 			for(var m = 0; m < metrics.length; m++) {
 
 				var metricId = metrics[m];			
