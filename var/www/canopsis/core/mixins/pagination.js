@@ -37,8 +37,8 @@ define([
     */
     var mixin = Mixin('pagination', {
         partials: {
-            subHeader: ['itemsperpage'],
-            footer: ['pagination']
+            subHeader: ['pagination', 'itemsperpage'],
+            footer: ['pagination', 'pagination-infos']
         },
 
         init:function () {

@@ -31,6 +31,7 @@ var templates = [
     { name: 'widgetslot-light', template: 'canopsis/uibase/templates/widgetslot-light.html' },
     { name: 'partialslot', template: 'canopsis/uibase/templates/partialslot.html' },
     { name: 'pagination', template: 'canopsis/uibase/templates/pagination.html' },
+    { name: 'pagination-infos', template: 'canopsis/uibase/templates/pagination-infos.html' },
     { name: 'itemsperpage', template: 'canopsis/uibase/templates/itemsperpage.html' },
     { name: 'search', template: 'canopsis/uibase/templates/search.html' },
     { name: 'customfilters', template: 'canopsis/uibase/templates/customfilters.html' },

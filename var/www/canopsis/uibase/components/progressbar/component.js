@@ -7,85 +7,76 @@
     var get = Ember.get,
         set = Ember.set;
 
-
     Application.ComponentProgressbarComponent = Ember.Component.extend({
     classNames: 'progress',
-    inline:false,
 
     init:function(){
         this._super();
-        var inline = this.get("inline");
-        var classNames = (inline)? ['progress' , 'PBinline'] : ['progress' , 'PB'] ;
-        this.set("classNames", classNames);
     },
 
-    inlineDidChange:  Ember.observer( function() {
-        var classNames = (inline)? ['progress' , 'PBinline'] :  ['progress' , 'PB'] ;
-        this.set("classNames", classNames);
-    }, 'this.inline'),
+    width_label: function(){
+		//var show_label = this.get("labeldisplay");
+		/*
+		if (show_label) {
+        	return "display:none; background:#ffffff; width: %@%; float:left;".fmt(this.get("labelwidth"));
+		}
+		*/
+		return "display:none;";
+    }.property("width_label"),
 
-    width_test: function(){
-        return "width: " + this.get("percent_test") + "% ;";
-    }.property("percent_test"),
+	style_bar: function(){
+		var color = "background: " + this.getcolor() + ";";
+        return color + "width: " + this.get("percent") + "%;";
+    }.property("style_bar"),
 
-    valuenow:function(){
-        var value = this.get("value");
-        return value;
-    }.property("value"),
+	style_span: function(){
+		return "display:none;";
+    }.property("style_span"),
 
-    valuemax:function(){
-        return 100;
-    }.property(),
+	getcolor: function(){
+		var background_color = this.get("background_color");
+		var warn_color = this.get("warn_color");
+		var critic_color = this.get("critic_color");
+		var valstatus = this.get("getstatus");
+		switch(valstatus){
+			case "critical":
+				return critic_color;
+				break;
+			case "warning":
+				return warn_color;
+				break;
+			default:
+				return background_color;
+				break;
+		}
+	},
 
-    valuemin:function(){
-        return 0;
-    }.property(),
+	getstatus: function(){
+		var percent = this.get("percent");
+		if(percent > this.get("crit_value")){
+			return "critical";
+		} else if(percent > this.get("warn_value")){
+			return "warning";
+		} else {
+			return "complete"
+		}
+	},
+	
+	textstatus:function(){
+		return "(" + this.getstatus() + ")";
+	}.property("textstatus"),
 
-    percent_test:function(){
-        var value = this.get("valuenow");
-        var max = this.get("valuemax");
+	textpercent:function(){
+		return "" + ""/*str(this.percent())*/ + "";
+	}.property("textpercent"),
 
+    percent:function(){
+        var value = this.get("value") - this.get("min_value");
+        var max = this.get("max_value") - this.get("min_value");
         var percent =  Math.ceil(value/max * 100);
         return percent;
-    }.property("valuemax", "valuenow"),
+    }.property("percent")
 
-
-    statusClass: function(){
-        var warn = 50//attr.get('warn') || 50;
-        var crit = 75//attr.get('crit') || 75;
-        var result = 'progress-bar progress-bar-';
-
-        var percent = this.get("percent_test");
-        var widthStyle  = "style='width: %@%;'".fmt(percent);
-        var bad_when_full = this.get("bad_when_full");
-
-        if(bad_when_full){
-            if(percent > crit)
-              statusClass = "danger";
-            else if(percent > warn)
-              statusClass = "warning";
-            else
-              statusClass = "success";
-        }
-        else{
-            if (percent < crit)
-              statusClass = "danger";
-            else if(percent < warn)
-              statusClass = "warning";
-            else
-              statusClass = "success";
-        }
-        return result+statusClass;
-
-    }.property("percent_test","bad_when_full"),
-
-    statusClassWillChange: Ember.beforeObserver(function() {
-        this.$('.bar').removeClass(this.get('statusClass'));
-    }, 'statusClass'),
-
-    statusClassDidChange: Ember.observer(function() {
-        this.$('.bar').addClass(this.get('statusClass'));
-    }, 'statusClass')
   });
   return   Application.ComponentProgressbarComponent;
 });
