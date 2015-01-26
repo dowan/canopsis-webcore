@@ -23,7 +23,8 @@ define([
 ], function(Ember, Mixin) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
 
     /**
@@ -43,6 +44,11 @@ define([
         init:function () {
             this.itemsPerPagePropositionSelected = get(this, 'content.itemsPerPage');
             this._super.apply(this, arguments);
+            if(isNone(get(this, 'itemsPerPagePropositionSelected'))){
+                var itemsperpage = this.getItemsPerPage();
+                set(this, 'itemsPerPagePropositionSelected', itemsperpage);
+            }
+
         },
 
         itemsPerPage: function() {
@@ -95,8 +101,12 @@ define([
         itemsPerPagePropositions : function() {
             var res = Ember.A([5, 10, 20, 50]);
             var itemsPerPagePropositionSelected = get(this, 'itemsPerPagePropositionSelected');
-            if(itemsPerPagePropositionSelected !== 5 && itemsPerPagePropositionSelected !== 10 && itemsPerPagePropositionSelected !== 20 && itemsPerPagePropositionSelected !== 50)
+            if( itemsPerPagePropositionSelected !== 5 &&
+                itemsPerPagePropositionSelected !== 10 &&
+                itemsPerPagePropositionSelected !== 20 &&
+                itemsPerPagePropositionSelected !== 50) {
                 res.pushObject(itemsPerPagePropositionSelected);
+            }
             return res;
         }.property('itemsPerPagePropositionSelected'),
 
@@ -111,14 +121,16 @@ define([
 
         itemsPerPagePropositionSelectedChanged: function() {
             var userSelection = get(this, 'itemsPerPagePropositionSelected');
-            set(this, 'mixinOptions.pagination.itemsPerPage', userSelection);
-
             if(get(this, 'userParams') !== undefined) {
                 set(this, 'userParams.itemsPerPage', userSelection);
                 this.saveUserConfiguration();
             }
+            //Big dirty hack in order to make it work.
+            set(this, 'itemsPerPage', userSelection);
+            set(this, 'mixinOptions.pagination.itemsPerPage', userSelection);
 
         }.observes('itemsPerPagePropositionSelected'),
+
 
         refreshContent: function() {
             console.group('paginationMixin refreshContent', get(this, 'mixinOptions.pagination.itemsPerPage'));
@@ -127,32 +139,10 @@ define([
                 set(this, 'paginationMixinFindOptions', {});
             }
 
-            var itemsPerPage = get(this, 'userParams.itemsPerPage') || get(this, 'mixinOptions.pagination.itemsPerPage');
-
-            console.log('itemsPerPage is', itemsPerPage, 'type', typeof itemsPerPage);
-
-            if(itemsPerPage === undefined || itemsPerPage === 0) {
-                itemsPerPage = 5;
-            }
-
-            //HACK when widget is saved and the app is not refreshed, itemsPerPage is a string!
-            if (typeof itemsPerPage === 'string') {
-                itemsPerPage = parseInt(itemsPerPage, 10);
-            }
-            if (itemsPerPage === 0) {
-                console.warn("itemsPerPage is 0 in widget", this);
-                console.warn("assuming itemsPerPage is 5");
-                itemsPerPage = 5;
-            }
-            if (typeof itemsPerPage !== 'number' || itemsPerPage % 1 !== 0) {
-                itemsPerPage = 5;
-            }
-
+            var itemsPerPage = this.getItemsPerPage();
             var start = itemsPerPage * (this.currentPage - 1);
-            console.log('start', start, itemsPerPage);
 
-            this.setProperties({
-                'itemsPerPagePropositionSelected': itemsPerPage,
+            Ember.setProperties(this, {
                 'paginationMixinFindOptions.start': start,
                 'paginationFirstItemIndex': start + 1,
                 'paginationMixinFindOptions.limit': itemsPerPage
