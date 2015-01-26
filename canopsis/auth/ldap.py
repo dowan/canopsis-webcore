@@ -43,8 +43,6 @@ class LDAPBackend(BaseBackend):
         def decorated(*args, **kwargs):
             s = self.session.get()
 
-            self.logger.info('Actually: {0}'.format(s.get('auth_on', False)))
-
             if not s.get("auth_on", False) and not self.do_auth(s):
                 self.logger.error('Impossible to authenticate user')
                 return HTTPError(403, "Forbidden")
