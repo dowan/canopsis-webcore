@@ -7,8 +7,7 @@
     var get = Ember.get,
         set = Ember.set;
 
-    Application.ComponentProgressbarComponent = Ember.Component.extend({
-        classNames: 'progress',
+    var component = Ember.Component.extend({
 
         style_bar: function(){
             var color = "background: " + this.getcolor() + ";";
