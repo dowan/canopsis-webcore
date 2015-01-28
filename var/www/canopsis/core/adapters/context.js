@@ -203,5 +203,11 @@ define([
         }
     }));
 
+    loader.register('adapter:ctxtopology', adapter.extend({
+        buildURL: function(type, id) {
+            return '/context/topo' + (id ? ('/' + id) : '');
+        }
+    }));
+
     return adapter;
 });
