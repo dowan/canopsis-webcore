@@ -161,7 +161,6 @@ define([
         rerender: function() {
             var _this = this;
             this._super.apply(this, arguments);
-            this.d3_graph = this.d3_graph;
             var width = 1000, height = 1000;
             // apply force behavior
             if (this.force === null) {
@@ -745,8 +744,11 @@ define([
                                 if (info) {
                                     var operator = info.operator;
                                     if (operator) {
-                                        var id_operator = operator.cid;
-                                        id_operator = id_operator.substring(id_operator.lastIndexOf('.'));
+                                        if (typeof operator === 'object' && operator.cid === 'canopsis.task.condition.condition') {
+                                            operator = operator.params.condition;
+                                        }
+                                        var id_operator = (typeof operator === 'string')? operator : operator.cid;
+                                        id_operator = id_operator.substring(id_operator.lastIndexOf('.') + 1);
                                         result += '/' + id_operator;
                                     }
                                 }
