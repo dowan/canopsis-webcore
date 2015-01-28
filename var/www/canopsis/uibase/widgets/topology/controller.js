@@ -744,12 +744,13 @@ define([
                                 if (info) {
                                     var operator = info.operator;
                                     if (operator) {
-                                        if (typeof operator === 'object' && operator.cid === 'canopsis.task.condition.condition') {
+                                        var operator_id = operator.id || operator.cid || operator;
+                                        if (operator_id === 'canopsis.task.condition.condition') {
                                             operator = operator.params.condition;
+                                            operator_id = operator.id || operator.cid || operator;
                                         }
-                                        var id_operator = (typeof operator === 'string')? operator : operator.cid;
-                                        id_operator = id_operator.substring(id_operator.lastIndexOf('.') + 1);
-                                        result += '/' + id_operator;
+                                        operator_id = operator_id.substring(operator_id.lastIndexOf('.') + 1);
+                                        result += '/' + operator_id;
                                     }
                                 }
                             }
