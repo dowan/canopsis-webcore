@@ -1,5 +1,5 @@
 /*
-# Copyright (c) 2014 "Capensis" [http://www.capensis.com]
+# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
 #
 # This file is part of Canopsis.
 #
@@ -736,21 +736,25 @@ define([
                             if (type === 'topoedge') {
                                 result += d.elt.get('weight');
                             } else {
-                                var entity = d.entity;
-                                if (entity !== undefined) {
-                                    result += (entity.component? (entity.component + '.') : '') + entity.cid;
-                                }
                                 var info = d.elt.get('info');
-                                if (info) {
-                                    var operator = info.operator;
-                                    if (operator) {
-                                        var operator_id = operator.id || operator.cid || operator;
-                                        if (operator_id === 'canopsis.task.condition.condition') {
-                                            operator = operator.params.condition;
-                                            operator_id = operator.id || operator.cid || operator;
+                                if (info && info.label) {
+                                    result += info.label;
+                                } else {
+                                    var entity = d.entity;
+                                    if (entity !== undefined) {
+                                        result += (entity.component? (entity.component + '.') : '') + entity.cid;
+                                    }
+                                    if (info) {
+                                        var operator = info.operator;
+                                        if (operator) {
+                                            var operator_id = operator.id || operator.cid || operator;
+                                            if (operator_id === 'canopsis.task.condition.condition') {
+                                                operator = operator.params.condition;
+                                                operator_id = operator.id || operator.cid || operator;
+                                            }
+                                            operator_id = operator_id.substring(operator_id.lastIndexOf('.') + 1);
+                                            result += '/' + operator_id;
                                         }
-                                        operator_id = operator_id.substring(operator_id.lastIndexOf('.') + 1);
-                                        result += '/' + operator_id;
                                     }
                                 }
                             }
