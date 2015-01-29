@@ -53,7 +53,16 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-    var widget = WidgetFactory('wgraph', {
+    var GraphViewMixin = Ember.Mixin.create({
+
+        controller: null, // reference to controller
+
+        didInsertElement: function() {
+            // update reference to controller
+            this.controller = get(this, 'controller');
+
+            this._super.apply(this, arguments);
+        },
 
         d3_graph: {
             nodes: [],
@@ -77,7 +86,9 @@ define([
         _translate: [0, 0],
         _scale: 1,
 
-        _size: [1, 1],
+        _autoLayout: true,
+
+//        _size: [1, 1],
         _charge: -120,
         _chargeDistance: 500,
         _linkDistance: 20,
@@ -88,72 +99,82 @@ define([
 
         eventZoom: null, // last event zoom fired by d3
 
-        size: function() {
+        autoLayout: function() {
+            return this._autoLayout;
+        }.property('autoLayout'),
+        autoLayoutChanged: function() {
+            this._autoLayout = get(this, 'autoLayout');
+            if (this._autoLayout) {
+                this.force.start();
+            } else {
+                this.force.stop();
+            }
+        }.observes('autoLayout'),
+/*        size: function() {
             return this._size;
         }.property('size'),
         sizeChanged: function() {
             this._size = this.get('size');
-            this.force.size(size);
-        }.observes('size'),
+            this.force.size(this._size);
+        }.observes('size'),*/
         charge: function() {
             return this._charge;
         }.property('charge'),
         chargeChanged: function() {
             this._charge = this.get('charge');
-            this.force.charge(charge);
+            this.force.charge(this._charge);
         }.observes('charge'),
         chargeDistance: function() {
             return this._chargeDistance;
         }.property('chargeDistance'),
         chargeDistanceChanged: function() {
             this._chargeDistance = this.get('chargeDistance');
-            this.force.chargeDistance(chargeDistance);
+            this.force.chargeDistance(this._chargeDistance);
         }.observes('chargeDistance'),
         linkDistance: function() {
             return this._linkDistance;
         }.property('linkDistance'),
         linkDistanceChanged: function() {
             this._linkDistance = this.get('linkDistance');
-            this.force.linkDistance(linkDistance);
+            this.force.linkDistance(this._linkDistance);
         }.observes('linkDistance'),
         linkStrength: function() {
             return this._linkStrength;
         }.property('linkStrength'),
         linkStrengthChanged: function() {
             this._linkStrength = this.get('linkStrength');
-            this.force.linkStrength(linkStrength);
+            this.force.linkStrength(this._linkStrength);
         }.observes('linkStrength'),
         friction: function() {
             return this._friction;
         }.property('friction'),
         frictionChanged: function() {
             this._friction = this.get('friction');
-            this.force.friction(friction);
+            this.force.friction(this._friction);
         }.observes('friction'),
         theta: function() {
             return this._theta;
         }.property('theta'),
         thetaChanged: function() {
             this._theta = this.get('theta');
-            this.force.theta(theta);
+            this.force.theta(this._theta);
         }.observes('theta'),
         gravity: function() {
             return this._gravity;
         }.property('gravity'),
         gravityChanged: function() {
             this._gravity = this.get('gravity');
-            this.force.gravity(gravity);
+            this.force.gravity(this._gravity);
         }.observes('gravity'),
 
         rerender: function() {
             var _this = this;
             this._super.apply(this, arguments);
-            this.d3_graph = this.d3_graph;
-            var width = 1000, height = 1000;
+            var width = this.$().width(), height = this.$().height();
             // apply force behavior
             if (this.force === null) {
                 this.force = d3.layout.force()
-                    .size(this._size)
+                    //.size(this.size)
                     .charge(this._charge)
                     .chargeDistance(this._chargeDistance)
                     .linkDistance(this._linkDistance)
@@ -178,7 +199,8 @@ define([
                 * zoom function.
                 */
                 function zoom() {
-                    /*console.log(_this.eventZoom);
+                    /*_this.eventZoom = d3.event;
+                    console.log(_this.eventZoom);
                     if (d3.event.sourceEvent.type !== 'mousemove') {*/
                         if (!_this.dragging) {
                             _this.panel.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
@@ -187,7 +209,6 @@ define([
                         var translate = [d3.event.translate[0] * d3.event.scale, d3.event.translate[1] * d3.event.scale];
                         _this.panel.attr("transform", "translate(" + translate + ")scale(" + d3.event.scale + ")");
                     }*/
-                    _this.eventZoom = d3.event;
                 };
                 function drag(){
                     console.log(d3.event);
@@ -601,7 +622,7 @@ define([
                             shapegroup: true,
                             node: true,
                             edge: function(d) {return d.elt.get('type') === 'topoedge';},
-                            topology: function(d) { return d.elt.get('type') === 'topology';}
+                            topology: function(d) { return d.elt.get('type') === 'topo';}
                         }
                     )
                     .attr(
@@ -690,7 +711,7 @@ define([
                                 d.x = 0; d.y = 0;
                             }
                             switch(d.elt.get('type')) {
-                                case 'topology':
+                                case 'topo':
                                     f = f.type('circle');
                                     if (d.id === _this.graph.get('cid')) {
                                         f = f.size(30 * 64);
@@ -722,14 +743,22 @@ define([
                             var result = '';
                             var type = d.elt.get('type');
                             if (type === 'topoedge') {
-                                result = d.elt.get('weight');
+                                result += d.elt.get('weight');
                             } else {
+                                var entity = d.entity;
+                                if (entity !== undefined) {
+                                    result += (entity.component? (entity.component + '.') : '') + entity.cid;
+                                }
                                 var info = d.elt.get('info');
                                 if (info) {
-                                    var entity = info.entity;
-                                    if (entity) {
-                                        var last_index_of_slash = entity.lastIndexOf('/') + 1;
-                                        var result = entity.substring(last_index_of_slash);
+                                    var operator = info.operator;
+                                    if (operator) {
+                                        if (typeof operator === 'object' && operator.cid === 'canopsis.task.condition.condition') {
+                                            operator = operator.params.condition;
+                                        }
+                                        var id_operator = (typeof operator === 'string')? operator : operator.cid;
+                                        id_operator = id_operator.substring(id_operator.lastIndexOf('.') + 1);
+                                        result += '/' + id_operator;
                                     }
                                 }
                             }
@@ -873,6 +902,14 @@ define([
             this.showToolBox(shape);
         },
 
+    });
+
+    var widget = WidgetFactory('topology', {
+
+        viewMixins: [
+            GraphViewMixin
+        ],
+
         /*******************************
         * business part
         */
@@ -971,7 +1008,7 @@ define([
                 function(elt_id) {
                     var record = this.graph._delts[elt_id];
                     // push only nodes and edges
-                    if (record.get('type') !== 'topology') {
+                    if (record.get('type') !== 'topo') {
                         var elt = this.toElt(record);
                         elts.push(elt);
                         graph.elts.push(elt.cid);
@@ -1015,50 +1052,57 @@ define([
                 // use graph id in getNodes method in order to get nodes
                 this.getGraphFromServer(
                     function(result) {
-                    // get graph or a default graph
-                    var graph = null;
-                    if (result.total === 0) {
-                        graph = {
-                            _delts: {},
-                            type: _this.graph_type,
-                            _type: 'graph',
-                            _id: _this.graph_id,
-                            cid: _this.graph_id,
-                            _cls: _this.graph_cls,
-                            data: {},
-                            elts: []
-                        }
-                        // reinitialize old view
-                        _this.d3_graph = {
-                            nodes: [],
-                            links: [],
-                            data_by_id: {}
-                        };
-                    } else {
-                        graph = result.data[0];
-                        // if old graph exists
-                        if (_this.graph !== null) {
-                            // delete old elements
-                            var elts_to_delete = [];
-                            Object.keys(_this.graph._delts).forEach(
-                                function(elt_id) {
-                                    // in case of old element
-                                    if (graph._delts[elt_id] === undefined) {
-                                        var elt = _this.graph._delts[elt_id];
-                                        elts_to_delete.push(elt.d3_elt);
+                        // get graph or a default graph
+                        var graph = null;
+                        if (result.total === 0) {
+                            graph = {
+                                _delts: {},
+                                type: 'topo',
+                                _type: 'graph',
+                                _id: _this.graph_id,
+                                cid: _this.graph_id,
+                                _cls: _this.graph_cls,
+                                data: {
+                                    operator: {
+                                        id: 'canopsis.topology.rule.action.change_state',
+                                        params: {
+                                            update_entity: true
+                                        }
                                     }
                                 },
-                                this
-                            );
-                            this.delete(elts_to_delete);
+                                elts: []
+                            };
+                            // reinitialize old view
+                            _this.d3_graph = {
+                                nodes: [],
+                                links: [],
+                                data_by_id: {}
+                            };
+                        } else {
+                            graph = result.data[0];
+                            // if old graph exists
+                            if (_this.graph !== null) {
+                                // delete old elements
+                                var elts_to_delete = [];
+                                Object.keys(_this.graph._delts).forEach(
+                                    function(elt_id) {
+                                        // in case of old element
+                                        if (graph._delts[elt_id] === undefined) {
+                                            var elt = _this.graph._delts[elt_id];
+                                            elts_to_delete.push(elt.d3_elt);
+                                        }
+                                    },
+                                    this
+                                );
+                                this.delete(elts_to_delete);
+                            }
                         }
+                        // convert graph such as a record
+                        _this.graph = _this.toRecord(graph);
+                        // and update the model
+                        _this.updateModel();
                     }
-                    // convert graph such as a record
-                    _this.graph = _this.toRecord(graph);
-                    // and update the model
-                    _this.updateModel();
-                }
-            );
+                );
             }
         },
 
@@ -1279,6 +1323,7 @@ define([
                         source_node._weight += node.elt.get('weight');
                     }
                     node.index = i;
+                    node.entity = undefined;
                 },
                 this
             );
@@ -1297,7 +1342,6 @@ define([
             );
 
             // resolve entities
-            /*
             var _this = this;
             this.getEntitiesFromServer(
                 Object.keys(nodes_by_entity_ids),
@@ -1315,8 +1359,7 @@ define([
                     }
                     _this.rerender();
                 }
-            );*/
-            this.rerender();
+            );
         },
 
         /**
@@ -1332,9 +1375,7 @@ define([
                 }
             }
             var elt = data.elt;
-            if (elt.get('type') !== 'topology') {
-                this.editRecord(elt, callback, failure, this);
-            }
+            this.editRecord(elt, callback, failure, this);
         },
 
         /**
@@ -1592,7 +1633,8 @@ define([
                     if (!elt.data) {
                         elt.data = {
                             entity: '',
-                            operator: ''
+                            operator: '',
+                            state: 0
                         };
                     }
                 }
@@ -1797,9 +1839,9 @@ define([
                             this.newToolBoxItem('delete', 'cross', 'rotate(45)') // elt deletion
                         );
                     }
-                    if (data.elt.get('type') !== 'topology') { // all elts but topologies
+                    //if (data.elt.get('type') !== 'topology') { // all elts but topologies
                         result.push(this.newToolBoxItem('edit', 'square')); // edit elt
-                    }
+                    //}
                 } else {
                     result.push(
                         this.newToolBoxItem('save', 'square'), // save model
