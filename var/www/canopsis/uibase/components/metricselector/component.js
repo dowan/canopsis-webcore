@@ -102,6 +102,8 @@ define([
                 set(this, 'multiselect', true);
             }
 
+            set(this, 'metrics', []);
+
             this._super.apply(this, arguments);
 
             var store = DS.Store.create({
@@ -239,8 +241,7 @@ define([
 
             selectAll: function() {
                 if (get(this, 'multiselect') === true) {
-                    var store = get(this, 'componentDataStore');
-                    var metrics = store.findAll('ctxmetric');
+                    var metrics = get(this, 'metrics');
 
                     set(this, 'selectedMetrics', metrics);
                 }
