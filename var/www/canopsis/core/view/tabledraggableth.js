@@ -37,20 +37,13 @@ define([
             this.get('controller').send("sort", get(this, 'attr'));
         },
 
-        dragStart: function() {
-            // console.log('dragStart');
-        },
         drag: function(event) {
-            // console.log('drag', this.get('elementId'), event.originalEvent.clientX);
-            // console.log('getting th positions');
-
             var ths = this.$().parent().children('th'),
                 mouseX = event.originalEvent.clientX;
 
             $(ths).css({'border-right': '0'});
 
-            // console.log(this.getPosition(this.$()));
-
+            //get closest th from mouse position
             this.closestTh = undefined;
             var closestDistance = 99999;
             for (var i = 0, l = ths.length; i < l; i++) {
@@ -62,20 +55,9 @@ define([
                 }
             }
 
-            // console.log(closestDistance, this.closestTh);
             $(this.closestTh).css({'border-right': '10px solid blue'});
-            // console.log(ths);
+        },
 
-        },
-        dragEnter: function() {
-            // console.log('dragEnter');
-        },
-        dragLeave: function() {
-            // console.log('dragLeave');
-        },
-        dragOver: function() {
-            // console.log('dragOver');
-        },
         dragEnd: function(event) {
             var ths = this.$().parent().children('th');
             $(ths).css({'border-right': '0'});
@@ -83,24 +65,26 @@ define([
             console.log('permute', this.getPosition(this.$()), this.getPosition($(this.closestTh)));
             this.permuteColumns(this.getPosition(this.$()), this.getPosition($(this.closestTh)));
         },
-        drop: function() {
-            // console.log('drop');
-        },
 
-        swapColumnsInDom: function(table, from, to) {
-            var rows = $('tr', table);
+        swapColumnsInDom: function(from, to) {
+            console.log('swapColumnsInDom', arguments);
+
+            table = this.$().parent();
+            var rows = this.$().parent().parent().parent().find('tr');
+
+            console.log('rows', rows);
+
             var cols;
             rows.each(function() {
                 cols = $(this).children('th, td');
-                cols.eq(from).detach().insertBefore(cols.eq(to));
+                console.log('cols', cols);
+                cols.eq(from + 1).detach().insertAfter(cols.eq(to + 1));
             });
         },
 
         permuteColumns: function (startIndex, endIndex) {
 
             //compute permutation from plugin given information
-            //var startIndex = startColumn - 1;
-            //var endIndex = stopColumn - 1;
             var controller = get(this, 'controller');
             var columns = this.getColumns();
 
@@ -111,15 +95,15 @@ define([
 
             console.debug('columns before drag', columns);
 
-            var permutation = columns.splice(startIndex - 1,1)[0];
+            var permutation = columns.splice(startIndex - 1, 1)[0];
 
+            var view = this;
 
-            // this.swapColumnsInDom(this.$().parent().parent(), startIndex, endIndex + 1);
             // exchange dragged column place in model as it is done in the view.
             if (!Ember.isNone(permutation)) {
                 console.debug('permutation is', permutation);
                 console.debug('permutation is replaced between', columns[endIndex -1], 'and', columns[endIndex]);
-                columns.splice(endIndex, 0, permutation);
+                columns.splice(endIndex - 1, 0, permutation);
 
                 console.debug('columns after drag', columns);
 
@@ -128,7 +112,7 @@ define([
                 set(controller, 'displayed_columns', columns);
 
                 controller.saveUserConfiguration(function () {
-                    controller.send('refreshView');
+                    view.swapColumnsInDom(startIndex - 1, endIndex -1);
                 });
             } else {
                 console.log('unable to perform drag and drop operation');
