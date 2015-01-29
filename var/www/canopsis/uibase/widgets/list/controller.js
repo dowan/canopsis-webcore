@@ -153,11 +153,11 @@ define([
                 if(itemActionbuttons) {
                     console.log("itemactionbuttons", itemActionbuttons);
                     html += '<td style="padding-left:0; padding-right:0"><div class="btn-group" style="display:flex">';
-/*
+
                     for (var j = 0, lj = itemActionbuttons.length; j < lj; j++) {
                         html += '{{partial "' + itemActionbuttons[j] + '"}}';
                     }
-*/
+
                     html += '</div></td>';
                 }
 
@@ -385,9 +385,15 @@ define([
 
                 var hbs = this.generateListlineTemplate(selected_columns);
 
-                if(hbs !== undefined && get(this, 'hbsListline') === undefined) {
+                if(hbs !== undefined) {
                     var tpl = Ember.Handlebars.compile(hbs);
                     set(this, 'hbsListline', hbs);
+
+                    var oldTemplateName = get(this, 'dynamicTemplateName');
+
+                    if(oldTemplateName) {
+                        delete Ember.TEMPLATES[oldTemplateName];
+                    }
 
                     var dynamicTemplateName = 'dynamic-list' + Math.floor(Math.random() * 10000);
 
