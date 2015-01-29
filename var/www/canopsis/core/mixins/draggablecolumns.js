@@ -21,16 +21,30 @@ define([
     'ember',
     'app/lib/factories/mixin',
     'jquery',
+    'app/view/tabledraggableth',
     'jqueryui'
-], function(Ember, Mixin) {
+], function(Ember, Mixin, $) {
 
     var get = Ember.get,
         set = Ember.set;
 
 
     var mixin = Mixin('draggablecolumns', {
+        partials: {
+            tableheader: ['draggableheaders']
+        },
 
-        init:function () {
+        didInsertElement: function() {
+            this.$('th').sortable({
+                update: function(event, ui) {
+                    var indexes = {};
+                    $(this).find('.item').each(function(index) {
+                        indexes[$(this).data('id')] = index;
+                    });
+                }
+            });
+        }
+/*      init:function () {
             this._super();
             console.log('draggable mixin ready');
         },
@@ -65,6 +79,15 @@ define([
 
                 }
             });
+            this._super();
+        },
+
+        willDestroyElement: function() {
+
+            var table = $('table', this.$());
+
+            $('th', table).draggable('destroy');
+            $('th', table).droppable('destroy');
             this._super();
         },
 
@@ -124,17 +147,20 @@ define([
             //find better column order depending on available information source.
             var columns = get(this,'controller.displayed_columns');
             if (Ember.isNone(columns)) {
+
                 var shown_columns = get(this, 'controller.shown_columns');
                 console.debug('using shown_columns property', shown_columns);
-                columns = [];
-                for (var i=0; i<shown_columns.length; i++) {
-                    columns.push(get(shown_columns[i], 'field'));
+                columns = Ember.A();
+
+                for (var i = 0, l = shown_columns.length; i < l; i++) {
+                    columns.pushObject(get(shown_columns[i], 'field'));
                 }
             } else {
                 console.debug('using displayed_columns property');
             }
             return columns;
         }
+*/
     });
 
     return mixin;

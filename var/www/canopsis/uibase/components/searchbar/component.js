@@ -61,14 +61,14 @@ define([
 
         didInsertElement: function() {
             console.log('didInsertElement');
-            this.$('.dropdown-menu a, .dropdown-menu div').click(function(e) {
-                e.stopPropagation();
-            });
+            // this.$('.dropdown-menu a, .dropdown-menu div').click(function(e) {
+            //     e.stopPropagation();
+            // });
 
-            this.$('.nav-tabs a').click(function (e) {
-                e.preventDefault();
-                $(this).tab('show');
-            });
+            // this.$('.nav-tabs a').click(function (e) {
+            //     e.preventDefault();
+            //     $(this).tab('show');
+            // });
         },
 
         tabAllId: function() {

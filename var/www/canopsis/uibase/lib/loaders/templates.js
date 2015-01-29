@@ -89,7 +89,9 @@ var templates = [
     { name: 'horizontallayout', template: 'canopsis/uibase/templates/horizontallayout.html' ,  classes: ["layout"]},
     { name: 'lightlayout', template: 'canopsis/uibase/templates/lightlayout.html' ,  classes: ["layout"]},
     { name: 'tablayout', template: 'canopsis/uibase/templates/tablayout.html' ,  classes: ["layout"]},
-    { name: 'mixineditdropdown', template: 'canopsis/uibase/templates/mixineditdropdown.html'}
+    { name: 'mixineditdropdown', template: 'canopsis/uibase/templates/mixineditdropdown.html'},
+    { name: 'draggableheaders', template: 'canopsis/uibase/templates/draggableheaders.html'},
+    { name: 'tabledraggableth', template: 'canopsis/uibase/templates/tabledraggableth.html'}
 ];
 
 loader.loadWithTemplates(templates);

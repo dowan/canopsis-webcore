@@ -46,6 +46,7 @@ define([
             this._super(arguments);
 
             set(this, 'selectionUnprepared', Ember.A());
+
             this.set('store_' + get(this, 'elementId'), DS.Store.create({
                 container: this.get('container')
             }));
@@ -143,11 +144,11 @@ define([
                 console.log("Push", selectionUnprepared[0]);
 
                 if(valueKey) {
-                    for (var i = 0; i < selectionUnprepared.length; i++) {
+                    for (var i = 0, li = selectionUnprepared.length; i < li; i++) {
                         res.pushObject(selectionUnprepared[i]);
                     }
                 } else {
-                    for (var j = 0; j < selectionUnprepared.length; j++) {
+                    for (var j = 0, lj = selectionUnprepared.length; j < lj; j++) {
                         res.pushObject(selectionUnprepared[j]);
                     }
                 }

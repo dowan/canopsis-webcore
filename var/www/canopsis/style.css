@@ -343,7 +343,7 @@ table.dataTable>thead>tr>th {
 }
 
 .modal {
-    right: auto !importants;
+    right: auto !important;
 }
 
 .modal-header {
@@ -661,7 +661,7 @@ table.dataTableConnector {
 .grouped-cell-label, .grouped-cell-label-even {
     text-align: right;
     padding-right: 10px;
-    padding-left: 10px;s
+    padding-left: 10px;
 }
 
 .grouped-cell-label {

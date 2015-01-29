@@ -17,27 +17,33 @@
         {{#if controller.standardListDisplay}}
             <table {{bind-attr id="controller.id"}} {{bind-attr class="controller.css"}} >
                 <thead>
-                    <tr>
-                        <th class="checkboxes">
-                            {{component-checkbox checked=controller.isAllSelected class="toggle"}}
-                        </th>
-
-                        {{#each attr in controller.shown_columns}}
-                            {{#if attr.options.show}}
-                                <th {{action "sort" attr}} {{bind-attr class=attr.field}}>
-                                    {{#if attr.options.label}}
-                                        {{tr attr.options.label}}
-                                    {{else}}
-                                        {{tr attr.field}}
-                                    {{/if}}
-                                    {{{sorticon attr.headerClassName}}}
-                                </th>
-                            {{/if}}
+                    {{#if controller._partials.tableheader}}
+                        {{#each templateName in controller._partials.tableheader}}
+                            {{partial templateName}}
                         {{/each}}
-                        {{#if controller._partials.itemactionbuttons}}
-                            <th class="actions">{{tr 'Actions'}}</th>
-                        {{/if}}
-                    </tr>
+                    {{else}}
+                        <tr>
+                            <th class="checkboxes">
+                                not draggable {{component-checkbox checked=controller.isAllSelected class="toggle"}}
+                            </th>
+
+                            {{#each attr in controller.shown_columns}}
+                                {{#if attr.options.show}}
+                                    <th {{action "sort" attr}} {{bind-attr class=attr.field}}>
+                                        {{#if attr.options.label}}
+                                            {{tr attr.options.label}}
+                                        {{else}}
+                                            {{tr attr.field}}
+                                        {{/if}}
+                                        {{{sorticon attr.headerClassName}}}
+                                    </th>
+                                {{/if}}
+                            {{/each}}
+                            {{#if controller._partials.itemactionbuttons}}
+                                <th class="actions">{{tr 'Actions'}}</th>
+                            {{/if}}
+                        </tr>
+                    {{/if}}
                 </thead>
                 <tbody>
                     {{#each controller.widgetData}}

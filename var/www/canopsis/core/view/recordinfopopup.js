@@ -27,11 +27,6 @@ define([
         set = Ember.set;
 
     var view = Ember.View.extend({
-        init: function() {
-            this._super();
-            console.log('recordinfopopup view init', this, get(this, 'controller'));
-        },
-
         didInsertElement: function () {
             console.log('Recordinfopopup dom element');
             //$('#recordinfopopup').hide();
@@ -42,9 +37,7 @@ define([
             $('#recordinfopopup').draggable({
                 handle: '.recordinfopopuphandle'
             });
-        },
-
-
+        }
     });
 
 

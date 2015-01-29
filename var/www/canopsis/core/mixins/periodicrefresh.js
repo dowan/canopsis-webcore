@@ -46,17 +46,13 @@ define([
 
             var interval = get(this, 'widgetRefreshInterval');
 
-            if(interval === undefined && widgetController.get('mixinOptions.periodicrefresh.refreshInterval') !== undefined) {
-                interval = setInterval(function () {
-                    if (canopsisConfiguration.REFRESH_ALL_WIDGETS) {
-                        console.log('refreshing widget ' + get(widgetController, 'title'), widgetController.get('mixinOptions.periodicrefresh.refreshInterval'), widgetController);
-                        widgetController.refreshContent();
-                    }
-                }, widgetController.get('mixinOptions.periodicrefresh.refreshInterval') * 1000);
+            interval = setInterval(function () {
+                console.log('refreshing widget ' + get(widgetController, 'title'), widgetController.get('mixinOptions.periodicrefresh.refreshInterval'), widgetController);
+                widgetController.refreshContent();
+            }, widgetController.get('mixinOptions.periodicrefresh.refreshInterval') * 1000);
 
-                //keep track of this interval
-                this.set('widgetRefreshInterval', interval);
-            }
+            //keep track of this interval
+            this.set('widgetRefreshInterval', interval);
         },
 
         willDestroyElement: function() {

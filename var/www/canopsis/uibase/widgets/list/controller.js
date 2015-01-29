@@ -78,9 +78,7 @@ define([
              */
             standardListDisplay: true,
 
-            viewMixins: [
-                DraggableColumnsMixin
-            ],
+            viewMixins: [],
 
             dynamicTemplateName: 'listlineTest',
 
@@ -134,6 +132,10 @@ define([
                     html += '{{#each columns in controller.parentController._partials.columnsLine}}<td>{{partial columns}}</td>{{/each}}';
                 }
 
+                if(shown_columns === undefined || shown_columns.length === 0) {
+                    return undefined;
+                }
+
                 for (var i = 0, l = shown_columns.length; i < l; i++) {
                     var currentColumn = shown_columns[i];
                     console.log('currentColumn', currentColumn);
@@ -151,11 +153,11 @@ define([
                 if(itemActionbuttons) {
                     console.log("itemactionbuttons", itemActionbuttons);
                     html += '<td style="padding-left:0; padding-right:0"><div class="btn-group" style="display:flex">';
-
+/*
                     for (var j = 0, lj = itemActionbuttons.length; j < lj; j++) {
                         html += '{{partial "' + itemActionbuttons[j] + '"}}';
                     }
-
+*/
                     html += '</div></td>';
                 }
 
@@ -381,12 +383,17 @@ define([
 
                 console.debug('selected cols', selected_columns);
 
-                var tpl = Ember.Handlebars.compile(this.generateListlineTemplate(selected_columns));
+                var hbs = this.generateListlineTemplate(selected_columns);
 
-                var dynamicTemplateName = 'dynamic-list' + Math.floor(Math.random() * 10000);
+                if(hbs !== undefined && get(this, 'hbsListline') === undefined) {
+                    var tpl = Ember.Handlebars.compile(hbs);
+                    set(this, 'hbsListline', hbs);
 
-                Ember.TEMPLATES[dynamicTemplateName] = tpl;
-                set(this, 'dynamicTemplateName', dynamicTemplateName);
+                    var dynamicTemplateName = 'dynamic-list' + Math.floor(Math.random() * 10000);
+
+                    Ember.TEMPLATES[dynamicTemplateName] = tpl;
+                    set(this, 'dynamicTemplateName', dynamicTemplateName);
+                }
 
                 return selected_columns;
 
@@ -420,7 +427,16 @@ define([
                 for (var i = 0, l = sourceFilter.length; i < l; i++) {
                     if(typeof sourceFilter[i] === 'string') {
                         //if json, parse json
-                        sourceFilter[i] = JSON.parse(sourceFilter[i]);
+                        try {
+                            sourceFilter[i] = JSON.parse(sourceFilter[i]);
+                        } catch (e) {
+                            if(get(this, 'content.displayedErrors') === undefined) {
+                                set(this, 'content.displayedErrors', Ember.A());
+                            }
+
+                            get(this, 'content.displayedErrors').pushObject('There seems to be an error with the currently selected filter.');
+                            sourceFilter[i] = {};
+                        }
                     }
                     if (isDefined(sourceFilter[i])) {
                         //when defined filter then it is added to the filter list

@@ -102,7 +102,7 @@ define([
                 mfilter = JSON.parse(cfilter_serialized);
             } catch (e) {
                 console.error('unable to parse serialized filter');
-                mfilter = JSON.parse({ $or: {}});
+                mfilter = { "$or": {}};
             }
 
             console.log('deserializeCfilter', cfilter_serialized, clauses.length);
