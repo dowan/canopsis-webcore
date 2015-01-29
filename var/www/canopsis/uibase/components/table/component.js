@@ -24,7 +24,8 @@ define([
 ], function(Ember, DS, PaginationMixin) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
 
     var component = Ember.Component.extend(PaginationMixin, {
@@ -53,14 +54,17 @@ define([
         init: function() {
             this._super(arguments);
 
-            if (get(this, 'model') !== undefined) {
+            if (!isNone(get(this, 'model'))) {
                 set(this, 'store', DS.Store.create({
                     container: get(this, 'container')
                 }));
             }
 
             set(this, 'widgetDataMetas', {total: 0});
-            set(this, 'items', []);
+
+            if (isNone(get(this, 'items'))) {
+                set(this, 'items', []);
+            }
         },
 
         didInsertElement: function() {

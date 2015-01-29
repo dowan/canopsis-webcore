@@ -90,15 +90,32 @@ def exports(ws):
         manager.del_elts(ids=ids, types=types, query=query)
 
     @route(
+        ws.application.post,
+        payload=['elt', 'graph_ids'],
+        name='topology/elt'
+    )
+    def put_elt(elt, graph_ids=None, cache=False):
+        """
+        Put element.
+
+        :param elt: element to put.
+        :type elt: dict.
+        :param str graph_ids: element topology id. None if elt is a topology.
+        :param bool cache: use query cache if True (False by default).
+        """
+
+        manager.put_elts(elts=elt, graph_ids=graph_ids, cache=cache)
+
+    @route(
         ws.application.put,
-        payload=['elts', 'graph_ids'],
+        payload=['elts', 'graph_ids', 'cache'],
         name='topology/elts'
     )
     def put_elts(elts, graph_ids=None, cache=False):
         """
         Put elements.
 
-        :param elts: element to put.
+        :param elts: elements to put.
         :type elts: dict or list.
         :param str graph_ids: element topology id. None if elt is a topology.
         :param bool cache: use query cache if True (False by default).
