@@ -51,13 +51,22 @@ define([
                 this.mixinOptions.customfilterlist = customfilterlistOptions;
             }
 
+            //retrieve custom default filter.
+            var mixins = get(this, 'model.mixins');
+            var filter;
+            for (var key in mixins) {
+                if (get(mixins, key + '.name') === 'Customfilterlist') {
+                    filter = mixins[key].default_filter;
+                }
+            }
+
+            set(this, 'findParams_cfilterFilterPart', filter);
+
             this._super();
 
             if(!get(this, 'userParams.custom_filters')) {
                 set(this, 'userParams.custom_filters', Ember.A());
             }
-
-            set(this, 'findParams_cfilterFilterPart', get(this, 'mixinOptions.customfilterlist.default_filter'));
         },
 
         isSelectedFilter: function (filterList) {
