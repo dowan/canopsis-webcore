@@ -115,7 +115,6 @@ define([
                 //prepare user configuration to fetch customer preference by reseting data.
                 //dont understand why without this reset, values same values are set into many list instances.
                 Ember.setProperties(this, {
-                    findParams_cfilterFilterPart: get(this, 'default_filter'),
                     custom_filters: [],
                     widgetData: [],
                     findOptions: {},
