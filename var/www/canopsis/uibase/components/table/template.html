@@ -3,14 +3,16 @@
         <thead>
             <tr>
                 {{#each column in columns}}
-                    {{#if column.action}}
+                    {{#if column.actionAll}}
                         <th {{bind-attr style=column.style class=column.class}}>
                             <a {{action "do" column.actionAll item}}>
                                 {{column.title}}
                             </a>
                         </th>
                     {{else}}
-                        <th>{{column.title}}</th>
+                        <th {{bind-attr style=column.style class=column.class}}>
+                            {{column.title}}
+                        </th>
                     {{/if}}
                 {{/each}}
             </tr>
@@ -27,7 +29,9 @@
                                 </a>
                             </td>
                         {{else}}
-                            <td>{{getfield item column.name}}</td>
+                            <td {{bind-attr style=column.style class=column.class}}>
+                                {{getfield item column.name}}
+                            </td>
                         {{/if}}
                     {{/each}}
                 </tr>
