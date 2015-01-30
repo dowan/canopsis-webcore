@@ -293,14 +293,7 @@ define([
 
             ackremove: {
                 extract: function(record, crecord, formRecord) {
-                    if (formRecord === undefined) {
-                        record.output = __('Removed ack for event:');
-                        record.output += ' ' + record.component;
-
-                        if(record.source_type === 'resource') {
-                            record.output += ' ' + record.resource;
-                        }
-                    } else {
+                    if (!isNone(formRecord)) {
                         record.output = get(formRecord, 'output');
                     }
 
