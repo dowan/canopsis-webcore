@@ -93,7 +93,7 @@ define([
         },
 
         onReload: function () {
-            console.debug('Reload widget:', get(this, 'id'));
+            console.debug('Reload widget:', get(this, 'id'), get(this, 'xtype'));
 
             if (get(this, 'widgetData.content') !== undefined) {
                 //Allows widget to know how many times they have been repainted
@@ -386,22 +386,16 @@ define([
         }.property('itemType'),
 
         refreshContent: function() {
-            //lock widget refresh for 1 second making some other refresh call useless.
-            //this aime to avoid duplicate computation.
-            var lastRefreshControl = get(this, 'lastRefreshControlDelay');
 
-            if(!lastRefreshControl) {
+            console.log('refreshContent', get(this, 'xtype'));
 
-                this._super();
-                this.findItems();
+            this._super();
+            this.findItems();
 
-                set(this, 'lastRefresh', new Date().getTime());
-                set(this, 'lastRefreshControlDelay', true);
-                var widgetController = this;
-                setTimeout(function () {
-                    set(widgetController, 'lastRefreshControlDelay', false);
-                }, 1000);
-            }
+            this.setProperties({
+                'lastRefresh': new Date().getTime(),
+                'lastRefreshControlDelay': true
+            });
         },
 
         findItems: function() {

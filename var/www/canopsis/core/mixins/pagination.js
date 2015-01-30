@@ -48,7 +48,6 @@ define([
                 var itemsperpage = this.getItemsPerPage();
                 set(this, 'itemsPerPagePropositionSelected', itemsperpage);
             }
-
         },
 
         itemsPerPage: function() {
@@ -111,8 +110,12 @@ define([
         }.property('itemsPerPagePropositionSelected'),
 
         itemsPerPageChanged : function() {
-            set(this, 'currentPage', 1);
-            this.refreshContent();
+            if(get(this, 'itemsPerPageChangedInitialLock') !== undefined) {
+                set(this, 'currentPage', 1);
+
+                this.refreshContent();
+            }
+            set(this, 'itemsPerPageChangedInitialLock', true);
         }.observes('mixinOptions.pagination.itemsPerPage'),
 
         onCurrentPageChanges: function() {
