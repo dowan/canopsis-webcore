@@ -136,6 +136,8 @@ define([
             var sub_weathers = [];
             var ack_count = 0;
             var computedState = 0;
+            var timestamp = 0;
+            var previous_state_change_ts = 0;
 
             for (var i = 0, l = data.length; i < l; i++) {
 
@@ -182,7 +184,9 @@ define([
                     component: get(currentData, 'component'),
                     resource: get(currentData, 'resource'),
                     title: component_label + ' ' + resource,
-                    custom_class: this.class_background(computedState)
+                    custom_class: this.class_background(computedState),
+                    timestamp: get(currentData, 'timestamp'),
+                    previous_state_change_ts: get(currentData, 'previous_state_change_ts')
                 };
 
                 if(get(currentData, 'event_type') === 'selector') {

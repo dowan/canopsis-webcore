@@ -704,3 +704,8 @@ table.dataTableConnector {
 .list table {
     margin-bottom: 0;
 }
+
+.halfwidth {
+    width: 50%;
+    float:left;
+}
