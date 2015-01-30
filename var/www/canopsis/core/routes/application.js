@@ -33,8 +33,10 @@ define([
         actions: {
             showView: function(id) {
                 console.log('ShowView action', arguments);
+
+                var currentViewId = routesUtils.getCurrentViewId();
                 var app = this.controllerFor('application');
-                if(routesUtils.getCurrentViewId() !== id) {
+                if(currentViewId !== undefined && currentViewId !== id) {
                     set(app, 'isLoading', get(app, 'isLoading') + 1);
                 }
 
