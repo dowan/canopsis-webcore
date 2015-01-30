@@ -30,11 +30,7 @@
                             {{#each attr in controller.shown_columns}}
                                 {{#if attr.options.show}}
                                     <th {{action "sort" attr}} {{bind-attr class=attr.field}}>
-                                        {{#if attr.options.label}}
-                                            {{tr attr.options.label}}
-                                        {{else}}
-                                            {{tr attr.field}}
-                                        {{/if}}
+                                        {{tr attr.display_title}}
                                         {{{sorticon attr.headerClassName}}}
                                     </th>
                                 {{/if}}

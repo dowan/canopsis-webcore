@@ -379,6 +379,20 @@ define([
                         shown_columns[column].headerClassName = headerClass;
                     }
 
+                    //select appropriate title for column headers from shema options.
+                    var display_title = 'no label';
+                    var label = get(shown_columns[column], 'options.label');
+                    var title = get(shown_columns[column], 'options.title');
+                    var field = get(shown_columns[column], 'field');
+                    if (title) {
+                        display_title = title;
+                    } else if (label) {
+                        display_title = label;
+                    } else if (field) {
+                        display_title = field;
+                    }
+                    set(shown_columns[column], 'display_title', display_title);
+
                 }
 
                 console.debug('selected cols', selected_columns);
