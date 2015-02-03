@@ -24,8 +24,7 @@ define(['ember'], function(Ember) {
         isArray = Ember.isArray;
 
 
-    //TODO check if it used or not
-    Ember.Handlebars.helper('json2html', function(json, settableObject) {
+    var helper = function(json, settableObject) {
         if (typeof json === 'string') {
 
             try {
@@ -77,6 +76,11 @@ define(['ember'], function(Ember) {
         }
 
         return new Ember.Handlebars.SafeString(html);
-    });
+    };
+
+    //declaring helper this way allow it to be used as simple function somewhere else.
+    Ember.Handlebars.helper('json2html', helper);
+
+    return helper;
 
 });

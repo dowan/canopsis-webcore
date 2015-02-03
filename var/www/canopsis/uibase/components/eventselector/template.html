@@ -25,10 +25,19 @@
     <ul class="list-group">
     {{#each event in events}}
         <li class="list-group-item list-group-item-info">
-            <button class="btn btn-default" {{action "add" event}}>
-                <span class="glyphicon glyphicon-plus"></span>
-                {{tr 'Add'}}
-            </button>&nbsp;{{event.component}} {{event.resource}}
+            <table>
+                <tr>
+                    <td>
+                        <button class="btn btn-default" {{action "add" event}}>
+                            <span class="glyphicon glyphicon-plus"></span>
+                            {{tr 'Add'}}
+                        </button>
+                    </td>
+                    <td style="padding-left:5px;padding-right:5px;overflow-y:hidden">
+                        {{component-propertiestopopup htmlOnly=true source=event properties='["connector", "component", "resource"]'}}
+                    </td>
+                </tr>
+            </table>
         </li>
     {{/each}}
     </ul>
@@ -44,13 +53,25 @@
     <ul class="list-group">
     {{#each event in selectedEvents}}
         <li class="list-group-item list-group-item-success">
-            <button class="btn btn-default" {{action "delete" event}}>
-                <span class="glyphicon glyphicon-minus"></span>
-                {{tr 'Remove'}}
-            </button>&nbsp;{{event.component}} {{event.resource}}
-            {{#if labelled}}
-                {{input type="text" value=event.label class="form-control" placeholder=type_label class="pull-right"}}
-            {{/if}}
+
+            <table>
+                <tr>
+                    <td>
+                        <button class="btn btn-default" {{action "delete" event}}>
+                            <span class="glyphicon glyphicon-minus"></span>
+                            {{tr 'Remove'}}
+                        </button>
+                    </td>
+                    <td style="padding-left:5px;padding-right:5px;overflow-y:hidden">
+                        {{component-propertiestopopup htmlOnly=true source=event properties='["connector", "component", "resource"]'}}
+                    </td>
+                    {{#if labelled}}
+                        <td>
+                            {{input type="text" value=event.label class="form-control" placeholder=type_label class="pull-right"}}
+                        </td>
+                    {{/if}}
+                </tr>
+            </table>
         </li>
     {{/each}}
     </ul>
