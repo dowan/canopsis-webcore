@@ -186,8 +186,8 @@ define([
 
             var start = itemsPerPage * (this.currentPage - 1);
 
-            return start + itemsPerPage;
-        }.property('widgetData'),
+            return Math.min(start + itemsPerPage, get(this, 'itemsTotal'));
+        }.property('widgetData', 'itemsTotal'),
 
         paginationFirstItemIndex: function () {
             var itemsPerPage = this.getItemsPerPage();
