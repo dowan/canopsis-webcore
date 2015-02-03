@@ -41,7 +41,7 @@ define([
         }.property(),
 
         specialDisplay: function () {
-            console.log('special display', get(this, 'eventstate'), get(this, 'optionaltimestamp'))
+            console.log('special display', get(this, 'eventstate'), get(this, 'optionaltimestamp'));
             return get(this, 'eventstate') && get(this, 'optionaltimestamp');
         }.property()
 
