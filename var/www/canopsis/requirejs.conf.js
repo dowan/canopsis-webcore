@@ -256,7 +256,6 @@ define(['text!canopsis/enabled.json', 'app/lib/wrappers/console', 'app/lib/objec
     setLoadingInfo('Fetching frontend plugin-ins', 'fa-cubes');
 
     var deps = [
-        'canopsis/file_loader',
         'seeds/RoutesLoader',
         'app/lib/wrappers/extend',
         'app/lib/utils/i18n',
@@ -275,13 +274,13 @@ define(['text!canopsis/enabled.json', 'app/lib/wrappers/console', 'app/lib/objec
     }
 
     require(deps, function() {
+        require(['canopsis/file_loader'], function(){
+            setLoadingInfo('Fetching application starting point', 'fa-plug');
+            require(['app/init'], function(Application) {
+                setLoadingInfo('Initializing user interface', 'fa-desktop');
 
-        setLoadingInfo('Fetching application starting point', 'fa-plug');
-        require(['app/init'], function(Application) {
-            setLoadingInfo('Initializing user interface', 'fa-desktop');
-
-            Application.advanceReadiness();
+                Application.advanceReadiness();
+            });
         });
-
     });
 });
