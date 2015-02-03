@@ -32,16 +32,20 @@ define(['ember'], function(Ember) {
 
         console.tags.add("helper");
 
-        var typeKey;
-        typeKey = get(this, 'model.type.typeKey');
+        var typeKey = get(this, 'model.type.typeKey');
 
-        console.tags.add(typeKey);
+        if (!isNone(typeKey)) {
+            console.tags.add(typeKey);
+        }
 
         console.log(message);
 
         console.tags.remove("helper");
 
-        console.tags.remove(typeKey);
+        if (!isNone(typeKey)) {
+            console.tags.remove(typeKey);
+        }
+
 
         return '';
     });
