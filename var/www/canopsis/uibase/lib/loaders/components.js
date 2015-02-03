@@ -65,7 +65,9 @@ var components = [
     { name: 'components/component-graph', url: 'canopsis/uibase/components/graph/component', template: 'canopsis/uibase/components/graph/template.html' },
     { name: 'components/component-topology', url: 'canopsis/uibase/components/topology/component', template: 'canopsis/uibase/components/topology/template.html' },
     { name: 'components/component-ack', url: 'canopsis/uibase/components/ack/component', template: 'canopsis/uibase/components/ack/template.html' },
-    { name: 'components/component-formulaeditor', url: 'canopsis/uibase/components/formulaeditor/component', template: 'canopsis/uibase/components/formulaeditor/template.html' }
+    { name: 'components/component-formulaeditor', url: 'canopsis/uibase/components/formulaeditor/component', template: 'canopsis/uibase/components/formulaeditor/template.html' },
+    { name: 'components/component-propertiestopopup', url: 'canopsis/uibase/components/propertiestopopup/component', template: 'canopsis/uibase/components/propertiestopopup/template.html' }
+
 ];
 
 loader.loadWithTemplates(components);
