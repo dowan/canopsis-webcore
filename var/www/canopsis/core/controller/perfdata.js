@@ -23,13 +23,21 @@ define([
     'ember-data'
 ], function($, Ember, DS) {
 
+    var get = Ember.get,
+        set = Ember.set;
+
+
     var controller = Ember.ObjectController.extend({
+        needs: ['application'],
 
         init: function() {
             this._super();
         },
 
         fetch: function(metric_id, tstart, tend) {
+            var app = get(this, 'controllers.application');
+            set(app, 'isLoading', get(app, 'isLoading') + 1);
+
             return new Ember.RSVP.Promise(function(resolve, reject) {
                 $.ajax({
                     url: '/perfdata',
@@ -45,7 +53,15 @@ define([
                             'aggregation': 'NONE'
                         })
                     }
-                }).then(resolve, reject);
+                }).then(function() {
+                    set(app, 'isLoading', get(app, 'isLoading') - 1);
+
+                    resolve.apply(this, arguments);
+                }, function() {
+                    set(app, 'isLoading', get(app, 'isLoading') - 1);
+
+                    reject.apply(this, arguments);
+                });
             });
         },
 

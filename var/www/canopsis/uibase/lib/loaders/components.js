@@ -30,7 +30,6 @@ var components = [
     { name: 'components/component-dictclassifiedcrecordselector', url: 'canopsis/uibase/components/dictclassifiedcrecordselector/component', template: 'canopsis/uibase/components/dictclassifiedcrecordselector/template.html' },
     { name: 'components/component-eventkey', url: 'canopsis/uibase/components/eventkey/component', template: 'canopsis/uibase/components/eventkey/template.html' },
     { name: 'components/component-expandableaddbutton', url: 'canopsis/uibase/components/expandableaddbutton/component', template: 'canopsis/uibase/components/expandableaddbutton/template.html' },
-    { name: 'components/component-expandabletext', url: 'canopsis/uibase/components/expandabletext/component', template: 'canopsis/uibase/components/expandabletext/template.html' },
     { name: 'components/component-filterclause', url: 'canopsis/uibase/components/filterclause/component', template: 'canopsis/uibase/components/filterclause/template.html' },
     { name: 'components/component-flotchart', url: 'canopsis/uibase/components/flotchart/component', template: 'canopsis/uibase/components/flotchart/template.html' },
     { name: 'components/component-listtree', url: 'canopsis/uibase/components/listtree/component', template: 'canopsis/uibase/components/listtree/template.html' },
