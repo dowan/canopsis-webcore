@@ -635,9 +635,12 @@ define([
                         }
                     )
                 ;
-            // add title
-            shapes.append('title');
-            shapes.append('text');// add entity name redirection
+            var nodeShapes = shapes.filter(function(d) { return d.elt.get('type') !== 'topoedge';});
+            nodeShapes.append('title');  // add title
+            nodeShapes.append('text').classed('entity', true);  // add entity name text
+            nodeShapes.append('text').classed('operator', true);  // add operator name text
+            var edgeShapes = shapes.filter(function(d) { return d.elt.get('type') === 'topoedge';});
+            edgeShapes.append('text').classed('weight', true); // add weight text
             // node drag
             var node_drag = this.force.drag
                 .on(
@@ -721,47 +724,61 @@ define([
             ;
             // update a title which is the entity id or graph element id
             nodes.select('title').text(
-                function (d) {
+                function(d) {
+                    var result = '';
                     var info = d.elt.get('info');
-                    return info? info.entity : '';
+                    if (info !== undefined) {
+                        var entity = info.entity;
+                        if (entity !== undefined) {
+                            result += entity;
+                        }
+                    }
+                    return result;
                 }
             );
-            // update href to event pool
-            nodes
-                .select('text')
-                    .text(
-                        function(d) {
-                            var result = '';
-                            var type = d.elt.get('type');
-                            if (type === 'topoedge') {
-                                result += d.elt.get('weight');
-                            } else {
-                                var info = d.elt.get('info');
-                                if (info && info.label) {
-                                    result += info.label;
-                                } else {
-                                    var entity = d.entity;
-                                    if (entity !== undefined) {
-                                        result += (entity.component? (entity.component + '.') : '') + entity.cid;
-                                    }
-                                    if (info) {
-                                        var operator = info.operator;
-                                        if (operator) {
-                                            var operator_id = operator.id || operator.cid || operator;
-                                            if (operator_id === 'canopsis.task.condition.condition') {
-                                                operator = operator.params.condition;
-                                                operator_id = operator.id || operator.cid || operator;
-                                            }
-                                            operator_id = operator_id.substring(operator_id.lastIndexOf('.') + 1);
-                                            result += '/' + operator_id;
-                                        }
-                                    }
-                                }
-                            }
-                            return result;
+            // update an entity id which is the entity id or graph element id
+            nodes.select('.entity').text(
+                function (d) {
+                    var result = '';
+                    var info = d.elt.get('info');
+                    if (info && info.label) {
+                        result += info.label;
+                    } else {
+                        var entity = d.entity;
+                        if (entity !== undefined) {
+                            result += entity.cid;
                         }
-                    )
-            ;
+                    }
+                    return result;
+                }
+            );
+            nodes.select('.operator').text(
+                function(d) {
+                    var result = '';
+                    var info = d.elt.get('info');
+                    if (info !== undefined) {
+                        var operator = info.operator;
+                        if (operator) {
+                            var operator_id = operator.id || operator.cid || operator;
+                            if (operator_id === 'canopsis.task.condition.condition') {
+                                operator = operator.params.condition;
+                                operator_id = operator.id || operator.cid || operator;
+                            }
+                            operator_id = operator_id.substring(operator_id.lastIndexOf('.') + 1);
+                            result += operator_id;
+                        }
+                    }
+                    return result;
+                }
+            );
+            nodes.select('.weight').text(
+                function(d) {
+                    var result = '';
+                    var weight = d.elt.get('weight');
+                    result += weight;
+                    return result;
+                }
+            );
         },
 
         /**
@@ -1101,11 +1118,11 @@ define([
         * @return d3 node.
         */
         record2Node: function(record) {
-            var result = this.d3_graph.data_by_id[record.get('cid')];
+            var record_id = record.get('cid');
+            var result = this.d3_graph.data_by_id[record_id];
             if (result === undefined) {
                 var result = {
-                    id: record.get('cid'),
-                    elt: record,
+                    id: record_id,
                     index: this.d3_graph.nodes.length,
                     _weight: 1,
                     x: 0,
@@ -1117,9 +1134,11 @@ define([
                 this.d3_graph.nodes.push(result);
                 // add node reference in d3_graph.data_by_id
                 this.d3_graph.data_by_id[result.id] = result;
-                // add a reference to shape from vertice
-                record.d3_elt = result;
             }
+            // save record in the result
+            result.elt = record;
+            // add a reference to shape from vertice
+            record.d3_elt = result;
             return result;
         },
 
