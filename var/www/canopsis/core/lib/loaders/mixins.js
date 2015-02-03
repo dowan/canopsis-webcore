@@ -25,6 +25,7 @@ var mixins = [
     { name: 'infobutton', url: 'app/mixins/infobutton', classes: ["list"]},
     { name: 'mixinArray', url: 'app/mixins/mixinArray', classes: ["test"]},
     { name: 'pagination', url: 'app/mixins/pagination', classes: ["widget"]},
+    { name: 'criticitylevels', url: 'app/mixins/criticitylevels', classes: ["widget"]},
     { name: 'tagsoptionfilter', url: 'app/mixins/tagsoptionfilter', classes: ["widget"]},
     { name: 'arraysearch', url: 'app/mixins/arraysearch', classes: ['widget']},
     { name: 'history', url: 'app/mixins/history', classes: ['widget']},

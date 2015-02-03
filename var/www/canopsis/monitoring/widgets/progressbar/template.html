@@ -1,3 +1,17 @@
 <div class="progressBarWidget">
-	{{component-progressbar value=controller.value unit=controller.unit min_value=controller.min_value warn_value=controller.warn_value crit_value=controller.crit_value max_value=controller.max_value background_color=controller.background_color start_color=controller.start_color warn_color=controller.warn_color critic_color=controller.critic_color thickness=controller.thickness vertical=controller.vertical height=controller.height label=controller.label labeldisplay=controller.labeldisplay labelalign=controller.labelalign labelwidth=controller.labelwidth}}
+
+    Last bar<br />
+    Value : {{controller.bar.value}}<br />
+    Unit : {{controller.bar.unit}}<br />
+    Min : {{controller.bar.min_value}}<br />
+    Max : {{controller.bar.max_value}}<br />
+
+    Bg Color : {{controller.background_color}}<br />
+    Warn Color : {{controller.warn_color}}<br />
+    Crit Color : {{controller.critic_color}}<br />
+
+    Warn Value : {{controller.warn_value}}<br />
+    Crit Value : {{controller.crit_value}}<br />
+    Unit or Percent : {{controller.unit_or_percent}}<br />
+    {{component-progressbar value=controller.bar.value unit=controller.bar.unit min_value=controller.bar.min_value max_value=controller.bar.max_value}}
 </div>
