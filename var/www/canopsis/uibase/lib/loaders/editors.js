@@ -66,6 +66,7 @@ var editors = [
     { name: 'editor-passwordsha1', template: 'canopsis/uibase/editors/passwordsha1.html' },
     { name: 'editor-forcevalue', template: 'canopsis/uibase/editors/forcevalue.html' },
     { name: 'editor-eventkey', template: 'canopsis/uibase/editors/eventkey.html' },
+    { name: 'editor-serieformula', template: 'canopsis/uibase/editors/serieformula.html' },
 ];
 
 loader.loadWithTemplates(editors);

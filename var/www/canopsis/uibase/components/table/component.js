@@ -83,9 +83,9 @@ define([
             try {
                 var me = this;
 
-                var store = get(this, 'store');
-                var model = get(this, 'model');
-                var modelfilter = get(this, 'modelfilter');
+                var store = get(this, 'store'),
+                    model = get(this, 'model'),
+                    modelfilter = get(this, 'modelfilter');
 
                 var query = {
                     skip: get(this, 'paginationMixinFindOptions.start'),
