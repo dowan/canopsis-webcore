@@ -59,7 +59,7 @@ define([
                 var mixins = get(this, 'model.mixins');
                 for (var key in mixins) {
                     if (get(mixins, key + '.name') === 'Customfilterlist') {
-                        filter = mixins[key].default_filter;
+                        filter = get(mixins, key + '.default_filter');
                     }
                 }
             } else {

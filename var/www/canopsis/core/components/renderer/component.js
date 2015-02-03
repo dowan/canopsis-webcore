@@ -18,8 +18,10 @@
 */
 
 define([
-    'ember'
-], function(Ember) {
+    'ember',
+    'canopsis/canopsisConfiguration',
+    'app/lib/utils/debug'
+], function(Ember, canopsisConfiguration, debugUtils) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -28,7 +30,14 @@ define([
 
     var component = Ember.Component.extend({
 
+        canopsisConfiguration: canopsisConfiguration,
+        debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
+
         actions: {
+            inspect: function() {
+                debugUtils.inspectObject(this);
+            },
+
             do: function(action) {
                 var params = [];
                 for (var i = 1, l = arguments.length; i < l; i++) {
@@ -39,6 +48,16 @@ define([
             }
         },
         tagName: 'span',
+
+        attr: function() {
+            var shown_columns = get(this, 'shown_columns');
+
+            for (var i = 0, l = shown_columns.length; i < l; i++) {
+                if(shown_columns[i].field === get(this, 'field')) {
+                    return shown_columns[i];
+                }
+            }
+        }.property('shown_columns'),
 
         rendererType: function() {
             console.group('rendererType');
