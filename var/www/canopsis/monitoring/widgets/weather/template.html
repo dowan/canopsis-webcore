@@ -1,46 +1,56 @@
-<div {{bind-attr class=":small-box controller.background"}}>
-    <div class="inner">
+{{#if controller._partials.weatherTheme}}
+    {{#each theme in controller._partials.weatherTheme}}
+        {{partial theme}}
+    {{/each}}
+{{else}}
+    <div {{bind-attr class=":small-box controller.background"}}>
+        <div class="inner">
 
-    </div>
-    <div class="icon">
-        <i {{bind-attr class=":ion controller.icon"}}></i>
-    </div>
+        </div>
+        <div class="icon">
+            <i {{bind-attr class=":ion controller.icon"}}></i>
+        </div>
 
-    <!-- child -->
-    <div class="row unmarged weatherminsize">
-        {{#if controller.singleEvent}}
-            {{#each controller.sub_weather}}
-                <div>
-                    <div class="inner text-center">
-                        <h4>
-                            {{title}}
-                        </h4>
-                        <p>
-                            <a {{action "goToInfo" this}} class="small-box-footer full"></a>
-                        </p>
-                        {{#if controller.show_output}}
-                            <h5>
-                                {{controller.singleEventOutput}}
-                            </h5>
-                        {{/if}}
-                    </div>
-                </div>
-            {{/each}}
-        {{else}}
-            {{#each controller.sub_weather}}
-                <div class="col-lg-3 col-xs-6">
-                    <div {{bind-attr class=":small-box custom_class"}}>
+        <!-- child -->
+        <div class="row unmarged weatherminsize">
+            {{#if controller.singleEvent}}
+                {{#each controller.sub_weather}}
+                    <div>
                         <div class="inner text-center">
-                            <h4>
-                                {{title}}
-                            </h4>
+                            {{#if controller.show_title}}
+                                <h4>
+                                    {{title}}
+                                </h4>
+                            {{/if}}
                             <p>
                                 <a {{action "goToInfo" this}} class="small-box-footer full"></a>
                             </p>
+                            {{#if controller.show_output}}
+                                <h5>
+                                    {{controller.singleEventOutput}}
+                                </h5>
+                            {{/if}}
                         </div>
                     </div>
-                </div>
-            {{/each}}
-        {{/if}}
+                {{/each}}
+            {{else}}
+                {{#each controller.sub_weather}}
+                    <div class="col-lg-3 col-xs-6">
+                        <div {{bind-attr class=":small-box custom_class"}}>
+                            <div class="inner text-center">
+                                {{#if controller.show_title}}
+                                    <h4>
+                                        {{title}}
+                                    </h4>
+                                {{/if}}
+                                <p>
+                                    <a {{action "goToInfo" this}} class="small-box-footer full"></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {{/each}}
+            {{/if}}
+        </div>
     </div>
-</div>
+{{/if}}
