@@ -40,8 +40,6 @@ define([
     var controller = PartialslotAbleController.extend({
         needs: ['application', 'login'],
 
-        viewMixins: [],
-
         /**
          * This is useful mostly for debug, to know that a printend object is a widget
          */
@@ -50,11 +48,12 @@ define([
         canopsisConfiguration: canopsisConfiguration,
         debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
 
-        userParams: {},
-
         editMode : Ember.computed.alias('controllers.application.editMode'),
 
         init: function () {
+
+            set(this, 'userParams', {});
+
             console.log('widget init');
 
             var viewId = get(widgetUtils.getParentViewForWidget(this), 'content.id');
@@ -82,6 +81,18 @@ define([
 
             console.debug('user configuration loaded for widget ' + get(this, 'title'));
             this.refreshContent();
+        },
+
+        addMixinView: function (viewMixin) {
+            /**
+                Adds mixins view to the current widget controller
+            **/
+            var viewMixins = get(this, 'viewMixins');
+            if (isNone(viewMixins)) {
+                viewMixins = [];
+                set(this, 'viewMixins', viewMixins);
+            }
+            viewMixins.push(viewMixin);
         },
 
         updateInterval: function (interval){

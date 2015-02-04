@@ -176,7 +176,7 @@ define([
 
         init:function() {
             console.log('init responsivelist');
-            this.viewMixins.push(viewMixin);
+            this.addMixinView(viewMixin);
 
             var mixinsOptions = get(this, 'content.mixins');
 

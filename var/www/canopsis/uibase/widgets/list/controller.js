@@ -78,8 +78,6 @@ define([
              */
             standardListDisplay: true,
 
-            viewMixins: [],
-
             dynamicTemplateName: 'listlineTest',
 
             //TODO test if this is needed (used in cloaked mode)

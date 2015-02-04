@@ -68,7 +68,7 @@ define([
 
         init:function() {
             console.log('init periodicrefresh');
-            this.viewMixins.push(viewMixin);
+            this.addMixinView(viewMixin);
 
             var mixinsOptions = get(this, 'content.mixins');
 
