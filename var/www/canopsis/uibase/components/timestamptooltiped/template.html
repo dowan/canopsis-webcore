@@ -1,6 +1,8 @@
 {{#if specialDisplay}}
     {{#component-tooltip content=showMainTimestamp htmlEnabled=true noTranslation=true}}
-        {{showOptionalElapsed}}
+        <span class="handle">
+            {{showOptionalElapsed}}
+        </span>
     {{/component-tooltip}}
 {{else}}
     {{#unless hideDate}}
