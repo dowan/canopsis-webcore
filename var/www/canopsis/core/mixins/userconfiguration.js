@@ -31,8 +31,6 @@ define([
 
         needs: ['login'],
 
-        content: {},
-
          saveUserConfiguration: function (callback) {
 
             var preferences = get(this, 'userParams');

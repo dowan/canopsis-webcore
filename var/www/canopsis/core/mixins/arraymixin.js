@@ -43,12 +43,14 @@ define([
         If you want to define a property in a mixin that is not shared, you can define
         it either as a computed property or have it be created on initialization of the object.
         */
-        content: [],
 
         /*
          * Create an array of template in order to feed collectionView's content (Must be redefined on child)
          */
         init : function(redefined) {
+
+            set(this, 'content', []);
+
             if (redefined!== true) {
                 console.warn("you must redefine init (ArrayMixin)");
             }
