@@ -12,7 +12,7 @@
             {{recordcanbeack this}}
             {{#if this.recordcanbeack}}
                 {{#component-tooltip content="Ack"}}
-                    <button class="btn btn-default btn-xs" {{action 'sendEvent' 'ack' this}} >
+                    <button class="btn btn-default btn-xs" {{action 'ackAndReport' this}} >
                         <span class="glyphicon glyphicon-ok"></span>
                     </button>
                 {{/component-tooltip}}
