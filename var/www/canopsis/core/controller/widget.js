@@ -103,19 +103,6 @@ define([
             return Application[get(this, 'xtype').capitalize()].proto().categories;
         },
 
-        onReload: function () {
-            console.debug('Reload widget:', get(this, 'id'), get(this, 'xtype'));
-
-            if (get(this, 'widgetData.content') !== undefined) {
-                //Allows widget to know how many times they have been repainted
-                if (get(this, 'domReadyCount') === undefined) {
-                    set(this, 'domReadyCount', 1);
-                } else {
-                    set(this, 'domReadyCount', get(this, 'domReadyCount') + 1);
-                }
-            }
-        },
-
         stopRefresh: function () {
             set(this, 'isRefreshable', false);
         },

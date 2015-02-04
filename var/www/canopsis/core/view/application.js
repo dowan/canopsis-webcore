@@ -39,13 +39,11 @@ define([
             }
         }.property('controller.fullscreenMode'),
 
-        willInsertElement: function() {
-            $('#loading').remove();
-            $('#loadingInfo').remove();
-        },
-
         didInsertElement: function() {
             console.log('main template rendered, trigger $ documentready', adminLTE);
+
+            $('#loading').remove();
+            $('#loadingInfo').remove();
 
             $("[data-toggle='offcanvas']").click(function(e) {
                 e.preventDefault();

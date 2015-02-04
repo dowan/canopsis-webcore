@@ -200,7 +200,6 @@ define([
 
             this.registerHooks();
             var result = this._super.apply(this, arguments);
-            get(this, 'controller').onReload(this.$);
 
             return result;
         },
