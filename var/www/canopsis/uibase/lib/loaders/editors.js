@@ -55,7 +55,6 @@ var editors = [
     { name: 'editor-tags', template: 'canopsis/uibase/editors/tags.html' },
     { name: 'editor-templateselector', template: 'canopsis/uibase/editors/templateselector.html' },
     { name: 'editor-textarea', template: 'canopsis/uibase/editors/textarea.html' },
-    { name: 'editor-timeinterval', template: 'canopsis/uibase/editors/timeinterval.html' },
     { name: 'editor-timestamp', template: 'canopsis/uibase/editors/timestamp.html' },
     { name: 'editor-userpreference', template: 'canopsis/uibase/editors/userpreference.html' },
     { name: 'editor-json', template: 'canopsis/uibase/editors/json.html' },

@@ -107,7 +107,7 @@ define([
             contentREF.push({ template: copyTemplate });
         },
 
-        registerFieldWithController: function() {
+        didInsertElement: function() {
             var formController  =  get(formsregistry, 'formwrapper.form');
             if (formController) {
                 var ArrayFields = get(formController, 'ArrayFields');
@@ -115,7 +115,7 @@ define([
                     ArrayFields.pushObject(this);
                 }
             }
-        }.on('didInsertElement'),
+        },
 
         changeCssClass : function(template,value) {
             var CSSclassToUse =  (this.checkIfAContainB(value,template))? this.cssClassON : this.cssClassOFF;

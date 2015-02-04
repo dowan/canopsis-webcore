@@ -55,7 +55,9 @@ define([
                 if(el_w > td_w) {
 
                     td.addClass('overflowed');
-                    td.mouseenter(function(){
+                    td.on('mouseenter',function(){
+                        //off is experimental on this feature
+                        td.off('mouseenter');
                         var $divs = td.children('.placeddiv');
                         if($divs.length) {
                             return;
@@ -85,6 +87,8 @@ define([
 
                         td.on('mouseleave', function(e) {
                             newDiv.remove();
+                            //off is experimental on this feature
+                            td.off('mouseleave');
                         });
                    });
                 }

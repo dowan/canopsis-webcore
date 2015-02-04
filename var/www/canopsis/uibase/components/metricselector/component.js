@@ -262,9 +262,6 @@ define([
             }
         },
 
-        didInsertElement: function() {
-            $('#' + get(this, 'helpModal.id')).popover({trigger: 'hover'});
-        }
     });
 
 

@@ -1,13 +1,10 @@
 <fieldset>
     <div style="float: right;">
+        {{#component-tooltip content=helpModal.content htmlEnabled=true noTranslation=true}}
+            <i class="fa fa-info-circle"></i>
+        {{/component-tooltip}}
         {{tr 'Search'}}: {{input action="search"}}
 
-        <a data-toggle="popover"
-           data-html="true"
-           data-placement="top"
-           {{bind-attr id=helpModal.id data-content=helpModal.content title=helpModal.title}}>
-            <i class="fa fa-info-circle"></i>
-        </a>
     </div>
 
     <b>{{tr 'Available'}}:</b>

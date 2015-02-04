@@ -53,7 +53,8 @@ define([
             this._super();
         },
 
-        registerFieldWithController: function() {
+        didInsertElement: function () {
+            //registerFieldWithController
             var formController  =  formsregistry.formwrapper.form;
             if ( formController ){
                 var validationFields = get(formController, 'validationFields');
@@ -64,7 +65,7 @@ define([
             if (formController.validateOnInsert){
                 this.validate();
             }
-        }.on('didInsertElement'),
+        },
 
         focusOut: function() {
             this.validate();

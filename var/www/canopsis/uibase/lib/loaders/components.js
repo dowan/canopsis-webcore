@@ -40,7 +40,6 @@ var components = [
     { name: 'components/component-stateeditor', url: 'canopsis/uibase/components/stateeditor/component', template: 'canopsis/uibase/components/stateeditor/template.html' },
     { name: 'components/component-eventselector', url: 'canopsis/uibase/components/eventselector/component', template: 'canopsis/uibase/components/eventselector/template.html' },
     { name: 'components/component-metricselector', url: 'canopsis/uibase/components/metricselector/component', template: 'canopsis/uibase/components/metricselector/template.html' },
-    { name: 'components/component-timeintervalselector', url: 'canopsis/uibase/components/timeintervalselector/component', template: 'canopsis/uibase/components/timeintervalselector/template.html' },
     { name: 'components/component-simpledicteditor', url: 'canopsis/uibase/components/simpledicteditor/component', template: 'canopsis/uibase/components/simpledicteditor/template.html' },
     { name: 'components/component-stringclassifiedcrecordselector', url: 'canopsis/uibase/components/stringclassifiedcrecordselector/component', template: 'canopsis/uibase/components/stringclassifiedcrecordselector/template.html' },
     { name: 'components/component-table', url: 'canopsis/uibase/components/table/component', template: 'canopsis/uibase/components/table/template.html' },

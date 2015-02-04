@@ -36,7 +36,6 @@ var templates = [
     { name: 'search', template: 'canopsis/uibase/templates/search.html' },
     { name: 'customfilters', template: 'canopsis/uibase/templates/customfilters.html' },
 
-    { name: 'timeintervalselection', template: 'canopsis/uibase/templates/timeintervalselection.html' },
     { name: 'userstatusmenu', template: 'canopsis/uibase/templates/userstatusmenu.html' },
     { name: 'schemamanagerstatusmenu', template: 'canopsis/uibase/templates/schemamanagerstatusmenu.html' },
     { name: 'notificationsstatusmenu', template: 'canopsis/uibase/templates/notificationsstatusmenu.html' },
