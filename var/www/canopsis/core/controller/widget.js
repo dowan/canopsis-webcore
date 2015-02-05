@@ -83,6 +83,10 @@ define([
             this.refreshContent();
         },
 
+        mixinsOptionsReady: function () {
+            //can be overriden to trigger action when mixins options ready.
+        },
+
         addMixinView: function (viewMixin) {
             /**
                 Adds mixins view to the current widget controller
