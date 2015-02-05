@@ -95,22 +95,22 @@ function($, WidgetFactory, CriticityLevelMixin) {
                 var total = 0;
                 var bar = {};
 
-                perfdata.aggregate(metricId, from, to, "max", 0).then(function(result) {
-                   var metric = result.data[0];
-                   var max = metric.points[0][1];
-                   set(bar, "max_value", max);
+                perfdata.aggregate(metricId, from, to, "last", 86400).then(function(result) {
+                    var metric = metrics[0];
+                    var max = metric.points[0][1];
+                    set(me, "max_value", max);
                 });
-                perfdata.aggregate(metricId, from, to, "min", 0).then(function(result) {
-                   var min = result.data[0].points[0][1];
-                   set(bar, "min_value", min);
+                perfdata.aggregate(metricId, from, to, "min", 86400).then(function(result) {
+                    var min = result.data[0].points[0][1];
+                    set(me, "min_value", min);
                 });
-                perfdata.aggregate(metricId, from, to, "last", 0).then(function(result) {
+                perfdata.aggregate(metricId, from, to, "last", 86400).then(function(result) {
                     var unit = result.data[0].meta.unit;
                     var metric = result.data[0];
                     var timestamp = metric.points[0][0];
                     var value = metric.points[0][1];
                     set(bar, "value", value);
-                    set(bar, "unit", unit);                  
+                    set(bar, "unit", unit);
                     bars[cmpt] = bar;
                     cmpt += 1;
                     set(me, "bar", bar);
@@ -122,19 +122,3 @@ function($, WidgetFactory, CriticityLevelMixin) {
 
     return widget;
 });
-
-/*
-warn_value=controller.warn_value 
-crit_value=controller.crit_value 
-background_color=controller.background_color 
-start_color=controller.start_color 
-warn_color=controller.warn_color 
-critic_color=controller.critic_color 
-thickness=controller.thickness 
-vertical=controller.vertical 
-height=controller.height 
-label=controller.label 
-labeldisplay=controller.labeldisplay 
-labelalign=controller.labelalign 
-labelwidth=controller.labelwidth
-*/

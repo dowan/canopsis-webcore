@@ -10,15 +10,19 @@
     var component = Ember.Component.extend({
 
         style_bar: function(){
-            var color = "background: " + this.getcolor() + ";";
-            return color + "width: " + this.get("percent") + "%;";
+            var color = "background: " + get(this,"getcolor") + ";";
+            return color + "width: " + get(this, "percent") + "%;";
         }.property("style_bar"),
 
+        value: function(){
+            return get(this, "value");
+        }.property("value"),
+
         getcolor: function(){
-            var background_color = this.get("background_color");
-            var warn_color = this.get("warn_color");
-            var critic_color = this.get("critic_color");
-            var valstatus = this.getstatus();
+            var background_color = get(this, "background_color");
+            var warn_color = get(this, "warn_color");
+            var critic_color = get(this, "critic_color");
+            var valstatus = get(this, "getstatus");
             switch(valstatus){
                 case "critical":
                     return critic_color;
@@ -33,10 +37,10 @@
         },
 
         getstatus: function(){
-            var percent = this.get("percent");
-            if(percent > this.get("crit_value")){
+            var percent = get(this, "percent");
+            if(percent > get(this, "crit_value")){
                 return "critical";
-            } else if(percent > this.get("warn_value")){
+            } else if(percent > get(this, "warn_value")){
                 return "warning";
             } else {
                 return "complete"
@@ -44,16 +48,16 @@
         },
         
         textstatus:function(){
-            return "(" + this.getstatus() + ")";
+            return "(" + get(this, "getstatus") + ")";
         }.property("textstatus"),
 
         textpercent:function(){
-            return "" + ""/*str(this.percent())*/ + "";
+            return "" + get(this, "percent") + "";
         }.property("textpercent"),
 
         percent:function(){
-            var value = this.get("value") - this.get("min_value");
-            var max = this.get("max_value") - this.get("min_value");
+            var value = get(this, "value") - get(this, "min_value");
+            var max = get(this, "max_value") - get(this, "min_value");
             var percent =  Math.ceil(value/max * 100);
             return percent;
         }.property("percent")

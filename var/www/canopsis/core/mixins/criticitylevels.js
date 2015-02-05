@@ -27,7 +27,7 @@ define([
         isNone = Ember.isNone;
 
     /**
-      Implements pagination in ArrayControllers
+      Implements criticity levels in ArrayControllers
 
       You should define on the ArrayController:
           - the `findOptions` property
@@ -38,14 +38,22 @@ define([
 
         init:function () {
 
-            this.warn_value = get(this, 'config.warn_value');
-            this.crit_value = get(this, 'config.crit_value');
-            this.unit_or_percent = get(this, 'config.unit_or_percent');
-            this.background_color = get(this, 'config.background_color');
-            this.warn_color = get(this, 'config.warn_color');
-            this.critic_color = get(this, 'config.critic_color');
 
-            this._super.apply(this, arguments);
+            var mixinsOptions = get(this, 'content.mixins');
+
+            if(mixinsOptions) {
+                var criticitylevelsOptions = get(this, 'content.mixins').findBy('name', 'criticitylevels');
+                this.mixinOptions.criticitylevels = criticitylevelsOptions;
+            }
+
+            this._super();
+
+            set(this, 'warn_value', get(this, 'mixinOptions.criticitylevels.warn_value'));
+            set(this, 'crit_value', get(this, 'mixinOptions.criticitylevels.crit_value'));
+            set(this, 'unit_or_percent', get(this, 'mixinOptions.criticitylevels.unit_or_percent'));
+            set(this, 'background_color', get(this, 'mixinOptions.criticitylevels.background_color'));
+            set(this, 'warn_color', get(this, 'mixinOptions.criticitylevels.warn_color'));
+            set(this, 'critic_color', get(this, 'mixinOptions.criticitylevels.critic_color'));
 
             if(isNone(get(this, 'background_color'))){
                 set(this, 'background_color', '#3c8dbc');
@@ -56,8 +64,6 @@ define([
             if(isNone(get(this, 'critic_color'))){
                 set(this, 'critic_color', '#f56954');
             }
-            
-            //set(this, 'warn_value', '35');
 
         }
     });
