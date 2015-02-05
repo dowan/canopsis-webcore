@@ -76,6 +76,7 @@ define([
 
     var get = Ember.get,
         set = Ember.set,
+        isNone = Ember.isNone,
         __ = Ember.String.loc;
 
 
@@ -153,6 +154,8 @@ define([
                 container: get(this, "container")
             });
 
+            set(this, 'devtoolsStore', devtoolsStore);
+
             devtoolsStore.find('userview', 'view.app_devtools').then(function(queryResults) {
                 set(appController, 'devtoolsUserview', queryResults);
             });
@@ -193,38 +196,22 @@ define([
 
             console.log('finding authentication backends config');
 
-            devtoolsStore.find('ldapconfig', 'cservice.ldapconfig').then(function(queryResults) {
-                console.log('ldap config found');
-                set(appController, 'ldapConfig', queryResults);
-                // set(Canopsis, 'conf.ldapConfig', queryResults);
-            }, function() {
-                console.log('create base ldap config');
+            appController.authConfig('authconfiguration', function (authconfigurationRecord) {
 
-                var record = devtoolsStore.createRecord('ldapconfig', {
-                    crecord_type: 'ldapconfig'
-                });
+                var serviceList = get(authconfigurationRecord, 'services');
 
-                record.id = 'cservice.ldapconfig';
+                console.log('authconfigurationRecord', authconfigurationRecord, serviceList);
 
-                set(appController, 'ldapConfig', record);
-                // set(Canopsis, 'conf.ldapConfig', record);
-            });
+                if(!isNone(serviceList)) {
+                    var length = serviceList.length;
+                    for(var i=0 ; i<length; i++) {
+                        //this test avoids empty strings
+                        if(serviceList[i]) {
+                            appController.authConfig(serviceList[i]);
+                        }
+                    }
+                }
 
-            devtoolsStore.find('casconfig', 'cservice.casconfig').then(function(queryResults) {
-                console.log('cas config found');
-                set(appController, 'casConfig', queryResults);
-                // set(Canopsis, 'conf.casConfig', queryResults);
-            }, function() {
-                console.log('create base cas config');
-
-                var record = devtoolsStore.createRecord('casconfig', {
-                    crecord_type: 'casconfig'
-                });
-
-                record.id = 'cservice.casconfig';
-
-                set(appController, 'casConfig', record);
-                // set(Canopsis, 'conf.casConfig', record);
             });
 
             var footerStore = DS.Store.create({
@@ -272,7 +259,72 @@ define([
             console.tags.remove('init');
         },
 
+        authConfig: function (authType, callback) {
+
+            var authId = 'cservice.' + authType;
+            var appController = this;
+            var store = get(this, 'devtoolsStore');
+
+            var onReadyRecord = function(appController, authType, record, callback) {
+                set(appController, authType, record);
+
+                if(!isNone(callback)) {
+                    callback(record);
+                }
+            };
+
+            store.find(authType, authId).then(function(queryResults) {
+
+                console.log(authType, 'config found', queryResults);
+                onReadyRecord(appController, authType, queryResults, callback);
+
+            }, function() {
+                console.log('create base ' + authType + ' config');
+
+                var record = store.createRecord(authType, {
+                    crecord_type: authType
+                });
+
+                record.id = authId;
+                onReadyRecord(appController, authType, record, callback);
+            });
+
+        },
+
+        editAuthConfig: function(authType) {
+
+            console.log('edit ' + authType);
+
+            var conf = get(this, authType);
+
+            if(isNone(conf)) {
+                this.send(
+                    'prompt',
+                    'Unable to load ' + authType + ' configuration. No edition possible.'
+                );
+            } else {
+                set(conf, 'crecord_type', authType);
+                var editForm = formsUtils.showNew('modelform', conf, { title: __('Edit ' + authType + ' configuration') });
+                editForm.submit.done(function() {
+                    conf.save();
+                });
+            }
+
+        },
+
         actions: {
+
+            editAuthConfiguration: function(authType) {
+                console.log('edit ' + authType);
+                this.editAuthConfig(authType);
+            },
+
+            prompt:function (message) {
+                formsUtils.showNew('confirmform', {}, {
+                    title: __(message)
+                });
+            },
+
             promptReloadApplication: function(title, location) {
                 setTimeout(function (){
                     console.log('in promptReloadApplication');
@@ -281,7 +333,7 @@ define([
                     });
 
                     recordWizard.submit.then(function(form) {
-                        if (Ember.isNone(location)) {
+                        if (isNone(location)) {
                             window.location = '/index.html';
                         } else {
                             window.location = location;
@@ -452,28 +504,6 @@ define([
                 });
 
                 console.groupEnd();
-            },
-
-            editLdapConfig: function() {
-                console.log('editLdapConfig');
-
-                var ldapConfig = get(this, 'ldapConfig');
-                set(ldapConfig, 'crecord_type', 'ldapconfig');
-                var editForm = formsUtils.showNew('modelform', ldapConfig, { title: __('Edit LDAP configuration') });
-                editForm.submit.done(function() {
-                    ldapConfig.save();
-                });
-            },
-
-            editCasConfig: function() {
-                console.log('editCasConfig');
-
-                var casConfig = get(this, 'casConfig');
-                set(casConfig, 'crecord_type', 'casconfig');
-                var editForm = formsUtils.showNew('modelform', casConfig, { title: __('Edit CAS configuration') });
-                editForm.submit.done(function() {
-                    casConfig.save();
-                });
             },
 
             addNewView: function () {
