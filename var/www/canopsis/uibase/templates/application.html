@@ -91,20 +91,18 @@
                                             </li>
                                         {{/if}}
                                     {{/each}}
-                                    {{#if controller.utils.session.rights.menu_enginesconfig.checksum}}
-                                        <li>
-                                            <a {{action 'editEventSettings'}}>
-                                                <i class="fa fa-angle-double-right"></i>
-                                                {{tr 'Events statuses'}}
-                                            </a>
-                                        </li>
-                                         <li>
-                                            <a {{action 'editDataclean'}}>
-                                                <i class="fa fa-angle-double-right"></i>
-                                                {{tr 'Data cleaner'}}
-                                            </a>
-                                        </li>
-                                    {{/if}}
+                                    <li>
+                                        <a {{action 'editEventSettings'}}>
+                                            <i class="fa fa-angle-double-right"></i>
+                                            {{tr 'Events statuses'}}
+                                        </a>
+                                    </li>
+                                     <li>
+                                        <a {{action 'editDataclean'}}>
+                                            <i class="fa fa-angle-double-right"></i>
+                                            {{tr 'Data cleaner'}}
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         {{/if}}
