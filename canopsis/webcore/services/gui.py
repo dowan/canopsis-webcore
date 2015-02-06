@@ -88,20 +88,28 @@ def exports(ws):
             }
 
             records = ws.db.find(
-                {'crecord_type': 'cservice'},
+                {'crecord_type': {'$in': ['casconfig', 'ldapconfig']}},
                 namespace='object'
             )
 
             prefix = len('cservice.')
 
+            ws.logger.info('found {} cservices'.format(len(records)))
+
             for cservice in records:
-                cname = cservice._id[prefix:]
                 cservice = cservice.dump()
+                cname = cservice['crecord_name']
                 cservices[cname] = cservice
+
+                ws.logger.info('found cservices type {}'.format(cname))
 
                 if cname == 'casconfig':
                     cservice['server'] = cservice['server'].rstrip('/')
                     cservice['service'] = cservice['service'].rstrip('/')
+                    ws.logger.info('cas config : server {}, service {}'.format(
+                        cservice['server'],
+                        cservice['service'],
+                    ))
 
             # Compile template
             login_page = os.path.join(ws.root_directory, 'login', 'index.html')
