@@ -41,13 +41,10 @@ define([
             footer: ['pagination', 'pagination-infos']
         },
 
-        init:function () {
-            this.itemsPerPagePropositionSelected = get(this, 'content.itemsPerPage');
-            this._super.apply(this, arguments);
-            if(isNone(get(this, 'itemsPerPagePropositionSelected'))){
-                var itemsperpage = this.getItemsPerPage();
-                set(this, 'itemsPerPagePropositionSelected', itemsperpage);
-            }
+
+        mixinsOptionsReady: function () {
+            this._super();
+            set(this, 'itemsPerPagePropositionSelected', this.getItemsPerPage());
         },
 
         itemsPerPage: function() {

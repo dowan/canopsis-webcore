@@ -179,6 +179,8 @@ define([
                 'mixinOptions': mixins.mixinOptions
             });
 
+            widgetControllerInstance.mixinsOptionsReady();
+
             var mixinsName = widget._data.mixins;
 
             if (mixinsName) {
