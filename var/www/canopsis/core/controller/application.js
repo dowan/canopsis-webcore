@@ -280,7 +280,7 @@ define([
                 console.log('create base ' + authType + ' config');
 
                 var record = store.createRecord(authType, {
-                    crecord_type: authType
+                    crecord_name: authType
                 });
 
                 record.id = authId;
@@ -301,8 +301,15 @@ define([
                     'Unable to load ' + authType + ' configuration. No edition possible.'
                 );
             } else {
+
                 set(conf, 'crecord_type', authType);
-                var editForm = formsUtils.showNew('modelform', conf, { title: __('Edit ' + authType + ' configuration') });
+
+                var editForm = formsUtils.showNew(
+                    'modelform',
+                    conf,
+                    { title: __('Edit ' + authType + ' configuration') }
+                );
+
                 editForm.submit.done(function() {
                     conf.save();
                 });
