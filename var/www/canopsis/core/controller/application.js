@@ -103,7 +103,7 @@ define([
         editMode: false,
 
         runtimeConfiguration: canopsisConfiguration,
-        debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
+        debug: Ember.computed.alias('runtimeConfiguration.DEBUG'),
 
         widgetsRegistry: widgetsRegistry,
         actionsRegistry: actionsRegistry,
