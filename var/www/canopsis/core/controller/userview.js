@@ -28,7 +28,7 @@ define([
 
     var get = Ember.get,
         set = Ember.set,
-         __ = Ember.String.loc;
+        __ = Ember.String.loc;
 
 
     var controller = CrecordController.extend(Ember.Evented, {

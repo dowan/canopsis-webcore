@@ -99,7 +99,7 @@ define([
             viewMixins.push(viewMixin);
         },
 
-        updateInterval: function (interval){
+        updateInterval: function (interval) {
             console.warn('This method should be overriden for current widget', get(this, 'id'), interval);
         },
 
@@ -132,7 +132,7 @@ define([
              * Show debug info in console and put widget var in window.$E
              */
             inspect: function (widget) {
-                debugUtils.inspectObject(this);
+                debugUtils.inspectObject(widget);
             },
 
             do: function(action) {

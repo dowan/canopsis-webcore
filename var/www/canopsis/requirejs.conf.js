@@ -219,7 +219,6 @@ require.config({
 window.isIE = navigator.appName.indexOf('Internet Explorer') !== -1;
 
 if (isIE) {
-
     //this force console to use log method for early loaded
     //modules that could use other console methods.
     console.group = function () {};
@@ -235,7 +234,6 @@ if (isIE) {
     console.settings = {
         save: function() {}
     };
-
 }
 
 var setLoadingInfo = function(text, icon) {
