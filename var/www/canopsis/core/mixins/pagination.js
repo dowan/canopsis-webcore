@@ -127,6 +127,10 @@ define([
             }
             //Big dirty hack in order to make it work.
             set(this, 'itemsPerPage', userSelection);
+
+            if(!get(this, 'mixinOptions.pagination'))
+                set(this, 'mixinOptions.pagination', {});
+
             set(this, 'mixinOptions.pagination.itemsPerPage', userSelection);
 
         }.observes('itemsPerPagePropositionSelected'),
