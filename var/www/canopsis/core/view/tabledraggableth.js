@@ -45,7 +45,8 @@ define([
 
             //get closest th from mouse position
             this.closestTh = undefined;
-            var closestDistance = 99999;
+            var closestDistance = Infinity;
+
             for (var i = 0, l = ths.length; i < l; i++) {
                 var absoluteDistance = Math.abs($(ths[i]).position().left + $(ths[i]).width() - mouseX);
 

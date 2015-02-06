@@ -1,0 +1,21 @@
+<div class="box">
+    {{#each widgetslot in controller.unplacedWidgets}}
+        {{view 'draggablewidgeticon' widgetslot=widgetslot}}
+    {{/each}}
+</div>
+
+{{#each item in controller.placedWidgets}}
+    <div>
+        {{placedwidget item=item}}
+    </div>
+{{/each}}
+<table style="width:100%; height:300px; border:1px solid #CCC">
+    {{#each controller.rowsEmptyArray}}
+        <tr>
+            {{#each controller.columnsEmptyArray}}
+                <td style="border:1px solid #CCC"></td>
+            {{/each}}
+        </tr>
+    {{/each}}
+</table>
+
