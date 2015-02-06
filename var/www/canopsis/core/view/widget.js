@@ -157,7 +157,7 @@ define([
             var mixins = computeMixinsArray(this, widget);
 
             mixins.array.pushObject({
-                content: widget,
+                model: widget,
                 target: get(this, 'target')
             });
 
@@ -175,7 +175,7 @@ define([
             widgetControllerInstance.refreshPartialsList();
 
             Ember.setProperties(widgetControllerInstance, {
-                'content.displayedErrors': get(this, 'displayedErrors'),
+                'model.displayedErrors': get(this, 'displayedErrors'),
                 'mixinOptions': mixins.mixinOptions
             });
 

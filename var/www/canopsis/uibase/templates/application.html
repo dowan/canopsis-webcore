@@ -1,11 +1,14 @@
 
 {{outlet "recordinfopopup"}}
 
-{{#if devtoolsUserview}}
-    <div class="debugmenu">
-        {{render "userview" devtoolsUserview}}
-    </div>
+{{#if controller.debug}}
+    {{#if devtoolsUserview}}
+        <div class="debugmenu">
+            {{render "userview" devtoolsUserview}}
+        </div>
+    {{/if}}
 {{/if}}
+
 <!-- header logo: style can be found in heaader.less -->
 {{#unless controller.fullscreenMode}}
     <header class="header">
