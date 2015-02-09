@@ -53,19 +53,6 @@ define([
             }
         },
 
-        mixinsOptionsReady: function () {
-            this._super();
-
-            var filter = get(this, 'userParams.findParams_cfilterFilterPart');
-
-            if (isNone(filter)) {
-                // Retrieve custom default filter from mixin information
-                filter = get(this, 'mixinOptions.customfilterlist.default_filter')
-            }
-
-            set(this, 'findParams_cfilterFilterPart', filter);
-        },
-
         isSelectedFilter: function (filterList) {
             if(!filterList || !filterList.length) {
                 return false;
@@ -103,15 +90,17 @@ define([
 
         actions: {
             setFilter: function (filter) {
+
                 var query = get(filter, 'filter');
-                set(this, 'findParams_cfilterFilterPart', query);
+
+                //current user filter set for list management
                 set(this, 'currentFilter', filter);
-                console.log('currentFilter', get(this, 'currentFilter'));
-
-                set(this, 'userParams.findParams_cfilterFilterPart', query);
-                set(this, 'userParams.currentFilter', filter);
+                //user filter set for user params persistance
+                set(this, 'userParams.userFilter', query);
+                //user filter for list be able to reload properly
+                set(this, 'userFilter', query);
+                //push userparams to db
                 this.saveUserConfiguration();
-
 
                 if (get(this, 'currentPage') !== undefined) {
                     set(this, 'currentPage', 1);
