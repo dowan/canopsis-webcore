@@ -48,16 +48,10 @@ define([
         },
 
         itemsPerPage: function() {
-            console.log('itemsperpage CP', this, this.mixinOptions.pagination, get(this, 'mixinOptions.pagination.itemsPerPage'));
-
-            var itemsPerPage = get(this, 'mixinOptions.pagination.itemsPerPage');
-
-            if(!itemsPerPage) {
-                itemsPerPage = 5;
-            }
-
+            var itemsPerPage = this.getItemsPerPage();
+            console.log('itemsperpage CP', itemsPerPage);
             return itemsPerPage;
-        }.property('mixinOptions.pagination.itemsPerPage'),
+        }.property(),
 
         paginationMixinContent: function() {
             console.warn("paginationMixinContent should be defined on the concrete class");
@@ -91,29 +85,31 @@ define([
         currentPage: 1,
 
         itemsDivided: function(){
-            return get(this, 'itemsTotal') / get(this, 'mixinOptions.pagination.itemsPerPage');
-        }.property('itemsTotal', 'mixinOptions.pagination.itemsPerPage'),
+            return get(this, 'itemsTotal') / get(this, 'itemsPerPage');
+        }.property('itemsTotal', 'itemsPerPage'),
 
         itemsPerPagePropositions : function() {
-            var res = Ember.A([5, 10, 20, 50]);
-            var itemsPerPagePropositionSelected = get(this, 'itemsPerPagePropositionSelected');
-            if( itemsPerPagePropositionSelected !== 5 &&
-                itemsPerPagePropositionSelected !== 10 &&
-                itemsPerPagePropositionSelected !== 20 &&
-                itemsPerPagePropositionSelected !== 50) {
-                res.pushObject(itemsPerPagePropositionSelected);
+
+            var choices = [5, 10, 20, 50];
+
+            var customItemsPerPage = get(this, 'mixinOptions.pagination.customItemsPerPage');
+
+            if (!isNone(customItemsPerPage) && Ember.isArray(customItemsPerPage)) {
+
+                var length = customItemsPerPage.length;
+
+                for (var i=0; i<length; i++) {
+                    if(!isNaN(customItemsPerPage[i])) {
+                        choices.push(parseInt(customItemsPerPage[i]));
+                    }
+
+                }
             }
-            return res;
+
+            choices.sort(function (a, b) {return a - b;});
+
+            return choices;
         }.property('itemsPerPagePropositionSelected'),
-
-        itemsPerPageChanged : function() {
-            if(get(this, 'itemsPerPageChangedInitialLock') !== undefined) {
-                set(this, 'currentPage', 1);
-
-                this.refreshContent();
-            }
-            set(this, 'itemsPerPageChangedInitialLock', true);
-        }.observes('mixinOptions.pagination.itemsPerPage'),
 
         onCurrentPageChanges: function() {
             this.refreshContent();
@@ -125,19 +121,16 @@ define([
                 set(this, 'userParams.itemsPerPage', userSelection);
                 this.saveUserConfiguration();
             }
-            //Big dirty hack in order to make it work.
+
             set(this, 'itemsPerPage', userSelection);
 
-            if(!get(this, 'mixinOptions.pagination'))
-                set(this, 'mixinOptions.pagination', {});
-
-            set(this, 'mixinOptions.pagination.itemsPerPage', userSelection);
+            this.refreshContent();
 
         }.observes('itemsPerPagePropositionSelected'),
 
 
         refreshContent: function() {
-            console.group('paginationMixin refreshContent', get(this, 'mixinOptions.pagination.itemsPerPage'));
+            console.group('paginationMixin refreshContent', get(this, 'itemsPerPage'));
 
             if (get(this, 'paginationMixinFindOptions') === undefined) {
                 set(this, 'paginationMixinFindOptions', {});
@@ -158,6 +151,7 @@ define([
         },
 
         getItemsPerPage: function() {
+            //gets user value or default mixin value
             var itemsPerPage = get(this, 'userParams.itemsPerPage') || get(this, 'mixinOptions.pagination.itemsPerPage');
 
             console.log('itemsPerPage is', itemsPerPage, 'type', typeof itemsPerPage);
@@ -211,18 +205,6 @@ define([
             }
         }.property('itemsTotal'),
 
-        extractItems: function(queryResult) {
-            get(this, 'paginationMixinContent');
-
-            var itemsPerPage = get(this, 'userParams.itemsPerPage') || get(this, 'mixinOptions.pagination.itemsPerPage') || 5;
-            if (itemsPerPage === 0) {
-                console.warn("itemsPerPage is 0 in widget", this);
-                console.warn("assuming itemsPerPage is 5");
-                itemsPerPage = 5;
-            }
-
-            this._super(queryResult);
-        }
     });
 
     return mixin;
