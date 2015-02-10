@@ -1,34 +1,55 @@
-  define([
+define([
   'jquery',
   'ember',
   'app/application'
 ], function($, Ember, Application) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     var component = Ember.Component.extend({
 
+        value : null,
+        min_value : null,
+        max_value : null,
+
         init: function(){
 
+            this._super();
+            var val = this.get("value");
+            alert(val);
+            /*
+            if (isNone(get(this, 'min_value'))) {
+                set(this, 'min_value', 0);
+                alert(get(this, 'min_value'));
+            } else {
+                alert(get(this, 'min_value'));
+            }
+            */
             //this.getpercent();
 
-            set(this, "percent", get(this, "getpercent"));
             /*
             set(this, "getcolor", "getcolor");
             set(this, "getstatus", "getstatus");
             set(this, "style_bar", "style_bar");
             set(this, "width_label", "width_label");
             */
-            this._super();
+            //this._super.apply(this, arguments);
 
         },
 
+        get_value: function(){
+            return get(this, "value");
+        }.property("get_value"),
+
+        getValue: function(){
+            return this.get("value");
+        }.property("getValue"),
         
         label: function(){
             return "LABEL";
         }.property("label"),
-
         
         width_label: function(){
             return "width: 0%;";
@@ -82,7 +103,7 @@
             var new_val = value - min;
             var max = parseFloat(get(this, "max_value"));
             var new_max = max - min;
-            var percent =  Math.ceil(new_value/new_max * 100);
+            var percent =  Math.ceil(new_val/new_max * 100);
             return percent;
         }.property("percent")
 
