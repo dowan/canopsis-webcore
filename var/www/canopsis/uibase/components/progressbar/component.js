@@ -9,14 +9,35 @@
 
     var component = Ember.Component.extend({
 
+        init: function(){
+
+            //this.getpercent();
+
+            set(this, "percent", get(this, "getpercent"));
+            /*
+            set(this, "getcolor", "getcolor");
+            set(this, "getstatus", "getstatus");
+            set(this, "style_bar", "style_bar");
+            set(this, "width_label", "width_label");
+            */
+            this._super();
+
+        },
+
+        
+        label: function(){
+            return "LABEL";
+        }.property("label"),
+
+        
+        width_label: function(){
+            return "width: 0%;";
+        }.property("width_label"),
+
         style_bar: function(){
             var color = "background: " + get(this,"getcolor") + ";";
             return color + "width: " + get(this, "percent") + "%;";
         }.property("style_bar"),
-
-        value: function(){
-            return get(this, "value");
-        }.property("value"),
 
         getcolor: function(){
             var background_color = get(this, "background_color");
@@ -34,7 +55,7 @@
                     return background_color;
                     break;
             }
-        },
+        }.property("getcolor"),
 
         getstatus: function(){
             var percent = get(this, "percent");
@@ -45,8 +66,8 @@
             } else {
                 return "complete"
             }
-        },
-        
+        }.property("getstatus"),
+       
         textstatus:function(){
             return "(" + get(this, "getstatus") + ")";
         }.property("textstatus"),
@@ -55,10 +76,13 @@
             return "" + get(this, "percent") + "";
         }.property("textpercent"),
 
-        percent:function(){
-            var value = get(this, "value") - get(this, "min_value");
-            var max = get(this, "max_value") - get(this, "min_value");
-            var percent =  Math.ceil(value/max * 100);
+        getpercent:function(){
+            var min = parseFloat(get(this, "min_value"));
+            var value = parseFloat(get(this, "value"));
+            var new_val = value - min;
+            var max = parseFloat(get(this, "max_value"));
+            var new_max = max - min;
+            var percent =  Math.ceil(new_value/new_max * 100);
             return percent;
         }.property("percent")
 

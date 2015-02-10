@@ -96,13 +96,12 @@ function($, WidgetFactory, CriticityLevelMixin) {
                 var bar = {};
 
                 perfdata.aggregate(metricId, from, to, "last", 86400).then(function(result) {
-                    var metric = metrics[0];
-                    var max = metric.points[0][1];
-                    set(me, "max_value", max);
+                    var max = result.data[0].points[0][1];
+                    set(bar, "max_value", max);
                 });
                 perfdata.aggregate(metricId, from, to, "min", 86400).then(function(result) {
                     var min = result.data[0].points[0][1];
-                    set(me, "min_value", min);
+                    set(bar, "min_value", min);
                 });
                 perfdata.aggregate(metricId, from, to, "last", 86400).then(function(result) {
                     var unit = result.data[0].meta.unit;
