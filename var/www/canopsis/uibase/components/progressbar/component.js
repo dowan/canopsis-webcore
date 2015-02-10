@@ -17,36 +17,9 @@ define([
         init: function(){
 
             this._super();
-            var val = this.get("value");
-            alert(val);
-            /*
-            if (isNone(get(this, 'min_value'))) {
-                set(this, 'min_value', 0);
-                alert(get(this, 'min_value'));
-            } else {
-                alert(get(this, 'min_value'));
-            }
-            */
-            //this.getpercent();
-
-            /*
-            set(this, "getcolor", "getcolor");
-            set(this, "getstatus", "getstatus");
-            set(this, "style_bar", "style_bar");
-            set(this, "width_label", "width_label");
-            */
-            //this._super.apply(this, arguments);
 
         },
 
-        get_value: function(){
-            return get(this, "value");
-        }.property("get_value"),
-
-        getValue: function(){
-            return this.get("value");
-        }.property("getValue"),
-        
         label: function(){
             return "LABEL";
         }.property("label"),
@@ -61,8 +34,8 @@ define([
         }.property("style_bar"),
 
         getcolor: function(){
-            var background_color = get(this, "background_color");
-            var warn_color = get(this, "warn_color");
+            var background_color = get(this, "bg_color");
+            var warn_color = get(this, "warning_color");
             var critic_color = get(this, "critic_color");
             var valstatus = get(this, "getstatus");
             switch(valstatus){
@@ -79,10 +52,17 @@ define([
         }.property("getcolor"),
 
         getstatus: function(){
+            var unit_or_percent = get(this, "unit_or_percent");
             var percent = get(this, "percent");
-            if(percent > get(this, "crit_value")){
+            var value = get(this, "value");
+            if(unit_or_percent){
+                var compared = value;
+            } else {
+                var compared = percent;
+            }
+            if(compared > get(this, "crit_value")){
                 return "critical";
-            } else if(percent > get(this, "warn_value")){
+            } else if(compared > get(this, "warn_value")){
                 return "warning";
             } else {
                 return "complete"
@@ -94,10 +74,10 @@ define([
         }.property("textstatus"),
 
         textpercent:function(){
-            return "" + get(this, "percent") + "";
+            return "" + get(this, "percent") + "%";
         }.property("textpercent"),
 
-        getpercent:function(){
+        percent:function(){
             var min = parseFloat(get(this, "min_value"));
             var value = parseFloat(get(this, "value"));
             var new_val = value - min;
