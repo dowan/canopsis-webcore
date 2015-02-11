@@ -53,6 +53,10 @@ function($, WidgetFactory, CriticityLevelMixin) {
             this.getMixinProperties();
             console.groupEnd();
 
+            console.group('Load series:');
+            this.fetchSeries(from, to, replace);
+            console.groupEnd();
+
             console.group('Load metrics:');
             this.fetchMetrics(from, to, replace);
             console.groupEnd();
@@ -75,6 +79,41 @@ function($, WidgetFactory, CriticityLevelMixin) {
             set(this, "crit_value", crit_value);
             var unit_or_percent = Ember.get('mixinOptions.criticitylevels.unit_or_percent');
             set(this, "unit_or_percent", unit_or_percent);
+        },
+
+        fetchSeries: function(from, to, replace) {
+            var ctrl = get(this, 'controller');
+            var cserie = get(this, 'controllers.serie');
+            var series = get(this, 'config.series');
+            var store = get(this, 'widgetDataStore');
+
+            var bars = [];
+            var cmpt = 0;
+
+            var me = this;
+          
+            var slength = series.length;
+            for(var s = 0; s < slength; s++) {
+                var serieId = series[s];
+                var total = 0;
+                var bar = {};
+                store.find('serie', serieId).then(function(result) {
+                    var serie = result.content;
+                    alert("cool");
+                    cserie.fetch(serie, from, to).then(function(result) {   
+                        var max = 100;
+                        var min = 0;
+                        var value = 50;
+                        alert(value);
+                        var unit = '';
+                        set(bar, "max_value", max);
+                        set(bar, "min_value", min);
+                        set(bar, "value", value);
+                        set(bar, "unit", unit);
+                        set(me, "bar", bar);
+                    });
+                });
+            }
         },
 
         fetchMetrics: function(from, to, replace) {
