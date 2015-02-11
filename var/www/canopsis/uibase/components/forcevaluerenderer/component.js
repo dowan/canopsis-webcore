@@ -38,7 +38,7 @@ define([
             if (!Ember.isNone(attr)) {
 
                 //copy to avoid side effects
-                var attr = Ember.copy(attr);
+                attr = Ember.copy(attr);
                 var value = get(this, 'value');
 
                 console.log('testing attr inf forcevaluerenderer component', attr);
