@@ -103,7 +103,6 @@ define([
                         set(me, 'widgetDataMetas', get(result, 'meta'));
                         set(me, 'items', get(result, 'content'));
 
-                        me.extractItems(result);
                     });
                 }
                 else {
@@ -118,18 +117,11 @@ define([
 
                     set(this, 'items', items);
 
-                    me.extractItems({
-                        meta: get(this, 'widgetDataMetas'),
-                        content: get(this, 'items')
-                    });
                 }
             } catch(err) {
                 console.warn('extractItems not updated:', err);
 
-                this.extractItems({
-                    meta: get(this, 'widgetDataMetas'),
-                    content: get(this, 'items')
-                });
+
             }
         },
 
