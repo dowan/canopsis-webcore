@@ -99,12 +99,10 @@ function($, WidgetFactory, CriticityLevelMixin) {
                 var bar = {};
                 store.find('serie', serieId).then(function(result) {
                     var serie = result.content;
-                    alert("cool");
                     cserie.fetch(serie, from, to).then(function(result) {   
                         var max = 100;
                         var min = 0;
                         var value = 50;
-                        alert(value);
                         var unit = '';
                         set(bar, "max_value", max);
                         set(bar, "min_value", min);
@@ -149,9 +147,8 @@ function($, WidgetFactory, CriticityLevelMixin) {
                     var value = metric.points[0][1];
                     set(bar, "value", value);
                     set(bar, "unit", unit);
-                    bars[cmpt] = bar;
+                    bars.pushObject(bar);
                     cmpt += 1;
-                    set(me, "bar", bar);
                 });
             }
             set(this, 'bars', bars);
