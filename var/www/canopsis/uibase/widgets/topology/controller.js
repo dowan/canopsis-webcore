@@ -183,7 +183,10 @@ define([
             };
             // update the view
             this.updateModel();
-            var width = this.$().width(), height = this.$().height();
+            var width = get(this, 'controller.width');
+            if (!width) width = this.$().width();
+            var height = get(this, 'controller.height');
+            if (!height) height = width * 9 / 16;
             // apply force behavior
             if (this.force === null) {
                 this.force = d3.layout.force()
@@ -477,14 +480,15 @@ define([
             var record_id = record.get('cid');
             var result = this.d3_graph.data_by_id[record_id];
             if (result === undefined) {
+                var old_result = record.d3_elt;
                 var result = {
                     id: record_id,
                     index: this.d3_graph.nodes.length,
                     _weight: 1,
-                    x: 0,
-                    y: 0,
-                    px: 0,
-                    py: 0
+                    x: old_result === undefined ? 0 : old_result.x,
+                    y: old_result === undefined ? 0 : old_result.y,
+                    px: old_result === undefined ? 0 : old_result.px,
+                    py: old_result === undefined ? 0 : old_result.py
                 };
                 // add result in d3_graph nodes
                 this.d3_graph.nodes.push(result);
@@ -972,7 +976,7 @@ define([
                                 switch(d.elt.get('info').state) {
                                     case 0: result = 'green'; break; // ok
                                     case 1: result = 'yellow'; break; // warning
-                                    case 2: result = 'red'; break; // critical
+                                    case 2: result = '#FF9900 !important'; break; // critical
                                     case 3: result = 'white'; break; // unknown
                                 }
                             }
@@ -1383,6 +1387,9 @@ define([
 
         graph_type: 'topology', // graph type
         graph_id: null,  // graph id
+
+        width: null,  // view width
+        height: null,  // view height
 
         graph_cls: 'canopsis.topology.elements.Topology', // default graph class
 
