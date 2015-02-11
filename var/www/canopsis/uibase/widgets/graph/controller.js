@@ -168,8 +168,8 @@ define([
         }.observes('gravity'),
 
         rerender: function() {
-            var _this = this;
             this._super.apply(this, arguments);
+            var _this = this;
             var width = this.$().width(), height = this.$().height();
             // apply force behavior
             if (this.force === null) {
@@ -489,7 +489,7 @@ define([
         },
         editHandler: function(data) {
             d3.event.stopPropagation();
-            this.edit(data);
+            this.controller.edit(data);
             this.destroyToolBox();
         },
         deleteHandler: function(data) {
