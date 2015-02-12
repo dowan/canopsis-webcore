@@ -25,9 +25,16 @@ define([
         set = Ember.set,
         isNone = Ember.isNone;
 
+    /**
+    This component forces a schema value to be
+    applied on a specific field on form save.
+    **/
+
 
     var component = Ember.Component.extend({
         init: function () {
+            this._super();
+            console.log('forced value attr', get(this, 'attr'));
             if (!isNone(get(this, 'forcedvalue'))) {
                 console.log('setting', get(this, 'content.value'),'to', get(this,'forcedvalue'));
                 set(this, 'content.value', get(this, 'forcedvalue'));

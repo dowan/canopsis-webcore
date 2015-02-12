@@ -34,11 +34,11 @@ define([
                 Business rules allowing to change attr values at runtime (when this helper is called)
                 Applyed rules should be explained below and in which context they are called
             */
-            if (!Ember.isNone(get(this, 'attr'))) {
+            var attr = get(this, 'attr');
+            if (!Ember.isNone(attr)) {
 
                 //copy to avoid side effects
-                var attr = Ember.copy(get(this, 'attr').toJson());
-
+                attr = Ember.copy(attr);
                 var value = get(this, 'value');
 
                 console.log('testing attr inf forcevaluerenderer component', attr);

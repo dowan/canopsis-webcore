@@ -71,10 +71,10 @@
     </marker>
 </defs>
 </svg>
-Auto-Layout: {{input name="autoLayout" type="checkbox" checked=controller.autoLayout}}
+Auto-Layout: {{input name="autoLayout" type="checkbox" checked=view.autoLayout}}
 Lock all: {{input name="lockAll" type="checkbox"
- checked=controller.lockAll}}
-Filter: {{input name="filter" type="text" value="controller.filter" action="controller.filterChanged" on="key-press"}}
+ checked=view.lockAll}}
+Filter: {{input name="filter" type="text" value="view.filter" action="view.filter" on="key-press"}}
 <!--
 Charge: <input type="range" min="-200" max="200" step="10" {{bind-attr value=controller.charge}} />
 Link strength: <input type="range" min="0" max="1" step="0.1" {{bind-attr value=controller.linkStrength}} />

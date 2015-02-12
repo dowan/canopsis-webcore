@@ -51,7 +51,6 @@ define([
 
         attr: function() {
             var shown_columns = get(this, 'shown_columns');
-
             for (var i = 0, l = shown_columns.length; i < l; i++) {
                 if(shown_columns[i].field === get(this, 'field')) {
                     return shown_columns[i];

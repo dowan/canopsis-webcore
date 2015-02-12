@@ -93,6 +93,8 @@ define([
 
                 var query = get(filter, 'filter');
 
+                //current selected filter information to user params
+                set(this, 'userParams.currentFilter', filter);
                 //current user filter set for list management
                 set(this, 'currentFilter', filter);
                 //user filter set for user params persistance
@@ -102,7 +104,8 @@ define([
                 //push userparams to db
                 this.saveUserConfiguration();
 
-                if (get(this, 'currentPage') !== undefined) {
+                //changing pagination information
+                if (!isNone(get(this, 'currentPage'))) {
                     set(this, 'currentPage', 1);
                 }
 
@@ -163,12 +166,7 @@ define([
 
             removeFilter: function (filter) {
 
-                var title;
-                try {
-                    title = filter.get('title');
-                } catch (err) {
-                    title = filter.title;
-                }
+                var title = get(filter, 'title');
 
                 var recordWizard = formsUtils.showNew('confirmform', {}, {
                     title: __('Are you sure to delete filter') + ' ' + title + '?'
