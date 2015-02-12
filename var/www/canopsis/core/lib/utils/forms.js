@@ -36,6 +36,10 @@ define([
             classDict.target = routesUtils.getCurrentRouteController();
             classDict.container = Application.__container__;
 
+            if(formsregistry.all[formName] === undefined) {
+                console.error('the form', formName, 'was not found');
+            }
+
             var formController = formsregistry.all[formName].EmberClass.create(classDict);
             formController.refreshPartialsList();
             return formController;
