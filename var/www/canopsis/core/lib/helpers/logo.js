@@ -28,7 +28,8 @@ define(['ember' , "app/application"], function(Ember , Application) {
         sikuli: folderPath + 'sikulilogo.png',
         cucumber: folderPath + 'cucumberlogo.png',
         watir: folderPath + 'watirlogo.png',
-        jmeter: folderPath + 'jmeterlogo.jpg'
+        jmeter: folderPath + 'jmeterlogo.jpg',
+        centreon: folderPath + 'centreonlogo.png'
 
     };
 
