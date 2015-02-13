@@ -490,6 +490,18 @@ define([
                     px: old_result === undefined ? 0 : old_result.px,
                     py: old_result === undefined ? 0 : old_result.py
                 };
+                info = record.get('info');
+                if (info.shape !== undefined && info.shape[this.graph_id] !== undefined) {
+                    var coordinates = info.shape[this.graph_id];
+                    if (result.x === undefined) {
+                        result.x = coordinates.x;
+                        result.y = coordinates.y;
+                    }
+                    if (result.px === undefined) {
+                        result.px = coordinates.px;
+                        result.py = coordinates.py;
+                    }
+                }
                 // add result in d3_graph nodes
                 this.d3_graph.nodes.push(result);
                 // add node reference in d3_graph.data_by_id
@@ -1797,13 +1809,12 @@ define([
         */
         toElt: function(record) {
             var result = {
-                data: record.get('info'),
                 _id: record.get('_id'),
                 cid: record.get('cid'),
                 _type: record.get('_type'),
                 type: record.get('type'),
                 _cls: record.get('_cls'),
-                data: record.get('info')
+                info: record.get('info')
             };
             var record_type = record.get('type');
             if (record_type === 'topoedge') {
@@ -1811,6 +1822,16 @@ define([
                 result.sources = record.get('sources');
                 result.targets = record.get('targets');
                 result.directed = record.get('directed');
+            }
+            // save coordinates in the dictionary of shape.graph_id
+            if (result.info.shape === undefined) {
+                result.info.shape = {};
+            }
+            result.info.shape[this.graph_id] = {
+                x: record.d3_elt.x,
+                y: record.d3_elt.y,
+                px: record.d3_elt.px,
+                py: record.d3_elt.py
             }
             return result;
         },
@@ -1833,7 +1854,7 @@ define([
                     type: 'toponode',
                     _type: 'vertice',
                     _cls: this.default_vertice_cls,
-                    data: {
+                    info: {
                         entity: '',
                         operator: ''
                     },
@@ -1852,16 +1873,14 @@ define([
                     if (!elt._cls) {
                         elt._cls = this.default_vertice_cls;
                     }
-                    if (!elt.data) {
-                        elt.data = {
+                    if (!elt.info) {
+                        elt.info = {
                             entity: '',
                             operator: '',
                             state: 0
                         };
                     }
                 }
-                elt.info = elt.data;
-                delete elt.data;
                 var result = dataUtils.getStore().createRecord(
                     elt.type,
                     elt
