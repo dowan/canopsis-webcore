@@ -65,6 +65,56 @@ define([
             return "content";
         }.property(),
 
+        getInspectedItemType: function() {
+            var itemType = get(this, 'inspectedItemType');
+
+            if (itemType === "view") {
+                itemType = "userview";
+            }
+
+            return itemType;
+        },
+
+        insertValueIntoAttribute: function(createdCategory, inspectedDataItem, key, attr, count) {
+            var value = (!this.isOnCreate)? get(inspectedDataItem, key) : attr.options["defaultValue"];
+
+            if (attr.type === "array"){
+                var value_temp = Ember.copy(value , true);
+                value = value_temp;
+            }
+            createdCategory.keys[count].value = value;
+
+            return createdCategory;
+        },
+
+        generateEditorNameForAttribute: function(attr) {
+            var editorName;
+
+            if (attr.options !== undefined && attr.options.role !== undefined) {
+                editorName = "editor-" + attr.options.role;
+            } else {
+                editorName = "editor-" + attr.type;
+            }
+
+            if (Ember.TEMPLATES[editorName] === undefined) {
+                editorName = "editor-defaultpropertyeditor";
+            }
+
+            return editorName;
+        },
+
+        generateSeparatorAttribute: function() {
+            return {
+                type:'string',
+                model: {
+                    options: {
+                        role:"separator"
+                    }
+                },
+                options: {}
+            };
+        },
+
         //getting attributes (keys and values as seen on the form)
         categorized_attributes: function() {
             var inspectedDataItem = get(this, 'inspectedDataItem');
@@ -72,16 +122,9 @@ define([
             if (inspectedDataItem !== undefined) {
 
                 console.log("inspectedDataItem attributes", get(inspectedDataItem, 'attributes'));
-                var me = this;
+                var itemType = this.getInspectedItemType();
 
-                if (get(this, 'inspectedItemType') !== undefined) {
-                    var itemType;
-
-                    if (get(this, 'inspectedItemType') === "view") {
-                        itemType = "userview";
-                    } else {
-                        itemType = get(this, 'inspectedItemType');
-                    }
+                if (itemType !== undefined) {
 
                     console.log("inspected itemType", itemType.capitalize());
                     var referenceModel = Application[itemType.capitalize()];
@@ -117,50 +160,28 @@ define([
                     for (var i = 0, li = refModelCategories.length; refModelCategories && i < li; i++) {
 
                         var category = refModelCategories[i],
-                        createdCategory = {};
-                        createdCategory.title = category.title;
-                        createdCategory.keys = [];
+                        createdCategory = {
+                            'title': category.title,
+                            'keys': []
+                        };
 
                         for (var j = 0, lj = category.keys.length; j < lj; j++) {
                             var key = category.keys[j];
+                            var attr = modelAttributes.get(key);
 
                             if(key === "separator") {
-                                createdCategory.keys[j] = {
-                                    type:'string',
-                                    model: {
-                                        options: {
-                                            role:"separator"
-                                        }
-                                    },
-                                    options: {}
-                                };
+                                createdCategory.keys[j] = this.generateSeparatorAttribute();
                             } else {
-                                if (typeof key === "object") {
-                                    key = key.field;
-                                }
-
-                                if (key !== undefined && modelAttributes.get(key) === undefined) {
+                                if (key !== undefined && attr === undefined) {
                                     notificationUtils.error("An attribute that does not exists seems to be referenced in schema categories" + key, referenceModel);
 
-                                    //break the iteration
-                                    createdCategory.keys[j] = {
-                                        type:'string',
-                                        model: {
-                                            options: {
-                                                role:"separator"
-                                            }
-                                        },
-                                        options: {}
-                                    };
+                                    createdCategory.keys[j] = this.generateSeparatorAttribute();
 
-                                    //break the iteration, insertinng a separator instead of a regular editor
-                                    //TODO custom error readonly editor
                                     continue;
                                 } else {
                                     //TODO refactor the 20 lines below in an utility function "getEditorForAttr"
                                     //find appropriate editor for the model property
                                     var editorName;
-                                    var attr = modelAttributes.get(key);
 
                                     //defines an option object explicitely here for next instruction
                                     if (attr.options === undefined) {
@@ -174,16 +195,6 @@ define([
                                         set(attr, 'options.hiddenInForm', true);
                                     }
 
-                                    if (attr.options !== undefined && attr.options.role !== undefined) {
-                                        editorName = "editor-" + attr.options.role;
-                                    } else {
-                                        editorName = "editor-" + attr.type;
-                                    }
-
-                                    if (Ember.TEMPLATES[editorName] === undefined) {
-                                        editorName = "editor-defaultpropertyeditor";
-                                    }
-
                                     //enable field label override.
                                     var label = key;
                                     if (override_labels[key]) {
@@ -192,19 +203,11 @@ define([
 
                                     createdCategory.keys[j] = {
                                         field: label,
-                                        model: modelAttributes.get(key),
-                                        editor: editorName
+                                        model: attr,
+                                        editor: this.generateEditorNameForAttribute(attr)
                                     };
 
-                                    var value = (!this.isOnCreate)? get(inspectedDataItem, key) : attr.options["defaultValue"];
-
-                                    if (attr.type === "array"){
-                                        var value_temp = Ember.copy(value , true);
-                                        value = value_temp;
-                                    }
-                                    createdCategory.keys[j].value = value;
-
-                                    console.log("category key ", category.keys[j].value);
+                                    createdCategory = this.insertValueIntoAttribute(createdCategory, inspectedDataItem, key, attr, j);
                                 }
                             }
                         }
