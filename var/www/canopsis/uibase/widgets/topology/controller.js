@@ -968,7 +968,15 @@ define([
             var _this = this;
             nodes
                 .select('path')
-                    .style(
+                    .classed(
+                        {
+                            'ok': function(d) {return !d.elt.get('info').state;},
+                            'warning': function(d) {return d.elt.get('info').state === 1;},
+                            'critical': function(d) {return d.elt.get('info').state === 2;},
+                            'unknown': function(d) {return d.elt.get('info').state > 3;}
+                        }
+                    )
+                    /*.style(
                         'fill',
                         function(d) { // set default color to green
                             var result = 'green';
@@ -982,7 +990,7 @@ define([
                             }
                             return result;
                         }
-                    )
+                    )*/
                     .attr(
                         'd',
                         function(d, i) {
