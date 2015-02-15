@@ -28,7 +28,8 @@ define([
 function($, WidgetFactory, CriticityLevelMixin) {
 
     var get = Ember.get,
-    set = Ember.set;
+    set = Ember.set,
+    isNone = Ember.isNone;
 
     var widgetOptions = {};
 
@@ -37,6 +38,9 @@ function($, WidgetFactory, CriticityLevelMixin) {
         needs: ['serie', 'perfdata'],
 
         findItems: function() {
+
+            set(this, "bars", []);
+        
             var replace = false;
             var from = get(this, 'lastRefresh');
             var now = new Date().getTime();
@@ -61,9 +65,23 @@ function($, WidgetFactory, CriticityLevelMixin) {
             this.fetchMetrics(from, to, replace);
             console.groupEnd();
 
+            this.trigger('refresh');
+
         },
 
         getMixinProperties: function(){
+            // Label
+            var show_value = Ember.get('mixinOptions.criticitylevels.show_value');
+            set(this, "show_value", show_value);
+            var label_align = Ember.get('mixinOptions.criticitylevels.label_align');
+            set(this, "label_align", label_align);
+            var label_display = Ember.get('mixinOptions.criticitylevels.label_display');
+            set(this, "label_display", label_display);
+            var label_width = Ember.get('mixinOptions.criticitylevels.label_width');
+            set(this, "label_width", label_width);
+            var label_unit = Ember.get('mixinOptions.criticitylevels.label_unit');
+            set(this, "label_unit", label_unit); 
+
             // Colors - always set
             var background_color = Ember.get('mixinOptions.criticitylevels.background_color');
             set(this, "background_color", background_color);
@@ -82,77 +100,117 @@ function($, WidgetFactory, CriticityLevelMixin) {
         },
 
         fetchSeries: function(from, to, replace) {
-            var ctrl = get(this, 'controller');
-            var cserie = get(this, 'controllers.serie');
-            var series = get(this, 'config.series');
             var store = get(this, 'widgetDataStore');
+            var series = get(this, 'config.series');
 
-            var bars = [];
-            var cmpt = 0;
-
+            var bars = get(this, "bars");
             var me = this;
           
             var slength = series.length;
+
             for(var s = 0; s < slength; s++) {
+
                 var serieId = series[s];
-                var total = 0;
                 var bar = {};
+
                 store.find('serie', serieId).then(function(result) {
+
                     var serie = result.content;
-                    cserie.fetch(serie, from, to).then(function(result) {   
-                        var max = 100;
-                        var min = 0;
-                        var value = 50;
-                        var unit = '';
-                        set(bar, "max_value", max);
-                        set(bar, "min_value", min);
-                        set(bar, "value", value);
-                        set(bar, "unit", unit);
-                        set(me, "bar", bar);
+
+                    get(me, 'controllers.serie').fetch(serie, from, to).then(function(result) {
+                        bar["label"] = result.data[0].crecord_name;
+                        bar["unit"] = result.data[0].meta.unit;
+                        slength = result.data.length;
+                        if(slength > 0){
+                            min = -1;
+                            max = -1;
+                            for(var i = 0; i < slength; i++) {
+                                var points = result.data[i].points;
+                                for(var j = 0; j < points.length; j++) {
+                                    var val = points[j][1];
+                                    if(min <0 || val < min){
+                                        min = val;
+                                    }
+                                    if(max <0 || val > max){
+                                        max = val;
+                                    }
+                                }
+                            }
+                            bar["value"] = result.data[result.data.length].points[result.data[i].points.length-1][1];
+                            bar["min_value"] = min;
+                            bar["max_value"] = max;
+                        } else {
+                            bar["value"] = 0;
+                            bar["min_value"] = 0;
+                            bar["max_value"] = 0;
+                        }
+
+                        bars.pushObject(bar);
+
                     });
+
                 });
             }
+            set(this, 'bars', bars);
         },
 
         fetchMetrics: function(from, to, replace) {
-            var ctrl = get(this, 'controller');
-            var perfdata = get(this, 'controllers.perfdata');
             var metrics = get(this, 'config.metrics');
             var store = get(this, 'widgetDataStore');
 
-            var bars = [];
-            var cmpt = 0;
+            var bars = get(this, "bars");
             var mlength = metrics.length;
-
             var me = this;
 
             for(var m = 0; m < mlength; m++) {
 
                 var metricId = metrics[m];            
-                var total = 0;
-                var bar = {};
 
-                perfdata.aggregate(metricId, from, to, "last", 86400).then(function(result) {
-                    var max = result.data[0].points[0][1];
-                    set(bar, "max_value", max);
-                });
-                perfdata.aggregate(metricId, from, to, "min", 86400).then(function(result) {
-                    var min = result.data[0].points[0][1];
-                    set(bar, "min_value", min);
-                });
-                perfdata.aggregate(metricId, from, to, "last", 86400).then(function(result) {
-                    var unit = result.data[0].meta.unit;
-                    var metric = result.data[0];
-                    var timestamp = metric.points[0][0];
-                    var value = metric.points[0][1];
-                    set(bar, "value", value);
-                    set(bar, "unit", unit);
-                    bars.pushObject(bar);
-                    cmpt += 1;
-                });
+                bar = {};
+                bar["label"] = metricId;
+                bar["max_value"] = this.getMaxValue(from, to, metricId);
+                bar["min_value"] = this.getMinValue(from, to, metricId);
+                unit_value = this.getUnitAndValue(from, to, metricId);
+                bar["value"]  = unit_value.value;
+                bar["unit"] = unit_value.unit;
+
+                bars.pushObject(bar);
             }
             set(this, 'bars', bars);
-        }
+        },
+
+        getMaxValue: function(from, to, metricId) {
+            var perfdata = get(this, 'controllers.perfdata');
+            max = 100;
+            perfdata.aggregate(metricId, from, to, "max", 86400).then(function(rmax) {
+                max = rmax.data[0].points[0][1];
+                return max;
+            });
+            return max;
+        },
+
+        getMinValue: function(from, to, metricId) {
+            var perfdata = get(this, 'controllers.perfdata');
+            min = 0;
+            perfdata.aggregate(metricId, from, to, "min", 86400).then(function(rmin) {
+                min = rmin.data[0].points[0][1];
+                return min;
+            });
+            return min;
+        },
+
+        getUnitAndValue: function(from, to, metricId) {
+            var perfdata = get(this, 'controllers.perfdata');
+            value = 50;
+            unit = '';
+            perfdata.aggregate(metricId, from, to, "last", 86400).then(function(result) {
+                value = result.data[0].points[0][1];
+                unit = result.data[0].meta.unit;
+                return {value:value, unit:unit};
+            });
+            return {value:value, unit:unit};
+        },
+
     }, widgetOptions);
 
     return widget;

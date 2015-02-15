@@ -1,11 +1,18 @@
 <div class="progress-container">
-	<div class="progress-label">
+	<div class="progress-label" {{bind-attr style=style_label}}>
+        {{label}}
 	</div>
 	<div class="progress-content">
 		<div class="progress">
 			<div {{bind-attr style=style_bar}} {{bind-attr aria-valuenow=value}} {{bind-attr aria-valuemin=min_value }} {{bind-attr aria-valuemax=max_value}} class="progress-bar" role="progressbar">
-				<span {{bind-attr style=style_span}}>{{textpercent}} Complete {{textstatus}}</span>
+				<span {{bind-attr style=style_span}}>{{textpercent}}</span>
 			</div>
 		</div>
 	</div>
+    <div class="gauge" data-dimension="250" data-text="35%" data-info="New Clients" data-width="30" data-fontsize="38" data-percent="35" data-fgcolor="#61a9dc" data-bgcolor="#eee" data-fill="#ddd" data-total="200" data-part="35" data-icon="long-arrow-up" data-icon-size="28" data-icon-color="#fff"></div>
+    <script>
+        jQuery( document ).ready(function() {
+            jQuery('.gauge').circliful();
+        });
+    </script>
 </div>

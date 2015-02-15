@@ -54,6 +54,11 @@ define([
             set(this, 'background_color', get(this, 'mixinOptions.criticitylevels.background_color'));
             set(this, 'warn_color', get(this, 'mixinOptions.criticitylevels.warn_color'));
             set(this, 'critic_color', get(this, 'mixinOptions.criticitylevels.critic_color'));
+            set(this, 'label_align', get(this, 'mixinOptions.criticitylevels.label_align'));
+            set(this, 'label_display', get(this, 'mixinOptions.criticitylevels.label_display'));
+            set(this, 'label_width', get(this, 'mixinOptions.criticitylevels.label_width'));
+            set(this, 'label_unit', get(this, 'mixinOptions.criticitylevels.label_unit'));
+            set(this, 'show_value', get(this, 'mixinOptions.criticitylevels.show_value'));
 
             if(isNone(get(this, 'background_color'))){
                 set(this, 'background_color', '#3c8dbc');
@@ -63,6 +68,23 @@ define([
             }
             if(isNone(get(this, 'critic_color'))){
                 set(this, 'critic_color', '#f56954');
+            }
+
+            if(isNone(get(this, 'label_align'))){
+                set(this, 'label_align', 'left');
+            }
+            if(isNone(get(this, 'label_display'))){
+                set(this, 'label_display', false);
+            }
+            if(isNone(get(this, 'show_value'))){
+                set(this, 'show_value', false);
+            }
+
+            if(isNone(get(this, 'label_width'))){
+                set(this, 'label_width', 0);
+            }
+            if(isNone(get(this, 'label_unit'))){
+                set(this, 'lbael_unit', '%');
             }
 
         }

@@ -1,8 +1,23 @@
 <div class="progressBarWidget">
-    Length : {{bars.length}}<br>
-    Length : {{controller.bars.length}}<br>
     {{#each bar in controller.bars}}
-        {{component-progressbar value=bar.value unit=bar.unit min_value=bar.min_value  max_value=bar.max_value  bg_color=controller.background_color warning_color=controller.warn_color critic_color=controller.critic_color unit_or_percent=controller.unit_or_percent warn_value=controller.warn_value crit_value=controller.crit_value unit_or_percent=controller.unit_or_percent}}
-        <br style="clear:both; margin-top:10px;" />
+        {{component-progressbar 
+            label=bar.label 
+            value=bar.value 
+            unit=bar.unit 
+            min_value=bar.min_value  
+            max_value=bar.max_value  
+            bg_color=controller.background_color 
+            warning_color=controller.warn_color 
+            critic_color=controller.critic_color 
+            unit_or_percent=controller.unit_or_percent 
+            warn_value=controller.warn_value 
+            crit_value=controller.crit_value 
+            unit_or_percent=controller.unit_or_percent 
+            label_display=controller.label_display 
+            label_align=controller.label_align 
+            label_width=controller.label_width
+            label_unit=controller.label_unit
+            show_value=controller.show_value}}
+        <br style="clear:both; margin-top:0px;" />
     {{/each}}
 </div>

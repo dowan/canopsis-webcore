@@ -1,6 +1,6 @@
 define([
-  'jquery',
   'ember',
+  'circliful',
   'app/application'
 ], function($, Ember, Application) {
 
@@ -10,39 +10,49 @@ define([
 
     var component = Ember.Component.extend({
 
-        value : null,
-        min_value : null,
-        max_value : null,
-
         init: function(){
-
             this._super();
-
         },
 
         label: function(){
-            return "LABEL";
+            if(get(this,"label_display")){
+                return get(this,"label");
+            }
+            return "";
         }.property("label"),
         
-        width_label: function(){
-            return "width: 0%;";
-        }.property("width_label"),
+        style_label: function(){
+            if(get(this,"label_display")){
+                if(isNone(get(this, "label_width"))){
+                    width = 0;
+                } else {
+                    width = get(this, "label_width");
+                }
+                if(isNone(get(this, "label_unit"))){
+                    unit = "%";
+                } else {
+                    unit = get(this, "label_unit");
+                }
+                return "width: " + width + unit + ";";
+            }
+            return "display: none;";
+        }.property("style_label"),
 
         style_bar: function(){
-            var color = "background: " + get(this,"getcolor") + ";";
+            var color = "background: " + get(this,"get_color") + ";";
             return color + "width: " + get(this, "percent") + "%;";
         }.property("style_bar"),
 
-        getcolor: function(){
+        get_color: function(){
             var background_color = get(this, "bg_color");
             var warn_color = get(this, "warning_color");
             var critic_color = get(this, "critic_color");
-            var valstatus = get(this, "getstatus");
+            var valstatus = get(this, "get_status");
             switch(valstatus){
-                case "critical":
+                case 2:
                     return critic_color;
                     break;
-                case "warning":
+                case 1:
                     return warn_color;
                     break;
                 default:
@@ -51,7 +61,7 @@ define([
             }
         }.property("getcolor"),
 
-        getstatus: function(){
+        get_status: function(){
             var unit_or_percent = get(this, "unit_or_percent");
             var percent = get(this, "percent");
             var value = get(this, "value");
@@ -60,22 +70,25 @@ define([
             } else {
                 var compared = percent;
             }
-            if(compared > get(this, "crit_value")){
-                return "critical";
-            } else if(compared > get(this, "warn_value")){
-                return "warning";
+            if(compared >= get(this, "crit_value")){
+                return 2;
+            } else if(compared >= get(this, "warn_value")){
+                return 1;
             } else {
-                return "complete"
+                return 0;
             }
         }.property("getstatus"),
        
-        textstatus:function(){
-            return "(" + get(this, "getstatus") + ")";
-        }.property("textstatus"),
+        text_status:function(){
+            return "(" + get(this, "get_status") + ")";
+        }.property("text_status"),
 
-        textpercent:function(){
-            return "" + get(this, "percent") + "%";
-        }.property("textpercent"),
+        text_percent:function(){
+            if(get(this, "show_value")){
+                return "" + get(this, "percent") + "%";
+            }
+            return "";
+        }.property("text_percent"),
 
         percent:function(){
             var min = parseFloat(get(this, "min_value"));
@@ -84,6 +97,9 @@ define([
             var max = parseFloat(get(this, "max_value"));
             var new_max = max - min;
             var percent =  Math.ceil(new_val/new_max * 100);
+            if(isNaN(percent)){
+                percent = 0;
+            }
             return percent;
         }.property("percent")
 
