@@ -1,18 +1,31 @@
 <div class="progress-container">
-	<div class="progress-label" {{bind-attr style=style_label}}>
+    <div class="progress-label" {{bind-attr style=style_label}}>
         {{label}}
-	</div>
-	<div class="progress-content">
-		<div class="progress">
-			<div {{bind-attr style=style_bar}} {{bind-attr aria-valuenow=value}} {{bind-attr aria-valuemin=min_value }} {{bind-attr aria-valuemax=max_value}} class="progress-bar" role="progressbar">
-				<span {{bind-attr style=style_span}}>{{textpercent}}</span>
-			</div>
-		</div>
-	</div>
-    <div class="gauge" data-dimension="250" data-text="35%" data-info="New Clients" data-width="30" data-fontsize="38" data-percent="35" data-fgcolor="#61a9dc" data-bgcolor="#eee" data-fill="#ddd" data-total="200" data-part="35" data-icon="long-arrow-up" data-icon-size="28" data-icon-color="#fff"></div>
-    <script>
-        jQuery( document ).ready(function() {
-            jQuery('.gauge').circliful();
-        });
-    </script>
+    </div>
+    <div class="progress-content">
+        {{#if is_progressbar}}
+            <div class="progress">
+                <div {{bind-attr style=style_bar}} {{bind-attr aria-valuenow=value}} {{bind-attr aria-valuemin=min_value }} {{bind-attr aria-valuemax=max_value}} class="progress-bar" role="progressbar">
+                    <span {{bind-attr style=style_span}}>{{text_percent}}</span>
+                </div>
+            </div>
+        {{else}}
+            <div class="gauge" {{bind-attr style=style_gauge}}
+                {{bind-attr id=id}}
+                {{bind-attr data-dimension=width}}
+                {{bind-attr data-text=percent}}
+                data-info=""
+                data-width="30" 
+                data-fontsize="38" 
+                {{bind-attr data-percent=percent}} 
+                data-bgcolor='#fff'
+                {{bind-attr data-fgcolor=bg_color}}
+                data-fill="#fff" 
+                data-icon="long-arrow-up" 
+                data-icon-size="28" 
+                {{bind-attr data-type=type}}
+                data-icon-color="#fff">
+            </div>
+        {{/if}}
+    </div>
 </div>

@@ -51,7 +51,7 @@ define([
             set(this, 'warn_value', get(this, 'mixinOptions.criticitylevels.warn_value'));
             set(this, 'crit_value', get(this, 'mixinOptions.criticitylevels.crit_value'));
             set(this, 'unit_or_percent', get(this, 'mixinOptions.criticitylevels.unit_or_percent'));
-            set(this, 'background_color', get(this, 'mixinOptions.criticitylevels.background_color'));
+            set(this, 'standard_color', get(this, 'mixinOptions.criticitylevels.standard_color'));
             set(this, 'warn_color', get(this, 'mixinOptions.criticitylevels.warn_color'));
             set(this, 'critic_color', get(this, 'mixinOptions.criticitylevels.critic_color'));
             set(this, 'label_align', get(this, 'mixinOptions.criticitylevels.label_align'));
@@ -59,6 +59,10 @@ define([
             set(this, 'label_width', get(this, 'mixinOptions.criticitylevels.label_width'));
             set(this, 'label_unit', get(this, 'mixinOptions.criticitylevels.label_unit'));
             set(this, 'show_value', get(this, 'mixinOptions.criticitylevels.show_value'));
+            set(this, 'display_as', get(this, 'mixinOptions.criticitylevels.display_as'));
+            set(this, 'pb_thickness', get(this, 'mixinOptions.criticitylevels.pb_thickness'));
+            set(this, 'gg_thickness', get(this, 'mixinOptions.criticitylevels.gg_thickness'));
+            set(this, 'gg_width', get(this, 'mixinOptions.criticitylevels.gg_width'));
 
             if(isNone(get(this, 'background_color'))){
                 set(this, 'background_color', '#3c8dbc');
@@ -84,8 +88,18 @@ define([
                 set(this, 'label_width', 0);
             }
             if(isNone(get(this, 'label_unit'))){
-                set(this, 'lbael_unit', '%');
+                set(this, 'label_unit', '%');
             }
+
+            if(isNone(get(this, 'pb_thickness'))){
+                set(this, 'pb_thickness', 10);
+            }
+            if(isNone(get(this, 'gg_thickness'))){
+                set(this, 'gg_thickness', 10);
+            }
+            if(isNone(get(this, 'gg_width'))){
+                set(this, 'gg_width', 250);
+            } 
 
         }
     });

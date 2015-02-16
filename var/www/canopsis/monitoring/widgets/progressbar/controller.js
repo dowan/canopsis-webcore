@@ -22,10 +22,9 @@ define([
     'app/lib/factories/widget',
     'app/controller/perfdata',
     'app/controller/serie',
-    'app/mixins/pagination',
     'canopsis/uibase/components/progressbar/component'
 ], 
-function($, WidgetFactory, CriticityLevelMixin) {
+function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
 
     var get = Ember.get,
     set = Ember.set,
@@ -71,32 +70,42 @@ function($, WidgetFactory, CriticityLevelMixin) {
 
         getMixinProperties: function(){
             // Label
-            var show_value = Ember.get('mixinOptions.criticitylevels.show_value');
+            var show_value = get('mixinOptions.criticitylevels.show_value');
             set(this, "show_value", show_value);
-            var label_align = Ember.get('mixinOptions.criticitylevels.label_align');
+            var label_align = get('mixinOptions.criticitylevels.label_align');
             set(this, "label_align", label_align);
-            var label_display = Ember.get('mixinOptions.criticitylevels.label_display');
+            var label_display = get('mixinOptions.criticitylevels.label_display');
             set(this, "label_display", label_display);
-            var label_width = Ember.get('mixinOptions.criticitylevels.label_width');
+            var label_width = get('mixinOptions.criticitylevels.label_width');
             set(this, "label_width", label_width);
-            var label_unit = Ember.get('mixinOptions.criticitylevels.label_unit');
+            var label_unit = get('mixinOptions.criticitylevels.label_unit');
             set(this, "label_unit", label_unit); 
 
             // Colors - always set
-            var background_color = Ember.get('mixinOptions.criticitylevels.background_color');
-            set(this, "background_color", background_color);
-            var warn_color = Ember.get('mixinOptions.criticitylevels.warn_color');
+            var standard_color = get('mixinOptions.criticitylevels.standard_color');
+            set(this, "standard_color", standard_color);
+            var warn_color = get('mixinOptions.criticitylevels.warn_color');
             set(this, "warn_color", warn_color);
-            var critic_color = Ember.get('mixinOptions.criticitylevels.critic_color');
+            var critic_color = get('mixinOptions.criticitylevels.critic_color');
             set(this, "critic_color", critic_color);
             
             // Values - may not be set
-            var warn_value = Ember.get('mixinOptions.criticitylevels.warn_value');
+            var display_as = get('mixinOptions.criticitylevels.display_as');
+            set(this, "display_as", display_as);
+            var warn_value = get('mixinOptions.criticitylevels.warn_value');
             set(this, "warn_value", warn_value);
-            var crit_value = Ember.get('mixinOptions.criticitylevels.crit_value');
+            var crit_value = get('mixinOptions.criticitylevels.crit_value');
             set(this, "crit_value", crit_value);
-            var unit_or_percent = Ember.get('mixinOptions.criticitylevels.unit_or_percent');
+            var unit_or_percent = get('mixinOptions.criticitylevels.unit_or_percent');
             set(this, "unit_or_percent", unit_or_percent);
+    
+            // Specifics
+            var pb_thickness = get('mixinOptions.criticitylevels.pb_thickness');
+            set(this, "pb_thickness", pb_thickness);
+            var gg_width = get('mixinOptions.criticitylevels.gg_width');
+            set(this, "gg_width", gg_width);
+            var gg_thickness = get('mixinOptions.criticitylevels.gg_thickness');
+            set(this, "gg_thickness", gg_thickness);
         },
 
         fetchSeries: function(from, to, replace) {

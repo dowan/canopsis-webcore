@@ -2,7 +2,7 @@ define([
   'ember',
   'circliful',
   'app/application'
-], function($, Ember, Circliful, Application) {
+], function(Ember, Circliful, Application) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -11,8 +11,57 @@ define([
     var component = Ember.Component.extend({
 
         init: function(){
+            var display_as = get(this,"display_as");
+            if(isNone(display_as)){
+                display_as = "progressbar";
+            }
+            if(display_as = "progressbar"){
+                set(this, "is_progressbar", true);
+                set(this, "is_gauge", false);
+                if(isNone(get(this,"pb_thickness"))){
+                    set(this, "thickness", 10);
+                } else {
+                    set(this, "thickness", get(this,"pb_thickness") );
+                }
+            } else {
+                set(this, "is_progressbar", false);
+                set(this, "is_gauge", true);
+                if(display_as == "halfgauge"){
+                    set(this, "type", "half");
+                } else {
+                    set(this, "type", "");
+                }
+                
+                if(isNone(get(this,"gg_thickness"))){
+                    set(this, "thickness", 10);
+                } else {
+                    set(this, "thickness", get(this,"pb_thickness") );
+                }
+                
+                if(isNone(get(this,"gg_width"))){
+                    set(this, "width", 250);
+                } else {
+                    set(this, "width", get(this,"gg_width") );
+                }
+
+                if( get(this, "is_half") ){
+                    set(this, "height", parseInt(get(this, "width")) / 2);
+                } else {
+                    set(this, "height", get(this, "width"));
+                }
+
+            }
+
             this._super();
         },
+
+        didInsertElement: function(){
+            jQuery('#' + get(this,"id")).circliful();
+        },
+
+        id: function(){
+            return "gauge_" + get(this,"label").replace(/\W+/g, "");
+        }.property("id"),
 
         label: function(){
             if(get(this,"label_display")){
@@ -33,7 +82,13 @@ define([
                 } else {
                     unit = get(this, "label_unit");
                 }
-                return "width: " + width + unit + ";";
+                var padding = "";
+                if(get(this, "is_gauge")){
+                    padding = "padding-top: " + str(parseInt(get(this, "height") / 2)) + "px; ";
+                }
+
+
+                return "width: " + width + unit + ";" + padding;
             }
             return "display: none;";
         }.property("style_label"),
@@ -42,6 +97,10 @@ define([
             var color = "background: " + get(this,"get_color") + ";";
             return color + "width: " + get(this, "percent") + "%;";
         }.property("style_bar"),
+
+        style_gauge: function(){
+            return "width: " + get(this, "width") + "px; height: " + get(this, "height") + "px;";
+        }.property("style_gauge"),
 
         get_color: function(){
             var background_color = get(this, "bg_color");
@@ -102,7 +161,6 @@ define([
             }
             return percent;
         }.property("percent")
-
     });
 
     Ember.Application.initializer({
