@@ -2,7 +2,7 @@ define([
   'ember',
   'circliful',
   'app/application'
-], function($, Ember, Application) {
+], function($, Ember, Circliful, Application) {
 
     var get = Ember.get,
         set = Ember.set,
