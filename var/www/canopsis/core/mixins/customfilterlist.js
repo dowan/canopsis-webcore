@@ -48,9 +48,11 @@ define([
 
             this._super();
 
-            if(!get(this, 'userParams.custom_filters')) {
-                set(this, 'userParams.custom_filters', Ember.A());
+            if(!get(this, 'model.user_filters')) {
+                set(this, 'model.user_filters', Ember.A());
             }
+
+            set(this, 'model.userFilter', get(this, 'model.selected_filter.filter'));
         },
 
         isSelectedFilter: function (filterList) {
@@ -59,7 +61,7 @@ define([
             }
 
             var filterLen = filterList.length;
-            var currentTitle = get(this, 'currentFilter.title');
+            var currentTitle = get(this, 'model.selected_filter.title');
             for (var i=0; i<filterLen; i++) {
 
                 var compareTitle = get(filterList[i], 'title');
@@ -71,21 +73,18 @@ define([
                 } else {
                     set(filterList[i], 'isActive', false);
                 }
-
             }
 
             return filterList;
         },
 
         filters_list: function () {
-            this.isSelectedFilter(get(this, 'userParams.custom_filters'));
             return this.isSelectedFilter(get(this, 'mixinOptions.customfilterlist.filters'));
-        }.property('mixinOptions.customfilterlist.filters', 'currentFilter'),
+        }.property('mixinOptions.customfilterlist.filters', 'model.selected_filter'),
 
-        custom_filters_list: function () {
-            this.isSelectedFilter(get(this, 'mixinOptions.customfilterlist.filters'));
-            return this.isSelectedFilter(get(this, 'userParams.custom_filters'));
-        }.property('userParams.custom_filters'),
+        user_filters: function () {
+            return this.isSelectedFilter(get(this, 'model.user_filters'));
+        }.property('model.user_filters', 'model.selected_filter'),
 
 
         actions: {
@@ -93,14 +92,11 @@ define([
 
                 var query = get(filter, 'filter');
 
-                //current selected filter information to user params
-                set(this, 'userParams.currentFilter', filter);
+                set(filter, 'isActive', true);
                 //current user filter set for list management
-                set(this, 'currentFilter', filter);
-                //user filter set for user params persistance
-                set(this, 'userParams.userFilter', query);
+                set(this, 'model.selected_filter', filter);
                 //user filter for list be able to reload properly
-                set(this, 'userFilter', query);
+                set(this, 'model.userFilter', query);
                 //push userparams to db
                 this.saveUserConfiguration();
 
@@ -126,13 +122,16 @@ define([
                 recordWizard.submit.then(function(form) {
                     record = form.get('formContext');
 
+                    get(widgetController, 'model.user_filters').pushObject(record);
 
-                    get(widgetController, 'userParams.custom_filters').pushObject(record);
+                    widgetController.notifyPropertyChange('model.user_filters');
 
-                    widgetController.notifyPropertyChange('userParams.custom_filters');
 
                     console.log('Custom filter created', record, form);
                     notificationUtils.info(__('Custom filter created'));
+
+                    // get(widgetController, 'viewController').get('content').save();
+
                     widgetController.saveUserConfiguration();
                 });
             },
@@ -154,11 +153,17 @@ define([
                 });
 
                 recordWizard.submit.then(function(form) {
-                    widgetController.get('custom_filters').removeObject(filter);
+                    widgetController.get('model.user_filters').removeObject(filter);
                     record = form.get('formContext');
-                    widgetController.get('userParams.custom_filters').pushObject(record);
+                    widgetController.get('model.user_filters').pushObject(record);
                     console.log('Custom filter created', record, form);
                     notificationUtils.info(__('Custom filter created'));
+
+
+                    console.log(widgetController.get('model.isDirty'));
+
+                    // get(widgetController, 'viewController').get('content').save();
+
                     widgetController.saveUserConfiguration();
 
                 });
@@ -172,13 +177,15 @@ define([
                     title: __('Are you sure to delete filter') + ' ' + title + '?'
                 });
 
-                var controller = this;
+                var widgetController = this;
 
                 recordWizard.submit.then(function(form) {
-                    controller.get('custom_filters').removeObject(filter);
+                    widgetController.get('model.user_filters').removeObject(filter);
                     notificationUtils.info(__('Custom filter removed'));
-                    controller.set('userParams.custom_filters', controller.get('custom_filters'));
-                    controller.saveUserConfiguration();
+
+                    // get(widgetController, 'viewController').get('content').save();
+
+                    widgetController.saveUserConfiguration();
                 });
             }
         },

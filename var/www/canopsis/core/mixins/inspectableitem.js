@@ -39,6 +39,11 @@ define([
     var mixin = Mixin('inspectableItem', {
 
         /**
+         * The key to get to retreive the list of attributes to edit
+         */
+        attributesKey: 'attributes',
+
+        /**
             @required
         */
         inspectedDataItem: function() {
@@ -115,26 +120,31 @@ define([
             };
         },
 
+        getAttributes: function() {
+            var itemType = this.getInspectedItemType();
+            var referenceModel = Application[itemType.capitalize()];
+
+            if (referenceModel === undefined || referenceModel.proto() === undefined) {
+                notificationUtils.error("There does not seems to be a registered schema for", itemType.capitalize());
+            }
+            if (referenceModel.proto().categories === undefined) {
+                notificationUtils.error("No categories in the schema of" + itemType);
+            }
+
+            return get(referenceModel, get(this, 'attributesKey'));
+        },
+
         //getting attributes (keys and values as seen on the form)
         categorized_attributes: function() {
             var inspectedDataItem = get(this, 'inspectedDataItem');
             console.log("recompute categorized_attributes", inspectedDataItem );
             if (inspectedDataItem !== undefined) {
 
-                console.log("inspectedDataItem attributes", get(inspectedDataItem, 'attributes'));
+                console.log("inspectedDataItem attributes", this.getAttributes());
                 var itemType = this.getInspectedItemType();
+                var referenceModel = Application[itemType.capitalize()];
 
                 if (itemType !== undefined) {
-
-                    console.log("inspected itemType", itemType.capitalize());
-                    var referenceModel = Application[itemType.capitalize()];
-
-                    if (referenceModel === undefined || referenceModel.proto() === undefined) {
-                        notificationUtils.error("There does not seems to be a registered schema for", itemType.capitalize());
-                    }
-                    if (referenceModel.proto().categories === undefined) {
-                        notificationUtils.error("No categories in the schema of" + itemType);
-                    }
 
                     var options = get(this, 'options'),
                         filters = [];
@@ -154,7 +164,7 @@ define([
 
                     set(this, 'categories', []);
 
-                    var modelAttributes = get(referenceModel, 'attributes');
+                    var modelAttributes = this.getAttributes();
 
                     var refModelCategories = referenceModel.proto().categories;
                     for (var i = 0, li = refModelCategories.length; refModelCategories && i < li; i++) {
@@ -173,7 +183,8 @@ define([
                                 createdCategory.keys[j] = this.generateSeparatorAttribute();
                             } else {
                                 if (key !== undefined && attr === undefined) {
-                                    notificationUtils.error("An attribute that does not exists seems to be referenced in schema categories" + key, referenceModel);
+                                    notificationUtils.error("An attribute that does not exists seems to be referenced in schema categories" + key);
+                                    console.error(referenceModel, attr, modelAttributes);
 
                                     createdCategory.keys[j] = this.generateSeparatorAttribute();
 

@@ -35,7 +35,7 @@ define([
 
         var mixinArray = [];
 
-        console.log('computeMixinsArray', mixinsNames);
+        console.log('computeMixinsArray', mixinsNames, widget);
 
         var mixinOptions = {};
 
@@ -55,6 +55,21 @@ define([
 
                 var currentClass = get(Application, currentName.capitalize() + 'Mixin');
                 console.log('find mixin', currentName, currentClass);
+
+                //merge mixin's userpreferences into the userpref model
+                var mixinModel = get(Application, currentName.capitalize());
+                if(mixinModel !== undefined) {
+                    var mixinUserPreferenceModel = mixinModel.proto().userPreferencesModel;
+
+                    console.log('mixinModel', mixinUserPreferenceModel);
+                    var mixinUserPreferenceModelAttributes = get(mixinUserPreferenceModel, 'attributes');
+                    console.log('mixinModelAttributes', mixinUserPreferenceModelAttributes);
+
+                    mixinUserPreferenceModelAttributes.forEach(function(item) {
+                        widget.userPreferencesModel[item.name] = mixinUserPreferenceModel[item.name];
+                        widget.userPreferencesModel.attributes.add(item);
+                    });
+                }
 
                 if(currentClass) {
                     mixinArray.pushObject(currentClass);

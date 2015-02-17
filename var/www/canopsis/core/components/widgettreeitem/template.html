@@ -1,0 +1,15 @@
+{{#if widget.title}}
+    {{widget.title}}
+{{else}}
+    <i>Untitled {{widget.xtype}} widget</i>
+{{/if}}
+
+{{#if widget.items}}
+    <ul>
+        {{#each widgetwrapper in widget.items}}
+            <li>
+                {{component-widgettreeitem widget=widgetwrapper.widget}}
+            </li>
+        {{/each}}
+    </ul>
+{{/if}}

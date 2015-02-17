@@ -117,9 +117,15 @@ define([
 
         itemsPerPagePropositionSelectedChanged: function() {
             var userSelection = get(this, 'itemsPerPagePropositionSelected');
-            if(get(this, 'userParams') !== undefined) {
-                set(this, 'userParams.itemsPerPage', userSelection);
-                this.saveUserConfiguration();
+
+            var firstExecution = true;
+            if(firstExecution) {
+                firstExecution = false;
+            } else {
+                if(get(this, 'userParams') !== undefined) {
+                    set(this, 'userParams.itemsPerPage', userSelection);
+                    this.saveUserConfiguration();
+                }
             }
 
             set(this, 'itemsPerPage', userSelection);
