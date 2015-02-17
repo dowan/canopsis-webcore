@@ -3,7 +3,7 @@
         {{#component-tooltip content="Cancel"}}
             <button class="btn btn-default btn-sm" {{action 'sendEvent' 'cancel'}} >
                 <span class="glyphicon glyphicon-trash"></span>
-                Cancel
+                {{tr "Cancel"}}
             </button>
         {{/component-tooltip}}
     {{/if}}
@@ -11,7 +11,7 @@
         {{#component-tooltip content="Undo cancel"}}
             <button class="btn btn-default btn-sm" {{action 'sendEvent' 'uncancel'}}>
                 <span class="glyphicon glyphicon-share-alt"></span>
-                Undo cancel
+                {{tr "Undo cancel"}}
             </button>
         {{/component-tooltip}}
     {{/if}}

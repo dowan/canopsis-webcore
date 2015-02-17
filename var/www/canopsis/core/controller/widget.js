@@ -246,29 +246,6 @@ define([
                 console.groupEnd();
             },
 
-            editWidgetPreferences: function (widget) {
-
-                var widgetController = this;
-
-                console.info('edit preferences', widget);
-
-                var widgetWizard = formsUtils.showNew('modelform', widget, {
-                    title: __('Edit your widget preferences'),
-                    userPreferencesOnly: true
-                });
-
-                console.log('widgetWizard', widgetWizard);
-
-                widgetWizard.submit.then(function(form) {
-
-                    var record = get(form, 'formContext');
-                    console.log('user param record', record);
-
-                    widgetController.trigger('refresh');
-                });
-            },
-
-
             /**
              * Moves the widget under the next one, if any
              */
