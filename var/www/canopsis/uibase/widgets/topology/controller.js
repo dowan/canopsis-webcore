@@ -821,12 +821,12 @@ define([
                     node.px = node.x;
                     node.py = node.y;
                     node.fixed = true;
-                    this.trigger('refresh');
+                    get(this, 'controller').trigger('refresh');
                 }
                 this.vertice2D3Node(undefined, true, callback, undefined, this);
             } else {
                 function success2(record) {
-                    this.trigger('refresh');
+                    get(this, 'controller').trigger('refresh');
                     this.removeTmpLink();
                 }
                 function failure2(record) {
@@ -850,13 +850,13 @@ define([
             d3.event.stopPropagation();
             this.lock(data);
             this.destroyToolBox();
-            this.trigger('refresh');
+            get(this, 'controller').trigger('refresh');
         },
         lockHandler: function(data) {
             d3.event.stopPropagation();
             this.lock(data, true);
             this.destroyToolBox();
-            this.trigger('refresh');
+            get(this, 'controller').trigger('refresh');
         },
         cancelHandler: function(data) {
             d3.event.stopPropagation();
@@ -1068,7 +1068,7 @@ define([
                     var result = '';
                     var info = d.elt.get('info');
                     if (info !== undefined) {
-                        var operator = info.operator;
+                        var operator = info.task;
                         if (operator) {
                             var operator_id = operator.id || operator.cid || operator;
                             if (operator_id === 'canopsis.task.condition.condition') {
@@ -1242,7 +1242,8 @@ define([
             // define a callback
             function processRecord(record) {
                 // save result in model
-                this.graph._delts[record.get('cid')] = record;
+                var record_id = record.get('cid');
+                this.graph._delts[record_id] = record;
                 var result = this.record2Node(record);
                 if (success !== undefined) {
                     success.call(context, record);
@@ -1556,7 +1557,7 @@ define([
                                 _id: _this.graph_id,
                                 cid: _this.graph_id,
                                 _cls: _this.graph_cls,
-                                data: {
+                                info: {
                                     operator: {
                                         id: 'canopsis.topology.rule.action.change_state',
                                         params: {
@@ -2004,7 +2005,11 @@ define([
                 function(form) {
                     var info = record.get('info');
                     if (info !== undefined) {
-                        var task = info.task || {};
+                        var task = info.task;
+                        if (task === undefined) {
+                            info.task = {};
+                            task = info.task;
+                        }
                     } else {
                         info = {
                             task: {}
