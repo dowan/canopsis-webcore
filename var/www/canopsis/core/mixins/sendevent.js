@@ -401,7 +401,12 @@ define([
                 handle: function(crecords) {
                     var record = this.getDisplayRecord('assocticket', crecords[0]);
 
-                    this.getEventForm('assocticket', record, crecords);
+                    var formbuttons = [
+                        'formbutton-cancel',
+                        'formbutton-submit'
+                    ];
+
+                    this.getEventForm('assocticket', record, crecords, formbuttons);
                 },
 
                 transform: function(crecord, record) {

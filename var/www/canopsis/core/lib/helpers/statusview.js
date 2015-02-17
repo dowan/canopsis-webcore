@@ -23,6 +23,7 @@ define([
 ], function(Ember, datesUtils) {
 
     var get = Ember.get,
+        set = Ember.set,
         isNone = Ember.isNone,
          __ = Ember.String.loc;
 
@@ -49,20 +50,28 @@ define([
             status = get(crecord, 'status');
         }
 
-        crecord.statusvalue = __(statuses[status]);
+        set(crecord, 'statusvalue', __(statuses[status]));
 
         if(status === 4) {
+
             //displays cancel information if any onto the status field
-            var value = get(crecord, 'record.cancel');
-            if(!isNone(value.timestamp)) {
-                crecord.statushtml = [
+            var cancel = get(crecord, 'record.cancel');
+            console.log('statusview', status, cancel);
+
+            if(!isNone(cancel)) {
+
+                var timestamp = get(cancel, 'timestamp');
+                var comment = get(cancel, 'comment');
+                var author = get(cancel, 'author');
+
+                set(crecord, 'statushtml', [
                     '<center>',
                     '<i>' , __('Date') , '</i> : <br/>',
-                    datesUtils.timestamp2String(value.timestamp) ,' <br/> ',
-                    __('By'), ' : ' , value.author ,' <br/><br/> ',
-                    '<i>', __('Comment') ,'</i> : <br/>' , value.comment,
+                    datesUtils.timestamp2String(timestamp) ,' <br/> ',
+                    __('By'), ' : ' , author ,' <br/><br/> ',
+                    '<i>', __('Comment') ,'</i> : <br/>' , comment,
                     '</center>'
-                ].join('');
+                ].join(''));
             }
 
         }
