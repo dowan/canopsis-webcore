@@ -1,12 +1,9 @@
-{{#if controller.parentController.rights.actionbutton_ticketnumber.checksum}}
+{{#if controller.rights.actionbutton_ticketnumber.checksum}}
     {{#if this.state}}
         {{#if this.ack.author}}
             {{#component-tooltip content="Assign ticket number"}}
                 <button class="btn btn-default btn-xs" {{action 'sendEvent' 'assocticket' this}} >
                     <i class="fa fa-thumb-tack"></i>
-                    {{#unless view.minified}}
-                        {{tr 'Assign a ticket number'}}
-                    {{/unless}}
                 </button>
             {{/component-tooltip}}
         {{/if}}
