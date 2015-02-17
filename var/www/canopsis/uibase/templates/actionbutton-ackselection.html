@@ -3,13 +3,13 @@
         {{#component-tooltip content="Ack"}}
             <button class="btn btn-default btn-sm" {{action 'ackAndReport'}} >
                 <span class="glyphicon glyphicon-ok"></span>
-                Ack
+                {{tr "Ack"}}
             </button>
         {{/component-tooltip}}
         {{#component-tooltip content="Cancel ack"}}
             <button class="btn btn-default btn-sm" {{action 'sendEvent' 'ackremove'}} >
                 <span class="glyphicon glyphicon-ban-circle"></span>
-                Remove ack
+                {{tr "Remove ack"}}
             </button>
         {{/component-tooltip}}
     {{/if}}
