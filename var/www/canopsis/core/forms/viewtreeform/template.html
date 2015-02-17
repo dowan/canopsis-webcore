@@ -1,0 +1,12 @@
+viewtree form {{formContext}}
+<ul class="treeview">
+    <li>
+        {{formContext.containerwidget.title}}
+        <ul>
+            {{#each widgetwrapper in formContext.containerwidget.items}}
+                {{component-widgettreeitem widget=widgetwrapper.widget}}
+            {{/each}}
+            <li></li>
+        </ul>
+    </li>
+</ul>

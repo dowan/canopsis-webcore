@@ -21,95 +21,161 @@ define([
     'jquery',
     'ember',
     'app/lib/utils/hash',
-    'app/lib/factories/mixin'
-], function($, Ember, hashUtils, Mixin) {
+    'app/lib/factories/mixin',
+    'utils',
+    'app/lib/utils/hash'
+], function($, Ember, hashUtils, Mixin, utils, hashUtils) {
 
     var get = Ember.get,
         set = Ember.set;
+
+
+    /**
+     * DS.Store hack to make transparent userpreferences persistence (when saving and retreiving models)
+     */
+    DS.Store.reopen({
+        serialize: function(record, options) {
+
+            var preferences = {};
+
+            if(record.userPreferencesModel.attributes.list && record.userPreferencesModel.attributes.list.length > 0) {
+                console.group('userpreferences for widget', record.get('title'), record);
+                var userpreferenceAttributes = record.userPreferencesModel.attributes.list;
+                var preference_id = get(record, 'preference_id'),
+                    user = get(utils.session,'_id');
+
+                if (preference_id === undefined) {
+                    preference_id = hashUtils.generate_GUID();
+                    set(record, 'preference_id', preference_id);
+                }
+
+                for (var i = 0, l = userpreferenceAttributes.length; i < l; i++) {
+                    console.log('userpreferenceAttributes', userpreferenceAttributes[i]);
+                    preferences[userpreferenceAttributes[i].name] = get(record, userpreferenceAttributes[i].name);
+                    console.log('key', userpreferenceAttributes[i].name,'value', get(record, userpreferenceAttributes[i].name));
+                }
+
+                var userConfiguration = {
+                    widget_preferences: preferences,
+                    crecord_name: user,
+                    widget_id: get(record, 'widgetId'),
+                    widgetXtype: get(record, 'xtype'),
+                    title: get(record, 'title'),
+                    viewId: get(record, 'viewId'),
+                    id: preference_id,
+                    crecord_type: 'userpreferences'
+                };
+
+                $.ajax({
+                    url: '/rest/userpreferences/userpreferences',
+                    type: 'POST',
+                    data: JSON.stringify(userConfiguration)
+                });
+
+                console.groupEnd('userpreferences for widget', record.get('title'));
+            } else {
+                console.log('no userpreferences to save for widget', record.get('title'));
+            }
+
+            return this._super.apply(this, arguments);
+        },
+
+        push: function(type, data) {
+            var record = this._super.apply(this, arguments);
+
+            var userpreferenceAttributes = record.userPreferencesModel.attributes.list;
+
+            if(userpreferenceAttributes.length > 0) {
+                var user = get(utils.session,'_id');
+
+                $.ajax({
+                    url: '/rest/userpreferences/userpreferences',
+                    async: false,
+                    data: {
+                        limit: 1,
+                        filter: JSON.stringify({
+                            crecord_name: user,
+                            widget_id: get(record, 'widgetId')
+                        })
+                    },
+                    success: function(data) {
+                        if (data.success && data.data.length && data.data[0].widget_preferences !== undefined) {
+                            console.log('User configuration load for widget complete', JSON.stringify(data));
+                            var preferences = data.data[0].widget_preferences;
+
+                            set(record, 'preference_id', data.data[0]._id);
+                            set(record, 'userPreferences', preferences);
+
+                            for (var key in preferences) {
+                                console.log('User preferences: will set key', key, 'in widget', get(record, 'title'), preferences[key]);
+                                record.set(key, preferences[key]);
+                            }
+
+                        } else {
+                            console.log('No user preference exists for widget' + get(record, 'title'));
+                        }
+                    }
+                }).fail(
+                    function (error) {
+                        void (error);
+                        console.log('No user s preference found for this widget');
+                    }
+                );
+            }
+
+            return record;
+        }
+    });
+
 
     var mixin = Mixin('userconfiguration', {
 
         needs: ['login'],
 
-         saveUserConfiguration: function (callback) {
+         saveUserConfiguration: function () {
 
-            var preferences = get(this, 'userParams');
-            console.debug('Ready to save user configuration', preferences);
+            var record = get(this, 'model');
 
-            var preference_id = get(this, 'preference_id');
-            if (preference_id === undefined) {
-                preference_id = hashUtils.generate_GUID();
-            }
+            console.log('saveUserConfiguration', record);
 
-            var user = get(this, 'controllers.login.record._id');
+            var preferences = {};
 
-            var userConfiguration = {
-                widget_preferences: preferences,
-                crecord_name: user,
-                widget_id: get(this, 'widgetId'),
-                widgetXtype: get(this,'xtype'),
-                title: get(this,'title'),
-                viewId: get(this,'viewId'),
-                id: preference_id,
-                crecord_type: 'userpreferences'
-            };
-            $.ajax({
-                url: '/rest/userpreferences/userpreferences',
-                type: 'POST',
-                data: JSON.stringify(userConfiguration),
-                success: function(data) {
-                    void (data);
-                    console.log('User configuration save statement for widget complete');
-                    if (!Ember.isNone(callback)) {
-                        console.log('found callback after save configuration, processing it.');
-                        callback();
+            if(record.userPreferencesModel.attributes.list && record.userPreferencesModel.attributes.list.length > 0) {
+                console.group('userpreferences for widget', record.get('title'), record);
+                var userpreferenceAttributes = record.userPreferencesModel.attributes.list;
+                var preference_id = get(this, 'preference_id'),
+                    user = get(utils.session,'_id');
+
+                if (preference_id === undefined) {
+                    record.save();
+                } else {
+                    for (var i = 0, l = userpreferenceAttributes.length; i < l; i++) {
+                        console.log('userpreferenceAttributes', userpreferenceAttributes[i]);
+                        preferences[userpreferenceAttributes[i].name] = get(record, userpreferenceAttributes[i].name);
+                        console.log('key', userpreferenceAttributes[i].name,'value', get(record, userpreferenceAttributes[i].name));
                     }
-                }
-            });
 
-        },
-
-        loadUserConfiguration: function(callback) {
-            var userConfiguration = this;
-            console.debug('loading configuration');
-            var user = get(this, 'controllers.login.record._id');
-            $.ajax({
-                url: '/rest/userpreferences/userpreferences',
-                async: false,
-                data: {
-                    limit: 1,
-                    filter: JSON.stringify({
+                    var userConfiguration = {
+                        widget_preferences: preferences,
                         crecord_name: user,
-                        widget_id: get(this, 'widgetId')
-                    })
-                },
-                success: function(data) {
-                    if (data.success && data.data.length && data.data[0].widget_preferences !== undefined) {
-                        console.log('User configuration load for widget complete', data);
-                        var preferences = data.data[0].widget_preferences;
+                        widget_id: get(record, 'widgetId'),
+                        widgetXtype: get(record, 'xtype'),
+                        title: get(record, 'title'),
+                        viewId: get(record, 'viewId'),
+                        id: preference_id,
+                        crecord_type: 'userpreferences'
+                    };
 
-                        set(userConfiguration, 'preference_id', data.data[0]._id);
-                        set(userConfiguration, 'userParams', preferences);
-
-                        for (var key in preferences) {
-                            console.debug('User preferences: will set key', key, 'in widget', get(userConfiguration, 'title'));
-                            userConfiguration.set(key, preferences[key]);
-                        }
-                        if (!Ember.isNone(callback)) {
-                           console.log('found callback after save configuration, processing it.');
-                            callback();
-                        }
-
-                    } else {
-                        console.debug('No user preference exists for widget' + get(userConfiguration, 'title'));
-                    }
+                    $.ajax({
+                        url: '/rest/userpreferences/userpreferences',
+                        type: 'POST',
+                        data: JSON.stringify(userConfiguration)
+                    });
                 }
-            }).fail(
-                function (error) {
-                    void (error);
-                    console.log('No user s preference found for this widget');
-                }
-            );
+                console.groupEnd('userpreferences for widget', record.get('title'));
+            } else {
+                console.log('no userpreferences to save for widget', record.get('title'));
+            }
         }
     });
 

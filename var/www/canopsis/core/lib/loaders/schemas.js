@@ -82,21 +82,21 @@ function compare(a,b) {
         },
 
         loadSchema: function(schemaId, schema) {
-          var schemaName = this.getSchemaName(schemaId, schema);
-          // console.log('schemaName', schemaName);
+            var schemaName = this.getSchemaName(schemaId, schema);
+            // console.log('schemaName', schemaName);
 
-          var parentModel = this.getParentModelForModelId(schemaId);
-          var modelDict = this.generateSchemaModelDict(schema, parentModel, schemaId);
+            var parentModel = this.getParentModelForModelId(schemaId);
+            var modelDict = this.generateSchemaModelDict(schema, parentModel, schemaId);
 
-          console.log(schemaId, modelDict);
+            console.log(schemaId, modelDict);
 
-          this.generatedModels.pushObject({
-            name: schemaName,
-            id: schemaId,
-            schema: schema,
-            model: parentModel.model.extend({}),
-            modelDict: modelDict
-          });
+            this.generatedModels.pushObject({
+                name: schemaName,
+                id: schemaId,
+                schema: schema,
+                model: parentModel.model.extend({}),
+                modelDict: modelDict
+            });
         },
 
         generateSchemaModelDict: function(schema, parentModel, modelId) {
@@ -107,32 +107,50 @@ function compare(a,b) {
 
             modelDict.categories = schema.categories;
             modelDict.metadata = schema.metadata;
+            modelDict.userPreferencesModel = {};
+            modelDict.userPreferencesModelName = modelId;
 
 
             // console.log(modelId, 'dict:', modelDict, this.generatedModels.findBy('name', 'widget').modelDict);
-          if(schema.properties) {
-            var propertiesKeys = Ember.keys(schema.properties);
-            for (var i = 0; i < propertiesKeys.length; i++) {
-              var currentKey = propertiesKeys[i];
-              var currentProperty = schema.properties[currentKey];
+            if(schema.properties) {
+                var propertiesKeys = Ember.keys(schema.properties);
+                for (var i = 0; i < propertiesKeys.length; i++) {
+                    var currentKey = propertiesKeys[i];
+                    var currentProperty = schema.properties[currentKey];
 
-              if (currentProperty.relationship === 'hasMany' && currentProperty.model !== undefined) {
-                currentProperty.model = currentProperty.model.split('.');
-                currentProperty.model = currentProperty.model[currentProperty.model.length - 1];
+                    if (currentProperty.relationship === 'hasMany' && currentProperty.model !== undefined) {
+                        currentProperty.model = currentProperty.model.split('.');
+                        currentProperty.model = currentProperty.model[currentProperty.model.length - 1];
 
-                modelDict[currentKey] = DS.hasMany(currentProperty.model, currentProperty);
-              } else if (currentProperty.relationship === 'belongsTo' && currentProperty.model !== undefined) {
-                currentProperty.model = currentProperty.model.split('.');
-                currentProperty.model = currentProperty.model[currentProperty.model.length - 1];
+                        modelDict[currentKey] = DS.hasMany(currentProperty.model, currentProperty);
+                    } else if (currentProperty.relationship === 'belongsTo' && currentProperty.model !== undefined) {
+                        currentProperty.model = currentProperty.model.split('.');
+                        currentProperty.model = currentProperty.model[currentProperty.model.length - 1];
 
-                modelDict[currentKey] = DS.belongsTo(currentProperty.model, currentProperty);
-              } else {
-                modelDict[currentKey] = DS.attr(currentProperty.type, currentProperty);
-              }
+                        modelDict[currentKey] = DS.belongsTo(currentProperty.model, currentProperty);
+                    } else {
+                        console.log('>>>', currentProperty);
+                        if(currentProperty.isUserPreference === true) {
+                            modelDict.userPreferencesModel[currentKey] = DS.attr(currentProperty.type, currentProperty);
+                        } else {
+                            modelDict[currentKey] = DS.attr(currentProperty.type, currentProperty);
+                        }
+                    }
+                }
+
+                console.log("###", modelDict.constructor);
+                userPreferencesKeys = Ember.keys(modelDict.userPreferencesModel);
+                modelDict.userPreferencesModel.attributes = Ember.OrderedSet.create();
+                for (var i = 0; i < userPreferencesKeys.length; i++) {
+                    var keyMeta = modelDict.userPreferencesModel[userPreferencesKeys[i]].meta();
+                    keyMeta.name = userPreferencesKeys[i];
+
+                    modelDict.userPreferencesModel.attributes.add(keyMeta);
+                }
+
             }
-          }
 
-          return modelDict;
+            return modelDict;
         },
 
         getParentModelForModelId: function(schemaId) {

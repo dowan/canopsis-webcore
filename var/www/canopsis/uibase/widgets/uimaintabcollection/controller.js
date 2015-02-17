@@ -19,10 +19,13 @@
 
 define([
     'jquery',
+    'ember',
     'app/lib/factories/widget',
     'utils',
+    'app/lib/utils/forms',
+    'app/lib/utils/routes',
     'app/lib/wrappers/bootstrap'
-], function($, WidgetFactory, utils) {
+], function($, Ember, WidgetFactory, utils, formsUtils, routesUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -86,6 +89,24 @@ define([
                 }
 
                 this.send(action, params);
+            },
+
+            showViewOptions: function() {
+
+                var userviewController = routesUtils.getCurrentRouteController();
+                var userview = userviewController.get('model');
+
+                var widgetWizard = formsUtils.showNew('viewtreeform', userview, { title: __('Edit userview') });
+                console.log('widgetWizard', widgetWizard);
+
+                var widgetController = this;
+
+                widgetWizard.submit.done(function() {
+                    userview.save().then(function(){
+                        get(widgetController, 'viewController').send('refresh');
+                    });
+                });
+
             }
         }
     });

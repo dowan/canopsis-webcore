@@ -66,6 +66,7 @@ var editors = [
     { name: 'editor-forcevalue', template: 'canopsis/uibase/editors/forcevalue.html' },
     { name: 'editor-eventkey', template: 'canopsis/uibase/editors/eventkey.html' },
     { name: 'editor-serieformula', template: 'canopsis/uibase/editors/serieformula.html' },
+    { name: 'editor-widgetstree', template: 'canopsis/uibase/editors/widgetstree.html' }
 ];
 
 loader.loadWithTemplates(editors);

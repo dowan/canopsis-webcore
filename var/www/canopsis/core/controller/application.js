@@ -80,6 +80,7 @@ define([
         __ = Ember.String.loc;
 
 
+
     function bindKey(keyCombination, actionName) {
         Mousetrap.bind([keyCombination], function(e) {
             console.log('binding', arguments);
@@ -202,14 +203,13 @@ define([
 
                 if(!isNone(serviceList)) {
                     var length = serviceList.length;
-                    for(var i=0 ; i<length; i++) {
+                    for(var i = 0 ; i < length; i++) {
                         //this test avoids empty strings
                         if(serviceList[i]) {
                             appController.authConfig(serviceList[i]);
                         }
                     }
                 }
-
             });
 
             var footerStore = DS.Store.create({
@@ -396,11 +396,9 @@ define([
 
                 var applicationController = this;
 
-
                 var dataStore = DS.Store.create({
                     container: get(this, "container")
                 });
-
 
                 var record = dataStore.findQuery('statusmanagement', {}).then(function(queryResults) {
 
@@ -439,7 +437,6 @@ define([
 
                 var applicationController = this;
 
-
                 var dataStore = DS.Store.create({
                     container: get(this, "container")
                 });
@@ -467,7 +464,6 @@ define([
                         //generated data by user form fill
                         record = form.get('formContext');
                         record.save();
-
                     });
                 });
             },

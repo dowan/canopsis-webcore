@@ -247,7 +247,7 @@ define([
                         console.log('use default sort',findParams.sort);
                     }
                 }
-                console.log('findParams.sort',findParams.sort);
+                console.log('findParams.sort', findParams.sort);
 
                 get(this, 'widgetDataStore').findQuery(itemType, findParams).then(function(queryResults) {
                     //retreive the metas of the records
@@ -419,7 +419,7 @@ define([
             computeFindParams: function(){
                 console.group('computeFindParams');
                 var defaultFilter = get(this, 'mixinOptions.customfilterlist.default_filter');
-                var userFilter = get(this, 'userFilter');
+                var userFilter = get(this, 'model.userFilter') || {};
 
                 if (!isNone(userFilter)) {
                     defaultFilter = undefined;
