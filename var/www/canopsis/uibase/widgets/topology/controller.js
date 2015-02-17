@@ -77,7 +77,7 @@ define([
         source: null, // source link data
 
         toolbox_gap: 50, // toolbox gap between shapes
-        duration: 300, // transition duration
+        duration: 500, // transition duration
 
         _translate: [0, 0],
         _scale: 1,
@@ -168,6 +168,11 @@ define([
             this._gravity = this.get('gravity');
             this.force.gravity(gravity);
         }.observes('gravity'),
+
+        rerender: function() {
+            this._super.apply(this, arguments);
+            this.didInsertElement();
+        },
 
         didInsertElement: function() {
             this._super.apply(this, arguments);
@@ -1900,6 +1905,96 @@ define([
         * @param failure edition failure callback. Takes record in parameter.
         */
         editRecord: function(record, success, failure, context) {
+            // fill operator data from record
+            var states = ['ok', 'warning', 'critical', 'unknown'];
+            function get_short_id(task) {
+                var task_id = task.cid || task;
+                var lastIndex = task_id.lastIndexOf('.');
+                var result = task_id.substring(lastIndex + 1);
+                return result;
+            }
+            var info = record.get('info');
+            if (info !== undefined) {
+                // set entity
+                var entity = info.entity;
+                if (entity !== undefined) {
+                    record.set('entity', entity);
+                }
+                // set label
+                var label = info.label;
+                if (label !== undefined) {
+                    record.set('label', label);
+                }
+                var task = info.task;
+                if (task !== undefined) {
+                    var operator = task.cid || task;
+                    if (operator !== undefined) {
+                        var operator_name = get_short_id(task);
+                        if (operator_name === 'condition') {  // at least / nok
+                            var params = task.params;
+                            if (params !== undefined) {
+                                var condition = params.condition;
+                                if (condition !== undefined) {
+                                    var condition_name = get_short_id(condition.cid || condition);
+                                    record.set('operator', condition_name);
+                                    var cond_params = condition.params;
+                                    if (cond_params !== undefined) {
+                                        // set in_state
+                                        if (condition_name === 'nok') {
+                                            record.set('in_state', 'nok');
+                                        } else {
+                                            var in_state = cond_params.state;
+                                            if (in_state !== undefined) {
+                                                in_state = states[in_state];
+                                                record.set('in_state', in_state);
+                                            }
+                                        }
+                                        // set min_weight
+                                        var min_weight = cond_params.min_weight;
+                                        if (min_weight !== undefined) {
+                                            record.set('min_weight', min_weight);
+                                        }
+                                        // set then_state
+                                        var statement = params.statement;
+                                        if (statement !== undefined) {
+                                            var statement_name = get_short_id(statement);
+                                            if (statement_name === 'change_state') {
+                                                var statement_params = statement.params;
+                                                if (statement_params !== undefined) {
+                                                    var then_state = statement_params.state;
+                                                    then_state = states[then_state];
+                                                    record.set('then_state', then_state);
+                                                }
+                                            } else {
+                                                var then_state = statement_name;
+                                                record.set('then_state', then_state);
+                                            }
+                                        }
+                                        // set else_state
+                                        var _else = params._else;
+                                        if (_else !== undefined) {
+                                            var _else_name = get_short_id(_else);
+                                            if (_else_name === 'change_state') {
+                                                var _else_params = _else.params;
+                                                if (_else_params !== undefined) {
+                                                    var else_state = _else_params.state;
+                                                    else_state = states[else_state];
+                                                    record.set('else_state', else_state);
+                                                }
+                                            } else {
+                                                var else_state = _else_name;
+                                                record.set('else_state', else_state);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        } else {  // simple task
+                            record.set(operator_name);
+                        }
+                    }
+                }
+            }
             var recordWizard = formsUtils.showNew(
                 'modelform',
                 record,
@@ -1907,6 +2002,92 @@ define([
             );
             recordWizard.submit.done(
                 function(form) {
+                    var info = record.get('info');
+                    if (info !== undefined) {
+                        var task = info.task || {};
+                    } else {
+                        info = {
+                            task: {}
+                        }
+                        var task = info.task;
+                    }
+                    // set entity
+                    var entity = record.get('entity');
+                    if (entity !== undefined) {
+                        info.entity = entity;
+                    }
+                    // set label
+                    var label = record.get('label');
+                    if (label !== undefined) {
+                        info.label = label;
+                    }
+                    var operator = record.get('operator');
+                    switch(operator) {
+                        case 'change_state':
+                        case 'worst_state':
+                        case 'best_state':
+                            task.cid = 'canopsis.topology.rule.action.' + operator;
+                            task.params = {};
+                            break;
+                        case '_all':
+                        case 'at_least':
+                            task.cid = 'canopsis.task.condition.condition';
+                            task.params = {};
+                            task.params.condition = {
+                                cid: 'canopsis.topology.rule.condition.',
+                                params: {}
+                            };
+                            // set min_weight
+                            if (operator === '_all') {
+                                task.params.condition.params.min_weight = null;
+                            } else {
+                                var min_weight = record.get('min_weight');
+                                task.params.condition.params.min_weight = (operator === '_all')? null : min_weight;
+                            }
+                            // set in_state
+                            var in_state = record.get('in_state');
+                            if (in_state === 'nok') {
+                                task.params.condition.cid += in_state;
+                            } else {
+                                task.params.condition.cid += operator;
+                            }
+                            // set then_state
+                            var then_state = record.get('then_state');
+                            task.params.statement = {
+                                cid: 'canopsis.topology.rule.',
+                                params: {}
+                            };
+                            switch(then_state) {
+                                case 'worst_state':
+                                case 'best_state':
+                                    task.params.statement.cid += ('action.' + then_state);
+                                    break;
+                                default:
+                                    then_state = states.indexOf(then_state);
+                                    task.params.statement.cid += 'action.change_state';
+                                    task.params.statement.params.state = then_state;
+                            }
+                            // set else_state
+                            var else_state = record.get('else_state');
+                            task.params._else = {
+                                cid: 'canopsis.topology.rule.',
+                                params: {}
+                            };
+                            switch(else_state) {
+                                case 'worst_state':
+                                case 'best_state':
+                                    task.params._else.cid += ('action.' + else_state);
+                                    break;
+                                default:
+                                    else_state = states.indexOf(else_state);
+                                    task.params._else.cid += 'action.change_state';
+                                    task.params._else.params.state = else_state;
+                            }
+                            break;
+                        default: break;
+                    }
+                    // update info
+                    record.set('info', info);
                     record.save();
                     if (success !== undefined) {
                         success.call(context, record);
