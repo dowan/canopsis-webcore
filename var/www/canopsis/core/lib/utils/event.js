@@ -31,16 +31,17 @@ define([
         getFields: function() {
             return [
                 'connector',
+                'connector_name',
                 'component',
                 'resource',
                 'perimeter',
                 'domain',
                 'state',
                 'status',
-                'timestamp'
+                'timestamp',
+                'output'
             ];
         },
-
     };
 
     return eventUtil;
