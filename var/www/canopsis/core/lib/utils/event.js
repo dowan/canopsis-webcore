@@ -17,43 +17,32 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var utilsFiles = [
-    'forms',
-    'routes',
-    'data',
-    'notification',
-    'i18n',
-    'hash',
-    'dates',
-    'indexes',
-    'filterObject',
-    'widgetSelectors',
-    'dom',
-    'event'
-];
+define([
+    'ember'
+], function(Ember) {
 
-var deps = [];
+    var get = Ember.get,
+        set = Ember.set,
+        __ = Ember.String.loc,
+        isNone = Ember.isNone;
 
-for (var i = 0, l = utilsFiles.length; i < l; i++) {
-    deps.push('app/lib/utils/' + utilsFiles[i]);
-}
+    var eventUtil= {
 
-define(deps, function() {
-    var utils = {};
+        getFields: function() {
+            return [
+                'connector',
+                'connector_name',
+                'component',
+                'resource',
+                'perimeter',
+                'domain',
+                'state',
+                'status',
+                'timestamp',
+                'output'
+            ];
+        },
+    };
 
-    console.tags.add('loader');
-
-    console.group("Begin load utils", arguments);
-
-    for (var i = 0, l = arguments.length; i < l; i++) {
-        var utilName = utilsFiles[i];
-        console.log("load util", utilName);
-        utils[utilName] = arguments[i];
-    }
-
-    console.groupEnd();
-
-    console.tags.remove('loader');
-
-    return utils;
+    return eventUtil;
 });

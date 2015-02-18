@@ -19,9 +19,10 @@
 
 define([
     'ember',
-    'app/lib/utils/types'
+    'app/lib/utils/types',
+    'app/lib/utils/event'
 
-], function(Ember, typesUtils) {
+], function(Ember, typesUtils, eventUtils) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -30,24 +31,25 @@ define([
 
     var component = Ember.Component.extend({
 
+        init:function () {
+            this._super();
+            set(this,'selectedMode',__('List'));
 
-        'selectedMode': __('List'),
+            set(this, 'modes',[
+                __('List'),
+                __('Custom')
+            ]);
 
-        'modes': [
-            __('List'),
-            __('Custom')
-        ],
+            var eventFields = eventUtils.getFields();
+            console.log('eventFields', eventFields);
+            var selectableProperties = [];
+            var length = eventFields.length;
+            for (var i=0; i<length; i++) {
+                selectableProperties.push({field: eventFields[i]});
+            }
 
-        'selectableProperties': [
-            {field:'connector'},
-            {field:'component'},
-            {field:'resource'},
-            {field:'perimeter'},
-            {field:'domain'},
-            {field:'state'},
-            {field:'status'},
-            {field:'timestamp'},
-        ],
+            set(this, 'selectableProperties', selectableProperties);
+        },
 
         useTextField: function () {
             return get(this, 'selectedMode') === __('Custom');
