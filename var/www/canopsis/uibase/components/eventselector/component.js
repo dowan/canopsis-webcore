@@ -116,11 +116,11 @@ define([
 
             //does user selected selector or topology search
             if (this.get('selectors')) {
-                filter.event_type = 'selector';
+                filter.event_type = {'$in' :['selector', 'sla']};
             }
 
             if (this.get('topologies')) {
-                filter.event_type = 'topologies';
+                filter.event_type = {'$eq' :['topologies']};
             }
 
             if (!filter.resource && !filter.component) {
