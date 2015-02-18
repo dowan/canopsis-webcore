@@ -79,6 +79,8 @@ define([
                 this.loadUserConfiguration();
             }
 
+            this._super();
+
             console.debug('user configuration loaded for widget ' + get(this, 'title'));
             this.refreshContent();
         },

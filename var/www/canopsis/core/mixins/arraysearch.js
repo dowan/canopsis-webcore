@@ -51,6 +51,16 @@ define([
             this._super.apply(this, arguments);
         },
 
+        computeFilterFragmentsList: function() {
+            var list = this._super();
+
+            var searchFilterPart = get(this, 'findParams_searchFilterPart');
+
+            list.pushObject(searchFilterPart);
+
+            return list;
+        },
+
         actions: {
             searchItems: function(findOptions) {
 

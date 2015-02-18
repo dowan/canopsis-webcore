@@ -45,14 +45,11 @@ define([
         },
 
         init: function() {
-
             this._super();
 
             if(!get(this, 'model.user_filters')) {
                 set(this, 'model.user_filters', Ember.A());
             }
-
-            set(this, 'model.userFilter', get(this, 'model.selected_filter.filter'));
         },
 
         isSelectedFilter: function (filterList) {
@@ -62,7 +59,7 @@ define([
 
             var filterLen = filterList.length;
             var currentTitle = get(this, 'model.selected_filter.title');
-            for (var i=0; i<filterLen; i++) {
+            for (var i = 0; i < filterLen; i++) {
 
                 var compareTitle = get(filterList[i], 'title');
 
@@ -86,6 +83,25 @@ define([
             return this.isSelectedFilter(get(this, 'model.user_filters'));
         }.property('model.user_filters', 'model.selected_filter'),
 
+        computeFilterFragmentsList: function() {
+            var list = this._super();
+
+            var userFilter;
+
+            if(get(this, 'model.selected_filter.filter') !== null && get(this, 'model.selected_filter.filter') !== undefined) {
+                userFilter = get(this, 'model.selected_filter.filter');
+            } else if(get(this, 'model.selected_filter') && !get(this, 'model.selected_filter.filter')) {
+                userFilter = {};
+            } else if(get(this, 'model.mixins').findBy('name', 'Customfilterlist')) {
+                userFilter = JSON.parse(get(this, 'model.mixins').findBy('name', 'Customfilterlist').default_filter);
+            } else {
+                userFilter = {};
+            }
+
+            list.pushObject(userFilter);
+
+            return list;
+        },
 
         actions: {
             setFilter: function (filter) {
@@ -147,7 +163,6 @@ define([
                     title: get(filter, 'title'),
                 });
 
-
                 var recordWizard = formsUtils.showNew('modelform', record, {
                     title: __('Edit filter for current list')
                 });
@@ -159,13 +174,7 @@ define([
                     console.log('Custom filter created', record, form);
                     notificationUtils.info(__('Custom filter created'));
 
-
-                    console.log(widgetController.get('model.isDirty'));
-
-                    // get(widgetController, 'viewController').get('content').save();
-
                     widgetController.saveUserConfiguration();
-
                 });
             },
 
