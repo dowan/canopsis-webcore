@@ -29,7 +29,6 @@ var editors = [
     { name: 'editor-cfilterwithproperties', template: 'canopsis/uibase/editors/cfilterwithproperties.html' },
     { name: 'editor-cmetric', template: 'canopsis/uibase/editors/cmetric.html' },
     { name: 'editor-color', template: 'canopsis/uibase/editors/color.html' },
-    { name: 'editor-criticity', template: 'canopsis/uibase/editors/criticity.html' },
     { name: 'editor-dateinterval', template: 'canopsis/uibase/editors/dateinterval.html' },
     { name: 'editor-defaultpropertyeditor', template: 'canopsis/uibase/editors/defaultpropertyeditor.html' },
     { name: 'editor-dictclassifiedcrecordselector', template: 'canopsis/uibase/editors/dictclassifiedcrecordselector.html' },
