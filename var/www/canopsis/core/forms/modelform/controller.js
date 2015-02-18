@@ -92,7 +92,7 @@ define([
                     if (get(this, 'filterFieldByKey') || get(this, 'userPreferencesOnly')) {
                         //filter on user preferences fields only
                         //if (category)
-                        category = this.filterUserPreferenceCategory(category, get(this, 'filterFieldByKey'));
+                        this.filterUserPreferenceCategory(category, get(this, 'filterFieldByKey'));
                         if (category.keys.length) {
                             category_selection.push(res[i]);
                         }
