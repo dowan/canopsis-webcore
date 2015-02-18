@@ -223,18 +223,12 @@ define([
 
                 var itemType = get(this, 'itemType');
 
-                console.log('findItems', itemType);
-
-                if (isNone(itemType)) {
-                    console.error('itemType is undefined for', this);
-                    return;
-                }
-
                 var findParams = this.computeFindParams();
 
                 //Setting default sort order param to the query depending on widget configuration
                 var columnSort = get(this, 'default_column_sort');
 
+                //TODO refactor this in the appropriate mixin
                 //when find params does not contains already a sort infomation, then apply default one if any
                 if (!isNone(findParams) && isNone(findParams.sort) && !isNone(columnSort)) {
                     if (!isNone(columnSort.property) && isNone(findParams.sort)){
@@ -416,19 +410,22 @@ define([
 
             }.property('attributesKeysDict', 'sorted_columns'),
 
-            computeFindParams: function(){
-                console.group('computeFindParams');
-                var defaultFilter = get(this, 'mixinOptions.customfilterlist.default_filter');
-                var userFilter = get(this, 'model.userFilter') || {};
-
-                if (!isNone(userFilter)) {
-                    defaultFilter = undefined;
-                }
-
-                var searchFilterPart = get(this, 'findParams_searchFilterPart');
+            /**
+             * Computes the list of different filter fragments used to create a proper query
+             * @returns {Array} the list of fragments
+             */
+            computeFilterFragmentsList: function() {
+                var list = Ember.A();
                 var additionalFilterPart = get(this, 'additional_filter');
 
-                var filter;
+                list.pushObject(this.getTimeInterval());
+                list.pushObject(additionalFilterPart);
+
+                return list;
+            },
+
+            computeFindParams: function(){
+                console.group('computeFindParams', get(this, 'model.selected_filter.filter'));
 
                 function isDefined(filterPart) {
                     if(filterPart === {} || isNone(filterPart)) {
@@ -438,33 +435,27 @@ define([
                     return true;
                 }
 
-                var sourceFilter = [
-                    searchFilterPart,
-                    defaultFilter,
-                    userFilter,
-                    this.getTimeInterval(),
-                    additionalFilterPart
-                ];
+                var filterFragments = this.computeFilterFragmentsList();
 
                 var filters = [];
 
-                for (var i = 0, l = sourceFilter.length; i < l; i++) {
-                    if(typeof sourceFilter[i] === 'string') {
+                for (var i = 0, l = filterFragments.length; i < l; i++) {
+                    if(typeof filterFragments[i] === 'string') {
                         //if json, parse json
                         try {
-                            sourceFilter[i] = JSON.parse(sourceFilter[i]);
+                            filterFragments[i] = JSON.parse(filterFragments[i]);
                         } catch (e) {
                             if(get(this, 'content.displayedErrors') === undefined) {
                                 set(this, 'content.displayedErrors', Ember.A());
                             }
 
                             get(this, 'content.displayedErrors').pushObject('There seems to be an error with the currently selected filter.');
-                            sourceFilter[i] = {};
+                            filterFragments[i] = {};
                         }
                     }
-                    if (isDefined(sourceFilter[i])) {
+                    if (isDefined(filterFragments[i])) {
                         //when defined filter then it is added to the filter list
-                        filters.pushObject(sourceFilter[i]);
+                        filters.pushObject(filterFragments[i]);
                     }
                 }
 
