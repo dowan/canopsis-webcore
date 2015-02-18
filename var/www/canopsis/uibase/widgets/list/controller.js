@@ -139,9 +139,9 @@ define([
 
                     if(get(currentColumn, 'options.show')) {
                         if(currentColumn.renderer) {
-                            html += '<td class="' + currentColumn.field + '">{{component-renderer rendererType="' + currentColumn.renderer + '" value=this.'+ currentColumn.field +' record=this field="' + currentColumn.field + '" shown_columns=controller.shown_columns}}</td>';
+                            html += ['<td class="', currentColumn.field, '">{{component-renderer rendererType="', currentColumn.renderer, '" value=this.', currentColumn.field, ' record=this field="', currentColumn.field, '" shown_columns=controller.shown_columns}}</td>'].join('');
                         } else {
-                            html += '<td class="' + currentColumn.field + '">{{this.'+ currentColumn.field + '}}</td>';
+                            html += ['<td class="', currentColumn.field, '">{{this.', currentColumn.field, '}}</td>'].join('');
                         }
                     }
                 }
@@ -152,7 +152,7 @@ define([
                     html += '<td style="padding-left:0; padding-right:0"><div class="btn-group" style="display:flex">';
 
                     for (var j = 0, lj = itemActionbuttons.length; j < lj; j++) {
-                        html += '{{partial "' + itemActionbuttons[j] + '"}}';
+                        html += ['{{partial "', itemActionbuttons[j], '"}}'].join('');
                     }
 
                     html += '</div></td>';
