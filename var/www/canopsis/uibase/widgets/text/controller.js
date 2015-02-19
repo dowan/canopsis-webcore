@@ -120,7 +120,7 @@ define([
                     for (i=0; i<length; i++) {
 
                         var rk = get(data.content[i], 'id'),
-                            label = labels_for_rk[rk];
+                            label = labels_for_rk[rk].replace(/ /g,'_');
                             if (!isNone(label)) {
                                 var eventjson = data.content[i].toJson();
                                 eventjson.id = get(data.content[i], 'id');
@@ -187,7 +187,7 @@ define([
                                 //choosing the value for the last point when any
                                 displayValue = data[data.length - 1][1];
                             }
-                            var serieName = get(series[i], 'crecord_name');
+                            var serieName = get(series[i], 'crecord_name').replace(/ /g,'_');
                             set(controller, 'templateContext.serie.' + serieName, displayValue);
                         }
 
