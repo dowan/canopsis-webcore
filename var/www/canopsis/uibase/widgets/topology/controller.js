@@ -1006,27 +1006,12 @@ define([
                 .select('path')
                     .classed(
                         {
-                            'ok': function(d) {return !d.elt.get('info').state;},
-                            'warning': function(d) {return d.elt.get('info').state === 1;},
-                            'critical': function(d) {return d.elt.get('info').state === 2;},
-                            'unknown': function(d) {return d.elt.get('info').state > 3;}
+                            'ndok': function(d) {return !d.elt.get('info').state;},
+                            'ndminor': function(d) {return d.elt.get('info').state === 1;},
+                            'ndmajor': function(d) {return d.elt.get('info').state === 2;},
+                            'ndcritical': function(d) {return d.elt.get('info').state === 3;}
                         }
                     )
-                    /*.style(
-                        'fill',
-                        function(d) { // set default color to green
-                            var result = 'green';
-                            if (d.elt.get('info')) {
-                                switch(d.elt.get('info').state) {
-                                    case 0: result = 'green'; break; // ok
-                                    case 1: result = 'yellow'; break; // warning
-                                    case 2: result = '#FF9900 !important'; break; // critical
-                                    case 3: result = 'white'; break; // unknown
-                                }
-                            }
-                            return result;
-                        }
-                    )*/
                     .attr(
                         'd',
                         function(d, i) {
@@ -1097,6 +1082,9 @@ define([
                             operator_id = operator_id.substring(operator_id.lastIndexOf('.') + 1);
                             result += operator_id;
                         }
+                        if (result === 'change_state') {  // do not display default operator
+                            result = '';
+                        }
                     }
                     return result;
                 }
@@ -1105,7 +1093,9 @@ define([
                 function(d) {
                     var result = '';
                     var weight = d.elt.get('weight');
-                    result += weight;
+                    if (weight !== undefined && weight !== 1) {
+                        result += weight;
+                    }
                     return result;
                 }
             );
@@ -1157,23 +1147,22 @@ define([
                         directed: function(d) {
                             return d.elt.get('directed');
                         },
+                        'lnok': function(d) {return !d.elt.get('info').state;},
+                        'lnminor': function(d) {return d.elt.get('info').state === 1;},
+                        'lnmajor': function(d) {return d.elt.get('info').state === 2;},
+                        'lncritical': function(d) {return d.elt.get('info').state === 3;}
                     }
                 )
                 .style(
                     {
-                        stroke: function(d) { // set default color to green
-                            var result = 'green';
-                            if (d.elt.get('info')) {
-                                switch(d.elt.get('info').state) {
-                                    case 0: result = 'green'; break; // ok
-                                    case 1: result = 'yellow'; break; // warning
-                                    case 2: result = 'red'; break; // critical
-                                    case 3: result = 'white'; break; // unknown
-                                }
+                        'stroke-width': function(d) {
+                            var result = 1;
+                            var weight = d.elt.get('weight');
+                            if (weight !== undefined) {
+                                result += (weight - 1);
                             }
                             return result;
                         },
-                        'stroke-width': function(d) { return d.elt.get('weight')? d.elt.get('weight') : 1;},
                         'marker-end': function(d) {
                             return (d.elt.get('directed') && !d.isSource)? "url(#markerArrow)" : "";
                         }
@@ -1926,7 +1915,7 @@ define([
         */
         editRecord: function(record, success, failure, context) {
             // fill operator data from record
-            var states = ['ok', 'warning', 'critical', 'unknown'];
+            var states = ['ok', 'minor', 'major', 'critical'];
             function get_short_id(task) {
                 var task_id = task.cid || task;
                 var lastIndex = task_id.lastIndexOf('.');
@@ -2066,7 +2055,7 @@ define([
                                 task.params.condition.params.min_weight = null;
                             } else {
                                 var min_weight = record.get('min_weight');
-                                task.params.condition.params.min_weight = (operator === '_all')? null : min_weight;
+                                task.params.condition.params.min_weight = min_weight;
                             }
                             // set in_state
                             var in_state = record.get('in_state');
@@ -2074,37 +2063,38 @@ define([
                                 task.params.condition.cid += in_state;
                             } else {
                                 task.params.condition.cid += operator;
+                                task.params.condition.params.state = in_state;
                             }
                             // set then_state
                             var then_state = record.get('then_state');
                             task.params.statement = {
-                                cid: 'canopsis.topology.rule.',
+                                cid: 'canopsis.topology.rule.action.',
                                 params: {}
                             };
                             switch(then_state) {
                                 case 'worst_state':
                                 case 'best_state':
-                                    task.params.statement.cid += ('action.' + then_state);
+                                    task.params.statement.cid += then_state;
                                     break;
                                 default:
                                     then_state = states.indexOf(then_state);
-                                    task.params.statement.cid += 'action.change_state';
+                                    task.params.statement.cid += 'change_state';
                                     task.params.statement.params.state = then_state;
                             }
                             // set else_state
                             var else_state = record.get('else_state');
                             task.params._else = {
-                                cid: 'canopsis.topology.rule.',
+                                cid: 'canopsis.topology.rule.action.',
                                 params: {}
                             };
                             switch(else_state) {
                                 case 'worst_state':
                                 case 'best_state':
-                                    task.params._else.cid += ('action.' + else_state);
+                                    task.params._else.cid += else_state;
                                     break;
                                 default:
                                     else_state = states.indexOf(else_state);
-                                    task.params._else.cid += 'action.change_state';
+                                    task.params._else.cid += 'change_state';
                                     task.params._else.params.state = else_state;
                             }
                             break;
