@@ -62,7 +62,7 @@ define([
                     widgetXtype: get(record, 'xtype'),
                     title: get(record, 'title'),
                     viewId: get(record, 'viewId'),
-                    id: preference_id,
+                    id: preference_id + "_" + user,
                     crecord_type: 'userpreferences'
                 };
 
@@ -162,7 +162,7 @@ define([
                         widgetXtype: get(record, 'xtype'),
                         title: get(record, 'title'),
                         viewId: get(record, 'viewId'),
-                        id: preference_id,
+                        id: preference_id + '_' + user,
                         crecord_type: 'userpreferences'
                     };
 
