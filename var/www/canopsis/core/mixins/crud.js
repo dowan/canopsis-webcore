@@ -146,20 +146,39 @@ define([
                 });
             },
 
-            remove: function(record) {
+            remove: function(record, noconfirm) {
                 console.info('removing record', record);
-                record.deleteRecord();
-                record.save();
+
+                if (noconfirm) {
+                    record.deleteRecord();
+                    record.save();
+                } else {
+                    var confirmform = formsUtils.showNew('confirmform', {}, {
+                        title: __('Delete this record ?')
+                    });
+                    var crudController = this;
+                    confirmform.submit.then(function(form) {
+                        record.deleteRecord();
+                        record.save();
+                    });
+                }
             },
 
             removeSelection: function() {
-                var selected = this.get("widgetData").filterBy('isSelected', true);
-                console.log("remove action", selected);
+                var confirmform = formsUtils.showNew('confirmform', {}, {
+                    title: __('Delete these records ?')
+                });
+                var crudController = this;
+                confirmform.submit.then(function(form) {
+                    var selected = crudController.get("widgetData").filterBy('isSelected', true);
+                    console.log("remove action", selected);
 
-                for (var i = 0, l = selected.length; i < l; i++) {
-                    var currentSelectedRecord = selected[i];
-                    this.send("remove", currentSelectedRecord);
-                }
+                    for (var i = 0, l = selected.length; i < l; i++) {
+                        var currentSelectedRecord = selected[i];
+                        crudController.send("remove", currentSelectedRecord, true);
+                    }
+                });
+
             }
         }
     });
