@@ -62,7 +62,7 @@ define([
                     widgetXtype: get(record, 'xtype'),
                     title: get(record, 'title'),
                     viewId: get(record, 'viewId'),
-                    id: preference_id + "_" + user,
+                    id: get(record, 'widgetId') + "_" + user,
                     crecord_type: 'userpreferences'
                 };
 
@@ -103,7 +103,7 @@ define([
                             console.log('User configuration load for widget complete', JSON.stringify(data));
                             var preferences = data.data[0].widget_preferences;
 
-                            set(record, 'preference_id', data.data[0]._id);
+                            set(record, get(record, 'widgetId') + "_" + user);
                             set(record, 'userPreferences', preferences);
 
                             for (var key in preferences) {
@@ -143,7 +143,7 @@ define([
             if(record.userPreferencesModel.attributes.list && record.userPreferencesModel.attributes.list.length > 0) {
                 console.group('userpreferences for widget', record.get('title'), record);
                 var userpreferenceAttributes = record.userPreferencesModel.attributes.list;
-                var preference_id = get(this, 'preference_id'),
+                var preference_id = get(record, 'preference_id'),
                     user = get(utils.session,'_id');
 
                 if (preference_id === undefined) {
