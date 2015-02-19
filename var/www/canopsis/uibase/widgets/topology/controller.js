@@ -174,6 +174,19 @@ define([
             this.didInsertElement();
         },
 
+        //Controller -> View Hooks
+        registerHooks: function() {
+            result = this._super.apply(this, arguments);
+            get(this, "controller").on('redraw', this, this.redraw);
+            return result;
+        },
+
+        unregisterHooks: function() {
+            result = this._super.apply(this, arguments);
+            get(this, "controller").off('redraw', this, this.redraw);
+            return result;
+        },
+
         didInsertElement: function() {
             this._super.apply(this, arguments);
             if (get(this, 'controller').graph === null) {
@@ -188,6 +201,10 @@ define([
             };
             // update the view
             this.updateModel();
+        },
+
+        redraw: function() {
+            var me = this;
             var width = get(this, 'controller.width');
             if (!width) width = this.$().width();
             var height = get(this, 'controller.height');
@@ -223,23 +240,23 @@ define([
                     /*_this.eventZoom = d3.event;
                     console.log(_this.eventZoom);
                     if (d3.event.sourceEvent.type !== 'mousemove') {*/
-                        if (!_this.dragging) {
-                            _this.panel.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+                        if (!me.dragging) {
+                            me.panel.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
                         }
                     /*} else {
                         var translate = [d3.event.translate[0] * d3.event.scale, d3.event.translate[1] * d3.event.scale];
-                        _this.panel.attr("transform", "translate(" + translate + ")scale(" + d3.event.scale + ")");
+                        me.panel.attr("transform", "translate(" + translate + ")scale(" + d3.event.scale + ")");
                     }*/
                 };
                 function drag() {
                     console.log(d3.event);
                     var translate = [
-                        _this.eventZoom.translate[0] + d3.event.dx,
-                        _this.eventZoom.translate[1] + d3.event.dy
+                        me.eventZoom.translate[0] + d3.event.dx,
+                        me.eventZoom.translate[1] + d3.event.dy
                     ];
-                    _this.eventZoom.translate = translate;
-                    _this.panel.attr('transform', 'translate(' + translate + ') scale(' + _this.eventZoom.scale + ')');
-                    _this.panel.select('.overlay').attr(
+                    me.eventZoom.translate = translate;
+                    me.panel.attr('transform', 'translate(' + translate + ') scale(' + me.eventZoom.scale + ')');
+                    me.panel.select('.overlay').attr(
                         {
                             'x': -translate[0],
                             'y': -translate[1]
@@ -270,11 +287,11 @@ define([
                             //    transform: 'scale(1.5)'
                             }
                         )
-                        .on('click', function(){ return _this.clickAction(this);})
-                        .on('mousemove', function() { return _this.moveAction(this);})
-                        //.on('mouseover', function() { return _this.overAction(this);})
-                        .on('mouseout', function() { return _this.overAction(this);})
-                        .on('dblclick', function() { return _this.addHandler();})
+                        .on('click', function(){ return me.clickAction(this);})
+                        .on('mousemove', function() { return me.moveAction(this);})
+                        //.on('mouseover', function() { return me.overAction(this);})
+                        .on('mouseout', function() { return me.overAction(this);})
+                        .on('dblclick', function() { return me.addHandler();})
                         .call(zoom)
                         //.call(drag)
                 ;
@@ -379,6 +396,7 @@ define([
         },
 
         updateModel: function() {
+            var me = this;
             this.graph = get(this, 'controller').graph;
             // add nodes and links in graph
             // contain nodes by entity_ids
@@ -471,6 +489,7 @@ define([
                             }
                         );
                     }
+                    me.trigger('redraw');
                 }
             );
         },
@@ -872,7 +891,7 @@ define([
             function success() {
                 _this.destroyToolBox();
             }
-            this.putGraphToServer(success);
+            get(this, 'controller').putGraphToServer(success);
         },
 
         /**
