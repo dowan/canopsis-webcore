@@ -499,42 +499,7 @@ table.dataTable tbody th, table.dataTable tbody td {
     width:400px;
 }
 
-th.output {
-    white-space: normal;
-    width:28%;
-}
 
-td.output.overflowed {
-    white-space: normal;
-    width: 28%;
-    padding: 4px 5px;
-}
-
-td.output.overflowed .placeddiv {
-    white-space: normal;
-    width: 28%;
-    padding: 6px 7px !important;
-}
-
-th.state {
-    width:95px;
-}
-
-th.ack {
-    width:70px;
-}
-
-th.status {
-    width:75px;
-}
-
-th.timestamp {
-    width:120px;
-}
-
-th.actions {
-    width:228px;
-}
 
 .subitems {
     text-align: left;
@@ -750,4 +715,8 @@ table.dataTableConnector {
         width: 20%;
         float: left;
     }
+}
+
+.widget.list th {
+    padding: 4px;
 }
