@@ -62,7 +62,6 @@ var editors = [
     { name: 'editor-password', template: 'canopsis/uibase/editors/password.html' },
     { name: 'editor-passwordmd5', template: 'canopsis/uibase/editors/passwordmd5.html' },
     { name: 'editor-passwordsha1', template: 'canopsis/uibase/editors/passwordsha1.html' },
-    { name: 'editor-forcevalue', template: 'canopsis/uibase/editors/forcevalue.html' },
     { name: 'editor-eventkey', template: 'canopsis/uibase/editors/eventkey.html' },
     { name: 'editor-serieformula', template: 'canopsis/uibase/editors/serieformula.html' },
     { name: 'editor-widgetstree', template: 'canopsis/uibase/editors/widgetstree.html' }
