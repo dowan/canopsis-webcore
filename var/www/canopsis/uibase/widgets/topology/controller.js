@@ -1441,6 +1441,61 @@ define([
         /**
         * Get request server url to get graph.
         */
+        getSendEventUrl: function() {
+            result = '/event';
+
+            return result;
+        },
+
+        /**
+        * Update node information related to backend activity.
+        */
+        updateNode: function(node) {
+            // save node
+
+            // process node
+            var _url = this.getSendEventUrl();
+            var _this = this;
+            var event = {
+                'connector': 'canopsis',
+                'connector_name': 'engine',
+                'event_type': node.get('type'),
+                'state': node.get('info').state ? node.get('info').state : 0,
+                'state_type': 1,
+                'cid': node.get('cid'),
+                'type': nod.get('type')
+            };
+            var type = node.get('type');
+            switch(type) {
+                case 'topo':
+                    event.source_type = 'component';
+                    event.component = event.cid;
+                    break;
+                case 'toponode':
+                    event.source_type = 'resource';
+                    event.component = this.graph_id;
+                    event.resource = event.cid;
+                    break;
+                default:
+                    console.error('type ' + type + ' can not be updated.');
+            }
+            var promise = new Ember.RSVP.Promise(function(resolve, reject) {
+                $.ajax(
+                    {
+                        url: _url,
+                        type: 'POST',
+                        data: {
+                            'event': event
+                        }
+                    }
+                ).then(resolve, reject);
+            });
+            promise.then(success, failure);
+        },
+
+        /**
+        * Get request server url to get graph.
+        */
         getGraphUrl: function() {
             result = '/' + this.graph_type + '/graphs/';
 
@@ -1950,12 +2005,17 @@ define([
                                     if (cond_params !== undefined) {
                                         // set in_state
                                         if (condition_name === 'nok') {
-                                            record.set('in_state', 'nok');
+                                            record.set('operator', 'nok');
                                         } else {
                                             var in_state = cond_params.state;
-                                            if (in_state !== undefined) {
-                                                in_state = states[in_state];
-                                                record.set('in_state', in_state);
+                                            var f = cond_params.f;
+                                            if (f === 'canopsis.topology.rule.condition.is_nok') {
+                                                in_state = 'nok';
+                                            } else {
+                                                if (in_state !== undefined) {
+                                                    in_state = states[in_state];
+                                                    record.set('in_state', in_state);
+                                                }
                                             }
                                         }
                                         // set min_weight
@@ -2044,10 +2104,11 @@ define([
                             break;
                         case '_all':
                         case 'at_least':
+                        case 'nok':
                             task.cid = 'canopsis.task.condition.condition';
                             task.params = {};
                             task.params.condition = {
-                                cid: 'canopsis.topology.rule.condition.',
+                                cid: 'canopsis.topology.rule.condition.' + operator,
                                 params: {}
                             };
                             // set min_weight
@@ -2060,9 +2121,9 @@ define([
                             // set in_state
                             var in_state = record.get('in_state');
                             if (in_state === 'nok') {
-                                task.params.condition.cid += in_state;
+                                task.params.condition.params.f = 'canopsis.topology.rule.condition.is_nok';
+                                task.params.condition.params.state = null;
                             } else {
-                                task.params.condition.cid += operator;
                                 task.params.condition.params.state = in_state;
                             }
                             // set then_state

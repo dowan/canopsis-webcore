@@ -57,8 +57,6 @@ var components = [
     { name: 'components/component-rrule', url: 'canopsis/uibase/components/rrule/component', template: 'canopsis/uibase/components/rrule/template.html' },
     { name: 'components/component-password', url: 'canopsis/uibase/components/password/component', template: 'canopsis/uibase/components/password/template.html' },
     { name: 'components/component-timestamptooltiped', url: 'canopsis/uibase/components/timestamptooltiped/component', template: 'canopsis/uibase/components/timestamptooltiped/template.html' },
-    { name: 'components/component-forcevalue', url: 'canopsis/uibase/components/forcevalue/component', template: 'canopsis/uibase/components/forcevalue/template.html' },
-    { name: 'components/component-forcevaluerenderer', url: 'canopsis/uibase/components/forcevaluerenderer/component', template: 'canopsis/uibase/components/forcevaluerenderer/template.html' },
     { name: 'components/component-graph', url: 'canopsis/uibase/components/graph/component', template: 'canopsis/uibase/components/graph/template.html' },
     { name: 'components/component-topology', url: 'canopsis/uibase/components/topology/component', template: 'canopsis/uibase/components/topology/template.html' },
     { name: 'components/component-ack', url: 'canopsis/uibase/components/ack/component', template: 'canopsis/uibase/components/ack/template.html' },
