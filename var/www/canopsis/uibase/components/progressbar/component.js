@@ -11,6 +11,7 @@ define([
     var component = Ember.Component.extend({
 
         init: function(){
+
             var display_as = get(this,"display_as");
             if(isNone(display_as)){
                 display_as = "progressbar";
@@ -49,9 +50,7 @@ define([
                 } else {
                     set(this, "height", get(this, "width"));
                 }
-
             }
-
             this._super();
         },
 
@@ -86,8 +85,6 @@ define([
                 if(get(this, "is_gauge")){
                     padding = "padding-top: " + str(parseInt(get(this, "height") / 2)) + "px; ";
                 }
-
-
                 return "width: " + width + unit + ";" + padding;
             }
             return "display: none;";
@@ -172,3 +169,4 @@ define([
 
     return component;
 });
+

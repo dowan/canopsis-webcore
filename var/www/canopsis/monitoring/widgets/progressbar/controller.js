@@ -53,7 +53,7 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
             console.log('refresh:', from, to, replace);
 
             console.group('Get mixin properties:');
-            this.getMixinProperties();
+            //this.getProperties();
             console.groupEnd();
 
             console.group('Load series:');
@@ -68,17 +68,17 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
 
         },
 
-        getMixinProperties: function(){
+        getProperties: function(){
             // Label
-            var show_value = get('mixinOptions.criticitylevels.show_value');
+            var show_value = get('config.show_value');
             set(this, "show_value", show_value);
-            var label_align = get('mixinOptions.criticitylevels.label_align');
+            var label_align = get('config.label_align');
             set(this, "label_align", label_align);
-            var label_display = get('mixinOptions.criticitylevels.label_display');
+            var label_display = get('config.label_display');
             set(this, "label_display", label_display);
-            var label_width = get('mixinOptions.criticitylevels.label_width');
+            var label_width = get('config.label_width');
             set(this, "label_width", label_width);
-            var label_unit = get('mixinOptions.criticitylevels.label_unit');
+            var label_unit = get('config.label_unit');
             set(this, "label_unit", label_unit); 
 
             // Colors - always set
@@ -90,7 +90,7 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
             set(this, "critic_color", critic_color);
             
             // Values - may not be set
-            var display_as = get('mixinOptions.criticitylevels.display_as');
+            var display_as = get('config.display_as');
             set(this, "display_as", display_as);
             var warn_value = get('mixinOptions.criticitylevels.warn_value');
             set(this, "warn_value", warn_value);
@@ -100,11 +100,11 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
             set(this, "unit_or_percent", unit_or_percent);
     
             // Specifics
-            var pb_thickness = get('mixinOptions.criticitylevels.pb_thickness');
+            var pb_thickness = get('config.pb_thickness');
             set(this, "pb_thickness", pb_thickness);
-            var gg_width = get('mixinOptions.criticitylevels.gg_width');
+            var gg_width = get('config.gg_width');
             set(this, "gg_width", gg_width);
-            var gg_thickness = get('mixinOptions.criticitylevels.gg_thickness');
+            var gg_thickness = get('config.gg_thickness');
             set(this, "gg_thickness", gg_thickness);
         },
 
@@ -167,6 +167,7 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
             var metrics = get(this, 'config.metrics');
             var store = get(this, 'widgetDataStore');
 
+
             var bars = get(this, "bars");
             var mlength = metrics.length;
             var me = this;
@@ -175,51 +176,78 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
 
                 var metricId = metrics[m];            
 
-                bar = {};
-                bar["label"] = metricId;
-                bar["max_value"] = this.getMaxValue(from, to, metricId);
-                bar["min_value"] = this.getMinValue(from, to, metricId);
-                unit_value = this.getUnitAndValue(from, to, metricId);
-                bar["value"]  = unit_value.value;
-                bar["unit"] = unit_value.unit;
+                bar = {
+                    "id" : metricId,
+                    "label" : this.getName(metricId),
+                    "max_value" : 100,
+                    "min_value" : 0,
+                    "value" : 50,
+                    "unit" : ""
+                };
 
-                bars.pushObject(bar);
+                get(this, "bars").pushObject(bar);
+
+                this.getMaxValue(from, to, metricId);
+                this.getMinValue(from, to, metricId);
+                this.getUnitAndValue(from, to, metricId);
+
             }
-            set(this, 'bars', bars);
+        },
+
+        getName: function(name){
+            return name.split("/").slice(-2).join(" ");
         },
 
         getMaxValue: function(from, to, metricId) {
             var perfdata = get(this, 'controllers.perfdata');
-            max = 100;
-            perfdata.aggregate(metricId, from, to, "max", 86400).then(function(rmax) {
-                max = rmax.data[0].points[0][1];
-                return max;
+            var me = this;
+            perfdata.aggregate(metricId, from, to, "max", 86400).then(function(rmax){
+                var max = rmax.data[0].points[0][1];
+                var bars = get(me, 'bars');
+                var bar = bars.findBy('id', metricId);
+                var index = bars.indexOf(bar);
+                if( ! Ember.isEmpty(bar)) {
+                    set(bar, 'max_value', max);
+                }
+                bars.replace(index, 0, bar);
+                this.trigger('refresh');
             });
-            return max;
         },
 
         getMinValue: function(from, to, metricId) {
             var perfdata = get(this, 'controllers.perfdata');
-            min = 0;
-            perfdata.aggregate(metricId, from, to, "min", 86400).then(function(rmin) {
-                min = rmin.data[0].points[0][1];
-                return min;
+            var me = this;
+            perfdata.aggregate(metricId, from, to, "min", 86400).then(function(rmin){
+                var min = rmin.data[0].points[0][1];
+                var bars = get(me, 'bars');
+                var bar = bars.findBy('id', metricId);
+                var index = bars.indexOf(bar);
+                if( ! Ember.isEmpty(bar)) {
+                    set(bar, 'min_value', min);
+                }
+                bars.replace(index, 0, bar);
+                this.trigger('refresh');
             });
-            return min;
         },
 
         getUnitAndValue: function(from, to, metricId) {
             var perfdata = get(this, 'controllers.perfdata');
-            value = 50;
-            unit = '';
-            perfdata.aggregate(metricId, from, to, "last", 86400).then(function(result) {
-                value = result.data[0].points[0][1];
-                unit = result.data[0].meta.unit;
-                return {value:value, unit:unit};
+            var me = this;
+            perfdata.aggregate(metricId, from, to, "last", 86400).then(function(result){
+                var value = result.data[0].points[0][1];
+                var unit = result.data[0].meta.unit;
+                var bars = get(me, 'bars');
+                var bar = bars.findBy('id', metricId);
+                var index = bars.indexOf(bar);
+                if( ! Ember.isEmpty(bar)) {
+                    set(bar, 'value', value);
+                    set(bar, 'unit', unit);
+                }
+                bars.replace(index, 0, bar);
+                this.trigger('refresh');
             });
-            return {value:value, unit:unit};
         },
-
+        
     }, widgetOptions);
 
     return widget;

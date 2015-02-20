@@ -38,7 +38,6 @@ define([
 
         init:function () {
 
-
             var mixinsOptions = get(this, 'content.mixins');
 
             if(mixinsOptions) {
@@ -54,15 +53,6 @@ define([
             set(this, 'standard_color', get(this, 'mixinOptions.criticitylevels.standard_color'));
             set(this, 'warn_color', get(this, 'mixinOptions.criticitylevels.warn_color'));
             set(this, 'critic_color', get(this, 'mixinOptions.criticitylevels.critic_color'));
-            set(this, 'label_align', get(this, 'mixinOptions.criticitylevels.label_align'));
-            set(this, 'label_display', get(this, 'mixinOptions.criticitylevels.label_display'));
-            set(this, 'label_width', get(this, 'mixinOptions.criticitylevels.label_width'));
-            set(this, 'label_unit', get(this, 'mixinOptions.criticitylevels.label_unit'));
-            set(this, 'show_value', get(this, 'mixinOptions.criticitylevels.show_value'));
-            set(this, 'display_as', get(this, 'mixinOptions.criticitylevels.display_as'));
-            set(this, 'pb_thickness', get(this, 'mixinOptions.criticitylevels.pb_thickness'));
-            set(this, 'gg_thickness', get(this, 'mixinOptions.criticitylevels.gg_thickness'));
-            set(this, 'gg_width', get(this, 'mixinOptions.criticitylevels.gg_width'));
 
             if(isNone(get(this, 'background_color'))){
                 set(this, 'background_color', '#3c8dbc');
@@ -73,33 +63,6 @@ define([
             if(isNone(get(this, 'critic_color'))){
                 set(this, 'critic_color', '#f56954');
             }
-
-            if(isNone(get(this, 'label_align'))){
-                set(this, 'label_align', 'left');
-            }
-            if(isNone(get(this, 'label_display'))){
-                set(this, 'label_display', false);
-            }
-            if(isNone(get(this, 'show_value'))){
-                set(this, 'show_value', false);
-            }
-
-            if(isNone(get(this, 'label_width'))){
-                set(this, 'label_width', 0);
-            }
-            if(isNone(get(this, 'label_unit'))){
-                set(this, 'label_unit', '%');
-            }
-
-            if(isNone(get(this, 'pb_thickness'))){
-                set(this, 'pb_thickness', 10);
-            }
-            if(isNone(get(this, 'gg_thickness'))){
-                set(this, 'gg_thickness', 10);
-            }
-            if(isNone(get(this, 'gg_width'))){
-                set(this, 'gg_width', 250);
-            } 
 
         }
     });
