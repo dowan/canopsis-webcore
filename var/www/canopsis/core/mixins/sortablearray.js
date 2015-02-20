@@ -39,8 +39,8 @@ define([
         init: function () {
             this._super();
 
-            if(get(this, 'model.user_sortedAttributeField')) {
-                set(this, 'sortedAttribute', get(this, 'model.user_sortedAttributeField'));
+            if(get(this, 'model.user_sortedAttribute')) {
+                set(this, 'sortedAttribute', get(this, 'model.user_sortedAttribute'));
 
                 if(get(this, 'sortedAttribute.headerClassName') === 'sorting_asc') {
                     set(this, 'sort_direction', true);
@@ -58,15 +58,15 @@ define([
                 direction = get(this, 'sort_direction') ? 'ASC' : 'DESC';
                 set(this, 'sort_direction', !get(this, 'sort_direction'));
 
-                if (get(this, 'userSortedAttribute') !== undefined) {
-                    set(this, 'userSortedAttribute.headerClassName', 'sorting');
+                if (get(this, 'model.user_sortedAttribute') !== undefined) {
+                    set(this, 'model.user_sortedAttribute.headerClassName', 'sorting');
                 }
 
                 console.log('attribute', attribute);
                 set(attribute, 'headerClassName', 'sorting_' + direction.toLowerCase());
 
                 set(this, 'sortedAttribute', attribute);
-                set(this, 'model.user_sortedAttributeField', attribute);
+                set(this, 'model.user_sortedAttribute', attribute);
 
                 console.log('sortBy', arguments);
                 if (this.findOptions === undefined) {
@@ -78,11 +78,32 @@ define([
                     direction: direction
                 }]);
 
-                // set(this, 'model.user_sortedAttributeField', attribute.field);
+                // set(this, 'model.user_sortedAttribute', attribute.field);
                 this.saveUserConfiguration();
 
                 this.refreshContent();
             }
+        },
+
+        computeFindParams: function() {
+            var params = this._super.apply(this, arguments);
+
+            var userSortedAttribute = get(this, 'model.user_sortedAttribute');
+
+            if (userSortedAttribute !== undefined) {
+
+                var direction;
+                if(get(userSortedAttribute, 'headerClassName') === 'sorting_asc') {
+                    direction = true;
+                } else {
+                    direction = false;
+                }
+
+                params.sort = JSON.stringify([{property: userSortedAttribute.field, direction: direction}]);
+                console.log('userSortedAttribute', userSortedAttribute);
+            }
+
+            return params;
         },
 
         attributesKeys: function() {
