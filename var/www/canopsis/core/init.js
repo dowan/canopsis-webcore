@@ -26,6 +26,7 @@ define([
     'app/adapters/cancel',
     'app/adapters/eue',
     'app/adapters/cservice',
+    'app/adapters/filter',
     'app/serializers/application',
     'app/lib/wrappers/bootstrap',
     'app/lib/wrappers/hint',
