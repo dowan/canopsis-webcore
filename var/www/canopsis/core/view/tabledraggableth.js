@@ -104,17 +104,22 @@ define([
             if (!Ember.isNone(permutation)) {
                 console.debug('permutation is', permutation);
                 console.debug('permutation is replaced between', columns[endIndex -1], 'and', columns[endIndex]);
-                columns.splice(endIndex - 1, 0, permutation);
+
+                if(startIndex > endIndex) {
+                    columns.splice(endIndex, 0, permutation);
+                } else {
+                    columns.splice(endIndex - 1, 0, permutation);
+                }
+
 
                 console.debug('columns after drag', columns);
 
                 // Synchornize view and model
-                set(controller, 'userParams.displayed_columns', columns);
+                set(controller, 'model.user_displayed_columns', columns);
                 set(controller, 'displayed_columns', columns);
 
-                controller.saveUserConfiguration(function () {
-                    view.swapColumnsInDom(startIndex - 1, endIndex -1);
-                });
+                view.swapColumnsInDom(startIndex - 1, endIndex -1);
+                controller.saveUserConfiguration();
             } else {
                 console.log('unable to perform drag and drop operation');
                 controller.send('refreshView');
