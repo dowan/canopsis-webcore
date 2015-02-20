@@ -75,25 +75,6 @@ def exports(ws):
 
         return result
 
-    @route(ws.application.post, payload=['limit', 'skip', 'sort', '_filter'])
-    def context(
-        _type=None, context=None, _filter=None, extended=False,
-        limit=0, skip=0, sort=None
-    ):
-
-        result = manager.find(
-            _type=_type,
-            context=context,
-            _filter=_filter,
-            extended=extended,
-            limit=limit,
-            skip=skip,
-            sort=sort,
-            with_count=True
-        )
-
-        return result
-
     @route(ws.application.put, payload=[
         '_type', 'entity', 'context', 'extended_id'
     ])
