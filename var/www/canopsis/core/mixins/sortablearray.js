@@ -34,19 +34,22 @@ define([
      */
     var mixin = Mixin('sortablearray', {
 
-        init: function () {
-            var mixinsOptions = get(this, 'content.mixins');
-
-            if(mixinsOptions) {
-                sortablearrayOptions = get(this, 'content.mixins').findBy('name', 'sortablearray');
-                this.mixinOptions.sortablearray = sortablearrayOptions;
-            }
-
-            this._super();
-        },
-
-
         sort_direction: false,
+
+        init: function () {
+            this._super();
+
+            if(get(this, 'model.user_sortedAttributeField')) {
+                set(this, 'sortedAttribute', get(this, 'model.user_sortedAttributeField'));
+
+                if(get(this, 'sortedAttribute.headerClassName') === 'sorting_asc') {
+                    set(this, 'sort_direction', true);
+                } else {
+                    set(this, 'sort_direction', false);
+                }
+
+            }
+        },
 
         actions: {
             sort: function(attribute) {
@@ -55,16 +58,17 @@ define([
                 direction = get(this, 'sort_direction') ? 'ASC' : 'DESC';
                 set(this, 'sort_direction', !get(this, 'sort_direction'));
 
-                if (get(this, 'sortedAttribute') !== undefined) {
-                    set(this, 'sortedAttribute.headerClassName', "sorting");
+                if (get(this, 'userSortedAttribute') !== undefined) {
+                    set(this, 'userSortedAttribute.headerClassName', 'sorting');
                 }
 
                 console.log('attribute', attribute);
                 set(attribute, 'headerClassName', 'sorting_' + direction.toLowerCase());
 
                 set(this, 'sortedAttribute', attribute);
+                set(this, 'model.user_sortedAttributeField', attribute);
 
-                console.log("sortBy", arguments);
+                console.log('sortBy', arguments);
                 if (this.findOptions === undefined) {
                     this.findOptions = {};
                 }
@@ -74,16 +78,19 @@ define([
                     direction: direction
                 }]);
 
+                // set(this, 'model.user_sortedAttributeField', attribute.field);
+                this.saveUserConfiguration();
+
                 this.refreshContent();
             }
         },
 
         attributesKeys: function() {
-            console.log("attributesKeys from sortableArray");
+            console.log('attributesKeys from sortableArray');
             var keys = this._super.apply(this);
             var sortedAttribute = get(this, 'sortedAttribute');
 
-            console.log("sortedAttribute", sortedAttribute);
+            console.log('sortedAttribute', sortedAttribute);
             if(sortedAttribute !== undefined)
             {
                 for (var i = 0, li = keys.length; i < li; i++) {
