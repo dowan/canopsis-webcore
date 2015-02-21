@@ -1,15 +1,5 @@
 <div class="progressBarWidget">
     {{#each bar in controller.bars}}
-
-
-
-            label= {{bar.label}}<br>
-            value= {{bar.value}}<br>
-            unit= {{bar.unit}}<br>
-            min_value= {{bar.min_value}}<br>
-            max_value= {{bar.max_value}}<br>
-
-
         {{component-progressbar
             label=bar.label
             value=bar.value
@@ -33,6 +23,6 @@
             gg_width=controller.gg_width
             gg_thickness=controller.gg_thickness
         }}
-        <br style="clear:both; margin-top:0px;" />
+        <br style="clear:both; height:10px;" />
     {{/each}}
 </div>
