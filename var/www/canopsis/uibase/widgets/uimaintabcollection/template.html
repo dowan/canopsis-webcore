@@ -1,5 +1,5 @@
 {{#with controllers.application.currentViewId as currentViewId}}
-    <div class="btn-group pull-right" style="clear:both; margin-top:5px; margin-bottom:5px">
+    <div class="btn-group pull-right" style="margin-top:5px; margin-bottom:5px">
         {{#if controllers.application.interval}}
             <div>
                 <button class="btn btn-default btn-sm btn-warning" {{action 'stopLiveReporting'}} >
@@ -24,6 +24,15 @@
             <span class="glyphicon glyphicon-refresh"></span>
         </button>
     </div>
+
+    {{#if controller.editMode}}
+        <div class="btn-group pull-right" style="margin:5px">
+            <button class="btn btn-info btn-sm" {{action 'showViewOptions'}} >
+                <span class="glyphicon glyphicon-cog"></span>
+            </button>
+        </div>
+    {{/if}}
+
     <section class="content-header nav-tabs-custom" style=" padding: 5px 0 0;margin-bottom:0px; ">
         <ul class="nav nav-tabs">
             {{#if controller.userCanUpdateRecord}}

@@ -29,6 +29,11 @@ define([
     var formUtils = {
         instantiateForm: function(formName, formContext, options) {
             void (formContext);
+
+            if(this.formController) {
+                this.formController.destroy();
+            }
+
             console.log('try to instantiate form', formName, options.formParent);
             var classDict = options;
 
@@ -42,6 +47,9 @@ define([
 
             var formController = formsregistry.all[formName].EmberClass.create(classDict);
             formController.refreshPartialsList();
+
+            this.formController = formController;
+
             return formController;
         },
 
