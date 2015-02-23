@@ -75,5 +75,5 @@ define([
     Ember.ObjectController.reopen(controllerDict);
     canopsisConfiguration.EmberIsLoaded = true;
 
-    return Wrapper("ember", Ember, arguments, Ember.VERSION);
+    return Wrapper('ember', Ember, arguments, Ember.VERSION);
 });

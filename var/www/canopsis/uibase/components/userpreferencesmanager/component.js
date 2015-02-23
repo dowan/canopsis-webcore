@@ -35,7 +35,7 @@ define([
         },
 
         getUserPreferences: function () {
-            var userpreference = this;
+            var component = this;
 
             var user = get(this, 'userId');
 
@@ -64,7 +64,8 @@ define([
                         var informations = [];
 
                         var len = data.data.length;
-                        for (var i=0; i<len; i++) {
+                        for (var i = 0; i < len; i++) {
+
                             var labels = [];
                             for (var preference_label in data.data[i].widget_preferences) {
                                 labels.push(preference_label);
@@ -79,11 +80,11 @@ define([
                             });
                         }
 
-                        set(userpreference, 'informations', informations);
+                        set(component, 'informations', informations);
 
 
                     } else {
-                        console.debug('No user preference exists for widget' + get(userpreference, 'title'));
+                        console.debug('No user preference exists for widget' + get(component, 'title'));
                     }
                 }
             }).fail(

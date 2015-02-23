@@ -26,6 +26,8 @@ define([
         set = Ember.set;
 
     var widget = WidgetFactory('weather', {
+        needs: ['application'],
+
         init: function() {
             this._super();
             set(this, 'worst_state', 0);
@@ -39,7 +41,11 @@ define([
                 console.log('goToInfo', element);
                 var transition = this.transitionToRoute('/userview/' + get(this, 'config.destination_view'));
 
-                var filter_pattern = get(this, 'config.filter_pattern');
+                var filter_pattern = get(this, 'model.filter_pattern');
+
+                var weatherController = this;
+
+                set(weatherController, 'controllers.application.isLoading', get(weatherController, 'controllers.application.isLoading') + 1);
 
                 transition.promise.then(function(routeInfos){
                     console.log('transition done', routeInfos);

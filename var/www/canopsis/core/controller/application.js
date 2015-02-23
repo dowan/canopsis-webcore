@@ -539,8 +539,8 @@ define([
                 }
 
                 recordWizard.submit.done(function() {
-                    console.log("userview.save()");
-                    console.log(userview.save());
+                    set(applicationController, 'isLoading', get(applicationController, 'isLoading') + 1);
+                    userview.save();
                     applicationController.transitionToRoute("/userview/" + get(userview, 'id'));
                 });
             },
