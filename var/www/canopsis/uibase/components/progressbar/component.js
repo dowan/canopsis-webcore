@@ -1,8 +1,9 @@
 define([
+  'jquery',
   'ember',
   'circliful',
   'app/application'
-], function(Ember, Circliful, Application) {
+], function(jQuery, Ember, Circliful, Application) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -11,8 +12,7 @@ define([
     var component = Ember.Component.extend({
 
         init: function(){
-
-            this._super();
+            this._super()
 
             var display_as = get(this,"display_as");
             if(isNone(display_as)){
@@ -57,6 +57,8 @@ define([
                 }
             }
             this.addObserver('value', this.onValueChange);
+            this.addObserver('min_value', this.onValueChange);
+            this.addObserver('max_value', this.onValueChange);
         },
 
         didInsertElement: function(){
@@ -94,6 +96,7 @@ define([
             } else {
                 this.getStyleGauge();
             }
+            this.rerender();
         },
 
         getStyleLabel: function(){
@@ -115,7 +118,6 @@ define([
                 var result = "display: none;";
             }
             set(this, "style_label", result);
-
         },
 
         getStyleBar: function(){
@@ -123,14 +125,13 @@ define([
             var height = "height: " + get(this, "thickness") + "px;";
             var color = "background: " + this.getColor() + ";";
             var result =  color + "width: " + get(this, "numPercent") + "%;";
-            jQuery("#" + id).attr("style", result);
-            jQuery("#" + id).parent().attr("style", height);
+            set(this, "style_bar", result);
         },
 
         getStyleGauge: function(){
             var id = get(this, "id");
             var result = "width: " + get(this, "width") + "px; height: " + get(this, "height") + "px;";
-            jQuery("#" + id).attr("style", result);
+            set(this, "style_gauge", result);
         },
 
         getColor: function(){

@@ -39,6 +39,7 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
         findItems: function() {
 
             set(this, "bars", []);
+            //set(this, "vals", {});
         
             var replace = false;
             var from = get(this, 'lastRefresh');
@@ -53,11 +54,11 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
             console.log('refresh:', from, to, replace);
 
             console.group('Get mixin properties:');
-            //this.getProperties();
+            this.getProperties();
             console.groupEnd();
 
             console.group('Load series:');
-            this.fetchSeries(from, to, replace);
+            //this.fetchSeries(from, to, replace);
             console.groupEnd();
 
             console.group('Load metrics:');
@@ -167,9 +168,12 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
             var metrics = get(this, 'config.metrics');
             var store = get(this, 'widgetDataStore');
 
-
             var bars = get(this, "bars");
-            var mlength = metrics.length;
+            if(metrics){
+                var mlength = metrics.length;
+            } else {
+                var mlength = 0;
+            }
             var me = this;
 
             for(var m = 0; m < mlength; m++) {
@@ -208,6 +212,7 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                     set(bar, 'max_value', max);
                 }
                 bars.replace(index, 0, bar);
+                me.trigger('refresh');
             });
         },
 
@@ -223,6 +228,7 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                     set(bar, 'min_value', min);
                 }
                 bars.replace(index, 0, bar);
+                me.trigger('refresh');
             });
         },
 
@@ -231,7 +237,12 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
             var me = this;
             perfdata.aggregate(metricId, from, to, "last", 86400).then(function(result){
                 var value = result.data[0].points[0][1];
-                if(Ember.none(result.data[0].meta)){
+                var bars = get(me, 'bars');
+                var bar = bars.findBy('id', metricId);
+                var index = bars.indexOf(bar);
+                if(Ember.isEmpty(result.data[0].meta)){
+                    var min = undefined;
+                    var max = undefined;
                     me.getMinValue(from, to, metricId);
                     me.getMaxValue(from, to, metricId); 
                 } else {
@@ -242,23 +253,24 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                     }
                     var max = result.data[0].meta.value.max;
                     if(isNaN(max)){
+                        max = undefined;
                         me.getMaxValue(from, to, metricId);
                     }
                 }
-                var bars = get(me, 'bars');
-                var bar = bars.findBy('id', metricId);
-                var index = bars.indexOf(bar);
                 if( ! Ember.isEmpty(bar)) {
                     set(bar, 'value', value);
                     set(bar, 'unit', unit);
-                    set(bar, 'min_value', min);
-                    if(isNaN(max)){
+                    if(!isNaN(min)){
+                        set(bar, 'min_value', min);
+                    }
+                    if(!isNaN(max)){
                         set(bar, 'max_value', max);
                     }
                 }
                 bars.replace(index, 0, bar);
+                me.trigger('refresh');
             });
-        },
+        }
         
     }, widgetOptions);
 
