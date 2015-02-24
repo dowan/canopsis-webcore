@@ -242,7 +242,7 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                 }
                 var max = result.data[0].meta.max;
                 if(isNaN(max)){
-                    this.getMaxValue(from, to, metricId);
+                    me.getMaxValue(from, to, metricId);
                 }
                 var bars = get(me, 'bars');
                 var bar = bars.findBy('id', metricId);
@@ -256,7 +256,7 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                     }
                 }
                 bars.replace(index, 0, bar);
-                this.trigger('refresh');
+                me.trigger('refresh');
             });
         },
         
