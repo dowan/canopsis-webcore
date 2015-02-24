@@ -60,7 +60,6 @@ define([
 
         didInsertElement: function(){
             jQuery('#' + get(this,"id")).circliful();
-            //jQuery('#myStat').circliful();
         },
        
         onValueChange: function(){
@@ -186,7 +185,8 @@ define([
         },
 
         getPercent: function(){
-            var min = parseFloat(get(this, "min_value"));
+            //var min = parseFloat(get(this, "min_value"));
+            var min = 0;
             var value = parseFloat(get(this, "value"));
             var new_val = value - min;
             var max = parseFloat(get(this, "max_value"));
