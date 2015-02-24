@@ -231,14 +231,19 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
             var me = this;
             perfdata.aggregate(metricId, from, to, "last", 86400).then(function(result){
                 var value = result.data[0].points[0][1];
-                var unit = result.data[0].meta.unit;
-                var min = result.data[0].meta.value.min;
-                if(isNaN(min)){
-                    min = 0;
-                }
-                var max = result.data[0].meta.value.max;
-                if(isNaN(max)){
-                    me.getMaxValue(from, to, metricId);
+                if(Ember.none(result.data[0].meta)){
+                    me.getMinValue(from, to, metricId);
+                    me.getMaxValue(from, to, metricId); 
+                } else {
+                    var unit = result.data[0].meta.unit;
+                    var min = result.data[0].meta.value.min;
+                    if(isNaN(min)){
+                        min = 0;
+                    }
+                    var max = result.data[0].meta.value.max;
+                    if(isNaN(max)){
+                        me.getMaxValue(from, to, metricId);
+                    }
                 }
                 var bars = get(me, 'bars');
                 var bar = bars.findBy('id', metricId);
