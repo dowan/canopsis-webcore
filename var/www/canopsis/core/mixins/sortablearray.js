@@ -135,7 +135,7 @@ define([
                 }
             }
             return keys;
-        }.property("inspectedProperty", "inspectedDataArray"),
+        }.property("inspectedProperty", "inspectedDataArray")
     });
 
 
