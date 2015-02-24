@@ -187,8 +187,8 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
 
                 get(this, "bars").pushObject(bar);
 
-                this.getMaxValue(from, to, metricId);
-                this.getMinValue(from, to, metricId);
+                //this.getMaxValue(from, to, metricId);
+                //this.getMinValue(from, to, metricId);
                 this.getUnitAndValue(from, to, metricId);
 
             }
@@ -236,12 +236,24 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
             perfdata.aggregate(metricId, from, to, "last", 86400).then(function(result){
                 var value = result.data[0].points[0][1];
                 var unit = result.data[0].meta.unit;
+                var min = result.data[0].meta.min;
+                if(isNaN(min)){
+                    min = 0;
+                }
+                var max = result.data[0].meta.max;
+                if(isNaN(max)){
+                    this.getMaxValue(from, to, metricId);
+                }
                 var bars = get(me, 'bars');
                 var bar = bars.findBy('id', metricId);
                 var index = bars.indexOf(bar);
                 if( ! Ember.isEmpty(bar)) {
                     set(bar, 'value', value);
                     set(bar, 'unit', unit);
+                    set(bar, 'min_value', min);
+                    if(isNaN(max)){
+                        set(bar, 'max_value', max);
+                    }
                 }
                 bars.replace(index, 0, bar);
                 this.trigger('refresh');
