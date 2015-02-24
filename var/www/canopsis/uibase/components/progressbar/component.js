@@ -18,6 +18,7 @@ define([
             if(isNone(display_as)){
                 display_as = "progressbar";
             }
+
             if(display_as == "progressbar"){
                 set(this, "is_progressbar", true);
                 if(isNone(get(this,"pb_thickness"))){
@@ -121,7 +122,7 @@ define([
             var id = get(this, "id_bar");
             var height = "height: " + get(this, "thickness") + "px;";
             var color = "background: " + this.getColor() + ";";
-            var result =  color + "width: " + get(this, "percent") + "%;";
+            var result =  color + "width: " + get(this, "numPercent") + "%;";
             jQuery("#" + id).attr("style", result);
             jQuery("#" + id).parent().attr("style", height);
         },
@@ -177,7 +178,7 @@ define([
 
         textPercent: function(){
             if(get(this, "show_value")){
-                var result = "" + get(this, "percent") + "%";
+                var result = "" + get(this, "numPercent") + "%";
             } else {
                 var result = "";
             }
@@ -185,11 +186,14 @@ define([
         },
 
         getPercent: function(){
-            //var min = parseFloat(get(this, "min_value"));
-            var min = 0;
+            var min = parseFloat(get(this, "min_value"));
             var value = parseFloat(get(this, "value"));
             var new_val = value - min;
+
             var max = parseFloat(get(this, "max_value"));
+            if(isNaN(max)){
+                max = value;
+            }
             var new_max = max - min;
             var percent =  Math.ceil(new_val/new_max * 100);
             if(isNaN(percent)){
