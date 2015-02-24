@@ -208,7 +208,7 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                     set(bar, 'max_value', max);
                 }
                 bars.replace(index, 0, bar);
-                me.trigger('refresh');
+                //me.trigger('refresh');
             });
         },
 
@@ -224,7 +224,7 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                     set(bar, 'min_value', min);
                 }
                 bars.replace(index, 0, bar);
-                me.trigger('refresh');
+                //me.trigger('refresh');
             });
         },
 
@@ -254,7 +254,7 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                     }
                 }
                 bars.replace(index, 0, bar);
-                me.trigger('refresh');
+                //me.trigger('refresh');
             });
         },
         
