@@ -208,7 +208,6 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                     set(bar, 'max_value', max);
                 }
                 bars.replace(index, 0, bar);
-                //me.trigger('refresh');
             });
         },
 
@@ -224,7 +223,6 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                     set(bar, 'min_value', min);
                 }
                 bars.replace(index, 0, bar);
-                //me.trigger('refresh');
             });
         },
 
@@ -234,11 +232,11 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
             perfdata.aggregate(metricId, from, to, "last", 86400).then(function(result){
                 var value = result.data[0].points[0][1];
                 var unit = result.data[0].meta.unit;
-                var min = result.data[0].meta.min;
+                var min = result.data[0].meta.value.min;
                 if(isNaN(min)){
                     min = 0;
                 }
-                var max = result.data[0].meta.max;
+                var max = result.data[0].meta.value.max;
                 if(isNaN(max)){
                     me.getMaxValue(from, to, metricId);
                 }
@@ -254,7 +252,6 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                     }
                 }
                 bars.replace(index, 0, bar);
-                //me.trigger('refresh');
             });
         },
         
