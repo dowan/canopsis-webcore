@@ -153,8 +153,9 @@ define([
 
             rollback: function(widget){
                 console.log('rollback changes', arguments);
+                set(widget, 'volatile', {});
                 widget.rollback();
-                set(this, 'rollbackable', false);
+                set(widget, 'rollbackable', false);
             },
 
             editWidget: function (widget) {
@@ -217,7 +218,6 @@ define([
                     });
                 });
             },
-
 
             /**
              * Deletes the widget from its parents saves the view, and refresh it

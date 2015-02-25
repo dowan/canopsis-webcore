@@ -185,22 +185,7 @@ define([
                 var itemsPerPage = get(this, 'itemsPerPage');
                 return Math.ceil(get(this, 'itemsTotal') / itemsPerPage);
             }
-        }.property('itemsTotal'),
-
-        computeFindParams: function() {
-            var params = this._super();
-
-            params.limit = get(this, 'itemsPerPage');
-
-            //TODO check if useless or not
-            if(params.limit === 0) {
-                params.limit = 5;
-            }
-
-            params.start = get(this, 'paginationFirstItemIndex') - 1;
-
-            return params;
-        }
+        }.property('itemsTotal')
     });
 
     return mixin;

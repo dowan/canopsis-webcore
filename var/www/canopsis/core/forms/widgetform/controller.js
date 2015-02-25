@@ -32,7 +32,7 @@ define([
 
 
     var form = FormFactory('widgetform', {
-        needs: ['journal'],
+        needs: ['journal', 'application'],
 
         title: "Select a widget",
 
@@ -55,7 +55,8 @@ define([
             submit: function(newWidgets) {
                 var newWidget = newWidgets[0];
 
-                get(this, 'controllers.journal').send('publish', 'create', 'widget');
+                var journalController = get(this, 'container').lookup('controller:journal');
+                journalController.send('publish', 'create', 'widget');
 
                 console.log("onWidgetChooserSubmit", arguments);
 

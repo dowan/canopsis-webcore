@@ -198,8 +198,7 @@ define([
                     widgetController.saveUserConfiguration();
                 });
             }
-        },
-
+        }
     });
 
     return mixin;

@@ -101,6 +101,14 @@ define([
                 this._super.apply(this, arguments);
             },
 
+            rollbackableChanged: function() {
+                var list = this;
+                console.log(':::: rollbackable', get(this, 'model.rollbackable'));
+                if(get(this, 'model.rollbackable') === false) {
+                    Ember.run.scheduleOnce('afterRender', this, function() { list.refreshContent(); });
+                }
+            }.observes('model.rollbackable'),
+
             generateListlineTemplate: function (shown_columns) {
                 var html = '<td>{{#if pendingOperation}}<i class="fa fa-cog fa-spin"></i>{{/if}}{{component-checkbox checked=isSelected class="toggle"}}</td>';
 
@@ -379,7 +387,8 @@ define([
              */
             computeFilterFragmentsList: function() {
                 var list = Ember.A();
-                var additionalFilterPart = get(this, 'additional_filter');
+                var additionalFilterPart = get(this, 'model.volatile.forced_filter') || get(this, 'additional_filter');
+                console.log('additionalFilterPart', get(this, 'model.volatile.forced_filter'), get(this, 'additional_filter'));
 
                 list.pushObject(this.getTimeInterval());
                 list.pushObject(additionalFilterPart);
@@ -416,8 +425,33 @@ define([
 
                 var params = {};
 
+                params.limit = get(this, 'itemsPerPage');
+
+                //TODO check if useless or not
+                if(params.limit === 0) {
+                    params.limit = 5;
+                }
+
+                params.start = get(this, 'paginationFirstItemIndex') - 1;
+
+
                 if (filters.length) {
                     params.filter = JSON.stringify({ '$and': filters });
+                }
+
+                var userSortedAttribute = get(this, 'model.user_sortedAttribute');
+
+                if (userSortedAttribute !== undefined) {
+
+                    var direction;
+                    if(get(userSortedAttribute, 'headerClassName') === 'sorting_asc') {
+                        direction = 'ASC';
+                    } else {
+                        direction = 'DESC';
+                    }
+
+                    params.sort = JSON.stringify([{property: userSortedAttribute.field, direction: direction}]);
+                    console.log('userSortedAttribute', userSortedAttribute);
                 }
 
                 console.groupEnd();

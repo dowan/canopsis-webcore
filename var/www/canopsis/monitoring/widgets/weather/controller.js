@@ -63,7 +63,11 @@ define([
                     console.log('compiledFilterPattern', compiledFilterPattern);
 
                     if(compiledFilterPattern !== '') {
-                        set(list, 'additional_filter', compiledFilterPattern);
+                        if(!get(list, 'volatile')) {
+                            set(list, 'volatile', {});
+                        }
+
+                        set(list, 'volatile.forced_filter', compiledFilterPattern);
                         set(list, 'rollbackable', true);
                         set(list, 'title', 'Info on events :', element.title);
                     }
@@ -243,7 +247,6 @@ define([
                 url: '/rest/object',
                 data: params,
                 success: function(payload) {
-                    console.log('### SUCCESS', payload);
                     if(payload.data.length >= 1) {
                         var filter = {'$or' : []};
 

@@ -21,8 +21,10 @@ define([
     'ember',
     'app/lib/factories/mixin'
 ], function(Ember, Mixin) {
+
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     /**
      * Implements sorting in arraycontrollers
@@ -85,25 +87,25 @@ define([
             }
         },
 
-        computeFindParams: function() {
-            var params = this._super.apply(this, arguments);
+        computeShownColumns: function(columns) {
+            var shown_columns = this._super(columns);
 
-            var userSortedAttribute = get(this, 'model.user_sortedAttribute');
+            var sortedAttribute = get(this, 'sortedAttribute'),
+                columnSort = get(this, 'default_column_sort');
 
-            if (userSortedAttribute !== undefined) {
+            for(var column = 0, l = shown_columns.length; column < l; column++) {
+                //Manage sort icon from default sort
+                if (!isNone(columnSort) &&
+                    columnSort.property === shown_columns[column].field &&
+                    !isNone(columnSort.direction) &&
+                    (isNone(sortedAttribute) || sortedAttribute === {})) {
 
-                var direction;
-                if(get(userSortedAttribute, 'headerClassName') === 'sorting_asc') {
-                    direction = true;
-                } else {
-                    direction = false;
+                    var headerClass = columnSort.direction === 'ASC' ? 'sorting_asc' : 'sorting_desc';
+                    shown_columns[column].headerClassName = headerClass;
                 }
-
-                params.sort = JSON.stringify([{property: userSortedAttribute.field, direction: direction}]);
-                console.log('userSortedAttribute', userSortedAttribute);
             }
 
-            return params;
+            return shown_columns;
         },
 
         attributesKeys: function() {
