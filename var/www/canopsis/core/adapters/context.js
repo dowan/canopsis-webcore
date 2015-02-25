@@ -22,29 +22,13 @@ define([
     'ember-data',
     'app/application',
     'app/adapters/application',
-    'app/lib/utils/notification'
-], function(Ember, DS, Application, ApplicationAdapter, notificationUtils) {
+    'app/lib/utils/notification',
+    'app/lib/utils/modelsolve'
+], function(Ember, DS, Application, ApplicationAdapter, notificationUtils, modelsolve) {
 
     var isNone = Ember.isNone;
 
     var adapter = ApplicationAdapter.extend({
-        gen_resolve: function(callback) {
-            return function(data) {
-                for (var i = 0; i < data.data.length; i++) {
-                    data.data[i].id = data.data[i]._id;
-                    delete data.data[i]._id;
-                }
-
-                Ember.run(null, callback, data);
-            };
-        },
-
-        gen_reject: function(callback) {
-            return function(xhr) {
-                xhr.then = null;
-                Ember.run(null, callback, xhr);
-            };
-        },
 
         buildURL: function(type, id) {
             return '/context/' + type + (id ? ('/' + id) : '');
@@ -72,8 +56,8 @@ define([
 
             return new Ember.RSVP.Promise(function(resolve, reject) {
                 var url = me.buildURL(model.typeKey, id);
-                var funcres = me.gen_resolve(resolve);
-                var funcrej = me.gen_reject(reject);
+                var funcres = modelsolve.gen_resolve(resolve);
+                var funcrej = modelsolve.gen_reject(reject);
 
                 $.get(url).then(funcres, funcrej);
             });
@@ -88,8 +72,8 @@ define([
             }
 
             return new Ember.RSVP.Promise(function(resolve, reject) {
-                var funcres = me.gen_resolve(resolve);
-                var funcrej = me.gen_reject(reject);
+                var funcres = modelsolve.gen_resolve(resolve);
+                var funcrej = modelsolve.gen_reject(reject);
                 var url = me.buildURL(model.typeKey, ids.join(','));
 
                 $.get(url).then(funcres, funcrej);
@@ -105,8 +89,8 @@ define([
             }
 
             return new Ember.RSVP.Promise(function(resolve, reject) {
-                var funcres = me.gen_resolve(resolve);
-                var funcrej = me.gen_reject(reject);
+                var funcres = modelsolve.gen_resolve(resolve);
+                var funcrej = modelsolve.gen_reject(reject);
 
                 var promise;
                 var url = me.buildURL(model.typeKey);
@@ -138,8 +122,8 @@ define([
             }
 
             return new Ember.RSVP.Promise(function(resolve, reject) {
-                var funcres = me.gen_resolve(resolve);
-                var funcrej = me.gen_reject(reject);
+                var funcres = modelsolve.gen_resolve(resolve);
+                var funcrej = modelsolve.gen_reject(reject);
                 var url = me.buildURL(model.typeKey);
 
                 if(typeof (query.filter) !== "string") {
