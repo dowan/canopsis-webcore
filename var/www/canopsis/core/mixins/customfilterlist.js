@@ -84,16 +84,17 @@ define([
         }.property('model.user_filters', 'model.selected_filter'),
 
         computeFilterFragmentsList: function() {
-            var list = this._super();
-
-            var userFilter;
+            var list = this._super(),
+                mixinOptions = get(this, 'model.mixins').findBy('name', 'Customfilterlist'),
+                userFilter;
 
             if(get(this, 'model.selected_filter.filter') !== null && get(this, 'model.selected_filter.filter') !== undefined) {
                 userFilter = get(this, 'model.selected_filter.filter');
             } else if(get(this, 'model.selected_filter') && !get(this, 'model.selected_filter.filter')) {
                 userFilter = {};
-            } else if(get(this, 'model.mixins').findBy('name', 'Customfilterlist')) {
-                userFilter = JSON.parse(get(this, 'model.mixins').findBy('name', 'Customfilterlist').default_filter);
+            } else if(mixinOptions && mixinOptions.default_filter) {
+                userFilter = mixinOptions.default_filter;
+                userFilter = JSON.parse(userFilter);
             } else {
                 userFilter = {};
             }

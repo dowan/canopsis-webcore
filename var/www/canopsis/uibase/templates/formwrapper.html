@@ -13,7 +13,9 @@
             </div>
             <div class="modal-body">
                 {{#if controller.form}}
-                    {{formview templateName=controller.formName controller=controller.form}}
+                    {{#with form}}
+                        {{formview templateName=controller.formName controller=this}}
+                    {{/with}}
                 {{/if}}
             </div>
             <div class="modal-footer">

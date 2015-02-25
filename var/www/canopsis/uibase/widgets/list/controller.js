@@ -83,35 +83,14 @@ define([
             //TODO test if this is needed (used in cloaked mode)
             listlineControllerClass: ListlineController,
 
-            actions: {
-                sendDisplayRecord: function (dest, record) {
-                    //This method is not ugly TODO refactor, it would be better if event bubble until application directly
-                    // but at the moment, event doen t bubble properly
-                    console.debug('sendDisplayRecord action called with params', dest, record);
-
-                    var template = get(dest, 'record_template');
-                    if (isNone(template)) {
-                        template = '';
-                    }
-
-                    console.debug('Template is ', template);
-
-                    var recordinfopopupController = get(this, 'controllers.recordinfopopup');
-
-                    recordinfopopupController.send('show', record, template);
-                }
-            },
-
             user: Ember.computed.alias('controllers.login.record._id'),
             rights: Ember.computed.alias('controllers.login.record.rights'),
             safeMode: Ember.computed.alias('controllers.application.frontendConfig.safe_mode'),
 
-            custom_filters: [],
-
             init: function() {
 
                 //prepare user configuration to fetch customer preference by reseting data.
-                //dont understand why without this reset, values same values are set into many list instances.
+                //properties are set here to avoid same array references between instances.
                 Ember.setProperties(this, {
                     custom_filters: [],
                     widgetData: [],
@@ -184,7 +163,6 @@ define([
             },
 
             itemType: function() {
-
                 var listed_crecord_type = get(this, 'listed_crecord_type');
                 console.info('listed_crecord_type', listed_crecord_type);
                 if(listed_crecord_type !== undefined && listed_crecord_type !== null ) {
@@ -227,21 +205,6 @@ define([
 
                 //Setting default sort order param to the query depending on widget configuration
                 var columnSort = get(this, 'default_column_sort');
-
-                //TODO refactor this in the appropriate mixin
-                //when find params does not contains already a sort infomation, then apply default one if any
-                if (!isNone(findParams) && isNone(findParams.sort) && !isNone(columnSort)) {
-                    if (!isNone(columnSort.property) && isNone(findParams.sort)){
-                        var direction = 'DESC';
-                        if (columnSort.direction === 'DESC' || columnSort.direction === 'ASC') {
-                            direction = columnSort.direction;
-                        }
-                        //Sort order has been found.
-                        findParams.sort = JSON.stringify([{property: columnSort.property, direction: direction}]);
-                        console.log('use default sort',findParams.sort);
-                    }
-                }
-                console.log('findParams.sort', findParams.sort);
 
                 get(this, 'widgetDataStore').findQuery(itemType, findParams).then(function(queryResults) {
                     //retreive the metas of the records
@@ -427,14 +390,6 @@ define([
             computeFindParams: function(){
                 console.group('computeFindParams', get(this, 'model.selected_filter.filter'));
 
-                function isDefined(filterPart) {
-                    if(filterPart === {} || isNone(filterPart)) {
-                        return false;
-                    }
-
-                    return true;
-                }
-
                 var filterFragments = this.computeFilterFragmentsList();
 
                 var filters = [];
@@ -453,7 +408,7 @@ define([
                             filterFragments[i] = {};
                         }
                     }
-                    if (isDefined(filterFragments[i])) {
+                    if (filterFragments[i] !== {} && !isNone(filterFragments[i])) {
                         //when defined filter then it is added to the filter list
                         filters.pushObject(filterFragments[i]);
                     }
@@ -463,33 +418,6 @@ define([
 
                 if (filters.length) {
                     params.filter = JSON.stringify({ '$and': filters });
-                }
-
-                console.log('List computed filter is', params.filter);
-
-                params.limit = get(this, 'itemsPerPage');
-
-                //TODO check if useless or not
-                if(params.limit === 0) {
-                    params.limit = 5;
-                }
-
-                params.start = get(this, 'paginationFirstItemIndex') - 1;
-
-                var sortedAttribute = get(this, 'sortedAttribute');
-
-                console.log('sortedAttribute', sortedAttribute);
-
-                if(isDefined(sortedAttribute)) {
-                    var direction = 'ASC';
-
-                    if(sortedAttribute.headerClassName === 'sorting_desc') {
-                        direction = 'DESC';
-                    }
-
-                    params.sort = [{ property : sortedAttribute.field, direction: direction }];
-                    console.log('params.sort', params.sort);
-                    params.sort = JSON.stringify(params.sort);
                 }
 
                 console.groupEnd();

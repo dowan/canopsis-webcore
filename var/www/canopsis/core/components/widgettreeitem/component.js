@@ -61,10 +61,7 @@ define([
         },
 
         dragEnd: function(event) {
-            var treeviewBase  = this.$().closest('.treeview'),
-                mouseX = event.originalEvent.clientX,
-                mouseY = event.originalEvent.clientY;
-
+            var treeviewBase  = this.$().closest('.treeview');
             var lis = treeviewBase.find('li.selected');
 
             var selectedLi = lis[lis.length - 1];
