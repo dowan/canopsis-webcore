@@ -1,19 +1,13 @@
 <div class="progress-container">
 
-    value : {{value}}<br>
-    min : {{min_value }}<br>
-    max : {{max_value}}<br>
-    style_bar : {{content.style_bar}}<br>
-    text_percent : {{content.text_percent}}<br>
-
     <div class="progress-label" {{bind-attr style=style_label}}>
         {{label}}
     </div>
     <div class="progress-content" {{bind-attr style=style_content}}>
         {{#if is_progressbar}}
             <div class="progress">
-                <div {{bind-attr id=id_bar}} {{bind-attr style=content.style_bar}} {{bind-attr aria-valuenow=value}} {{bind-attr aria-valuemin=min_value }} {{bind-attr aria-valuemax=max_value}} class="progress-bar" role="progressbar">
-                    <span {{bind-attr style=style_span}}>{{content.text_percent}}</span>
+                <div {{bind-attr id=id_bar}} {{bind-attr style=style_bar}} {{bind-attr aria-valuenow=value}} {{bind-attr aria-valuemin=min_value }} {{bind-attr aria-valuemax=max_value}} class="progress-bar" role="progressbar">
+                    <span {{bind-attr style=style_span}}>{{text_percent}}</span>
                 </div>
             </div>
         {{else}}
@@ -24,12 +18,12 @@
                 data-info="" 
                 {{bind-attr data-width=thickness}} 
                 data-fontsize="38" 
-                {{bind-attr data-text=numPercent}}
+                {{bind-attr data-text=percent}}
                 {{bind-attr data-fgcolor=bg_color}}
                 data-bgcolor="#fff" 
                 data-fill="#fff" 
                 data-total="100" 
-                {{bind-attr data-part=numPercent}}
+                {{bind-attr data-part=percent}}
                 data-icon="long-arrow-up" 
                 data-icon-size="28" 
                 data-icon-color="#fff"

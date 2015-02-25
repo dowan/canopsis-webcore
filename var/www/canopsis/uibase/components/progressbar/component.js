@@ -12,12 +12,14 @@ define([
     var component = Ember.Component.extend({
 
         init: function(){
-            this._super()
+
+            this._super();
 
             var display_as = get(this,"display_as");
             if(isNone(display_as)){
                 display_as = "progressbar";
             }
+            set(this, "display_as", display_as);
 
             if(display_as == "progressbar"){
                 set(this, "is_progressbar", true);
@@ -56,18 +58,30 @@ define([
                     set(this, "height", get(this, "width"));
                 }
             }
-            this.addObserver('value', this.onValueChange);
-            this.addObserver('min_value', this.onValueChange);
-            this.addObserver('max_value', this.onValueChange);
+
+            //this.onValueChange();
+
+            //this.addObserver('value', this.onValueChange);
+            //this.addObserver('min_value', this.onValueChange);
+            //this.addObserver('max_value', this.onValueChange);
         },
 
         didInsertElement: function(){
+            this.onValueChange();
             jQuery('#' + get(this,"id")).circliful();
         },
        
         onValueChange: function(){
-            this.getPercent();
-            this.updateValues();
+            this.gettStyleLabel();
+            this.gettColor();
+            this.gettStatus();
+            this.texttStatus();
+            this.texttPercent();
+            if(get(this, "display_as")=="progressbar"){
+                this.gettStyleBar();
+            } else {
+                this.gettStyleGauge();
+            }
         },
 
         id: function(){
@@ -85,21 +99,7 @@ define([
             return "";
         }.property(),
        
-        updateValues: function(){
-            this.getStyleLabel();
-            this.getColor();
-            this.getStatus();
-            this.textStatus();
-            this.textPercent();
-            if(get(this, "display_as")=="progressbar"){
-                this.getStyleBar();
-            } else {
-                this.getStyleGauge();
-            }
-            this.rerender();
-        },
-
-        getStyleLabel: function(){
+        gettStyleLabel: function(){
             if(get(this,"label_display")){
                 if(isNone(get(this, "label_width"))){
                     width = 0;
@@ -120,25 +120,25 @@ define([
             set(this, "style_label", result);
         },
 
-        getStyleBar: function(){
+        gettStyleBar: function(){
             var id = get(this, "id_bar");
             var height = "height: " + get(this, "thickness") + "px;";
-            var color = "background: " + this.getColor() + ";";
-            var result =  color + "width: " + get(this, "numPercent") + "%;";
+            var color = "background: " + this.gettColor() + ";";
+            var result =  color + "width: " + get(this, "percent") + "%;";
             set(this, "style_bar", result);
         },
 
-        getStyleGauge: function(){
+        gettStyleGauge: function(){
             var id = get(this, "id");
             var result = "width: " + get(this, "width") + "px; height: " + get(this, "height") + "px;";
             set(this, "style_gauge", result);
         },
 
-        getColor: function(){
+        gettColor: function(){
             var background_color = get(this, "bg_color");
             var warn_color = get(this, "warning_color");
             var critic_color = get(this, "critic_color");
-            var valstatus = this.getStatus();
+            var valstatus = this.gettStatus();
             switch(valstatus){
                 case 2:
                     var result = critic_color;
@@ -153,14 +153,13 @@ define([
             return result;
         },
 
-        getStatus: function(){
+        gettStatus: function(){
             var unit_or_percent = get(this, "unit_or_percent");
-            var percent = this.getPercent();
             var value = get(this, "value");
             if(unit_or_percent){
                 var compared = value;
             } else {
-                var compared = percent;
+                var compared = get(this, "percent");
             }
             if(compared >= get(this, "crit_value")){
                 var result = 2;
@@ -172,43 +171,25 @@ define([
             return result;
         },
        
-        textStatus: function(){
+        texttStatus: function(){
             var result = "(" + get(this, "get_status") + ")";
             set(this, "text_status", result);
         },
 
-        textPercent: function(){
+        texttPercent: function(){
+            var unit_or_percent = get(this, "unit_or_percent");
             if(get(this, "show_value")){
-                var result = "" + get(this, "numPercent") + "%";
+                if(unit_or_percent){
+                    var result = "" + get(this, "value") + get(this, "unit");
+                } else {
+                    var result = "" + get(this, "percent") + "%";
+                }
             } else {
                 var result = "";
             }
             set(this, "text_percent", result);
-        },
+        }
 
-        getPercent: function(){
-            var min = parseFloat(get(this, "min_value"));
-            var value = parseFloat(get(this, "value"));
-            var new_val = value - min;
-
-            var max = parseFloat(get(this, "max_value"));
-            if(isNaN(max)){
-                max = value;
-            }
-            var new_max = max - min;
-            var percent =  Math.ceil(new_val/new_max * 100);
-            if(isNaN(percent)){
-                percent = 0;
-            }
-            set(this, "percent", percent);
-        },
-
-        numPercent: function(){
-            this.getPercent();
-            var percent = get(this, "percent");
-            percent += ''
-            return percent;
-        }.property()
     });
 
     Ember.Application.initializer({

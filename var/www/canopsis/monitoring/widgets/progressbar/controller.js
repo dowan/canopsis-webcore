@@ -39,7 +39,6 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
         findItems: function() {
 
             set(this, "bars", []);
-            //set(this, "vals", {});
         
             var replace = false;
             var from = get(this, 'lastRefresh');
@@ -69,43 +68,62 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
 
         },
 
+        getPercent: function(min, max, value){
+            if(isNaN(value)){
+                return 0;
+            }
+            if(isNaN(min)){
+                min = 0;
+            }
+            var new_val = value - min;
+            if(isNaN(max)){
+                max = value;
+            }
+            var new_max = max - min;
+            var percent =  Math.ceil(new_val/new_max * 100);
+            if(isNaN(percent)){
+                percent = 0;
+            }
+            return percent;
+        },
+
         getProperties: function(){
             // Label
-            var show_value = get('config.show_value');
+            var show_value = get(this, 'config.show_value');
             set(this, "show_value", show_value);
-            var label_align = get('config.label_align');
+            var label_align = get(this, 'config.label_align');
             set(this, "label_align", label_align);
-            var label_display = get('config.label_display');
+            var label_display = get(this, 'config.label_display');
             set(this, "label_display", label_display);
-            var label_width = get('config.label_width');
+            var label_width = get(this, 'config.label_width');
             set(this, "label_width", label_width);
-            var label_unit = get('config.label_unit');
+            var label_unit = get(this, 'config.label_unit');
             set(this, "label_unit", label_unit); 
 
             // Colors - always set
-            var standard_color = get('mixinOptions.criticitylevels.standard_color');
+            var standard_color = get(this, 'mixinOptions.criticitylevels.standard_color');
             set(this, "standard_color", standard_color);
-            var warn_color = get('mixinOptions.criticitylevels.warn_color');
+            var warn_color = get(this, 'mixinOptions.criticitylevels.warn_color');
             set(this, "warn_color", warn_color);
-            var critic_color = get('mixinOptions.criticitylevels.critic_color');
+            var critic_color = get(this, 'mixinOptions.criticitylevels.critic_color');
             set(this, "critic_color", critic_color);
             
             // Values - may not be set
-            var display_as = get('config.display_as');
+            var display_as = get(this, 'config.display_as');
             set(this, "display_as", display_as);
-            var warn_value = get('mixinOptions.criticitylevels.warn_value');
+            var warn_value = get(this, 'mixinOptions.criticitylevels.warn_value');
             set(this, "warn_value", warn_value);
-            var crit_value = get('mixinOptions.criticitylevels.crit_value');
+            var crit_value = get(this, 'mixinOptions.criticitylevels.crit_value');
             set(this, "crit_value", crit_value);
-            var unit_or_percent = get('mixinOptions.criticitylevels.unit_or_percent');
+            var unit_or_percent = get(this, 'mixinOptions.criticitylevels.unit_or_percent');
             set(this, "unit_or_percent", unit_or_percent);
     
             // Specifics
-            var pb_thickness = get('config.pb_thickness');
+            var pb_thickness = get(this, 'config.pb_thickness');
             set(this, "pb_thickness", pb_thickness);
-            var gg_width = get('config.gg_width');
+            var gg_width = get(this, 'config.gg_width');
             set(this, "gg_width", gg_width);
-            var gg_thickness = get('config.gg_thickness');
+            var gg_thickness = get(this, 'config.gg_thickness');
             set(this, "gg_thickness", gg_thickness);
         },
 
@@ -186,8 +204,14 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                     "max_value" : 100,
                     "min_value" : 0,
                     "value" : 50,
-                    "unit" : ""
-                };
+                    "percent" : 50,
+                    "unit" : "",
+                    "style_bar" : "",
+                    "style_label" : "",
+                    "style_content" : "",
+                    "style_span" : "",
+                    "text_percent" : ""
+                }
 
                 get(this, "bars").pushObject(bar);
 
@@ -211,6 +235,8 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                 if( ! Ember.isEmpty(bar)) {
                     set(bar, 'max_value', max);
                 }
+                var percent = me.getPercent(get(bar, "min_value"), max,  get(bar, "value"));
+                set(bar, 'percent', percent);
                 bars.replace(index, 0, bar);
                 me.trigger('refresh');
             });
@@ -227,6 +253,8 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                 if( ! Ember.isEmpty(bar)) {
                     set(bar, 'min_value', min);
                 }
+                var percent = me.getPercent(min, get(bar, "max_value"), get(bar, "value"));
+                set(bar, 'percent', percent);
                 bars.replace(index, 0, bar);
                 me.trigger('refresh');
             });
@@ -240,6 +268,7 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                 var bars = get(me, 'bars');
                 var bar = bars.findBy('id', metricId);
                 var index = bars.indexOf(bar);
+
                 if(Ember.isEmpty(result.data[0].meta)){
                     var min = undefined;
                     var max = undefined;
@@ -258,8 +287,11 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                     }
                 }
                 if( ! Ember.isEmpty(bar)) {
+
                     set(bar, 'value', value);
                     set(bar, 'unit', unit);
+                    var percent = me.getPercent(min, max, value);
+                    set(bar, 'percent', percent);
                     if(!isNaN(min)){
                         set(bar, 'min_value', min);
                     }
@@ -267,6 +299,7 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                         set(bar, 'max_value', max);
                     }
                 }
+
                 bars.replace(index, 0, bar);
                 me.trigger('refresh');
             });
