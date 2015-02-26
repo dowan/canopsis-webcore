@@ -282,6 +282,8 @@ define([
 
             var content = record.get(key);
 
+            console.log('content', content);
+
             if (!isNone(content)) {
                 var serializedSubDocument = content.serialize({ lookForDocumentRoot : false });
                 console.log("serializedSubDocument", serializedSubDocument);
