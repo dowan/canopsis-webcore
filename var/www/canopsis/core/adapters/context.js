@@ -133,14 +133,6 @@ define([
                     query._filter = query.filter;
                 }
 
-                //When start is defined and not skip, this is a miss use of the skip param
-                if(!isNone(query.start) && isNone(query.skip)) {
-                    //Then replace skip by start param
-                    console.log('start param is used instead skip param in api query');
-                    query.skip = query.start;
-                    delete query.start;
-                }
-
                 delete query.filter;
 
                 console.log('findQuery: ', query);

@@ -39,27 +39,27 @@ def exports(ws):
     @route(ws.application.get, name='context/ids')
     @route(
         ws.application.post,
-        payload=['ids', 'limit', 'skip', 'sort', 'with_count'],
+        payload=['ids', 'limit', 'start', 'sort', 'with_count'],
         name='context/ids'
     )
     def context_by_id(
-        ids=None, limit=0, skip=0, sort=None, with_count=False
+        ids=None, limit=0, start=0, sort=None, with_count=False
     ):
 
         result = manager.get_by_id(
             ids=ids,
             limit=limit,
-            skip=skip,
+            skip=start,
             sort=sort,
             with_count=with_count
         )
 
         return result
 
-    @route(ws.application.post, payload=['limit', 'skip', 'sort', '_filter'])
+    @route(ws.application.post, payload=['limit', 'start', 'sort', '_filter'])
     def context(
         _type=None, context=None, _filter=None, extended=False,
-        limit=0, skip=0, sort=None
+        limit=0, start=0, sort=None
     ):
 
         result = manager.find(
@@ -68,7 +68,7 @@ def exports(ws):
             _filter=_filter,
             extended=extended,
             limit=limit,
-            skip=skip,
+            skip=start,
             sort=sort,
             with_count=True
         )
