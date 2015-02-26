@@ -18,11 +18,11 @@
 */
 
 define([
-        'app/application',
-        'app/adapters/application',
-        'utils',
-        'app/lib/loaders/schemas'
-], function(Application, ApplicationAdapter, cutils) {
+    'app/application',
+    'app/adapters/application',
+    'app/lib/schemasregistry',
+    'app/lib/loaders/schemas'
+], function(Application, ApplicationAdapter, schemasregistry) {
 
     console.group('CserviceAdapter');
 
@@ -34,15 +34,16 @@ define([
         }
     });
 
-    for(var sname in cutils.schemaList) {
-        if(sname.indexOf('Crecord.cservice.') === 0) {
-            var xtype = sname.slice('Crecord.cservice.'.length);
-            var modelname = xtype[0].toUpperCase() + xtype.slice(1);
+    for(var sname in schemasregistry.all) {
+        var schema = schemasregistry.getByName(sname);
 
-            var adapterName = modelname.dasherize();
-            console.log('Add adapter:', adapterName);
+        //TODO: do not use userPreferencesModelName
+        var modelname = schema.modelDict.userPreferencesModelName;
 
-            loader.register('adapter:' + adapterName, adapter.extend());
+        if(modelname.indexOf('crecord.cservice.') === 0) {
+            console.log('Add adapter:', sname);
+
+            loader.register('adapter:' + sname, adapter.extend());
         }
     }
 

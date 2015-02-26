@@ -46,7 +46,7 @@ define([
             var job_types = [];
             console.log('availableJobs CP', get(this, 'schemas'));
             for(var sname in get(this, 'schemas')) {
-                if(sname.indexOf('Task') === 0 && sname.length > 4) {
+                if(sname.indexOf('task') === 0 && sname.length > 4) {
                     job_types.pushObject({
                         name: sname.slice(4),
                         value: sname
@@ -104,7 +104,7 @@ define([
                 console.log('Show new form with context:', context, this.formContext);
                 var recordWizard = formsUtils.showNew('taskform', context, {
                     formParent: this,
-                    scheduled: this.scheduled
+                    scheduled: get(this, 'scheduled')
                 });
 
                 console.groupEnd();
