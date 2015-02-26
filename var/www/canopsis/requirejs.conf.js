@@ -33,7 +33,7 @@ require.config({
         'consolejs': 'webcore-libs/console.js/console',
         'ember-cloaking': 'canopsis/core/lib/wrappers/ember-cloaking',
         'codemirror': 'webcore-libs/codemirror/lib/codemirror',
-        'summernote': 'webcore-libs/summernote/summernote',
+        'summernote': 'webcore-libs/summernote/dist/summernote',
         'ember-summernote': 'webcore-libs/ember-summernote/lib/component',
         'seeds': 'webcore-libs/seeds',
         'hashes': 'webcore-libs/jshashes/hashes',

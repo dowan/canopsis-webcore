@@ -20,7 +20,7 @@
 define([
     'app/lib/factories/wrapper',
     'jquery',
-    'webcore-libs/summernote/summernote.min',
+    'webcore-libs/summernote/dist/summernote.min',
     'link!webcore-libs/codemirror/lib/codemirror.css',
     'app/lib/wrappers/codemirror',
     'ember-summernote'
