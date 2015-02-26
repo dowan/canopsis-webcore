@@ -110,13 +110,18 @@ function compare(a,b) {
             modelDict.userPreferencesModel = {};
             modelDict.userPreferencesModelName = modelId;
 
-
             // console.log(modelId, 'dict:', modelDict, this.generatedModels.findBy('name', 'widget').modelDict);
             if(schema.properties) {
                 var propertiesKeys = Ember.keys(schema.properties);
                 for (var i = 0; i < propertiesKeys.length; i++) {
                     var currentKey = propertiesKeys[i];
                     var currentProperty = schema.properties[currentKey];
+
+                    if(currentProperty['default']) {
+                        currentProperty.defaultValue = function(model, attribute) {
+                            return attribute['default'];
+                        };
+                    }
 
                     if (currentProperty.relationship === 'hasMany' && currentProperty.model !== undefined) {
                         currentProperty.model = currentProperty.model.split('.');
@@ -129,7 +134,6 @@ function compare(a,b) {
 
                         modelDict[currentKey] = DS.belongsTo(currentProperty.model, currentProperty);
                     } else {
-                        console.log('>>>', currentProperty);
                         if(currentProperty.isUserPreference === true) {
                             modelDict.userPreferencesModel[currentKey] = DS.attr(currentProperty.type, currentProperty);
                         } else {
@@ -138,7 +142,6 @@ function compare(a,b) {
                     }
                 }
 
-                console.log("###", modelDict.constructor);
                 userPreferencesKeys = Ember.keys(modelDict.userPreferencesModel);
                 modelDict.userPreferencesModel.attributes = Ember.OrderedSet.create();
                 for (var i = 0; i < userPreferencesKeys.length; i++) {
