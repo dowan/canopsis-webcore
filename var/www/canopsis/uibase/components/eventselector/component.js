@@ -120,7 +120,7 @@ define([
             }
 
             if (this.get('topologies')) {
-                filter.event_type = {'$eq' :['topologies']};
+                filter.source_type = {'$eq' :['topologies']};
             }
 
             if (!filter.resource && !filter.component) {
