@@ -124,7 +124,7 @@ define([
                     console.log('currentColumn', currentColumn);
 
                     if(get(currentColumn, 'options.show')) {
-                        if(currentColumn.renderer) {
+                        if(currentColumn.renderer && get(this, 'model.useRenderers')) {
                             html += ['<td class="', currentColumn.field, '">{{component-renderer rendererType="', currentColumn.renderer, '" value=this.', currentColumn.field, ' record=this field="', currentColumn.field, '" shown_columns=controller.shown_columns}}</td>'].join('');
                         } else {
                             html += ['<td class="', currentColumn.field, '">{{this.', currentColumn.field, '}}</td>'].join('');
