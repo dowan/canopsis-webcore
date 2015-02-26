@@ -482,7 +482,7 @@ define([
                 console.group('editTicketJob');
 
                 var ticketConfig = get(this, 'ticketConfig');
-                set(ticketConfig, 'crecord_type', 'ticketconfig');
+                set(ticketConfig, 'crecord_type', 'ticket');
 
                 console.log('ticketConfig:', ticketConfig);
 
@@ -500,7 +500,7 @@ define([
                 });
 
                 editForm.submit.done(function() {
-                    ticketConfig.set('job', job);
+                    set(ticketConfig, 'job', job);
                     ticketConfig.save();
                 });
 

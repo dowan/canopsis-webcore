@@ -34,15 +34,18 @@ define([
     var form = FormFactory('taskform', {
         title: 'Configure Job settings',
         scheduled: true,
-        jobRecord: undefined,
 
         init: function() {
             this._super();
 
-            if(this.scheduled === false) {
-                this.partials.buttons = ["formbutton-next", "formbutton-cancel"];
+            set(this, 'store', DS.Store.create({
+                container: get(this, "container")
+            }));
+
+            if(get(this, 'scheduled') === true) {
+                set(this, 'partials.buttons', ["formbutton-next", "formbutton-cancel"]);
             } else {
-                this.partials.buttons = ["formbutton-cancel", "formbutton-submit"];
+                set(this, 'partials.buttons', ["formbutton-cancel", "formbutton-submit"]);
             }
 
             this.refreshPartialsList();

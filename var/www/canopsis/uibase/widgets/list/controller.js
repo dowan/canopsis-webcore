@@ -103,7 +103,6 @@ define([
 
             rollbackableChanged: function() {
                 var list = this;
-                console.log(':::: rollbackable', get(this, 'model.rollbackable'));
                 if(get(this, 'model.rollbackable') === false) {
                     Ember.run.scheduleOnce('afterRender', this, function() { list.refreshContent(); });
                 }
@@ -210,9 +209,6 @@ define([
                 var itemType = get(this, 'itemType');
 
                 var findParams = this.computeFindParams();
-
-                //Setting default sort order param to the query depending on widget configuration
-                var columnSort = get(this, 'default_column_sort');
 
                 get(this, 'widgetDataStore').findQuery(itemType, findParams).then(function(queryResults) {
                     //retreive the metas of the records
