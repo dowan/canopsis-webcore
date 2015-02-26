@@ -1,5 +1,7 @@
 {{#if controller.rights.actionbutton_info.checksum}}
-    <button {{action 'info' this}} class="btn btn-default btn-xs">
-        <i class="fa fa-info"></i>
-    </button>
+    {{#component-tooltip content="Information"}}
+        <button {{action 'info' this}} class="btn btn-default btn-xs">
+            <i class="fa fa-info"></i>
+        </button>
+    {{/component-tooltip}}
 {{/if}}
