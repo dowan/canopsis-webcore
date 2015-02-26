@@ -34,6 +34,10 @@ define([
         init: function() {
             this._super.apply(this, arguments);
 
+            if(isNone(get(this, 'content'))) {
+                set(this, 'content', Ember.A());
+            }
+
             set(this, 'selectionPrepared', Ember.A());
 
             var content = get(this, 'content');
@@ -47,6 +51,7 @@ define([
             }
             set(this, 'selectionPrepared', content);
         },
+
 
         /*
          * Compute a structure with classified item each time the 'items' property changed
