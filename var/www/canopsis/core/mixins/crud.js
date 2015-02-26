@@ -34,19 +34,31 @@ define([
      */
     var mixin = Mixin('crud', {
         partials: {
-            selectionToolbarButtons: [
-                'actionbutton-removeselection'
-            ],
-            actionToolbarButtons: [
-                'actionbutton-create'
-            ],
-            itemactionbuttons: [
-                'actionbutton-edit',
-                'actionbutton-remove'
-            ],
+            selectionToolbarButtons: [],
+            actionToolbarButtons: [],
+            itemactionbuttons: [],
             header: [],
             subHeader: [],
             footer: []
+        },
+
+        mixinsOptionsReady: function () {
+            this._super();
+
+            if (!get(this, 'mixinOptions.crud.hideRemove')) {
+                get(this,'partials.selectionToolbarButtons').push('actionbutton-removeselection');
+                get(this,'partials.itemactionbuttons').push('actionbutton-remove');
+            }
+            if (!get(this, 'mixinOptions.crud.hideEdit')) {
+                get(this,'partials.itemactionbuttons').push('actionbutton-edit');
+            }
+            if (!get(this, 'mixinOptions.crud.hideCreate')) {
+                get(this,'partials.actionToolbarButtons').push('actionbutton-create');
+            }
+
+
+
+            set(this, 'itemsPerPagePropositionSelected', get(this, 'itemsPerPage'));
         },
 
         userCanReadRecord: function() {
