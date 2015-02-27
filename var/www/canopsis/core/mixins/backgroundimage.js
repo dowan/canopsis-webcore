@@ -41,6 +41,8 @@ define([
             if(position) {
                 this.$().css('background-position', position);
             }
+
+            this._super();
         }
     });
 
