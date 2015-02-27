@@ -42,7 +42,8 @@ var mixins = [
     { name: 'tablayout', url: 'app/mixins/tablayout', classes: ['widget', 'events']},
     { name: 'recordinfopopup', url: 'app/mixins/recordinfopopup', classes: ['widget', 'events']},
     { name: 'minimizebutton', url: 'app/mixins/minimizebutton', classes: ['widget']},
-    { name: 'draggablecolumns', url: 'app/mixins/draggablecolumns', classes: ['widget']}
+    { name: 'draggablecolumns', url: 'app/mixins/draggablecolumns', classes: ['widget']},
+    { name: 'backgroundimage', url: 'app/mixins/backgroundimage', classes: ['widget']}
 ];
 
 loader.loadWithTemplates(mixins);
