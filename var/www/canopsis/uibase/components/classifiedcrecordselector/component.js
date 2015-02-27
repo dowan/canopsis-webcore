@@ -47,6 +47,7 @@ define([
 
             set(this, 'selectionUnprepared', Ember.A());
 
+            //FIXME is store destroyed?
             this.set('store_' + get(this, 'elementId'), DS.Store.create({
                 container: this.get('container')
             }));
