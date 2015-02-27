@@ -192,13 +192,31 @@ define([
             if (get(this, 'controller').graph === null) {
                 return;
             }
-            var _this = this;
+            // get controller graph
+            this.graph = get(this, 'controller').graph;
             // reinitialize old view
-            _this.d3_graph = {
-                nodes: [],
-                links: [],
-                data_by_id: {}
-            };
+            if (this.d3_graph === undefined) {
+                this.d3_graph = {
+                    nodes: [],
+                    links: [],
+                    data_by_id: {}
+                };
+            } else { // or remove useless d3 elts from data_by_id
+                var graph = this.graph;
+                var d3_graph = this.d3_graph;
+                var graph_id = get(this, 'controller').graph_id;
+                var elts_to_delete = [];
+                Object.keys(d3_graph.data_by_id).forEach(
+                    function(elt_id) {
+                        var elt = d3_graph.data_by_id[elt_id];
+                        if (elt.isSource === undefined && elt_id !== graph_id && graph._delts[elt_id] === undefined) {
+                            elts_to_delete.push(elt);
+                        }
+                    }
+                );
+                // delete elts
+                get(this, 'controller').delete(elts_to_delete, true);
+            }
             // update the view
             this.updateModel();
         },
@@ -432,7 +450,7 @@ define([
                     // update its reference in _delts
                     elts[elt_id] = elt;
                     var node = null;
-                    if (elt.get('type') === 'topoedge') {
+                    if (elt.get('_type') === 'edge') {
                         // add links if elt is an edge.
                         this.weaveLinks(d3_node);
                     } else {
@@ -448,7 +466,7 @@ define([
             // resolve weight
             this.d3_graph.nodes.forEach(
                 function(node, i) {
-                    if (node.elt.get('type') === 'topoedge') {
+                    if (node.elt.get('_type') === 'edge') {
                         var source_id = node.elt.get('sources')[0];
                         var source_node = this.d3_graph.data_by_id[source_id];
                         source_node._weight += node.elt.get('weight');
@@ -527,14 +545,15 @@ define([
                     }
                 }
                 // add result in d3_graph nodes
+                result.index = this.d3_graph.nodes.length;
                 this.d3_graph.nodes.push(result);
-                // add node reference in d3_graph.data_by_id
-                this.d3_graph.data_by_id[result.id] = result;
             }
             // save record in the result
             result.elt = record;
             // add a reference to shape from vertice
             record.d3_elt = result;
+            // add node reference in d3_graph.data_by_id
+            this.d3_graph.data_by_id[result.id] = result;
             return result;
         },
 
@@ -840,12 +859,12 @@ define([
                     node.px = node.x;
                     node.py = node.y;
                     node.fixed = true;
-                    get(this, 'controller').trigger('refresh');
+                    get(this, 'controller').trigger('redraw');
                 }
                 this.vertice2D3Node(undefined, true, callback, undefined, this);
             } else {
                 function success2(record) {
-                    get(this, 'controller').trigger('refresh');
+                    get(this, 'controller').trigger('redraw');
                     this.removeTmpLink();
                 }
                 function failure2(record) {
@@ -869,13 +888,13 @@ define([
             d3.event.stopPropagation();
             this.lock(data);
             this.destroyToolBox();
-            get(this, 'controller').trigger('refresh');
+            get(this, 'controller').trigger('redraw');
         },
         lockHandler: function(data) {
             d3.event.stopPropagation();
             this.lock(data, true);
             this.destroyToolBox();
-            get(this, 'controller').trigger('refresh');
+            get(this, 'controller').trigger('redraw');
         },
         cancelHandler: function(data) {
             d3.event.stopPropagation();
@@ -1279,7 +1298,7 @@ define([
         */
         addLink: function(source, target, edit, success, failure, context) {
             var result = null;
-            var source_type = source.elt.get('type');
+            var source_type = source.elt.get('_type');
             // ensure source and target are ok
             if (source.id === this.graph.get('cid') || !this.checkTargetLink(target)) {
                 throw new Exception('Wrong parameters');
@@ -1304,7 +1323,7 @@ define([
             }
             // get result
             // if source is an edge, then edge is source
-            if (source_type === 'topoedge') {
+            if (source_type === 'edge') {
                 result = source;
                 // and add right now the target
                 result.elt.get('targets').push(target.id);
@@ -1319,7 +1338,7 @@ define([
                 }
                 var edge = this.vertice2D3Node(
                     {
-                        type: 'topoedge',
+                        type: this.edge_elt_type,
                         sources: [source.id],
                         targets: [target.id],
                         weight: 1,
@@ -1434,6 +1453,12 @@ define([
 
         graph_div: null, // graph div markup
 
+        graph_elt_type: 'topo', // graph elt type
+        vertice_elt_type: 'toponode', // vertice elt type
+        edge_elt_type: 'edge', // edge elt type
+
+        layout: 'natural', // layout
+
         init: function() {
             this._super.apply(this, arguments);
         },
@@ -1465,13 +1490,13 @@ define([
                 'cid': node.get('cid'),
                 'type': nod.get('type')
             };
-            var type = node.get('type');
+            var type = node.get('_type');
             switch(type) {
-                case 'topo':
+                case 'graph':
                     event.source_type = 'component';
                     event.component = event.cid;
                     break;
-                case 'toponode':
+                case 'vertice':
                     event.source_type = 'resource';
                     event.component = this.graph_id;
                     event.resource = event.cid;
@@ -1615,7 +1640,7 @@ define([
                         if (result.total === 0) {
                             graph = {
                                 _delts: {},
-                                type: 'topo',
+                                type: this.graph_elt_type,
                                 _type: 'graph',
                                 _id: _this.graph_id,
                                 cid: _this.graph_id,
@@ -1715,7 +1740,7 @@ define([
                         // add data into nodes_data_to_delete for future cleaning
                         nodes_data_to_delete.push(data);
                         // delete nodes
-                        if (data.elt.get('type') === 'topoedge') { // in case of an edge
+                        if (data.elt.get('_type') === 'edge') { // in case of an edge
                             // get all link_data in order to remove them
                             ['sources', 'targets'].forEach(
                                 function(key) {
@@ -1743,7 +1768,7 @@ define([
                             nodes.forEach(
                                 function(edge) {
                                     // if elt is an edge
-                                    if (edge.elt.get('type') === 'topoedge') {
+                                    if (edge.elt.get('_type') === 'edge') {
                                         // iterate on sources/targets
                                         ['sources', 'targets'].forEach(
                                             function(key) {
@@ -1803,7 +1828,7 @@ define([
                 //var links_to_delete = this.panel.selecAll('.'+this.link_class).data(links_data_to_delete, function(d) { return d.id});
                 //this.delLinks(links_to_delete);
                 // update view pos
-                for(pos = links_data_to_delete[0].view_pos; pos < this.d3_graph.links.length; pos++) {
+                for(var pos = links_data_to_delete[0].view_pos; pos < this.d3_graph.links.length; pos++) {
                     this.d3_graph.links[pos].view_pos = pos;
                 };
             }
@@ -1885,8 +1910,8 @@ define([
                 _cls: record.get('_cls'),
                 info: record.get('info')
             };
-            var record_type = record.get('type');
-            if (record_type === 'topoedge') {
+            var record_type = record.get('_type');
+            if (record_type === 'edge') {
                 result.weight = record.get('weight');
                 result.sources = record.get('sources');
                 result.targets = record.get('targets');
@@ -1920,7 +1945,7 @@ define([
                 elt = {
                     _id: uuid,
                     cid: uuid,
-                    type: 'toponode',
+                    type: this.vertice_elt_type,
                     _type: 'vertice',
                     _cls: this.default_vertice_cls,
                     info: {
@@ -1937,7 +1962,7 @@ define([
                     elt._id = uuid;
                     if (!elt._type) {
                         elt._type = 'vertice';
-                        elt.type = 'toponode';
+                        elt.type = this.vertice_elt_type;
                     }
                     if (!elt._cls) {
                         elt._cls = this.default_vertice_cls;
