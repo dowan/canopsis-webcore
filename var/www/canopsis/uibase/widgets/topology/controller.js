@@ -1338,13 +1338,13 @@ define([
                 }
                 var edge = this.vertice2D3Node(
                     {
-                        type: this.edge_elt_type,
+                        type: get(this, 'controller').edge_elt_type,
                         sources: [source.id],
                         targets: [target.id],
                         weight: 1,
                         directed: true,
                         _type: 'edge',
-                        _cls: this.default_edge_cls
+                        _cls: get(this, 'controller').default_edge_cls
                     },
                     edit,
                     callback2,
@@ -1455,7 +1455,7 @@ define([
 
         graph_elt_type: 'topo', // graph elt type
         vertice_elt_type: 'toponode', // vertice elt type
-        edge_elt_type: 'edge', // edge elt type
+        edge_elt_type: 'topoedge', // edge elt type
 
         layout: 'natural', // layout
 
@@ -1646,8 +1646,8 @@ define([
                                 cid: me.graph_id,
                                 _cls: me.graph_cls,
                                 info: {
-                                    operator: {
-                                        id: 'canopsis.topology.rule.action.change_state',
+                                    task: {
+                                        id: 'canopsis.topology.rule.action.worst_state',
                                         params: {
                                             update_entity: true
                                         }
