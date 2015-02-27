@@ -201,6 +201,7 @@ define([
                     links: [],
                     data_by_id: {}
                 };
+                get(this, 'controller').d3_graph = this.d3_graph;
             } else { // or remove useless d3 elts from data_by_id
                 var graph = this.graph;
                 var d3_graph = this.d3_graph;
@@ -214,6 +215,7 @@ define([
                         }
                     }
                 );
+                get(this, 'controller').d3_graph = this.d3_graph;
                 // delete elts
                 get(this, 'controller').delete(elts_to_delete, true);
             }
@@ -1647,7 +1649,7 @@ define([
                                 _cls: me.graph_cls,
                                 info: {
                                     task: {
-                                        id: 'canopsis.topology.rule.action.worst_state',
+                                        cid: 'canopsis.topology.rule.action.worst_state',
                                         params: {
                                             update_entity: true
                                         }
@@ -2084,7 +2086,7 @@ define([
                                 }
                             }
                         } else {  // simple task
-                            record.set(operator_name);
+                            record.set('operator', operator_name);
                         }
                     }
                 }
