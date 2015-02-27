@@ -25,14 +25,6 @@
         </button>
     </div>
 
-    {{#if controller.editMode}}
-        <div class="btn-group pull-right" style="margin:5px">
-            <button class="btn btn-info btn-sm" {{action 'showViewOptions'}} >
-                <span class="glyphicon glyphicon-cog"></span>
-            </button>
-        </div>
-    {{/if}}
-
     <section class="content-header nav-tabs-custom" style=" padding: 5px 0 0;margin-bottom:0px; ">
         <ul class="nav nav-tabs">
             {{#if controller.userCanUpdateRecord}}
