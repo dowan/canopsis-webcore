@@ -532,7 +532,8 @@ define([
                     x: old_result === undefined ? 0 : old_result.x,
                     y: old_result === undefined ? 0 : old_result.y,
                     px: old_result === undefined ? 0 : old_result.px,
-                    py: old_result === undefined ? 0 : old_result.py
+                    py: old_result === undefined ? 0 : old_result.py,
+                    fixed: old_result === undefined ? false : old_result.fixed
                 };
                 info = record.get('info');
                 if (info.shape !== undefined && info.shape[this.graph_id] !== undefined) {
@@ -540,6 +541,7 @@ define([
                     if (result.x === undefined) {
                         result.x = coordinates.x;
                         result.y = coordinates.y;
+                        result.fixed = coordinates.fixed;
                     }
                     if (result.px === undefined) {
                         result.px = coordinates.px;
@@ -1927,7 +1929,8 @@ define([
                 x: record.d3_elt.x,
                 y: record.d3_elt.y,
                 px: record.d3_elt.px,
-                py: record.d3_elt.py
+                py: record.d3_elt.py,
+                fixed: record.d3_elt.fixed
             }
             return result;
         },
