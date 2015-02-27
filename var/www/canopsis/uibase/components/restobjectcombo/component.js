@@ -55,15 +55,17 @@ define([
                 }
 
                 if(element.get(get(component, 'valueField')) === get(component, 'selectedValue')) {
-                    set(element, 'selected', true);
+                    categorizedElements[name].pushObject({
+                        label: get(element, get(component, 'labelField')),
+                        value: get(element, get(component, 'valueField')),
+                        selected: true
+                    });
                 } else {
-                    set(element, 'selected', false);
+                    categorizedElements[name].pushObject({
+                        label: get(element, get(component, 'labelField')),
+                        value: get(element, get(component, 'valueField'))
+                    });
                 }
-
-                categorizedElements[name].pushObject({
-                    label: get(element, get(component, 'labelField')),
-                    value: get(element, get(component, 'valueField'))
-                });
             }
 
             for (var i = 0, li = elements.length; i < li; i++) {
@@ -123,6 +125,7 @@ define([
                 //insert the hook to manage selection change
                 Ember.run.schedule('afterRender', function bindEvents(){
                     this.$('select').on('change', function manageSelectChange() {
+                        console.log('select value', this.value);
                         set(component, 'attr.value', this.value);
                     });
                 });
