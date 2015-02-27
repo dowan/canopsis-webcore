@@ -1630,7 +1630,7 @@ define([
             // business_name = this.graph_type + 'Component';
             // this.business = eval(business_name);
 
-            var _this = this;
+            var me = this;
             if (this.graph_id !== undefined) {
                 // use graph id in getNodes method in order to get nodes
                 this.getGraphFromServer(
@@ -1640,11 +1640,11 @@ define([
                         if (result.total === 0) {
                             graph = {
                                 _delts: {},
-                                type: this.graph_elt_type,
+                                type: me.graph_elt_type,
                                 _type: 'graph',
-                                _id: _this.graph_id,
-                                cid: _this.graph_id,
-                                _cls: _this.graph_cls,
+                                _id: me.graph_id,
+                                cid: me.graph_id,
+                                _cls: me.graph_cls,
                                 info: {
                                     operator: {
                                         id: 'canopsis.topology.rule.action.change_state',
@@ -1658,26 +1658,26 @@ define([
                         } else {
                             graph = result.data[0];
                             // if old graph exists
-                            if (_this.graph !== null) {
+                            if (me.graph !== null) {
                                 // delete old elements
                                 var elts_to_delete = [];
-                                Object.keys(_this.graph._delts).forEach(
+                                Object.keys(me.graph._delts).forEach(
                                     function(elt_id) {
                                         // in case of old element
                                         if (graph._delts[elt_id] === undefined) {
-                                            var elt = _this.graph._delts[elt_id];
+                                            var elt = me.graph._delts[elt_id];
                                             elts_to_delete.push(elt.d3_elt);
                                         }
                                     },
                                     this
                                 );
-                                this.delete(elts_to_delete);
+                                me.delete(elts_to_delete);
                             }
                         }
                         // convert graph such as a record
-                        _this.graph = _this.toRecord(graph);
+                        me.graph = me.toRecord(graph);
                         // refresh the view
-                        _this.trigger('refresh');
+                        me.trigger('refresh');
                     }
                 );
             }
