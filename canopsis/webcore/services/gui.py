@@ -110,7 +110,7 @@ def exports(ws):
                         cservice['server'],
                         cservice['service'],
                     ))
-            ws.logger.error('cservice is -> {}'.format(cservices))
+
             # Compile template
             login_page = os.path.join(ws.root_directory, 'login', 'index.html')
             with open(login_page) as src:
