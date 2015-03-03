@@ -88,7 +88,7 @@ def exports(ws):
             }
 
             records = ws.db.find(
-                {'crecord_type': {'$in': ['casconfig', 'ldapconfig']}},
+                {'crecord_name': {'$in': ['casconfig', 'ldapconfig']}},
                 namespace='object'
             )
 
