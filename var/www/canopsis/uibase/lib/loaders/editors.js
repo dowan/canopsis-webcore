@@ -65,7 +65,8 @@ var editors = [
     { name: 'editor-eventkey', template: 'canopsis/uibase/editors/eventkey.html' },
     { name: 'editor-serieformula', template: 'canopsis/uibase/editors/serieformula.html' },
     { name: 'editor-widgetstree', template: 'canopsis/uibase/editors/widgetstree.html' },
-    { name: 'editor-restobject', template: 'canopsis/uibase/editors/restobject.html' }
+    { name: 'editor-restobject', template: 'canopsis/uibase/editors/restobject.html' },
+    { name: 'editor-contextselector', template: 'canopsis/uibase/editors/contextselector.html' }
 ];
 
 loader.loadWithTemplates(editors);

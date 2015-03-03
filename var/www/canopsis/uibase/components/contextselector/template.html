@@ -1,0 +1,14 @@
+<div class="well">
+    {{view "select"
+       content=contexts
+       optionValuePath="content.modelName"
+       optionLabelPath="content.name"
+       value=contextType}}
+</div>
+{{#each item in findResults}}
+    {{item.cid}}<br/>
+{{/each}}
+<h3>{{tr 'Selection'}} :</h3>
+<div class="well">
+    {{content}}
+</div>

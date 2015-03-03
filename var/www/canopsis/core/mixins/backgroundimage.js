@@ -35,19 +35,20 @@ define([
             var imageUrl = get(this, 'controller.mixinOptions.backgroundimage.imageUrl'),
                 position = get(this, 'controller.mixinOptions.backgroundimage.position'),
                 repeat = get(this, 'controller.mixinOptions.backgroundimage.repeat'),
-                size = get(this, 'controller.mixinOptions.backgroundimage.size');
+                size = get(this, 'controller.mixinOptions.backgroundimage.size'),
+                element = this.$();
 
             if(imageUrl) {
-                this.$().css('background-image', 'url(' + imageUrl + ')');
+                element.css('background-image', 'url(' + imageUrl + ')');
             }
             if(position) {
-                this.$().css('background-position', position);
+                element.css('background-position', position);
             }
             if(size) {
-                this.$().css('background-size', size);
+                element.css('background-size', size);
             }
             if(repeat) {
-                this.$().css('background-repeat', repeat);
+                element.css('background-repeat', repeat);
             }
 
             this._super();

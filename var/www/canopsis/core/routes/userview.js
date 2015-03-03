@@ -43,8 +43,16 @@ define([
         actions: {
             loading: function() {
                 if(initialLoadDone === false) {
-                    var app = this.controllerFor('application');
-                    set(app, 'isLoading', get(app, 'isLoading') + 1);
+                    var app = this.controllerFor('application'),
+                        isLoading;
+
+                    if(get(app, 'isLoading')) {
+                        isLoading = get(app, 'isLoading');
+                    } else {
+                        isLoading = 0;
+                    }
+
+                    set(app, 'isLoading', isLoading + 1);
                 }
             },
 
