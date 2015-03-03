@@ -57,7 +57,7 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
             console.groupEnd();
 
             console.group('Load series:');
-            //this.fetchSeries(from, to, replace);
+            this.fetchSeries(from, to, replace);
             console.groupEnd();
 
             console.group('Load metrics:');
@@ -129,57 +129,75 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
 
         fetchSeries: function(from, to, replace) {
             var store = get(this, 'widgetDataStore');
-            var series = get(this, 'config.series');
+            //var series = get(this, 'config.series');
 
             var bars = get(this, "bars");
-            var me = this;
-          
-            var slength = series.length;
 
-            for(var s = 0; s < slength; s++) {
+            var controller = this,
+                seriesController = get(controller, 'controllers.serie'),
+                series;
 
-                var serieId = series[s];
-                var bar = {};
+            var seriesValues = get(this, 'series');
+            if (!isNone(seriesValues)) {
 
-                store.find('serie', serieId).then(function(result) {
+                //Declared here for translation purposes
+                var valueNotDefined = __('No data available');
 
-                    var serie = result.content;
+                var seriesFilter = JSON.stringify({
+                    crecord_name: {'$in': seriesValues}
+                });
 
-                    get(me, 'controllers.serie').fetch(serie, from, to).then(function(result) {
-                        bar["label"] = result.data[0].crecord_name;
-                        bar["unit"] = result.data[0].meta.unit;
-                        slength = result.data.length;
-                        if(slength > 0){
-                            min = -1;
-                            max = -1;
-                            for(var i = 0; i < slength; i++) {
-                                var points = result.data[i].points;
-                                for(var j = 0; j < points.length; j++) {
-                                    var val = points[j][1];
-                                    if(min <0 || val < min){
-                                        min = val;
-                                    }
-                                    if(max <0 || val > max){
-                                        max = val;
-                                    }
-                                }
+                console.log('widget text series duration queries', from, to);
+                get(this, 'widgetDataStore').findQuery('serie', {filter: seriesFilter}).then(function(results) {
+
+                    series = get(results, 'content');
+                    console.log('series records', series);
+
+                    //Event query is the first param if any rk have to be fetched
+                    var seriesQueries = [];
+                    for (var i = 0, l = series.length; i < l; i++) {
+                        seriesQueries.push(seriesController.fetch(
+                            series[i],
+                            from,
+                            to
+                        ));
+                    }
+
+                    console.log('seriesQueries', seriesQueries);
+
+                    Ember.RSVP.all(seriesQueries).then(function(pargs) {
+                        for (var i=0, l=pargs.length; i<l; i++) {
+                            var data = pargs[i];
+                            console.log('series pargs', pargs);
+                            var displayValue = 0;
+                            if (data.length) {
+                                //choosing the value for the last point when any
+                                displayValue = data[data.length - 1][1];
                             }
-                            bar["value"] = result.data[result.data.length].points[result.data[i].points.length-1][1];
-                            bar["min_value"] = min;
-                            bar["max_value"] = max;
-                        } else {
-                            bar["value"] = 0;
-                            bar["min_value"] = 0;
-                            bar["max_value"] = 0;
+                            var serieName = get(series[i], 'crecord_name');
+                            //set(controller, 'templateContext.serie.' + serieName, displayValue);
+                            var bar = {
+                                "id" : serieName,
+                                "label" : serieName,
+                                "max_value" : 100,
+                                "min_value" : 0,
+                                "value" : displayValue,
+                                "percent" : displayValue,
+                                "unit" : "",
+                                "style_bar" : "",
+                                "style_label" : "",
+                                "style_content" : "",
+                                "style_span" : "",
+                                "text_percent" : ""
+                            }
+                            get(controller, "bars").pushObject(bar);
                         }
-
-                        bars.pushObject(bar);
-
+                        //controller.setReady('serie');
                     });
+
 
                 });
             }
-            set(this, 'bars', bars);
         },
 
         fetchMetrics: function(from, to, replace) {
@@ -203,8 +221,8 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                     "label" : this.getName(metricId),
                     "max_value" : 100,
                     "min_value" : 0,
-                    "value" : 50,
-                    "percent" : 50,
+                    "value" : 0,
+                    "percent" : 0,
                     "unit" : "",
                     "style_bar" : "",
                     "style_label" : "",
@@ -237,8 +255,8 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                 }
                 var percent = me.getPercent(get(bar, "min_value"), max,  get(bar, "value"));
                 set(bar, 'percent', percent);
-                bars.replace(index, 0, bar);
-                me.trigger('refresh');
+                //bars.replace(index, 0, bar);
+                //me.trigger('refresh');
             });
         },
 
@@ -255,8 +273,8 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                 }
                 var percent = me.getPercent(min, get(bar, "max_value"), get(bar, "value"));
                 set(bar, 'percent', percent);
-                bars.replace(index, 0, bar);
-                me.trigger('refresh');
+                //bars.replace(index, 0, bar);
+                //me.trigger('refresh');
             });
         },
 
@@ -300,7 +318,7 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                     }
                 }
 
-                bars.replace(index, 0, bar);
+                //bars.replace(index, 0, bar);
                 me.trigger('refresh');
             });
         }
