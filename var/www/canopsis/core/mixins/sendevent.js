@@ -154,12 +154,6 @@ define([
                         me.trigger('refresh');
                     }
 
-                    //callback on event send.
-                    var nextAction = get(me, 'nextAction');
-                    if(!isNone(nextAction)) {
-                        nextAction();
-                    }
-
                     resolve(arguments);
                 }, reject);
             });
@@ -355,21 +349,14 @@ define([
                 },
 
                 handle: function(crecords) {
-                    if (get(this, 'noPopUp')) {
+                    var record = this.getDisplayRecord('declareticket', crecords[0]);
 
-                        var record = crecords[0];
-                        this.submitEvents([record], record, 'declareticket');
+                    var formbuttons = [
+                        'formbutton-cancel',
+                        'formbutton-incident'
+                    ];
 
-                    } else {
-                        var record = this.getDisplayRecord('declareticket', crecords[0]);
-
-                        var formbuttons = [
-                            'formbutton-cancel',
-                            'formbutton-incident'
-                        ];
-
-                        this.getEventForm('declareticket', record, crecords, formbuttons);
-                    }
+                    this.getEventForm('declareticket', record, crecords, formbuttons);
                 },
 
                 transform: function(crecord, record) {
@@ -641,71 +628,46 @@ define([
             }
         },
 
-        /**
-        * Entry point for this class
-        * Sends one or many event to the server depending on selected record and action performed.
-        **/
-        doSendEvent: function(event_type, crecord) {
-            console.group('sendEvent:', arguments);
-
-            this.stopRefresh();
-
-            var crecords = [];
-
-            if (!isNone(crecord)) {
-                console.log('event:', event_type, crecord);
-                crecords.push(crecord);
-            }
-            else {
-                var content = get(this, 'widgetData.content');
-                var selected = content.filterBy('isSelected', true);
-
-                crecords = this.filterUsableCrecords(event_type, selected);
-
-                console.log('events:', event_type, crecords);
-
-                if(!crecords.length) {
-                    notificationUtils.warning(
-                        'No matching event found for event:',
-                        event_type
-                    );
-                    return;
-                }
-            }
-
-            this.processEvent(event_type, 'handle', [crecords]);
-
-            this.setPendingOperation(crecords);
-
-            console.groupEnd();
-        },
-
         actions: {
 
-            ackAndReport: function (crecord) {
-                var widgetController = this;
-                /*//TODO activate this feature when found how action button works
-                set(widgetController, 'nextAction', function (){
-                    //stop callback, and next action system
-                    set(widgetController, 'nextAction', undefined);
-                    set(widgetController, 'noPopUp', true);
+            /**
+            * Entry point for this class
+            * Sends one or many event to the server depending on selected record and action performed.
+            **/
+            sendEvent: function(event_type, crecord) {
+                console.group('sendEvent:', arguments);
 
-                    console.log('triggering declare ticket next to ack');
-                    widgetController.doSendEvent('declareticket', crecord);
-                    set(widgetController, 'noPopUp', false);
+                this.stopRefresh();
 
+                var crecords = [];
 
-                });
-                */
-                widgetController.doSendEvent('ack', crecord);
+                if (!isNone(crecord)) {
+                    console.log('event:', event_type, crecord);
+                    crecords.push(crecord);
+                }
+                else {
+                    var content = get(this, 'widgetData.content');
+                    var selected = content.filterBy('isSelected', true);
 
+                    crecords = this.filterUsableCrecords(event_type, selected);
 
-            },
+                    console.log('events:', event_type, crecords);
 
-            sendEvent: function (event_type, crecord) {
-                this.doSendEvent(event_type, crecord);
-            },
+                    if(!crecords.length) {
+                        notificationUtils.warning(
+                            'No matching event found for event:',
+                            event_type
+                        );
+                        return;
+                    }
+                }
 
+                this.processEvent(event_type, 'handle', [crecords]);
+
+                this.setPendingOperation(crecords);
+
+                console.groupEnd();
+            }
         }
     });
 
