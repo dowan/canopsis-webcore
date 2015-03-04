@@ -77,6 +77,8 @@ require.config({
         'flotchart-tooltip': 'webcore-libs/flot.tooltip/js/jquery.flot.tooltip',
         'flotchart-chartvalues': 'webcore-libs/flot-plugins/custom/jquery.flot.chartvalues',
 
+        'circliful' : 'webcore-libs/circliful/js/jquery.circliful',
+
         'rrule': 'webcore-libs/kb-rrule/lib/rrule',
         'nlp': 'webcore-libs/kb-rrule/lib/nlp',
 
@@ -211,6 +213,10 @@ require.config({
 
         'flotchart-chartvalues': {
             deps: ['jquery', 'flotchart']
+        },
+
+        'circliful': {
+            deps: ['jquery']
         }
     }
 });

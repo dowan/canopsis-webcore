@@ -1,82 +1,204 @@
-  define([
+define([
   'jquery',
   'ember',
+  'circliful',
   'app/application'
-], function($, Ember, Application) {
+], function(jQuery, Ember, Circliful, Application) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
-    Application.ComponentProgressbarComponent = Ember.Component.extend({
-    classNames: 'progress',
+    var component = Ember.Component.extend({
 
-    init:function(){
-        this._super();
-    },
+        init: function(){
 
-    width_label: function(){
-		//var show_label = this.get("labeldisplay");
-		/*
-		if (show_label) {
-        	return "display:none; background:#ffffff; width: %@%; float:left;".fmt(this.get("labelwidth"));
-		}
-		*/
-		return "display:none;";
-    }.property("width_label"),
+            this._super();
 
-	style_bar: function(){
-		var color = "background: " + this.getcolor() + ";";
-        return color + "width: " + this.get("percent") + "%;";
-    }.property("style_bar"),
+            var display_as = get(this,"display_as");
+            if(isNone(display_as)){
+                display_as = "progressbar";
+            }
+            set(this, "display_as", display_as);
 
-	style_span: function(){
-		return "display:none;";
-    }.property("style_span"),
+            if(display_as == "progressbar"){
+                set(this, "is_progressbar", true);
+                if(isNone(get(this,"pb_thickness"))){
+                    set(this, "thickness", 10);
+                    set(this, "height", 10);
+                } else {
+                    set(this, "thickness", get(this,"pb_thickness") );
+                    set(this, "height", get(this,"pb_thickness") );
+                }
 
-	getcolor: function(){
-		var background_color = this.get("background_color");
-		var warn_color = this.get("warn_color");
-		var critic_color = this.get("critic_color");
-		var valstatus = this.get("getstatus");
-		switch(valstatus){
-			case "critical":
-				return critic_color;
-				break;
-			case "warning":
-				return warn_color;
-				break;
-			default:
-				return background_color;
-				break;
-		}
-	},
+            } else {
+                set(this, "is_gauge", true);
+                set(this, "style_content", "float:left;");
+                if(display_as == "halfgauge"){
+                    set(this, "type", "half");
+                } else {
+                    set(this, "type", "full");
+                }
+                
+                if(isNone(get(this,"gg_thickness"))){
+                    set(this, "thickness", 10);
+                } else {
+                    set(this, "thickness", get(this,"pb_thickness") );
+                }
+                
+                if(isNone(get(this,"gg_width"))){
+                    set(this, "width", 250);
+                } else {
+                    set(this, "width", get(this,"gg_width") );
+                }
 
-	getstatus: function(){
-		var percent = this.get("percent");
-		if(percent > this.get("crit_value")){
-			return "critical";
-		} else if(percent > this.get("warn_value")){
-			return "warning";
-		} else {
-			return "complete"
-		}
-	},
-	
-	textstatus:function(){
-		return "(" + this.getstatus() + ")";
-	}.property("textstatus"),
+                if( get(this, "type") == "half" ){
+                    set(this, "height", parseInt(get(this, "width")) / 2);
+                } else {
+                    set(this, "height", get(this, "width"));
+                }
+            }
 
-	textpercent:function(){
-		return "" + ""/*str(this.percent())*/ + "";
-	}.property("textpercent"),
+            //this.onValueChange();
 
-    percent:function(){
-        var value = this.get("value") - this.get("min_value");
-        var max = this.get("max_value") - this.get("min_value");
-        var percent =  Math.ceil(value/max * 100);
-        return percent;
-    }.property("percent")
+            //this.addObserver('value', this.onValueChange);
+            //this.addObserver('min_value', this.onValueChange);
+            //this.addObserver('max_value', this.onValueChange);
+        },
 
-  });
-  return   Application.ComponentProgressbarComponent;
+        didInsertElement: function(){
+            this.onValueChange();
+            jQuery('#' + get(this,"id")).circliful();
+        },
+       
+        onValueChange: function(){
+            this.gettStyleLabel();
+            this.gettColor();
+            this.gettStatus();
+            this.texttStatus();
+            this.texttPercent();
+            if(get(this, "display_as")=="progressbar"){
+                this.gettStyleBar();
+            } else {
+                this.gettStyleGauge();
+            }
+        },
+
+        id: function(){
+            return "gauge_" + get(this,"label").replace(/\W+/g, "");
+        }.property(),
+
+        id_bar: function(){
+            return "bar_" + get(this,"label").replace(/\W+/g, "");
+        }.property(),
+
+        label: function(){
+            if(get(this,"label_display")){
+                return get(this,"label");
+            }
+            return "";
+        }.property(),
+       
+        gettStyleLabel: function(){
+            if(get(this,"label_display")){
+                if(isNone(get(this, "label_width"))){
+                    width = 0;
+                } else {
+                    width = get(this, "label_width");
+                }
+                if(isNone(get(this, "label_unit"))){
+                    unit = "%";
+                } else {
+                    unit = get(this, "label_unit");
+                }
+                var padding = "";
+                padding = "padding-top: " + parseInt(parseInt(get(this, "height") - 14) / 2) + "px; ";
+                var result = "width: " + width + unit + ";" + padding;
+            } else {
+                var result = "display: none;";
+            }
+            set(this, "style_label", result);
+        },
+
+        gettStyleBar: function(){
+            var id = get(this, "id_bar");
+            var height = "height: " + get(this, "thickness") + "px;";
+            var color = "background: " + this.gettColor() + ";";
+            var result =  color + "width: " + get(this, "percent") + "%;";
+            set(this, "style_bar", result);
+        },
+
+        gettStyleGauge: function(){
+            var id = get(this, "id");
+            var result = "width: " + get(this, "width") + "px; height: " + get(this, "height") + "px;";
+            set(this, "style_gauge", result);
+        },
+
+        gettColor: function(){
+            var background_color = get(this, "bg_color");
+            var warn_color = get(this, "warning_color");
+            var critic_color = get(this, "critic_color");
+            var valstatus = this.gettStatus();
+            switch(valstatus){
+                case 2:
+                    var result = critic_color;
+                    break;
+                case 1:
+                    var result = warn_color;
+                    break;
+                default:
+                    var result = background_color;
+                    break;
+            }
+            return result;
+        },
+
+        gettStatus: function(){
+            var unit_or_percent = get(this, "unit_or_percent");
+            var value = get(this, "value");
+            if(unit_or_percent){
+                var compared = value;
+            } else {
+                var compared = get(this, "percent");
+            }
+            if(compared >= get(this, "crit_value")){
+                var result = 2;
+            } else if(compared >= get(this, "warn_value")){
+                var result = 1;
+            } else {
+                var result = 0;
+            }
+            return result;
+        },
+       
+        texttStatus: function(){
+            var result = "(" + get(this, "get_status") + ")";
+            set(this, "text_status", result);
+        },
+
+        texttPercent: function(){
+            var unit_or_percent = get(this, "unit_or_percent");
+            if(get(this, "show_value")){
+                if(unit_or_percent){
+                    var result = "" + get(this, "value") + get(this, "unit");
+                } else {
+                    var result = "" + get(this, "percent") + "%";
+                }
+            } else {
+                var result = "";
+            }
+            set(this, "text_percent", result);
+        }
+
+    });
+
+    Ember.Application.initializer({
+        name:"component-progressbar",
+        initialize: function(container, application) {
+            application.register('component:component-progressbar', component);
+        }
+    });
+
+    return component;
 });
+
