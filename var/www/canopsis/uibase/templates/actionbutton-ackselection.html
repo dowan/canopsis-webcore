@@ -1,7 +1,7 @@
 {{#unless controller.findOptions.useLogCollection}}
     {{#if controller.rights.actionbutton_ack.checksum}}
         {{#component-tooltip content="Ack"}}
-            <button class="btn btn-default btn-sm" {{action 'ackAndReport'}} >
+            <button class="btn btn-default btn-sm" {{action 'sendEvent' 'ack'}} >
                 <span class="glyphicon glyphicon-ok"></span>
                 {{tr "Ack"}}
             </button>
