@@ -128,7 +128,6 @@ define([
             return false;
         }.property('isDirty', 'dirtyType', 'rollbackable'),
 
-
         actions: {
             /**
              * Show debug info in console and put widget var in window.$E
@@ -354,8 +353,7 @@ define([
                     console.error(e.stack, e.message);
                 }
                 console.groupEnd();
-            },
-
+            }
         },
 
         config: Ember.computed.alias('content'),
@@ -387,7 +385,6 @@ define([
             console.log('extractItems', queryResult);
 
             this._super(queryResult);
-
             set(this, 'widgetData', queryResult);
         },
 

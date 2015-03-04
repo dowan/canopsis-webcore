@@ -88,9 +88,11 @@ define([
                     modelfilter = get(this, 'modelfilter');
 
                 var query = {
-                    skip: get(this, 'paginationMixinFindOptions.start'),
                     limit: get(this, 'paginationMixinFindOptions.limit')
                 };
+
+                var queryStartOffsetKeyword = get(this, "queryStartOffsetKeyword") || 'skip';
+                query[queryStartOffsetKeyword] = get(this, 'paginationMixinFindOptions.start');
 
                 if (model !== undefined) {
                     if(modelfilter !== null) {
