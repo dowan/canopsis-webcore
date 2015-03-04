@@ -24,7 +24,8 @@ define([
     'app/lib/factories/mixin'
 ], function(Ember, Application, hashUtils, Mixin) {
 
-    var isNone = Ember.isNone;
+    var isNone = Ember.isNone,
+        get = Ember.get;
 
     function keyForRelationship(key) {
         key = key.decamelize();
@@ -86,8 +87,8 @@ define([
 
                 console.log("sideloadKey", sideloadKey);
 
-                // Missing an ID, give it one
                 if (isNone(id)) {
+                    console.log('generateId', item.xtype, item.id);
                     id = hashUtils.generateId('item');
                     item[primaryKey] = id;
                 }
@@ -267,8 +268,13 @@ define([
                 this.getTopmostNotEmbeddedRecordFor(record).save(options);
                 return;
             }
-            console.log(' - serialized record', record);
-            return this._super(record, options);
+
+            var res = this._super(record, options);
+            res['id'] = record.get('id');
+
+            console.log(' - serialized record', record, res);
+
+            return res;
         },
 
         serializeBelongsTo: function(record, json, relationship) {

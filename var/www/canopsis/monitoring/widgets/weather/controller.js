@@ -22,8 +22,10 @@ define([
     'jquery',
     'app/lib/factories/widget'
 ], function(Ember, $, WidgetFactory) {
+
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     var widget = WidgetFactory('weather', {
         needs: ['application'],
@@ -211,8 +213,9 @@ define([
             console.log('The data lenght => ', data.length);
             if(data.length === 1) {
                 set(this, 'singleEvent', true);
+
                 var output = get(data[0],'output');
-                if (output.length > 150) {
+                if (!isNone(output) && output.length > 150) {
                     output = output.substr(0,150) + ' ...';
                 }
                 set(this, 'singleEventOutput', output);
