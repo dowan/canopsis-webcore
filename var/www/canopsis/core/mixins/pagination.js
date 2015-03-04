@@ -42,7 +42,6 @@ define([
         },
 
         init: function() {
-            this.itemsPerPagePropositionSelectedChangedFirstExecution = true;
             this._super();
         },
 
@@ -121,18 +120,14 @@ define([
         itemsPerPagePropositionSelectedChanged: function() {
             var userSelection = get(this, 'itemsPerPagePropositionSelected');
 
-            if(this.itemsPerPagePropositionSelectedChangedFirstExecution) {
-                set(this, 'itemsPerPagePropositionSelectedChangedFirstExecution', false);
-            } else {
-                Ember.setProperties(this, {
-                    'model.itemsPerPage': userSelection,
-                    'currentPage': 1
-                });
+            Ember.setProperties(this, {
+                'model.itemsPerPage': userSelection,
+                'currentPage': 1
+            });
 
-                this.saveUserConfiguration();
+            this.saveUserConfiguration();
 
-                this.refreshContent();
-            }
+            this.refreshContent();
 
         }.observes('itemsPerPagePropositionSelected'),
 

@@ -229,8 +229,6 @@ define([
                     }
 
                     set(appController, 'isLoading', get(appController, 'isLoading') - 1);
-
-                    me.trigger('refresh');
                 }).catch(function (promiseProxy) {
                     console.warn('Catching error', promiseProxy);
                     //TODO add an error in displayedErrors array, to warn the user that the data cannot be displayed
@@ -238,6 +236,10 @@ define([
                     set(me, 'dataError', promiseProxy);
                 });
             },
+
+            widgetDataChanged: function() {
+                this.trigger('refresh');
+            }.observes('widgetData'),
 
             attributesKeysDict: function() {
                 var res = {};
