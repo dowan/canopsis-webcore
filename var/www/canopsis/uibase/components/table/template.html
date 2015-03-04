@@ -39,15 +39,13 @@
         </tbody>
     </table>
 
-    {{!#group}}
-        <button type="button" class="btn btn-small btn-default" {{action "prevPage"}}>
-            <span class="glyphicon glyphicon-chevron-left"></span>
-        </button>
-        Page {{input type="number" value=currentPage}} / {{totalPages}}
-        <button type="button" class="btn btn-small btn-default" {{action "nextPage"}}>
-            <span class="glyphicon glyphicon-chevron-right"></span>
-        </button>
-    {{!/group}}
+    <button type="button" class="btn btn-small btn-default" {{action "prevPage"}}>
+        <span class="glyphicon glyphicon-chevron-left"></span>
+    </button>
+    Page {{input type="number" value=currentPage}} / {{totalPages}}
+    <button type="button" class="btn btn-small btn-default" {{action "nextPage"}}>
+        <span class="glyphicon glyphicon-chevron-right"></span>
+    </button>
 {{else}}
     <div class="well"><i>{{tr "No values"}}</i></div>
 {{/if}}
