@@ -72,7 +72,9 @@ define([
                 this.registerHooks();
             }
 
-            $("#formwrapper").modal('show');
+            //show and display centered !
+            $("#formwrapper").modal('show').css('top',0).css('left',0);
+
             if(get(this, 'controller.form')) {
                 get(this, 'controller.form').send('show');
             }
