@@ -28,9 +28,14 @@ define(['ember'], function(Ember) {
     Ember.Handlebars.helper('criticity', function(value, keep_state) {
         //displays keep status information if any onto the state field
         //keep state is generated when a user overrides the criticity of and acknowleged event
-        console.log('da crecord keep_state', keep_state);
+        console.log('keep_state', keep_state);
 
         var display_keep_state = '';
+
+        //default value: unknown
+        if (value === undefined) {
+            value = 4;
+        }
 
         var color = '';
         switch(value) {
