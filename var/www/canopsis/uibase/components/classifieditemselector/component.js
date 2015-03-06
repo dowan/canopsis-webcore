@@ -25,7 +25,8 @@ define([
 ], function(Ember) {
 
     var set = Ember.set,
-        get = Ember.get;
+        get = Ember.get,
+        isNone = Ember.isNone;
 
 
     var component = Ember.Component.extend({
@@ -144,14 +145,27 @@ define([
             return '#' + get(this, 'classAllPanelId');
         }.property(),
 
-        allClasses: function(){
+        allClasses: function() {
             var searchFilter = get(this, 'searchFilter');
             var res;
 
-            if(searchFilter === '') {
-                res = get(this, 'content.all');
-            } else {
-                res = get(this, 'content.all').filter(function(item, index, enumerable){
+            var component = this;
+            res = get(this, 'content.all').filter(function(item, index, enumerable){
+                console.log('filter', item);
+                var systemClass = component.get('content.byClass.system');
+
+                if(!isNone(systemClass)) {
+                    if(systemClass.filterBy('name', item.get('name')).length > 0) {
+                        console.log('filtered!', item);
+                        return false;
+                    }
+                }
+
+                return true;
+            });
+
+            if(searchFilter !== '') {
+                res = res.filter(function(item, index, enumerable){
                     var doesItStartsWithSearchFilter = item.name.slice(0, searchFilter.length) == searchFilter;
                     return doesItStartsWithSearchFilter;
                 });
