@@ -260,7 +260,10 @@ define([
                 },
 
                 filter: function(record) {
-                    return (get(record, 'state') && !get(record, 'ack.isAck') && !get(record, 'ack.isCancel'));
+                    var BAGOT = 3,
+                        OFF = 0;
+                    return (get(record, 'state') && !get(record, 'ack.isAck') && !get(record, 'ack.isCancel')
+                        || (get(record, 'state') === OFF && get(record, 'status') === BAGOT));
                 },
 
                 handle: function(crecords) {
