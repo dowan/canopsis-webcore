@@ -56,8 +56,6 @@ define([
                 get(this,'partials.actionToolbarButtons').push('actionbutton-create');
             }
 
-
-
             set(this, 'itemsPerPagePropositionSelected', get(this, 'itemsPerPage'));
         },
 
