@@ -18,16 +18,17 @@
 */
 
 var helpers = [
-    { name:'formview', url:'app/lib/helpers/formview' },
-    { name:'getfield', url:'app/lib/helpers/getfield' },
-    { name:'i18n', url:'app/lib/helpers/i18n' },
-    { name:'ifcond', url:'app/lib/helpers/ifcond' },
-    { name:'log', url:'app/lib/helpers/log' },
-    { name:'partialslot', url:'app/lib/helpers/partialslot' },
-    { name:'renderwidget', url:'app/lib/helpers/renderwidget' },
-    { name:'validationtextarea', url:'app/lib/helpers/validationtextarea' },
-    { name:'validationtextfield', url:'app/lib/helpers/validationtextfield' },
-    { name:'widgetslot', url:'app/lib/helpers/widgetslot' },
+    { name:'eventtype', url:'canopsis/uibase/helpers/eventtype' },
+    { name:'sorticon', url:'canopsis/uibase/helpers/sorticon' },
+    { name:'percent', url:'canopsis/uibase/helpers/percent' },
+    { name:'timestamp', url:'canopsis/uibase/helpers/timestamp' },
+    { name:'timeSince', url:'canopsis/uibase/helpers/timeSince' },
+    { name:'logo', url:'canopsis/uibase/helpers/logo' },
+    { name:'glyphicon', url:'canopsis/uibase/helpers/glyphicon' },
+    { name:'color', url:'canopsis/uibase/helpers/color' },
+    { name:'rights', url:'canopsis/uibase/helpers/rights' },
+    { name:'json2html', url:'canopsis/uibase/helpers/json2html' },
+    { name:'interval2html', url:'canopsis/uibase/helpers/interval2html' }
 ];
 
 loader.loadWithTemplates(helpers);

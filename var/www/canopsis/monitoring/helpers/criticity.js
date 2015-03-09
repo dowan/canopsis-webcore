@@ -32,15 +32,15 @@ define(['ember'], function(Ember) {
 
         var display_keep_state = '';
 
-        var color = '';
-        switch(value) {
-            case 0: color = 'bg-green'; break;
-            case 1: color = 'bg-yellow'; break;
-            case 2: color = 'bg-orange'; break;
-            case 3: color = 'bg-red'; break;
-        }
-
         if (keep_state) {
+            var color = '';
+            switch(value) {
+                case 0: color = 'bg-green'; break;
+                case 1: color = 'bg-yellow'; break;
+                case 2: color = 'bg-orange'; break;
+                case 3: color = 'bg-red'; break;
+            }
+
             display_keep_state = '<span class="badge '+ color +'"><i class="fa fa-male"></i></span>';
         }
 
