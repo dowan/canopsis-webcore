@@ -19,32 +19,9 @@
 
 var mixins = [
     { name: 'validation', url: 'app/mixins/validation', classes: ["action"]},
-    { name: 'customfilterlist', url: 'app/mixins/customfilterlist', classes: ["list"]},
-    { name: 'sortablearray', url: 'app/mixins/sortablearray', classes: ["list"]},
-    { name: 'arraysearch', url: 'app/mixins/arraysearch', classes: ["list"]},
-    { name: 'infobutton', url: 'app/mixins/infobutton', classes: ["list"]},
     { name: 'mixinArray', url: 'app/mixins/mixinArray', classes: ["test"]},
-    { name: 'pagination', url: 'app/mixins/pagination', classes: ["widget"]},
     { name: 'tagsoptionfilter', url: 'app/mixins/tagsoptionfilter', classes: ["widget"]},
-    { name: 'arraysearch', url: 'app/mixins/arraysearch', classes: ['widget']},
-    { name: 'history', url: 'app/mixins/history', classes: ['widget']},
-    { name: 'sendevent', url: 'app/mixins/sendevent', classes: ['widget']},
-    { name: 'crud', url: 'app/mixins/crud', classes: ['widget']},
     { name: 'criticitylevels', url: 'app/mixins/criticitylevels', classes: ['widget']},
-    { name: 'showviewbutton', url: 'app/mixins/showviewbutton', classes: ['widget', 'userviews']},
-    { name: 'eventnavigation', url: 'app/mixins/eventnavigation', classes: ['widget', 'events']},
-    { name: 'eventhistory', url: 'app/mixins/eventhistory', classes: ['widget', 'events']},
-    { name: 'responsivelist', url: 'app/mixins/responsivelist', classes: ['widget', 'events']},
-    { name: 'periodicrefresh', url: 'app/mixins/periodicrefresh', classes: ['widget', 'events']},
-    { name: 'verticallayout', url: 'app/mixins/verticallayout', classes: ['widget', 'events']},
-    { name: 'fixedlayout', url: 'app/mixins/fixedlayout', classes: ['widget', 'events']},
-    { name: 'horizontallayout', url: 'app/mixins/horizontallayout', classes: ['widget', 'events']},
-    { name: 'lightlayout', url: 'app/mixins/lightlayout', classes: ['widget', 'events']},
-    { name: 'tablayout', url: 'app/mixins/tablayout', classes: ['widget', 'events']},
-    { name: 'recordinfopopup', url: 'app/mixins/recordinfopopup', classes: ['widget', 'events']},
-    { name: 'minimizebutton', url: 'app/mixins/minimizebutton', classes: ['widget']},
-    { name: 'draggablecolumns', url: 'app/mixins/draggablecolumns', classes: ['widget']},
-    { name: 'backgroundimage', url: 'app/mixins/backgroundimage', classes: ['widget']}
 ];
 
 loader.loadWithTemplates(mixins);

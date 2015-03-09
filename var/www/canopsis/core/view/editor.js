@@ -27,8 +27,6 @@ define([
 
         init: function() {
             var id = utils.hash.generateId(this.templateName);
-            console.log("editor view", this.templateName, this);
-            console.log("new id");
             this.elementId = id;
         }
     });

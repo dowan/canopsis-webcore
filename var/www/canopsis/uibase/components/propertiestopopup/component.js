@@ -20,7 +20,7 @@
 
 define([
     'ember',
-    'app/lib/helpers/json2html'
+    'canopsis/uibase/helpers/json2html'
 ], function(Ember, json2html) {
 
     var get = Ember.get,

@@ -20,7 +20,7 @@
 define([
     'jquery',
     'ember',
-    'app/mixins/pagination',
+    'canopsis/uibase/mixins/pagination',
     'app/adapters/crecord'
 ], function($, Ember, PaginationMixin) {
 

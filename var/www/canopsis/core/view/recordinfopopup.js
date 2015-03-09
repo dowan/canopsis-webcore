@@ -27,6 +27,7 @@ define([
         set = Ember.set;
 
     var view = Ember.View.extend({
+        //TODO remove hooks!
         didInsertElement: function () {
             console.log('Recordinfopopup dom element');
             //$('#recordinfopopup').hide();

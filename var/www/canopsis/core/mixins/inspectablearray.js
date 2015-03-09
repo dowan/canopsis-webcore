@@ -49,7 +49,6 @@ define([
             return attributes;
         }.property("inspectedProperty", "inspectedDataArray"),
 
-
         inspectedDataArray: function() { console.error("This must be defined on the base class"); }.property()
     });
 

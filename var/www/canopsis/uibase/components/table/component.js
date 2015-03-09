@@ -20,7 +20,7 @@
 define([
     'ember',
     'ember-data',
-    'app/mixins/pagination'
+    'canopsis/uibase/mixins/pagination'
 ], function(Ember, DS, PaginationMixin) {
 
     var get = Ember.get,
@@ -94,7 +94,8 @@ define([
                 var queryStartOffsetKeyword = get(this, "queryStartOffsetKeyword") || 'skip';
                 query[queryStartOffsetKeyword] = get(this, 'paginationMixinFindOptions.start');
 
-                if (model !== undefined) {
+                if (model
+                 !== undefined) {
                     if(modelfilter !== null) {
                         query.filter = modelfilter;
                     }

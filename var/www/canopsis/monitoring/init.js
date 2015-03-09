@@ -23,5 +23,11 @@ loader.loadWithTemplates([
     { name:'criticity', url:'canopsis/monitoring/helpers/criticity' },
     { name:'stateview', url:'canopsis/monitoring/helpers/stateview' },
     { name:'statusview', url:'canopsis/monitoring/helpers/statusview' },
-    { name:'recordcanbeack', url:'canopsis/monitoring/helpers/recordcanbeack' }
+    { name:'recordcanbeack', url:'canopsis/monitoring/helpers/recordcanbeack' },
+    { name: 'sendevent', url: 'canopsis/monitoring/mixins/sendevent', classes: ['widget']},
+    { name: 'recordinfopopup', url: 'canopsis/monitoring/mixins/recordinfopopup', classes: ['widget', 'events']},
+    { name: 'history', url: 'canopsis/monitoring/mixins/history', classes: ['widget']},
+    { name: 'eventnavigation', url: 'canopsis/monitoring/mixins/eventnavigation', classes: ['widget', 'events']},
+    { name: 'eventhistory', url: 'canopsis/monitoring/mixins/eventhistory', classes: ['widget', 'events']},
+    { name: 'infobutton', url: 'canopsis/monitoring/mixins/infobutton', classes: ["list"]}
 ]);

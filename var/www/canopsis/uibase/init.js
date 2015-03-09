@@ -23,5 +23,6 @@ define([
     'canopsis/uibase/lib/loaders/components',
     'canopsis/uibase/lib/loaders/renderers',
     'canopsis/uibase/lib/loaders/templates',
-    'canopsis/uibase/lib/loaders/helpers'
+    'canopsis/uibase/lib/loaders/helpers',
+    'canopsis/uibase/lib/loaders/mixins'
 ], function () {});

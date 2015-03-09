@@ -20,12 +20,8 @@
 define(['ember', 'utils'], function(Ember,  utils) {
 
     var isNone = Ember.isNone,
-        __ = Ember.String.loc;
-
-
-    Ember.Handlebars.helper('eventtype', function(eventType) {
-
-        var types = {
+        __ = Ember.String.loc,
+        types = {
             check : {color: 'green', icon: 'certificate'},
             consolidation : {color: 'green', icon: 'cogs'},
             log : {color: 'black', icon: 'clock-o'},
@@ -46,7 +42,7 @@ define(['ember', 'utils'], function(Ember,  utils) {
             assocticket : {color: 'yellow', icon: 'thumb-tack'}
         };
 
-
+    Ember.Handlebars.helper('eventtype', function(eventType) {
         if (isNone(types[eventType])) {
             return eventType;
         }

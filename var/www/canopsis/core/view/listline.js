@@ -19,9 +19,8 @@
 
 define([
     'ember',
-    'jsonselect',
-    'app/controller/listline'
-], function(Ember, JSONSelect, ListLineController) {
+    'jsonselect'
+], function(Ember, JSONSelect) {
 
     var set = Ember.set,
         get = Ember.get;
