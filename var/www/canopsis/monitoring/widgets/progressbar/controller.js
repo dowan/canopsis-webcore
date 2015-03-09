@@ -75,6 +75,12 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
             if(isNaN(min)){
                 min = 0;
             }
+            if(value == max){
+                if(value == 0){
+                    return 0;
+                }
+                return 100;
+            }
             var new_val = value - min;
             if(isNaN(max)){
                 max = value;
@@ -170,19 +176,23 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                             var data = pargs[i];
                             console.log('series pargs', pargs);
                             var displayValue = 0;
+                            var min = null, max = null;
                             if (data.length) {
                                 //choosing the value for the last point when any
                                 displayValue = data[data.length - 1][1];
+                                var boundaries = controller.getSerieBoundaries(data);
+                                min = boundaries[0];
+                                max = boundaries[1];
                             }
                             var serieName = get(series[i], 'crecord_name');
-                            //set(controller, 'templateContext.serie.' + serieName, displayValue);
+                            var percent = controller.getPercent(min, max, displayValue);
                             var bar = {
                                 "id" : serieName,
                                 "label" : serieName,
-                                "max_value" : 100,
-                                "min_value" : 0,
+                                "max_value" : max,
+                                "min_value" : min,
                                 "value" : displayValue,
-                                "percent" : displayValue,
+                                "percent" : percent,
                                 "unit" : "",
                                 "style_bar" : "",
                                 "style_label" : "",
@@ -321,8 +331,22 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                 //bars.replace(index, 0, bar);
                 me.trigger('refresh');
             });
-        }
+        },
         
+        getSerieBoundaries: function(data) {
+            var min = null, max = null;
+            for(var i = 0, l = data.length; i < l; i++) {
+                var point = data[i];
+                if (min === null || point[1] < min) {
+                    min = point[1];
+                }
+                if (max === null || point[1] > max) {
+                    max = point[1];
+                }
+            }
+            return [min, max];
+        }
+
     }, widgetOptions);
 
     return widget;
