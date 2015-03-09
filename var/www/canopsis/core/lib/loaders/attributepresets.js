@@ -40,7 +40,6 @@ var presets = [
         'init',
         'wrappers/ember-data.js',
         'routes/application.js',
-        'routes/application.js',
         'loader'
     ]}, { name: 'All', classes: ['selected_tags'], value: []}
 

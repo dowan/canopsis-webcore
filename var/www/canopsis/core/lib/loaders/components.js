@@ -25,7 +25,6 @@ var components = [
     { name: 'components/component-renderer', url: 'app/components/renderer/component', template: 'app/components/renderer/template.html' },
     { name: 'components/component-wrapper', url: 'app/components/wrapper/component', template: 'app/components/wrapper/template.html' },
     { name: 'components/component-attributepreset', url: 'app/components/attributepreset/component', template: 'app/components/attributepreset/template.html' },
-    { name: 'components/component-texttodict', url: 'app/components/texttodict/component', template: 'app/components/texttodict/template.html' },
     { name: 'components/component-widgettreeitem', url: 'app/components/widgettreeitem/component', template: 'app/components/widgettreeitem/template.html' }
 ];
 

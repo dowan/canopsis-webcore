@@ -21,7 +21,6 @@ var helpers = [
     { name:'formview', url:'app/lib/helpers/formview' },
     { name:'getfield', url:'app/lib/helpers/getfield' },
     { name:'i18n', url:'app/lib/helpers/i18n' },
-    { name:'ifcond', url:'app/lib/helpers/ifcond' },
     { name:'log', url:'app/lib/helpers/log' },
     { name:'partialslot', url:'app/lib/helpers/partialslot' },
     { name:'renderwidget', url:'app/lib/helpers/renderwidget' },

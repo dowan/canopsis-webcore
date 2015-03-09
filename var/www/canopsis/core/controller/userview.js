@@ -19,19 +19,19 @@
 
 define([
     'ember',
-    'app/controller/crecord',
     'app/lib/utils/forms',
+    'app/mixins/inspectableitem',
     'app/routes/userview',
     'app/view/userview',
     'app/serializers/userview'
-], function(Ember, CrecordController, formUtils) {
+], function(Ember, formUtils, InspectableItem) {
 
     var get = Ember.get,
         set = Ember.set,
         __ = Ember.String.loc;
 
 
-    var controller = CrecordController.extend(Ember.Evented, {
+    var controller = Ember.ObjectController.extend(InspectableItem, Ember.Evented, {
         needs: ['application'],
 
         actions: {

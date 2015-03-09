@@ -30,10 +30,6 @@ define([
     var controller = Ember.ObjectController.extend({
         needs: ['application'],
 
-        init: function() {
-            this._super();
-        },
-
         fetch: function(metric_id, tstart, tend) {
             var app = get(this, 'controllers.application');
             set(app, 'isLoading', get(app, 'isLoading') + 1);

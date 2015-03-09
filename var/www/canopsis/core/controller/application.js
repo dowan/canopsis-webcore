@@ -29,7 +29,6 @@ define([
     'app/lib/mixinsregistry',
     'app/lib/formsregistry',
     'app/lib/inflections',
-    'app/mixins/usermenu',
     'app/mixins/schemamanager',
     'app/mixins/consolemanager',
     'app/mixins/promisemanager',
@@ -62,7 +61,6 @@ define([
     mixinsRegistry,
     formsRegistry,
     inflectionsRegistry,
-    UsermenuMixin,
     SchemamanagerMixin,
     ConsolemanagerMixin,
     PromisemanagerMixin,
@@ -93,7 +91,7 @@ define([
     Application.IndexController = Ember.Controller.extend(Ember.Evented, {});
 
     var controller = PartialslotAbleController.extend(
-        SchemamanagerMixin, PromisemanagerMixin, ConsolemanagerMixin, NotificationsMixin, UsermenuMixin, {
+        SchemamanagerMixin, PromisemanagerMixin, ConsolemanagerMixin, NotificationsMixin, {
 
         needs: ['login', 'recordinfopopup'],
 

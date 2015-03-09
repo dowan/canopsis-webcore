@@ -23,10 +23,9 @@ define([
     'app/lib/schemasregistry',
     'app/mixins/inspectableitem',
     'app/mixins/validation',
-    'app/mixins/recordpreset',
     'app/lib/utils/slug',
     'app/lib/loaders/schemas'
-], function(Ember, FormFactory, schemasRegistry, InspectableitemMixin, ValidationMixin, RecordpresetMixin, slugUtils) {
+], function(Ember, FormFactory, schemasRegistry, InspectableitemMixin, ValidationMixin, slugUtils) {
     var set = Ember.set,
         get = Ember.get,
         isNone = Ember.isNone;
@@ -34,8 +33,7 @@ define([
     var formOptions = {
         mixins: [
             InspectableitemMixin,
-            ValidationMixin,
-            RecordpresetMixin
+            ValidationMixin
         ]
     };
 
