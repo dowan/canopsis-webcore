@@ -153,7 +153,7 @@ define([
                             html += values.humanize(yval, item.series.unit || '');
                         }
                         else {
-                            html += yval + ' ' + item.unit;
+                            html += yval + ' ' + item.series.unit;
                         }
 
                         return html;
