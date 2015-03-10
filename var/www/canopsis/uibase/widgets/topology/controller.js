@@ -205,7 +205,7 @@ define([
             } else { // or remove useless d3 elts from data_by_id
                 var graph = this.graph;
                 var d3_graph = this.d3_graph;
-                var graph_id = get(this, 'controller').graph_id;
+                var graph_id = get(this, 'controller.model').graph_id;
                 var elts_to_delete = [];
                 Object.keys(d3_graph.data_by_id).forEach(
                     function(elt_id) {
