@@ -80,11 +80,21 @@ def exports(ws):
 
         ticket = request.params.get('ticket', default=None)
 
+        footer = ws.db.find_one(
+            {'_id': 'cservice.frontend'},
+            {'login_footer': 1}
+        )
+        if footer is not None and 'login_footer' in footer:
+            footer = footer['login_footer']
+        else:
+            footer = None
+
         if not ticket and not s.get('auth_on', False):
             # Build cservice dict for login page templating
             cservices = {
                 'webserver': {provider: 1 for provider in ws.providers},
-                'logmessage': logmessage
+                'logmessage': logmessage,
+                'login_footer': footer
             }
 
             records = ws.db.find(
