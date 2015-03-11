@@ -131,6 +131,14 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
             set(this, "gg_width", gg_width);
             var gg_thickness = get(this, 'config.gg_thickness');
             set(this, "gg_thickness", gg_thickness);
+            var gg_fill = get(this, 'config.gg_fill');
+            set(this, "gg_fill", gg_fill);
+            var gg_border = get(this, 'config.gg_border');
+            set(this, "gg_border", gg_border);
+            var value_color = get(this, 'config.value_color');
+            set(this, "value_color", value_color);
+            var value_in_column = get(this, 'config.value_in_column');
+            set(this, "value_in_column", value_in_column);
         },
 
         fetchSeries: function(from, to, replace) {
@@ -304,6 +312,9 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                     me.getMaxValue(from, to, metricId); 
                 } else {
                     var unit = result.data[0].meta.unit;
+                    if(!unit){
+                        unit = "";
+                    }
                     var min = result.data[0].meta.value.min;
                     if(isNaN(min)){
                         min = 0;
