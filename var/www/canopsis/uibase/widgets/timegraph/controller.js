@@ -29,7 +29,8 @@ define([
     'app/controller/perfdata'
 ], function($, Ember, DS, WidgetFactory, values, dates) {
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     var widgetOptions = {};
 
@@ -146,8 +147,7 @@ define([
                     content: function(label, xval, yval, item) {
                         var date = dates.timestamp2String(xval / 1000, 'f', true);
 
-                        var html = '<p>' + date + '</p>';
-                        html += '<p><b>' + label + ' :</b> ';
+                        var html = ['<p>', date, '</p><p><b>', label, ' :</b> '].join('');
 
                         if (get(ctrl, 'human_readable') === true) {
                             html += values.humanize(yval, item.series.unit || '');
@@ -321,7 +321,7 @@ define([
             var now = new Date().getTime();
             var to = now - get(this, 'time_window_offset');
 
-            if(from === null) {
+            if(isNone(from)) {
                 replace = true;
                 from = to - get(this, 'timenav_window') - get(this, 'time_window_offset');
             }
@@ -353,18 +353,16 @@ define([
 
                 set(this, 'chartOptions', opts);
 
-                if(get(this, 'timenav')) {
-                    opts = {};
-                    $.extend(opts, get(this, 'timenavOptions'));
-                    $.extend(opts, {
-                        xaxis: {
-                            min: to - get(this, 'timenav_window') - get(this, 'time_window_offset'),
-                            max: to
-                        }
-                    });
+                opts = {};
+                $.extend(opts, get(this, 'timenavOptions'));
+                $.extend(opts, {
+                    xaxis: {
+                        min: to - get(this, 'timenav_window') - get(this, 'time_window_offset'),
+                        max: to
+                    }
+                });
 
-                    set(this, 'timenavOptions', opts);
-                }
+                set(this, 'timenavOptions', opts);
             }
         },
 
@@ -447,7 +445,7 @@ define([
                     style: stylizedmetrics[i],
                     serie: serieconf,
                     curve: undefined
-                }
+                };
 
                 series.push(serieconf);
                 curveIds.push(get(stylizedmetrics[i], 'curve'));
@@ -622,8 +620,6 @@ define([
                 chartSerie.data = [];
             }
 
-            var me = this;
-
             console.log('call controller fetch', request);
 
             ctrl.fetch(request, from, to).then(function(data) {
@@ -658,9 +654,11 @@ define([
             var chartSeries = get(this, 'chartSeries');
             var oldSeries = get(this, 'dataSeries');
 
-            for(var i = 0, l = oldSeries.length; i < l; i++) {
+            var i, l, serieId;
+
+            for(i = 0, l = oldSeries.length; i < l; i++) {
                 var oldSerie = oldSeries[i];
-                var serieId = get(oldSerie, 'serie');
+                serieId = get(oldSerie, 'serie');
                 var chartSerie = get(chartSeries, serieId);
 
                 if (chartSerie !== undefined) {
@@ -682,8 +680,8 @@ define([
             var series = Ember.A();
             var serieIds = Object.keys(chartSeries);
 
-            for(var i = 0, l = serieIds.length; i < l; i++) {
-                var serieId = serieIds[i];
+            for(i = 0, l = serieIds.length; i < l; i++) {
+                serieId = serieIds[i];
 
                 series.pushObject(chartSeries[serieId]);
             }
