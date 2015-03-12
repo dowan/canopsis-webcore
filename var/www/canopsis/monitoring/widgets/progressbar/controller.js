@@ -1,5 +1,5 @@
 /*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+# Copyright (c) 2014 "Capensis" [http://www.capensis.com]
 #
 # This file is part of Canopsis.
 #
@@ -23,7 +23,7 @@ define([
     'app/controller/perfdata',
     'app/controller/serie',
     'canopsis/uibase/components/progressbar/component'
-], 
+],
 function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
 
     var get = Ember.get,
@@ -39,7 +39,7 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
         findItems: function() {
 
             set(this, "bars", []);
-        
+
             var replace = false;
             var from = get(this, 'lastRefresh');
             var now = new Date().getTime();
@@ -75,6 +75,12 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
             if(isNaN(min)){
                 min = 0;
             }
+            if(value == max){
+                if(value == 0){
+                    return 0;
+                }
+                return 100;
+            }
             var new_val = value - min;
             if(isNaN(max)){
                 max = value;
@@ -98,7 +104,7 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
             var label_width = get(this, 'config.label_width');
             set(this, "label_width", label_width);
             var label_unit = get(this, 'config.label_unit');
-            set(this, "label_unit", label_unit); 
+            set(this, "label_unit", label_unit);
 
             // Colors - always set
             var standard_color = get(this, 'mixinOptions.criticitylevels.standard_color');
@@ -107,7 +113,7 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
             set(this, "warn_color", warn_color);
             var critic_color = get(this, 'mixinOptions.criticitylevels.critic_color');
             set(this, "critic_color", critic_color);
-            
+
             // Values - may not be set
             var display_as = get(this, 'config.display_as');
             set(this, "display_as", display_as);
@@ -117,7 +123,7 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
             set(this, "crit_value", crit_value);
             var unit_or_percent = get(this, 'mixinOptions.criticitylevels.unit_or_percent');
             set(this, "unit_or_percent", unit_or_percent);
-    
+
             // Specifics
             var pb_thickness = get(this, 'config.pb_thickness');
             set(this, "pb_thickness", pb_thickness);
@@ -125,6 +131,14 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
             set(this, "gg_width", gg_width);
             var gg_thickness = get(this, 'config.gg_thickness');
             set(this, "gg_thickness", gg_thickness);
+            var gg_fill = get(this, 'config.gg_fill');
+            set(this, "gg_fill", gg_fill);
+            var gg_border = get(this, 'config.gg_border');
+            set(this, "gg_border", gg_border);
+            var value_color = get(this, 'config.value_color');
+            set(this, "value_color", value_color);
+            var value_in_column = get(this, 'config.value_in_column');
+            set(this, "value_in_column", value_in_column);
         },
 
         fetchSeries: function(from, to, replace) {
@@ -170,19 +184,23 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                             var data = pargs[i];
                             console.log('series pargs', pargs);
                             var displayValue = 0;
+                            var min = null, max = null;
                             if (data.length) {
                                 //choosing the value for the last point when any
                                 displayValue = data[data.length - 1][1];
+                                var boundaries = controller.getSerieBoundaries(data);
+                                min = boundaries[0];
+                                max = boundaries[1];
                             }
                             var serieName = get(series[i], 'crecord_name');
-                            //set(controller, 'templateContext.serie.' + serieName, displayValue);
+                            var percent = controller.getPercent(min, max, displayValue);
                             var bar = {
                                 "id" : serieName,
                                 "label" : serieName,
-                                "max_value" : 100,
-                                "min_value" : 0,
+                                "max_value" : max,
+                                "min_value" : min,
                                 "value" : displayValue,
-                                "percent" : displayValue,
+                                "percent" : percent,
                                 "unit" : "",
                                 "style_bar" : "",
                                 "style_label" : "",
@@ -214,7 +232,7 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
 
             for(var m = 0; m < mlength; m++) {
 
-                var metricId = metrics[m];            
+                var metricId = metrics[m];
 
                 bar = {
                     "id" : metricId,
@@ -291,9 +309,12 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                     var min = undefined;
                     var max = undefined;
                     me.getMinValue(from, to, metricId);
-                    me.getMaxValue(from, to, metricId); 
+                    me.getMaxValue(from, to, metricId);
                 } else {
                     var unit = result.data[0].meta.unit;
+                    if(!unit){
+                        unit = "";
+                    }
                     var min = result.data[0].meta.value.min;
                     if(isNaN(min)){
                         min = 0;
@@ -321,8 +342,22 @@ function($, WidgetFactory, Perfdata, Serie, ProgressbarComponent) {
                 //bars.replace(index, 0, bar);
                 me.trigger('refresh');
             });
+        },
+
+        getSerieBoundaries: function(data) {
+            var min = null, max = null;
+            for(var i = 0, l = data.length; i < l; i++) {
+                var point = data[i];
+                if (min === null || point[1] < min) {
+                    min = point[1];
+                }
+                if (max === null || point[1] > max) {
+                    max = point[1];
+                }
+            }
+            return [min, max];
         }
-        
+
     }, widgetOptions);
 
     return widget;
