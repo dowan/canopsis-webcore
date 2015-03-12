@@ -2154,7 +2154,7 @@ define([
                                 task.params.condition.params.f = 'canopsis.topology.rule.condition.is_nok';
                                 task.params.condition.params.state = null;
                             } else {
-                                task.params.condition.params.state = in_state;
+                                task.params.condition.params.state = states.indexOf(in_state);
                             }
                             // set then_state
                             var then_state = record.get('then_state');
