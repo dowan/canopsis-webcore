@@ -11,21 +11,21 @@
                 </div>
             </div>
         {{else}}
-            <div 
-                {{bind-attr id=id}} 
-                {{bind-attr data-dimension=width}} 
+            <div
+                {{bind-attr id=id}}
+                {{bind-attr data-dimension=width}}
                 {{bind-attr data-text=text_percent}}
-                data-info="" 
-                {{bind-attr data-width=thickness}} 
-                data-fontsize="8" 
+                data-info=""
+                {{bind-attr data-width=thickness}}
+                data-fontsize="8"
                 {{bind-attr data-text=percent}}
                 {{bind-attr data-fgcolor=bg_color}}
-                data-bgcolor="#fff" 
-                data-fill="#fff" 
-                data-total="100" 
+                {{bind-attr data-bgcolor=gg_border}}
+                {{bind-attr data-fill=gg_fill}}
+                data-total="100"
                 {{bind-attr data-part=percent}}
-                data-icon="long-arrow-up" 
-                data-icon-size="28" 
+                data-icon="long-arrow-up"
+                data-icon-size="28"
                 data-icon-color="#fff"
                 {{bind-attr data-type=type}}
             >
@@ -33,4 +33,3 @@
         {{/if}}
     </div>
 </div>
-

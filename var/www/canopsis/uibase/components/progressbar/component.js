@@ -39,13 +39,13 @@ define([
                 } else {
                     set(this, "type", "full");
                 }
-                
+
                 if(isNone(get(this,"gg_thickness"))){
                     set(this, "thickness", 10);
                 } else {
                     set(this, "thickness", get(this,"pb_thickness") );
                 }
-                
+
                 if(isNone(get(this,"gg_width"))){
                     set(this, "width", 250);
                 } else {
@@ -56,6 +56,12 @@ define([
                     set(this, "height", parseInt(get(this, "width")) / 2);
                 } else {
                     set(this, "height", get(this, "width"));
+                }
+                if(isNone(get(this,"gg_fill"))){
+                    set(this, "gg_fill", "#ffffff");
+                }
+                if(isNone(get(this,"gg_border"))){
+                    set(this, "gg_border", "#cccccc");
                 }
             }
 
@@ -70,13 +76,14 @@ define([
             this.onValueChange();
             jQuery('#' + get(this,"id")).circliful();
         },
-       
+
         onValueChange: function(){
             this.gettStyleLabel();
-            this.gettColor();
+            //this.gettColor();
             this.gettStatus();
             this.texttStatus();
             this.texttPercent();
+            this.gettStyleSpan();
             if(get(this, "display_as")=="progressbar"){
                 this.gettStyleBar();
             } else {
@@ -98,7 +105,7 @@ define([
             }
             return "";
         }.property(),
-       
+
         gettStyleLabel: function(){
             if(get(this,"label_display")){
                 if(isNone(get(this, "label_width"))){
@@ -120,6 +127,19 @@ define([
             set(this, "style_label", result);
         },
 
+        gettStyleSpan: function(){
+            if(get(this, "value_in_column")){
+                result = "display: none;";
+            } else {
+                if(isNone(get(this, "value_color"))){
+                    result = "color: #000000;"
+                } else {
+                    result = "color: " + get(this, "value_color") + ";";
+                }
+            }
+            set(this, "style_span", result);
+        },
+
         gettStyleBar: function(){
             var id = get(this, "id_bar");
             var height = "height: " + get(this, "thickness") + "px;";
@@ -132,6 +152,8 @@ define([
             var id = get(this, "id");
             var result = "width: " + get(this, "width") + "px; height: " + get(this, "height") + "px;";
             set(this, "style_gauge", result);
+            var color = "background: " + this.gettColor() + ";";
+            jQuery('#' + get(this,"id")).attr("data-fgcolor", this.gettColor());
         },
 
         gettColor: function(){
@@ -170,7 +192,7 @@ define([
             }
             return result;
         },
-       
+
         texttStatus: function(){
             var result = "(" + get(this, "get_status") + ")";
             set(this, "text_status", result);
@@ -201,4 +223,3 @@ define([
 
     return component;
 });
-
