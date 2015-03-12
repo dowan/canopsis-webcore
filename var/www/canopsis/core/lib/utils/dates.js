@@ -44,7 +44,7 @@ define([
             var days = parseInt( totalSec / (3600 * 24) );
             var hours = parseInt( totalSec / 3600 ) % 24;
             var minutes = parseInt( totalSec / 60 ) % 60;
-            var seconds = totalSec % 60;
+            var seconds = parseInt(totalSec % 60);
 
             var displayHours = '';
             if (hours) {
