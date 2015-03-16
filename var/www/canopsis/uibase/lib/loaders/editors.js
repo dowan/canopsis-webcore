@@ -18,6 +18,7 @@
 */
 
 var editors = [
+    { name: 'editor-error', template: 'canopsis/uibase/editors/error.html' },
     { name: 'editor-actionfilter', template: 'canopsis/uibase/editors/actionfilter.html' },
     { name: 'editor-array', template: 'canopsis/uibase/editors/array.html' },
     { name: 'editor-arrayclassifiedcrecordselector', template: 'canopsis/uibase/editors/arrayclassifiedcrecordselector.html' },

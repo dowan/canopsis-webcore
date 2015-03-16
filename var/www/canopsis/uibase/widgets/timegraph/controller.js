@@ -353,16 +353,18 @@ define([
 
                 set(this, 'chartOptions', opts);
 
-                opts = {};
-                $.extend(opts, get(this, 'timenavOptions'));
-                $.extend(opts, {
-                    xaxis: {
-                        min: to - get(this, 'timenav_window') - get(this, 'time_window_offset'),
-                        max: to
-                    }
-                });
+                if(get(this, 'timenav')) {
+                    opts = {};
+                    $.extend(opts, get(this, 'timenavOptions'));
+                    $.extend(opts, {
+                        xaxis: {
+                            min: to - get(this, 'timenav_window') - get(this, 'time_window_offset'),
+                            max: to
+                        }
+                    });
 
-                set(this, 'timenavOptions', opts);
+                    set(this, 'timenavOptions', opts);
+                }
             }
         },
 
@@ -614,9 +616,20 @@ define([
                 (get(config, 'serie.metrics.length') > 1)
             );
 
+            var min, max;
+
+            if(get(this, 'timenav')) {
+                min = get(this, 'timenavOptions.xaxis.min');
+                max = get(this, 'timenavOptions.xaxis.max');
+            }
+            else {
+                min = get(this, 'chartOptions.xaxis.min');
+                max = get(this, 'chartOptions.xaxis.max');
+            }
+
             if(aggregation) {
-                from = get(this, 'timenavOptions.xaxis.min');
-                to = get(this, 'timenavOptions.xaxis.max');
+                from = min;
+                to = max;
                 chartSerie.data = [];
             }
 
