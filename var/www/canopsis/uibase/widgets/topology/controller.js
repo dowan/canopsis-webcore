@@ -153,7 +153,7 @@ define([
         */
         getGraphFromServer: function(success, failure) {
             var _url = this.getGraphUrl();
-            var graph_id = get(this, 'model;graph_id');
+            var graph_id = get(this, 'model.graph_id');
             var promise = new Ember.RSVP.Promise(function(resolve, reject) {
                 $.ajax(
                     {
