@@ -20,11 +20,14 @@
 define([
     'jquery',
     'ember',
+    'ember-data',
     'utils',
     'app/adapters/acl'
-], function($, Ember, utils) {
+], function($, Ember, DS, utils) {
+
     var set = Ember.set,
-        get = Ember.get;
+        get = Ember.get,
+        isNone = Ember.isNone;
 
     loader.register('route:login', Ember.Route.extend({
         setupController: function(controller, model) {
@@ -53,7 +56,7 @@ define([
             var controller = this;
             var store = get(this, 'store');
 
-            $.ajax({
+            return $.ajax({
                 url: '/account/me',
                 success: function(data) {
                     if (data.success) {

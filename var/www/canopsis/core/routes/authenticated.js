@@ -27,7 +27,13 @@ define([
     var route = Ember.Route.extend({
 
         beforeModel: function() {
-            this.controllerFor('login').getUser();
+            var superPromise = this._super();
+            var loginPromise = this.controllerFor('login').getUser();
+
+            return Ember.RSVP.Promise.all([
+                superPromise,
+                loginPromise
+            ]);
         },
 
         actions: {

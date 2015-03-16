@@ -143,7 +143,7 @@ define([
 
             console.log('finding authentication backends config');
 
-            //TODO refactor this in application
+            //TODO refactor this in application route
             appController.authConfig('authconfiguration', function (authconfigurationRecord) {
 
                 var serviceList = get(authconfigurationRecord, 'services');
@@ -160,23 +160,6 @@ define([
                     }
                 }
             });
-
-            var enginesviews = get(this, 'enginesviews');
-
-            for (var i = 0, l = enginesviews.length; i < l; i++) {
-                var item = enginesviews[i];
-                //FIXME stop using utils to store data!
-                if(get(utils, 'session._id') === "root") {
-                    set(item, 'displayable', true);
-                } else {
-                    viewId = item.value;
-                    if (get(utils, 'session.rights.showview_' + viewId.replace('.', '_'))) {
-                        set(item, 'displayable', true);
-                    } else {
-                        set(item, 'displayable', false);
-                    }
-                }
-            }
 
             console.groupEnd();
             this.refreshPartialsList();
@@ -220,7 +203,6 @@ define([
         },
 
         editAuthConfig: function(authType) {
-
             console.log('edit ' + authType);
 
             var conf = get(this, authType);
@@ -262,12 +244,13 @@ define([
 
             promptReloadApplication: function(title, location) {
                 setTimeout(function (){
-                    console.log('in promptReloadApplication');
                     var recordWizard = formsUtils.showNew('confirmform', {}, {
                         title: __(title)
                     });
 
                     recordWizard.submit.then(function(form) {
+                        void(form);
+
                         if (isNone(location)) {
                             window.location = '/index.html';
                         } else {

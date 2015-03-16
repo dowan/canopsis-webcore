@@ -24,8 +24,9 @@ define([
     'app/lib/formsregistry',
     'app/lib/utils/routes',
     'app/lib/utils/actions',
+    'utils',
     'app/lib/loaders/forms'
-], function(Ember, DS, AuthenticatedRoute, formsregistry, routesUtils, actionsUtils) {
+], function(Ember, DS, AuthenticatedRoute, formsregistry, routesUtils, actionsUtils, utils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -124,7 +125,6 @@ define([
                 }
             });
 
-
             headerPromise.then(function(queryResults) {
                 appController.headerUserview = queryResults;
             });
@@ -139,6 +139,22 @@ define([
 
             var superPromise = this._super(transition);
 
+            var enginesviews = get(appController, 'enginesviews');
+
+            for (var i = 0, l = enginesviews.length; i < l; i++) {
+                var item = enginesviews[i];
+                //FIXME stop using utils to store data!
+                if(get(utils, 'session._id') === "root") {
+                    set(item, 'displayable', true);
+                } else {
+                    viewId = item.value;
+                    if (get(utils, 'session.rights.showview_' + viewId.replace('.', '_'))) {
+                        set(item, 'displayable', true);
+                    } else {
+                        set(item, 'displayable', false);
+                    }
+                }
+            }
 
             return Ember.RSVP.Promise.all([
                 superPromise,
