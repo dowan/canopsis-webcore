@@ -38,7 +38,6 @@ define([
     'app/lib/utils/data',
     'app/lib/utils/hash',
     'app/lib/utils/notification',
-    'app/lib/utils/actions',
     'app/adapters/cservice',
     'app/adapters/notification',
     'app/serializers/cservice',
@@ -69,24 +68,13 @@ define([
     formsUtils,
     dataUtils,
     hashUtils,
-    notificationUtils,
-    actionsUtils) {
+    notificationUtils) {
 
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone,
         __ = Ember.String.loc;
 
-
-
-    function bindKey(keyCombination, actionName) {
-        Mousetrap.bind([keyCombination], function(e) {
-            console.log('binding', arguments);
-            actionsUtils.doAction(actionName);
-
-            return false;
-        });
-    }
 
     Application.IndexController = Ember.Controller.extend(Ember.Evented, {});
 
@@ -153,46 +141,9 @@ define([
 
             set(this, 'devtoolsStore', devtoolsStore);
 
-            devtoolsStore.find('userview', 'view.app_devtools').then(function(queryResults) {
-                set(appController, 'devtoolsUserview', queryResults);
-            });
-
-            console.log('finding cservices config');
-            devtoolsStore.find('frontend', 'cservice.frontend').then(function(queryResults) {
-                console.log('frontend config found');
-                set(appController, 'frontendConfig', queryResults);
-                // set(Canopsis, 'conf.frontendConfig', queryResults);
-
-                var keybindings = get(appController, 'frontendConfig.keybindings');
-
-                console.log('load keybindings', keybindings);
-
-                for (var i = 0, l = keybindings.length; i < l; i++) {
-                    var currentKeybinding = keybindings[i];
-                    console.log('Mousetrap define', currentKeybinding);
-
-                    bindKey(currentKeybinding.label, currentKeybinding.value);
-                }
-
-                if(get(appController, 'onIndexRoute') === true) {
-                    console.info('on index route, redirecting to the appropriate route');
-
-                    var defaultview = get(appController, 'frontendConfig.defaultview');
-
-                    if(!! defaultview) {
-                        appController.send('showView', defaultview);
-                    }
-                }
-            });
-
-            devtoolsStore.find('ticket', 'cservice.ticket').then(function(queryResults) {
-                console.log('ticket config found');
-                set(appController, 'ticketConfig', queryResults);
-                // set(Canopsis, 'conf.ticketConfig', queryResults);
-            });
-
             console.log('finding authentication backends config');
 
+            //TODO refactor this in application
             appController.authConfig('authconfiguration', function (authconfigurationRecord) {
 
                 var serviceList = get(authconfigurationRecord, 'services');
@@ -208,25 +159,6 @@ define([
                         }
                     }
                 }
-            });
-
-            var footerStore = DS.Store.create({
-                container: get(this, "container")
-            });
-
-            set(this, "footerViewStore", footerStore);
-            footerStore.find('userview', 'view.app_footer').then(function(queryResults) {
-                set(appController, 'footerUserview', queryResults);
-            });
-
-            var headerStore = DS.Store.create({
-                container: get(this, "container")
-            });
-
-            set(this, "headerViewStore", headerStore);
-
-            headerStore.find('userview', 'view.app_header').then(function(queryResults) {
-                set(appController, 'headerUserview', queryResults);
             });
 
             var enginesviews = get(this, 'enginesviews');
@@ -246,7 +178,7 @@ define([
                 }
             }
 
-            // console.groupEnd();
+            console.groupEnd();
             this.refreshPartialsList();
             this._super.apply(this, arguments);
 

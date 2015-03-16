@@ -59,8 +59,9 @@ define([
             payload[typeKeyPlural] = payload.data;
             delete payload.data;
 
+            console.log('payload', typeKeyPlural, payload);
             // Many items (findMany, findAll)
-            if (typeof payload[typeKeyPlural] !== 'undefined') {
+            if (payload && payload[typeKeyPlural] && typeof payload[typeKeyPlural] !== 'undefined') {
                 payload[typeKeyPlural].forEach(function(item) {
                         this.extractRelationships(payload, item, type);
                 }, this);
