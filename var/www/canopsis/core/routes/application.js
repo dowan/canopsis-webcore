@@ -147,9 +147,7 @@ define([
                 devtoolsPromise,
                 frontendConfigPromise,
                 ticketPromise
-            ]).then(function() {
-                store.destroy();
-            });
+            ]);
         },
 
         model: function() {
