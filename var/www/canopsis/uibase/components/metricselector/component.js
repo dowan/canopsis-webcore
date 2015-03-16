@@ -114,27 +114,29 @@ define([
 
             var query = {filter: {_id: undefined}}, me = this;
 
-            if (get(this, 'multiselect') === true) {
-                var content = get(this, 'content') || [];
-                query.filter._id = {'$in': content};
-            }
-            else {
-                query.filter._id = get(this, 'content');
-            }
-
-            store.findQuery('ctxmetric', query).then(function(result) {
-                var metrics = get(me, 'selectedMetrics') || [],
-                    content = get(result, 'content'),
-                    l = get(result, 'meta.total');
-
-                console.log('Received data:', l, content, metrics);
-
-                for(var i = 0; i < l; i++) {
-                    metrics.pushObject(content[i]);
+            if (!isNone(get(this,'content'))) {
+                if (get(this, 'multiselect') === true) {
+                    var content = get(this, 'content') || [];
+                    query.filter._id = {'$in': content};
+                }
+                else {
+                    query.filter._id = get(this, 'content');
                 }
 
-                set(me, 'selectedMetrics', metrics);
-            });
+                store.findQuery('ctxmetric', query).then(function(result) {
+                    var metrics = get(me, 'selectedMetrics') || [],
+                        content = get(result, 'content'),
+                        l = get(result, 'meta.total');
+
+                    console.log('Received data:', l, content, metrics);
+
+                    for(var i = 0; i < l; i++) {
+                        metrics.pushObject(content[i]);
+                    }
+
+                    set(me, 'selectedMetrics', metrics);
+                });
+            }
         },
 
         build_filter: function(search) {
