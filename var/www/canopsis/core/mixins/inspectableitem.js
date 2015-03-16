@@ -108,12 +108,12 @@ define([
             return editorName;
         },
 
-        generateSeparatorAttribute: function() {
+        generateRoleAttribute: function(attr_role) {
             return {
                 type:'string',
                 model: {
                     options: {
-                        role:"separator"
+                        role: attr_role
                     }
                 },
                 options: {}
@@ -180,13 +180,15 @@ define([
                             var attr = modelAttributes.get(key);
 
                             if(key === "separator") {
-                                createdCategory.keys[j] = this.generateSeparatorAttribute();
+                                createdCategory.keys[j] = this.generateRoleAttribute('separator');
                             } else {
                                 if (key !== undefined && attr === undefined) {
                                     notificationUtils.error("An attribute that does not exists seems to be referenced in schema categories" + key);
                                     console.error(referenceModel, attr, modelAttributes);
 
-                                    createdCategory.keys[j] = this.generateSeparatorAttribute();
+                                    createdCategory.keys[j] = this.generateRoleAttribute('error');
+                                    createdCategory.keys[j].field = key;
+                                    createdCategory.keys[j].error = 'Attribute referenced in schema categories not found';
 
                                     continue;
                                 } else {
