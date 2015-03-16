@@ -23,9 +23,9 @@ define([
     'app/lib/schemasregistry',
     'app/mixins/inspectableitem',
     'app/mixins/validation',
-    'app/lib/utils/slug',
-    'app/lib/loaders/schemas'
+    'app/lib/utils/slug'
 ], function(Ember, FormFactory, schemasRegistry, InspectableitemMixin, ValidationMixin, slugUtils) {
+
     var set = Ember.set,
         get = Ember.get,
         isNone = Ember.isNone;

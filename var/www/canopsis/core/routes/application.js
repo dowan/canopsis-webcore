@@ -19,15 +19,27 @@
 
 define([
     'ember',
+    'ember-data',
     'app/routes/authenticated',
     'app/lib/formsregistry',
     'app/lib/utils/routes',
+    'app/lib/utils/actions',
+    'utils',
     'app/lib/loaders/forms'
-], function(Ember, AuthenticatedRoute, formsregistry, routesUtils) {
+], function(Ember, DS, AuthenticatedRoute, formsregistry, routesUtils, actionsUtils, utils) {
 
     var get = Ember.get,
         set = Ember.set;
 
+
+    function bindKey(keyCombination, actionName) {
+        Mousetrap.bind([keyCombination], function(e) {
+            console.log('binding', arguments);
+            actionsUtils.doAction(actionName);
+
+            return false;
+        });
+    }
 
     var route = AuthenticatedRoute.extend({
         actions: {
@@ -70,6 +82,88 @@ define([
 
                 return formController;
             }
+        },
+
+        beforeModel: function(transition) {
+            var route = this;
+
+            var store = DS.Store.create({ container: get(this, "container") });
+            var footerPromise = store.find('userview', 'view.app_footer');
+            var headerPromise = store.find('userview', 'view.app_header');
+            var devtoolsPromise = store.find('userview', 'view.app_devtools');
+            var frontendConfigPromise = store.find('frontend', 'cservice.frontend');
+            var ticketPromise = store.find('ticket', 'cservice.ticket');
+            var appController = route.controllerFor('application');
+
+            ticketPromise.then(function(queryResults) {
+                appController.ticketConfig = queryResults;
+            });
+
+            frontendConfigPromise.then(function(queryResults) {
+                console.log('frontend config found');
+                appController.frontendConfig = queryResults;
+
+                var keybindings = get(queryResults, 'keybindings');
+
+                console.log('load keybindings', keybindings);
+
+                for (var i = 0, l = keybindings.length; i < l; i++) {
+                    var currentKeybinding = keybindings[i];
+                    console.log('Mousetrap define', currentKeybinding);
+
+                    bindKey(currentKeybinding.label, currentKeybinding.value);
+                }
+
+                if(get(appController, 'onIndexRoute') === true) {
+                    console.info('on index route, redirecting to the appropriate route');
+
+                    var defaultview = get(appController, 'frontendConfig.defaultview');
+
+                    if(!! defaultview) {
+                        appController.send('showView', defaultview);
+                    }
+                }
+            });
+
+            headerPromise.then(function(queryResults) {
+                appController.headerUserview = queryResults;
+            });
+
+            footerPromise.then(function(queryResults) {
+                appController.footerUserview = queryResults;
+            });
+
+            devtoolsPromise.then(function(queryResults) {
+                appController.devtoolsUserview = queryResults;
+            });
+
+            var superPromise = this._super(transition);
+
+            var enginesviews = get(appController, 'enginesviews');
+
+            for (var i = 0, l = enginesviews.length; i < l; i++) {
+                var item = enginesviews[i];
+                //FIXME stop using utils to store data!
+                if(get(utils, 'session._id') === "root") {
+                    set(item, 'displayable', true);
+                } else {
+                    viewId = item.value;
+                    if (get(utils, 'session.rights.showview_' + viewId.replace('.', '_'))) {
+                        set(item, 'displayable', true);
+                    } else {
+                        set(item, 'displayable', false);
+                    }
+                }
+            }
+
+            return Ember.RSVP.Promise.all([
+                superPromise,
+                footerPromise,
+                headerPromise,
+                devtoolsPromise,
+                frontendConfigPromise,
+                ticketPromise
+            ]);
         },
 
         model: function() {

@@ -19,9 +19,9 @@
 
 define([
     'app/lib/factories/widget',
-    'app/lib/utils/debug',
-    'app/lib/loaders/schemas'
+    'app/lib/utils/debug'
 ], function(WidgetFactory, debugUtils) {
+
     var get = Ember.get,
         set = Ember.set;
 

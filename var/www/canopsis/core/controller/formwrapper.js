@@ -20,7 +20,6 @@
 define([
     'ember',
     'canopsis/canopsisConfiguration',
-    'app/lib/loaders/schemas',
     'app/view/formwrapper'
 ], function(Ember, canopsisConfiguration) {
 

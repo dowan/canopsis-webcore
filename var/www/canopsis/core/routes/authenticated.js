@@ -20,14 +20,19 @@
 define([
     'ember',
     'app/controller/application',
-    'app/controller/login',
-    'app/lib/loaders/schemas'
+    'app/controller/login'
 ], function(Ember, ApplicationController) {
 
     var route = Ember.Route.extend({
 
         beforeModel: function() {
-            this.controllerFor('login').getUser();
+            var superPromise = this._super();
+            var loginPromise = this.controllerFor('login').getUser();
+
+            return Ember.RSVP.Promise.all([
+                superPromise,
+                loginPromise
+            ]);
         },
 
         actions: {

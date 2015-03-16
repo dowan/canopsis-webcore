@@ -23,7 +23,6 @@ define([
     'app/lib/utils/forms',
     'app/lib/utils/hash',
     'app/lib/widgetsregistry',
-    'app/lib/loaders/schemas',
     'app/controller/journal'
 ], function(Ember, FormFactory, formsUtils, hashUtils, widgets) {
 

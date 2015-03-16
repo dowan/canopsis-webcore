@@ -21,8 +21,7 @@ define([
     'ember-data',
     'app/serializers/application',
     'app/mixins/embeddedrecordserializer',
-    'utils',
-    'app/lib/loaders/schemas'
+    'utils'
 ], function(DS, ApplicationSerializer, EmbeddedRecordSerializerMixin, cutils) {
 
     var serializer = ApplicationSerializer.extend(

@@ -24,7 +24,8 @@ define([
     'app/lib/formsregistry'
 ], function(Ember, Application, routesUtils, formsregistry) {
 
-    var set = Ember.set;
+    var get = Ember.get,
+        set = Ember.set;
 
     var formUtils = {
         instantiateForm: function(formName, formContext, options) {
@@ -66,7 +67,7 @@ define([
                 options = {};
             }
 
-            if (formContext.get && Ember.isNone(formContext.get('crecord_type'))) {
+            if (Ember.isNone(formContext) || Ember.isNone(get(formContext, 'crecord_type'))) {
                 console.warn('There is no crecord_type in the given record. Form may not display properly.');
             }
 

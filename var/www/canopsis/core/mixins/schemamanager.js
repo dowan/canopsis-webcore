@@ -22,7 +22,7 @@ define([
     'canopsis/canopsisConfiguration',
     'app/lib/loaders/schemas',
     'app/lib/factories/mixin'
-], function(Ember, canopsisConfiguration, available_types, Mixin) {
+], function(Ember, canopsisConfiguration, schemasLoader, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -30,7 +30,7 @@ define([
 
     var mixin = Mixin('schemamanager', {
         configuration: canopsisConfiguration,
-        available_types : available_types
+        available_types : schemasLoader.generatedModels
     });
 
 

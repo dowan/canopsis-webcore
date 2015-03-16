@@ -22,8 +22,7 @@ define([
     'app/controller/widget',
     "app/lib/widgetsregistry",
     "app/serializers/userview",
-    'app/lib/utils/notification',
-    "app/lib/loaders/schemas"
+    'app/lib/utils/notification'
 ], function(Application, WidgetController, WidgetsRegistry, UserviewSerializer, notificationUtils) {
 
     var get = Ember.get,

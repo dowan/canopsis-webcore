@@ -26,7 +26,6 @@ define([
     'app/lib/utils/widgetSelectors',
     'app/lib/utils/actions',
     'app/lib/utils/test',
-    'app/lib/loaders/schemas',
     'seeds/RoutesLoader',
     'app/serializers/userview',
     'app/adapters/userview',

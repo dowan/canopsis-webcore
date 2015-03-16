@@ -118,7 +118,9 @@ define([
         didInsertElement: function() {
             var component = this;
 
-            get(this, 'store').findAll(get(this, 'schemaType')).then(function(result) {
+            get(this, 'store').findQuery(get(this, 'schemaType'), {
+                limit: 10000
+            }).then(function(result) {
                 set(component, 'isLoading', false);
                 set(component, 'content', result.get('content'));
 

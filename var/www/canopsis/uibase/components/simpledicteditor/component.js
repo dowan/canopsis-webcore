@@ -33,6 +33,10 @@ define([
                 var newValue = get(this, 'newValue');
                 var newKey = get(this, 'newKey');
 
+                if(isNone(get(this, 'content'))) {
+                    set(this, 'content', {});
+                }
+
                 if(!isNone(newValue) && !isNone(newKey)) {
                     set(this, 'content.' + newKey, newValue);
                     this.contentChanged();

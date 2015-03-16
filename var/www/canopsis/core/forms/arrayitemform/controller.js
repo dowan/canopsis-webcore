@@ -19,8 +19,7 @@
 
 define([
     'ember',
-    'app/lib/factories/form',
-    'app/lib/loaders/schemas'
+    'app/lib/factories/form'
 ], function(Ember, FormFactory) {
 
     var form = FormFactory('arrayitemform', {
