@@ -58,13 +58,16 @@ define([
                 var userConfiguration = {
                     widget_preferences: preferences,
                     crecord_name: user,
-                    widget_id: get(record, 'widgetId'),
+                    widget_id: get(record, 'id'),
                     widgetXtype: get(record, 'xtype'),
                     title: get(record, 'title'),
                     viewId: get(record, 'viewId'),
-                    id: get(record, 'widgetId') + "_" + user,
+                    id: get(record, 'id') + "_" + user,
+                    _id: get(record, 'id') + "_" + user,
                     crecord_type: 'userpreferences'
                 };
+
+                console.log('push UP', userConfiguration);
 
                 $.ajax({
                     url: '/rest/userpreferences/userpreferences',
@@ -95,7 +98,8 @@ define([
                         limit: 1,
                         filter: JSON.stringify({
                             crecord_name: user,
-                            widget_id: get(record, 'widgetId')
+                            widget_id: get(record, 'id'),
+                            _id: get(record, 'id') + '_' + user
                         })
                     },
                     success: function(data) {
@@ -103,7 +107,7 @@ define([
                             console.log('User configuration load for widget complete', JSON.stringify(data));
                             var preferences = data.data[0].widget_preferences;
 
-                            set(record, get(record, 'widgetId') + "_" + user);
+                            set(record, get(record, 'id') + "_" + user);
                             set(record, 'userPreferences', preferences);
 
                             for (var key in preferences) {
@@ -158,11 +162,12 @@ define([
                     var userConfiguration = {
                         widget_preferences: preferences,
                         crecord_name: user,
-                        widget_id: get(record, 'widgetId'),
+                        widget_id: get(record, 'id'),
                         widgetXtype: get(record, 'xtype'),
                         title: get(record, 'title'),
                         viewId: get(record, 'viewId'),
                         id: preference_id + '_' + user,
+                        _id: get(record, 'id') + "_" + user,
                         crecord_type: 'userpreferences'
                     };
 
