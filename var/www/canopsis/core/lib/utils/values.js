@@ -17,12 +17,22 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/application'], function(Application) {
+define([
+    'app/application',
+    'app/lib/utils/dates'
+], function(Application, dateUtils) {
 
     var units = [ ' ', ' k', ' M', ' G', ' T' ];
 
     var values = {
         humanize: function(x, unit) {
+
+            //This is time to convert
+            //premptive transformation
+            if (unit.toLowerCase() === 's') {
+                return dateUtils.second2Duration(x);
+            }
+
             var step = 1000;
             var negative = (x < 0);
 

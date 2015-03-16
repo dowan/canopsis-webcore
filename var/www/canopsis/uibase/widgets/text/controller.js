@@ -213,19 +213,26 @@ define([
 
         registerHelpers: function (){
             var controller = this;
-
             var invalidNumber = __('Not a valid number');
 
             var helpers = {
                 hr: function (value) {
+                    console.log('found value for human readable : ', value);
+                    var unit = get(value, 'hash.unit');
                     var value = get(value, 'hash.value');
+                    //only second option unit is available for now
+                    //otherwise, values are considered as number base 10
+                    if (unit !== 's') {
+                        unit = '';
+                    }
+
                     if(isNaN(value)) {
                         value = parseFloat(value);
                         if(isNaN(value)) {
                             return invalidNumber;
                         }
                     }
-                    value = values.humanize(value, '');
+                    value = values.humanize(value, unit);
                     return value;
                 },
                 action: function () {
