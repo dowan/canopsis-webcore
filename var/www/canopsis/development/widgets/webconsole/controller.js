@@ -18,9 +18,7 @@
 */
 
 define([
-    'app/lib/factories/widget',
-    'app/lib/loaders/schemas'
-    // 'app/lib/wrappers/codemirror'
+    'app/lib/factories/widget'
 ], function(WidgetFactory) {
     var get = Ember.get,
         set = Ember.set;

@@ -45,13 +45,14 @@ define([
     'jquery',
     'app/lib/factories/widget',
     'd3',
-    'app/lib/loaders/schemas',
     'app/lib/utils/forms',
     'app/lib/utils/data',
     'jqueryui'
-], function($, WidgetFactory, d3, schemas, formsUtils, dataUtils) {
+], function($, WidgetFactory, d3, formsUtils, dataUtils) {
+
     var get = Ember.get,
         set = Ember.set;
+
 
     var GraphViewMixin = Ember.Mixin.create({
 

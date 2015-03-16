@@ -25,7 +25,6 @@ define([
     'app/controller/serie',
     'canopsis/canopsisConfiguration',
     'app/lib/utils/values',
-    'app/lib/loaders/schemas',
     'app/controller/perfdata',
 ], function($, Ember, DS, WidgetFactory, Serie, canopsisConfiguration, values) {
 

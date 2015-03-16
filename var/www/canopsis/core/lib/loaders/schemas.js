@@ -208,5 +208,5 @@ function compare(a,b) {
 
     console.tags.remove('loader');
 
-    return schemasLoader.generatedModels;
+    return schemasLoader;
 });

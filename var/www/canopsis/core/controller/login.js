@@ -67,8 +67,6 @@ define([
                     else {
                         utils.notification.error('Impossible to get user account');
                     }
-
-
                 },
                 async: false
             });

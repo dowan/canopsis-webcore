@@ -19,8 +19,7 @@
 
 define([
     'app/lib/factories/widget',
-    'app/lib/promisesmanager',
-    'app/lib/loaders/schemas'
+    'app/lib/promisesmanager'
 ], function(WidgetFactory, promisesManager) {
     var get = Ember.get,
         set = Ember.set;

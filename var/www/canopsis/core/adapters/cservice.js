@@ -20,8 +20,7 @@
 define([
     'app/application',
     'app/adapters/application',
-    'app/lib/schemasregistry',
-    'app/lib/loaders/schemas'
+    'app/lib/schemasregistry'
 ], function(Application, ApplicationAdapter, schemasregistry) {
 
     console.group('CserviceAdapter');

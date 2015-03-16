@@ -19,8 +19,7 @@
 
 define([
     'app/application',
-    'ember-data',
-    'app/lib/loaders/schemas'
+    'ember-data'
 ], function(Application, DS) {
 
     var adapter = DS.FixtureAdapter.extend();
