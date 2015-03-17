@@ -412,8 +412,13 @@ define([
                     scheduled: false
                 });
 
-                editForm.submit.done(function() {
+                editForm.submit.done(function(form) {
+                    var job = get(form, 'formContext');
+                    var params = get(job, 'params');
+
                     set(ticketConfig, 'job', job);
+                    set(ticketConfig, 'job.params', params);
+
                     ticketConfig.save();
                 });
 

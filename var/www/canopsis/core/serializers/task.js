@@ -29,19 +29,8 @@ define([
         {}
     );
 
-    for(var sname in cutils.schemaList) {
-        if(sname.indexOf('Task.') === 0) {
-            var xtype = sname.slice(5);
-            var modelname = xtype[0].toUpperCase() + xtype.slice(1);
-
-            var serializerName = modelname;
-
-            loader.register('serializer:' + serializerName.dasherize(), serializer);
-
-        }
-    }
-
     loader.register('serializer:task', serializer);
+    loader.register('serializer:taskmail', serializer.extend({}));
 
     return serializer;
 });

@@ -24,11 +24,13 @@ define([
     'utils',
     'app/lib/utils/forms',
     'app/lib/utils/hash',
-    'app/lib/schemasregistry'
+    'app/lib/schemasregistry',
+    'app/serializers/job'
 ], function(Ember, Application, FormFactory, utils, formsUtils, hashUtils, schemasRegistry) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     var form = FormFactory('jobform', {
         title: 'Select task type',
@@ -78,7 +80,7 @@ define([
                 var params = get(this, 'formContext.params');
                 console.log('params:', params);
 
-                if(params && get(params, 'xtype') === xtype) {
+                if(!isNone(params) && get(params, 'xtype') === xtype) {
                     context = params;
                 }
                 else {
@@ -90,11 +92,12 @@ define([
 
                     console.log('Instanciate non-persistent model:', model, params);
                     context = get(this, 'store').createRecord(xtype, params);
+                    console.log('model:', context);
 
                     var jobdict = get(this, 'formContext._data');
                     jobdict.task = xtype;
                     jobdict.paramsType = xtype;
-                    jobdict.params = params.id;
+                    jobdict.params = context;
 
                     job = this.get('store').push('job', jobdict);
                     this.formContext.rollback();
