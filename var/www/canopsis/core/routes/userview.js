@@ -73,10 +73,22 @@ define([
             toggleEditMode: function() {
                 var applicationController = this.controllerFor('application');
                 if (get(applicationController, 'editMode') === true) {
-                    console.info('Entering edit mode');
+
+                    console.info('Leaving edit mode');
                     set(applicationController, 'editMode', false);
                 } else {
-                    console.info('Leaving edit mode');
+
+                    // Try to rollback each widget of the view
+                    var viewWidgets = widgetSelectorsUtils.children(get(this.controllerFor('userview'), 'containerwidget'));
+                    for (var i = 0, l = viewWidgets.length; i < l; i++) {
+                        var currentWidget = viewWidgets[i];
+
+                        if(get(currentWidget, 'rollbackable')) {
+                            currentWidget.send('rollback');
+                        }
+                    }
+
+                    console.info('Entering edit mode');
                     set(applicationController, 'editMode', true);
                 }
             },
