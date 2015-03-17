@@ -21,6 +21,9 @@ define([], function() {
 
     var appInstance;
 
+    /**
+     * generates a requirejs dependancy list to include in a module header
+     */
     var makeDeps = function(requirementList) {
 
         var jsDeps = [];
@@ -65,7 +68,7 @@ define([], function() {
 
                 var len = info.htmlNames.length;
 
-                for (var i=0; i<len; i++) {
+                for (var i = 0; i < len; i++) {
                     Ember.TEMPLATES[info.htmlNames[i]] = Ember.Handlebars.compile(arguments[i + 1]);
                 }
 
