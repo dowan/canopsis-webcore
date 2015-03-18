@@ -29,7 +29,6 @@ define([
         {}
     );
 
-
     loader.register('serializer:job', serializer);
 
     return serializer;
