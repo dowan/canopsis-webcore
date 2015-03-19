@@ -26,11 +26,11 @@ manager = TopologyManager()
 
 def exports(ws):
 
-    @route(ws.application.get, name='topology/elts')
+    @route(ws.application.get, name='topology/graphelts')
     @route(
         ws.application.post,
         payload=['ids', 'types', 'info', 'graph_ids', 'base_type', 'query'],
-        name='topology/elts'
+        name='topology/graphelts'
     )
     def get_elts(
         ids=None, types=None, graph_ids=None, info=None, base_type=None,
@@ -72,7 +72,7 @@ def exports(ws):
     @route(
         ws.application.delete,
         payload=['ids', 'types', 'query'],
-        name='topology/elts'
+        name='topology/graphelts'
     )
     def del_elts(ids=None, types=None, query=None, cache=False):
         """
@@ -92,7 +92,7 @@ def exports(ws):
     @route(
         ws.application.post,
         payload=['elt', 'graph_ids'],
-        name='topology/elt'
+        name='topology/graphelt'
     )
     def put_elt(elt, graph_ids=None, cache=False):
         """
@@ -109,7 +109,7 @@ def exports(ws):
     @route(
         ws.application.put,
         payload=['elts', 'graph_ids', 'cache'],
-        name='topology/elts'
+        name='topology/graphelts'
     )
     def put_elts(elts, graph_ids=None, cache=False):
         """

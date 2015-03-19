@@ -29,7 +29,8 @@ define([
 ], function(Ember, DS, AuthenticatedRoute, formsregistry, routesUtils, actionsUtils, utils) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
 
     function bindKey(keyCombination, actionName) {
@@ -114,13 +115,15 @@ define([
                     bindKey(currentKeybinding.label, currentKeybinding.value);
                 }
 
-                if(get(appController, 'onIndexRoute') === true) {
+                console.log('transition', transition);
+                if(get(transition, 'targetName') === 'index') {
                     console.info('on index route, redirecting to the appropriate route');
 
                     var defaultview = get(appController, 'frontendConfig.defaultview');
 
-                    if(!! defaultview) {
-                        appController.send('showView', defaultview);
+                    if(!isNone(defaultview)) {
+                        console.log('redirect to view', defaultview);
+                        route.transitionTo('/userview/' + defaultview);
                     }
                 }
             });

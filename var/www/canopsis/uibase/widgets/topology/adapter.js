@@ -29,16 +29,25 @@ define([
 
     var adapter = DS.RESTAdapter.extend({
 
+        graph_type: 'topology',
+
         buildURL: function(type, id, record) {
-            return '/topology/elts'
-        }
+            return '/' + this.graph_type + '/' + type + 's';
+        },
+
+        findQuery: function(store, type, query) {
+            if (this.sortQueryParams) {
+              query = this.sortQueryParams(query);
+            }
+            return this.ajax(this.buildURL(type.typeKey), 'POST', { data: query });
+        },
 
     });
 
-    loader.register('adapter:gelt', adapter);
-    loader.register('adapter:topo', adapter);
-    loader.register('adapter:topovertice', adapter);
-    loader.register('adapter:topoedge', adapter);
+    loader.register('adapter:graphelt', adapter);
+    loader.register('adapter:graph', adapter);
+    loader.register('adapter:vertice', adapter);
+    loader.register('adapter:edge', adapter);
 
     return adapter;
 });
