@@ -132,6 +132,12 @@ define([
                 this.partials.statusbar.pushObject('promisemanagerstatusmenu');
             }
 
+            //Set page title
+            var title = get(canopsisConfiguration, 'TITLE');
+            if (!isNone(title)) {
+                $('title').html(title);
+            }
+
             this.partials.statusbar.pushObject('userstatusmenu');
 
             var appController = this;
