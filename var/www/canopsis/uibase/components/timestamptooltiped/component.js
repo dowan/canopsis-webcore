@@ -40,12 +40,6 @@ define([
             return dateUtils.durationFromNow(optionaltimestamp);
         }.property(),
 
-        specialDisplay: function () {
-            console.log('special display', get(this, 'eventstate'), get(this, 'optionaltimestamp'));
-            return get(this, 'eventstate') && get(this, 'optionaltimestamp');
-        }.property()
-
-
     });
 
     Ember.Application.initializer({
