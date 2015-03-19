@@ -35,6 +35,10 @@ define([
         title: 'Configure Job settings',
         scheduled: true,
 
+        parentContext: function() {
+            return get(this, 'formParent.formContext');
+        }.property('formParent'),
+
         init: function() {
             this._super();
 
@@ -48,6 +52,12 @@ define([
                 set(this, 'partials.buttons', ["formbutton-cancel", "formbutton-submit"]);
             }
 
+            var wizard = formsUtils.showNew('scheduleform', get(this, 'parentContext'), {
+                formParent: this,
+                title: 'Configure Schedule'
+            });
+
+            set(this, 'nextForm', wizard);
             this.refreshPartialsList();
         },
 
@@ -55,21 +65,11 @@ define([
             next: function() {
                 console.group('configureTask');
 
-                var formParent = get(this, 'formParent');
-                var wizard;
+                console.log('parent:', get(this, 'parentContext'));
+                console.log('ctx:', get(this, 'formContext'));
+                console.log('form:', get(this, 'nextForm'));
 
-                if(get(this, 'nextForm') === undefined) {
-                    wizard = formsUtils.showNew('scheduleform', formParent.formContext, {
-                        formParent: this,
-                        title: 'Configure Schedule'
-                    });
-
-                    set(this, 'nextForm', wizard);
-                } else {
-                    wizard = get(this, 'nextForm');
-                    console.log('nextForm', wizard);
-                    formsUtils.showInstance(wizard);
-                }
+                formsUtils.showInstance(get(this, 'nextForm'));
 
                 console.groupEnd();
             },

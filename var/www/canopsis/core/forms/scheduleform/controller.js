@@ -30,8 +30,8 @@ define([
         title: 'Configure Schedule',
 
         init: function() {
-            this.refreshPartialsList();
             this._super();
+            this.refreshPartialsList();
         },
 
         actions: {

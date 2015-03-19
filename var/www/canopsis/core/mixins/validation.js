@@ -81,7 +81,7 @@ define([
         },
 
         empty_validationFields: function() {
-            this.set('validationFields' , Ember.A() );
+            set(this, 'validationFields' , Ember.A() );
         },
 
         validation: function() {

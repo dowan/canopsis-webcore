@@ -94,14 +94,9 @@ define([
                     context = get(this, 'store').createRecord(xtype, params);
                     console.log('model:', context);
 
-                    var jobdict = get(this, 'formContext._data');
-                    jobdict.task = xtype;
-                    jobdict.paramsType = xtype;
-                    jobdict.params = context;
-
-                    job = this.get('store').push('job', jobdict);
-                    this.formContext.rollback();
-                    this.formContext = job;
+                    set(this, 'formContext.task', xtype);
+                    set(this, 'formContext.paramsType', xtype);
+                    set(this, 'formContext.params', context);
                 }
 
                 console.log('Show new form with context:', context, this.formContext);
