@@ -90,13 +90,16 @@ function compare(a,b) {
 
             console.log(schemaId, modelDict);
 
-            this.generatedModels.pushObject({
+            var generatedModelsObject = {
                 name: schemaName,
                 id: schemaId,
                 schema: schema,
                 model: parentModel.model.extend({}),
                 modelDict: modelDict
-            });
+            };
+
+            this.generatedModels.pushObject(generatedModelsObject);
+            return generatedModelsObject;
         },
 
         generateSchemaModelDict: function(schema, parentModel, modelId) {

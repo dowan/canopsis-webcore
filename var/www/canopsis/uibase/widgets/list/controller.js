@@ -30,7 +30,6 @@ define([
     'app/lib/utils/routes',
     'app/lib/utils/forms',
     'app/view/listline',
-    'app/lib/loaders/schemas',
     'app/adapters/event',
     'app/adapters/userview',
     'canopsis/core/lib/wrappers/ember-cloaking',

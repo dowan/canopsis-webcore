@@ -27,7 +27,15 @@ define([
     var widget = WidgetFactory('objectinspector', {
         debugUtils: debugUtils,
 
-        inspectedObject: Ember.computed.alias('debugUtils.inspectedObject')
+        inspectedObject: function() {
+            var o = get(this, 'debugUtils.inspectedObject');
+
+            if(o && o.toJSON){
+                return o.toJSON();
+            }
+
+            return o;
+        }.property('debugUtils.inspectedObject')
     });
 
     return widget;

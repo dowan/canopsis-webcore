@@ -75,9 +75,9 @@
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a {{action 'editAuthConfiguration' 'ldapconfig'}}><i class="fa fa-angle-double-right"></i> LDAP</a></li>
-                                    <li><a {{action 'editAuthConfiguration' 'casconfig'}}><i class="fa fa-angle-double-right"></i> CAS</a></li>
-                                    <li><a {{action 'editAuthConfiguration' 'authconfiguration'}}><i class="fa fa-angle-double-right"></i> {{tr 'Auth systems'}}</a></li>
+                                    <li><a {{action 'editAuthConfiguration' 'ldapconfig'}}><i class="fa fa-list-alt"></i> LDAP</a></li>
+                                    <li><a {{action 'editAuthConfiguration' 'casconfig'}}><i class="fa fa-list-alt"></i> CAS</a></li>
+                                    <li><a {{action 'editAuthConfiguration' 'authconfiguration'}}><i class="fa fa-list-alt"></i> {{tr 'Auth systems'}}</a></li>
                                 </ul>
                             </li>
                         {{/if}}
@@ -101,13 +101,13 @@
                                     {{/each}}
                                     <li>
                                         <a {{action 'editEventSettings'}}>
-                                            <i class="fa fa-angle-double-right"></i>
+                                            <i class="fa fa-list-alt"></i>
                                             {{tr 'Events statuses'}}
                                         </a>
                                     </li>
                                      <li>
                                         <a {{action 'editDataclean'}}>
-                                            <i class="fa fa-angle-double-right"></i>
+                                            <i class="fa fa-list-alt"></i>
                                             {{tr 'Data cleaner'}}
                                         </a>
                                     </li>
@@ -133,13 +133,13 @@
                                 <ul class="treeview-menu">
                                     <li>
                                         <a {{action 'editConfig'}}>
-                                            <i class="fa fa-angle-double-right"></i>
+                                            <i class="fa fa-list-alt"></i>
                                             {{tr 'User Interface'}}
                                         </a>
                                     </li>
                                     <li>
                                         <a {{action 'editTicketJob'}}>
-                                            <i class="fa fa-angle-double-right"></i>
+                                            <i class="fa fa-list-alt"></i>
                                             {{tr 'Ticket'}}
                                         </a>
                                     </li>

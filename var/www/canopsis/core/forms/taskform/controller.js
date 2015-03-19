@@ -77,9 +77,20 @@ define([
             submit: function() {
                 console.group('submitTask');
 
+                var parentForm = get(this, 'formParent'),
+                    ctx = get(this, 'formContext');
+                var job = get(parentForm, 'formContext');
+
+                set(job, 'params', ctx);
+
                 console.groupEnd();
 
-                this._super(arguments);
+                if(get(this, 'scheduled') === true) {
+                    this._super(arguments);
+                }
+                else {
+                    this._super([job]);
+                }
             }
         },
 

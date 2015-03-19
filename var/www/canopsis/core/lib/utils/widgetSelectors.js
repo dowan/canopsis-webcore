@@ -76,8 +76,12 @@ define(['ember'], function(Ember) {
             return result;
         },
 
+        /**
+         * Recursively fetch widgets an returns a list of chilren
+         *
+         * @param widget
+         */
         children: function(widget) {
-            //Recursively fetch widgets an returns a list of chilren
             if (Ember.isNone(widget)) {
                 console.warn('Widget is undefined in widget selector in children');
                 return [];
@@ -149,25 +153,7 @@ define(['ember'], function(Ember) {
 
             return selection;
 
-        },
-
-        root: function (widget) {
-            if (Ember.isNone(widget)) {
-                console.warn('Widget is undefined in widget selector in root');
-                return [];
-            }
-            //TODO
-        },
-
-        parent: function (widget) {
-            if (Ember.isNone(widget)) {
-                console.warn('Widget is undefined in widget selector in parent');
-                return [];
-            }
-            //TODO
-
         }
-
     };
 
     return widgetSelectors;

@@ -18,14 +18,16 @@
 */
 
 define([
+    'jquery',
     'ember',
     'app/lib/utils/forms',
     'app/lib/utils/hash',
     'app/lib/factories/mixin'
-], function(Ember, formsUtils, hashUtils, Mixin) {
+], function($, Ember, formsUtils, hashUtils, Mixin) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     /**
      * Implement CRUD handling for widgets that manages collections
@@ -109,7 +111,23 @@ define([
 
                 console.log('temp record', record, formsUtils);
 
-                var recordWizard = formsUtils.showNew('modelform', record, { title: "Add " + recordType });
+                var extraoptions = get(this, 'mixinOptions.crud.formoptions'),
+                    formclass = get(this, 'mixinOptions.crud.form');
+                var formoptions = {
+                    title: 'Add ' + recordType
+                };
+
+                if(!isNone(extraoptions)) {
+                    $.extend(formoptions, extraoptions);
+                }
+
+                if(isNone(formclass)) {
+                    formclass = 'modelform';
+                }
+
+                console.log('open form:', formclass, formoptions);
+
+                var recordWizard = formsUtils.showNew(formclass, record, formoptions);
 
                 var listController = this;
 
@@ -142,8 +160,24 @@ define([
             edit: function (record) {
                 console.log("edit", record);
 
+                var extraoptions = get(this, 'mixinOptions.crud.formoptions'),
+                    formclass = get(this, 'mixinOptions.crud.form');
+                var formoptions = {
+                    title: 'Edit ' + get(record, 'crecord_type')
+                };
+
+                if(!isNone(extraoptions)) {
+                    $.extend(formoptions, extraoptions);
+                }
+
+                if(isNone(formclass)) {
+                    formclass = 'modelform';
+                }
+
+                console.log('open form:', formclass, formoptions);
+
                 var listController = this;
-                var recordWizard = formsUtils.showNew('modelform', record, { title: "Edit " + get(record, 'crecord_type') });
+                var recordWizard = formsUtils.showNew(formclass, record, formoptions);
 
                 recordWizard.submit.then(function(form) {
                     console.log('record going to be saved', record, form);
