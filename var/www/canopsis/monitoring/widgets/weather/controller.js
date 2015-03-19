@@ -32,7 +32,7 @@ define([
 
         init: function() {
             this._super();
-            set(this, 'worst_state', 0);
+            set(this, 'worst_state', undefined);
             set(this, 'sub_weather', []);
             this.fetchStates();
             console.log('Setting up weather widget : ' + get(this, 'config.title'));
