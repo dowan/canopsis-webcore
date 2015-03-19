@@ -107,6 +107,7 @@ define([
             {label: __('Scheduled Jobs'), value: 'view.jobs'},
             {label: __('Event Filter'), value: 'view.filters'},
             {label: __('Performance Data'), value: 'view.series'},
+            {label: __('Scheduled Jobs'), value: 'view.jobs'}
         ],
 
         plugins:function(){
