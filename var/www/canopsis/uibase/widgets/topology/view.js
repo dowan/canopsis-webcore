@@ -205,7 +205,7 @@ define([
             } else { // or remove useless d3 elts from data_by_id
                 var graph = this.graph;
                 var d3_graph = this.d3_graph;
-                var graph_id = get(this, 'controller.model').graph_id;
+                var graph_id = get(this, 'controller.model.graph_id');
                 var elts_to_delete = [];
                 Object.keys(d3_graph.data_by_id).forEach(
                     function(elt_id) {
@@ -225,9 +225,9 @@ define([
 
         redraw: function() {
             var me = this;
-            var width = get(this, 'controller.width');
+            var width = get(this, 'controller.model.width');
             if (!width) width = this.$().width();
-            var height = get(this, 'controller.height');
+            var height = get(this, 'controller.model.height');
             if (!height) height = width * 9 / 16;
             // apply force behavior
             if (this.force === null) {
@@ -909,13 +909,6 @@ define([
             document.location.href = "/eventpool/?" + data.elt.get('info').entity;
             this.destroyToolBox();
         },
-        saveHandler: function(data) {
-            var me = this;
-            function success() {
-                me.destroyToolBox();
-            }
-            get(this, 'controller').putGraphToServer(success);
-        },
 
         /**
         * Remove tmp link
@@ -1424,7 +1417,6 @@ define([
                     //}
                 } else {
                     result.push(
-                        this.newToolBoxItem('save', 'square'), // save model
                         this.newToolBoxItem('add', 'cross') // add elt
                     );
                 }

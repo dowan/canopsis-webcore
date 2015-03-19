@@ -140,36 +140,6 @@ define([
         },
 
         /**
-        * Get request server url to get graph.
-        */
-        getGraphUrl: function() {
-            result = '/' + get(this, 'model.graph_type') + '/graphs/';
-
-            return result;
-        },
-
-        /**
-        * Get graph with its elements from a foreign server.
-        */
-        getGraphFromServer: function(success, failure) {
-            var _url = this.getGraphUrl();
-            var graph_id = get(this, 'model.graph_id');
-            var promise = new Ember.RSVP.Promise(function(resolve, reject) {
-                $.ajax(
-                    {
-                        url: _url,
-                        type: 'POST',
-                        data: {
-                            'ids': graph_id,
-                            'add_elts': true
-                        }
-                    }
-                ).then(resolve, reject);
-            });
-            promise.then(success, failure);
-        },
-
-        /**
         * Get entities from a foreign server.
         * @param entity_ids list of entity ids from where get entities.
         * @param success handler to request success.
@@ -195,49 +165,6 @@ define([
         },
 
         /**
-        * Get request server url to put graph.
-        */
-        putGraphUrl: function() {
-            result = '/' + get(this, 'model.graph_type') + '/elts/';
-
-            return result;
-        },
-
-        /**
-        * Put graph with its elements to a foreign server.
-        * @param success handler to request success.
-        * @param failure handler to request failure.
-        */
-        putGraphToServer: function(success, failure) {
-            var _url = this.putGraphUrl();
-            var graph = this.toElt(this.graph);
-            graph.elts = [];
-            var elts = [graph];
-            Object.keys(this.graph._delts).forEach(
-                function(elt_id) {
-                    var record = this.graph._delts[elt_id];
-                    // push only nodes and edges
-                    if (record.get('type') !== 'topo') {
-                        var elt = this.toElt(record);
-                        elts.push(elt);
-                        graph.elts.push(elt.cid);
-                    }
-                },
-                this
-            );
-            var promise = new Ember.RSVP.Promise(function(resolve, reject) {
-                $.ajax(
-                    {
-                        url: _url,
-                        type: 'PUT',
-                        data: {elts: JSON.stringify(elts)}
-                    }
-                ).then(resolve, reject);
-            });
-            promise.then(success, failure);
-        },
-
-        /**
         * display nodes in the widget
         */
         findItems: function() {
@@ -246,12 +173,54 @@ define([
             // get graph_id
             var graph_id = get(this, 'model.graph_id');
             if (graph_id !== undefined) {
-                // use graph id in getNodes method in order to get nodes
-                this.getGraphFromServer(
+                var query = {
+                    'ids': graph_id,
+                    'add_elts': true
+                };
+                var store = this.widgetDataStore;
+                store.find('graph', query).then(
                     function(result) {
-                        // get graph or a default graph
                         var graph = null;
-                        if (result.total === 0) {
+                        if (result.content) {  // if content exists
+                            // get graph and elt ids
+                            graph = result.content[0];
+                            var elt_ids = graph.get('elts');
+                            // if old graph exists
+                            if (me.graph !== null) {
+                                // delete old elements
+                                var elts_to_delete = [];
+                                Object.keys(me.graph._delts).forEach(
+                                    function(elt_id) {
+                                        // in case of old element
+                                        if (graph._delts[elt_id] === undefined) {
+                                            var elt = me.graph._delts[elt_id];
+                                            elts_to_delete.push(elt.d3_elt);
+                                        }
+                                    },
+                                    this
+                                );
+                                me.delete(elts_to_delete);
+                            }
+                            // get elt_ids
+                            if (elt_ids) {
+                                var elts_query = {
+                                    ids: elt_ids
+                                };
+                                store.find('graphelt', elts_query).then(
+                                    function(result) {
+                                        var graphelts = result.content;
+                                        graphelts.forEach(
+                                            function(record) {
+                                                var record_id = record.get('cid');
+                                                graph._delts[record_id] = record;
+                                            }
+                                        );
+                                        graph._delts = result.content;
+                                        me.trigger('refresh');
+                                    }
+                                );
+                            }
+                        } else {  // if no graph exists
                             graph = {
                                 _delts: {},
                                 type: me.graph_elt_type,
@@ -269,24 +238,6 @@ define([
                                 },
                                 elts: []
                             };
-                        } else {
-                            graph = result.data[0];
-                            // if old graph exists
-                            if (me.graph !== null) {
-                                // delete old elements
-                                var elts_to_delete = [];
-                                Object.keys(me.graph._delts).forEach(
-                                    function(elt_id) {
-                                        // in case of old element
-                                        if (graph._delts[elt_id] === undefined) {
-                                            var elt = me.graph._delts[elt_id];
-                                            elts_to_delete.push(elt.d3_elt);
-                                        }
-                                    },
-                                    this
-                                );
-                                me.delete(elts_to_delete);
-                            }
                         }
                         // convert graph such as a record
                         me.graph = me.toRecord(graph);
@@ -300,8 +251,9 @@ define([
         /**
         * return unique id.
         */
-        uuid: function() {
-            return '' + Math.random();
+        uuid: function(record) {
+            var result = this.widgetDataStore.adapterFor('graphelt').generateIdForRecord(record);
+            return result;
         },
 
         /**
@@ -834,12 +786,6 @@ define([
                 }
             );
         },
-
-        actions: {
-            save: function() {
-                this.putGraphToServer();
-            },
-        }
 
     });
 
