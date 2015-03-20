@@ -17,35 +17,21 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+require.config({
+    waitSeconds: 40,
+    baseUrl: '/static/',
+    paths: {},
+    shim: {}
+
+});
+
 define([
-    'ember',
-    'app/lib/factories/form',
-    'app/forms/modelform/controller'
-], function(Ember, FormFactory, ModelFormController) {
-    var formOptions = {
-        subclass: ModelFormController
-    };
-
-    var form = FormFactory('scheduleform', {
-        title: 'Configure Schedule',
-
-        init: function() {
-            this._super();
-            this.refreshPartialsList();
-        },
-
-        actions: {
-            submit: function() {
-                console.log('context:', this.formContext);
-
-                this._super(arguments);
-            }
-        },
-
-        partials: {
-            buttons: ["formbutton-previous", "formbutton-cancel", "formbutton-submit"]
-        },
-    }, formOptions);
-
-    return form;
+    'canopsis/canopsisConfiguration',
+], function(canopsisConfiguration) {
+    console.log(canopsisConfiguration);
+    //Set page title
+    var title = canopsisConfiguration.TITLE;
+    if (title !== undefined) {
+        $('title').html(title);
+    }
 });

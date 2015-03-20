@@ -23,7 +23,7 @@ var forms = [
     { name: 'arrayitemform', url: 'app/forms/arrayitemform/controller', template: 'app/forms/arrayitemform/template.html' },
     { name: 'jobform', url: 'app/forms/jobform/controller', template: 'app/forms/jobform/template.html' },
     { name: 'taskform', url: 'app/forms/taskform/controller', template: 'app/forms/modelform/template.html' },
-    { name: 'scheduleform', url: 'app/forms/scheduleform/controller', template: 'app/forms/scheduleform/template.html' },
+    { name: 'scheduleform', url: 'app/forms/scheduleform/controller', template: 'app/forms/modelform/template.html' },
     { name: 'confirmform', url: 'app/forms/confirmform/controller', template: 'app/forms/confirmform/template.html' },
     { name: 'viewtreeform', url: 'app/forms/viewtreeform/controller', template: 'app/forms/viewtreeform/template.html' }
 ];

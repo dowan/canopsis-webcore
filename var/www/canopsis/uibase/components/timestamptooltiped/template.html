@@ -1,17 +1,5 @@
-{{#if specialDisplay}}
-    {{#component-tooltip content=showMainTimestamp htmlEnabled=true noTranslation=true}}
-        <span class="handle">
-            {{showOptionalElapsed}}
-        </span>
-    {{/component-tooltip}}
-{{else}}
-    {{#unless hideDate}}
-        {{timestamp maintimestamp}}
-    {{/unless}}
-    {{#if agoformat}}
-            <small class="text-muted">
-                <span class="glyphicon glyphicon-time"></span>
-                {{timeSince maintimestamp}}
-            </small>
-    {{/if}}
-{{/if}}
+{{#component-tooltip content=showMainTimestamp htmlEnabled=true noTranslation=true}}
+    <span class="handle">
+        {{showOptionalElapsed}}
+    </span>
+{{/component-tooltip}}
