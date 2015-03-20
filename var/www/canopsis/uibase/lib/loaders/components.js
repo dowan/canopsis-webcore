@@ -63,7 +63,8 @@ var components = [
     { name: 'components/component-formulaeditor', url: 'canopsis/uibase/components/formulaeditor/component', template: 'canopsis/uibase/components/formulaeditor/template.html' },
     { name: 'components/component-propertiestopopup', url: 'canopsis/uibase/components/propertiestopopup/component', template: 'canopsis/uibase/components/propertiestopopup/template.html' },
     { name: 'components/component-restobjectcombo', url: 'canopsis/uibase/components/restobjectcombo/component', template: 'canopsis/uibase/components/restobjectcombo/template.html' },
-    { name: 'components/component-contextselector', url: 'canopsis/uibase/components/contextselector/component', template: 'canopsis/uibase/components/contextselector/template.html' }
+    { name: 'components/component-contextselector', url: 'canopsis/uibase/components/contextselector/component', template: 'canopsis/uibase/components/contextselector/template.html' },
+    { name: 'components/component-colpick', url: 'canopsis/uibase/components/colpick/component', template: 'canopsis/uibase/components/colpick/template.html' }
 ];
 
 loader.loadWithTemplates(components);
