@@ -196,7 +196,7 @@ define([
                                 return record.save();
                             }
                         );
-                        RSVP.all(records_to_delete).then(
+                        Ember.RSVP.all(records_to_delete).then(
                             function() {
                                 me.trigger('refresh');
                             }
@@ -266,7 +266,7 @@ define([
                 }
             );
             // execute promises
-            RSVP.all(promises).then(success, context).catch(failure, context);
+            Ember.RSVP.all(promises).then(success, context).catch(failure, context);
         },
 
         /**
@@ -543,8 +543,19 @@ define([
                             break;
                         default: break;
                     }
+                    function _success(record) {
+                        me.trigger('refresh');
+                        if (success !== undefined) {
+                            success.call(context, record);
+                        }
+                    }
+                    function _failure(record) {
+                        if (failure !== undefined) {
+                            failure.call(context, record);
+                        }
+                    }
                     // save the record
-                    this.saveRecords(record, success, failure, context);
+                    me.saveRecords(record, _success, _failure, me);
                 }
             ).fail(
                 function(form) {

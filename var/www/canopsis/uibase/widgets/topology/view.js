@@ -425,8 +425,27 @@ define([
                         )
                     ;
                 };
+                function dragstart(d, i) {
+                    force.stop() // stops the force auto positioning before you start dragging
+                }
+                function dragmove(d, i) {
+                    d.px += d3.event.dx;
+                    d.py += d3.event.dy;
+                    d.x += d3.event.dx;
+                    d.y += d3.event.dy;
+                    tick(); // this is the key to make it work together with updating both px,py,x,y on d !
+                }
+                function dragend(d, i) {
+                    //d.fixed = true; // of course set the node to fixed so the force doesn't include the node in its auto positioning stuff
+                    tick();
+                    if (layout.activated) {
+                        force.resume();
+                    }
+                }
                 var drag = d3.behavior.drag()
-                    //.on('drag',drag)
+                    .on('dragstart', dragstart)
+                    .on('drag', dragmove)
+                    .on('dragend', dragend)
                     ;
                 var zoom = d3.behavior.zoom()
                     //.translate([0, 0])
@@ -516,52 +535,49 @@ define([
             engine.on(
                 'tick',
                 function() {
-                    // do something only if auto layout
-                    if (layout.activated) {
-                        link_model
-                            .attr(
-                                {
-                                    "d": function(d) {
-                                        return "M"+d.source.x+" "+d.source.y+"L"+d.target.x+" "+d.target.y;
-                                    },
+                    link_model
+                        .attr(
+                            {
+                                "d": function(d) {
+                                    return "M"+d.source.x+" "+d.source.y+"L"+d.target.x+" "+d.target.y;
+                                },
 
-                                    /*'x1': function(d) {
-                                        if (!d.source.x) {
-                                            d.source.x = 1;
-                                        }
-                                        return d.source.x;
-                                    },
-                                    'y1': function(d) {
-                                        if (!d.source.y) {
-                                            d.source.y = 1;
-                                        }
-                                        return d.source.y;
-                                    },
-                                    'x2': function(d) {
-                                        if (!d.target.x) {
-                                            d.target.x = 1
-                                        }
-                                        return d.target.x;
-                                    },
-                                    'y2': function(d) {
-                                        if (!d.target.y) {
-                                            d.target.y = 1;
-                                        }
-                                        return d.target.y;
-                                    }*/
-                                }
-                            )
-                        ;
-                        node_model
-                            .attr(
-                                {
-                                    "transform": function(d) {
-                                        return "translate(" + d.x + "," + d.y + ")";
+                                /*'x1': function(d) {
+                                    if (!d.source.x) {
+                                        d.source.x = 1;
                                     }
+                                    return d.source.x;
+                                },
+                                'y1': function(d) {
+                                    if (!d.source.y) {
+                                        d.source.y = 1;
+                                    }
+                                    return d.source.y;
+                                },
+                                'x2': function(d) {
+                                    if (!d.target.x) {
+                                        d.target.x = 1
+                                    }
+                                    return d.target.x;
+                                },
+                                'y2': function(d) {
+                                    if (!d.target.y) {
+                                        d.target.y = 1;
+                                    }
+                                    return d.target.y;
+                                }*/
+                            }
+                        )
+                    ;
+                    node_model
+                        .attr(
+                            {
+                                "transform": function(d) {
+                                    return "translate(" + d.x + "," + d.y + ")";
                                 }
-                            )
-                        ;
-                    }
+                            }
+                        )
+                    ;
                 }
             );
             // finish to run the layout
