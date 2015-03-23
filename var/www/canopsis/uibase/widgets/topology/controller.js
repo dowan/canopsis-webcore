@@ -18,28 +18,14 @@
 */
 
 /**
-* This widget uses 3 layers of models:
-* - Dom element ---> D3 element (node and link) <--> canopsis record.
-* Dom element to D3 element: field __data__
-* D3 element to canopsis record: elt
-* canopsis record to D3 element: d3_elt
-* All elements have the same uuid:
-* - id: Dom and D3 elements
-* - cid/_id: canopsis record.
+* This widget contains graph records (vertices, edges and graphs).
+* They are saved in controller.records_by_id dictionary (like record elements).
 *
 * The process begins in executing the updateModel method.
 * This last aims to retrieve a graph with its elements.
 * Once the graph is retrieved, all elements including the graph, are
 * transformed into schemas records and saved in the dictionary graph._delts where keys are record uid.
 * A vertice becomes a node, an edge becomes a set of node and links, and the graph is a node as well.
-* Then, D3 elements are created related to those records, and saved in
-* this.d3_graph object.
-* This last contains two lists respectively for nodes and links of D3, and a
-* dictionary of D3 elements by id.
-* Finally, in order to retrieve quickly links from an edge node, the elt link
-* property refers to its edge. And an edge contains two dictionaries of dictionaries of links by id by neighbour id
-* respectivelly named 'sources' and 'targets'.
-* Each link knows its position in the d3_graph thanks to the view_pos field.
 */
 define([
     'jquery',
@@ -60,10 +46,8 @@ define([
             TopologyViewMixin
         ],
 
-        graph: null, // canopsis graph model
-
-        width: null,  // view width
-        height: null,  // view height
+        graph: null, // graph record
+        records_by_id: {}, // record elements by id
 
         graph_cls: 'canopsis.topology.elements.Topology', // default graph class
 
@@ -78,65 +62,10 @@ define([
         vertice_elt_type: 'toponode', // vertice elt type
         edge_elt_type: 'topoedge', // edge elt type
 
-        layout: 'natural', // layout
+        selected: [], // selected records
 
         init: function() {
             this._super.apply(this, arguments);
-        },
-
-        /**
-        * Get request server url to get graph.
-        */
-        getSendEventUrl: function() {
-            result = '/event';
-
-            return result;
-        },
-
-        /**
-        * Update node information related to backend activity.
-        */
-        updateNode: function(node) {
-            // save node
-
-            // process node
-            var _url = this.getSendEventUrl();
-            var me = this;
-            var event = {
-                'connector': 'canopsis',
-                'connector_name': 'engine',
-                'event_type': node.get('type'),
-                'state': node.get('info').state ? node.get('info').state : 0,
-                'state_type': 1,
-                'cid': node.get('cid'),
-                'type': nod.get('type')
-            };
-            var type = node.get('_type');
-            switch(type) {
-                case 'graph':
-                    event.source_type = 'component';
-                    event.component = event.cid;
-                    break;
-                case 'vertice':
-                    event.source_type = 'resource';
-                    event.component = get(this, 'model.graph_id');
-                    event.resource = event.cid;
-                    break;
-                default:
-                    console.error('type ' + type + ' can not be updated.');
-            }
-            var promise = new Ember.RSVP.Promise(function(resolve, reject) {
-                $.ajax(
-                    {
-                        url: _url,
-                        type: 'POST',
-                        data: {
-                            'event': event
-                        }
-                    }
-                ).then(resolve, reject);
-            });
-            promise.then(success, failure);
         },
 
         /**
@@ -165,6 +94,32 @@ define([
         },
 
         /**
+        * Add a graph and all its related elements into this records.
+        *
+        * @param graph graph to add with all inner elements.
+        */
+        _addGraph: function(graph) {
+            var me = this;
+            var records_by_id = this.records_by_id;
+            // register the graph
+            this.graph = graph;
+            records_by_id[graph.get('id')] = graph;
+            // add all graph elts
+            var _delts = graph.get('_delts');
+            // and in doing the server request
+            Object.keys(_delts).forEach(
+                function(elt_id) {
+                    var elt = _delts[elt_id];
+                    var record = this.newRecord(elt['type'], elt);
+                    records_by_id[elt_id] = record;
+                },
+                me
+            );
+            // refresh the view
+            me.trigger('refresh');
+        },
+
+        /**
         * display nodes in the widget
         */
         findItems: function() {
@@ -174,75 +129,35 @@ define([
             var graph_id = get(this, 'model.graph_id');
             if (graph_id !== undefined) {
                 var query = {
-                    'ids': graph_id,
-                    'add_elts': true
+                    ids: graph_id,
+                    add_elts: true
                 };
                 var store = this.widgetDataStore;
                 store.find('graph', query).then(
                     function(result) {
                         var graph = null;
-                        if (result.content) {  // if content exists
+                        if (result.content.length > 0) {  // if content exists
                             // get graph and elt ids
                             graph = result.content[0];
-                            var elt_ids = graph.get('elts');
                             // if old graph exists
                             if (me.graph !== null) {
-                                // delete old elements
-                                var elts_to_delete = [];
-                                Object.keys(me.graph._delts).forEach(
-                                    function(elt_id) {
-                                        // in case of old element
-                                        if (graph._delts[elt_id] === undefined) {
-                                            var elt = me.graph._delts[elt_id];
-                                            elts_to_delete.push(elt.d3_elt);
-                                        }
+                                // delete old records
+                                var records_to_delete = me.records_by_id.map(
+                                    function(record_id) {
+                                        var record = me.records_by_id[record_id];
+                                        record.delete();
+                                        return record.save();
                                     },
-                                    this
-                                );
-                                me.delete(elts_to_delete);
-                            }
-                            // get elt_ids
-                            if (elt_ids) {
-                                var elts_query = {
-                                    ids: elt_ids
-                                };
-                                store.find('graphelt', elts_query).then(
-                                    function(result) {
-                                        var graphelts = result.content;
-                                        graphelts.forEach(
-                                            function(record) {
-                                                var record_id = record.get('cid');
-                                                graph._delts[record_id] = record;
-                                            }
-                                        );
-                                        graph._delts = result.content;
-                                        me.trigger('refresh');
-                                    }
+                                    me
                                 );
                             }
+                            me._addGraph(graph);
                         } else {  // if no graph exists
-                            graph = {
-                                _delts: {},
-                                type: me.graph_elt_type,
-                                _type: 'graph',
-                                _id: graph_id,
-                                cid: graph_id,
-                                _cls: me.graph_cls,
-                                info: {
-                                    task: {
-                                        cid: 'canopsis.topology.rule.action.worst_state',
-                                        params: {
-                                            update_entity: true
-                                        }
-                                    }
-                                },
-                                elts: []
-                            };
+                            me.graph = this.newRecord(me.graph_elt_type);
                         }
-                        // convert graph such as a record
-                        me.graph = me.toRecord(graph);
-                        // refresh the view
-                        me.trigger('refresh');
+                    },
+                    function(reason) {
+                        console.log(reason);
                     }
                 );
             }
@@ -252,249 +167,106 @@ define([
         * return unique id.
         */
         uuid: function(record) {
-            var result = this.widgetDataStore.adapterFor('graphelt').generateIdForRecord(record);
+            var result = ''+Math.random();//this.widgetDataStore.adapterFor('graphelt').generateIdForRecord(record);
             return result;
         },
 
         /**
-        * Edit input elt properties.
-        *
-        * @param data data to edit.
+        * Delete record(s).
+        * @param records record(s) to delete.
         */
-        edit: function(data, success, failure, context) {
-            function callback(record) {
-                this.trigger('refresh');
-                if (success !== undefined) {
-                    success.call(context, record);
-                }
+        deleteRecords: function(records) {
+            // ensure records is an array of records
+            if (! Array.isArray(records)) {
+                records = [records];
             }
-            var elt = data.elt;
-            this.editRecord(elt, callback, failure, this);
-        },
-
-        /**
-        * Delete a selected element or all elements related to input data.
-        * @param data array of data to delete if not undefined.
-        */
-        delete: function(datum, doNotUpdateModel) {
-            //ensure data is an array of data
-            if (! Array.isArray(datum)) {
-                datum = [datum];
-            }
-            // arrays of link/node to delete once at the end for better complexity time reasons
-            var links_data_to_delete = [];
-            var nodes_data_to_delete = [];
-
-            datum.forEach(
-                function(data) {
-                    // forbid to delete the main topology
-                    if (data.id === this.graph.get('cid')) {
-                        console.error('Impossible to delete the main topology');
-                    } else if (data.isSource !== undefined) { // is data a target link ?
-                        var key = data.isSource? 'sources' : 'targets';
-                        var key_s = key.substring(0, key.length - 1);
-                        // delete from sources/targets
-                        var bound_nodes = data.elt.get(key);
-                        var neighbour = data[key_s];
-                        var index = bound_nodes.indexOf(neighbour.id);
-                        bound_nodes.splice(index, 1);
-                        // delete data from view
-                        delete data.elt.d3_elt[key][neighbour.id][data.id];
-                        // reference link position in d3_graph.links
-                        links_data_to_delete.push(data);
-                    } else { // data is a node/edge/topology
-                        // add data into nodes_data_to_delete for future cleaning
-                        nodes_data_to_delete.push(data);
-                        // delete nodes
-                        if (data.elt.get('_type') === 'edge') { // in case of an edge
-                            // get all link_data in order to remove them
-                            ['sources', 'targets'].forEach(
-                                function(key) {
-                                    var neighbours = data[key];
-                                    Object.keys(neighbours).forEach(
-                                        function(neighbour_id) {
-                                            var links_by_id = neighbours[neighbour_id];
-                                            Object.keys(links_by_id).forEach(
-                                                function(link_id) {
-                                                    var link_data = links_by_id[link_id];
-                                                    // add link in the right to deleting them later
-                                                    links_data_to_delete.push(link_data);
-                                                }
-                                            );
-                                        }
-                                    );
-                                },
-                                this
-                            );
-                        } else {
-                            // delete links from edges
-                            // let's iterate on dict of data by id in the view
-                            var nodes = this.d3_graph.nodes;
-                            var elts_to_delete = []; // for time execution reason, we save in memory all elts to delete in order to delete them once at the end
-                            nodes.forEach(
-                                function(edge) {
-                                    // if elt is an edge
-                                    if (edge.elt.get('_type') === 'edge') {
-                                        // iterate on sources/targets
-                                        ['sources', 'targets'].forEach(
-                                            function(key) {
-                                                var links_by_id = edge[key][data.id];
-                                                if (links_by_id !== undefined) {
-                                                    var link_ids = Object.keys(links_by_id);
-                                                    var tmp_elts_to_delete = [];
-                                                    for (var index=0; index<link_ids.length; index++) {
-                                                        var link_id = link_ids[index];
-                                                        var link_data = links_by_id[link_id];
-                                                        if (link_data.isSource) {
-                                                            // if source, add edge and all links to delete
-                                                            tmp_elts_to_delete = [edge];
-                                                            break;
-                                                        } else {
-                                                            // if not source, add target link only
-                                                            tmp_elts_to_delete.push(link_data);
-                                                        }
-                                                    }
-                                                    // fill elts_to_delete with tmp_elts_to_delete
-                                                    tmp_elts_to_delete.forEach(
-                                                        function(d) {
-                                                            elts_to_delete.push(d);
-                                                        }
-                                                    );
-                                                }
-                                            },
-                                            this
-                                        );
-                                    }
-                                },
-                                this
-                            );
-                            // delete once edges and links
-                            if (elts_to_delete.length > 0) {
-                                // without update the model at the end
-                                this.delete(elts_to_delete, true);
+            var me = this;
+            var graph_id = this.graph.get('id');
+            // delete all records
+            records.forEach(
+                function(record) {
+                    // but the main graph
+                    if (record.get('id') === graph_id) {
+                        console.error('Impossible to delete the main graph');
+                    } else {
+                        // let the backend delete records
+                        var records_to_delete = records.map(
+                            function(record) {
+                                record.delete();
+                                return record.save();
                             }
-                        }
+                        );
+                        RSVP.all(records_to_delete).then(
+                            function() {
+                                me.trigger('refresh');
+                            }
+                        );
                     }
-                },
-                this
-            );
-            // delete link shapes from view once
-            if (links_data_to_delete.length > 0) {
-                links_data_to_delete.sort(function(a, b) { return a.view_pos - b.view_pos;});
-                links_data_to_delete.forEach(
-                    function(d, i) {
-                        // delete link from view
-                        var pos = d.view_pos - i;
-                        this.d3_graph.links.splice(pos, 1);
-                        delete this.d3_graph.data_by_id[d.id];
-                    },
-                    this
-                );
-                // delete shapes
-                //var links_to_delete = this.panel.selecAll('.'+this.link_class).data(links_data_to_delete, function(d) { return d.id});
-                //this.delLinks(links_to_delete);
-                // update view pos
-                for(var pos = links_data_to_delete[0].view_pos; pos < this.d3_graph.links.length; pos++) {
-                    this.d3_graph.links[pos].view_pos = pos;
-                };
-            }
-            // delete node shapes from view once
-            if (nodes_data_to_delete.length > 0) {
-                nodes_data_to_delete.sort(function(a, b) { return a.index - b.index;});
-                nodes_data_to_delete.forEach(
-                    function(d, i) {
-                        // delete node from model
-                        delete this.graph._delts[d.id];
-                        // and from view
-                        index = d.index - i;
-                        this.d3_graph.nodes.splice(index, 1);
-                        delete this.d3_graph.data_by_id[d.id];
-                    },
-                    this
-                );
-                // delete shapes
-                //var nodes_to_delete = this.panel.selectAll('.'+this.node_class).data(nodes_data_to_delete, function(d) { return d.id});
-                //this.delNodes(nodes_to_delete);
-                // update indexes
-                for (index=nodes_data_to_delete[0].index; index < this.d3_graph.nodes.length; index++) {
-                    this.d3_graph.nodes[index].index = index;
                 }
-            }
-            // update model if asked
-            if (!doNotUpdateModel) {
-                this.trigger('refresh');
-            }
+            );
         },
 
         /**
-        * Select input data in order to get detail informations.
+        * Select input record(s) in order to get detail informations.
         *
-        * @param data array of data.
+        * @param records record(s) to select.
         */
-        select: function(data) {
-            if (! Array.isArray(data)) {
-                data = [data];
+        select: function(records) {
+            if (! Array.isArray(records)) {
+                records = [records];
             }
-            data.forEach(
-                function(d) {
-                    this.selected[d.id] = d;
+            records.forEach(
+                function(record) {
+                    this.selected[record.id] = record;
                 },
                 this
             )
-            this.refreshSelectedShapes();
+            this.trigger('refresh');
         },
 
         /**
-        * Unselect input data in order to get detail informations.
+        * Unselect input record(s) in order to get detail informations.
         *
-        * @param data array of data.
+        * @param records record(s) to unselect.
         */
-        unselect: function(data) {
-            if (! Array.isArray(data)) {
-                data = [data];
+        unselect: function(records) {
+            if (! Array.isArray(records)) {
+                records = [records];
             }
-            data.forEach(
-                function(d) {
-                    delete this.selected[d.id];
+            records.forEach(
+                function(record) {
+                    delete this.selected[record.id];
                 },
                 this
             );
-            this.refreshSelectedShapes();
+            this.trigger('refresh');
         },
 
         /**
-        * Convert a record into a graph element.
+        * Save records.
         *
-        * @param record record to convert into a graph element.
+        * @param records records to save.
         */
-        toElt: function(record) {
-            var result = {
-                _id: record.get('_id'),
-                cid: record.get('cid'),
-                _type: record.get('_type'),
-                type: record.get('type'),
-                _cls: record.get('_cls'),
-                info: record.get('info')
-            };
-            var record_type = record.get('_type');
-            if (record_type === 'edge') {
-                result.weight = record.get('weight');
-                result.sources = record.get('sources');
-                result.targets = record.get('targets');
-                result.directed = record.get('directed');
+        saveRecords: function(records, success, failure, context) {
+            // ensure records is an array of records
+            if (! Array.isArray(records)) {
+                records = [records];
             }
-            // save coordinates in the dictionary of shape.graph_id
-            if (result.info.shape === undefined) {
-                result.info.shape = {};
-            }
-            result.info.shape[get(this, 'model.graph_id')] = {
-                x: record.d3_elt.x,
-                y: record.d3_elt.y,
-                px: record.d3_elt.px,
-                py: record.d3_elt.py,
-                fixed: record.d3_elt.fixed
-            }
-            return result;
+            // save all records in an array of promises
+            var promises = records.map(
+                function(record) {
+                    var info = record.get('info');
+                    // save view elt information in the dictionary of view graph_id
+                    if (info.view === undefined) {
+                        info.view = {};
+                    }
+                    info.view[get(this, 'model.graph_id')] = record.view;
+                    // save the record
+                    return record.save();
+                }
+            );
+            // execute promises
+            RSVP.all(promises).then(success, context).catch(failure, context);
         },
 
         /**
@@ -505,50 +277,44 @@ define([
         * @param success edition success callback. Takes record in parameter.
         * @param failure edition failure callback. Takes record in parameter.
         */
-        toRecord: function(elt, edit, success, failure, context) {
-            var result = elt;
-            if (!elt) {
-                var uuid = this.uuid();
-                elt = {
-                    _id: uuid,
-                    cid: uuid,
-                    type: this.vertice_elt_type,
-                    _type: 'vertice',
-                    _cls: this.default_vertice_cls,
-                    info: {
-                        entity: '',
-                        operator: ''
-                    },
-                };
-            }
-            // if elt is a record
-            if (elt.store === undefined) {
-                if (elt.cid === undefined) {
-                    var uuid = this.uuid();
-                    elt.cid = uuid;
-                    elt._id = uuid;
-                    if (!elt._type) {
-                        elt._type = 'vertice';
-                        elt.type = this.vertice_elt_type;
-                    }
-                    if (!elt._cls) {
-                        elt._cls = this.default_vertice_cls;
-                    }
-                    if (!elt.info) {
-                        elt.info = {
-                            entity: '',
-                            operator: '',
-                            state: 0
-                        };
+        newRecord: function(type, properties, edit, success, failure, context) {
+            var id = null;
+            // ensure id exists
+            if (properties !== undefined) {
+                id = properties.id;
+                if (id === undefined) {
+                    id = properties.cid;
+                    if (id === undefined) {
+                        id = this.uuid();
                     }
                 }
-                var result = dataUtils.getStore().createRecord(
-                    elt.type,
-                    elt
-                );
+            } else {
+                properties = {};
+                id = this.uuid();
+            }
+            properties.id = id;
+            properties.cid = id;
+            var result = this.widgetDataStore.createRecord(type, properties);
+            function _success(record) {
+                var record_id = record.get('id');
+                var old_record = this.records_by_id[record_id];
+                if (old_record !== undefined) {
+                    this.deleteRecords(old_record);
+                }
+                this.records_by_id[record_id] = record;
+                if (success !== undefined) {
+                    success.call(context, record);
+                }
+            }
+            function _failure(record) {
+                record.delete();
+                record.save();
+                if (failure !== undefined) {
+                    failure.call(context, record);
+                }
             }
             if (edit) {
-                this.editRecord(result, success, failure, context);
+                this.editRecord(result, _success, _failure, this);
             }
             return result;
         },
@@ -556,11 +322,16 @@ define([
         /**
         * Edit a record.
         *
-        * @param record record to edit.
+        * @param record record to edit. Can be a record id.
         * @param success edition success callback. Takes record in parameter.
         * @param failure edition failure callback. Takes record in parameter.
         */
         editRecord: function(record, success, failure, context) {
+            var me = this;
+            // ensure record is a record in case of record id
+            if (typeof record === 'string') {
+                record = this.records_by_id[record];
+            }
             // fill operator data from record
             var record_type = record.get('_type');
             switch(record_type) {
@@ -772,13 +543,14 @@ define([
                             break;
                         default: break;
                     }
-                    record.save();
-                    if (success !== undefined) {
-                        success.call(context, record);
-                    }
+                    // save the record
+                    record.save().then(
+                        success,
+                        failure,
+                        context
+                    );
                 }
-            );
-            recordWizard.submit.fail(
+            ).fail(
                 function(form) {
                     if (failure !== undefined) {
                         failure.call(context, record);

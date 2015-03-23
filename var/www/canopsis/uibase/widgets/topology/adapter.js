@@ -21,13 +21,16 @@ define([
     'ember',
     'ember-data',
     'app/application',
-    'app/lib/promisesmanager'
-], function(Ember, DS, Application, promisesmanager) {
+    'app/adapters/application',
+    'app/lib/promisesmanager',
+    'app/lib/utils/modelsolve'
+], function(Ember, DS, Application, ApplicationAdapter, promisesmanager, modelsolve) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
-    var adapter = DS.RESTAdapter.extend({
+    var adapter = ApplicationAdapter.extend({
 
         graph_type: 'topology',
 
@@ -35,11 +38,64 @@ define([
             return '/' + this.graph_type + '/' + type + 's';
         },
 
-        findQuery: function(store, type, query) {
-            if (this.sortQueryParams) {
-              query = this.sortQueryParams(query);
+        createRecord: function(store, type, record) {
+            var data = {};
+            if (isNone(type) || isNone(type.typeKey)) {
+                console.error('Error while retrieving typeKey from type is it is none.');
             }
-            return this.ajax(this.buildURL(type.typeKey), 'POST', { data: query });
+            var serializer = store.serializerFor(type.typeKey);
+
+            data = serializer.serializeIntoHash(data, type, record, 'POST', { includeId: true });
+
+            var url = this.buildURL('graphelt', null);
+
+            var query = {data: {elt: data}};
+
+            return new Ember.RSVP.Promise(function(resolve, reject) {
+                var funcres = modelsolve.gen_resolve(resolve);
+                var funcrej = modelsolve.gen_reject(reject);
+                $.put(url, query).then(funcres, funcrej);
+            });
+        },
+
+        updateRecord: function(store, type, record) {
+            var data = {};
+            var serializer = store.serializerFor(type.typeKey);
+
+            data = serializer.serializeIntoHash(data, type, record, 'POST', { includeId: true });
+
+            var url = this.buildURL('graphelt', null);
+
+            var query = {data: {elt: data}};
+
+            return new Ember.RSVP.Promise(function(resolve, reject) {
+                var funcres = modelsolve.gen_resolve(resolve);
+                var funcrej = modelsolve.gen_reject(reject);
+                $.put(url, query).then(funcres, funcrej);
+            });
+        },
+
+        deleteRecord: function(store, type, record) {
+            var url = this.buildURL('graphelt', null);
+
+            var id = get(record, 'id');
+            var query = {data: {ids: id}};
+
+            return new Ember.RSVP.Promise(function(resolve, reject) {
+                var funcres = modelsolve.gen_resolve(resolve);
+                var funcrej = modelsolve.gen_reject(reject);
+                $.delete(url, query).then(funcres, funcrej);
+            });
+        },
+
+        findQuery: function(store, type, query) {
+            var url = this.buildURL(type.typeKey, null);
+
+            return new Ember.RSVP.Promise(function(resolve, reject) {
+                var funcres = modelsolve.gen_resolve(resolve);
+                var funcrej = modelsolve.gen_reject(reject);
+                $.post(url, query).then(funcres, funcrej);
+            });
         },
 
     });
@@ -48,6 +104,9 @@ define([
     loader.register('adapter:graph', adapter);
     loader.register('adapter:vertice', adapter);
     loader.register('adapter:edge', adapter);
+    loader.register('adapter:toponode', adapter);
+    loader.register('adapter:topoedge', adapter);
+    loader.register('adapter:topo', adapter);
 
     return adapter;
 });
