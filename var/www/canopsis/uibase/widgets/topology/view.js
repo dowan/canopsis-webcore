@@ -507,6 +507,12 @@ define([
             // refresh locked shapes
             this.refreshLockedShapes();
 
+            var diagonal = d3.svg.diagonal.radial()
+                .projection(function(d) {
+                        return [d.y, d.x / 180 * Math.PI];
+                    }
+                );
+
             engine.on(
                 'tick',
                 function() {
@@ -514,39 +520,35 @@ define([
                     if (layout.activated) {
                         link_model
                             .attr(
-                                'x1',
-                                function(d) {
-                                    if (!d.source.x) {
-                                        d.source.x = 1;
-                                    }
-                                    return d.source.x;
-                                }
-                            )
-                            .attr(
-                                'y1',
-                                function(d) {
-                                    if (!d.source.y) {
-                                        d.source.y = 1;
-                                    }
-                                    return d.source.y;
-                                }
-                            )
-                            .attr(
-                                'x2',
-                                function(d) {
-                                    if (!d.target.x) {
-                                        d.target.x = 1
-                                    }
-                                    return d.target.x;
-                                }
-                            )
-                            .attr(
-                                'y2',
-                                function(d) {
-                                    if (!d.target.y) {
-                                        d.target.y = 1;
-                                    }
-                                    return d.target.y;
+                                {
+                                    "d": function(d) {
+                                        return "M"+d.source.x+" "+d.source.y+"L"+d.target.x+" "+d.target.y;
+                                    },
+
+                                    /*'x1': function(d) {
+                                        if (!d.source.x) {
+                                            d.source.x = 1;
+                                        }
+                                        return d.source.x;
+                                    },
+                                    'y1': function(d) {
+                                        if (!d.source.y) {
+                                            d.source.y = 1;
+                                        }
+                                        return d.source.y;
+                                    },
+                                    'x2': function(d) {
+                                        if (!d.target.x) {
+                                            d.target.x = 1
+                                        }
+                                        return d.target.x;
+                                    },
+                                    'y2': function(d) {
+                                        if (!d.target.y) {
+                                            d.target.y = 1;
+                                        }
+                                        return d.target.y;
+                                    }*/
                                 }
                             )
                         ;
@@ -1174,7 +1176,10 @@ define([
         addLinks: function(links) {
             var me = this;
             var diagonal = d3.svg.diagonal.radial()
-    .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
+                .projection(function(d) {
+                        return [d.y, d.x / 180 * Math.PI];
+                    }
+                );
             // create the graphical element
             var shapes = links
                 .append('path') // line representation
