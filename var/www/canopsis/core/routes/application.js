@@ -159,14 +159,76 @@ define([
                 }
             }
 
-            return Ember.RSVP.Promise.all([
+            set(this, 'promiseArray', [
                 superPromise,
                 footerPromise,
                 headerPromise,
                 devtoolsPromise,
                 frontendConfigPromise,
-                ticketPromise
+                ticketPromise,
             ]);
+
+            set(this, 'store', store);
+
+            var authpromise = this.authConfig('authconfiguration', function (authconfigurationRecord) {
+
+                var serviceList = get(authconfigurationRecord, 'services');
+
+                console.log('authconfigurationRecord', authconfigurationRecord, serviceList);
+
+                if(!isNone(serviceList)) {
+                    for(var i = 0, l = serviceList.length; i < l; i++) {
+                        //this test avoids empty strings
+                        if(serviceList[i]) {
+                            var promise = route.authConfig(serviceList[i]);
+                            get(route, 'promiseArray').pushObject(promise);
+                        }
+                    }
+                }
+            });
+
+            get(this, 'promiseArray').pushObject(authpromise);
+
+            return Ember.RSVP.Promise.all(get(this, 'promiseArray'));
+        },
+
+        authConfig: function (authType, callback) {
+
+            var authId = 'cservice.' + authType;
+            var appController = this.controllerFor('application');
+            var store = get(this, 'store');
+
+            var onReadyRecord = function(appController, authType, record, callback) {
+                appController[authType] = record;
+                if(!appController.authTypes) {
+                    appController.authTypes = [];
+                }
+
+                appController.authTypes.pushObject(authType);
+
+                if(!isNone(callback)) {
+                    callback(record);
+                }
+            };
+
+            var promise = store.find(authType, authId);
+            promise.then(function(queryResults) {
+
+                console.log(authType, 'config found', queryResults);
+                onReadyRecord(appController, authType, queryResults, callback);
+
+            }, function() {
+                console.log('create base ' + authType + ' config');
+
+                var record = store.createRecord(authType, {
+                    crecord_name: authType
+                });
+
+                record.id = authId;
+                onReadyRecord(appController, authType, record, callback);
+            });
+
+            return promise;
         },
 
         model: function() {

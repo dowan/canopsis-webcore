@@ -151,22 +151,6 @@ define([
             console.log('finding authentication backends config');
 
             //TODO refactor this in application route
-            appController.authConfig('authconfiguration', function (authconfigurationRecord) {
-
-                var serviceList = get(authconfigurationRecord, 'services');
-
-                console.log('authconfigurationRecord', authconfigurationRecord, serviceList);
-
-                if(!isNone(serviceList)) {
-                    var length = serviceList.length;
-                    for(var i = 0 ; i < length; i++) {
-                        //this test avoids empty strings
-                        if(serviceList[i]) {
-                            appController.authConfig(serviceList[i]);
-                        }
-                    }
-                }
-            });
 
             console.groupEnd();
             this.refreshPartialsList();
@@ -175,38 +159,6 @@ define([
             //close the init group
             console.groupEnd();
             console.tags.remove('init');
-        },
-
-        authConfig: function (authType, callback) {
-
-            var authId = 'cservice.' + authType;
-            var appController = this;
-            var store = get(this, 'devtoolsStore');
-
-            var onReadyRecord = function(appController, authType, record, callback) {
-                set(appController, authType, record);
-
-                if(!isNone(callback)) {
-                    callback(record);
-                }
-            };
-
-            store.find(authType, authId).then(function(queryResults) {
-
-                console.log(authType, 'config found', queryResults);
-                onReadyRecord(appController, authType, queryResults, callback);
-
-            }, function() {
-                console.log('create base ' + authType + ' config');
-
-                var record = store.createRecord(authType, {
-                    crecord_name: authType
-                });
-
-                record.id = authId;
-                onReadyRecord(appController, authType, record, callback);
-            });
-
         },
 
         editAuthConfig: function(authType) {
