@@ -23,9 +23,9 @@
 *
 * This widget uses 2 layers of models:
 * - Dom element ---> view element (node and link).
-* View elements are stored in the shapes_by_id dictionary where ids correspond to controller record ids.
+* View elements are stored in the shapesById dictionary where ids correspond to controller record ids.
 * Dom element to view element: field __data__
-* view element to canopsis record: using view id in controller.records_by_id.
+* view element to canopsis record: using view id in controller.recordsById.
 * Both Dom and view elements have the same id.
 *
 * A view element contains such view properties:
@@ -33,7 +33,7 @@
 * - fixed: if True, the element is not impacted by the auto-layout.
 * - x, y: respective abscisse and ordinate coordinates.
 *
-* All view elements are saved in the property shapes_by_id.
+* All view elements are saved in the property shapesById.
 * nodes and links properties are dedicated to the layout engine.
 * The process begins updating the view model, then in drawing shapes.
 * During update, records are retrieved form the model, and if existing id already exist in view model, the view keeps existing view properties (coordinates, etc.) and update business properties (dynamic weight, etc.).
@@ -72,14 +72,14 @@ define([
 
     var TopologyViewMixin = Ember.Mixin.create({
 
-        shapes_by_id: {}, // dictionary of shapes by id
+        shapesById: {}, // dictionary of shapes by id
 
         nodes: [], // list of nodes
         links: [], // list of links
 
-        node_class: 'node', // node class name
-        link_class: 'link', // link class name
-        edge_class: 'edge', // edge class name
+        nodeClass: 'node', // node class name
+        linkClass: 'link', // link class name
+        edgeClass: 'edge', // edge class name
 
         toolbox: null, // global toolbox which may be unique
 
@@ -98,13 +98,13 @@ define([
 
         source: null, // source position in multi selection (link, multi-select, etc.)
 
-        toolbox_gap: 50, // toolbox gap between shapes
+        toolboxGap: 50, // toolbox gap between shapes
         duration: 500, // transition duration in ms
 
         translate: [0, 0], // translation
         scale: 1, // layout scale
 
-        _default_layout: {
+        _defaultLayout: {
             partition: {
                 sort: function comparator(a, b) {
                     var result = d3.ascending(a.name, b.name);
@@ -269,45 +269,45 @@ define([
             // get global reference to this in updateModel function
             var me = this;
             // get record elements by id
-            var records_by_id = get(this, 'controller').records_by_id;
+            var recordsById = get(this, 'controller').recordsById;
             // add nodes and links in graph
             // contain nodes by entity_ids
-            var nodes_by_entity_ids = {};
+            var nodesByEntityIds = {};
             /**
             * Save node related to entity ids in memory.
             */
             function saveRefToEntity(node) {
-                var node_id = node.id;
-                var info = records_by_id[node_id].get('info');
+                var nodeId = node.id;
+                var info = recordsById[nodeId].get('info');
                 // add reference between entity id and node
                 if (info) {
                     var entity = info.entity;
                     if (entity !== undefined) {
-                        if (nodes_by_entity_ids[entity] === undefined) {
-                            nodes_by_entity_ids[entity] = [node];
+                        if (nodesByEntityIds[entity] === undefined) {
+                            nodesByEntityIds[entity] = [node];
                         } else {
-                            nodes_by_entity_ids[entity].push(node);
+                            nodesByEntityIds[entity].push(node);
                         }
                     }
                 }
             };
 
-            Object.keys(records_by_id).forEach(
-                function(record_id) {
-                    var record = records_by_id[record_id];
+            Object.keys(recordsById).forEach(
+                function(recordId) {
+                    var record = recordsById[recordId];
                     // get record shape from record
-                    var record_shape = this.get_node(record);
-                    // update its reference in shapes_by_id
-                    this.shapes_by_id[record_id] = record_shape;
+                    var recordShape = this.getNode(record);
+                    // update its reference in shapesById
+                    this.shapesById[recordId] = recordShape;
                     if (record.get('_type') === 'edge') {
                         // add links if record is an edge.
-                        this.weaveLinks(record_shape);
+                        this.weaveLinks(recordShape);
                     } else {
                         // initialize weight
-                        record_shape._weight = 1;
+                        recordShape._weight = 1;
                     }
                     // register the node in memory
-                    saveRefToEntity(record_shape);
+                    saveRefToEntity(recordShape);
                 },
                 this
             );
@@ -315,12 +315,12 @@ define([
             // resolve weight
             this.nodes.forEach(
                 function(node, i) {
-                    var node_id = node.id;
-                    var record = records_by_id[node_id];
+                    var nodeId = node.id;
+                    var record = recordsById[nodeId];
                     if (record.get('_type') === 'edge') {
-                        var source_id = record.get('sources')[0];
-                        var source_node = this.shapes_by_id[source_id];
-                        source_node._weight += record.get('weight');
+                        var sourceId = record.get('sources')[0];
+                        var sourceNode = this.shapesById[sourceId];
+                        sourceNode._weight += record.get('weight');
                     }
                     node.index = i;
                     node.entity = undefined;
@@ -332,11 +332,11 @@ define([
             this.links.forEach(
                 function(link) {
                     if (typeof link.source === 'string') {
-                        link.source = this.shapes_by_id[link.source];
+                        link.source = this.shapesById[link.source];
                     }
                     if (typeof link.target === 'string') {
-                        var parent_shape = this.shapes_by_id[link.target];
-                        link.parent = link.target = parent_shape;
+                        var parentShape = this.shapesById[link.target];
+                        link.parent = link.target = parentShape;
                     }
                 },
                 this
@@ -344,12 +344,12 @@ define([
 
             // resolve entities
             get(this, 'controller').getEntitiesFromServer(
-                Object.keys(nodes_by_entity_ids),
+                Object.keys(nodesByEntityIds),
                 function(result) {
                     if (result.total !== 0) {
                         result.data.forEach(
                             function(entity) {
-                                nodes_by_entity_ids[entity._id].forEach(
+                                nodesByEntityIds[entity._id].forEach(
                                     function(node) {
                                         node.entity = entity;
                                     }
@@ -371,20 +371,20 @@ define([
             var height = get(this, 'controller.model.height');
             if (!height) height = width * 9 / 16;
             // get the right layout
-            var layout_type = get(this, 'controller.model.layout');
+            var layoutType = get(this, 'controller.model.layout');
             var layout = this._layout;
-            layout.type = layout_type;
+            layout.type = layoutType;
             // initialize the engine if necessary
             var engine = layout.engine;
-            if (layout[layout_type] === null) {
+            if (layout[layoutType] === null) {
                 // initialize layout with default properties
-                engine = layout.engine = d3.layout[layout_type]();
-                layout[layout_type] = this._default_layout[layout_type];
+                engine = layout.engine = d3.layout[layoutType]();
+                layout[layoutType] = this._defaultLayout[layoutType];
             }
             // apply layout properties
-            Object.keys(layout[layout_type]).forEach(
+            Object.keys(layout[layoutType]).forEach(
                 function(layout_property_id) {
-                    engine[layout_property_id](layout[layout_type][layout_property_id]);
+                    engine[layout_property_id](layout[layoutType][layout_property_id]);
                 }
             );
             // apply size
@@ -436,7 +436,7 @@ define([
                     tick(); // this is the key to make it work together with updating both px,py,x,y on d !
                 }
                 function dragend(d, i) {
-                    //d.fixed = true; // of course set the node to fixed so the force doesn't include the node in its auto positioning stuff
+                    d.fixed = true; // of course set the node to fixed so the force doesn't include the node in its auto positioning stuff
                     tick();
                     if (layout.activated) {
                         force.resume();
@@ -450,7 +450,7 @@ define([
                 var zoom = d3.behavior.zoom()
                     //.translate([0, 0])
                     //.scale(1)
-                    .scaleExtent([1.5, 8])
+                    .scaleExtent([1.5, 10])
                     .on('zoom', zoom)
                 ;
                 // or create it if it does not exist
@@ -497,28 +497,28 @@ define([
             // load nodes and links into engine layout
             engine.nodes(this.nodes).links(this.links);
             // get link model
-            var link_model = this.panel.selectAll('.' + this.link_class)
+            var linkModel = this.panel.selectAll('.' + this.linkClass)
                 .data(this.links, function(link) {return link.id;});
 
             // process links to delete, add and update.
-            var links_to_add = link_model.enter();
-            this.addLinks(links_to_add);
-            var links_to_update = link_model;
-            this.updateLinks(links_to_update);
-            var links_to_delete = link_model.exit();
-            this.delLinks(links_to_delete);
+            var linksToAdd = linkModel.enter();
+            this.addLinks(linksToAdd);
+            var linksToUpdate = linkModel;
+            this.updateLinks(linksToUpdate);
+            var linksToDelete = linkModel.exit();
+            this.delLinks(linksToDelete);
 
             // get node model
-            var node_model = this.panel.selectAll('.' + this.node_class)
+            var nodeModel = this.panel.selectAll('.' + this.nodeClass)
                 .data(this.nodes, function(node) { return node.id; });
 
             // process nodes to delete, add and update.
-            var nodes_to_add = node_model.enter();
-            this.addNodes(nodes_to_add);
-            var nodes_to_update = node_model;
-            this.updateNodes(nodes_to_update);
-            var nodes_to_delete = node_model.exit();
-            this.delNodes(nodes_to_delete);
+            var nodesToAdd = nodeModel.enter();
+            this.addNodes(nodesToAdd);
+            var nodesToUpdate = nodeModel;
+            this.updateNodes(nodesToUpdate);
+            var nodesToDelete = nodeModel.exit();
+            this.delNodes(nodesToDelete);
 
             // refresh selected shapes
             this.refreshSelectedShapes();
@@ -535,41 +535,19 @@ define([
             engine.on(
                 'tick',
                 function() {
-                    link_model
+                    if (!layout.activated) {
+                        engine.stop();
+                    }
+                    linkModel
                         .attr(
                             {
                                 "d": function(d) {
                                     return "M"+d.source.x+" "+d.source.y+"L"+d.target.x+" "+d.target.y;
-                                },
-
-                                /*'x1': function(d) {
-                                    if (!d.source.x) {
-                                        d.source.x = 1;
-                                    }
-                                    return d.source.x;
-                                },
-                                'y1': function(d) {
-                                    if (!d.source.y) {
-                                        d.source.y = 1;
-                                    }
-                                    return d.source.y;
-                                },
-                                'x2': function(d) {
-                                    if (!d.target.x) {
-                                        d.target.x = 1
-                                    }
-                                    return d.target.x;
-                                },
-                                'y2': function(d) {
-                                    if (!d.target.y) {
-                                        d.target.y = 1;
-                                    }
-                                    return d.target.y;
-                                }*/
+                                }
                             }
                         )
                     ;
-                    node_model
+                    nodeModel
                         .attr(
                             {
                                 "transform": function(d) {
@@ -591,31 +569,30 @@ define([
         *
         * @param edge d3 graph edge.
         */
-        weaveLinks: function(d3_edge) {
+        weaveLinks: function(d3Edge) {
             var me = this;
             // save count of link_id per targets/sources
-            var link_id_count = {};
-            var records_by_id = get(this, 'controller').records_by_id;
-            var id = d3_edge.id;
-            var edge = records_by_id[id];
+            var recordsById = get(this, 'controller').recordsById;
+            var id = d3Edge.id;
+            var edge = recordsById[id];
             // cause a d3 link has one source and one target, we may create as many link as there are composition of sources and targets.
             var sources = edge.get('sources');
             var targets = edge.get('targets');
             // update weight
-            d3_edge._weight = edge.get('weight');
-            // save links in d3_edge links
-            if (d3_edge.sources === undefined) {
-                d3_edge.sources = {};
-                d3_edge.targets = {};
+            d3Edge._weight = edge.get('weight');
+            // save links in d3Edge links
+            if (d3Edge.sources === undefined) {
+                d3Edge.sources = {};
+                d3Edge.targets = {};
             }
-            var neighbour_counts = {
+            var neighbourCounts = {
                 sources: {},
                 targets: {}
             };
             // array of links view pos to delete at the end for better complexity time resolution
-            var link_pos_to_delete = [];
+            var linkPosToDelete = [];
             /**
-            * Add links in d3_edge.
+            * Add links in d3Edge.
             * @param key value among targets and sources
             */
             function updateLinks(key) {
@@ -624,69 +601,69 @@ define([
                 neighbours.forEach(
                     function(d) {
                         // get number of time we meet d
-                        var neighbour_count = neighbour_counts[key][d];
-                        if (neighbour_count === undefined) {
-                            neighbour_count = 0;
-                            neighbour_counts[key][d] = neighbour_count;
+                        var neighbourCount = neighbourCounts[key][d];
+                        if (neighbourCount === undefined) {
+                            neighbourCount = 0;
+                            neighbourCounts[key][d] = neighbourCount;
                         }
                         // increment neighbour count
-                        neighbour_count++;
-                        neighbour_counts[key][d] = neighbour_count;
+                        neighbourCount++;
+                        neighbourCounts[key][d] = neighbourCount;
                         // get d links
-                        var links_by_id = d3_edge[key][d];
-                        if (links_by_id === undefined) {
-                            links_by_id = {};
-                            d3_edge[key][d] = links_by_id;
+                        var linksById = d3Edge[key][d];
+                        if (linksById === undefined) {
+                            linksById = {};
+                            d3Edge[key][d] = linksById;
                         }
                         // if a link is missing
-                        var links_by_id_length = Object.keys(links_by_id).length;
-                        if (links_by_id_length < neighbour_count) {
+                        var linksByIdLength = Object.keys(linksById).length;
+                        if (linksByIdLength < neighbourCount) {
                             // create it
                             link = {
-                                edge: d3_edge,
+                                edge: d3Edge,
                                 type: 'link',
                                 isSource: isSource,
                                 source: isSource? d : id,
                                 target: (!isSource)? d : id,
                                 id: get(this, 'controller').uuid(), // uuid
-                                view_pos: this.links.length, // pos in view
+                                viewPos: this.links.length, // pos in view
                             };
                             // add in view
                             this.links.push(link);
-                            this.shapes_by_id[link.id] = link;
+                            this.shapesById[link.id] = link;
                             // try to inject references to sources
-                            var source = this.shapes_by_id[link.source];
+                            var source = this.shapesById[link.source];
                             if (source !== undefined) {
                                 link.source = source;
                             }
                             // and targets
-                            var target = this.shapes_by_id[link.target];
+                            var target = this.shapesById[link.target];
                             if (target !== undefined) {
                                 link.target = target;
                             }
-                            // push link in d3_edge model
-                            links_by_id[link.id] = link;
+                            // push link in d3Edge model
+                            linksById[link.id] = link;
                         }
                     },
                     this
                 );
                 // remove useless links
-                for (vertice_id in d3_edge[key]) {
-                    var neighbour_count = neighbour_counts[key][vertice_id];
+                for (vertice_id in d3Edge[key]) {
+                    var neighbourCount = neighbourCounts[key][vertice_id];
                     var index = 0; // index to start to remove links
-                    if (neighbour_count !== undefined) {
-                        index = neighbour_count;
+                    if (neighbourCount !== undefined) {
+                        index = neighbourCount;
                     }
                     // delete links from model
-                    var link_id_to_delete = Object.keys(d3_edge[key][vertice_id]).splice(index);
+                    var link_id_to_delete = Object.keys(d3Edge[key][vertice_id]).splice(index);
                     link_id_to_delete.forEach(
                         function(link_id) {
-                            var link = this.shapes_by_id[link_id];
+                            var link = this.shapesById[link_id];
                             // delete from model
-                            delete d3_edge[key][vertice_id][link_id];
+                            delete d3Edge[key][vertice_id][link_id];
                             // delete from view
-                            delete this.shapes_by_id[link_id];
-                            link_pos_to_delete.push(link.view_pos);
+                            delete this.shapesById[link_id];
+                            linkPosToDelete.push(link.viewPos);
                         },
                         this
                     );
@@ -697,16 +674,16 @@ define([
             // add links for all targets
             updateLinks.call(this, 'targets');
             // delete useless links from view
-            if (link_pos_to_delete.length > 0) {
-                link_pos_to_delete.sort();
-                link_pos_to_delete.forEach(
+            if (linkPosToDelete.length > 0) {
+                linkPosToDelete.sort();
+                linkPosToDelete.forEach(
                     function(d, i) {
                         this.links.splice(d - i, 1);
                     }
                 );
                 this.links.forEach(
                     function(d, i) {
-                        d.view_pos = i;
+                        d.viewPos = i;
                     }
                 );
             }
@@ -719,12 +696,12 @@ define([
             var selected = get(this, 'controller').selected;
             if (selected.length > 0) {
                 // get a list of 'selected' items
-                var selected_shapes = this.panel.selectAll('.shapegroup')
+                var selectedShapes = this.panel.selectAll('.shapegroup')
                     .data(selected, function(d){ return d; });
                 // select newly selected items
-                selected_shapes.classed('selected', true);
+                selectedShapes.classed('selected', true);
                 // unselect old selected
-                selected_shapes.exit().classed('selected', false);
+                selectedShapes.exit().classed('selected', false);
             }
         },
 
@@ -765,15 +742,15 @@ define([
             //    this.destroyToolBox(shape);
             //}
             // add a new toolbox with specific node toolbox items
-            var toolbox_items = this.getToolBoxItems(data);
+            var toolboxItems = this.getToolBoxItems(data);
             // get coordinates
             var coordinates = data? [data.x, data.y] : this.coordinates();
             var me = this;
             // create generic toolbox
             this.toolbox = this.panel.selectAll('.toolbox')
-                .data(toolbox_items, function(d) {return d.name;});
+                .data(toolboxItems, function(d) {return d.name;});
             // add new toolbox items
-            var new_toolbox = this.toolbox.enter()
+            var newToolbox = this.toolbox.enter()
                 .append('g')
                     .style("opacity", 0) // generic style
                     .attr(
@@ -781,9 +758,9 @@ define([
                             id: function(d) { return 'toolbox_' + d.name;}, // id
                             class: function(d) { return 'toolbox ' + d.name;}, // class
                             transform: function(d, i) {
-                                var length = 2 * i * Math.PI / toolbox_items.length;
-                                var x = coordinates[0] + Math.cos(length) * me.toolbox_gap;
-                                var y = coordinates[1] + Math.sin(length) * me.toolbox_gap;
+                                var length = 2 * i * Math.PI / toolboxItems.length;
+                                var x = coordinates[0] + Math.cos(length) * me.toolboxGap;
+                                var y = coordinates[1] + Math.sin(length) * me.toolboxGap;
                                 var translate = 'translate(' + x + ',' + y + ')';
                                 var scale = 'scale(' + (1 / me.scale) + ')';
                                 return translate + scale + (d.transform ? d.transform : '');
@@ -791,7 +768,7 @@ define([
                         }
                     )
                 ;
-            new_toolbox // add shape
+            newToolbox // add shape
                 .append('path')
                     .attr(
                         {
@@ -804,7 +781,7 @@ define([
                     .append('title')
                         .text(function(d) {return d.name;})
                 ;
-            new_toolbox // add hyperlink with name
+            newToolbox // add hyperlink with name
                 .append('text')
                     .text(function(d) { return d.name});
             // move all toolbox to mouse coordinates
@@ -819,9 +796,9 @@ define([
                     .attr( // and move them
                         {
                             transform: function(d, i) {
-                                var length = 2 * i * Math.PI / toolbox_items.length;
-                                var x = coordinates[0] + Math.cos(length) * me.toolbox_gap;
-                                var y = coordinates[1] + Math.sin(length) * me.toolbox_gap;
+                                var length = 2 * i * Math.PI / toolboxItems.length;
+                                var x = coordinates[0] + Math.cos(length) * me.toolboxGap;
+                                var y = coordinates[1] + Math.sin(length) * me.toolboxGap;
                                 return "translate(" + x + "," + y + ") " + (d.transform ? d.transform : '');
                             }
                         }
@@ -865,11 +842,11 @@ define([
                 data = [data];
             }
             // save records to delete
-            var records_to_del = [];
-            var records_by_id = get(this, 'controller').records_by_id;
+            var recordsToDel = [];
+            var recordsById = get(this, 'controller').recordsById;
             data.forEach(
                 function(d) {
-                    var record = records_by_id[d.id];
+                    var record = recordsById[d.id];
                     // delete links
                     if (d.isSource !== undefined) {
                         var dest = d.isSource ? 'source' : 'target';
@@ -879,12 +856,12 @@ define([
                         // update the record
                         record.set(dest+'s', dests);
                     } else {  // push record in records to delete
-                        records_to_del.push(record);
+                        recordsToDel.push(record);
                     }
                 }
             );
-            if (records_to_del.length > 0) {
-                get(this, 'controller').delete(records_to_del);
+            if (recordsToDel.length > 0) {
+                get(this, 'controller').delete(recordsToDel);
             }
         },
         linkHandler: function(data, shape) {
@@ -909,7 +886,7 @@ define([
             d3.event.stopPropagation();
             if (this.source === null) { // add a new node
                 function callback(record) {
-                    this.get_node(record);
+                    this.getNode(record);
                 }
                 var controller = get(this, 'controller');
                 var record = controller.newRecord(controller.vertice_elt_type, undefined, true, callback);
@@ -981,7 +958,7 @@ define([
         */
         addNodes: function(nodes) {
             var me = this;
-            var records_by_id = get(this, 'controller').records_by_id;
+            var recordsById = get(this, 'controller').recordsById;
             // create the graphical element
             var shapes = nodes
                 .append('g')
@@ -990,11 +967,11 @@ define([
                             shapegroup: true,
                             node: true,
                             edge: function(d) {
-                                var record = records_by_id[d.id];
+                                var record = recordsById[d.id];
                                 return record.get('_type') === 'edge';
                             },
                             graph: function(d) {
-                                var record = records_by_id[d.id];
+                                var record = recordsById[d.id];
                                 return record.get('_type') === 'graph';
                             }
                         }
@@ -1019,14 +996,14 @@ define([
                     )
                 ;
             var nodeShapes = shapes.filter(function(d) {
-                var record = records_by_id[d.id];
+                var record = recordsById[d.id];
                 return record.get('_type') !== 'edge';
             });
             nodeShapes.append('title');  // add title
             nodeShapes.append('text').classed('entity', true);  // add entity name text
             nodeShapes.append('text').classed('operator', true);  // add operator name text
             var edgeShapes = shapes.filter(function(d) {
-                var record = records_by_id[d.id];
+                var record = recordsById[d.id];
                 return record.get('_type') === 'edge';
             });
             edgeShapes.append('text').classed('weight', true); // add weight text
@@ -1068,26 +1045,26 @@ define([
         */
         updateNodes: function(nodes) {
             var me = this;
-            var records_by_id = get(this, 'controller').records_by_id;
-            var graph_id = get(this, 'controller.model.graph_id');
+            var recordsById = get(this, 'controller').recordsById;
+            var graphId = get(this, 'controller.model.graph_id');
             nodes
                 .select('path')
                     .classed(
                         {
                             'ndok': function(d) {
-                                var record = records_by_id[d.id];
+                                var record = recordsById[d.id];
                                 return !record.get('info').state;
                             },
                             'ndminor': function(d) {
-                                var record = records_by_id[d.id];
+                                var record = recordsById[d.id];
                                 return record.get('info').state === 1;
                             },
                             'ndmajor': function(d) {
-                                var record = records_by_id[d.id];
+                                var record = recordsById[d.id];
                                 return record.get('info').state === 2;
                             },
                             'ndcritical': function(d) {
-                                var record = records_by_id[d.id];
+                                var record = recordsById[d.id];
                                 return record.get('info').state === 3;
                             }
                         }
@@ -1099,11 +1076,11 @@ define([
                             if (d.x === undefined) {
                                 d.x = 0; d.y = 0;
                             }
-                            var record = records_by_id[d.id];
+                            var record = recordsById[d.id];
                             switch(record.get('_type')) {
                                 case 'graph':
                                     f = f.type('circle');
-                                    if (d.id === graph_id) {
+                                    if (d.id === graphId) {
                                         f = f.size(30 * 64);
                                     } else {
                                         f = f.size((d._weight>=1? d._weight : 1) * 64);
@@ -1122,7 +1099,7 @@ define([
             nodes.select('title').text(
                 function(d) {
                     var result = '';
-                    var record = records_by_id[d.id];
+                    var record = recordsById[d.id];
                     var info = record.get('info');
                     if (info !== undefined) {
                         var entity = info.entity;
@@ -1137,7 +1114,7 @@ define([
             nodes.select('.entity').text(
                 function (d) {
                     var result = '';
-                    var record = records_by_id[d.id];
+                    var record = recordsById[d.id];
                     var info = record.get('info');
                     if (info && info.label) {
                         result += info.label;
@@ -1153,18 +1130,18 @@ define([
             nodes.select('.operator').text(
                 function(d) {
                     var result = '';
-                    var record = records_by_id[d.id];
+                    var record = recordsById[d.id];
                     var info = record.get('info');
                     if (info !== undefined) {
                         var operator = info.task;
                         if (operator) {
-                            var operator_id = operator.id || operator.cid || operator;
-                            if (operator_id === 'canopsis.task.condition.condition') {
+                            var operatorId = operator.id || operator.cid || operator;
+                            if (operatorId === 'canopsis.task.condition.condition') {
                                 operator = operator.params.condition;
-                                operator_id = operator.id || operator.cid || operator;
+                                operatorId = operator.id || operator.cid || operator;
                             }
-                            operator_id = operator_id.substring(operator_id.lastIndexOf('.') + 1);
-                            result += operator_id;
+                            operatorId = operatorId.substring(operatorId.lastIndexOf('.') + 1);
+                            result += operatorId;
                         }
                         if (result === 'change_state') {  // do not display default operator
                             result = '';
@@ -1176,7 +1153,7 @@ define([
             nodes.select('.weight').text(
                 function(d) {
                     var result = '';
-                    var record = records_by_id[d.id];
+                    var record = recordsById[d.id];
                     var weight = record.get('weight');
                     if (weight !== undefined && weight !== 1) {
                         result += weight;
@@ -1212,9 +1189,9 @@ define([
                             'd': diagonal
                         }
                     )
-                    .on('click', function() { return me.clickAction(this); })
-                    .on('mouseout', function() {me.outAction(this);})
-                    .on('mousemove', function() {me.moveAction(this);})
+                    .on('click', function() { return me.clickAction(this);})
+                    .on('mouseout', function() { me.outAction(this);})
+                    .on('mousemove', function() { me.moveAction(this);})
                     .on('mouseover', function() { me.overAction(this);})
             ;
         },
@@ -1236,28 +1213,28 @@ define([
         */
         updateLinks: function(links) {
             var me = this;
-            var records_by_id = get(this, 'controller').records_by_id;
+            var recordsById = get(this, 'controller').recordsById;
             links
                 .classed(
                     {
                         directed: function(d) {
-                            var record = records_by_id[d.edge.id];
+                            var record = recordsById[d.edge.id];
                             return record.get('directed');
                         },
                         'lnok': function(d) {
-                            var record = records_by_id[d.edge.id];
+                            var record = recordsById[d.edge.id];
                             return !record.get('info').state;
                         },
                         'lnminor': function(d) {
-                            var record = records_by_id[d.edge.id];
+                            var record = recordsById[d.edge.id];
                             return record.get('info').state === 1;
                         },
                         'lnmajor': function(d) {
-                            var record = records_by_id[d.edge.id];
+                            var record = recordsById[d.edge.id];
                             return record.get('info').state === 2;
                         },
                         'lncritical': function(d) {
-                            var record = records_by_id[d.edge.id];
+                            var record = recordsById[d.edge.id];
                             return record.get('info').state === 3;
                         }
                     }
@@ -1266,7 +1243,7 @@ define([
                     {
                         'stroke-width': function(d) {
                             var result = 1;
-                            var record = records_by_id[d.edge.id];
+                            var record = recordsById[d.edge.id];
                             var weight = record.get('weight');
                             if (weight !== undefined) {
                                 result += (weight - 1);
@@ -1274,7 +1251,7 @@ define([
                             return result;
                         },
                         'marker-end': function(d) {
-                            var record = records_by_id[d.edge.id];
+                            var record = recordsById[d.edge.id];
                             return (record.get('directed') && !d.isSource)? "url(#markerArrow)" : "";
                         }
                     }
@@ -1291,8 +1268,8 @@ define([
             if (d3.event.defaultPrevented) return;
             var data = shape.__data__;
             if (data !== undefined) {
-                d3_shape = d3.select(shape);
-                d3_shape.classed('over', true);
+                d3Shape = d3.select(shape);
+                d3Shape.classed('over', true);
             }
             if (this.source !== null) {
                 console.log(data);
@@ -1325,7 +1302,7 @@ define([
         * @param shape target shape.
         */
         checkTargetLink: function(data) {
-            var record = records_by_id[data.id || data];
+            var record = recordsById[data.id || data];
             var result = (data === undefined || (record.get('type') !== 'topoedge' && data.id !== this.source.id));
             return result;
         },
@@ -1349,46 +1326,46 @@ define([
         },
 
         /**
-        * Get a node from a record and register it in this.shapes_by_id and nodes.
+        * Get a node from a record and register it in this.shapesById and nodes.
         * If node does not exist, create it.
         *
         * @param record source record.
         * @return record node.
         */
-        get_node: function(record) {
+        getNode: function(record) {
             // get record id
-            var record_id = record.get('id');
+            var recordId = record.get('id');
             // get result in this memory
-            var result = this.shapes_by_id[record_id];
-            // get graph_id
-            var graph_id = get(this, 'controller.model.graph_id');
+            var result = this.shapesById[recordId];
+            // get graphId
+            var graphId = get(this, 'controller.model.graph_id');
             // get node from db
-            var record_node = undefined;
+            var recordNode = undefined;
             var view = record.get('info').view;
             if (view !== undefined) {
-                record_node = view[grap_id];
+                recordNode = view[grap_id];
             }
             // create a new node if it does not exist
             if (result === undefined) {
                 // if old node does not exist
-                if (record_node === undefined) {
+                if (recordNode === undefined) {
                     // get current mouse coordinates
                     var coordinates = this.coordinates();
                     // apply mouse coordinates to the result
                     result = {
                         fixed: false, // new node is fixed
                         hidden: false, // and displayed,
-                        id: record_id, // with record id
+                        id: recordId, // with record id
                         index: this.nodes.length,
                         type: record.get('type')
                     }
                     // add node in nodes
                     this.nodes.push(result);
                 } else { // result becomes old node
-                    result = record_node;
+                    result = recordNode;
                 }
-                // update this shapes_by_id
-                this.shapes_by_id[record_id] = result;
+                // update this shapesById
+                this.shapesById[recordId] = result;
             }
             return result
         },
@@ -1406,10 +1383,10 @@ define([
         */
         addLink: function(source, target, edit, success, failure, context) {
             var result = null;
-            var source_type = source.elt.get('_type');
-            var graph_id = get(this, 'controller.model.graph_id');
+            var sourceType = source.elt.get('_type');
+            var graphId = get(this, 'controller.model.graph_id');
             // ensure source and target are ok
-            if (source.id === graph_id || !this.checkTargetLink(target)) {
+            if (source.id === graphId || !this.checkTargetLink(target)) {
                 throw new Exception('Wrong parameters');
             }
             // get a target
@@ -1427,12 +1404,12 @@ define([
                     }
                 }
                 // create a node if target does not exist
-                target = this.get_node(undefined, edit, callback, failure, this);
+                target = this.getNode(undefined, edit, callback, failure, this);
                 if (edit) return;
             }
             // get result
             // if source is an edge, then edge is source
-            if (source_type === 'edge') {
+            if (sourceType === 'edge') {
                 result = source;
                 // and add right now the target
                 result.elt.get('targets').push(target.id);
@@ -1445,7 +1422,7 @@ define([
                         success.call(context, record);
                     }
                 }
-                var edge = this.get_node(
+                var edge = this.getNode(
                     {
                         type: get(this, 'controller').edge_elt_type,
                         sources: [source.id],
@@ -1489,7 +1466,7 @@ define([
         */
         getToolBoxItems: function(data) {
             var result = [];
-            var graph_id = get(this, 'controller.model.graph_id');
+            var graphId = get(this, 'controller.model.graph_id');
             if (this.source !== null) {
                 result.push(
                     this.newToolBoxItem('close', 'triangle-down'),
@@ -1503,7 +1480,7 @@ define([
                 );
 
                 if (data !== undefined && data.type !== 'link') { // is it a node
-                    var record = get(this, 'controller').records_by_id[data.id];
+                    var record = get(this, 'controller').recordsById[data.id];
                     var info = record.get('info');
                     if (info) {
                         if (info.entity) {
@@ -1520,7 +1497,7 @@ define([
                     } else {
                         result.push(this.newToolBoxItem('lock'));
                     }
-                    if (data.id !== graph_id) { // all nodes but topology
+                    if (data.id !== graphId) { // all nodes but topology
                         result.push(
                             this.newToolBoxItem('link', 'triangle-up'), // new link
                             this.newToolBoxItem('delete', 'cross', 'rotate(45)') // elt deletion

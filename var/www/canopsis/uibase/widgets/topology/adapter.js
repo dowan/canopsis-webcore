@@ -32,10 +32,12 @@ define([
 
     var adapter = ApplicationAdapter.extend({
 
-        graph_type: 'topology',
+        graphType: 'topology',
 
         buildURL: function(type, id, record) {
-            return '/' + this.graph_type + '/' + type + 's';
+            void(id);
+            void(record);
+            return '/' + this.graphType + '/' + type + 's';
         },
 
         createRecord: function(store, type, record) {
@@ -45,17 +47,25 @@ define([
             }
             var serializer = store.serializerFor(type.typeKey);
 
-            data = serializer.serializeIntoHash(data, type, record, 'POST', { includeId: true });
+            data = serializer.serializeIntoHash(data, type, record, 'PUT', { includeId: true });
 
-            var url = this.buildURL('graphelt', null);
+            console.log('connector typeKey', type.typeKey);
 
-            var query = {data: {elt: data}};
+            var url = this.buildURL('graphelt');
 
-            return new Ember.RSVP.Promise(function(resolve, reject) {
-                var funcres = modelsolve.gen_resolve(resolve);
-                var funcrej = modelsolve.gen_reject(reject);
-                $.put(url, query).then(funcres, funcrej);
+            var promise = new Ember.RSVP.Promise(function(resolve, reject) {
+                $.ajax(
+                    {
+                        url: url,
+                        type: 'PUT',
+                        data: {
+                            elt: data
+                        }
+                    }
+                ).then(resolve, reject);
             });
+
+            return promise;
         },
 
         updateRecord: function(store, type, record) {
