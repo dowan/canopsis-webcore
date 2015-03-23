@@ -544,11 +544,7 @@ define([
                         default: break;
                     }
                     // save the record
-                    record.save().then(
-                        success,
-                        failure,
-                        context
-                    );
+                    this.saveRecords(record, success, failure, context);
                 }
             ).fail(
                 function(form) {

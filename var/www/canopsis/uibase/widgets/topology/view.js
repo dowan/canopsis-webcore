@@ -381,14 +381,14 @@ define([
                 engine = layout.engine = d3.layout[layout_type]();
                 layout[layout_type] = this._default_layout[layout_type];
             }
-            // apply size
-            layout.engine.size([width, height]);
             // apply layout properties
             Object.keys(layout[layout_type]).forEach(
                 function(layout_property_id) {
                     engine[layout_property_id](layout[layout_type][layout_property_id]);
                 }
             );
+            // apply size
+            engine.size([width, height]);
             // get panel
             this.panel = d3.select(this.$('svg .panel')[0]);
             if (this.panel.size() === 0) {
@@ -553,17 +553,8 @@ define([
                         node_model
                             .attr(
                                 {
-                                    "cx": function(d) {
-                                        if (!d.x) {
-                                            d.x = 1;
-                                        }
-                                        return d.x;
-                                    },
-                                    "cy": function(d) {
-                                        if (!d.y) {
-                                            d.y = 1;
-                                        }
-                                        return d.y;
+                                    "transform": function(d) {
+                                        return "translate(" + d.x + "," + d.y + ")";
                                     }
                                 }
                             )
@@ -736,7 +727,7 @@ define([
         },
 
         coordinates: function() {
-            var result = {x: 1, y: 1};
+            var result = [1, 1];
             if (this.panel !== null) {
                 result = d3.mouse(this.panel[0][0]);
             }
@@ -1364,8 +1355,6 @@ define([
                     var coordinates = this.coordinates();
                     // apply mouse coordinates to the result
                     result = {
-                        x: coordinates.x,
-                        y: coordinates.y,
                         fixed: false, // new node is fixed
                         hidden: false, // and displayed,
                         id: record_id, // with record id
