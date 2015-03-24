@@ -20,8 +20,11 @@
 
 from canopsis.common.ws import route
 from canopsis.topology.manager import TopologyManager
+import json
 
 manager = TopologyManager()
+
+
 
 
 def exports(ws):
@@ -107,11 +110,11 @@ def exports(ws):
         manager.put_elts(elts=elt, graph_ids=graph_ids, cache=cache)
 
     @route(
-        ws.application.put,
+        ws.application.put, raw_body=True,
         payload=['elts', 'graph_ids', 'cache'],
         name='topology/graphelts'
     )
-    def put_elts(elts, graph_ids=None, cache=False):
+    def put_elts(graph_ids=None, cache=False, body=None):
         """
         Put elements.
 
@@ -121,7 +124,7 @@ def exports(ws):
         :param bool cache: use query cache if True (False by default).
         """
 
-        manager.put_elts(elts=elts, graph_ids=graph_ids, cache=cache)
+        manager.put_elts(elts=json.loads(body)["elts"], graph_ids=graph_ids, cache=cache)
 
     @route(
         ws.application.delete,
