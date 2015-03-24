@@ -538,6 +538,7 @@ define([
                         default: break;
                     }
                     function _success(record) {
+                        record = record[0];
                         me.trigger('refresh');
                         if (success !== undefined) {
                             success.call(context, record);

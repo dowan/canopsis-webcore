@@ -19,7 +19,8 @@
 
 
 define([
-    'ember'
+    'ember',
+    'app/lib/wrappers/colpick',
 ], function(Ember) {
 
     var get = Ember.get,
