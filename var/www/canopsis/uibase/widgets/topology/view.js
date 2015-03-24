@@ -724,7 +724,9 @@ define([
         coordinates: function() {
             var result = [1, 1];
             if (this.panel !== null) {
-                result = d3.mouse(this.panel[0][0]);
+                // result = d3.mouse(this.panel[0][0]);
+                //FIXME hack to make node insertion work
+                result = [10, 10];
             }
             return result;
         },
@@ -889,7 +891,7 @@ define([
                     this.getNode(record);
                 }
                 var controller = get(this, 'controller');
-                var record = controller.newRecord(controller.vertice_elt_type, undefined, true, callback);
+                var record = controller.newRecord(controller.verticeEltType, undefined, true, callback);
             } else {
                 function success(record) {
                     get(this, 'controller').trigger('redraw');
@@ -898,7 +900,7 @@ define([
                 function failure(record) {
                     this.removeTmpLink();
                 }
-                this.addLink(this.source, data, true, success2, failure2, this);
+                this.addLink(this.source, data, true, success, failure, this);
             }
         },
         unselectHandler: function(data) {
@@ -1342,7 +1344,8 @@ define([
             // get node from db
             var recordNode = undefined;
             var view = record.get('info').view;
-            if (view !== undefined) {
+            //FIXME hack
+            if (view !== undefined && ! view.undefined === 'undefined') {
                 recordNode = view[grap_id];
             }
             // create a new node if it does not exist
@@ -1383,7 +1386,7 @@ define([
         */
         addLink: function(source, target, edit, success, failure, context) {
             var result = null;
-            var sourceType = source.elt.get('_type');
+            var sourceType = source.get('_type');
             var graphId = get(this, 'controller.model.graph_id');
             // ensure source and target are ok
             if (source.id === graphId || !this.checkTargetLink(target)) {

@@ -22,6 +22,7 @@ define([
     'ember-data',
     'webcore-libs/requirejs-domready/domReady',
     'app/lib/wrappers/summernote',
+    'app/lib/wrappers/colpick',
     'jsonselect',
     'webcore-libs/ember-icheck/lib/component',
     'webcore-libs/ember-tooltip/lib/component',
