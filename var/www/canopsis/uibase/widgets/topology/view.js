@@ -747,7 +747,9 @@ define([
         coordinates: function() {
             var result = [1, 1];
             if (this.panel !== null) {
-                result = d3.mouse(this.panel[0][0]);
+                // result = d3.mouse(this.panel[0][0]);
+                //FIXME hack to make node insertion work
+                result = [10, 10];
             }
             return result;
         },
@@ -921,7 +923,7 @@ define([
                 function failure(record) {
                     this.removeTmpLink();
                 }
-                this.addLink(this.source, data, true, success2, failure2, this);
+                this.addLink(this.source, data, true, success, failure, this);
             }
         },
         unselectHandler: function(data) {
@@ -1364,8 +1366,10 @@ define([
             var graph_id = get(this, 'controller.model.graph_id');
             // get node from db
             var record_node = undefined;
+
+            $record = record;
             var view = record.get('info').view;
-            if (view !== undefined) {
+            if (view !== undefined && ! view.undefined === 'undefined') {
                 record_node = view[grap_id];
             }
             // create a new node if it does not exist
@@ -1406,7 +1410,7 @@ define([
         */
         addLink: function(source, target, edit, success, failure, context) {
             var result = null;
-            var source_type = source.elt.get('_type');
+            var source_type = source.get('_type');
             var graph_id = get(this, 'controller.model.graph_id');
             // ensure source and target are ok
             if (source.id === graph_id || !this.checkTargetLink(target)) {

@@ -18,13 +18,14 @@
 */
 
 define([
+    'jquery',
     'ember',
     'ember-data',
     'app/application',
     'app/adapters/application',
     'app/lib/promisesmanager',
     'app/lib/utils/modelsolve'
-], function(Ember, DS, Application, ApplicationAdapter, promisesmanager, modelsolve) {
+], function($, Ember, DS, Application, ApplicationAdapter, promisesmanager, modelsolve) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -39,6 +40,7 @@ define([
         },
 
         createRecord: function(store, type, record) {
+
             var data = {};
             if (isNone(type) || isNone(type.typeKey)) {
                 console.error('Error while retrieving typeKey from type is it is none.');
@@ -49,13 +51,7 @@ define([
 
             var url = this.buildURL('graphelt', null);
 
-            var query = {data: {elt: data}};
-
-            return new Ember.RSVP.Promise(function(resolve, reject) {
-                var funcres = modelsolve.gen_resolve(resolve);
-                var funcrej = modelsolve.gen_reject(reject);
-                $.put(url, query).then(funcres, funcrej);
-            });
+            return this.ajax(url, 'PUT', { data: {elts: data }});
         },
 
         updateRecord: function(store, type, record) {
@@ -107,6 +103,7 @@ define([
     loader.register('adapter:toponode', adapter);
     loader.register('adapter:topoedge', adapter);
     loader.register('adapter:topo', adapter);
+
 
     return adapter;
 });
