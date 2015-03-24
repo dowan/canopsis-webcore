@@ -19,7 +19,7 @@
 
 /**
 * This widget contains graph records (vertices, edges and graphs).
-* They are saved in controller.records_by_id dictionary (like record elements).
+* They are saved in controller.recordsById dictionary (like record elements).
 *
 * The process begins in executing the updateModel method.
 * This last aims to retrieve a graph with its elements.
@@ -47,20 +47,16 @@ define([
         ],
 
         graph: null, // graph record
-        records_by_id: {}, // record elements by id
+        recordsById: {}, // record elements by id
 
         graph_cls: 'canopsis.topology.elements.Topology', // default graph class
 
-        default_vertice_cls: 'canopsis.topology.elements.TopoNode', // default vertice class
-        default_edge_cls: 'canopsis.topology.elements.TopoEdge', // default edge class
+        defaultVerticeCls: 'canopsis.topology.elements.TopoNode', // default vertice class
+        defaultEdgeCls: 'canopsis.topology.elements.TopoEdge', // default edge class
 
-        business: null, // business controller
-
-        graph_div: null, // graph div markup
-
-        graph_elt_type: 'topo', // graph elt type
-        vertice_elt_type: 'toponode', // vertice elt type
-        edge_elt_type: 'topoedge', // edge elt type
+        graphEltType: 'topo', // graph elt type
+        verticeEltType: 'toponode', // vertice elt type
+        edgeEltType: 'topoedge', // edge elt type
 
         selected: [], // selected records
 
@@ -70,19 +66,19 @@ define([
 
         /**
         * Get entities from a foreign server.
-        * @param entity_ids list of entity ids from where get entities.
+        * @param entityIds list of entity ids from where get entities.
         * @param success handler to request success.
         * @param failure handler to request failure.
         */
-        getEntitiesFromServer: function(entity_ids, success, failure) {
-            if (entity_ids.length > 0) {
+        getEntitiesFromServer: function(entityIds, success, failure) {
+            if (entityIds.length > 0) {
                 var promise = new Ember.RSVP.Promise(function(resolve, reject) {
                     $.ajax(
                         {
                             url: '/context/ids',
                             type: 'POST',
                             data: {
-                                'ids': JSON.stringify(entity_ids),
+                                'ids': JSON.stringify(entityIds),
                             }
                         }
                     ).then(resolve, reject);
@@ -100,10 +96,10 @@ define([
         */
         _addGraph: function(graph) {
             var me = this;
-            var records_by_id = this.records_by_id;
+            var recordsById = this.recordsById;
             // register the graph
             this.graph = graph;
-            records_by_id[graph.get('id')] = graph;
+            recordsById[graph.get('id')] = graph;
             // add all graph elts
             var _delts = graph.get('_delts');
             // and in doing the server request
@@ -111,7 +107,7 @@ define([
                 function(elt_id) {
                     var elt = _delts[elt_id];
                     var record = this.newRecord(elt['type'], elt);
-                    records_by_id[elt_id] = record;
+                    recordsById[elt_id] = record;
                 },
                 me
             );
@@ -125,11 +121,11 @@ define([
         findItems: function() {
             // load business
             var me = this;
-            // get graph_id
-            var graph_id = get(this, 'model.graph_id');
-            if (graph_id !== undefined) {
+            // get graphId
+            var graphId = get(this, 'model.graph_id');
+            if (graphId !== undefined) {
                 var query = {
-                    ids: graph_id,
+                    ids: graphId,
                     add_elts: true
                 };
                 var store = this.widgetDataStore;
@@ -142,9 +138,9 @@ define([
                             // if old graph exists
                             if (me.graph !== null) {
                                 // delete old records
-                                var records_to_delete = me.records_by_id.map(
-                                    function(record_id) {
-                                        var record = me.records_by_id[record_id];
+                                var recordsToDelete = me.recordsById.map(
+                                    function(recordId) {
+                                        var record = me.recordsById[recordId];
                                         record.delete();
                                         return record.save();
                                     },
@@ -153,7 +149,7 @@ define([
                             }
                             me._addGraph(graph);
                         } else {  // if no graph exists
-                            me.graph = this.newRecord(me.graph_elt_type);
+                            me.graph = this.newRecord(me.graphEltType);
                         }
                     },
                     function(reason) {
@@ -181,22 +177,22 @@ define([
                 records = [records];
             }
             var me = this;
-            var graph_id = this.graph.get('id');
+            var graphId = this.graph.get('id');
             // delete all records
             records.forEach(
                 function(record) {
                     // but the main graph
-                    if (record.get('id') === graph_id) {
+                    if (record.get('id') === graphId) {
                         console.error('Impossible to delete the main graph');
                     } else {
                         // let the backend delete records
-                        var records_to_delete = records.map(
+                        var recordsToDelete = records.map(
                             function(record) {
                                 record.delete();
                                 return record.save();
                             }
                         );
-                        Ember.RSVP.all(records_to_delete).then(
+                        Ember.RSVP.all(recordsToDelete).then(
                             function() {
                                 me.trigger('refresh');
                             }
@@ -256,7 +252,7 @@ define([
             var promises = records.map(
                 function(record) {
                     var info = record.get('info');
-                    // save view elt information in the dictionary of view graph_id
+                    // save view elt information in the dictionary of view graphId
                     if (info.view === undefined) {
                         info.view = {};
                     }
@@ -296,19 +292,17 @@ define([
             properties.cid = id;
             var result = this.widgetDataStore.createRecord(type, properties);
             function _success(record) {
-                var record_id = record.get('id');
-                var old_record = this.records_by_id[record_id];
-                if (old_record !== undefined) {
-                    this.deleteRecords(old_record);
+                var recordId = record.get('id');
+                var oldRecord = this.recordsById[recordId];
+                if (oldRecord !== undefined) {
+                    this.deleteRecords(oldRecord);
                 }
-                this.records_by_id[record_id] = record;
+                this.recordsById[recordId] = record;
                 if (success !== undefined) {
                     success.call(context, record);
                 }
             }
-            function _failure(record) {
-                record.delete();
-                record.save();
+            function _failure(reason) {
                 if (failure !== undefined) {
                     failure.call(context, record);
                 }
@@ -330,20 +324,20 @@ define([
             var me = this;
             // ensure record is a record in case of record id
             if (typeof record === 'string') {
-                record = this.records_by_id[record];
+                record = this.recordsById[record];
             }
             // fill operator data from record
-            var record_type = record.get('_type');
-            switch(record_type) {
+            var recordType = record.get('_type');
+            switch(recordType) {
                 case 'edge':
                     break;
                 case 'vertice':
                 case 'graph':
                     var states = ['ok', 'minor', 'major', 'critical'];
-                    function get_short_id(task) {
-                        var task_id = task.cid || task;
-                        var lastIndex = task_id.lastIndexOf('.');
-                        var result = task_id.substring(lastIndex + 1);
+                    function getShortId(task) {
+                        var taskId = task.cid || task;
+                        var lastIndex = taskId.lastIndexOf('.');
+                        var result = taskId.substring(lastIndex + 1);
                         return result;
                     }
                     var info = record.get('info');
@@ -362,73 +356,73 @@ define([
                         if (task !== undefined) {
                             var operator = task.cid || task;
                             if (operator !== undefined) {
-                                var operator_name = get_short_id(task);
-                                if (operator_name === 'condition') {  // at least / nok
+                                var operatorName = getShortId(task);
+                                if (operatorName === 'condition') {  // at least / nok
                                     var params = task.params;
                                     if (params !== undefined) {
                                         var condition = params.condition;
                                         if (condition !== undefined) {
-                                            var condition_name = get_short_id(condition.cid || condition);
-                                            record.set('operator', condition_name);
-                                            var cond_params = condition.params;
-                                            if (cond_params !== undefined) {
-                                                // set in_state
-                                                if (condition_name === 'nok') {
+                                            var conditionName = getShortId(condition.cid || condition);
+                                            record.set('operator', conditionName);
+                                            var condParams = condition.params;
+                                            if (condParams !== undefined) {
+                                                // set inState
+                                                if (conditionName === 'nok') {
                                                     record.set('operator', 'nok');
                                                 } else {
-                                                    var in_state = cond_params.state;
-                                                    var f = cond_params.f;
+                                                    var inState = condParams.state;
+                                                    var f = condParams.f;
                                                     if (f === 'canopsis.topology.rule.condition.is_nok') {
-                                                        in_state = 'nok';
+                                                        inState = 'nok';
                                                     } else {
-                                                        if (in_state !== undefined) {
-                                                            in_state = states[in_state];
-                                                            record.set('in_state', in_state);
+                                                        if (inState !== undefined) {
+                                                            inState = states[inState];
+                                                            record.set('in_state', inState);
                                                         }
                                                     }
                                                 }
-                                                // set min_weight
-                                                var min_weight = cond_params.min_weight;
-                                                if (min_weight !== undefined) {
-                                                    record.set('min_weight', min_weight);
+                                                // set minWeight
+                                                var minWeight = condParams.minWeight;
+                                                if (minWeight !== undefined) {
+                                                    record.set('min_weight', minWeight);
                                                 }
-                                                // set then_state
+                                                // set thenState
                                                 var statement = params.statement;
                                                 if (statement !== undefined) {
-                                                    var statement_name = get_short_id(statement);
+                                                    var statement_name = getShortId(statement);
                                                     if (statement_name === 'change_state') {
-                                                        var statement_params = statement.params;
-                                                        if (statement_params !== undefined) {
-                                                            var then_state = statement_params.state;
-                                                            then_state = states[then_state];
-                                                            record.set('then_state', then_state);
+                                                        var statementParams = statement.params;
+                                                        if (statementParams !== undefined) {
+                                                            var thenState = statementParams.state;
+                                                            thenState = states[thenState];
+                                                            record.set('then_state', thenState);
                                                         }
                                                     } else {
-                                                        var then_state = statement_name;
-                                                        record.set('then_state', then_state);
+                                                        var thenState = statement_name;
+                                                        record.set('then_state', thenState);
                                                     }
                                                 }
-                                                // set else_state
+                                                // set elseState
                                                 var _else = params._else;
                                                 if (_else !== undefined) {
-                                                    var _else_name = get_short_id(_else);
-                                                    if (_else_name === 'change_state') {
-                                                        var _else_params = _else.params;
-                                                        if (_else_params !== undefined) {
-                                                            var else_state = _else_params.state;
-                                                            else_state = states[else_state];
-                                                            record.set('else_state', else_state);
+                                                    var _elseName = getShortId(_else);
+                                                    if (_elseName === 'change_state') {
+                                                        var _elseParams = _else.params;
+                                                        if (_elseParams !== undefined) {
+                                                            var elseState = _elseParams.state;
+                                                            elseState = states[elseState];
+                                                            record.set('else_state', elseState);
                                                         }
                                                     } else {
-                                                        var else_state = _else_name;
-                                                        record.set('else_state', else_state);
+                                                        var elseState = _elseName;
+                                                        record.set('else_state', elseState);
                                                     }
                                                 }
                                             }
                                         }
                                     }
                                 } else {  // simple task
-                                    record.set('operator', operator_name);
+                                    record.set('operator', operatorName);
                                 }
                             }
                         }
@@ -443,7 +437,7 @@ define([
             );
             recordWizard.submit.done(
                 function(form) {
-                    switch(record_type) {
+                    switch(recordType) {
                         case 'edge':
                             break;
                         case 'vertice':
@@ -488,52 +482,52 @@ define([
                                         cid: 'canopsis.topology.rule.condition.' + operator,
                                         params: {}
                                     };
-                                    // set min_weight
+                                    // set minWeight
                                     if (operator === '_all') {
-                                        task.params.condition.params.min_weight = null;
+                                        task.params.condition.params.minWeight = null;
                                     } else {
-                                        var min_weight = record.get('min_weight');
-                                        task.params.condition.params.min_weight = min_weight;
+                                        var minWeight = record.get('minWeight');
+                                        task.params.condition.params.minWeight = minWeight;
                                     }
-                                    // set in_state
-                                    var in_state = record.get('in_state');
-                                    if (in_state === 'nok') {
+                                    // set inState
+                                    var inState = record.get('inState');
+                                    if (inState === 'nok') {
                                         task.params.condition.params.f = 'canopsis.topology.rule.condition.is_nok';
                                         task.params.condition.params.state = null;
                                     } else {
-                                        task.params.condition.params.state = states.indexOf(in_state);
+                                        task.params.condition.params.state = states.indexOf(inState);
                                     }
-                                    // set then_state
-                                    var then_state = record.get('then_state');
+                                    // set thenState
+                                    var thenState = record.get('thenState');
                                     task.params.statement = {
                                         cid: 'canopsis.topology.rule.action.',
                                         params: {}
                                     };
-                                    switch(then_state) {
+                                    switch(thenState) {
                                         case 'worst_state':
                                         case 'best_state':
-                                            task.params.statement.cid += then_state;
+                                            task.params.statement.cid += thenState;
                                             break;
                                         default:
-                                            then_state = states.indexOf(then_state);
+                                            thenState = states.indexOf(thenState);
                                             task.params.statement.cid += 'change_state';
-                                            task.params.statement.params.state = then_state;
+                                            task.params.statement.params.state = thenState;
                                     }
-                                    // set else_state
-                                    var else_state = record.get('else_state');
+                                    // set elseState
+                                    var elseState = record.get('elseState');
                                     task.params._else = {
                                         cid: 'canopsis.topology.rule.action.',
                                         params: {}
                                     };
-                                    switch(else_state) {
+                                    switch(elseState) {
                                         case 'worst_state':
                                         case 'best_state':
-                                            task.params._else.cid += else_state;
+                                            task.params._else.cid += elseState;
                                             break;
                                         default:
-                                            else_state = states.indexOf(else_state);
+                                            elseState = states.indexOf(elseState);
                                             task.params._else.cid += 'change_state';
-                                            task.params._else.params.state = else_state;
+                                            task.params._else.params.state = elseState;
                                     }
                                     break;
                                 default: break;

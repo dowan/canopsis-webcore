@@ -33,10 +33,12 @@ define([
 
     var adapter = ApplicationAdapter.extend({
 
-        graph_type: 'topology',
+        graphType: 'topology',
 
         buildURL: function(type, id, record) {
-            return '/' + this.graph_type + '/' + type + 's';
+            void(id);
+            void(record);
+            return '/' + this.graphType + '/' + type + 's';
         },
 
         createRecord: function(store, type, record) {
@@ -47,10 +49,11 @@ define([
             }
             var serializer = store.serializerFor(type.typeKey);
 
-            data = serializer.serializeIntoHash(data, type, record, 'POST', { includeId: true });
+            data = serializer.serializeIntoHash(data, type, record, 'PUT', { includeId: true });
 
-            var url = this.buildURL('graphelt', null);
+            console.log('connector typeKey', type.typeKey);
 
+            var url = this.buildURL('graphelt');
             return this.ajax(url, 'PUT', { data: {elts: data }});
         },
 

@@ -222,29 +222,39 @@ define([
              * Deletes the widget from its parents saves the view, and refresh it
              */
             removeWidget: function (widget) {
-                console.group('remove widget', widget);
-                console.log('parent container', this);
 
-                var itemsContent = get(this, 'content.items.content');
+                var widgetController = this;
 
-                for (var i = 0, l = itemsContent.length; i < l; i++) {
-                    console.log(get(this, 'content.items.content')[i]);
-
-                    if (get(itemsContent[i], 'widget') === widget) {
-                        itemsContent.removeAt(i);
-                        console.log('deleteRecord ok');
-                        break;
-                    }
-                }
-
-                var widgetController = this,
-                    userview = get(this, 'viewController.content');
-
-                userview.save().then(function() {
-                    get(widgetController, 'viewController').send('refresh');
+                var confirmform = formsUtils.showNew('confirmform', {}, {
+                    title: __('Delete this widget ?')
                 });
 
-                console.groupEnd();
+                confirmform.submit.then(function(form) {
+
+
+                    console.group('remove widget', widget);
+                    console.log('parent container', widgetController);
+
+                    var itemsContent = get(widgetController, 'content.items.content');
+
+                    for (var i = 0, l = itemsContent.length; i < l; i++) {
+                        console.log(get(widgetController, 'content.items.content')[i]);
+
+                        if (get(itemsContent[i], 'widget') === widget) {
+                            itemsContent.removeAt(i);
+                            console.log('deleteRecord ok');
+                            break;
+                        }
+                    }
+
+                    var userview = get(widgetController, 'viewController.content');
+
+                    userview.save().then(function() {
+                        get(widgetController, 'viewController').send('refresh');
+                    });
+
+                    console.groupEnd();
+                });
             },
 
             /**

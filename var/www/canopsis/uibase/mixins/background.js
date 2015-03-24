@@ -32,10 +32,10 @@ define([
 
     var viewMixin = Ember.Mixin.create({
         didInsertElement: function() {
-            var imageUrl = get(this, 'controller.mixinOptions.backgroundimage.imageUrl'),
-                position = get(this, 'controller.mixinOptions.backgroundimage.position'),
-                repeat = get(this, 'controller.mixinOptions.backgroundimage.repeat'),
-                size = get(this, 'controller.mixinOptions.backgroundimage.size'),
+            var imageUrl = get(this, 'controller.mixinOptions.background.imageUrl'),
+                position = get(this, 'controller.mixinOptions.background.position'),
+                repeat = get(this, 'controller.mixinOptions.background.repeat'),
+                size = get(this, 'controller.mixinOptions.background.size'),
                 element = this.$();
 
             if(imageUrl) {
@@ -56,7 +56,7 @@ define([
     });
 
 
-    var mixin = Mixin('backgroundimage', {
+    var mixin = Mixin('background', {
         init: function() {
             this._super();
             this.addMixinView(viewMixin);
