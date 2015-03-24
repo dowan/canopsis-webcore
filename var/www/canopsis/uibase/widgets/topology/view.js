@@ -101,8 +101,10 @@ define([
         toolboxGap: 50, // toolbox gap between shapes
         duration: 500, // transition duration in ms
 
+        _unit: 32, // unit shape size
+
         translate: [0, 0], // translation
-        scale: 1, // layout scale
+        scale: 1.5, // layout scale
 
         _defaultLayout: {
             partition: {
@@ -571,7 +573,7 @@ define([
         */
         weaveLinks: function(d3Edge) {
             var me = this;
-            // save count of link_id per targets/sources
+            // save count of linkId per targets/sources
             var recordsById = get(this, 'controller').recordsById;
             var id = d3Edge.id;
             var edge = recordsById[id];
@@ -648,21 +650,21 @@ define([
                     this
                 );
                 // remove useless links
-                for (vertice_id in d3Edge[key]) {
-                    var neighbourCount = neighbourCounts[key][vertice_id];
+                for (verticeId in d3Edge[key]) {
+                    var neighbourCount = neighbourCounts[key][verticeId];
                     var index = 0; // index to start to remove links
                     if (neighbourCount !== undefined) {
                         index = neighbourCount;
                     }
                     // delete links from model
-                    var link_id_to_delete = Object.keys(d3Edge[key][vertice_id]).splice(index);
-                    link_id_to_delete.forEach(
-                        function(link_id) {
-                            var link = this.shapesById[link_id];
+                    var linkIdToDelete = Object.keys(d3Edge[key][verticeId]).splice(index);
+                    linkIdToDelete.forEach(
+                        function(linkId) {
+                            var link = this.shapesById[linkId];
                             // delete from model
-                            delete d3Edge[key][vertice_id][link_id];
+                            delete d3Edge[key][verticeId][linkId];
                             // delete from view
-                            delete this.shapesById[link_id];
+                            delete this.shapesById[linkId];
                             linkPosToDelete.push(link.viewPos);
                         },
                         this
@@ -773,7 +775,7 @@ define([
                     .attr(
                         {
                             d: function(d, i) {
-                                return d.symbol.size(10 * 64)(d, i);
+                                return d.symbol.size(10 * me._unit)(d, i);
                             }
                         }
                     )
@@ -1081,13 +1083,13 @@ define([
                                 case 'graph':
                                     f = f.type('circle');
                                     if (d.id === graphId) {
-                                        f = f.size(30 * 64);
+                                        f = f.size(30 * me._unit);
                                     } else {
-                                        f = f.size((d._weight>=1? d._weight : 1) * 64);
+                                        f = f.size((d._weight>=1? d._weight : 1) * me._unit);
                                     }
                                     break;
-                                case 'edge': f = f.type('diamond').size(d._weight * 64); break;
-                                case 'vertice': f = f.type('square').size((d._weight>=1? d._weight : 1) * 64); break;
+                                case 'edge': f = f.type('diamond').size(d._weight * me._unit); break;
+                                case 'vertice': f = f.type('square').size((d._weight>=1? d._weight : 1) * me._unit); break;
                                 default: f = f.type('triangle-down');
                             }
                            var result = f(d, i);
@@ -1383,8 +1385,10 @@ define([
         */
         addLink: function(source, target, edit, success, failure, context) {
             var result = null;
-            var sourceType = source.elt.get('_type');
-            var graphId = get(this, 'controller.model.graph_id');
+            var controller = get(this, 'controller');
+            var sourceRecord = controller.recordsById[source.id];
+            var sourceType = sourceRecord.get('_type');
+            var graphId = get(controller, 'model.graph_id');
             // ensure source and target are ok
             if (source.id === graphId || !this.checkTargetLink(target)) {
                 throw new Exception('Wrong parameters');
@@ -1393,9 +1397,9 @@ define([
             if (target === undefined) {
                 // create a callback
                 var coordinates = this.coordinates();
-                function callback(record) {
-                    this.addLink(source, record.d3_elt);
-                    var target = record.d3_elt;
+                function _success(record) {
+                    var target = this.shapesById[record.get('id')];
+                    this.addLink(source, viewElt);
                     target.px = target.x = coordinates[0];
                     target.py = target.y = coordinates[1];
                     target.fixed = true;
@@ -1403,8 +1407,15 @@ define([
                         success.call(context, record);
                     }
                 }
+                function _failure(reason) {
+                    if (failure !== undefined) {
+                        failure.call(context, reason);
+                    }
+                }
                 // create a node if target does not exist
-                target = this.getNode(undefined, edit, callback, failure, this);
+                target = this.getNode(
+                    undefined, edit, _success, _failure, this
+                );
                 if (edit) return;
             }
             // get result
