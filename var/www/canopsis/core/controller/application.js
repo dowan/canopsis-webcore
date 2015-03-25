@@ -78,6 +78,12 @@ define([
 
     Application.IndexController = Ember.Controller.extend(Ember.Evented, {});
 
+    /**
+     * @class ApplicationController
+     * @extends PartialslotAbleController
+     * @constructor
+     * @description Main application controller
+     */
     var controller = PartialslotAbleController.extend(
         SchemamanagerMixin, PromisemanagerMixin, ConsolemanagerMixin, NotificationsMixin, {
 
@@ -87,21 +93,78 @@ define([
             statusbar: []
         },
 
+        /**
+         * @property editMode
+         * @type {boolean}
+         * @description Whether the current view is editable or not
+         */
         editMode: false,
 
         runtimeConfiguration: canopsisConfiguration,
+
+        /**
+         * @property debug
+         * @type Object
+         *
+         * @description See {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
+         */
         debug: Ember.computed.alias('runtimeConfiguration.DEBUG'),
 
+        /**
+         * @property widgetsRegistry
+         * @type Object
+         * @description Reference to the widgets registry
+         */
         widgetsRegistry: widgetsRegistry,
+
+        /**
+         * @property actionsRegistry
+         * @type Object
+         * @description Reference to the actions registry
+         */
         actionsRegistry: actionsRegistry,
+
+        /**
+         * @property mixinsRegistry
+         * @type Object
+         * @description Reference to the mixins registry
+         */
         mixinsRegistry: mixinsRegistry,
+
+        /**
+         * @property inflectionsRegistry
+         * @type Object
+         * @description Reference to the inflections registry
+         */
         inflectionsRegistry: inflectionsRegistry,
+
+        /**
+         * @property formsRegistry
+         * @type Object
+         * @description Reference to the form registry
+         */
         formsRegistry: formsRegistry,
 
+        /**
+         * @property isLoading
+         * @type Number
+         * @description the number of concurrent loadings (usually requests) pending
+         */
         isLoading:0,
 
+        /**
+         * @property utils
+         * @description utils reference
+         * @deprecated
+         */
         utils: utils,
 
+        /**
+         * @property enginesviews
+         * @type Array
+         * @static
+         * @description used to feed the left menu "Engines"
+         */
         enginesviews: [
             {label: __('Selectors'), value: 'view.selectors'},
             {label: __('Scheduled Jobs'), value: 'view.jobs'},
@@ -110,17 +173,9 @@ define([
             {label: __('Scheduled Jobs'), value: 'view.jobs'}
         ],
 
-        plugins:function(){
-            var all_plugins = [];
-            var plugins = Application.plugins;
-            for(var pluginName in plugins) {
-                if(plugins.hasOwnProperty(pluginName)){
-                    all_plugins.pushObject(plugins[pluginName]);
-                }
-            }
-            return all_plugins;
-        }.property(),
-
+        /**
+         * @method init
+         */
         init: function() {
             console.group('app init');
             notificationUtils.setController(this);
@@ -161,6 +216,10 @@ define([
             console.tags.remove('init');
         },
 
+        /**
+         * @method editAuthConfig
+         * @param {String} authType the type of the auth system to edit
+         */
         editAuthConfig: function(authType) {
             console.log('edit ' + authType);
 
@@ -185,22 +244,35 @@ define([
                     conf.save();
                 });
             }
-
         },
 
         actions: {
-
+            /**
+             * @event editAuthConfiguration
+             * @param {String} authType
+             */
             editAuthConfiguration: function(authType) {
                 console.log('edit ' + authType);
                 this.editAuthConfig(authType);
             },
 
+            /**
+             * @event prompt
+             * @descriptions Shows a popup with a message
+             * @param {String} message
+             */
             prompt:function (message) {
                 formsUtils.showNew('confirmform', {}, {
                     title: __(message)
                 });
             },
 
+            /**
+             * @event promptReloadApplication
+             * @descriptions Shows a popup with a message
+             * @param {String} title
+             * @param {String} location the location to redirect the user when he accepts to get redirected. Defaults to "/index.html"
+             */
             promptReloadApplication: function(title, location) {
                 setTimeout(function (){
                     var recordWizard = formsUtils.showNew('confirmform', {}, {
@@ -219,6 +291,10 @@ define([
                 }, 1500);
             },
 
+            /**
+             * @event showUserProfile
+             * @descriptions Shows a Modelform with the user profile
+             */
             showUserProfile: function () {
                 var applicationController = this;
 
@@ -264,6 +340,10 @@ define([
                 });
             },
 
+            /**
+             * @event editEventSettings
+             * @descriptions Shows a Modelform with event settings
+             */
             editEventSettings: function () {
 
                 var applicationController = this;
@@ -305,6 +385,10 @@ define([
                 });
             },
 
+            /**
+             * @event editDataclean
+             * @descriptions Shows a Modelform to edit data cleaner options
+             */
             editDataclean: function () {
 
                 var applicationController = this;
@@ -340,6 +424,11 @@ define([
                 });
             },
 
+
+            /**
+             * @event editConfig
+             * @descriptions Shows a form to edit the frontend configuration
+             */
             editConfig: function() {
                 var frontendConfig = get(this, 'frontendConfig');
                 console.log('editConfig', formsUtils, frontendConfig);
@@ -350,6 +439,10 @@ define([
                 });
             },
 
+            /**
+             * @event editTicketJob
+             * @descriptions Shows a form to edit the tickets configuration
+             */
             editTicketJob: function() {
                 console.group('editTicketJob');
 
@@ -384,6 +477,10 @@ define([
                 console.groupEnd();
             },
 
+            /**
+             * @event addNewView
+             * @descriptions Shows a form to create a new userview
+             */
             addNewView: function () {
                 var type = "userview";
                 var applicationController = this;
@@ -422,10 +519,20 @@ define([
                 });
             },
 
+            /**
+             * @event openTab
+             * @descriptions Change frontend route to a new url
+             * @param url the new url to go to
+             */
             openTab: function(url) {
                 this.transitionToRoute(url);
             },
 
+            /**
+             * @event addModelInstance
+             * @descriptions Shows a form to a specified model
+             * @param {String} type the model type, lower-cased
+             */
             addModelInstance: function(type) {
                 console.log("add", type);
 
@@ -442,6 +549,10 @@ define([
                 });
             },
 
+            /**
+             * @event logout
+             * @descriptions close the user session and go back to the login screen
+             */
             logout: function() {
                 get(this, 'controllers.login').setProperties({
                     'authkey': null,
@@ -456,6 +567,5 @@ define([
 
     loader.register('controller:application', controller);
 
-    void (utils);
     return controller;
 });

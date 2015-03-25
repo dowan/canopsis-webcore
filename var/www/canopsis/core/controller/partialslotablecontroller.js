@@ -63,15 +63,33 @@ define([
         return res;
     }
 
+    /**
+     * @class PartialslotAbleController
+     * @extends Ember.ObjectController
+     * @constructor
+     * @description Abstract class to manage partial slots and mixin with models, as used in Canopsis
+     */
     var controller = Ember.ObjectController.extend({
 
         mergedProperties: ['partials'],
 
+        /**
+         * @property _partials
+         * @type Object
+         */
         _partials: {},
 
+        /**
+         * @property mixinOptions
+         * @type Object
+         */
         mixinOptions : {},
 
 
+        /**
+         * @method refreshPartialsList
+         * @description recompute the "_partials" object. See {{#crossLink "PartialslotAbleController/_partials:property"}}{{/crossLink}}
+         */
         refreshPartialsList: function() {
             console.log('refreshPartialsList', get(this, 'partials'));
             var partials = get(this, 'partials');
@@ -97,7 +115,9 @@ define([
             set(this, '_partials', partials);
         },
 
-
+        /**
+         * @method mergeMixinPartials
+         */
         mergeMixinPartials: function(Mixin, partials) {
             var me = this;
             var mixinName = Mixin.decamelize();
