@@ -16,7 +16,7 @@
             {{#if controller.singleEvent}}
                 {{#each controller.sub_weather}}
                     <div>
-                        <div class="inner text-center">
+                        <div class="inner text-center" style="overflow:hidden">
                             {{#if controller.show_title}}
                                 <h4>
                                     {{title}}
@@ -34,10 +34,11 @@
                     </div>
                 {{/each}}
             {{else}}
+                <div style="margin-right:55px;">
                 {{#each controller.sub_weather}}
                     <div class="col-lg-3 col-xs-6">
                         <div {{bind-attr class=":small-box custom_class"}}>
-                            <div class="inner text-center">
+                            <div class="inner text-center" style="overflow:hidden">
                                 {{#if controller.show_title}}
                                     <h4>
                                         {{title}}
@@ -50,6 +51,7 @@
                         </div>
                     </div>
                 {{/each}}
+                </div>
             {{/if}}
         </div>
     </div>

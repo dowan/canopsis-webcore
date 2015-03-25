@@ -36,6 +36,7 @@ define([
                 position = get(this, 'controller.mixinOptions.background.position'),
                 repeat = get(this, 'controller.mixinOptions.background.repeat'),
                 size = get(this, 'controller.mixinOptions.background.size'),
+                backgroundcolor = get(this, 'controller.mixinOptions.background.backgroundcolor'),
                 element = this.$();
 
             if(imageUrl) {
@@ -49,6 +50,9 @@ define([
             }
             if(repeat) {
                 element.css('background-repeat', repeat);
+            }
+            if(backgroundcolor) {
+                element.css('background-color', backgroundcolor);
             }
 
             this._super();

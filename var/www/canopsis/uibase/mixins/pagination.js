@@ -50,6 +50,12 @@ define([
             set(this, 'itemsPerPagePropositionSelected', get(this, 'itemsPerPage'));
         },
 
+        hasOnePage: function () {
+            var onepage = get(this, 'totalPages') === 1;
+            console.log('Is it a one page ?', onepage);
+            return onepage;
+        }.property('totalPages'),
+
         itemsPerPage: function() {
             var itemsPerPage = get(this, 'model.itemsPerPage') || get(this, 'mixinOptions.pagination.defaultItemsPerPage') || 5;
             return itemsPerPage;
