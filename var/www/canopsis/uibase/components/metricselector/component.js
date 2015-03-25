@@ -31,7 +31,7 @@ define([
 
     var component = Ember.Component.extend({
         valueChanged: function() {
-            var metrics = get(this, 'selectedMetrics');
+            var metrics = get(this, 'selectedMetrics') || [];
             var ids = [];
 
             for(var i = 0, l = metrics.length; i < l; i++) {

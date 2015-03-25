@@ -278,7 +278,7 @@ define(['text!canopsis/enabled.json', 'app/lib/wrappers/console', 'app/lib/objec
     }
 
     require(deps, function() {
-        require(['canopsis/file_loader'], function(){
+        require(['canopsis/file_loader'], function() {
             setLoadingInfo('Fetching application starting point', 'fa-plug');
             require(['app/init'], function(Application) {
                 setLoadingInfo('Initializing user interface', 'fa-desktop');
