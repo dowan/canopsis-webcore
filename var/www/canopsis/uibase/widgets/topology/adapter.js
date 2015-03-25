@@ -51,27 +51,15 @@ define([
 
             data = serializer.serializeIntoHash(data, type, record, 'PUT', { includeId: true });
 
-            console.log('connector typeKey', type.typeKey);
-
             var url = this.buildURL('graphelt');
+
             return this.ajax(url, 'PUT', { data: {elts: data }});
         },
 
         updateRecord: function(store, type, record) {
-            var data = {};
-            var serializer = store.serializerFor(type.typeKey);
 
-            data = serializer.serializeIntoHash(data, type, record, 'POST', { includeId: true });
+            return this.createRecord(store, type, record);
 
-            var url = this.buildURL('graphelt', null);
-
-            var query = {data: {elt: data}};
-
-            return new Ember.RSVP.Promise(function(resolve, reject) {
-                var funcres = modelsolve.gen_resolve(resolve);
-                var funcrej = modelsolve.gen_reject(reject);
-                $.put(url, query).then(funcres, funcrej);
-            });
         },
 
         deleteRecord: function(store, type, record) {
@@ -80,21 +68,13 @@ define([
             var id = get(record, 'id');
             var query = {data: {ids: id}};
 
-            return new Ember.RSVP.Promise(function(resolve, reject) {
-                var funcres = modelsolve.gen_resolve(resolve);
-                var funcrej = modelsolve.gen_reject(reject);
-                $.delete(url, query).then(funcres, funcrej);
-            });
+            return this.ajax(url, 'DELETE', query);
         },
 
         findQuery: function(store, type, query) {
             var url = this.buildURL(type.typeKey, null);
 
-            return new Ember.RSVP.Promise(function(resolve, reject) {
-                var funcres = modelsolve.gen_resolve(resolve);
-                var funcrej = modelsolve.gen_reject(reject);
-                $.post(url, query).then(funcres, funcrej);
-            });
+            return this.ajax(url, 'POST', {data: query});
         },
 
     });

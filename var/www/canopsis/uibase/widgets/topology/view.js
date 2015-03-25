@@ -101,8 +101,10 @@ define([
         toolboxGap: 50, // toolbox gap between shapes
         duration: 500, // transition duration in ms
 
+        _unit: 32, // unit shape size
+
         translate: [0, 0], // translation
-        scale: 1, // layout scale
+        scale: 1.5, // layout scale
 
         _defaultLayout: {
             partition: {
@@ -526,12 +528,6 @@ define([
             // refresh locked shapes
             this.refreshLockedShapes();
 
-            var diagonal = d3.svg.diagonal.radial()
-                .projection(function(d) {
-                        return [d.y, d.x / 180 * Math.PI];
-                    }
-                );
-
             engine.on(
                 'tick',
                 function() {
@@ -571,7 +567,7 @@ define([
         */
         weaveLinks: function(d3Edge) {
             var me = this;
-            // save count of link_id per targets/sources
+            // save count of linkId per targets/sources
             var recordsById = get(this, 'controller').recordsById;
             var id = d3Edge.id;
             var edge = recordsById[id];
@@ -598,6 +594,7 @@ define([
             function updateLinks(key) {
                 var isSource = key === 'sources';
                 var neighbours = edge.get(key);
+
                 neighbours.forEach(
                     function(d) {
                         // get number of time we meet d
@@ -625,7 +622,7 @@ define([
                                 isSource: isSource,
                                 source: isSource? d : id,
                                 target: (!isSource)? d : id,
-                                id: get(this, 'controller').uuid(), // uuid
+                                id: ''+Math.random(), // uuid
                                 viewPos: this.links.length, // pos in view
                             };
                             // add in view
@@ -648,21 +645,21 @@ define([
                     this
                 );
                 // remove useless links
-                for (vertice_id in d3Edge[key]) {
-                    var neighbourCount = neighbourCounts[key][vertice_id];
+                for (verticeId in d3Edge[key]) {
+                    var neighbourCount = neighbourCounts[key][verticeId];
                     var index = 0; // index to start to remove links
                     if (neighbourCount !== undefined) {
                         index = neighbourCount;
                     }
                     // delete links from model
-                    var link_id_to_delete = Object.keys(d3Edge[key][vertice_id]).splice(index);
-                    link_id_to_delete.forEach(
-                        function(link_id) {
-                            var link = this.shapesById[link_id];
+                    var linkIdToDelete = Object.keys(d3Edge[key][verticeId]).splice(index);
+                    linkIdToDelete.forEach(
+                        function(linkId) {
+                            var link = this.shapesById[linkId];
                             // delete from model
-                            delete d3Edge[key][vertice_id][link_id];
+                            delete d3Edge[key][verticeId][linkId];
                             // delete from view
-                            delete this.shapesById[link_id];
+                            delete this.shapesById[linkId];
                             linkPosToDelete.push(link.viewPos);
                         },
                         this
@@ -724,9 +721,7 @@ define([
         coordinates: function() {
             var result = [1, 1];
             if (this.panel !== null) {
-                // result = d3.mouse(this.panel[0][0]);
-                //FIXME hack to make node insertion work
-                result = [10, 10];
+                result = d3.mouse(this.panel[0][0]);
             }
             return result;
         },
@@ -775,7 +770,7 @@ define([
                     .attr(
                         {
                             d: function(d, i) {
-                                return d.symbol.size(10 * 64)(d, i);
+                                return d.symbol.size(10 * me._unit)(d, i);
                             }
                         }
                     )
@@ -863,7 +858,7 @@ define([
                 }
             );
             if (recordsToDel.length > 0) {
-                get(this, 'controller').delete(recordsToDel);
+                get(this, 'controller').deleteRecords(recordsToDel);
             }
         },
         linkHandler: function(data, shape) {
@@ -891,7 +886,9 @@ define([
                     this.getNode(record);
                 }
                 var controller = get(this, 'controller');
-                var record = controller.newRecord(controller.verticeEltType, undefined, true, callback);
+                var record = controller.newRecord(
+                    controller.verticeEltType, undefined, true, callback, undefined, this
+                    );
             } else {
                 function success(record) {
                     get(this, 'controller').trigger('redraw');
@@ -1083,13 +1080,13 @@ define([
                                 case 'graph':
                                     f = f.type('circle');
                                     if (d.id === graphId) {
-                                        f = f.size(30 * 64);
+                                        f = f.size(30 * me._unit);
                                     } else {
-                                        f = f.size((d._weight>=1? d._weight : 1) * 64);
+                                        f = f.size((d._weight>=1? d._weight : 1) * me._unit);
                                     }
                                     break;
-                                case 'edge': f = f.type('diamond').size(d._weight * 64); break;
-                                case 'vertice': f = f.type('square').size((d._weight>=1? d._weight : 1) * 64); break;
+                                case 'edge': f = f.type('diamond').size(d._weight * me._unit); break;
+                                case 'vertice': f = f.type('square').size((d._weight>=1? d._weight : 1) * me._unit); break;
                                 default: f = f.type('triangle-down');
                             }
                            var result = f(d, i);
@@ -1170,11 +1167,6 @@ define([
         */
         addLinks: function(links) {
             var me = this;
-            var diagonal = d3.svg.diagonal.radial()
-                .projection(function(d) {
-                        return [d.y, d.x / 180 * Math.PI];
-                    }
-                );
             // create the graphical element
             var shapes = links
                 .append('path') // line representation
@@ -1188,7 +1180,6 @@ define([
                     .attr(
                         {
                             'id': function(d) { return d.id; },
-                            'd': diagonal
                         }
                     )
                     .on('click', function() { return me.clickAction(this);})
@@ -1304,8 +1295,9 @@ define([
         * @param shape target shape.
         */
         checkTargetLink: function(data) {
+            var recordsById = get(this, 'controller').recordsById;
             var record = recordsById[data.id || data];
-            var result = (data === undefined || (record.get('type') !== 'topoedge' && data.id !== this.source.id));
+            var result = (data === undefined || (record.get('_type') !== 'edge' && data.id !== this.source.id));
             return result;
         },
 
@@ -1344,16 +1336,13 @@ define([
             // get node from db
             var recordNode = undefined;
             var view = record.get('info').view;
-            //FIXME hack
-            if (view !== undefined && ! view.undefined === 'undefined') {
-                recordNode = view[grap_id];
+            if (view !== undefined) {
+                recordNode = view[graphId];
             }
             // create a new node if it does not exist
             if (result === undefined) {
                 // if old node does not exist
                 if (recordNode === undefined) {
-                    // get current mouse coordinates
-                    var coordinates = this.coordinates();
                     // apply mouse coordinates to the result
                     result = {
                         fixed: false, // new node is fixed
@@ -1386,8 +1375,10 @@ define([
         */
         addLink: function(source, target, edit, success, failure, context) {
             var result = null;
-            var sourceType = source.get('_type');
-            var graphId = get(this, 'controller.model.graph_id');
+            var controller = get(this, 'controller');
+            var sourceRecord = controller.recordsById[source.id];
+            var sourceType = sourceRecord.get('_type');
+            var graphId = get(controller, 'model.graph_id');
             // ensure source and target are ok
             if (source.id === graphId || !this.checkTargetLink(target)) {
                 throw new Exception('Wrong parameters');
@@ -1396,9 +1387,9 @@ define([
             if (target === undefined) {
                 // create a callback
                 var coordinates = this.coordinates();
-                function callback(record) {
-                    this.addLink(source, record.d3_elt);
-                    var target = record.d3_elt;
+                function _success(record) {
+                    var target = this.shapesById[record.get('id')];
+                    this.addLink(source, viewElt);
                     target.px = target.x = coordinates[0];
                     target.py = target.y = coordinates[1];
                     target.fixed = true;
@@ -1406,8 +1397,15 @@ define([
                         success.call(context, record);
                     }
                 }
+                function _failure(reason) {
+                    if (failure !== undefined) {
+                        failure.call(context, reason);
+                    }
+                }
                 // create a node if target does not exist
-                target = this.getNode(undefined, edit, callback, failure, this);
+                target = this.getNode(
+                    undefined, edit, _success, _failure, this
+                );
                 if (edit) return;
             }
             // get result
@@ -1419,30 +1417,23 @@ define([
                 this.weaveLinks(result);
             } else { // else create a new edge
                 function callback2(record) {
-                    var edge = record.d3_elt;
+                    var edge = this.get_node(record);
                     this.weaveLinks(edge);
                     if (success !== undefined) {
                         success.call(context, record);
                     }
                 }
-                var edge = this.getNode(
+                var edge = get(this, 'controller').newRecord(
+                    get(this, 'controller').edge_elt_type,
                     {
-                        type: get(this, 'controller').edge_elt_type,
                         sources: [source.id],
-                        targets: [target.id],
-                        weight: 1,
-                        directed: true,
-                        _type: 'edge',
-                        _cls: get(this, 'controller').default_edge_cls
+                        targets: [target.id]
                     },
                     edit,
                     callback2,
                     failure,
                     this
                 );
-                if (!edit) {
-                    callback2.call(this, edge.elt);
-                }
             }
             return result;
         },
