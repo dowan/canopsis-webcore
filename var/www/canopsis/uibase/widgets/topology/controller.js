@@ -106,7 +106,10 @@ define([
             Object.keys(_delts).forEach(
                 function(elt_id) {
                     var elt = _delts[elt_id];
-                    var record = this.newRecord(elt['type'], elt);
+                    elt.id = elt_id;
+                    var record = this.widgetDataStore.createRecord(
+                        elt['type'], elt
+                    );
                     recordsById[elt_id] = record;
                 },
                 me
@@ -128,8 +131,7 @@ define([
                     ids: graphId,
                     add_elts: true
                 };
-                var store = this.widgetDataStore;
-                store.find('graph', query).then(
+                this.widgetDataStore.find('graph', query).then(
                     function(result) {
                         var graph = null;
                         if (result.content.length > 0) {  // if content exists
@@ -141,8 +143,7 @@ define([
                                 var recordsToDelete = me.recordsById.map(
                                     function(recordId) {
                                         var record = me.recordsById[recordId];
-                                        record.delete();
-                                        return record.save();
+                                        return record.destroyRecord();
                                     },
                                     me
                                 );
@@ -153,18 +154,13 @@ define([
                         }
                     },
                     function(reason) {
-                        console.log(reason);
+                        var graph = me.widgetDataStore.createRecord(
+                            me.graphEltType, {id: graphId}
+                        );
+                        graph.save().then(function(record){me._addGraph(record)});
                     }
                 );
             }
-        },
-
-        /**
-        * return unique id.
-        */
-        uuid: function(record) {
-            var result = ''+Math.random();//this.widgetDataStore.adapterFor('graphelt').generateIdForRecord(record);
-            return result;
         },
 
         /**
@@ -188,8 +184,7 @@ define([
                         // let the backend delete records
                         var recordsToDelete = records.map(
                             function(record) {
-                                record.delete();
-                                return record.save();
+                                return record.destroyRecord();
                             }
                         );
                         Ember.RSVP.all(recordsToDelete).then(
@@ -274,22 +269,6 @@ define([
         * @param failure edition failure callback. Takes record in parameter.
         */
         newRecord: function(type, properties, edit, success, failure, context) {
-            var id = null;
-            // ensure id exists
-            if (properties !== undefined) {
-                id = properties.id;
-                if (id === undefined) {
-                    id = properties.cid;
-                    if (id === undefined) {
-                        id = this.uuid();
-                    }
-                }
-            } else {
-                properties = {};
-                id = this.uuid();
-            }
-            properties.id = id;
-            properties.cid = id;
             var result = this.widgetDataStore.createRecord(type, properties);
             function _success(record) {
                 var recordId = record.get('id');

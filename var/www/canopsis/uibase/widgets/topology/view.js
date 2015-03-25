@@ -528,12 +528,6 @@ define([
             // refresh locked shapes
             this.refreshLockedShapes();
 
-            var diagonal = d3.svg.diagonal.radial()
-                .projection(function(d) {
-                        return [d.y, d.x / 180 * Math.PI];
-                    }
-                );
-
             engine.on(
                 'tick',
                 function() {
@@ -600,6 +594,7 @@ define([
             function updateLinks(key) {
                 var isSource = key === 'sources';
                 var neighbours = edge.get(key);
+
                 neighbours.forEach(
                     function(d) {
                         // get number of time we meet d
@@ -627,7 +622,7 @@ define([
                                 isSource: isSource,
                                 source: isSource? d : id,
                                 target: (!isSource)? d : id,
-                                id: get(this, 'controller').uuid(), // uuid
+                                id: ''+Math.random(), // uuid
                                 viewPos: this.links.length, // pos in view
                             };
                             // add in view
@@ -726,9 +721,7 @@ define([
         coordinates: function() {
             var result = [1, 1];
             if (this.panel !== null) {
-                // result = d3.mouse(this.panel[0][0]);
-                //FIXME hack to make node insertion work
-                result = [10, 10];
+                result = d3.mouse(this.panel[0][0]);
             }
             return result;
         },
@@ -865,7 +858,7 @@ define([
                 }
             );
             if (recordsToDel.length > 0) {
-                get(this, 'controller').delete(recordsToDel);
+                get(this, 'controller').deleteRecords(recordsToDel);
             }
         },
         linkHandler: function(data, shape) {
@@ -893,7 +886,9 @@ define([
                     this.getNode(record);
                 }
                 var controller = get(this, 'controller');
-                var record = controller.newRecord(controller.verticeEltType, undefined, true, callback);
+                var record = controller.newRecord(
+                    controller.verticeEltType, undefined, true, callback, undefined, this
+                    );
             } else {
                 function success(record) {
                     get(this, 'controller').trigger('redraw');
@@ -1172,11 +1167,6 @@ define([
         */
         addLinks: function(links) {
             var me = this;
-            var diagonal = d3.svg.diagonal.radial()
-                .projection(function(d) {
-                        return [d.y, d.x / 180 * Math.PI];
-                    }
-                );
             // create the graphical element
             var shapes = links
                 .append('path') // line representation
@@ -1190,7 +1180,6 @@ define([
                     .attr(
                         {
                             'id': function(d) { return d.id; },
-                            'd': diagonal
                         }
                     )
                     .on('click', function() { return me.clickAction(this);})
@@ -1306,8 +1295,9 @@ define([
         * @param shape target shape.
         */
         checkTargetLink: function(data) {
+            var recordsById = get(this, 'controller').recordsById;
             var record = recordsById[data.id || data];
-            var result = (data === undefined || (record.get('type') !== 'topoedge' && data.id !== this.source.id));
+            var result = (data === undefined || (record.get('_type') !== 'edge' && data.id !== this.source.id));
             return result;
         },
 
@@ -1346,16 +1336,13 @@ define([
             // get node from db
             var recordNode = undefined;
             var view = record.get('info').view;
-            //FIXME hack
-            if (view !== undefined && ! view.undefined === 'undefined') {
-                recordNode = view[grap_id];
+            if (view !== undefined) {
+                recordNode = view[graphId];
             }
             // create a new node if it does not exist
             if (result === undefined) {
                 // if old node does not exist
                 if (recordNode === undefined) {
-                    // get current mouse coordinates
-                    var coordinates = this.coordinates();
                     // apply mouse coordinates to the result
                     result = {
                         fixed: false, // new node is fixed
@@ -1430,30 +1417,23 @@ define([
                 this.weaveLinks(result);
             } else { // else create a new edge
                 function callback2(record) {
-                    var edge = record.d3_elt;
+                    var edge = this.get_node(record);
                     this.weaveLinks(edge);
                     if (success !== undefined) {
                         success.call(context, record);
                     }
                 }
-                var edge = this.getNode(
+                var edge = get(this, 'controller').newRecord(
+                    get(this, 'controller').edge_elt_type,
                     {
-                        type: get(this, 'controller').edge_elt_type,
                         sources: [source.id],
-                        targets: [target.id],
-                        weight: 1,
-                        directed: true,
-                        _type: 'edge',
-                        _cls: get(this, 'controller').default_edge_cls
+                        targets: [target.id]
                     },
                     edit,
                     callback2,
                     failure,
                     this
                 );
-                if (!edit) {
-                    callback2.call(this, edge.elt);
-                }
             }
             return result;
         },
