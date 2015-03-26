@@ -72,14 +72,17 @@ define([
             }
         }
     });
-    /*
-        Default is to display all fields of a given model if they are referenced into category list (in model)
-        options: is an object that can hold a set dictionnary of values to override
-            - filters: is a list of keys to filter the fields that can be displayed
-            - override_labels is an object that helps translate fields to display in form
-            - callback, witch is called once form sent
-            - plain ajax contains information that will be used insted of ember data mechanism
-    */
+    /**
+     * @class FormController
+     * @controller
+     * @description
+     * Default is to display all fields of a given model if they are referenced into category list (in model)
+     * options: is an object that can hold a set dictionnary of values to override
+     *   - filters: is a list of keys to filter the fields that can be displayed
+     *   - override_labels is an object that helps translate fields to display in form
+     *   - callback, witch is called once form sent
+     *   - plain ajax contains information that will be used insted of ember data mechanism
+     */
     var controller = eventedController.extend({
         needs: ['application'],
 
@@ -90,7 +93,14 @@ define([
             this._super.apply(this, arguments);
         },
 
-        /*
+        confirmation: false,
+
+        /**
+         * @property submit
+         * @type $.Deferred
+         * @static
+         * @description
+         *
          * Deferred to help manage form callbacks. You can implement :
          *  - done
          *  - always
@@ -102,7 +112,12 @@ define([
          * Caution: FormController#submit is NOT FormController#_actions#submit
          */
         submit: $.Deferred(),
+
         actions: {
+            /**
+             * @event previousForm
+             * @description rollback to the previous form (if applicable)
+             */
             previousForm: function() {
                 var previousForm = get(this, 'previousForm');
 
@@ -110,11 +125,26 @@ define([
                 formUtils.showInstance(previousForm);
             },
 
+
+            /**
+             * @event show
+             * @description
+             *
+             * Action triggered when the form is shown.
+             * By default it is used to reinitialize the "submit" deferred
+             */
             show: function() {
                 //reset submit defered
                 this.submit = $.Deferred();
             },
 
+            /**
+             * @event submit
+             * @description
+             *
+             * Action triggered when the form is submit.
+             * If there is a parent form, its submit action is also called
+             */
             submit: function() {
                 console.log("onsubmit", this.formParent);
 
@@ -133,6 +163,14 @@ define([
                 }
             },
 
+
+            /**
+             * @event abort
+             * @description
+             *
+             * Action triggered when the form is aborted.
+             * If there is a parent form, its abort action is also called
+             */
             abort: function() {
                 if(this.formParent !== undefined) {
                     this.formParent.send('abort', arguments);
@@ -142,6 +180,12 @@ define([
                 }
             },
 
+            /**
+             * @event inspectForm
+             * @description
+             *
+             * Inspect form in console and put it in the global $E variable
+             */
             inspectForm: function() {
                 console.group('inspectForm');
                 console.log('form:', this);
@@ -159,6 +203,12 @@ define([
             debugButtons: ['formbutton-inspectform']
         },
 
+        /**
+         * @property title
+         * @description
+         *
+         * The title of the form, usually displayed in the formwrapper header
+         */
         title: function() {
             console.warn("Property \"title\" must be defined on the concrete class.");
 
