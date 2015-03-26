@@ -26,7 +26,8 @@ define([
     var inflexions = [
         ['nagios' , 'nagios'],
         ['curve', 'curves'],
-        ['serie', 'serie']
+        ['serie', 'serie'],
+        ['enabledmodules', 'enabledmodules']
     ];
 
     var inflectionsManager = Abstractclassregistry.create({

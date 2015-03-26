@@ -16,31 +16,20 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
+define(['jquery'], function($) {
 
-define([
-    'app/application',
-    'runtime.conf',
-    'app/serializers/application',
-    'app/lib/wrappers/bootstrap',
-    'app/lib/wrappers/hint',
-    'app/lib/wrappers/swag',
-    'app/lib/wrappers/console',
-    'app/lib/wrappers/ionicons',
-    'app/lib/wrappers/jsoneditor',
-    'app/lib/loaders/attributepresets',
-    'app/lib/loaders/forms',
-    'app/lib/loaders/validators',
-    'app/lib/loaders/mixins',
-    'app/routes/application',
-    'app/routes/authenticated',
-    'app/routes/index',
-    'app/routes/userview',
-    'css3-mediaqueries'
-], function(Application, Canopsis) {
+    var enabled = {
+        getEnabledModules: function (callback) {
+            $.get('/rest/object/enabledmodules', function (data) {
+                if (data.success === true && data.total === 1) {
+                    callback(data.data[0].enabled);
+                } else {
+                    console.error('Could not load module information.');
+                }
 
-    window.getCanopsis = function () {
-        return Canopsis;
+            });
+        }
     };
 
-    return Application;
+    return enabled;
 });

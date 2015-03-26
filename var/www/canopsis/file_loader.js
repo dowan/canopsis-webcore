@@ -18,33 +18,31 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var routes;
+define(function() {
+    var file_loader = {
+        routes: [],
+        load: function(path, enabledModules, plugins_tool) {
+            var files;
+            var plugins = [];
 
-require(['plugins'], function(plugins_tool) {
-    routes = [];
+            try {
+                plugins = plugins_tool.Plugins.getPlugins(path, enabledModules);
+                plugins = plugins_tool.Plugins.resolveDependancies(plugins);
+            } catch (e) {
+                console.warn('PluginError: ' + e);
+            }
 
-    function load_(path) {
-        var files;
-        var plugins = [];
+            var routes_plugins = plugins_tool.Manifest.fetchRoutes(plugins, path);
+            this.routes = this.routes.concat(routes_plugins);
+            files = plugins_tool.Manifest.fetchFiles(plugins, path);
 
-        try {
-            plugins = plugins_tool.Plugins.getPlugins(path);
-            plugins = plugins_tool.Plugins.resolveDependancies(plugins);
-        } catch (e) {
-            console.warn("PluginError: " + e);
+            files = files.map(function(e) {
+                return e.replace('canopsis/core/', 'app/');
+            });
+
+            require(files);
         }
-
-        var routes_plugins = plugins_tool.Manifest.fetchRoutes(plugins, path);
-        routes = routes.concat(routes_plugins);
-        files = plugins_tool.Manifest.fetchFiles(plugins, path);
-
-        files = files.map(function(e) {
-            return e.replace("canopsis/core/", "app/");
-        });
-
-        require(files);
-    }
-
-    load_("canopsis/");
+    };
+    return file_loader;
 });
 
