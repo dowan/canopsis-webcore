@@ -17,23 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+
 define([
-        'app/application',
-        'canopsis/canopsis-backend-ui-connector/adapters/application'
-], function(Application, ApplicationAdapter) {
-
-    var adapter = ApplicationAdapter.extend({
-        buildURL: function(type, id) {
-            return '/account/' + id;
-        },
-
-        find: function () {
-            return this.ajax('/account/me', 'GET', {});
-        }
-    });
-
-
-    loader.register('adapter:loggedaccount', adapter);
-
-    return adapter;
-});
+    'canopsis/userpreferences/lib/loaders/components'
+], function () {});

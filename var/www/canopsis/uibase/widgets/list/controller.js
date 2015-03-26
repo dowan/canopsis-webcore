@@ -24,7 +24,7 @@ define([
     'app/lib/factories/widget',
     'canopsis/uibase/mixins/pagination',
     'app/mixins/inspectablearray',
-    'app/mixins/userconfiguration',
+    'canopsis/userpreferences/mixins/userconfiguration',
     'canopsis/uibase/mixins/draggablecolumns',
     'app/lib/utils/dom',
     'app/lib/utils/routes',

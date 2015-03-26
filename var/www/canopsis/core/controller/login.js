@@ -51,26 +51,6 @@ define([
             set(this, 'store', store);
         },
 
-        getUser: function () {
-            var controller = this;
-            var store = get(this, 'store');
-
-            return $.ajax({
-                url: '/account/me',
-                success: function(data) {
-                    if (data.success) {
-                        var login = store.createRecord('user', data.data[0]);
-                        set(controller, 'record', login);
-                        set(utils, 'session', get(controller, 'record'));
-                    }
-                    else {
-                        utils.notification.error('Impossible to get user account');
-                    }
-                },
-                async: false
-            });
-        },
-
         reset: function() {
             this.setProperties({
                 username: "",

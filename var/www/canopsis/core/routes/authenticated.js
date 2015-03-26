@@ -19,15 +19,40 @@
 
 define([
     'ember',
+    'ember-data',
     'app/controller/application',
-    'app/controller/login'
-], function(Ember, ApplicationController) {
+    'utils',
+    'app/lib/utils/data',
+    'app/controller/login',
+], function(Ember, DS, ApplicationController, utils, dataUtils) {
+
+    var get = Ember.get,
+        set = Ember.set;
+
 
     var route = Ember.Route.extend({
 
-        beforeModel: function() {
-            var superPromise = this._super();
-            var loginPromise = this.controllerFor('login').getUser();
+        beforeModel: function(transition) {
+            // var loginPromise = this.controllerFor('login').getUser();
+
+            var route = this;
+            var store = DS.Store.create({ container: get(this, "container") });
+
+            //FIXME dirty, risky
+            loggedaccountAdapter = getCanopsis().Application.__container__.lookup('adapter:loggedaccount');
+
+            var loginPromise = loggedaccountAdapter.find();
+
+
+            loginPromise.then(function (promiseResult) {
+                var record = promiseResult.data[0];
+                var loginController = route.controllerFor('login');
+
+                set(loginController, 'record', record);
+                set(utils, 'session', record);
+            });
+
+            var superPromise = this._super(transition);
 
             return Ember.RSVP.Promise.all([
                 superPromise,
