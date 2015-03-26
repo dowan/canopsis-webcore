@@ -22,7 +22,7 @@ define([
     'ember',
     'ember-data',
     'app/application',
-    'app/adapters/application',
+    'canopsis/canopsis-backend-ui-connector/adapters/application',
     'app/lib/promisesmanager',
     'app/lib/utils/modelsolve'
 ], function($, Ember, DS, Application, ApplicationAdapter, promisesmanager, modelsolve) {

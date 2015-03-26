@@ -19,30 +19,12 @@
 
 define([
     'app/application',
-    'app/adapters/application'
-], function(Application, ApplicationAdapter) {
+    'canopsis/canopsis-backend-ui-connector/adapters/event'
+], function(Application, EventAdapter) {
 
-    var adapter = ApplicationAdapter.extend({
+    var adapter = EventAdapter.extend({});
 
-        buildURL: function(type, id) {
-            void(id);
-            return "/event";
-        },
-
-        findQuery: function(store, type, query) {
-            var noAckSearch = false;
-            if (query && query.noAckSearch) {
-                noAckSearch = true;
-                delete query.noAckSearch;
-            }
-            var url = "/rest/events";
-
-            return this.ajax(url, 'GET', { data: query });
-        }
-    });
-
-
-    loader.register('adapter:event', adapter);
+    loader.register('adapter:cancel', adapter);
 
     return adapter;
 });

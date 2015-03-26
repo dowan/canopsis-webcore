@@ -18,37 +18,18 @@
 */
 
 define([
-    'app/application',
-    'app/adapters/application',
-    'app/lib/schemasregistry'
-], function(Application, ApplicationAdapter, schemasregistry) {
-
-    console.group('CserviceAdapter');
+        'app/application',
+        'canopsis/canopsis-backend-ui-connector/adapters/application'
+], function(Application, ApplicationAdapter) {
 
     var adapter = ApplicationAdapter.extend({
-        buildURL: function(type, id) {
-            type = 'cservice';
-
-            return this._super(type, id);
+        buildURL: function() {
+            return '/rest/object/account';
         }
     });
 
-    for(var sname in schemasregistry.all) {
-        var schema = schemasregistry.getByName(sname);
 
-        //TODO: do not use userPreferencesModelName
-        var modelname = schema.modelDict.userPreferencesModelName;
-
-        if(modelname.indexOf('crecord.cservice.') === 0) {
-            console.log('Add adapter:', sname);
-
-            loader.register('adapter:' + sname, adapter.extend());
-        }
-    }
-
-    console.groupEnd();
-
-    loader.register('adapter:cservice', adapter);
+    loader.register('adapter:loggedaccount', adapter);
 
     return adapter;
 });

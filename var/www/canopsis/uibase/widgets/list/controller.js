@@ -30,11 +30,8 @@ define([
     'app/lib/utils/routes',
     'app/lib/utils/forms',
     'app/view/listline',
-    'app/adapters/event',
-    'app/adapters/userview',
     'canopsis/core/lib/wrappers/ember-cloaking',
     'app/lib/wrappers/datatables',
-    'app/adapters/acl'
 ], function($,
     Ember,
     DS,

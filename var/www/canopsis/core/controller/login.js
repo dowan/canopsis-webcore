@@ -21,8 +21,7 @@ define([
     'jquery',
     'ember',
     'ember-data',
-    'utils',
-    'app/adapters/acl'
+    'utils'
 ], function($, Ember, DS, utils) {
 
     var set = Ember.set,

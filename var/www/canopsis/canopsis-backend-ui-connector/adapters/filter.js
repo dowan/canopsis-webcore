@@ -18,13 +18,25 @@
 */
 
 define([
+    'ember',
     'app/application',
-    'app/adapters/event'
-], function(Application, EventAdapter) {
+    'canopsis/canopsis-backend-ui-connector/adapters/application',
+], function(Ember, Application, ApplicationAdapter) {
 
-    var adapter = EventAdapter.extend({});
+    var set = Ember.set;
 
-    loader.register('adapter:cancel', adapter);
+    var adapter = ApplicationAdapter.extend({
+
+        updateRecord: function(store, type, record) {
+            //This value have to be reseted each update for user display purpose
+            set(record, 'run_once', false);
+            var promise = this._super(store, type, record);
+            return promise;
+        }
+    });
+
+
+    loader.register('adapter:filter', adapter);
 
     return adapter;
 });

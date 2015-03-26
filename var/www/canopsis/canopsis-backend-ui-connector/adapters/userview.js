@@ -18,25 +18,20 @@
 */
 
 define([
-    'ember',
     'app/application',
-    'app/adapters/application',
-], function(Ember, Application, ApplicationAdapter) {
-
-    var set = Ember.set;
+    'canopsis/canopsis-backend-ui-connector/adapters/application'
+], function(Application, ApplicationAdapter) {
 
     var adapter = ApplicationAdapter.extend({
+        buildURL: function(type) {
+            type = "view";
 
-        updateRecord: function(store, type, record) {
-            //This value have to be reseted each update for user display purpose
-            set(record, 'run_once', false);
-            var promise = this._super(store, type, record);
-            return promise;
+            return this._super.apply(this, arguments);
         }
     });
 
 
-    loader.register('adapter:filter', adapter);
+    loader.register('adapter:userview', adapter);
 
     return adapter;
 });

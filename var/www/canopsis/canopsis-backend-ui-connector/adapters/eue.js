@@ -19,27 +19,13 @@
 
 define([
     'app/application',
-    'app/adapters/application',
-    'app/serializers/eventlog',
-], function(Application, ApplicationAdapter) {
+    'canopsis/canopsis-backend-ui-connector/adapters/event'
+], function(Application, EventAdapter) {
 
-    var adapter = ApplicationAdapter.extend({
-
-        buildURL: function(type, id) {
-            void(id);
-
-            return "/rest/events_log";
-        },
-
-        findQuery: function(store, type, query) {
-            var url = "/rest/events_log";
-
-            return this.ajax(url, 'GET', { data: query });
-        }
-    });
+    var adapter = EventAdapter;
 
 
-    loader.register('adapter:eventlog', adapter);
+    loader.register('adapter:eue', adapter);
 
     return adapter;
 });

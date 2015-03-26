@@ -1,0 +1,6 @@
+[{
+	"name": "canopsis-backend-ui-connector",
+	"version": "0.1",
+	"routes": "routes.json",
+	"files": "files.json"
+}]

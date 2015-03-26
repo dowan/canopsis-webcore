@@ -21,7 +21,7 @@ define([
     'ember',
     'ember-data',
     'app/application',
-    'app/adapters/application',
+    'canopsis/canopsis-backend-ui-connector/adapters/application',
     'app/lib/utils/notification',
     'app/lib/utils/modelsolve'
 ], function(Ember, DS, Application, ApplicationAdapter, notificationUtils, modelsolve) {
