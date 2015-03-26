@@ -436,6 +436,44 @@ define([
                 });
             },
 
+             /**
+             * @event editEnabledPlugins
+             * @descriptions Shows a form to edit the canopsis UI enabled plugins
+             */
+            editEnabledPlugins: function() {
+
+                var applicationController = this;
+
+                var dataStore = DS.Store.create({
+                    container: get(this, "container")
+                });
+
+                var record = dataStore.findQuery('enabledmodules', {}).then(function(queryResults) {
+
+                    console.log('queryResults', queryResults);
+
+                    var record = get(queryResults, 'content')[0];
+
+                    //generating form from record model
+                    var recordWizard = formsUtils.showNew('modelform', record, {
+                        title: __('Enabled plugins'),
+                    });
+
+                    var okMessage =__('Enabled plugins') + ' ' + _('information') + ' ' +__('updated');
+                    //submit form and it s callback
+                    recordWizard.submit.then(function(form) {
+                        console.log('record going to be saved', record, form);
+
+                        notificationUtils.info(okMessage);
+                        //generated data by user form fill
+                        record = form.get('formContext');
+                        record.save();
+                    });
+                });
+            },
+
+
+
             /**
              * @event editTicketJob
              * @descriptions Shows a form to edit the tickets configuration

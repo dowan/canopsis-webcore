@@ -143,6 +143,14 @@
                                             {{tr 'Ticket'}}
                                         </a>
                                     </li>
+                                    {{#if controller.debug}}
+                                        <li>
+                                            <a {{action 'editEnabledPlugins'}}>
+                                                <i class="fa fa-list-alt"></i>
+                                                {{tr 'Enabled plugins'}}
+                                            </a>
+                                        </li>
+                                    {{/if}}
                                 </ul>
                             </li>
                         {{/if}}
