@@ -19,7 +19,7 @@
 
 define([
     'app/application',
-    'app/adapters/event'
+    'canopsis/canopsis-backend-ui-connector/adapters/event'
 ], function(Application, EventAdapter) {
 
     var adapter = EventAdapter.extend({});

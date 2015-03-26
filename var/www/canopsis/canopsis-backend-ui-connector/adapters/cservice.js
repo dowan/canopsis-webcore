@@ -19,7 +19,7 @@
 
 define([
     'app/application',
-    'app/adapters/application',
+    'canopsis/canopsis-backend-ui-connector/adapters/application',
     'app/lib/schemasregistry'
 ], function(Application, ApplicationAdapter, schemasregistry) {
 

@@ -19,7 +19,7 @@
 
 define([
     'app/application',
-    'app/adapters/application',
+    'canopsis/canopsis-backend-ui-connector/adapters/application',
     'app/serializers/eventlog',
 ], function(Application, ApplicationAdapter) {
 
