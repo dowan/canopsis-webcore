@@ -28,7 +28,6 @@ define([
     'app/lib/utils/test',
     'seeds/RoutesLoader',
     'app/serializers/userview',
-    'app/adapters/userview',
     'app/controller/userview',
 ], function(Ember, AuthenticatedRoute, utils, dataUtils, formUtils, widgetSelectorsUtils, actionsUtils, testUtils) {
 
