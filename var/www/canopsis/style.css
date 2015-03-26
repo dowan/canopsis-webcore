@@ -717,6 +717,41 @@ table.dataTableConnector {
     }
 }
 
+/* for 5 elements per line in hboxes */
+.col-xs-13,
+.col-sm-13,
+.col-md-13,
+.col-lg-13 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.col-xs-13 {
+    width: 33.33%;
+    float: left;
+}
+@media (min-width: 768px) {
+.col-sm-13 {
+        width: 33.33%;
+        float: left;
+    }
+}
+@media (min-width: 992px) {
+    .col-md-13 {
+        width: 33.33%;
+        float: left;
+    }
+}
+@media (min-width: 1200px) {
+    .col-lg-13 {
+        width: 33.33%;
+        float: left;
+    }
+}
+
+
 .widget.list th {
     padding: 4px;
 }
@@ -741,3 +776,13 @@ table.dataTableConnector {
     position: relative;
     bottom: 4px;
 }
+
+
+.richtexteditor .editor {
+    overflow: auto;
+}
+.richtexteditor .editor table td{
+    border: 1px solid #ccc;
+    padding:5px;
+}
+
