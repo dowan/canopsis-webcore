@@ -49,10 +49,5 @@ define([
         return Canopsis;
     };
 
-    //TEMP
-    Application.connector = [{ name : "nagios" }, { name : "shinken" } , { name : "schneider" } , { name : "collectd" }];
-
-    Application.manifest = routes;
-
     return Application;
 });

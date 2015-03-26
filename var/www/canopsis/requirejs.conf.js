@@ -254,36 +254,44 @@ var setLoadingInfo = function(text, icon) {
     }
 };
 
-define(['text!canopsis/enabled.json', 'app/lib/wrappers/console', 'app/lib/objects/loader', 'jquery'], function(enabledPlugins) {
-    enabledPlugins = JSON.parse(enabledPlugins);
+define(['canopsis/enabled', 'plugins', 'app/lib/wrappers/console', 'app/lib/objects/loader', 'jquery'], function(enabled, plugins_tools) {
 
-    setLoadingInfo('Fetching frontend plugin-ins', 'fa-cubes');
+    enabled.getEnabledModules(function (enabledPlugins) {
 
-    var deps = [
-        'seeds/RoutesLoader',
-        'app/lib/wrappers/extend',
-        'app/lib/utils/i18n',
-        'link'
-    ];
+        setLoadingInfo('Fetching frontend plugin-ins', 'fa-cubes');
 
-    for (var i = 0; i < enabledPlugins.length; i++) {
-        var currentPlugin = enabledPlugins[i];
+        var deps = [
+            'seeds/RoutesLoader',
+            'app/lib/wrappers/extend',
+            'app/lib/utils/i18n',
+            'link'
+        ];
 
-        deps.push('text!canopsis/'+ currentPlugin +'/files/routes.json');
-        deps.push('text!canopsis/'+ currentPlugin +'/files/files.json');
-        deps.push('text!canopsis/'+ currentPlugin +'/files/manifest.json');
+        for (var i = 0; i < enabledPlugins.length; i++) {
+            var currentPlugin = enabledPlugins[i];
 
-        if(currentPlugin !== 'core')
-            deps.push('canopsis/'+ currentPlugin +'/init');
-    }
+            deps.push('text!canopsis/'+ currentPlugin +'/files/routes.json');
+            deps.push('text!canopsis/'+ currentPlugin +'/files/files.json');
+            deps.push('text!canopsis/'+ currentPlugin +'/files/manifest.json');
 
-    require(deps, function() {
-        require(['canopsis/file_loader'], function() {
-            setLoadingInfo('Fetching application starting point', 'fa-plug');
-            require(['app/init'], function(Application) {
-                setLoadingInfo('Initializing user interface', 'fa-desktop');
+            if(currentPlugin !== 'core') {
+                deps.push('canopsis/'+ currentPlugin +'/init');
+            }
+        }
 
-                Application.advanceReadiness();
+        require(deps, function() {
+            require(['canopsis/file_loader'], function(file_loader) {
+
+                file_loader.load('canopsis/', enabledPlugins, plugins_tools);
+
+                setLoadingInfo('Fetching application starting point', 'fa-plug');
+                require(['app/init'], function(Application) {
+                    setLoadingInfo('Initializing user interface', 'fa-desktop');
+
+                    Application.manifest = file_loader.routes;
+
+                    Application.advanceReadiness();
+                });
             });
         });
     });
