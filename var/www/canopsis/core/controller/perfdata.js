@@ -34,31 +34,30 @@ define([
             var app = get(this, 'controllers.application');
             set(app, 'isLoading', get(app, 'isLoading') + 1);
 
-            return new Ember.RSVP.Promise(function(resolve, reject) {
-                $.ajax({
-                    url: '/perfdata',
-                    type: 'POST',
-                    data: {
-                        'metric_id': metric_id,
-                        'timewindow': JSON.stringify({
-                            'start': tstart / 1000,
-                            'stop': tend / 1000,
-                            'timezone': new Date().getTimezoneOffset()
-                        }),
-                        'timeserie': JSON.stringify({
-                            'aggregation': 'NONE'
-                        })
-                    }
-                }).then(function() {
-                    set(app, 'isLoading', get(app, 'isLoading') - 1);
+            //FIXME refactor this to stop using getCanopsis
+            var pojoAdapter = getCanopsis().Application.__container__.lookup('adapter:pojo');
+            var requestOptions = {
+                'metric_id': metric_id,
+                'timewindow': JSON.stringify({
+                    'start': tstart / 1000,
+                    'stop': tend / 1000,
+                    'timezone': new Date().getTimezoneOffset()
+                }),
+                'timeserie': JSON.stringify({
+                    'aggregation': 'NONE'
+                })
+            };
 
-                    resolve.apply(this, arguments);
-                }, function() {
-                    set(app, 'isLoading', get(app, 'isLoading') - 1);
+            //createRecord is used as it is a POST request
+            var promise = pojoAdapter.createRecord('perfdata', undefined, requestOptions);
 
-                    reject.apply(this, arguments);
-                });
+            promise.then(function() {
+                set(app, 'isLoading', get(app, 'isLoading') - 1);
+            }, function() {
+                set(app, 'isLoading', get(app, 'isLoading') - 1);
             });
+
+            return promise;
         },
 
         fetchMany: function(metrics, tstart, tend) {
@@ -66,26 +65,33 @@ define([
         },
 
         aggregate: function(metric_id, tstart, tend, method, interval) {
-            return new Ember.RSVP.Promise(function(resolve, reject) {
-                $.ajax({
-                    url: '/perfdata',
-                    type: 'POST',
-                    data: {
-                        'metric_id': metric_id,
-                        'timewindow': JSON.stringify({
-                            'start': tstart / 1000,
-                            'stop': tend / 1000,
-                            'timezone': new Date().getTimezoneOffset()
-                        }),
-                        'timeserie': JSON.stringify({
-                            'aggregation': method,
-                            'period': {
-                                'second': interval
-                            }
-                        })
+            //FIXME refactor this to stop using getCanopsis
+            var pojoAdapter = getCanopsis().Application.__container__.lookup('adapter:pojo');
+            var requestOptions = {
+                'metric_id': metric_id,
+                'timewindow': JSON.stringify({
+                    'start': tstart / 1000,
+                    'stop': tend / 1000,
+                    'timezone': new Date().getTimezoneOffset()
+                }),
+                'timeserie': JSON.stringify({
+                    'aggregation': method,
+                    'period': {
+                        'second': interval
                     }
-                }).then(resolve, reject);
+                })
+            };
+
+            //createRecord is used as it is a POST request
+            var promise = pojoAdapter.createRecord('perfdata', undefined, requestOptions);
+
+            promise.then(function() {
+                set(app, 'isLoading', get(app, 'isLoading') - 1);
+            }, function() {
+                set(app, 'isLoading', get(app, 'isLoading') - 1);
             });
+
+            return promise;
         },
 
         aggregateMany: function(metrics, tstart, tend, method, interval) {

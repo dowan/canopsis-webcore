@@ -18,30 +18,33 @@
 */
 
 define([
-    'app/application',
+    'jquery',
+    'ember',
     'canopsis/canopsis-backend-ui-connector/adapters/application'
-], function(Application, ApplicationAdapter) {
+], function($, Ember, ApplicationAdapter) {
 
     var adapter = ApplicationAdapter.extend({
-
         buildURL: function(type, id) {
-            void(id);
-            return "/event";
+            return '/' + type + (!!id ? "/" + id : "");
         },
 
-        findQuery: function(store, type, query) {
-            var noAckSearch = false;
-            if (query && query.noAckSearch) {
-                noAckSearch = true;
-                delete query.noAckSearch;
-            }
-            var url = "/rest/events";
+        find: function (type, id) {
+            return this.ajax(this.buildURL(type, id), 'GET', undefined);
+        },
 
-            return this.ajax(url, 'GET', { data: query });
+        createRecord: function (type, id, options) {
+            var url = this.buildURL(type, id);
+            return new Ember.RSVP.Promise(function(resolve, reject) {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: options
+                }).then(resolve, reject);
+            });
         }
     });
 
-    loader.register('adapter:event', adapter);
+    loader.register('adapter:pojo', adapter);
 
     return adapter;
 });

@@ -29,7 +29,8 @@ define([
 	'canopsis/canopsis-backend-ui-connector/adapters/event',
 	'canopsis/canopsis-backend-ui-connector/adapters/eventlog',
 	'canopsis/canopsis-backend-ui-connector/adapters/filter',
-	'canopsis/canopsis-backend-ui-connector/adapters/loggedaccount',
+    'canopsis/canopsis-backend-ui-connector/adapters/loggedaccount',
+	'canopsis/canopsis-backend-ui-connector/adapters/pojo',
 	'canopsis/canopsis-backend-ui-connector/adapters/notification',
 	'canopsis/canopsis-backend-ui-connector/adapters/userview'
 ], function () {
