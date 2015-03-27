@@ -37,10 +37,12 @@
     <div class="input-group input-group-sm">
         {{input type="text" placeholder=placeholder action="searchInputAction" class="form-control inlineInput" value=value}}
         <span class="input-group-btn">
-            <button class="btn btn-danger btn-flat" {{action 'clearSearch'}}>
+            <button class="btn btn-default btn-flat" {{action 'clearSearch'}}>
                 <span class="glyphicon glyphicon-remove-circle"></span>
+            </button>
+            <button class="btn btn-primary btn-flat" {{action 'searchInputAction'}}>
+                <span class="fa fa-search"></span>
             </button>
         </span>
     </div>
-
 {{/if}}

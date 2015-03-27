@@ -40,7 +40,8 @@ define([
         tagName: 'span',
 
         actions: {
-            searchInputAction: function(searchPhrase) {
+            searchInputAction: function() {
+                var searchPhrase = get(this, 'value');
                 console.log('searchItems', this, this.controller, searchPhrase);
 
                 this.controller.target.set('searchCriterion', searchPhrase);
