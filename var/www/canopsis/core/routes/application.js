@@ -142,23 +142,6 @@ define([
 
             var superPromise = this._super(transition);
 
-            var enginesviews = get(appController, 'enginesviews');
-
-            for (var i = 0, l = enginesviews.length; i < l; i++) {
-                var item = enginesviews[i];
-                //FIXME stop using utils to store data!
-                if(get(utils, 'session._id') === "root") {
-                    set(item, 'displayable', true);
-                } else {
-                    viewId = item.value;
-                    if (get(utils, 'session.rights.showview_' + viewId.replace('.', '_'))) {
-                        set(item, 'displayable', true);
-                    } else {
-                        set(item, 'displayable', false);
-                    }
-                }
-            }
-
             set(this, 'promiseArray', [
                 superPromise,
                 footerPromise,
