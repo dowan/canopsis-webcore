@@ -39,10 +39,9 @@ define([
             var store = DS.Store.create({ container: get(this, "container") });
 
             //FIXME dirty, risky
-            loggedaccountAdapter = getCanopsis().Application.__container__.lookup('adapter:loggedaccount');
+            loggedaccountAdapter = getCanopsis().Application.__container__.lookup('adapter:application');
 
-            var loginPromise = loggedaccountAdapter.find();
-
+            var loginPromise = loggedaccountAdapter.ajax ('/account/me', 'GET', {});
 
             loginPromise.then(function (promiseResult) {
                 var record = promiseResult.data[0];
