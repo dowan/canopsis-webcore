@@ -6,7 +6,7 @@
         <span class="caret"></span>
         <span class="sr-only">Toggle Dropdown</span>
     </button>
-    <ul class="dropdown-menu" role="menu">
+    <ul class="dropdown-menu" role="menu" style="margin-left: -200%;">
         {{#each mixin in view.editableEnabledMixins}}
             <li><a {{action 'editMixin' widget mixin.name}}>{{mixin.name}}</a></li>
         {{/each}}
