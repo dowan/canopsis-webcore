@@ -1,3 +1,8 @@
+/*Avoids double scroll bar in main page*/
+#applicationdiv > div{
+    overflow-y:hidden;
+}
+
 html {
     margin-left: 0 !important;
 }
