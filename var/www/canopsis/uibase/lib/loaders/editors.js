@@ -42,7 +42,6 @@ var editors = [
     { name: 'editor-richtext', template: 'canopsis/uibase/editors/richtext.html' },
     { name: 'editor-rights', template: 'canopsis/uibase/editors/rights.html' },
     { name: 'editor-separator', template: 'canopsis/uibase/editors/separator.html' },
-    { name: 'editor-serieitem', template: 'canopsis/uibase/editors/serieitem.html' },
     { name: 'editor-metricitem', template: 'canopsis/uibase/editors/metricitem.html' },
     { name: 'editor-session', template: 'canopsis/uibase/editors/session.html' },
     { name: 'editor-simpledict', template: 'canopsis/uibase/editors/simpledict.html' },

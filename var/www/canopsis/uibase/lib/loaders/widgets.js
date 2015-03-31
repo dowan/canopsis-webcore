@@ -26,7 +26,6 @@ var widgets = [
     //USELESS ATM : { name:'uimaindropdown', url:'canopsis/uibase/widgets/uimaindropdown/controller', template:'canopsis/uibase/widgets/uimaindropdown/template.html' },
     //{ name:'multicrecordlist', url:'canopsis/uibase/widgets/multicrecordlist/controller', template:'canopsis/uibase/widgets/multicrecordlist/template.html' , TEMPLATE:'list'},
     { name:'euewi', url:'canopsis/uibase/widgets/euewi/controller', template:'canopsis/uibase/widgets/list/template.html', TEMPLATE: 'list' },
-    { name:'timegraph', url:'canopsis/uibase/widgets/timegraph/controller', template:'canopsis/uibase/widgets/timegraph/template.html'},
     //{ name:'wgraph', url:'canopsis/uibase/widgets/graph/controller', template:'canopsis/uibase/widgets/graph/template.html' },
     { name:'topology', url:'canopsis/uibase/widgets/topology/controller', template:'canopsis/uibase/widgets/topology/template.html' }
 ];

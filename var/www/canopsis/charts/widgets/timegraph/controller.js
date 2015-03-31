@@ -24,7 +24,6 @@ define([
     'app/lib/factories/widget',
     'app/lib/utils/values',
     'app/lib/utils/dates',
-    'canopsis/uibase/components/flotchart/component',
     'app/controller/serie',
     'app/controller/perfdata'
 ], function($, Ember, DS, WidgetFactory, values, dates) {
@@ -146,14 +145,14 @@ define([
                     id: this.$().closest('.ember-view').attr('id') + '-tooltip',
                     content: function(label, xval, yval, item) {
                         var date = dates.timestamp2String(xval / 1000, 'f', true);
-
+                        var unit = item.series.unit || '';
                         var html = ['<p>', date, '</p><p><b>', label, ' :</b> '].join('');
 
                         if (get(ctrl, 'human_readable') === true) {
-                            html += values.humanize(yval, item.series.unit || '');
+                            html += values.humanize(yval, unit || '');
                         }
                         else {
-                            html += yval + ' ' + item.series.unit;
+                            html += yval + ' ' + unit;
                         }
 
                         return html;

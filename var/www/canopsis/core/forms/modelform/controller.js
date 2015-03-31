@@ -38,7 +38,8 @@ define([
     };
 
     /**
-     * @class Generic form which dynamically generates its content by reading a model's schema
+     * @class Modelform
+     * @description Generic form which dynamically generates its content by reading a model's schema
      */
     var form = FormFactory('modelform', {
         needs: ['application'],
@@ -77,6 +78,11 @@ define([
             return category;
         },
 
+
+        /**
+         * @property categories
+         * @type {Array}
+         */
         categories: function(){
             var res = get(this, 'categorized_attributes');
             var category_selection = [];
@@ -121,6 +127,14 @@ define([
             return get(this, 'formContext');
         }.property('formContext'),
 
+        /**
+         * @property inspectedItemType
+         * @type {string} lowercased model name
+         * @description
+         *
+         * Used to dynamically create form editors and assign values to the edited model.
+         * To force editing as a specific model type, override this property.
+         */
         inspectedItemType: function() {
             console.log('recompute inspectedItemType', get(this, 'formContext'));
 
