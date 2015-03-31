@@ -22,16 +22,69 @@ define([
     'app/lib/factories/mixin'
 ], function(Ember, Mixin) {
 
-    var get = Ember.get;
+    var get = Ember.get,
+        set = Ember.set,
+        isNone = Ember.isNone;
+
+    var viewMixin = Ember.Mixin.create({
+        didInsertElement: function() {
+
+            var usegridlayout = get(this, 'controller.mixinOptions.horizontallayout.usegridlayout');
+
+            var wrappers = get(this, 'controller.items.content');
+            var haveToSaveView = false;
+
+            for (var i = wrappers.length - 1; i >= 0; i--) {
+
+                //Dynamic mixin values setting
+                var currentWrapperMixins = get(wrappers[i], 'mixins');
+                if (isNone(currentWrapperMixins)) {
+                    set(wrappers[i], 'mixins', []);
+                    currentWrapperMixins = get(wrappers[i], 'mixins');
+                }
+
+                if (isNone(currentWrapperMixins.findBy('name', 'gridlayout'))) {
+                    currentWrapperMixins.pushObject({'name': 'gridlayout'});
+                    haveToSaveView = true;
+                }
+
+                var classValue = get(this, 'controller').getSection(currentWrapperMixins, usegridlayout);
+
+                Ember.setProperties(wrappers[i], {
+                    'classValue': classValue,
+                    'usegridlayout': usegridlayout
+                });
+            }
+
+            if (haveToSaveView) {
+                get(this, 'controller.viewController.content').save();
+            }
+
+            this._super();
+        }
+    });
 
     var mixin = Mixin('horizontallayout', {
         partials: {
             layout: ['horizontallayout']
         },
 
-        section : function () {
-            return get(this, 'mixinOptions.horizontallayout.cellCssClass') || 'col-lg-3 col-md-6 col-xs-12';
-        }.property()
+        init: function() {
+            this._super();
+            this.addMixinView(viewMixin);
+        },
+
+        getSection: function (currentWrapperMixins, usegridlayout) {
+
+            if (usegridlayout) {
+                var gridLayoutMixin = currentWrapperMixins.findBy('name', 'gridlayout');
+                var column = gridLayoutMixin.column || '4';
+                var offset = gridLayoutMixin.offset || '0';
+                return 'col-md-' + column + ' col-md-offset-' + offset;
+            } else {
+                return get(this, 'mixinOptions.horizontallayout.cellCssClass') || 'col-lg-3 col-md-6 col-xs-12';
+            }
+        },
 
     });
 

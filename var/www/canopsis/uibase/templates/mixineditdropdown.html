@@ -1,7 +1,7 @@
 <button type="button" class="btn btn-info btn-xs" {{action 'editWidget' widget}}>
     <span class="glyphicon glyphicon-edit"></span>
 </button>
-{{#if view.editableEnabledMixins.length}}
+{{#if view.hasEditableMixins}}
     <button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
         <span class="caret"></span>
         <span class="sr-only">Toggle Dropdown</span>
@@ -9,6 +9,9 @@
     <ul class="dropdown-menu" role="menu">
         {{#each mixin in view.editableEnabledMixins}}
             <li><a {{action 'editMixin' widget mixin.name}}>{{mixin.name}}</a></li>
+        {{/each}}
+        {{#each mixin in view.wrapperMixins}}
+            <li><a {{action 'editMixin' this mixin.name}}>{{mixin.name}}</a></li>
         {{/each}}
     </ul>
 {{/if}}

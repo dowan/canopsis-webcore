@@ -1,6 +1,6 @@
 <div>
     {{#each item in controller.items}}
-        <div {{bind-attr class="controller.section"}} >
+        <div {{bind-attr class="item.classValue"}} >
             {{widgetslot item=item}}
         </div>
     {{/each}}

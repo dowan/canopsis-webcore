@@ -31,10 +31,23 @@ define([
         tagName: 'span',
         templateName: 'mixineditdropdown',
 
+        hasEditableMixins: function () {
+            return get(this, 'editableMixins.length') || get(this, 'wrapperMixins.length');
+        }.property('editableEnabledMixins', 'wrapperMixins'),
+
+        wrapperMixins: function () {
+            var mixins = Ember.A();
+            var usegridlayout = true;
+            if (usegridlayout) {
+                mixins.pushObject({'name': 'gridlayout'});
+            }
+            return mixins;
+        }.property(),
+
         editableEnabledMixins: function () {
             var mixins = get(this, 'mixins');
             var editableMixins = Ember.A();
-
+            window.$dd = this;
             if(mixins) {
                 for (var i = 0; i < mixins.length; i++) {
                     if(schemasRegistry.getByName(mixins[i].name.camelize())) {
