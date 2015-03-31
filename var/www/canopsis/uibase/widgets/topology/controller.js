@@ -480,9 +480,15 @@ define([
                         case 'vertice':
                         case 'graph':
                             var info = record.get('info');
+                            var task = null;
                             if (info !== undefined) {
-                                var task = info.task;
-                                if (task === undefined) {
+                                task = info.task;
+                                if (typeof task === 'string') {
+                                    info.task = {
+                                        cid: task
+                                    };
+                                    task = info.task;
+                                } else if (task === undefined) {
                                     info.task = {};
                                     task = info.task;
                                 }
@@ -490,7 +496,7 @@ define([
                                 info = {
                                     task: {}
                                 }
-                                var task = info.task;
+                                task = info.task;
                             }
                             // set entity
                             var entity = record.get('entity');
