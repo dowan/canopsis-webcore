@@ -130,20 +130,6 @@ define([
 
 
         actions: {
-            setGridLayout:function (wrapper) {
-
-                console.log('Widget wrapper', wrapper);
-                window.$w = wrapper;
-
-                set(wrapper, 'mixins', [{name: 'gridlayout'}]);
-
-                var widgetController = this,
-                    userview = get(this, 'viewController.content');
-
-                userview.save().then(function() {
-                    get(widgetController, 'viewController').send('refresh');
-                });
-            },
 
             /**
              * Show debug info in console and put widget var in window.$E
