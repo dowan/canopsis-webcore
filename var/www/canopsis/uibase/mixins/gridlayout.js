@@ -35,9 +35,10 @@ define([
             //if view update, push it to db
             var haveToSaveView = false;
 
-            var containerMixins = get(this, 'mixins');
+            var containerGridLayout;
+            var containerMixins = get(this, 'controller.mixins');
             if (!isNone(containerMixins)) {
-                var containerGridLayout = containerMixins.findBy('name', 'gridlayout');
+                containerGridLayout = containerMixins.findBy('name', 'gridlayout');
             }
 
             for (var i = wrappers.length - 1; i >= 0; i--) {
@@ -50,7 +51,12 @@ define([
                 }
 
                 if (isNone(currentWrapperMixins.findBy('name', 'gridlayout'))) {
-                    currentWrapperMixins.pushObject({'name': 'gridlayout'});
+                    //Legacy management, defining sub wrapper container mixin data.
+                    if (isNone(containerGridLayout)) {
+                        containerGridLayout = {'name': 'gridlayout'};
+                    }
+
+                    currentWrapperMixins.pushObject(containerGridLayout);
                     haveToSaveView = true;
                 }
 

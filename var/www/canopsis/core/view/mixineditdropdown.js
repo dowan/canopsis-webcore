@@ -33,7 +33,7 @@ define([
         templateName: 'mixineditdropdown',
 
         hasEditableMixins: function () {
-            return get(this, 'editableMixins.length') || get(this, 'wrapperMixins.length');
+            return get(this, 'editableEnabledMixins.length') || get(this, 'wrapperMixins.length');
         }.property('editableEnabledMixins', 'wrapperMixins'),
 
         wrapperMixins: function () {
@@ -42,7 +42,7 @@ define([
                 mixins.pushObject({'name': 'gridlayout'});
             }
             return mixins;
-        }.property(),
+        }.property('isGridLayout'),
 
         editableEnabledMixins: function () {
             var mixins = get(this, 'mixins');

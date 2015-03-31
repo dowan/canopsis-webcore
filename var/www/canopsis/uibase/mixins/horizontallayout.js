@@ -31,7 +31,7 @@ define([
             layout: ['horizontallayout']
         },
 
-        getSection: function () {
+        section: function () {
             return get(this, 'mixinOptions.horizontallayout.cellCssClass') || 'col-lg-3 col-md-6 col-xs-12';
         },
 
