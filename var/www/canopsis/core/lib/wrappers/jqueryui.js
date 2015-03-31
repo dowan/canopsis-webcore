@@ -16,26 +16,14 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
-
 define([
-    'ember',
-    'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+    'app/lib/factories/wrapper',
+    'webcore-libs/jquery-ui/jquery-ui.min',
+    'link!webcore-libs/jquery-ui/themes/smoothness/jquery-ui.min.css',
+    'link!webcore-libs/jquery-ui/themes/smoothness/theme.css',
+], function(Wrapper, jqueryui) {
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+    console.log('jqueryui wrapper', jqueryui);
 
-    var mixin = Mixin('horizontallayout', {
-        partials: {
-            layout: ['horizontallayout']
-        },
-
-        section: function () {
-            return get(this, 'mixinOptions.horizontallayout.cellCssClass') || 'col-lg-3 col-md-6 col-xs-12';
-        },
-
-    });
-
-    return mixin;
+    return Wrapper("jqueryui", jqueryui, arguments, '1.11.2');
 });

@@ -24,17 +24,29 @@ define([
 ], function(Ember, JSONSelect, schemasRegistry) {
 
     var set = Ember.set,
-        get = Ember.get;
+        get = Ember.get,
+        isNone = Ember.isNone;
 
 
     var view = Ember.View.extend({
         tagName: 'span',
         templateName: 'mixineditdropdown',
 
+        hasEditableMixins: function () {
+            return get(this, 'editableEnabledMixins.length') || get(this, 'wrapperMixins.length');
+        }.property('editableEnabledMixins', 'wrapperMixins'),
+
+        wrapperMixins: function () {
+            var mixins = Ember.A();
+            if (get(this, 'isGridLayout')) {
+                mixins.pushObject({'name': 'gridlayout'});
+            }
+            return mixins;
+        }.property('isGridLayout'),
+
         editableEnabledMixins: function () {
             var mixins = get(this, 'mixins');
             var editableMixins = Ember.A();
-
             if(mixins) {
                 for (var i = 0; i < mixins.length; i++) {
                     if(schemasRegistry.getByName(mixins[i].name.camelize())) {
