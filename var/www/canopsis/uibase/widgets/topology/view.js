@@ -857,7 +857,8 @@ define([
             }
             // save records to delete
             var recordsToDel = [];
-            var recordsById = get(this, 'controller').graphModel.recordsById;
+            var controller = get(this, 'controller');
+            var recordsById = controller.graphModel.recordsById;
             data.forEach(
                 function(d) {
                     var record = recordsById[d.id];
@@ -875,7 +876,7 @@ define([
                 }
             );
             if (recordsToDel.length > 0) {
-                get(this, 'controller').deleteRecords(recordsToDel);
+                controller.deleteRecords(recordsToDel);
             }
         },
         linkHandler: function(data, shape) {
@@ -1400,6 +1401,12 @@ define([
             if (source.id === graphId || !this.checkTargetLink(target)) {
                 throw new Exception('Wrong parameters');
             }
+            // default failure function
+            function _failure(reason) {
+                if (failure !== undefined) {
+                    failure.call(context, reason);
+                }
+            }
             // get a target
             if (target === undefined) {
                 // create a callback
@@ -1412,11 +1419,6 @@ define([
                     target.fixed = true;
                     if (success !== undefined) {
                         success.call(context, record);
-                    }
-                }
-                function _failure(reason) {
-                    if (failure !== undefined) {
-                        failure.call(context, reason);
                     }
                 }
                 // create a node if target does not exist
@@ -1440,15 +1442,15 @@ define([
                         success.call(context, record);
                     }
                 }
-                var edge = get(this, 'controller').newRecord(
-                    get(this, 'controller').edge_elt_type,
+                var edge = controller.newRecord(
+                    controller.edgeEltType,
                     {
                         sources: [source.id],
                         targets: [target.id]
                     },
                     edit,
                     callback2,
-                    failure,
+                    _failure,
                     this
                 );
             }

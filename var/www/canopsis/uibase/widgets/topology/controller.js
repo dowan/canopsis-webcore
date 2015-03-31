@@ -192,7 +192,13 @@ define([
             // create an array of promises
             var recordsToDelete = records.map(
                 function(record) {
-                    return record.destroyRecord();
+                    var result = null;
+                    if (record.get('id') === graphId) {
+                        console.error('Impossible to delete the graph');
+                    } else {
+                        result = record.destroyRecord();
+                    }
+                    return result;
                 }
             );
             // execute all promises
@@ -560,10 +566,10 @@ define([
                     }
                     function _success(record) {
                         var record = record[0];
-                        me.trigger('refresh');
                         if (success !== undefined) {
                             success.call(context, record);
                         }
+                        me.trigger('refresh');
                     }
                     function _failure(record) {
                         if (failure !== undefined) {
