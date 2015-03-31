@@ -66,7 +66,7 @@
                             {{/if}}
                             <a {{action "unselectItem" item}}>
                                 {{#if item.icon}}
-                                    {{{glyphicon item.icon}}} 
+                                    <span {{bind-attr class=item.icon}}></span> 
                                 {{else}}
                                     {{#if defaultIcon}}
                                         {{{glyphicon defaultIcon}}} 
@@ -98,7 +98,7 @@
                     <li class="list-group-item">
                         <a {{action "selectItem" item}}>
                             {{#if item.icon}}
-                                {{{glyphicon item.icon}}} 
+                                <span {{bind-attr class=item.icon}}></span> 
                             {{else}}
                                 {{#if defaultIcon}}
                                     {{{glyphicon defaultIcon}}} 
@@ -127,7 +127,7 @@
                         <li class="list-group-item">
                             <a {{action "selectItem" item}}>
                                 {{#if item.icon}}
-                                    {{{glyphicon item.icon}}} 
+                                    <span {{bind-attr class=item.icon}}></span> 
                                 {{else}}
                                     {{#if defaultIcon}}
                                         {{{glyphicon defaultIcon}}} 

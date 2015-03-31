@@ -226,16 +226,16 @@ define([
             set(ctrl, 'timenavOptions', chartOptions);
         },
 
+        resetZoom: function() {
+            var ctrl = get(this, 'controller');
+
+            this.setDefaultChartOptions();
+            this.setDefaultTimenavOptions();
+
+            set(ctrl, 'zooming', false);
+        },
+
         actions: {
-            resetZoom: function() {
-                var ctrl = get(this, 'controller');
-
-                this.setDefaultChartOptions();
-                this.setDefaultTimenavOptions();
-
-                set(ctrl, 'zooming', false);
-            },
-
             stepBack: function() {
                 var ctrl = get(this, 'controller');
                 var step = get(ctrl, 'timestep');
@@ -261,6 +261,18 @@ define([
 
                 set(ctrl, 'chartOptions', opts);
             }
+        },
+
+        //Controller -> View Hooks
+        registerHooks: function() {
+            console.log("registerHooks", get(this, "controller"), get(this, "controller").on);
+            get(this, "controller").on('resetZoom', this, this.resetZoom);
+            return this._super();
+        },
+
+        unregisterHooks: function() {
+            get(this, "controller").off('resetZoom', this, this.resetZoom);
+            return this._super();
         }
     });
 
@@ -272,9 +284,18 @@ define([
         ],
 
         partials: {
+            titlebarbuttons: [
+                'titlebarbutton-resetzoom'
+            ],
             widgetActionButtons: [
                 'timegraphbutton-resetzoom'
             ]
+        },
+
+        actions: {
+            resetZoom: function () {
+                this.trigger('resetZoom');
+            }
         },
 
         init: function() {
