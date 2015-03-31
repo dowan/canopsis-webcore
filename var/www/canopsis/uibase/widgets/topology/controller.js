@@ -46,8 +46,11 @@ define([
             TopologyViewMixin
         ],
 
-        graph: null, // graph record
-        recordsById: {}, // record elements by id
+        graphModel: {
+            graph: null, // graph record
+            recordsById: {}, // record elements by id,
+            selected: [] // selected records
+        },
 
         graph_cls: 'canopsis.topology.elements.Topology', // default graph class
 
@@ -57,8 +60,6 @@ define([
         graphEltType: 'topo', // graph elt type
         verticeEltType: 'toponode', // vertice elt type
         edgeEltType: 'topoedge', // edge elt type
-
-        selected: [], // selected records
 
         init: function() {
             this._super.apply(this, arguments);
@@ -96,9 +97,9 @@ define([
         */
         _addGraph: function(graph) {
             var me = this;
-            var recordsById = this.recordsById;
+            var recordsById = this.graphModel.recordsById;
             // register the graph
-            this.graph = graph;
+            this.graphModel.graph = graph;
             recordsById[graph.get('id')] = graph;
             // add all graph elts
             var _delts = graph.get('_delts');
@@ -127,6 +128,12 @@ define([
             // get graphId
             var graphId = get(this, 'model.graph_id');
             if (graphId !== undefined) {
+                // delete old records in memory
+                if (this.graphModel.graph !== null && this.graphModel.graph.get('id') !== graphId) {
+                    this.graphModel.graph = null;
+                    this.graphModel.recordsById = {};
+                    this.graphModel.selected = [];
+                }
                 var query = {
                     ids: graphId,
                     add_elts: true
@@ -134,15 +141,15 @@ define([
                 this.widgetDataStore.find('graph', query).then(
                     function(result) {
                         var graph = null;
-                        if (result.content.length > 0) {  // if content exists
+                        if (result.content.length === 1) {  // if content exists
                             // get graph and elt ids
                             graph = result.content[0];
                             // if old graph exists
-                            if (me.graph !== null) {
+                            if (me.graphModel.graph !== null) {
                                 // delete old records
-                                var recordsToDelete = me.recordsById.map(
+                                var recordsToDelete = me.graphModel.recordsById.map(
                                     function(recordId) {
-                                        var record = me.recordsById[recordId];
+                                        var record = me.graphModel.recordsById[recordId];
                                         return record.destroyRecord();
                                     },
                                     me
@@ -150,14 +157,19 @@ define([
                             }
                             me._addGraph(graph);
                         } else {  // if no graph exists
-                            me.graph = this.newRecord(me.graphEltType);
+                            console.error('Several graph obtained from a simple request: ' + result.content);
                         }
                     },
                     function(reason) {
+                        // if no graph exists, create a new one
                         var graph = me.widgetDataStore.createRecord(
                             me.graphEltType, {id: graphId}
                         );
-                        graph.save().then(function(record){me._addGraph(record)});
+                        graph.save().then(
+                            function(record){
+                                me._addGraph(record);
+                            }
+                        );
                     }
                 );
             }
@@ -166,33 +178,38 @@ define([
         /**
         * Delete record(s).
         * @param records record(s) to delete.
+        * @param success fired if deleting successed.
+        * @param failure fired if deleting failed.
+        * @param context success/failure execution context.
         */
-        deleteRecords: function(records) {
+        deleteRecords: function(records, success, failure, context) {
             // ensure records is an array of records
             if (! Array.isArray(records)) {
                 records = [records];
             }
             var me = this;
-            var graphId = this.graph.get('id');
-            // delete all records
-            records.forEach(
+            var graphId = this.graphModel.graph.get('id');
+            // create an array of promises
+            var recordsToDelete = records.map(
                 function(record) {
-                    // but the main graph
-                    if (record.get('id') === graphId) {
-                        console.error('Impossible to delete the main graph');
-                    } else {
-                        // let the backend delete records
-                        var recordsToDelete = records.map(
-                            function(record) {
-                                return record.destroyRecord();
-                            }
-                        );
-                        Ember.RSVP.all(recordsToDelete).then(
-                            function() {
-                                me.trigger('refresh');
-                            }
-                        );
+                    return record.destroyRecord();
+                }
+            );
+            // execute all promises
+            Ember.RSVP.all(recordsToDelete).then(
+                // in ensuring execution of success and refresh
+                function() {
+                    if (success !== undefined) {
+                        success.call(context, arguments);
                     }
+                    me.trigger('refresh');
+                },
+                // or failure and refresh
+                function(reason) {
+                    if (failure !== undefined) {
+                        failure.call(context, arguments);
+                    }
+                    me.trigger('refresh');
                 }
             );
         },
@@ -208,7 +225,7 @@ define([
             }
             records.forEach(
                 function(record) {
-                    this.selected[record.id] = record;
+                    this.graphModel.selected[record.get('id')] = record;
                 },
                 this
             )
@@ -226,7 +243,7 @@ define([
             }
             records.forEach(
                 function(record) {
-                    delete this.selected[record.id];
+                    delete this.graphModel.selected[record.get('id')];
                 },
                 this
             );
@@ -269,21 +286,42 @@ define([
         * @param failure edition failure callback. Takes record in parameter.
         */
         newRecord: function(type, properties, edit, success, failure, context) {
+            var me = this;
             var result = this.widgetDataStore.createRecord(type, properties);
-            function _success(record) {
-                var recordId = record.get('id');
-                var oldRecord = this.recordsById[recordId];
-                if (oldRecord !== undefined) {
-                    this.deleteRecords(oldRecord);
-                }
-                this.recordsById[recordId] = record;
-                if (success !== undefined) {
-                    success.call(context, record);
-                }
-            }
+            // any failure would result in calling input failure
             function _failure(reason) {
                 if (failure !== undefined) {
                     failure.call(context, record);
+                }
+            }
+            // callback called if the record has been created
+            function _success(record) {
+                var recordId = record.get('id');
+                var oldRecord = this.graphModel.recordsById[recordId];
+                // if record already exists in graph
+                if (oldRecord !== undefined) {
+                    this.deleteRecords(oldRecord);
+                } else { // add record to the graph
+                    var elts = this.graphModel.graph.get('elts');
+                    elts.push(recordId);
+                    this.graphModel.graph.set('elts', elts);
+                    this.graphModel.graph.save().then(
+                        // update record in self records by id
+                        function(record) {
+                            // update reference of the record
+                            me.recordsById[recordId] = record;
+                            if (success !== undefined) {
+                                success.call(context, record);
+                            }
+                        },
+                        function(reason) {
+                            record.destroyRecord().then(
+                                function(reason) {
+                                    _failure(reason);
+                                }
+                            );
+                        }
+                    );
                 }
             }
             if (edit) {
@@ -303,7 +341,7 @@ define([
             var me = this;
             // ensure record is a record in case of record id
             if (typeof record === 'string') {
-                record = this.recordsById[record];
+                record = this.graphModel.recordsById[record];
             }
             // fill operator data from record
             var recordType = record.get('_type');

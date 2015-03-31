@@ -20,8 +20,12 @@
 
 from canopsis.common.ws import route
 from canopsis.topology.manager import TopologyManager
+from canopsis.graph.elements import GraphElement
+from canopsis.old.rabbitmq import Amqp
+from canopsis.check import Check
 
 manager = TopologyManager()
+publisher = Amqp()
 
 
 def exports(ws):
@@ -124,6 +128,18 @@ def exports(ws):
         """
 
         manager.put_elts(elts=elts, graph_ids=graph_ids, cache=cache)
+
+        # ensure elts is a list of elements
+        if isinstance(elts, (dict, GraphElement)):
+            elts = [elts]
+
+        # process all elts
+        for elt in elts:
+            gelt = elt
+            if not isinstance(elt, GraphElement):
+                gelt = GraphElement.new_element(**elt)
+            event = {Check.STATE: gelt.state}
+            gelt.process(event=event, manager=manager, publisher=publisher)
 
         return elts
 
