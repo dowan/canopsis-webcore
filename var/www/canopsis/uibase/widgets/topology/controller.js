@@ -297,19 +297,21 @@ define([
             // callback called if the record has been created
             function _success(record) {
                 var recordId = record.get('id');
-                var oldRecord = this.graphModel.recordsById[recordId];
+                var recordsById = this.graphModel.recordsById;
+                var graph = this.graphModel.graph;
+                var oldRecord = recordsById[recordId];
                 // if record already exists in graph
                 if (oldRecord !== undefined) {
                     this.deleteRecords(oldRecord);
                 } else { // add record to the graph
-                    var elts = this.graphModel.graph.get('elts');
+                    var elts = graph.get('elts');
                     elts.push(recordId);
-                    this.graphModel.graph.set('elts', elts);
-                    this.graphModel.graph.save().then(
+                    graph.set('elts', elts);
+                    graph.save().then(
                         // update record in self records by id
                         function(record) {
                             // update reference of the record
-                            me.recordsById[recordId] = record;
+                            recordsById[recordId] = record;
                             if (success !== undefined) {
                                 success.call(context, record);
                             }
@@ -326,6 +328,8 @@ define([
             }
             if (edit) {
                 this.editRecord(result, _success, _failure, this);
+            } else {
+                _success(result);
             }
             return result;
         },
@@ -555,7 +559,7 @@ define([
                         default: break;
                     }
                     function _success(record) {
-                        record = record[0];
+                        var record = record[0];
                         me.trigger('refresh');
                         if (success !== undefined) {
                             success.call(context, record);

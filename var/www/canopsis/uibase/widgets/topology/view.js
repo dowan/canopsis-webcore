@@ -1498,7 +1498,7 @@ define([
                             result.push(this.newToolBoxItem('eventpool', 'triangle-up'))
                         }
                     }
-                    if (get(this, 'controller').selected[data.id] !== undefined) {
+                    if (get(this, 'controller').graphModel.selected[data.id] !== undefined) {
                         result.push(this.newToolBoxItem('unselect', 'diamond'));
                     } else {
                         result.push(this.newToolBoxItem('select', 'diamond'));
