@@ -25,7 +25,7 @@
 * - Dom element ---> view element (node and link).
 * View elements are stored in the shapesById dictionary where ids correspond to controller record ids.
 * Dom element to view element: field __data__
-* view element to canopsis record: using view id in controller.recordsById.
+* view element to canopsis record: using view id in controller.graphModel.recordsById.
 * Both Dom and view elements have the same id.
 *
 * A view element contains such view properties:
@@ -257,7 +257,7 @@ define([
 
         didInsertElement: function() {
             this._super.apply(this, arguments);
-            if (get(this, 'controller').graph === null) {
+            if (get(this, 'controller').graphModel.graph === null) {
                 return;
             }
             // update the view
@@ -271,7 +271,7 @@ define([
             // get global reference to this in updateModel function
             var me = this;
             // get record elements by id
-            var recordsById = get(this, 'controller').recordsById;
+            var recordsById = get(this, 'controller').graphModel.recordsById;
             // add nodes and links in graph
             // contain nodes by entity_ids
             var nodesByEntityIds = {};
@@ -293,6 +293,39 @@ define([
                     }
                 }
             };
+
+            // delete old shapes
+            var shapesById = this.shapesById;
+            var arrayToDelete = {
+                nodes: [],
+                links: []
+            }
+            Object.keys(shapesById).forEach(
+                function(shapeId) {
+                    if (recordsById[shapeId] === undefined) {
+                        var shape = shapesById[shapeId];
+                        if (shape.type === 'link') {
+                            arrayToDelete.links.push(shape.index);
+                        } else {
+                            arrayToDelete.nodes.push(shape.index);
+                        }
+                        delete shapesById[shapeId];
+                    }
+                }
+            );
+            ['nodes', 'links'].forEach(
+                function(type) {
+                    indexToDelete = arrayToDelete[type];
+                    var count = 0;
+                    indexToDelete.forEach(
+                        function(index) {
+                            this[type].splice(index - count++, 1);
+                        },
+                        this
+                    );
+                },
+                this
+            );
 
             Object.keys(recordsById).forEach(
                 function(recordId) {
@@ -568,7 +601,7 @@ define([
         weaveLinks: function(d3Edge) {
             var me = this;
             // save count of linkId per targets/sources
-            var recordsById = get(this, 'controller').recordsById;
+            var recordsById = get(this, 'controller').graphModel.recordsById;
             var id = d3Edge.id;
             var edge = recordsById[id];
             // cause a d3 link has one source and one target, we may create as many link as there are composition of sources and targets.
@@ -577,10 +610,8 @@ define([
             // update weight
             d3Edge._weight = edge.get('weight');
             // save links in d3Edge links
-            if (d3Edge.sources === undefined) {
-                d3Edge.sources = {};
-                d3Edge.targets = {};
-            }
+            d3Edge.sources = {};
+            d3Edge.targets = {};
             var neighbourCounts = {
                 sources: {},
                 targets: {}
@@ -623,7 +654,7 @@ define([
                                 source: isSource? d : id,
                                 target: (!isSource)? d : id,
                                 id: ''+Math.random(), // uuid
-                                viewPos: this.links.length, // pos in view
+                                index: this.links.length, // pos in view
                             };
                             // add in view
                             this.links.push(link);
@@ -660,7 +691,7 @@ define([
                             delete d3Edge[key][verticeId][linkId];
                             // delete from view
                             delete this.shapesById[linkId];
-                            linkPosToDelete.push(link.viewPos);
+                            linkPosToDelete.push(link.index);
                         },
                         this
                     );
@@ -670,27 +701,13 @@ define([
             updateLinks.call(this, 'sources');
             // add links for all targets
             updateLinks.call(this, 'targets');
-            // delete useless links from view
-            if (linkPosToDelete.length > 0) {
-                linkPosToDelete.sort();
-                linkPosToDelete.forEach(
-                    function(d, i) {
-                        this.links.splice(d - i, 1);
-                    }
-                );
-                this.links.forEach(
-                    function(d, i) {
-                        d.viewPos = i;
-                    }
-                );
-            }
         },
 
         /**
         * Refresh the view related to selected data.
         */
         refreshSelectedShapes: function() {
-            var selected = get(this, 'controller').selected;
+            var selected = get(this, 'controller').graphModel.selected;
             if (selected.length > 0) {
                 // get a list of 'selected' items
                 var selectedShapes = this.panel.selectAll('.shapegroup')
@@ -770,7 +787,7 @@ define([
                     .attr(
                         {
                             d: function(d, i) {
-                                return d.symbol.size(10 * me._unit)(d, i);
+                                return d.symbol.size(20 * me._unit)(d, i);
                             }
                         }
                     )
@@ -840,7 +857,7 @@ define([
             }
             // save records to delete
             var recordsToDel = [];
-            var recordsById = get(this, 'controller').recordsById;
+            var recordsById = get(this, 'controller').graphModel.recordsById;
             data.forEach(
                 function(d) {
                     var record = recordsById[d.id];
@@ -957,7 +974,7 @@ define([
         */
         addNodes: function(nodes) {
             var me = this;
-            var recordsById = get(this, 'controller').recordsById;
+            var recordsById = get(this, 'controller').graphModel.recordsById;
             // create the graphical element
             var shapes = nodes
                 .append('g')
@@ -1044,7 +1061,7 @@ define([
         */
         updateNodes: function(nodes) {
             var me = this;
-            var recordsById = get(this, 'controller').recordsById;
+            var recordsById = get(this, 'controller').graphModel.recordsById;
             var graphId = get(this, 'controller.model.graph_id');
             nodes
                 .select('path')
@@ -1206,7 +1223,7 @@ define([
         */
         updateLinks: function(links) {
             var me = this;
-            var recordsById = get(this, 'controller').recordsById;
+            var recordsById = get(this, 'controller').graphModel.recordsById;
             links
                 .classed(
                     {
@@ -1295,7 +1312,7 @@ define([
         * @param shape target shape.
         */
         checkTargetLink: function(data) {
-            var recordsById = get(this, 'controller').recordsById;
+            var recordsById = get(this, 'controller').graphModel.recordsById;
             var record = recordsById[data.id || data];
             var result = (data === undefined || (record.get('_type') !== 'edge' && data.id !== this.source.id));
             return result;
@@ -1376,7 +1393,7 @@ define([
         addLink: function(source, target, edit, success, failure, context) {
             var result = null;
             var controller = get(this, 'controller');
-            var sourceRecord = controller.recordsById[source.id];
+            var sourceRecord = controller.graphModel.recordsById[source.id];
             var sourceType = sourceRecord.get('_type');
             var graphId = get(controller, 'model.graph_id');
             // ensure source and target are ok
@@ -1474,14 +1491,14 @@ define([
                 );
 
                 if (data !== undefined && data.type !== 'link') { // is it a node
-                    var record = get(this, 'controller').recordsById[data.id];
+                    var record = get(this, 'controller').graphModel.recordsById[data.id];
                     var info = record.get('info');
                     if (info) {
                         if (info.entity) {
                             result.push(this.newToolBoxItem('eventpool', 'triangle-up'))
                         }
                     }
-                    if (get(this, 'controller').selected[data.id] !== undefined) {
+                    if (get(this, 'controller').graphModel.selected[data.id] !== undefined) {
                         result.push(this.newToolBoxItem('unselect', 'diamond'));
                     } else {
                         result.push(this.newToolBoxItem('select', 'diamond'));
