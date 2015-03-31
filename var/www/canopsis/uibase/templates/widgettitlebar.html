@@ -2,7 +2,7 @@
     <div class="pull-right">
         {{partialslot slot=controller._partials.titlebarsbuttons minified=true class="btn-group" tagName="span"}}
             {{#if controller.editMode}}
-                {{view "mixineditdropdown" mixins=widget.mixins class="btn-group"}}
+                {{view "mixineditdropdown" mixins=widget.mixins isGridLayout=controller.isGridLayout class="btn-group"}}
             {{/if}}
         <div class="btn-group">
             {{#if widget.isMinimizable}}

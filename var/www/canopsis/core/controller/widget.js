@@ -128,7 +128,9 @@ define([
             return false;
         }.property('isDirty', 'dirtyType', 'rollbackable'),
 
+
         actions: {
+
             /**
              * Show debug info in console and put widget var in window.$E
              */
