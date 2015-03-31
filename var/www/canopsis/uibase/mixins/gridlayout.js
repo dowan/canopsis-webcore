@@ -19,7 +19,8 @@
 
 define([
     'ember',
-    'app/lib/factories/mixin'
+    'app/lib/factories/mixin',
+    'jqueryui'
 ], function(Ember, Mixin) {
 
     var get = Ember.get,
@@ -72,11 +73,25 @@ define([
         },
 
         getSection: function (currentWrapperMixins) {
-
             var gridLayoutMixin = currentWrapperMixins.findBy('name', 'gridlayout');
-            var column = gridLayoutMixin.column || '4';
+            var columnXS = gridLayoutMixin.columnXS || '4';
+            var columnMD = gridLayoutMixin.columnMD || '4';
+            var columnLG = gridLayoutMixin.columnLG || '4';
             var offset = gridLayoutMixin.offset || '0';
-            return 'col-md-' + column + ' col-md-offset-' + offset;
+
+            var classValue = [
+                'col-md-',
+                columnMD,
+                ' col-xs-',
+                columnXS,
+                ' col-lg-',
+                columnLG,
+                ' col-md-offset-',
+                offset
+            ].join('');
+
+            debugger;
+            return classValue;
         },
 
     });
