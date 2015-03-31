@@ -37,6 +37,7 @@ var templates = [
     { name: 'customfilters', template: 'canopsis/uibase/templates/customfilters.html' },
 
     { name: 'userstatusmenu', template: 'canopsis/uibase/templates/userstatusmenu.html' },
+    { name: 'screentoolstatusmenu', template: 'canopsis/uibase/templates/screentoolstatusmenu.html' },
     { name: 'schemamanagerstatusmenu', template: 'canopsis/uibase/templates/schemamanagerstatusmenu.html' },
     { name: 'notificationsstatusmenu', template: 'canopsis/uibase/templates/notificationsstatusmenu.html' },
     { name: 'consolemanagerstatusmenu', template: 'canopsis/uibase/templates/consolemanagerstatusmenu.html' },
