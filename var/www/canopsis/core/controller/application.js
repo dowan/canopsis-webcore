@@ -248,8 +248,8 @@ define([
 
             changeScreenSize: function (size) {
                 var cssSize = {
-                    small: '750px',
-                    medium: '1280px',
+                    small: '480px',
+                    medium: '940px',
                     large: '100%',
                 }[size];
 
