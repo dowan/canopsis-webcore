@@ -49,7 +49,7 @@ define([
         graphModel: {
             graph: null, // graph record
             recordsById: {}, // record elements by id,
-            selected: [] // selected records
+            selected: {} // selected records
         },
 
         graph_cls: 'canopsis.topology.elements.Topology', // default graph class
@@ -132,7 +132,7 @@ define([
                 if (this.graphModel.graph !== null && this.graphModel.graph.get('id') !== graphId) {
                     this.graphModel.graph = null;
                     this.graphModel.recordsById = {};
-                    this.graphModel.selected = [];
+                    this.graphModel.selected = {};
                 }
                 var query = {
                     ids: graphId,
@@ -146,13 +146,17 @@ define([
                             graph = result.content[0];
                             // if old graph exists
                             if (me.graphModel.graph !== null) {
+                                var _delts = graph.get('_delts');
                                 // delete old records
-                                var recordsToDelete = me.graphModel.recordsById.map(
+                                var recordsById = me.graphModel.recordsById;
+                                var selected = me.graphModel.selected;
+                                recordsById.forEach(
                                     function(recordId) {
-                                        var record = me.graphModel.recordsById[recordId];
-                                        return record.destroyRecord();
-                                    },
-                                    me
+                                        if (_delts[recordId] === undefined) {
+                                            delete recordsById[recordId];
+                                            delete selected[recordId];
+                                        }
+                                    }
                                 );
                             }
                             me._addGraph(graph);
@@ -189,14 +193,20 @@ define([
             }
             var me = this;
             var graphId = this.graphModel.graph.get('id');
+            var recordsById = this.graphModel.recordsById;
+            var selected = this.graphModel.selected;
             // create an array of promises
             var recordsToDelete = records.map(
                 function(record) {
                     var result = null;
-                    if (record.get('id') === graphId) {
+                    var recordId = record.get('id');
+                    if (recordId === graphId) {
                         console.error('Impossible to delete the graph');
                     } else {
-                        result = record.destroyRecord();
+                        delete recordsById[recordId];
+                        delete selected[recordId];
+                        record.deleteRecord();
+                        result = record.save();
                     }
                     return result;
                 }
@@ -315,7 +325,7 @@ define([
                     graph.set('elts', elts);
                     graph.save().then(
                         // update record in self records by id
-                        function(record) {
+                        function() {
                             // update reference of the record
                             recordsById[recordId] = record;
                             if (success !== undefined) {

@@ -708,15 +708,13 @@ define([
         */
         refreshSelectedShapes: function() {
             var selected = get(this, 'controller').graphModel.selected;
-            if (selected.length > 0) {
-                // get a list of 'selected' items
-                var selectedShapes = this.panel.selectAll('.shapegroup')
-                    .data(selected, function(d){ return d; });
-                // select newly selected items
-                selectedShapes.classed('selected', true);
-                // unselect old selected
-                selectedShapes.exit().classed('selected', false);
-            }
+            // get a list of 'selected' items
+            var selectedShapes = this.panel.selectAll('.shapegroup')
+                .data(selected, function(d){ return d; });
+            // select newly selected items
+            selectedShapes.classed('selected', true);
+            // unselect old selected
+            selectedShapes.exit().classed('selected', false);
         },
 
         /**
@@ -899,18 +897,19 @@ define([
         },
         addHandler: function(data) {
             d3.event.stopPropagation();
+            var controller = get(this, 'controller');
             if (this.source === null) { // add a new node
                 function callback(record) {
                     this.getNode(record);
+                    controller.trigger('refresh');
                 }
-                var controller = get(this, 'controller');
                 var record = controller.newRecord(
                     controller.verticeEltType, undefined, true, callback, undefined, this
                     );
             } else {
                 function success(record) {
-                    get(this, 'controller').trigger('redraw');
                     this.removeTmpLink();
+                    controller.trigger('refresh');
                 }
                 function failure(record) {
                     this.removeTmpLink();
@@ -1436,7 +1435,7 @@ define([
                 this.weaveLinks(result);
             } else { // else create a new edge
                 function callback2(record) {
-                    var edge = this.get_node(record);
+                    var edge = this.getNode(record);
                     this.weaveLinks(edge);
                     if (success !== undefined) {
                         success.call(context, record);
