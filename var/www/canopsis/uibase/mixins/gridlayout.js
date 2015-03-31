@@ -30,8 +30,15 @@ define([
     var viewMixin = Ember.Mixin.create({
         didInsertElement: function() {
 
+            //iteration over all content widget to set them the appropriage css class
             var wrappers = get(this, 'controller.items.content');
+            //if view update, push it to db
             var haveToSaveView = false;
+
+            var containerMixins = get(this, 'mixins');
+            if (!isNone(containerMixins)) {
+                var containerGridLayout = containerMixins.findBy('name', 'gridlayout');
+            }
 
             for (var i = wrappers.length - 1; i >= 0; i--) {
 
@@ -68,11 +75,21 @@ define([
         },
 
         init: function() {
+            //Attach view to the mixin
             this._super();
             this.addMixinView(viewMixin);
         },
 
+        isGridLayout: function () {
+            //Tells the controller of this mixin that it is a grid layout
+            return true;
+        }.property(),
+
         getSection: function (currentWrapperMixins) {
+            /**
+                Builds css classes for the widget wrapper that allow responsive parametrized diplay
+                depending on legacy/overriden values.
+            **/
             var gridLayoutMixin = currentWrapperMixins.findBy('name', 'gridlayout');
             var columnXS = gridLayoutMixin.columnXS || '4';
             var columnMD = gridLayoutMixin.columnMD || '4';
@@ -90,7 +107,6 @@ define([
                 offset
             ].join('');
 
-            debugger;
             return classValue;
         },
 
