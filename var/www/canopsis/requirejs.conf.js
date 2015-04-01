@@ -46,7 +46,6 @@ require.config({
         'ember-listview': 'webcore-libs/ember-list-view/list-view',
         'bootstrap': 'webcore-libs/bootstrap/dist/js/bootstrap.min',
         'daterangepicker': 'webcore-libs/bootstrap-daterangepicker/daterangepicker',
-        'jqueryui': 'canopsis/core/lib/wrappers/jqueryui',
         'icheck': 'webcore-libs/iCheck/icheck',
         'adminLTElib': 'webcore-libs/dev/AdminLTE', //TODO make a bower package for this
         'adminLTE': 'canopsis/core/lib/wrappers/adminLTE',
@@ -108,10 +107,6 @@ require.config({
         },
 
         'icheck': {
-            deps: ['jquery']
-        },
-
-        'jqueryui': {
             deps: ['jquery']
         },
 
