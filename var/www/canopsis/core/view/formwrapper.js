@@ -20,14 +20,12 @@
 define([
     'jquery',
     'ember',
-    'app/view/form'
-], function($, Ember, FormView) {
+    'app/view/form',
+    'app/lib/utils/drag',
+], function($, Ember, FormView, drag) {
 
     var get = Ember.get,
         set = Ember.set;
-
-
-    //FIXME is this still important to use Ember.Evented here?
 
     var view = Ember.View.extend({
         init: function() {
@@ -40,9 +38,7 @@ define([
         formViewClass : FormView,
 
         didInsertElement: function () {
-            this.$("#formwrapper").draggable({
-                handle: ".modal-header"
-            });
+            drag.setDraggable(this.$('#formwrapper'));
         },
 
         //Controller -> View Hooks
