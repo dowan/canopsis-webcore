@@ -94,8 +94,6 @@ var templates = [
     { name: 'draggableheaders', template: 'canopsis/uibase/templates/draggableheaders.html'},
     { name: 'tabledraggableth', template: 'canopsis/uibase/templates/tabledraggableth.html'},
 
-    { name: 'fixedlayout', template: 'canopsis/uibase/templates/fixedlayout.html'},
-    { name: 'draggablewidgeticon', template: 'canopsis/uibase/templates/draggablewidgeticon.html'},
     { name: 'placedwidget', template: 'canopsis/uibase/templates/placedwidget.html'}
 ];
 
