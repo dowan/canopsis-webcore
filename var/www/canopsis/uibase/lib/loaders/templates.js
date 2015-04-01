@@ -94,7 +94,6 @@ var templates = [
     { name: 'draggableheaders', template: 'canopsis/uibase/templates/draggableheaders.html'},
     { name: 'tabledraggableth', template: 'canopsis/uibase/templates/tabledraggableth.html'},
 
-    { name: 'placedwidget', template: 'canopsis/uibase/templates/placedwidget.html'}
 ];
 
 loader.loadWithTemplates(templates);
