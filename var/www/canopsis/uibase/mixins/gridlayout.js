@@ -29,18 +29,21 @@ define([
 
     var viewMixin = Ember.Mixin.create({
         didInsertElement: function() {
-
             //iteration over all content widget to set them the appropriage css class
             var wrappers = get(this, 'controller.items.content');
             //if view update, push it to db
             var haveToSaveView = false;
 
-            var containerGridLayout;
+            var containerGridLayout,
+                forcelegacy = false;
+
             var containerMixins = get(this, 'controller.mixins');
             if (!isNone(containerMixins)) {
                 containerGridLayout = containerMixins.findBy('name', 'gridlayout');
+                if (!isNone(containerGridLayout)) {
+                    forcelegacy = get(containerGridLayout, 'forcelegacy');
+                }
             }
-
             for (var i = wrappers.length - 1; i >= 0; i--) {
 
                 //Dynamic mixin values setting
@@ -55,11 +58,28 @@ define([
                     if (isNone(containerGridLayout)) {
                         containerGridLayout = {'name': 'gridlayout'};
                     }
-
+                    //Push fresh information
                     currentWrapperMixins.pushObject(containerGridLayout);
                     haveToSaveView = true;
                 }
 
+                //Manage legacy data from mixin to content wrappers
+                if (forcelegacy) {
+                    //Get it now because it may have just been added before
+                    var existingGridLayoutMixin = currentWrapperMixins.findBy('name', 'gridlayout');
+                    //Clean previous information
+                    if (!isNone(existingGridLayoutMixin)) {
+                        currentWrapperMixins.removeObject(existingGridLayoutMixin);
+                    }
+                    //avoid side effects
+                    delete containerGridLayout.forcelegacy;
+
+                    //Add legacy information
+                    currentWrapperMixins.pushObject(containerGridLayout);
+                    haveToSaveView = true;
+                }
+
+                //Computes class value
                 var classValue = get(this, 'controller').getSection(currentWrapperMixins);
 
                 Ember.setProperties(wrappers[i], {
