@@ -20,7 +20,6 @@
 
 define([
     'ember',
-    'jqueryui'
 ], function(Ember) {
 
     var get = Ember.get,

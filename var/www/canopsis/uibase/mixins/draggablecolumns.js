@@ -22,7 +22,6 @@ define([
     'app/lib/factories/mixin',
     'jquery',
     'app/view/tabledraggableth',
-    'jqueryui'
 ], function(Ember, Mixin, $) {
 
     var get = Ember.get,

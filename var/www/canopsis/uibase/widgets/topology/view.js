@@ -65,7 +65,6 @@
 define([
     'jquery',
     'd3',
-    'jqueryui'
 ], function($, d3) {
     var get = Ember.get,
         set = Ember.set;

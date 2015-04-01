@@ -47,7 +47,6 @@ define([
     'd3',
     'app/lib/utils/forms',
     'app/lib/utils/data',
-    'jqueryui'
 ], function($, WidgetFactory, d3, formsUtils, dataUtils) {
 
     var get = Ember.get,
@@ -1033,11 +1032,13 @@ define([
         * display nodes in the widget
         */
         findItems: function() {
+            /*
             $('.charge').slider(
                 {
                     change: this.chargeChanged
                 }
             );
+            */
             // get graph id and graph type
             this.graph_type = this.get('model.graph_type');
             if (!this.graph_type) this.graph_type = 'topology';
