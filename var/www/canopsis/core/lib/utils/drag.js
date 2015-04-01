@@ -20,29 +20,26 @@
 define([
     'jquery',
     'ember',
-    'app/lib/utils/drag',
-], function($, Ember, drag) {
+], function($, Ember) {
 
-    var get = Ember.get,
-        set = Ember.set;
+    var __ = Ember.String.loc,
+        isNone = Ember.isNone;
 
-    var view = Ember.View.extend({
-
-        didInsertElement: function () {
-            console.log('Recordinfopopup dom element');
-
-            $( window ).on('resize', function () {
-                var left = ($(window).width() - $('#recordinfopopup').outerWidth()) / 2;
-                $('#recordinfopopup').css('left', left);
+    var drag = {
+        setDraggable: function (domElement) {
+            domElement.on('mousedown', function() {
+                console.log('mousedown', $(this));
+                $(this).addClass('draggable').parents().on('mousemove', function(e) {
+                    $('.draggable').offset({
+                        top: e.pageY - $('.draggable').outerHeight() / 2,
+                        left: e.pageX - $('.draggable').outerWidth() / 2
+                    }).on('mouseup', function() {
+                        $(this).removeClass('draggable');
+                    });
+                });
             });
-
-            drag.setDraggable($('#recordinfopopup'));
-
         }
-    });
+    };
 
-
-    loader.register('view:recordinfopopup', view);
-
-    return view;
+    return drag;
 });
