@@ -20,7 +20,6 @@
 define([
     'ember',
     'app/lib/factories/mixin',
-    'jqueryui'
 ], function(Ember, Mixin) {
 
     var get = Ember.get,
