@@ -20,6 +20,7 @@
 
 define([
     'ember',
+    'canopsis/core/lib/wrappers/slider',
 ], function(Ember) {
 
     var get = Ember.get,
@@ -53,21 +54,32 @@ define([
                 min: min,
                 max: max,
                 step: step,
-                value: value
+                value: value,
             });
 
-            sliderComponent.$('.slider').slider({
+            var slider = sliderComponent.$('#range_slider');
+
+            slider.ionRangeSlider({
                 min: min,
                 max: max,
+                from: value,
+                type: 'single',
                 step: step,
-                value: value,
-                slide: function (event, ui) {
-                    console.log('slider change', ui.value, event, ui);
-                    set(sliderComponent, 'content', ui.value);
+                prefix: '',
+                onChange: function (data) {
+                    set(sliderComponent, 'content', get(data, 'fromNumber'));
                 }
+
+            });
+
+            //get slider from computed ionRangeslider
+            var slider = sliderComponent.$('#range_slider');
+            ionRangeslider = slider.data("ionRangeSlider");
+
+            ionRangeSlider.update({
+                from: value
             });
         }
-
     });
 
     Ember.Application.initializer({

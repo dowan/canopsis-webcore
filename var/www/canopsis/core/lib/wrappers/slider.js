@@ -16,14 +16,13 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
+
 define([
     'app/lib/factories/wrapper',
-    'adminLTElib',
-    'link!webcore-libs/css/AdminLTE.css',
-    'link!webcore-libs/css/AdminLTE_extra.css',
-], function(Wrapper, AdminLteJs) {
+    'link!webcore-libs/ion.rangeSlider/css/ion.rangeSlider.css',
+    'link!webcore-libs/ion.rangeSlider/css/ion.rangeSlider.skinNice.css',
+    'webcore-libs/ion.rangeSlider/js/ion.rangeSlider',
+], function(Wrapper) {
 
-    console.log('AdminLTE wrapper', AdminLteJs);
-
-    return Wrapper("AdminLTE", AdminLteJs, arguments, "0.1");
+    return Wrapper("slider", null, arguments, "1.0.1");
 });
