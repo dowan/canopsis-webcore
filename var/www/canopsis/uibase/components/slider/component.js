@@ -69,16 +69,19 @@ define([
                 onChange: function (data) {
                     set(sliderComponent, 'content', get(data, 'fromNumber'));
                 }
-
             });
 
-            //get slider from computed ionRangeslider
-            var slider = sliderComponent.$('#range_slider');
-            ionRangeslider = slider.data("ionRangeSlider");
 
-            ionRangeSlider.update({
-                from: value
-            });
+            //I hate myself doing this
+            setTimeout(function () {
+                //hack as library does not manage properly the from parameter in this version.
+                var width = sliderComponent.$('.irs-line').width();
+                var proportion = width / max * value;
+                //Manually placing slider and tooltip proportionnaly to the width of the slider.
+                sliderComponent.$('.irs-single').css('left', proportion);
+                sliderComponent.$('.irs-slider').css('left', proportion);
+            }, 500);
+
         }
     });
 

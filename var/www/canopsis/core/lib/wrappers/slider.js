@@ -20,7 +20,7 @@
 define([
     'app/lib/factories/wrapper',
     'link!webcore-libs/ion.rangeSlider/css/ion.rangeSlider.css',
-    'link!webcore-libs/ion.rangeSlider/css/ion.rangeSlider.skinNice.css',
+    'link!webcore-libs/ion.rangeSlider/css/ion.rangeSlider.skinHTML5.css',
     'webcore-libs/ion.rangeSlider/js/ion.rangeSlider',
 ], function(Wrapper) {
 
