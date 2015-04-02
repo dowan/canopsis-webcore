@@ -105,7 +105,19 @@
 </defs>
 </svg>
 
+<button type="button" {{action "showHideProperties"}}>Show/Hide Properties</button>
 Auto-Layout: {{input name="autoLayout" type="checkbox" checked=view.autoLayout}}
+
+{{#if view.showProperties}}
+Filter: {{input name="filter" type="text" value="view.filter" action="view.filter" on="key-press"}}
+Charge: {{input name="charge" type="text" value="view.charge"}}
+Link strength: {{input name="linkStrength" type="text" value="view.linkStrength"}}
+LinkDistance: {{input name="linkDistance" type="text" value="view.linkDistance"}}
+Friction: {{input name="friction" type="text" value="view.friction"}}
+Theta: {{input name="theta" type="text" value="view.theta"}}
+Gravity: {{input name="gravity" type="text" value="view.gravity"}}
+{{/if}}
+
 <!--Lock all: {{input name="lockAll" type="checkbox"
  checked=view.lockAll}}
 Filter: {{input name="filter" type="text" value="view.filter" action="view.filter" on="key-press"}}

@@ -302,11 +302,15 @@ define([
         */
         newRecord: function(type, properties, edit, success, failure, context) {
             var me = this;
+            // initialize type with default vertice
+            if (type === undefined) {
+                type = this.verticeEltType;
+            }
             var result = this.widgetDataStore.createRecord(type, properties);
             // any failure would result in calling input failure
             function _failure(reason) {
                 if (failure !== undefined) {
-                    failure.call(context, record);
+                    failure.call(context, reason);
                 }
             }
             // callback called if the record has been created
@@ -601,6 +605,16 @@ define([
                     }
                 }
             );
+        },
+
+        actions: {
+            /**
+            * Change boolean value of controller.showProperties with the opposite.
+            */
+            showHideProperties: function() {
+                var showProperties = get(this, 'showProperties');
+                set(this, 'showProperties', !showProperties);
+            }
         },
 
     });
