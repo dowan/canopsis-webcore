@@ -64,7 +64,7 @@
 */
 define([
     'jquery',
-    'd3',
+    'd3'
 ], function($, d3) {
     var get = Ember.get,
         set = Ember.set;
@@ -235,6 +235,9 @@ define([
             this._layout[this._layout.type].gravity = this.get('gravity');
             this._layout.engine.gravity(this._layout[this._layout.type].gravity);
         }.observes('gravity'),
+        showProperties: function() {
+            return this._showProperties;
+        }.property('showProperties'),
 
         rerender: function() {
             this._super.apply(this, arguments);
@@ -1312,8 +1315,11 @@ define([
         */
         checkTargetLink: function(data) {
             var recordsById = get(this, 'controller').graphModel.recordsById;
-            var record = recordsById[data.id || data];
-            var result = (data === undefined || (record.get('_type') !== 'edge' && data.id !== this.source.id));
+            var result = data === undefined;
+            if (!result) {
+                var record = recordsById[data.id || data];
+                result = record.get('_type') !== 'edge' && data.id !== this.source.id;
+            }
             return result;
         },
 
@@ -1410,8 +1416,8 @@ define([
                 // create a callback
                 var coordinates = this.coordinates();
                 function _success(record) {
-                    var target = this.shapesById[record.get('id')];
-                    this.addLink(source, viewElt);
+                    var target = this.getNode(record);
+                    this.addLink(source, target, edit);
                     target.px = target.x = coordinates[0];
                     target.py = target.y = coordinates[1];
                     target.fixed = true;
@@ -1419,10 +1425,8 @@ define([
                         success.call(context, record);
                     }
                 }
-                // create a node if target does not exist
-                target = this.getNode(
-                    undefined, edit, _success, _failure, this
-                );
+                // edit a new vertice if target does not exist
+                target = controller.newRecord(controller.verticeEltType, undefined, edit, _success, _failure, this);
                 if (edit) return;
             }
             // get result
