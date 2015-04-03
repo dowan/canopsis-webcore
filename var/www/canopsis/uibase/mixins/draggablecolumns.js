@@ -1,3 +1,4 @@
+
 /*
 # Copyright (c) 2015 "Capensis" [http://www.capensis.com]
 #
@@ -34,6 +35,7 @@ define([
         },
 
         didInsertElement: function() {
+            /*
             this.$('th').sortable({
                 update: function(event, ui) {
                     var indexes = {};
@@ -42,6 +44,7 @@ define([
                     });
                 }
             });
+            */
         }
     });
 

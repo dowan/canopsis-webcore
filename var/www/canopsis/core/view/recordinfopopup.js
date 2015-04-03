@@ -36,7 +36,7 @@ define([
                 $('#recordinfopopup').css('left', left);
             });
 
-            drag.setDraggable($('#recordinfopopup'));
+            drag.setDraggable($('#recordinfopopup .hand'), $('#recordinfopopup'));
 
         }
     });

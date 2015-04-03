@@ -38,7 +38,7 @@ define([
         formViewClass : FormView,
 
         didInsertElement: function () {
-            drag.setDraggable(this.$('#formwrapper'));
+            drag.setDraggable(this.$('#formwrapper .modal-header'), this.$('#formwrapper'));
         },
 
         //Controller -> View Hooks
