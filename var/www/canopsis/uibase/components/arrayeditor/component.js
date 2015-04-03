@@ -129,7 +129,8 @@ define([
 
             move: function (direction, item) {
 
-                var index = get(this, 'arrayAttributes').indexOf(item);
+                var array = get(this, 'arrayAttributes');
+                var index = array.indexOf(item);
 
                 if (direction === 'up') {
                     if (index > 0) {
