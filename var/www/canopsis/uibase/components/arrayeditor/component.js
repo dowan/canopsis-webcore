@@ -128,11 +128,9 @@ define([
         actions: {
 
             move: function (direction, item) {
-                var array = get(this, 'arrayAttributes');
-                var index = array.indexOf(item);
 
-                //array.arrayContentWillChange (index, 0, 0);
-                console.log('moving', item, 'direction', direction);
+                var index = get(this, 'arrayAttributes').indexOf(item);
+
                 if (direction === 'up') {
                     if (index > 0) {
                         console.log('processing', direction);
