@@ -348,7 +348,7 @@ define([
             if (edit) {
                 this.editRecord(result, _success, _failure, this);
             } else {
-                _success(result);
+                _success.call(this, result);
             }
             return result;
         },
