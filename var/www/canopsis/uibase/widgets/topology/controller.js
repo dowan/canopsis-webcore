@@ -110,6 +110,7 @@ define([
                     var record = this.widgetDataStore.createRecord(
                         elt['type'], elt
                     );
+                    record.save();
                     recordsById[elt_id] = record;
                 },
                 me

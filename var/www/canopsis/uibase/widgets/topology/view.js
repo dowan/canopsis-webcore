@@ -1420,7 +1420,6 @@ define([
                     this.addLink(source, target, false);
                     target.px = target.x = coordinates[0];
                     target.py = target.y = coordinates[1];
-                    target.fixed = true;
                     if (success !== undefined) {
                         success.call(context, record);
                     }
