@@ -1421,7 +1421,7 @@ define([
                 var coordinates = this.coordinates();
                 function _success(record) {
                     var target = this.getNode(record);
-                    this.addLink(source, target, false);
+                    this.addLink(source, target, edit);
                     target.px = target.x = coordinates[0];
                     target.py = target.y = coordinates[1];
                     if (success !== undefined) {

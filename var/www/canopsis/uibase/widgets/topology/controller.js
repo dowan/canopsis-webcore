@@ -157,9 +157,9 @@ define([
                                 // delete old records
                                 var recordsById = me.graphModel.recordsById;
                                 var selected = me.graphModel.selected;
-                                recordsById.forEach(
+                                Object.keys(recordsById).forEach(
                                     function(recordId) {
-                                        if (_delts[recordId] === undefined) {
+                                        if (recordId !== graphId && _delts[recordId] === undefined) {
                                             delete recordsById[recordId];
                                             delete selected[recordId];
                                         }
@@ -212,8 +212,7 @@ define([
                     } else {
                         delete recordsById[recordId];
                         delete selected[recordId];
-                        record.deleteRecord();
-                        result = record.save();
+                        result = record.destroyRecord();
                     }
                     return result;
                 }
