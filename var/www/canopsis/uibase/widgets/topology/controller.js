@@ -103,19 +103,27 @@ define([
             // add all graph elts
             var _delts = graph.get('_delts');
             // and in doing the server request
-            Object.keys(_delts).forEach(
+            records_to_save = Object.keys(_delts).map(
                 function(elt_id) {
                     var elt = _delts[elt_id];
                     elt.id = elt_id;
-                    var record = this.widgetDataStore.createRecord(
+                    var record = me.widgetDataStore.createRecord(
                         elt['type'], elt
                     );
                     recordsById[elt_id] = record;
-                },
-                me
+                    // save record in order to bind it to the adapter
+                    return record.save();
+                }
             );
-            // refresh the view
-            me.trigger('refresh');
+            Ember.RSVP.all(records_to_save).then(
+                function() {
+                    // refresh the view
+                    me.trigger('refresh');
+                },
+                function(reason) {
+                    console.error(reason);
+                }
+            );
         },
 
         /**
@@ -149,9 +157,9 @@ define([
                                 // delete old records
                                 var recordsById = me.graphModel.recordsById;
                                 var selected = me.graphModel.selected;
-                                recordsById.forEach(
+                                Object.keys(recordsById).forEach(
                                     function(recordId) {
-                                        if (_delts[recordId] === undefined) {
+                                        if (recordId !== graphId && _delts[recordId] === undefined) {
                                             delete recordsById[recordId];
                                             delete selected[recordId];
                                         }
@@ -204,8 +212,7 @@ define([
                     } else {
                         delete recordsById[recordId];
                         delete selected[recordId];
-                        record.deleteRecord();
-                        result = record.save();
+                        result = record.destroyRecord();
                     }
                     return result;
                 }
@@ -217,10 +224,11 @@ define([
                     if (success !== undefined) {
                         success.call(context, arguments);
                     }
-                    me.trigger('refresh');
+                    me.findItems();
                 },
                 // or failure and refresh
                 function(reason) {
+                    console.error(reason);
                     if (failure !== undefined) {
                         failure.call(context, arguments);
                     }
@@ -309,6 +317,7 @@ define([
             var result = this.widgetDataStore.createRecord(type, properties);
             // any failure would result in calling input failure
             function _failure(reason) {
+                console.error(reason);
                 if (failure !== undefined) {
                     failure.call(context, reason);
                 }
@@ -338,6 +347,7 @@ define([
                         function(reason) {
                             record.destroyRecord().then(
                                 function(reason) {
+                                    console.error(reason);
                                     _failure(reason);
                                 }
                             );
@@ -591,6 +601,7 @@ define([
                         me.trigger('refresh');
                     }
                     function _failure(record) {
+                        console.error(record);
                         if (failure !== undefined) {
                             failure.call(context, record);
                         }
@@ -599,7 +610,7 @@ define([
                     me.saveRecords(record, _success, _failure, me);
                 }
             ).fail(
-                function(form) {
+                function() {
                     if (failure !== undefined) {
                         failure.call(context, record);
                     }

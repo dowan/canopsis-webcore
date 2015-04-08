@@ -357,7 +357,9 @@ define([
                     if (record.get('_type') === 'edge') {
                         var sourceId = record.get('sources')[0];
                         var sourceNode = this.shapesById[sourceId];
-                        sourceNode._weight += record.get('weight');
+                        if (sourceNode !== undefined) {
+                            sourceNode._weight += record.get('weight');
+                        }
                     }
                     node.index = i;
                     node.entity = undefined;
@@ -1356,7 +1358,7 @@ define([
             // get graphId
             var graphId = get(this, 'controller.model.graph_id');
             // get node from db
-            var recordNode = undefined;
+            var recordNode;
             var view = record.get('info').view;
             if (view !== undefined) {
                 recordNode = view[graphId];
@@ -1396,6 +1398,7 @@ define([
         * @return new edge node.
         */
         addLink: function(source, target, edit, success, failure, context) {
+            var me = this;
             var result = null;
             var controller = get(this, 'controller');
             var sourceRecord = controller.graphModel.recordsById[source.id];
@@ -1403,10 +1406,11 @@ define([
             var graphId = get(controller, 'model.graph_id');
             // ensure source and target are ok
             if (source.id === graphId || !this.checkTargetLink(target)) {
-                throw new Exception('Wrong parameters');
+                throw 'Wrong parameters';
             }
             // default failure function
             function _failure(reason) {
+                console.error(reason);
                 if (failure !== undefined) {
                     failure.call(context, reason);
                 }
@@ -1417,10 +1421,9 @@ define([
                 var coordinates = this.coordinates();
                 function _success(record) {
                     var target = this.getNode(record);
-                    this.addLink(source, target, false);
+                    this.addLink(source, target, edit);
                     target.px = target.x = coordinates[0];
                     target.py = target.y = coordinates[1];
-                    target.fixed = true;
                     if (success !== undefined) {
                         success.call(context, record);
                     }
@@ -1434,8 +1437,18 @@ define([
             if (sourceType === 'edge') {
                 result = source;
                 // and add right now the target
-                result.elt.get('targets').push(target.id);
-                this.weaveLinks(result);
+                record = controller.graphModel.recordsById[result.id];
+                var targets = record.get('targets');
+                targets.push(target.id);
+                record.set('targets', targets);
+                record.save().then(
+                    function() {
+                        me.weaveLinks(result);
+                    },
+                    function(reason) {
+                        console.error(reason);
+                    }
+                );
             } else { // else create a new edge
                 function callback2(record) {
                     var edge = this.getNode(record);
