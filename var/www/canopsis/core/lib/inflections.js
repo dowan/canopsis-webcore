@@ -25,6 +25,7 @@ define([
 
     var inflexions = [
         ['nagios' , 'nagios'],
+        ['tcp2canopsis' , 'tcp2canopsis'],
         ['curve', 'curves'],
         ['serie', 'serie'],
         ['enabledmodules', 'enabledmodules']
