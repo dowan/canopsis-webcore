@@ -29,7 +29,8 @@ var utilsFiles = [
     'filterObject',
     'widgetSelectors',
     'dom',
-    'event'
+    'event',
+    'drag'
 ];
 
 var deps = [];

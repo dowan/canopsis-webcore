@@ -64,8 +64,7 @@
 */
 define([
     'jquery',
-    'd3',
-    'jqueryui'
+    'd3'
 ], function($, d3) {
     var get = Ember.get,
         set = Ember.set;
@@ -236,6 +235,9 @@ define([
             this._layout[this._layout.type].gravity = this.get('gravity');
             this._layout.engine.gravity(this._layout[this._layout.type].gravity);
         }.observes('gravity'),
+        showProperties: function() {
+            return this._showProperties;
+        }.property('showProperties'),
 
         rerender: function() {
             this._super.apply(this, arguments);
@@ -278,7 +280,7 @@ define([
             /**
             * Save node related to entity ids in memory.
             */
-            function saveRefToEntity(node) {
+            var saveRefToEntity = function(node) {
                 var nodeId = node.id;
                 var info = recordsById[nodeId].get('info');
                 // add reference between entity id and node
@@ -355,7 +357,9 @@ define([
                     if (record.get('_type') === 'edge') {
                         var sourceId = record.get('sources')[0];
                         var sourceNode = this.shapesById[sourceId];
-                        sourceNode._weight += record.get('weight');
+                        if (sourceNode !== undefined) {
+                            sourceNode._weight += record.get('weight');
+                        }
                     }
                     node.index = i;
                     node.entity = undefined;
@@ -430,7 +434,7 @@ define([
                 /**
                 * zoom function.
                 */
-                function zoom() {
+                var zoom = function() {
                     /*me.eventZoom = d3.event;
                     console.log(me.eventZoom);
                     if (d3.event.sourceEvent.type !== 'mousemove') {*/
@@ -444,7 +448,7 @@ define([
                         me.panel.attr("transform", "translate(" + translate + ")scale(" + d3.event.scale + ")");
                     }*/
                 };
-                function drag() {
+                var drag = function() {
                     var translate = [
                         me.translate[0] + d3.event.dx,
                         me.translate[1] + d3.event.dy
@@ -460,17 +464,17 @@ define([
                         )
                     ;
                 };
-                function dragstart(d, i) {
+                var dragstart = function(d, i) {
                     force.stop() // stops the force auto positioning before you start dragging
                 }
-                function dragmove(d, i) {
+                var dragmove = function(d, i) {
                     d.px += d3.event.dx;
                     d.py += d3.event.dy;
                     d.x += d3.event.dx;
                     d.y += d3.event.dy;
                     tick(); // this is the key to make it work together with updating both px,py,x,y on d !
                 }
-                function dragend(d, i) {
+                var dragend = function(d, i) {
                     d.fixed = true; // of course set the node to fixed so the force doesn't include the node in its auto positioning stuff
                     tick();
                     if (layout.activated) {
@@ -622,7 +626,7 @@ define([
             * Add links in d3Edge.
             * @param key value among targets and sources
             */
-            function updateLinks(key) {
+            var updateLinks = function(key) {
                 var isSource = key === 'sources';
                 var neighbours = edge.get(key);
 
@@ -696,7 +700,7 @@ define([
                         this
                     );
                 }
-            }
+            };
             // add links for all sources
             updateLinks.call(this, 'sources');
             // add links for all targets
@@ -708,15 +712,13 @@ define([
         */
         refreshSelectedShapes: function() {
             var selected = get(this, 'controller').graphModel.selected;
-            if (selected.length > 0) {
-                // get a list of 'selected' items
-                var selectedShapes = this.panel.selectAll('.shapegroup')
-                    .data(selected, function(d){ return d; });
-                // select newly selected items
-                selectedShapes.classed('selected', true);
-                // unselect old selected
-                selectedShapes.exit().classed('selected', false);
-            }
+            // get a list of 'selected' items
+            var selectedShapes = this.panel.selectAll('.shapegroup')
+                .data(selected, function(d){ return d; });
+            // select newly selected items
+            selectedShapes.classed('selected', true);
+            // unselect old selected
+            selectedShapes.exit().classed('selected', false);
         },
 
         /**
@@ -899,18 +901,19 @@ define([
         },
         addHandler: function(data) {
             d3.event.stopPropagation();
+            var controller = get(this, 'controller');
             if (this.source === null) { // add a new node
                 function callback(record) {
                     this.getNode(record);
+                    controller.trigger('refresh');
                 }
-                var controller = get(this, 'controller');
                 var record = controller.newRecord(
                     controller.verticeEltType, undefined, true, callback, undefined, this
                     );
             } else {
                 function success(record) {
-                    get(this, 'controller').trigger('redraw');
                     this.removeTmpLink();
+                    controller.trigger('refresh');
                 }
                 function failure(record) {
                     this.removeTmpLink();
@@ -1314,8 +1317,11 @@ define([
         */
         checkTargetLink: function(data) {
             var recordsById = get(this, 'controller').graphModel.recordsById;
-            var record = recordsById[data.id || data];
-            var result = (data === undefined || (record.get('_type') !== 'edge' && data.id !== this.source.id));
+            var result = data === undefined;
+            if (!result) {
+                var record = recordsById[data.id || data];
+                result = record.get('_type') !== 'edge' && data.id !== this.source.id;
+            }
             return result;
         },
 
@@ -1352,7 +1358,7 @@ define([
             // get graphId
             var graphId = get(this, 'controller.model.graph_id');
             // get node from db
-            var recordNode = undefined;
+            var recordNode;
             var view = record.get('info').view;
             if (view !== undefined) {
                 recordNode = view[graphId];
@@ -1392,6 +1398,7 @@ define([
         * @return new edge node.
         */
         addLink: function(source, target, edit, success, failure, context) {
+            var me = this;
             var result = null;
             var controller = get(this, 'controller');
             var sourceRecord = controller.graphModel.recordsById[source.id];
@@ -1399,10 +1406,11 @@ define([
             var graphId = get(controller, 'model.graph_id');
             // ensure source and target are ok
             if (source.id === graphId || !this.checkTargetLink(target)) {
-                throw new Exception('Wrong parameters');
+                throw 'Wrong parameters';
             }
             // default failure function
-            function _failure(reason) {
+            var _failure = function(reason) {
+                console.error(reason);
                 if (failure !== undefined) {
                     failure.call(context, reason);
                 }
@@ -1411,20 +1419,17 @@ define([
             if (target === undefined) {
                 // create a callback
                 var coordinates = this.coordinates();
-                function _success(record) {
-                    var target = this.shapesById[record.get('id')];
-                    this.addLink(source, viewElt);
+                var _success = function(record) {
+                    var target = this.getNode(record);
+                    this.addLink(source, target, edit);
                     target.px = target.x = coordinates[0];
                     target.py = target.y = coordinates[1];
-                    target.fixed = true;
                     if (success !== undefined) {
                         success.call(context, record);
                     }
                 }
-                // create a node if target does not exist
-                target = this.getNode(
-                    undefined, edit, _success, _failure, this
-                );
+                // edit a new vertice if target does not exist
+                target = controller.newRecord(controller.verticeEltType, undefined, edit, _success, _failure, this);
                 if (edit) return;
             }
             // get result
@@ -1432,11 +1437,21 @@ define([
             if (sourceType === 'edge') {
                 result = source;
                 // and add right now the target
-                result.elt.get('targets').push(target.id);
-                this.weaveLinks(result);
+                record = controller.graphModel.recordsById[result.id];
+                var targets = record.get('targets');
+                targets.push(target.id);
+                record.set('targets', targets);
+                record.save().then(
+                    function() {
+                        me.weaveLinks(result);
+                    },
+                    function(reason) {
+                        console.error(reason);
+                    }
+                );
             } else { // else create a new edge
-                function callback2(record) {
-                    var edge = this.get_node(record);
+                var callback2 = function(record) {
+                    var edge = this.getNode(record);
                     this.weaveLinks(edge);
                     if (success !== undefined) {
                         success.call(context, record);
@@ -1527,7 +1542,17 @@ define([
             }
 
             return result;
-        }
+        },
+
+        actions: {
+            /**
+            * Change boolean value of controller.showProperties with the opposite.
+            */
+            showHideProperties: function() {
+                var showProperties = get(this, 'showProperties');
+                set(this, 'showProperties', !showProperties);
+            }
+        },
     });
 
     return TopologyViewMixin;

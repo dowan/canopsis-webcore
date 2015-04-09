@@ -7,8 +7,11 @@
                     <tr style="width:100%">
                         {{#if content.model.options.reorderable}}
                             <td>
-                                <a class="img-thumbnail handle" style="height:100%; color: black; vertical-align: middle">
-                                    <span class="glyphicon glyphicon-resize-vertical"></span>
+                                <a {{action "move" "up" item}} class="btn btn-default">
+                                    <i class="fa fa-arrow-up"></i>
+                                </a>
+                                <a {{action "move" "down" item}} class="btn btn-default">
+                                    <i class="fa fa-arrow-down"></i>
                                 </a>
                             </td>
                         {{/if}}

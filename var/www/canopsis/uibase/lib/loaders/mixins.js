@@ -20,8 +20,8 @@
 var mixins = [
     { name: 'background', url: 'canopsis/uibase/mixins/background', classes: ['widget']},
     { name: 'verticallayout', url: 'canopsis/uibase/mixins/verticallayout', classes: ['widget', 'events']},
-    { name: 'fixedlayout', url: 'canopsis/uibase/mixins/fixedlayout', classes: ['widget', 'events']},
     { name: 'horizontallayout', url: 'canopsis/uibase/mixins/horizontallayout', classes: ['widget', 'events']},
+    { name: 'gridlayout', url: 'canopsis/uibase/mixins/gridlayout', classes: ['widget', 'events']},
     { name: 'lightlayout', url: 'canopsis/uibase/mixins/lightlayout', classes: ['widget', 'events']},
     { name: 'tablayout', url: 'canopsis/uibase/mixins/tablayout', classes: ['widget', 'events']},
     { name: 'pagination', url: 'canopsis/uibase/mixins/pagination', classes: ["widget"]},

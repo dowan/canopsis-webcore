@@ -52,14 +52,13 @@ var components = [
     { name: 'components/component-rrule', url: 'canopsis/uibase/components/rrule/component', template: 'canopsis/uibase/components/rrule/template.html' },
     { name: 'components/component-password', url: 'canopsis/uibase/components/password/component', template: 'canopsis/uibase/components/password/template.html' },
     { name: 'components/component-timestamptooltiped', url: 'canopsis/uibase/components/timestamptooltiped/component', template: 'canopsis/uibase/components/timestamptooltiped/template.html' },
-    { name: 'components/component-graph', url: 'canopsis/uibase/components/graph/component', template: 'canopsis/uibase/components/graph/template.html' },
-    { name: 'components/component-topology', url: 'canopsis/uibase/components/topology/component', template: 'canopsis/uibase/components/topology/template.html' },
     { name: 'components/component-ack', url: 'canopsis/uibase/components/ack/component', template: 'canopsis/uibase/components/ack/template.html' },
     { name: 'components/component-formulaeditor', url: 'canopsis/uibase/components/formulaeditor/component', template: 'canopsis/uibase/components/formulaeditor/template.html' },
     { name: 'components/component-propertiestopopup', url: 'canopsis/uibase/components/propertiestopopup/component', template: 'canopsis/uibase/components/propertiestopopup/template.html' },
     { name: 'components/component-restobjectcombo', url: 'canopsis/uibase/components/restobjectcombo/component', template: 'canopsis/uibase/components/restobjectcombo/template.html' },
     { name: 'components/component-contextselector', url: 'canopsis/uibase/components/contextselector/component', template: 'canopsis/uibase/components/contextselector/template.html' },
-    { name: 'components/component-colpick', url: 'canopsis/uibase/components/colpick/component', template: 'canopsis/uibase/components/colpick/template.html' }
+    { name: 'components/component-colpick', url: 'canopsis/uibase/components/colpick/component', template: 'canopsis/uibase/components/colpick/template.html' },
+    { name: 'components/component-slider', url: 'canopsis/uibase/components/slider/component', template: 'canopsis/uibase/components/slider/template.html' }
 ];
 
 loader.loadWithTemplates(components);

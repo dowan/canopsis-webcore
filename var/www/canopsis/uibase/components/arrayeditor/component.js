@@ -59,43 +59,7 @@ define([
         },
 
         didInsertElement: function() {
-            var sortableElements = this.$(".sortable");
-            var componentArrayComponent = this;
 
-            if(sortableElements.length >= 0) {
-                this.$(".sortable").sortable({
-                    items: '> tr',
-                    handle: ".handle",
-                    axis: "y",
-                    // forceHelperSize: true,
-                    // forcePlaceholderSize: true,
-                    helper: function(e, tr) {
-                        void (e);
-                        var $originals = tr.children();
-                        var $helper = tr.clone();
-                        $helper.children().each(function(index) {
-                            // Set helper cell sizes to match the original sizes
-                            $(this).width($originals.eq(index).width());
-                        });
-                        return $helper;
-                    },
-
-                    start: function(event, ui) {
-                        // creates a temporary attribute on the element with the old index
-                        $(ui.item.context).attr('data-previndex', $(ui.item.context).index('tr'));
-                    },
-
-                    update: function(event, ui) {
-                        console.log('update', ui.item);
-                        console.log('update', $(ui.item.context));
-                        var newIndex = $(ui.item.context).index('tr');
-                        var oldIndex = parseInt($(ui.item.context).attr('data-previndex'), 10);
-
-                        ui.item.remove();
-                        componentArrayComponent.moveItem(oldIndex, newIndex);
-                    }
-                });
-            }
         },
 
         itemEditorType: function(){
@@ -162,6 +126,28 @@ define([
         },
 
         actions: {
+
+            move: function (direction, item) {
+
+                var array = get(this, 'arrayAttributes');
+                var index = array.indexOf(item);
+
+                if (direction === 'up') {
+                    if (index > 0) {
+                        console.log('processing', direction);
+                        this.moveItem(index, index - 1);
+                    }
+                }
+
+                if (direction === 'down') {
+                    if (index < get(array, 'length') - 1) {
+                        console.log('processing', direction);
+                        this.moveItem(index, index + 1);
+                    }
+                }
+
+            },
+
             addItem: function() {
                 console.log('addItem', get(this, 'value'));
 

@@ -1,4 +1,3 @@
-
 /*
 # Copyright (c) 2015 "Capensis" [http://www.capensis.com]
 #
@@ -19,34 +18,11 @@
 */
 
 define([
-    'ember',
-    'app/lib/factories/mixin',
-    'jquery',
-    'app/view/tabledraggableth',
-], function(Ember, Mixin, $) {
+    'app/lib/factories/wrapper',
+    'link!webcore-libs/ion.rangeSlider/css/ion.rangeSlider.css',
+    'link!webcore-libs/ion.rangeSlider/css/ion.rangeSlider.skinHTML5.css',
+    'webcore-libs/ion.rangeSlider/js/ion.rangeSlider',
+], function(Wrapper) {
 
-    var get = Ember.get,
-        set = Ember.set;
-
-
-    var mixin = Mixin('draggablecolumns', {
-        partials: {
-            tableheader: ['draggableheaders']
-        },
-
-        didInsertElement: function() {
-            /*
-            this.$('th').sortable({
-                update: function(event, ui) {
-                    var indexes = {};
-                    $(this).find('.item').each(function(index) {
-                        indexes[$(this).data('id')] = index;
-                    });
-                }
-            });
-            */
-        }
-    });
-
-    return mixin;
+    return Wrapper("slider", null, arguments, "1.0.1");
 });

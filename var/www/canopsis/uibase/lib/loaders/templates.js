@@ -37,6 +37,7 @@ var templates = [
     { name: 'customfilters', template: 'canopsis/uibase/templates/customfilters.html' },
 
     { name: 'userstatusmenu', template: 'canopsis/uibase/templates/userstatusmenu.html' },
+    { name: 'screentoolstatusmenu', template: 'canopsis/uibase/templates/screentoolstatusmenu.html' },
     { name: 'schemamanagerstatusmenu', template: 'canopsis/uibase/templates/schemamanagerstatusmenu.html' },
     { name: 'notificationsstatusmenu', template: 'canopsis/uibase/templates/notificationsstatusmenu.html' },
     { name: 'consolemanagerstatusmenu', template: 'canopsis/uibase/templates/consolemanagerstatusmenu.html' },
@@ -60,6 +61,7 @@ var templates = [
 
     { name: 'actionbutton-history', template: 'canopsis/uibase/templates/actionbutton-history.html', classes: ["action", "toolbar"],icon : "time", label : "History" },
     { name: 'actionbutton-eventnavigation', template: 'canopsis/uibase/templates/actionbutton-eventnavigation.html', classes: ["action", "toolbar"],icon : "time", label : "Event navigation" },
+    { name: 'actionbutton-viewrights', template: 'canopsis/uibase/templates/actionbutton-viewrights.html', classes: ["action", "toolbar"],icon : "time", label : "View rights" },
 
     { name: 'formbutton-submit', template: 'canopsis/uibase/templates/formbutton-submit.html', classes: ["formbutton"] },
     { name: 'formbutton-cancel', template: 'canopsis/uibase/templates/formbutton-cancel.html', classes: ["formbutton"] },
@@ -86,15 +88,13 @@ var templates = [
 
     { name: 'verticallayout', template: 'canopsis/uibase/templates/verticallayout.html' ,  classes: ["layout"]},
     { name: 'horizontallayout', template: 'canopsis/uibase/templates/horizontallayout.html' ,  classes: ["layout"]},
+    { name: 'gridlayout', template: 'canopsis/uibase/templates/gridlayout.html' ,  classes: ["layout"]},
     { name: 'lightlayout', template: 'canopsis/uibase/templates/lightlayout.html' ,  classes: ["layout"]},
     { name: 'tablayout', template: 'canopsis/uibase/templates/tablayout.html' ,  classes: ["layout"]},
     { name: 'mixineditdropdown', template: 'canopsis/uibase/templates/mixineditdropdown.html'},
     { name: 'draggableheaders', template: 'canopsis/uibase/templates/draggableheaders.html'},
     { name: 'tabledraggableth', template: 'canopsis/uibase/templates/tabledraggableth.html'},
 
-    { name: 'fixedlayout', template: 'canopsis/uibase/templates/fixedlayout.html'},
-    { name: 'draggablewidgeticon', template: 'canopsis/uibase/templates/draggablewidgeticon.html'},
-    { name: 'placedwidget', template: 'canopsis/uibase/templates/placedwidget.html'}
 ];
 
 loader.loadWithTemplates(templates);

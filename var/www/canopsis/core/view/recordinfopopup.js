@@ -20,24 +20,24 @@
 define([
     'jquery',
     'ember',
-    'jqueryui',
-], function($, Ember) {
+    'app/lib/utils/drag',
+], function($, Ember, drag) {
 
     var get = Ember.get,
         set = Ember.set;
 
     var view = Ember.View.extend({
-        //TODO remove hooks!
+
         didInsertElement: function () {
             console.log('Recordinfopopup dom element');
-            //$('#recordinfopopup').hide();
+
             $( window ).on('resize', function () {
                 var left = ($(window).width() - $('#recordinfopopup').outerWidth()) / 2;
                 $('#recordinfopopup').css('left', left);
             });
-            $('#recordinfopopup').draggable({
-                handle: '.recordinfopopuphandle'
-            });
+
+            drag.setDraggable($('#recordinfopopup .hand'), $('#recordinfopopup'));
+
         }
     });
 

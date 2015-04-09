@@ -22,16 +22,18 @@ define([
     'app/lib/factories/mixin'
 ], function(Ember, Mixin) {
 
-    var get = Ember.get;
+    var get = Ember.get,
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     var mixin = Mixin('horizontallayout', {
         partials: {
             layout: ['horizontallayout']
         },
 
-        section : function () {
+        section: function () {
             return get(this, 'mixinOptions.horizontallayout.cellCssClass') || 'col-lg-3 col-md-6 col-xs-12';
-        }.property()
+        },
 
     });
 

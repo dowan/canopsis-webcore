@@ -18,26 +18,28 @@
 */
 
 define([
-    'ember'
-], function(Ember, hash) {
+    'jquery',
+    'ember',
+], function($, Ember) {
 
-    var get = Ember.get,
-        set = Ember.set,
-        __ = Ember.String.loc;
+    var __ = Ember.String.loc,
+        isNone = Ember.isNone;
 
-
-    var component = Ember.Component.extend({
-        init: function () {
-            this._super();
+    var drag = {
+        setDraggable: function (handle, dragElement) {
+            handle.on('mousedown', function() {
+                console.log('mousedown', $(this));
+                dragElement.addClass('draggable').parents().on('mousemove', function(e) {
+                    $('.draggable').offset({
+                        top: e.pageY - 50,
+                        left: e.pageX - $('.draggable').outerWidth() / 2
+                    }).on('mouseup', function() {
+                        dragElement.removeClass('draggable');
+                    });
+                });
+            });
         }
-    });
+    };
 
-    Ember.Application.initializer({
-        name:"component-topology",
-        initialize: function(container, application) {
-            application.register('component:component-topology', component);
-        }
-    });
-
-    return component;
+    return drag;
 });

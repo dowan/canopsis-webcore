@@ -178,6 +178,7 @@ define([
             notificationUtils.setController(this);
 
             if(canopsisConfiguration.DEBUG) {
+                this.partials.statusbar.pushObject('screentoolstatusmenu');
                 this.partials.statusbar.pushObject('schemamanagerstatusmenu');
                 this.partials.statusbar.pushObject('consolemanagerstatusmenu' );
                 this.partials.statusbar.pushObject('notificationsstatusmenu');
@@ -244,6 +245,18 @@ define([
         },
 
         actions: {
+
+            changeScreenSize: function (size) {
+                var cssSize = {
+                    small: '480px',
+                    medium: '940px',
+                    large: '100%',
+                }[size];
+
+                $('body').animate({
+                    width: cssSize
+                });
+            },
             /**
              * @event editAuthConfiguration
              * @param {String} authType
