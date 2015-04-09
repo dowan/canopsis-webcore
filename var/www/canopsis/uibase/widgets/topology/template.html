@@ -48,7 +48,7 @@
     baseline-shift: -0.5ex;
 }
 .overlay {
-    fill: none;
+    fill: red;
     pointer-events: all;
     cursor: context-menu;
 }
@@ -91,12 +91,11 @@
 .lncritical {
     stroke: #CF0000 !important;
 }
-
 .targetLink {
     cursor: context-menu;
 }
 </style>
-<div class="graph" {{bind-attr id=controller.id}}>
+<div class="graph" {{bind-attr id=view.id}}>
 <svg>
 <defs>
     <marker id="markerArrow" markerWidth="10" viewBox="0 0 10 10" markerHeight="10" refx="15" refy="5" orient="auto">
@@ -117,17 +116,4 @@ Friction: {{input name="friction" type="text" target="view" value="friction"}}
 Theta: {{input name="theta" type="text" target="view" value="theta"}}
 Gravity: {{input name="gravity" type="text" target="view" value="gravity"}}
 {{/if}}
-
-<!--Lock all: {{input name="lockAll" type="checkbox"
- checked=view.lockAll}}
-Filter: {{input name="filter" type="text" value="view.filter" action="view.filter" on="key-press"}}
--->
-<!--
-Charge: <input type="range" min="-200" max="200" step="10" {{bind-attr value=controller.charge}} />
-Link strength: <input type="range" min="0" max="1" step="0.1" {{bind-attr value=controller.linkStrength}} />
-LinkDistance: <input type="range" min="0" max="200" step="5" {{bind-attr value=controller.linkDistance}} />
-Friction: <input type="range" min="0" max="1" step="0.1" {{bind-attr value=controller.friction}} />
-Theta: <input type="range" min="0" max="1" step="0.1" {{bind-attr value=controller.theta}} />
-Gravity: <input type="range" min="0" max="1" step="0.1" {{bind-attr value=controller.gravity}} />
--->
 </div>

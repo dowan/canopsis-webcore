@@ -439,9 +439,15 @@ define([
                     console.log(me.eventZoom);
                     if (d3.event.sourceEvent.type !== 'mousemove') {*/
                         if (!me.dragging) {
+                            console.log(me.translate, d3.event.translate);
+                            var translate = [];
+                            [0, 1].forEach(function(index) {
+                                translate[index] = (d3.event.translate[index]);// me.translate[index] + d3.event.translate[index]) * d3.event.scale;
+                            });
                             me.translate = d3.event.translate;
                             me.scale = d3.event.scale;
-                            me.panel.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+                            var transform = "translate(" + translate + ")scale(" + d3.event.scale + ")";
+                            me.panel.attr("transform", transform);
                         }
                     /*} else {
                         var translate = [d3.event.translate[0] * d3.event.scale, d3.event.translate[1] * d3.event.scale];
@@ -455,14 +461,14 @@ define([
                     ];
                     me.translate = translate;
                     me.panel.attr('transform', 'translate(' + translate + ') scale(' + me.scale + ')');
-                    me.panel.select('.overlay')
+                    /*me.panel.select('.overlay')
                         .attr(
                             {
                                 'x': -translate[0],
                                 'y': -translate[1]
                             }
                         )
-                    ;
+                    ;*/
                 };
                 var dragstart = function(d, i) {
                     force.stop() // stops the force auto positioning before you start dragging
@@ -521,7 +527,8 @@ define([
                 ;
             }
             // recover translate and scale
-            this.panel.attr("transform", "translate(" + this.translate + ")scale(" + this.scale + ")");
+            var transform = "translate(" + this.translate + ")scale(" + this.scale + ")";
+            this.panel.attr("transform", transform);
 
             // apply an overlay for better graph zooming and selection
             var overlay = this.panel.select('.overlay');
@@ -533,6 +540,8 @@ define([
                         .attr("height", height);
                 ;
             }
+            // save overlay in memory
+            me.overlay = overlay;
             // load nodes and links into engine layout
             engine.nodes(this.nodes).links(this.links);
             // get link model
@@ -1141,7 +1150,7 @@ define([
                     } else {
                         var entity = d.entity;
                         if (entity !== undefined) {
-                            result += entity.cid;
+                            result += entity.id;
                         }
                     }
                     return result;
@@ -1155,10 +1164,10 @@ define([
                     if (info !== undefined) {
                         var operator = info.task;
                         if (operator) {
-                            var operatorId = operator.id || operator.cid || operator;
+                            var operatorId = operator.id || operator;
                             if (operatorId === 'canopsis.task.condition.condition') {
                                 operator = operator.params.condition;
-                                operatorId = operator.id || operator.cid || operator;
+                                operatorId = operator.id || operator;
                             }
                             operatorId = operatorId.substring(operatorId.lastIndexOf('.') + 1);
                             result += operatorId;

@@ -179,8 +179,11 @@ define([
                     var graph = me.widgetDataStore.createRecord(
                         me.graphEltType, {id: graphId}
                     );
+                    var addGraph = function() {
+                        me._addGraph(graph);
+                    }
                     graph.save().then(
-                        me._addGraph
+                        addGraph
                     );
                 };
                 this.widgetDataStore.find('graph', query).then(
@@ -395,7 +398,7 @@ define([
                 case 'graph':
                     var states = ['ok', 'minor', 'major', 'critical'];
                     var getShortId = function(task) {
-                        var taskId = task.cid || task;
+                        var taskId = task.id || task;
                         var lastIndex = taskId.lastIndexOf('.');
                         var result = taskId.substring(lastIndex + 1);
                         return result;
@@ -414,7 +417,7 @@ define([
                         }
                         var task = info.task;
                         if (task !== undefined) {
-                            var operator = task.cid || task;
+                            var operator = task.id || task;
                             if (operator !== undefined) {
                                 var operatorName = getShortId(task);
                                 if (operatorName === 'condition') {  // at least / nok
@@ -422,7 +425,7 @@ define([
                                     if (params !== undefined) {
                                         var condition = params.condition;
                                         if (condition !== undefined) {
-                                            var conditionName = getShortId(condition.cid || condition);
+                                            var conditionName = getShortId(condition.id || condition);
                                             record.set('operator', conditionName);
                                             var condParams = condition.params;
                                             if (condParams !== undefined) {
@@ -442,7 +445,7 @@ define([
                                                     }
                                                 }
                                                 // set minWeight
-                                                var minWeight = condParams.minWeight;
+                                                var minWeight = condParams.min_weight;
                                                 if (minWeight !== undefined) {
                                                     record.set('min_weight', minWeight);
                                                 }
@@ -510,7 +513,7 @@ define([
                             task = info.task;
                             if (typeof task === 'string') {
                                 info.task = {
-                                    cid: task
+                                    id: task
                                 };
                                 task = info.task;
                             } else if (task === undefined) {
@@ -538,27 +541,27 @@ define([
                             case 'change_state':
                             case 'worst_state':
                             case 'best_state':
-                                task.cid = 'canopsis.topology.rule.action.' + operator;
+                                task.id = 'canopsis.topology.rule.action.' + operator;
                                 task.params = {};
                                 break;
                             case '_all':
                             case 'at_least':
                             case 'nok':
-                                task.cid = 'canopsis.task.condition.condition';
+                                task.id = 'canopsis.task.condition.condition';
                                 task.params = {};
                                 task.params.condition = {
-                                    cid: 'canopsis.topology.rule.condition.' + operator,
+                                    id: 'canopsis.topology.rule.condition.' + operator,
                                     params: {}
                                 };
                                 // set minWeight
                                 if (operator === '_all') {
-                                    task.params.condition.params.minWeight = null;
+                                    task.params.condition.params.min_weight = null;
                                 } else {
-                                    var minWeight = record.get('minWeight');
-                                    task.params.condition.params.minWeight = minWeight;
+                                    var minWeight = record.get('min_weight');
+                                    task.params.condition.params.min_weight = minWeight;
                                 }
                                 // set inState
-                                var inState = record.get('inState');
+                                var inState = record.get('in_state');
                                 if (inState === 'nok') {
                                     task.params.condition.params.f = 'canopsis.topology.rule.condition.is_nok';
                                     task.params.condition.params.state = null;
@@ -566,35 +569,35 @@ define([
                                     task.params.condition.params.state = states.indexOf(inState);
                                 }
                                 // set thenState
-                                var thenState = record.get('thenState');
+                                var thenState = record.get('then_state');
                                 task.params.statement = {
-                                    cid: 'canopsis.topology.rule.action.',
+                                    id: 'canopsis.topology.rule.action.',
                                     params: {}
                                 };
                                 switch(thenState) {
                                     case 'worst_state':
                                     case 'best_state':
-                                        task.params.statement.cid += thenState;
+                                        task.params.statement.id += thenState;
                                         break;
                                     default:
                                         thenState = states.indexOf(thenState);
-                                        task.params.statement.cid += 'change_state';
+                                        task.params.statement.id += 'change_state';
                                         task.params.statement.params.state = thenState;
                                 }
                                 // set elseState
-                                var elseState = record.get('elseState');
+                                var elseState = record.get('else_state');
                                 task.params._else = {
-                                    cid: 'canopsis.topology.rule.action.',
+                                    id: 'canopsis.topology.rule.action.',
                                     params: {}
                                 };
                                 switch(elseState) {
                                     case 'worst_state':
                                     case 'best_state':
-                                        task.params._else.cid += elseState;
+                                        task.params._else.id += elseState;
                                         break;
                                     default:
                                         elseState = states.indexOf(elseState);
-                                        task.params._else.cid += 'change_state';
+                                        task.params._else.id += 'change_state';
                                         task.params._else.params.state = elseState;
                                 }
                                 break;
