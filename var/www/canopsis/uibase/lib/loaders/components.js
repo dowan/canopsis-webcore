@@ -59,7 +59,8 @@ var components = [
     { name: 'components/component-contextselector', url: 'canopsis/uibase/components/contextselector/component', template: 'canopsis/uibase/components/contextselector/template.html' },
     { name: 'components/component-colpick', url: 'canopsis/uibase/components/colpick/component', template: 'canopsis/uibase/components/colpick/template.html' },
     { name: 'components/component-slider', url: 'canopsis/uibase/components/slider/component', template: 'canopsis/uibase/components/slider/template.html' },
-    { name: 'components/component-linklist', url: 'canopsis/uibase/components/linklist/component', template: 'canopsis/uibase/components/linklist/template.hbs' }
+    { name: 'components/component-linklist', url: 'canopsis/uibase/components/linklist/component', template: 'canopsis/uibase/components/linklist/template.hbs' },
+    { name: 'components/component-filterlinkitem', url: 'canopsis/uibase/components/filterlinkitem/component', template: 'canopsis/uibase/components/filterlinkitem/template.hbs' }
 ];
 
 loader.loadWithTemplates(components);
