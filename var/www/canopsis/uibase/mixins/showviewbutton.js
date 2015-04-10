@@ -32,7 +32,7 @@ define([
 
     var mixin = Mixin('showviewbutton', {
         partials: {
-            itemactionbuttons: ['actionbutton-show', 'actionbutton-viewrights']
+            itemactionbuttons: ['actionbutton-show']
         },
 
         actions: {
