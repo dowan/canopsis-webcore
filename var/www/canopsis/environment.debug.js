@@ -12,28 +12,13 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
+
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function () {
+define(['app/lib/wrappers/console'], function() {
 
-    /*
-    * Here is the canopsis UI main configuration file.
-    * It is possible to add properies and values that are reachable
-    * from the whole application through the namespace Canopsis.conf.PROPERTY
-    */
-    var canopsisConfiguration = {
-        DEBUG: false,
-        VERBOSE: 1,
-        showPartialslots: false,
-        DISPLAY_SCHEMA_MANAGER: true,
-        REFRESH_ALL_WIDGETS: true,
-        TRANSLATE: true,
-        SHOW_TRANSLATIONS: false,
-        TITLE: 'Canopsis Sakura',
-    };
-
-    return canopsisConfiguration;
 });
+
