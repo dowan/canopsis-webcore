@@ -61,7 +61,7 @@ var templates = [
 
     { name: 'actionbutton-history', template: 'canopsis/uibase/templates/actionbutton-history.html', classes: ["action", "toolbar"],icon : "time", label : "History" },
     { name: 'actionbutton-eventnavigation', template: 'canopsis/uibase/templates/actionbutton-eventnavigation.html', classes: ["action", "toolbar"],icon : "time", label : "Event navigation" },
-    { name: 'actionbutton-viewrights', template: 'canopsis/uibase/templates/actionbutton-viewrights.html', classes: ["action", "toolbar"],icon : "time", label : "View rights" },
+    // { name: 'actionbutton-viewrights', template: 'canopsis/uibase/templates/actionbutton-viewrights.html', classes: ["action", "toolbar"],icon : "time", label : "View rights" },
 
     { name: 'formbutton-submit', template: 'canopsis/uibase/templates/formbutton-submit.html', classes: ["formbutton"] },
     { name: 'formbutton-cancel', template: 'canopsis/uibase/templates/formbutton-cancel.html', classes: ["formbutton"] },

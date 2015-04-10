@@ -58,7 +58,12 @@ var components = [
     { name: 'components/component-restobjectcombo', url: 'canopsis/uibase/components/restobjectcombo/component', template: 'canopsis/uibase/components/restobjectcombo/template.html' },
     { name: 'components/component-contextselector', url: 'canopsis/uibase/components/contextselector/component', template: 'canopsis/uibase/components/contextselector/template.html' },
     { name: 'components/component-colpick', url: 'canopsis/uibase/components/colpick/component', template: 'canopsis/uibase/components/colpick/template.html' },
-    { name: 'components/component-slider', url: 'canopsis/uibase/components/slider/component', template: 'canopsis/uibase/components/slider/template.html' }
+    { name: 'components/component-slider', url: 'canopsis/uibase/components/slider/component', template: 'canopsis/uibase/components/slider/template.html' },
+    { name: 'components/component-miniform', url: 'canopsis/uibase/components/miniform/component', template: 'canopsis/uibase/components/miniform/template.hbs' },
+    { name: 'components/component-miniformcontent', url: 'canopsis/uibase/components/miniformcontent/component', template: 'canopsis/uibase/components/miniformcontent/template.hbs' },
+    { name: 'components/component-miniformheader', url: 'canopsis/uibase/components/miniformheader/component', template: 'canopsis/uibase/components/miniformheader/template.hbs' },
+    { name: 'components/component-miniformheaderbuttons', url: 'canopsis/uibase/components/miniformheaderbuttons/component', template: 'canopsis/uibase/components/miniformheaderbuttons/template.hbs' },
+    { name: 'components/component-miniformtitle', url: 'canopsis/uibase/components/miniformtitle/component', template: 'canopsis/uibase/components/miniformtitle/template.hbs' }
 ];
 
 loader.loadWithTemplates(components);
