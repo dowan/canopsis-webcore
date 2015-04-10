@@ -30,38 +30,9 @@ define([
 
     var component = Ember.Component.extend({
         init: function() {
-            /*
-           var linklist = get(this, 'content.linklist');
-            if (isNone(linklist)) {
-                linklist = [];
-                set(this, 'content.linklist', linklist);
-            }
-            set(this, 'linklist', linklist);
-            */
             this._super();
-            console.log('component-filterlinkitem attr', get(this, 'attr'));
         },
-/*
-        onUpdate: function () {
-            debugger;
-            var linklist = get(this, 'linklist');
-            var content = get(this, 'content');
-            if (isNone(content)) {
-                content = {};
-            }
 
-            if (!isNone(linklist)) {
-                content.linklist = linklist;
-            }
-
-            set(this, 'content', content);
-
-        }.observes('linklist'),
-
-        didInsertElement: function () {
-
-        },
-*/
     });
 
     Ember.Application.initializer({
