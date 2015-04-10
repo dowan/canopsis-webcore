@@ -63,9 +63,10 @@
 * A toolbox is provided in order to enrich interaction with the graph. Its instance is managed in the toolbox property. This last contains data or null if toolbox is not activated.
 */
 define([
+    'ember',
     'jquery',
     'd3'
-], function($, d3) {
+], function(Ember, $, d3) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -159,8 +160,7 @@ define([
             }, // default tree layout parameters
 
             force: {
-                charge: -120, // charge
-                chargeDistance: 500, // charge distance
+                charge: -30, // charge
                 linkDistance: 20, // link distance
                 linkStrength: 1, // link strength
                 friction: 0.9, // friction
@@ -177,32 +177,37 @@ define([
         }.property('optionsCharge'),
         linkStrengthCharge: function() {
             return {
-                min: -256,
-                max: 256
+                min: 0,
+                max: 1,
+                step: 0.05
             };
         }.property('linkStrengthCharge'),
         linkDistanceCharge: function() {
             return {
-                min: -256,
-                max: 256
+                min: 0,
+                max: 150,
+                step: 10
             };
         }.property('linkDistanceCharge'),
         frictionCharge: function() {
             return {
-                min: -256,
-                max: 256
+                min: 0,
+                max: 1,
+                step: 0.05
             };
         }.property('frictionCharge'),
         thetaCharge: function() {
             return {
-                min: -256,
-                max: 256
+                min: 0,
+                max: 1,
+                step: 0.05
             };
         }.property('thetaCharge'),
         gravityCharge: function() {
             return {
-                min: -256,
-                max: 256
+                min: 0,
+                max: 1,
+                step: 0.05
             };
         }.property('gravityCharge'),
 
@@ -224,53 +229,64 @@ define([
             }
         }.observes('autoLayout'),
         charge: function() {
-            return this._layout[this._layout.type].charge;
+            var result = this._layout[this._layout.type].charge;
+            return result;
         }.property('charge'),
         chargeChanged: function() {
-            this._layout[this._layout.type].charge = this.get('charge');
-            this._layout.engine.charge(this._layout[this._layout.type].charge);
+            var charge = get(this, 'charge');
+            this._layout[this._layout.type].charge = charge;
+            this._layout.engine.charge(charge);
+            this.redraw();
         }.observes('charge'),
-        chargeDistance: function() {
-            return this._layout[this._layout.type].chargeDistance;
-        }.property('chargeDistance'),
-        chargeDistanceChanged: function() {
-            this._layout[this._layout.type].chargeDistance = this.get('chargeDistance');
-            this._layout.engine.chargeDistance(this._layout[this._layout.type].chargeDistance);
-        }.observes('chargeDistance'),
         linkDistance: function() {
-            return this._layout[this._layout.type].linkDistance;
+            var result = this._layout[this._layout.type].linkDistance;
+            return result;
         }.property('linkDistance'),
         linkDistanceChanged: function() {
-            this._layout[this._layout.type].linkDistance = this.get('linkDistance');
-            this._layout.engine.linkDistance(this._layout[this._layout.type].linkDistance);
+            var linkDistance = this.get('linkDistance');
+            this._layout[this._layout.type].linkDistance = linkDistance;
+            this._layout.engine.linkDistance(linkDistance);
+            this.redraw();
         }.observes('linkDistance'),
         linkStrength: function() {
-            return this._layout[this._layout.type].linkStrength;
+            var result = this._layout[this._layout.type].linkStrength;
+            return result;
         }.property('linkStrength'),
         linkStrengthChanged: function() {
-            this._layout[this._layout.type].linkStrength = this.get('linkStrength');
-            this._layout.engine.linkStrength(this._layout[this._layout.type].linkStrength);
+            var linkStrength = this.get('linkStrength');
+            this._layout[this._layout.type].linkStrength = linkStrength;
+            this._layout.engine.linkStrength(linkStrength);
+            this.redraw();
         }.observes('linkStrength'),
         friction: function() {
-            return this._layout[this._layout.type].friction;
+            var result = this._layout[this._layout.type].friction;
+            return result;
         }.property('friction'),
         frictionChanged: function() {
-            this._layout[this._layout.type].friction = this.get('friction');
-            this._layout.engine.friction(this._layout[this._layout.type].friction);
+            var friction = this.get('friction');
+            this._layout[this._layout.type].friction = friction;
+            this._layout.engine.friction(friction);
+            this.redraw();
         }.observes('friction'),
         theta: function() {
-            return this._layout[this._layout.type].theta;
+            var result = this._layout[this._layout.type].theta;
+            return result;
         }.property('theta'),
         thetaChanged: function() {
-            this._layout[this._layout.type].theta = this.get('theta');
-            this._layout.engine.theta(this._layout[this._layout.type].theta);
+            var theta = this.get('theta');
+            this._layout[this._layout.type].theta = theta;
+            this._layout.engine.theta(theta);
+            this.redraw();
         }.observes('theta'),
         gravity: function() {
-            return this._layout[this._layout.type].gravity;
+            var result = this._layout[this._layout.type].gravity;
+            return result;
         }.property('gravity'),
         gravityChanged: function() {
-            this._layout[this._layout.type].gravity = this.get('gravity');
-            this._layout.engine.gravity(this._layout[this._layout.type].gravity);
+            var gravity = this.get('gravity');
+            this._layout[this._layout.type].gravity = gravity;
+            this._layout.engine.gravity(gravity);
+            this.redraw();
         }.observes('gravity'),
         showProperties: function() {
             return this._showProperties;
@@ -948,18 +964,18 @@ define([
         addHandler: function(data) {
             d3.event.stopPropagation();
             var controller = get(this, 'controller');
-            if (this.source === null) { // add a new node
+            if (this.source === null) { // in case of node
                 function callback(record) {
                     this.getNode(record);
-                    controller.trigger('refresh');
+                    controller.trigger('redraw');
                 }
                 var record = controller.newRecord(
                     controller.verticeEltType, undefined, true, callback, undefined, this
                     );
-            } else {
+            } else { // in case of edge
                 function success(record) {
                     this.removeTmpLink();
-                    controller.trigger('refresh');
+                    controller.trigger('redraw');
                 }
                 function failure(record) {
                     this.removeTmpLink();
@@ -1419,7 +1435,11 @@ define([
                         hidden: false, // and displayed,
                         id: recordId, // with record id
                         index: this.nodes.length,
-                        type: record.get('type')
+                        type: record.get('type'),
+                        x: 0,
+                        y: 0,
+                        px: 0,
+                        py: 0
                     }
                     // add node in nodes
                     this.nodes.push(result);
@@ -1467,12 +1487,9 @@ define([
                 var coordinates = this.coordinates();
                 var _success = function(record) {
                     var target = this.getNode(record);
-                    this.addLink(source, target, edit);
                     target.px = target.x = coordinates[0];
                     target.py = target.y = coordinates[1];
-                    if (success !== undefined) {
-                        success.call(context, record);
-                    }
+                    this.addLink(source, target, edit, success, failure, context);
                 }
                 // edit a new vertice if target does not exist
                 target = controller.newRecord(controller.verticeEltType, undefined, edit, _success, _failure, this);
