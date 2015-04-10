@@ -102,7 +102,7 @@ define([
 
         _unit: 32, // unit shape size
 
-        translate: [0, 0], // translation
+        translate: [1, 1], // translation
         scale: 1.5, // layout scale
 
         _defaultLayout: {
@@ -168,6 +168,43 @@ define([
                 gravity: 0.1, // gravity
             }, // default force parameters
         }, // default layout parameters
+
+        optionsCharge: function() {
+            return {
+                min: -256,
+                max: 256
+            };
+        }.property('optionsCharge'),
+        linkStrengthCharge: function() {
+            return {
+                min: -256,
+                max: 256
+            };
+        }.property('linkStrengthCharge'),
+        linkDistanceCharge: function() {
+            return {
+                min: -256,
+                max: 256
+            };
+        }.property('linkDistanceCharge'),
+        frictionCharge: function() {
+            return {
+                min: -256,
+                max: 256
+            };
+        }.property('frictionCharge'),
+        thetaCharge: function() {
+            return {
+                min: -256,
+                max: 256
+            };
+        }.property('thetaCharge'),
+        gravityCharge: function() {
+            return {
+                min: -256,
+                max: 256
+            };
+        }.property('gravityCharge'),
 
         filter: function() {
             return this._filter;
@@ -444,9 +481,9 @@ define([
                             [0, 1].forEach(function(index) {
                                 translate[index] = (d3.event.translate[index]);// me.translate[index] + d3.event.translate[index]) * d3.event.scale;
                             });
-                            me.translate = d3.event.translate;
-                            me.scale = d3.event.scale;
-                            var transform = "translate(" + translate + ")scale(" + d3.event.scale + ")";
+                            me.translate = translate;
+                            me.scale = Math.max(d3.event.scale, 1.5);
+                            var transform = "translate(" + translate + ")scale(" + me.scale + ")";
                             me.panel.attr("transform", transform);
                         }
                     /*} else {

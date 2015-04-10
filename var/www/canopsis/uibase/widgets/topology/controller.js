@@ -35,6 +35,7 @@ define([
     'app/lib/utils/data',
     'canopsis/uibase/widgets/topology/view',
     'canopsis/uibase/widgets/topology/adapter',
+    'link!canopsis/uibase/widgets/topology/style.css'
 ], function($, WidgetFactory, schemas, formsUtils, dataUtils, TopologyViewMixin) {
     var get = Ember.get,
         set = Ember.set;
