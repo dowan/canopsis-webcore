@@ -17,10 +17,26 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var editors = [
-    { name: 'editor-metricitem', template: 'canopsis/charts/editors/metricitem.hbs' },
-    { name: 'editor-serieitem', template: 'canopsis/charts/editors/serieitem.hbs' },
-    { name: 'editor-metricselector2', template: 'canopsis/charts/editors/metricselector2.hbs' }
-];
+define([
+    'ember'
+], function(Ember, typesUtils) {
 
-loader.loadWithTemplates(editors);
+    var get = Ember.get,
+        set = Ember.set;
+
+
+    var component = Ember.Component.extend({
+        classNames: ['panel', 'panel-default'],
+        attributeBindings: ['style'],
+        style: 'margin-bottom:0'
+    });
+
+    Ember.Application.initializer({
+        name:"component-miniform",
+        initialize: function(container, application) {
+            application.register('component:component-miniform', component);
+        }
+    });
+
+    return component;
+});

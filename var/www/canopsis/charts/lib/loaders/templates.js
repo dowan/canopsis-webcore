@@ -18,6 +18,7 @@
 */
 
 var templates = [
+    { name: 'titlebarbutton-resetzoom', template: 'canopsis/charts/templates/titlebarbutton-resetzoom.hbs', classes: ["titlebarbutton"] }
 ];
 
 loader.loadWithTemplates(templates);

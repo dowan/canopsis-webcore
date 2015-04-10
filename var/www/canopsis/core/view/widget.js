@@ -152,10 +152,13 @@ define([
         intializeController: function(widget) {
             console.group('set controller for widget', widget);
 
+            var controller = this.instantiateCorrectController(widget);
             this.setProperties({
-                'controller': this.instantiateCorrectController(widget),
+                'controller': controller,
                 'templateName': get(widget, "xtype")
             });
+
+            widget.set('controller', controller);
 
             this.registerHooks();
             console.groupEnd();

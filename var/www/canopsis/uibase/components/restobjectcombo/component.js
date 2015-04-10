@@ -70,7 +70,7 @@ define([
 
             for (var i = 0, li = elements.length; i < li; i++) {
                 var tags = get(elements[i], 'tags');
-                if(tags) {
+                if(tags && tags.length) {
                     for (var j = 0, lj = tags.length; j < lj; j++) {
                         appendTo(tags[j], elements[i]);
                     }
