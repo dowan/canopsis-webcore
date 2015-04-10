@@ -28,6 +28,7 @@
 * A vertice becomes a node, an edge becomes a set of node and links, and the graph is a node as well.
 */
 define([
+    'ember',
     'jquery',
     'app/lib/factories/widget',
     'app/lib/loaders/schemas',
@@ -35,7 +36,7 @@ define([
     'app/lib/utils/data',
     'canopsis/uibase/widgets/topology/view',
     'canopsis/uibase/widgets/topology/adapter',
-], function($, WidgetFactory, schemas, formsUtils, dataUtils, TopologyViewMixin) {
+], function(Ember, $, WidgetFactory, schemas, formsUtils, dataUtils, TopologyViewMixin) {
     var get = Ember.get,
         set = Ember.set;
 
