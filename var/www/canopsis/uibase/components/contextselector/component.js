@@ -63,7 +63,7 @@ define([
 
         actions: {
             select: function(item) {
-                set(this, 'content', get(item, 'id'));
+                set(this, 'content', get(item, '_id'));
             },
 
             search: function(search) {
