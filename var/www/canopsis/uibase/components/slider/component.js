@@ -75,16 +75,19 @@ define([
             //I hate myself doing this
             setTimeout(function () {
                 //hack as library does not manage properly the from parameter in this version.
-                var width = sliderComponent.$('.irs-line').width();
-                var proportion = width / max * value;
-                //nice display ajustement....
-                var maxwidth = width - 20;
-                if (proportion > maxwidth) {
-                    proportion = maxwidth;
+                var irsLine = sliderComponent.$('.irs-line');
+                if (irsLine !== undefined) {
+                    var width = irsLine.width();
+                    var proportion = width / max * value;
+                    //nice display ajustement....
+                    var maxwidth = width - 20;
+                    if (proportion > maxwidth) {
+                        proportion = maxwidth;
+                    }
+                    //Manually placing slider and tooltip proportionnaly to the width of the slider.
+                    sliderComponent.$('.irs-single').css('left', proportion);
+                    sliderComponent.$('.irs-slider').css('left', proportion);
                 }
-                //Manually placing slider and tooltip proportionnaly to the width of the slider.
-                sliderComponent.$('.irs-single').css('left', proportion);
-                sliderComponent.$('.irs-slider').css('left', proportion);
             }, 500);
 
         }

@@ -967,7 +967,7 @@ define([
             if (this.source === null) { // in case of node
                 function callback(record) {
                     this.getNode(record);
-                    controller.trigger('redraw');
+                    controller.trigger('refresh');
                 }
                 var record = controller.newRecord(
                     controller.verticeEltType, undefined, true, callback, undefined, this
@@ -975,7 +975,7 @@ define([
             } else { // in case of edge
                 function success(record) {
                     this.removeTmpLink();
-                    controller.trigger('redraw');
+                    controller.trigger('refresh');
                 }
                 function failure(record) {
                     this.removeTmpLink();

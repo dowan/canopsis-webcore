@@ -556,17 +556,17 @@ define([
                                     params: {}
                                 };
                                 // set minWeight
-                                if (operator === '_all') {
-                                    task.params.condition.params.min_weight = null;
-                                } else {
+                                if (operator !== '_all') {
                                     var minWeight = record.get('min_weight');
                                     task.params.condition.params.min_weight = minWeight;
                                 }
                                 // set inState
                                 var inState = record.get('in_state');
                                 if (inState === 'nok') {
-                                    task.params.condition.params.f = 'canopsis.topology.rule.condition.is_nok';
-                                    task.params.condition.params.state = null;
+                                    if (operator !== 'nok') {
+                                        task.params.condition.params.f = 'canopsis.topology.rule.condition.is_nok';
+                                        task.params.condition.params.state = null;
+                                    }
                                 } else {
                                     task.params.condition.params.state = states.indexOf(inState);
                                 }
