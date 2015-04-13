@@ -249,7 +249,7 @@ var setLoadingInfo = function(text, icon) {
     }
 };
 
-define(['canopsis/enabled', 'plugins', 'app/lib/wrappers/console', 'app/lib/objects/loader', 'jquery'], function(enabled, plugins_tools) {
+define(['canopsis/enabled', 'plugins', 'canopsis/canopsisConfiguration', 'app/lib/objects/loader', 'jquery'], function(enabled, plugins_tools, canopsisConfiguration) {
 
     enabled.getEnabledModules(function (enabledPlugins) {
 
@@ -261,6 +261,12 @@ define(['canopsis/enabled', 'plugins', 'app/lib/wrappers/console', 'app/lib/obje
             'app/lib/utils/i18n',
             'link'
         ];
+
+        if(canopsisConfiguration.DEBUG) {
+            deps.push('canopsis/environment.debug');
+        } else {
+            deps.push('canopsis/environment.prod');
+        }
 
         for (var i = 0; i < enabledPlugins.length; i++) {
             var currentPlugin = enabledPlugins[i];
