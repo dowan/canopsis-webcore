@@ -105,17 +105,17 @@
 </defs>
 </svg>
 
-<button type="button" {{action "showHideProperties"}}>Show/Hide Properties</button>
-Auto-Layout: {{input name="autoLayout" type="checkbox" checked=view.autoLayout}}
+<button type="button" {{action "showHideProperties" target="view"}}>Show/Hide Properties</button>
+Auto-Layout: {{input name="autoLayout" type="checkbox" target="view" checked=autoLayout}}
 
 {{#if view.showProperties}}
-Filter: {{input name="filter" type="text" value="view.filter" action="view.filter" on="key-press"}}
-Charge: {{input name="charge" type="text" value="view.charge"}}
-Link strength: {{input name="linkStrength" type="text" value="view.linkStrength"}}
-LinkDistance: {{input name="linkDistance" type="text" value="view.linkDistance"}}
-Friction: {{input name="friction" type="text" value="view.friction"}}
-Theta: {{input name="theta" type="text" value="view.theta"}}
-Gravity: {{input name="gravity" type="text" value="view.gravity"}}
+Filter: {{input name="filter" target="view" type="text" value="filter" action="filter" on="key-press"}}
+Charge: {{input target="view" name="charge" type="text" value="charge"}}
+Link strength: {{input name="linkStrength" target="view" type="text" value="linkStrength"}}
+LinkDistance: {{input name="linkDistance" type="text" target="view" value="linkDistance"}}
+Friction: {{input name="friction" type="text" target="view" value="friction"}}
+Theta: {{input name="theta" type="text" target="view" value="theta"}}
+Gravity: {{input name="gravity" type="text" target="view" value="gravity"}}
 {{/if}}
 
 <!--Lock all: {{input name="lockAll" type="checkbox"

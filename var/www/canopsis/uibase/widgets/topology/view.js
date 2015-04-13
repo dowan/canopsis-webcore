@@ -63,9 +63,10 @@
 * A toolbox is provided in order to enrich interaction with the graph. Its instance is managed in the toolbox property. This last contains data or null if toolbox is not activated.
 */
 define([
+    'ember',
     'jquery',
     'd3'
-], function($, d3) {
+], function(Ember, $, d3) {
     var get = Ember.get,
         set = Ember.set;
 
@@ -280,7 +281,7 @@ define([
             /**
             * Save node related to entity ids in memory.
             */
-            function saveRefToEntity(node) {
+            var saveRefToEntity = function(node) {
                 var nodeId = node.id;
                 var info = recordsById[nodeId].get('info');
                 // add reference between entity id and node
@@ -434,7 +435,7 @@ define([
                 /**
                 * zoom function.
                 */
-                function zoom() {
+                var zoom = function() {
                     /*me.eventZoom = d3.event;
                     console.log(me.eventZoom);
                     if (d3.event.sourceEvent.type !== 'mousemove') {*/
@@ -448,7 +449,7 @@ define([
                         me.panel.attr("transform", "translate(" + translate + ")scale(" + d3.event.scale + ")");
                     }*/
                 };
-                function drag() {
+                var drag = function() {
                     var translate = [
                         me.translate[0] + d3.event.dx,
                         me.translate[1] + d3.event.dy
@@ -464,17 +465,17 @@ define([
                         )
                     ;
                 };
-                function dragstart(d, i) {
+                var dragstart = function(d, i) {
                     force.stop() // stops the force auto positioning before you start dragging
                 }
-                function dragmove(d, i) {
+                var dragmove = function(d, i) {
                     d.px += d3.event.dx;
                     d.py += d3.event.dy;
                     d.x += d3.event.dx;
                     d.y += d3.event.dy;
                     tick(); // this is the key to make it work together with updating both px,py,x,y on d !
                 }
-                function dragend(d, i) {
+                var dragend = function(d, i) {
                     d.fixed = true; // of course set the node to fixed so the force doesn't include the node in its auto positioning stuff
                     tick();
                     if (layout.activated) {
@@ -626,7 +627,7 @@ define([
             * Add links in d3Edge.
             * @param key value among targets and sources
             */
-            function updateLinks(key) {
+            var updateLinks = function(key) {
                 var isSource = key === 'sources';
                 var neighbours = edge.get(key);
 
@@ -700,7 +701,7 @@ define([
                         this
                     );
                 }
-            }
+            };
             // add links for all sources
             updateLinks.call(this, 'sources');
             // add links for all targets
@@ -1409,7 +1410,7 @@ define([
                 throw 'Wrong parameters';
             }
             // default failure function
-            function _failure(reason) {
+            var _failure = function(reason) {
                 console.error(reason);
                 if (failure !== undefined) {
                     failure.call(context, reason);
@@ -1419,7 +1420,7 @@ define([
             if (target === undefined) {
                 // create a callback
                 var coordinates = this.coordinates();
-                function _success(record) {
+                var _success = function(record) {
                     var target = this.getNode(record);
                     this.addLink(source, target, edit);
                     target.px = target.x = coordinates[0];
@@ -1450,7 +1451,7 @@ define([
                     }
                 );
             } else { // else create a new edge
-                function callback2(record) {
+                var callback2 = function(record) {
                     var edge = this.getNode(record);
                     this.weaveLinks(edge);
                     if (success !== undefined) {
@@ -1542,7 +1543,17 @@ define([
             }
 
             return result;
-        }
+        },
+
+        actions: {
+            /**
+            * Change boolean value of controller.showProperties with the opposite.
+            */
+            showHideProperties: function() {
+                var showProperties = get(this, 'showProperties');
+                set(this, 'showProperties', !showProperties);
+            }
+        },
     });
 
     return TopologyViewMixin;
