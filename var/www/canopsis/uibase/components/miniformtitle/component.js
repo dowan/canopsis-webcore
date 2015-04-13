@@ -17,23 +17,30 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function () {
+define([
+    'ember'
+], function(Ember) {
 
-    /*
-    * Here is the canopsis UI main configuration file.
-    * It is possible to add properies and values that are reachable
-    * from the whole application through the namespace Canopsis.conf.PROPERTY
-    */
-    var canopsisConfiguration = {
-        DEBUG: false,
-        VERBOSE: 1,
-        showPartialslots: false,
-        DISPLAY_SCHEMA_MANAGER: true,
-        REFRESH_ALL_WIDGETS: true,
-        TRANSLATE: true,
-        SHOW_TRANSLATIONS: false,
-        TITLE: 'Canopsis Sakura',
-    };
+    var get = Ember.get,
+        set = Ember.set;
 
-    return canopsisConfiguration;
+
+    var component = Ember.Component.extend({
+        formBase: Ember.computed.alias('parentView.parentView'),
+
+        actions: {
+            toggleContent: function() {
+                get(this, 'formBase').toggleProperty('contentShown');
+            }
+        }
+    });
+
+    Ember.Application.initializer({
+        name:"component-miniformtitle",
+        initialize: function(container, application) {
+            application.register('component:component-miniformtitle', component);
+        }
+    });
+
+    return component;
 });

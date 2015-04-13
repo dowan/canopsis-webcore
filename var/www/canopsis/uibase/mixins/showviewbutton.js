@@ -21,8 +21,9 @@ define([
     'ember',
     'app/lib/utils/routes',
     'app/lib/utils/test',
-    'app/lib/factories/mixin'
-], function(Ember, routesUtils, testUtils, Mixin) {
+    'app/lib/factories/mixin',
+    'app/lib/utils/forms',
+], function(Ember, routesUtils, testUtils, Mixin, formsUtils) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -42,6 +43,10 @@ define([
 
                 console.log("Show action", arguments);
                 routesUtils.getCurrentRouteController().send('showView', id);
+            },
+
+            viewrights: function(view) {
+                formsUtils.showNew('viewrightsform', view, { title: __('Edit view rights') });
             }
         }
     });

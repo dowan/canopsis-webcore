@@ -18,7 +18,9 @@
 */
 
 var editors = [
-    { name: 'editor-serieitem', template: 'canopsis/charts/editors/serieitem.html' }
+    { name: 'editor-metricitem', template: 'canopsis/charts/editors/metricitem.hbs' },
+    { name: 'editor-serieitem', template: 'canopsis/charts/editors/serieitem.hbs' },
+    { name: 'editor-metricselector2', template: 'canopsis/charts/editors/metricselector2.hbs' }
 ];
 
 loader.loadWithTemplates(editors);

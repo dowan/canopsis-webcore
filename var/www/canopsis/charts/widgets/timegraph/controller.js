@@ -46,8 +46,11 @@ define([
                 var opts = {};
                 $.extend(opts, chartOptions);
 
-                set(opts, 'xaxis.min', ranges.xaxis.from);
-                set(opts, 'xaxis.max', ranges.xaxis.to);
+                if(ranges.xaxis) {
+                    set(opts, 'xaxis.min', ranges.xaxis.from);
+                    set(opts, 'xaxis.max', ranges.xaxis.to);
+                }
+
                 set(ctrl, 'chartOptions', opts);
 
                 set(ctrl, 'zooming', true);
@@ -433,44 +436,45 @@ define([
             var seriesById = {};
             var curveIds = [];
 
-            for(var i = 0, l = stylizedmetrics.length ; i < l ; i++) {
-                var metricId = get(stylizedmetrics[i], 'metric');
-                var metricTuple = metricId.split('/');
-                metricTuple.shift();
-                var isComponentMetric = (metricTuple.length === 5);
+            if(!isNone(stylizedmetrics)) {
+                for(var i = 0, l = stylizedmetrics.length ; i < l ; i++) {
+                    var metricId = get(stylizedmetrics[i], 'metric');
+                    var metricTuple = metricId.split('/');
+                    metricTuple.shift();
+                    var isComponentMetric = (metricTuple.length === 5);
 
-                var metricInfo = {
-                    connector: metricTuple[1],
-                    connector_name: metricTuple[2],
-                    component: metricTuple[3]
-                };
+                    var metricInfo = {
+                        connector: metricTuple[1],
+                        connector_name: metricTuple[2],
+                        component: metricTuple[3]
+                    };
 
-                if(isComponentMetric) {
-                    metricInfo.resource = '';
-                    metricInfo.name = metricTuple[4];
+                    if(isComponentMetric) {
+                        metricInfo.resource = '';
+                        metricInfo.name = metricTuple[4];
+                    } else {
+                        metricInfo.resource = metricTuple[4];
+                        metricInfo.name = metricTuple[5];
+                    }
+
+                    var serieconf = Ember.Object.create({
+                        id: metricId,
+                        virtual: true,
+                        crecord_name: metricInfo.name,
+                        metrics: [metricId],
+                        aggregate_method: 'none',
+                        unit: get(stylizedmetrics[i], 'unit')
+                    });
+
+                    seriesById[metricId] = {
+                        style: stylizedmetrics[i],
+                        serie: serieconf,
+                        curve: undefined
+                    };
+
+                    series.push(serieconf);
+                    curveIds.push(get(stylizedmetrics[i], 'curve'));
                 }
-                else {
-                    metricInfo.resource = metricTuple[4];
-                    metricInfo.name = metricTuple[5];
-                }
-
-                var serieconf = Ember.Object.create({
-                    id: metricId,
-                    virtual: true,
-                    crecord_name: metricInfo.name,
-                    metrics: [metricId],
-                    aggregate_method: 'none',
-                    unit: get(stylizedmetrics[i], 'unit')
-                });
-
-                seriesById[metricId] = {
-                    style: stylizedmetrics[i],
-                    serie: serieconf,
-                    curve: undefined
-                };
-
-                series.push(serieconf);
-                curveIds.push(get(stylizedmetrics[i], 'curve'));
             }
 
             curveIds = JSON.stringify(curveIds);

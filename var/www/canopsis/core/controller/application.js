@@ -325,19 +325,23 @@ define([
                     console.group('submit form:', form);
 
                     //generated data by user form fill
-                    record = form.get('formContext');
-                    console.log('save record:', record);
+                    editedUser = form.get('formContext');
+                    console.log('save record:', editedUser);
 
-                    set(record, 'crecord_type', 'user');
-                    record.save();
+                    set(editedUser, 'crecord_type', 'user');
+
+                    editedUser.id= editedUser._id;
+
+                    var editedUserRecord = dataUtils.getStore().createRecord('user', editedUser);
+
+                    editedUserRecord.save();
 
                     notificationUtils.info(__('profile') + ' ' +__('updated'));
 
-                    uilang = get(record, 'ui_language');
+                    uilang = get(editedUser, 'ui_language');
                     ouilang = get(ouser, 'ui_language');
 
                     console.log('Lang:', uilang, ouilang);
-
                     if (uilang !== ouilang) {
                         console.log('Language changed, will prompt for application reload');
                         applicationController.send(

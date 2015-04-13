@@ -43,7 +43,7 @@ def exports(ws):
         ws.application.post,
         payload=[
             'metric_id', 'with_meta',
-            'limit', 'skip',
+            'limit', 'skip', 'period',
             'timewindow', 'period', 'timeserie'
         ])
     def perfdata(
