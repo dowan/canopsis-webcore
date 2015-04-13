@@ -399,12 +399,67 @@ define([
                 case 'vertice':
                 case 'graph':
                     var states = ['ok', 'minor', 'major', 'critical'];
+                    /**
+                    * Get task id.
+                    *
+                    * @param  task task from where get task id. Can be a string or a dictionary.
+                    */
                     var getShortId = function(task) {
                         var taskId = task.id || task;
                         var lastIndex = taskId.lastIndexOf('.');
                         var result = taskId.substring(lastIndex + 1);
                         return result;
-                    }
+                    };
+                    /**
+                    * Update form properties related to input params.
+                    *
+                    * @param params params from where get action params.
+                    * @param record form record.
+                    * @param actionName action name to retrieve from params.
+                    * @param stateName state name to retrieve from params.
+                    */
+                    var updateAction = function(params, record, actionName, stateName) {
+                        // set actionState
+                        var action = params[actionName];
+                        if (action !== undefined) {
+                            var taskId = getShortId(action);
+                            if (taskId === 'change_state') {
+                                var actionParams = action.params;
+                                if (actionParams !== undefined) {
+                                    var actionState = actionParams.state;
+                                    actionState = states[actionState];
+                                }
+                            } else {
+                                var actionState = taskId;
+                            }
+                            record.set(stateName, actionState);
+                        }
+                    };
+                    /**
+                    * Update record info.
+                    *
+                    * @param record record to update.
+                    * @param actionName action name to update in info.
+                    * @param action action to retrieve from record task params.
+                    */
+                    var updateInfoAction = function(record, actionName, action){
+                        // set thenState
+                        var conState = record.get(actionName);
+                        task.params[action] = {
+                            id: 'canopsis.topology.rule.action.',
+                            params: {}
+                        };
+                        switch(conState) {
+                            case 'worst_state':
+                            case 'best_state':
+                                task.params[action].id += conState;
+                                break;
+                            default:
+                                conState = states.indexOf(conState);
+                                task.params[action].id += 'change_state';
+                                task.params[action].params.state = conState;
+                        }
+                    };
                     var info = record.get('info');
                     if (info !== undefined) {
                         // set entity
@@ -452,37 +507,9 @@ define([
                                                     record.set('min_weight', minWeight);
                                                 }
                                                 // set thenState
-                                                var statement = params.statement;
-                                                if (statement !== undefined) {
-                                                    var statement_name = getShortId(statement);
-                                                    if (statement_name === 'change_state') {
-                                                        var statementParams = statement.params;
-                                                        if (statementParams !== undefined) {
-                                                            var thenState = statementParams.state;
-                                                            thenState = states[thenState];
-                                                            record.set('then_state', thenState);
-                                                        }
-                                                    } else {
-                                                        var thenState = statement_name;
-                                                        record.set('then_state', thenState);
-                                                    }
-                                                }
+                                                updateAction(params, record, 'statement', 'then_state');
                                                 // set elseState
-                                                var _else = params._else;
-                                                if (_else !== undefined) {
-                                                    var _elseName = getShortId(_else);
-                                                    if (_elseName === 'change_state') {
-                                                        var _elseParams = _else.params;
-                                                        if (_elseParams !== undefined) {
-                                                            var elseState = _elseParams.state;
-                                                            elseState = states[elseState];
-                                                            record.set('else_state', elseState);
-                                                        }
-                                                    } else {
-                                                        var elseState = _elseName;
-                                                        record.set('else_state', elseState);
-                                                    }
-                                                }
+                                                updateAction(params, record, '_else', 'else_state');
                                             }
                                         }
                                     }
@@ -570,39 +597,10 @@ define([
                                 } else {
                                     task.params.condition.params.state = states.indexOf(inState);
                                 }
-                                // set thenState
-                                var thenState = record.get('then_state');
-                                task.params.statement = {
-                                    id: 'canopsis.topology.rule.action.',
-                                    params: {}
-                                };
-                                switch(thenState) {
-                                    case 'worst_state':
-                                    case 'best_state':
-                                        task.params.statement.id += thenState;
-                                        break;
-                                    default:
-                                        thenState = states.indexOf(thenState);
-                                        task.params.statement.id += 'change_state';
-                                        task.params.statement.params.state = thenState;
-                                }
-                                // set elseState
-                                var elseState = record.get('else_state');
-                                task.params._else = {
-                                    id: 'canopsis.topology.rule.action.',
-                                    params: {}
-                                };
-                                switch(elseState) {
-                                    case 'worst_state':
-                                    case 'best_state':
-                                        task.params._else.id += elseState;
-                                        break;
-                                    default:
-                                        elseState = states.indexOf(elseState);
-                                        task.params._else.id += 'change_state';
-                                        task.params._else.params.state = elseState;
-                                }
-                                break;
+                                // set statement
+                                updateInfoAction(record, 'then_state', 'statement');
+                                // set else
+                                updateInfoAction(record, 'else_state', '_else');
                             default: break;
                         }
                         // update info

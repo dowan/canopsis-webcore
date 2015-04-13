@@ -8,9 +8,8 @@
 </svg>
 
 <button type="button" {{action "showHideProperties" target="view"}}>Show/Hide Properties</button>
-Auto-Layout: {{input name="autoLayout" type="checkbox" target="view" checked=autoLayout}}
-
 {{#if view.showProperties}}
+Auto-Layout: {{input name="autoLayout" type="checkbox" target="view" checked=autoLayout}}
 Filter: {{input name="filter" target="view" type="text" value="filter" action="filter" on="key-press"}}
 Charge: {{component-slider content=view.charge options=view.optionsCharge}}
 Link strength: {{component-slider content=view.linkStrength options=view.linkStrengthCharge}}

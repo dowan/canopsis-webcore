@@ -474,11 +474,11 @@ define([
                 layout[layoutType] = this._defaultLayout[layoutType];
             }
             // apply layout properties
-            Object.keys(layout[layoutType]).forEach(
+            /*Object.keys(layout[layoutType]).forEach(
                 function(layout_property_id) {
                     engine[layout_property_id](layout[layoutType][layout_property_id]);
                 }
-            );
+            );*/
             // apply size
             engine.size([width, height]);
             // get panel
@@ -1607,6 +1607,19 @@ define([
             return result;
         },
 
+        /**
+        * Show only d3 elements where entity names correspond to input filter.
+        * @param filter string which specifies node regex entity name to show. If undefined, show all d3 nodes.
+        */
+        filter: function(filter) {
+            if (filter === undefined) {
+                filter = '*';
+            };
+            var toShow = this.panel.selectAll('.node').where(function(d) {
+                var result = d.entity && d.entity.id
+            });
+        },
+
         actions: {
             /**
             * Change boolean value of controller.showProperties with the opposite.
@@ -1614,6 +1627,14 @@ define([
             showHideProperties: function() {
                 var showProperties = get(this, 'showProperties');
                 set(this, 'showProperties', !showProperties);
+            },
+            /**
+            * Apply filter.
+            */
+            filter: function() {
+                var filter = get(this, 'filter');
+                this.filter(filter);
+                set(this, 'filter', filter);
             }
         },
     });
