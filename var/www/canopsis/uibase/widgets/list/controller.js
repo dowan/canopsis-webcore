@@ -260,6 +260,10 @@ define([
                 if(get(attribute, 'model.options.role')) {
                     role = get(attribute, 'model.options.role');
                 }
+                var subRole = get(attribute, 'options.items.role');
+                if(role === 'array' && !isNone(subRole)) {
+                    role = subRole;
+                }
 
                 var rendererName;
                 if (role) {
