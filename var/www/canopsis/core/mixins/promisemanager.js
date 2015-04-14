@@ -25,8 +25,20 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+    /**
+     * Mixin allowing to show promises on the status bar
+     *
+     * @class PromisemanagerMixin
+     * @extensionfor ApplicationController
+     * @static
+     */
     var mixin = Mixin('promisemanager', {
         promises: promisesmanager,
+
+        init: function() {
+            this.partials.statusbar.pushObject('promisemanagerstatusmenu');
+            this._super();
+        }
     });
 
 
