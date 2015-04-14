@@ -29,7 +29,13 @@ define([
 
     //TODO manage element with add and remove methods
 
-    var manager = Ember.Object.extend({
+    /**
+     * Abstract class to provide a common API to every registry
+     *
+     * @class AbstractClassRegistry
+     * @constructor
+     */
+    var AbstractClassRegistry = Ember.Object.extend({
         init: function() {
             this._super.apply(this, arguments);
 
@@ -40,6 +46,7 @@ define([
 
         /**
          * The name of the registry
+         * @property name
          * @type {string}
          */
         name: 'unnamed registry',
@@ -49,12 +56,18 @@ define([
 
         /**
          * Aims to provide a way to inspect and display items
-         * Strictly typed object, at term, will not need this anymore
+         *
+         * @property tableColumns
          */
         tableColumns: [{title: 'name', name: 'name'}],
 
         /**
          * Appends the item into the "all" array, and into the corresponding class arrays in the "byClass" dict
+         *
+         * @method add
+         * @param {object} item the item to add
+         * @param {string} name the name of the item to add
+         * @param {array} classes classes of the item
          */
         add: function(item, name, classes) {
             if(isNone(name)) {
@@ -86,7 +99,9 @@ define([
         /**
          * Get an item by its name. Implemented because all must be migrated from an array to a dict
          *
-         * @param {name} the name of the item to get
+         * @method getByName
+         * @param {string} name the name of the item to get
+         * @return {object} the object with the specified name
          */
         getByName: function(name) {
             for (var i = 0, l = this.all.length; i < l; i++) {
@@ -99,12 +114,14 @@ define([
         /**
          * Get a list of item that are registered in the specified class
          *
-         * @param {name} the name of the class
+         * @method getByClassName
+         * @param {string} name the name of the class
+         * @return {array} the array of items that are defined with the specified class name
          */
         getByClassName: function(name) {
             return get(this.byClass, name);
         }
     });
 
-    return manager;
+    return AbstractClassRegistry;
 });

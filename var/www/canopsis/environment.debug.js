@@ -18,7 +18,19 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/lib/wrappers/console'], function() {
+define([
+    'jquery',
+    'app/lib/wrappers/console'
+], function($) {
 
 });
 
+var mocks = localStorage.getItem('files_mocks');
+mocks = JSON.parse(mocks);
+
+if(!!mocks) {
+    for(var key in mocks) {
+        eval('var m = ' + mocks[key].module);
+        define(key, mocks[key].requirements, m);
+    }
+}

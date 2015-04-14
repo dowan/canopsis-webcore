@@ -41,6 +41,7 @@ var templates = [
     { name: 'schemamanagerstatusmenu', template: 'canopsis/uibase/templates/schemamanagerstatusmenu.html' },
     { name: 'notificationsstatusmenu', template: 'canopsis/uibase/templates/notificationsstatusmenu.html' },
     { name: 'consolemanagerstatusmenu', template: 'canopsis/uibase/templates/consolemanagerstatusmenu.html' },
+    { name: 'requirejsmockingstatusmenu', template: 'canopsis/uibase/templates/requirejsmockingstatusmenu.hbs' },
     { name: 'promisemanagerstatusmenu', template: 'canopsis/uibase/templates/promisemanagerstatusmenu.html' },
     { name: 'presettoolbar', template: 'canopsis/uibase/templates/presettoolbar.html' },
     { name: 'rightschecksumbuttons', template: 'canopsis/uibase/templates/rightschecksumbuttons.html' },
