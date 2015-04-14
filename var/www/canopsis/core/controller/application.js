@@ -29,6 +29,9 @@ define([
     'app/lib/mixinsregistry',
     'app/lib/formsregistry',
     'app/lib/inflections',
+    'app/mixins/userprofilestatusmenu',
+    'app/mixins/requirejsmocksmanager',
+    'app/mixins/screentoolstatusmenu',
     'app/mixins/schemamanager',
     'app/mixins/consolemanager',
     'app/mixins/promisemanager',
@@ -57,6 +60,9 @@ define([
     mixinsRegistry,
     formsRegistry,
     inflectionsRegistry,
+    UserprofilestatusmenuMixin,
+    RequirejsmocksmanagerMixin,
+    ScreentoolstatusmenuMixin,
     SchemamanagerMixin,
     ConsolemanagerMixin,
     PromisemanagerMixin,
@@ -81,8 +87,7 @@ define([
      * @constructor
      * @description Main application controller
      */
-    var controller = PartialslotAbleController.extend(
-        SchemamanagerMixin, PromisemanagerMixin, ConsolemanagerMixin, NotificationsMixin, {
+    var ApplicationControllerDict = {
 
         needs: ['login', 'recordinfopopup'],
 
@@ -177,31 +182,11 @@ define([
             console.group('app init');
             notificationUtils.setController(this);
 
-            if(canopsisConfiguration.DEBUG) {
-                this.partials.statusbar.pushObject('screentoolstatusmenu');
-                this.partials.statusbar.pushObject('schemamanagerstatusmenu');
-                this.partials.statusbar.pushObject('consolemanagerstatusmenu' );
-                this.partials.statusbar.pushObject('notificationsstatusmenu');
-                this.partials.statusbar.pushObject('promisemanagerstatusmenu');
-            }
-
             //Set page title
             var title = get(canopsisConfiguration, 'TITLE');
             if (!isNone(title)) {
                 $('title').html(title);
             }
-
-            this.partials.statusbar.pushObject('userstatusmenu');
-
-            var appController = this;
-
-            var devtoolsStore = DS.Store.create({
-                container: get(this, "container")
-            });
-
-            set(this, 'devtoolsStore', devtoolsStore);
-
-            console.log('finding authentication backends config');
 
             //TODO refactor this in application route
 
@@ -245,18 +230,6 @@ define([
         },
 
         actions: {
-
-            changeScreenSize: function (size) {
-                var cssSize = {
-                    small: '480px',
-                    medium: '940px',
-                    large: '100%',
-                }[size];
-
-                $('body').animate({
-                    width: cssSize
-                });
-            },
             /**
              * @event editAuthConfiguration
              * @param {String} authType
@@ -302,71 +275,15 @@ define([
             },
 
             /**
-             * @event showUserProfile
-             * @descriptions Shows a Modelform with the user profile
-             */
-            showUserProfile: function () {
-                var applicationController = this;
-
-                var ouser = get(utils, 'session');
-                var recordWizard = formsUtils.showNew('modelform', ouser, {
-                    title: get(ouser, '_id') + ' ' + __('profile'),
-                    filterFieldByKey: {
-                        firstname: {readOnly: true},
-                        lastname: {readOnly: true},
-                        authkey: {readOnly: true},
-                        ui_language: true,
-                        mail: true,
-                        userpreferences: true,
-                    }
-                });
-
-                recordWizard.submit.then(function(form) {
-                    console.group('submit form:', form);
-
-                    //generated data by user form fill
-                    editedUser = form.get('formContext');
-                    console.log('save record:', editedUser);
-
-                    set(editedUser, 'crecord_type', 'user');
-
-                    editedUser.id= editedUser._id;
-
-                    var editedUserRecord = dataUtils.getStore().createRecord('user', editedUser);
-
-                    editedUserRecord.save();
-
-                    notificationUtils.info(__('profile') + ' ' +__('updated'));
-
-                    uilang = get(editedUser, 'ui_language');
-                    ouilang = get(ouser, 'ui_language');
-
-                    console.log('Lang:', uilang, ouilang);
-                    if (uilang !== ouilang) {
-                        console.log('Language changed, will prompt for application reload');
-                        applicationController.send(
-                            'promptReloadApplication',
-                            'Interface language has changed, reload canopsis to apply changes ?'
-                        );
-                    }
-
-                    console.groupEnd();
-                });
-            },
-
-            /**
              * @event editEventSettings
              * @descriptions Shows a Modelform with event settings
              */
             editEventSettings: function () {
-
-                var applicationController = this;
-
                 var dataStore = DS.Store.create({
                     container: get(this, "container")
                 });
 
-                var record = dataStore.findQuery('statusmanagement', {}).then(function(queryResults) {
+                dataStore.findQuery('statusmanagement', {}).then(function(queryResults) {
 
                     console.log('queryResults', queryResults);
 
@@ -404,14 +321,11 @@ define([
              * @descriptions Shows a Modelform to edit data cleaner options
              */
             editDataclean: function () {
-
-                var applicationController = this;
-
                 var dataStore = DS.Store.create({
                     container: get(this, "container")
                 });
 
-                var record = dataStore.findQuery('datacleaner', {}).then(function(queryResults) {
+                dataStore.findQuery('datacleaner', {}).then(function(queryResults) {
 
                     console.log('queryResults', queryResults);
 
@@ -439,33 +353,16 @@ define([
             },
 
 
-            /**
-             * @event editConfig
-             * @descriptions Shows a form to edit the frontend configuration
-             */
-            editConfig: function() {
-                var frontendConfig = get(this, 'frontendConfig');
-                console.log('editConfig', formsUtils, frontendConfig);
-
-                var editForm = formsUtils.showNew('modelform', frontendConfig, { title: __("Edit settings"), inspectedItemType: "frontend" });
-                editForm.submit.done(function() {
-                    frontendConfig.save();
-                });
-            },
-
              /**
              * @event editEnabledPlugins
              * @descriptions Shows a form to edit the canopsis UI enabled plugins
              */
             editEnabledPlugins: function() {
-
-                var applicationController = this;
-
                 var dataStore = DS.Store.create({
                     container: get(this, "container")
                 });
 
-                var record = dataStore.findQuery('enabledmodules', {}).then(function(queryResults) {
+                dataStore.findQuery('enabledmodules', {}).then(function(queryResults) {
 
                     console.log('queryResults', queryResults);
 
@@ -487,43 +384,8 @@ define([
                         record.save();
                     });
                 });
-            },
 
-
-             /**
-             * @event editEnabledPlugins
-             * @descriptions Shows a form to edit the canopsis UI enabled plugins
-             */
-            editFilterLink: function() {
-
-                var applicationController = this;
-
-                var dataStore = DS.Store.create({
-                    container: get(this, "container")
-                });
-
-                var record = dataStore.findQuery('filterlink', {}).then(function(queryResults) {
-
-                    console.log('queryResults', queryResults);
-
-                    var record = get(queryResults, 'content')[0];
-
-                    //generating form from record model
-                    var recordWizard = formsUtils.showNew('modelform', record, {
-                        title: __('Filter links'),
-                    });
-
-                    var okMessage =__('Filter links') + ' ' + _('information') + ' ' +__('updated');
-                    //submit form and it s callback
-                    recordWizard.submit.then(function(form) {
-                        console.log('record going to be saved', record, form);
-
-                        notificationUtils.info(okMessage);
-                        //generated data by user form fill
-                        record = form.get('formContext');
-                        record.save();
-                    });
-                });
+                dataStore.destroy();
             },
 
             /**
@@ -575,7 +437,7 @@ define([
 
                 var containerwidgetId = hashUtils.generateId('container');
 
-                var containerwidget = dataUtils.getStore().createRecord('widgetcontainer', {
+                dataUtils.getStore().createRecord('widgetcontainer', {
                     xtype: 'widgetcontainer',
                     mixins : [{
                         name: 'verticallayout'
@@ -594,11 +456,6 @@ define([
 
                 var recordWizard = formsUtils.showNew('modelform', userview, { title: __("Add ") + type });
 
-                function transitionToView(userview) {
-                    console.log('userview saved, switch to the newly created view');
-                    applicationController.send('showView', get(userview, 'id'));
-                }
-
                 recordWizard.submit.done(function() {
                     set(applicationController, 'isLoading', get(applicationController, 'isLoading') + 1);
                     userview.save();
@@ -609,31 +466,10 @@ define([
             /**
              * @event openTab
              * @descriptions Change frontend route to a new url
-             * @param url the new url to go to
+             * @param {string} url the new url to go to
              */
             openTab: function(url) {
                 this.transitionToRoute(url);
-            },
-
-            /**
-             * @event addModelInstance
-             * @descriptions Shows a form to a specified model
-             * @param {String} type the model type, lower-cased
-             */
-            addModelInstance: function(type) {
-                console.log("add", type);
-
-                var record = dataUtils.getStore().createRecord(type, {
-                    crecord_type: type.underscore()
-                });
-
-                console.log('temp record', record);
-
-                var recordWizard = formsUtils.showNew('modelform', record, { title: __("Add ") + type });
-
-                recordWizard.submit.done(function() {
-                    record.save();
-                });
             },
 
             /**
@@ -650,7 +486,25 @@ define([
             }
         }
 
-    });
+    };
+
+    var controller;
+
+    if(canopsisConfiguration.DEBUG) {
+        controller = PartialslotAbleController.extend(
+            UserprofilestatusmenuMixin,
+            SchemamanagerMixin,
+            PromisemanagerMixin,
+            ConsolemanagerMixin,
+            NotificationsMixin,
+            RequirejsmocksmanagerMixin,
+            ScreentoolstatusmenuMixin,
+            ApplicationControllerDict);
+    } else {
+        controller = PartialslotAbleController.extend(
+            UserprofilestatusmenuMixin,
+            ApplicationControllerDict);
+    }
 
     loader.register('controller:application', controller);
 

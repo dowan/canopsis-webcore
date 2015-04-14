@@ -66,6 +66,7 @@ define([
                 if(get(this, 'multiselect') === false) {
                     set(this, 'selection', [item]);
                 } else {
+                    //TODO use searchmethodsregistry instead of plain old static code
                     var search = get(this, 'selection').filter(function(loopItem, index, enumerable){
                         return loopItem === item;
                     });
@@ -164,6 +165,7 @@ define([
                 return true;
             });
 
+            //TODO use searchmethodsregistry instead of plain old static code
             if(searchFilter !== '') {
                 res = res.filter(function(item, index, enumerable){
                     var doesItStartsWithSearchFilter = item.name.slice(0, searchFilter.length) == searchFilter;
@@ -197,6 +199,7 @@ define([
 
             var res = Ember.A();
 
+            //TODO use searchmethodsregistry instead of plain old static code
             var filterFunction = function(item, index, enumerable) {
                 var doesItStartsWithSearchFilter = item.name.indexOf(searchFilter) !== -1;
                 return doesItStartsWithSearchFilter;
