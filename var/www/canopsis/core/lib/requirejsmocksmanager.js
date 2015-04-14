@@ -19,9 +19,8 @@
 
 define([
     'ember',
-    'app/lib/utils/forms',
-    'app/lib/utils/string'
-], function(Ember, formsUtils, stringUtils) {
+    'app/lib/utils/forms'
+], function(Ember, formsUtils) {
 
     var set = Ember.set;
 

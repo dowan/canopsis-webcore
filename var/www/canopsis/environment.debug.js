@@ -20,9 +20,8 @@
 
 define([
     'jquery',
-    'app/lib/utils/string',
     'app/lib/wrappers/console'
-], function($, stringUtils) {
+], function($) {
 
 });
 
