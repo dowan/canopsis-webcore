@@ -17,7 +17,17 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
+/**
+ * Component for choosing a color.
+ * It let to choose between a colorpicker 
+ * and a display of several ranges
+ *
+ * @module component
+ * @return {component} colpick
+ * @requires jquey
+ * @requires ember
+ * @requires app/lib/wrappers/colpick
+ */
 define([
     'jquery',
     'ember',
@@ -31,6 +41,10 @@ define([
         range: undefined,
         isLoading: true,
 
+        /**
+         * instantiate component and load data
+         * @method init
+         */
         init: function() {
             this._super();
 
@@ -39,6 +53,10 @@ define([
             }));
         },
 
+        /**
+         * set the chosen color and update css in function
+         * @method didInsertElement
+         */
         didInsertElement: function() {
             var component = this;
 
@@ -46,6 +64,11 @@ define([
                 flat:true,
                 layout:'hex',
                 submit:0,
+                /**
+                 * @method onChange
+                 * @param hsb : not used
+                 * @param {string} hexa code color
+                 */
                 onChange: function(hsb,hex) {
                     void(hsb);
 
@@ -53,9 +76,12 @@ define([
                 }
             };
 
+            /**
+             * set each colors selected attribute to false
+             * set background-color of each div with color code 
+             */
            this.get('store').findAll('rangecolor', {
             }).then(function(result) {
-                //caculer ici la couleur en style 'computed property'
                 var ranges = get(result, 'content');
                 for (var i = ranges.length - 1; i >= 0; i--) {
                     var colors = get(ranges[i], 'colors');
@@ -74,8 +100,9 @@ define([
             if(value) {
                 options.color = value;
             }
-
-            //display or hide background color
+            /**
+             *display or hide background color
+             */
             component.$('.colorSelector').hide();
             component.$('.opening').show();
 
@@ -89,7 +116,9 @@ define([
                 component.$('.colorSelector').hide('slow');
             });
 
-            //switch display between colorPicker and colorGrid
+            /**
+             *switch display between colorPicker and colorGrid
+             */
             component.$('.colorGrid').hide();
             component.$('#colorPicker').addClass('activeColor');
 
@@ -112,6 +141,9 @@ define([
             this._super();
         },
 
+        /**
+         * action to update css for ranges and set the chosen color
+         */
         actions: {
             changeColor: function(color, ranges){
                 var component = this;
