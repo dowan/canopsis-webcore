@@ -1,3 +1,108 @@
+/* Properties for colorGrid editor*/
+.rangeBrowser{
+    position: relative;
+    display: block;
+    height: 185px;
+    width: 100%;
+    min-height: 90px;
+    border: 1px solid #ddd;
+    background-color: #eee;
+    overflow: auto;
+}
+
+.rangeColorChoose{
+    display: inline-block;
+    margin-left: 5%;
+    width: 155px;
+    height: 33px;
+}
+
+.range{
+    height: 38px;
+}
+
+.rangeColorBtn{
+    display: inline-block;
+    float: left;
+}
+
+.rangeColorSelect{
+    display: inline-block;
+    width: 30%;
+    margin-right: 1.5%;
+    margin-left: 1.5%;
+    margin-top: 1%;
+    height: 20%;
+    float: left;
+    /*border: 1px solid #ccc;*/
+}
+
+.opening{
+    margin-top: 10px;
+}
+
+.closure{
+
+}
+
+.activeColor{
+    color: #555;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-radius: 4px 4px 0 0;
+    border-bottom-color: transparent;
+}
+
+#colorSelectorList{
+    display: block;
+    margin-top: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+#colorSelectorList li{
+    display: inline-block;
+    float: left;
+    background-color: #fff;
+}
+
+.colorGrid{
+    height: 201px;
+    /*width: 480px;*/
+    width: 100%;
+    float: left;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.colorElement{
+    height: 92%;
+    margin: 1px;
+    width: 17.5%;
+    float: left;
+    cursor: pointer;
+}
+
+.unSelectedColorGrid {
+    border: 1px solid #ddd;
+}
+
+.selectedColorGrid {
+    border: 2px solid #444;
+}
+
+div .customcolor{
+    /*width: 480px;*/
+    width : 100%;
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    float: left;
+    display: inline-block;
+}
+
+
 /*Avoids double scroll bar in main page*/
 #applicationdiv > div{
     overflow-y:hidden;

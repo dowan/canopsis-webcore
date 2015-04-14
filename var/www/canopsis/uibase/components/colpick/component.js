@@ -19,14 +19,26 @@
 
 
 define([
+    'jquery',
     'ember',
     'app/lib/wrappers/colpick',
-], function(Ember) {
+], function($, Ember) {
 
     var get = Ember.get,
         set = Ember.set;
 
     var component = Ember.Component.extend({
+        range: undefined,
+        isLoading: true,
+
+        init: function() {
+            this._super();
+
+            set(this, 'store', DS.Store.create({
+                container: this.get('container')
+            }));
+        },
+
         didInsertElement: function() {
             var component = this;
 
@@ -41,14 +53,83 @@ define([
                 }
             };
 
+           this.get('store').findAll('rangecolor', {
+            }).then(function(result) {
+                //caculer ici la couleur en style 'computed property'
+                var ranges = get(result, 'content');
+                for (var i = ranges.length - 1; i >= 0; i--) {
+                    var colors = get(ranges[i], 'colors');
+                    for (var j = colors.length - 1; j >= 0; j--) {
+                        var color = colors[j];
+                        set(color, 'style', 'background-color:' + get(color, 'code'));
+                        set(color, 'selected', false);
+                    }
+                }
+                
+                set(component, 'ranges', ranges);
+
+            });
+
             var value = get(this, 'value');
             if(value) {
                 options.color = value;
             }
 
-            this.$().colpick(options);
+            //display or hide background color
+            component.$('.colorSelector').hide();
+            component.$('.opening').show();
+
+            component.$('.opening').click(function(){
+                component.$('.colorSelector').show('slow');
+                component.$('.opening').hide('slow');
+            });
+            
+            component.$('.closure').click(function(){
+                component.$('.opening').show('slow');
+                component.$('.colorSelector').hide('slow');
+            });
+
+            //switch display between colorPicker and colorGrid
+            component.$('.colorGrid').hide();
+            component.$('#colorPicker').addClass('activeColor');
+
+            component.$('#colorPicker').click(function() {
+                component.$('.customcolor').show();
+                component.$('#colorPicker').addClass('activeColor');
+                component.$('.colorGrid').hide();
+                component.$('#colorGrid').removeClass('activeColor');
+            });
+
+            component.$('#colorGrid').click(function() {
+                component.$('.customcolor').hide();
+                component.$('#colorPicker').removeClass('activeColor');
+                component.$('.colorGrid').show();
+                component.$('#colorGrid').addClass('activeColor');
+            });
+
+            component.$('.customcolor').colpick(options);
 
             this._super();
+        },
+
+        actions: {
+            changeColor: function(color, ranges){
+                var component = this;
+                var currentColor = color;
+                var colorHex = currentColor.code;
+
+                for (var i = ranges.length - 1; i >= 0; i--) {
+                    var colors = get(ranges[i], 'colors');
+                    for (var j = colors.length - 1; j >= 0; j--) {
+                        color = colors[j];
+                        set(color, 'selected', false);
+                    }
+                }
+
+                set(currentColor, 'selected', true);
+                set(component, 'value', colorHex);
+                component.$('.customcolor').colpickSetColor(colorHex, true);
+            }
         },
 
         willDestroyElement: function() {
