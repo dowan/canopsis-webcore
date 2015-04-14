@@ -55,13 +55,13 @@ define([
     var mixin = Mixin('embeddedRecordSerializer', {
 
         /**
-         Sideload a JSON object to the payload
-
-         @method sideloadItem
-         @param {Object} payload JSON object representing the payload
-         @param {subclass of DS.Model} type The DS.Model class of the item to be sideloaded
-         @param {Object} item JSON object representing the record to sideload to the payload
-        */
+         * Sideload a JSON object to the payload
+         *
+         * @method sideloadItem
+         * @param {Object} payload JSON object representing the payload
+         * @param {subclass of DS.Model} type The DS.Model class of the item to be sideloaded
+         * @param {Object} item JSON object representing the record to sideload to the payload
+         */
         sideloadItem: function(payload, type, item, parentJSON) {
             try {
                 console.log("sideLoad", type, item.xtype);
@@ -126,15 +126,15 @@ define([
         },
 
         /**
-         Extract relationships from the payload and sideload them. This function recursively
-         walks down the JSON tree
-
-         @method extractRelationships
-         @param {Object} payload JSON object representing the payload
-         @param {Object} recordJSON JSON object representing the current record in the payload to look for relationships
-         @param {Object} primaryType The DS.Model class of the record object
-         @param {Object} parentType
-        */
+         * Extract relationships from the payload and sideload them. This function recursively
+         * walks down the JSON tree
+         *
+         * @method extractRelationships
+         * @param {Object} payload JSON object representing the payload
+         * @param {Object} recordJSON JSON object representing the current record in the payload to look for relationships
+         * @param {Object} primaryType The DS.Model class of the record object
+         * @param {Object} parentType
+         */
         extractRelationships: function(payload, recordJSON, primaryType, parentType) {
             console.group('extractRelationships', recordJSON, primaryType);
 
