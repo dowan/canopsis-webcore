@@ -442,7 +442,7 @@ define([
                     * @param actionName action name to update in info.
                     * @param action action to retrieve from record task params.
                     */
-                    var updateInfoAction = function(record, actionName, action){
+                    var updateInfoAction = function(task, record, actionName, action) {
                         // set thenState
                         var conState = record.get(actionName);
                         task.params[action] = {
@@ -598,9 +598,9 @@ define([
                                     task.params.condition.params.state = states.indexOf(inState);
                                 }
                                 // set statement
-                                updateInfoAction(record, 'then_state', 'statement');
+                                updateInfoAction(task, record, 'then_state', 'statement');
                                 // set else
-                                updateInfoAction(record, 'else_state', '_else');
+                                updateInfoAction(task, record, 'else_state', '_else');
                             default: break;
                         }
                         // update info
