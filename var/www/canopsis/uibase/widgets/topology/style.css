@@ -47,7 +47,7 @@
     baseline-shift: -0.5ex;
 }
 .overlay {
-    fill: red;
+    fill: none;
     pointer-events: all;
     cursor: context-menu;
 }
