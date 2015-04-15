@@ -1,3 +1,13 @@
+{{#if controller.controllers.application.runtimeConfiguration.DEBUG}}
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <h3 class="panel-title">Debug informations</h3>
+        </div>
+        <div class="panel-body">
+            inspectedItemType: {{inspectedItemType}}
+        </div>
+    </div>
+{{/if}}
 <p>
     {{#if controller.categories}}
         {{partialslot slot=controller._partials.toolbar tagName="ul" classNames="nav navbar-nav pull-right"}}

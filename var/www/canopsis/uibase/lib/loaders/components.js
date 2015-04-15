@@ -59,6 +59,7 @@ var components = [
     { name: 'components/component-contextselector', url: 'canopsis/uibase/components/contextselector/component', template: 'canopsis/uibase/components/contextselector/template.html' },
     { name: 'components/component-colpick', url: 'canopsis/uibase/components/colpick/component', template: 'canopsis/uibase/components/colpick/template.html' },
     { name: 'components/component-slider', url: 'canopsis/uibase/components/slider/component', template: 'canopsis/uibase/components/slider/template.html' },
+    { name: 'components/component-labelledlink', url: 'canopsis/uibase/components/labelledlink/component', template: 'canopsis/uibase/components/labelledlink/template.hbs' },
     { name: 'components/component-miniform', url: 'canopsis/uibase/components/miniform/component', template: 'canopsis/uibase/components/miniform/template.hbs' },
     { name: 'components/component-miniformcontent', url: 'canopsis/uibase/components/miniformcontent/component', template: 'canopsis/uibase/components/miniformcontent/template.hbs' },
     { name: 'components/component-miniformheader', url: 'canopsis/uibase/components/miniformheader/component', template: 'canopsis/uibase/components/miniformheader/template.hbs' },
