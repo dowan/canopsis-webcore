@@ -1,0 +1,6 @@
+{{#if opened}}
+	{{yield}}
+	<button type="button" class="btn btn-primary closure" {{action "close"}}>Close</button>
+{{else}}
+	<button type="button" class="btn btn-primary opening" {{action "open"}}>Open</button>
+{{/if}}

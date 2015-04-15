@@ -100,21 +100,6 @@ define([
             if(value) {
                 options.color = value;
             }
-            /**
-             *display or hide background color
-             */
-            component.$('.colorSelector').hide();
-            component.$('.opening').show();
-
-            component.$('.opening').click(function(){
-                component.$('.colorSelector').show('slow');
-                component.$('.opening').hide('slow');
-            });
-            
-            component.$('.closure').click(function(){
-                component.$('.opening').show('slow');
-                component.$('.colorSelector').hide('slow');
-            });
 
             /**
              *switch display between colorPicker and colorGrid
