@@ -1,6 +1,9 @@
-{{#if opened}}
-	{{yield}}
-	<button type="button" class="btn btn-primary closure" {{action "close"}}>Close</button>
-{{else}}
-	<button type="button" class="btn btn-primary opening" {{action "open"}}>Open</button>
-{{/if}}
+<div class="dropdown">
+	<button class="btn btn-primary dropdown-toggle opening" type="button" id="myDropdown" data-toggle="dropdown" aria-expanded="true">
+    	Choose a color
+    	<span class="caret"></span>
+  	</button>
+  	<div class="dropdown-menu">
+    	{{yield}}
+  	</div>
+</div>

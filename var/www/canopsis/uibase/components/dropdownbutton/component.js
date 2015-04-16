@@ -30,11 +30,15 @@ define([
         actions: {
             open: function(){ 
                 set(this, 'opened', true);
-                console.log('opened values after open function', this.opened);
             },
             close: function(){ 
                 set(this, 'opened', false);
-                console.log('opened values after close function', this.opened);
+            },
+            onChange: function(){
+                var component = this;
+                component.$('#myDropdown .dropdown-menu').click(function(event){
+                    event.stopPropagation();
+                });
             },
         }
     });
