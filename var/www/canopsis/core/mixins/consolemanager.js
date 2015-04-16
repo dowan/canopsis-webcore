@@ -28,13 +28,26 @@ define([
         set = Ember.set,
         __ = Ember.String.loc;
 
+
     /**
-     * Mixins allowing console and various js runtime settings
-    */
+     * Mixin allowing console and various js runtime settings
+     *
+     * @class ConsolemanagerMixin
+     * @extensionfor ApplicationController
+     * @static
+     */
     var mixin = Mixin('consolemanager', {
-        partials: {},
+        init: function() {
+            this.partials.statusbar.pushObject('consolemanagerstatusmenu' );
+            this._super();
+        },
 
         actions: {
+            /**
+             * Shows a form to edit runtime settings
+             *
+             * @event showConsoleSettings
+             */
             showConsoleSettings: function(){
                 var jsruntimeconfigrecord = dataUtils.getStore().createRecord('jsruntimeconfiguration', {
                     id: 0,

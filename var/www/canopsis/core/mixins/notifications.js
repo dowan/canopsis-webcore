@@ -28,8 +28,18 @@ define([
         set = Ember.set;
         assert = Ember.assert;
 
-
+    /**
+     * Mixin handling frontend-wide notifications. Used on the Application controller
+     *
+     * @class NotificationsMixin
+     * @extensionfor ApplicationController
+     * @static
+     */
     var mixin = Mixin('notifications', {
+        init: function() {
+            this.partials.statusbar.pushObject('notificationsstatusmenu');
+            this._super();
+        },
 
         notifications: function(){
             testUtils.pre(this, function () {

@@ -71,25 +71,29 @@ define([
                 }
             });
 
-
-            //I hate myself doing this
-            setTimeout(function () {
-                //hack as library does not manage properly the from parameter in this version.
+            //hack as library does not manage properly the from parameter in this version.
+            var mockFrom = function () {
                 var irsLine = sliderComponent.$('.irs-line');
                 if (irsLine !== undefined) {
-                    var width = irsLine.width();
-                    var proportion = width / max * value;
-                    //nice display ajustement....
-                    var maxwidth = width - 20;
-                    if (proportion > maxwidth) {
-                        proportion = maxwidth;
+                    if (irsLine.is(':visible')) {
+                        var width = irsLine.width();
+                        var proportion = width / max * value;
+                        //nice display ajustement....
+                        var maxwidth = width - 20;
+                        if (proportion > maxwidth) {
+                            proportion = maxwidth;
+                        }
+                        //Manually placing slider and tooltip proportionnaly to the width of the slider.
+                        sliderComponent.$('.irs-single').css('left', proportion);
+                        sliderComponent.$('.irs-slider').css('left', proportion);
+                    } else {
+                        setTimeout(mockFrom, 500);
                     }
-                    //Manually placing slider and tooltip proportionnaly to the width of the slider.
-                    sliderComponent.$('.irs-single').css('left', proportion);
-                    sliderComponent.$('.irs-slider').css('left', proportion);
                 }
-            }, 500);
 
+            };
+            //as from feature doesn t work on this slider...
+            mockFrom();
         }
     });
 
