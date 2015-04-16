@@ -57,7 +57,7 @@ define([
                 '<li><code>co:</code>, <code>re:</code>, <code>me:</code> : ', __('look for non-existant field') , '</li>' ,
                 '</ul>'].join(''),
 
-            id: hashUtils.generateId('cmetric-help-modal'),
+            name: hashUtils.generateId('cmetric-help-modal'),
             label: hashUtils.generateId('cmetric-help-modal-label')
         },
 
@@ -88,7 +88,7 @@ define([
             var patterns = {
                 component: [],
                 resource: [],
-                id: []
+                name: []
             };
 
             for(i = 0; i < conditions.length; i++) {
@@ -104,10 +104,10 @@ define([
                         patterns.resource.push(regex);
                     }
                     else if(condition.indexOf('me:') === 0) {
-                        patterns.id.push(regex);
+                        patterns.name.push(regex);
                     }
                     else {
-                        patterns.id.push(condition);
+                        patterns.name.push(condition);
                     }
                 }
             }
@@ -116,7 +116,7 @@ define([
             var filters = {
                 component: {'$or': []},
                 resource: {'$or': []},
-                id: {'$or': []}
+                name: {'$or': []}
             };
 
             for(var key in filters) {
@@ -158,7 +158,7 @@ define([
             switch(contextType) {
                 case 'ctxcomponent':
                     return [
-                        {name: 'id', title: __('Component')},
+                        {name: 'name', title: __('Component')},
                         {
                             action: 'select',
                             actionAll: (get(this, 'multiselect') === true ? 'selectAll' : undefined),
@@ -169,7 +169,7 @@ define([
                 case 'ctxresource':
                     return [
                         {name: 'component', title: __('Component')},
-                        {name: 'id', title: __('Resource')},
+                        {name: 'name', title: __('Resource')},
                         {
                             action: 'select',
                             actionAll: (get(this, 'multiselect') === true ? 'selectAll' : undefined),

@@ -1203,7 +1203,7 @@ define([
                     } else {
                         var entity = d.entity;
                         if (entity !== undefined) {
-                            result += entity.id;
+                            result += entity.name;
                         }
                     }
                     return result;
@@ -1616,7 +1616,7 @@ define([
                 filter = '*';
             };
             var toShow = this.panel.selectAll('.node').where(function(d) {
-                var result = d.entity && d.entity.id
+                var result = d.entity && d.entity.name
             });
         },
 
