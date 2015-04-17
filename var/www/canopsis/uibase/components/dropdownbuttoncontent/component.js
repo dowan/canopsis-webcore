@@ -26,37 +26,10 @@ define([
         set = Ember.set;
 
     var component = Ember.Component.extend({
-        classNames: ['dropdown', 'dropdown-default'],
-        attributeBindings: ['class', 'id'],
-        class: 'dropdown mega-dropdown',
-        id: 'myDropdown'
+        classNames: ['dropdownbuttoncontent', 'dropdownbuttoncontent-default'],
+        attributeBindings: ['class'],
+        class: 'dropdown-menu'
     });
-
-    /*var component = Ember.Component.extend({
-        opened: false,
-        actions: {
-            open: function(){ 
-                set(this, 'opened', true);
-            },
-            close: function(){ 
-                set(this, 'opened', false);
-            },
-        },
-
-        didInsertElement: function(){
-            var component = this;
-
-            $('div.dropdown.mega-dropdown button').on('click', function (event) {
-                $(this).parent().toggleClass("open");
-            });
-
-           $('body').on('click', function (e) {
-                if (!$('div.dropdown.mega-dropdown').is(e.target) && $('div.dropdown.mega-dropdown').has(e.target).length === 0 && $('.open').has(e.target).length === 0) {
-                    $('div.dropdown.mega-dropdown').removeClass('open');
-                }
-            });
-        }
-    });*/
 
     Ember.Application.initializer({
         name:"component-dropdownbutton",

@@ -1,23 +1,10 @@
 /* Properties for colorGrid editor*/
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1000;
-  display: none;
-  float: left;
-  min-width: 80%;
-  padding: 5px 0;
-  margin: 2px 0 0;
-  font-size: 14px;
-  text-align: left;
-  list-style: none;
-  background-color: #fff;
-  -webkit-background-clip: padding-box;
-  /* background-clip: padding-box; */
-  border: 1px solid #ccc;
-  border: 1px solid rgba(0,0,0,.15);
-  border-radius: 4px;
+#color-preview{
+    border: 1px solid black;
+    display: inline-block;
+    height: 20px;
+    width: 30px;
+    margin: 0 5px 0 5px;
 }
 
 .rangeBrowser{
@@ -73,6 +60,11 @@
 
 .opening{
     margin-top: 10px;
+    padding-bottom: 10px;
+}
+
+.opening span{
+    margin-bottom: 10px;
 }
 
 .closure{

@@ -38,8 +38,6 @@ define([
         set = Ember.set;
 
     var component = Ember.Component.extend({
-        range: undefined,
-        isLoading: true,
 
         /**
          * instantiate component and load data
