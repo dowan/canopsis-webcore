@@ -1,0 +1,10 @@
+<div class="progress-bar" role="progressbar"
+    {{bind-attr style=style_bar}}
+    {{bind-attr aria-valuenow=value}}
+    {{bind-attr aria-valuemin=min_value}}
+    {{bind-attr aria-valuemax=max_value}}
+    >
+    {{#if showValueLabel}}
+        <span {{bind-attr style=style_span}}>{{{valueLabel}}}</span>
+    {{/if}}
+</div>

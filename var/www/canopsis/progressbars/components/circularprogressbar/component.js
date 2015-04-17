@@ -1,13 +1,32 @@
+/*
+# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+#
+# This file is part of Canopsis.
+#
+# Canopsis is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Canopsis is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 define([
-  'jquery',
-  'ember',
-  'circliful',
-  'app/application'
-], function(jQuery, Ember, Circliful, Application) {
+    'jquery',
+    'ember',
+    'circliful',
+], function(jQuery, Ember, Circliful) {
 
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone;
+
 
     var component = Ember.Component.extend({
 
@@ -15,61 +34,38 @@ define([
 
             this._super();
 
-            var display_as = get(this,"display_as");
-            if(isNone(display_as)){
-                display_as = "progressbar";
-            }
-            set(this, "display_as", display_as);
+            var display_as = get(this, 'display_as');
 
-            if(display_as == "progressbar"){
-                set(this, "is_progressbar", true);
-                if(isNone(get(this,"pb_thickness"))){
-                    set(this, "thickness", 10);
-                    set(this, "height", 10);
-                } else {
-                    set(this, "thickness", get(this,"pb_thickness") );
-                    set(this, "height", get(this,"pb_thickness") );
-                }
-
+            set(this, "style_content", "float:left;");
+            if(display_as === "halfgauge"){
+                set(this, "type", "half");
             } else {
-                set(this, "is_gauge", true);
-                set(this, "style_content", "float:left;");
-                if(display_as == "halfgauge"){
-                    set(this, "type", "half");
-                } else {
-                    set(this, "type", "full");
-                }
-
-                if(isNone(get(this,"gg_thickness"))){
-                    set(this, "thickness", 10);
-                } else {
-                    set(this, "thickness", get(this,"pb_thickness") );
-                }
-
-                if(isNone(get(this,"gg_width"))){
-                    set(this, "width", 250);
-                } else {
-                    set(this, "width", get(this,"gg_width") );
-                }
-
-                if( get(this, "type") == "half" ){
-                    set(this, "height", parseInt(get(this, "width")) / 2);
-                } else {
-                    set(this, "height", get(this, "width"));
-                }
-                if(isNone(get(this,"gg_fill"))){
-                    set(this, "gg_fill", "#ffffff");
-                }
-                if(isNone(get(this,"gg_border"))){
-                    set(this, "gg_border", "#cccccc");
-                }
+                set(this, "type", "full");
             }
 
-            //this.onValueChange();
+            if(isNone(get(this,"gg_thickness"))){
+                set(this, "thickness", 10);
+            } else {
+                set(this, "thickness", get(this,"pb_thickness") );
+            }
 
-            //this.addObserver('value', this.onValueChange);
-            //this.addObserver('min_value', this.onValueChange);
-            //this.addObserver('max_value', this.onValueChange);
+            if(isNone(get(this,"gg_width"))){
+                set(this, "width", 250);
+            } else {
+                set(this, "width", get(this,"gg_width") );
+            }
+
+            if( get(this, "type") == "half" ){
+                set(this, "height", parseInt(get(this, "width")) / 2);
+            } else {
+                set(this, "height", get(this, "width"));
+            }
+            if(isNone(get(this,"gg_fill"))){
+                set(this, "gg_fill", "#ffffff");
+            }
+            if(isNone(get(this,"gg_border"))){
+                set(this, "gg_border", "#cccccc");
+            }
         },
 
         didInsertElement: function(){
@@ -215,9 +211,9 @@ define([
     });
 
     Ember.Application.initializer({
-        name:"component-progressbar",
+        name:"component-circularprogressbar",
         initialize: function(container, application) {
-            application.register('component:component-progressbar', component);
+            application.register('component:component-circularprogressbar', component);
         }
     });
 

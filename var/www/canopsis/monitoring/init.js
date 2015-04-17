@@ -19,7 +19,6 @@
 
 loader.loadWithTemplates([
     { name:'weather', url:'canopsis/monitoring/widgets/weather/controller', template:'canopsis/monitoring/widgets/weather/template.html' },
-    { name:'progressbar', url:'canopsis/monitoring/widgets/progressbar/controller', template:'canopsis/monitoring/widgets/progressbar/template.html'},
     { name:'criticity', url:'canopsis/monitoring/helpers/criticity' },
     { name:'stateview', url:'canopsis/monitoring/helpers/stateview' },
     { name:'statusview', url:'canopsis/monitoring/helpers/statusview' },
