@@ -9,8 +9,8 @@ manager = Linklist()
 def exports(ws):
 
     @route(ws.application.delete, payload=['context'])
-    def linklist(context):
-        manager.remove(context)
+    def linklist(ids):
+        manager.remove(ids)
         ws.logger.info('Delete : {}, {}'.format(
             context,
             type(context)
@@ -19,16 +19,15 @@ def exports(ws):
 
     @route(
         ws.application.post,
-        payload=['extra_keys', 'context'],
+        payload=['document'],
         name='linklist/put'
     )
-    def linklist(context, extra_keys):
+    def linklist(document):
         ws.logger.info({
-            'extra_keys': extra_keys,
-            'context': context
+            'document': document
         })
 
-        manager.put(context, extra_keys)
+        manager.put(document)
 
         return True
 

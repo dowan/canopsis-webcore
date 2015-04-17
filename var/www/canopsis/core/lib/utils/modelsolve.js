@@ -28,6 +28,11 @@ define(['ember'], function(Ember) {
                     delete data.data[i]._id;
                 }
 
+                if(data.success === false && data.data.msg) {
+                    console.error('Server Error', data.data.msg, data.data.type);
+                    console.error(data.data.traceback);
+                }
+
                 Ember.run(null, callback, data);
             };
         },
