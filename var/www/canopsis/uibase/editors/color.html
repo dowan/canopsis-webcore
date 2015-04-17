@@ -1,3 +1,11 @@
 {{#component-dropdownbutton}}
-	{{component-colpick value=attr.value}}
+	{{#component-dropdownbuttonheader}}
+		{{#component-dropdownbuttontitle}}
+			Colors
+			{{component-dropdownbuttonoverview value=attr.value}}
+		{{/component-dropdownbuttontitle}}
+	{{/component-dropdownbuttonheader}}
+	{{#component-dropdownbuttoncontent}}
+		{{component-colpick value=attr.value}}
+	{{/component-dropdownbuttoncontent}}
 {{/component-dropdownbutton}}
