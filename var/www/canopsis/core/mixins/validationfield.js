@@ -41,15 +41,19 @@ define([
             var attributes = this.attr || this.content;
             set(this, "attr", attributes);
 
-            var model = attributes.model;
+            if (isNone(attributes) || isNone(attributes.model)) {
+                console.warn('No attributes found on this component');
+            } else {
+                var model = attributes.model;
 
-            if (isNone(get(this, 'value')) && !isNone(get(this, 'attr.model.options.default'))) {
-                this.set('value', get(this, 'attr.model.options.default'));
+                if (isNone(get(this, 'value')) && !isNone(get(this, 'attr.model.options.default'))) {
+                    this.set('value', get(this, 'attr.model.options.default'));
+                }
+
+                var type =  get(model, 'options.input_type') || get(model, 'type');
+                type = (type === 'string') ? 'text' : type;
             }
 
-            var type =  model.options.input_type || model.type;
-            type = (type === 'string') ? 'text' : type;
-            // this.type = type;
             this._super();
         },
 
