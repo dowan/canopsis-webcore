@@ -39,3 +39,11 @@ def exports(ws):
             with_count=True
         )
         return result
+
+    @route(
+        ws.application.post,
+        payload=['event'],
+        name='entitylink'
+    )
+    def linklist(event):
+        return manager.get_links_from_event(event)
