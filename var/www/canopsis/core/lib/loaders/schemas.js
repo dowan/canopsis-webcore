@@ -118,6 +118,11 @@ function compare(a,b) {
                 var propertiesKeys = Ember.keys(schema.properties);
                 for (var i = 0; i < propertiesKeys.length; i++) {
                     var currentKey = propertiesKeys[i];
+                    // avoid to add id in model because ember has already added once
+                    if (currentKey === 'id') {
+                        continue;
+                    }
+
                     var currentProperty = schema.properties[currentKey];
 
                     if(currentProperty['default']) {

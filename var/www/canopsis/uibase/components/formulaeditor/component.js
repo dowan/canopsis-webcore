@@ -20,7 +20,7 @@
 define([
     'ember'
 ], function(Ember) {
-    
+
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone;
@@ -31,7 +31,7 @@ define([
         metrics_cols: [
             {name: 'component', title: __('Component')},
             {name: 'resource', title: __('Resource')},
-            {name: 'cid', title: __('Metric')},
+            {name: 'id', title: __('Metric')},
             {
                 action: 'insert',
                 actionAll: undefined,
@@ -87,14 +87,14 @@ define([
                     metric = {
                         component: metric[nmeta - 3],
                         resource: metric[nmeta - 2],
-                        cid: metric[nmeta - 1]
+                        id: metric[nmeta - 1]
                     };
                 }
                 else {
                     metric = {
                         component: metric[nmeta - 2],
                         resource: null,
-                        cid: metric[nmeta - 1]
+                        id: metric[nmeta - 1]
                     };
                 }
 
@@ -110,7 +110,7 @@ define([
                     '',
                     get(metric, 'component'),
                     get(metric, 'resource') || '',
-                    get(metric, 'cid')
+                    get(metric, 'id')
                 ].join('/');
 
                 var formula = get(this, 'content.value');

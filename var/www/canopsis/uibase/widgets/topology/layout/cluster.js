@@ -18,20 +18,16 @@
 */
 
 define([
-    'ember',
-    'app/lib/factories/mixin'
-], function(Ember, Mixin) {
-
+    'jquery',
+    'd3'
+], function($, d3) {
     var get = Ember.get,
         set = Ember.set;
 
-
-    var mixin = Mixin('infobutton', {
-        partials: {
-            itemactionbuttons: ['actionbutton-info']
+    var ClusterLayout = Ember.Mixin.create(
+        {
         },
-    });
+    );
 
-
-    return mixin;
-});
+    return ClusterLayout;
+}

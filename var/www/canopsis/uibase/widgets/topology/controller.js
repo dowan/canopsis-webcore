@@ -36,6 +36,7 @@ define([
     'app/lib/utils/data',
     'canopsis/uibase/widgets/topology/view',
     'canopsis/uibase/widgets/topology/adapter',
+    'link!canopsis/uibase/widgets/topology/style.css'
 ], function(Ember, $, WidgetFactory, schemas, formsUtils, dataUtils, TopologyViewMixin) {
     var get = Ember.get,
         set = Ember.set;
@@ -180,8 +181,11 @@ define([
                     var graph = me.widgetDataStore.createRecord(
                         me.graphEltType, {id: graphId}
                     );
+                    var addGraph = function() {
+                        me._addGraph(graph);
+                    }
                     graph.save().then(
-                        me._addGraph
+                        addGraph
                     );
                 };
                 this.widgetDataStore.find('graph', query).then(
@@ -395,12 +399,67 @@ define([
                 case 'vertice':
                 case 'graph':
                     var states = ['ok', 'minor', 'major', 'critical'];
+                    /**
+                    * Get task id.
+                    *
+                    * @param  task task from where get task id. Can be a string or a dictionary.
+                    */
                     var getShortId = function(task) {
-                        var taskId = task.cid || task;
+                        var taskId = task.id || task;
                         var lastIndex = taskId.lastIndexOf('.');
                         var result = taskId.substring(lastIndex + 1);
                         return result;
-                    }
+                    };
+                    /**
+                    * Update form properties related to input params.
+                    *
+                    * @param params params from where get action params.
+                    * @param record form record.
+                    * @param actionName action name to retrieve from params.
+                    * @param stateName state name to retrieve from params.
+                    */
+                    var updateAction = function(params, record, actionName, stateName) {
+                        // set actionState
+                        var action = params[actionName];
+                        if (action !== undefined) {
+                            var taskId = getShortId(action);
+                            if (taskId === 'change_state') {
+                                var actionParams = action.params;
+                                if (actionParams !== undefined) {
+                                    var actionState = actionParams.state;
+                                    actionState = states[actionState];
+                                }
+                            } else {
+                                var actionState = taskId;
+                            }
+                            record.set(stateName, actionState);
+                        }
+                    };
+                    /**
+                    * Update record info.
+                    *
+                    * @param record record to update.
+                    * @param actionName action name to update in info.
+                    * @param action action to retrieve from record task params.
+                    */
+                    var updateInfoAction = function(task, record, actionName, action) {
+                        // set thenState
+                        var conState = record.get(actionName);
+                        task.params[action] = {
+                            id: 'canopsis.topology.rule.action.',
+                            params: {}
+                        };
+                        switch(conState) {
+                            case 'worst_state':
+                            case 'best_state':
+                                task.params[action].id += conState;
+                                break;
+                            default:
+                                conState = states.indexOf(conState);
+                                task.params[action].id += 'change_state';
+                                task.params[action].params.state = conState;
+                        }
+                    };
                     var info = record.get('info');
                     if (info !== undefined) {
                         // set entity
@@ -415,7 +474,7 @@ define([
                         }
                         var task = info.task;
                         if (task !== undefined) {
-                            var operator = task.cid || task;
+                            var operator = task.id || task;
                             if (operator !== undefined) {
                                 var operatorName = getShortId(task);
                                 if (operatorName === 'condition') {  // at least / nok
@@ -423,7 +482,7 @@ define([
                                     if (params !== undefined) {
                                         var condition = params.condition;
                                         if (condition !== undefined) {
-                                            var conditionName = getShortId(condition.cid || condition);
+                                            var conditionName = getShortId(condition.id || condition);
                                             record.set('operator', conditionName);
                                             var condParams = condition.params;
                                             if (condParams !== undefined) {
@@ -443,42 +502,14 @@ define([
                                                     }
                                                 }
                                                 // set minWeight
-                                                var minWeight = condParams.minWeight;
+                                                var minWeight = condParams.min_weight;
                                                 if (minWeight !== undefined) {
                                                     record.set('min_weight', minWeight);
                                                 }
                                                 // set thenState
-                                                var statement = params.statement;
-                                                if (statement !== undefined) {
-                                                    var statement_name = getShortId(statement);
-                                                    if (statement_name === 'change_state') {
-                                                        var statementParams = statement.params;
-                                                        if (statementParams !== undefined) {
-                                                            var thenState = statementParams.state;
-                                                            thenState = states[thenState];
-                                                            record.set('then_state', thenState);
-                                                        }
-                                                    } else {
-                                                        var thenState = statement_name;
-                                                        record.set('then_state', thenState);
-                                                    }
-                                                }
+                                                updateAction(params, record, 'statement', 'then_state');
                                                 // set elseState
-                                                var _else = params._else;
-                                                if (_else !== undefined) {
-                                                    var _elseName = getShortId(_else);
-                                                    if (_elseName === 'change_state') {
-                                                        var _elseParams = _else.params;
-                                                        if (_elseParams !== undefined) {
-                                                            var elseState = _elseParams.state;
-                                                            elseState = states[elseState];
-                                                            record.set('else_state', elseState);
-                                                        }
-                                                    } else {
-                                                        var elseState = _elseName;
-                                                        record.set('else_state', elseState);
-                                                    }
-                                                }
+                                                updateAction(params, record, '_else', 'else_state');
                                             }
                                         }
                                     }
@@ -511,7 +542,7 @@ define([
                             task = info.task;
                             if (typeof task === 'string') {
                                 info.task = {
-                                    cid: task
+                                    id: task
                                 };
                                 task = info.task;
                             } else if (task === undefined) {
@@ -539,66 +570,37 @@ define([
                             case 'change_state':
                             case 'worst_state':
                             case 'best_state':
-                                task.cid = 'canopsis.topology.rule.action.' + operator;
+                                task.id = 'canopsis.topology.rule.action.' + operator;
                                 task.params = {};
                                 break;
                             case '_all':
                             case 'at_least':
                             case 'nok':
-                                task.cid = 'canopsis.task.condition.condition';
+                                task.id = 'canopsis.task.condition.condition';
                                 task.params = {};
                                 task.params.condition = {
-                                    cid: 'canopsis.topology.rule.condition.' + operator,
+                                    id: 'canopsis.topology.rule.condition.' + operator,
                                     params: {}
                                 };
                                 // set minWeight
-                                if (operator === '_all') {
-                                    task.params.condition.params.minWeight = null;
-                                } else {
-                                    var minWeight = record.get('minWeight');
-                                    task.params.condition.params.minWeight = minWeight;
+                                if (operator !== '_all') {
+                                    var minWeight = record.get('min_weight');
+                                    task.params.condition.params.min_weight = minWeight;
                                 }
                                 // set inState
-                                var inState = record.get('inState');
+                                var inState = record.get('in_state');
                                 if (inState === 'nok') {
-                                    task.params.condition.params.f = 'canopsis.topology.rule.condition.is_nok';
-                                    task.params.condition.params.state = null;
+                                    if (operator !== 'nok') {
+                                        task.params.condition.params.f = 'canopsis.topology.rule.condition.is_nok';
+                                        task.params.condition.params.state = null;
+                                    }
                                 } else {
                                     task.params.condition.params.state = states.indexOf(inState);
                                 }
-                                // set thenState
-                                var thenState = record.get('thenState');
-                                task.params.statement = {
-                                    cid: 'canopsis.topology.rule.action.',
-                                    params: {}
-                                };
-                                switch(thenState) {
-                                    case 'worst_state':
-                                    case 'best_state':
-                                        task.params.statement.cid += thenState;
-                                        break;
-                                    default:
-                                        thenState = states.indexOf(thenState);
-                                        task.params.statement.cid += 'change_state';
-                                        task.params.statement.params.state = thenState;
-                                }
-                                // set elseState
-                                var elseState = record.get('elseState');
-                                task.params._else = {
-                                    cid: 'canopsis.topology.rule.action.',
-                                    params: {}
-                                };
-                                switch(elseState) {
-                                    case 'worst_state':
-                                    case 'best_state':
-                                        task.params._else.cid += elseState;
-                                        break;
-                                    default:
-                                        elseState = states.indexOf(elseState);
-                                        task.params._else.cid += 'change_state';
-                                        task.params._else.params.state = elseState;
-                                }
-                                break;
+                                // set statement
+                                updateInfoAction(task, record, 'then_state', 'statement');
+                                // set else
+                                updateInfoAction(task, record, 'else_state', '_else');
                             default: break;
                         }
                         // update info

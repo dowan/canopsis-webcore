@@ -18,20 +18,22 @@
 */
 
 define([
-    'ember',
-    'app/lib/factories/mixin'
-], function(Ember, Mixin) {
-
+    'canopsis/uibase/widgets/topology/layout/force',
+    'canopsis/uibase/widgets/topology/layout/cluster',
+    'canopsis/uibase/widgets/topology/layout/tree',
+    'canopsis/uibase/widgets/topology/layout/pack',
+    'canopsis/uibase/widgets/topology/layout/partition'
+], function(ForceLayout, ClusterLayout, TreeLayout, PackLayout, PartitionLayout) {
     var get = Ember.get,
         set = Ember.set;
 
-
-    var mixin = Mixin('infobutton', {
-        partials: {
-            itemactionbuttons: ['actionbutton-info']
+    var LayoutMixin = Ember.Mixin.create(
+        {
+            viewMixins: [
+                ForceLayout, ClusterLayout, TreeLayout, PackLayout, PartitionLayout
+            ],
         },
-    });
+    );
 
-
-    return mixin;
-});
+    return LayoutMixin;
+}
