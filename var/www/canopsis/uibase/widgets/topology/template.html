@@ -1,102 +1,4 @@
-<style>
-.node {
-    cursor: move;
-    stroke: black;
-}
-.node .entity {
-    text-anchor: middle;
-    baseline-shift: 0.5ex;
-}
-.node .operator {
-    text-anchor: middle;
-    baseline-shift: -1ex;
-}
-.ndok {
-    background-color: #00a65a !important;
-    color: #00a65a !important;
-    fill: #00a65a !important;
-}
-.ndminor {
-    background-color: #FFE000 !important;
-    color: #FFE000 !important;
-    fill: #FFE000 !important;
-}
-.ndmajor {
-    background-color: #FF9900 !important;
-    color: #FF9900 !important;
-    fill: #FF9900 !important;
-}
-.ndcritical {
-    background-color: #CF0000 !important;
-    color: #CF0000 !important;
-    fill: #CF0000 !important;
-}
-.edgenode {
-}
-.edgenode .weight {
-    text-anchor: middle;
-    baseline-shift: -0.5ex;
-}
-.toolbox {
-    fill: white;
-    cursor: pointer;
-    stroke: black;
-    font-color: black;
-}
-.toolbox text {
-    text-anchor: middle;
-    baseline-shift: -0.5ex;
-}
-.overlay {
-    fill: none;
-    pointer-events: all;
-    cursor: context-menu;
-}
-.locked {
-    stroke: blue;
-    stroke-width: 2;
-}
-.selected {
-    stroke: green;
-    stroke-width: 2;
-}
-.over {
-    stroke: blue;
-    stroke-width: 2;
-}
-.tmpLink {
-    opacity: 0.5;
-    pointer-events: all;
-    marker-end: url(#markerArrow);
-}
-#tmpLink {
-    cursor: copy;
-    stroke: green;
-}
-#wrongTmpLink {
-    cursor: no-drop;
-    stroke: red;
-}
-.link {
-}
-.lnok {
-    stroke: #00a65a !important;
-}
-.lnminor {
-    stroke: #FFE000 !important;
-}
-.lnmajor {
-    stroke: #FF9900 !important;
-}
-.lncritical {
-    stroke: #CF0000 !important;
-}
-
-.targetLink {
-    cursor: context-menu;
-}
-</style>
-<div class="graph" {{bind-attr id=controller.id}}>
+<div class="graph" {{bind-attr id=view.id}}>
 <svg>
 <defs>
     <marker id="markerArrow" markerWidth="10" viewBox="0 0 10 10" markerHeight="10" refx="15" refy="5" orient="auto">
@@ -106,28 +8,14 @@
 </svg>
 
 <button type="button" {{action "showHideProperties" target="view"}}>Show/Hide Properties</button>
-Auto-Layout: {{input name="autoLayout" type="checkbox" target="view" checked=autoLayout}}
-
 {{#if view.showProperties}}
+Auto-Layout: {{input name="autoLayout" type="checkbox" target="view" checked=autoLayout}}
 Filter: {{input name="filter" target="view" type="text" value="filter" action="filter" on="key-press"}}
-Charge: {{input target="view" name="charge" type="text" value="charge"}}
-Link strength: {{input name="linkStrength" target="view" type="text" value="linkStrength"}}
-LinkDistance: {{input name="linkDistance" type="text" target="view" value="linkDistance"}}
-Friction: {{input name="friction" type="text" target="view" value="friction"}}
-Theta: {{input name="theta" type="text" target="view" value="theta"}}
-Gravity: {{input name="gravity" type="text" target="view" value="gravity"}}
+Charge: {{component-slider content=view.charge options=view.optionsCharge}}
+Link strength: {{component-slider content=view.linkStrength options=view.linkStrengthCharge}}
+Link distance: {{component-slider content=view.linkDistance options=view.linkDistanceCharge}}
+Friction: {{component-slider content=view.friction options=view.frictionCharge}}
+Theta: {{component-slider content=view.theta options=view.thetaCharge}}
+Gravity: {{component-slider content=view.gravity options=view.gravityCharge}}
 {{/if}}
-
-<!--Lock all: {{input name="lockAll" type="checkbox"
- checked=view.lockAll}}
-Filter: {{input name="filter" type="text" value="view.filter" action="view.filter" on="key-press"}}
--->
-<!--
-Charge: <input type="range" min="-200" max="200" step="10" {{bind-attr value=controller.charge}} />
-Link strength: <input type="range" min="0" max="1" step="0.1" {{bind-attr value=controller.linkStrength}} />
-LinkDistance: <input type="range" min="0" max="200" step="5" {{bind-attr value=controller.linkDistance}} />
-Friction: <input type="range" min="0" max="1" step="0.1" {{bind-attr value=controller.friction}} />
-Theta: <input type="range" min="0" max="1" step="0.1" {{bind-attr value=controller.theta}} />
-Gravity: <input type="range" min="0" max="1" step="0.1" {{bind-attr value=controller.gravity}} />
--->
 </div>

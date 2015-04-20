@@ -127,6 +127,8 @@ def exports(ws):
         :param bool cache: use query cache if True (False by default).
         """
 
+        manager.logger.error(elts)
+
         manager.put_elts(elts=elts, graph_ids=graph_ids, cache=cache)
 
         # ensure elts is a list of elements
@@ -140,6 +142,8 @@ def exports(ws):
                 gelt = GraphElement.new_element(**elt)
             event = {Check.STATE: gelt.state}
             gelt.process(event=event, manager=manager, publisher=publisher)
+
+        manager.logger.error(elts)
 
         return elts
 

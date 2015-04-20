@@ -24,8 +24,8 @@ define(['ember'], function(Ember) {
         gen_resolve: function(callback) {
             return function(data) {
                 for (var i = 0; i < data.data.length; i++) {
-                    data.data[i].id = data.data[i]._id;
-                    delete data.data[i]._id;
+                    //data.data[i].id = data.data[i]._id;
+                    //delete data.data[i]._id;
                 }
 
                 if(data.success === false && data.data.msg) {

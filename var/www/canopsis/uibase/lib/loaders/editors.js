@@ -34,6 +34,7 @@ var editors = [
     { name: 'editor-defaultpropertyeditor', template: 'canopsis/uibase/editors/defaultpropertyeditor.html' },
     { name: 'editor-dictclassifiedcrecordselector', template: 'canopsis/uibase/editors/dictclassifiedcrecordselector.html' },
     { name: 'editor-duration', template: 'canopsis/uibase/editors/duration.html' },
+    { name: 'editor-durationWithUnits', template: 'canopsis/uibase/editors/durationWithUnits.html' },
     { name: 'editor-eventselector', template: 'canopsis/uibase/editors/eventselector.html' },
     { name: 'editor-integer', template: 'canopsis/uibase/editors/integer.html' },
     { name: 'editor-mail', template: 'canopsis/uibase/editors/mail.html' },
