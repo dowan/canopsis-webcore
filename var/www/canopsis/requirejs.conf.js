@@ -256,7 +256,6 @@ define(['canopsis/enabled', 'plugins', 'canopsis/canopsisConfiguration', 'app/li
         setLoadingInfo('Fetching frontend plugin-ins', 'fa-cubes');
 
         var deps = [
-            'seeds/RoutesLoader',
             'app/lib/wrappers/extend',
             'app/lib/utils/i18n',
             'link'

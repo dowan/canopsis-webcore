@@ -232,6 +232,19 @@ define([
 
         actions: {
             /**
+             * @event editConfig
+             * @descriptions Shows a form to edit the frontend configuration
+             */
+            editConfig: function() {
+                var frontendConfig = get(this, 'frontendConfig');
+                console.log('editConfig', formsUtils, frontendConfig);
+
+                var editForm = formsUtils.showNew('modelform', frontendConfig, { title: __("Edit settings"), inspectedItemType: "frontend" });
+                editForm.submit.done(function() {
+                    frontendConfig.save();
+                });
+            },
+            /**
              * @event editAuthConfiguration
              * @param {String} authType
              */
