@@ -21,6 +21,7 @@ define([
     'app/application',
     'runtime.conf',
     'app/serializers/application',
+    'app/serializers/ctxmetric',
     'app/lib/wrappers/bootstrap',
     'app/lib/wrappers/hint',
     'app/lib/wrappers/swag',
