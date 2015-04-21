@@ -24,6 +24,7 @@ define([
     'app/serializers/ctxmetric',
     'app/serializers/ctxcomponent',
     'app/serializers/ctxresource',
+    'app/serializers/ctxselector',
     'app/lib/wrappers/bootstrap',
     'app/lib/wrappers/hint',
     'app/lib/wrappers/swag',

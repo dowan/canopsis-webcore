@@ -156,8 +156,19 @@ define([
             var contextType = get(this, 'contextType');
 
             switch(contextType) {
+                case 'ctxselector':
+                    return [
+                        {name: 'name', title: __('Component')},
+                        {
+                            action: 'select',
+                            actionAll: (get(this, 'multiselect') === true ? 'selectAll' : undefined),
+                            title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-plus-sign"></span>'),
+                            style: 'text-align: center;'
+                        }
+                    ];
                 case 'ctxcomponent':
                     return [
+                        {name: 'connector_name', title: __('Connector name')},
                         {name: 'name', title: __('Component')},
                         {
                             action: 'select',
@@ -168,6 +179,7 @@ define([
                     ];
                 case 'ctxresource':
                     return [
+                        {name: 'connector_name', title: __('Connector name')},
                         {name: 'component', title: __('Component')},
                         {name: 'name', title: __('Resource')},
                         {
