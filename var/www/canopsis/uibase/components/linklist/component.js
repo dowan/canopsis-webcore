@@ -19,9 +19,9 @@
 
 
 define([
-    'jquery',
     'ember',
-], function(Ember) {
+    'app/application'
+], function(Ember, Application) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -32,6 +32,7 @@ define([
     var component = Ember.Component.extend({
         init: function() {
             this._super();
+            set(this, 'links', []);
         },
 
         didInsertElement: function () {
@@ -41,26 +42,26 @@ define([
             this.$().parents('td').css('overflow-x', 'visible').css('overflow-y', 'visible');
         },
 
-        links: function () {
-            /*
-            var infoLink = this.getInfoLink();
-            return [
-                {label: __('info link'), url: infoLink},
-                {label: 'perdu', url: 'http://perdu.com'},
-                {label: 'weekend', url: 'http://estcequecestbientotleweekend.fr'},
-                {label: 'uselessweb', url: 'http://theuselessweb.com'},
-            ];
-            */
-            return [];
-        }.property(),
-
         linksFromApi: function (evt) {
+
+            var linklistComponent = this;
+
+            var adapter = Application.__container__.lookup('adapter:entitylink');
+
             console.log('event', evt);
-            get(this, 'widgetDataStore').findQuery(
+
+            adapter.findEventLinks(
                 'entitylink',
-                {'event': evt}
+                {'event': JSON.stringify(evt)}
             ).then(function(results) {
                 console.log('links from api results', results);
+                var links;
+                if (result.success) {
+                    links = results.data;
+                } else {
+                    links = [];
+                }
+                set(linklistComponent, 'links', links);
             });
         },
 

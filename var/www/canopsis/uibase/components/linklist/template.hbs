@@ -4,12 +4,14 @@
             <i class="fa fa-link"></i>
             <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu" role="menu" style="right:0; left:auto">
-            {{#each linkInformation in links}}
-                <li>
-                    <a target="_blank" {{bind-attr href=linkInformation.url}}>{{linkInformation.label}}</a>
-                </li>
-            {{/each}}
-        </ul>
+        {{#if links.length}}
+            <ul class="dropdown-menu" role="menu" style="right:0; left:auto">
+                {{#each linkInformation in links}}
+                    <li>
+                        <a target="_blank" {{bind-attr href=linkInformation.url}}>{{linkInformation.label}}</a>
+                    </li>
+                {{/each}}
+            </ul>
+        {{/if}}
     </div>
 {{/component-tooltip}}

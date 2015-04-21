@@ -2,15 +2,17 @@
 
 from canopsis.common.ws import route
 from canopsis.linklist.manager import Linklist
+from canopsis.entitylink.manager import Entitylink
 
-manager = Linklist()
+link_list_manager = Linklist()
+entity_link_manager = Entitylink()
 
 
 def exports(ws):
 
     @route(ws.application.delete, payload=['ids'])
     def linklist(ids):
-        manager.remove(ids)
+        link_list_manager.remove(ids)
         ws.logger.info('Delete : {}'.format(ids))
         return True
 
@@ -25,13 +27,13 @@ def exports(ws):
             'type': type(document)
         })
 
-        manager.put(document)
+        link_list_manager.put(document)
 
         return True
 
     @route(ws.application.post, payload=['limit', 'start', 'sort', 'filter'])
     def linklist(limit=0, start=0, sort=None, filter={}):
-        result = manager.find(
+        result = link_list_manager.find(
             limit=limit,
             skip=start,
             _filter=filter,
@@ -46,4 +48,4 @@ def exports(ws):
         name='entitylink'
     )
     def linklist(event):
-        return manager.get_links_from_event(event)
+        return entity_link_manager.get_links_from_event(event)
