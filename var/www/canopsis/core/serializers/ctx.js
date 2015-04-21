@@ -19,11 +19,17 @@
 
 define([
     'ember-data',
-    'app/serializers/ctx',
-], function(DS, CtxSerializer) {
+    'app/serializers/application'
+], function(DS, ApplicationSerializer) {
 
-    var serializer = CtxSerializer.extend({});
+    var serializer = ApplicationSerializer.extend({
+        normalize: function (type, hash) {
+            console.log('normalize', arguments);
+            hash.id = hash._id;
+            return this._super(type, hash);
+        }
+    });
 
-    loader.register('serializer:ctxmetric', serializer);
+    loader.register('serializer:ctx', serializer);
     return serializer;
 });
