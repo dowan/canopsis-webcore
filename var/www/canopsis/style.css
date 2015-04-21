@@ -1,10 +1,17 @@
-/* Properties for colorGrid editor*/
-#color-preview{
-    border: 1px solid black;
+/* Properties for colorGrid editor and dropdownbutton*/
+.btn-secondary{
+    color: #333;
+    background-color: #eee;
+    border-color: #eee;
+}
+
+.overview{
+    border: 1px solid #fff;
     display: inline-block;
     height: 20px;
     width: 30px;
     margin: 0 5px 0 5px;
+    float: left;
 }
 
 .rangeBrowser{
@@ -42,7 +49,6 @@
     margin-top: 1%;
     height: 20%;
     float: left;
-    /*border: 1px solid #ccc;*/
 }
 
 @media only screen and (max-width:800px) {
@@ -54,21 +60,37 @@
         margin-top: 1%;
         height: 20%;
         float: left;
-        /*border: 1px solid #ccc;*/
     } 
+}
+
+.colorBtn{
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid #eee;
+    border-radius: 4px;
 }
 
 .opening{
     margin-top: 10px;
     padding-bottom: 10px;
+    display: block;
 }
 
 .opening span{
     margin-bottom: 10px;
-}
-
-.closure{
-
+    display: inline-block;
+    float: left;
+    background-color: #eee;
 }
 
 .activeColor{
@@ -126,6 +148,28 @@ div .customcolor{
     margin-bottom: 20px;
     float: left;
     display: inline-block;
+}
+
+.dropdown-content-menu{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
 }
 
 

@@ -32,9 +32,9 @@ define([
 
 
     Ember.Application.initializer({
-        name:"component-dropdownbutton",
+        name:"component-dropdownbuttontitle",
         initialize: function(container, application) {
-            application.register('component:component-dropdownbutton', component);
+            application.register('component:component-dropdownbuttontitle', component);
         }
     });
 

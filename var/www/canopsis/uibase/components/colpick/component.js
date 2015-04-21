@@ -38,7 +38,7 @@ define([
         set = Ember.set;
 
     var component = Ember.Component.extend({
-
+        classNames: ['colorSelector'],
         /**
          * instantiate component and load data
          * @method init
@@ -57,6 +57,8 @@ define([
          */
         didInsertElement: function() {
             var component = this;
+
+            component.$().parents('td').css('overflow-x', 'visible').css('overflow-y', 'visible');
 
             var options = {
                 flat:true,
@@ -85,8 +87,15 @@ define([
                     var colors = get(ranges[i], 'colors');
                     for (var j = colors.length - 1; j >= 0; j--) {
                         var color = colors[j];
-                        set(color, 'style', 'background-color:' + get(color, 'code'));
-                        set(color, 'selected', false);
+                        var style = 'background-color:' + color;
+                        var selected = false;
+                        var colorCode = color;
+
+                        colors[j] = {
+                            style: style,
+                            selected: selected,
+                            code: colorCode
+                        };
                     }
                 }
                 

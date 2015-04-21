@@ -26,23 +26,21 @@ define([
         set = Ember.set;
 
     var component = Ember.Component.extend({
-        classNames: ['dropdownbuttoncontent', 'dropdownbuttoncontent-default'],
-        attributeBindings: ['class'],
-        class: 'dropdown-menu'
+        classNames: ['dropdownbuttoncontent'],
+        classNameBindings: ['dropdownContentMenu'],
+        dropdownContentMenu: function(){
+           return get(this, 'parentView.opened');
+        }.property('parentView.opened'),
+        attributeBindings: ['aria-labelledby'],
+        'aria-labelledby': 'dropdownMenu1'
     });
 
     Ember.Application.initializer({
-        name:"component-dropdownbutton",
+        name:"component-dropdownbuttoncontent",
         initialize: function(container, application) {
-            application.register('component:component-dropdownbutton', component);
+            application.register('component:component-dropdownbuttoncontent', component);
         }
     });
 
     return component;
 });
-
-/**
- * commencer l'arborescence avec un yield simple
- * faire un yield pour chaque niveau (je crois) car pas possible autrement
- * gérer le parcours d'arborescence avec parentView() et le style dans component.js quand html inexistant
- **/

@@ -26,27 +26,18 @@ define([
         set = Ember.set;
 
     var component = Ember.Component.extend({
-        classNames: ['dropdownbuttonoverview', 'dropdownbuttonoverview-default'],
-
-        init: function() {
-            this._super();
-            var test = get(this, 'value');
-            console.log('value', test);
-        },
-
-        didInsertElement: function(){
-            var component = this;
-            var test = get(this, 'value');
-            set(component,'fond', 'background-color:' + 'value');
-            console.log('value', test);
-        }
+        classNames: ['dropdownbuttonoverview', 'dropdownbuttonoverview-default', 'overview'],
+        attributeBindings: ['style'],
+        style: function() {
+            var code = get(this, 'color');
+            return 'background-color:' + code;
+        }.property('color')
     });
 
-
     Ember.Application.initializer({
-        name:"component-dropdownbutton",
+        name:"component-dropdownbuttonoverview",
         initialize: function(container, application) {
-            application.register('component:component-dropdownbutton', component);
+            application.register('component:component-dropdownbuttonoverview', component);
         }
     });
 
