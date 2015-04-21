@@ -31,10 +31,10 @@ define([
             modelName: 'ctxresource'
         },{
             name: 'selector',
-            modelName: 'selector'
+            modelName: 'ctxselector'
         },{
-            name: 'topo',
-            modelName: 'topo'
+            name: 'topology',
+            modelName: 'ctxtopology'
         }];
 
     var contextsManager = Abstractclassregistry.create({

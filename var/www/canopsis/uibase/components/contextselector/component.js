@@ -155,9 +155,25 @@ define([
         columns: function() {
             var contextType = get(this, 'contextType');
 
+            //for topology and selectors
+            var model1 = [
+                {name: 'name', title: __('Component')},
+                {
+                    action: 'select',
+                    actionAll: (get(this, 'multiselect') === true ? 'selectAll' : undefined),
+                    title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-plus-sign"></span>'),
+                    style: 'text-align: center;'
+                }
+            ];
+
             switch(contextType) {
+                case 'ctxtopology':
+                    return model1;
+                case 'ctxselector':
+                    return model1;
                 case 'ctxcomponent':
                     return [
+                        {name: 'connector_name', title: __('Connector name')},
                         {name: 'name', title: __('Component')},
                         {
                             action: 'select',
@@ -168,6 +184,7 @@ define([
                     ];
                 case 'ctxresource':
                     return [
+                        {name: 'connector_name', title: __('Connector name')},
                         {name: 'component', title: __('Component')},
                         {name: 'name', title: __('Resource')},
                         {

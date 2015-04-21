@@ -24,6 +24,6 @@ define([
 
     var serializer = CtxSerializer.extend({});
 
-    loader.register('serializer:ctxmetric', serializer);
+    loader.register('serializer:ctxcomponent', serializer);
     return serializer;
 });
