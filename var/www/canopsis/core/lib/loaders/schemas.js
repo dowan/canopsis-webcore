@@ -118,6 +118,11 @@ function compare(a,b) {
                 var propertiesKeys = Ember.keys(schema.properties);
                 for (var i = 0; i < propertiesKeys.length; i++) {
                     var currentKey = propertiesKeys[i];
+                    // avoid to add id in model because ember has already added once
+                    if (currentKey === 'id') {
+                        continue;
+                    }
+
                     var currentProperty = schema.properties[currentKey];
 
                     if(currentProperty['default']) {
@@ -184,24 +189,25 @@ function compare(a,b) {
         getSchemas: function() {
             var schemasLoader = this;
             var shemasLimit = 200;
-            $.ajax({
-                url: '/rest/schemas',
-                data: {limit: shemasLimit},
-                success: function(payload) {
+
+            var adapter = Application.__container__.lookup('adapter:schema');
+
+            var successFunction = function(payload) {
                 if (payload.success) {
                     if(payload.total === 0) {
                         console.warn('No schemas was imported from the backend, you might have nothing in your database, or a communication problem with the server');
                     } else if(payload.total === shemasLimit) {
                         console.warn('You loaded', shemasLimit, 'schemas. You might have some more on your database that were ignored.');
                     }
-                        console.log('Api schema data', payload);
-                        schemasLoader.__schemas__ = payload.data;
-                    } else {
-                        console.error('Unable to load schemas from API');
-                    }
-                },
-                async: false
-            });
+
+                    console.log('Api schema data', payload);
+                    schemasLoader.__schemas__ = payload.data;
+                } else {
+                    console.error('Unable to load schemas from API');
+                }
+            }
+
+            adapter.findAll(successFunction);
 
             return this.__schemas__;
         }

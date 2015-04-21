@@ -21,6 +21,8 @@ define([
     'ember'
 ], function(Ember) {
 
+    var get = Ember.get;
+
     /**
      * TODO : Add validators to crecord.attributes
      * Scan attr's options in order to retrieve all needed validators (Ember.validators)
@@ -28,10 +30,10 @@ define([
      */
     function GetValidators(attr) {
         console.log("attr = ", attr);
-        var options = attr.model.options;
+        var options = get(attr, 'model.options');
         var validators = [];
 
-        var validatorName = attr.model.type;
+        var validatorName = get(attr, 'model.type');
         var validator = Ember.validators[validatorName];
         if (validator !== undefined) {
             console.log("pushed : ", validatorName);

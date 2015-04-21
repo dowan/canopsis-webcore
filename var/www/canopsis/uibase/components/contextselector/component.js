@@ -57,13 +57,13 @@ define([
                 '<li><code>co:</code>, <code>re:</code>, <code>me:</code> : ', __('look for non-existant field') , '</li>' ,
                 '</ul>'].join(''),
 
-            id: hashUtils.generateId('cmetric-help-modal'),
+            name: hashUtils.generateId('cmetric-help-modal'),
             label: hashUtils.generateId('cmetric-help-modal-label')
         },
 
         actions: {
             select: function(item) {
-                set(this, 'content', get(item, 'id'));
+                set(this, 'content', get(item, '_id'));
             },
 
             search: function(search) {
@@ -88,7 +88,7 @@ define([
             var patterns = {
                 component: [],
                 resource: [],
-                cid: []
+                name: []
             };
 
             for(i = 0; i < conditions.length; i++) {
@@ -104,10 +104,10 @@ define([
                         patterns.resource.push(regex);
                     }
                     else if(condition.indexOf('me:') === 0) {
-                        patterns.cid.push(regex);
+                        patterns.name.push(regex);
                     }
                     else {
-                        patterns.cid.push(condition);
+                        patterns.name.push(condition);
                     }
                 }
             }
@@ -116,7 +116,7 @@ define([
             var filters = {
                 component: {'$or': []},
                 resource: {'$or': []},
-                cid: {'$or': []}
+                name: {'$or': []}
             };
 
             for(var key in filters) {
@@ -155,10 +155,26 @@ define([
         columns: function() {
             var contextType = get(this, 'contextType');
 
+            //for topology and selectors
+            var model1 = [
+                {name: 'name', title: __('Component')},
+                {
+                    action: 'select',
+                    actionAll: (get(this, 'multiselect') === true ? 'selectAll' : undefined),
+                    title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-plus-sign"></span>'),
+                    style: 'text-align: center;'
+                }
+            ];
+
             switch(contextType) {
+                case 'ctxtopology':
+                    return model1;
+                case 'ctxselector':
+                    return model1;
                 case 'ctxcomponent':
                     return [
-                        {name: 'cid', title: __('Component')},
+                        {name: 'connector_name', title: __('Connector name')},
+                        {name: 'name', title: __('Component')},
                         {
                             action: 'select',
                             actionAll: (get(this, 'multiselect') === true ? 'selectAll' : undefined),
@@ -168,8 +184,9 @@ define([
                     ];
                 case 'ctxresource':
                     return [
+                        {name: 'connector_name', title: __('Connector name')},
                         {name: 'component', title: __('Component')},
-                        {name: 'cid', title: __('Resource')},
+                        {name: 'name', title: __('Resource')},
                         {
                             action: 'select',
                             actionAll: (get(this, 'multiselect') === true ? 'selectAll' : undefined),
@@ -181,7 +198,7 @@ define([
                     return [
                         {name: 'component', title: __('Component')},
                         {name: 'resource', title: __('Resource')},
-                        {name: 'cid', title: __('Metric')},
+                        {name: 'id', title: __('Metric')},
                         {
                             action: 'select',
                             actionAll: (get(this, 'multiselect') === true ? 'selectAll' : undefined),

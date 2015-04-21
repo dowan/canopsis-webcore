@@ -17,21 +17,19 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
-    if(window.isIE) {
-        Function.prototype.bind = function(context) {
-            var func = this;
+define([
+    'ember-data',
+    'app/serializers/application'
+], function(DS, ApplicationSerializer) {
 
-            var decorator = function() {
-                return func.call(context, arguments);
-            };
+    var serializer = ApplicationSerializer.extend({
+        normalize: function (type, hash) {
+            console.log('normalize', arguments);
+            hash.id = hash._id;
+            return this._super(type, hash);
+        }
+    });
 
-            return decorator;
-        };
-
-    }
-    String.prototype.replaceAll = function(find, replace) {
-        var escaped = find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-        return this.replace(new RegExp(escaped, 'g'), replace);
-    };
+    loader.register('serializer:ctx', serializer);
+    return serializer;
 });

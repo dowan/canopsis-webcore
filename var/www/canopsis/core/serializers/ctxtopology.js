@@ -17,21 +17,13 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
-    if(window.isIE) {
-        Function.prototype.bind = function(context) {
-            var func = this;
+define([
+    'ember-data',
+    'app/serializers/ctx',
+], function(DS, CtxSerializer) {
 
-            var decorator = function() {
-                return func.call(context, arguments);
-            };
+    var serializer = CtxSerializer.extend({});
 
-            return decorator;
-        };
-
-    }
-    String.prototype.replaceAll = function(find, replace) {
-        var escaped = find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-        return this.replace(new RegExp(escaped, 'g'), replace);
-    };
+    loader.register('serializer:ctxtopology', serializer);
+    return serializer;
 });

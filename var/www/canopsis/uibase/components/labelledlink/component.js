@@ -17,21 +17,33 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
-    if(window.isIE) {
-        Function.prototype.bind = function(context) {
-            var func = this;
+define([
+    'ember',
+], function(Ember) {
 
-            var decorator = function() {
-                return func.call(context, arguments);
-            };
+    var get = Ember.get,
+        set = Ember.set,
+        isNone = Ember.isNone,
+        __ = Ember.String.loc;
 
-            return decorator;
-        };
 
-    }
-    String.prototype.replaceAll = function(find, replace) {
-        var escaped = find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-        return this.replace(new RegExp(escaped, 'g'), replace);
-    };
+    var component = Ember.Component.extend({
+        label_placeholder: __('label'),
+        url_placeholder: __('url'),
+
+        init: function () {
+            this._super();
+        },
+
+
+    });
+
+    Ember.Application.initializer({
+        name:"component-labelledlink",
+        initialize: function(container, application) {
+            application.register('component:component-labelledlink', component);
+        }
+    });
+
+    return component;
 });

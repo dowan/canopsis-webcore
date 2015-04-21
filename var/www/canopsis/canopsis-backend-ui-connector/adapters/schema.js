@@ -17,21 +17,32 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
-    if(window.isIE) {
-        Function.prototype.bind = function(context) {
-            var func = this;
+define([
+    'jquery',
+    'ember',
+    'canopsis/canopsis-backend-ui-connector/adapters/application'
+], function($, Ember, ApplicationAdapter) {
 
-            var decorator = function() {
-                return func.call(context, arguments);
-            };
+    var shemasLimit = 200;
 
-            return decorator;
-        };
+    var adapter = ApplicationAdapter.extend({
+        findAll: function (callback) {
+            return this.findAllSyncronous(callback);
+        },
 
-    }
-    String.prototype.replaceAll = function(find, replace) {
-        var escaped = find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-        return this.replace(new RegExp(escaped, 'g'), replace);
-    };
+        //TODO make this asyncronous
+        findAllSyncronous: function (successCallback) {
+            return $.ajax({
+                url: '/rest/schemas',
+                data: {limit: shemasLimit},
+                success: successCallback,
+                async: false
+            });
+
+        }
+    });
+
+    loader.register('adapter:schema', adapter);
+
+    return adapter;
 });

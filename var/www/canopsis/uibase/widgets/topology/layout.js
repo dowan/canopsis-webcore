@@ -17,21 +17,23 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
-    if(window.isIE) {
-        Function.prototype.bind = function(context) {
-            var func = this;
+define([
+    'canopsis/uibase/widgets/topology/layout/force',
+    'canopsis/uibase/widgets/topology/layout/cluster',
+    'canopsis/uibase/widgets/topology/layout/tree',
+    'canopsis/uibase/widgets/topology/layout/pack',
+    'canopsis/uibase/widgets/topology/layout/partition'
+], function(ForceLayout, ClusterLayout, TreeLayout, PackLayout, PartitionLayout) {
+    var get = Ember.get,
+        set = Ember.set;
 
-            var decorator = function() {
-                return func.call(context, arguments);
-            };
+    var LayoutMixin = Ember.Mixin.create(
+        {
+            viewMixins: [
+                ForceLayout, ClusterLayout, TreeLayout, PackLayout, PartitionLayout
+            ],
+        },
+    );
 
-            return decorator;
-        };
-
-    }
-    String.prototype.replaceAll = function(find, replace) {
-        var escaped = find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-        return this.replace(new RegExp(escaped, 'g'), replace);
-    };
-});
+    return LayoutMixin;
+}
