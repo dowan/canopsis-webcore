@@ -17,6 +17,14 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * Component for switching between display and hide of the content
+ *
+ * @module component
+ * @return {component} dropdownbuttoncontent
+ * @requires jquey
+ * @requires ember
+ */
 define([
     'jquery',
     'ember'
@@ -28,9 +36,16 @@ define([
     var component = Ember.Component.extend({
         classNames: ['dropdownbuttoncontent'],
         classNameBindings: ['dropdownContentMenu'],
+        /**
+         * Method for defining a boolean value on dropdownContentMenu 
+         * thanks to opened attribute
+         * @method dropdownMenu
+         * @return {boolean}
+         */
         dropdownContentMenu: function(){
            return get(this, 'parentView.opened');
         }.property('parentView.opened'),
+        
         attributeBindings: ['aria-labelledby'],
         'aria-labelledby': 'dropdownMenu1'
     });

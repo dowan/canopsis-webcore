@@ -17,6 +17,14 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * Component for defining the title of the dropdownbutton
+ *
+ * @module component
+ * @return {component} dropdownbuttontitle
+ * @requires jquey
+ * @requires ember
+ */
 define([
     'jquery',
     'ember'

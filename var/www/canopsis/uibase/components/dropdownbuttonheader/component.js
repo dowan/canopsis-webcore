@@ -17,6 +17,15 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * Component that contains the title and optional other components 
+ * for dropdownbutton
+ *
+ * @module component
+ * @return {component} dropdownbuttonheader
+ * @requires jquey
+ * @requires ember
+ */
 define([
     'jquery',
     'ember'
@@ -31,6 +40,10 @@ define([
         attributeBindings: ['aria-expanded'],
         'aria-expanded': 'true',
 
+         /**
+          * method calling toggle method on click to switch boolean value of opened attribute
+          * @method click 
+          */
         click: function(){
             this.toggle();
         },
