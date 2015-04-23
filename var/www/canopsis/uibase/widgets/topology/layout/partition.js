@@ -26,7 +26,7 @@ define([
 
     var PartitionLayout = Ember.Mixin.create(
         {
-        },
+        }
     );
 
     return PartitionLayout;

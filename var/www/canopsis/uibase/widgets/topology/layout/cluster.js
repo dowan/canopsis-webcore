@@ -26,7 +26,7 @@ define([
 
     var ClusterLayout = Ember.Mixin.create(
         {
-        },
+        }
     );
 
     return ClusterLayout;
