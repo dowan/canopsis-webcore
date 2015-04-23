@@ -30,6 +30,9 @@ define([
 
 
     var component = Ember.Component.extend({
+
+        link_types: ['computed_links', 'event_links'],
+
         init: function() {
             this._super();
             set(this, 'links', []);
@@ -55,13 +58,28 @@ define([
                 {'event': JSON.stringify(evt)}
             ).then(function(results) {
                 console.log('links from api results', results);
-                var links;
-                if (result.success) {
-                    links = results.data;
-                } else {
-                    links = [];
+                var links = [],
+                    link_types = linklistComponent.link_types;
+
+                if (results.success) {
+
+                    var links_information = results.data[0];
+                    console.log('links_information', links_information);
+
+                    for(var i=0; i<link_types.length;i++) {
+
+                        var value = links_information[link_types[i]];
+                        console.log('search',link_types[i], 'in links_information', value);
+
+                        if (!isNone(value)) {
+                            links = links.concat(value);
+                        }
+                    }
+
                 }
+
                 set(linklistComponent, 'links', links);
+                console.log('links fetched', get(linklistComponent, 'links'));
             });
         },
 
@@ -81,19 +99,6 @@ define([
                     console.log('Links already loaded');
                 }
 
-                /*
-                var record = get(this, 'record');
-                var linkInfoPattern = get(this, 'linkInfoPattern');
-
-                var template = linkInfoPattern,
-                    context = record._data;
-
-                var compiledUrl = Handlebars.compile(template)(context);
-
-                console.log('info', compiledUrl, record._data);
-
-                return compiledUrl;
-                */
             }
         }
 

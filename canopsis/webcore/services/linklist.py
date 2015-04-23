@@ -22,7 +22,7 @@ def exports(ws):
         name='linklist/put'
     )
     def linklist(document):
-        ws.logger.info({
+        ws.logger.debug({
             'document': document,
             'type': type(document)
         })
@@ -48,4 +48,5 @@ def exports(ws):
         name='entitylink'
     )
     def linklist(event):
+        ws.logger.debug({'received event': event})
         return entity_link_manager.get_links_from_event(event)
