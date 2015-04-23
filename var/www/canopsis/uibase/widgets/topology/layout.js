@@ -31,9 +31,9 @@ define([
         {
             viewMixins: [
                 ForceLayout, ClusterLayout, TreeLayout, PackLayout, PartitionLayout
-            ],
-        },
+            ]
+        }
     );
 
     return LayoutMixin;
-}
+});

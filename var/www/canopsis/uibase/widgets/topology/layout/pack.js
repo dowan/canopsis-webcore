@@ -26,8 +26,8 @@ define([
 
     var PackLayout = Ember.Mixin.create(
         {
-        },
+        }
     );
 
     return PackLayout;
-}
+});
