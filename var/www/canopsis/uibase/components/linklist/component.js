@@ -28,9 +28,14 @@ define([
         isNone = Ember.isNone,
         __ = Ember.String.loc;
 
+    /**
+    This component loads labelled links information from entity link backend and make them
+    available in the link list button.
+    **/
 
     var component = Ember.Component.extend({
 
+        //events link that may exist in the entitylink payload where to look for labelled urls
         link_types: ['computed_links', 'event_links'],
 
         init: function() {
@@ -46,26 +51,31 @@ define([
         },
 
         linksFromApi: function (evt) {
-
+            /**
+            Query the entity link storage in order to find a link list from an event.
+            **/
             var linklistComponent = this;
 
             var adapter = Application.__container__.lookup('adapter:entitylink');
 
             console.log('event', evt);
 
+            //Do query entity link api
             adapter.findEventLinks(
                 'entitylink',
                 {'event': JSON.stringify(evt)}
             ).then(function(results) {
+
                 console.log('links from api results', results);
                 var links = [],
                     link_types = linklistComponent.link_types;
 
                 if (results.success) {
-
+                    //when links found, make them available in the links array of the component
                     var links_information = results.data[0];
                     console.log('links_information', links_information);
 
+                    //merge all optional data fields that may contain labelled links
                     for(var i=0; i<link_types.length;i++) {
 
                         var value = links_information[link_types[i]];
@@ -85,6 +95,11 @@ define([
 
         actions: {
             loadLinks: function(record) {
+
+                /**
+                Initialization of the api query from an event.
+                Data are cached, when already fetched, they are not reloaded.
+                **/
 
                 console.log('record', record);
 
