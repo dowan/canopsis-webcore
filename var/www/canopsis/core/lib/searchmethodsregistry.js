@@ -41,6 +41,89 @@ define([
                 console.log("##" ,res);
                 return res;
             }
+        },{
+            name: 'metric',
+            help: {
+                title: __('Syntax'),
+                content: ['<ul>',
+                    '<li><code>co:regex</code> : ', __('look for a component'), '</li>',
+                    '<li><code>re:regex</code> : ', __('look for a resource'), '</li>' ,
+                    '<li><code>me:regex</code> : ' , __('look for a metric') , '(<code>me:</code>' , __(' isn\'t needed for this one') , ')</li>' ,
+                    '<li>', __('combine all of them to improve your search'),' : <code>co:regex re:regex me:regex</code></li>' ,
+                    '<li><code>co:</code>, <code>re:</code>, <code>me:</code> : ', __('look for non-existant field') , '</li>' ,
+                    '</ul>'].join('')
+            },
+
+            buildFilter: function(search) {
+                var conditions = search.split(' ');
+                var i;
+
+                var patterns = {
+                    component: [],
+                    resource: [],
+                    cid: []
+                };
+
+                for(i = 0; i < conditions.length; i++) {
+                    var condition = conditions[i];
+
+                    if(condition !== '') {
+                        var regex = condition.slice(3) || null;
+
+                        if(condition.indexOf('co:') === 0) {
+                            patterns.component.push(regex);
+                        }
+                        else if(condition.indexOf('re:') === 0) {
+                            patterns.resource.push(regex);
+                        }
+                        else if(condition.indexOf('me:') === 0) {
+                            patterns.cid.push(regex);
+                        }
+                        else {
+                            patterns.cid.push(condition);
+                        }
+                    }
+                }
+
+                var mfilter = {'$and': []};
+                var filters = {
+                    component: {'$or': []},
+                    resource: {'$or': []},
+                    cid: {'$or': []}
+                };
+
+                for(var key in filters) {
+                    for(i = 0; i < patterns[key].length; i++) {
+                        var filter = {};
+                        var value = patterns[key][i];
+
+                        if(value !== null) {
+                            filter[key] = {'$regex': value};
+                        }
+                        else {
+                            filter[key] = null;
+                        }
+
+                        filters[key].$or.push(filter);
+                    }
+
+                    var len = filters[key].$or.length;
+
+                    if(len === 1) {
+                        filters[key] = filters[key].$or[0];
+                    }
+
+                    if(len > 0) {
+                        mfilter.$and.push(filters[key]);
+                    }
+                }
+
+                if(mfilter.$and.length === 1) {
+                    mfilter = mfilter.$and[0];
+                }
+
+                return mfilter;
+            }
         }
     ];
 

@@ -18,7 +18,8 @@
 */
 
 var renderers = [
-    { name: 'renderer-stylizedmetric', template: 'canopsis/charts/renderers/stylizedmetric.hbs'}
+    { name: 'renderer-stylizedmetric', template: 'canopsis/charts/renderers/stylizedmetric.hbs'},
+    { name: 'renderer-stylizedserie', template: 'canopsis/charts/renderers/stylizedserie.hbs'}
 ];
 
 loader.loadWithTemplates(renderers);

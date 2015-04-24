@@ -1,11 +1,15 @@
 <b>{{tr 'Available'}}:</b>
-<div style="float: right;">
-    {{#component-tooltip content=helpModal.content htmlEnabled=true noTranslation=true}}
-        <i class="fa fa-info-circle"></i>
-    {{/component-tooltip}}
-    {{tr 'Search'}}: {{input action="search"}}
 
-</div>
+{{#if searchMethod}}
+    <div style="float: right;">
+        {{#if helpModal.content}}
+            {{#component-tooltip content=helpModal.content htmlEnabled=true noTranslation=true}}
+                <i class="fa fa-info-circle"></i>
+            {{/component-tooltip}}
+        {{/if}}
+        {{tr 'Search'}}: {{input action="search"}}
+    </div>
+{{/if}}
 
 {{component-table items=listedAvailableItems model=content.model.options.source.schema modelfilter=searchPhrase columns=availableDataColumns targetObject=this queryStartOffsetKeyword="start"}}
 

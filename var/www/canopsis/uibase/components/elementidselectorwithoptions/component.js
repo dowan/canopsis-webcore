@@ -21,8 +21,9 @@
 define([
     'ember',
     'ember-data',
-    'app/lib/utils/hash'
-], function(Ember, DS, hashUtils) {
+    'app/lib/utils/hash',
+    'app/lib/searchmethodsregistry'
+], function(Ember, DS, hashUtils, searchmethodsRegistry) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -33,19 +34,14 @@ define([
     var component = Ember.Component.extend({
         additionnalSelectionButtons: ['removeitembutton'],
 
-        helpModal: {
-            title: __('Syntax'),
-            content: ['<ul>',
-                '<li><code>co:regex</code> : ', __('look for a component'), '</li>',
-                '<li><code>re:regex</code> : ', __('look for a resource'), '</li>' ,
-                '<li><code>me:regex</code> : ' , __('look for a metric') , '(<code>me:</code>' , __(' isn\'t needed for this one') , ')</li>' ,
-                '<li>', __('combine all of them to improve your search'),' : <code>co:regex re:regex me:regex</code></li>' ,
-                '<li><code>co:</code>, <code>re:</code>, <code>me:</code> : ', __('look for non-existant field') , '</li>' ,
-                '</ul>'].join(''),
+        searchMethod: function () {
+            var searchMethodKey = get(this, 'content.model.options.source.searchMethod');
+            return searchmethodsRegistry.getByName(searchMethodKey);
+        }.property('content.model.options.source.searchMethod'),
 
-            id: hashUtils.generateId('cmetric-help-modal'),
-            label: hashUtils.generateId('cmetric-help-modal-label')
-        },
+        helpModal: function () {
+            return get(this, 'searchMethod.help');
+        }.property('searchMethod'),
 
         /**
          * Columns available on the "avaiable data" table. This computed property gets the list of columns defined on the schema, and add a special column with the add button
@@ -182,24 +178,36 @@ define([
                 if (selected.indexOf(element) < 0) {
                     console.log('Select element:', element);
 
-                    var sourceRelationshipIdKey = get(this, 'content.model.options.items.sourceRelationshipIdKey');
 
                     var polymorphicTypeKey = get(this, 'content.model.options.items.polymorphicTypeKey');
 
+                    //TODO manage default values
+                    var insertedElement = {};
+
                     var typeKeyName = get(this, 'content.model.options.items.typeKeyName');
                     var typeKeyValue;
+
+                    //TODO stop using polymorphicTypeKey, use sourceMappingKeys instead
                     if(polymorphicTypeKey) {
                         typeKeyValue = get(element, polymorphicTypeKey);
                     } else {
-                        typeKeyValue = get(this, 'content.model.options.items.model');
+                        var modelName = get(this, 'content.model.options.items.model');
+                        if(modelName) {
+                            typeKeyValue = get(this, 'content.model.options.items.model');
+                        }
                     }
 
-                    //TODO manage default values
-                    var insertedElement = {
-                        xtype: typeKeyValue
-                    };
+                    if(typeKeyValue && typeKeyName) {
+                        insertedElement[typeKeyName] = typeKeyValue;
+                    }
 
-                    insertedElement[sourceRelationshipIdKey.objectKey] = get(element, sourceRelationshipIdKey.sourceItemKey);
+                    //Manage mapping : take properties from the available element and put them in the generated object
+                    var sourceMappingKeys = get(this, 'content.model.options.sourceMappingKeys');
+
+                    for (var i = 0; i < sourceMappingKeys.length; i++) {
+                        var currentMappingOptions = sourceMappingKeys[i];
+                        insertedElement[currentMappingOptions.objectKey] = get(element, currentMappingOptions.sourceItemKey);
+                    }
 
                     if (get(this, 'multiselect') === true) {
                         selected.pushObject(insertedElement);
@@ -244,84 +252,17 @@ define([
 
             search: function(search) {
                 if(search) {
-                    var mfilter = this.buildFilterFromSearch(search);
-                    set(this, 'searchPhrase', mfilter);
+                    var searchMethod = get(this, 'searchMethod');
+
+                    if(searchMethod) {
+                        var mfilter = searchMethod.buildFilter(search);
+                        set(this, 'searchPhrase', mfilter);
+                    }
                 }
                 else {
                     set(this, 'searchPhrase', null);
                 }
             }
-        },
-
-        buildFilterFromSearch: function(search) {
-            var conditions = search.split(' ');
-            var i;
-
-            var patterns = {
-                component: [],
-                resource: [],
-                cid: []
-            };
-
-            for(i = 0; i < conditions.length; i++) {
-                var condition = conditions[i];
-
-                if(condition !== '') {
-                    var regex = condition.slice(3) || null;
-
-                    if(condition.indexOf('co:') === 0) {
-                        patterns.component.push(regex);
-                    }
-                    else if(condition.indexOf('re:') === 0) {
-                        patterns.resource.push(regex);
-                    }
-                    else if(condition.indexOf('me:') === 0) {
-                        patterns.cid.push(regex);
-                    }
-                    else {
-                        patterns.cid.push(condition);
-                    }
-                }
-            }
-
-            var mfilter = {'$and': []};
-            var filters = {
-                component: {'$or': []},
-                resource: {'$or': []},
-                cid: {'$or': []}
-            };
-
-            for(var key in filters) {
-                for(i = 0; i < patterns[key].length; i++) {
-                    var filter = {};
-                    var value = patterns[key][i];
-
-                    if(value !== null) {
-                        filter[key] = {'$regex': value};
-                    }
-                    else {
-                        filter[key] = null;
-                    }
-
-                    filters[key].$or.push(filter);
-                }
-
-                var len = filters[key].$or.length;
-
-                if(len === 1) {
-                    filters[key] = filters[key].$or[0];
-                }
-
-                if(len > 0) {
-                    mfilter.$and.push(filters[key]);
-                }
-            }
-
-            if(mfilter.$and.length === 1) {
-                mfilter = mfilter.$and[0];
-            }
-
-            return mfilter;
         }
     });
 
