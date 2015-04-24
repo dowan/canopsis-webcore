@@ -1,0 +1,20 @@
+{{#if attr.model.options.title}}
+    <span class="label" style="color:black">
+        <b>
+            {{tr attr.model.options.title}}
+        </b>
+    </span>
+{{else}}
+    {{#if attr.field}}
+        <span class="label" style="color:black">
+            <b>
+                {{tr attr.field}}
+            </b>
+        </span>
+    {{/if}}
+{{/if}}
+{{#if attr.model.options.description}}
+    {{#component-tooltip content=attr.model.options.description}}
+        <i class="fa fa-question-circle"></i>
+    {{/component-tooltip}}
+{{/if}}

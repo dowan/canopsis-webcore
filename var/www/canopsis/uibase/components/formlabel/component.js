@@ -18,32 +18,20 @@
 */
 
 define([
-    'ember'
+    'ember',
+    'app/lib/utils/types'
 ], function(Ember, typesUtils) {
 
     var get = Ember.get,
         set = Ember.set;
 
 
-    var component = Ember.Component.extend({
-        classNames: ['panel-collapse', 'collapse', 'in'],
-        formBase: Ember.computed.alias('parentView'),
-
-        onPanelVisibilityChange: function() {
-            var contentShown = get(this, 'formBase.contentShown');
-
-            if(contentShown) {
-                this.$('.miniformcontent-body').slideDown();
-            } else {
-                this.$('.miniformcontent-body').slideUp();
-            }
-        }.observes('formBase.contentShown')
-    });
+    var component = Ember.Component.extend({});
 
     Ember.Application.initializer({
-        name:"component-miniformcontent",
+        name:"component-formlabel",
         initialize: function(container, application) {
-            application.register('component:component-miniformcontent', component);
+            application.register('component:component-formlabel', component);
         }
     });
 

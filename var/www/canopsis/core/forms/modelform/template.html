@@ -44,37 +44,13 @@
                 {{#each attr in category.keys}}
                     {{#if attr.model.options.readOnly}}
                         <div>
-                            {{#if attr.model.options.title}}
-                                <span class="label" style="color:black">
-                                    <b>
-                                        {{tr attr.model.options.title}}
-                                    </b>
-                                </span>
-                            {{else}}
-                                {{#if attr.field}}
-                                    <span class="label" style="color:black">
-                                        <b>
-                                            {{tr attr.field}}
-                                        </b>
-                                    </span>
-                                {{/if}}
-                            {{/if}}
-                        {{component-renderer attr=attr record=controller.formContext value=attr.value}}
+                            {{component-formlabel attr=attr}}
+                            {{component-renderer attr=attr record=controller.formContext value=attr.value}}
                         </div>
                     {{else}}
                         {{#unless attr.model.options.hiddenInForm}}
                             <div>
-                                {{#if attr.model.options.title}}
-                                    <span class="label" style="color:black">
-                                        {{tr attr.model.options.title}}
-                                    </span>
-                                {{else}}
-                                    {{#if attr.field}}
-                                        <span class="label" style="color:black">
-                                            {{tr attr.field}}
-                                        </span>
-                                    {{/if}}
-                                {{/if}}
+                                {{component-formlabel attr=attr}}
                                 {{component-editor attr=attr form=this editorOverrides=controller.controllers.application.frontendConfig.editors}}
                             </div>
                         {{/unless}}
@@ -88,41 +64,12 @@
                     {{#each attr in category.keys}}
                         {{#if attr.model.options.readOnly}}
                             <div>
-                                {{#if attr.model.options.title}}
-                                    <span class="label" style="color:black">
-                                        <b>
-                                            {{tr attr.model.options.title}}
-                                        </b>
-                                    </span>
-                                {{else}}
-                                    {{#if attr.field}}
-                                        <span class="label" style="color:black">
-                                            <b>
-                                                {{tr attr.field}}
-                                            </b>
-                                        </span>
-                                    {{/if}}
-                                {{/if}}
-                               {{component-renderer attr=attr record=controller.formContext value=attr.value}}
+                                {{component-formlabel attr=attr}}
+                                {{component-renderer attr=attr record=controller.formContext value=attr.value}}
                             </div>
                         {{else}}
                             <div>
-                                {{#if attr.model.options.title}}
-                                    <span class="label" style="color:black">
-                                        <b>
-                                            {{tr attr.model.options.title}}
-                                        </b>
-                                    </span>
-                                {{else}}
-                                    {{#if attr.field}}
-                                        <span class="label" style="color:black">
-                                            <b>
-                                                {{tr attr.field}}
-                                            </b>
-                                        </span>
-                                    {{/if}}
-                                {{/if}}
-
+                                {{component-formlabel attr=attr}}
                                 {{component-editor attr=attr form=this editorOverrides=controller.controllers.application.frontendConfig.editors}}
                             </div>
                         {{/if}}
@@ -133,40 +80,12 @@
                     {{#each attr in category.keys}}
                         {{#if attr.model.options.readOnly}}
                             <div>
-                                {{#if attr.model.options.title}}
-                                    <span class="label" style="color:black">
-                                        <b>
-                                            {{tr attr.model.options.title}}
-                                        </b>
-                                    </span>
-                                {{else}}
-                                    {{#if attr.field}}
-                                        <span class="label" style="color:black">
-                                            <b>
-                                                {{tr attr.field}}
-                                            </b>
-                                        </span>
-                                    {{/if}}
-                                {{/if}}
+                                {{component-formlabel attr=attr}}
                                 {{component-renderer attr=attr record=controller.formContext}}
                             </div>
                         {{else}}
                             <div>
-                                {{#if attr.model.options.title}}
-                                    <span class="label" style="color:black">
-                                        <b>
-                                            {{tr attr.model.options.title}}
-                                        </b>
-                                    </span>
-                                {{else}}
-                                    {{#if attr.field}}
-                                        <span class="label" style="color:black">
-                                            <b>
-                                                {{tr attr.field}}
-                                            </b>
-                                        </span>
-                                    {{/if}}
-                                {{/if}}
+                                {{component-formlabel attr=attr}}
 
                                 {{component-editor attr=attr form=this editorOverrides=controller.controllers.application.frontendConfig.editors}}
                             </div>

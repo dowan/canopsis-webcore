@@ -65,7 +65,8 @@ var components = [
     { name: 'components/component-miniformheaderbuttons', url: 'canopsis/uibase/components/miniformheaderbuttons/component', template: 'canopsis/uibase/components/miniformheaderbuttons/template.hbs' },
     { name: 'components/component-miniformtitle', url: 'canopsis/uibase/components/miniformtitle/component', template: 'canopsis/uibase/components/miniformtitle/template.hbs' },
     { name: 'components/component-objecteditor', url: 'canopsis/uibase/components/objecteditor/component', template: 'canopsis/uibase/components/objecteditor/template.hbs' },
-    { name: 'components/component-elementidselectorwithoptions', url: 'canopsis/uibase/components/elementidselectorwithoptions/component', template: 'canopsis/uibase/components/elementidselectorwithoptions/template.hbs' }
+    { name: 'components/component-elementidselectorwithoptions', url: 'canopsis/uibase/components/elementidselectorwithoptions/component', template: 'canopsis/uibase/components/elementidselectorwithoptions/template.hbs' },
+    { name: 'components/component-formlabel', url: 'canopsis/uibase/components/formlabel/component', template: 'canopsis/uibase/components/formlabel/template.hbs' }
 ];
 
 loader.loadWithTemplates(components);

@@ -1,12 +1,10 @@
-<table>
-	{{#each property in propertiesArray}}
-		<tr>
-			<td style="width:50%">
-				{{property.field}}
-			</td>
-			<td style="width:50%">
-				{{component-editor content=property value=property.value}}
-			</td>
-		</tr>
-	{{/each}}
-</table>
+<form class="form-horizontal">
+    {{#each property in propertiesArray}}
+        <div class="col-sm-2">
+            {{component-formlabel attr=property}}
+        </div>
+        <div class="col-sm-10">
+            {{component-editor content=property value=property.value}}
+        </div>
+    {{/each}}
+</form>
