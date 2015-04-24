@@ -1,6 +1,5 @@
 .node {
     cursor: move;
-    stroke: black;
 }
 .node .entity {
     text-anchor: middle;

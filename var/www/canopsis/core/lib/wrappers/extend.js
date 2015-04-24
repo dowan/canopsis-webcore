@@ -18,16 +18,18 @@
 */
 
 define([], function() {
-    Function.prototype.bind = function(context) {
-        var func = this;
+    if(window.isIE) {
+        Function.prototype.bind = function(context) {
+            var func = this;
 
-        var decorator = function() {
-            return func.call(context, arguments);
+            var decorator = function() {
+                return func.call(context, arguments);
+            };
+
+            return decorator;
         };
 
-        return decorator;
-    };
-
+    }
     String.prototype.replaceAll = function(find, replace) {
         var escaped = find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
         return this.replace(new RegExp(escaped, 'g'), replace);

@@ -18,16 +18,18 @@
 */
 
 define([
-    'jquery',
-    'd3'
-], function($, d3) {
-    var get = Ember.get,
-        set = Ember.set;
+    'ember-data',
+    'app/serializers/application'
+], function(DS, ApplicationSerializer) {
 
-    var TreeLayout = Ember.Mixin.create(
-        {
+    var serializer = ApplicationSerializer.extend({
+        normalize: function (type, hash) {
+            console.log('normalize', arguments);
+            hash.id = hash._id;
+            return this._super(type, hash);
         }
-    );
+    });
 
-    return TreeLayout;
+    loader.register('serializer:ctx', serializer);
+    return serializer;
 });

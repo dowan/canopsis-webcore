@@ -18,16 +18,12 @@
 */
 
 define([
-    'jquery',
-    'd3'
-], function($, d3) {
-    var get = Ember.get,
-        set = Ember.set;
+    'ember-data',
+    'app/serializers/ctx',
+], function(DS, CtxSerializer) {
 
-    var TreeLayout = Ember.Mixin.create(
-        {
-        }
-    );
+    var serializer = CtxSerializer.extend({});
 
-    return TreeLayout;
+    loader.register('serializer:ctxselector', serializer);
+    return serializer;
 });

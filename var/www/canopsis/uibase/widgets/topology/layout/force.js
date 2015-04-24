@@ -26,8 +26,8 @@ define([
 
     var ForceLayout = Ember.Mixin.create(
         {
-        },
+        }
     );
 
     return ForceLayout;
-}
+});

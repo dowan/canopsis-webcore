@@ -193,5 +193,11 @@ define([
         }
     }));
 
+    loader.register('adapter:ctxselector', adapter.extend({
+        buildURL: function(type, id) {
+            return '/context/selector' + (id ? ('/' + id) : '');
+        }
+    }));
+
     return adapter;
 });
