@@ -17,14 +17,8 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+var renderers = [
+    { name: 'renderer-stylizedmetric', template: 'canopsis/charts/renderers/stylizedmetric.hbs'}
+];
 
-define([
-    'canopsis/charts/lib/loaders/editors',
-    'canopsis/charts/lib/loaders/components',
-    'canopsis/charts/lib/loaders/mixins',
-    'canopsis/charts/lib/loaders/widgets',
-    'canopsis/charts/lib/loaders/templates',
-    'canopsis/charts/lib/loaders/renderers'
-], function () {
-
-});
+loader.loadWithTemplates(renderers);

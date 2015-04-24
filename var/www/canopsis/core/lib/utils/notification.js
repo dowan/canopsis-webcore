@@ -43,23 +43,23 @@ define([], function() {
             for (var i = 0, l = buffer.length; i < l; i++) {
                 var currentNotification = buffer[i];
 
-                controller.createNotification(currentNotification.notificationType, currentNotification.notificationMessage);
+                // controller.createNotification(currentNotification.notificationType, currentNotification.notificationMessage);
             }
         },
 
         //will be defined when notification controller is called.
         info: function (message) {
-            targetcontroller.createNotification('info', message);
+            // targetcontroller.createNotification('info', message);
             console.log('info', message);
             return message;
         },
         warning: function (message) {
-            targetcontroller.createNotification('warning', message);
+            // targetcontroller.createNotification('warning', message);
             console.log('warning', message);
             return message;
         },
         error: function (message) {
-            targetcontroller.createNotification('error', message);
+            // targetcontroller.createNotification('error', message);
             console.error(message);
             return message;
         },

@@ -1,0 +1,12 @@
+<table>
+	{{#each property in propertiesArray}}
+		<tr>
+			<td style="width:50%">
+				{{property.field}}
+			</td>
+			<td style="width:50%">
+				{{component-editor content=property value=property.value}}
+			</td>
+		</tr>
+	{{/each}}
+</table>

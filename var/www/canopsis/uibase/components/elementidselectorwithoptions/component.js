@@ -47,34 +47,50 @@ define([
             label: hashUtils.generateId('cmetric-help-modal-label')
         },
 
-        select_cols: function() {
-            return [
-                {name: 'component', title: __('Component')},
-                {name: 'resource', title: __('Resource')},
-                {name: 'cid', title: __('Metric')},
-                {
-                    action: 'select',
-                    actionAll: (get(this, 'multiselect') === true ? 'selectAll' : undefined),
-                    title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-plus-sign"></span>'),
-                    style: 'text-align: center;'
-                }
-            ];
-        }.property(),
+        /**
+         * Columns available on the "avaiable data" table. This computed property gets the list of columns defined on the schema, and add a special column with the add button
+         * @property availableDataColumns
+         * @type array
+         */
+        availableDataColumns: function() {
+            var columns = get(this, 'content.model.options.source.columns');
+            var result = Ember.A();
 
-        init: function() {
-            if (isNone(get(this, 'selectedMetrics'))) {
-                set(this, 'selectedMetrics', []);
+            for (var i = 0; i < columns.length; i++) {
+                var currentColumn = columns[i];
+                var title = get(currentColumn, 'title'),
+                    name = get(currentColumn, 'name');
+
+                result.pushObject({
+                    title: __(title),
+                    name: name
+                });
             }
 
-            if (isNone(get(this, 'metricSearch'))) {
-                set(this, 'metricSearch', null);
+            result.pushObject({
+                action: 'select',
+                actionAll: (get(this, 'multiselect') === true ? 'selectAll' : undefined),
+                title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-plus-sign"></span>'),
+                style: 'text-align: center;'
+            });
+
+            return result;
+        }.property('content.model.options.source.columns'),
+
+        init: function() {
+            if (isNone(get(this, 'selectedData'))) {
+                set(this, 'selectedData', []);
+            }
+
+            if (isNone(get(this, 'searchPhrase'))) {
+                set(this, 'searchPhrase', null);
             }
 
             if (isNone(get(this, 'multiselect'))) {
                 set(this, 'multiselect', true);
             }
 
-            set(this, 'metrics', []);
+            set(this, 'listedAvailableItems', []);
 
             this._super.apply(this, arguments);
 
@@ -95,57 +111,115 @@ define([
                     query.filter._id = get(this, 'content');
                 }
 
-                store.findQuery('ctxmetric', query).then(function(result) {
-                    var metrics = [],
-                        fetchedMetrics = get(result, 'content');
+                var dataSchema = get(this, 'content.model.options.source.schema');
 
-                    console.log('Received data:', l, content, metrics);
+                store.findQuery(dataSchema, query).then(function(result) {
+                    var listedAvailableItems = get(result, 'content') || [];
 
-                    for(var i = 0, l = fetchedMetrics.length; i < l; i++) {
-                        metrics.pushObject(fetchedMetrics[i]);
+                    console.log('Received data:', l, content, listedAvailableItems);
+
+                    for(var i = 0, l = listedAvailableItems.length; i < l; i++) {
+                        listedAvailableItems.pushObject(listedAvailableItems[i]);
                     }
 
-                    set(me, 'metrics', metrics);
+                    set(me, 'listedAvailableItems', listedAvailableItems);
                 });
             }
         },
 
+        //WARNING duplication
+        //TODO put this on a dedicated util
+        rendererFor: function(attribute) {
+            var type = get(attribute, 'type');
+            var role = get(attribute, 'options.role');
+            if(get(attribute, 'model.options.role')) {
+                role = get(attribute, 'model.options.role');
+            }
+            var subRole = get(attribute, 'options.items.role');
+            if(role === 'array' && !isNone(subRole)) {
+                role = subRole;
+            }
+
+            var rendererName;
+            if (role) {
+                rendererName = 'renderer-' + role;
+            } else {
+                rendererName = 'renderer-' + type;
+            }
+
+            if (Ember.TEMPLATES[rendererName] === undefined) {
+                rendererName = undefined;
+            }
+
+            return rendererName;
+        },
+
+        /**
+         * @property selectedItemHeaderRendererType
+         * The renderer type for the selected elements' header renderer
+         */
+        selectedItemHeaderRendererType: function () {
+            return this.rendererFor(get(this, 'selectedItemHeaderRendererAttr'));
+        }.property('selectedItemHeaderRendererAttr'),
+
+        /**
+         * @property selectedItemHeaderRendererAttr
+         * The attribute for the selected elements' header renderer
+         */
+        selectedItemHeaderRendererAttr: function () {
+            var attr = {
+                type: get(this, 'content.model.options.items.type'),
+                options: get(this, 'content.model.options.items')
+            };
+
+            return attr;
+        }.property(),
+
         actions: {
-            select: function(metric) {
+            select: function(element) {
                 var selected = get(this, 'content.value') || [];
 
-                if (selected.indexOf(metric) < 0) {
-                    console.log('Select metric:', metric);
+                if (selected.indexOf(element) < 0) {
+                    console.log('Select element:', element);
 
-                    metric = {
-                        metric: metric.get('id'),
-                        color: "#B7CA79",
-                        curve: "curve.simplepoints",
-                        unit: null,
-                        xaxis: 1,
-                        xtype: 'stylizedmetric',
-                        yaxis: 1
+                    var sourceRelationshipIdKey = get(this, 'content.model.options.items.sourceRelationshipIdKey');
+
+                    var polymorphicTypeKey = get(this, 'content.model.options.items.polymorphicTypeKey');
+
+                    var typeKeyName = get(this, 'content.model.options.items.typeKeyName');
+                    var typeKeyValue;
+                    if(polymorphicTypeKey) {
+                        typeKeyValue = get(element, polymorphicTypeKey);
+                    } else {
+                        typeKeyValue = get(this, 'content.model.options.items.model');
+                    }
+
+                    //TODO manage default values
+                    var insertedElement = {
+                        xtype: typeKeyValue
                     };
 
+                    insertedElement[sourceRelationshipIdKey.objectKey] = get(element, sourceRelationshipIdKey.sourceItemKey);
+
                     if (get(this, 'multiselect') === true) {
-                        selected.pushObject(metric);
+                        selected.pushObject(insertedElement);
                     }
                     else {
-                        selected = [metric];
+                        selected = [insertedElement];
                     }
                 }
 
                 set(this, 'content.value', selected);
             },
 
-            unselect: function(metric) {
-                console.error('unselect', metric);
+            unselect: function(element) {
+                console.error('unselect', element);
                 var selected = get(this, 'content.value');
 
-                var idx = selected.indexOf(metric);
+                var idx = selected.indexOf(element);
 
                 if (idx >= 0) {
-                    console.log('Unselect metric:', metric);
+                    console.log('Unselect element:', element);
                     selected.removeAt(idx);
                 }
 
@@ -154,27 +228,27 @@ define([
 
             selectAll: function() {
                 if (get(this, 'multiselect') === true) {
-                    var metrics = get(this, 'metrics');
+                    var listedAvailableItems = get(this, 'listedAvailableItems');
 
-                    if(metrics.length) {
-                        for (var i = 0, l = metrics.length; i < l; i++) {
-                            this.send('select', metrics[i]);
+                    if(listedAvailableItems.length) {
+                        for (var i = 0, l = listedAvailableItems.length; i < l; i++) {
+                            this.send('select', listedAvailableItems[i]);
                         }
                     }
                 }
             },
 
             unselectAll: function() {
-                set(this, 'selectedMetrics', []);
+                set(this, 'selectedData', []);
             },
 
             search: function(search) {
                 if(search) {
                     var mfilter = this.buildFilterFromSearch(search);
-                    set(this, 'metricSearch', mfilter);
+                    set(this, 'searchPhrase', mfilter);
                 }
                 else {
-                    set(this, 'metricSearch', null);
+                    set(this, 'searchPhrase', null);
                 }
             }
         },
@@ -229,7 +303,7 @@ define([
                         filter[key] = null;
                     }
 
-                    filters[key].$or.push(filter)
+                    filters[key].$or.push(filter);
                 }
 
                 var len = filters[key].$or.length;
@@ -253,9 +327,9 @@ define([
 
 
     Ember.Application.initializer({
-        name:"component-metricselector2",
+        name:"component-elementidselectorwithoptions",
         initialize: function(container, application) {
-            application.register('component:component-metricselector2', component);
+            application.register('component:component-elementidselectorwithoptions', component);
         }
     });
 

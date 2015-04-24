@@ -24,7 +24,6 @@ var components = [
     { name: 'components/component-serieitemeditor', url: 'canopsis/charts/components/serieitemeditor/component', template: 'canopsis/charts/components/serieitemeditor/template.html' },
     { name: 'components/component-metricitemeditor', url: 'canopsis/charts/components/metricitemeditor/component', template: 'canopsis/charts/components/metricitemeditor/template.html' },
     { name: 'components/component-metricselector', url: 'canopsis/charts/components/metricselector/component', template: 'canopsis/charts/components/metricselector/template.html' },
-    { name: 'components/component-metricselector2', url: 'canopsis/charts/components/metricselector2/component', template: 'canopsis/charts/components/metricselector2/template.hbs' },
     { name: 'components/component-selectedmetricheader', url: 'canopsis/charts/components/selectedmetricheader/component', template: 'canopsis/charts/components/selectedmetricheader/template.hbs' }
 ];
 
