@@ -30,10 +30,7 @@ define([
 
 
     var adapter = ApplicationAdapter.extend({
-        buildURL: function(type, id) {
-            var namespace = "default_rights" ;
-            return ("/rest/"+ namespace +"/" + type + (!!id ? "/" + id : ""));
-        }
+        namespace: 'default_rights'
     });
 
     loader.register('adapter:action', adapter);
