@@ -50,6 +50,14 @@ define([
             set(this, 'itemsPerPagePropositionSelected', get(this, 'itemsPerPage'));
         },
 
+        isFirstPage: function () {
+            return get(this, 'currentPage') === 1 && get(this, 'paginationFirstItemIndex') === 1;
+        }.property('currentPage', 'paginationFirstItemIndex'),
+
+        isLastPage: function () {
+            return get(this, 'paginationLastItemIndex') === get(this, 'itemsTotal');
+        }.property('paginationLastItemIndex', 'itemsTotal'),
+
         hasOnePage: function () {
             var onepage = get(this, 'totalPages') === 1;
             console.log('Is it a one page ?', onepage);
