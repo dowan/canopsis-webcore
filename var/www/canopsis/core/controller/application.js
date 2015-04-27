@@ -449,6 +449,7 @@ define([
                 console.log("add", type);
 
                 var containerwidgetId = hashUtils.generateId('container');
+                var viewId = hashUtils.generateId('userview');
 
                 dataUtils.getStore().createRecord('widgetcontainer', {
                     xtype: 'widgetcontainer',
@@ -459,11 +460,13 @@ define([
                 });
 
                 var userview = dataUtils.getStore().push(type, {
-                    id: hashUtils.generateId('userview'),
+                    id: viewId,
                     crecord_type: 'view',
                     containerwidget: containerwidgetId,
                     containerwidgetType: 'widgetcontainer'
                 });
+
+                var formattedViewId = viewId.replace('.', '_');
 
                 console.log('temp record', userview);
 
@@ -472,6 +475,19 @@ define([
                 recordWizard.submit.done(function() {
                     set(applicationController, 'isLoading', get(applicationController, 'isLoading') + 1);
                     userview.save();
+
+                    var right = dataUtils.getStore().createRecord('action', {
+                          enable: true,
+                          crecord_type: "action",
+                          _id: "showview_" + formattedViewId,
+                          id: "showview_" + formattedViewId,
+                          crecord_name: "showview_" + formattedViewId,
+                          desc: ""
+                    });
+
+                    right.save();
+                    alert('right save');
+
                     applicationController.transitionToRoute("/userview/" + get(userview, 'id'));
                 });
             },

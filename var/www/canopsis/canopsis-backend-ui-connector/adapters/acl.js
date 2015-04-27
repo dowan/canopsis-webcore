@@ -39,6 +39,8 @@ define([
 
             if(method === 'GET') {
                 return ('/rest/default_rights/' + type + (!!id ? '/' + id : ''));
+            } else if(type === "action" && (method === "POST" || method === "PUT")) {
+                return ('/rest/default_rights/' + type + (!!id ? '/' + id : ''));
             } else if(method === 'DELETE') {
                 return ('/account/delete/' + type + (!!id ? '/' + id : ''));
             } else {
@@ -93,6 +95,7 @@ define([
             if (isNone(type) || isNone(type.typeKey)) {
                 console.error('Error while retrieving typeKey from type is it is none.');
             }
+
             return new Ember.RSVP.Promise(function(resolve, reject) {
                 var url = me.buildURL(type.typeKey, undefined, record, 'POST');
                 var hash = me.serialize(record, {includeId: true});
@@ -122,7 +125,6 @@ define([
     loader.register('adapter:group', adapter);
     loader.register('adapter:account', adapter);
     loader.register('adapter:user', adapter);
-    loader.register('adapter:action', adapter);
     loader.register('adapter:role', adapter);
     loader.register('adapter:right', adapter);
     loader.register('adapter:profile', adapter);
