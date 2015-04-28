@@ -1,10 +1,10 @@
-{{#component-tooltip content="External links"}}
-    <div class="btn-group">
-        <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" {{action "loadLinks" this}}>
-            <i class="fa fa-link"></i>
-            <span class="caret"></span>
-        </button>
-        {{#if links.length}}
+{{#if links.length}}
+    {{#component-tooltip content="External links"}}
+        <div class="btn-group">
+            <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-link"></i>
+                <span class="caret"></span>
+            </button>
             <ul class="dropdown-menu" role="menu" style="right:0; left:auto">
                 {{#each linkInformation in links}}
                     <li>
@@ -12,6 +12,6 @@
                     </li>
                 {{/each}}
             </ul>
-        {{/if}}
-    </div>
-{{/component-tooltip}}
+        </div>
+    {{/component-tooltip}}
+{{/if}}

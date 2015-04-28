@@ -40,7 +40,7 @@ define([
 
         init: function() {
             this._super();
-            set(this, 'links', []);
+            set(this, 'links', Ember.A());
         },
 
         didInsertElement: function () {
@@ -48,6 +48,7 @@ define([
             //otherwise the menu is locked into the table td element.
             console.log('Inserted element linklist, setting td parent overflow to visible');
             this.$().parents('td').css('overflow-x', 'visible').css('overflow-y', 'visible');
+            this.loadLinks();
         },
 
         linksFromApi: function (evt) {
@@ -72,49 +73,50 @@ define([
 
                 if (results.success) {
                     //when links found, make them available in the links array of the component
-                    var links_information = results.data[0];
-                    console.log('links_information', links_information);
+                    var data = results.data;
+                    if (data.length) {
 
-                    //merge all optional data fields that may contain labelled links
-                    for(var i=0; i<link_types.length;i++) {
+                        var links_information = data[0];
+                        console.log('links_information', links_information);
 
-                        var value = links_information[link_types[i]];
-                        console.log('search',link_types[i], 'in links_information', value);
+                        //merge all optional data fields that may contain labelled links
+                        var types_length = link_types.length;
+                        for (var i=0; i<types_length; i++) {
 
-                        if (!isNone(value)) {
-                            links = links.concat(value);
+                            var value = links_information[link_types[i]];
+                            console.log('search',link_types[i], 'in links_information', value);
+
+                            if (!isNone(value) && Ember.isArray(value)) {
+                                var len = value.length;
+                                for (var j=0; j<len; j++) {
+                                    get(linklistComponent, 'links').pushObject(value[j]);
+                                }
+                            }
                         }
                     }
 
                 }
-
-                set(linklistComponent, 'links', links);
-                console.log('links fetched', get(linklistComponent, 'links'));
             });
         },
 
-        actions: {
-            loadLinks: function(record) {
+        loadLinks: function() {
 
-                /**
-                Initialization of the api query from an event.
-                Data are cached, when already fetched, they are not reloaded.
-                **/
+            /**
+            Initialization of the api query from an event.
+            Data are cached, when already fetched, they are not reloaded.
+            **/
 
-                console.log('record', record);
+            if (!get(this, 'loaded')) {
 
-                if (!get(this, 'loaded')) {
+                var evt = get(this, 'record').toJson();
+                console.log('loading links for event', evt);
+                this.linksFromApi(evt);
 
-                    var evt = get(record, 'record').toJson();
-                    console.log('loading links for event', evt);
-                    this.linksFromApi(evt);
-
-                    set(this, 'loaded', true);
-                } else {
-                    console.log('Links already loaded');
-                }
-
+                set(this, 'loaded', true);
+            } else {
+                console.log('Links already loaded');
             }
+
         }
 
     });
