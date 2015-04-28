@@ -20,8 +20,9 @@
 
 define([
     'ember',
-    'canopsis/uibase/components/dictclassifiedcrecordselector/component'
-], function(Ember, DictclassifiedcrecordselectorComponent) {
+    'canopsis/uibase/components/dictclassifiedcrecordselector/component',
+    'app/lib/rightsregistry'
+], function(Ember, DictclassifiedcrecordselectorComponent, rightsRegistry) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -131,6 +132,7 @@ define([
             store.findQuery('action', query).then(function(result) {
                 me.set('widgetDataMetas', result.meta);
                 var items = result.get('content');
+
                 me.set('items', items);
 
                 Ember.run.scheduleOnce('afterRender', {}, function() { me.rerender(); });

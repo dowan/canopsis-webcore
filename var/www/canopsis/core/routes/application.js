@@ -94,7 +94,7 @@ define([
             var devtoolsPromise = store.find('userview', 'view.app_devtools');
             var frontendConfigPromise = store.find('frontend', 'cservice.frontend');
             var ticketPromise = store.find('ticket', 'cservice.ticket');
-            var rightsPromise = store.findAll('action');
+            var rightsPromise = store.findQuery('action', { limit: 1000 });
             var appController = route.controllerFor('application');
 
             ticketPromise.then(function(queryResults) {
@@ -138,10 +138,12 @@ define([
             });
 
             rightsPromise.then(function(queryResults) {
-                console.log('--------------------------->');
+                for (var i = 0, l = queryResults.content.length; i < l; i++) {
+                    var right = queryResults.content[i];
+                    appController.rightsRegistry.add(right, get(right, 'crecord_name'));
+                }
                 console.log(queryResults);
-                console.log('--------------------------->');
-            })
+            });
 
             devtoolsPromise.then(function(queryResults) {
                 appController.devtoolsUserview = queryResults;
