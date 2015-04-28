@@ -89,6 +89,8 @@ define([
                             if (!isNone(value) && Ember.isArray(value)) {
                                 var len = value.length;
                                 for (var j=0; j<len; j++) {
+                                    //Compute handlebars url if any
+                                    value[j].url = linklistComponent.compute_url(evt, value[j].url);
                                     get(linklistComponent, 'links').pushObject(value[j]);
                                 }
                             }
@@ -98,6 +100,15 @@ define([
                 }
             });
         },
+
+        compute_url: function(context, template) {
+
+            var compiledUrl = Handlebars.compile(template)(context);
+            console.log('handlebars url', compiledUrl, context);
+            return compiledUrl;
+
+        },
+
 
         loadLinks: function() {
 
