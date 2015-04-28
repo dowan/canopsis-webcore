@@ -20,21 +20,21 @@
 
 define([
     'canopsis/canopsis-backend-ui-connector/adapters/acl',
-	'canopsis/canopsis-backend-ui-connector/adapters/action',
-	'canopsis/canopsis-backend-ui-connector/adapters/application',
-	'canopsis/canopsis-backend-ui-connector/adapters/cancel',
-	'canopsis/canopsis-backend-ui-connector/adapters/context',
-	'canopsis/canopsis-backend-ui-connector/adapters/crecord',
-	'canopsis/canopsis-backend-ui-connector/adapters/cservice',
-	'canopsis/canopsis-backend-ui-connector/adapters/eue',
-	'canopsis/canopsis-backend-ui-connector/adapters/event',
-	'canopsis/canopsis-backend-ui-connector/adapters/eventlog',
-	'canopsis/canopsis-backend-ui-connector/adapters/filter',
+    'canopsis/canopsis-backend-ui-connector/adapters/action',
+    'canopsis/canopsis-backend-ui-connector/adapters/application',
+    'canopsis/canopsis-backend-ui-connector/adapters/cancel',
+    'canopsis/canopsis-backend-ui-connector/adapters/context',
+    'canopsis/canopsis-backend-ui-connector/adapters/crecord',
+    'canopsis/canopsis-backend-ui-connector/adapters/cservice',
+    'canopsis/canopsis-backend-ui-connector/adapters/eue',
+    'canopsis/canopsis-backend-ui-connector/adapters/event',
+    'canopsis/canopsis-backend-ui-connector/adapters/eventlog',
+    'canopsis/canopsis-backend-ui-connector/adapters/filter',
     'canopsis/canopsis-backend-ui-connector/adapters/loggedaccount',
-	'canopsis/canopsis-backend-ui-connector/adapters/pojo',
-	'canopsis/canopsis-backend-ui-connector/adapters/schema',
-	'canopsis/canopsis-backend-ui-connector/adapters/notification',
-	'canopsis/canopsis-backend-ui-connector/adapters/userview'
+    'canopsis/canopsis-backend-ui-connector/adapters/notification',
+    'canopsis/canopsis-backend-ui-connector/adapters/pojo',
+    'canopsis/canopsis-backend-ui-connector/adapters/schema',
+    'canopsis/canopsis-backend-ui-connector/adapters/userview'
 ], function () {
 
 });

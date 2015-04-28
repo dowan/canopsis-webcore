@@ -18,30 +18,14 @@
 */
 
 define([
-    'app/application',
-    'canopsis/canopsis-backend-ui-connector/adapters/application',
-    'app/serializers/eventlog',
-], function(Application, ApplicationAdapter) {
+    'app/lib/abstractclassregistry'
+], function(Abstractclassregistry) {
 
-    var adapter = ApplicationAdapter.extend({
+    var rightsRegistry = Abstractclassregistry.create({
+        name: 'rights',
 
-        buildURL: function(type, id) {
-            void(id);
-
-            return "/rest/object/" + type;
-        },
-
-        findQuery: function(store, type, query) {
-            var url = "/rest/object";
-
-            console.log('findQuery', arguments);
-
-            return this.ajax(url, 'GET', { data: query });
-        }
+        tableColumns: [{title: 'name', name: 'name'}, {title: 'description', name: 'description'}]
     });
 
-
-    loader.register('adapter:crecord', adapter);
-
-    return adapter;
+    return rightsRegistry;
 });

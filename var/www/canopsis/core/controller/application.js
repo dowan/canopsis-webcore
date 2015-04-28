@@ -28,6 +28,7 @@ define([
     'app/lib/actionsregistry',
     'app/lib/mixinsregistry',
     'app/lib/formsregistry',
+    'app/lib/rightsregistry',
     'app/lib/inflections',
     'app/mixins/userprofilestatusmenu',
     'app/mixins/requirejsmocksmanager',
@@ -59,6 +60,7 @@ define([
     actionsRegistry,
     mixinsRegistry,
     formsRegistry,
+    rightsRegistry,
     inflectionsRegistry,
     UserprofilestatusmenuMixin,
     RequirejsmocksmanagerMixin,
@@ -148,6 +150,13 @@ define([
         formsRegistry: formsRegistry,
 
         /**
+         * @property rightsRegistry
+         * @type Object
+         * @description Reference to the rights registry
+         */
+        rightsRegistry: rightsRegistry,
+
+        /**
          * @property isLoading
          * @type Number
          * @description the number of concurrent loadings (usually requests) pending
@@ -187,8 +196,6 @@ define([
             if (!isNone(title)) {
                 $('title').html(title);
             }
-
-            //TODO refactor this in application route
 
             console.groupEnd();
             this.refreshPartialsList();

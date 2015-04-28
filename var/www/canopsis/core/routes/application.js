@@ -94,6 +94,7 @@ define([
             var devtoolsPromise = store.find('userview', 'view.app_devtools');
             var frontendConfigPromise = store.find('frontend', 'cservice.frontend');
             var ticketPromise = store.find('ticket', 'cservice.ticket');
+            var rightsPromise = store.findAll('action');
             var appController = route.controllerFor('application');
 
             ticketPromise.then(function(queryResults) {
@@ -135,6 +136,12 @@ define([
             footerPromise.then(function(queryResults) {
                 appController.footerUserview = queryResults;
             });
+
+            rightsPromise.then(function(queryResults) {
+                console.log('--------------------------->');
+                console.log(queryResults);
+                console.log('--------------------------->');
+            })
 
             devtoolsPromise.then(function(queryResults) {
                 appController.devtoolsUserview = queryResults;
