@@ -17,14 +17,6 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
- * Component for switching between display and hide of the content
- *
- * @module component
- * @return {component} dropdownbuttoncontent
- * @requires jquey
- * @requires ember
- */
 define([
     'jquery',
     'ember'
@@ -33,6 +25,12 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+    /**
+     * Component for switching between display and hide of the content
+     *
+     * @class Dropdownbuttoncontent
+     * @static
+     */
     var component = Ember.Component.extend({
         classNames: ['dropdownbuttoncontent'],
         classNameBindings: ['dropdownContentMenu'],

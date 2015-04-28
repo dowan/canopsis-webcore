@@ -19,30 +19,12 @@
 
 define([
     'jquery',
-    'ember'
-], function($, Ember) {
+    'app/lib/factories/wrapper',
+    'webcore-libs/slick.js/slick/slick',
+    'link!webcore-libs/slick.js/slick/slick.css',
+    'link!webcore-libs/slick.js/slick/slick-theme.css'
+], function($, Wrapper) {
 
-    var get = Ember.get,
-        set = Ember.set;
+    return Wrapper("slick", undefined, arguments, undefined);
 
-    /**
-     * Component for defining the title of the dropdownbutton
-     *
-     * @class Dropdownbuttontitle
-     * @static 
-     */
-    var component = Ember.Component.extend({
-        name: undefined,
-        classNames: ['dropdownbuttontitle', 'dropdownbuttontitle-default'],
-    });
-
-
-    Ember.Application.initializer({
-        name:"component-dropdownbuttontitle",
-        initialize: function(container, application) {
-            application.register('component:component-dropdownbuttontitle', component);
-        }
-    });
-
-    return component;
 });

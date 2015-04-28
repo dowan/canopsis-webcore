@@ -17,17 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
- * Component for choosing a color.
- * It let to choose between a colorpicker 
- * and a display of several ranges
- *
- * @module component
- * @return {component} colpick
- * @requires jquey
- * @requires ember
- * @requires app/lib/wrappers/colpick
- */
+
 define([
     'jquery',
     'ember',
@@ -36,6 +26,15 @@ define([
 
     var get = Ember.get,
         set = Ember.set;
+
+        /**
+         * Component for choosing a color.
+         * It let to choose between a colorpicker 
+         * and a display of several ranges
+         *
+         * @class Colpick
+         * @static
+         */
 
     var component = Ember.Component.extend({
         classNames: ['colorSelector'],
@@ -76,7 +75,7 @@ define([
                 }
             };
 
-            /**
+            /*
              * set each colors selected attribute to false
              * set background-color of each div with color code 
              */
@@ -108,7 +107,7 @@ define([
                 options.color = value;
             }
 
-            /**
+            /*
              *switch display between colorPicker and colorGrid
              */
             component.$('.colorGrid').hide();
@@ -134,7 +133,9 @@ define([
         },
 
         /**
-         * action to update css for ranges and set the chosen color
+         * @method changeColor : action to update css for ranges and set the chosen color
+         * @param {object} color
+         * @param {object} range
          */
         actions: {
             changeColor: function(color, ranges){
@@ -156,6 +157,9 @@ define([
             }
         },
 
+        /**
+         * @method willDestroyElement
+         */
         willDestroyElement: function() {
             this._super();
         }

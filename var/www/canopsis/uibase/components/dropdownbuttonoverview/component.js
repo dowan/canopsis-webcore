@@ -17,14 +17,6 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
- * Component for seeing the chosen color in the dropdownbutton
- *
- * @module component
- * @return {component} dropdownbuttonoverview
- * @requires jquey
- * @requires ember
- */
 define([
     'jquery',
     'ember'
@@ -33,6 +25,12 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+    /**
+     * Component for seeing the chosen color in the dropdownbutton
+     *
+     * @class Dropdownbuttonoverview
+     * @static
+     */
     var component = Ember.Component.extend({
         classNames: ['dropdownbuttonoverview', 'dropdownbuttonoverview-default', 'overview'],
 

@@ -1,16 +1,16 @@
 <ul class="nav" id="colorSelectorList"> 
-    <li class="">
+    <li>
         <a style="cursor:pointer" data-ember-action="2048" id="colorPicker">Color picker</a>
     </li>
-    <li class="">
+    <li>
         <a style="cursor:pointer" data-ember-action="2048" id="colorGrid">Color grid</a>
     </li>
 </ul>
-
 <div class="colorGrid"><br/>
           
     <div class="rangeBrowser">
         {{#each range in ranges}}
+        <div class="rangeName">{{range.name}}</div>
             <div class="rangeColorSelect">
                 {{#each color in range.colors}}
                     {{#if color.selected}}
@@ -18,10 +18,10 @@
                     {{else}}
                         <div class="colorElement unselectedColorGrid" {{bind-attr style=color.style}} {{action "changeColor" color ranges}}></div>
                     {{/if}}
-                    
                 {{/each}}
             </div>
-        {{/each}}
+            <hr style="clear:both;"/>
+        {{/each}}   
     </div>
 </div>
 

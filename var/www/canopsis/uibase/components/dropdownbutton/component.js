@@ -25,6 +25,12 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+    /**
+     * Global component for dropdownbutton
+     *
+     * @class Dropdownbutton
+     * @static
+     */
     var component = Ember.Component.extend({
         classNames: ['dropdown'],
         attributeBindings: ['id'],

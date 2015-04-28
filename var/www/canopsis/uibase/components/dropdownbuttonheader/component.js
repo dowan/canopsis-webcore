@@ -17,15 +17,6 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
- * Component that contains the title and optional other components 
- * for dropdownbutton
- *
- * @module component
- * @return {component} dropdownbuttonheader
- * @requires jquey
- * @requires ember
- */
 define([
     'jquery',
     'ember'
@@ -34,6 +25,13 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+    /**
+     * Component that contains the title and optional other components 
+     * for dropdownbutton
+     *
+     * @class Dropdownbuttonheader
+     * @static
+     */
     var component = Ember.Component.extend({
         tagName: 'a',
         classNames: ['btn btn-secondary dropdown-toggle opening'],
@@ -41,16 +39,19 @@ define([
         'aria-expanded': 'true',
 
          /**
-          * method calling toggle method on click to switch boolean value of opened attribute
+          * method calling toggle method on click
           * @method click 
           */
         click: function(){
             this.toggle();
         },
 
+        /**
+         * Method to switch boolean value of opened attribute
+         * @method toggle
+         */
         toggle: function(){
             this.toggleProperty('parentView.opened');
-            console.log('valeur de parentView', get(this, 'parentView.opened'));
         }
     });
 
