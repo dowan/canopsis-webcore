@@ -36,29 +36,25 @@ define([
      */
     var mixin = Mixin('sortablearray', {
 
-        sort_direction: false,
 
         init: function () {
             this._super();
 
-            if(get(this, 'model.user_sortedAttribute')) {
-                set(this, 'sortedAttribute', get(this, 'model.user_sortedAttribute'));
+            set(this, 'sort_direction', 'ASC');
 
-                if(get(this, 'sortedAttribute.headerClassName') === 'sorting_asc') {
-                    set(this, 'sort_direction', true);
-                } else {
-                    set(this, 'sort_direction', false);
-                }
-
+            var sorted = get(this, 'model.user_sortedAttribute');
+            if(sorted) {
+                set(this, 'sortedAttribute', sorted);
+                var direction = get(this, 'sortedAttribute.headerClassName') === 'sorting_asc' ? 'ASC': 'DESC';
+                set(this, 'sort_direction', direction);
             }
         },
 
         actions: {
             sort: function(attribute) {
-                var direction;
-
-                direction = get(this, 'sort_direction') ? 'ASC' : 'DESC';
-                set(this, 'sort_direction', !get(this, 'sort_direction'));
+                var old_direction = get(this, 'sort_direction');
+                var direction = old_direction === 'ASC' ? 'DESC': 'ASC';
+                set(this, 'sort_direction', direction);
 
                 if (get(this, 'model.user_sortedAttribute') !== undefined) {
                     set(this, 'model.user_sortedAttribute.headerClassName', 'sorting');

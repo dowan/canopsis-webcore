@@ -49,17 +49,20 @@ define([], function() {
 
         //will be defined when notification controller is called.
         info: function (message) {
-            targetcontroller.createNotification('info', message);
+            //TODO doing it clean
+//            targetcontroller.createNotification('info', message);
             console.log('info', message);
             return message;
         },
         warning: function (message) {
-            targetcontroller.createNotification('warning', message);
+            //TODO doing it clean
+//            targetcontroller.createNotification('warning', message);
             console.log('warning', message);
             return message;
         },
         error: function (message) {
-            targetcontroller.createNotification('error', message);
+            //TODO doing it clean
+//            targetcontroller.createNotification('error', message);
             console.error(message);
             return message;
         },
