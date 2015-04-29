@@ -17,10 +17,10 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
+define(['ember'], function(Ember) {
 
-    return {
+    return Ember.Object.create({
         'todo': 'firebase'
-    };
+    });
 
 });

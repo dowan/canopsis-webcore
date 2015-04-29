@@ -42,6 +42,10 @@ define([
             //put the initialized registry into the registry list
             var name = get(this, 'name');
             registries[name] = this;
+
+            if(isNone(get(this, 'all'))) {
+                set(this, 'all', Ember.A());
+            }
         },
 
         /**
@@ -51,7 +55,7 @@ define([
          */
         name: 'unnamed registry',
 
-        all: [],
+        all: undefined,
         byClass: {},
 
         /**

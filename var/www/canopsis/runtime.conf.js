@@ -23,6 +23,7 @@ define([
     'app/application',
     'utils',
     'app/lib/registries',
+    'app/lib/mappers/adapters',
     'app/lib/wrappersmanager',
     'app/lib/formsregistry',
     'app/lib/widgetsregistry',
@@ -38,6 +39,7 @@ define([
         Application,
         utils,
         registries,
+        adaptersMapper,
         wrappersRegistry,
         formsRegistry,
         widgetsRegistry,
@@ -57,6 +59,7 @@ define([
     Canopsis.tooltips = {};
     Canopsis.utils = utils;
     Canopsis.wrappers = wrappersRegistry;
+    Canopsis.adaptersMapper = adaptersMapper;
     Canopsis.widgets = widgetsRegistry;
     Canopsis.actions = actionsRegistry;
     Canopsis.schemas = schemasRegistry;
