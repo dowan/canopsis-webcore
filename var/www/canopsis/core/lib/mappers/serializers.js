@@ -17,32 +17,10 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember-data',
-    'app/lib/mappers/adapters',
-    'app/lib/mappers/serializers'
-], function(DS, adaptersMapper, serializersMapper) {
+define([], function() {
 
-    DS.Store.reopen({
-      /**
-        Returns the adapter for a given type.
+    return {
+        'todo': 'firebase'
+    };
 
-        @method adapterFor
-        @private
-        @param {subclass of DS.Model} type
-        @return DS.Adapter
-      */
-      adapterFor: function(type) {
-        var container = this.container, adapter;
-
-        if (container) {
-          adapter = container.lookup('adapter:' + adaptersMapper[type.typeKey]) || container.lookup('adapter:' + type.typeKey) || container.lookup('adapter:application');
-        }
-
-        return adapter || get(this, 'defaultAdapter');
-      },
-
-    });
-
-    return DS.Store;
 });
