@@ -18,10 +18,32 @@
 */
 
 define([
-    'canopsis/monitoring/lib/loaders/widgets',
-    'canopsis/monitoring/lib/loaders/helpers',
-    'canopsis/monitoring/lib/loaders/mixins',
-    'canopsis/monitoring/lib/loaders/templates'
-], function () {
+    'ember',
+    'app/lib/factories/mixin'
+], function(Ember, Mixin) {
 
+    var get = Ember.get,
+        set = Ember.set;
+
+
+    var mixin = Mixin('editurlfield', {
+
+        init: function () {
+            this._super();
+        }
+       /*
+        partials: {
+            selectionToolbarButtons: ['actionbutton-editurlfield'],
+        },
+
+        actions: {
+            editUrlField: function () {
+                console.log('edit url field');
+            }
+        }
+        */
+    });
+
+
+    return mixin;
 });
