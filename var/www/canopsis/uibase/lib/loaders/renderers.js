@@ -31,7 +31,6 @@ var renderers = [
     { name: 'renderer-mail', template: 'canopsis/uibase/renderers/mail.html'},
     { name: 'renderer-object', template: 'canopsis/uibase/renderers/object.html'},
     { name: 'renderer-percent', template: 'canopsis/uibase/renderers/percent.html'},
-    { name: 'renderer-rights', template: 'canopsis/uibase/renderers/rights.html'},
     { name: 'renderer-richtext', template: 'canopsis/uibase/renderers/richtext.html'},
     { name: 'renderer-source', template: 'canopsis/uibase/renderers/source.html'},
     { name: 'renderer-state', template: 'canopsis/uibase/renderers/state.html'},

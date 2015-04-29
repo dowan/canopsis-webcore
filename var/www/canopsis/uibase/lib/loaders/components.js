@@ -32,7 +32,6 @@ var components = [
     { name: 'components/component-filterclause', url: 'canopsis/uibase/components/filterclause/component', template: 'canopsis/uibase/components/filterclause/template.html' },
     { name: 'components/component-listtree', url: 'canopsis/uibase/components/listtree/component', template: 'canopsis/uibase/components/listtree/template.html' },
     { name: 'components/component-modelselect', url: 'canopsis/uibase/components/modelselect/component', template: 'canopsis/uibase/components/modelselect/template.html' },
-    { name: 'components/component-rightsselector', url: 'canopsis/uibase/components/rightsselector/component', template: 'canopsis/uibase/components/rightsselector/template.html' },
     { name: 'components/component-searchbar', url: 'canopsis/uibase/components/searchbar/component', template: 'canopsis/uibase/components/searchbar/template.html' },
     { name: 'components/component-stateeditor', url: 'canopsis/uibase/components/stateeditor/component', template: 'canopsis/uibase/components/stateeditor/template.html' },
     { name: 'components/component-eventselector', url: 'canopsis/uibase/components/eventselector/component', template: 'canopsis/uibase/components/eventselector/template.html' },
@@ -64,8 +63,6 @@ var components = [
     { name: 'components/component-miniformheader', url: 'canopsis/uibase/components/miniformheader/component', template: 'canopsis/uibase/components/miniformheader/template.hbs' },
     { name: 'components/component-miniformheaderbuttons', url: 'canopsis/uibase/components/miniformheaderbuttons/component', template: 'canopsis/uibase/components/miniformheaderbuttons/template.hbs' },
     { name: 'components/component-miniformtitle', url: 'canopsis/uibase/components/miniformtitle/component', template: 'canopsis/uibase/components/miniformtitle/template.hbs' },
-    { name: 'components/component-rights-action', url: 'canopsis/uibase/components/rights-action/component', template: 'canopsis/uibase/components/rights-action/template.html' },
-    { name: 'components/component-rightsrenderer', url: 'canopsis/uibase/components/rightsrenderer/component', template: 'canopsis/uibase/components/rightsrenderer/template.html' }
 ];
 
 loader.loadWithTemplates(components);
