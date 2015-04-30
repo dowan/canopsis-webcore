@@ -17,11 +17,18 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 define([
+    'jquery',
     'ember',
-    'canopsis/canopsis-rights/objects/rightsregistry'
-], function(Ember, rightsRegistry) {
+    'ember-data',
+    'app/controller/application',
+    'app/lib/utils/data'
+], function(
+    $,
+    Ember,
+    DS,
+    Applicationcontroller,
+    dataUtils) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -29,22 +36,24 @@ define([
         __ = Ember.String.loc;
 
 
-    var component = Ember.Component.extend({
-        description: function() {
-            var value = get(this, 'value');
+    Applicationcontroller.reopen({
+        didSaveView: function(userview) {
+            this._super(userview);
 
-            var action = rightsRegistry.getByName(value);
-            console.log('///', action, get(action, 'desc'), action._data.desc);
-            return action._data.desc;
-        }.property('value')
-    });
+            var right = dataUtils.getStore().createRecord('action', {
+                  enable: true,
+                  crecord_type: "action",
+                  _id: 'showview_' + formattedViewId,
+                  id: 'showview_' + formattedViewId,
+                  crecord_name: 'showview_' + formattedViewId,
+                  desc: ''
+            });
 
-    Ember.Application.initializer({
-        name:"component-rights-action",
-        initialize: function(container, application) {
-            application.register('component:component-rights-action', component);
+            alert('view right saved');
+
+            right.save();
         }
     });
 
-    return component;
+    return Applicationcontroller;
 });

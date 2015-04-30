@@ -21,7 +21,7 @@
 define([
     'ember',
     'canopsis/uibase/components/dictclassifiedcrecordselector/component',
-    'app/lib/rightsregistry'
+    'canopsis/canopsis-rights/objects/rightsregistry'
 ], function(Ember, DictclassifiedcrecordselectorComponent, rightsRegistry) {
 
     var get = Ember.get,

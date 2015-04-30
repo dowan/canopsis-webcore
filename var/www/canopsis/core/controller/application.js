@@ -28,7 +28,7 @@ define([
     'app/lib/actionsregistry',
     'app/lib/mixinsregistry',
     'app/lib/formsregistry',
-    'app/lib/rightsregistry',
+    'canopsis/canopsis-rights/objects/rightsregistry',
     'app/lib/inflections',
     'app/mixins/userprofilestatusmenu',
     'app/mixins/requirejsmocksmanager',
@@ -234,6 +234,10 @@ define([
                     conf.save();
                 });
             }
+        },
+
+        didSaveView: function(userview) {
+            this.transitionToRoute("/userview/" + get(userview, 'id'));
         },
 
         actions: {
@@ -481,21 +485,9 @@ define([
 
                 recordWizard.submit.done(function() {
                     set(applicationController, 'isLoading', get(applicationController, 'isLoading') + 1);
-                    userview.save();
-
-                    var right = dataUtils.getStore().createRecord('action', {
-                          enable: true,
-                          crecord_type: "action",
-                          _id: "showview_" + formattedViewId,
-                          id: "showview_" + formattedViewId,
-                          crecord_name: "showview_" + formattedViewId,
-                          desc: ""
+                    userview.save().then(function() {
+                        applicationController.didSaveView(userview);
                     });
-
-                    right.save();
-                    alert('right save');
-
-                    applicationController.transitionToRoute("/userview/" + get(userview, 'id'));
                 });
             },
 

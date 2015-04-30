@@ -21,7 +21,9 @@
 define([
     'canopsis/canopsis-rights/lib/loaders/components',
     'canopsis/canopsis-rights/lib/loaders/editors',
-    'canopsis/canopsis-rights/lib/loaders/renderers'
+    'canopsis/canopsis-rights/lib/loaders/renderers',
+    'canopsis/canopsis-rights/reopens/routes/application',
+    'canopsis/canopsis-rights/reopens/controllers/application'
 ], function () {
 
 });
