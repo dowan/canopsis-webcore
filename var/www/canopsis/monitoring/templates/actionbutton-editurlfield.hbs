@@ -1,6 +1,4 @@
-editurlfield
-
-{{#if controller.userCanEditUrlField}}
+{{#if controller.rights.actionbutton_canediturlfield.checksum}}
     {{#component-tooltip content="Edit wich fields in event should contains links"}}
         <button class="btn btn-default btn-sm" {{action 'editUrlField'}} >
             <span class="glyphicon glyphicon-list-alt"></span>
