@@ -19,8 +19,9 @@
 
 define([
     'ember',
-    'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+    'app/lib/factories/mixin',
+    'app/lib/utils/forms'
+], function(Ember, Mixin, forms) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -28,20 +29,16 @@ define([
 
     var mixin = Mixin('editurlfield', {
 
-        init: function () {
-            this._super();
-        }
-       /*
         partials: {
-            selectionToolbarButtons: ['actionbutton-editurlfield'],
+            actionToolbarButtons: ['actionbutton-editurlfield'],
         },
 
         actions: {
             editUrlField: function () {
-                console.log('edit url field');
+                forms.editSchemaRecord('editurlfield', get(this, "container"));
             }
+
         }
-        */
     });
 
 
