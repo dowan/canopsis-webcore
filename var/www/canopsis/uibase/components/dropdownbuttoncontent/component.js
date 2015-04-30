@@ -34,6 +34,17 @@ define([
     var component = Ember.Component.extend({
         classNames: ['dropdownbuttoncontent'],
         classNameBindings: ['dropdownContentMenu'],
+
+        /**
+         * Method to close the dropdownbutton
+         * @method close
+         */
+        actions:{
+            close: function(){
+                this.toggleProperty('parentView.opened');
+            }
+        },
+
         /**
          * Method for defining a boolean value on dropdownContentMenu 
          * thanks to opened attribute

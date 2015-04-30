@@ -37,7 +37,7 @@ define([
          */
 
     var component = Ember.Component.extend({
-        classNames: ['colorSelector'],
+        classNames: ['colorSelector dropdown-toggle'],
         /**
          * instantiate component and load data
          * @method init
@@ -106,6 +106,13 @@ define([
             if(value) {
                 options.color = value;
             }
+
+            /*
+             * close the dropdownbutton
+             */
+             component.$('.closeDropdown').click(function(){
+               
+             });
 
             /*
              *switch display between colorPicker and colorGrid

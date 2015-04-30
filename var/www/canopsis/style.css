@@ -113,8 +113,8 @@
 }
 
 .colorElement{
-    height: 40px;
-    width: 60px;
+    height: 20px;
+    width: 30px;
     float: left;
     cursor: pointer;
 }
