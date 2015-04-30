@@ -34,7 +34,6 @@ define([
             var value = get(this, 'value');
 
             var action = rightsRegistry.getByName(value);
-            console.log('///', action, get(action, 'desc'), action._data.desc);
             return action._data.desc;
         }.property('value')
     });
