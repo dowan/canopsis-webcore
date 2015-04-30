@@ -10,7 +10,7 @@
     <i class="fa fa-recycle"></i> {{tr 'Data clean'}}
 </button>
 
-{{#if controller.rights.actionbutton_canediturlfield.checksum}}
+{{#if controller.utils.session.rights.actionbutton_canediturlfield.checksum}}
     <button class="btn btn-default" {{action 'selectItem' 'linklist'}} >
         <i class="fa fa-list"></i> {{tr 'Link list'}}
     </button>

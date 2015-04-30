@@ -35,7 +35,7 @@ define([
 
         actions: {
             editUrlField: function () {
-                forms.editSchemaRecord('editurlfield', get(this, "container"));
+                forms.editSchemaRecord('linklistfieldsurl', get(this, "container"));
             }
 
         }
