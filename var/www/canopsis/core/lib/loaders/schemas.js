@@ -28,15 +28,16 @@ for (var i = 0, l = schemaFiles.length; i < l; i++) {
 }
 
 define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
-function compare(a,b) {
-  if (a.id < b.id) {
-     return -1;
-  }
-  if (a.id > b.id) {
-    return 1;
-  }
-  return 0;
-}
+
+    function compare(a,b) {
+      if (a.id < b.id) {
+         return -1;
+      }
+      if (a.id > b.id) {
+        return 1;
+      }
+      return 0;
+    }
 
     /**
      * provides an abstraction to register schemas where they need to be
