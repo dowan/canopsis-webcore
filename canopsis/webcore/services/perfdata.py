@@ -27,68 +27,68 @@ iface = PerfDataInterface()
 
 def exports(ws):
     apply_routes([
-        (
-            ws.application.post,
-            'perfdata/count',
-            {
+        {
+            'method': ws.application.post,
+            'name': 'perfdata/count',
+            'params': {
                 'payload': ['metric_id', 'timewindow']
             },
-            iface.count
-        ),
-        (
-            ws.application.post,
-            'perfdata',
-            {
+            'handler': iface.count
+        },
+        {
+            'method': ws.application.post,
+            'name': 'perfdata',
+            'params': {
                 'payload': [
                     'metric_id', 'with_meta',
                     'limit', 'skip', 'period',
                     'timewindow', 'period', 'timeserie'
                 ]
             },
-            iface.get
-        ),
-        (
-            ws.application.post,
-            'perfdata/meta',
-            {
+            'handler': iface.get
+        },
+        {
+            'method': ws.application.post,
+            'name': 'perfdata/meta',
+            'params': {
                 'payload': ['timewindow', 'limit', 'sort']
             },
-            iface.meta
-        ),
-        (
-            ws.application.put,
-            'perfdata',
-            {
+            'handler': iface.meta
+        },
+        {
+            'method': ws.application.put,
+            'name': 'perfdata',
+            'params': {
                 'payload': ['metric_id', 'points', 'meta']
             },
-            iface.put
-        ),
-        (
-            ws.application.delete,
-            'perfdata',
-            {
+            'handler': iface.put
+        },
+        {
+            'method': ws.application.delete,
+            'name': 'perfdata',
+            'params': {
                 'payload': ['metric_id', 'with_meta', 'timewindow']
             },
-            iface.remove
-        ),
-        (
-            ws.application.put,
-            'perfdata/meta',
-            {
+            'handler': iface.remove
+        },
+        {
+            'method': ws.application.put,
+            'name': 'perfdata/meta',
+            'params': {
                 'payload': ['metric_id', 'meta', 'timestamp']
             },
-            iface.manager.put_meta
-        ),
-        (
-            ws.application.get,
-            'perfdata/period',
-            {},
-            iface.manager.get_period
-        ),
-        (
-            ws.application.get,
-            'perfdata/internal',
-            {},
-            iface.manager.is_internal
-        )
+            'handler': iface.manager.put_meta
+        },
+        {
+            'method': ws.application.get,
+            'name': 'perfdata/period',
+            'params': {},
+            'handler': iface.manager.get_period
+        },
+        {
+            'method': ws.application.get,
+            'name': 'perfdata/internal',
+            'params': {},
+            'handler': iface.manager.is_internal
+        }
     ])
