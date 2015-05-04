@@ -292,41 +292,7 @@ define([
              * @descriptions Shows a Modelform with event settings
              */
             editEventSettings: function () {
-                var dataStore = DS.Store.create({
-                    container: get(this, "container")
-                });
-
-                dataStore.findQuery('statusmanagement', {}).then(function(queryResults) {
-
-                    console.log('queryResults', queryResults);
-
-                    var record = get(queryResults, 'content')[0];
-
-                    //it is always translated this way
-                    var errorMessage = __('Status management information not registered in database.') +
-                        ' ' + __('Please contact your administrator.');
-
-                    if (record) {
-
-                        //generating form from record model
-                        var recordWizard = formsUtils.showNew('modelform', record, {
-                            title: __('Event settings edition'),
-                        });
-
-                        //submit form and it s callback
-                        recordWizard.submit.then(function(form) {
-                            console.log('record going to be saved', record, form);
-                            notificationUtils.info(__('Status management information') + ' ' +__('updated'));
-
-                            //generated data by user form fill
-                            record = form.get('formContext');
-                            record.save();
-
-                        });
-                    } else {
-                        notificationUtils.error(errorMessage);
-                    }
-                });
+                formsUtils.editSchemaRecord('statusmanagement', get(this, "container"));
             },
 
             /**
@@ -334,35 +300,7 @@ define([
              * @descriptions Shows a Modelform to edit data cleaner options
              */
             editDataclean: function () {
-                var dataStore = DS.Store.create({
-                    container: get(this, "container")
-                });
-
-                dataStore.findQuery('datacleaner', {}).then(function(queryResults) {
-
-                    console.log('queryResults', queryResults);
-
-                    var record = get(queryResults, 'content')[0];
-
-                    //it is always translated this way
-                    var errorMessage = __('Engine data cleaner information not registered in database.') +
-                        ' ' + __('Please contact your administrator.');
-
-                    //generating form from record model
-                    var recordWizard = formsUtils.showNew('modelform', record, {
-                        title: __('Data clean edition'),
-                    });
-
-                    //submit form and it s callback
-                    recordWizard.submit.then(function(form) {
-                        console.log('record going to be saved', record, form);
-
-                        notificationUtils.info(__('Engine data clean information') + ' ' +__('updated'));
-                        //generated data by user form fill
-                        record = form.get('formContext');
-                        record.save();
-                    });
-                });
+                formsUtils.editSchemaRecord('datacleaner', get(this, "container"));
             },
 
 
@@ -371,34 +309,7 @@ define([
              * @descriptions Shows a form to edit the canopsis UI enabled plugins
              */
             editEnabledPlugins: function() {
-                var dataStore = DS.Store.create({
-                    container: get(this, "container")
-                });
-
-                dataStore.findQuery('enabledmodules', {}).then(function(queryResults) {
-
-                    console.log('queryResults', queryResults);
-
-                    var record = get(queryResults, 'content')[0];
-
-                    //generating form from record model
-                    var recordWizard = formsUtils.showNew('modelform', record, {
-                        title: __('Enabled plugins'),
-                    });
-
-                    var okMessage =__('Enabled plugins') + ' ' + _('information') + ' ' +__('updated');
-                    //submit form and it s callback
-                    recordWizard.submit.then(function(form) {
-                        console.log('record going to be saved', record, form);
-
-                        notificationUtils.info(okMessage);
-                        //generated data by user form fill
-                        record = form.get('formContext');
-                        record.save();
-                    });
-                });
-
-                dataStore.destroy();
+                formsUtils.editSchemaRecord('enabledmodules', get(this, "container"));
             },
 
             /**
