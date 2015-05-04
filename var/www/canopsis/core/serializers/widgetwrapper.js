@@ -23,12 +23,13 @@ define([
     'app/mixins/embeddedrecordserializer'
 ], function(DS, ApplicationSerializer, EmbeddedRecordSerializerMixin) {
 
-    var serializer = ApplicationSerializer.extend(
+    var serializerClass = ApplicationSerializer.extend(
         EmbeddedRecordSerializerMixin,
         {}
     );
 
-    loader.register('serializer:job', serializer);
 
-    return serializer;
+    loader.register('serializer:widgetwrapper', serializerClass.extend());
+
+    return serializerClass;
 });

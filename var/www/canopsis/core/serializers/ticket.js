@@ -28,7 +28,7 @@ define([
         {}
     );
 
-    loader.register('serializer:job', serializer);
+    loader.register('serializer:ticket', serializer);
 
     return serializer;
 });
