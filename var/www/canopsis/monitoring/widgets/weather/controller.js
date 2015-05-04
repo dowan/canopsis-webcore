@@ -112,33 +112,26 @@ define([
         },
 
         fetchStates: function () {
-            var that = this;
-            var rks = get(that, 'config.event_selection');
+            var weatherWidget = this;
+            var rks = get(weatherWidget, 'config.event_selection');
 
             if (!rks || !rks.length) {
                 console.warn('Widget weather ' + get(this, 'title') + ' No rk found, the widget may not be configured properly');
                 return;
             }
 
-
-            //TODO avoid using 0 as limit. A better practivce should be used, like limiting to 1000 and display a warning if payload.length > 1000
             var params = {
-                limit: 0,
+                limit: 20,
                 ids: JSON.stringify(rks)
             };
 
-            $.ajax({
-                url: '/rest/events',
-                data: params,
-                success: function(data) {
-                    if (data.success) {
-                        that.computeWeather(data.data);
-                    } else {
-                        console.error('Unable to load event information for weather widget from API');
-                    }
-                    that.trigger('refresh');
-                    console.log(' + Weather content', get(that, 'config.event_selection'));
-                }
+            var store = get(this, 'widgetDataStore');
+
+            store.findQuery('event', params).then(function (data) {
+                var content = get(data, 'content');
+                weatherWidget.computeWeather(content);
+                weatherWidget.trigger('refresh');
+                console.log('weather content', content);
             });
         },
 
