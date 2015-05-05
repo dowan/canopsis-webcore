@@ -19,8 +19,10 @@
 
 define([], function() {
 
-    return {
+    window.serializersMapper = Ember.Object.create({
         'todo': 'firebase'
-    };
+    });
+
+    return window.serializersMapper;
 
 });

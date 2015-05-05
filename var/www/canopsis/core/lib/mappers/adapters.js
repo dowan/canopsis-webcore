@@ -19,8 +19,10 @@
 
 define(['ember'], function(Ember) {
 
-    return Ember.Object.create({
+    window.adaptersMapper = Ember.Object.create({
         'todo': 'firebase'
     });
+
+    return window.adaptersMapper;
 
 });

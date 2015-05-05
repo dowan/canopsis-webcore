@@ -42,6 +42,17 @@ define([
         return adapter || get(this, 'defaultAdapter');
       },
 
+      serializerFor: function(type) {
+        var container = this.container;
+        var adapter = this.adapterFor(type);
+
+        type = this.modelFor(type);
+        if(container) {
+          serializer = container.lookup('serializer:' + serializersMapper[type.typeKey]) || container.lookup('serializer:' + type.typeKey) || container.lookup('serializer:application');
+        }
+
+        return serializer || adapter.defaultSerializer || container.lookup('serializer:-default');
+      }
     });
 
     return DS.Store;
