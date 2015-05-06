@@ -35,7 +35,8 @@ define([
 	'canopsis/canopsis-backend-ui-connector/adapters/notification',
     'canopsis/canopsis-backend-ui-connector/adapters/userview',
     'canopsis/canopsis-backend-ui-connector/adapters/linklist',
-	'canopsis/canopsis-backend-ui-connector/adapters/entitylink'
+    'canopsis/canopsis-backend-ui-connector/adapters/entitylink',
+	'canopsis/canopsis-backend-ui-connector/adapters/snmprule'
 ], function () {
 
 });

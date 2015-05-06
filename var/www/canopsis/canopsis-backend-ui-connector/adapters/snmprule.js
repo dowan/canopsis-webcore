@@ -12,13 +12,13 @@ define([
         buildURL: function(type, id) {
             void(id);
 
-            return '/linklist';
+            return '/snmprule';
         },
 
     });
 
 
-    loader.register('adapter:linklist', adapter);
+    loader.register('adapter:snmprule', adapter);
 
     return adapter;
 });

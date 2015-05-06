@@ -27,6 +27,7 @@ define([
     'app/serializers/ctxselector',
     'app/serializers/ctxtopology',
     'app/serializers/linklist',
+    'app/serializers/snmprule',
     'app/lib/wrappers/bootstrap',
     'app/lib/wrappers/hint',
     'app/lib/wrappers/swag',
