@@ -40,10 +40,11 @@ define([
 
             var viewId = get(transition, 'params.userview.userview_id');
             viewId = viewId.replace('.', '_');
+
             var checksum = get(loginController, 'record.rights.' + viewId + '.checksum');
             var userId = get(loginController, 'record._id');
 
-            if(rightsflagsUtils.canRead(checksum) || viewId === 'view.404' || userId === 'root') {
+            if(rightsflagsUtils.canRead(checksum) || viewId === 'view_404' || viewId === 'view_401' || userId === 'root') {
                 return this._super(transition);
             } else {
                 this.transitionTo('/userview/view.404');
@@ -55,9 +56,11 @@ define([
                 var viewId = get(this, 'controller.model.id');
                 viewId = viewId.replace('.', '_');
 
+                var userId = get(loginController, 'record._id');
+
                 var checksum = get(loginController, 'record.rights.' + viewId + '.checksum');
 
-                if(rightsflagsUtils.canWrite(checksum)) {
+                if(rightsflagsUtils.canWrite(checksum) || userId === 'root') {
                     this._super();
                 }
             }
