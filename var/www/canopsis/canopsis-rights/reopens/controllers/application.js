@@ -40,18 +40,28 @@ define([
         didSaveView: function(userview) {
             this._super(userview);
 
+            var formattedViewId = get(userview, 'id').replace('.', '_');
+
+            console.error('didSaveView', userview);
+
             var right = dataUtils.getStore().createRecord('action', {
                   enable: true,
                   crecord_type: "action",
-                  _id: 'showview_' + formattedViewId,
-                  id: 'showview_' + formattedViewId,
-                  crecord_name: 'showview_' + formattedViewId,
-                  desc: ''
+                  _id: formattedViewId,
+                  id: formattedViewId,
+                  crecord_name: formattedViewId,
+                  desc: 'Rights on view : ' + userview.get('crecord_name')
             });
-
-            alert('view right saved');
-
             right.save();
+
+            //TODO Add the correct right to the current user, to allow him to display the view
+            // var loginController = get(this, 'controllers.login');
+
+            // var rights = get(loginController, 'record.rights');
+
+            // set(rights, formattedViewId, { checksum : 7 });
+            // var record = get(loginController, 'record');
+            // record.save();
         }
     });
 
