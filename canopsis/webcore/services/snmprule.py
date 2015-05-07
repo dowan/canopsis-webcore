@@ -2,8 +2,10 @@
 
 from canopsis.common.ws import route
 from canopsis.snmp.rulesmanager import RulesManager
+from canopsis.snmp.mibs import MibsManager
 
 manager = RulesManager()
+mibmanager = MibsManager()
 
 
 def exports(ws):
@@ -32,5 +34,14 @@ def exports(ws):
             query=filter,
             sort=sort,
             with_count=True
+        )
+        return result
+
+    @route(ws.application.post, payload=['limit', 'query', 'projection'])
+    def snmpmib(limit=None, query={}, projection=None):
+        result = mibmanager.get(
+            limit=limit,
+            query=query,
+            projection=projection
         )
         return result

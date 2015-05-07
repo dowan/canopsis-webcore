@@ -36,7 +36,8 @@ define([
     'canopsis/canopsis-backend-ui-connector/adapters/userview',
     'canopsis/canopsis-backend-ui-connector/adapters/linklist',
     'canopsis/canopsis-backend-ui-connector/adapters/entitylink',
-	'canopsis/canopsis-backend-ui-connector/adapters/snmprule'
+    'canopsis/canopsis-backend-ui-connector/adapters/snmprule',
+	'canopsis/canopsis-backend-ui-connector/adapters/snmpmib'
 ], function () {
 
 });

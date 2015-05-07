@@ -1,0 +1,10 @@
+{{input class="form-control" value=mibLabel type='text'}}
+{{#if showOids}}
+    <ul class="list-group" style="position:absolute;z-index:100">
+        {{#each oidElement in oidElements}}
+            <li class="list-group-item">
+                <a href="#" {{action 'setOid' oidElement}}>{{oidElement._id}}</a>
+            </li>
+        {{/each}}
+    </ul>
+{{/if}}
