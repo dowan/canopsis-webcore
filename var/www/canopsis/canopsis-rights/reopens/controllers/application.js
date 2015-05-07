@@ -42,8 +42,6 @@ define([
 
             var formattedViewId = get(userview, 'id').replace('.', '_');
 
-            console.error('didSaveView', userview);
-
             var right = dataUtils.getStore().createRecord('action', {
                   enable: true,
                   crecord_type: "action",
@@ -53,6 +51,8 @@ define([
                   desc: 'Rights on view : ' + userview.get('crecord_name')
             });
             right.save();
+
+            this.rightsRegistry.add(right, get(right, 'crecord_name'));
 
             //TODO Add the correct right to the current user, to allow him to display the view
             // var loginController = get(this, 'controllers.login');
