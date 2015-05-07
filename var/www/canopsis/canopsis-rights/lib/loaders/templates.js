@@ -17,15 +17,10 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+var templates = [
+    { name: 'rightschecksumbuttons', template: 'canopsis/canopsis-rights/templates/rightschecksumbuttons.html' },
+    { name: 'rightselector-itempartial', template: 'canopsis/canopsis-rights/templates/rightselector-itempartial.hbs'},
+    { name: 'rightselector-selecteditempartial', template: 'canopsis/canopsis-rights/templates/rightselector-selecteditempartial.hbs'}
+];
 
-define([
-    'canopsis/canopsis-rights/lib/loaders/components',
-    'canopsis/canopsis-rights/lib/loaders/editors',
-    'canopsis/canopsis-rights/lib/loaders/renderers',
-    'canopsis/canopsis-rights/lib/loaders/templates',
-    'canopsis/canopsis-rights/reopens/routes/application',
-    'canopsis/canopsis-rights/reopens/routes/userview',
-    'canopsis/canopsis-rights/reopens/controllers/application'
-], function () {
-
-});
+loader.loadWithTemplates(templates);
