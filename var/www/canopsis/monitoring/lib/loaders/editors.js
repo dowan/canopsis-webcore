@@ -18,7 +18,8 @@
 */
 
 var editors = [
-    { name: 'editor-snmpoid', template: 'canopsis/monitoring/editors/snmpoid.hbs' }
+    { name: 'editor-snmpoid', template: 'canopsis/monitoring/editors/snmpoid.hbs' },
+    { name: 'editor-snmpelement', template: 'canopsis/monitoring/editors/snmpelement.hbs' }
 ];
 
 loader.loadWithTemplates(editors);

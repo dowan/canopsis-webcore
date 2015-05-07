@@ -3,7 +3,7 @@
     <ul class="list-group" style="position:absolute;z-index:100">
         {{#each oidElement in oidElements}}
             <li class="list-group-item">
-                <a href="#" {{action 'setOid' oidElement}}>{{oidElement._id}}</a>
+                <a href="#" {{action 'setOid' oidElement}}>{{oidElement.name}}</a>
             </li>
         {{/each}}
     </ul>

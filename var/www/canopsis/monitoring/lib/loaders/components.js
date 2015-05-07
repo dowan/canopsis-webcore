@@ -19,7 +19,8 @@
 
 
 var components = [
-    { name: 'components/component-snmpoid', url: 'canopsis/monitoring/components/snmpoid/component', template: 'canopsis/monitoring/components/snmpoid/template.hbs' }
+    { name: 'components/component-snmpoid', url: 'canopsis/monitoring/components/snmpoid/component', template: 'canopsis/monitoring/components/snmpoid/template.hbs' },
+    { name: 'components/component-snmpelement', url: 'canopsis/monitoring/components/snmpelement/component', template: 'canopsis/monitoring/components/snmpelement/template.hbs' }
 ];
 
 loader.loadWithTemplates(components);

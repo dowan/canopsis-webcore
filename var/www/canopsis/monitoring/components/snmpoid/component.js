@@ -34,20 +34,18 @@ define([
             this._super();
             set(this, 'showOids', false);
             set(this, 'noSearch', false);
-            //this.loadMib();
+            this.loadMib();
         },
 
         loadMib: function () {
             var adapter = Application.__container__.lookup('adapter:snmpmib');
             set(this, 'adapter', adapter);
-
             var snmpoidComponent = this;
             var content = get(this, 'content');
             if (content) {
                 var query = {
-                    'oid': content,
-                    'moduleName': {'$exists': false},
-                    'nodetype': {'$exists': false} //search only mib definitions from an ecclectic collection
+                    '_id': content,
+                    'nodetype': 'notification',
                 };
 
                 get(this, 'adapter').findMib(
@@ -59,9 +57,19 @@ define([
                 ).then(function(results) {
                     if (results.success && results.data.length) {
                         console.log('found', results.data);
-                        var label = get(results.data[0], '_id');
+                        var label = get(results.data[0], 'name');
                         set(snmpoidComponent, 'noSearch', true);
                         set(snmpoidComponent, 'mibLabel', label);
+                        var mibObjects = get(results.data[0], 'objects');
+
+                        //make object list available to other form editors.
+                        if (!isNone(mibObjects)) {
+                            mibObjects = Object.keys(mibObjects);
+                            var form = get(snmpoidComponent, 'crecord.form');
+                            set(form, 'mibObjects', mibObjects);
+                            console.log('set', mibObjects, 'to form', form);
+                        }
+
                     }
                 });
             }
@@ -85,8 +93,7 @@ define([
 
                 var query = {
                     'name': {'$regex': '.*' + search + '.*','$options':'i'},
-                    'moduleName': {'$exists': false},
-                    'nodetype': {'$exists': false} //search only mib definitions from an ecclectic collection
+                    'nodetype': 'notification',
                 };
 
                 var adapter = Application.__container__.lookup('adapter:snmpmib');
@@ -111,8 +118,8 @@ define([
         actions: {
             setOid: function (oidElement) {
                 console.log(oidElement);
-                var oid = get(oidElement, 'oid');
-                var label = get(oidElement, '_id');
+                var oid = get(oidElement, '_id');
+                var label = get(oidElement, 'name');
                 set(this, 'showOids', false);
                 set(this, 'noSearch', true);
                 set(this, 'content', oid);
