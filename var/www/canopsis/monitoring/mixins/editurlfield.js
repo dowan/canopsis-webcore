@@ -18,10 +18,29 @@
 */
 
 define([
-    'canopsis/monitoring/lib/loaders/widgets',
-    'canopsis/monitoring/lib/loaders/helpers',
-    'canopsis/monitoring/lib/loaders/mixins',
-    'canopsis/monitoring/lib/loaders/templates'
-], function () {
+    'ember',
+    'app/lib/factories/mixin',
+    'app/lib/utils/forms'
+], function(Ember, Mixin, forms) {
 
+    var get = Ember.get,
+        set = Ember.set;
+
+
+    var mixin = Mixin('editurlfield', {
+
+        partials: {
+            actionToolbarButtons: ['actionbutton-editurlfield'],
+        },
+
+        actions: {
+            editUrlField: function () {
+                forms.editSchemaRecord('linklistfieldsurl', get(this, "container"));
+            }
+
+        }
+    });
+
+
+    return mixin;
 });

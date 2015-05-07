@@ -25,7 +25,8 @@ define([
 ], function(Ember, Application, routesUtils, formsregistry) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        __ = Ember.String.loc;
 
     var formUtils = {
         instantiateForm: function(formName, formContext, options) {
@@ -82,7 +83,7 @@ define([
         },
 
         editRecord: function(record) {
-            var widgetWizard = formsUtils.showNew('modelform', record);
+            var widgetWizard = this.showNew('modelform', record);
             console.log('widgetWizard', widgetWizard);
 
             widgetWizard.submit.then(function() {
@@ -94,6 +95,37 @@ define([
             });
 
             return widgetWizard;
+        },
+
+        editSchemaRecord: function (schemaName, container) {
+
+            var forms = this;
+
+            var dataStore = DS.Store.create({
+                container: container//get(this, "container")
+            });
+
+            dataStore.findQuery(schemaName, {}).then(function(queryResults) {
+
+                console.log('queryResults', queryResults);
+
+                var record = get(queryResults, 'content')[0];
+
+                //it is always translated this way
+                var errorMessage = [
+                    schemaName,
+                    ' ',
+                    __('information not registered in database.'),
+                    ' ',
+                    __('Please contact your administrator.'),
+                ].join('');
+
+                if (record) {
+                    forms.editRecord(record);
+                 } else {
+                    forms.error(errorMessage);
+                }
+            });
         },
 
         addRecord: function(record_type) {

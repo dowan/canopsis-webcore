@@ -49,7 +49,7 @@ html {
 }
 
 .noyscroll{
-    overflow-y: hidden !important;
+    overflow: visible !important;
 }
 
 #recordinfopopup{

@@ -18,10 +18,12 @@
 */
 
 define([
-    'canopsis/monitoring/lib/loaders/widgets',
-    'canopsis/monitoring/lib/loaders/helpers',
-    'canopsis/monitoring/lib/loaders/mixins',
-    'canopsis/monitoring/lib/loaders/templates'
-], function () {
+    'ember-data',
+    'app/serializers/ctx',
+], function(DS, CtxSerializer) {
 
+    var serializer = CtxSerializer.extend({});
+
+    loader.register('serializer:linklist', serializer);
+    return serializer;
 });

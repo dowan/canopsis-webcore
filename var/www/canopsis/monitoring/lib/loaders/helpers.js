@@ -17,11 +17,11 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'canopsis/monitoring/lib/loaders/widgets',
-    'canopsis/monitoring/lib/loaders/helpers',
-    'canopsis/monitoring/lib/loaders/mixins',
-    'canopsis/monitoring/lib/loaders/templates'
-], function () {
+var helpers = [
+    { name:'criticity', url:'canopsis/monitoring/helpers/criticity' },
+    { name:'stateview', url:'canopsis/monitoring/helpers/stateview' },
+    { name:'statusview', url:'canopsis/monitoring/helpers/statusview' },
+    { name:'recordcanbeack', url:'canopsis/monitoring/helpers/recordcanbeack' },
+];
 
-});
+loader.loadWithTemplates(helpers);
