@@ -96,7 +96,7 @@ var templates = [
     { name: 'draggableheaders', template: 'canopsis/uibase/templates/draggableheaders.html'},
     { name: 'tabledraggableth', template: 'canopsis/uibase/templates/tabledraggableth.html'},
     { name: 'rightselector-itempartial', template: 'canopsis/uibase/templates/rightselector-itempartial.hbs'},
-
+    { name: 'rightselector-selecteditempartial', template: 'canopsis/uibase/templates/rightselector-selecteditempartial.hbs'}
 ];
 
 loader.loadWithTemplates(templates);

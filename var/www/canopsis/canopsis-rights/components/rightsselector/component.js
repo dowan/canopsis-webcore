@@ -49,7 +49,11 @@ define([
 
             for (var i = 0, l = items.length; i < l; i++) {
                 var currentItem = items[i];
-                var objDict = { name: currentItem.get(nameKey) };
+
+                var objDict = {
+                    name: currentItem.get(nameKey)
+                };
+
                 if(valueKey) {
                     console.log('add valueKey', currentItem.get(valueKey));
                     objDict.value = currentItem.get(valueKey);
@@ -72,49 +76,31 @@ define([
                 }
             }
 
+            console.log('recompute classifiedItems done', res);
             return res;
         }.property('items', 'items.@each'),
 
         recomputeValue: function(){
-            console.group('recomputeValue', get(this, 'selection'));
+            console.group('recomputeValue', get(this, 'selectionUnprepared'));
 
-            var selection = get(this, 'selection');
+            var selection = get(this, 'selectionUnprepared');
 
             var buffer = {};
-            for (var i = 0, l = selection.length; i < l; i++) {
-                var currentItem = selection[i];
-                console.log('iteration', currentItem);
-                set(buffer, currentItem.name, {checksum: 1});
+            if(selection && selection.length) {
+                for (var i = 0, l = selection.length; i < l; i++) {
+                    var currentItem = selection[i];
+                    console.log('iteration', currentItem, get(currentItem, 'checksum'));
+                    set(buffer, currentItem.name, {
+                        checksum: get(currentItem, 'checksum') || 19
+                    });
+                }
             }
 
             console.log('buffer', buffer);
 
             set(this, 'content', buffer);
             console.groupEnd();
-        }.observes('selection'),
-
-        actions: {
-            toggleRightChecksum: function(checksumFlag, item) {
-                console.info('toggleRightChecksum action', arguments);
-
-                //create item.data.checksum if not present in item dict
-                if(!get(item, 'data')) {
-                    set(item, 'data', Ember.Object.create());
-                }
-
-                if(!get(item, 'data.checksum')) {
-                    set(item, 'data.checksum', Ember.Object.create());
-                }
-
-                var checksumFlagValue = get(item, 'data.checksum.' + checksumFlag);
-
-                if(checksumFlagValue) {
-                    set(item, 'data.checksum.' + checksumFlag, false);
-                } else {
-                    set(item, 'data.checksum.' + checksumFlag, true);
-                }
-            }
-        },
+        }.observes('selectionUnprepared', 'selectionUnprepared.@each', 'selectionUnprepared.@each.checksum'),
 
         findItems: function() {
             var me = this;
@@ -135,10 +121,23 @@ define([
 
                 me.set('items', items);
 
-                Ember.run.scheduleOnce('afterRender', {}, function() { me.rerender(); });
+                Ember.run.scheduleOnce('afterRender', {}, function() {
+                    me.rerender();
+                });
+
                 me.extractItems(items);
             });
+        },
+
+        deserializeAdditionnalData: function(item) {
+            console.log('deserializeAdditionnalData', arguments);
+            return {checksum: item.checksum};
+        },
+
+        serializeAdditionnalData: function(additionnalData) {
+            console.log('serializeAdditionnalData', arguments);
         }
+
     });
 
 

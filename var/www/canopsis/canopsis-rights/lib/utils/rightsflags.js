@@ -17,14 +17,22 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 define([
-    'canopsis/canopsis-rights/lib/loaders/components',
-    'canopsis/canopsis-rights/lib/loaders/editors',
-    'canopsis/canopsis-rights/lib/loaders/renderers',
-    'canopsis/canopsis-rights/reopens/routes/application',
-    'canopsis/canopsis-rights/reopens/routes/userview',
-    'canopsis/canopsis-rights/reopens/controllers/application'
-], function () {
+    'ember',
+    'app/application'
+], function(Application) {
 
+
+    var rightsflagsUtils = {
+        canRead: function(checksum) {
+            return checksum >> 2 === 1;
+        },
+        canWrite: function(checksum) {
+            var mask = 2;
+            return checksum & mask > 0;
+        }
+    };
+
+    window.rightsflagsUtils = rightsflagsUtils;
+    return rightsflagsUtils;
 });

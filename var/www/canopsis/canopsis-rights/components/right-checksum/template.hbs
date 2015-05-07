@@ -1,0 +1,6 @@
+{{!-- <a class="btn btn-default" style="display:inline" {{action "toggleRightChecksum" "R"}}>{{computedNumericChecksum}}
+</a> --}}
+<a {{bind-attr class=checksumRClass}} style="display:inline" {{action "toggleRightChecksum" "R"}}><i class="fa fa-eye"></i></a>
+<a {{bind-attr class=checksumWClass}} style="display:inline" {{action "toggleRightChecksum" "W"}}><i class="fa fa-pencil"></i></a>
+<a {{bind-attr class=checksumXClass}} style="display:inline" {{action "toggleRightChecksum" "X"}}><i class="fa fa-cog"></i></a>
+&nbsp;

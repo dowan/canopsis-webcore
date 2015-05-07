@@ -41,6 +41,11 @@ define([
             drag.setDraggable(this.$('#formwrapper .modal-header'), this.$('#formwrapper'));
         },
 
+        willDestroyElement: function () {
+            this.$("#formwrapper").modal("hide");
+            this._super();
+        },
+
         //Controller -> View Hooks
         registerHooks: function() {
             this.hooksRegistered = true;
@@ -48,10 +53,11 @@ define([
             console.log("registerHooks", this);
             this.get("controller").on('validate', this, this.hidePopup);
             this.get("controller").on('hide', this, this.hidePopup);
+            this.get("controller").on('rerender', this, this.rerender);
 
             var formwrapperView = this;
 
-            $('#formwrapper').on('hidden.bs.modal', function () {
+            this.$('#formwrapper').on('hidden.bs.modal', function () {
                 formwrapperView.onPopupHidden.apply(formwrapperView, arguments);
             });
         },
@@ -59,6 +65,7 @@ define([
         unregisterHooks: function() {
             this.get("controller").off('validate', this, this.hidePopup);
             this.get("controller").off('hide', this, this.hidePopup);
+            this.get("controller").off('rerender', this, this.rerender);
         },
 
         //regular methods
@@ -69,7 +76,7 @@ define([
             }
 
             //show and display centered !
-            $("#formwrapper").modal('show').css('top',0).css('left',0);
+            this.$("#formwrapper").modal('show').css('top',0).css('left',0);
 
             if(get(this, 'controller.form')) {
                 get(this, 'controller.form').send('show');
@@ -78,7 +85,7 @@ define([
 
         hidePopup: function() {
             console.log("view hidePopup");
-            $("#formwrapper").modal("hide");
+            this.$("#formwrapper").modal("hide");
         },
 
         onPopupHidden: function() {

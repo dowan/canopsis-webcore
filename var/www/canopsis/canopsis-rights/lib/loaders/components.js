@@ -21,7 +21,8 @@
 var components = [
     { name: 'components/component-rightsselector', url: 'canopsis/canopsis-rights/components/rightsselector/component', template: 'canopsis/canopsis-rights/components/rightsselector/template.hbs' },
     { name: 'components/component-rights-action', url: 'canopsis/canopsis-rights/components/rights-action/component', template: 'canopsis/canopsis-rights/components/rights-action/template.hbs' },
-    { name: 'components/component-rightsrenderer', url: 'canopsis/canopsis-rights/components/rightsrenderer/component', template: 'canopsis/canopsis-rights/components/rightsrenderer/template.hbs' }
+    { name: 'components/component-rightsrenderer', url: 'canopsis/canopsis-rights/components/rightsrenderer/component', template: 'canopsis/canopsis-rights/components/rightsrenderer/template.hbs' },
+    { name: 'components/component-right-checksum', url: 'canopsis/canopsis-rights/components/right-checksum/component', template: 'canopsis/canopsis-rights/components/right-checksum/template.hbs' }
 ];
 
 loader.loadWithTemplates(components);

@@ -24,8 +24,9 @@ define([
     'utils',
     'app/lib/utils/forms',
     'app/lib/utils/routes',
+    'canopsis/canopsis-rights/lib/utils/rightsflags',
     'app/lib/wrappers/bootstrap'
-], function($, Ember, WidgetFactory, utils, formsUtils, routesUtils) {
+], function($, Ember, WidgetFactory, utils, formsUtils, routesUtils, rightsflagsUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -41,15 +42,21 @@ define([
 
         tagName: 'span',
 
-        userCanUpdateRecord: function() {
-            if(get(this, 'user') === "root") {
+        userCanEditView: function() {
+            if(get(utils, 'session._id') === "root") {
                 return true;
             }
 
-            var crecord_type = 'userview';
+            var rights = get(utils, 'session.rights'),
+                viewId = get(this, 'currentViewId');
+                viewId = viewId.replace('.', '_');
 
-            return get(this, 'rights.' + crecord_type + '_update.checksum');
-        }.property(),
+            if (rightsflagsUtils.canWrite(get(rights, viewId + '.checksum'))) {
+                return true;
+            }
+
+            return false;
+        }.property('currentViewId'),
 
 
         preparedTabs: function() {
@@ -64,12 +71,16 @@ define([
                     set(item, 'isActive', false);
                 }
 
+                var user = get(utils, 'session._id'),
+                    rights = get(utils, 'session.rights');
+
                 //FIXME stop using utils to store data!
-                if(get(utils, 'session._id') === "root") {
+                if(user === "root") {
                     set(item, 'displayable', true);
                 } else {
                     viewId = item.value;
-                    if (get(utils, 'session.rights.showview_' + viewId.replace('.', '_'))) {
+                    viewId = viewId.replace('.', '_');
+                    if (viewId && rightsflagsUtils.canRead(get(rights, viewId + '.checksum'))) {
                         set(item, 'displayable', true);
                     } else {
                         set(item, 'displayable', false);
