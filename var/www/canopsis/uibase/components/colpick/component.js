@@ -79,7 +79,7 @@ define([
              * set each colors selected attribute to false
              * set background-color of each div with color code 
              */
-           this.get('store').findAll('rangecolor', {
+            this.get('store').findAll('rangecolor', {
             }).then(function(result) {
                 var ranges = get(result, 'content');
                 for (var i = ranges.length - 1; i >= 0; i--) {
@@ -169,6 +169,8 @@ define([
          */
         willDestroyElement: function() {
             this._super();
+            this.$().off('click');
+            colpick.destroy();
         }
     });
 
