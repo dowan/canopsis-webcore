@@ -25,7 +25,8 @@ define([
 ], function($, Ember, FormView, drag) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone =Ember.isNone;
 
     var view = Ember.View.extend({
         init: function() {
@@ -83,7 +84,8 @@ define([
 
         onPopupHidden: function() {
             console.log("onPopupHidden", arguments);
-            if (get(this, 'controller.form.submit').state() === "pending") {
+            var submit = get(this, 'controller.form.submit');
+            if (!isNone(submit) && submit.state() === "pending") {
                 console.info("rejecting form submission");
                 get(this, 'controller.form').send("abort");
             }
