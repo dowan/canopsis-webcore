@@ -17,11 +17,8 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'canopsis/monitoring/lib/loaders/widgets',
-    'canopsis/monitoring/lib/loaders/helpers',
-    'canopsis/monitoring/lib/loaders/mixins',
-    'canopsis/monitoring/lib/loaders/templates'
-], function () {
+var templates = [
+    { name: 'actionbutton-editurlfield', template: 'canopsis/monitoring/templates/actionbutton-editurlfield.hbs', classes: ["action", "toolbar"],icon : "list-alt", label : "Edit url fields" },
+];
 
-});
+loader.loadWithTemplates(templates);

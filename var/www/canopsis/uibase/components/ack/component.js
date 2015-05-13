@@ -55,9 +55,10 @@ define([
                 ].join('');
             }
 
+            var tickettooltip = '';
             //Generate html display for ticket declared and ticket number when possible
             if(!isNone(ticket_declared_date) && !isNone(ticket_declared_author)) {
-                var tickettooltip = ['<center>',
+                tickettooltip = ['<center>',
                     '<b>' + __('Ticket declared') + '</b><br/>',
                     datesUtils.timestamp2String(ticket_declared_date) +' <br/> ',
                     __('By') +' : ' + ticket_declared_author +' <br/><br/> ',
@@ -72,7 +73,7 @@ define([
                 console.debug('ticket date is ', get(crecord, 'record.ticket_date'));
                 var date = datesUtils.timestamp2String(get(crecord, 'record.ticket_date'));
 
-                var tickettooltip = ['<center>',
+                tickettooltip = ['<center>',
                     ticketNumberHtml,
                     "</center>"
                 ].join('');

@@ -36,6 +36,8 @@ define([
         title: 'Select task type',
         scheduled: true,
 
+        utils: utils,
+
         schemas: schemasRegistry.all,
 
         init: function() {

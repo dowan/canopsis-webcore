@@ -17,11 +17,8 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'canopsis/monitoring/lib/loaders/widgets',
-    'canopsis/monitoring/lib/loaders/helpers',
-    'canopsis/monitoring/lib/loaders/mixins',
-    'canopsis/monitoring/lib/loaders/templates'
-], function () {
+var widgets = [
+    { name:'weather', url:'canopsis/monitoring/widgets/weather/controller', template:'canopsis/monitoring/widgets/weather/template.html' },
+];
 
-});
+loader.loadWithTemplates(widgets);
