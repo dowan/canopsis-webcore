@@ -30,11 +30,7 @@ define([
         },
 
         findQuery: function(store, type, query) {
-            var noAckSearch = false;
-            if (query && query.noAckSearch) {
-                noAckSearch = true;
-                delete query.noAckSearch;
-            }
+
             var url = "/rest/events";
 
             if (query.skip !== undefined){
