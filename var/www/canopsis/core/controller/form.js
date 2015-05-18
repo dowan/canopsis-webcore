@@ -52,7 +52,6 @@ define([
             set(this, '_partials', partials);
         },
 
-
         mergeMixinPartials: function(Mixin, partials) {
             var me = this;
 

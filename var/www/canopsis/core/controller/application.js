@@ -28,6 +28,7 @@ define([
     'app/lib/actionsregistry',
     'app/lib/mixinsregistry',
     'app/lib/formsregistry',
+    'canopsis/canopsis-rights/objects/rightsregistry',
     'app/lib/inflections',
     'app/mixins/userprofilestatusmenu',
     'app/mixins/requirejsmocksmanager',
@@ -59,6 +60,7 @@ define([
     actionsRegistry,
     mixinsRegistry,
     formsRegistry,
+    rightsRegistry,
     inflectionsRegistry,
     UserprofilestatusmenuMixin,
     RequirejsmocksmanagerMixin,
@@ -148,6 +150,13 @@ define([
         formsRegistry: formsRegistry,
 
         /**
+         * @property rightsRegistry
+         * @type Object
+         * @description Reference to the rights registry
+         */
+        rightsRegistry: rightsRegistry,
+
+        /**
          * @property isLoading
          * @type Number
          * @description the number of concurrent loadings (usually requests) pending
@@ -188,8 +197,6 @@ define([
                 $('title').html(title);
             }
 
-            //TODO refactor this in application route
-
             console.groupEnd();
             this.refreshPartialsList();
             this._super.apply(this, arguments);
@@ -227,6 +234,10 @@ define([
                     conf.save();
                 });
             }
+        },
+
+        didSaveView: function(userview) {
+            this.transitionToRoute("/userview/" + get(userview, 'id'));
         },
 
         actions: {
@@ -360,6 +371,7 @@ define([
                 console.log("add", type);
 
                 var containerwidgetId = hashUtils.generateId('container');
+                var viewId = hashUtils.generateId('userview');
 
                 dataUtils.getStore().createRecord('widgetcontainer', {
                     xtype: 'widgetcontainer',
@@ -370,11 +382,13 @@ define([
                 });
 
                 var userview = dataUtils.getStore().push(type, {
-                    id: hashUtils.generateId('userview'),
+                    id: viewId,
                     crecord_type: 'view',
                     containerwidget: containerwidgetId,
                     containerwidgetType: 'widgetcontainer'
                 });
+
+                var formattedViewId = viewId.replace('.', '_');
 
                 console.log('temp record', userview);
 
@@ -382,8 +396,9 @@ define([
 
                 recordWizard.submit.done(function() {
                     set(applicationController, 'isLoading', get(applicationController, 'isLoading') + 1);
-                    userview.save();
-                    applicationController.transitionToRoute("/userview/" + get(userview, 'id'));
+                    userview.save().then(function() {
+                        applicationController.didSaveView(userview);
+                    });
                 });
             },
 

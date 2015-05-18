@@ -58,7 +58,12 @@ define([
         },
 
         buildURL: function(type, id) {
-            var namespace = ( entities.contains(type) ) ? "entities" :"object" ;
+            var namespace = get(this, 'namespace');
+
+            if(isNone(namespace)) {
+                namespace = ( entities.contains(type) ) ? "entities" :"object" ;
+            }
+
             return ("/rest/"+ namespace +"/" + type + (!!id ? "/" + id : ""));
         },
 
