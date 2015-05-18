@@ -70,8 +70,7 @@ define([
                 'event',
                 {
                     filter: JSON.stringify({_id: {'$in': rks}}),
-                    limit: 0,
-                    noAckSearch: true
+                    limit: 0
                 }
             ).then(
                 function (data) {
@@ -135,8 +134,7 @@ define([
                 'event',
                 {
                     filter: JSON.stringify(filter),
-                    limit: 10,
-                    noAckSearch: true
+                    limit: 10
                 }
             );
 
