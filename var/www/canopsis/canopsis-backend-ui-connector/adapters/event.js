@@ -37,6 +37,11 @@ define([
             }
             var url = "/rest/events";
 
+            if (query.skip !== undefined){
+                query.start = query.skip;
+                delete query.skip;
+            }
+
             return this.ajax(url, 'GET', { data: query });
         }
     });
