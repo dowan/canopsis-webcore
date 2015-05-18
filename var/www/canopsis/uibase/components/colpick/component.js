@@ -170,7 +170,6 @@ define([
         willDestroyElement: function() {
             this._super();
             this.$().off('click');
-            colpick.destroy();
         }
     });
 
