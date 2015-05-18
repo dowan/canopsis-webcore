@@ -50,7 +50,8 @@ define([
             status = get(crecord, 'status');
         }
 
-        set(crecord, 'statusvalue', __(statuses[status]));
+        var value = statuses[status] || '';
+        set(crecord, 'statusvalue', __(value));
 
         if(status === 4) {
 

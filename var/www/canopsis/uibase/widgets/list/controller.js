@@ -227,7 +227,9 @@ define([
                 }).catch(function (promiseProxy) {
                     console.warn('Catching error', promiseProxy);
                     //TODO add an error in displayedErrors array, to warn the user that the data cannot be displayed
-                    get(this, 'content.displayedErrors').pushObject('There seems to be an error with listed data.');
+                    var message = 'There seems to be an error with listed data, or maybe selected record type is not in widget list schema.';
+                    console.error(message);
+                    get(this, 'content.displayedErrors').pushObject(message);
                     set(me, 'dataError', promiseProxy);
                 });
             },

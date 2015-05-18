@@ -143,6 +143,7 @@ define([
     });
 
     loader.register('adapter:context', adapter);
+    loader.register('adapter:entity', adapter);
 
     loader.register('adapter:ctxconnector', adapter.extend({
         buildURL: function(type, id) {
