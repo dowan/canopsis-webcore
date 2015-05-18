@@ -28,8 +28,7 @@ define([
             return checksum >> 2 === 1;
         },
         canWrite: function(checksum) {
-            var mask = 2;
-            return checksum & mask > 0;
+            return (checksum >> 1) % 2 === 1;
         }
     };
 
