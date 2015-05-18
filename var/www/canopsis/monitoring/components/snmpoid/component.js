@@ -76,7 +76,7 @@ define([
 
         },
 
-        onSearch: function () {
+        onNameSearch: function () {
 
             //avoid loop search when item selected from list and label re-set
             if (get(this, 'noSearch')) {
@@ -114,6 +114,74 @@ define([
                 });
             }
         }.observes('mibLabel'),
+
+        onModuleSearch: function () {
+            //as this method is used in two cases, some information may vary
+            var searchType = 'module';
+
+            var info = {
+                module: {
+                    noSearch: 'noSearchModule',
+                    searchText: 'moduleName',
+                    searchField: 'moduleName',
+                    listShow: 'showModules',
+                    listElements: 'ModulesElements'
+
+                },
+                name: {
+                    noSearch: 'noSearchName',
+                    searchText: 'mibLabel',
+                    searchField: 'name',
+                    listShow: 'showOids',
+                    listElements: 'oidElements'
+                }
+            }[searchType];
+
+
+            //avoid loop search when item selected from list and label re-set
+            if (get(this, info.noSearch)) {
+                set(this, info.noSearch, false);
+                return;
+            }
+            var snmpoidComponent = this;
+
+            var search = get(this, info.searchText);
+
+            if (search.length >= 3) {
+
+                console.log('perform search',info.searchField, search);
+
+                var searchField = info.searchField;
+
+                var query = {
+                    searchField: {'$regex': '.*' + search + '.*','$options':'i'},
+                    'nodetype': 'notification',
+                };
+
+                //Additional query filter in case name is searched
+                if (searchType === 'name') {
+                    query.moduleName = get(this, 'moduleName');
+                }
+
+                var adapter = Application.__container__.lookup('adapter:snmpmib');
+
+                //Do query entity link api
+                adapter.findMib(
+                    'snmpmib',
+                    {
+                        query: JSON.stringify(query),
+                        limit: 10,
+                    }
+                ).then(function(results) {
+                    if (results.success && results.data.length) {
+                        console.log('found', results.data);
+                        set(snmpoidComponent, info.listShow, true);
+                        set(snmpoidComponent, info.listElements, results.data);
+                    }
+                });
+            }
+        }.observes('moduleName'),
+
 
         actions: {
             setOid: function (oidElement) {

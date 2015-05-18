@@ -17,14 +17,8 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'canopsis/monitoring/lib/loaders/widgets',
-    'canopsis/monitoring/lib/loaders/helpers',
-    'canopsis/monitoring/lib/loaders/mixins',
-    'canopsis/monitoring/lib/loaders/templates',
-    'canopsis/monitoring/lib/loaders/editors',
-    'canopsis/monitoring/lib/loaders/renderers',
-    'canopsis/monitoring/lib/loaders/components'
-], function () {
+var renderers = [
+    { name: 'renderer-snmpoid', template: 'canopsis/monitoring/renderers/snmpoid.hbs'}
+];
 
-});
+loader.loadWithTemplates(renderers);

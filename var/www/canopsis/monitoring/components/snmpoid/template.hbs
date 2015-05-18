@@ -1,4 +1,15 @@
-{{input class="form-control" value=mibLabel type='text'}}
+{{input class="form-control pull-left" value=moduleName type='text'}}
+{{#if showModules}}
+    <ul class="list-group" style="position:absolute;z-index:100">
+        {{#each modulesElement in modulesElements}}
+            <li class="list-group-item">
+                <a href="#" {{action 'setModuleName' modules}}>{{modulesElements.moduleName}}</a>
+            </li>
+        {{/each}}
+    </ul>
+{{/if}}
+
+{{input class="form-control pull-right" value=mibLabel type='text'}}
 {{#if showOids}}
     <ul class="list-group" style="position:absolute;z-index:100">
         {{#each oidElement in oidElements}}
@@ -8,3 +19,4 @@
         {{/each}}
     </ul>
 {{/if}}
+
