@@ -59,6 +59,21 @@ define([
         }.property('currentViewId'),
 
 
+        userCanCreateView: function() {
+            if(get(utils, 'session._id') === "root") {
+                return true;
+            }
+
+            var rights = get(utils, 'session.rights');
+
+            if (get(rights, 'userview_create.checksum')) {
+                return true;
+            }
+
+            return false;
+        }.property(),
+
+
         preparedTabs: function() {
             var uimaintabcollectionController = this;
 

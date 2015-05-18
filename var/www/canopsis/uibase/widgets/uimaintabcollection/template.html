@@ -46,12 +46,14 @@
                                 {{tr 'Export current view'}}
                             </a>
                         </li>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="#" {{action 'addNewView'}}>
-                                <i class="fa fa-plus"></i>
-                                {{tr 'Add a view'}}
-                            </a>
-                        </li>
+                        {{#if controller.userCanCreateView}}
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#" {{action 'addNewView'}}>
+                                    <i class="fa fa-plus"></i>
+                                    {{tr 'Add a view'}}
+                                </a>
+                            </li>
+                        {{/if}}
                         <li role="presentation" class="divider"></li>
                         <li role="presentation">
                             <a role="menuitem" tabindex="-1" href="#" {{action 'showView' 'view.userviews'}}>
