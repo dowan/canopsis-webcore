@@ -28,7 +28,7 @@ define([
 
     var component = Ember.Component.extend({
         rightsArray: function() {
-            var rights = get(this, 'content'),
+            var rights = get(this, 'content') || {},
                 res = Ember.A();
             var rightsKeys = Ember.keys(rights);
 
