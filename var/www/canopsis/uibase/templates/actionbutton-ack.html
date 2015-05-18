@@ -2,7 +2,7 @@
     {{#if controller.rights.actionbutton_ack.checksum}}
         {{#if this.ack.author}}
             {{#if this.ack.isAck}}
-                {{#component-tooltip content="Remove ack"}}
+                {{#component-tooltip content="Cancel ack"}}
                     <button class="btn btn-default btn-xs" {{action 'sendEvent' 'ackremove' this}} >
                         <span class="glyphicon glyphicon-ban-circle"></span>
                     </button>
