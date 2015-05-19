@@ -47,9 +47,18 @@ define([
             if(rightsflagsUtils.canRead(checksum) || viewId === 'view_404' || viewId === 'view_401' || userId === 'root') {
                 return this._super(transition);
             } else {
+                set(transition, 'hasToBeRedirected', true);
+            }
+        },
+
+        afterModel: function(view, transition) {
+            var hasToBeRedirected = get(transition, 'hasToBeRedirected');
+
+            if(hasToBeRedirected) {
                 this.transitionTo('/userview/view.404');
             }
         },
+
         actions: {
             toggleEditMode: function () {
                 var loginController = this.controllerFor('login');
