@@ -145,11 +145,11 @@ define([
                 data: params,
                 success: function(data) {
                     if (data.success) {
-                        that.computeWeather(data.data);
+                        weatherWidget.computeWeather(data.data);
                     } else {
                         console.error('Unable to load event information for weather widget from API');
                     }
-                    that.trigger('refresh');
+                    weatherWidget.trigger('refresh');
                     console.log(' + Weather content', get(that, 'config.event_selection'));
                 }
             });
