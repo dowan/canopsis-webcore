@@ -150,7 +150,7 @@ define([
                         console.error('Unable to load event information for weather widget from API');
                     }
                     weatherWidget.trigger('refresh');
-                    console.log(' + Weather content', get(that, 'config.event_selection'));
+                    console.log(' + Weather content', get(weatherWidget, 'config.event_selection'));
                 }
             });
         },
