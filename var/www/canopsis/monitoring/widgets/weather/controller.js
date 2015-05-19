@@ -112,12 +112,25 @@ define([
         },
 
         fetchStates: function () {
-            var that = this;
-            var rks = get(that, 'config.event_selection');
+            var weatherWidget = this;
+            var eventMetas = get(weatherWidget, 'config.event_selection'),
+                rks = [];
 
-            if (!rks || !rks.length) {
+            console.log('rk information for weather', rks);
+
+
+            if (!eventMetas || !eventMetas.length) {
                 console.warn('Widget weather ' + get(this, 'title') + ' No rk found, the widget may not be configured properly');
                 return;
+            } else {
+                var rksLength = eventMetas.length,
+                    rksLabels = {};
+                for (var i=0; i<rksLength; i++) {
+                    var meta = eventMetas[i];
+                    rksLabels[meta.rk] = meta.label;
+                    rks.push(meta.rk);
+                }
+                set(weatherWidget,'rksLabels', rksLabels);
             }
 
 
@@ -144,21 +157,29 @@ define([
 
         computeWeather: function (data) {
             console.group('computing weathers');
-            var worst_state = 0;
-            var sub_weathers = [];
-            var ack_count = 0;
-            var computedState = 0;
-            var timestamp = 0;
-            var previous_state_change_ts = 0;
+            var worst_state = 0,
+                sub_weathers = [],
+                ack_count = 0,
+                computedState = 0,
+                timestamp = 0,
+                previous_state_change_ts = 0,
+                rksLabels = get(this, 'rksLabels');
 
             for (var i = 0, l = data.length; i < l; i++) {
 
                 var currentData = data[i];
 
                 console.log('subweather event', currentData);
+                var isAck = get(currentData, 'ack.isAck'),
+                    ack = get(currentData, 'ack'),
+                    resource = get(currentData, 'resource') || '',
+                    event_type = get(currentData, 'event_type'),
+                    component = get(currentData, 'component') || '',
+                    rk = get(currentData, 'id');
+
 
                 //compute wether or not each event were acknowleged for this weather
-                if (get(currentData, 'ack.isAck')) {
+                if (isAck) {
                     console.log('one more ack count');
                     ack_count++;
                     computedState = 4;
@@ -169,39 +190,41 @@ define([
 
                 //computing worst state for general weather display depending on ack state
                 if (currentData.state > worst_state) {
-                    if(!currentData.ack || (currentData.ack && !currentData.ack.isAck)) {
+                    if(!ack || (ack && !isAck)) {
                         worst_state = currentData.state;
                     }
                 }
 
-                //compute sub item title depending on if resource exists
-                var resource = '';
-                if (currentData.resource) {
-                    resource = ' ' + currentData.resource;
-                }
 
                 console.log('computedState', computedState);
 
                 //special selector event case
-                var component_label = get(currentData, 'component');
+                var component_label = component;
                 if (component_label === 'selector') {
                     component_label = '';
                 }
 
+                var label = component_label + ' ' + resource;
+                //define a label when option checked
+                if (get(this, 'use_labels')) {
+                    //label is title by default is not set
+                    label = rksLabels[rk] || label;
+                }
+
                 //building the data structure for sub parts of the weather
                 var subweatherDict = {
-                    rk: currentData.rk,
-                    event_type : get(currentData, 'event_type'),
-                    isSelector : get(currentData, 'event_type') === 'selector',
-                    component: get(currentData, 'component'),
-                    resource: get(currentData, 'resource'),
-                    title: component_label + ' ' + resource,
+                    rk: rk,
+                    event_type : event_type,
+                    isSelector : event_type === 'selector',
+                    component: component,
+                    resource: resource,
+                    title: label,
                     custom_class: this.class_background(computedState),
                     timestamp: get(currentData, 'timestamp'),
                     previous_state_change_ts: get(currentData, 'previous_state_change_ts')
                 };
 
-                if(get(currentData, 'event_type') === 'selector') {
+                if(event_type === 'selector') {
                     this.generateSelectorFilter(currentData, subweatherDict);
                 }
 
@@ -214,7 +237,7 @@ define([
             if(data.length === 1) {
                 set(this, 'singleEvent', true);
 
-                var output = get(data[0],'output');
+                var output = get(data[0], 'output');
                 if (!isNone(output) && output.length > 150) {
                     output = output.substr(0,150) + ' ...';
                 }
@@ -271,6 +294,7 @@ define([
                         }
 
                         set(subweatherDict, 'selector_filter', JSON.stringify(filter));
+                        console.log('selector filter', filter);
                     }
                 }
             });
