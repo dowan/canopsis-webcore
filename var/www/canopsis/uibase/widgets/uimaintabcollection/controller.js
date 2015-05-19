@@ -86,8 +86,8 @@ define([
                     set(item, 'isActive', false);
                 }
 
-                var user = get(this, 'controllers.login.record._id'),
-                    rights = get(this, 'controllers.login.record.rights');
+                var user = get(uimaintabcollectionController, 'controllers.login.record._id'),
+                    rights = get(uimaintabcollectionController, 'controllers.login.record.rights');
 
                 //FIXME stop using utils to store data!
                 if(user === "root") {
