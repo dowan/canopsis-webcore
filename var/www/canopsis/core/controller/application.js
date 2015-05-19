@@ -381,9 +381,12 @@ define([
                     id: containerwidgetId
                 });
 
+                var userId = get(this, 'controllers.login.record._id');
+
                 var userview = dataUtils.getStore().push(type, {
                     id: viewId,
                     crecord_type: 'view',
+                    author: userId,
                     containerwidget: containerwidgetId,
                     containerwidgetType: 'widgetcontainer'
                 });

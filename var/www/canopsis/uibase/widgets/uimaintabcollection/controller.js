@@ -43,11 +43,11 @@ define([
         tagName: 'span',
 
         userCanEditView: function() {
-            if(get(utils, 'session._id') === "root") {
+            if(get(this, 'controllers.login.record._id') === "root") {
                 return true;
             }
 
-            var rights = get(utils, 'session.rights'),
+            var rights = get(this, 'controllers.login.record.rights'),
                 viewId = get(this, 'currentViewId');
                 viewId = viewId.replace('.', '_');
 
@@ -60,11 +60,11 @@ define([
 
 
         userCanCreateView: function() {
-            if(get(utils, 'session._id') === "root") {
+            if(get(this, 'controllers.login.record._id') === "root") {
                 return true;
             }
 
-            var rights = get(utils, 'session.rights');
+            var rights = get(this, 'controllers.login.record.rights');
 
             if (get(rights, 'userview_create.checksum')) {
                 return true;
@@ -86,8 +86,8 @@ define([
                     set(item, 'isActive', false);
                 }
 
-                var user = get(utils, 'session._id'),
-                    rights = get(utils, 'session.rights');
+                var user = get(this, 'controllers.login.record._id'),
+                    rights = get(this, 'controllers.login.record.rights');
 
                 //FIXME stop using utils to store data!
                 if(user === "root") {
