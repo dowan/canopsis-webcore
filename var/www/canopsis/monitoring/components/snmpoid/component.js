@@ -32,12 +32,12 @@ define([
     var component = Ember.Component.extend({
 
         selectModuleLabel: __('Select a mib module'),
-        selectMibNameLabel: __('Select a mib name'),
 
         init: function() {
             this._super();
             set(this, 'showOids', false);
-            set(this, 'noSearch', false);
+            set(this, 'noSearchModule', false);
+            set(this, 'noSearchName', false);
             this.loadMib();
         },
 
@@ -50,10 +50,20 @@ define([
             var content = get(this, 'content');
 
             if (content) {
+
                 var query = {
-                    '_id': content,
+                    'name': content.mibName,
+                    'moduleName': content.moduleName,
                     'nodetype': 'notification',
                 };
+
+                Ember.setProperties(snmpoidComponent, {
+                    'noSearchModule': true,
+                    'noSearchName': true,
+                    'moduleName': content.moduleName,
+                    'mibName': content.mibName,
+                });
+
 
                 get(this, 'adapter').findMib(
                     'snmpmib',
@@ -63,19 +73,9 @@ define([
                     }
                 ).then(function(results) {
                     if (results.success && results.data.length) {
-                        console.log('found', results.data);
-                        var label = get(results.data[0], 'name');
-                        set(snmpoidComponent, 'noSearch', true);
-                        set(snmpoidComponent, 'mibLabel', label);
-                        var mibObjects = get(results.data[0], 'objects');
 
-                        //make object list available to other form editors.
-                        if (!isNone(mibObjects)) {
-                            mibObjects = Object.keys(mibObjects);
-                            var form = get(snmpoidComponent, 'crecord.form');
-                            set(form, 'mibObjects', mibObjects);
-                            console.log('set', mibObjects, 'to form', form);
-                        }
+                        console.log('found', results.data);
+                        snmpoidComponent.setMibObjects(get(results.data[0], 'objects'));
 
                     }
                 });
@@ -83,57 +83,41 @@ define([
                 set(snmpoidComponent, 'content', {
                     moduleName: '',
                     oid: '',
-                    oidlabel: ''
+                    mibName: ''
                 });
             }
 
         },
 
-        onSearch: function (searchType) {
-            //manage different search types
-            var info = {
-                module: {
-                    noSearch: 'noSearchModule',
-                    searchText: 'moduleName',
-                    searchField: 'moduleName',
-                    listShow: 'showModules',
-                    listElements: 'modulesElements'
+        setMibObjects: function (mibObjects) {
+            //make object list available to other form editors.
+            if (!isNone(mibObjects)) {
+                mibObjects = Object.keys(mibObjects);
+                var form = get(this, 'crecord.form');
+                set(form, 'mibObjects', mibObjects);
+                console.log('set', mibObjects, 'to form', form);
+            }
+        },
 
-                },
-                name: {
-                    noSearch: 'noSearchName',
-                    searchText: 'mibLabel',
-                    searchField: 'name',
-                    listShow: 'showOids',
-                    listElements: 'oidElements'
-                }
-            }[searchType];
-
+        onModuleSearch: function () {
 
             //avoid loop search when item selected from list and label re-set
-            if (get(this, info.noSearch)) {
-                set(this, info.noSearch, false);
+            if (get(this, 'noSearchModule')) {
+                set(this, 'noSearchModule', false);
                 return;
             }
             var snmpoidComponent = this;
 
-            var search = get(this, info.searchText);
+            var search = get(this, 'moduleName');
 
             if (search.length >= 3) {
 
-                console.log('perform search', info.searchField, search);
-
-                var searchField = info.searchField;
+                console.log('perform search', search);
 
                 var query = {
                     'nodetype': 'notification',
+                    'moduleName' : {'$regex': '.*' + search + '.*','$options':'i'}
                 };
-                query[searchField] = {'$regex': '.*' + search + '.*','$options':'i'};
-
-                //Additional query filter in case name is searched
-                if (searchType === 'name') {
-                    query.moduleName = get(this, 'moduleName');
-                }
 
                 var adapter = Application.__container__.lookup('adapter:snmpmib');
 
@@ -147,43 +131,99 @@ define([
                 ).then(function(results) {
                     if (results.success && results.data.length) {
                         console.log('found', results.data);
-                        set(snmpoidComponent, info.listShow, true);
-                        set(snmpoidComponent, info.listElements, results.data);
+                        set(snmpoidComponent, 'showModules', true);
+                        var len = results.data.length;
+                        var modules = {};
+                        for(var i=0; i<len; i++) {
+                            modules[results.data[i].moduleName] = 1;
+                        }
+                        var modulesList = Object.keys(modules);
+                        set(snmpoidComponent, 'modulesElements', modulesList);
+
                     }
                 });
             }
-        },
-
-        onModuleSearch: function () {
-            this.onSearch('module');
         }.observes('moduleName'),
 
+
         onNameSearch: function () {
-            this.onSearch('name');
-        }.observes('mibLabel'),
+
+            //avoid loop search when item selected from list and label re-set
+            if (get(this, 'noSearchName')) {
+                set(this, 'noSearchName', false);
+                return;
+            }
+
+            var snmpoidComponent = this;
+
+            var query = {
+                nodetype: 'notification',
+                moduleName: get(this, 'moduleName')
+            };
+
+            var adapter = Application.__container__.lookup('adapter:snmpmib');
+
+            //Do query to snmp api
+            adapter.findMib(
+                'snmpmib',
+                {
+                    query: JSON.stringify(query),
+                    limit: 0,
+                }
+            ).then(function(results) {
+                if (results.success && results.data.length) {
+                    console.log('found', results.data);
+                    set(snmpoidComponent, 'mibNames', results.data);
+                    var len = results.data.length;
+                    var names = {};
+                    for(var i=0; i<len; i++) {
+                        names[results.data[i].name] = results.data[i];
+                    }
+                    set(snmpoidComponent, 'names', names);
+
+                    //Force combobox selection/initialization on load
+                    var namesList = Object.keys(names);
+                    if(namesList.length) {
+                        set(snmpoidComponent, 'mibName', namesList[0]);
+                    }
+                }
+            });
+
+        },
+
+        onNameUpdate: function () {
+
+            var label = get(this, 'mibName');
+            var mib = get(this, 'names')[label];
+
+            //got mib info when selected module
+            console.log('selected mib', label, mib);
+
+            this.setMibObjects(get(mib, 'objects'));
+
+            //Set description for user display purpose.
+            set(this, 'mibDescription', get(mib, 'description'));
+
+            //Update editor content
+            Ember.setProperties(this, {
+                'content.mibName': label,
+                'content.oid': mib._id,
+            });
+
+
+        }.observes('mibName'),
 
         actions: {
-            setName: function (element) {
-                console.log(element);
-                var label = get(element, 'name');
-                Ember.setProperties(this,  {
-                    'showOids': false,
-                    'noSearchName': true,
-                    'content.oid': get(element, '_id'),
-                    'content.label': label,
-                    'mibLabel': label,
-                });
-            },
 
-            setModule: function (element) {
-                console.log(element);
-                var label = get(element, 'moduleName');
+            setModule: function (label) {
+                console.log(label);
                 Ember.setProperties(this, {
                     'showModules': false,
                     'noSearchModule': true,
                     'content.moduleName': label,
                     'moduleName': label,
                 });
+                this.onNameSearch();
             }
         }
     });

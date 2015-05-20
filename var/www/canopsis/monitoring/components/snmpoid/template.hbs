@@ -2,10 +2,10 @@
       <div class="col-xs-6">
         {{input class="form-control pull-left" value=moduleName type='text' placeholder=selectModuleLabel}}
         {{#if showModules}}
-            <ul class="list-group" style="position:absolute;z-index:100">
+            <ul class="list-group" style="position:absolute;z-index:100;top:35px">
                 {{#each modulesElement in modulesElements}}
                     <li class="list-group-item">
-                        <a href="#" {{action 'setModule' modulesElement}}>{{modulesElement.moduleName}}</a>
+                        <a href="#" {{action 'setModule' modulesElement}}>{{modulesElement}}</a>
                     </li>
                 {{/each}}
             </ul>
@@ -13,18 +13,19 @@
       </div>
 
       <div class="col-xs-6">
-        {{input class="form-control pull-right" value=mibLabel type='text' placeholder=selectMibNameLabel}}
-        {{#if showOids}}
-            <ul class="list-group" style="position:absolute;z-index:100">
-                {{#each oidElement in oidElements}}
-                    <li class="list-group-item">
-                        <a href="#" {{action 'setName' oidElement}}>{{oidElement.name}}</a>
-                    </li>
-                {{/each}}
-            </ul>
-        {{/if}}
+        {{view Ember.Select
+            content=mibNames
+            value=mibName
+            class="form-control"
+            optionValuePath="content.name"
+            optionLabelPath="content.name"
+        }}
       </div>
 </div>
+{{#if mibDescription}}
+    <hr/>
+    <div class="well well-sm">{{mibDescription}}</div>
+{{/if}}
 
 
 
