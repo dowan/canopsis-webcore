@@ -39,6 +39,10 @@ define([
             set(this, 'noSearchModule', false);
             set(this, 'noSearchName', false);
             this.loadMib();
+            var t = this;
+            setInterval(function() {
+                console.log('content', get(t,'content'));
+            },3000);
         },
 
         loadMib: function () {
