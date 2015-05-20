@@ -21,12 +21,11 @@ define([
     'jquery',
     'ember',
     'app/lib/factories/widget',
-    'utils',
     'app/lib/utils/forms',
     'app/lib/utils/routes',
     'canopsis/canopsis-rights/lib/utils/rightsflags',
     'app/lib/wrappers/bootstrap'
-], function($, Ember, WidgetFactory, utils, formsUtils, routesUtils, rightsflagsUtils) {
+], function($, Ember, WidgetFactory, formsUtils, routesUtils, rightsflagsUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -37,17 +36,17 @@ define([
 
         currentViewId: Ember.computed.alias('controllers.application.currentViewId'),
 
-        user: Ember.computed.alias('controllers.login.record._id'),
-        rights: Ember.computed.alias('controllers.login.record.rights'),
+        loggedaccountId: Ember.computed.alias('controllers.login.record._id'),
+        loggedaccountRights: Ember.computed.alias('controllers.login.record.rights'),
 
         tagName: 'span',
 
         userCanEditView: function() {
-            if(get(this, 'controllers.login.record._id') === "root") {
+            if(get(this, 'loggedaccountId') === "root") {
                 return true;
             }
 
-            var rights = get(this, 'controllers.login.record.rights'),
+            var rights = get(this, 'loggedaccountRights'),
                 viewId = get(this, 'currentViewId');
                 viewId = viewId.replace('.', '_');
 
@@ -60,11 +59,11 @@ define([
 
 
         userCanCreateView: function() {
-            if(get(this, 'controllers.login.record._id') === "root") {
+            if(get(this, 'loggedaccountId')) {
                 return true;
             }
 
-            var rights = get(this, 'controllers.login.record.rights');
+            var rights = get(this, 'loggedaccountRights');
 
             if (get(rights, 'userview_create.checksum')) {
                 return true;
@@ -86,10 +85,9 @@ define([
                     set(item, 'isActive', false);
                 }
 
-                var user = get(uimaintabcollectionController, 'controllers.login.record._id'),
-                    rights = get(uimaintabcollectionController, 'controllers.login.record.rights');
+                var user = get(uimaintabcollectionController, 'loggedaccountId'),
+                    rights = get(uimaintabcollectionController, 'loggedaccountRights');
 
-                //FIXME stop using utils to store data!
                 if(user === "root") {
                     set(item, 'displayable', true);
                 } else {

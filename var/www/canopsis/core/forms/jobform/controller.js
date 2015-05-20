@@ -24,9 +24,10 @@ define([
     'utils',
     'app/lib/utils/forms',
     'app/lib/utils/hash',
+    'app/lib/utils/data',
     'app/lib/schemasregistry',
     'app/serializers/job'
-], function(Ember, Application, FormFactory, utils, formsUtils, hashUtils, schemasRegistry) {
+], function(Ember, Application, FormFactory, utils, formsUtils, hashUtils, dataUtils, schemasRegistry) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -37,11 +38,14 @@ define([
         scheduled: true,
 
         utils: utils,
+        loggedAccountloggedaccountController: undefined,
 
         schemas: schemasRegistry.all,
 
         init: function() {
             this._super(arguments);
+
+            set(this, 'loggedaccountController', dataUtils.getLoggedUserController());
 
             set(this, 'store', DS.Store.create({
                 container: get(this, "container")

@@ -19,6 +19,8 @@
 
 define(['app/application'], function(Application) {
 
+    var _loggedUserController;
+
     /**
      * @class dataUtils
      * @static
@@ -26,6 +28,14 @@ define(['app/application'], function(Application) {
      * Utility class to manage data, whether they are related or not to Ember Data
      */
     var dataUtils = {
+
+        getLoggedUserController: function() {
+            return _loggedUserController;
+        },
+
+        setLoggedUserController: function(loggedUserController) {
+            _loggedUserController = loggedUserController;
+        },
 
         /**
          * @method getStore
