@@ -55,13 +55,13 @@ define([
             this.rightsRegistry.add(right, get(right, 'crecord_name'));
 
             //TODO Add the correct right to the current user, to allow him to display the view
-            // var loginController = get(this, 'controllers.login');
+            var loginController = get(this, 'controllers.login');
 
-            // var rights = get(loginController, 'record.rights');
+            var rights = get(loginController, 'record.rights');
 
-            // set(rights, formattedViewId, { checksum : 7 });
-            // var record = get(loginController, 'record');
-            // record.save();
+            set(rights, formattedViewId, { checksum : 7 });
+            var record = get(loginController, 'record');
+            record.save();
         }
     });
 

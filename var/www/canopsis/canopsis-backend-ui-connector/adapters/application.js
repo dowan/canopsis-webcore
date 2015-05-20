@@ -64,7 +64,7 @@ define([
                 namespace = ( entities.contains(type) ) ? "entities" :"object" ;
             }
 
-            return ("/rest/"+ namespace +"/" + type + (!!id ? "/" + id : ""));
+            return ("/rest/"+ namespace + "/" + type + (!!id ? "/" + id : ""));
         },
 
         createRecord: function(store, type, record) {

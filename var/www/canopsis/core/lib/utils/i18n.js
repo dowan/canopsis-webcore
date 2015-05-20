@@ -29,7 +29,7 @@ define([
         newTranslations: true,
         _: function(word, noDeprecation) {
 
-            if(Ember && noDeprecation === undefined) {
+            if(window.Ember && noDeprecation === undefined) {
                 Ember.deprecate('You should not use i18n tools directly when ember is loaded. Please consider using Ember.String.loc instead. ', !conf.EmberIsLoaded);
             }
 

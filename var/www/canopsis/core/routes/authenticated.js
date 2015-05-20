@@ -39,16 +39,17 @@ define([
             var store = DS.Store.create({ container: get(this, "container") });
 
             //FIXME dirty, risky
-            loggedaccountAdapter = getCanopsis().Application.__container__.lookup('adapter:application');
+            loggedaccountAdapter = getCanopsis().Application.__container__.lookup('adapter:loggedaccount');
 
-            var loginPromise = loggedaccountAdapter.ajax ('/account/me', 'GET', {});
+            var loginPromise = store.findAll('loggedaccount');
 
             loginPromise.then(function (promiseResult) {
-                var record = promiseResult.data[0];
+
+                var record = promiseResult.content[0];
                 var loginController = route.controllerFor('login');
 
                 set(loginController, 'record', record);
-                set(utils, 'session', record);
+                set(utils, 'session', record._data);
 
                 var appController = route.controllerFor('application');
                 var enginesviews = get(appController, 'enginesviews');

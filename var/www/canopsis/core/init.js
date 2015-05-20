@@ -25,6 +25,7 @@ define([
     'app/serializers/ctxcomponent',
     'app/serializers/ctxresource',
     'app/serializers/widgetwrapper',
+    'app/serializers/loggedaccount',
     'app/serializers/ticket',
     'app/serializers/userview',
     'app/serializers/widget',
