@@ -28,7 +28,8 @@ define([
         ['tcp2canopsis' , 'tcp2canopsis'],
         ['curve', 'curves'],
         ['serie', 'serie'],
-        ['enabledmodules', 'enabledmodules']
+        ['enabledmodules', 'enabledmodules'],
+        ['calendardata','calendardata']
     ];
 
     var inflectionsManager = Abstractclassregistry.create({
