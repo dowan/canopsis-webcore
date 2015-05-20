@@ -1,22 +1,30 @@
-{{input class="form-control pull-left" value=moduleName type='text'}}
-{{#if showModules}}
-    <ul class="list-group" style="position:absolute;z-index:100">
-        {{#each modulesElement in modulesElements}}
-            <li class="list-group-item">
-                <a href="#" {{action 'setModuleName' modules}}>{{modulesElements.moduleName}}</a>
-            </li>
-        {{/each}}
-    </ul>
-{{/if}}
+<div class="row">
+      <div class="col-xs-6">
+        {{input class="form-control pull-left" value=moduleName type='text' placeholder=selectModuleLabel}}
+        {{#if showModules}}
+            <ul class="list-group" style="position:absolute;z-index:100">
+                {{#each modulesElement in modulesElements}}
+                    <li class="list-group-item">
+                        <a href="#" {{action 'setModule' modulesElement}}>{{modulesElement.moduleName}}</a>
+                    </li>
+                {{/each}}
+            </ul>
+        {{/if}}
+      </div>
 
-{{input class="form-control pull-right" value=mibLabel type='text'}}
-{{#if showOids}}
-    <ul class="list-group" style="position:absolute;z-index:100">
-        {{#each oidElement in oidElements}}
-            <li class="list-group-item">
-                <a href="#" {{action 'setOid' oidElement}}>{{oidElement.name}}</a>
-            </li>
-        {{/each}}
-    </ul>
-{{/if}}
+      <div class="col-xs-6">
+        {{input class="form-control pull-right" value=mibLabel type='text' placeholder=selectMibNameLabel}}
+        {{#if showOids}}
+            <ul class="list-group" style="position:absolute;z-index:100">
+                {{#each oidElement in oidElements}}
+                    <li class="list-group-item">
+                        <a href="#" {{action 'setName' oidElement}}>{{oidElement.name}}</a>
+                    </li>
+                {{/each}}
+            </ul>
+        {{/if}}
+      </div>
+</div>
+
+
 

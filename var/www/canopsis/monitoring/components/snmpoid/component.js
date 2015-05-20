@@ -30,6 +30,10 @@ define([
 
 
     var component = Ember.Component.extend({
+
+        selectModuleLabel: __('Select a mib module'),
+        selectMibNameLabel: __('Select a mib name'),
+
         init: function() {
             this._super();
             set(this, 'showOids', false);
@@ -38,10 +42,13 @@ define([
         },
 
         loadMib: function () {
+
             var adapter = Application.__container__.lookup('adapter:snmpmib');
-            set(this, 'adapter', adapter);
+
             var snmpoidComponent = this;
+
             var content = get(this, 'content');
+
             if (content) {
                 var query = {
                     '_id': content,
@@ -72,60 +79,25 @@ define([
 
                     }
                 });
+            } else {
+                set(snmpoidComponent, 'content', {
+                    moduleName: '',
+                    oid: '',
+                    oidlabel: ''
+                });
             }
 
         },
 
-        onNameSearch: function () {
-
-            //avoid loop search when item selected from list and label re-set
-            if (get(this, 'noSearch')) {
-                set(this, 'noSearch', false);
-                return;
-            }
-            var snmpoidComponent = this;
-
-            var search = get(this, 'mibLabel');
-
-            if (search.length >= 3) {
-
-                console.log('perform search', search);
-
-                var query = {
-                    'name': {'$regex': '.*' + search + '.*','$options':'i'},
-                    'nodetype': 'notification',
-                };
-
-                var adapter = Application.__container__.lookup('adapter:snmpmib');
-
-                //Do query entity link api
-                adapter.findMib(
-                    'snmpmib',
-                    {
-                        query: JSON.stringify(query),
-                        limit: 10,
-                    }
-                ).then(function(results) {
-                    if (results.success && results.data.length) {
-                        console.log('found', results.data);
-                        set(snmpoidComponent, 'showOids', true);
-                        set(snmpoidComponent, 'oidElements', results.data);
-                    }
-                });
-            }
-        }.observes('mibLabel'),
-
-        onModuleSearch: function () {
-            //as this method is used in two cases, some information may vary
-            var searchType = 'module';
-
+        onSearch: function (searchType) {
+            //manage different search types
             var info = {
                 module: {
                     noSearch: 'noSearchModule',
                     searchText: 'moduleName',
                     searchField: 'moduleName',
                     listShow: 'showModules',
-                    listElements: 'ModulesElements'
+                    listElements: 'modulesElements'
 
                 },
                 name: {
@@ -149,14 +121,14 @@ define([
 
             if (search.length >= 3) {
 
-                console.log('perform search',info.searchField, search);
+                console.log('perform search', info.searchField, search);
 
                 var searchField = info.searchField;
 
                 var query = {
-                    searchField: {'$regex': '.*' + search + '.*','$options':'i'},
                     'nodetype': 'notification',
                 };
+                query[searchField] = {'$regex': '.*' + search + '.*','$options':'i'};
 
                 //Additional query filter in case name is searched
                 if (searchType === 'name') {
@@ -165,7 +137,7 @@ define([
 
                 var adapter = Application.__container__.lookup('adapter:snmpmib');
 
-                //Do query entity link api
+                //Do query to snmp api
                 adapter.findMib(
                     'snmpmib',
                     {
@@ -180,18 +152,38 @@ define([
                     }
                 });
             }
+        },
+
+        onModuleSearch: function () {
+            this.onSearch('module');
         }.observes('moduleName'),
 
+        onNameSearch: function () {
+            this.onSearch('name');
+        }.observes('mibLabel'),
 
         actions: {
-            setOid: function (oidElement) {
-                console.log(oidElement);
-                var oid = get(oidElement, '_id');
-                var label = get(oidElement, 'name');
-                set(this, 'showOids', false);
-                set(this, 'noSearch', true);
-                set(this, 'content', oid);
-                set(this, 'mibLabel', label);
+            setName: function (element) {
+                console.log(element);
+                var label = get(element, 'name');
+                Ember.setProperties(this,  {
+                    'showOids': false,
+                    'noSearchName': true,
+                    'content.oid': get(element, '_id'),
+                    'content.label': label,
+                    'mibLabel': label,
+                });
+            },
+
+            setModule: function (element) {
+                console.log(element);
+                var label = get(element, 'moduleName');
+                Ember.setProperties(this, {
+                    'showModules': false,
+                    'noSearchModule': true,
+                    'content.moduleName': label,
+                    'moduleName': label,
+                });
             }
         }
     });
