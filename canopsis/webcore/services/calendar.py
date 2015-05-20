@@ -19,7 +19,7 @@
 # ---------------------------------
 
 from canopsis.common.ws import route
-from canopsis.calendar.manager import Calendar
+from canopsis.ccalendar.manager import Calendar
 
 from dateutil.rrule import rrulestr
 from datetime import datetime
