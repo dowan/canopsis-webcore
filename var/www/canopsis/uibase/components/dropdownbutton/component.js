@@ -35,7 +35,11 @@ define([
         classNames: ['dropdown'],
         attributeBindings: ['id'],
         id: 'myDropdown',
-        opened: false
+        opened: false,
+
+        didInsertElement: function() {
+            this.$().parents('td').css('overflow-x', 'visible').css('overflow-y', 'visible');
+        }
     });
 
     Ember.Application.initializer({
