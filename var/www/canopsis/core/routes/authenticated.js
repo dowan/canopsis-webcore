@@ -33,8 +33,6 @@ define([
     var route = Ember.Route.extend({
 
         beforeModel: function(transition) {
-            // var loginPromise = this.controllerFor('login').getUser();
-
             var route = this;
             var store = DS.Store.create({ container: get(this, "container") });
 
