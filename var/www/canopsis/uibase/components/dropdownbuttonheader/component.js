@@ -26,7 +26,7 @@ define([
         set = Ember.set;
 
     /**
-     * Component that contains the title and optional other components 
+     * Component that contains the title and optional other components
      * for dropdownbutton
      *
      * @class Dropdownbuttonheader
@@ -34,13 +34,25 @@ define([
      */
     var component = Ember.Component.extend({
         tagName: 'a',
-        classNames: ['btn btn-secondary dropdown-toggle opening'],
+        classNameBindings: ['classAttribute'],
+
+        classAttribute: function() {
+            var opened = get(this, 'parentView.opened'),
+                res = 'btn btn-secondary dropdown-toggle opening';
+
+            if(opened) {
+                res += ' active';
+            }
+
+            return res;
+        }.property('parentView.opened'),
+
         attributeBindings: ['aria-expanded'],
         'aria-expanded': 'true',
 
          /**
           * method calling toggle method on click
-          * @method click 
+          * @method click
           */
         click: function(){
             this.toggle();
