@@ -64,7 +64,7 @@ define([
             return [
                 {name: 'component', title: __('Component')},
                 {name: 'resource', title: __('Resource')},
-                {name: 'id', title: __('Metric')},
+                {name: 'name', title: __('Metric')},
                 {
                     action: 'select',
                     actionAll: (get(this, 'multiselect') === true ? 'selectAll' : undefined),
@@ -78,7 +78,7 @@ define([
             return [
                 {name: 'component', title: __('Component')},
                 {name: 'resource', title: __('Resource')},
-                {name: 'id', title: __('Metric')},
+                {name: 'name', title: __('Metric')},
                 {
                     action: 'unselect',
                     actionAll: 'unselectAll',
@@ -145,7 +145,7 @@ define([
             var patterns = {
                 component: [],
                 resource: [],
-                id: []
+                name: []
             };
 
             for(i = 0; i < conditions.length; i++) {
@@ -161,10 +161,10 @@ define([
                         patterns.resource.push(regex);
                     }
                     else if(condition.indexOf('me:') === 0) {
-                        patterns.id.push(regex);
+                        patterns.name.push(regex);
                     }
                     else {
-                        patterns.id.push(condition);
+                        patterns.name.push(condition);
                     }
                 }
             }
@@ -173,7 +173,7 @@ define([
             var filters = {
                 component: {'$or': []},
                 resource: {'$or': []},
-                id: {'$or': []}
+                name: {'$or': []}
             };
 
             for(var key in filters) {
