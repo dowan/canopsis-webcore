@@ -18,31 +18,32 @@
 */
 
 define([
-    'app/application',
-    'canopsis/canopsis-backend-ui-connector/adapters/application'
-], function(Application, ApplicationAdapter) {
+    'jquery',
+    'ember'
+], function($, Ember) {
 
-    var adapter = ApplicationAdapter.extend({
+    var get = Ember.get,
+        set = Ember.set;
 
-        buildURL: function(type, id) {
-            void(id);
-            return "/event";
-        },
+    /**
+     * Global component for dropdownbutton
+     *
+     * @class Dropdownbutton
+     * @static
+     */
+    var component = Ember.Component.extend({
+        classNames: ['dropdown'],
+        attributeBindings: ['id'],
+        id: 'myDropdown',
+        opened: false
+    });
 
-        findQuery: function(store, type, query) {
-
-            var url = "/rest/events";
-
-            if (query.skip !== undefined){
-                query.start = query.skip;
-                delete query.skip;
-            }
-
-            return this.ajax(url, 'GET', { data: query });
+    Ember.Application.initializer({
+        name:"component-dropdownbutton",
+        initialize: function(container, application) {
+            application.register('component:component-dropdownbutton', component);
         }
     });
 
-    loader.register('adapter:event', adapter);
-
-    return adapter;
+    return component;
 });
