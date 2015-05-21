@@ -38,11 +38,11 @@ define([
             set(this, 'showOids', false);
             set(this, 'noSearchModule', false);
             set(this, 'noSearchName', false);
+            window.$OID = this;
+        },
+
+        didInsertElement: function () {
             this.loadMib();
-            var t = this;
-            setInterval(function() {
-                console.log('content', get(t,'content'));
-            },3000);
         },
 
         loadMib: function () {
@@ -61,28 +61,15 @@ define([
                     'nodetype': 'notification',
                 };
 
-                Ember.setProperties(snmpoidComponent, {
-                    'noSearchModule': true,
-                    'noSearchName': true,
-                    'moduleName': content.moduleName,
-                    'mibName': content.mibName,
-                });
-
-
-                get(this, 'adapter').findMib(
-                    'snmpmib',
-                    {
-                        query: JSON.stringify(query),
-                        limit: 1,
+                snmpoidComponent.send(
+                    'setModule',
+                    content.moduleName,
+                    function () {
+                        //initialize component with existing value.
+                        set(snmpoidComponent, 'mibName', content.mibName);
                     }
-                ).then(function(results) {
-                    if (results.success && results.data.length) {
+                );
 
-                        console.log('found', results.data);
-                        snmpoidComponent.setMibObjects(get(results.data[0], 'objects'));
-
-                    }
-                });
             } else {
                 set(snmpoidComponent, 'content', {
                     moduleName: '',
@@ -150,13 +137,7 @@ define([
         }.observes('moduleName'),
 
 
-        onNameSearch: function () {
-
-            //avoid loop search when item selected from list and label re-set
-            if (get(this, 'noSearchName')) {
-                set(this, 'noSearchName', false);
-                return;
-            }
+        onNameSearch: function (callback) {
 
             var snmpoidComponent = this;
 
@@ -185,10 +166,14 @@ define([
                     }
                     set(snmpoidComponent, 'names', names);
 
-                    //Force combobox selection/initialization on load
-                    var namesList = Object.keys(names);
-                    if(namesList.length) {
-                        set(snmpoidComponent, 'mibName', namesList[0]);
+                    if (!isNone(callback)) {
+                        callback();
+                    } else {
+                        //Force combobox selection/initialization on load
+                        var namesList = Object.keys(names);
+                        if(namesList.length && isNone(get(snmpoidComponent, 'mibName'))) {
+                            set(snmpoidComponent, 'mibName', namesList[0]);
+                        }
                     }
                 }
             });
@@ -196,6 +181,12 @@ define([
         },
 
         onNameUpdate: function () {
+
+            //avoid loop search when item selected from list and label re-set
+            if (get(this, 'noSearchName')) {
+                set(this, 'noSearchName', false);
+                return;
+            }
 
             var label = get(this, 'mibName');
             var mib = get(this, 'names')[label];
@@ -219,7 +210,7 @@ define([
 
         actions: {
 
-            setModule: function (label) {
+            setModule: function (label, callback) {
                 console.log(label);
                 Ember.setProperties(this, {
                     'showModules': false,
@@ -227,7 +218,7 @@ define([
                     'content.moduleName': label,
                     'moduleName': label,
                 });
-                this.onNameSearch();
+                this.onNameSearch(callback);
             }
         }
     });
