@@ -19,7 +19,8 @@
 
 
 define([
-    'ember'
+    'ember',
+    'canopsis/canopsis-rights/objects/rightsregistry'
 ], function(Ember, rightsRegistry) {
 
     var get = Ember.get,
@@ -64,6 +65,17 @@ define([
             this.recomputeNumericChecksum();
         },
 
+        checksumType: function() {
+            var value = get(this, 'right.name');
+
+            var action = rightsRegistry.getByName(value);
+            return action._data.type;
+        }.property('right.name'),
+
+        checksumIsRW: function() {
+            return get(this, 'checksumType') === 'RW';
+        }.property('checksumType'),
+
         actions: {
             toggleRightChecksum: function(flag) {
                 var right = get(this, 'right');
@@ -82,25 +94,25 @@ define([
 
         checksumRClass: function() {
             if(get(this, 'checksum_R')) {
-                return 'btn btn-sm btn-warning active';
+                return 'btn btn-sm btn-default active';
             } else {
-                return 'btn btn-sm btn-warning';
+                return 'btn btn-sm btn-default';
             }
         }.property('checksum_R'),
 
         checksumWClass: function() {
             if(get(this, 'checksum_W')) {
-                return 'btn btn-sm btn-warning active';
+                return 'btn btn-sm btn-default active';
             } else {
-                return 'btn btn-sm btn-warning';
+                return 'btn btn-sm btn-default';
             }
         }.property('checksum_W'),
 
         checksumXClass: function() {
             if(get(this, 'checksum_X')) {
-                return 'btn btn-sm btn-warning active';
+                return 'btn btn-sm btn-default active';
             } else {
-                return 'btn btn-sm btn-warning';
+                return 'btn btn-sm btn-default';
             }
         }.property('checksum_X'),
 
