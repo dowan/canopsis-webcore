@@ -1,0 +1,8 @@
+{{#if controller.rights.actionbutton_canuploadmibfile.checksum}}
+    {{#component-tooltip content="Upload mib file to canopsis system"}}
+        <button class="btn btn-default btn-sm" {{action 'uploadMib'}} >
+			<i class="fa fa-upload"></i>
+            {{tr 'Upload mib'}}
+        </button>
+    {{/component-tooltip}}
+{{/if}}

@@ -171,7 +171,7 @@ define([
                     } else {
                         //Force combobox selection/initialization on load
                         var namesList = Object.keys(names);
-                        if(namesList.length && isNone(get(snmpoidComponent, 'mibName'))) {
+                        if(namesList.length) {
                             set(snmpoidComponent, 'mibName', namesList[0]);
                         }
                     }

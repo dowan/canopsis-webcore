@@ -17,9 +17,21 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var templates = [
-    { name: 'actionbutton-editurlfield', template: 'canopsis/monitoring/templates/actionbutton-editurlfield.hbs', classes: ["action", "toolbar"],icon : "list-alt", label : "Edit url fields" },
-    { name: 'actionbutton-uploadmib', template: 'canopsis/monitoring/templates/actionbutton-uploadmib.hbs', classes: ["action", "toolbar"],icon : "list-alt", label : "Edit url fields" },
-];
+define([
+    'ember',
+    'app/lib/factories/mixin'
+], function(Ember, Mixin) {
 
-loader.loadWithTemplates(templates);
+    var get = Ember.get,
+        set = Ember.set;
+
+
+    var mixin = Mixin('uploadmib', {
+        partials: {
+            itemactionbuttons: ['actionbutton-uploadmib']
+        },
+    });
+
+
+    return mixin;
+});
