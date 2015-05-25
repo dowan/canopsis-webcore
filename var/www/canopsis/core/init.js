@@ -26,6 +26,7 @@ define([
     'app/serializers/ctxresource',
     'app/serializers/ctxselector',
     'app/serializers/ctxtopology',
+    'app/serializers/linklist',
     'app/lib/wrappers/bootstrap',
     'app/lib/wrappers/hint',
     'app/lib/wrappers/swag',

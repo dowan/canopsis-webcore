@@ -59,6 +59,7 @@ var components = [
     { name: 'components/component-colpick', url: 'canopsis/uibase/components/colpick/component', template: 'canopsis/uibase/components/colpick/template.html' },
     { name: 'components/component-slider', url: 'canopsis/uibase/components/slider/component', template: 'canopsis/uibase/components/slider/template.html' },
     { name: 'components/component-labelledlink', url: 'canopsis/uibase/components/labelledlink/component', template: 'canopsis/uibase/components/labelledlink/template.hbs' },
+    { name: 'components/component-linklist', url: 'canopsis/uibase/components/linklist/component', template: 'canopsis/uibase/components/linklist/template.hbs' },
     { name: 'components/component-miniform', url: 'canopsis/uibase/components/miniform/component', template: 'canopsis/uibase/components/miniform/template.hbs' },
     { name: 'components/component-miniformcontent', url: 'canopsis/uibase/components/miniformcontent/component', template: 'canopsis/uibase/components/miniformcontent/template.hbs' },
     { name: 'components/component-miniformheader', url: 'canopsis/uibase/components/miniformheader/component', template: 'canopsis/uibase/components/miniformheader/template.hbs' },
@@ -66,7 +67,12 @@ var components = [
     { name: 'components/component-miniformtitle', url: 'canopsis/uibase/components/miniformtitle/component', template: 'canopsis/uibase/components/miniformtitle/template.hbs' },
     { name: 'components/component-objecteditor', url: 'canopsis/uibase/components/objecteditor/component', template: 'canopsis/uibase/components/objecteditor/template.hbs' },
     { name: 'components/component-elementidselectorwithoptions', url: 'canopsis/uibase/components/elementidselectorwithoptions/component', template: 'canopsis/uibase/components/elementidselectorwithoptions/template.hbs' },
-    { name: 'components/component-formlabel', url: 'canopsis/uibase/components/formlabel/component', template: 'canopsis/uibase/components/formlabel/template.hbs' }
+    { name: 'components/component-formlabel', url: 'canopsis/uibase/components/formlabel/component', template: 'canopsis/uibase/components/formlabel/template.hbs' },
+    { name: 'components/component-dropdownbutton', url: 'canopsis/uibase/components/dropdownbutton/component', template: 'canopsis/uibase/components/dropdownbutton/template.html' },
+    { name: 'components/component-dropdownbuttonheader', url: 'canopsis/uibase/components/dropdownbuttonheader/component', template: 'canopsis/uibase/components/dropdownbuttonheader/template.html' },
+    { name: 'components/component-dropdownbuttoncontent', url: 'canopsis/uibase/components/dropdownbuttoncontent/component', template: 'canopsis/uibase/components/dropdownbuttoncontent/template.html' },
+    { name: 'components/component-dropdownbuttontitle', url: 'canopsis/uibase/components/dropdownbuttontitle/component', template: 'canopsis/uibase/components/dropdownbuttontitle/template.html' },
+    { name: 'components/component-dropdownbuttonoverview', url: 'canopsis/uibase/components/dropdownbuttonoverview/component', template: 'canopsis/uibase/components/dropdownbuttonoverview/template.html' }
 ];
 
 loader.loadWithTemplates(components);
