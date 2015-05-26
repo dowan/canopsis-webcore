@@ -87,32 +87,9 @@ def exports(ws):
         return result
 
     @route(
-        ws.application.put,
-        payload=['entity_id', 'values', 'behaviors', 'cache'],
-        name='pbehavior'
+        ws.application.delete, payload=['ids', 'cache'],
+        name='pbehavior/docs'
     )
-    def add(self, entity_id, values, behaviors, cache=False):
-        """Add a pbehavior entry related to input entity_id and values.
-
-        :param str entity_id: entity id.
-        :param values: value(s) to add.
-        :type values: str, Event or list of str/Event.
-        :param behaviors: value(s) behavior(s) to add. If None, behaviors are
-            retrieved from values with the PBehaviorManager.BEHAVIOR key.
-        :type behaviors: list or str
-        :param bool cache: if True (False by default), use storage cache.
-        :return: added document ids
-        :rtype: list
-        """
-
-        result = pbm.add(
-            entity_id=entity_id, values=values, behaviors=behaviors,
-            cache=cache
-        )
-
-        return result
-
-    @route(ws.application.delete, payload=['ids', 'cache'], name='pbehavior')
     def remove(self, ids=None, cache=False):
         """Remove document(s) by id.
 
@@ -128,28 +105,9 @@ def exports(ws):
         return result
 
     @route(
-        ws.application.delete,
-        payload=['entity_ids', 'cache'],
-        name='pbehavior/entity'
-    )
-    def remove_by_entity(self, entity_ids, cache=False):
-        """Remove document(s) by entity ids.
-
-        :param entity_ids: document entity id(s) to remove.
-        :type entity_ids: list or str
-        :param bool cache: if True (False by default), use storage cache.
-        :return: removed document id(s).
-        :rtype: list
-        """
-
-        result = pbm.remove_by_entity(entity_ids=entity_ids, cache=cache)
-
-        return result
-
-    @route(
         ws.application.get,
         payload=['entity_id', 'behaviors', 'ts', 'start', 'end'],
-        name='pbehavior/ending'
+        name='pbehavior/entity'
     )
     def getending(self, entity_id, behaviors, ts=None, start=None, end=None):
         """Get end date of corresponding behaviors if a timestamp is in a
@@ -176,9 +134,54 @@ def exports(ws):
         return result
 
     @route(
-        ws.application.get,
+        ws.application.put,
+        payload=['entity_id', 'values', 'behaviors', 'cache'],
+        name='pbehavior/entity'
+    )
+    def add(self, entity_id, values, behaviors, cache=False):
+        """Add a pbehavior entry related to input entity_id and values.
+
+        :param str entity_id: entity id.
+        :param values: value(s) to add.
+        :type values: str, Event or list of str/Event.
+        :param behaviors: value(s) behavior(s) to add. If None, behaviors are
+            retrieved from values with the PBehaviorManager.BEHAVIOR key.
+        :type behaviors: list or str
+        :param bool cache: if True (False by default), use storage cache.
+        :return: added document ids
+        :rtype: list
+        """
+
+        result = pbm.add(
+            entity_id=entity_id, values=values, behaviors=behaviors,
+            cache=cache
+        )
+
+        return result
+
+    @route(
+        ws.application.delete,
+        payload=['entity_ids', 'cache'],
+        name='pbehavior/entity'
+    )
+    def remove_by_entity(self, entity_ids, cache=False):
+        """Remove document(s) by entity ids.
+
+        :param entity_ids: document entity id(s) to remove.
+        :type entity_ids: list or str
+        :param bool cache: if True (False by default), use storage cache.
+        :return: removed document id(s).
+        :rtype: list
+        """
+
+        result = pbm.remove_by_entity(entity_ids=entity_ids, cache=cache)
+
+        return result
+
+    @route(
+        ws.application.post,
         payload=['behaviors', 'ts', 'entity_ids', 'start', 'end'],
-        name='pbehavior/whois'
+        name='pbehavior/entity'
     )
     def whois(self, behaviors, ts=None, entity_ids=None, start=None, end=None):
         """Get entities which currently have all specific behaviors.
