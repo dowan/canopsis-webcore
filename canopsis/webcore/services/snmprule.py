@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 
+import os
+from subprocess import Popen, PIPE
 from canopsis.common.ws import route
 from canopsis.snmp.rulesmanager import RulesManager
 from canopsis.snmp.mibs import MibsManager
+from bottle import request, HTTPError
 
 manager = RulesManager()
 mibmanager = MibsManager()
@@ -45,3 +48,34 @@ def exports(ws):
             projection=projection
         )
         return result
+
+    @route(ws.application.post, payload=[])
+    def uploadmib():
+        try:
+            upload = request.files.get('file')
+            filepath = os.path.expanduser('~/tmp/mibimport.mib')
+            with open(filepath, 'w') as f:
+                f.write(upload.file.read())
+
+            # Try import mib
+            process = Popen(
+                [
+                    'python',
+                    '-m',
+                    'canopsis.snmp.mibs',
+                    '-k',
+                    filepath
+                ],
+                stdout=PIPE
+            )
+            stdout, _ = process.communicate()
+            ws.logger.info(stdout)
+
+            if process.returncode != 0:
+                raise('Could not import uploaded mib')
+
+            return True
+        except Exception as e:
+            message = 'Upload error {}'.format(e)
+            ws.logger.error(message)
+            return HTTPError(500, message)

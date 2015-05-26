@@ -24,7 +24,8 @@ define([
     'canopsis/monitoring/lib/loaders/templates',
     'canopsis/monitoring/lib/loaders/editors',
     'canopsis/monitoring/lib/loaders/renderers',
-    'canopsis/monitoring/lib/loaders/components'
+    'canopsis/monitoring/lib/loaders/components',
+    'canopsis/monitoring/wrappers/fileuploader'
 ], function () {
 
 });

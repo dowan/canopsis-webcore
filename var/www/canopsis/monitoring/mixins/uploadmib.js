@@ -25,11 +25,26 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+    var viewMixin = Ember.Mixin.create({
+        didInsertElement: function() {
+            this._super();
+
+            $("#uploadmib").uploadFile({
+                url: '/uploadmib'
+            });
+
+        }
+    });
 
     var mixin = Mixin('uploadmib', {
         partials: {
-            itemactionbuttons: ['actionbutton-uploadmib']
+            actionToolbarButtons: ['actionbutton-uploadmib']
         },
+
+        init: function() {
+            this._super();
+            this.addMixinView(viewMixin);
+        }
     });
 
 
