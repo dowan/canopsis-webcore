@@ -25,10 +25,20 @@ define([
 
     var rightsflagsUtils = {
         canRead: function(checksum) {
-            return checksum >> 2 === 1;
+            return (checksum >> 2) % 2 === 1;
         },
         canWrite: function(checksum) {
             return (checksum >> 1) % 2 === 1;
+        },
+
+        canCreate: function(checksum) {
+            return (checksum >> 3) % 2 === 1;
+        },
+        canUpdate: function(checksum) {
+            return this.canWrite(checksum);
+        },
+        canDelete: function(checksum) {
+            return checksum % 2 === 1;
         }
     };
 

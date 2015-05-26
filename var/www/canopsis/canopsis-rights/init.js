@@ -25,7 +25,9 @@ define([
     'canopsis/canopsis-rights/lib/loaders/templates',
     'canopsis/canopsis-rights/reopens/routes/application',
     'canopsis/canopsis-rights/reopens/routes/userview',
-    'canopsis/canopsis-rights/reopens/controllers/application'
+    'canopsis/canopsis-rights/reopens/controllers/application',
+    'canopsis/canopsis-rights/reopens/widgets/uimaintabcollection',
+    'canopsis/canopsis-rights/reopens/mixins/crud'
 ], function () {
 
 });

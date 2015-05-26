@@ -44,7 +44,8 @@ define([
 
             var right = dataUtils.getStore().createRecord('action', {
                   enable: true,
-                  crecord_type: "action",
+                  crecord_type: 'action',
+                  type: 'RW',
                   _id: formattedViewId,
                   id: formattedViewId,
                   crecord_name: formattedViewId,

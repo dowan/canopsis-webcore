@@ -36,42 +36,14 @@ define([
 
         currentViewId: Ember.computed.alias('controllers.application.currentViewId'),
 
-        loggedaccountId: Ember.computed.alias('controllers.login.record._id'),
-        loggedaccountRights: Ember.computed.alias('controllers.login.record.rights'),
-
         tagName: 'span',
 
-        userCanEditView: function() {
-            if(get(this, 'loggedaccountId') === "root") {
-                return true;
-            }
+        userCanEditView: true,
+        userCanCreateView: true,
 
-            var rights = get(this, 'loggedaccountRights'),
-                viewId = get(this, 'currentViewId');
-                viewId = viewId.replace('.', '_');
-
-            if (rightsflagsUtils.canWrite(get(rights, viewId + '.checksum'))) {
-                return true;
-            }
-
-            return false;
-        }.property('currentViewId'),
-
-
-        userCanCreateView: function() {
-            if(get(this, 'loggedaccountId')) {
-                return true;
-            }
-
-            var rights = get(this, 'loggedaccountRights');
-
-            if (get(rights, 'userview_create.checksum')) {
-                return true;
-            }
-
-            return false;
-        }.property(),
-
+        isViewDisplayable: function(viewId) {
+            return true;
+        },
 
         preparedTabs: function() {
             var uimaintabcollectionController = this;
@@ -85,19 +57,13 @@ define([
                     set(item, 'isActive', false);
                 }
 
-                var user = get(uimaintabcollectionController, 'loggedaccountId'),
-                    rights = get(uimaintabcollectionController, 'loggedaccountRights');
 
-                if(user === "root") {
+                viewId = item.value;
+                viewId = viewId.replace('.', '_');
+                if (uimaintabcollectionController.isViewDisplayable(viewId)) {
                     set(item, 'displayable', true);
                 } else {
-                    viewId = item.value;
-                    viewId = viewId.replace('.', '_');
-                    if (viewId && rightsflagsUtils.canRead(get(rights, viewId + '.checksum'))) {
-                        set(item, 'displayable', true);
-                    } else {
-                        set(item, 'displayable', false);
-                    }
+                    set(item, 'displayable', false);
                 }
 
                 res.pushObject(item);

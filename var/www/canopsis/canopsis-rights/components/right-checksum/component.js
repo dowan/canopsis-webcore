@@ -43,21 +43,25 @@ define([
             }
 
             var checksum = get(right, 'checksum');
-            console.log('>>>>>>>>> checksum', checksum);
+
+            if(checksum >= 8) {
+                checksum -= 8;
+                set(this, 'checksum8flag', true);
+            }
 
             if(checksum >= 4) {
                 checksum -= 4;
-                set(this, 'checksum_R', true);
+                set(this, 'checksum4flag', true);
             }
 
             if(checksum >= 2) {
                 checksum -= 2;
-                set(this, 'checksum_W', true);
+                set(this, 'checksum2flag', true);
             }
 
             if(checksum >= 1) {
                 checksum -= 1;
-                set(this, 'checksum_X', true);
+                set(this, 'checksum1flag', true);
             }
 
             this._super();
@@ -76,68 +80,84 @@ define([
             return get(this, 'checksumType') === 'RW';
         }.property('checksumType'),
 
+        checksumIsCRUD: function() {
+            return get(this, 'checksumType') === 'CRUD';
+        }.property('checksumType'),
+
         actions: {
-            toggleRightChecksum: function(flag) {
+            toggleRightChecksum: function(flagNumber) {
                 var right = get(this, 'right');
 
                 console.info('toggleRightChecksum action', arguments);
 
-                var checksumFlagValue = get(this, 'checksum_' + flag);
+                var checksumFlagValue = get(this, 'checksum' + flagNumber + 'flag');
 
                 if(checksumFlagValue) {
-                    set(this, 'checksum_' + flag, false);
+                    set(this, 'checksum' + flagNumber + 'flag', false);
                 } else {
-                    set(this, 'checksum_' + flag, true);
+                    set(this, 'checksum' + flagNumber + 'flag', true);
                 }
             }
         },
 
-        checksumRClass: function() {
-            if(get(this, 'checksum_R')) {
-                return 'btn btn-sm btn-default active';
+        checksum8Class: function() {
+            if(get(this, 'checksum8flag')) {
+                return 'btn btn-xs btn-success active';
             } else {
-                return 'btn btn-sm btn-default';
+                return 'btn btn-xs btn-danger';
             }
-        }.property('checksum_R'),
+        }.property('checksum8flag'),
 
-        checksumWClass: function() {
-            if(get(this, 'checksum_W')) {
-                return 'btn btn-sm btn-default active';
+        checksum4Class: function() {
+            if(get(this, 'checksum4flag')) {
+                return 'btn btn-xs btn-success active';
             } else {
-                return 'btn btn-sm btn-default';
+                return 'btn btn-xs btn-danger';
             }
-        }.property('checksum_W'),
+        }.property('checksum4flag'),
 
-        checksumXClass: function() {
-            if(get(this, 'checksum_X')) {
-                return 'btn btn-sm btn-default active';
+        checksum2Class: function() {
+            if(get(this, 'checksum2flag')) {
+                return 'btn btn-xs btn-success active';
             } else {
-                return 'btn btn-sm btn-default';
+                return 'btn btn-xs btn-danger';
             }
-        }.property('checksum_X'),
+        }.property('checksum2flag'),
+
+        checksum1Class: function() {
+            if(get(this, 'checksum1flag')) {
+                return 'btn btn-xs btn-success active';
+            } else {
+                return 'btn btn-xs btn-danger';
+            }
+        }.property('checksum1flag'),
 
         recomputeNumericChecksum: function() {
-            var checksum_R = get(this, 'checksum_R'),
-                checksum_W = get(this, 'checksum_W'),
-                checksum_X = get(this, 'checksum_X'),
+            var checksum8flag = get(this, 'checksum8flag'),
+                checksum4flag = get(this, 'checksum4flag'),
+                checksum2flag = get(this, 'checksum2flag'),
+                checksum1flag = get(this, 'checksum1flag'),
                 numericChecksum = 0;
 
-            if(checksum_R) {
+            if(checksum8flag) {
+                numericChecksum += 8;
+            }
+
+            if(checksum4flag) {
                 numericChecksum += 4;
             }
 
-            if(checksum_W) {
+            if(checksum2flag) {
                 numericChecksum += 2;
             }
 
-            if(checksum_X) {
+            if(checksum1flag) {
                 numericChecksum += 1;
             }
 
             set(this, 'computedNumericChecksum', numericChecksum);
             set(this, 'right.checksum', numericChecksum);
-            // get(this, 'rightselector').recomputeValue();
-        }.observes('checksum_R', 'checksum_W', 'checksum_X')
+        }.observes('checksum8flag', 'checksum4flag', 'checksum2flag', 'checksum1flag')
     });
 
     Ember.Application.initializer({
