@@ -17,30 +17,27 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+require.config({
+    paths: {
+        'adminLTElib': 'webcore-libs/dev/AdminLTE',
+        'adminLTE': 'canopsis/canopsis-ui/wrappers/adminLTE'
+    },
+
+    shim: {
+        'adminLTE': {
+            deps: ['jquery', 'bootstrap']
+        },
+
+        'adminLTElib': {
+            deps: ['jquery']
+        }
+    }
+});
+
+
 define([
-    'jquery',
-    'ember',
-    'app/controller/application'
-], function($, Ember, ApplicationController) {
+    'canopsis/canopsis-ui/reopens/views/application'
+], function () {
 
-    var get = Ember.get,
-        set = Ember.set;
-
-    var view = Ember.View.extend({
-        /**
-         * @property the css class of the main container
-         */
-        rightSideCssClasses: function(){
-            if(get(this, 'controller.fullscreenMode')) {
-                return 'right-side strech fullscreen';
-            } else {
-                return 'right-side strech';
-            }
-        }.property('controller.fullscreenMode')
-    });
-
-
-    loader.register('view:application', view);
-
-    return view;
 });

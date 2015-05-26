@@ -47,8 +47,6 @@ require.config({
         'bootstrap': 'webcore-libs/bootstrap/dist/js/bootstrap.min',
         'daterangepicker': 'webcore-libs/bootstrap-daterangepicker/daterangepicker',
         'icheck': 'webcore-libs/iCheck/icheck',
-        'adminLTElib': 'webcore-libs/dev/AdminLTE', //TODO make a bower package for this
-        'adminLTE': 'canopsis/core/lib/wrappers/adminLTE',
         'utils': 'canopsis/core/lib/loaders/utils',
         'css3-mediaqueries': 'webcore-libs/min/css3-mediaqueries',
         'math': 'webcore-libs/mathjs/dist/math',
