@@ -31,19 +31,47 @@ define([
     var adapter = ApplicationAdapter.extend({
 
         buildURL: function(type, id) {
-            return '/context/' + type + (id ? ('/' + id) : '');
+            return '/context/' + type + (isNone(id)? '' : ('/' + id));
         },
 
-        createRecord: function() {
-            notificationUtils.error('Context creation not implemented');
+        createRecord: function(store, type, record) {
+            return this.updateRecord(store, type, record);
         },
 
-        updateRecord: function() {
-            notificationUtils.error('Context update not implemented');
+        updateRecord: function(store, type, record) {
+
+            var id = get(record, 'id');
+
+            var data = {};
+            var serializer = store.serializerFor(type.modelName);
+            var url = this.buildURL(type.modelName, null, snapshot);
+
+            serializer.serializeIntoHash(
+                data, type, snapshot, { includeId: true }
+            );
+
+            var query = {
+                _type: data.type,
+                entity: data,
+                context: data
+            };
+
+            return this.ajax(url, "PUT", query);
         },
 
-        deleteRecord: function() {
-            notificationUtils.error('Context deletion not implemented');
+        deleteRecord: function(store, type, record) {
+            var url = this.buildURL();
+
+            var id = get(record, 'id');
+            var query = {data: {ids: id}};
+
+            return this.ajax(url, 'DELETE', query);
+        },
+
+        findQuery: function(store, type, query) {
+            var url = this.buildURL();
+
+            return this.ajax(url, 'POST', {data: query});
         },
 
         find: function(store, model, id) {
@@ -113,7 +141,7 @@ define([
             });
         },
 
-        findQuery: function(store, model, query) {
+        /*findQuery: function(store, model, query) {
             void(store);
             var me = this;
 
@@ -139,7 +167,7 @@ define([
 
                 $.post(url, query).then(funcres, funcrej);
             });
-        }
+        }*/
     });
 
     loader.register('adapter:context', adapter);

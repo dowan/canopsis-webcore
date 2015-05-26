@@ -23,11 +23,14 @@ from canopsis.pbehavior.manager import PBehaviorManager
 
 pbm = PBehaviorManager()
 
+DOCS_ROUTE = 'pbehavior/docs'  #: route specifics to pbehavior document
+ENTITY_ROUTE = 'pbehavior/entity'  #: route specifics to pbehavior entity
+
 
 def exports(ws):
 
-    @route(ws.application.get, name='pbehavior/docs')
-    def get(self, ids):
+    @route(ws.application.get, name=DOCS_ROUTE)
+    def get(ids):
         """Get a document related to input id(s).
 
         :param ids: document id(s) to get.
@@ -45,9 +48,9 @@ def exports(ws):
     @route(
         ws.application.post,
         payload=['entity_ids', 'behaviors', 'start', 'end'],
-        name='pbehavior/docs'
+        name=DOCS_ROUTE
     )
-    def find(self, entity_ids=None, behaviors=None, start=None, end=None):
+    def find(entity_ids=None, behaviors=None, start=None, end=None):
         """Find documents related to input entity id(s) and behavior(s).
 
         :param entity_ids:
@@ -69,9 +72,9 @@ def exports(ws):
     @route(
         ws.application.put,
         payload=['_id', 'document', 'cache'],
-        name='pbehavior/docs'
+        name=DOCS_ROUTE
     )
-    def put(self, _id, document, cache=False):
+    def put(_id, document, cache=False):
         """Put a pbehavior document.
 
         :param str _id: document entity id.
@@ -88,9 +91,9 @@ def exports(ws):
 
     @route(
         ws.application.delete, payload=['ids', 'cache'],
-        name='pbehavior/docs'
+        name=DOCS_ROUTE
     )
-    def remove(self, ids=None, cache=False):
+    def remove(ids=None, cache=False):
         """Remove document(s) by id.
 
         :param ids: pbehavior document id(s). If None, remove all documents.
@@ -107,9 +110,9 @@ def exports(ws):
     @route(
         ws.application.get,
         payload=['entity_id', 'behaviors', 'ts', 'start', 'end'],
-        name='pbehavior/entity'
+        name=ENTITY_ROUTE
     )
-    def getending(self, entity_id, behaviors, ts=None, start=None, end=None):
+    def getending(entity_id, behaviors, ts=None, start=None, end=None):
         """Get end date of corresponding behaviors if a timestamp is in a
         behavior period.
 
@@ -136,9 +139,9 @@ def exports(ws):
     @route(
         ws.application.put,
         payload=['entity_id', 'values', 'behaviors', 'cache'],
-        name='pbehavior/entity'
+        name=ENTITY_ROUTE
     )
-    def add(self, entity_id, values, behaviors, cache=False):
+    def add(entity_id, values, behaviors, cache=False):
         """Add a pbehavior entry related to input entity_id and values.
 
         :param str entity_id: entity id.
@@ -162,9 +165,9 @@ def exports(ws):
     @route(
         ws.application.delete,
         payload=['entity_ids', 'cache'],
-        name='pbehavior/entity'
+        name=ENTITY_ROUTE
     )
-    def remove_by_entity(self, entity_ids, cache=False):
+    def remove_by_entity(entity_ids, cache=False):
         """Remove document(s) by entity ids.
 
         :param entity_ids: document entity id(s) to remove.
@@ -181,9 +184,9 @@ def exports(ws):
     @route(
         ws.application.post,
         payload=['behaviors', 'ts', 'entity_ids', 'start', 'end'],
-        name='pbehavior/entity'
+        name=ENTITY_ROUTE
     )
-    def whois(self, behaviors, ts=None, entity_ids=None, start=None, end=None):
+    def whois(behaviors, ts=None, entity_ids=None, start=None, end=None):
         """Get entities which currently have all specific behaviors.
 
         :param behaviors: behavior(s) to look for.

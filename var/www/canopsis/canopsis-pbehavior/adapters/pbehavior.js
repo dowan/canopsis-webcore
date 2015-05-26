@@ -31,10 +31,15 @@ define([
 
         buildURL: function(type, id, record) {
             void(type);
-            void(id);
             void(record);
 
-            return '/pbehavior/docs';
+            var result = '/pbehavior/docs';
+
+            if (!isNone(id)) {
+                result += '/' + id;
+            }
+
+            return result;
         },
 
         createRecord: function(store, type, record) {
@@ -64,8 +69,7 @@ define([
             var url = this.buildURL();
 
             return this.ajax(url, 'POST', {data: query});
-        },
-
+        }
     });
 
     loader.register('adapter:pbehavior', adapter);
