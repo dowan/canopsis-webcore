@@ -69,36 +69,36 @@ define([
         },
 
         colspan: function() {
-            var nb_columns = get(this, 'controller.shown_columns.length');
-            var nb_extracolumns = get(this, 'controller._partials.columnsLine.length');
-            var have_item_actions = get(this, 'controller._partials.itemactionbuttons');
+            var nbColumns = get(this, 'controller.shown_columns.length');
+            var nbExtraColumns = get(this, 'controller._partials.columnsLine.length');
+            var haveItemActions = get(this, 'controller._partials.itemactionbuttons');
 
-            if (isNone(nb_columns)) {
-                nb_columns = 0;
+            if (isNone(nbColumns)) {
+                nbColumns = 0;
             }
 
-            if (isNone(nb_extracolumns)) {
-                nb_extracolumns = 0;
+            if (isNone(nbExtraColumns)) {
+                nbExtraColumns = 0;
             }
 
-            if (isNone(have_item_actions)) {
-                have_item_actions = false;
+            if (isNone(haveItemActions)) {
+                haveItemActions = false;
             }
 
-            have_item_actions = !!have_item_actions;
+            haveItemActions = !!haveItemActions;
 
             /* checkbox */
-            nb_columns++;
+            nbColumns++;
 
             /* columnsLine */
-            nb_columns += nb_extracolumns;
+            nbColumns += nbExtraColumns;
 
             /* item actions */
-            if (have_item_actions) {
-                nb_columns++;
+            if (haveItemActions) {
+                nbColumns++;
             }
 
-            return nb_columns;
+            return nbColumns;
         }.property("controller.shown_columns")
     });
 
