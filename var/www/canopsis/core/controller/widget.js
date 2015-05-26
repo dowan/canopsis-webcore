@@ -89,6 +89,8 @@ define([
             //can be overriden to trigger action when mixins options ready.
         },
 
+	saveUserConfiguration: function() {},
+
         addMixinView: function (viewMixin) {
             /**
                 Adds mixins view to the current widget controller

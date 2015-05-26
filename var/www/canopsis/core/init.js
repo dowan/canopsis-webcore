@@ -41,7 +41,6 @@ define([
     'app/routes/authenticated',
     'app/routes/index',
     'app/routes/userview',
-    'app/reopens/store',
     'css3-mediaqueries'
 ], function(Application, Canopsis) {
 
