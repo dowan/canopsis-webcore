@@ -29,8 +29,13 @@ define([
         didInsertElement: function() {
             this._super();
 
-            $("#uploadmib").uploadFile({
-                url: '/uploadmib'
+            $('#uploadmib').uploadFile({
+                url: '/uploadmib',
+                onSuccess:function(files,data,xhr)
+                {
+                    var messages = $('#uploadmib #eventsmessage');
+                    messages.html(messages.html()+ '<br/>Success for: '+ JSON.stringify(data));
+                },
             });
 
         }
