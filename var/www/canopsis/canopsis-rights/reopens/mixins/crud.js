@@ -37,7 +37,7 @@ define([
 
             var crecord_type = get(this, 'listed_crecord_type');
             var checksum = get(this, 'rights.models_' + crecord_type + '.checksum');
-            console.log('rights.models_' + crecord_type + '.checksum', rightsflagsUtils.canRead(checksum));
+
             return rightsflagsUtils.canRead(checksum);
         }.property('config.listed_crecord_type'),
 
@@ -48,6 +48,7 @@ define([
 
             var crecord_type = get(this, 'listed_crecord_type');
             var checksum = get(this, 'rights.models_' + crecord_type + '.checksum');
+
             return rightsflagsUtils.canCreate(checksum);
         }.property('config.listed_crecord_type'),
 
@@ -58,6 +59,7 @@ define([
 
             var crecord_type = get(this, 'listed_crecord_type');
             var checksum = get(this, 'rights.models_' + crecord_type + '.checksum');
+
             return rightsflagsUtils.canUpdate(checksum);
         }.property('config.listed_crecord_type'),
 
@@ -68,6 +70,7 @@ define([
 
             var crecord_type = get(this, 'listed_crecord_type');
             var checksum = get(this, 'rights.models_' + crecord_type + '.checksum');
+
             return rightsflagsUtils.canDelete(checksum);
         }.property('config.listed_crecord_type')
     });
