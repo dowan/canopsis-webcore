@@ -18,31 +18,13 @@
 */
 
 define([
-    'app/application',
-    'canopsis/canopsis-backend-ui-connector/adapters/application'
-], function(Application, ApplicationAdapter) {
+    'jquery',
+    'app/lib/factories/wrapper',
+    'webcore-libs/slick.js/slick/slick',
+    'link!webcore-libs/slick.js/slick/slick.css',
+    'link!webcore-libs/slick.js/slick/slick-theme.css'
+], function($, Wrapper) {
 
-    var adapter = ApplicationAdapter.extend({
+    return Wrapper("slick", undefined, arguments, undefined);
 
-        buildURL: function(type, id) {
-            void(id);
-            return "/event";
-        },
-
-        findQuery: function(store, type, query) {
-
-            var url = "/rest/events";
-
-            if (query.skip !== undefined){
-                query.start = query.skip;
-                delete query.skip;
-            }
-
-            return this.ajax(url, 'GET', { data: query });
-        }
-    });
-
-    loader.register('adapter:event', adapter);
-
-    return adapter;
 });
