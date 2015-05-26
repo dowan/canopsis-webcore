@@ -24,7 +24,6 @@ var renderers = [
     { name: 'renderer-cfilterwithproperties', template: 'canopsis/uibase/renderers/cfilterwithproperties.html'},
     { name: 'renderer-color', template: 'canopsis/uibase/renderers/color.html'},
     { name: 'renderer-conf', template: 'canopsis/uibase/renderers/conf.html'},
-    { name: 'renderer-crecord-type',template: 'canopsis/uibase/renderers/crecord-type.html'},
     { name: 'renderer-mail', template: 'canopsis/uibase/renderers/mail.html'},
     { name: 'renderer-object', template: 'canopsis/uibase/renderers/object.html'},
     { name: 'renderer-percent', template: 'canopsis/uibase/renderers/percent.html'},

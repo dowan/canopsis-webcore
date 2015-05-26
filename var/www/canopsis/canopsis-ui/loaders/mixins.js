@@ -17,30 +17,8 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'jquery',
-    'ember',
-    'app/controller/application'
-], function($, Ember, ApplicationController) {
+var mixins = [
+    { name: 'uiv1weathertheme', url: 'canopsis/uiv1_themes/mixins/uiv1weathertheme', classes: ["theme"]}
+];
 
-    var get = Ember.get,
-        set = Ember.set;
-
-    var view = Ember.View.extend({
-        /**
-         * @property the css class of the main container
-         */
-        rightSideCssClasses: function(){
-            if(get(this, 'controller.fullscreenMode')) {
-                return 'right-side strech fullscreen';
-            } else {
-                return 'right-side strech';
-            }
-        }.property('controller.fullscreenMode')
-    });
-
-
-    loader.register('view:application', view);
-
-    return view;
-});
+loader.loadWithTemplates(mixins);
