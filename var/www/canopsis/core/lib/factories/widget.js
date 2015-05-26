@@ -78,7 +78,7 @@ define([
 
             loader.register('controller:' + widgetControllerName, controllerClass);
 
-            //dynamically create an adapter that implements EmbeddedRecordMixin if a custom adapter is not already defined in Application
+            //dynamically create a serializer that implements EmbeddedRecordMixin if a custom serializer is not already defined in Application
             if(isNone(get(Application, widgetSerializerName))) {
                 loader.register('serializer:' + widgetSerializerName, WidgetSerializer.extend());
             }

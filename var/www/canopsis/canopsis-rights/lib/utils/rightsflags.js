@@ -22,7 +22,6 @@ define([
     'app/application'
 ], function(Application) {
 
-
     var rightsflagsUtils = {
         canRead: function(checksum) {
             return (checksum >> 2) % 2 === 1;
@@ -42,6 +41,5 @@ define([
         }
     };
 
-    window.rightsflagsUtils = rightsflagsUtils;
     return rightsflagsUtils;
 });
