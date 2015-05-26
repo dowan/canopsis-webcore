@@ -28,7 +28,6 @@ define([
     'app/lib/actionsregistry',
     'app/lib/mixinsregistry',
     'app/lib/formsregistry',
-    'canopsis/canopsis-rights/objects/rightsregistry',
     'app/lib/inflections',
     'app/mixins/userprofilestatusmenu',
     'app/mixins/requirejsmocksmanager',
@@ -60,7 +59,6 @@ define([
     actionsRegistry,
     mixinsRegistry,
     formsRegistry,
-    rightsRegistry,
     inflectionsRegistry,
     UserprofilestatusmenuMixin,
     RequirejsmocksmanagerMixin,
@@ -148,13 +146,6 @@ define([
          * @description Reference to the form registry
          */
         formsRegistry: formsRegistry,
-
-        /**
-         * @property rightsRegistry
-         * @type Object
-         * @description Reference to the rights registry
-         */
-        rightsRegistry: rightsRegistry,
 
         /**
          * @property isLoading

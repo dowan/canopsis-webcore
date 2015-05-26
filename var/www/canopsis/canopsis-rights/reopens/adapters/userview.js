@@ -65,6 +65,20 @@ define([
             }
 
             return this._super.apply(this, arguments);
+        },
+
+        deleteRecord: function(store, type, snapshot) {
+            var userview = snapshot;
+
+            formattedViewId = get(userview, 'id').replace('.', '_');
+            var right = rightsRegistry.getByName(formattedViewId);
+            console.log('deleteRecord', formattedViewId, rightsRegistry, right);
+            right.deleteRecord();
+            right.save();
+
+            //TODO delete user right in payload
+
+            return this._super.apply(this, arguments);
         }
     });
 
