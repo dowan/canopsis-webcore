@@ -54,6 +54,7 @@ def exports(ws):
         try:
             upload = request.files.get('file')
             filepath = os.path.expanduser('~/tmp/mibimport.mib')
+            ws.logger.info('writting mib file {}'.format(filepath))
             with open(filepath, 'w') as f:
                 f.write(upload.file.read())
 
@@ -71,11 +72,18 @@ def exports(ws):
             stdout, _ = process.communicate()
             ws.logger.info(stdout)
 
-            if process.returncode != 0:
-                raise('Could not import uploaded mib')
+            # Depends on what does the mib parser produces
+            try:
+                output = '\n'.join(
+                    stdout.split('----------')[-1].strip().split('\n')[:-1]
+                )
+            except Exception as e:
+                output = 'Could not get import summary'
 
-            return True
+            return {'message': output}
+
         except Exception as e:
-            message = 'Upload error {}'.format(e)
+            import traceback
+            message = 'Upload error {} \n{}'.format(e, traceback.format_exc())
             ws.logger.error(message)
             return HTTPError(500, message)

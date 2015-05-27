@@ -2,4 +2,12 @@
     {{#component-tooltip content="Upload mib file to canopsis system"}}
         <div id="uploadmib">{{tr 'Upload mib'}}</div>
     {{/component-tooltip}}
+    {{#if controller.message}}
+        <div class="alert alert-info" role="alert">
+            <center>
+                <b>{{controller.filename}}</b>
+            </center>
+            {{controller.message}}
+        </div>
+    {{/if}}
 {{/if}}

@@ -26,19 +26,24 @@ define([
         set = Ember.set;
 
     var viewMixin = Ember.Mixin.create({
+
         didInsertElement: function() {
             this._super();
+            var mixinView = this;
 
-            $('#uploadmib').uploadFile({
+            $("#uploadmib").uploadFile({
                 url: '/uploadmib',
-                onSuccess:function(files,data,xhr)
+                onSuccess:function(files, data, xhr)
                 {
-                    var messages = $('#uploadmib #eventsmessage');
-                    messages.html(messages.html()+ '<br/>Success for: '+ JSON.stringify(data));
-                },
+                    console.log('On upload succes', files, data, xhr);
+                    var controller = get(mixinView, 'controller');
+                    var message = new Ember.Handlebars.SafeString(data.data[0].message.replace(/\n/g,'<br/>'));
+                    set(controller, 'message', message);
+                    set(controller, 'filename', files[0]);
+                }
             });
 
-        }
+        },
     });
 
     var mixin = Mixin('uploadmib', {
