@@ -16,31 +16,14 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
-
 define([
-    'jquery',
-    'ember',
-    'app/controller/application'
-], function($, Ember, ApplicationController) {
+    'app/lib/factories/wrapper',
+    'adminLTElib',
+    'link!canopsis/canopsis-ui/lib/adminlte/AdminLTE.css',
+    'link!canopsis/canopsis-ui/lib/adminlte/AdminLTE_extra.css',
+], function(Wrapper, AdminLteJs) {
 
-    var get = Ember.get,
-        set = Ember.set;
+    console.log('AdminLTE wrapper', AdminLteJs);
 
-    var view = Ember.View.extend({
-        /**
-         * @property the css class of the main container
-         */
-        rightSideCssClasses: function(){
-            if(get(this, 'controller.fullscreenMode')) {
-                return 'right-side strech fullscreen';
-            } else {
-                return 'right-side strech';
-            }
-        }.property('controller.fullscreenMode')
-    });
-
-
-    loader.register('view:application', view);
-
-    return view;
+    return Wrapper("AdminLTE", AdminLteJs, arguments, "0.1");
 });
