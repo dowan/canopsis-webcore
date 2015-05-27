@@ -32,6 +32,12 @@ define([
         __ = Ember.String.loc;
 
 
+    /**
+     * @class ApplicationController
+     * @extends PartialslotAbleController
+     * @constructor
+     * @description ApplicationController reopen
+     */
     Applicationcontroller.reopen({
         /**
          * @property rightsRegistry

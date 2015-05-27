@@ -27,8 +27,20 @@ define([
         set = Ember.set,
         isNone = Ember.isNone;
 
-
+    /**
+     * @class ApplicationRoute
+     * @extends AuthenticatedRoute
+     * @constructor
+     * @description ApplicationRoute reopen
+     */
     ApplicationRoute.reopen({
+        /**
+         * @method beforeModel
+         * @param {Transition} transition
+         * @return {Promise}
+         *
+         * Fetch all the registered rights in the backend and fill the rightsRegistry
+         */
         beforeModel: function(transition) {
             var route = this;
 

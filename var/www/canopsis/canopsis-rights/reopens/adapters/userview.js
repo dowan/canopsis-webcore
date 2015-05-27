@@ -29,9 +29,24 @@ define([
         set = Ember.set,
         isNone = Ember.isNone;
 
+    /**
+     * @class UserviewAdapter
+     * @extends ApplicationAdapter
+     * @constructor
+     * @description UserviewAdapter reopen
+     */
     UserviewAdapter.reopen({
-        updateRecord: function(store, type, snapshot) {
-            var userview = snapshot;
+        /**
+         * @method updateRecord
+         * @param {DS.Store} store
+         * @param {subclass of DS.Model} type
+         * @param {DS.Model} userview
+         * @return {Promise} promise
+         *
+         * Manage right creation and modification on view creation or update.
+         * Note that the createRecord method is never used with the userview adapter.
+         */
+        updateRecord: function(store, type, userview) {
 
             formattedViewId = get(userview, 'id').replace('.', '_');
 
@@ -67,8 +82,16 @@ define([
             return this._super.apply(this, arguments);
         },
 
-        deleteRecord: function(store, type, snapshot) {
-            var userview = snapshot;
+        /**
+         * @method deleteRecord
+         * @param {DS.Store} store
+         * @param {subclass of DS.Model} type
+         * @param {DS.Model} userview
+         * @return {Promise} promise
+         *
+         * Manage right deletion when the user deletes the userview.
+         */
+        deleteRecord: function(store, type, userview) {
 
             formattedViewId = get(userview, 'id').replace('.', '_');
             var right = rightsRegistry.getByName(formattedViewId);
