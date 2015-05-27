@@ -1,0 +1,69 @@
+/*
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+define([
+    'ember',
+    'canopsis/canopsis-pbehavior/adapters/pbehavior'
+], function(Ember) {
+
+    var get = Ember.get,
+        set = Ember.set;
+
+
+    var component = Ember.Component.extend({
+        init: function() {
+            this._super.apply(this, arguments);
+
+            var store = DS.Store.create({
+                container: get(this, 'container')
+            });
+
+            set(this, 'componentDataStore', store);
+        },
+
+        didInsertElement: function() {
+            this._super.apply(this, arguments);
+
+            console.log('BWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH');
+            console.log('BWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH');
+            console.log('BWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH');
+            console.log('BWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH');
+
+            var store = get(this, 'componentDataStore', store),
+                ctx = get(this, 'contextId');
+
+            var behaviors = store.findQuery('pbehavior', {entity_ids: ctx});
+
+            set(this, 'behaviors', behaviors);
+        }
+    });
+
+    Ember.Application.initializer({
+        name: 'component-periodicbehaviormanager',
+
+        initialize: function(container, application) {
+            application.register(
+                'component:component-periodicbehaviormanager',
+                component
+            );
+        }
+    });
+
+    return component;
+});
