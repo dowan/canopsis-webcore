@@ -26,10 +26,11 @@ from datetime import datetime
 from time import mktime
 
 
-calendar_manager = Calendar()
+cm = Calendar()
 
 
 def exports(ws):
+
     rest = ws.require('rest')
 
     @route(ws.application.get)
@@ -105,8 +106,10 @@ def exports(ws):
 
     @route(ws.application.delete, payload=['ids'])
     def calendar(ids):
-        calendar_manager.remove(ids)
+
+        cm.remove(ids)
         ws.logger.info('Delete : {}'.format(ids))
+
         return True
 
     @route(
@@ -115,22 +118,29 @@ def exports(ws):
         name='calendar/put'
     )
     def calendar(document):
-        ws.logger.debug({
-            'document': document,
-            'type': type(document)
-        })
 
-        calendar_manager.put(document)
+        _id = document['_id']
+
+        ws.logger.debug(
+            {
+                'document': document,
+                'type': type(document)
+            }
+        )
+
+        cm.put(_id=_id, document=document)
 
         return True
 
     @route(ws.application.post, payload=['limit', 'start', 'sort', 'filter'])
     def calendar(limit=0, start=0, sort=None, filter={}):
-        result = calendar_manager.find(
+
+        result = cm.find(
             limit=limit,
             skip=start,
             query=filter,
             sort=sort,
             with_count=True
         )
+
         return result

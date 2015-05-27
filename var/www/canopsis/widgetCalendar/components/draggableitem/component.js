@@ -17,23 +17,36 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function () {
+define([
+    'ember',
+    'jquery',
+], function(Ember, $) {
+	var get = Ember.get,
+      set = Ember.set;
 
-    /*
-    * Here is the canopsis UI main configuration file.licenses
-    * It is possible to add properies and values that are reachable
-    * from the whole application through the namespace Canopsis.conf.PROPERTY
-    */
-    var canopsisConfiguration = {
-        DEBUG: false,
-        VERBOSE: 1,
-        showPartialslots: false,
-        DISPLAY_SCHEMA_MANAGER: true,
-        REFRESH_ALL_WIDGETS: true,
-        TRANSLATE: true,
-        SHOW_TRANSLATIONS: false,
-        TITLE: 'Canopsis Sakura',
-    };
+    var component = Ember.Component.extend({
+      classNames: [ 'draggableItem' ]
+  	 /* attributeBindings: [ 'draggable' ],
+  	  draggable: 'true',*/
 
-    return canopsisConfiguration;
+	  /*dragStart: function(event) {
+    	return event.dataTransfer.setData('text/data');
+  	},*/
+
+    /**
+     * @method willDestroyElement
+     */
+    /*willDestroyElement: function() {
+      this._super();
+    }*/
+	});
+
+  Ember.Application.initializer({
+    name:"component-draggableitem",
+    initialize: function(container, application) {
+        application.register('component:component-draggableitem', component);
+    }
+  });
+
+	return component;
 });

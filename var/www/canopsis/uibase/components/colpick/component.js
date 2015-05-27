@@ -29,7 +29,7 @@ define([
 
         /**
          * Component for choosing a color.
-         * It let to choose between a colorpicker 
+         * It let to choose between a colorpicker
          * and a display of several ranges
          *
          * @class Colpick
@@ -77,7 +77,7 @@ define([
 
             /*
              * set each colors selected attribute to false
-             * set background-color of each div with color code 
+             * set background-color of each div with color code
              */
             this.get('store').findAll('rangecolor', {
             }).then(function(result) {
@@ -97,7 +97,7 @@ define([
                         };
                     }
                 }
-                
+
                 set(component, 'ranges', ranges);
 
             });
@@ -111,7 +111,7 @@ define([
              * close the dropdownbutton
              */
              component.$('.closeDropdown').click(function(){
-               
+
              });
 
             /*
