@@ -17,37 +17,26 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 define([
-    'ember'
-], function(Ember) {
+    'ember',
+    'canopsis/uibase/mixins/showviewbutton',
+    'app/lib/utils/forms'
+], function(Ember, ShowviewbuttonMixin, formsUtils) {
 
-    var get = Ember.get;
+    var __ = Ember.String.loc;
 
+    ShowviewbuttonMixin.reopen({
+        init: function () {
+            this.get('partials.itemactionbuttons').pushObject('actionbutton-viewrights');
+            return this._super();
+        },
 
-    var component = Ember.Component.extend({
-        rightsArray: function() {
-            var rights = get(this, 'content') || {},
-                res = Ember.A();
-            var rightsKeys = Ember.keys(rights);
-
-
-            for (var i = 0, l = rightsKeys.length; i < l; i++) {
-                res.pushObject({
-                    name: rightsKeys[i]
-                });
+        actions: {
+            editUserviewRights: function(view) {
+                formsUtils.showNew('viewrightsform', view, { title: __('Edit view rights')});
             }
-
-            return res;
-        }.property('content')
-    });
-
-    Ember.Application.initializer({
-        name:"component-rightsrenderer",
-        initialize: function(container, application) {
-            application.register('component:component-rightsrenderer', component);
         }
     });
 
-    return component;
+    return ShowviewbuttonMixin;
 });

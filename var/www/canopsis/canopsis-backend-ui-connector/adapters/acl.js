@@ -86,7 +86,7 @@ define([
                     url: url,
                     type: 'POST',
                     data: data
-                });
+                }).then(resolve, reject);
             });
         },
 
@@ -107,7 +107,7 @@ define([
                     url: url,
                     type: 'POST',
                     data: data
-                });
+                }).then(resolve, reject);
             });
         },
 

@@ -23,9 +23,8 @@ define([
     'app/lib/factories/widget',
     'app/lib/utils/forms',
     'app/lib/utils/routes',
-    'canopsis/canopsis-rights/lib/utils/rightsflags',
     'app/lib/wrappers/bootstrap'
-], function($, Ember, WidgetFactory, formsUtils, routesUtils, rightsflagsUtils) {
+], function($, Ember, WidgetFactory, formsUtils, routesUtils) {
 
     var get = Ember.get,
         set = Ember.set;

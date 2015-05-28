@@ -20,7 +20,7 @@
 define([
     'ember',
     'canopsis/uibase/widgets/uimaintabcollection/controller',
-    'canopsis/canopsis-rights/lib/utils/rightsflags'
+    'canopsis/canopsis-rights/utils/rightsflags'
 ], function(Ember, UimaintabcollectionWidget, rightsflagsUtils) {
 
     var get = Ember.get,

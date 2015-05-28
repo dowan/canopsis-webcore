@@ -1,0 +1,46 @@
+{{controller.formContext.crecord_name}}
+<hr/>
+
+{{#if isLoading}}
+    loading
+{{else}}
+    <table>
+        {{#each right in rightsArray}}
+            {{#if right.checksum}}
+                <tr>
+                    <td>
+                        {{right.role}}:
+                    </td>
+                    <td>
+                        {{component-right-checksum right=right onChecksumChange="onRightChecksumChange" onChecksumChangeTarget=controller}}
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" {{action "deleteRight" right}}>
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </td>
+                </tr>
+            {{/if}}
+        {{/each}}
+        {{#if rolesWithoutRights.length}}
+          <tr>
+              <td>
+                  {{view "select"
+                     content=rolesWithoutRights
+                     optionValuePath="content._id"
+                     optionLabelPath="content._id"
+                     class="fright"
+                     class="inlineInput form-control input-sm"
+                     value=addedRole}}
+              </td>
+              <td></td>
+              <td>
+                  <button type="button" class="btn btn-success" {{action "addNewRight"}}>
+                      <span class="glyphicon glyphicon-plus"></span>
+                  </button>
+              </td>
+          </tr>
+        {{/if}}
+
+    </table>
+{{/if}}

@@ -20,7 +20,8 @@
 var templates = [
     { name: 'rightschecksumbuttons', template: 'canopsis/canopsis-rights/templates/rightschecksumbuttons.html' },
     { name: 'rightselector-itempartial', template: 'canopsis/canopsis-rights/templates/rightselector-itempartial.hbs'},
-    { name: 'rightselector-selecteditempartial', template: 'canopsis/canopsis-rights/templates/rightselector-selecteditempartial.hbs'}
+    { name: 'rightselector-selecteditempartial', template: 'canopsis/canopsis-rights/templates/rightselector-selecteditempartial.hbs'},
+    { name: 'actionbutton-viewrights', template: 'canopsis/canopsis-rights/templates/actionbutton-viewrights.hbs'}
 ];
 
 loader.loadWithTemplates(templates);

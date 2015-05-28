@@ -21,7 +21,8 @@ define([
     'ember',
     'ember-data',
     'app/routes/application',
-], function(Ember, DS, ApplicationRoute) {
+    'canopsis/canopsis-rights/objects/rightsregistry'
+], function(Ember, DS, ApplicationRoute, rightsRegistry) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -46,12 +47,11 @@ define([
 
             var store = DS.Store.create({ container: get(this, "container") });
             var rightsPromise = store.findQuery('action', { limit: 1000 });
-            var appController = route.controllerFor('application');
 
             rightsPromise.then(function(queryResults) {
                 for (var i = 0, l = queryResults.content.length; i < l; i++) {
                     var right = queryResults.content[i];
-                    appController.rightsRegistry.add(right, get(right, 'crecord_name'));
+                    rightsRegistry.add(right, get(right, 'crecord_name'));
                 }
                 store.destroy();
             });

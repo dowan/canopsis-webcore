@@ -17,19 +17,8 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+var forms = [
+    { name: 'viewrightsform', url: 'canopsis/canopsis-rights/forms/viewrightsform/controller', template: 'canopsis/canopsis-rights/forms/viewrightsform/template.hbs' }
+];
 
-define([
-    'canopsis/canopsis-rights/loaders/components',
-    'canopsis/canopsis-rights/loaders/forms',
-    'canopsis/canopsis-rights/loaders/editors',
-    'canopsis/canopsis-rights/loaders/renderers',
-    'canopsis/canopsis-rights/loaders/templates',
-    'canopsis/canopsis-rights/reopens/routes/application',
-    'canopsis/canopsis-rights/reopens/routes/userview',
-    'canopsis/canopsis-rights/reopens/widgets/uimaintabcollection',
-    'canopsis/canopsis-rights/reopens/adapters/userview',
-    'canopsis/canopsis-rights/reopens/mixins/crud',
-    'canopsis/canopsis-rights/reopens/mixins/showviewbutton'
-], function () {
-
-});
+loader.loadWithTemplates(forms);

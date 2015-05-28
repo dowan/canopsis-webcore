@@ -32,7 +32,6 @@ define([
     var component = Ember.Component.extend({
         init: function() {
             var right = get(this, 'right');
-            console.log('>>> init right', this, right);
 
             if(isNone(get(right, 'data'))) {
                 set(right, 'data', Ember.Object.create());
@@ -71,7 +70,6 @@ define([
 
         checksumType: function() {
             var value = get(this, 'right.name');
-
             var action = rightsRegistry.getByName(value);
             return action._data.type;
         }.property('right.name'),
@@ -96,6 +94,12 @@ define([
                     set(this, 'checksum' + flagNumber + 'flag', false);
                 } else {
                     set(this, 'checksum' + flagNumber + 'flag', true);
+                }
+
+                var onChecksumChange = get(this, 'onChecksumChange');
+                var onChecksumChangeTarget = get(this, 'onChecksumChangeTarget');
+                if(onChecksumChange && onChecksumChangeTarget) {
+                    onChecksumChangeTarget[onChecksumChange](right);
                 }
             }
         },
