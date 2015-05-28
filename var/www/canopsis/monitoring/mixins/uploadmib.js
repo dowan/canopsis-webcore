@@ -37,7 +37,7 @@ define([
                 {
                     console.log('On upload succes', files, data, xhr);
                     var controller = get(mixinView, 'controller');
-                    var message = new Ember.Handlebars.SafeString(data.data[0].message);
+                    var message = new Ember.Handlebars.SafeString(data.data[0].message.replace(/\n/g,'<br/>'));
                     set(controller, 'message', message);
                     set(controller, 'filename', files[0]);
                     //hide message ten seconds later

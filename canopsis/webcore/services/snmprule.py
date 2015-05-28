@@ -78,7 +78,7 @@ def exports(ws):
             lines = stdout.split('----------')[-1].strip().split('\n')
             # Filter output mibimport error line if any (nice summary in ui)
             lines = [line for line in lines if 'mibimport.mib' not in line]
-            output = '<br/>'.join(lines)
+            output = '\n'.join(lines)
         except Exception as e:
             output = 'Could not get import summary'
 
