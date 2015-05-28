@@ -430,6 +430,8 @@ define([
     } else {
         controller = PartialslotAbleController.extend(
             UserprofilestatusmenuMixin,
+            NotificationsMixin,
+            DocumentationMixin,
             ApplicationControllerDict);
     }
 
