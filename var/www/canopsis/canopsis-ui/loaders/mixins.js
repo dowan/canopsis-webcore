@@ -17,13 +17,8 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'canopsis/monitoring/lib/loaders/widgets',
-    'canopsis/monitoring/lib/loaders/components',
-    'canopsis/monitoring/lib/loaders/helpers',
-    'canopsis/monitoring/lib/loaders/mixins',
-    'canopsis/monitoring/lib/loaders/templates',
-    'canopsis/monitoring/lib/loaders/renderers'
-], function () {
+var mixins = [
+    { name: 'uiv1weathertheme', url: 'canopsis/uiv1_themes/mixins/uiv1weathertheme', classes: ["theme"]}
+];
 
-});
+loader.loadWithTemplates(mixins);

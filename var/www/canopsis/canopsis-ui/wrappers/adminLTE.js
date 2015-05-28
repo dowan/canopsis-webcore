@@ -16,14 +16,14 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
-
 define([
-    'canopsis/monitoring/lib/loaders/widgets',
-    'canopsis/monitoring/lib/loaders/components',
-    'canopsis/monitoring/lib/loaders/helpers',
-    'canopsis/monitoring/lib/loaders/mixins',
-    'canopsis/monitoring/lib/loaders/templates',
-    'canopsis/monitoring/lib/loaders/renderers'
-], function () {
+    'app/lib/factories/wrapper',
+    'adminLTElib',
+    'link!canopsis/canopsis-ui/lib/adminlte/AdminLTE.css',
+    'link!canopsis/canopsis-ui/lib/adminlte/AdminLTE_extra.css',
+], function(Wrapper, AdminLteJs) {
 
+    console.log('AdminLTE wrapper', AdminLteJs);
+
+    return Wrapper("AdminLTE", AdminLteJs, arguments, "0.1");
 });

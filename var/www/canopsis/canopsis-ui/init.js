@@ -17,13 +17,27 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+require.config({
+    paths: {
+        'adminLTElib': 'webcore-libs/dev/AdminLTE',
+        'adminLTE': 'canopsis/canopsis-ui/wrappers/adminLTE'
+    },
+
+    shim: {
+        'adminLTE': {
+            deps: ['jquery', 'bootstrap']
+        },
+
+        'adminLTElib': {
+            deps: ['jquery']
+        }
+    }
+});
+
+
 define([
-    'canopsis/monitoring/lib/loaders/widgets',
-    'canopsis/monitoring/lib/loaders/components',
-    'canopsis/monitoring/lib/loaders/helpers',
-    'canopsis/monitoring/lib/loaders/mixins',
-    'canopsis/monitoring/lib/loaders/templates',
-    'canopsis/monitoring/lib/loaders/renderers'
+    'canopsis/canopsis-ui/reopens/views/application'
 ], function () {
 
 });
