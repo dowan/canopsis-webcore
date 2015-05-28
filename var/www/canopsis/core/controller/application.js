@@ -32,6 +32,7 @@ define([
     'app/mixins/userprofilestatusmenu',
     'app/mixins/requirejsmocksmanager',
     'app/mixins/screentoolstatusmenu',
+    'app/mixins/documentation',
     'app/mixins/schemamanager',
     'app/mixins/consolemanager',
     'app/mixins/promisemanager',
@@ -63,6 +64,7 @@ define([
     UserprofilestatusmenuMixin,
     RequirejsmocksmanagerMixin,
     ScreentoolstatusmenuMixin,
+    DocumentationMixin,
     SchemamanagerMixin,
     ConsolemanagerMixin,
     PromisemanagerMixin,
@@ -423,6 +425,7 @@ define([
             NotificationsMixin,
             RequirejsmocksmanagerMixin,
             ScreentoolstatusmenuMixin,
+            DocumentationMixin,
             ApplicationControllerDict);
     } else {
         controller = PartialslotAbleController.extend(
