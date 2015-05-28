@@ -31,7 +31,17 @@ define([
     var adapter = ApplicationAdapter.extend({
 
         buildURL: function(type, id) {
-            return '/context/' + type + (isNone(id)? '' : ('/' + id));
+            var url = '/context';
+
+            if (!isNone(type)) {
+                url += '/' + type;
+            }
+
+            if (!isNone(id)) {
+                url += '/' + id;
+            }
+
+            return url;
         },
 
         createRecord: function(store, type, record) {
