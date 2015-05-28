@@ -40,11 +40,9 @@ require.config({
         'handlebars': 'webcore-libs/handlebars/handlebars',
         'ember': 'canopsis/core/lib/wrappers/ember',
         'jsonselect': 'canopsis/core/lib/wrappers/jsonselect',
-        'datetimepicker': 'canopsis/core/lib/wrappers/datetimepicker',
         'moment': 'webcore-libs/moment/min/moment-with-locales.min',
         'ember-data': 'canopsis/core/lib/wrappers/ember-data',
         'ember-listview': 'webcore-libs/ember-list-view/list-view',
-        'bootstrap': 'webcore-libs/bootstrap/dist/js/bootstrap.min',
         'daterangepicker': 'webcore-libs/bootstrap-daterangepicker/daterangepicker',
         'utils': 'canopsis/core/lib/loaders/utils',
         'math': 'webcore-libs/mathjs/dist/math',
@@ -119,14 +117,6 @@ require.config({
 
         'ember-listview': {
             deps: ['ember']
-        },
-
-        'bootstrap': {
-            deps: ['jquery']
-        },
-
-        'datetimepicker': {
-            deps: ['jquery', 'moment', 'bootstrap']
         },
 
         'flotchart': {

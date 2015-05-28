@@ -17,6 +17,21 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+require.config({
+    paths: {
+        'bootstrap': 'webcore-libs/bootstrap/dist/js/bootstrap.min',
+        'datetimepicker': 'canopsis/uibase/libwrappers/datetimepicker',
+    },
+    shim: {
+        'bootstrap': {
+            deps: ['jquery']
+        },
+        'datetimepicker': {
+            deps: ['jquery', 'moment', 'bootstrap']
+        },
+    }
+});
+
 define([
     'canopsis/uibase/lib/loaders/editors',
     'canopsis/uibase/lib/loaders/widgets',
@@ -24,5 +39,6 @@ define([
     'canopsis/uibase/lib/loaders/renderers',
     'canopsis/uibase/lib/loaders/templates',
     'canopsis/uibase/lib/loaders/helpers',
-    'canopsis/uibase/lib/loaders/mixins'
+    'canopsis/uibase/lib/loaders/mixins',
+    'canopsis/uibase/libwrappers/bootstrap',
 ], function () {});

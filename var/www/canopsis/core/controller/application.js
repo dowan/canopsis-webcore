@@ -44,7 +44,6 @@ define([
     'app/serializers/cservice',
     'app/lib/loaders/helpers',
     'app/lib/loaders/helpers',
-    'app/lib/wrappers/bootstrap',
     'app/lib/wrappers/mousetrap',
     'app/controller/recordinfopopup',
     'app/controller/formwrapper'
