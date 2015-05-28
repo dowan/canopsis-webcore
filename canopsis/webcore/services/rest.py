@@ -22,10 +22,12 @@ from bottle import HTTPError, response
 from canopsis.common.ws import route
 
 from canopsis.common.utils import ensure_iterable
+from canopsis.context.manager import Context
 from canopsis.old.record import Record
 
 from base64 import b64decode
 import json
+
 
 def get_records(ws, namespace, ctype=None, _id=None, **params):
     options = {
@@ -244,6 +246,8 @@ def delete_records(ws, namespace, ctype, _id, data):
 
 
 def exports(ws):
+    ctxmgr = Context()
+
     @route(ws.application.get, name='rest/indexes', response=lambda r, a: r)
     def indexes(collection):
         storage = ws.db.get_backend(collection)
@@ -300,7 +304,19 @@ def exports(ws):
         adapt=False
     )
     def rest(namespace, ctype=None, _id=None, **params):
-        return get_records(ws, namespace, ctype=ctype, _id=_id, **params)
+        records, nrecords = get_records(
+            ws, namespace,
+            ctype=ctype, _id=_id,
+            **params
+        )
+
+        for record in records:
+            if record['crecord_type'] == 'event':
+                entity = ctxmgr.get_entity(record)
+
+                record['entity_id'] = ctxmgr.get_entity_id(entity)
+
+        return records, nrecords
 
     @route(ws.application.put, raw_body=True, adapt=False)
     def rest(namespace, ctype, _id=None, body=None):

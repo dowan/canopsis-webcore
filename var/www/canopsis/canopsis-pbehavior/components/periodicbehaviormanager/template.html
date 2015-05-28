@@ -1,0 +1,22 @@
+<button class="btn btn-default btn-sm" {{action 'add' 'pbehavior'}}>
+    <span class="glyphicon glyphicon-plus-sign"></span> New behavior
+</button>
+
+{{#each behavior in behaviors}}
+    <p>
+        <strong>{{tr "From:"}}</strong> {{behavior.start}}<br/>
+        <strong>{{tr "To:"}}</strong> {{behavior.end}}<br/>
+        <strong>{{tr "Frequency:"}}</strong> {{behavior.freq}}<br/>
+        <strong>{{tr "Duration:"}}</strong> {{behavior.duration}}
+    </p>
+
+    <p>{{behavior.behaviors}}</p>
+
+    <button type="button" class="btn btn-xs btn-default" {{action 'edit' behavior}}>
+        <span class="glyphicon glyphicon-edit"></span>
+    </button>
+
+    <button class="btn btn-default btn-xs" {{action 'remove' behavior}} >
+        <span class="glyphicon glyphicon-trash"></span>
+    </button>
+{{/each}}

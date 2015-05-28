@@ -16,14 +16,9 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
-define([
-    'app/lib/factories/wrapper',
-    'adminLTElib',
-    'link!webcore-libs/css/AdminLTE.css',
-    'link!webcore-libs/css/AdminLTE_extra.css',
-], function(Wrapper, AdminLteJs) {
 
-    console.log('AdminLTE wrapper', AdminLteJs);
+var templates = [
+    { name: 'uiv1_themes_weather', template: 'canopsis/uiv1_themes/templates/weather.html' }
+];
 
-    return Wrapper("AdminLTE", AdminLteJs, arguments, "0.1");
-});
+loader.loadWithTemplates(templates);
