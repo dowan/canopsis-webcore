@@ -25,7 +25,7 @@ define([], function () {
     * from the whole application through the namespace Canopsis.conf.PROPERTY
     */
     var canopsisConfiguration = {
-        DEBUG: false,
+        DEBUG: true,
         VERBOSE: 1,
         showPartialslots: false,
         DISPLAY_SCHEMA_MANAGER: true,

@@ -28,11 +28,11 @@ def exports(ws):
 
     @route(ws.application.get, name='vevent')
     def get_by_uids(
-        uids, limit=0, skip=0, sort=None, projection=None, with_count=False
+        ids, limit=0, skip=0, sort=None, projection=None, with_count=False
     ):
         """Get documents by uids.
 
-        :param list uids: list of document uids.
+        :param list ids: list of document ids.
         :param int limit: max number of elements to get.
         :param int skip: first element index among searched list.
         :param sort: contains a list of couples of field (name, ASC/DESC)
@@ -46,7 +46,7 @@ def exports(ws):
         """
 
         result = vem.get_by_uids(
-            uids=uids, limit=limit, skip=skip, sort=sort,
+            uids=ids, limit=limit, skip=skip, sort=sort,
             projection=projection, with_count=with_count
         )
 
@@ -54,19 +54,17 @@ def exports(ws):
 
     @route(
         ws.application.post, name='vevent',
-        payload=['source', 'vevents', 'query']
+        payload=['source', 'vevents']
     )
     @route(
         ws.application.put, name='vevent',
-        payload=['source', 'vevents', 'query']
+        payload=['source', 'vevents']
     )
     def put(vevents, source=None):
         """Add vevents (and optionally data) related to input source.
 
         :param str source: vevent source if not None.
         :param list vevents: vevents (document, str or ical vevent).
-        :param dict query: additional filtering query to apply in the search.
-        :param bool cache: if True (default False), use storage cache.
         :return: new documents.
         :rtype: list
         """
@@ -77,16 +75,16 @@ def exports(ws):
 
     @route(
         ws.application.delete, name='vevent',
-        payload=['uids']
+        payload=['ids']
     )
-    def remove(uids=None):
+    def remove(ids=None):
         """Remove elements from storage where uids are given.
 
-        :param list uids: list of document uids to remove from storage
+        :param list ids: list of document uids to remove from storage
             (default all empty storage documents).
         """
 
-        result = vem.remove(uids=uids)
+        result = vem.remove(uids=ids)
 
         return result
 

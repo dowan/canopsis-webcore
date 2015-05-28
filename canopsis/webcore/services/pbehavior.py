@@ -18,37 +18,21 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
+from canopsis.common.utils import ensure_iterable
 from canopsis.common.ws import route
-from canopsis.pbehavior.manager import PBehaviorManager
+from canopsis.pbehavior.manager import PBehaviorManager, get_query
 
 pbm = PBehaviorManager()
 
-DOCS_ROUTE = 'pbehavior/docs'  #: route specifics to pbehavior document
-ENTITY_ROUTE = 'pbehavior/entity'  #: route specifics to pbehavior entity
+DEFAULT_ROUTE = 'pbehavior'  #: route specifics to pbehavior document
 
 
 def exports(ws):
 
-    @route(ws.application.get, name=DOCS_ROUTE)
-    def get(ids):
-        """Get a document related to input id(s).
-
-        :param ids: document id(s) to get.
-        :type ids: list or str
-        :return: depending on ids type:
-            - str: one document.
-            - list: list of documents.
-        :rtype: list or dict
-        """
-
-        result = pbm.get(ids)
-
-        return result
-
     @route(
         ws.application.post,
         payload=['entity_ids', 'behaviors', 'start', 'end'],
-        name=DOCS_ROUTE
+        name=DEFAULT_ROUTE
     )
     def find(entity_ids=None, behaviors=None, start=None, end=None):
         """Find documents related to input entity id(s) and behavior(s).
@@ -63,18 +47,21 @@ def exports(ws):
         :rtype: list
         """
 
-        result = pbm.find(
-            entity_ids=entity_ids, behaviors=behaviors, start=start, end=end
+        query = get_query(behaviors)
+
+        entity_ids = ensure_iterable(entity_ids)
+
+        result = pbm.values(
+            sources=entity_ids, query=query, dtstart=start, dtend=end
         )
 
         return result
 
     @route(
-        ws.application.put,
-        payload=['_id', 'document', 'cache'],
-        name=DOCS_ROUTE
+        ws.application.put, name=DEFAULT_ROUTE,
+        payload=['document']
     )
-    def put(_id, document, cache=False):
+    def put(document):
         """Put a pbehavior document.
 
         :param str _id: document entity id.
@@ -85,15 +72,15 @@ def exports(ws):
         :rtype: str
         """
 
-        result = pbm.put(_id=_id, document=document, cache=cache)
+        result = pbm.put(vevents=[document])
 
         return result
 
     @route(
-        ws.application.delete, payload=['ids', 'cache'],
-        name=DOCS_ROUTE
+        ws.application.delete, payload=['ids'],
+        name=DEFAULT_ROUTE
     )
-    def remove(ids=None, cache=False):
+    def remove(ids=None):
         """Remove document(s) by id.
 
         :param ids: pbehavior document id(s). If None, remove all documents.
@@ -103,103 +90,6 @@ def exports(ws):
         :rtype: list
         """
 
-        result = pbm.remove(ids=ids, cache=cache)
-
-        return result
-
-    @route(
-        ws.application.get,
-        payload=['entity_id', 'behaviors', 'ts', 'start', 'end'],
-        name=ENTITY_ROUTE
-    )
-    def getending(entity_id, behaviors, ts=None, start=None, end=None):
-        """Get end date of corresponding behaviors if a timestamp is in a
-        behavior period.
-
-        :param str entity_ids: entity id.
-        :param behaviors: behavior(s) to check at timestamp.
-        :type behaviors: list or str
-        :param long ts: timestamp to check. If None, use now.
-        :param int start: start timestamp.
-        :param int end: end timestamp.
-        :return: depending on behaviors types:
-            - behaviors:
-                + str: behavior end timestamp.
-                + array: dict of end timestamp by behavior.
-        :rtype: dict or long or NoneType
-        """
-
-        result = pbm.getending(
-            entity_id=entity_id, behaviors=behaviors,
-            ts=ts, start=start, end=end
-        )
-
-        return result
-
-    @route(
-        ws.application.put,
-        payload=['entity_id', 'values', 'behaviors', 'cache'],
-        name=ENTITY_ROUTE
-    )
-    def add(entity_id, values, behaviors, cache=False):
-        """Add a pbehavior entry related to input entity_id and values.
-
-        :param str entity_id: entity id.
-        :param values: value(s) to add.
-        :type values: str, Event or list of str/Event.
-        :param behaviors: value(s) behavior(s) to add. If None, behaviors are
-            retrieved from values with the PBehaviorManager.BEHAVIOR key.
-        :type behaviors: list or str
-        :param bool cache: if True (False by default), use storage cache.
-        :return: added document ids
-        :rtype: list
-        """
-
-        result = pbm.add(
-            entity_id=entity_id, values=values, behaviors=behaviors,
-            cache=cache
-        )
-
-        return result
-
-    @route(
-        ws.application.delete,
-        payload=['entity_ids', 'cache'],
-        name=ENTITY_ROUTE
-    )
-    def remove_by_entity(entity_ids, cache=False):
-        """Remove document(s) by entity ids.
-
-        :param entity_ids: document entity id(s) to remove.
-        :type entity_ids: list or str
-        :param bool cache: if True (False by default), use storage cache.
-        :return: removed document id(s).
-        :rtype: list
-        """
-
-        result = pbm.remove_by_entity(entity_ids=entity_ids, cache=cache)
-
-        return result
-
-    @route(
-        ws.application.post,
-        payload=['behaviors', 'ts', 'entity_ids', 'start', 'end'],
-        name=ENTITY_ROUTE
-    )
-    def whois(behaviors, ts=None, entity_ids=None, start=None, end=None):
-        """Get entities which currently have all specific behaviors.
-
-        :param behaviors: behavior(s) to look for.
-        :type behaviors: list or str
-        :param int start: start timestamp.
-        :param int end: end timestamp.
-        :return: list of entities ids with the specified behaviors
-        :rtype: list
-        """
-
-        result = pbm.whois(
-            behaviors=behaviors,
-            ts=ts, entity_ids=entity_ids, start=start, end=end
-        )
+        result = pbm.remove(uids=ids)
 
         return result

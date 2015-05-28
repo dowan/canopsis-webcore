@@ -73,7 +73,7 @@ define([
             this._super.apply(this, arguments);
 
             var contextId = get(this, 'contextId');
-            set(record, 'entity_id', contextId);
+            set(record, 'source', contextId);
         }
     });
 
