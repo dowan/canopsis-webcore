@@ -19,38 +19,61 @@
 
 define([
     'ember',
+    'canopsis/uibase/mixins/crud',
     'canopsis/canopsis-pbehavior/adapters/pbehavior'
-], function(Ember) {
+], function(Ember, CrudMixin) {
 
     var get = Ember.get,
         set = Ember.set;
 
 
-    var component = Ember.Component.extend({
+    var component = Ember.Component.extend(CrudMixin, {
         init: function() {
+            /* mixin options for mixins */
+            set(this, 'mixinOptions', {
+                /* specific to crud mixin */
+                crud: {
+                    form: 'modelform'
+                }
+            });
+
             this._super.apply(this, arguments);
 
+            /* store for pbehaviors fetching */
             var store = DS.Store.create({
                 container: get(this, 'container')
             });
 
-            set(this, 'componentDataStore', store);
+            set(this, 'widgetDataStore', store);
+
+            this.refreshContent();
+            this.on('refresh', this.refreshContent);
+
+            /* call mixin method to initialize mixin */
+            this.mixinsOptionsReady();
         },
 
-        didInsertElement: function() {
+        refreshContent: function() {
+            var store = get(this, 'widgetDataStore'),
+                ctrl = this;
+
+            store.findQuery(
+                'pbehavior',
+                {
+                    entity_ids: get(this, 'contextId')
+                }
+            ).then(
+                function(result) {
+                    set(ctrl, 'behaviors', get(result, 'content'));
+                }
+            );
+        },
+
+        onRecordReady: function(record) {
             this._super.apply(this, arguments);
 
-            console.log('BWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH');
-            console.log('BWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH');
-            console.log('BWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH');
-            console.log('BWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH');
-
-            var store = get(this, 'componentDataStore', store),
-                ctx = get(this, 'contextId');
-
-            var behaviors = store.findQuery('pbehavior', {entity_ids: ctx});
-
-            set(this, 'behaviors', behaviors);
+            var contextId = get(this, 'contextId');
+            set(record, 'entity_id', contextId);
         }
     });
 

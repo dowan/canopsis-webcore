@@ -19,7 +19,8 @@
 
 
 define([
-    'canopsis/canopsis-pbehavior/lib/loaders/components'
+    'canopsis/canopsis-pbehavior/lib/loaders/components',
+    'canopsis/canopsis-pbehavior/serializers/pbehavior'
 ], function () {
 
 });

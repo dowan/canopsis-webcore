@@ -20,14 +20,14 @@
 define([
     'jquery',
     'ember',
-    'canopsis/canopsis-backend-ui-connector/adapters/application'
-], function($, Ember, ApplicationAdapter) {
+    'canopsis/canopsis-backend-ui-connector/adapters/baseadapter'
+], function($, Ember, BaseAdapter) {
 
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone;
 
-    var adapter = ApplicationAdapter.extend({
+    var adapter = BaseAdapter.extend({
 
         buildURL: function(type, id, record) {
             void(type);
@@ -43,12 +43,17 @@ define([
         },
 
         createRecord: function(store, type, record) {
-            var url = this.buildURL();
+            var serializer = store.serializerFor(type.typeKey);
+            var data = serializer.serializeIntoHash(data, type, record, 'PUT', { includeId: true });
 
-            var id = get(record, 'id');
-            var query = {data: {entity_id: id}};
+            var query = {
+                data: {
+                    '_id': get(record, 'entity_id'),
+                    'document': data
+                }
+            };
 
-            return this.ajax(url, 'PUT', query);
+            return this.ajax(this.buildURL(), 'PUT', query);
         },
 
         updateRecord: function(store, type, record) {
@@ -59,16 +64,10 @@ define([
         deleteRecord: function(store, type, record) {
             var url = this.buildURL();
 
-            var id = get(record, 'id');
+            var id = get(record, 'entity_id');
             var query = {data: {ids: id}};
 
             return this.ajax(url, 'DELETE', query);
-        },
-
-        findQuery: function(store, type, query) {
-            var url = this.buildURL();
-
-            return this.ajax(url, 'POST', {data: query});
         }
     });
 
