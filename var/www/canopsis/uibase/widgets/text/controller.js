@@ -178,7 +178,7 @@ define([
 
                     Ember.RSVP.all(seriesQueries).then(function(pargs) {
 
-                        for (var i=0, l=pargs.length; i<l; i++) {
+                        for (var i = 0, l = pargs.length; i < l; i++) {
                             var data = pargs[i];
                             console.log('series pargs', pargs);
                             var displayValue = valueNotDefined;

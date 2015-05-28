@@ -33,7 +33,8 @@ var mixins = [
     { name: 'periodicrefresh', url: 'canopsis/uibase/mixins/periodicrefresh', classes: ['widget', 'events']},
     { name: 'customfilterlist', url: 'canopsis/uibase/mixins/customfilterlist', classes: ["list"]},
     { name: 'arraysearch', url: 'canopsis/uibase/mixins/arraysearch', classes: ["list"]},
-    { name: 'crud', url: 'canopsis/uibase/mixins/crud', classes: ['widget']}
+    { name: 'crud', url: 'canopsis/uibase/mixins/crud', classes: ['widget']},
+    { name: 'detail', url: 'canopsis/uibase/mixins/detail', classes: ['list']}
 ];
 
 loader.loadWithTemplates(mixins);

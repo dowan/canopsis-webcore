@@ -1,19 +1,20 @@
 define([
     'jquery',
     'app/lib/factories/widget',
-    'app/mixins/foldablelistlinemixin',
+    'canopsis/uibase/mixins/detail',
     'canopsis/uibase/widgets/list/controller'
-], function($, WidgetFactory , FoldableListLineMixin , ListController) {
+], function($, WidgetFactory , DetailMixin , ListController) {
+
     var get = Ember.get;
+
     var listOptions = {
         mixins: [
-            FoldableListLineMixin
+            DetailMixin
         ],
-        subclass:ListController
+        subclass: ListController
     };
+
     var widget = WidgetFactory('euewi', {
-
-
     },listOptions);
 
     return widget;

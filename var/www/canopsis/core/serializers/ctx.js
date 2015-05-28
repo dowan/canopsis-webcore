@@ -31,5 +31,6 @@ define([
     });
 
     loader.register('serializer:ctx', serializer);
+    loader.register('serializer:context', serializer);
     return serializer;
 });

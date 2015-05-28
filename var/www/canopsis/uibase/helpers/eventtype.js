@@ -54,7 +54,7 @@ define(['ember', 'utils'], function(Ember,  utils) {
             __(eventType)
         );
 
-        return html;
+        return new Ember.Handlebars.SafeString(html);
     });
 
 });
