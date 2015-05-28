@@ -37,7 +37,8 @@ require.config({
 
 
 define([
-    'canopsis/canopsis-ui/reopens/views/application'
+    'canopsis/canopsis-ui/reopens/views/application',
+    'canopsis/canopsis-ui/loaders/forms'
 ], function () {
 
 });

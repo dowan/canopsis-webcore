@@ -17,8 +17,10 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var templates = [
-    { name: 'uiv1_themes_weather', template: 'canopsis/uiv1_themes/templates/weather.html' }
+var forms = [
+    { name: 'jobform', url: 'canopsis/canopsis-ui/forms/jobform/controller', template: 'canopsis/canopsis-ui/forms/jobform/template.html' },
+    { name: 'taskform', url: 'canopsis/canopsis-ui/forms/taskform/controller', template: 'app/forms/modelform/template.html' },
+    { name: 'scheduleform', url: 'canopsis/canopsis-ui/forms/scheduleform/controller', template: 'app/forms/modelform/template.html' }
 ];
 
-loader.loadWithTemplates(templates);
+loader.loadWithTemplates(forms);
