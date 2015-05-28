@@ -19,7 +19,7 @@
 
 define([
     'app/lib/factories/wrapper',
-    'webcore-libs/jsoneditor/jsoneditor',
+    'jsoneditorlib',
     'link!webcore-libs/jsoneditor/jsoneditor.css'
 ], function(Wrapper, jsoneditor) {
 

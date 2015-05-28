@@ -22,9 +22,11 @@ define([
     'app/lib/factories/form',
     'app/forms/modelform/controller'
 ], function(Ember, FormFactory, ModelFormController) {
+
     var formOptions = {
         subclass: ModelFormController
     };
+
 
     var form = FormFactory('scheduleform', {
         title: 'Configure Schedule',
@@ -32,14 +34,6 @@ define([
         init: function() {
             this._super();
             this.refreshPartialsList();
-        },
-
-        actions: {
-            submit: function() {
-                console.log('context:', this.formContext);
-
-                this._super(arguments);
-            }
         },
 
         partials: {

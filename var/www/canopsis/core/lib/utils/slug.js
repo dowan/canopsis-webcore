@@ -19,6 +19,7 @@
 
 define(['app/application'], function(Application) {
 
+    //TODO delete this, seems to be unused
     var slugify = function(value) {
         var rExps = [
             { re: /[\xC0-\xC6]/g, ch: 'A' },

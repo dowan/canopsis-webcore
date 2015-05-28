@@ -46,9 +46,7 @@ require.config({
         'ember-listview': 'webcore-libs/ember-list-view/list-view',
         'bootstrap': 'webcore-libs/bootstrap/dist/js/bootstrap.min',
         'daterangepicker': 'webcore-libs/bootstrap-daterangepicker/daterangepicker',
-        'icheck': 'webcore-libs/iCheck/icheck',
         'utils': 'canopsis/core/lib/loaders/utils',
-        'css3-mediaqueries': 'webcore-libs/min/css3-mediaqueries',
         'math': 'webcore-libs/mathjs/dist/math',
         'dragtable': 'webcore-libs/dev/dragtable',
         'underscore' : 'canopsis/core/lib/wrappers/underscore',
@@ -83,7 +81,6 @@ require.config({
     },
 
     shim: {
-
         'rrule': {
              deps: ['jquery', 'underscore']
         },
@@ -101,10 +98,6 @@ require.config({
         },
 
         'contextmenu': {
-            deps: ['jquery']
-        },
-
-        'icheck': {
             deps: ['jquery']
         },
 
@@ -252,12 +245,16 @@ define(['canopsis/enabled', 'plugins', 'canopsis/canopsisConfiguration', 'app/li
     enabled.getEnabledModules(function (enabledPlugins) {
 
         setLoadingInfo('Fetching frontend plugin-ins', 'fa-cubes');
+        var deps = [];
 
-        var deps = [
-            'app/lib/wrappers/extend',
-            'app/lib/utils/i18n',
-            'link'
-        ];
+        for (var i = 0; i < enabledPlugins.length; i++) {
+            var currentPlugin = enabledPlugins[i];
+
+            if(currentPlugin !== 'core') {
+                deps.push('text!canopsis/'+ currentPlugin +'/bower.json');
+            }
+        }
+        deps.push('text!app/bower.json');
 
         if(canopsisConfiguration.DEBUG) {
             deps.push('canopsis/environment.debug');
@@ -265,28 +262,33 @@ define(['canopsis/enabled', 'plugins', 'canopsis/canopsisConfiguration', 'app/li
             deps.push('canopsis/environment.prod');
         }
 
-        for (var i = 0; i < enabledPlugins.length; i++) {
-            var currentPlugin = enabledPlugins[i];
-
-            deps.push('text!canopsis/'+ currentPlugin +'/files/routes.json');
-            deps.push('text!canopsis/'+ currentPlugin +'/files/files.json');
-            deps.push('text!canopsis/'+ currentPlugin +'/files/manifest.json');
-
-            if(currentPlugin !== 'core') {
-                deps.push('canopsis/'+ currentPlugin +'/init');
-            }
-        }
+        deps.push('app/lib/wrappers/extend');
+        deps.push('app/lib/utils/i18n');
+        deps.push('link');
 
         require(deps, function() {
-            require(['canopsis/file_loader'], function(file_loader) {
+            var initFiles = [];
 
-                file_loader.load('canopsis/', enabledPlugins, plugins_tools);
+            for (var i = 0, l = enabledPlugins.length; i < l; i++) {
+                var currentPlugin = enabledPlugins[i];
+                if(currentPlugin !== 'core') {
+                    var brickManifest = JSON.parse(arguments[i]);
+
+                    brickMainModule = 'canopsis/' + currentPlugin + '/' + brickManifest.main;
+                    //remove the .js extension
+                    brickMainModule = brickMainModule.slice(0, -3);
+
+                    initFiles.push(brickMainModule);
+                }
+            }
+
+            initFiles.push('app/init');
+
+            require(initFiles, function() {
 
                 setLoadingInfo('Fetching application starting point', 'fa-plug');
                 require(['app/init'], function(Application) {
                     setLoadingInfo('Initializing user interface', 'fa-desktop');
-
-                    Application.manifest = file_loader.routes;
 
                     Application.advanceReadiness();
                 });

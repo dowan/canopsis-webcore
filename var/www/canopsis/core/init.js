@@ -17,9 +17,36 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+require.config({
+    paths: {
+        'jsoneditorlib': 'webcore-libs/jsoneditor/jsoneditor',
+        'icheck': 'webcore-libs/iCheck/icheck',
+        'css3-mediaqueries': 'webcore-libs/min/css3-mediaqueries',
+    },
+    shim: {
+        'jsoneditorlib': {
+            deps: ['ember']
+        },
+        'icheck': {
+            deps: ['jquery']
+        }
+    }
+});
+
 define([
     'app/application',
     'runtime.conf',
+    'app/controller/application',
+    'app/controller/formwrapper',
+    'app/controller/login',
+    'app/controller/userview',
+    'app/controller/widget',
+    'app/view/application',
+    'app/view/formwrapper',
+    'app/view/editor',
+    'app/view/widget',
+    'app/view/validationtextfield',
+    'app/view/validationtextarea',
     'app/serializers/application',
     'app/serializers/ctxmetric',
     'app/serializers/ctxcomponent',
@@ -29,10 +56,9 @@ define([
     'app/serializers/linklist',
     'app/lib/wrappers/bootstrap',
     'app/lib/wrappers/hint',
-    'app/lib/wrappers/swag',
     'app/lib/wrappers/console',
-    'app/lib/wrappers/ionicons',
     'app/lib/wrappers/jsoneditor',
+    'app/lib/wrappers/ionicons',
     'app/lib/loaders/attributepresets',
     'app/lib/loaders/forms',
     'app/lib/loaders/validators',
