@@ -51,39 +51,35 @@ def exports(ws):
 
     @route(ws.application.post, payload=[])
     def uploadmib():
+
+        upload = request.files.get('file')
+        filepath = os.path.expanduser('~/tmp/mibimport.mib')
+        ws.logger.info('writting mib file {}'.format(filepath))
+
+        with open(filepath, 'w') as f:
+            f.write(upload.file.read())
+
+        # Try import mib
+        process = Popen(
+            [
+                'python',
+                '-m',
+                'canopsis.snmp.mibs',
+                '-k',
+                filepath
+            ],
+            stdout=PIPE
+        )
+        stdout, _ = process.communicate()
+        ws.logger.info(stdout)
+
         try:
-            upload = request.files.get('file')
-            filepath = os.path.expanduser('~/tmp/mibimport.mib')
-            ws.logger.info('writting mib file {}'.format(filepath))
-            with open(filepath, 'w') as f:
-                f.write(upload.file.read())
-
-            # Try import mib
-            process = Popen(
-                [
-                    'python',
-                    '-m',
-                    'canopsis.snmp.mibs',
-                    '-k',
-                    filepath
-                ],
-                stdout=PIPE
-            )
-            stdout, _ = process.communicate()
-            ws.logger.info(stdout)
-
             # Depends on what does the mib parser produces
-            try:
-                output = '\n'.join(
-                    stdout.split('----------')[-1].strip().split('\n')[:-1]
-                )
-            except Exception as e:
-                output = 'Could not get import summary'
-
-            return {'message': output}
-
+            lines = stdout.split('----------')[-1].strip().split('\n')
+            # Filter output mibimport error line if any (nice summary in ui)
+            lines = [line for line in lines if 'mibimport.mib' not in line]
+            output = '<br/>'.join(lines)
         except Exception as e:
-            import traceback
-            message = 'Upload error {} \n{}'.format(e, traceback.format_exc())
-            ws.logger.error(message)
-            return HTTPError(500, message)
+            output = 'Could not get import summary'
+
+        return {'message': output}

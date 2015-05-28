@@ -37,9 +37,13 @@ define([
                 {
                     console.log('On upload succes', files, data, xhr);
                     var controller = get(mixinView, 'controller');
-                    var message = new Ember.Handlebars.SafeString(data.data[0].message.replace(/\n/g,'<br/>'));
+                    var message = new Ember.Handlebars.SafeString(data.data[0].message);
                     set(controller, 'message', message);
                     set(controller, 'filename', files[0]);
+                    //hide message ten seconds later
+                    setTimeout(function () {
+                        set(controller, 'message', '');
+                    }, 10000);
                 }
             });
 

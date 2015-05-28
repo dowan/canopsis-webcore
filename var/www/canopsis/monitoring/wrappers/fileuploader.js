@@ -1,0 +1,28 @@
+/*
+# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+#
+# This file is part of Canopsis.
+#
+# Canopsis is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Canopsis is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+*/
+define([
+    'app/lib/factories/wrapper',
+    'webcore-libs/jquery-upload-file/js/jquery.uploadfile.min',
+    'link!webcore-libs/jquery-upload-file/css/uploadfile.min.css',
+], function(Wrapper, Uploadfile) {
+
+    console.log('uploadfile wrapper', Uploadfile);
+
+    return Wrapper('uploadfile', Uploadfile, arguments, '3.1.10');
+});
