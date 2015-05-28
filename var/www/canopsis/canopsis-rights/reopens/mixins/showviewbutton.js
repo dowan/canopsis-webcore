@@ -23,7 +23,9 @@ define([
     'app/lib/utils/forms'
 ], function(Ember, ShowviewbuttonMixin, formsUtils) {
 
-    var __ = Ember.String.loc;
+    var get = Ember.get,
+        __ = Ember.String.loc;
+
 
     ShowviewbuttonMixin.reopen({
         init: function () {
@@ -33,7 +35,11 @@ define([
 
         actions: {
             editUserviewRights: function(view) {
-                formsUtils.showNew('viewrightsform', view, { title: __('Edit view rights')});
+                var viewName = get(view, 'crecord_name');
+                console.log('editUserviewRights view', view, viewName);
+                var formTitle = __('Edit rights for view : ') +  '"' + viewName + '"';
+
+                formsUtils.showNew('viewrightsform', view, { title: formTitle});
             }
         }
     });

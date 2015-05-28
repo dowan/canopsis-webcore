@@ -67,6 +67,8 @@ define([
             });
 
             this.computeRolesWithoutRights();
+
+            set(this, 'addedRole', get(this, 'rolesWithoutRights').objectAt(0).get('_id'));
         },
 
         onRightChecksumChange: function(right) {
@@ -79,11 +81,9 @@ define([
 
             set(currentRole, 'rights.' + viewrightname + '.checksum' , get(right, 'checksum'));
 
-            currentRole.save().then(function () {
-                viewrightsform.rolesChanged();
-            }).fail(function() {
-                console.error('fail', arguments);
-            });
+            viewrightsform.rolesChanged();
+
+            currentRole.save();
         },
 
         computeRolesWithoutRights: function() {
@@ -96,7 +96,7 @@ define([
                 var currentRole = roles[i];
                 var checksum = get(currentRole, 'rights.' + viewrightname + '.checksum');
 
-                if(isNone(checksum) || checksum === -1) {
+                if(isNone(checksum) || checksum === 0 || checksum === -1) {
                     rolesWithoutRights.pushObject(currentRole);
                 }
             }
@@ -126,10 +126,15 @@ define([
                 var roles = get(this, 'roles');
                 var viewrightsform = this;
 
-                var addedRole = roles.findBy('_id', get(this, 'addedRole')),
-                    viewrightname = get(this, 'formContext.id').replace('.', '_');
+                var addedRole = get(this, 'addedRole');
 
-                console.log('addNewRight', addedRole, roles);
+                if(addedRole === undefined) {
+                    addedRole = get(this, 'rolesWithoutRights').objectAt(0).get('_id');
+                }
+
+                addedRole = roles.findBy('_id', get(this, 'addedRole'));
+                var viewrightname = get(this, 'formContext.id').replace('.', '_');
+
                 if(isNone(get(addedRole, 'rights'))) {
                     set(addedRole, 'rights', {});
                 }
@@ -137,34 +142,13 @@ define([
                     set(addedRole, 'rights.' + viewrightname, {checksum: 4});
                 }
 
-                // alert('role added 1');
-
                 set(addedRole, 'rights.' + viewrightname + '.checksum', 4);
 
                 set(this, 'isLoading', false);
 
-                console.log("addedRole", JSON.stringify(addedRole));
-                var promise = addedRole.save();
+                viewrightsform.rolesChanged();
 
-                promise.then(function() {
-                    viewrightsform.rolesChanged();
-                });
-            },
-
-            deleteRight: function (right) {
-                console.log('deleteRight', right);
-                var viewrightsform = this;
-                var rightId = get(right, 'role');
-                var viewrightname = get(this, 'formContext.id').replace('.', '_');
-                var currentRole = get(this, 'roles').findBy('crecord_name',rightId);
-
-                set(currentRole, 'rights.' + viewrightname + '.checksum' , -1);
-
-                currentRole.save().then(function () {
-                    viewrightsform.rolesChanged();
-                }).fail(function() {
-                    console.error('fail', arguments);
-                });
+                addedRole.save();
             }
         }
     });
