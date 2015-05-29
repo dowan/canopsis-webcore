@@ -48,9 +48,6 @@ define([
 
             this.refreshContent();
             this.on('refresh', this.refreshContent);
-
-            /* call mixin method to initialize mixin */
-            this.mixinsOptionsReady();
         },
 
         refreshContent: function() {
