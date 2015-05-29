@@ -19,23 +19,18 @@
 
 require.config({
     paths: {
-        'jsoneditorlib': 'webcore-libs/jsoneditor/jsoneditor',
-        'icheck': 'webcore-libs/iCheck/icheck',
         'css3-mediaqueries': 'webcore-libs/min/css3-mediaqueries',
-    },
-    shim: {
-        'jsoneditorlib': {
-            deps: ['ember']
-        },
-        'icheck': {
-            deps: ['jquery']
-        }
+        'math': 'webcore-libs/mathjs/dist/math',
+        'hashes': 'webcore-libs/jshashes/hashes',
+
+        //TODO move this in uibase
+        'jsonselect': 'canopsis/core/lib/wrappers/jsonselect'
     }
 });
 
 define([
     'app/application',
-    'runtime.conf',
+    'canopsis/runtime.conf',
     'app/controller/application',
     'app/controller/formwrapper',
     'app/controller/login',
@@ -54,9 +49,7 @@ define([
     'app/serializers/ctxselector',
     'app/serializers/ctxtopology',
     'app/serializers/linklist',
-    'app/lib/wrappers/hint',
     'app/lib/wrappers/console',
-    'app/lib/wrappers/jsoneditor',
     'app/lib/wrappers/ionicons',
     'app/lib/loaders/attributepresets',
     'app/lib/loaders/forms',

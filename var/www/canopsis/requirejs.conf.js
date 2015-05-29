@@ -18,181 +18,24 @@
 */
 
 require.config({
-    waitSeconds: 40,
     baseUrl: '/static/',
     paths: {
         'app': 'canopsis/core',
-        'runtime.conf': 'canopsis/runtime.conf',
-        'schemas': 'canopsis/schemas',
-        'etc': 'canopsis/etc',
-        'lib': 'webcore-libs/dev',
+
         'text': 'webcore-libs/requirejs-text/text',
         'link': 'webcore-libs/requirejs-link/link',
+
         'jquery': 'canopsis/core/lib/wrappers/jquery',
-        'plugins': 'webcore-libs/plugins/plugin',
-        'consolejs': 'webcore-libs/console.js/console',
-        'ember-cloaking': 'canopsis/core/lib/wrappers/ember-cloaking',
-        'codemirror': 'webcore-libs/codemirror/lib/codemirror',
-        'summernote': 'webcore-libs/summernote/dist/summernote',
-        'ember-summernote': 'webcore-libs/ember-summernote/lib/component',
-        'seeds': 'webcore-libs/seeds',
-        'hashes': 'webcore-libs/jshashes/hashes',
         'handlebars': 'webcore-libs/handlebars/handlebars',
         'ember': 'canopsis/core/lib/wrappers/ember',
-        'jsonselect': 'canopsis/core/lib/wrappers/jsonselect',
-        'moment': 'webcore-libs/moment/min/moment-with-locales.min',
-        'ember-data': 'canopsis/core/lib/wrappers/ember-data',
-        'ember-listview': 'webcore-libs/ember-list-view/list-view',
-        'daterangepicker': 'webcore-libs/bootstrap-daterangepicker/daterangepicker',
-        'utils': 'canopsis/core/lib/loaders/utils',
-        'math': 'webcore-libs/mathjs/dist/math',
-        'dragtable': 'webcore-libs/dev/dragtable',
-        'underscore' : 'canopsis/core/lib/wrappers/underscore',
-        'ember-jsoneditor-lib': 'webcore-libs/ember-jsoneditor/build/lib',
-        'lodash': 'webcore-libs/lodash/dist/lodash.compat',
-
-        'flotchart': 'webcore-libs/flot/jquery.flot',
-        'flotchart-canvas': 'webcore-libs/flot/jquery.flot.canvas',
-        'flotchart-categories': 'webcore-libs/flot/jquery.flot.categories',
-        'flotchart-crosshair': 'webcore-libs/flot/jquery.flot.crosshair',
-        'flotchart-errorbars': 'webcore-libs/flot/jquery.flot.errorbars',
-        'flotchart-fillbetween': 'webcore-libs/flot/jquery.flot.fillbetween',
-        'flotchart-image': 'webcore-libs/flot/jquery.flot.image',
-        'flotchart-navigate': 'webcore-libs/flot/jquery.flot.navigate',
-        'flotchart-pie': 'webcore-libs/flot/jquery.flot.pie',
-        'flotchart-resize': 'webcore-libs/flot/jquery.flot.resize',
-        'flotchart-selection': 'webcore-libs/flot/jquery.flot.selection',
-        'flotchart-stack': 'webcore-libs/flot/jquery.flot.stack',
-        'flotchart-symbol': 'webcore-libs/flot/jquery.flot.symbol',
-        'flotchart-threshold': 'webcore-libs/flot/jquery.flot.threshold',
-        'flotchart-time': 'webcore-libs/flot/jquery.flot.time',
-        'flotchart-valuelabel': 'webcore-libs/flot-plugins/custom/jquery.flot.valuelabel',
-        'flotchart-tooltip': 'webcore-libs/flot.tooltip/js/jquery.flot.tooltip',
-        'flotchart-chartvalues': 'webcore-libs/flot-plugins/custom/jquery.flot.chartvalues',
-
-        'circliful' : 'webcore-libs/circliful/js/jquery.circliful',
-
-        'rrule': 'webcore-libs/kb-rrule/lib/rrule',
-        'nlp': 'webcore-libs/kb-rrule/lib/nlp',
-
-        'd3': 'webcore-libs/d3/d3'
+        'ember-data': 'canopsis/core/lib/wrappers/ember-data'
     },
-
     shim: {
-        'rrule': {
-             deps: ['jquery', 'underscore']
-        },
-
-        'nlp': {
-             deps: ['jquery', 'rrule', 'underscore']
-        },
-
-        'adminLTE': {
-            deps: ['jquery', 'bootstrap']
-        },
-
-        'adminLTElib': {
-            deps: ['jquery']
-        },
-
-        'contextmenu': {
-            deps: ['jquery']
-        },
-
-        'consolejs': {
-            deps: ['ember']
-        },
-
         'ember': {
             deps: ['jquery', 'handlebars']
         },
-
-        'ember-cloaking': {
-            deps: ['ember']
-        },
-
         'ember-data': {
             deps: ['ember']
-        },
-
-        'ember-listview': {
-            deps: ['ember']
-        },
-
-        'flotchart': {
-            deps: ['jquery'],
-        },
-
-        'flotchart-canvas': {
-            deps: ['jquery', 'flotchart']
-        },
-
-        'flotchart-categories': {
-            deps: ['jquery', 'flotchart']
-        },
-
-        'flotchart-crosshair': {
-            deps: ['jquery', 'flotchart']
-        },
-
-        'flotchart-errorbars': {
-            deps: ['jquery', 'flotchart']
-        },
-
-        'flotchart-fillbetween': {
-            deps: ['jquery', 'flotchart']
-        },
-
-        'flotchart-image': {
-            deps: ['jquery', 'flotchart']
-        },
-
-        'flotchart-navigate': {
-            deps: ['jquery', 'flotchart']
-        },
-
-        'flotchart-pie': {
-            deps: ['jquery', 'flotchart']
-        },
-
-        'flotchart-resize': {
-            deps: ['jquery', 'flotchart']
-        },
-
-        'flotchart-selection': {
-            deps: ['jquery', 'flotchart']
-        },
-
-        'flotchart-stack': {
-            deps: ['jquery', 'flotchart']
-        },
-
-        'flotchart-symbol': {
-            deps: ['jquery', 'flotchart']
-        },
-
-        'flotchart-threshold': {
-            deps: ['jquery', 'flotchart']
-        },
-
-        'flotchart-time': {
-            deps: ['jquery', 'flotchart']
-        },
-
-        'flotchart-valuelabel': {
-            deps: ['jquery', 'flotchart']
-        },
-
-        'flotchart-tooltip': {
-            deps: ['jquery', 'flotchart']
-        },
-
-        'flotchart-chartvalues': {
-            deps: ['jquery', 'flotchart']
-        },
-
-        'circliful': {
-            deps: ['jquery']
         }
     }
 });
@@ -230,7 +73,7 @@ var setLoadingInfo = function(text, icon) {
     }
 };
 
-define(['canopsis/enabled', 'plugins', 'canopsis/canopsisConfiguration', 'app/lib/objects/loader', 'jquery'], function(enabled, plugins_tools, canopsisConfiguration) {
+define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/objects/loader', 'jquery'], function(enabled, canopsisConfiguration) {
 
     enabled.getEnabledModules(function (enabledPlugins) {
 

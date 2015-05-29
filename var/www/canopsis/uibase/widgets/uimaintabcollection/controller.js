@@ -21,7 +21,7 @@ define([
     'jquery',
     'ember',
     'app/lib/factories/widget',
-    'utils',
+    'app/lib/loaders/utils',
     'app/lib/utils/forms',
     'app/lib/utils/routes'
 ], function($, Ember, WidgetFactory, utils, formsUtils, routesUtils) {

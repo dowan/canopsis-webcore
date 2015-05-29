@@ -24,7 +24,7 @@ define([
     'app/lib/formsregistry',
     'app/lib/utils/routes',
     'app/lib/utils/actions',
-    'utils',
+    'app/lib/loaders/utils',
     'app/lib/loaders/forms'
 ], function(Ember, DS, AuthenticatedRoute, formsregistry, routesUtils, actionsUtils, utils) {
 

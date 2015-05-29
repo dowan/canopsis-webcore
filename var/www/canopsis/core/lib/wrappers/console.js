@@ -20,7 +20,7 @@
 
 var deps = ['canopsis/canopsisConfiguration',];
 if (!isIE) {
-    deps.push('consolejs');
+    deps.push('webcore-libs/console.js/console');
 }
 
 define(deps, function(conf) {

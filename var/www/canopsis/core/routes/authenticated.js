@@ -21,7 +21,7 @@ define([
     'ember',
     'ember-data',
     'app/controller/application',
-    'utils',
+    'app/lib/loaders/utils',
     'app/lib/utils/data',
     'app/controller/login',
 ], function(Ember, DS, ApplicationController, utils, dataUtils) {

@@ -21,7 +21,7 @@ define([
     'ember',
     'app/application',
     'app/lib/factories/form',
-    'utils',
+    'app/lib/loaders/utils',
     'app/lib/utils/forms',
     'app/lib/utils/hash',
     'app/lib/schemasregistry',

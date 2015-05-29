@@ -21,7 +21,7 @@ define([
     'jquery',
     'ember',
     'app/lib/indexesregistry',
-    'runtime.conf'
+    'canopsis/runtime.conf'
 ], function($, Ember, indexesregistry, Canopsis) {
 
     var get = Ember.get,

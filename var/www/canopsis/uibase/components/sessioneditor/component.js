@@ -19,7 +19,7 @@
 
 define([
     'ember',
-    'utils'
+    'app/lib/loaders/utils'
 ], function(Ember, cutils) {
 
     var get = Ember.get,

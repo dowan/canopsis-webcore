@@ -19,8 +19,12 @@
 
 define([
     'app/lib/factories/wrapper',
-    'link!webcore-libs/hint.css/hint.min.css'
-], function(Wrapper) {
+    'jquery',
+    'webcore-libs/summernote/dist/summernote.min',
+    'link!webcore-libs/codemirror/lib/codemirror.css',
+    'canopsis/uibase/libwrappers/codemirror',
+    'ember-summernote'
+], function(Wrapper, $) {
 
-    return Wrapper("hint.css", $, arguments, undefined);
+    return Wrapper("summernote", undefined, arguments);
 });

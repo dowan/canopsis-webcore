@@ -21,7 +21,7 @@
 var schemaFiles = [
 ];
 
-var schemasDeps = ['ember-data', 'app/application', 'utils', 'app/lib/schemasregistry'];
+var schemasDeps = ['ember-data', 'app/application', 'app/lib/loaders/utils', 'app/lib/schemasregistry'];
 
 for (var i = 0, l = schemaFiles.length; i < l; i++) {
     schemasDeps.push('text!schemas/' + schemaFiles[i] + '.json');

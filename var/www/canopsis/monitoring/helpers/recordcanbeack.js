@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
-    'utils',
-], function(Ember, utils) {
+    'ember'
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set;

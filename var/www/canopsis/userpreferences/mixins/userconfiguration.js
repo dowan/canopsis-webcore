@@ -22,7 +22,7 @@ define([
     'ember',
     'app/lib/utils/hash',
     'app/lib/factories/mixin',
-    'utils',
+    'app/lib/loaders/utils',
     'app/lib/utils/hash'
 ], function($, Ember, hashUtils, Mixin, utils, hashUtils) {
 

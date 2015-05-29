@@ -36,7 +36,7 @@ define([
     'app/mixins/consolemanager',
     'app/mixins/promisemanager',
     'app/mixins/notifications',
-    'utils',
+    'app/lib/loaders/utils',
     'app/lib/utils/forms',
     'app/lib/utils/data',
     'app/lib/utils/hash',
