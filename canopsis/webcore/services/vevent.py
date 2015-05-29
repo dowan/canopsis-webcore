@@ -23,10 +23,12 @@ from canopsis.vevent.manager import VEventManager
 
 vem = VEventManager()
 
+DEFAULT_ROUTE = 'vevent'  #: route specifics to vevents document
+
 
 def exports(ws):
 
-    @route(ws.application.get, name='vevent')
+    @route(ws.application.get, name=DEFAULT_ROUTE)
     def get_by_uids(
         ids, limit=0, skip=0, sort=None, projection=None, with_count=False
     ):
@@ -53,11 +55,11 @@ def exports(ws):
         return result
 
     @route(
-        ws.application.post, name='vevent',
+        ws.application.post, name=DEFAULT_ROUTE,
         payload=['source', 'vevents']
     )
     @route(
-        ws.application.put, name='vevent',
+        ws.application.put, name=DEFAULT_ROUTE,
         payload=['source', 'vevents']
     )
     def put(vevents, source=None):
@@ -74,7 +76,7 @@ def exports(ws):
         return result
 
     @route(
-        ws.application.delete, name='vevent',
+        ws.application.delete, name=DEFAULT_ROUTE,
         payload=['ids']
     )
     def remove(ids=None):
