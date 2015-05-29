@@ -20,8 +20,7 @@
 define([
     'ember',
     'app/lib/factories/mixin',
-    'app/lib/requirejsmocksmanager',
-], function(Ember, Mixin, requirejsmocksmanager) {
+], function(Ember, Mixin) {
 
     /**
      * Mixin allowing to virtually resize the screen, adding a dedicated statusbar button into the app statusbar only in debug mode
@@ -31,8 +30,6 @@ define([
      * @static
      */
     var mixin = Mixin('Screentoolstatusmenu', {
-
-        requirejsmocksmanager: requirejsmocksmanager,
 
         init: function() {
             this.partials.statusbar.pushObject('screentoolstatusmenu');

@@ -20,8 +20,6 @@
 
 var components = [
     { name: 'components/component-cfiltereditor', url: 'canopsis/monitoring/components/cfiltereditor/component', template: 'canopsis/monitoring/components/cfiltereditor/template.html' },
-    { name: 'components/component-cfilter2editor', url: 'canopsis/monitoring/components/cfilter2editor/component', template: 'canopsis/monitoring/components/cfilter2editor/template.html' },
-    { name: 'components/component-cfilter3editor', url: 'canopsis/monitoring/components/cfilter3editor/component', template: 'canopsis/monitoring/components/cfilter3editor/template.html' },
     { name: 'components/component-ack', url: 'canopsis/monitoring/components/ack/component', template: 'canopsis/monitoring/components/ack/template.html' },
     { name: 'components/component-stateeditor', url: 'canopsis/monitoring/components/stateeditor/component', template: 'canopsis/monitoring/components/stateeditor/template.html' },
     { name: 'components/component-eventselector', url: 'canopsis/monitoring/components/eventselector/component', template: 'canopsis/monitoring/components/eventselector/template.html' }
