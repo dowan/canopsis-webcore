@@ -22,11 +22,11 @@ require.config({
     paths: {
         'app': 'canopsis/core',
 
-        'text': 'webcore-libs/requirejs-text/text',
-        'link': 'webcore-libs/requirejs-link/link',
+        'text': 'canopsis/core/lib/externals/requirejs-text/text',
+        'link': 'canopsis/core/lib/externals/requirejs-link/link',
 
         'jquery': 'canopsis/core/lib/wrappers/jquery',
-        'handlebars': 'webcore-libs/handlebars/handlebars',
+        'handlebars': 'canopsis/core/lib/externals/handlebars/handlebars',
         'ember': 'canopsis/core/lib/wrappers/ember',
         'ember-data': 'canopsis/core/lib/wrappers/ember-data'
     },

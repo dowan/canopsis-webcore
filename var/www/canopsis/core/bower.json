@@ -2,7 +2,7 @@
   "name": "core",
   "version": "0.0.0",
   "authors": [
-    "Gwenaël Pluchon <info@gwenp.fr>"
+    "Team Canopsis <maintainers@canopsis.org>"
   ],
   "description": "Core UI brick. Provides the base application layer for the Canopsis UI",
   "main": "init.js",

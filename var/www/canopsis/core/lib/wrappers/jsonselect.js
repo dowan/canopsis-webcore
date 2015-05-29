@@ -20,7 +20,7 @@ var JSONSelect;
 
 define([
     'app/lib/factories/wrapper',
-    'webcore-libs/jsonselect/src/jsonselect'
+    'app/lib/externals/jsonselect/src/jsonselect'
 ], function(Wrapper) {
 
     return Wrapper("jsonselect", JSONSelect, arguments, "0.2.1");

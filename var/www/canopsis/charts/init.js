@@ -20,24 +20,24 @@
 
 require.config({
     paths: {
-        'flotchart': 'webcore-libs/flot/jquery.flot',
-        'flotchart-canvas': 'webcore-libs/flot/jquery.flot.canvas',
-        'flotchart-categories': 'webcore-libs/flot/jquery.flot.categories',
-        'flotchart-crosshair': 'webcore-libs/flot/jquery.flot.crosshair',
-        'flotchart-errorbars': 'webcore-libs/flot/jquery.flot.errorbars',
-        'flotchart-fillbetween': 'webcore-libs/flot/jquery.flot.fillbetween',
-        'flotchart-image': 'webcore-libs/flot/jquery.flot.image',
-        'flotchart-navigate': 'webcore-libs/flot/jquery.flot.navigate',
-        'flotchart-pie': 'webcore-libs/flot/jquery.flot.pie',
-        'flotchart-resize': 'webcore-libs/flot/jquery.flot.resize',
-        'flotchart-selection': 'webcore-libs/flot/jquery.flot.selection',
-        'flotchart-stack': 'webcore-libs/flot/jquery.flot.stack',
-        'flotchart-symbol': 'webcore-libs/flot/jquery.flot.symbol',
-        'flotchart-threshold': 'webcore-libs/flot/jquery.flot.threshold',
-        'flotchart-time': 'webcore-libs/flot/jquery.flot.time',
-        'flotchart-valuelabel': 'webcore-libs/flot-plugins/custom/jquery.flot.valuelabel',
-        'flotchart-tooltip': 'webcore-libs/flot.tooltip/js/jquery.flot.tooltip',
-        'flotchart-chartvalues': 'webcore-libs/flot-plugins/custom/jquery.flot.chartvalues'
+        'flotchart': 'canopsis/charts/lib/externals/flot/jquery.flot',
+        'flotchart-canvas': 'canopsis/charts/lib/externals/flot/jquery.flot.canvas',
+        'flotchart-categories': 'canopsis/charts/lib/externals/flot/jquery.flot.categories',
+        'flotchart-crosshair': 'canopsis/charts/lib/externals/flot/jquery.flot.crosshair',
+        'flotchart-errorbars': 'canopsis/charts/lib/externals/flot/jquery.flot.errorbars',
+        'flotchart-fillbetween': 'canopsis/charts/lib/externals/flot/jquery.flot.fillbetween',
+        'flotchart-image': 'canopsis/charts/lib/externals/flot/jquery.flot.image',
+        'flotchart-navigate': 'canopsis/charts/lib/externals/flot/jquery.flot.navigate',
+        'flotchart-pie': 'canopsis/charts/lib/externals/flot/jquery.flot.pie',
+        'flotchart-resize': 'canopsis/charts/lib/externals/flot/jquery.flot.resize',
+        'flotchart-selection': 'canopsis/charts/lib/externals/flot/jquery.flot.selection',
+        'flotchart-stack': 'canopsis/charts/lib/externals/flot/jquery.flot.stack',
+        'flotchart-symbol': 'canopsis/charts/lib/externals/flot/jquery.flot.symbol',
+        'flotchart-threshold': 'canopsis/charts/lib/externals/flot/jquery.flot.threshold',
+        'flotchart-time': 'canopsis/charts/lib/externals/flot/jquery.flot.time',
+        'flotchart-valuelabel': 'canopsis/charts/lib/externals/flot-plugins/custom/jquery.flot.valuelabel',
+        'flotchart-tooltip': 'canopsis/charts/lib/externals/flot.tooltip/js/jquery.flot.tooltip',
+        'flotchart-chartvalues': 'canopsis/charts/lib/externals/flot-plugins/custom/jquery.flot.chartvalues'
     },
 
     shim: {

@@ -23,12 +23,8 @@ $.browser = {msie: isIE};
 
 define([
     'app/lib/factories/wrapper',
-    'webcore-libs/underscore/underscore'
+    'canopsis/uibase/lib/externals/underscore/underscore'
 ], function(Wrapper) {
-
-
-
-    console.log('underscore wrapper');
 
     return Wrapper("underscore", _, arguments, "1.7.0");
 });

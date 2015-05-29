@@ -2,7 +2,7 @@
   "name": "uiv1_themes",
   "version": "0.0.0",
   "authors": [
-    "Gwenaël Pluchon <info@gwenp.fr>"
+    "Team Canopsis <maintainers@canopsis.org>"
   ],
   "description": "Provides legacy themes for widgets",
   "main": "init.js",

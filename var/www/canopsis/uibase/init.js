@@ -19,22 +19,22 @@
 
 require.config({
     paths: {
-        'bootstrap': 'webcore-libs/bootstrap/dist/js/bootstrap.min',
+        'bootstrap': 'canopsis/uibase/lib/externals/bootstrap/dist/js/bootstrap.min',
         'datetimepicker': 'canopsis/uibase/libwrappers/datetimepicker',
-        'icheck': 'webcore-libs/iCheck/icheck',
-        'codemirror': 'webcore-libs/codemirror/lib/codemirror',
-        'summernote': 'webcore-libs/summernote/dist/summernote',
-        'ember-summernote': 'webcore-libs/ember-summernote/lib/component',
-        'daterangepicker': 'webcore-libs/bootstrap-daterangepicker/daterangepicker',
+        'icheck': 'canopsis/uibase/lib/externals/iCheck/icheck',
+        'codemirror': 'canopsis/uibase/lib/externals/codemirror/lib/codemirror',
+        'summernote': 'canopsis/uibase/lib/externals/summernote/dist/summernote',
+        'ember-summernote': 'canopsis/uibase/lib/externals/ember-summernote/lib/component',
+        'daterangepicker': 'canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker',
 
-        'rrule': 'webcore-libs/kb-rrule/lib/rrule',
-        'nlp': 'webcore-libs/kb-rrule/lib/nlp',
+        'rrule': 'canopsis/uibase/lib/externals/kb-rrule/lib/rrule',
+        'nlp': 'canopsis/uibase/lib/externals/kb-rrule/lib/nlp',
         'underscore' : 'canopsis/uibase/libwrappers/underscore',
 
-        'moment': 'webcore-libs/moment/min/moment-with-locales.min',
-        'jsoneditorlib': 'webcore-libs/jsoneditor/jsoneditor',
-        'ember-jsoneditor-lib': 'webcore-libs/ember-jsoneditor/build/lib',
-        'd3': 'webcore-libs/d3/d3'
+        'moment': 'canopsis/uibase/lib/externals/moment/min/moment-with-locales.min',
+        'jsoneditorlib': 'canopsis/uibase/lib/externals/jsoneditor/jsoneditor',
+        'ember-jsoneditor-lib': 'canopsis/uibase/lib/externals/ember-jsoneditor/build/lib',
+        'd3': 'canopsis/uibase/lib/externals/d3/d3'
     },
     shim: {
         'rrule': {
@@ -69,5 +69,12 @@ define([
     'canopsis/uibase/libwrappers/bootstrap',
     'canopsis/uibase/libwrappers/jsoneditor',
     'canopsis/uibase/libwrappers/summernote',
-    'canopsis/uibase/libwrappers/codemirror'
+    'canopsis/uibase/libwrappers/codemirror',
+    'canopsis/uibase/lib/externals/ember-datetimepicker/lib/component',
+    'canopsis/uibase/lib/externals/ember-icheck/lib/component',
+    'canopsis/uibase/lib/externals/ember-tooltip/lib/component',
+    'canopsis/uibase/lib/externals/ember-durationcombo/lib/component',
+    'link!canopsis/uibase/lib/externals/fontawesome/css/font-awesome.min.css',
+    'link!canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker-bs3.css'
 ], function () {});
+

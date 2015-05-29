@@ -19,9 +19,9 @@
 
 require.config({
     paths: {
-        'css3-mediaqueries': 'webcore-libs/min/css3-mediaqueries',
-        'math': 'webcore-libs/mathjs/dist/math',
-        'hashes': 'webcore-libs/jshashes/hashes',
+        'css3-mediaqueries': 'canopsis/core/lib/externals/min/css3-mediaqueries',
+        'math': 'canopsis/core/lib/externals/mathjs/dist/math',
+        'hashes': 'canopsis/core/lib/externals/jshashes/hashes',
 
         //TODO move this in uibase
         'jsonselect': 'canopsis/core/lib/wrappers/jsonselect'

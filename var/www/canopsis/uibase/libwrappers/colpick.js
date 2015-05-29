@@ -20,8 +20,8 @@
 define([
     'jquery',
     'app/lib/factories/wrapper',
-    'webcore-libs/colpick/js/colpick',
-    'link!webcore-libs/colpick/css/colpick.css'
+    'canopsis/uibase/lib/externals/colpick/js/colpick',
+    'link!canopsis/uibase/lib/externals/colpick/css/colpick.css'
 ], function($, Wrapper) {
 
     return Wrapper("colpick", undefined, arguments, undefined);

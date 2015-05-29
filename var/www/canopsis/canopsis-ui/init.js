@@ -20,7 +20,8 @@
 
 require.config({
     paths: {
-        'adminLTElib': 'webcore-libs/dev/AdminLTE',
+        'bootstrap': 'canopsis/uibase/lib/externals/bootstrap/dist/js/bootstrap.min',
+        'adminLTElib': 'canopsis/canopsis-ui/lib/adminlte/AdminLTE',
         'adminLTE': 'canopsis/canopsis-ui/wrappers/adminLTE'
     },
 
