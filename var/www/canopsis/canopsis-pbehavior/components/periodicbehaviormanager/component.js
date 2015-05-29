@@ -27,7 +27,7 @@ define([
         set = Ember.set;
 
 
-    var component = Ember.Component.extend(CrudMixin, {
+    var component = Ember.Component.extend(Ember.Evented, CrudMixin, {
         init: function() {
             /* mixin options for mixins */
             set(this, 'mixinOptions', {
