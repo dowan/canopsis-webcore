@@ -38,7 +38,7 @@ define([
             }
         };
 
-        return adapter.ajax(adapter.buildURL(), verb, query);
+        return adapter.ajax(adapter.buildURL(type.typeKey), verb, query);
     };
 
     var adapter = BaseAdapter.extend({
@@ -62,7 +62,18 @@ define([
 
         updateRecord: function(store, type, record) {
             return _upsertRecord(this, 'PUT', store, type, record);
+        },
+
+        deleteRecord: function(store, type, snapshot) {
+            var query = {
+                data: {
+                    'ids': snapshot.uid
+                }
+            };
+
+            return this.ajax(this.buildURL(type.typeKey), 'DELETE', query);
         }
+
     });
 
     loader.register('adapter:vevent', adapter);
