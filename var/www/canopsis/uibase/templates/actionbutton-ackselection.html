@@ -1,16 +1,12 @@
 {{#unless controller.findOptions.useLogCollection}}
     {{#if controller.rights.actionbutton_ack.checksum}}
-        {{#component-tooltip content="Ack"}}
-            <button class="btn btn-default btn-sm" {{action 'sendEvent' 'ack'}} >
-                <span class="glyphicon glyphicon-ok"></span>
-                {{tr "Ack"}}
-            </button>
-        {{/component-tooltip}}
-        {{#component-tooltip content="Cancel ack"}}
-            <button class="btn btn-default btn-sm" {{action 'sendEvent' 'ackremove'}} >
-                <span class="glyphicon glyphicon-ban-circle"></span>
-                {{tr "Remove ack"}}
-            </button>
-        {{/component-tooltip}}
+        <button class="btn btn-default btn-sm" {{action 'sendEvent' 'ack'}} >
+            <span class="glyphicon glyphicon-ok"></span>
+            {{tr "Ack"}}
+        </button>
+        <button class="btn btn-default btn-sm" {{action 'sendEvent' 'ackremove'}} >
+            <span class="glyphicon glyphicon-ban-circle"></span>
+            {{tr "Cancel ack"}}
+        </button>
     {{/if}}
 {{/unless}}

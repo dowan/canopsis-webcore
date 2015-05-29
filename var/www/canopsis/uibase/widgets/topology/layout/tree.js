@@ -26,8 +26,8 @@ define([
 
     var TreeLayout = Ember.Mixin.create(
         {
-        },
+        }
     );
 
     return TreeLayout;
-}
+});

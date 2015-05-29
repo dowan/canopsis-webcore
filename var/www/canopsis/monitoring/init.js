@@ -17,16 +17,13 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-loader.loadWithTemplates([
-    { name:'weather', url:'canopsis/monitoring/widgets/weather/controller', template:'canopsis/monitoring/widgets/weather/template.html' },
-    { name:'criticity', url:'canopsis/monitoring/helpers/criticity' },
-    { name:'stateview', url:'canopsis/monitoring/helpers/stateview' },
-    { name:'statusview', url:'canopsis/monitoring/helpers/statusview' },
-    { name:'recordcanbeack', url:'canopsis/monitoring/helpers/recordcanbeack' },
-    { name: 'sendevent', url: 'canopsis/monitoring/mixins/sendevent', classes: ['widget']},
-    { name: 'recordinfopopup', url: 'canopsis/monitoring/mixins/recordinfopopup', classes: ['widget', 'events']},
-    { name: 'history', url: 'canopsis/monitoring/mixins/history', classes: ['widget']},
-    { name: 'eventnavigation', url: 'canopsis/monitoring/mixins/eventnavigation', classes: ['widget', 'events']},
-    { name: 'eventhistory', url: 'canopsis/monitoring/mixins/eventhistory', classes: ['widget', 'events']},
-    { name: 'infobutton', url: 'canopsis/monitoring/mixins/infobutton', classes: ["list"]}
-]);
+define([
+    'canopsis/monitoring/lib/loaders/widgets',
+    'canopsis/monitoring/lib/loaders/components',
+    'canopsis/monitoring/lib/loaders/helpers',
+    'canopsis/monitoring/lib/loaders/mixins',
+    'canopsis/monitoring/lib/loaders/templates',
+    'canopsis/monitoring/lib/loaders/renderers'
+], function () {
+
+});

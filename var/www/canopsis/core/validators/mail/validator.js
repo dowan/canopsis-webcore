@@ -22,7 +22,16 @@ define([], function() {
     function mailValidator(attr, valideStruct) {
         var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-        if (regex.test(attr.value)) {
+        if (Ember.isBlank(attr.value)) {
+            if(attr.model.required) {
+                valideStruct.valid = false;
+                valideStruct.error = 'Mail is required';
+            }
+            else {
+                valideStruct.valid = true;
+            }
+        }
+        else if (regex.test(attr.value)) {
             valideStruct.valid = true ;
         } else {
             valideStruct.valid = false ;

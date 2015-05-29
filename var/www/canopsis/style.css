@@ -1,3 +1,164 @@
+/* Properties for colorGrid editor and dropdownbutton*/
+.btn-secondary{
+    color: #333;
+    background-color: #eee;
+    border-color: #eee;
+}
+
+.rangeName{
+    margin-left: 7px;
+    padding-top: 5px;
+}
+
+.overview{
+    border: 1px solid #fff;
+    display: inline-block;
+    height: 20px;
+    width: 30px;
+    margin: 0 5px 0 5px;
+    float: left;
+}
+
+.rangeBrowser{
+    position: relative;
+    display: block;
+    height: 185px;
+    width: 100%;
+    min-height: 90px;
+    border: 1px solid #ddd;
+    background-color: #eee;
+    overflow: auto;
+}
+
+.rangeColorChoose{
+    display: inline-block;
+    margin-left: 5%;
+    width: 155px;
+    height: 33px;
+}
+
+.range{
+    height: 38px;
+}
+
+.rangeColorBtn{
+    display: inline-block;
+    float: left;
+}
+
+.rangeColorSelect{
+    width: 100%;
+    margin: 0% 1.5% 0% 1.5%;
+    float: left;
+}
+.colorBtn{
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid #eee;
+    border-radius: 4px;
+}
+
+.opening{
+    margin-top: 10px;
+    padding-bottom: 10px;
+    display: block;
+}
+
+.opening span{
+    margin-bottom: 10px;
+    display: inline-block;
+    float: left;
+    background-color: #eee;
+}
+
+.activeColor{
+    color: #555;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-radius: 4px 4px 0 0;
+    border-bottom-color: transparent;
+}
+
+#colorSelectorList{
+    display: block;
+    margin-top: 10px;
+    border-bottom: 1px solid #ddd;
+    width: 400px;
+}
+
+#colorSelectorList li{
+    display: inline-block;
+    float: left;
+    background-color: #fff;
+}
+
+.colorGrid{
+    height: 201px;
+    width: 100%;
+    float: left;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.colorElement{
+    height: 20px;
+    width: 30px;
+    float: left;
+    cursor: pointer;
+}
+
+.unSelectedColorGrid {
+    border: 1px solid #ddd;
+}
+
+.selectedColorGrid {
+    border: 2px solid #444;
+}
+
+div .customcolor{
+    width : 100%;
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    float: left;
+    display: inline-block;
+}
+
+.dropdown-content-menu{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+
+
 /*Avoids double scroll bar in main page*/
 #applicationdiv > div{
     overflow-y:hidden;
@@ -49,7 +210,7 @@ html {
 }
 
 .noyscroll{
-    overflow-y: hidden !important;
+    overflow: visible !important;
 }
 
 #recordinfopopup{
