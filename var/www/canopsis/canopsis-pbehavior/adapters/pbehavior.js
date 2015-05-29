@@ -27,13 +27,27 @@ define([
         set = Ember.set,
         isNone = Ember.isNone;
 
+    var _upsertRecord = function(adapter, verb, store, type, record) {
+        var serializer = store.serializerFor(type.typeKey);
+        var data = serializer.serializeIntoHash({}, type, record, verb, { includeId: true
+        });
+
+        var query = {
+            data: {
+                'document': data
+            }
+        };
+
+        return adapter.ajax(adapter.buildURL(), verb, query);
+    };
+
     var adapter = BaseAdapter.extend({
 
         buildURL: function(type, id, record) {
             void(type);
             void(record);
 
-            var result = '/pbehavior/docs';
+            var result = '/pbehavior';
 
             if (!isNone(id)) {
                 result += '/' + id;
@@ -43,31 +57,11 @@ define([
         },
 
         createRecord: function(store, type, record) {
-            var serializer = store.serializerFor(type.typeKey);
-            var data = serializer.serializeIntoHash(data, type, record, 'PUT', { includeId: true });
-
-            var query = {
-                data: {
-                    '_id': get(record, 'entity_id'),
-                    'document': data
-                }
-            };
-
-            return this.ajax(this.buildURL(), 'PUT', query);
+            return _upsertRecord(this, 'PUT', store, type, record);
         },
 
         updateRecord: function(store, type, record) {
-
-            return this.createRecord(store, type, record);
-        },
-
-        deleteRecord: function(store, type, record) {
-            var url = this.buildURL();
-
-            var id = get(record, 'entity_id');
-            var query = {data: {ids: id}};
-
-            return this.ajax(url, 'DELETE', query);
+            return _upsertRecord(this, 'PUT', store, type, record);
         }
     });
 

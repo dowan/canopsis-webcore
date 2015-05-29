@@ -28,11 +28,11 @@ def exports(ws):
 
     @route(ws.application.get, name='vevent')
     def get_by_uids(
-        uids, limit=0, skip=0, sort=None, projection=None, with_count=False
+        ids, limit=0, skip=0, sort=None, projection=None, with_count=False
     ):
         """Get documents by uids.
 
-        :param list uids: list of document uids.
+        :param list ids: list of document ids.
         :param int limit: max number of elements to get.
         :param int skip: first element index among searched list.
         :param sort: contains a list of couples of field (name, ASC/DESC)
@@ -46,7 +46,7 @@ def exports(ws):
         """
 
         result = vem.get_by_uids(
-            uids=uids, limit=limit, skip=skip, sort=sort,
+            uids=ids, limit=limit, skip=skip, sort=sort,
             projection=projection, with_count=with_count
         )
 
@@ -54,45 +54,58 @@ def exports(ws):
 
     @route(
         ws.application.post, name='vevent',
-        payload=['source', 'vevents', 'info']
+        payload=['source', 'vevents']
     )
     @route(
         ws.application.put, name='vevent',
-        payload=['source', 'vevents', 'info']
+        payload=['source', 'vevents']
     )
-    def put(vevents, source=None, info=None):
+    def put(vevents, source=None):
         """Add vevents (and optionally data) related to input source.
 
         :param str source: vevent source if not None.
         :param list vevents: vevents (document, str or ical vevent).
-        :param dict info: vevent info.
-        :param bool cache: if True (default False), use storage cache.
         :return: new documents.
         :rtype: list
         """
 
-        result = vem.put(source=source, vevents=vevents, info=info)
+        result = vem.put(source=source, vevents=vevents)
 
         return result
 
     @route(
         ws.application.delete, name='vevent',
-        payload=['uids']
+        payload=['ids']
     )
-    def remove(uids=None):
+    def remove(ids=None):
         """Remove elements from storage where uids are given.
 
-        :param list uids: list of document uids to remove from storage
+        :param list ids: list of document uids to remove from storage
             (default all empty storage documents).
         """
 
-        result = vem.remove(uids=uids)
+        result = vem.remove(uids=ids)
+
+        return result
+
+    @route(
+        ws.application.delete, name='vevent/source',
+        payload=['sources']
+    )
+    def remove_by_source(sources=None):
+        """Remove vevent documents related to input sources.
+
+        :param list sources: sources from where remove related vevent
+            documents.
+        """
+
+        result = vem.remove_by_source(sources=sources)
 
         return result
 
     @route(ws.application.get, name='vevent/values')
     def values(
-        sources=None, dtstart=None, dtend=None, info=None,
+        sources=None, dtstart=None, dtend=None, query=None,
         limit=0, skip=0, sort=None, projection=None, with_count=False
     ):
         """Get source vevent document values.
@@ -101,7 +114,7 @@ def exports(ws):
             sources.
         :param int dtstart: vevent dtstart (default 0).
         :param int dtend: vevent dtend (default sys.maxsize).
-        :param dict info: vevent information if given.
+        :param dict query: additional filtering query to apply in the search.
         :param int limit: max number of elements to get.
         :param int skip: first element index among searched list.
         :param sort: contains a list of couples of field (name, ASC/DESC)
@@ -115,7 +128,7 @@ def exports(ws):
         """
 
         result = vem.values(
-            sources=sources, dtstart=dtstart, dtend=dtend, info=info,
+            sources=sources, dtstart=dtstart, dtend=dtend, query=query,
             limit=limit, skip=skip, sort=sort, projection=projection,
             with_count=with_count
         )
@@ -123,27 +136,27 @@ def exports(ws):
         return result
 
     @route(ws.application.get, name='vevent/whois')
-    def whois(sources=None, dtstart=None, dtend=None, info=None):
+    def whois(sources=None, dtstart=None, dtend=None, query=None):
         """Get a set of sources which match with timed condition and query.
 
         :param list sources: sources from where get values. If None, use all
             sources.
         :param int dtstart: vevent dtstart (default 0).
         :param int dtend: vevent dtend (default sys.maxsize).
-        :param dict info: vevent information if given.
+        :param dict query: additional filtering query to apply in the search.
         :return: sources.
         :rtype: set
         """
 
         result = vem.whois(
-            sources=sources, dtstart=dtstart, dtend=dtend, info=info
+            sources=sources, dtstart=dtstart, dtend=dtend, query=query
         )
 
         return result
 
     @route(ws.application.get, name='vevent/before')
     def get_before(
-        sources=None, ts=None, dtstart=None, dtstop=None, info=None
+        sources=None, ts=None, dtstart=None, dtstop=None, query=None
     ):
         """Get before date related to one timestamp and additional parameters.
 
@@ -151,19 +164,19 @@ def exports(ws):
         :param int ts: timestamp from when find vevent documents.
         :param int dtstart: vevent dtstart.
         :param int dtend: vevent dtend.
-        :param dict info: document information.
+        :param dict query: additional filtering query to apply in the search.
         :return: list of before date per source.
         """
 
         result = vem.get_before(
-            sources=sources, ts=ts, dtstart=dtstart, dtstop=dtstop, info=info
+            sources=sources, ts=ts, dtstart=dtstart, dtstop=dtstop, query=query
         )
 
         return result
 
     @route(ws.application.get, name='vevent/after')
     def get_after(
-        sources=None, ts=None, dtstart=None, dtstop=None, info=None
+        sources=None, ts=None, dtstart=None, dtstop=None, query=None
     ):
         """Get afer date related to one timestamp and additional parameters.
 
@@ -171,12 +184,12 @@ def exports(ws):
         :param int ts: timestamp from when find vevent documents.
         :param int dtstart: vevent dtstart.
         :param int dtend: vevent dtend.
-        :param dict info: document information.
+        :param dict query: additional filtering query to apply in the search.
         :return: list of after date per source.
         """
 
         result = vem.get_after(
-            sources=sources, ts=ts, dtstart=dtstart, dtstop=dtstop, info=info
+            sources=sources, ts=ts, dtstart=dtstart, dtstop=dtstop, query=query
         )
 
         return result
