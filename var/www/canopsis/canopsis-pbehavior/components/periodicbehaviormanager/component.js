@@ -54,6 +54,9 @@ define([
         },
 
         refreshContent: function() {
+            console.group('Fetching periodic behaviors');
+            console.log('context:', get(this, 'contextId'));
+
             var store = get(this, 'widgetDataStore'),
                 ctrl = this;
 
@@ -65,8 +68,11 @@ define([
             ).then(
                 function(result) {
                     set(ctrl, 'behaviors', get(result, 'content'));
+                    console.log('behaviors:', get(ctrl, 'behaviors'));
                 }
             );
+
+            console.groupEnd();
         },
 
         onRecordReady: function(record) {

@@ -154,7 +154,10 @@ define([
                     record = get(form, 'formContext');
                     record.save();
 
-                    ctrl.trigger('refresh');
+                    /* wait 1s to let the previous request travel to the webserver */
+                    setTimeout(function() {
+                        ctrl.trigger('refresh');
+                    }, 1000);
                 });
             },
 

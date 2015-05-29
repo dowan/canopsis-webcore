@@ -64,14 +64,16 @@ define([
             return _upsertRecord(this, 'PUT', store, type, record);
         },
 
-        deleteRecord: function(store, type, snapshot) {
-            var query = {
-                data: {
-                    'ids': snapshot.uid
+        deleteRecord: function(store, type, record) {
+            return this.ajax(
+                this.buildURL(),
+                'DELETE',
+                {
+                    data: {
+                        ids: get(record, 'id')
+                    }
                 }
-            };
-
-            return this.ajax(this.buildURL(type.typeKey), 'DELETE', query);
+            );
         }
 
     });
