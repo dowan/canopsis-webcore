@@ -18,12 +18,16 @@
 */
 
 define([
-    'canopsis/monitoring/lib/loaders/widgets',
-    'canopsis/monitoring/lib/loaders/components',
-    'canopsis/monitoring/lib/loaders/helpers',
-    'canopsis/monitoring/lib/loaders/mixins',
-    'canopsis/monitoring/lib/loaders/templates',
-    'canopsis/monitoring/lib/loaders/renderers'
-], function () {
+    'ember',
+    'app/lib/factories/mixin',
+], function(Ember, Mixin) {
 
+    var mixin = Mixin('Documentation', {
+        init: function() {
+            this.partials.statusbar.pushObject('documentation');
+            this._super();
+        },
+    });
+
+    return mixin;
 });
