@@ -19,11 +19,17 @@
 
 define(['ember'], function(Ember) {
 
-    var get = Ember.get;
+    var get = Ember.get,
+        isNone = Ember.isNone;
 
 
     Ember.Handlebars.helper('getfield', function(ctx, fieldname) {
-        var field = get(ctx, fieldname) || '';
+        var field = get(ctx, fieldname);
+
+        if(isNone(field)) {
+            field = '';
+        }
+
         return new Ember.Handlebars.SafeString(field);
     });
 

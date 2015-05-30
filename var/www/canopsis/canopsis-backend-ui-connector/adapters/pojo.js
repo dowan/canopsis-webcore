@@ -33,14 +33,7 @@ define([
         },
 
         createRecord: function (type, id, options) {
-            var url = this.buildURL(type, id);
-            return new Ember.RSVP.Promise(function(resolve, reject) {
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: options
-                }).then(resolve, reject);
-            });
+            return this.ajax(this.buildURL(type, id), 'POST', options);
         }
     });
 

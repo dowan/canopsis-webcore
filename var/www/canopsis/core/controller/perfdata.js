@@ -96,6 +96,32 @@ define([
 
         aggregateMany: function(metrics, tstart, tend, method, interval) {
             return this.aggregate(JSON.stringify(metrics), tstart, tend, method, interval);
+        },
+
+        fetchMeta: function(metric_id) {
+            var app = get(this, 'controllers.application');
+            set(app, 'isLoading', get(app, 'isLoading') + 1);
+
+            //FIXME refactor this to stop using getCanopsis
+            var pojoAdapter = getCanopsis().Application.__container__.lookup('adapter:pojo');
+            var requestOptions = {
+                'metric_id': metric_id
+            };
+
+            //createRecord is used as it is a POST request
+            var promise = pojoAdapter.createRecord('perfdata-meta', undefined, requestOptions);
+
+            promise.then(function() {
+                set(app, 'isLoading', get(app, 'isLoading') - 1);
+            }, function() {
+                set(app, 'isLoading', get(app, 'isLoading') - 1);
+            });
+
+            return promise;
+        },
+
+        fetchManyMeta: function(metrics) {
+            return this.fetchMeta(JSON.stringify(metrics));
         }
     });
 

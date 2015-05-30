@@ -22,7 +22,8 @@ var components = [
     { name: 'components/component-cfiltereditor', url: 'canopsis/monitoring/components/cfiltereditor/component', template: 'canopsis/monitoring/components/cfiltereditor/template.html' },
     { name: 'components/component-ack', url: 'canopsis/monitoring/components/ack/component', template: 'canopsis/monitoring/components/ack/template.html' },
     { name: 'components/component-stateeditor', url: 'canopsis/monitoring/components/stateeditor/component', template: 'canopsis/monitoring/components/stateeditor/template.html' },
-    { name: 'components/component-eventselector', url: 'canopsis/monitoring/components/eventselector/component', template: 'canopsis/monitoring/components/eventselector/template.html' }
+    { name: 'components/component-eventselector', url: 'canopsis/monitoring/components/eventselector/component', template: 'canopsis/monitoring/components/eventselector/template.html' },
+    { name: 'components/component-perfalert', url: 'canopsis/monitoring/components/perfalert/component', template: 'canopsis/monitoring/components/perfalert/template.html' }
 
 ];
 
