@@ -28,7 +28,7 @@ define([
         buildURL: function(type, id) {
             void(id);
 
-            return "/rest/object";
+            return "/rest/object/" + type;
         },
 
         findQuery: function(store, type, query) {

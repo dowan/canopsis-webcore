@@ -10,7 +10,7 @@
     <span class="fa fa-database"></span> {{tr 'Data clean'}}
 </button>
 
-{{#if controller.utils.session.rights.actionbutton_canediturlfield.checksum}}
+{{#if loggedaccountController.record.rights.actionbutton_canediturlfield.checksum}}
     <button class="btn btn-default" {{action 'selectItem' 'linklist'}} >
         <i class="fa fa-list"></i> {{tr 'Link list'}}
     </button>

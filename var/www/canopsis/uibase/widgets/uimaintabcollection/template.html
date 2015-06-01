@@ -12,10 +12,6 @@
             <span class="glyphicon glyphicon-time"></span>
         </button>
 
-        <button class="btn btn-default btn-sm" {{action 'togglePlaymode' this}} >
-            <span class="glyphicon glyphicon-play"></span>
-        </button>
-
         <button class="btn btn-default btn-sm" {{action 'toggleFullscreen' this}} >
             <span class="glyphicon glyphicon-fullscreen"></span>
         </button>
@@ -27,34 +23,37 @@
 
     <section class="content-header nav-tabs-custom" style=" padding: 5px 0 0;margin-bottom:0px; ">
         <ul class="nav nav-tabs">
-            {{#if controller.userCanUpdateRecord}}
                 <li>
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <h4> <i class="fa fa-gear"></i> <span class="caret"></span></h4>
                     </a>
                     <ul class="dropdown-menu">
+                        {{#if controller.userCanEditView}}
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#" {{action 'toggleEditMode'}}>
+                                    <i class="fa fa-pencil"></i>
+                                    {{#if controller.editMode}}
+                                        {{tr 'Leave edition mode'}}
+                                    {{else}}
+                                        {{tr 'Edit current view'}}
+                                    {{/if}}
+                                </a>
+                            </li>
+                        {{/if}}
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="#" {{action 'toggleEditMode'}}>
-                                <i class="fa fa-pencil"></i>
-                                {{#if controller.editMode}}
-                                    {{tr 'Leave edition mode'}}
-                                {{else}}
-                                    {{tr 'Edit current view'}}
-                                {{/if}}
-                            </a>
-                        </li>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="#">
+                            <a role="menuitem" tabindex="-1" {{action 'exportCurrentView'}}>
                                 <i class="fa fa-clipboard"></i>
                                 {{tr 'Export current view'}}
                             </a>
                         </li>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="#" {{action 'addNewView'}}>
-                                <i class="fa fa-plus"></i>
-                                {{tr 'Add a view'}}
-                            </a>
-                        </li>
+                        {{#if controller.userCanCreateView}}
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#" {{action 'addNewView'}}>
+                                    <i class="fa fa-plus"></i>
+                                    {{tr 'Add a view'}}
+                                </a>
+                            </li>
+                        {{/if}}
                         <li role="presentation" class="divider"></li>
                         <li role="presentation">
                             <a role="menuitem" tabindex="-1" href="#" {{action 'showView' 'view.userviews'}}>
@@ -63,7 +62,6 @@
                         </li>
                     </ul>
                 </li>
-            {{/if}}
             {{#each tab in controller.preparedTabs}}
                 <li {{bind-attr class="tab.isActive:active:"}}>
                     {{#if tab.displayable}}

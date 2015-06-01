@@ -25,8 +25,6 @@ var editors = [
     { name: 'editor-attributepreset', template: 'canopsis/uibase/editors/attributepreset.html' },
     { name: 'editor-boolean', template: 'canopsis/uibase/editors/boolean.html' },
     { name: 'editor-cfilter', template: 'canopsis/uibase/editors/cfilter.html' },
-    { name: 'editor-cfilter2', template: 'canopsis/uibase/editors/cfilter2.html' },
-    { name: 'editor-cfilter3', template: 'canopsis/uibase/editors/cfilter3.html' },
     { name: 'editor-cfilterwithproperties', template: 'canopsis/uibase/editors/cfilterwithproperties.html' },
     { name: 'editor-cmetric', template: 'canopsis/uibase/editors/cmetric.html' },
     { name: 'editor-color', template: 'canopsis/uibase/editors/color.html' },
@@ -41,7 +39,6 @@ var editors = [
     { name: 'editor-mixins', template: 'canopsis/uibase/editors/mixins.html' },
     { name: 'editor-modelselect', template: 'canopsis/uibase/editors/modelselect.html' },
     { name: 'editor-richtext', template: 'canopsis/uibase/editors/richtext.html' },
-    { name: 'editor-rights', template: 'canopsis/uibase/editors/rights.html' },
     { name: 'editor-separator', template: 'canopsis/uibase/editors/separator.html' },
     { name: 'editor-session', template: 'canopsis/uibase/editors/session.html' },
     { name: 'editor-simpledict', template: 'canopsis/uibase/editors/simpledict.html' },
@@ -68,7 +65,8 @@ var editors = [
     { name: 'editor-restobject', template: 'canopsis/uibase/editors/restobject.html' },
     { name: 'editor-contextselector', template: 'canopsis/uibase/editors/contextselector.html' },
     { name: 'editor-slider', template: 'canopsis/uibase/editors/slider.html' },
-    { name: 'editor-labelledlink', template: 'canopsis/uibase/editors/labelledlink.hbs' }
+    { name: 'editor-labelledlink', template: 'canopsis/uibase/editors/labelledlink.hbs' },
+    { name: 'editor-elementidselectorwithoptions', template: 'canopsis/uibase/editors/elementidselectorwithoptions.hbs' }
 ];
 
 loader.loadWithTemplates(editors);

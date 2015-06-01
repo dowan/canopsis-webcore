@@ -38,13 +38,13 @@ var templates = [
 
     { name: 'userstatusmenu', template: 'canopsis/uibase/templates/userstatusmenu.html' },
     { name: 'screentoolstatusmenu', template: 'canopsis/uibase/templates/screentoolstatusmenu.html' },
+    { name: 'documentation', template: 'canopsis/uibase/templates/documentation.hbs' },
     { name: 'schemamanagerstatusmenu', template: 'canopsis/uibase/templates/schemamanagerstatusmenu.html' },
     { name: 'notificationsstatusmenu', template: 'canopsis/uibase/templates/notificationsstatusmenu.html' },
     { name: 'consolemanagerstatusmenu', template: 'canopsis/uibase/templates/consolemanagerstatusmenu.html' },
     { name: 'requirejsmockingstatusmenu', template: 'canopsis/uibase/templates/requirejsmockingstatusmenu.hbs' },
     { name: 'promisemanagerstatusmenu', template: 'canopsis/uibase/templates/promisemanagerstatusmenu.html' },
     { name: 'presettoolbar', template: 'canopsis/uibase/templates/presettoolbar.html' },
-    { name: 'rightschecksumbuttons', template: 'canopsis/uibase/templates/rightschecksumbuttons.html' },
 
     { name: 'actionbutton-edit', template: 'canopsis/uibase/templates/actionbutton-edit.html', classes: ["action"], icon : "pencil", label : "Edit"},
     { name: 'actionbutton-ack', template: 'canopsis/uibase/templates/actionbutton-ack.html', classes: ["action", "toolbar"], icon : "ok", label : "Ack"},
@@ -94,8 +94,7 @@ var templates = [
     { name: 'tablayout', template: 'canopsis/uibase/templates/tablayout.html' ,  classes: ["layout"]},
     { name: 'mixineditdropdown', template: 'canopsis/uibase/templates/mixineditdropdown.html'},
     { name: 'draggableheaders', template: 'canopsis/uibase/templates/draggableheaders.html'},
-    { name: 'tabledraggableth', template: 'canopsis/uibase/templates/tabledraggableth.html'},
-
+    { name: 'tabledraggableth', template: 'canopsis/uibase/templates/tabledraggableth.html'}
 ];
 
 loader.loadWithTemplates(templates);

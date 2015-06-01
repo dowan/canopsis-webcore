@@ -22,13 +22,42 @@ define([
         'canopsis/canopsis-backend-ui-connector/adapters/application'
 ], function(Application, ApplicationAdapter) {
 
+    var get = Ember.get,
+        set = Ember.set,
+        isNone = Ember.isNone;
+
+
     var adapter = ApplicationAdapter.extend({
         buildURL: function(type, id) {
-            return '/account/' + id;
+            return '/account/me';
         },
 
         find: function () {
             return this.ajax('/account/me', 'GET', {});
+        },
+
+        updateRecord: function(store, type, record) {
+            var me = this,
+                id = get(record, '_id');
+
+            if (isNone(type) || isNone(type.typeKey)) {
+                console.error('Error while retrieving typeKey from type is it is none.');
+            }
+
+            return new Ember.RSVP.Promise(function(resolve, reject) {
+                var hash = me.serialize(record, {includeId: true});
+                var url = '/account/user';
+
+                var payload = JSON.stringify({
+                    user: hash
+                });
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: payload
+                });
+            });
         }
     });
 
