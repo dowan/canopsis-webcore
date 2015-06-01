@@ -26,6 +26,7 @@ define([
 
     /**
      * Singleton for handling utility objects in canopsis
+     * Allow hooks on canopsis utility features
      *
      * @class Utility
      */
