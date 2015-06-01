@@ -142,9 +142,10 @@ div .customcolor{
     z-index: 6000;
     float: left;
     min-width: 160px;
-    padding: 5px 0;
     margin: 2px 0 0;
     font-size: 14px;
+    overflow: auto;
+    max-height: 400px;
     text-align: left;
     list-style: none;
     background-color: #fff;
@@ -235,9 +236,6 @@ html {
 }
 
 html{
-    overflow: auto;
-}
-.content {
     overflow: auto;
 }
 
