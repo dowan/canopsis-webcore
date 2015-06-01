@@ -20,12 +20,16 @@
 define([
     'jquery',
     'ember',
-], function($, Ember) {
+    'app/lib/utilityclass'
+], function($, Ember, Utility) {
 
     var __ = Ember.String.loc,
         isNone = Ember.isNone;
 
-    var drag = {
+    var drag = Utility.create({
+
+        name: 'drag',
+
         setDraggable: function (handle, dragElement) {
             handle.on('mousedown', function() {
                 console.log('mousedown', $(this));
@@ -39,7 +43,7 @@ define([
                 });
             });
         }
-    };
+    });
 
     return drag;
 });

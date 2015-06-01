@@ -19,9 +19,9 @@
 
 define([
     'app/lib/factories/wrapper',
-    'link!webcore-libs/ion.rangeSlider/css/ion.rangeSlider.css',
-    'link!webcore-libs/ion.rangeSlider/css/ion.rangeSlider.skinHTML5.css',
-    'webcore-libs/ion.rangeSlider/js/ion.rangeSlider',
+    'link!canopsis/core/lib/externals/ion.rangeSlider/css/ion.rangeSlider.css',
+    'link!canopsis/core/lib/externals/ion.rangeSlider/css/ion.rangeSlider.skinHTML5.css',
+    'app/lib/externals/ion.rangeSlider/js/ion.rangeSlider',
 ], function(Wrapper) {
 
     return Wrapper("slider", null, arguments, "1.0.1");

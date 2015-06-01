@@ -19,8 +19,8 @@
 
 define([
     'ember',
-    'utils'
-], function(Ember, utils) {
+    'app/lib/utils/hash'
+], function(Ember, hashUtils) {
 
     var view = Ember.View.extend({
         attrBinding: "templateData.keywords.attr.value",

@@ -19,7 +19,7 @@
 
 define([
     'app/lib/factories/wrapper',
-    'webcore-libs/jquery/dist/jquery'
+    'app/lib/externals/jquery/dist/jquery'
 ], function(Wrapper) {
 
     Wrapper("jquery", $, arguments, '2.1.1');

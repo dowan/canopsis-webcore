@@ -19,12 +19,16 @@
 
 define([
     'app/application',
-    'app/lib/utils/dates'
-], function(Application, dateUtils) {
+    'app/lib/utils/dates',
+    'app/lib/utilityclass'
+], function(Application, dateUtils, Utility) {
 
     var units = [ ' ', ' k', ' M', ' G', ' T' ];
 
-    var values = {
+    var values = Utility.create({
+
+        name: 'values',
+
         humanize: function(x, unit) {
 
             //This is time to convert
@@ -60,7 +64,7 @@ define([
                 return x + units[nstep] + unit;
             }
         }
-    };
+    });
 
     return values;
 });

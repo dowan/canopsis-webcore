@@ -17,9 +17,22 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/application'], function(Application) {
+define(['app/application', 'app/lib/utilityclass'], function(Application, Utility) {
 
-    var dataUtils = {
+    var _loggedUserController;
+
+    var dataUtils = Utility.create({
+
+        name: 'data',
+
+        getLoggedUserController: function() {
+            return _loggedUserController;
+        },
+
+        setLoggedUserController: function(loggedUserController) {
+            _loggedUserController = loggedUserController;
+        },
+
         getStore: function() {
             console.warn("this should not be used as there is not only one store in Canopsis. This might lead to unexpected behaviour");
             return Application.__container__.lookup('store:main');
@@ -36,7 +49,7 @@ define(['app/application'], function(Application) {
                 parentElement.set(relationshipKey, record);
             }
         }
-    };
+    });
 
     return dataUtils;
 });

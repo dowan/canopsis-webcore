@@ -20,14 +20,8 @@
 define([
     'ember',
     'ember-data',
-    'webcore-libs/requirejs-domready/domReady',
-    'app/lib/wrappers/summernote',
-    'app/lib/wrappers/colpick',
+    'app/lib/externals/requirejs-domready/domReady', //TODO remove, seems to be useless
     'jsonselect',
-    'webcore-libs/ember-icheck/lib/component',
-    'webcore-libs/ember-tooltip/lib/component',
-    'webcore-libs/ember-datetimepicker/lib/component',
-    'webcore-libs/ember-durationcombo/lib/component'
 ], function(Ember, DS, domReady) {
 
     var Application = Ember.Application.create({

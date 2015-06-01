@@ -20,10 +20,11 @@
 define([
     'jquery',
     'ember',
-    'hashes'
-], function($, Ember, Hashes) {
+    'hashes',
+    'app/lib/utilityclass'
+], function($, Ember, Hashes, Utility) {
 
-    var hash = {
+    var hash = Utility.create({
         generate_GUID: function() {
             //Generates a random GUID
             var s4 = function () {
@@ -54,7 +55,7 @@ define([
             var sha1 = new Hashes.SHA1();
             return sha1.hex(data);
         }
-    };
+    });
 
     return hash;
 });

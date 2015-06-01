@@ -17,24 +17,13 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-window.useHtmlBars = true;
-
-var emberFile;
-
-if(window.useHtmlBars) {
-    emberFile = 'webcore-libs/min/ember';
-} else {
-    emberFile = 'webcore-libs/ember/ember';
-}
-
-var Ember;
 
 define([
     'app/lib/factories/wrapper',
     'app/lib/utils/i18n',
     'canopsis/canopsisConfiguration',
-    emberFile,
-    'webcore-libs/jquery-resize/jquery.ba-resize'
+    'app/lib/externals/min/ember',
+    'app/lib/externals/jquery-resize/jquery.ba-resize'
 ], function(Wrapper, i18n, canopsisConfiguration) {
 
     var get = Ember.get;
@@ -53,22 +42,6 @@ define([
             this._super.apply(this, arguments);
         }
     };
-
-    var language = i18n.lang;
-    console.log('i18n language:', language.toUpperCase(), 'translations:', i18n.translations);
-
-    if(!language) {
-        language = 'en';
-    }
-
-    var loc = Ember.String.loc;
-    Ember.String.loc = function (fieldToTranslate) {
-        i18n._(fieldToTranslate, true);
-        return loc(fieldToTranslate);
-    };
-
-
-    Ember.STRINGS = i18n.translations[language] || {};
 
     Ember.Controller.reopen(controllerDict);
     Ember.ArrayController.reopen(controllerDict);

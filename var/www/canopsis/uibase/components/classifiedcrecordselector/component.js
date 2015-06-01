@@ -86,7 +86,8 @@ define([
                             for (var key in initialContent) {
                                 if (initialContent.hasOwnProperty(key)) {
                                     var additionnalData = this.deserializeAdditionnalData(get(initialContent, key));
-                                    buffer.pushObject({'name': key, 'data': additionnalData});
+                                    additionnalData.name = key;
+                                    buffer.pushObject(additionnalData);
                                 }
                             }
 
@@ -187,7 +188,6 @@ define([
          * Fetch items as crecords, for performance reasons (userviews slowed down the component a lot because of embedded records for instance)
          */
         findItems: function() {
-            console.log('>>> findItems');
             var me = this;
 
             var crecordtype = get(this, 'crecordtype');

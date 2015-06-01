@@ -21,7 +21,7 @@
 define([
     'canopsis/commit',
     'app/application',
-    'utils',
+    'app/lib/loaders/utils',
     'app/lib/registries',
     'app/lib/wrappersmanager',
     'app/lib/formsregistry',
