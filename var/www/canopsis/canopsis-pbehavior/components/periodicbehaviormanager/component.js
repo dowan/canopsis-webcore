@@ -77,6 +77,31 @@ define([
 
             var contextId = get(this, 'contextId');
             set(record, 'source', contextId);
+        },
+
+        tableColumns: [
+            {name: 'dtstart', title: __('From')},
+            {name: 'dtend', title: __('To')},
+            {name: 'freq', title: __('Frequency')},
+            {name: 'duration', title: __('Duration')},
+            {name: 'behaviors', title: __('Behaviors')},
+            {
+                title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-plus-sign"></span>'),
+                action: 'edit',
+                actionAll: 'addBehavior',
+                style: 'text-align: center;'
+            },
+            {
+                title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-trash"></span>'),
+                action: 'remove',
+                style: 'text-align: center;'
+            }
+        ],
+
+        actions: {
+            addBehavior: function() {
+                this.send('add', 'pbehavior');
+            }
         }
     });
 
