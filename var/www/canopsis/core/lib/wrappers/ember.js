@@ -43,22 +43,6 @@ define([
         }
     };
 
-    var language = i18n.lang;
-    console.log('i18n language:', language.toUpperCase(), 'translations:', i18n.translations);
-
-    if(!language) {
-        language = 'en';
-    }
-
-    var loc = Ember.String.loc;
-    Ember.String.loc = function (fieldToTranslate) {
-        i18n._(fieldToTranslate, true);
-        return loc(fieldToTranslate);
-    };
-
-
-    Ember.STRINGS = i18n.translations[language] || {};
-
     Ember.Controller.reopen(controllerDict);
     Ember.ArrayController.reopen(controllerDict);
     Ember.ObjectController.reopen(controllerDict);

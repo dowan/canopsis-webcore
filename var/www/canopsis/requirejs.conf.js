@@ -73,9 +73,25 @@ var setLoadingInfo = function(text, icon) {
     }
 };
 
-define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/objects/loader', 'jquery'], function(enabled, canopsisConfiguration) {
+define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18n', 'app/lib/objects/loader', 'jquery'], function(enabled, canopsisConfiguration, i18n) {
 
     enabled.getEnabledModules(function (enabledPlugins) {
+
+        var language = i18n.lang;
+        console.log('i18n language:', language.toUpperCase(), 'translations:', i18n.translations);
+
+        if(!language) {
+            language = 'en';
+        }
+
+        var loc = Ember.String.loc;
+        Ember.String.loc = function (fieldToTranslate) {
+            i18n._(fieldToTranslate, true);
+            return loc(fieldToTranslate);
+        };
+
+
+        Ember.STRINGS = i18n.translations[language] || {};
 
         setLoadingInfo('Fetching frontend bricks', 'fa-cubes');
         var deps = [];
@@ -96,7 +112,6 @@ define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/objects/l
         }
 
         deps.push('app/lib/wrappers/extend');
-        deps.push('app/lib/utils/i18n');
         deps.push('link');
 
         require(deps, function() {

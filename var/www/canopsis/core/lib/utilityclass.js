@@ -25,7 +25,7 @@ define([
         get = Ember.get;
 
     /**
-     * Singleton for handling utility objects in canopsis
+     * Class for handling utility objects in canopsis
      * Allow hooks on canopsis utility features
      *
      * @class Utility

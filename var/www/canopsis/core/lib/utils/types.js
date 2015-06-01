@@ -22,7 +22,7 @@ define([
     'app/lib/utilityclass'
 ], function(Ember, Utility) {
 
-    var typesUtils = Utility({
+    var typesUtils = Utility.create({
 
         name: 'types',
 
