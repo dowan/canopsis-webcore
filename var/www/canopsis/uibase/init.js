@@ -33,7 +33,7 @@ require.config({
 
         'moment': 'canopsis/uibase/lib/externals/moment/min/moment-with-locales.min',
         'jsoneditorlib': 'canopsis/uibase/lib/externals/jsoneditor/jsoneditor',
-        'ember-jsoneditor-lib': 'canopsis/uibase/lib/externals/ember-jsoneditor/build/lib',
+        'ember-jsoneditor-lib': 'canopsis/uibase/lib/externals/ember-jsoneditor/ember-jsoneditor',
         'd3': 'canopsis/uibase/lib/externals/d3/d3'
     },
     shim: {
