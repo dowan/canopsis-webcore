@@ -31,7 +31,7 @@ define([
         didInsertElement: function () {
             console.log('Recordinfopopup dom element');
 
-            $( window ).on('resize', function () {
+            $(window).on('resize', function () {
                 var left = ($(window).width() - $('#recordinfopopup').outerWidth()) / 2;
                 $('#recordinfopopup').css('left', left);
             });

@@ -38,18 +38,7 @@ define([
         },
 
         templateName:'widgetslot-default',
-        classNames: ['widgetslot'],
-
-        actions: {
-            minimize: function() {
-                console.log('minimize action', arguments);
-                if(get(this, 'minimized') === true) {
-                    set(this, 'minimized', false);
-                } else {
-                    set(this, 'minimized', true);
-                }
-            }
-        }
+        classNames: ['widgetslot']
     });
 
 

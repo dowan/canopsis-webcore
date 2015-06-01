@@ -20,7 +20,7 @@
 define([
     'app/lib/factories/wrapper',
     'app/lib/wrappers/jquery',
-    'webcore-libs/jquery-resize/jquery.ba-resize.min'
+    'app/lib/externals/jquery-resize/jquery.ba-resize.min'
 ], function(Wrapper) {
 
     Wrapper("jquery", $, arguments, '2.1.1');

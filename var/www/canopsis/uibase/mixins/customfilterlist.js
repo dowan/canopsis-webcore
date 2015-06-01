@@ -20,7 +20,7 @@
 define([
     'ember',
     'ember-data',
-    'utils',
+    'app/lib/loaders/utils',
     'app/lib/utils/data',
     'app/lib/utils/forms',
     'app/lib/utils/notification',

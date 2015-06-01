@@ -17,10 +17,13 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
+define(['ember', 'app/lib/utilityclass'], function(Ember, Utility) {
     var get = Ember.get;
 
-    var widgetsUtils = {
+    var widgetsUtils = Utility.create({
+
+        name: 'widgetsUtils',
+
         getParentViewForWidget: function(widget) {
             var currentItem = widget;
 
@@ -30,7 +33,7 @@ define(['ember'], function(Ember) {
 
             return currentItem;
         }
-    };
+    });
 
     return widgetsUtils;
 });

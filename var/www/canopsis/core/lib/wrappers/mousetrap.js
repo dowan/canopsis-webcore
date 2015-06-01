@@ -20,7 +20,7 @@
 define([
     'app/lib/factories/wrapper',
     'jquery',
-    'webcore-libs/mousetrap/mousetrap.min'
+    'app/lib/externals/mousetrap/mousetrap.min'
 ], function(Wrapper, $) {
 
     return Wrapper("mousetrap", Mousetrap, arguments, "1.4.6");

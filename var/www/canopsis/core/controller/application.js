@@ -37,7 +37,7 @@ define([
     'app/mixins/consolemanager',
     'app/mixins/promisemanager',
     'app/mixins/notifications',
-    'utils',
+    'app/lib/loaders/utils',
     'app/lib/utils/forms',
     'app/lib/utils/data',
     'app/lib/utils/hash',
@@ -45,7 +45,6 @@ define([
     'app/serializers/cservice',
     'app/lib/loaders/helpers',
     'app/lib/loaders/helpers',
-    'app/lib/wrappers/bootstrap',
     'app/lib/wrappers/mousetrap',
     'app/controller/recordinfopopup',
     'app/controller/formwrapper'
