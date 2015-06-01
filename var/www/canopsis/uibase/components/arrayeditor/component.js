@@ -175,11 +175,6 @@ define([
 
                 this.validate();
             },
-            editItem: function(item) {
-                console.log('editItem', item, get(this, 'form'), formsUtils);
-
-                formsUtils.showNew('arrayitemform', undefined, {formParent: get(this, 'form')});
-            },
             removeItem: function(item) {
                 console.log('removeItem', get(this, 'value'));
 

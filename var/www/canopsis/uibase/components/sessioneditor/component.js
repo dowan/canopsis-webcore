@@ -19,8 +19,8 @@
 
 define([
     'ember',
-    'utils'
-], function(Ember, cutils) {
+    'app/lib/utils/data'
+], function(Ember, dataUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -29,7 +29,9 @@ define([
     var component = Ember.Component.extend({
         fieldValue: function() {
             var key = this.get('attr.model.options.valueFrom');
-            var value = cutils.session[key];
+            var loginController = dataUtils.getLoggedUserController();
+
+            var value = loginController.get('record.' + key);
 
             console.group('editor-session');
             console.log('key:', key);

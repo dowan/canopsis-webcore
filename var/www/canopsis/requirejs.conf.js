@@ -251,7 +251,7 @@ define(['canopsis/enabled', 'plugins', 'canopsis/canopsisConfiguration', 'app/li
 
     enabled.getEnabledModules(function (enabledPlugins) {
 
-        setLoadingInfo('Fetching frontend plugin-ins', 'fa-cubes');
+        setLoadingInfo('Fetching frontend bricks', 'fa-cubes');
 
         var deps = [
             'app/lib/wrappers/extend',

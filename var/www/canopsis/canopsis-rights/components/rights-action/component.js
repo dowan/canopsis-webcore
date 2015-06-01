@@ -17,19 +17,33 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+
 define([
     'ember',
-    'app/lib/factories/form'
-], function(Ember, FormFactory) {
+    'canopsis/canopsis-rights/objects/rightsregistry'
+], function(Ember, rightsRegistry) {
 
-    var form = FormFactory('arrayitemform', {
-        needs: ['journal'],
+    var get = Ember.get,
+        set = Ember.set,
+        isNone = Ember.isNone,
+        __ = Ember.String.loc;
 
-        title: "configure arrayitem",
 
-        parentContainerWidget: Ember.required(),
-        parentUserview: Ember.required()
+    var component = Ember.Component.extend({
+        description: function() {
+            var value = get(this, 'value');
+
+            var action = rightsRegistry.getByName(value);
+            return action._data.desc;
+        }.property('value')
     });
 
-    return form;
+    Ember.Application.initializer({
+        name:"component-rights-action",
+        initialize: function(container, application) {
+            application.register('component:component-rights-action', component);
+        }
+    });
+
+    return component;
 });

@@ -21,11 +21,10 @@ define([
     'jquery',
     'ember',
     'app/lib/factories/widget',
-    'utils',
     'app/lib/utils/forms',
     'app/lib/utils/routes',
     'app/lib/wrappers/bootstrap'
-], function($, Ember, WidgetFactory, utils, formsUtils, routesUtils) {
+], function($, Ember, WidgetFactory, formsUtils, routesUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -36,21 +35,14 @@ define([
 
         currentViewId: Ember.computed.alias('controllers.application.currentViewId'),
 
-        user: Ember.computed.alias('controllers.login.record._id'),
-        rights: Ember.computed.alias('controllers.login.record.rights'),
-
         tagName: 'span',
 
-        userCanUpdateRecord: function() {
-            if(get(this, 'user') === "root") {
-                return true;
-            }
+        userCanEditView: true,
+        userCanCreateView: true,
 
-            var crecord_type = 'userview';
-
-            return get(this, 'rights.' + crecord_type + '_update.checksum');
-        }.property(),
-
+        isViewDisplayable: function(viewId) {
+            return true;
+        },
 
         preparedTabs: function() {
             var uimaintabcollectionController = this;
@@ -64,16 +56,13 @@ define([
                     set(item, 'isActive', false);
                 }
 
-                //FIXME stop using utils to store data!
-                if(get(utils, 'session._id') === "root") {
+
+                viewId = item.value;
+                viewId = viewId.replace('.', '_');
+                if (uimaintabcollectionController.isViewDisplayable(viewId)) {
                     set(item, 'displayable', true);
                 } else {
-                    viewId = item.value;
-                    if (get(utils, 'session.rights.showview_' + viewId.replace('.', '_'))) {
-                        set(item, 'displayable', true);
-                    } else {
-                        set(item, 'displayable', false);
-                    }
+                    set(item, 'displayable', false);
                 }
 
                 res.pushObject(item);

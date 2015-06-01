@@ -36,17 +36,7 @@ define([
         classNameBindings: ['dropdownContentMenu'],
 
         /**
-         * Method to close the dropdownbutton
-         * @method close
-         */
-        actions:{
-            close: function(){
-                this.toggleProperty('parentView.opened');
-            }
-        },
-
-        /**
-         * Method for defining a boolean value on dropdownContentMenu 
+         * Method for defining a boolean value on dropdownContentMenu
          * thanks to opened attribute
          * @method dropdownMenu
          * @return {boolean}
@@ -54,7 +44,7 @@ define([
         dropdownContentMenu: function(){
            return get(this, 'parentView.opened');
         }.property('parentView.opened'),
-        
+
         attributeBindings: ['aria-labelledby'],
         'aria-labelledby': 'dropdownMenu1'
     });
