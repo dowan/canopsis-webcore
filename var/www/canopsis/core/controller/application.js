@@ -190,8 +190,6 @@ define([
                 $('title').html(title);
             }
 
-            //TODO refactor this in application route
-
             console.groupEnd();
             this.refreshPartialsList();
             this._super.apply(this, arguments);
@@ -229,6 +227,10 @@ define([
                     conf.save();
                 });
             }
+        },
+
+        didSaveView: function(userview) {
+            this.transitionToRoute("/userview/" + get(userview, 'id'));
         },
 
         actions: {
@@ -362,6 +364,7 @@ define([
                 console.log("add", type);
 
                 var containerwidgetId = hashUtils.generateId('container');
+                var viewId = hashUtils.generateId('userview');
 
                 dataUtils.getStore().createRecord('widgetcontainer', {
                     xtype: 'widgetcontainer',
@@ -371,12 +374,17 @@ define([
                     id: containerwidgetId
                 });
 
+                var userId = get(this, 'controllers.login.record._id');
+
                 var userview = dataUtils.getStore().push(type, {
-                    id: hashUtils.generateId('userview'),
+                    id: viewId,
                     crecord_type: 'view',
+                    author: userId,
                     containerwidget: containerwidgetId,
                     containerwidgetType: 'widgetcontainer'
                 });
+
+                var formattedViewId = viewId.replace('.', '_');
 
                 console.log('temp record', userview);
 
@@ -384,8 +392,9 @@ define([
 
                 recordWizard.submit.done(function() {
                     set(applicationController, 'isLoading', get(applicationController, 'isLoading') + 1);
-                    userview.save();
-                    applicationController.transitionToRoute("/userview/" + get(userview, 'id'));
+                    userview.save().then(function() {
+                        applicationController.didSaveView(userview);
+                    });
                 });
             },
 

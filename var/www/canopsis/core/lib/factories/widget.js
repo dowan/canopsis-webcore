@@ -21,10 +21,10 @@ define([
     'app/application',
     'app/controller/widget',
     'app/lib/widgetsregistry',
-    'app/serializers/userview',
+    'app/serializers/widget',
     'app/lib/utils/notification',
     'app/lib/loaders/schemas'
-], function(Application, WidgetController, WidgetsRegistry, UserviewSerializer, notificationUtils) {
+], function(Application, WidgetController, WidgetsRegistry, WidgetSerializer, notificationUtils) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -78,9 +78,9 @@ define([
 
             loader.register('controller:' + widgetControllerName, controllerClass);
 
-            //dynamically create an adapter that implements EmbeddedRecordMixin if a custom adapter is not already defined in Application
+            //dynamically create a serializer that implements EmbeddedRecordMixin if a custom serializer is not already defined in Application
             if(isNone(get(Application, widgetSerializerName))) {
-                loader.register('serializer:' + widgetSerializerName, UserviewSerializer.extend());
+                loader.register('serializer:' + widgetSerializerName, WidgetSerializer.extend());
             }
 
             console.log("widget", widgetName.camelize().capitalize(), Application[widgetName.camelize().capitalize()]);

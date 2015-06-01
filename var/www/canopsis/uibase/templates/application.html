@@ -53,7 +53,7 @@
                             <i class="fa fa-desktop"></i> <span>{{tr 'Dashboard'}}</span>
                         </a>
                     </li>
-                        {{#if controller.utils.session.rights.menu_aclconfig.checksum}}
+                        {{#if controller.controllers.login.record.rights.menu_aclconfig.checksum}}
                             <li class="treeview">
                                 <a href="#">
                                     <i class="fa fa-group"></i>
@@ -67,7 +67,7 @@
                                 </ul>
                             </li>
                         {{/if}}
-                        {{#if controller.utils.session.rights.menu_authsystems.checksum}}
+                        {{#if controller.controllers.login.record.rights.menu_authsystems.checksum}}
                             <li class="treeview">
                                 <a href="#">
                                     <i class="fa fa-key"></i>
@@ -81,7 +81,7 @@
                                 </ul>
                             </li>
                         {{/if}}
-                        {{#if controller.utils.session.rights.menu_enginesconfig.checksum}}
+                        {{#if controller.controllers.login.record.rights.menu_enginesconfig.checksum}}
                             <li class="treeview">
                                 <a href="#">
                                     <i class="fa fa-cogs"></i>
@@ -114,7 +114,7 @@
                                 </ul>
                             </li>
                         {{/if}}
-                        {{#if controller.utils.session.rights.menu_pluginsconfig.checksum}}
+                        {{#if controller.controllers.login.record.rights.menu_pluginsconfig.checksum}}
                             {{#each plugin in controller.plugins}}
                                 <li>
                                     <a {{action plugin.action plugin.param}}>
@@ -123,7 +123,7 @@
                                 </li>
                             {{/each}}
                         {{/if}}
-                        {{#if controller.utils.session.rights.menu_uisettings.checksum}}
+                        {{#if controller.controllers.login.record.rights.menu_uisettings.checksum}}
                             <li class="treeview">
                                 <a href="#">
                                     <i class="fa fa-wrench"></i>

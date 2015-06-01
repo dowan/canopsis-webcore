@@ -30,9 +30,6 @@ define([
 
 
     loader.register('serializer:userview', serializerClass);
-    loader.register('serializer:widgetwrapper', serializerClass.extend());
-    loader.register('serializer:widget', serializerClass.extend());
-    loader.register('serializer:ticket', serializerClass.extend());
 
     return serializerClass;
 });

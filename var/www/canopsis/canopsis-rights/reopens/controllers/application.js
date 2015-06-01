@@ -17,8 +17,35 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var mixins = [
-    { name: 'uiv1weathertheme', url: 'canopsis/uiv1_themes/mixins/uiv1weathertheme', classes: ["theme"]}
-];
+define([
+    'ember',
+    'app/controller/application',
+    'canopsis/canopsis-rights/objects/rightsregistry'
+], function(
+    Ember,
+    Applicationcontroller,
+    rightsRegistry) {
 
-loader.loadWithTemplates(mixins);
+    var get = Ember.get,
+        set = Ember.set,
+        isNone = Ember.isNone,
+        __ = Ember.String.loc;
+
+
+    /**
+     * @class ApplicationController
+     * @extends PartialslotAbleController
+     * @constructor
+     * @description ApplicationController reopen
+     */
+    Applicationcontroller.reopen({
+        /**
+         * @property rightsRegistry
+         * @type Object
+         * @description Reference to the rights registry
+         */
+        rightsRegistry: rightsRegistry
+    });
+
+    return Applicationcontroller;
+});

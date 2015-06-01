@@ -148,30 +148,33 @@ define([
 
         allClasses: function() {
             var searchFilter = get(this, 'searchFilter');
-            var res;
+            var res = get(this, 'content.all');
 
-            var component = this;
-            res = get(this, 'content.all').filter(function(item, index, enumerable){
-                console.log('filter', item);
-                var systemClass = component.get('content.byClass.system');
+            if(!isNone(res)) {
+                var component = this;
+                res = get(this, 'content.all').filter(function(item, index, enumerable){
+                    console.log('filter', item);
+                    var systemClass = component.get('content.byClass.system');
 
-                if(!isNone(systemClass)) {
-                    if(systemClass.filterBy('name', item.get('name')).length > 0) {
-                        console.log('filtered!', item);
-                        return false;
+                    if(!isNone(systemClass)) {
+                        if(systemClass.filterBy('name', item.get('name')).length > 0) {
+                            console.log('filtered!', item);
+                            return false;
+                        }
                     }
-                }
 
-                return true;
-            });
-
-            //TODO use searchmethodsregistry instead of plain old static code
-            if(searchFilter !== '') {
-                res = res.filter(function(item, index, enumerable){
-                    var doesItStartsWithSearchFilter = item.name.slice(0, searchFilter.length) == searchFilter;
-                    return doesItStartsWithSearchFilter;
+                    return true;
                 });
+
+                //TODO use searchmethodsregistry instead of plain old static code
+                if(searchFilter !== '') {
+                    res = res.filter(function(item, index, enumerable){
+                        var doesItStartsWithSearchFilter = item.name.slice(0, searchFilter.length) == searchFilter;
+                        return doesItStartsWithSearchFilter;
+                    });
+                }
             }
+
 
             console.log('recompute allClasses', res);
             return res;

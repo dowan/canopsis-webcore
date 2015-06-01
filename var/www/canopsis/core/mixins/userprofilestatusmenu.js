@@ -54,7 +54,7 @@ define([
             showUserProfile: function () {
                 var applicationController = this;
 
-                var ouser = get(utils, 'session');
+                var ouser = get(this, 'controllers.login.record');
                 var recordWizard = formsUtils.showNew('modelform', ouser, {
                     title: get(ouser, '_id') + ' ' + __('profile'),
                     filterFieldByKey: {
