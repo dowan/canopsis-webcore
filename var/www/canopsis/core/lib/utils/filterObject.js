@@ -17,9 +17,12 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/application'], function(Application) {
+define(['app/application', 'app/lib/utilityclass'], function(Application, Utility) {
 
-    var filterObjectUtils = {
+    var filterObjectUtils = Utility.create({
+
+        name: 'filterObject',
+
         getFieldsByPrefix: function( prefix , record, callback , contentREF , _self  ) {
             var resultISString =  typeof (contentREF) === "string" ;
             var result = ( resultISString )? contentREF :  contentREF || Ember.A();
@@ -40,7 +43,7 @@ define(['app/application'], function(Application) {
 
             return result;
         }
-    };
+    });
 
     return filterObjectUtils;
 });

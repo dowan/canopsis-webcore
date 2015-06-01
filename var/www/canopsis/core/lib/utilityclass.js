@@ -17,23 +17,26 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember', 'app/lib/utilityclass'], function(Ember, Utility) {
-    var get = Ember.get;
+define([
+    'ember',
+], function(Ember) {
 
-    var widgetsUtils = Utility.create({
+    var set = Ember.set,
+        get = Ember.get;
 
-        name: 'widgetsUtils',
+    /**
+     * Singleton for handling utility objects in canopsis
+     *
+     * @class Utility
+     */
+    var Utility = Ember.Object.extend({
 
-        getParentViewForWidget: function(widget) {
-            var currentItem = widget;
-
-            while (get(currentItem, 'crecord_type') !== 'view') {
-                currentItem = get(currentItem, 'target');
-            }
-
-            return currentItem;
+        init: function() {
+            this._super();
+            console.log('Registering utility object ' + get(this, 'name'));
         }
+
     });
 
-    return widgetsUtils;
+    return Utility;
 });
