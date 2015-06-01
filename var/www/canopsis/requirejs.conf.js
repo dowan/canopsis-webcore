@@ -77,7 +77,7 @@ define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/objects/l
 
     enabled.getEnabledModules(function (enabledPlugins) {
 
-        setLoadingInfo('Fetching frontend plugin-ins', 'fa-cubes');
+        setLoadingInfo('Fetching frontend bricks', 'fa-cubes');
         var deps = [];
 
         for (var i = 0; i < enabledPlugins.length; i++) {
