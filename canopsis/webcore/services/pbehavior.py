@@ -47,7 +47,7 @@ def exports(ws):
         :rtype: list
         """
 
-        query = pbm.get_query(behaviors)
+        query = PBehaviorManager.get_query(behaviors)
 
         entity_ids = ensure_iterable(entity_ids)
 
