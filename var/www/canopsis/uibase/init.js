@@ -17,6 +17,47 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+require.config({
+    paths: {
+        'bootstrap': 'canopsis/uibase/lib/externals/bootstrap/dist/js/bootstrap.min',
+        'datetimepicker': 'canopsis/uibase/libwrappers/datetimepicker',
+        'icheck': 'canopsis/uibase/lib/externals/iCheck/icheck',
+        'codemirror': 'canopsis/uibase/lib/externals/codemirror/lib/codemirror',
+        'summernote': 'canopsis/uibase/lib/externals/summernote/dist/summernote',
+        'ember-summernote': 'canopsis/uibase/lib/externals/ember-summernote/lib/component',
+        'daterangepicker': 'canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker',
+
+        'rrule': 'canopsis/uibase/lib/externals/kb-rrule/lib/rrule',
+        'nlp': 'canopsis/uibase/lib/externals/kb-rrule/lib/nlp',
+        'underscore' : 'canopsis/uibase/libwrappers/underscore',
+
+        'moment': 'canopsis/uibase/lib/externals/moment/min/moment-with-locales.min',
+        'jsoneditorlib': 'canopsis/uibase/lib/externals/jsoneditor/jsoneditor',
+        'ember-jsoneditor-lib': 'canopsis/uibase/lib/externals/ember-jsoneditor/build/lib',
+        'd3': 'canopsis/uibase/lib/externals/d3/d3'
+    },
+    shim: {
+        'rrule': {
+             deps: ['jquery', 'underscore']
+        },
+        'nlp': {
+             deps: ['jquery', 'rrule', 'underscore']
+        },
+        'bootstrap': {
+            deps: ['jquery']
+        },
+        'datetimepicker': {
+            deps: ['jquery', 'moment', 'bootstrap']
+        },
+        'icheck': {
+            deps: ['jquery']
+        },
+        'jsoneditorlib': {
+            deps: ['ember']
+        }
+    }
+});
+
 define([
     'canopsis/uibase/lib/loaders/editors',
     'canopsis/uibase/lib/loaders/widgets',
@@ -24,5 +65,16 @@ define([
     'canopsis/uibase/lib/loaders/renderers',
     'canopsis/uibase/lib/loaders/templates',
     'canopsis/uibase/lib/loaders/helpers',
-    'canopsis/uibase/lib/loaders/mixins'
+    'canopsis/uibase/lib/loaders/mixins',
+    'canopsis/uibase/libwrappers/bootstrap',
+    'canopsis/uibase/libwrappers/jsoneditor',
+    'canopsis/uibase/libwrappers/summernote',
+    'canopsis/uibase/libwrappers/codemirror',
+    'canopsis/uibase/lib/externals/ember-datetimepicker/lib/component',
+    'canopsis/uibase/lib/externals/ember-icheck/lib/component',
+    'canopsis/uibase/lib/externals/ember-tooltip/lib/component',
+    'canopsis/uibase/lib/externals/ember-durationcombo/lib/component',
+    'link!canopsis/uibase/lib/externals/fontawesome/css/font-awesome.min.css',
+    'link!canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker-bs3.css'
 ], function () {});
+

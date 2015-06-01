@@ -40,7 +40,6 @@ define([
         var mixinOptions = {};
 
         if(mixinsNames) {
-
             for (var i = 0, l = mixinsNames.length; i < l; i++) {
                 var currentName = mixinsNames[i];
 
@@ -242,13 +241,7 @@ define([
         unregisterHooks: function() {
             get(this, "controller").off('refresh', this, this.rerender);
             return this._super();
-        },
-
-        rerender: function() {
-            console.info('refreshing widget');
-            this._super.apply(this, arguments);
         }
-
     });
 
 

@@ -31,10 +31,6 @@ define([
         templateName: 'listline',
         classNames: ['listline'],
 
-        init: function() {
-            this._super.apply(this, arguments);
-        },
-
         checkChanged: function() {
             var checkbox = this.$('.toggle');
             if(checkbox !== undefined) {

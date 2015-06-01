@@ -17,9 +17,31 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+require.config({
+    paths: {
+        'css3-mediaqueries': 'canopsis/core/lib/externals/min/css3-mediaqueries',
+        'math': 'canopsis/core/lib/externals/mathjs/dist/math',
+        'hashes': 'canopsis/core/lib/externals/jshashes/hashes',
+
+        //TODO move this in uibase
+        'jsonselect': 'canopsis/core/lib/wrappers/jsonselect'
+    }
+});
+
 define([
     'app/application',
-    'runtime.conf',
+    'canopsis/runtime.conf',
+    'app/controller/application',
+    'app/controller/formwrapper',
+    'app/controller/login',
+    'app/controller/userview',
+    'app/controller/widget',
+    'app/view/application',
+    'app/view/formwrapper',
+    'app/view/editor',
+    'app/view/widget',
+    'app/view/validationtextfield',
+    'app/view/validationtextarea',
     'app/serializers/application',
     'app/serializers/ctxmetric',
     'app/serializers/ctxcomponent',
@@ -32,12 +54,8 @@ define([
     'app/serializers/ctxselector',
     'app/serializers/ctxtopology',
     'app/serializers/linklist',
-    'app/lib/wrappers/bootstrap',
-    'app/lib/wrappers/hint',
-    'app/lib/wrappers/swag',
     'app/lib/wrappers/console',
     'app/lib/wrappers/ionicons',
-    'app/lib/wrappers/jsoneditor',
     'app/lib/loaders/attributepresets',
     'app/lib/loaders/forms',
     'app/lib/loaders/validators',

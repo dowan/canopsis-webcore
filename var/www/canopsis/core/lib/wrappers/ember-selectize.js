@@ -19,11 +19,11 @@
 
 define([
     'app/lib/factories/wrapper',
-    'webcore-libs/selectize/dist/js/selectize',
-    'link!webcore-libs/selectize/dist/css/selectize.bootstrap3.css'
+    'app/core/lib/externals/selectize/dist/js/selectize',
+    'link!canopsis/core/lib/externals/selectize/dist/css/selectize.bootstrap3.css'
 ], function(Wrapper, $) {
 
-    require(['webcore-libs/ember-selectize/src/ember.selectize'], function() {
+    require(['app/core/lib/externals/ember-selectize/src/ember.selectize'], function() {
         return Wrapper("ember-selectize", undefined, arguments);
     });
 });

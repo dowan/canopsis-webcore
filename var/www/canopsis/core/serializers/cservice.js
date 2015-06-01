@@ -21,15 +21,16 @@ define([
     'ember-data',
     'app/serializers/application',
     'app/mixins/embeddedrecordserializer',
-    'utils'
-], function(DS, ApplicationSerializer, EmbeddedRecordSerializerMixin, cutils) {
+    'app/lib/loaders/utils'
+], function(DS, ApplicationSerializer, EmbeddedRecordSerializerMixin, utils) {
 
     var serializer = ApplicationSerializer.extend(
         EmbeddedRecordSerializerMixin,
         {}
     );
 
-    for(var sname in cutils.schemaList) {
+    //TODO don't use utils.schemaList, it is deprecated. Use registries
+    for(var sname in utils.schemaList) {
         if(sname.indexOf('Crecord.cservice.') === 0) {
             var xtype = sname.slice('Crecord.cservice.'.length);
             var modelname = xtype[0].toUpperCase() + xtype.slice(1);

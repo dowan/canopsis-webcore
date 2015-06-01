@@ -1,5 +1,5 @@
-@import url(/static/webcore-libs/css/AdminLTE_extra.css);
-/*! 
+@import url(/static/canopsis/canopsis-ui/lib/adminlte/AdminLTE_extra.css);
+/*!
  *   AdminLTE v1.2
  *   Author: AlmsaeedStudio.com
  *   License: Open source - MIT
@@ -15,7 +15,7 @@ html,
   font-family: 'Source Sans Pro', sans-serif;
   -webkit-font-smoothing: antialiased;
   min-height: 100%;
-  background: url("/static/canopsis/media/background.jpg") no-repeat center fixed; 
+  background: url("/static/canopsis/media/background.jpg") no-repeat center fixed;
   -webkit-background-size: cover; /* pour Chrome et Safari */
   -moz-background-size: cover; /* pour Firefox */
   -o-background-size: cover; /* pour Opera */
@@ -29,13 +29,13 @@ body.bg-video {
 }
 
 #video_background {
- opacity:0.5; 
+ opacity:0.5;
  z-index: 0 !important;
   -webkit-filter: blur(10px);
   -moz-filter: blur(10px);
   -o-filter: blur(10px);
   -ms-filter: blur(10px);
-  filter: blur(10px);	
+  filter: blur(10px);
 }
 
 a {
@@ -98,7 +98,7 @@ font-size: 12px;
 border-radius: 5px 0 0 5px;
 font-weight: 100;
 text-align: center;
-margin-top: -12px;} 
+margin-top: -12px;}
 .left-side.collapse-left #togglenavigationbot .fa-chevron-left {display:none;}
 .left-side #togglenavigationbot .fa-chevron-left {display:block;}
 
@@ -109,7 +109,7 @@ margin-top: -12px;}
   .left-side {
     top: 50px;
   }
-  
+
 	#togglenavigationtop {display:none;}
   /*Right side strech mode*/
   .right-side.strech {
@@ -123,25 +123,25 @@ margin-top: -12px;}
     left: 0px;
      width:30px;
   }
-  
-  .left-side.collapse-left a span{ 
+
+  .left-side.collapse-left a span{
        display:none;
   }
-  
-  .left-side.collapse-left .sidebar .sidebar-menu  > li:hover > a { 
+
+  .left-side.collapse-left .sidebar .sidebar-menu  > li:hover > a {
   	z-index: 999999;
 	position: relative;
 	width: 200px;
-	background:#1e3956;  	
+	background:#1e3956;
   	}
   	.left-side.collapse-left .sidebar .sidebar-menu  > li#togglenavigationbot:hover > a {
   	width: auto;
   	}
-  	
+
   	.left-side.collapse-left .sidebar .sidebar-menu > li.active > a {
-  	background:#0b1928 !important;;  
+  	background:#0b1928 !important;;
   	}
-  
+
   .left-side.collapse-left .sidebar .sidebar-menu  > li:hover > a span {
   	display: inline-block;
 	 }
@@ -162,27 +162,27 @@ margin-top: -12px;}
 	width: 170px;
 	background: #39608b;
   }
-  
+
   .left-side.collapse-left .sidebar .sidebar-menu  > li > a {
   	background:#1e3956 !important;
   	padding:12px 0px 12px 8px;
   }
   .left-side.collapse-left .sidebar .sidebar-menu  > li > a > .badge {
    display:none;
-  } 
-  .left-side.collapse-left .sidebar .sidebar-menu  > li > a > .fa-angle-left { 
+  }
+  .left-side.collapse-left .sidebar .sidebar-menu  > li > a > .fa-angle-left {
    display:none;
-  } 
-  
-  
+  }
+
+
 }
 /*Give content full width on xs screens*/
 @media screen and (max-width: 992px) {
   .right-side {
     margin-left: 0;
   }
-  
- 
+
+
  #togglenavigationbot {display:none;}
 }
 /*
@@ -726,7 +726,7 @@ body .ember-view > .header .logo .icon {
     left: 0px;
   }
 }
-/* 
+/*
     Dropdown menus
 ----------------------------
 */
@@ -1107,7 +1107,7 @@ body .ember-view > .header .logo .icon {
     left: auto;
   }
 }
-/* 
+/*
    All form elements including input, select, textarea etc.
 -----------------------------------------------------------------
 */
@@ -1157,7 +1157,7 @@ body .ember-view > .header .logo .icon {
 .radio {
   padding-left: 0;
 }
-/* 
+/*
     Compenent: Progress bars
 --------------------------------
 */
@@ -2001,7 +2001,7 @@ Component: timeline
   -moz-border-radius: 50%;
   border-radius: 50%;
 }
-/* 
+/*
     Component: callout
 ------------------------
 */
@@ -2041,7 +2041,7 @@ Component: timeline
 .callout.callout-info h4 {
   color: #3A87AD;
 }
-/* 
+/*
     Component: alert
 ------------------------
 */
@@ -2346,7 +2346,7 @@ Component: timeline
   margin-top: 30px;
   text-align: center;
 }
-/* 
+/*
     Page: register and login
 */
 .form-box {
@@ -2413,7 +2413,7 @@ color: #fff;
     width: 90%;
   }
 }
-/* 
+/*
     Page: 404 and 500 error pages
 ------------------------------------
 */
@@ -2463,7 +2463,7 @@ color: #fff;
 .error-page:after {
   clear: both;
 }
-/* 
+/*
     Page: Invoice
 */
 .invoice {
@@ -2496,17 +2496,17 @@ color: #fff;
     white-space: normal!important;
   }
 }
-/* 
+/*
     Skins
     -----
 */
-/* 
-    Skin Blue 
+/*
+    Skin Blue
     ---------
 */
 /* skin-blue navbar */
 .skin-blue .navbar {
-  
+
 }
 .skin-blue .navbar .nav a {
   color: rgba(255, 255, 255, 0.8);
@@ -2559,7 +2559,7 @@ color: #fff;
 }
 .skin-blue .sidebar > .sidebar-menu > li {
   border-top: 1px solid rgba(255, 255, 255, 0.34);
- 
+
 }
 .skin-blue .sidebar > .sidebar-menu > li:first-of-type {
   border-top: 1px solid #dbdbdb;
@@ -3501,9 +3501,9 @@ fieldset[disabled] .btn-vk.active {
 padding: 0px 10px;}
 
 /*
- * 
+ *
  * Add spec for Canopsis UI
- * 
+ *
  */
 
 table.table tr td span.badge {font-size:14px;}
@@ -3512,8 +3512,8 @@ table.table tr:hover > td {background:#E2E2E2;}
 
 table.table .badge.bg-yellow {background-color:#FFE000 !important;color: rgba(0, 0, 0, 0.57) !important;}
 table.table .badge.bg-orange {background-color:#FF9900 !important;color: rgba(0, 0, 0, 0.57) !important;}
-table.table .badge.bg-red {background-color:#CF0000 !important;} 
-table.table .badge.bg-green {color: rgba(0, 0, 0, 0.57) !important;}   
+table.table .badge.bg-red {background-color:#CF0000 !important;}
+table.table .badge.bg-green {color: rgba(0, 0, 0, 0.57) !important;}
 table.table tr.highlight > td {background:#fcf8e3;}
 
 #contextMenu {
@@ -3542,19 +3542,19 @@ margin-right: 20px;
 
 .small-box h2 {margin:0;}
 
-.dataTable td p {word-wrap: break-word;} 
+.dataTable td p {word-wrap: break-word;}
 /*
- * 
- * 
- *  Service View 
- * 
- * 
- * 
+ *
+ *
+ *  Service View
+ *
+ *
+ *
  */
 a.small-box-footer.full {width: 100%;
 position: absolute;
-height: 100%;left:0;  
-top: 0;z-index:55; 
+height: 100%;left:0;
+top: 0;z-index:55;
 background: rgba(0, 0, 0, 0);}
 a.small-box-footer.full:hover{background: rgba(0, 0, 0, 0.15);}
 .row.unmarged {margin-right:0;margin-left:0;}
@@ -3564,6 +3564,6 @@ a.small-box-footer.full:hover{background: rgba(0, 0, 0, 0.15);}
 .small-box .icon {top: -20px;
 bottom:auto; }
 
-.row.unmarged .small-box {border:2px solid rgba(255, 255, 255, 0.7);} 
+.row.unmarged .small-box {border:2px solid rgba(255, 255, 255, 0.7);}
 
 .nav-tabs h4 {margin:0;}
