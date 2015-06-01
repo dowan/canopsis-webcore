@@ -48,12 +48,12 @@ define([
 
             this.refreshContent();
             this.on('refresh', this.refreshContent);
-
-            /* call mixin method to initialize mixin */
-            this.mixinsOptionsReady();
         },
 
         refreshContent: function() {
+            console.group('Fetching periodic behaviors');
+            console.log('context:', get(this, 'contextId'));
+
             var store = get(this, 'widgetDataStore'),
                 ctrl = this;
 
@@ -65,8 +65,11 @@ define([
             ).then(
                 function(result) {
                     set(ctrl, 'behaviors', get(result, 'content'));
+                    console.log('behaviors:', get(ctrl, 'behaviors'));
                 }
             );
+
+            console.groupEnd();
         },
 
         onRecordReady: function(record) {
