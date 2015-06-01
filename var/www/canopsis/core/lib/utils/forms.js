@@ -21,14 +21,18 @@ define([
     'ember',
     'app/application',
     'app/lib/utils/routes',
-    'app/lib/formsregistry'
-], function(Ember, Application, routesUtils, formsregistry) {
+    'app/lib/formsregistry',
+    'app/lib/utilityclass'
+], function(Ember, Application, routesUtils, formsregistry, Utility) {
 
     var get = Ember.get,
         set = Ember.set,
         __ = Ember.String.loc;
 
-    var formUtils = {
+    var formUtils = Utility.create({
+
+        name: 'forms',
+
         instantiateForm: function(formName, formContext, options) {
             void (formContext);
 
@@ -131,7 +135,7 @@ define([
         addRecord: function(record_type) {
             routesUtils.getCurrentRouteController().send('show_add_crecord_form', record_type);
         }
-    };
+    });
 
     return formUtils;
 });

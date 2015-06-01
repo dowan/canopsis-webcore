@@ -20,9 +20,8 @@
 define([
     'ember',
     'app/lib/utils/forms',
-    'app/lib/utils/slug',
     'app/lib/factories/mixin'
-], function(Ember, formUtils , slugify, Mixin) {
+], function(Ember, formUtils , Mixin) {
 
     var get = Ember.get,
         set = Ember.set;

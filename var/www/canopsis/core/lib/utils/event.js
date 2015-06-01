@@ -18,15 +18,18 @@
 */
 
 define([
-    'ember'
-], function(Ember) {
+    'ember',
+    'app/lib/utilityclass'
+], function(Ember, Utility) {
 
     var get = Ember.get,
         set = Ember.set,
         __ = Ember.String.loc,
         isNone = Ember.isNone;
 
-    var eventUtil= {
+    var eventUtil= Utility.create({
+
+        name: 'event',
 
         getFields: function() {
             return [
@@ -42,7 +45,7 @@ define([
                 'output'
             ];
         },
-    };
+    });
 
     return eventUtil;
 });

@@ -17,9 +17,12 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/application'], function(Application) {
+define(['app/application', 'app/lib/utilityclass'], function(Application, Utility) {
 
-    var routesUtils = {
+    var routesUtils = Utility.create({
+
+        name: 'routes',
+
         getCurrentRouteController: function() {
             var currentHandlers = Application.__container__.lookup("router:main").router.currentHandlerInfos;
             var currentRouteController = currentHandlers[currentHandlers.length - 1].handler.controller;
@@ -34,7 +37,7 @@ define(['app/application'], function(Application) {
             return Application.__container__.lookup("router:main").router.currentHandlerInfos[1].params.userview_id;
         }
 
-    };
+    });
 
     return routesUtils;
 });
