@@ -42,7 +42,17 @@ define([
         },
 
         didInsertElement: function () {
-            this.loadMib();
+            var snmpoidComponent = this;
+
+            snmpoidComponent.loadMib();
+
+            snmpoidComponent.$('.moduleSearch').focusin(function () {
+                snmpoidComponent.onModuleSearch();
+            });
+
+            snmpoidComponent.$('.searchPanel').mouseleave(function () {
+                set(snmpoidComponent, 'showModules', false);
+            });
         },
 
         loadMib: function () {
@@ -91,7 +101,6 @@ define([
         },
 
         onModuleSearch: function () {
-
             //avoid loop search when item selected from list and label re-set
             if (get(this, 'noSearchModule')) {
                 set(this, 'noSearchModule', false);
@@ -99,41 +108,38 @@ define([
             }
             var snmpoidComponent = this;
 
-            var search = get(this, 'moduleName');
+            var search = get(this, 'moduleName') || '';
 
-            if (search.length >= 3) {
+            console.log('perform search', search);
 
-                console.log('perform search', search);
+            var query = {
+                'nodetype': 'notification',
+                'moduleName' : {'$regex': '.*' + search + '.*','$options':'i'}
+            };
 
-                var query = {
-                    'nodetype': 'notification',
-                    'moduleName' : {'$regex': '.*' + search + '.*','$options':'i'}
-                };
+            var adapter = Application.__container__.lookup('adapter:snmpmib');
 
-                var adapter = Application.__container__.lookup('adapter:snmpmib');
-
-                //Do query to snmp api
-                adapter.findMib(
-                    'snmpmib',
-                    {
-                        query: JSON.stringify(query),
-                        limit: 10,
+            //Do query to snmp api
+            adapter.findMib(
+                'snmpmib',
+                {
+                    query: JSON.stringify(query),
+                    limit: 10,
+                }
+            ).then(function(results) {
+                if (results.success && results.data.length) {
+                    console.log('found', results.data);
+                    set(snmpoidComponent, 'showModules', true);
+                    var len = results.data.length;
+                    var modules = {};
+                    for(var i=0; i<len; i++) {
+                        modules[results.data[i].moduleName] = 1;
                     }
-                ).then(function(results) {
-                    if (results.success && results.data.length) {
-                        console.log('found', results.data);
-                        set(snmpoidComponent, 'showModules', true);
-                        var len = results.data.length;
-                        var modules = {};
-                        for(var i=0; i<len; i++) {
-                            modules[results.data[i].moduleName] = 1;
-                        }
-                        var modulesList = Object.keys(modules);
-                        set(snmpoidComponent, 'modulesElements', modulesList);
+                    var modulesList = Object.keys(modules);
+                    set(snmpoidComponent, 'modulesElements', modulesList);
 
-                    }
-                });
-            }
+                }
+            });
         }.observes('moduleName'),
 
 

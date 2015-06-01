@@ -47,7 +47,7 @@ define([
 
         didInsertElement: function () {
             var snmpElementComponent = this;
-            snmpElementComponent.$().mouseenter(function () {
+            snmpElementComponent.$().focusin(function () {
                 console.log('show options');
                 set(snmpElementComponent, 'showObjects', true);
             });

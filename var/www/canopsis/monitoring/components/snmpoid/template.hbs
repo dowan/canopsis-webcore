@@ -1,8 +1,8 @@
 <div class="row">
-      <div class="col-xs-6">
-        {{input class="form-control pull-left" value=moduleName type='text' placeholder=selectModuleLabel}}
+      <div class="searchPanel col-xs-6">
+        {{input class="form-control pull-left moduleSearch" value=moduleName type='text' placeholder=selectModuleLabel}}
         {{#if showModules}}
-            <ul class="list-group" style="position:absolute;z-index:100;top:35px">
+            <ul class="list-group scrollableList" style="position:absolute;z-index:100;top:35px">
                 {{#each modulesElement in modulesElements}}
                     <li class="list-group-item">
                         <a href="#" {{action 'setModule' modulesElement}}>{{modulesElement}}</a>
