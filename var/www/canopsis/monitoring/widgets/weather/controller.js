@@ -114,7 +114,8 @@ define([
         fetchStates: function () {
 
             var that = this;
-            var eventMetas = get(weatherWidget, 'config.event_selection'),
+
+            var eventMetas = get(that, 'config.event_selection'),
                 rks = [];
 
             console.log('rk information for weather', rks);
