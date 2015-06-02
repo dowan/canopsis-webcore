@@ -71,7 +71,7 @@ def exports(ws):
         :rtype: list
         """
 
-        result = cm.put(source=source, vevent=vevents, info=info)
+        result = cm.put(source=source, vevents=calendar)
 
         return result
 
@@ -89,10 +89,11 @@ def exports(ws):
         result = cm.remove(uids=uids)
 
         return result
+    query_test = {"category": "1"}
 
     @route(ws.application.get, name='calendar/values')
     def values(
-        sources=None, dtstart=None, dtend=None, info=None,
+        sources=None, dtstart=None, dtend=None, query=query_test,
         limit=0, skip=0, sort=None, projection=None, with_count=False
     ):
         """Get source vevent document values.
@@ -101,7 +102,7 @@ def exports(ws):
             sources.
         :param int dtstart: vevent dtstart (default 0).
         :param int dtend: vevent dtend (default sys.maxsize).
-        :param dict info: vevent information if given.
+        :param dict query: vevent information if given.
         :param int limit: max number of elements to get.
         :param int skip: first element index among searched list.
         :param sort: contains a list of couples of field (name, ASC/DESC)
@@ -115,7 +116,7 @@ def exports(ws):
         """
 
         result = cm.values(
-            sources=sources, dtstart=dtstart, dtend=dtend, info=info,
+            sources=sources, dtstart=dtstart, dtend=dtend, query=query,
             limit=limit, skip=skip, sort=sort, projection=projection,
             with_count=with_count
         )
