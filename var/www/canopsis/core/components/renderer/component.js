@@ -52,8 +52,10 @@ define([
                     if(!isNone(role)) {
                         var renderer = 'renderer-' + role;
 
-                        console.log('rendererType:', renderer);
-                        set(this, 'rendererType', renderer);
+                        if(!isNone(Ember.TEMPLATES[renderer])) {
+                            console.log('rendererType:', renderer);
+                            set(this, 'rendererType', renderer);
+                        }
                     }
 
                     set(this, 'attr', attr);
