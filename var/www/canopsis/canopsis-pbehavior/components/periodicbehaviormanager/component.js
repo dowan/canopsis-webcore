@@ -27,7 +27,9 @@ define([
         set = Ember.set;
 
 
-    var component = Ember.Component.extend(Ember.Evented, CrudMixin, {
+    var CrudEventedComponent = Ember.Component.extend(Ember.Evented, CrudMixin);
+
+    var component = CrudEventedComponent.extend({
         init: function() {
             /* mixin options for mixins */
             set(this, 'mixinOptions', {
@@ -105,16 +107,7 @@ define([
         }
     });
 
-    Ember.Application.initializer({
-        name: 'component-periodicbehaviormanager',
-
-        initialize: function(container, application) {
-            application.register(
-                'component:component-periodicbehaviormanager',
-                component
-            );
-        }
-    });
+    loader.register('component:component-periodicbehaviormanager', component);
 
     return component;
 });
