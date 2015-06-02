@@ -18,8 +18,8 @@
 */
 define([
     'app/lib/factories/wrapper',
-    'webcore-libs/jquery-upload-file/js/jquery.uploadfile.min',
-    'link!webcore-libs/jquery-upload-file/css/uploadfile.min.css',
+    'canopsis/uibase/jquery-upload-file/js/jquery.uploadfile.min',
+    'link!canopsis/uibase/jquery-upload-file/css/uploadfile.min.css',
 ], function(Wrapper, Uploadfile) {
 
     console.log('uploadfile wrapper', Uploadfile);
