@@ -84,7 +84,7 @@ define([
         tableColumns: [
             {name: 'dtstart', title: __('From')},
             {name: 'dtend', title: __('To')},
-            {name: 'freq', title: __('Frequency')},
+            {name: 'rrule', title: __('Recursion')},
             {name: 'duration', title: __('Duration')},
             {name: 'behaviors', title: __('Behaviors')},
             {
