@@ -19,8 +19,8 @@
 
 define([
     'app/lib/factories/wrapper',
-    'link!canopsis/uibase/lib/externals/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
-    'canopsis/uibase/lib/externals/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min'
+    'link!canopsis/uibase/lib/externals/eonasdan-bootstrap-datetimepicker/lib/css/bootstrap-datetimepicker.min.css',
+    'canopsis/uibase/lib/externals/eonasdan-bootstrap-datetimepicker/lib/js/bootstrap-datetimepicker.min'
 ], function(Wrapper) {
 
     console.log('datetimepicker wrapper');
