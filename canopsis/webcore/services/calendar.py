@@ -89,11 +89,12 @@ def exports(ws):
         result = cm.remove(uids=uids)
 
         return result
-    query_test = {"category": "1"}
+
+    test_query = {"category": "1"}
 
     @route(ws.application.get, name='calendar/values')
     def values(
-        sources=None, dtstart=None, dtend=None, query=query_test,
+        sources=None, dtstart=None, dtend=None, query=test_query,
         limit=0, skip=0, sort=None, projection=None, with_count=False
     ):
         """Get source vevent document values.
