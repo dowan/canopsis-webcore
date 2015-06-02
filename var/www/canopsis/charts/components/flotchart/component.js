@@ -20,8 +20,7 @@ define([
     'jquery',
     'ember',
     'app/lib/utils/dom',
-    'app/lib/utils/values',
-    'app/lib/wrappers/flotchart'
+    'app/lib/utils/values'
 ], function($, Ember, DOM, values) {
 
     var get = Ember.get,

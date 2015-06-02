@@ -20,13 +20,12 @@
 define([
     'ember',
     'app/routes/authenticated',
-    'utils',
+    'app/lib/loaders/utils',
     'app/lib/utils/data',
     'app/lib/utils/forms',
     'app/lib/utils/widgetSelectors',
     'app/lib/utils/actions',
     'app/lib/utils/test',
-    'seeds/RoutesLoader',
     'app/serializers/userview',
     'app/controller/userview',
 ], function(Ember, AuthenticatedRoute, utils, dataUtils, formUtils, widgetSelectorsUtils, actionsUtils, testUtils) {
@@ -69,6 +68,12 @@ define([
                 }
             },
 
+
+            /**
+             * @event toggleEditMode
+             *
+             * Toggles the edition mode for the currently opened view
+             */
             toggleEditMode: function() {
                 var applicationController = this.controllerFor('application');
                 if (get(applicationController, 'editMode') === true) {
@@ -92,12 +97,30 @@ define([
                 }
             },
 
+            /**
+             * @event exportCurrentView
+             *
+             * Exports the currently opened view
+             */
+            exportCurrentView: function() {
+                var viewModel = this.controllerFor('userview').get('model');
+                var viewJSON = viewModel.serialize();
+
+                dataUtils.download(JSON.stringify(viewJSON), get(viewModel, 'crecord_name') + '.json', 'application/json');
+            },
+
+            /**
+             * @event toggleDevTools
+             *
+             * show or hide developper tools
+             */
             toggleDevTools: function () {
                 //FIXME don't use jquery in here, it's for views !
                 $('.debugmenu').slideToggle(200);
             },
 
             /**
+             * @event toggleFullscreen
              * Toggle fullscreen and regular mode, by toggling Applicationcontroller#fullscreenMode boolean.
              * The rest of the implementation is on handlebars templates (application and userview)
              */
@@ -109,14 +132,20 @@ define([
                 set(applicationController, 'fullscreenMode', updatedFullscreenMode);
             },
 
+            /**
+             * @event stopLiveReporting
+             * clears the live reporting interval, ending the live reporting mode
+             */
             stopLiveReporting: function () {
                 this.setReportingInterval(undefined);
             },
 
             /**
-            * Display a pop up allowing customer to set view time
-            * parameters that will affect all widget data selection.
-            **/
+             * @event displayLiveReporting
+             *
+             * Display a pop up allowing customer to set view time
+             * parameters that will affect all widget data selection.
+             */
             displayLiveReporting: function () {
 
                 var userview = this;
@@ -139,6 +168,11 @@ define([
                 });
             },
 
+            /**
+             * @event refresh
+             *
+             * Refreshes the currently opened view
+             */
             refresh: function() {
                 var userviewController = this.controllerFor('userview');
 

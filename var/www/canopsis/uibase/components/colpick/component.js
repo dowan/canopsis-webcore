@@ -21,7 +21,7 @@
 define([
     'jquery',
     'ember',
-    'app/lib/wrappers/colpick',
+    'canopsis/uibase/libwrappers/colpick',
 ], function($, Ember) {
 
     var get = Ember.get,
@@ -56,8 +56,6 @@ define([
          */
         didInsertElement: function() {
             var component = this;
-
-            component.$().parents('td').css('overflow-x', 'visible').css('overflow-y', 'visible');
 
             var options = {
                 flat:true,
@@ -170,6 +168,8 @@ define([
         willDestroyElement: function() {
             this._super();
             this.$().off('click');
+
+            //TODO check to destroy colpick
         }
     });
 

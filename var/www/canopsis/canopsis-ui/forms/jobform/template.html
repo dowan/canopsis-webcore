@@ -1,0 +1,17 @@
+{{#if controller.controllers.application.runtimeConfiguration.DEBUG}}
+    <div>parent form: {{controller.formParent}}</div>
+{{/if}}
+
+<button class="btn btn-default" {{action 'selectItem' 'mail'}} >
+    <span class="fa fa-envelope"></span> {{tr 'Mail'}}
+</button>
+
+<button class="btn btn-default" {{action 'selectItem' 'dataclean'}} >
+    <span class="fa fa-database"></span> {{tr 'Data clean'}}
+</button>
+
+{{#if loggedaccountController.record.rights.actionbutton_canediturlfield.checksum}}
+    <button class="btn btn-default" {{action 'selectItem' 'linklist'}} >
+        <i class="fa fa-list"></i> {{tr 'Link list'}}
+    </button>
+{{/if}}

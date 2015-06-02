@@ -90,7 +90,7 @@ define([
                 for(var i = 0, l = res.length; i < l; i++) {
                     var category = res[i];
 
-                    category.slug = slugUtils(category.title);
+                    category.slug = slugUtils.slug(category.title);
                     console.log('current category', category);
 
                     if (get(this, 'filterFieldByKey') || get(this, 'userPreferencesOnly')) {

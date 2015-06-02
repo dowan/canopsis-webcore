@@ -67,18 +67,24 @@ def save_profile(ws, profile):
 
 def save_role(ws, role):
     rid = role['_id']
-    rgroup = role['groups']
-    rrights = role['rights']
-    rprofile = role['profile']
+
+    rgroup = role.get('groups', None)
+    rrights = role.get('rights', None)
+    rprofile = role.get('profile', None)
 
     role = rights.get_role(rid)
 
     if not role and not rights.create_role(rid, rprofile):
         raise ws.Error('Impossible to create role')
 
-    rights.update_profile(rid, 'role', rgroup, role)
-    rights.update_group(rid, 'role', rgroup, role)
-    rights.update_rights(rid, 'role', rrights, role)
+    if rprofile:
+        rights.update_profile(rid, 'role', rgroup, role)
+
+    if rgroup:
+        rights.update_group(rid, 'role', rgroup, role)
+
+    if rrights:
+        rights.update_rights(rid, 'role', rrights, role)
 
     return role
 

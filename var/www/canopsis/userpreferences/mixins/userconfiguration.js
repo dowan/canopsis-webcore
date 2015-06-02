@@ -21,10 +21,10 @@ define([
     'jquery',
     'ember',
     'app/lib/utils/hash',
+    'app/lib/utils/data',
     'app/lib/factories/mixin',
-    'utils',
-    'app/lib/utils/hash'
-], function($, Ember, hashUtils, Mixin, utils, hashUtils) {
+    'app/lib/loaders/utils'
+], function($, Ember, hashUtils, dataUtils, Mixin, utils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -37,12 +37,13 @@ define([
         serialize: function(record, options) {
 
             var preferences = {};
+            var loginController = dataUtils.getLoggedUserController();
 
             if(record.userPreferencesModel.attributes.list && record.userPreferencesModel.attributes.list.length > 0) {
                 console.group('userpreferences for widget', record.get('title'), record);
                 var userpreferenceAttributes = record.userPreferencesModel.attributes.list;
                 var preference_id = get(record, 'preference_id'),
-                    user = get(utils.session,'_id');
+                    user = get(loginController,'record._id');
 
                 if (preference_id === undefined) {
                     preference_id = hashUtils.generate_GUID();
@@ -85,11 +86,12 @@ define([
 
         push: function(type, data) {
             var record = this._super.apply(this, arguments);
+            var loginController = dataUtils.getLoggedUserController();
 
             var userpreferenceAttributes = record.userPreferencesModel.attributes.list;
 
             if(userpreferenceAttributes.length > 0) {
-                var user = get(utils.session,'_id');
+                var user = get(loginController, 'record._id');
 
                 $.ajax({
                     url: '/rest/userpreferences/userpreferences',
@@ -137,7 +139,6 @@ define([
         needs: ['login'],
 
          saveUserConfiguration: function () {
-
             var record = get(this, 'model');
 
             console.log('saveUserConfiguration', record);
@@ -148,7 +149,7 @@ define([
                 console.group('userpreferences for widget', record.get('title'), record);
                 var userpreferenceAttributes = record.userPreferencesModel.attributes.list;
                 var preference_id = get(record, 'preference_id'),
-                    user = get(utils.session,'_id');
+                    user = get(this, 'controller.login.record._id');
 
                 if (preference_id === undefined) {
                     record.save();

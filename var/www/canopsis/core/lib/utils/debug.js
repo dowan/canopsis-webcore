@@ -17,11 +17,14 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
+define(['ember', 'app/lib/utilityclass'], function(Ember, Utility) {
 
     var set = Ember.set;
 
-    var debugUtils = Ember.Object.create({
+    var debugUtils = Utility.create({
+
+        name: 'debug',
+
         inspectObject: function(object) {
             window.$E = object;
 

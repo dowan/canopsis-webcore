@@ -20,8 +20,7 @@
 define([
     'ember-data',
     'app/serializers/application',
-    'app/mixins/embeddedrecordserializer',
-    'app/serializers/task'
+    'app/mixins/embeddedrecordserializer'
 ], function(DS, ApplicationSerializer, EmbeddedRecordSerializerMixin) {
 
     var serializer = ApplicationSerializer.extend(

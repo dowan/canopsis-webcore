@@ -21,7 +21,7 @@ define([
     'ember',
     'app/lib/factories/mixin',
     'app/lib/requirejsmocksmanager',
-    'utils',
+    'app/lib/loaders/utils',
     'app/lib/utils/forms',
     'app/lib/utils/data',
     'app/lib/utils/notification'
@@ -54,7 +54,7 @@ define([
             showUserProfile: function () {
                 var applicationController = this;
 
-                var ouser = get(utils, 'session');
+                var ouser = get(this, 'controllers.login.record');
                 var recordWizard = formsUtils.showNew('modelform', ouser, {
                     title: get(ouser, '_id') + ' ' + __('profile'),
                     filterFieldByKey: {

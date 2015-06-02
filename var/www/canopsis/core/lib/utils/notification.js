@@ -17,7 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
+define(['app/lib/utilityclass'], function(Utility) {
 
     targetcontroller = {
         temp_buffer: [],
@@ -31,7 +31,9 @@ define([], function() {
 
 
 
-    var notification = {
+    var notification = Utility.create({
+
+        name: 'notification',
         /**
          * Initialize the notification controller
          * when the controller is not set up, it stores all the messages in a buffer stack.
@@ -69,7 +71,7 @@ define([], function() {
         help: function () {
             console.log("usage is: utils.notification.notificate('info'|'warning'|'error', 'my message');");
         }
-    };
+    });
 
     return notification;
 });
