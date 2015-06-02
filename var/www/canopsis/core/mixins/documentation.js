@@ -22,6 +22,13 @@ define([
     'app/lib/factories/mixin',
 ], function(Ember, Mixin) {
 
+    /**
+     * Put a "view documentation button on the status bar"
+     *
+     * @class DocumentationMixin
+     * @extensionfor ApplicationController
+     * @static
+     */
     var mixin = Mixin('Documentation', {
         init: function() {
             this.partials.statusbar.pushObject('documentation');
