@@ -23,7 +23,7 @@ define([
     'app/lib/utils/hash',
     'app/lib/utils/data',
     'app/lib/factories/mixin',
-    'utils'
+    'app/lib/loaders/utils'
 ], function($, Ember, hashUtils, dataUtils, Mixin, utils) {
 
     var get = Ember.get,

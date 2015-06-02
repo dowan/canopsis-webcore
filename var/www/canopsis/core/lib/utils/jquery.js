@@ -17,9 +17,12 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
+define(['ember', 'app/lib/utilityclass'], function(Ember, Utility) {
 
-    var jqueryUtils = {
+    var jqueryUtils = Utility.create({
+
+        name: 'jquery',
+
         isPointOnElement: function (x, y, el) {
             var el_x = ($(el).offset().left);
             var el_y = ($(el).offset().top);
@@ -34,7 +37,7 @@ define(['ember'], function(Ember) {
                 return false;
         }
 
-    };
+    });
 
     return jqueryUtils;
 });

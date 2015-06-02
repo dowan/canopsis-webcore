@@ -19,7 +19,7 @@
 
 define([
     'app/lib/factories/wrapper',
-    'link!webcore-libs/ionicons/css/ionicons.min.css'
+    'link!canopsis/core/lib/externals/ionicons/css/ionicons.min.css'
 ], function(Wrapper, $) {
 
     return Wrapper("ionicons", undefined, arguments);

@@ -19,11 +19,15 @@
 
 define([
     'ember',
+    'app/lib/utilityclass',
     'canopsis/canopsisConfiguration',
     'app/application'
-], function(ember, conf) {
+], function(ember, Utility, conf) {
 
-    var indexes = {
+    var indexes = Utility.create({
+
+        name: 'indexes',
+
         cache: {},
         load: function (collection) {
             $.ajax({
@@ -69,7 +73,7 @@ define([
 
             return indexSelection;
         }
-    };
+    });
 
     return indexes;
 });

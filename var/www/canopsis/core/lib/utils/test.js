@@ -18,10 +18,14 @@
 */
 
 define([
-    'canopsis/canopsisConfiguration'
-], function(canopsisConfiguration) {
+    'canopsis/canopsisConfiguration',
+    'app/lib/utilityclass'
+], function(canopsisConfiguration, Utility) {
 
-    var test = {
+    var test = Utility.create({
+
+        name: 'test',
+
         /**
          * Perform precondition tests
          */
@@ -30,7 +34,7 @@ define([
                 assertsFunction.apply(scope);
             }
         }
-    };
+    });
 
     return test;
 });

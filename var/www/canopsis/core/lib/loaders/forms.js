@@ -20,12 +20,9 @@
 var forms = [
     { name: 'modelform', url: 'app/forms/modelform/controller', template: 'app/forms/modelform/template.html' },
     { name: 'widgetform', url: 'app/forms/widgetform/controller', template: 'app/forms/widgetform/template.html' },
-    { name: 'jobform', url: 'app/forms/jobform/controller', template: 'app/forms/jobform/template.html' },
-    { name: 'taskform', url: 'app/forms/taskform/controller', template: 'app/forms/modelform/template.html' },
-    { name: 'scheduleform', url: 'app/forms/scheduleform/controller', template: 'app/forms/modelform/template.html' },
+    // { name: 'arrayitemform', url: 'app/forms/arrayitemform/controller', template: 'app/forms/arrayitemform/template.html' },
     { name: 'confirmform', url: 'app/forms/confirmform/controller', template: 'app/forms/confirmform/template.html' },
     { name: 'viewtreeform', url: 'app/forms/viewtreeform/controller', template: 'app/forms/viewtreeform/template.html' }
-    // { name: 'viewrightsform', url: 'app/forms/viewrightsform/controller', template: 'app/forms/viewrightsform/template.html' }
 ];
 
 loader.loadWithTemplates(forms);

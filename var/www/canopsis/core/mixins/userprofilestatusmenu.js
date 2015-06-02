@@ -21,7 +21,7 @@ define([
     'ember',
     'app/lib/factories/mixin',
     'app/lib/requirejsmocksmanager',
-    'utils',
+    'app/lib/loaders/utils',
     'app/lib/utils/forms',
     'app/lib/utils/data',
     'app/lib/utils/notification'

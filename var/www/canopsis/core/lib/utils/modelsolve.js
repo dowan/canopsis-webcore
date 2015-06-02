@@ -17,10 +17,13 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
+define(['ember', 'app/lib/utilityclass'], function(Ember, Utility) {
 
 
-    var modelsolve = {
+    var modelsolve = Utility.create({
+
+        name: 'modelsolve',
+
         gen_resolve: function(callback) {
             return function(data) {
                 for (var i = 0; i < data.data.length; i++) {
@@ -43,7 +46,7 @@ define(['ember'], function(Ember) {
                 Ember.run(null, callback, xhr);
             };
         },
-    };
+    });
 
     return modelsolve;
 });

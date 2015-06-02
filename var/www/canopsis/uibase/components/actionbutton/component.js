@@ -19,8 +19,7 @@
 
 define([
     'ember',
-    'app/lib/utils/actions',
-    'app/lib/wrappers/bootstrap'
+    'app/lib/utils/actions'
 ], function(Ember, actionsUtils) {
 
     var get = Ember.get,

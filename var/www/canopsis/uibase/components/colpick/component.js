@@ -21,7 +21,7 @@
 define([
     'jquery',
     'ember',
-    'app/lib/wrappers/colpick',
+    'canopsis/uibase/libwrappers/colpick',
 ], function($, Ember) {
 
     var get = Ember.get,

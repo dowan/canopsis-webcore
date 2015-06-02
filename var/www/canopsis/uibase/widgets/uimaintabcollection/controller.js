@@ -22,8 +22,7 @@ define([
     'ember',
     'app/lib/factories/widget',
     'app/lib/utils/forms',
-    'app/lib/utils/routes',
-    'app/lib/wrappers/bootstrap'
+    'app/lib/utils/routes'
 ], function($, Ember, WidgetFactory, formsUtils, routesUtils) {
 
     var get = Ember.get,
