@@ -39,7 +39,8 @@ define([
     'canopsis/canopsis-backend-ui-connector/adapters/notification',
     'canopsis/canopsis-backend-ui-connector/adapters/pojo',
     'canopsis/canopsis-backend-ui-connector/adapters/schema',
-    'canopsis/canopsis-backend-ui-connector/adapters/userview'
+    'canopsis/canopsis-backend-ui-connector/adapters/userview',
+    'canopsis/canopsis-backend-ui-connector/adapters/trap'
 ], function () {
 
 });
