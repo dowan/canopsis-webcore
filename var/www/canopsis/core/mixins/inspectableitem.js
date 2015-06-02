@@ -33,17 +33,19 @@ define([
      * Provides an "attributes" property, dependant on content, to iterate on model's attributes, with the value and schema's properties
      *
      * Warning :the parent controller MUST have attributesKeys property!
-     * @mixin
+     * @mixin InspectableItemMixin
      */
 
     var mixin = Mixin('inspectableItem', {
 
         /**
+         * @property attributesKey
          * The key to get to retreive the list of attributes to edit
          */
         attributesKey: 'attributes',
 
         /**
+            @property inspectedDataItem
             @required
         */
         inspectedDataItem: function() {
@@ -53,6 +55,7 @@ define([
         }.property(),
 
         /**
+            @property inspectedItemType
             @required
         */
         inspectedItemType: function() {
@@ -62,6 +65,7 @@ define([
         }.property(),
 
         /**
+            @property inspectedItemInstance
             @required
         */
         inspectedItemInstance: function() {
@@ -70,6 +74,9 @@ define([
             return "content";
         }.property(),
 
+        /**
+         * @method getInspectedItemType
+         */
         getInspectedItemType: function() {
             var itemType = get(this, 'inspectedItemType');
 
@@ -80,6 +87,9 @@ define([
             return itemType;
         },
 
+        /**
+         * @method insertValueIntoAttribute
+         */
         insertValueIntoAttribute: function(createdCategory, inspectedDataItem, key, attr, count) {
             var value = (!this.isOnCreate)? get(inspectedDataItem, key) : attr.options["defaultValue"];
 
@@ -92,6 +102,9 @@ define([
             return createdCategory;
         },
 
+        /**
+         * @method generateEditorNameForAttribute
+         */
         generateEditorNameForAttribute: function(attr) {
             var editorName;
 
@@ -108,6 +121,9 @@ define([
             return editorName;
         },
 
+        /**
+         * @method generateRoleAttribute
+         */
         generateRoleAttribute: function(attr_role) {
             return {
                 type:'string',
@@ -120,6 +136,9 @@ define([
             };
         },
 
+        /**
+         * @method getAttributes
+         */
         getAttributes: function() {
             var itemType = this.getInspectedItemType();
             var referenceModel = Application[itemType.capitalize()];
@@ -128,13 +147,16 @@ define([
                 notificationUtils.error("There does not seems to be a registered schema for", itemType.capitalize());
             }
             if (referenceModel.proto().categories === undefined) {
-                notificationUtils.error("No categories in the schema of" + itemType);
+                notificationUtils.error("No categories in the schema of " + itemType);
             }
 
             return get(referenceModel, get(this, 'attributesKey'));
         },
 
         //getting attributes (keys and values as seen on the form)
+        /**
+         * @property categorized_attributes
+         */
         categorized_attributes: function() {
             var inspectedDataItem = get(this, 'inspectedDataItem');
             console.log("recompute categorized_attributes", inspectedDataItem );

@@ -31,10 +31,20 @@ define([
         __ = Ember.String.loc;
 
 
+    /**
+     * @class UserviewController
+     * @extends Ember.ObjectController
+     * @constructor
+     */
     var controller = Ember.ObjectController.extend(InspectableItem, Ember.Evented, {
         needs: ['application'],
 
         actions: {
+            /**
+             * @event insertWidget
+             * @param containerController
+             * @description Shows the "add widget" form, insert the selected widget on the view, and make the changes persistant
+             */
             insertWidget: function(containerController) {
                 console.log("insertWidget", containerController);
                 var widgetChooserForm = formUtils.showNew('widgetform', this);

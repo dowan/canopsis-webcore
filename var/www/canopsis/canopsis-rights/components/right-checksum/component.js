@@ -71,7 +71,12 @@ define([
         checksumType: function() {
             var value = get(this, 'right.name');
             var action = rightsRegistry.getByName(value);
-            return action._data.type;
+
+            if(!isNone(action) && !isNone(action._data)) {
+                return action._data.type;
+            } else {
+                return undefined;
+            }
         }.property('right.name'),
 
         checksumIsRW: function() {
