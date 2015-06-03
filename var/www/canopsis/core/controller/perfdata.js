@@ -20,8 +20,9 @@
 define([
     'jquery',
     'ember',
-    'ember-data'
-], function($, Ember, DS) {
+    'ember-data',
+    'app/lib/utils/data'
+], function($, Ember, DS, dataUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -35,7 +36,7 @@ define([
             set(app, 'isLoading', get(app, 'isLoading') + 1);
 
             //FIXME refactor this to stop using getCanopsis
-            var pojoAdapter = getCanopsis().Application.__container__.lookup('adapter:pojo');
+            var pojoAdapter = dataUtils.getEmberApplicationSingleton().__container__.lookup('adapter:pojo');
             var requestOptions = {
                 'metric_id': metric_id,
                 'timewindow': JSON.stringify({
