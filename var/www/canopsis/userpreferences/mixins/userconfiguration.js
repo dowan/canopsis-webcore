@@ -27,112 +27,112 @@ define([
     'app/lib/loaders/utils'
 ], function($, Ember, DS, hashUtils, dataUtils, Mixin, utils) {
 
-    // var get = Ember.get,
-    //     set = Ember.set;
+    var get = Ember.get,
+        set = Ember.set;
 
 
     // /**
     //  * DS.Store hack to make transparent userpreferences persistence (when saving and retreiving models)
     //  */
-    // DS.Store.reopen({
-    //     serialize: function(record, options) {
+    DS.Store.reopen({
+        serialize: function(record, options) {
 
-    //         var preferences = {};
-    //         var loginController = dataUtils.getLoggedUserController();
+            var preferences = {};
+            var loginController = dataUtils.getLoggedUserController();
 
-    //         if(record.userPreferencesModel.attributes.list && record.userPreferencesModel.attributes.list.length > 0) {
-    //             console.group('userpreferences for widget', record.get('title'), record);
-    //             var userpreferenceAttributes = record.userPreferencesModel.attributes.list;
-    //             var preference_id = get(record, 'preference_id'),
-    //                 user = get(loginController,'record._id');
+            if(record.userPreferencesModel.attributes.list && record.userPreferencesModel.attributes.list.length > 0) {
+                console.group('userpreferences for widget', record.get('title'), record);
+                var userpreferenceAttributes = record.userPreferencesModel.attributes.list;
+                var preference_id = get(record, 'preference_id'),
+                    user = get(loginController,'record._id');
 
-    //             if (preference_id === undefined) {
-    //                 preference_id = hashUtils.generate_GUID();
-    //                 set(record, 'preference_id', preference_id);
-    //             }
+                if (preference_id === undefined) {
+                    preference_id = hashUtils.generate_GUID();
+                    set(record, 'preference_id', preference_id);
+                }
 
-    //             for (var i = 0, l = userpreferenceAttributes.length; i < l; i++) {
-    //                 console.log('userpreferenceAttributes', userpreferenceAttributes[i]);
-    //                 preferences[userpreferenceAttributes[i].name] = get(record, userpreferenceAttributes[i].name);
-    //                 console.log('key', userpreferenceAttributes[i].name,'value', get(record, userpreferenceAttributes[i].name));
-    //             }
+                for (var i = 0, l = userpreferenceAttributes.length; i < l; i++) {
+                    console.log('userpreferenceAttributes', userpreferenceAttributes[i]);
+                    preferences[userpreferenceAttributes[i].name] = get(record, userpreferenceAttributes[i].name);
+                    console.log('key', userpreferenceAttributes[i].name,'value', get(record, userpreferenceAttributes[i].name));
+                }
 
-    //             var userConfiguration = {
-    //                 widget_preferences: preferences,
-    //                 crecord_name: user,
-    //                 widget_id: get(record, 'id'),
-    //                 widgetXtype: get(record, 'xtype'),
-    //                 title: get(record, 'title'),
-    //                 viewId: get(record, 'viewId'),
-    //                 id: get(record, 'id') + "_" + user,
-    //                 _id: get(record, 'id') + "_" + user,
-    //                 crecord_type: 'userpreferences'
-    //             };
+                var userConfiguration = {
+                    widget_preferences: preferences,
+                    crecord_name: user,
+                    widget_id: get(record, 'id'),
+                    widgetXtype: get(record, 'xtype'),
+                    title: get(record, 'title'),
+                    viewId: get(record, 'viewId'),
+                    id: get(record, 'id') + "_" + user,
+                    _id: get(record, 'id') + "_" + user,
+                    crecord_type: 'userpreferences'
+                };
 
-    //             console.log('push UP', userConfiguration);
+                console.log('push UP', userConfiguration);
 
-    //             $.ajax({
-    //                 url: '/rest/userpreferences/userpreferences',
-    //                 type: 'POST',
-    //                 data: JSON.stringify(userConfiguration)
-    //             });
+                $.ajax({
+                    url: '/rest/userpreferences/userpreferences',
+                    type: 'POST',
+                    data: JSON.stringify(userConfiguration)
+                });
 
-    //             console.groupEnd('userpreferences for widget', record.get('title'));
-    //         } else {
-    //             console.log('no userpreferences to save for widget', record.get('title'));
-    //         }
+                console.groupEnd('userpreferences for widget', record.get('title'));
+            } else {
+                console.log('no userpreferences to save for widget', record.get('title'));
+            }
 
-    //         return this._super.apply(this, arguments);
-    //     },
+            return this._super.apply(this, arguments);
+        },
 
-    //     push: function(type, data) {
-    //         var record = this._super.apply(this, arguments);
-    //         var loginController = dataUtils.getLoggedUserController();
+        push: function(type, data) {
+            var record = this._super.apply(this, arguments);
+            var loginController = dataUtils.getLoggedUserController();
 
-    //         var userpreferenceAttributes = record.userPreferencesModel.attributes.list;
+            var userpreferenceAttributes = record.userPreferencesModel.attributes.list;
 
-    //         if(userpreferenceAttributes.length > 0) {
-    //             var user = get(loginController, 'record._id');
+            if(userpreferenceAttributes.length > 0) {
+                var user = get(loginController, 'record._id');
 
-    //             $.ajax({
-    //                 url: '/rest/userpreferences/userpreferences',
-    //                 async: false,
-    //                 data: {
-    //                     limit: 1,
-    //                     filter: JSON.stringify({
-    //                         crecord_name: user,
-    //                         widget_id: get(record, 'id'),
-    //                         _id: get(record, 'id') + '_' + user
-    //                     })
-    //                 },
-    //                 success: function(data) {
-    //                     if (data.success && data.data.length && data.data[0].widget_preferences !== undefined) {
-    //                         console.log('User configuration load for widget complete', JSON.stringify(data));
-    //                         var preferences = data.data[0].widget_preferences;
+                $.ajax({
+                    url: '/rest/userpreferences/userpreferences',
+                    async: false,
+                    data: {
+                        limit: 1,
+                        filter: JSON.stringify({
+                            crecord_name: user,
+                            widget_id: get(record, 'id'),
+                            _id: get(record, 'id') + '_' + user
+                        })
+                    },
+                    success: function(data) {
+                        if (data.success && data.data.length && data.data[0].widget_preferences !== undefined) {
+                            console.log('User configuration load for widget complete', JSON.stringify(data));
+                            var preferences = data.data[0].widget_preferences;
 
-    //                         set(record, get(record, 'id') + "_" + user);
-    //                         set(record, 'userPreferences', preferences);
+                            set(record, get(record, 'id') + "_" + user);
+                            set(record, 'userPreferences', preferences);
 
-    //                         for (var key in preferences) {
-    //                             console.log('User preferences: will set key', key, 'in widget', get(record, 'title'), preferences[key]);
-    //                             record.set(key, preferences[key]);
-    //                         }
+                            for (var key in preferences) {
+                                console.log('User preferences: will set key', key, 'in widget', get(record, 'title'), preferences[key]);
+                                record.set(key, preferences[key]);
+                            }
 
-    //                     } else {
-    //                         console.log('No user preference exists for widget' + get(record, 'title'));
-    //                     }
-    //                 }
-    //             }).fail(
-    //                 function (error) {
-    //                     void (error);
-    //                     console.log('No user s preference found for this widget');
-    //                 }
-    //             );
-    //         }
+                        } else {
+                            console.log('No user preference exists for widget' + get(record, 'title'));
+                        }
+                    }
+                }).fail(
+                    function (error) {
+                        void (error);
+                        console.log('No user s preference found for this widget');
+                    }
+                );
+            }
 
-    //         return record;
-    //     }
-    // });
+            return record;
+        }
+    });
 
 
     var mixin = Mixin('userconfiguration', {
@@ -140,52 +140,52 @@ define([
         needs: ['login'],
 
          saveUserConfiguration: function () {
-            // var record = get(this, 'model');
+            var record = get(this, 'model');
 
-            // console.log('saveUserConfiguration', record);
+            console.log('saveUserConfiguration', record);
 
-            // var preferences = {};
+            var preferences = {};
 
-            // if(record.userPreferencesModel.attributes.list && record.userPreferencesModel.attributes.list.length > 0) {
-            //     console.group('userpreferences for widget', record.get('title'), record);
-            //     var userpreferenceAttributes = record.userPreferencesModel.attributes.list;
-            //     var preference_id = get(record, 'preference_id'),
-            //         user = get(this, 'controller.login.record._id');
+            if(record.userPreferencesModel.attributes.list && record.userPreferencesModel.attributes.list.length > 0) {
+                console.group('userpreferences for widget', record.get('title'), record);
+                var userpreferenceAttributes = record.userPreferencesModel.attributes.list;
+                var preference_id = get(record, 'preference_id'),
+                    user = get(this, 'controller.login.record._id');
 
-            //     if (preference_id === undefined) {
-            //         record.save();
-            //     } else {
-            //         for (var i = 0, l = userpreferenceAttributes.length; i < l; i++) {
-            //             console.log('userpreferenceAttributes', userpreferenceAttributes[i]);
-            //             preferences[userpreferenceAttributes[i].name] = get(record, userpreferenceAttributes[i].name);
-            //             console.log('key', userpreferenceAttributes[i].name,'value', get(record, userpreferenceAttributes[i].name));
-            //         }
+                if (preference_id === undefined) {
+                    record.save();
+                } else {
+                    for (var i = 0, l = userpreferenceAttributes.length; i < l; i++) {
+                        console.log('userpreferenceAttributes', userpreferenceAttributes[i]);
+                        preferences[userpreferenceAttributes[i].name] = get(record, userpreferenceAttributes[i].name);
+                        console.log('key', userpreferenceAttributes[i].name,'value', get(record, userpreferenceAttributes[i].name));
+                    }
 
-            //         var userConfiguration = {
-            //             widget_preferences: preferences,
-            //             crecord_name: user,
-            //             widget_id: get(record, 'id'),
-            //             widgetXtype: get(record, 'xtype'),
-            //             title: get(record, 'title'),
-            //             viewId: get(record, 'viewId'),
-            //             id: preference_id + '_' + user,
-            //             _id: get(record, 'id') + "_" + user,
-            //             crecord_type: 'userpreferences'
-            //         };
+                    var userConfiguration = {
+                        widget_preferences: preferences,
+                        crecord_name: user,
+                        widget_id: get(record, 'id'),
+                        widgetXtype: get(record, 'xtype'),
+                        title: get(record, 'title'),
+                        viewId: get(record, 'viewId'),
+                        id: preference_id + '_' + user,
+                        _id: get(record, 'id') + "_" + user,
+                        crecord_type: 'userpreferences'
+                    };
 
-            //         $.ajax({
-            //             url: '/rest/userpreferences/userpreferences',
-            //             type: 'POST',
-            //             data: JSON.stringify(userConfiguration)
-            //         });
-            //     }
-            //     console.groupEnd('userpreferences for widget', record.get('title'));
-            // } else {
-            //     console.log('no userpreferences to save for widget', record.get('title'));
-            // }
+                    $.ajax({
+                        url: '/rest/userpreferences/userpreferences',
+                        type: 'POST',
+                        data: JSON.stringify(userConfiguration)
+                    });
+                }
+                console.groupEnd('userpreferences for widget', record.get('title'));
+            } else {
+                console.log('no userpreferences to save for widget', record.get('title'));
+            }
         }
     });
 
 
-    // return mixin;
+    return mixin;
 });
