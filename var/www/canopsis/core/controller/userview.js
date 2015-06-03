@@ -22,7 +22,6 @@ define([
     'app/lib/utils/forms',
     'app/mixins/inspectableitem',
     'app/routes/userview',
-    'app/view/userview',
     'app/serializers/userview'
 ], function(Ember, formUtils, InspectableItem) {
 

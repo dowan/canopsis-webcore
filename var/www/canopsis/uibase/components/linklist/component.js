@@ -20,8 +20,8 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/lib/utils/data'
+], function(Ember, dataUtils) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -57,7 +57,7 @@ define([
             **/
             var linklistComponent = this;
 
-            var adapter = Application.__container__.lookup('adapter:entitylink');
+            var adapter = dataUtils.getEmberApplicationSingleton().__container__.lookup('adapter:entitylink');
 
             console.log('event', evt);
 
