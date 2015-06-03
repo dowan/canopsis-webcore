@@ -1,10 +1,10 @@
 {
-  "name": "monitoring",
+  "name": "canopsis-pbehavior",
   "version": "0.0.0",
   "authors": [
     "Team Canopsis <maintainers@canopsis.org>"
   ],
-  "description": "Monitoring-related features for Canopsis",
+  "description": "Periodic Behavior interface for Canopsis",
   "main": "init.js",
   "moduleType": [
     "amd"

@@ -1,10 +1,10 @@
 {
-  "name": "vevent",
+  "name": "canopsis-vevent",
   "version": "0.0.0",
   "authors": [
     "Team Canopsis <maintainers@canopsis.org>"
   ],
-  "description": "Monitoring-related features for Canopsis",
+  "description": "iCalendar Event support for Canopsis",
   "main": "init.js",
   "moduleType": [
     "amd"

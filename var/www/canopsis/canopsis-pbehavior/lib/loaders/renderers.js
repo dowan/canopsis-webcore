@@ -17,11 +17,9 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
+var renderers = [
+    { name: 'renderer-periodicbehaviors', template: 'canopsis/canopsis-pbehavior/renderers/periodicbehaviors.html'}
+];
 
-define([
-    'canopsis/canopsis-pbehavior/lib/loaders/components',
-    'canopsis/canopsis-pbehavior/lib/loaders/renderers',
-    'canopsis/canopsis-pbehavior/serializers/pbehavior'
-], function () {
+loader.loadWithTemplates(renderers);
 
-});

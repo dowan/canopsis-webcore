@@ -27,7 +27,9 @@ define([
         set = Ember.set;
 
 
-    var component = Ember.Component.extend(Ember.Evented, CrudMixin, {
+    var CrudEventedComponent = Ember.Component.extend(Ember.Evented, CrudMixin);
+
+    var component = CrudEventedComponent.extend({
         init: function() {
             /* mixin options for mixins */
             set(this, 'mixinOptions', {
@@ -77,19 +79,35 @@ define([
 
             var contextId = get(this, 'contextId');
             set(record, 'source', contextId);
+        },
+
+        tableColumns: [
+            {name: 'dtstart', title: __('From')},
+            {name: 'dtend', title: __('To')},
+            {name: 'rrule', title: __('Recursion')},
+            {name: 'duration', title: __('Duration')},
+            {name: 'behaviors', title: __('Behaviors')},
+            {
+                title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-plus-sign"></span>'),
+                action: 'edit',
+                actionAll: 'addBehavior',
+                style: 'text-align: center;'
+            },
+            {
+                title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-trash"></span>'),
+                action: 'remove',
+                style: 'text-align: center;'
+            }
+        ],
+
+        actions: {
+            addBehavior: function() {
+                this.send('add', 'pbehavior');
+            }
         }
     });
 
-    Ember.Application.initializer({
-        name: 'component-periodicbehaviormanager',
-
-        initialize: function(container, application) {
-            application.register(
-                'component:component-periodicbehaviormanager',
-                component
-            );
-        }
-    });
+    loader.register('component:component-periodicbehaviormanager', component);
 
     return component;
 });
