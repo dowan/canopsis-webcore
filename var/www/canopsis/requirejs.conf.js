@@ -73,11 +73,19 @@ var setLoadingInfo = function(text, icon) {
     }
 };
 
+setModuleInfo = function (modules, showmodules) {
+    if (showmodules) {
+        var title = '<h5>Enabled modules :</h5>';
+        $('#moduleList').append(title + modules.join('<br />'));
+    }
+};
+
 define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18n', 'app/lib/objects/loader', 'jquery'], function(enabled, canopsisConfiguration, i18n) {
 
     enabled.getEnabledModules(function (enabledPlugins) {
 
         setLoadingInfo('Fetching frontend bricks', 'fa-cubes');
+        setModuleInfo(enabledPlugins, canopsisConfiguration.SHOWMODULES);
         var language = i18n.lang;
         console.log('i18n language:', language.toUpperCase(), 'translations:', i18n.translations);
 
@@ -132,6 +140,9 @@ define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18
             initFiles.push('app/init');
 
             require(initFiles, function() {
+
+                //This flag allow to prevent too early application requirement. @see "app/application" module
+                window.appShouldNowBeLoaded = true;
 
                 setLoadingInfo('Fetching application starting point', 'fa-plug');
                 require(['app/init'], function(Application) {

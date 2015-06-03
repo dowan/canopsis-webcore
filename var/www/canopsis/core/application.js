@@ -24,6 +24,10 @@ define([
     'jsonselect',
 ], function(Ember, DS, domReady) {
 
+    if(window.appShouldNowBeLoaded !== true) {
+        console.error('Application module is required too early, and it is probably leading to bad application behaviour and errors. Please do NOT require "app/application" in your modules.');
+    }
+
     var Application = Ember.Application.create({
         LOG_ACTIVE_GENERATION: false,
         LOG_TRANSITIONS: false,
