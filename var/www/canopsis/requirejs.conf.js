@@ -133,6 +133,9 @@ define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18
 
             require(initFiles, function() {
 
+                //This flag allow to prevent too early application requirement. @see "app/application" module
+                window.appShouldNowBeLoaded = true;
+
                 setLoadingInfo('Fetching application starting point', 'fa-plug');
                 require(['app/application'], function(Application) {
                     setLoadingInfo('Initializing user interface', 'fa-desktop');
