@@ -20,6 +20,7 @@
 define(['app/application', 'app/lib/utilityclass'], function(Application, Utility) {
 
     var _loggedUserController;
+    var _applicationSingleton;
 
     var dataUtils = Utility.create({
 
@@ -31,6 +32,14 @@ define(['app/application', 'app/lib/utilityclass'], function(Application, Utilit
 
         setLoggedUserController: function(loggedUserController) {
             _loggedUserController = loggedUserController;
+        },
+
+        getEmberApplicationSingleton: function() {
+            return _applicationSingleton;
+        },
+
+        setEmberApplicationSingleton: function(applicationInstance) {
+            _applicationSingleton = applicationInstance;
         },
 
         getStore: function() {
