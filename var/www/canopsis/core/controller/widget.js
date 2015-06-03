@@ -21,6 +21,7 @@ define([
     'jquery',
     'ember',
     'ember-data',
+    'app/application',
     'app/controller/partialslotablecontroller',
     'canopsis/canopsisConfiguration',
     'app/lib/utils/widgets',
@@ -28,10 +29,8 @@ define([
     'app/lib/utils/forms',
     'app/lib/utils/debug',
     'app/lib/utils/data',
-    'app/lib/schemasregistry',
-    'app/lib/mixinsregistry',
     'app/view/mixineditdropdown'
-], function($, Ember, DS, PartialslotAbleController, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, dataUtils, schemasregistry, mixinsregistry) {
+], function($, Ember, DS, Application, PartialslotAbleController, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, dataUtils) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -104,6 +103,10 @@ define([
 
         updateInterval: function (interval) {
             console.warn('This method should be overriden for current widget', get(this, 'id'), interval);
+        },
+
+        getSchema: function() {
+            return Application[get(this, 'xtype').capitalize()].proto().categories;
         },
 
         stopRefresh: function () {
@@ -195,7 +198,7 @@ define([
                 var widgetController = this;
 
                 mixinForm.submit.done(function() {
-                    var referenceModel = mixinsregistry.getByName(mixinName).EmberClass;
+                    var referenceModel = Application[mixinName.capitalize()];
                     var modelAttributes = get(referenceModel, 'attributes');
 
                     console.log('attributes', modelAttributes);

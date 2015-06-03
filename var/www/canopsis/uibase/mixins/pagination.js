@@ -139,7 +139,7 @@ define([
                 'currentPage': 1
             });
 
-            // this.saveUserConfiguration();
+            this.saveUserConfiguration();
 
             this.refreshContent();
 

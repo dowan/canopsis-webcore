@@ -134,9 +134,10 @@ define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18
             require(initFiles, function() {
 
                 setLoadingInfo('Fetching application starting point', 'fa-plug');
-                require(['app/application'], function(Application) {
+                require(['app/init'], function(Application) {
                     setLoadingInfo('Initializing user interface', 'fa-desktop');
 
+                    Application.advanceReadiness();
                 });
             });
         });

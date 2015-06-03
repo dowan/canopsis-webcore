@@ -19,12 +19,14 @@
 
 define([
     'ember',
+    'app/application',
     'canopsis/canopsis-backend-ui-connector/adapters/application',
-], function(Ember, ApplicationAdapter) {
+], function(Ember, Application, ApplicationAdapter) {
 
     var set = Ember.set;
 
     var adapter = ApplicationAdapter.extend({
+
         updateRecord: function(store, type, record) {
             //This value have to be reseted each update for user display purpose
             set(record, 'run_once', false);

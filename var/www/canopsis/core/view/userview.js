@@ -19,8 +19,7 @@
 
 define([
     'ember',
-    'app/lib/utils/test',
-    'app/controller/userview'
+    'app/lib/utils/test'
 ], function(Ember, testUtils) {
 
     var get = Ember.get,

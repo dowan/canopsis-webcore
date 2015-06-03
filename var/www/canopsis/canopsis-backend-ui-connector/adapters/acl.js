@@ -20,8 +20,9 @@
 
 define([
     'ember',
+    'app/application',
     'canopsis/canopsis-backend-ui-connector/adapters/application',
-], function(Ember, ApplicationAdapter) {
+], function(Ember, Application, ApplicationAdapter) {
 
     var get = Ember.get,
         set = Ember.set,

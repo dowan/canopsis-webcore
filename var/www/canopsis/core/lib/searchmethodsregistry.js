@@ -19,7 +19,8 @@
 
 define([
     'ember',
-    'app/lib/abstractclassregistry'
+    'app/lib/abstractclassregistry',
+    'app/application'
 ], function(Ember, Abstractclassregistry) {
 
     var searchMethods = [

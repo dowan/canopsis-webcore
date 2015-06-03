@@ -18,11 +18,13 @@
 */
 
 define([
+    'jquery',
     'ember',
+    'app/application',
     'app/lib/utils/widgets',
     'app/lib/mixinsregistry',
     'app/lib/helpers/partialslot'
-], function(Ember, widgetUtils, mixinsRegistry) {
+], function($, Ember, Application, widgetUtils, mixinsRegistry) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -48,13 +50,6 @@ define([
 
     //TODO put this in arrayutils
     function union_arrays (x, y) {
-        if(x === undefined) {
-            x = [];
-        }
-        if(y === undefined) {
-            y = [];
-        }
-
         var obj = {};
         for (var i = x.length-1; i >= 0; -- i)
             obj[x[i]] = x[i];

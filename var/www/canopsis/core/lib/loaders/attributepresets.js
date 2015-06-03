@@ -45,11 +45,15 @@ var presets = [
 
 ];
 
-var presetsDeps = ['app/lib/attributepreset'];
+var presetsDeps = ['app/application', 'app/lib/attributepreset'];
 var presetsDepsSize = presetsDeps.length;
 
-define(presetsDeps, function(Attributepreset) {
+define(presetsDeps, function(Application, Attributepreset) {
+    console.log('loading presets', presets, 'into', Application.presets);
+
     for (var i = 0, l = presets.length; i < l; i++) {
         var attr = Attributepreset.create(presets[i]);
     }
+
+    return Application.presets;
 });

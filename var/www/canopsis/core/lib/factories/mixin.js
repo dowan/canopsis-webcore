@@ -19,8 +19,9 @@
 
 define([
     'ember',
-    'app/lib/mixinsregistry'
-], function(Ember, mixinsRegistry) {
+    'app/application',
+    "app/lib/mixinsregistry"
+], function(Ember, Application, mixinsRegistry) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -35,15 +36,15 @@ define([
      */
     function Mixin(name, mixindict) {
         console.tags.add('factory');
-        console.group('mixin factory call', arguments);
+        console.group("mixin factory call", arguments);
 
-        var mixinName = name.camelize().capitalize() + 'Mixin';
+        var mixinName = name.camelize().capitalize() + "Mixin";
 
-        var mixin = Ember.Mixin.create(mixindict);
+        Application[mixinName] = Ember.Mixin.create(mixindict);
 
         var registryEntry = Ember.Object.create({
             name: name,
-            EmberClass: mixin
+            EmberClass: Application[mixinName]
         });
 
         mixinsRegistry.all.push(registryEntry);
@@ -51,7 +52,7 @@ define([
         console.groupEnd();
         console.tags.remove('factory');
 
-        return mixin;
+        return Application[mixinName];
     }
 
     return Mixin;

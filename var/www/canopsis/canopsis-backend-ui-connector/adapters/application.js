@@ -20,8 +20,9 @@
 define([
     'ember',
     'ember-data',
+    'app/application',
     'app/lib/promisesmanager'
-], function(Ember, DS, promisesmanager) {
+], function(Ember, DS, Application, promisesmanager) {
 
     var get = Ember.get,
         set = Ember.set,

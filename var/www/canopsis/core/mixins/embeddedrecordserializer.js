@@ -19,10 +19,10 @@
 
 define([
     'ember',
-    'app/lib/schemasregistry',
+    'app/application',
     'app/lib/utils/hash',
     'app/lib/factories/mixin'
-], function(Ember, schemasregistry, hashUtils, Mixin) {
+], function(Ember, Application, hashUtils, Mixin) {
 
     var isNone = Ember.isNone,
         get = Ember.get;
@@ -71,7 +71,7 @@ define([
                     console.error('no xtype for widget', type, item, payload);
                     return undefined;
                 }
-                if(schemasregistry.getByName(item.xtype).EmberModel === undefined) {
+                if(Application[item.xtype.capitalize()] === undefined) {
                     console.error(payload, 'bad xtype for widget :' + item.xtype);
                     return undefined;
                 }
@@ -146,8 +146,8 @@ define([
                 }
 
                 console.log('primaryType', primaryType, recordJSON.xtype);
-                if (primaryType === schemasregistry.getByName('widget').EmberModel) {
-                    var concreteWidgetType = schemasregistry.getByName(recordJSON.xtype).EmberModel;
+                if (primaryType === Application.Widget) {
+                    var concreteWidgetType = Application[recordJSON.xtype.capitalize()];
                     primaryType = concreteWidgetType;
                 }
 

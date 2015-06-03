@@ -20,10 +20,10 @@
 define([
     'jquery',
     'ember',
-    'app/lib/schemasregistry',
+    'app/application',
     'app/lib/utils/notification',
     'app/lib/factories/mixin'
-], function($, Ember, Schemasregistry, notificationUtils, Mixin) {
+], function($, Ember, Application, notificationUtils, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -122,7 +122,7 @@ define([
 
         getAttributes: function() {
             var itemType = this.getInspectedItemType();
-            var referenceModel = Schemasregistry.getByName(itemType).EmberModel;
+            var referenceModel = Application[itemType.capitalize()];
 
             if (referenceModel === undefined || referenceModel.proto() === undefined) {
                 notificationUtils.error("There does not seems to be a registered schema for", itemType.capitalize());
@@ -142,8 +142,7 @@ define([
 
                 console.log("inspectedDataItem attributes", this.getAttributes());
                 var itemType = this.getInspectedItemType();
-
-                var referenceModel = Schemasregistry.getByName(itemType).EmberModel;
+                var referenceModel = Application[itemType.capitalize()];
 
                 if (itemType !== undefined) {
 

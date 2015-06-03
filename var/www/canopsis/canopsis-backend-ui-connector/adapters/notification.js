@@ -18,14 +18,15 @@
 */
 
 define([
+    'app/application',
     'ember-data'
-], function(DS) {
+], function(Application, DS) {
 
     var adapter = DS.FixtureAdapter.extend();
 
-    // if(Application.Notification) {
-    //     Application.Notification.FIXTURES = [];
-    // }
+    if(Application.Notification) {
+        Application.Notification.FIXTURES = [];
+    }
 
 
     loader.register('adapter:notification', adapter);

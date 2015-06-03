@@ -18,9 +18,10 @@
 */
 
 define([
+    'app/application',
     'app/lib/utils/dates',
     'app/lib/utilityclass'
-], function(dateUtils, Utility) {
+], function(Application, dateUtils, Utility) {
 
     var units = [ ' ', ' k', ' M', ' G', ' T' ];
 

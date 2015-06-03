@@ -18,8 +18,9 @@
 */
 
 define([
+    'app/application',
     'canopsis/canopsis-backend-ui-connector/adapters/event'
-], function(EventAdapter) {
+], function(Application, EventAdapter) {
 
     var adapter = EventAdapter;
 

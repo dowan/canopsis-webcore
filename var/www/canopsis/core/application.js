@@ -21,10 +21,8 @@ define([
     'ember',
     'ember-data',
     'app/lib/externals/requirejs-domready/domReady', //TODO remove, seems to be useless
-    'app/lib/utils/data',
-    'app/lib/inflections',
-    'jsonselect'
-], function(Ember, DS, domReady, dataUtils, inflectionsManager) {
+    'jsonselect',
+], function(Ember, DS, domReady) {
 
     var Application = Ember.Application.create({
         LOG_ACTIVE_GENERATION: false,
@@ -41,8 +39,7 @@ define([
         this.resource('userview', { path: '/userview/:userview_id' });
     });
 
-    // loader.setApplication(Application);
-    dataUtils.setEmberApplicationSingleton(Application);
+    loader.setApplication(Application);
 
     Ember.Application.initializer({
         name:"RESTAdaptertransforms",
@@ -54,10 +51,6 @@ define([
             application.register('transform:object', DS.ObjectTransform);
         }
     });
-    Application.advanceReadiness();
-    window.$A = Application;
-
-    inflectionsManager.loadInflections();
 
     return Application;
 });

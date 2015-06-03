@@ -18,9 +18,10 @@
 */
 
 define([
+    'app/application',
     'canopsis/canopsis-backend-ui-connector/adapters/application',
     'app/lib/schemasregistry'
-], function(ApplicationAdapter, schemasregistry) {
+], function(Application, ApplicationAdapter, schemasregistry) {
 
     console.group('CserviceAdapter');
 

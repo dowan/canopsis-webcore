@@ -19,11 +19,11 @@
 
 define([
     'ember',
+    'app/application',
     'app/lib/utils/routes',
-    'app/lib/utils/data',
     'app/lib/formsregistry',
     'app/lib/utilityclass'
-], function(Ember, routesUtils, dataUtils, formsregistry, Utility) {
+], function(Ember, Application, routesUtils, formsregistry, Utility) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -45,7 +45,7 @@ define([
 
             options.formName = formName;
             classDict.target = routesUtils.getCurrentRouteController();
-            classDict.container = dataUtils.getEmberApplicationSingleton().__container__;
+            classDict.container = Application.__container__;
 
             if(formsregistry.all[formName] === undefined) {
                 console.error('the form', formName, 'was not found');

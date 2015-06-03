@@ -17,10 +17,9 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/lib/utilityclass'], function(Utility) {
+define(['app/application', 'app/lib/utilityclass'], function(Application, Utility) {
 
-    var _loggedUserController,
-        _emberApplication;
+    var _loggedUserController;
 
     var dataUtils = Utility.create({
 
@@ -34,17 +33,9 @@ define(['app/lib/utilityclass'], function(Utility) {
             _loggedUserController = loggedUserController;
         },
 
-        getEmberApplicationSingleton: function() {
-            return _emberApplication;
-        },
-
-        setEmberApplicationSingleton: function(emberApplication) {
-            _emberApplication = emberApplication;
-        },
-
         getStore: function() {
             console.warn("this should not be used as there is not only one store in Canopsis. This might lead to unexpected behaviour");
-            return this.getEmberApplicationSingleton().__container__.lookup('store:main');
+            return Application.__container__.lookup('store:main');
         },
 
         //TODO change parentElement term to something more descriptive

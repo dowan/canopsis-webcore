@@ -21,6 +21,7 @@ define([
     'jquery',
     'ember',
     'ember-data',
+    'app/application',
     'canopsis/canopsisConfiguration',
     'app/controller/partialslotablecontroller',
     'app/lib/widgetsregistry',
@@ -51,6 +52,7 @@ define([
     $,
     Ember,
     DS,
+    Application,
     canopsisConfiguration,
     PartialslotAbleController,
     widgetsRegistry,
@@ -78,8 +80,7 @@ define([
         __ = Ember.String.loc;
 
 
-    var indexController = Ember.Controller.extend(Ember.Evented, {});
-    loader.register('controller:index', indexController);
+    Application.IndexController = Ember.Controller.extend(Ember.Evented, {});
 
     /**
      * @class ApplicationController

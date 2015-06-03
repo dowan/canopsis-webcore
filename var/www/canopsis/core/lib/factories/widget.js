@@ -18,19 +18,17 @@
 */
 
 define([
+    'app/application',
     'app/controller/widget',
     'app/lib/widgetsregistry',
-    'app/lib/schemasregistry',
     'app/serializers/widget',
     'app/lib/utils/notification',
-    'app/lib/utils/data',
     'app/lib/loaders/schemas'
-], function(WidgetController, WidgetsRegistry, schemasregistry, WidgetSerializer, notificationUtils, dataUtils) {
+], function(Application, WidgetController, WidgetsRegistry, WidgetSerializer, notificationUtils) {
 
     var get = Ember.get,
         set = Ember.set,
-        isNone = Ember.isNone,
-        Application = dataUtils.getEmberApplicationSingleton();
+        isNone = Ember.isNone;
 
     /**
      * Widget factory. Creates a controller, stores it in Application
@@ -68,7 +66,7 @@ define([
 
         var widgetControllerName = widgetName.dasherize();
         var widgetSerializerName = widgetName.dasherize();
-        var widgetModel = schemasregistry.getByName(widgetName).EmberModel;
+        var widgetModel = Application[widgetName.camelize().capitalize()];
         var controllerClass = options.subclass.extend.apply(options.subclass, extendArguments);
 
         if(isNone(widgetModel)) {
@@ -81,13 +79,14 @@ define([
             loader.register('controller:' + widgetControllerName, controllerClass);
 
             //dynamically create a serializer that implements EmbeddedRecordMixin if a custom serializer is not already defined in Application
-            // if(isNone(get(Application, widgetSerializerName))) {
-            //     loader.register('serializer:' + widgetSerializerName, WidgetSerializer.extend());
-            // }
+            if(isNone(get(Application, widgetSerializerName))) {
+                loader.register('serializer:' + widgetSerializerName, WidgetSerializer.extend());
+            }
 
-            console.log("widget", widgetName.camelize().capitalize(), widgetModel);
+            console.log("widget", widgetName.camelize().capitalize(), Application[widgetName.camelize().capitalize()]);
             var capitalizedWidgetName = widgetName.camelize().capitalize();
-            var metadataDict = widgetModel.proto().metadata;
+            var t = Application[capitalizedWidgetName].proto();
+            var metadataDict = t.metadata;
 
             console.log("metadataDict", widgetName, metadataDict);
 

@@ -21,10 +21,11 @@ define([
     'jquery',
     'ember',
     'ember-data',
+    'app/application',
     'canopsis/canopsis-backend-ui-connector/adapters/application',
     'app/lib/promisesmanager',
     'app/lib/utils/modelsolve'
-], function($, Ember, DS, ApplicationAdapter, promisesmanager, modelsolve) {
+], function($, Ember, DS, Application, ApplicationAdapter, promisesmanager, modelsolve) {
 
     var get = Ember.get,
         set = Ember.set,
