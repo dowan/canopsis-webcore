@@ -94,7 +94,7 @@ def exports(ws):
 
     @route(ws.application.get, name='calendar/values')
     def values(
-        sources=None, dtstart=None, dtend=None, query=test_query,
+        sources=None, dtstart=None, dtend=None, query={},
         limit=0, skip=0, sort=None, projection=None, with_count=False
     ):
         """Get source vevent document values.
