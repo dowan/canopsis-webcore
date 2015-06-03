@@ -93,7 +93,6 @@ define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18
 
         Ember.STRINGS = i18n.translations[language] || {};
 
-        setLoadingInfo('Fetching frontend bricks', 'fa-cubes');
         var deps = [];
 
         for (var i = 0; i < enabledPlugins.length; i++) {
