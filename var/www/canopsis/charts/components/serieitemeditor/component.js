@@ -20,7 +20,7 @@
 
 define([
     'ember',
-    'app/lib/utils/schemasregistry',
+    'app/lib/schemasregistry',
     'canopsis/uibase/components/stringclassifiedcrecordselector/component'
 ], function(Ember, schemasregistry) {
 

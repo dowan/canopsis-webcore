@@ -27,7 +27,7 @@ define([
     'app/lib/loaders/utils'
 ], function($, Ember, DS, hashUtils, dataUtils, Mixin, utils) {
 
-    var get = Ember.get,
+    // var get = Ember.get,
     //     set = Ember.set;
 
 
