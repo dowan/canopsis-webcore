@@ -28,16 +28,6 @@ define([
         get = Ember.get,
         isNone = Ember.isNone;
 
-    loader.register('route:login', Ember.Route.extend({
-        setupController: function(controller, model) {
-            void(model);
-
-            controller.reset();
-            //prevents from getting a string into the authkey
-        }
-    }));
-
-
     var controller = Ember.ObjectController.extend({
         content: {},
 
@@ -49,16 +39,6 @@ define([
             });
 
             set(this, 'store', store);
-        },
-
-        reset: function() {
-            this.setProperties({
-                username: "",
-                password: "",
-                shadow: "",
-                crypted: "",
-                authkey: get(this, 'authkey')
-            });
         },
 
         authkey: function () {
