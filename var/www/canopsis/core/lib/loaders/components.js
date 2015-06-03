@@ -23,9 +23,7 @@
 var components = [
     { name: 'components/component-editor', url: 'app/components/editor/component', template: 'app/components/editor/template.html' },
     { name: 'components/component-renderer', url: 'app/components/renderer/component', template: 'app/components/renderer/template.html' },
-    { name: 'components/component-wrapper', url: 'app/components/wrapper/component', template: 'app/components/wrapper/template.html' },
-    { name: 'components/component-attributepreset', url: 'app/components/attributepreset/component', template: 'app/components/attributepreset/template.html' },
-    { name: 'components/component-widgettreeitem', url: 'app/components/widgettreeitem/component', template: 'app/components/widgettreeitem/template.html' }
+    { name: 'components/component-wrapper', url: 'app/components/wrapper/component', template: 'app/components/wrapper/template.html' }
 ];
 
 loader.loadWithTemplates(components);
