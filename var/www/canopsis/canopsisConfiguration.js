@@ -33,6 +33,7 @@ define([], function () {
         TRANSLATE: true,
         SHOW_TRANSLATIONS: false,
         TITLE: 'Canopsis Sakura',
+        SHOWMODULES: false,
     };
 
     return canopsisConfiguration;

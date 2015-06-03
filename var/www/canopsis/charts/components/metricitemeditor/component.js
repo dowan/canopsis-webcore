@@ -20,9 +20,9 @@
 
 define([
     'ember',
-    'app/application',
+    'app/lib/schemasregistry',
     'canopsis/uibase/components/stringclassifiedcrecordselector/component'
-], function(Ember, Application) {
+], function(Ember, schemaregistry) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -40,7 +40,7 @@ define([
             var typekeySplit = typekey.split('.');
 
             var modelname = typekeySplit[typekeySplit.length - 1];
-            var model = Application[modelname.capitalize()].proto();
+            var model = schemaregistry.getByName(modelname).EmberModel.proto();
             console.log('Fetch model:', modelname, model);
 
             var item = {};
