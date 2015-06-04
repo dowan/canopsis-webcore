@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
-define(['ember' , "app/application"], function(Ember , Application) {
+define(['ember'], function(Ember) {
 
     var folderPath = "/static/canopsis/media/images/";
 
