@@ -56,7 +56,6 @@ define([
     'app/serializers/linklist',
     'app/lib/wrappers/console',
     'app/lib/wrappers/ionicons',
-    'app/lib/loaders/attributepresets',
     'app/lib/loaders/forms',
     'app/lib/loaders/validators',
     'app/lib/loaders/mixins',
