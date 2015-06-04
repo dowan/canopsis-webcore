@@ -308,7 +308,7 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
 }
 
 .handle{
-    cursor:pointer;
+    cursor: move;
 }
 
 .underline:hover{
@@ -509,9 +509,7 @@ table.dataTable>thead>tr>th {
     right: auto !important;
 }
 
-.modal-header {
-    cursor: move;
-}
+
 .modal-dialog {
     margin-right: 0;
     margin-left: 0;
