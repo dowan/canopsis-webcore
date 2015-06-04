@@ -52,6 +52,62 @@ def exports(ws):
         )
         return result
 
+    @route(ws.application.post, payload=['filecontent'])
+    def uploadmib(filecontent):
+
+        mib_path = '~/tmp/{}'
+
+        filenames = []
+
+        for fileinfo in filecontent:
+            filename = fileinfo['filename']
+            filenames.append(filename)
+            filepath = os.path.expanduser(
+                mib_path.format(filename)
+            )
+            with open(filepath, 'w') as f:
+                f.write(fileinfo['data'].encode('utf-8'))
+
+        validation = []
+        for filename in filenames:
+            filepath = os.path.expanduser(
+                mib_path.format(filename)
+            )
+            check = mibmanager.check_mib(filepath)
+            validation.append((check, filename))
+
+        if not all([x[0] for x in validation]):
+            return {
+                'msg': 'Uploaded mib file validation failed.',
+                'data': validation
+            }
+        else:
+
+            import_all = True
+            notif_count = object_count = 0
+            errors = []
+            for filename in filenames:
+                filepath = os.path.expanduser(
+                    mib_path.format(filename)
+                )
+            try:
+                counts = mibmanager.import_mib(filepath)
+                notif_count += counts[0]
+                object_count += counts[1]
+            except Exception as e:
+                errors.append((filename, e))
+                import_all = False
+
+            message = 'Updated {} objects, {} notification'.format(
+                object_count,
+                notif_count
+            )
+            return {
+                'msg': message,
+                'data': errors
+            }
+
+    """
     @route(ws.application.post, payload=[])
     def uploadmib():
 
@@ -86,6 +142,7 @@ def exports(ws):
             output = 'Could not get import summary'
 
         return {'message': output}
+    """
 
     @route(
         ws.application.get,
