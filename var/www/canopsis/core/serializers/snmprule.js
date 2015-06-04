@@ -18,17 +18,12 @@
 */
 
 define([
-    'ember-data'
-], function(DS) {
+    'ember-data',
+    'app/serializers/ctx',
+], function(DS, CtxSerializer) {
 
-    var adapter = DS.FixtureAdapter.extend();
+    var serializer = CtxSerializer.extend({});
 
-    // if(Application.Notification) {
-    //     Application.Notification.FIXTURES = [];
-    // }
-
-
-    loader.register('adapter:notification', adapter);
-
-    return adapter;
+    loader.register('serializer:snmprule', serializer);
+    return serializer;
 });

@@ -18,23 +18,30 @@
 */
 
 define([
-    'ember-data',
-    'app/serializers/application'
-], function(DS, ApplicationSerializer) {
+    'canopsis/canopsis-backend-ui-connector/adapters/application'
+], function(ApplicationAdapter) {
 
-    var serializer = ApplicationSerializer.extend({
+    var adapter = ApplicationAdapter.extend({
 
-        normalize: function (type, hash) {
-            console.log('normalize', arguments);
-            hash.xtype = 'context';  //TODO: autodetect xtype
-            hash.id = hash._id;
-            return this._super(type, hash);
+        buildURL: function(type, id) {
+            void(id);
+            return '/trap';
+        },
+
+        findQuery: function(store, type, query) {
+
+            var url = '/trap';
+
+            if (query.skip !== undefined){
+                query.start = query.skip;
+                delete query.skip;
+            }
+
+            return this.ajax(url, 'GET', { data: query });
         }
-
     });
 
-    loader.register('serializer:ctx', serializer);
-    loader.register('serializer:context', serializer);
+    loader.register('adapter:trap', adapter);
 
-    return serializer;
+    return adapter;
 });

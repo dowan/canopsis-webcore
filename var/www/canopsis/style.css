@@ -1,3 +1,9 @@
+.scrollableList {
+    max-height: 300px;
+    overflow-x:hidden;
+    overflow-y:auto;
+}
+
 /* Properties for colorGrid editor and dropdownbutton*/
 .btn-secondary{
     color: #333;
@@ -308,7 +314,7 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
 }
 
 .handle{
-    cursor:pointer;
+    cursor: move;
 }
 
 .underline:hover{
@@ -509,9 +515,7 @@ table.dataTable>thead>tr>th {
     right: auto !important;
 }
 
-.modal-header {
-    cursor: move;
-}
+
 .modal-dialog {
     margin-right: 0;
     margin-left: 0;
