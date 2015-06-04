@@ -105,7 +105,7 @@ define([
                 var html = '<td>{{#if pendingOperation}}<i class="fa fa-cog fa-spin"></i>{{/if}}{{component-checkbox checked=isSelected class="toggle"}}</td>';
 
                 if(get(this, '_partials.columnsLine')) {
-                    html += '{{#each columns in controller.parentController._partials.columnsLine}}<td>{{partial columns}}</td>{{/each}}';
+                    html += '{{#each columns in controller._partials.columnsLine}}<td>{{partial columns}}</td>{{/each}}';
                 }
 
                 if(shown_columns === undefined || shown_columns.length === 0) {

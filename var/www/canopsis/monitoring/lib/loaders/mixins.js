@@ -25,6 +25,7 @@ var mixins = [
     { name: 'eventhistory', url: 'canopsis/monitoring/mixins/eventhistory', classes: ['widget', 'events']},
     { name: 'infobutton', url: 'canopsis/monitoring/mixins/infobutton', classes: ['list']},
     { name: 'editurlfield', url: 'canopsis/monitoring/mixins/editurlfield', classes: ['list']},
+    { name: 'uploadmib', url: 'canopsis/monitoring/mixins/uploadmib', classes: ['list']},
 ];
 
 loader.loadWithTemplates(mixins);

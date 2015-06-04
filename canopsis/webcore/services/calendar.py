@@ -19,10 +19,14 @@
 # ---------------------------------
 
 from canopsis.common.ws import route
+from canopsis.ccalendar.manager import Calendar
 
 from dateutil.rrule import rrulestr
 from datetime import datetime
 from time import mktime
+
+
+calendar_manager = Calendar()
 
 
 def exports(ws):
@@ -98,3 +102,35 @@ def exports(ws):
                 ws.logger.error('Error parsing rrule for event: {0}'.format(e))
 
         return events
+
+    @route(ws.application.delete, payload=['ids'])
+    def calendar(ids):
+        calendar_manager.remove(ids)
+        ws.logger.info('Delete : {}'.format(ids))
+        return True
+
+    @route(
+        ws.application.post,
+        payload=['document'],
+        name='calendar/put'
+    )
+    def calendar(document):
+        ws.logger.debug({
+            'document': document,
+            'type': type(document)
+        })
+
+        calendar_manager.put(document)
+
+        return True
+
+    @route(ws.application.post, payload=['limit', 'start', 'sort', 'filter'])
+    def calendar(limit=0, start=0, sort=None, filter={}):
+        result = calendar_manager.find(
+            limit=limit,
+            skip=start,
+            query=filter,
+            sort=sort,
+            with_count=True
+        )
+        return result

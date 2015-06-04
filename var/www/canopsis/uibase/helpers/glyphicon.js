@@ -20,7 +20,7 @@
 define(['ember'], function(Ember) {
 
     Ember.Handlebars.helper('glyphicon', function(icon) {
-        return '<span class="glyphicon glyphicon-' + icon + '"></span>';
+        return new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-' + icon + '"></span>');
     });
 
 });

@@ -19,6 +19,8 @@
 
 
 var components = [
+    { name: 'components/component-snmpoid', url: 'canopsis/monitoring/components/snmpoid/component', template: 'canopsis/monitoring/components/snmpoid/template.hbs' },
+    { name: 'components/component-snmpelement', url: 'canopsis/monitoring/components/snmpelement/component', template: 'canopsis/monitoring/components/snmpelement/template.hbs' },
     { name: 'components/component-cfiltereditor', url: 'canopsis/monitoring/components/cfiltereditor/component', template: 'canopsis/monitoring/components/cfiltereditor/template.html' },
     { name: 'components/component-ack', url: 'canopsis/monitoring/components/ack/component', template: 'canopsis/monitoring/components/ack/template.html' },
     { name: 'components/component-stateeditor', url: 'canopsis/monitoring/components/stateeditor/component', template: 'canopsis/monitoring/components/stateeditor/template.html' },
@@ -27,4 +29,3 @@ var components = [
 ];
 
 loader.loadWithTemplates(components);
-
