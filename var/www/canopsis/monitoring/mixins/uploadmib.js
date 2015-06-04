@@ -19,8 +19,9 @@
 
 define([
     'ember',
-    'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+    'app/lib/factories/mixin',
+    'app/lib/utils/data'
+], function(Ember, Mixin, dataUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -38,7 +39,7 @@ define([
         },
 
         onFileLoaded: function (filecontent, uploadmibMixin) {
-            var adapter = getCanopsis().Application.__container__.lookup('adapter:snmpmib');
+            var adapter = dataUtils.getEmberApplicationSingleton().__container__.lookup('adapter:snmpmib');
 
             adapter.uploadmib(
                 'uploadmib',

@@ -20,8 +20,8 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+    'app/lib/utils/data'
+], function(Ember, dataUtils) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -35,6 +35,7 @@ define([
 
         init: function() {
             this._super();
+            set(this, 'snmpAdapter', dataUtils.getEmberApplicationSingleton().__container__.lookup('adapter:snmpmib'));
             set(this, 'showOids', false);
             set(this, 'noSearchModule', false);
             set(this, 'noSearchName', false);
@@ -60,7 +61,7 @@ define([
 
         loadMib: function () {
 
-            var adapter = Application.__container__.lookup('adapter:snmpmib');
+            var adapter = get(this, 'snmpAdapter');
 
             var snmpoidComponent = this;
 
@@ -120,7 +121,7 @@ define([
                 'moduleName' : {'$regex': '.*' + search + '.*','$options':'i'}
             };
 
-            var adapter = Application.__container__.lookup('adapter:snmpmib');
+            var adapter = get(this, 'snmpAdapter');
 
             //Do query to snmp api
             adapter.findMib(
@@ -155,7 +156,7 @@ define([
                 moduleName: get(this, 'moduleName')
             };
 
-            var adapter = Application.__container__.lookup('adapter:snmpmib');
+            var adapter = get(this, 'snmpAdapter');
 
             //Do query to snmp api
             adapter.findMib(

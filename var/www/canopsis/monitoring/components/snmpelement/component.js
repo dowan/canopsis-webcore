@@ -20,8 +20,7 @@
 
 define([
     'ember',
-    'app/application'
-], function(Ember, Application) {
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set,
