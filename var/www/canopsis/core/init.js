@@ -29,12 +29,12 @@ require.config({
 });
 
 define([
-    'app/application',
     'canopsis/runtime.conf',
     'app/controller/application',
     'app/controller/formwrapper',
     'app/controller/login',
     'app/controller/userview',
+    'app/view/userview',
     'app/controller/widget',
     'app/view/application',
     'app/view/formwrapper',
@@ -57,7 +57,6 @@ define([
     'app/serializers/snmprule',
     'app/lib/wrappers/console',
     'app/lib/wrappers/ionicons',
-    'app/lib/loaders/attributepresets',
     'app/lib/loaders/forms',
     'app/lib/loaders/validators',
     'app/lib/loaders/mixins',
