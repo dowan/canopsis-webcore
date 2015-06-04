@@ -19,8 +19,8 @@
 
 define(['app/lib/utilityclass'], function(Utility) {
 
-    var _loggedUserController;
-    var _applicationSingleton;
+    var _loggedUserController,
+        _applicationSingleton;
 
     var dataUtils = Utility.create({
 
@@ -44,7 +44,7 @@ define(['app/lib/utilityclass'], function(Utility) {
 
         getStore: function() {
             console.warn("this should not be used as there is not only one store in Canopsis. This might lead to unexpected behaviour");
-            return _applicationSingleton.__container__.lookup('store:main');
+            return this.getEmberApplicationSingleton().__container__.lookup('store:main');
         },
 
         //TODO change parentElement term to something more descriptive
