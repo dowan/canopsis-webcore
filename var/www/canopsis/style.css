@@ -1,3 +1,9 @@
+.scrollableList {
+    max-height: 300px;
+    overflow-x:hidden;
+    overflow-y:auto;
+}
+
 /* Properties for colorGrid editor and dropdownbutton*/
 .btn-secondary{
     color: #333;

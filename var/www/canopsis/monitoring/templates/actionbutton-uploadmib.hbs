@@ -1,0 +1,14 @@
+{{#if controller.rights.actionbutton_canuploadmibfile.checksum}}
+    {{#component-tooltip content="Upload mib file to canopsis system"}}
+        <input type="file" class="btn btn-default" id="files" name="files[]" multiple />
+    {{/component-tooltip}}
+    {{#if controller.message}}
+        <div {{bind-attr class=":alert controller.alertlevel" }} role="alert">
+            <b>{{controller.message}}</b>
+            <br/>
+            {{#each error in controller.uploadErrors}}
+                <p>{{error}}</p>
+            {{/each}}
+        </div>
+    {{/if}}
+{{/if}}

@@ -1,7 +1,8 @@
 define([
     'ember',
+    'app/application',
     'canopsis/canopsis-backend-ui-connector/adapters/baseadapter'
-], function(Ember, BaseAdapter) {
+], function(Ember, Application, BaseAdapter) {
 
     var isNone = Ember.isNone,
         get = Ember.get;
@@ -11,13 +12,13 @@ define([
         buildURL: function(type, id) {
             void(id);
 
-            return '/linklist';
+            return '/snmprule';
         },
 
     });
 
 
-    loader.register('adapter:linklist', adapter);
+    loader.register('adapter:snmprule', adapter);
 
     return adapter;
 });
