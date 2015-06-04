@@ -67,13 +67,21 @@ define([
         userCanUpdateRecord: true,
         userCanDeleteRecord: true,
 
+        onRecordReady: function(record) {
+            this._super.apply(this, arguments);
+        },
+
         actions: {
             add: function (recordType) {
+                this._super.apply(this, arguments);
+
                 console.log("add", recordType);
 
                 var record = get(this, "widgetDataStore").createRecord(recordType, {
                     crecord_type: recordType
                 });
+
+                this.onRecordReady(record);
 
                 console.log('temp record', record, formsUtils);
 
@@ -96,7 +104,7 @@ define([
 
                 var recordWizard = formsUtils.showNew(formclass, record, formoptions);
 
-                var listController = this;
+                var ctrl = this;
 
                 recordWizard.submit.then(function(form) {
                     console.log('record going to be saved', record, form);
@@ -111,16 +119,12 @@ define([
                     }
 
                     record = get(form, 'formContext');
-
                     record.save();
 
-                    //quite ugly callback
-                    setTimeout(function () {
-                        listController.refreshContent();
-                        console.log('refresh after operation');
-                    },500);
-
-                    listController.startRefresh();
+                    /* wait 1s to let the previous request travel to the webserver */
+                    setTimeout(function() {
+                        ctrl.trigger('refresh');
+                    }, 1000);
                 });
             },
 
@@ -134,7 +138,8 @@ define([
                 var extraoptions = get(this, 'mixinOptions.crud.formoptions'),
                     formclass = get(this, 'mixinOptions.crud.form');
                 var formoptions = {
-                    title: 'Edit ' + get(record, 'crecord_type')
+                    title: 'Edit ' + get(record, 'crecord_type'),
+                    inspectedItemType: get(this, 'listed_crecord_type')
                 };
 
                 if(!isNone(extraoptions)) {
@@ -147,7 +152,7 @@ define([
 
                 console.log('open form:', formclass, formoptions);
 
-                var listController = this;
+                var ctrl = this;
                 var recordWizard = formsUtils.showNew(formclass, record, formoptions);
 
                 recordWizard.submit.then(function(form) {
@@ -157,7 +162,7 @@ define([
 
                     record.save();
 
-                    listController.trigger('refresh');
+                    ctrl.trigger('refresh');
                 });
             },
 

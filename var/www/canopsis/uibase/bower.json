@@ -10,5 +10,7 @@
     "amd"
   ],
   "license": "GNU Affero General Public License",
-  "homepage": "http://www.canopsis.org/"
+  "homepage": "http://www.canopsis.org/",
+  "dependencies": {
+  }
 }
