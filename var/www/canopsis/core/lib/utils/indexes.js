@@ -20,8 +20,7 @@
 define([
     'ember',
     'app/lib/utilityclass',
-    'canopsis/canopsisConfiguration',
-    'app/application'
+    'canopsis/canopsisConfiguration'
 ], function(ember, Utility, conf) {
 
     var indexes = Utility.create({

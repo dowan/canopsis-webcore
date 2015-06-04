@@ -19,13 +19,13 @@
 
 define([
     'ember',
-    'app/application',
     'canopsis/canopsisConfiguration',
     'app/lib/mixinsregistry',
+    'app/lib/schemasregistry',
     'app/lib/widgetsregistry',
     'app/controller/widget',
     'app/lib/loaders/mixins'
-], function(Ember, Application, canopsisConfiguration, mixinsregistry, widgetsregistry, WidgetController) {
+], function(Ember, canopsisConfiguration, mixinsregistry, schemasregistry, widgetsregistry, WidgetController) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -52,12 +52,14 @@ define([
 
                 mixinOptions[currentName] = mixinsNames[i];
 
-                var currentClass = get(Application, currentName.capitalize() + 'Mixin');
+                var currentClass = mixinsregistry.getByName(currentName).EmberClass;
                 console.log('find mixin', currentName, currentClass);
 
                 //merge mixin's userpreferences into the userpref model
-                var mixinModel = get(Application, currentName.capitalize());
+                var mixinModel = schemasregistry.getByName(currentName);
                 if(mixinModel !== undefined) {
+                    mixinModel = mixinModel.EmberModel;
+
                     var mixinUserPreferenceModel = mixinModel.proto().userPreferencesModel;
 
                     console.log('mixinModel', mixinUserPreferenceModel);

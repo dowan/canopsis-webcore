@@ -19,11 +19,10 @@
 
 define([
     'ember',
-    'app/application',
     'canopsis/canopsis-backend-ui-connector/adapters/userview',
     'canopsis/canopsis-rights/objects/rightsregistry',
     'app/lib/utils/data'
-], function(Ember, Application, UserviewAdapter, rightsRegistry, dataUtils) {
+], function(Ember, UserviewAdapter, rightsRegistry, dataUtils) {
 
     var get = Ember.get,
         set = Ember.set,

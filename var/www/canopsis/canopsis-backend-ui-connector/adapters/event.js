@@ -18,9 +18,8 @@
 */
 
 define([
-    'app/application',
     'canopsis/canopsis-backend-ui-connector/adapters/application'
-], function(Application, ApplicationAdapter) {
+], function(ApplicationAdapter) {
 
     var adapter = ApplicationAdapter.extend({
 

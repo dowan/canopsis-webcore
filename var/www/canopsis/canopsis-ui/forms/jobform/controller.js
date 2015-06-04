@@ -19,15 +19,13 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/factories/form',
-    'app/lib/loaders/utils',
     'app/lib/utils/forms',
     'app/lib/utils/hash',
     'app/lib/utils/data',
     'app/lib/schemasregistry',
     'app/serializers/job'
-], function(Ember, Application, FormFactory, utils, formsUtils, hashUtils, dataUtils, schemasRegistry) {
+], function(Ember, FormFactory, formsUtils, hashUtils, dataUtils, schemasRegistry) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -37,7 +35,6 @@ define([
         title: 'Select task type',
         scheduled: true,
 
-        utils: utils,
         loggedAccountloggedaccountController: undefined,
 
         schemas: schemasRegistry.all,
@@ -80,8 +77,7 @@ define([
                 }
 
                 var xtype = job.value;
-                var modelname = xtype[0].toUpperCase() + xtype.slice(1);
-                var model = Application[modelname];
+                var model = schemasRegistry.getByName(xtype).EmberModel;
 
                 var params = get(this, 'formContext.params');
                 console.log('params:', params);

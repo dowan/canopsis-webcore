@@ -94,6 +94,10 @@ define([], function() {
                 var dasherizedName = splittedName[1] + '-' + splittedName[0];
                 var classifiedName = dasherizedName.classify();
 
+            if(classToRegister === undefined) {
+                console.error('attemping to register ', classToRegister, ',which should be a non-empty value, for the alias', name);
+            }
+
             if(appInstance) {
                 appInstance[classifiedName] = classToRegister;
             } else {

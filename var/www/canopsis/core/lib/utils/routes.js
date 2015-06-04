@@ -17,14 +17,14 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/application', 'app/lib/utilityclass'], function(Application, Utility) {
+define(['app/lib/utilityclass', 'app/lib/utils/data'], function(Utility, dataUtils) {
 
     var routesUtils = Utility.create({
 
         name: 'routes',
 
         getCurrentRouteController: function() {
-            var currentHandlers = Application.__container__.lookup("router:main").router.currentHandlerInfos;
+            var currentHandlers = dataUtils.getEmberApplicationSingleton().__container__.lookup("router:main").router.currentHandlerInfos;
             var currentRouteController = currentHandlers[currentHandlers.length - 1].handler.controller;
 
             console.log("currentHandlers", currentHandlers);
@@ -34,7 +34,7 @@ define(['app/application', 'app/lib/utilityclass'], function(Application, Utilit
         },
 
         getCurrentViewId: function() {
-            return Application.__container__.lookup("router:main").router.currentHandlerInfos[1].params.userview_id;
+            return dataUtils.getEmberApplicationSingleton().__container__.lookup("router:main").router.currentHandlerInfos[1].params.userview_id;
         }
 
     });
