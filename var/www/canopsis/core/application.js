@@ -56,6 +56,10 @@ define([
             application.register('transform:object', DS.ObjectTransform);
         }
     });
+    Application.advanceReadiness();
+    window.$A = Application;
+
+    inflectionsManager.loadInflections();
 
     return Application;
 });

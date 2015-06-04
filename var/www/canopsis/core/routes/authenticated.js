@@ -37,7 +37,7 @@ define([
             var store = DS.Store.create({ container: get(this, "container") });
 
             //FIXME dirty, risky
-            loggedaccountAdapter = getCanopsis().Application.__container__.lookup('adapter:loggedaccount');
+            loggedaccountAdapter = dataUtils.getEmberApplicationSingleton().__container__.lookup('adapter:loggedaccount');
 
             var loginPromise = store.findAll('loggedaccount');
 

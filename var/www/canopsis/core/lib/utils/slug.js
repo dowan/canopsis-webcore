@@ -17,7 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/application', 'app/lib/utilityclass'], function(Application, Utility) {
+define(['app/lib/utilityclass'], function(Utility) {
 
     //TODO delete this, seems to be unused
     var slugify = Utility.create({
