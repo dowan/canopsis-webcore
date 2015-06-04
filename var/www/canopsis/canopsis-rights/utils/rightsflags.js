@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
-    'app/application'
-], function(Application) {
+    'ember'
+], function() {
 
     var rightsflagsUtils = {
         canRead: function(checksum) {

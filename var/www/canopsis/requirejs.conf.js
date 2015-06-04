@@ -145,10 +145,9 @@ define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18
                 window.appShouldNowBeLoaded = true;
 
                 setLoadingInfo('Fetching application starting point', 'fa-plug');
-                require(['app/init'], function(Application) {
+                require(['app/application'], function(Application) {
                     setLoadingInfo('Initializing user interface', 'fa-desktop');
 
-                    Application.advanceReadiness();
                 });
             });
         });

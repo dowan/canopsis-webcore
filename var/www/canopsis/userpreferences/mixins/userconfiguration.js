@@ -20,19 +20,20 @@
 define([
     'jquery',
     'ember',
+    'ember-data',
     'app/lib/utils/hash',
     'app/lib/utils/data',
     'app/lib/factories/mixin',
     'app/lib/loaders/utils'
-], function($, Ember, hashUtils, dataUtils, Mixin, utils) {
+], function($, Ember, DS, hashUtils, dataUtils, Mixin, utils) {
 
     var get = Ember.get,
         set = Ember.set;
 
 
-    /**
-     * DS.Store hack to make transparent userpreferences persistence (when saving and retreiving models)
-     */
+    // /**
+    //  * DS.Store hack to make transparent userpreferences persistence (when saving and retreiving models)
+    //  */
     DS.Store.reopen({
         serialize: function(record, options) {
 
