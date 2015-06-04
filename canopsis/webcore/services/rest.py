@@ -319,13 +319,7 @@ def exports(ws):
         return records, nrecords
 
     @route(ws.application.put, raw_body=True, adapt=False)
-    def rest(namespace, ctype, _id=None, body=None):
-        if not body:
-            body = '[]'
-
-        else:  # body is a File-like object
-            body = body.readline() or '[]'
-
+    def rest(namespace, ctype, _id=None, body='[]'):
         try:
             items = ensure_iterable(json.loads(body))
 
@@ -335,13 +329,7 @@ def exports(ws):
         return save_records(ws, namespace, ctype, _id, items)
 
     @route(ws.application.post, raw_body=True, adapt=False)
-    def rest(namespace, ctype, _id=None, body=None):
-        if not body:
-            body = '[]'
-
-        else:  # body is a File-like object
-            body = body.readline() or '[]'
-
+    def rest(namespace, ctype, _id=None, body='[]'):
         try:
             items = ensure_iterable(json.loads(body))
 
@@ -351,13 +339,7 @@ def exports(ws):
         return save_records(ws, namespace, ctype, _id, items)
 
     @route(ws.application.delete, raw_body=True, adapt=False)
-    def rest(namespace, ctype, _id=None, body=None):
-        if not body:
-            body = '[]'
-
-        else:  # body is a File-like object
-            body = body.readline() or '[]'
-
+    def rest(namespace, ctype, _id=None, body='[]'):
         try:
             data = json.loads(body)
 
