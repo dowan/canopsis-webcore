@@ -17,9 +17,31 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var templates = [
-    { name: 'actionbutton-editurlfield', template: 'canopsis/monitoring/templates/actionbutton-editurlfield.hbs', classes: ["action", "toolbar"],icon : "list-alt", label : "Edit url fields" },
-    { name: 'actionbutton-uploadmib', template: 'canopsis/monitoring/templates/actionbutton-uploadmib.hbs', classes: ["action", "toolbar"],icon : "list-alt", label : "Upload mib file" },
-];
+define([
+    'canopsis/canopsis-backend-ui-connector/adapters/application'
+], function(ApplicationAdapter) {
 
-loader.loadWithTemplates(templates);
+    var adapter = ApplicationAdapter.extend({
+
+        buildURL: function(type, id) {
+            void(id);
+            return '/trap';
+        },
+
+        findQuery: function(store, type, query) {
+
+            var url = '/trap';
+
+            if (query.skip !== undefined){
+                query.start = query.skip;
+                delete query.skip;
+            }
+
+            return this.ajax(url, 'GET', { data: query });
+        }
+    });
+
+    loader.register('adapter:trap', adapter);
+
+    return adapter;
+});

@@ -17,9 +17,13 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var templates = [
-    { name: 'actionbutton-editurlfield', template: 'canopsis/monitoring/templates/actionbutton-editurlfield.hbs', classes: ["action", "toolbar"],icon : "list-alt", label : "Edit url fields" },
-    { name: 'actionbutton-uploadmib', template: 'canopsis/monitoring/templates/actionbutton-uploadmib.hbs', classes: ["action", "toolbar"],icon : "list-alt", label : "Upload mib file" },
-];
+define([
+    'ember-data',
+    'app/serializers/ctx',
+], function(DS, CtxSerializer) {
 
-loader.loadWithTemplates(templates);
+    var serializer = CtxSerializer.extend({});
+
+    loader.register('serializer:snmprule', serializer);
+    return serializer;
+});
