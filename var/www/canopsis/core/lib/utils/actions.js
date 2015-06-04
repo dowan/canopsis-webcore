@@ -19,12 +19,15 @@
 
 define([
     'ember',
-    'app/application'
-], function(Application) {
+    'app/lib/utilityclass'
+], function(Ember, Utility) {
 
     var actionsDefaultTarget;
 
-    var actionsUtils = {
+    var actionsUtils = Utility.create({
+
+        name: 'actions',
+
         setDefaultTarget: function (target) {
             actionsDefaultTarget = target;
         },
@@ -39,7 +42,7 @@ define([
 
             actionsDefaultTarget.send.apply(actionsDefaultTarget, [actionName, actionParam]);
         }
-    };
+    });
 
     return actionsUtils;
 });

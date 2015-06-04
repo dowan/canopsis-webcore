@@ -21,23 +21,22 @@ define([
     'jquery',
     'ember',
     'ember-data',
-    'app/application',
     'canopsis/canopsisConfiguration',
     'app/controller/partialslotablecontroller',
     'app/lib/widgetsregistry',
     'app/lib/actionsregistry',
     'app/lib/mixinsregistry',
     'app/lib/formsregistry',
-    'canopsis/canopsis-rights/objects/rightsregistry',
     'app/lib/inflections',
     'app/mixins/userprofilestatusmenu',
     'app/mixins/requirejsmocksmanager',
     'app/mixins/screentoolstatusmenu',
+    'app/mixins/documentation',
     'app/mixins/schemamanager',
     'app/mixins/consolemanager',
     'app/mixins/promisemanager',
     'app/mixins/notifications',
-    'utils',
+    'app/lib/loaders/utils',
     'app/lib/utils/forms',
     'app/lib/utils/data',
     'app/lib/utils/hash',
@@ -45,7 +44,6 @@ define([
     'app/serializers/cservice',
     'app/lib/loaders/helpers',
     'app/lib/loaders/helpers',
-    'app/lib/wrappers/bootstrap',
     'app/lib/wrappers/mousetrap',
     'app/controller/recordinfopopup',
     'app/controller/formwrapper'
@@ -53,18 +51,17 @@ define([
     $,
     Ember,
     DS,
-    Application,
     canopsisConfiguration,
     PartialslotAbleController,
     widgetsRegistry,
     actionsRegistry,
     mixinsRegistry,
     formsRegistry,
-    rightsRegistry,
     inflectionsRegistry,
     UserprofilestatusmenuMixin,
     RequirejsmocksmanagerMixin,
     ScreentoolstatusmenuMixin,
+    DocumentationMixin,
     SchemamanagerMixin,
     ConsolemanagerMixin,
     PromisemanagerMixin,
@@ -81,7 +78,8 @@ define([
         __ = Ember.String.loc;
 
 
-    Application.IndexController = Ember.Controller.extend(Ember.Evented, {});
+    var indexController = Ember.Controller.extend(Ember.Evented, {});
+    loader.register('controller:index', indexController);
 
     /**
      * @class ApplicationController
@@ -150,13 +148,6 @@ define([
         formsRegistry: formsRegistry,
 
         /**
-         * @property rightsRegistry
-         * @type Object
-         * @description Reference to the rights registry
-         */
-        rightsRegistry: rightsRegistry,
-
-        /**
          * @property isLoading
          * @type Number
          * @description the number of concurrent loadings (usually requests) pending
@@ -177,11 +168,13 @@ define([
          * @description used to feed the left menu "Engines"
          */
         enginesviews: [
+            {label: __('Context'), value: 'view.context'},
             {label: __('Selectors'), value: 'view.selectors'},
             {label: __('Event Filter'), value: 'view.filters'},
             {label: __('Performance Data'), value: 'view.series'},
             {label: __('Scheduled Jobs'), value: 'view.jobs'},
-            {label: __('Link list'), value: 'view.linklist'}
+            {label: __('Link list'), value: 'view.linklist'},
+            {label: __('Snmp rules'), value: 'view.snmprule'}
         ],
 
         /**
@@ -381,9 +374,12 @@ define([
                     id: containerwidgetId
                 });
 
+                var userId = get(this, 'controllers.login.record._id');
+
                 var userview = dataUtils.getStore().push(type, {
                     id: viewId,
                     crecord_type: 'view',
+                    author: userId,
                     containerwidget: containerwidgetId,
                     containerwidgetType: 'widgetcontainer'
                 });
@@ -438,10 +434,13 @@ define([
             NotificationsMixin,
             RequirejsmocksmanagerMixin,
             ScreentoolstatusmenuMixin,
+            DocumentationMixin,
             ApplicationControllerDict);
     } else {
         controller = PartialslotAbleController.extend(
             UserprofilestatusmenuMixin,
+            NotificationsMixin,
+            DocumentationMixin,
             ApplicationControllerDict);
     }
 

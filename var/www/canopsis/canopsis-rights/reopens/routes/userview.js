@@ -21,19 +21,34 @@ define([
     'ember',
     'ember-data',
     'app/routes/userview',
-    'canopsis/canopsis-rights/lib/utils/rightsflags'
+    'canopsis/canopsis-rights/utils/rightsflags'
 ], function(Ember, DS, UserviewRoute, rightsflagsUtils) {
 
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone;
 
-
+    /**
+     * @class UserviewRoute
+     * @extends AuthenticatedRoute
+     * @constructor
+     * @description UserviewRoute reopen
+     */
     UserviewRoute.reopen({
+        /**
+         * @method beforeModel
+         * @param {Transition} transition
+         * @return {Promise}
+         *
+         * Ensure the target view can be displayed.
+         * Otherwise, put a "hasToBeRedirected" flag into the transition, in order to handle the redirection in the "afterModel" method.
+         */
         beforeModel: function(transition) {
             var route = this;
 
             var applicationController = route.controllerFor('application');
+
+            //TODO This should probably be set in the core userview route?
             set(applicationController, 'editMode', false);
 
             var loginController = route.controllerFor('login');
@@ -47,10 +62,33 @@ define([
             if(rightsflagsUtils.canRead(checksum) || viewId === 'view_404' || viewId === 'view_401' || userId === 'root') {
                 return this._super(transition);
             } else {
-                this.transitionTo('/userview/view.404');
+                set(transition, 'hasToBeRedirected', true);
             }
         },
+
+        /**
+         * @method afterModel
+         * @param {Userview} view The resolved model instance
+         * @param {Transition} transition
+         * @return {Promise}
+         *
+         * If a "hasToBeRedirected" flag is present into the transition, handle the redirection.
+         */
+        afterModel: function(view, transition) {
+            var hasToBeRedirected = get(transition, 'hasToBeRedirected');
+
+            if(hasToBeRedirected) {
+                this.transitionTo('/userview/view.404');
+            }
+
+            return this._super(view, transition);
+        },
+
         actions: {
+            /**
+             * @event toggleEditMode
+             * Handle rights management when toggling edit mode.
+             */
             toggleEditMode: function () {
                 var loginController = this.controllerFor('login');
                 var viewId = get(this, 'controller.model.id');
@@ -61,6 +99,7 @@ define([
                 var checksum = get(loginController, 'record.rights.' + viewId + '.checksum');
 
                 if(rightsflagsUtils.canWrite(checksum) || userId === 'root') {
+                    //call the regular "toggleEditMode" action
                     this._super();
                 }
             }

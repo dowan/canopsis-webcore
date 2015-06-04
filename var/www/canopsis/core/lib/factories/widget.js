@@ -18,17 +18,21 @@
 */
 
 define([
-    'app/application',
     'app/controller/widget',
     'app/lib/widgetsregistry',
+    'app/lib/schemasregistry',
     'app/serializers/widget',
+    'app/serializers/application',
+    'app/mixins/embeddedrecordserializer',
     'app/lib/utils/notification',
+    'app/lib/utils/data',
     'app/lib/loaders/schemas'
-], function(Application, WidgetController, WidgetsRegistry, WidgetSerializer, notificationUtils) {
+], function(WidgetController, WidgetsRegistry, schemasregistry, WidgetSerializer, ApplicationSerializer, EmbeddedRecordSerializerMixin, notificationUtils, dataUtils) {
 
     var get = Ember.get,
         set = Ember.set,
-        isNone = Ember.isNone;
+        isNone = Ember.isNone,
+        Application = dataUtils.getEmberApplicationSingleton();
 
     /**
      * Widget factory. Creates a controller, stores it in Application
@@ -66,7 +70,7 @@ define([
 
         var widgetControllerName = widgetName.dasherize();
         var widgetSerializerName = widgetName.dasherize();
-        var widgetModel = Application[widgetName.camelize().capitalize()];
+        var widgetModel = schemasregistry.getByName(widgetName).EmberModel;
         var controllerClass = options.subclass.extend.apply(options.subclass, extendArguments);
 
         if(isNone(widgetModel)) {
@@ -78,15 +82,16 @@ define([
 
             loader.register('controller:' + widgetControllerName, controllerClass);
 
-            //dynamically create an adapter that implements EmbeddedRecordMixin if a custom adapter is not already defined in Application
-            if(isNone(get(Application, widgetSerializerName))) {
-                loader.register('serializer:' + widgetSerializerName, WidgetSerializer.extend());
-            }
+            //dynamically create a serializer that implements EmbeddedRecordMixin if a custom serializer is not already defined in Application
+            var serializer = ApplicationSerializer.extend(
+                EmbeddedRecordSerializerMixin,
+                {}
+            );
+            loader.register('serializer:' + widgetSerializerName, WidgetSerializer.extend());
 
-            console.log("widget", widgetName.camelize().capitalize(), Application[widgetName.camelize().capitalize()]);
+            console.log("widget", widgetName.camelize().capitalize(), widgetModel);
             var capitalizedWidgetName = widgetName.camelize().capitalize();
-            var t = Application[capitalizedWidgetName].proto();
-            var metadataDict = t.metadata;
+            var metadataDict = widgetModel.proto().metadata;
 
             console.log("metadataDict", widgetName, metadataDict);
 

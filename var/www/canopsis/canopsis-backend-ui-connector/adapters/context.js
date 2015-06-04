@@ -20,129 +20,84 @@
 define([
     'ember',
     'ember-data',
-    'app/application',
     'canopsis/canopsis-backend-ui-connector/adapters/application',
     'app/lib/utils/notification',
     'app/lib/utils/modelsolve'
-], function(Ember, DS, Application, ApplicationAdapter, notificationUtils, modelsolve) {
+], function(Ember, DS, ApplicationAdapter, notificationUtils, modelsolve) {
 
     var isNone = Ember.isNone;
 
     var adapter = ApplicationAdapter.extend({
 
         buildURL: function(type, id) {
-            return '/context/' + type + (id ? ('/' + id) : '');
-        },
+            var url = '/context';
 
-        createRecord: function() {
-            notificationUtils.error('Context creation not implemented');
-        },
-
-        updateRecord: function() {
-            notificationUtils.error('Context update not implemented');
-        },
-
-        deleteRecord: function() {
-            notificationUtils.error('Context deletion not implemented');
-        },
-
-        find: function(store, model, id) {
-            void(store);
-            var me = this;
-
-            if (isNone(model) || isNone(model.typeKey)) {
-                console.error('Error while retrieving typeKey from model is it is none.');
+            if (!isNone(type)) {
+                url += '/' + type;
             }
 
-            return new Ember.RSVP.Promise(function(resolve, reject) {
-                var url = me.buildURL(model.typeKey, id);
-                var funcres = modelsolve.gen_resolve(resolve);
-                var funcrej = modelsolve.gen_reject(reject);
-
-                $.get(url).then(funcres, funcrej);
-            });
-        },
-
-        findMany: function(store, model, ids) {
-            void(store);
-            var me = this;
-
-            if (isNone(model) || isNone(model.typeKey)) {
-                console.error('Error while retrieving typeKey from model is it is none.');
+            if (!isNone(id)) {
+                url += '/' + id;
             }
 
-            return new Ember.RSVP.Promise(function(resolve, reject) {
-                var funcres = modelsolve.gen_resolve(resolve);
-                var funcrej = modelsolve.gen_reject(reject);
-                var url = me.buildURL(model.typeKey, ids.join(','));
-
-                $.get(url).then(funcres, funcrej);
-            });
+            return url;
         },
 
-        findAll: function(store, model, options) {
-            void(store);
-            var me = this;
+        createRecord: function(store, type, record) {
+            return this.updateRecord(store, type, record);
+        },
 
-            if (isNone(model) || isNone(model.typeKey)) {
-                console.error('Error while retrieving typeKey from model is it is none.');
-            }
+        updateRecord: function(store, type, record) {
 
-            return new Ember.RSVP.Promise(function(resolve, reject) {
-                var funcres = modelsolve.gen_resolve(resolve);
-                var funcrej = modelsolve.gen_reject(reject);
+            var id = get(record, 'id');
 
-                var promise;
-                var url = me.buildURL(model.typeKey);
+            var data = {};
+            var serializer = store.serializerFor(type.modelName);
+            var url = this.buildURL(type.modelName, null, snapshot);
 
-                if (options && options.mfilter) {
-                    var mfilter = JSON.stringify({
-                        '$and': [
-                            {'type': model.typeKey},
-                            options.mfilter
-                        ]
-                    });
+            serializer.serializeIntoHash(
+                data, type, snapshot, { includeId: true }
+            );
 
-                    promise = $.post(url, {_filter: mfilter});
-                }
-                else {
-                    promise = $.get(url);
-                }
+            var query = {
+                _type: data.type,
+                entity: data,
+                context: data
+            };
 
-                promise.then(funcres, funcrej);
-            });
+            return this.ajax(url, "PUT", {data: query});
+        },
+
+        deleteRecord: function(store, type, record) {
+            var url = this.buildURL();
+
+            var id = get(record, 'id');
+            var query = {data: {ids: id}};
+
+            return this.ajax(url, 'DELETE', query);
         },
 
         findQuery: function(store, model, query) {
             void(store);
-            var me = this;
+            var url = this.buildURL();
 
-            if (isNone(model) || isNone(model.typeKey)) {
-                console.error('Error while retrieving typeKey from model is it is none.');
+            if(typeof (query.filter) !== "string") {
+                query._filter = query.filter;
+            }
+            else {
+                query._filter = query.filter;
             }
 
-            return new Ember.RSVP.Promise(function(resolve, reject) {
-                var funcres = modelsolve.gen_resolve(resolve);
-                var funcrej = modelsolve.gen_reject(reject);
-                var url = me.buildURL(model.typeKey);
+            delete query.filter;
 
-                if(typeof (query.filter) !== "string") {
-                    query._filter = JSON.stringify(query.filter);
-                }
-                else {
-                    query._filter = query.filter;
-                }
+            console.log('findQuery: ', query);
 
-                delete query.filter;
-
-                console.log('findQuery: ', query);
-
-                $.post(url, query).then(funcres, funcrej);
-            });
+            return this.ajax(url, 'POST', {data: query});
         }
     });
 
     loader.register('adapter:context', adapter);
+    loader.register('adapter:entity', adapter);
 
     loader.register('adapter:ctxconnector', adapter.extend({
         buildURL: function(type, id) {

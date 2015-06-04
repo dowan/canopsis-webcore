@@ -1,0 +1,31 @@
+<div class="row">
+      <div class="searchPanel col-xs-6">
+        {{input class="form-control pull-left moduleSearch" value=moduleName type='text' placeholder=selectModuleLabel}}
+        {{#if showModules}}
+            <ul class="list-group scrollableList" style="position:absolute;z-index:100;top:35px">
+                {{#each modulesElement in modulesElements}}
+                    <li class="list-group-item">
+                        <a href="#" {{action 'setModule' modulesElement}}>{{modulesElement}}</a>
+                    </li>
+                {{/each}}
+            </ul>
+        {{/if}}
+      </div>
+
+      <div class="col-xs-6">
+        {{view Ember.Select
+            content=mibNames
+            value=mibName
+            class="form-control"
+            optionValuePath="content.name"
+            optionLabelPath="content.name"
+        }}
+      </div>
+</div>
+{{#if mibDescription}}
+    <hr/>
+    <div class="well well-sm">{{mibDescription}}</div>
+{{/if}}
+
+
+

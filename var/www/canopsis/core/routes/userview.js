@@ -20,15 +20,13 @@
 define([
     'ember',
     'app/routes/authenticated',
-    'utils',
+    'app/lib/loaders/utils',
     'app/lib/utils/data',
     'app/lib/utils/forms',
     'app/lib/utils/widgetSelectors',
     'app/lib/utils/actions',
     'app/lib/utils/test',
-    'seeds/RoutesLoader',
-    'app/serializers/userview',
-    'app/controller/userview',
+    'app/serializers/userview'
 ], function(Ember, AuthenticatedRoute, utils, dataUtils, formUtils, widgetSelectorsUtils, actionsUtils, testUtils) {
 
     var set = Ember.set,

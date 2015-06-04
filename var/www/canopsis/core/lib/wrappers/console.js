@@ -20,7 +20,7 @@
 
 var deps = ['canopsis/canopsisConfiguration',];
 if (!isIE) {
-    deps.push('consolejs');
+    deps.push('canopsis/core/lib/externals/console.js/console');
 }
 
 define(deps, function(conf) {

@@ -29,9 +29,7 @@ define([
     'app/lib/utils/dom',
     'app/lib/utils/routes',
     'app/lib/utils/forms',
-    'app/view/listline',
-    'canopsis/core/lib/wrappers/ember-cloaking',
-    'app/lib/wrappers/datatables',
+    'app/view/listline'
 ], function($,
     Ember,
     DS,
@@ -107,7 +105,7 @@ define([
                 var html = '<td>{{#if pendingOperation}}<i class="fa fa-cog fa-spin"></i>{{/if}}{{component-checkbox checked=isSelected class="toggle"}}</td>';
 
                 if(get(this, '_partials.columnsLine')) {
-                    html += '{{#each columns in controller.parentController._partials.columnsLine}}<td>{{partial columns}}</td>{{/each}}';
+                    html += '{{#each columns in controller._partials.columnsLine}}<td>{{partial columns}}</td>{{/each}}';
                 }
 
                 if(shown_columns === undefined || shown_columns.length === 0) {

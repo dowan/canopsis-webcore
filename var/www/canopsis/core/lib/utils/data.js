@@ -17,30 +17,37 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/application'], function(Application) {
+define(['app/lib/utilityclass'], function(Utility) {
 
-    /**
-     * @class dataUtils
-     * @static
-     *
-     * Utility class to manage data, whether they are related or not to Ember Data
-     */
-    var dataUtils = {
+    var _loggedUserController,
+        _applicationSingleton;
 
-        /**
-         * @method getStore
-         * @return {store} the application store
-         *
-         * Get the main application store
-         */
-        getStore: function() {
-            console.warn("this should not be used as there is not only one store in Canopsis. This might lead to unexpected behaviour");
-            return Application.__container__.lookup('store:main');
+    var dataUtils = Utility.create({
+
+        name: 'data',
+
+        getLoggedUserController: function() {
+            return _loggedUserController;
         },
 
-        /**
-         * @method addRecordToRelationship
-         */
+        setLoggedUserController: function(loggedUserController) {
+            _loggedUserController = loggedUserController;
+        },
+
+        getEmberApplicationSingleton: function() {
+            return _applicationSingleton;
+        },
+
+        setEmberApplicationSingleton: function(applicationInstance) {
+            _applicationSingleton = applicationInstance;
+        },
+
+        getStore: function() {
+            console.warn("this should not be used as there is not only one store in Canopsis. This might lead to unexpected behaviour");
+            return this.getEmberApplicationSingleton().__container__.lookup('store:main');
+        },
+
+        //TODO change parentElement term to something more descriptive
         addRecordToRelationship: function(record, parentElement, relationshipKey, cardinality) {
             console.log('addRecordToRelationship', arguments);
             if (cardinality === "hasMany") {
@@ -50,25 +57,8 @@ define(['app/application'], function(Application) {
                 console.log("addRecordToRelationship belongsTo", relationshipKey, arguments, parentElement);
                 parentElement.set(relationshipKey, record);
             }
-        },
-
-        /**
-         * @method download
-         * @param {string} content the file content
-         * @param {string} filename the file name
-         * @param {string} contentType the file content type
-         *
-         * Automatically download content as a file
-         */
-        download: function (content, filename, contentType) {
-            if(!contentType) contentType = 'application/octet-stream';
-                var a = document.createElement('a');
-                var blob = new Blob([content], {'type':contentType});
-                a.href = window.URL.createObjectURL(blob);
-                a.download = filename;
-                a.click();
         }
-    };
+    });
 
     return dataUtils;
 });

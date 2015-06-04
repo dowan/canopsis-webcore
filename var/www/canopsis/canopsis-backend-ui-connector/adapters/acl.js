@@ -20,9 +20,8 @@
 
 define([
     'ember',
-    'app/application',
     'canopsis/canopsis-backend-ui-connector/adapters/application',
-], function(Ember, Application, ApplicationAdapter) {
+], function(Ember, ApplicationAdapter) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -86,7 +85,7 @@ define([
                     url: url,
                     type: 'POST',
                     data: data
-                });
+                }).then(resolve, reject);
             });
         },
 
@@ -107,7 +106,7 @@ define([
                     url: url,
                     type: 'POST',
                     data: data
-                });
+                }).then(resolve, reject);
             });
         },
 

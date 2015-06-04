@@ -22,8 +22,7 @@ define([
     'ember'
 ], function(Ember) {
 
-    var get = Ember.get,
-        set = Ember.set;
+    var get = Ember.get;
 
 
     var component = Ember.Component.extend({

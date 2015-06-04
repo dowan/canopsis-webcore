@@ -20,15 +20,14 @@
 define([
     'ember',
     'ember-data',
-    'webcore-libs/requirejs-domready/domReady',
-    'app/lib/wrappers/summernote',
-    'app/lib/wrappers/colpick',
+    'app/lib/utils/data',
+    'app/lib/inflections',
     'jsonselect',
-    'webcore-libs/ember-icheck/lib/component',
-    'webcore-libs/ember-tooltip/lib/component',
-    'webcore-libs/ember-datetimepicker/lib/component',
-    'webcore-libs/ember-durationcombo/lib/component'
-], function(Ember, DS, domReady) {
+], function(Ember, DS, dataUtils, inflectionsManager) {
+
+    if(window.appShouldNowBeLoaded !== true) {
+        console.error('Application module is required too early, and it is probably leading to bad application behaviour and errors. Please do NOT require "app/application" in your modules.');
+    }
 
     var Application = Ember.Application.create({
         LOG_ACTIVE_GENERATION: false,
@@ -46,6 +45,7 @@ define([
     });
 
     loader.setApplication(Application);
+    dataUtils.setEmberApplicationSingleton(Application);
 
     Ember.Application.initializer({
         name:"RESTAdaptertransforms",
@@ -57,6 +57,10 @@ define([
             application.register('transform:object', DS.ObjectTransform);
         }
     });
+    Application.advanceReadiness();
+    window.$A = Application;
+
+    inflectionsManager.loadInflections();
 
     return Application;
 });

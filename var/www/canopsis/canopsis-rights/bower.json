@@ -1,0 +1,14 @@
+{
+  "name": "canopsis-rights",
+  "version": "0.0.0",
+  "authors": [
+    "Team Canopsis <maintainers@canopsis.org>"
+  ],
+  "description": "Rights and permission management",
+  "main": "init.js",
+  "moduleType": [
+    "amd"
+  ],
+  "license": "GNU Affero General Public License",
+  "homepage": "http://www.canopsis.org/"
+}

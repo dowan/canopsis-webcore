@@ -17,7 +17,7 @@
 # along with Canopsis. If not,  see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember', 'utils'], function(Ember,  utils) {
+define(['ember', 'app/lib/loaders/utils'], function(Ember,  utils) {
 
     var isNone = Ember.isNone,
         __ = Ember.String.loc,
@@ -54,7 +54,7 @@ define(['ember', 'utils'], function(Ember,  utils) {
             __(eventType)
         );
 
-        return html;
+        return new Ember.Handlebars.SafeString(html);
     });
 
 });

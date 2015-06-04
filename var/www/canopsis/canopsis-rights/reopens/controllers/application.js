@@ -18,17 +18,13 @@
 */
 
 define([
-    'jquery',
     'ember',
-    'ember-data',
     'app/controller/application',
-    'app/lib/utils/data'
+    'canopsis/canopsis-rights/objects/rightsregistry'
 ], function(
-    $,
     Ember,
-    DS,
     Applicationcontroller,
-    dataUtils) {
+    rightsRegistry) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -36,33 +32,19 @@ define([
         __ = Ember.String.loc;
 
 
+    /**
+     * @class ApplicationController
+     * @extends PartialslotAbleController
+     * @constructor
+     * @description ApplicationController reopen
+     */
     Applicationcontroller.reopen({
-        didSaveView: function(userview) {
-            this._super(userview);
-
-            var formattedViewId = get(userview, 'id').replace('.', '_');
-
-            var right = dataUtils.getStore().createRecord('action', {
-                  enable: true,
-                  crecord_type: "action",
-                  _id: formattedViewId,
-                  id: formattedViewId,
-                  crecord_name: formattedViewId,
-                  desc: 'Rights on view : ' + userview.get('crecord_name')
-            });
-            right.save();
-
-            this.rightsRegistry.add(right, get(right, 'crecord_name'));
-
-            //TODO Add the correct right to the current user, to allow him to display the view
-            // var loginController = get(this, 'controllers.login');
-
-            // var rights = get(loginController, 'record.rights');
-
-            // set(rights, formattedViewId, { checksum : 7 });
-            // var record = get(loginController, 'record');
-            // record.save();
-        }
+        /**
+         * @property rightsRegistry
+         * @type Object
+         * @description Reference to the rights registry
+         */
+        rightsRegistry: rightsRegistry
     });
 
     return Applicationcontroller;

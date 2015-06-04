@@ -32,11 +32,14 @@ define([
     'canopsis/canopsis-backend-ui-connector/adapters/eventlog',
     'canopsis/canopsis-backend-ui-connector/adapters/filter',
     'canopsis/canopsis-backend-ui-connector/adapters/linklist',
+    'canopsis/canopsis-backend-ui-connector/adapters/entitylink',
+    'canopsis/canopsis-backend-ui-connector/adapters/snmprule',
+	'canopsis/canopsis-backend-ui-connector/adapters/snmpmib',
     'canopsis/canopsis-backend-ui-connector/adapters/loggedaccount',
-    'canopsis/canopsis-backend-ui-connector/adapters/notification',
     'canopsis/canopsis-backend-ui-connector/adapters/pojo',
     'canopsis/canopsis-backend-ui-connector/adapters/schema',
-    'canopsis/canopsis-backend-ui-connector/adapters/userview'
+    'canopsis/canopsis-backend-ui-connector/adapters/userview',
+    'canopsis/canopsis-backend-ui-connector/adapters/trap'
 ], function () {
 
 });

@@ -19,8 +19,7 @@
 
 define([
     'ember',
-    'app/lib/abstractclassregistry',
-    'app/application'
+    'app/lib/abstractclassregistry'
 ], function(Ember, Abstractclassregistry) {
 
     var inflexions = [
@@ -28,7 +27,8 @@ define([
         ['tcp2canopsis' , 'tcp2canopsis'],
         ['curve', 'curves'],
         ['serie', 'serie'],
-        ['enabledmodules', 'enabledmodules']
+        ['enabledmodules', 'enabledmodules'],
+        ['calendardata','calendardata']
     ];
 
     var inflectionsManager = Abstractclassregistry.create({
@@ -36,17 +36,21 @@ define([
 
         all: [],
         byClass: {},
-        tableColumns: [{title: 'name', name: 'name'}, {title: 'Singular', name: 'singular'}, {title: 'Plural', name: 'plural'}]
+        tableColumns: [{title: 'name', name: 'name'}, {title: 'Singular', name: 'singular'}, {title: 'Plural', name: 'plural'}],
+
+        loadInflections: function() {
+            for (var i = 0, l = inflexions.length; i < l; i++) {
+                inflectionsManager.all.pushObject({
+                    name: inflexions[i][0] + ' -> ' + inflexions[i][1],
+                    singular: inflexions[i][0],
+                    plural: inflexions[i][1]
+                });
+                Ember.Inflector.inflector.irregular(inflexions[i][0], inflexions[i][1]);
+            }
+        }
     });
 
-    for (var i = 0, l = inflexions.length; i < l; i++) {
-        inflectionsManager.all.pushObject({
-            name: inflexions[i][0] + ' -> ' + inflexions[i][1],
-            singular: inflexions[i][0],
-            plural: inflexions[i][1]
-        });
-        Ember.Inflector.inflector.irregular(inflexions[i][0], inflexions[i][1]);
-    }
+
 
     return inflectionsManager;
 });

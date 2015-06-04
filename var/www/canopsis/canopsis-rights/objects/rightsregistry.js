@@ -21,6 +21,12 @@ define([
     'app/lib/abstractclassregistry'
 ], function(Abstractclassregistry) {
 
+    /**
+     * @class rightsRegistry
+     * @extends Abstractclassregistry
+     * @static
+     * @description List all rights
+     */
     var rightsRegistry = Abstractclassregistry.create({
         name: 'rights',
 

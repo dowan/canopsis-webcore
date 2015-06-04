@@ -10,11 +10,8 @@
 
         <link rel="icon" type="image/png" href="/static/canopsis/media/favicon.png" />
         <!-- CSS -->
-        <link rel="stylesheet" type="text/css" href="/static/webcore-libs/bootstrap-daterangepicker/daterangepicker-bs3.css" />
         <link rel="stylesheet" type="text/css" href="/static/canopsis/style.css" />
 
-        <!-- font Awesome -->
-        <link rel="stylesheet" type="text/css" href="/static/webcore-libs/fontawesome/css/font-awesome.min.css" />
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -25,13 +22,16 @@
 
         <script
             type="application/javascript"
-            src="/static/webcore-libs/requirejs/require.js"
+            src="/static/canopsis/core/lib/externals/requirejs/require.js"
             data-main="/static/canopsis/requirejs.conf">
         </script>
 
     </head>
     <body class="skin-blue" style="background: url('/static/canopsis/media/background.jpg') no-repeat ;background-size: 100%;">
-    <center><div id="loadingInfo">Loading i18n definitions</div></center>
+    <center>
+        <div id="loadingInfo">Loading i18n definitions</div>
+        <div id="moduleList"></div>
+    </center>
     <div id="loading">
         <i class="fa fa-cog fa-spin fa-5x"></i><br/>
         <i class="fa fa-flag"></i>

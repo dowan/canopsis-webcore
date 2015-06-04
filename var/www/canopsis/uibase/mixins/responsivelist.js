@@ -22,8 +22,8 @@ define([
     'app/lib/utils/forms',
     'app/lib/utils/hash',
     'app/lib/factories/mixin',
-    'webcore-libs/stacktable/stacktable',
-    'link!webcore-libs/stacktable/stacktable.css'
+    'canopsis/uibase/lib/externals/stacktable/stacktable',
+    'link!canopsis/uibase/lib/externals/stacktable/stacktable.css'
 ], function(Ember, formsUtils, hashUtils, Mixin) {
 
     var get = Ember.get,

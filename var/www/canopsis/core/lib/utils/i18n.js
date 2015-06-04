@@ -19,17 +19,21 @@
 
 define([
     'jquery',
-    'canopsis/canopsisConfiguration'
-], function($, conf) {
+    'canopsis/canopsisConfiguration',
+    'app/lib/utilityclass'
+], function($, conf, Utility) {
 
 
-    var i18n = {
+    var i18n = Utility.create({
+
+        name: 'i18n',
+
         todo: [],
         translations: {},
         newTranslations: true,
         _: function(word, noDeprecation) {
 
-            if(Ember && noDeprecation === undefined) {
+            if(window.Ember && noDeprecation === undefined) {
                 Ember.deprecate('You should not use i18n tools directly when ember is loaded. Please consider using Ember.String.loc instead. ', !conf.EmberIsLoaded);
             }
 
@@ -140,7 +144,7 @@ define([
                 i18n.uploadDefinitions();
             });
         }
-    };
+    });
 
     window.__ = i18n._;
 

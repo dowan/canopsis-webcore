@@ -25,8 +25,6 @@ var editors = [
     { name: 'editor-attributepreset', template: 'canopsis/uibase/editors/attributepreset.html' },
     { name: 'editor-boolean', template: 'canopsis/uibase/editors/boolean.html' },
     { name: 'editor-cfilter', template: 'canopsis/uibase/editors/cfilter.html' },
-    { name: 'editor-cfilter2', template: 'canopsis/uibase/editors/cfilter2.html' },
-    { name: 'editor-cfilter3', template: 'canopsis/uibase/editors/cfilter3.html' },
     { name: 'editor-cfilterwithproperties', template: 'canopsis/uibase/editors/cfilterwithproperties.html' },
     { name: 'editor-cmetric', template: 'canopsis/uibase/editors/cmetric.html' },
     { name: 'editor-color', template: 'canopsis/uibase/editors/color.html' },

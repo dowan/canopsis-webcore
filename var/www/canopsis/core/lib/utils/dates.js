@@ -18,13 +18,16 @@
 */
 
 define([
-    'ember'
-], function(Ember) {
+    'ember',
+    'app/lib/utilityclass'
+], function(Ember, Utility) {
 
     var __ = Ember.String.loc,
         isNone = Ember.isNone;
 
-    var dates = {
+    var dates = Utility.create({
+
+        name: 'dates',
 
         getNow: function() {
             return parseInt(new Date().getTime() / 1000);
@@ -195,7 +198,7 @@ define([
             var Diff = d2 - d1;
             return Math.ceil((Diff/div));
         }
-    };
+    });
 
     return dates;
 });

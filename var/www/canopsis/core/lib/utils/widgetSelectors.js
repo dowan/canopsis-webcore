@@ -17,15 +17,16 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
+define(['ember', 'app/lib/utilityclass'], function(Ember, Utility) {
 
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone;
 
 
-    var widgetSelectors = {
+    var widgetSelectors = Utility.create({
 
+        name: 'widgetSelector',
 
         toTree: function (widget) {
             //doesn't work yet
@@ -154,7 +155,7 @@ define(['ember'], function(Ember) {
             return selection;
 
         }
-    };
+    });
 
     return widgetSelectors;
 });

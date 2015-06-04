@@ -39,7 +39,7 @@ define([
         formViewClass : FormView,
 
         didInsertElement: function () {
-            drag.setDraggable(this.$('#formwrapper .modal-header'), this.$('#formwrapper'));
+            drag.setDraggable(this.$('#formwrapper .modal-title'), this.$('#formwrapper'));
         },
 
         willDestroyElement: function () {

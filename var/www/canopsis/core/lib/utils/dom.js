@@ -17,9 +17,12 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
+define(['ember', 'app/lib/utilityclass'], function(Ember, Utility) {
 
-    var domUtils = {
+    var domUtils = Utility.create({
+
+        name: 'dom',
+
         getViewFromJqueryElement: function($el, className) {
             if(className) {
                 return Ember.View.views[$el.closest('.ember-view .' + className).attr('id')];
@@ -27,7 +30,7 @@ define(['ember'], function(Ember) {
                 return Ember.View.views[$el.closest('.ember-view').attr('id')];
             }
         }
-    };
+    });
 
     return domUtils;
 });
