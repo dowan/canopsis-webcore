@@ -17,10 +17,14 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
+define([
+    'ember-data',
+    'app/serializers/ctx'
+], function(DS, ContextSerializer) {
 
-    Ember.Handlebars.helper('glyphicon', function(icon) {
-        return new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-' + icon + '"></span>');
-    });
+    var serializer = ContextSerializer.extend({});
 
+    loader.register('serializer:vevent', serializer);
+
+    return serializer;
 });

@@ -168,6 +168,7 @@ define([
          * @description used to feed the left menu "Engines"
          */
         enginesviews: [
+            {label: __('Context'), value: 'view.context'},
             {label: __('Selectors'), value: 'view.selectors'},
             {label: __('Event Filter'), value: 'view.filters'},
             {label: __('Performance Data'), value: 'view.series'},

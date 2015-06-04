@@ -18,7 +18,7 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-from canopsis.old.template import Template
+from canopsis.common.template import Template
 from bottle import static_file, request, redirect
 import os
 
