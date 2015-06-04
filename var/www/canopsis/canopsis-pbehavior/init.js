@@ -20,6 +20,7 @@
 
 define([
     'canopsis/canopsis-pbehavior/lib/loaders/components',
+    'canopsis/canopsis-pbehavior/lib/loaders/renderers',
     'canopsis/canopsis-pbehavior/serializers/pbehavior'
 ], function () {
 

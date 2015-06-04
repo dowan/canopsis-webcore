@@ -29,9 +29,7 @@ define([
     'app/lib/utils/dom',
     'app/lib/utils/routes',
     'app/lib/utils/forms',
-    'app/view/listline',
-    'canopsis/core/lib/wrappers/ember-cloaking',
-    'app/lib/wrappers/datatables',
+    'app/view/listline'
 ], function($,
     Ember,
     DS,

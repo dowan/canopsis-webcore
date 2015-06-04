@@ -20,14 +20,14 @@
 
 from canopsis.common.utils import ensure_iterable
 from canopsis.common.ws import route
-from canopsis.pbehavior.manager import PBehaviorManager, get_query
+from canopsis.pbehavior.manager import PBehaviorManager
 
-pbm = PBehaviorManager()
 
 DEFAULT_ROUTE = 'pbehavior'  #: route specifics to pbehavior document
 
 
 def exports(ws):
+    pbm = PBehaviorManager()
 
     @route(
         ws.application.post,
@@ -47,7 +47,7 @@ def exports(ws):
         :rtype: list
         """
 
-        query = get_query(behaviors)
+        query = PBehaviorManager.get_query(behaviors)
 
         entity_ids = ensure_iterable(entity_ids)
 

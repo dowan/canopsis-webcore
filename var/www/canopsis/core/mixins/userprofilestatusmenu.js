@@ -21,14 +21,15 @@ define([
     'ember',
     'app/lib/factories/mixin',
     'app/lib/requirejsmocksmanager',
-    'utils',
+    'app/lib/loaders/utils',
     'app/lib/utils/forms',
     'app/lib/utils/data',
     'app/lib/utils/notification'
 ], function(Ember, Mixin, requirejsmocksmanager, utils, formsUtils, dataUtils, notificationUtils) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
    /**
      * Mixin allowing to manage the current user profile, adding a button into the app status bar
@@ -42,7 +43,9 @@ define([
         requirejsmocksmanager: requirejsmocksmanager,
 
         init: function() {
-            this.partials.statusbar.pushObject('userstatusmenu');
+            if (!isNone(this.partials.statusbar)) {
+                this.partials.statusbar.pushObject('userstatusmenu');
+            }
             this._super();
         },
 
@@ -54,7 +57,7 @@ define([
             showUserProfile: function () {
                 var applicationController = this;
 
-                var ouser = get(utils, 'session');
+                var ouser = get(this, 'controllers.login.record');
                 var recordWizard = formsUtils.showNew('modelform', ouser, {
                     title: get(ouser, '_id') + ' ' + __('profile'),
                     filterFieldByKey: {

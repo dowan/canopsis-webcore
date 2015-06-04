@@ -1,9 +1,8 @@
 define([
     'ember',
-    'app/application',
     'canopsis/canopsis-backend-ui-connector/adapters/application',
     'app/lib/utils/modelsolve'
-], function(Ember, Application, ApplicationAdapter, modelsolve) {
+], function(Ember, ApplicationAdapter, modelsolve) {
 
     var isNone = Ember.isNone,
         get = Ember.get;

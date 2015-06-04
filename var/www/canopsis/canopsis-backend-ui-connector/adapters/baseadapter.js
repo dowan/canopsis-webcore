@@ -1,9 +1,8 @@
 define([
     'ember',
-    'app/application',
     'canopsis/canopsis-backend-ui-connector/adapters/application',
     'app/lib/utils/modelsolve'
-], function(Ember, Application, ApplicationAdapter, modelsolve) {
+], function(Ember, ApplicationAdapter, modelsolve) {
 
     var isNone = Ember.isNone,
         get = Ember.get;
@@ -21,12 +20,7 @@ define([
 
             console.log('findQuery', query);
             var me = this;
-            return new Ember.RSVP.Promise(function(resolve, reject) {
-                var funcres = modelsolve.gen_resolve(resolve);
-                var funcrej = modelsolve.gen_reject(reject);
-                $.post(url, query).then(funcres, funcrej);
-            });
-
+            return this.ajax(url, 'POST', {data: query});
         },
 
         createRecord: function(store, type, record) {
@@ -42,21 +36,7 @@ define([
 
             var url = this.buildURL(type.typeKey, record.id) + '/put';
 
-            var promise = new Ember.RSVP.Promise(function(resolve, reject) {
-                var funcres = modelsolve.gen_resolve(resolve);
-                var funcrej = modelsolve.gen_reject(reject);
-                $.ajax(
-                    {
-                        url: url,
-                        type: 'POST',
-                        data: {
-                            'document' : JSON.stringify(context),
-                        }
-                    }
-                ).then(funcres, funcrej);
-            });
-
-            return promise;
+            return this.ajax(url, 'POST', {data: {document: context}});
         },
 
         updateRecord: function(store, type, record) {
@@ -68,25 +48,10 @@ define([
             var data = { ids: id};
             var url = this.buildURL(type.typeKey, id);
 
-            var promise = new Ember.RSVP.Promise(function(resolve, reject) {
-                var funcres = modelsolve.gen_resolve(resolve);
-                var funcrej = modelsolve.gen_reject(reject);
-                $.ajax(
-                    {
-                        url: url,
-                        type: 'DELETE',
-                        data: {
-                            ids : JSON.stringify([id])
-                        }
-                    }
-                ).then(funcres, funcrej);
-            });
-
-            return promise;
+            return this.ajax(url, 'DELETE', {data: {ids: [id]}});
         },
 
     });
-
 
     loader.register('adapter:baseadapter', adapter);
 

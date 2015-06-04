@@ -18,10 +18,14 @@
 */
 
 define([
-    'ember'
-], function(Ember) {
+    'ember',
+    'app/lib/utilityclass'
+], function(Ember, Utility) {
 
-    var typesUtils = {
+    var typesUtils = Utility.create({
+
+        name: 'types',
+
         castValue: function(value, type) {
             type = type.toLowerCase();
             var types = ['string', 'boolean', 'number', 'array'];
@@ -68,7 +72,7 @@ define([
             }
 
         },
-    };
+    });
 
     return typesUtils;
 });

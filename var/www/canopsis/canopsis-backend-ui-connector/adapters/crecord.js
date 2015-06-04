@@ -18,17 +18,15 @@
 */
 
 define([
-    'app/application',
-    'canopsis/canopsis-backend-ui-connector/adapters/application',
-    'app/serializers/eventlog',
-], function(Application, ApplicationAdapter) {
+    'canopsis/canopsis-backend-ui-connector/adapters/application'
+], function(ApplicationAdapter) {
 
     var adapter = ApplicationAdapter.extend({
 
         buildURL: function(type, id) {
             void(id);
 
-            return "/rest/object";
+            return "/rest/object/" + type;
         },
 
         findQuery: function(store, type, query) {

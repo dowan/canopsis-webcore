@@ -20,8 +20,7 @@
 
 define([
     'canopsis/commit',
-    'app/application',
-    'utils',
+    'app/lib/loaders/utils',
     'app/lib/registries',
     'app/lib/wrappersmanager',
     'app/lib/formsregistry',
@@ -35,7 +34,6 @@ define([
     'app/lib/loaders/components',
     'canopsis/canopsisConfiguration',
 ], function(commit,
-        Application,
         utils,
         registries,
         wrappersRegistry,
@@ -64,11 +62,9 @@ define([
     Canopsis.presets = attributepresetRegistry;
     Canopsis.inflections = inflectionsRegistry;
     Canopsis.forms = formsRegistry;
-    Canopsis.manifest = Application.manifest;
     Canopsis.helpers = helpers;
     Canopsis.templates = templates;
     Canopsis.components = components;
-    Canopsis.Application = Application;
     Canopsis.commit = commit;
     Canopsis.conf = canopsisConfiguration;
 

@@ -19,16 +19,20 @@
 
 define([
     'ember',
-    'app/application',
     'app/lib/utils/routes',
-    'app/lib/formsregistry'
-], function(Ember, Application, routesUtils, formsregistry) {
+    'app/lib/utils/data',
+    'app/lib/formsregistry',
+    'app/lib/utilityclass'
+], function(Ember, routesUtils, dataUtils, formsregistry, Utility) {
 
     var get = Ember.get,
         set = Ember.set,
         __ = Ember.String.loc;
 
-    var formUtils = {
+    var formUtils = Utility.create({
+
+        name: 'forms',
+
         instantiateForm: function(formName, formContext, options) {
             void (formContext);
 
@@ -41,7 +45,7 @@ define([
 
             options.formName = formName;
             classDict.target = routesUtils.getCurrentRouteController();
-            classDict.container = Application.__container__;
+            classDict.container = dataUtils.getEmberApplicationSingleton().__container__;
 
             if(formsregistry.all[formName] === undefined) {
                 console.error('the form', formName, 'was not found');
@@ -131,7 +135,7 @@ define([
         addRecord: function(record_type) {
             routesUtils.getCurrentRouteController().send('show_add_crecord_form', record_type);
         }
-    };
+    });
 
     return formUtils;
 });

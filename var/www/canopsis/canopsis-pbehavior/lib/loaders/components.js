@@ -19,7 +19,11 @@
 
 
 var components = [
-    { name: 'components/component-periodicbehaviormanager', url: 'canopsis/canopsis-pbehavior/components/periodicbehaviormanager/component', template: 'canopsis/canopsis-pbehavior/components/periodicbehaviormanager/template.html' }
+    {
+        name: 'components/component-periodicbehaviormanager',
+        url: 'canopsis/canopsis-pbehavior/components/periodicbehaviormanager/component',
+        template: 'canopsis/canopsis-pbehavior/components/periodicbehaviormanager/template.html'
+    }
 ];
 
 loader.loadWithTemplates(components);

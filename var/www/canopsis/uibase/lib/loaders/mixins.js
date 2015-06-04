@@ -34,7 +34,7 @@ var mixins = [
     { name: 'customfilterlist', url: 'canopsis/uibase/mixins/customfilterlist', classes: ["list"]},
     { name: 'arraysearch', url: 'canopsis/uibase/mixins/arraysearch', classes: ["list"]},
     { name: 'crud', url: 'canopsis/uibase/mixins/crud', classes: ['widget']},
-    { name: 'detail', url: 'canopsis/uibase/mixins/detail', classes: ['list']}
+    { name: 'listlinedetail', url: 'canopsis/uibase/mixins/listlinedetail', classes: ['list']}
 ];
 
 loader.loadWithTemplates(mixins);

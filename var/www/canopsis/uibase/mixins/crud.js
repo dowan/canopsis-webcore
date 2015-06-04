@@ -61,45 +61,10 @@ define([
             set(this, 'itemsPerPagePropositionSelected', get(this, 'itemsPerPage'));
         },
 
-        userCanReadRecord: function() {
-            if(get(this, 'user') === "root") {
-                return true;
-            }
-
-            var crecord_type = get(this, 'listed_crecord_type');
-
-            return get(this, 'rights.' + crecord_type + '_read.checksum');
-        }.property('config.listed_crecord_type'),
-
-        userCanCreateRecord: function() {
-            if(get(this, 'user') === "root") {
-                return true;
-            }
-
-            var crecord_type = get(this, 'listed_crecord_type');
-
-            return get(this, 'rights.' + crecord_type + '_create.checksum');
-        }.property('config.listed_crecord_type'),
-
-        userCanUpdateRecord: function() {
-            if(get(this, 'user') === "root") {
-                return true;
-            }
-
-            var crecord_type = get(this, 'listed_crecord_type');
-
-            return get(this, 'rights.' + crecord_type + '_update.checksum');
-        }.property('config.listed_crecord_type'),
-
-        userCanDeleteRecord: function() {
-            if(get(this, 'user') === "root") {
-                return true;
-            }
-
-            var crecord_type = get(this, 'listed_crecord_type');
-
-            return get(this, 'rights.' + crecord_type + '_delete.checksum');
-        }.property('config.listed_crecord_type'),
+        userCanReadRecord: true,
+        userCanCreateRecord: true,
+        userCanUpdateRecord: true,
+        userCanDeleteRecord: true,
 
         onRecordReady: function(record) {
             this._super.apply(this, arguments);
@@ -167,7 +132,8 @@ define([
                 var extraoptions = get(this, 'mixinOptions.crud.formoptions'),
                     formclass = get(this, 'mixinOptions.crud.form');
                 var formoptions = {
-                    title: 'Edit ' + get(record, 'crecord_type')
+                    title: 'Edit ' + get(record, 'crecord_type'),
+                    inspectedItemType: get(this, 'listed_crecord_type')
                 };
 
                 if(!isNone(extraoptions)) {

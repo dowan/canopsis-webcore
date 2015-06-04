@@ -65,14 +65,18 @@
                                 </span>
                             {{/if}}
                             <a {{action "unselectItem" item}}>
-                                {{#if item.icon}}
-                                    <span {{bind-attr class=item.icon}}></span> 
+                                {{#if templateForHeader}}
+                                    {{partial templateForHeader}}
                                 {{else}}
-                                    {{#if defaultIcon}}
-                                        {{{glyphicon defaultIcon}}} 
+                                    {{#if item.icon}}
+                                        <span {{bind-attr class=item.icon}}></span>
+                                    {{else}}
+                                        {{#if defaultIcon}}
+                                            {{{glyphicon defaultIcon}}}
+                                        {{/if}}
                                     {{/if}}
+                                    {{item.name}} {{#if item.value}}({{item.value}}){{/if}}
                                 {{/if}}
-                                {{item.name}} {{#if item.value}}({{item.value}}){{/if}}
                             </a>
                             <span style="clear:both"></span>
                         </li>
@@ -97,14 +101,18 @@
                 {{#each item in allClasses}}
                     <li class="list-group-item">
                         <a {{action "selectItem" item}}>
-                            {{#if item.icon}}
-                                <span {{bind-attr class=item.icon}}></span> 
+                            {{#if templateForHeader}}
+                                {{partial templateForHeader}}
                             {{else}}
-                                {{#if defaultIcon}}
-                                    {{{glyphicon defaultIcon}}} 
+                                {{#if item.icon}}
+                                    <span {{bind-attr class=item.icon}}></span>
+                                {{else}}
+                                    {{#if defaultIcon}}
+                                        {{{glyphicon defaultIcon}}}
+                                    {{/if}}
                                 {{/if}}
+                                {{item.name}}
                             {{/if}}
-                            {{item.name}}
                         </a>
                     </li>
                 {{/each}}
@@ -126,14 +134,18 @@
                     {{#each item in class.items}}
                         <li class="list-group-item">
                             <a {{action "selectItem" item}}>
-                                {{#if item.icon}}
-                                    <span {{bind-attr class=item.icon}}></span> 
+                                {{#if templateForHeader}}
+                                    {{partial templateForHeader}}
                                 {{else}}
-                                    {{#if defaultIcon}}
-                                        {{{glyphicon defaultIcon}}} 
+                                    {{#if item.icon}}
+                                        <span {{bind-attr class=item.icon}}></span>
+                                    {{else}}
+                                        {{#if defaultIcon}}
+                                            {{{glyphicon defaultIcon}}}
+                                        {{/if}}
                                     {{/if}}
+                                    {{item.name}}
                                 {{/if}}
-                                {{item.name}}
                             </a>
                         </li>
                     {{/each}}

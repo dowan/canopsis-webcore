@@ -21,7 +21,6 @@ define([
     'jquery',
     'ember',
     'ember-data',
-    'app/application',
     'canopsis/canopsisConfiguration',
     'app/controller/partialslotablecontroller',
     'app/lib/widgetsregistry',
@@ -37,7 +36,7 @@ define([
     'app/mixins/consolemanager',
     'app/mixins/promisemanager',
     'app/mixins/notifications',
-    'utils',
+    'app/lib/loaders/utils',
     'app/lib/utils/forms',
     'app/lib/utils/data',
     'app/lib/utils/hash',
@@ -45,7 +44,6 @@ define([
     'app/serializers/cservice',
     'app/lib/loaders/helpers',
     'app/lib/loaders/helpers',
-    'app/lib/wrappers/bootstrap',
     'app/lib/wrappers/mousetrap',
     'app/controller/recordinfopopup',
     'app/controller/formwrapper'
@@ -53,7 +51,6 @@ define([
     $,
     Ember,
     DS,
-    Application,
     canopsisConfiguration,
     PartialslotAbleController,
     widgetsRegistry,
@@ -81,7 +78,8 @@ define([
         __ = Ember.String.loc;
 
 
-    Application.IndexController = Ember.Controller.extend(Ember.Evented, {});
+    var indexController = Ember.Controller.extend(Ember.Evented, {});
+    loader.register('controller:index', indexController);
 
     /**
      * @class ApplicationController
@@ -175,7 +173,8 @@ define([
             {label: __('Event Filter'), value: 'view.filters'},
             {label: __('Performance Data'), value: 'view.series'},
             {label: __('Scheduled Jobs'), value: 'view.jobs'},
-            {label: __('Link list'), value: 'view.linklist'}
+            {label: __('Link list'), value: 'view.linklist'},
+            {label: __('Snmp rules'), value: 'view.snmprule'}
         ],
 
         /**
@@ -190,8 +189,6 @@ define([
             if (!isNone(title)) {
                 $('title').html(title);
             }
-
-            //TODO refactor this in application route
 
             console.groupEnd();
             this.refreshPartialsList();
@@ -230,6 +227,10 @@ define([
                     conf.save();
                 });
             }
+        },
+
+        didSaveView: function(userview) {
+            this.transitionToRoute("/userview/" + get(userview, 'id'));
         },
 
         actions: {
@@ -363,6 +364,7 @@ define([
                 console.log("add", type);
 
                 var containerwidgetId = hashUtils.generateId('container');
+                var viewId = hashUtils.generateId('userview');
 
                 dataUtils.getStore().createRecord('widgetcontainer', {
                     xtype: 'widgetcontainer',
@@ -372,12 +374,17 @@ define([
                     id: containerwidgetId
                 });
 
+                var userId = get(this, 'controllers.login.record._id');
+
                 var userview = dataUtils.getStore().push(type, {
-                    id: hashUtils.generateId('userview'),
+                    id: viewId,
                     crecord_type: 'view',
+                    author: userId,
                     containerwidget: containerwidgetId,
                     containerwidgetType: 'widgetcontainer'
                 });
+
+                var formattedViewId = viewId.replace('.', '_');
 
                 console.log('temp record', userview);
 
@@ -385,8 +392,9 @@ define([
 
                 recordWizard.submit.done(function() {
                     set(applicationController, 'isLoading', get(applicationController, 'isLoading') + 1);
-                    userview.save();
-                    applicationController.transitionToRoute("/userview/" + get(userview, 'id'));
+                    userview.save().then(function() {
+                        applicationController.didSaveView(userview);
+                    });
                 });
             },
 

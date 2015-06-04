@@ -20,9 +20,8 @@
 define([
     'ember',
     'ember-data',
-    'app/application',
     'app/lib/promisesmanager'
-], function(Ember, DS, Application, promisesmanager) {
+], function(Ember, DS, promisesmanager) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -58,8 +57,13 @@ define([
         },
 
         buildURL: function(type, id) {
-            var namespace = ( entities.contains(type) ) ? "entities" :"object" ;
-            return ("/rest/"+ namespace +"/" + type + (!!id ? "/" + id : ""));
+            var namespace = get(this, 'namespace');
+
+            if(isNone(namespace)) {
+                namespace = ( entities.contains(type) ) ? "entities" :"object" ;
+            }
+
+            return ("/rest/"+ namespace + "/" + type + (!!id ? "/" + id : ""));
         },
 
         createRecord: function(store, type, record) {

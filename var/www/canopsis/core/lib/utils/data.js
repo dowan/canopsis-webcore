@@ -17,12 +17,34 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/application'], function(Application) {
+define(['app/lib/utilityclass'], function(Utility) {
 
-    var dataUtils = {
+    var _loggedUserController,
+        _applicationSingleton;
+
+    var dataUtils = Utility.create({
+
+        name: 'data',
+
+        getLoggedUserController: function() {
+            return _loggedUserController;
+        },
+
+        setLoggedUserController: function(loggedUserController) {
+            _loggedUserController = loggedUserController;
+        },
+
+        getEmberApplicationSingleton: function() {
+            return _applicationSingleton;
+        },
+
+        setEmberApplicationSingleton: function(applicationInstance) {
+            _applicationSingleton = applicationInstance;
+        },
+
         getStore: function() {
             console.warn("this should not be used as there is not only one store in Canopsis. This might lead to unexpected behaviour");
-            return Application.__container__.lookup('store:main');
+            return this.getEmberApplicationSingleton().__container__.lookup('store:main');
         },
 
         //TODO change parentElement term to something more descriptive
@@ -36,7 +58,7 @@ define(['app/application'], function(Application) {
                 parentElement.set(relationshipKey, record);
             }
         }
-    };
+    });
 
     return dataUtils;
 });
