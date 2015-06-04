@@ -588,6 +588,14 @@ table.sortable th {
     text-align:center;
 }
 
+#moduleList {
+    font-size: 9px;
+    position:absolute;
+    top: 65%;
+    width:100%;
+    text-align:center;
+}
+
 #loading {
     position:absolute;
     top: 50%;

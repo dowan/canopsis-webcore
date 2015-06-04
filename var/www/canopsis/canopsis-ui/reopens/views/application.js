@@ -34,7 +34,7 @@ define([
 
             $('#loading').remove();
             $('#loadingInfo').remove();
-
+            $('#moduleList').remove();
             $("[data-toggle='offcanvas']").click(function(e) {
                 e.preventDefault();
 

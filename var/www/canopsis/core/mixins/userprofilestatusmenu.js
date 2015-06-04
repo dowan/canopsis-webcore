@@ -28,7 +28,8 @@ define([
 ], function(Ember, Mixin, requirejsmocksmanager, utils, formsUtils, dataUtils, notificationUtils) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
    /**
      * Mixin allowing to manage the current user profile, adding a button into the app status bar
@@ -42,7 +43,9 @@ define([
         requirejsmocksmanager: requirejsmocksmanager,
 
         init: function() {
-            this.partials.statusbar.pushObject('userstatusmenu');
+            if (!isNone(this.partials.statusbar)) {
+                this.partials.statusbar.pushObject('userstatusmenu');
+            }
             this._super();
         },
 
