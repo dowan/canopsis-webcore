@@ -12,6 +12,5 @@
   "license": "GNU Affero General Public License",
   "homepage": "http://www.canopsis.org/",
   "dependencies": {
-    "jquery-upload-file": "git@github.com:hayageek/jquery-upload-file.git#~3.1.10"
   }
 }
