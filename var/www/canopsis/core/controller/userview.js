@@ -31,6 +31,34 @@ define([
         __ = Ember.String.loc;
 
 
+    recursiveDeleteKeys = function(object, keysToRemove) {
+        var objectKeys = Ember.keys(object);
+        alert('recursiveDeleteKeys ' + objectKeys.length);
+
+        for (var i = 0, li = objectKeys.length; i < li; i++) {
+            var currentKey = objectKeys[i],
+                currentObject = object[objectKeys[i]];
+
+            alert(currentKey);
+            if(keysToRemove.contains(currentKey)) {
+                alert('delete key ' + currentKey);
+                delete object[currentKey];
+            } else if(Ember.isArray(currentObject)) {
+                var buffer = [];
+
+                for (var j = 0, lj = currentObject.length; j < lj; j++) {
+                    buffer.pushObject(recursiveDeleteKeys(currentObject[j], keysToRemove));
+                }
+
+                object[currentKey] = recursiveDeleteKeys(object[currentKey], keysToRemove);
+            } else if(typeof currentKey === 'object') {
+                object[currentKey] = recursiveDeleteKeys(object[currentKey], keysToRemove);
+            }
+        }
+
+        return object;
+    }
+
     var controller = Ember.ObjectController.extend(InspectableItem, Ember.Evented, {
         needs: ['application'],
 
@@ -59,6 +87,10 @@ define([
                 widgetChooserForm.submit.fail(function() {
                     console.info('Widget insertion canceled');
                 });
+            },
+
+            duplicateWidgetAndContent: function(widgetModel) {
+                window.$F(widgetModel);
             },
 
             refreshView: function() {

@@ -48,14 +48,15 @@ define([
             this._super();
 
             if (!get(this, 'mixinOptions.crud.hideRemove')) {
-                get(this,'partials.selectionToolbarButtons').push('actionbutton-removeselection');
-                get(this,'partials.itemactionbuttons').push('actionbutton-remove');
+                get(this,'partials.selectionToolbarButtons').pushObject('actionbutton-removeselection');
+                get(this,'partials.itemactionbuttons').pushObject('actionbutton-duplicate');
+                get(this,'partials.itemactionbuttons').pushObject('actionbutton-remove');
             }
             if (!get(this, 'mixinOptions.crud.hideEdit')) {
-                get(this,'partials.itemactionbuttons').push('actionbutton-edit');
+                get(this,'partials.itemactionbuttons').pushObject('actionbutton-edit');
             }
             if (!get(this, 'mixinOptions.crud.hideCreate')) {
-                get(this,'partials.actionToolbarButtons').push('actionbutton-create');
+                get(this,'partials.actionToolbarButtons').pushObject('actionbutton-create');
             }
 
             set(this, 'itemsPerPagePropositionSelected', get(this, 'itemsPerPage'));
@@ -78,6 +79,7 @@ define([
 
                 var extraoptions = get(this, 'mixinOptions.crud.formoptions'),
                     formclass = get(this, 'mixinOptions.crud.form');
+
                 var formoptions = {
                     title: 'Add ' + recordType
                 };
@@ -120,6 +122,10 @@ define([
 
                     listController.startRefresh();
                 });
+            },
+
+            duplicate: function (record) {
+                //TODO duplication method
             },
 
             edit: function (record) {

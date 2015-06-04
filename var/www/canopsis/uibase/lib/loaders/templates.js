@@ -47,6 +47,7 @@ var templates = [
     { name: 'presettoolbar', template: 'canopsis/uibase/templates/presettoolbar.html' },
 
     { name: 'actionbutton-edit', template: 'canopsis/uibase/templates/actionbutton-edit.html', classes: ["action"], icon : "pencil", label : "Edit"},
+    { name: 'actionbutton-duplicate', template: 'canopsis/uibase/templates/actionbutton-duplicate.hbs', classes: ["action"], icon : "pencil", label : "Edit"},
     { name: 'actionbutton-ack', template: 'canopsis/uibase/templates/actionbutton-ack.html', classes: ["action", "toolbar"], icon : "ok", label : "Ack"},
     { name: 'actionbutton-ackselection', template: 'canopsis/uibase/templates/actionbutton-ackselection.html', classes: ["action", "toolbar"], icon : "ok", label : "Ack selection"},
     { name: 'actionbutton-cancel', template: 'canopsis/uibase/templates/actionbutton-cancel.html', classes: ["action", "toolbar"], icon : "ban-circle", label : "Cancel"},
@@ -74,6 +75,7 @@ var templates = [
     { name: 'formbutton-next', template: 'canopsis/uibase/templates/formbutton-next.html', classes: ["formbutton"] },
     { name: 'formbutton-inspectform', template: 'canopsis/uibase/templates/formbutton-inspectform.html', classes: ["formbutton"] },
 
+    { name: 'titlebarbutton-duplicate', template: 'canopsis/uibase/templates/titlebarbutton-duplicate.hbs', classes: ["titlebarbutton"] },
     { name: 'titlebarbutton-moveup', template: 'canopsis/uibase/templates/titlebarbutton-moveup.html', classes: ["titlebarbutton"] },
     { name: 'titlebarbutton-movedown', template: 'canopsis/uibase/templates/titlebarbutton-movedown.html', classes: ["titlebarbutton"] },
     { name: 'titlebarbutton-moveleft', template: 'canopsis/uibase/templates/titlebarbutton-moveleft.html', classes: ["titlebarbutton"] },
