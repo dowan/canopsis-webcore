@@ -46,12 +46,15 @@ define([
 
             snmpoidComponent.loadMib();
 
-            snmpoidComponent.$('.moduleSearch').focusin(function () {
+            snmpoidComponent.$('.moduleSearch').mouseup(function () {
                 snmpoidComponent.onModuleSearch();
             });
 
-            snmpoidComponent.$('.searchPanel').mouseleave(function () {
-                set(snmpoidComponent, 'showModules', false);
+            snmpoidComponent.$('.moduleSearch').focusout(function () {
+                //defferate module hide to let the action be performed
+                setTimeout(function () {
+                    set(snmpoidComponent, 'showModules', false);
+                }, 300);
             });
         },
 

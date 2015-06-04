@@ -47,13 +47,14 @@ define([
 
         didInsertElement: function () {
             var snmpElementComponent = this;
-            snmpElementComponent.$().focusin(function () {
-                console.log('show options');
+            snmpElementComponent.$('.oidelement').click(function () {
                 set(snmpElementComponent, 'showObjects', true);
             });
-            snmpElementComponent.$().mouseleave(function () {
-                console.log('hide options');
-                set(snmpElementComponent, 'showObjects', false);
+            snmpElementComponent.$('.oidelement').focusout(function () {
+                //Defferate action in order to let action be performed
+                setTimeout(function () {
+                    set(snmpElementComponent, 'showObjects', false);
+                }, 300);
             });
         },
 
