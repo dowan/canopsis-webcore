@@ -132,7 +132,8 @@ define([
                 var extraoptions = get(this, 'mixinOptions.crud.formoptions'),
                     formclass = get(this, 'mixinOptions.crud.form');
                 var formoptions = {
-                    title: 'Edit ' + get(record, 'crecord_type')
+                    title: 'Edit ' + get(record, 'crecord_type'),
+                    inspectedItemType: get(this, 'listed_crecord_type')
                 };
 
                 if(!isNone(extraoptions)) {
