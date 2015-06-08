@@ -30,7 +30,6 @@ define([
 
 
     loader.register('serializer:widget', serializerClass.extend());
-    loader.register('serializer:widgetwrapper', serializerClass.extend());
 
     return serializerClass;
 });

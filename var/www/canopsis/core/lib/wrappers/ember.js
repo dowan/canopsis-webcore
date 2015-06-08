@@ -22,7 +22,7 @@ define([
     'app/lib/factories/wrapper',
     'app/lib/utils/i18n',
     'canopsis/canopsisConfiguration',
-    'app/lib/externals/min/ember',
+    'app/lib/externals/min/ember.debug',
     'app/lib/externals/jquery-resize/jquery.ba-resize'
 ], function(Wrapper, i18n, canopsisConfiguration) {
 
