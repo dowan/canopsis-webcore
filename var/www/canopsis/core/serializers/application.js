@@ -25,12 +25,23 @@ define([
 ], function(DS, MetaSerializerMixin, HashSerializerMixin, notificationUtils) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     var serializer = DS.RESTSerializer.extend(
         MetaSerializerMixin,
         HashSerializerMixin,
         {
+            /**
+             * @method normalizeId
+             * @private
+             */
+            normalizeId: function(hash) {
+                if(isNone(hash.id)) {
+                    hash.id = hash._id;
+                }
+            },
+
             /**
              * Add a message to payload's metadata
              */
