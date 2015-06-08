@@ -35,10 +35,6 @@ define([
 
         perfdata: Ember.computed.alias('controllers.perfdata'),
 
-        init: function() {
-            this._super();
-        },
-
         fetch: function(serie, from, to) {
             if(get(serie, 'metrics.length') > 1 && get(serie, 'aggregate_method') === 'none') {
                 console.group('More than one metric in serie, performing an aggregation');
