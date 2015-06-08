@@ -30,13 +30,10 @@ define([
     var eventedController = Ember.Controller.extend(Ember.Evented);
 
     var controller = eventedController.extend({
-
-
         init: function () {
             set(this, 'title',__('Information'));
             console.log('initializing recordinfopopup controller');
         },
-
 
         actions: {
             show: function(crecord, template) {
@@ -55,9 +52,7 @@ define([
                 //FIXME do not use jquery for that kind of things on a controller
                 var left = ($(window).width() - $('#recordinfopopup').outerWidth()) / 2;
                 $('#recordinfopopup').css('left', left);
-
                 $('#recordinfopopup').fadeIn(500);
-
             },
 
             hide: function() {
