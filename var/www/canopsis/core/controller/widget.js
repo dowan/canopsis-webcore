@@ -195,7 +195,7 @@ define([
                 var widgetController = this;
 
                 mixinForm.submit.done(function() {
-                    var referenceModel = mixinsregistry.getByName(mixinName).EmberClass;
+                    var referenceModel = schemasregistry.getByName(mixinName).EmberModel;
                     var modelAttributes = get(referenceModel, 'attributes');
 
                     console.log('attributes', modelAttributes);
