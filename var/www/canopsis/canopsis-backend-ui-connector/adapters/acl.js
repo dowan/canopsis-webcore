@@ -124,7 +124,6 @@ define([
     loader.register('adapter:group', adapter);
     loader.register('adapter:account', adapter);
     loader.register('adapter:user', adapter);
-    loader.register('adapter:role', adapter);
     loader.register('adapter:right', adapter);
     loader.register('adapter:profile', adapter);
 
