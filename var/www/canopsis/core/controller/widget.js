@@ -248,9 +248,7 @@ define([
 
                     var userview = get(widgetController, 'viewController.content');
 
-                    userview.save().then(function() {
-                        get(widgetController, 'viewController').send('refresh');
-                    });
+                    userview.save();
 
                     console.groupEnd();
                 });
@@ -299,9 +297,7 @@ define([
                         var widgetController = this,
                             userview = get(this, 'viewController.content');
 
-                        userview.save().then(function() {
-                            get(widgetController, 'viewController').send('refresh');
-                        });
+                        userview.save();
                     }
                 } catch (e) {
                     console.error(e.stack, e.message);
@@ -354,9 +350,7 @@ define([
                         var widgetController = this,
                             userview = get(widgetUtils.getParentViewForWidget(this), 'content');
 
-                        userview.save().then(function() {
-                            get(widgetController, 'viewController').send('refresh');
-                        });
+                        userview.save();
                     }
                 } catch (e) {
                     console.error(e.stack, e.message);

@@ -81,9 +81,7 @@ define([
                     get(containerController, 'model.items.content').pushObject(newWidgetWrapper);
 
                     console.log("saving view");
-                    get(userviewController, 'model').save().then(function() {
-                        userviewController.trigger('refreshView');
-                    });
+                    get(userviewController, 'model').save();
                 });
 
                 widgetChooserForm.submit.fail(function() {
