@@ -28,6 +28,10 @@ define([
 
     var eventedController = Ember.Controller.extend(Ember.Evented);
 
+    /**
+     * @class FormwrapperController
+     * @constructor
+     */
     var controller = eventedController.extend({
         // used only here
         config: canopsisConfiguration,

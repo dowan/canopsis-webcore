@@ -22,8 +22,7 @@ define([
     'app/lib/factories/form',
     'app/lib/utils/forms',
     'app/lib/utils/hash',
-    'app/lib/widgetsregistry',
-    'app/controller/journal'
+    'app/lib/widgetsregistry'
 ], function(Ember, FormFactory, formsUtils, hashUtils, widgets) {
 
     var get = Ember.get,
@@ -31,7 +30,7 @@ define([
 
 
     var form = FormFactory('widgetform', {
-        needs: ['journal', 'application'],
+        needs: ['application'],
 
         title: "Select a widget",
 
@@ -54,16 +53,12 @@ define([
             submit: function(newWidgets) {
                 var newWidget = newWidgets[0];
 
-                var journalController = get(this, 'container').lookup('controller:journal');
-                journalController.send('publish', 'create', 'widget');
-
                 console.log("onWidgetChooserSubmit", arguments);
 
                 console.group("attach new widget to widgetwrapper");
 
                 console.log("newWidget", newWidget);
                 console.log("widgetwrapper", this.newWidgetWrapper);
-                // Ember.set(this, 'newWidgetWrapper.widget', newWidget);
 
                 console.groupEnd();
 
