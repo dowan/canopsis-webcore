@@ -32,7 +32,14 @@ define([
         set = Ember.set,
         isNone = Ember.isNone;
 
-
+    /**
+     * @function bindKey
+     * @param keyCombination
+     * @param actionName
+     *
+     * Bind a key combination to an action registered in the actionsRegistry.
+     * @see ActionsUtils#doAction
+     */
     function bindKey(keyCombination, actionName) {
         Mousetrap.bind([keyCombination], function(e) {
             console.log('binding', arguments);
@@ -42,8 +49,19 @@ define([
         });
     }
 
+    /**
+     * @class ApplicationRoute
+     * @extends AuthenticatedRoute
+     * @constructor
+     */
     var route = AuthenticatedRoute.extend({
         actions: {
+            /**
+             * @event showView
+             * @param {string} id the id of the view to display
+             *
+             * Changes the currently displayed view to a new one.
+             */
             showView: function(id) {
                 console.log('ShowView action', arguments);
 
@@ -56,6 +74,12 @@ define([
                 this.transitionTo('userview', id);
             },
 
+            /**
+             * @event showEditFormWithController
+             * @param formController
+             * @param formContext
+             * @param options
+             */
             showEditFormWithController: function(formController, formContext, options) {
                 if (formController.ArrayFields) {
                     while(formController.ArrayFields.length > 0) {
@@ -85,6 +109,13 @@ define([
             }
         },
 
+        /**
+         * @method beforeModel
+         * @param {Transition} transition
+         * @return {Promise}
+         *
+         * Feed the ApplicationController with extra views to be used alongside the current view, and additionnal config from the backend.
+         */
         beforeModel: function(transition) {
             var route = this;
 
@@ -175,8 +206,13 @@ define([
             return Ember.RSVP.Promise.all(get(this, 'promiseArray'));
         },
 
+        /**
+         * @method authConfig
+         * @private
+         * @param authType
+         * @param callback
+         */
         authConfig: function (authType, callback) {
-
             var authId = 'cservice.' + authType;
             var appController = this.controllerFor('application');
             var store = get(this, 'store');
@@ -214,12 +250,16 @@ define([
             return promise;
         },
 
+        //TODO check if this is still used
         model: function() {
             return {
                 title: 'Canopsis'
             };
         },
 
+        /**
+         * @method renderTemplate
+         */
         renderTemplate: function() {
             console.info('render application template');
             this.render();

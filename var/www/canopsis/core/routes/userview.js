@@ -35,8 +35,34 @@ define([
 
     var initialLoadDone = false;
 
+    /**
+     * @class UserviewRoute
+     * @extends AuthenticatedRoute
+     * @constructor
+     */
     var route = AuthenticatedRoute.extend({
+        /**
+         * @method beforeModel
+         * @param {Transition} transition
+         * @return {Promise}
+         *
+         * Toggle editMode if the view id changes.
+         */
+        beforeModel: function(transition) {
+            var applicationController = this.controllerFor('application'),
+                viewId = get(transition, 'params.userview.userview_id');
+
+            if(get(applicationController, 'currentViewId') !== viewId) {
+                //if the id has changed, the user actually transitionned to another view, disable the edit mode
+                set(applicationController, 'editMode', false);
+            }
+
+            return this._super.apply(this, arguments);
+        },
         actions: {
+            /**
+             * @event loading
+             */
             loading: function() {
                 if(initialLoadDone === false) {
                     var app = this.controllerFor('application'),
@@ -52,6 +78,11 @@ define([
                 }
             },
 
+            /**
+             * @event error
+             * @param error
+             * @param transition
+             */
             error: function(error, transition){
                 if (error.status === 0) {
                     console.debug('no error detected in access status');
@@ -181,6 +212,11 @@ define([
             }
         },
 
+
+        /**
+         * @method setReportingInterval
+         * @param interval
+         */
         setReportingInterval: function (interval) {
 
             set(this.controllerFor('application'), 'interval', interval);
@@ -209,6 +245,11 @@ define([
             }
         },
 
+        /**
+         * @method setupController
+         * @param controller
+         * @param model
+         */
         setupController: function(controller, model) {
             console.log('UserviewRoute setupController', arguments);
 

@@ -29,7 +29,11 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-
+    /**
+     * @class ApplicationRoute
+     * @extends Ember.Route
+     * @constructor
+     */
     var route = Ember.Route.extend({
 
         beforeModel: function(transition) {

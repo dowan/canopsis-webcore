@@ -25,8 +25,16 @@ define([
     var set = Ember.set,
         get = Ember.get;
 
-
+    /**
+     * @class IndexRoute
+     * @extends AuthenticatedRoute
+     * @constructor
+     */
     var route = AuthenticatedRoute.extend({
+        /**
+         * @method setupController
+         * @param controller
+         */
         setupController: function(controller) {
             this.controllerFor('application').onIndexRoute = true;
             actionsUtils.setDefaultTarget(controller);

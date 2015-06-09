@@ -44,14 +44,8 @@ define([
          * Otherwise, put a "hasToBeRedirected" flag into the transition, in order to handle the redirection in the "afterModel" method.
          */
         beforeModel: function(transition) {
-            var route = this;
-
-            var applicationController = route.controllerFor('application');
-
-            //TODO This should probably be set in the core userview route?
-            set(applicationController, 'editMode', false);
-
-            var loginController = route.controllerFor('login');
+            var applicationController = this.controllerFor('application'),
+                loginController = this.controllerFor('login');
 
             var viewId = get(transition, 'params.userview.userview_id');
             viewId = viewId.replace('.', '_');
@@ -59,11 +53,10 @@ define([
             var checksum = get(loginController, 'record.rights.' + viewId + '.checksum');
             var userId = get(loginController, 'record._id');
 
-            if(rightsflagsUtils.canRead(checksum) || viewId === 'view_404' || viewId === 'view_401' || userId === 'root') {
-                return this._super(transition);
-            } else {
+            if(!(rightsflagsUtils.canRead(checksum) || viewId === 'view_404' || viewId === 'view_401' || userId === 'root')) {
                 set(transition, 'hasToBeRedirected', true);
             }
+            return this._super(transition);
         },
 
         /**
