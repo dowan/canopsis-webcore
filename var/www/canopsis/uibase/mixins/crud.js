@@ -71,6 +71,11 @@ define([
             this._super.apply(this, arguments);
         },
 
+        askRefresh: function() {
+            this.refreshContent();
+            this.trigger('refresh');
+        },
+
         actions: {
             add: function (recordType) {
                 this._super.apply(this, arguments);
@@ -123,7 +128,7 @@ define([
 
                     /* wait 1s to let the previous request travel to the webserver */
                     setTimeout(function() {
-                        ctrl.trigger('refresh');
+                        ctrl.askRefresh();
                     }, 1000);
                 });
             },
