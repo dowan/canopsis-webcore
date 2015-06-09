@@ -103,6 +103,7 @@ define([
             }
         },
         copyWidget: function(widgetwrapperModel, containerModel) {
+            console.error('copyWidget', arguments);
             var widgetwrapperJson = cleanRecord(widgetwrapperModel.toJSON());
             widgetwrapperJson.widget = null;
             var duplicatedWrapper = this.store.createRecord('widgetwrapper', widgetwrapperJson);
@@ -116,13 +117,18 @@ define([
 
             var duplicatedWidget = this.store.createRecord(widgetJson.xtype, widgetJson);
 
-            // if(!isNone(widgetwrapperModel.get('widget.items'))) {
-                // var items = widgetwrapperModel.get('widget.items');
-                // for (var i = 0; i < items.length; i++) {
-                    // var subWrapperModel = items.objectAt(i);
-                    // this.copyWidget(subWrapperModel, duplicatedWidget);
-                // }
-            // }
+            if(!isNone(widgetwrapperModel.get('widget.items'))) {
+                var items = widgetwrapperModel.get('widget.items.content');
+
+                console.error('copying items', items);
+
+                for (var i = 0; i < items.length; i++) {
+                    var subWrapperModel = items[i];
+                    console.error('copying subwidget wrapper', subWrapperModel);
+
+                    this.copyWidget(subWrapperModel, duplicatedWidget);
+                }
+            }
 
             duplicatedWrapper.set('widget',  duplicatedWidget);
             containerModel.get('items.content').pushObject(duplicatedWrapper);
