@@ -166,6 +166,7 @@ define([
 
     var mixin = Mixin('responsivelist', {
         partials: {
+            //TODO check if still used
             alternativeListDisplay: ['groupedrowslistlayout'],
             subRowInformation: ['stackedcolumns']
         },
