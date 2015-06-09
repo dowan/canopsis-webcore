@@ -31,7 +31,14 @@ define([
         ['calendardata','calendardata']
     ];
 
-    var inflectionsManager = Abstractclassregistry.create({
+    /**
+     * Inflections Registry
+     *
+     * @class InflectionsRegistry
+     * @extends Abstractclassregistry
+     * @static
+     */
+    var inflectionsRegistry = Abstractclassregistry.create({
         name: 'inflections',
 
         all: [],
@@ -40,7 +47,7 @@ define([
 
         loadInflections: function() {
             for (var i = 0, l = inflexions.length; i < l; i++) {
-                inflectionsManager.all.pushObject({
+                inflectionsRegistry.all.pushObject({
                     name: inflexions[i][0] + ' -> ' + inflexions[i][1],
                     singular: inflexions[i][0],
                     plural: inflexions[i][1]
@@ -52,5 +59,5 @@ define([
 
 
 
-    return inflectionsManager;
+    return inflectionsRegistry;
 });

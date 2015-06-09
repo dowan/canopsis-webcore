@@ -21,6 +21,13 @@ define([
     'app/lib/abstractclassregistry'
 ], function(Abstractclassregistry) {
 
+    /**
+     * Widgets Registry
+     *
+     * @class WidgetsRegistry
+     * @extends Abstractclassregistry
+     * @static
+     */
     var widgetsManager = Abstractclassregistry.create({
         name: 'widgets',
 

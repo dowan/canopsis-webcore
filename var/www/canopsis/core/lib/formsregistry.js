@@ -19,6 +19,13 @@
 
 define(['app/lib/abstractclassregistry'], function(Abstractclassregistry) {
 
+    /**
+     * Forms Registry
+     *
+     * @class FormsRegistry
+     * @extends Abstractclassregistry
+     * @static
+     */
     var formsManager = Abstractclassregistry.create({
         name: 'forms',
 

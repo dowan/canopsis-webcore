@@ -21,6 +21,13 @@ define([
     'app/lib/abstractclassregistry'
 ], function(Abstractclassregistry) {
 
+    /**
+     * UI actions Registry
+     *
+     * @class ActionsRegistry
+     * @extends Abstractclassregistry
+     * @static
+     */
     var actionsRegistry = Abstractclassregistry.create({
         name: 'actions',
 

@@ -21,6 +21,13 @@ define([
     'app/lib/abstractclassregistry'
 ], function(Abstractclassregistry) {
 
+    /**
+     * Schemas Registry
+     *
+     * @class SchemasRegistry
+     * @extends Abstractclassregistry
+     * @static
+     */
     var widgetsManager = Abstractclassregistry.create({
         name: 'schemas',
 

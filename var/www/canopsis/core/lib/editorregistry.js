@@ -21,7 +21,13 @@ define([
     'app/lib/abstractclassregistry'
 ], function(Abstractclassregistry) {
 
-    //Not used at the moment
+    /**
+     * Editors Registry
+     *
+     * @class EditorRegistry
+     * @extends Abstractclassregistry
+     * @static
+     */
     var manager = Abstractclassregistry.create({
         name: 'editors',
 

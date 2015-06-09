@@ -29,6 +29,7 @@ define([
      * Allow hooks on canopsis utility features
      *
      * @class Utility
+     * @extends Ember.Object
      */
     var Utility = Ember.Object.extend({
 

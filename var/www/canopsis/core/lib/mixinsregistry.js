@@ -21,7 +21,14 @@ define([
     'app/lib/abstractclassregistry'
 ], function(Abstractclassregistry) {
 
-    var manager = Abstractclassregistry.create({
+    /**
+     * Mixins Registry
+     *
+     * @class MixinsRegistry
+     * @extends Abstractclassregistry
+     * @static
+     */
+    var registry = Abstractclassregistry.create({
         name: 'mixins',
 
         all: [],
@@ -29,5 +36,5 @@ define([
         tableColumns: [{title: 'name', name: 'name'}]
     });
 
-    return manager;
+    return registry;
 });

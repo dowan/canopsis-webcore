@@ -22,6 +22,13 @@ define([
     'app/lib/abstractclassregistry'
 ], function(Ember, Abstractclassregistry) {
 
+    /**
+     * Indexes Registry
+     *
+     * @class IndexesRegistry
+     * @extends Abstractclassregistry
+     * @static
+     */
     var manager = Abstractclassregistry.create({
         name: 'indexes'
     });
