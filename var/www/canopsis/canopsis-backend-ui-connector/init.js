@@ -39,7 +39,16 @@ define([
     'canopsis/canopsis-backend-ui-connector/adapters/pojo',
     'canopsis/canopsis-backend-ui-connector/adapters/schema',
     'canopsis/canopsis-backend-ui-connector/adapters/userview',
-    'canopsis/canopsis-backend-ui-connector/adapters/trap'
+    'canopsis/canopsis-backend-ui-connector/adapters/trap',
+    'canopsis/canopsis-backend-ui-connector/serializers/ticket',
+    'canopsis/canopsis-backend-ui-connector/serializers/ctxmetric',
+    'canopsis/canopsis-backend-ui-connector/serializers/ctxcomponent',
+    'canopsis/canopsis-backend-ui-connector/serializers/ctxresource',
+    'canopsis/canopsis-backend-ui-connector/serializers/ctxselector',
+    'canopsis/canopsis-backend-ui-connector/serializers/ctxtopology',
+    'canopsis/canopsis-backend-ui-connector/serializers/linklist',
+    'canopsis/canopsis-backend-ui-connector/serializers/snmprule',
+
 ], function () {
 
 });

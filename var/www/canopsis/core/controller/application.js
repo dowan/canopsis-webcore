@@ -41,8 +41,6 @@ define([
     'app/lib/utils/data',
     'app/lib/utils/hash',
     'app/lib/utils/notification',
-    'app/serializers/cservice',
-    'app/lib/loaders/helpers',
     'app/lib/loaders/helpers',
     'app/lib/wrappers/mousetrap',
     'app/controller/recordinfopopup',

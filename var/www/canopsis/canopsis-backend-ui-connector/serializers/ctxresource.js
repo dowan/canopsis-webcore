@@ -19,11 +19,11 @@
 
 define([
     'ember-data',
-    'app/serializers/ctx',
+    'canopsis/canopsis-backend-ui-connector/serializers/ctx',
 ], function(DS, CtxSerializer) {
 
     var serializer = CtxSerializer.extend({});
 
-    loader.register('serializer:ctxselector', serializer);
+    loader.register('serializer:ctxresource', serializer);
     return serializer;
 });

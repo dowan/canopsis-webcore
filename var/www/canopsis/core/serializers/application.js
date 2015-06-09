@@ -40,25 +40,6 @@ define([
                 if(isNone(hash.id)) {
                     hash.id = hash._id;
                 }
-            },
-
-            /**
-             * Add a message to payload's metadata
-             */
-            addMessage: function(payload, message, logLevel) {
-                void(logLevel); //TODO not implemented
-
-                //FIXME not working in here
-                notificationUtils.error(message);
-
-                //FIXME metadata does not seems to be handled properly
-                if(payload.meta === undefined) {
-                    payload.meta = {};
-                }
-                if(payload.meta.messages === undefined) {
-                    payload.meta.messages = [];
-                }
-                payload.meta.messages.push(message);
             }
         }
     );

@@ -29,7 +29,6 @@ define([
 
 
     var component = Ember.Component.extend({
-
         init: function() {
             var record = get(this, 'record'),
                 attrName = get(this, 'attrName');

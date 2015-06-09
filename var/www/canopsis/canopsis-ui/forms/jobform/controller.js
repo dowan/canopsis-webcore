@@ -23,8 +23,7 @@ define([
     'app/lib/utils/forms',
     'app/lib/utils/hash',
     'app/lib/utils/data',
-    'app/lib/schemasregistry',
-    'app/serializers/job'
+    'app/lib/schemasregistry'
 ], function(Ember, FormFactory, formsUtils, hashUtils, dataUtils, schemasRegistry) {
 
     var get = Ember.get,
