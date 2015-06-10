@@ -111,10 +111,6 @@ define([
             var widgetJson = cleanRecord(widgetwrapperModel.get('widget').toJSON());
             console.error(widgetJson);
 
-            // if(!widgetJson.items) {
-            //     widgetJson.items = null;
-            // }
-
             var duplicatedWidget = this.store.createRecord(widgetJson.xtype, widgetJson);
 
             if(!isNone(widgetwrapperModel.get('widget.items'))) {
@@ -135,8 +131,6 @@ define([
         }
     });
 
-
-
     function cleanRecord(recordJSON) {
         for (var key in recordJSON) {
             var item = recordJSON[key];
@@ -153,12 +147,13 @@ define([
         }
 
         if(recordJSON !== null && recordJSON !== undefined) {
-            recordJSON['id'] = hashUtils.generateId('newitem');
+            recordJSON['id'] = hashUtils.generateId(recordJSON.xtype || recordJSON.crecord_type || 'item');
             recordJSON['_id'] = recordJSON['id'];
         }
 
         return recordJSON;
     }
+
     loader.register('controller:userview', controller);
 
     return controller;
