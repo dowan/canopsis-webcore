@@ -33,6 +33,9 @@ define([
      * Implement CRUD handling for widgets that manages collections
      *
      * Useful in lists for example, where it adds buttons to CRUD list elements
+     *
+     * @class CrudMixin
+     * @static
      */
     var mixin = Mixin('crud', {
         partials: {
@@ -62,21 +65,94 @@ define([
             set(this, 'itemsPerPagePropositionSelected', get(this, 'itemsPerPage'));
         },
 
+        /**
+         * @property userCanReadRecord
+         * @type Boolean
+         * @description Whether the user can read the records handled by the mixin
+         */
         userCanReadRecord: true,
+
+        /**
+         * @property userCanCreateRecord
+         * @type Boolean
+         * @description Whether the user can read the records handled by the mixin
+         */
         userCanCreateRecord: true,
+
+        /**
+         * @property userCanUpdateRecord
+         * @type Boolean
+         * @description Whether the user can update the records handled by the mixin
+         */
         userCanUpdateRecord: true,
+
+        /**
+         * @property userCanDeleteRecord
+         * @type Boolean
+         * @description Whether the user can delete the records handled by the mixin
+         */
         userCanDeleteRecord: true,
 
         onRecordReady: function(record) {
             this._super.apply(this, arguments);
         },
 
-        askRefresh: function() {
-            this.refreshContent();
-            this.trigger('refresh');
+        /**
+         * @method showEditFormAndSaveRecord
+         * @param {DS.Model} record the record to edit
+         *
+         * Display an edition form for the record passed as first parameter, and make the changes persistant when the user saves the form.
+         */
+        showEditFormAndSaveRecord: function(record) {
+            this.onRecordReady(record);
+
+            console.log('temp record', record, formsUtils);
+
+            var extraoptions = get(this, 'mixinOptions.crud.formoptions'),
+                formclass = get(this, 'mixinOptions.crud.form');
+
+            var formoptions = {
+                title: 'Add ' + recordType
+            };
+
+            if(!isNone(extraoptions)) {
+                $.extend(formoptions, extraoptions);
+            }
+
+            if(isNone(formclass)) {
+                formclass = 'modelform';
+            }
+
+            console.log('open form:', formclass, formoptions);
+
+            var recordWizard = formsUtils.showNew(formclass, record, formoptions);
+
+            var ctrl = this;
+
+            recordWizard.submit.then(function(form) {
+                console.log('record going to be saved', record, form);
+
+                //Dirty hack to make acl routes work
+                if(get(record, 'crecord_type') === 'group') {
+                    set(record, 'id', hashUtils.generateId('group'));
+                }
+                if(get(record, 'crecord_type') === 'profile') {
+                    console.error('set id for profile', record);
+                    set(record, 'id', hashUtils.generateId('profile'));
+                }
+
+                record = get(form, 'formContext');
+                record.save().then(function() {
+                    ctrl.refreshContent();
+                });
+            });
         },
 
         actions: {
+            /**
+             * @event add
+             * @param {string} recordType
+             */
             add: function (recordType) {
                 this._super.apply(this, arguments);
 
@@ -86,57 +162,33 @@ define([
                     crecord_type: recordType
                 });
 
-                this.onRecordReady(record);
-
-                console.log('temp record', record, formsUtils);
-
-                var extraoptions = get(this, 'mixinOptions.crud.formoptions'),
-                    formclass = get(this, 'mixinOptions.crud.form');
-
-                var formoptions = {
-                    title: 'Add ' + recordType
-                };
-
-                if(!isNone(extraoptions)) {
-                    $.extend(formoptions, extraoptions);
-                }
-
-                if(isNone(formclass)) {
-                    formclass = 'modelform';
-                }
-
-                console.log('open form:', formclass, formoptions);
-
-                var recordWizard = formsUtils.showNew(formclass, record, formoptions);
-
-                var ctrl = this;
-
-                recordWizard.submit.then(function(form) {
-                    console.log('record going to be saved', record, form);
-
-                    //Dirty hack to make acl routes work
-                    if(get(record, 'crecord_type') === 'group') {
-                        set(record, 'id', hashUtils.generateId('group'));
-                    }
-                    if(get(record, 'crecord_type') === 'profile') {
-                        console.error('set id for profile', record);
-                        set(record, 'id', hashUtils.generateId('profile'));
-                    }
-
-                    record = get(form, 'formContext');
-                    record.save();
-
-                    /* wait 1s to let the previous request travel to the webserver */
-                    setTimeout(function() {
-                        ctrl.askRefresh();
-                    }, 1000);
-                });
+                this.showEditFormAndSaveRecord(record);
             },
 
+            /**
+             * @event duplicate
+             * @param {DS.Model} record
+             */
             duplicate: function (record) {
-                //TODO duplication method
+                console.error('copyWidget', arguments);
+                var recordJson = cleanRecordJSON(record.toJSON());
+                recordType = recordJson.xtype || recordJson.crecord_type;
+
+                this._super.apply(this, arguments);
+
+                console.log("add", recordType);
+
+                var record = get(this, "widgetDataStore").createRecord(recordType, recordJson);
+
+                this.showEditFormAndSaveRecord(record);
             },
 
+
+            /**
+             * @event edit
+             * @param {DS.Model} record
+             * @param {boolean} noconfirm
+             */
             edit: function (record) {
                 console.log("edit", record);
 
@@ -171,6 +223,11 @@ define([
                 });
             },
 
+            /**
+             * @event remove
+             * @param {DS.Model} record
+             * @param {boolean} noconfirm
+             */
             remove: function(record, noconfirm) {
                 console.info('removing record', record);
 
@@ -189,6 +246,9 @@ define([
                 }
             },
 
+            /**
+             * @event removeSelection
+             */
             removeSelection: function() {
                 var confirmform = formsUtils.showNew('confirmform', {}, {
                     title: __('Delete these records ?')
@@ -207,6 +267,39 @@ define([
             }
         }
     });
+
+    /**
+     * @function showEditFormAndSaveRecord
+     * @param {object} recordJSON
+     * @private
+     *
+     * remove keys that should not be present on a record exported to JSON, and generates new ids
+     */
+    function cleanRecordJSON(recordJSON) {
+        for (var key in recordJSON) {
+            var item = recordJSON[key];
+            //see if the key need to be cleaned
+            if(key === 'widgetId' || key === 'preference_id') {
+                delete recordJSON[key];
+            }
+
+            if(key === 'id') {
+                recordJSON['id'] = recordJSON['_id'] || hashUtils.generateId(recordJSON.xtype || recordJSON.crecord_type || 'item');
+            }
+
+            if(key === '_id') {
+                recordJSON['_id'] = recordJSON['id'] || hashUtils.generateId(recordJSON.xtype || recordJSON.crecord_type || 'item');
+            }
+
+            //if this item is an object, then recurse into it
+            //to remove empty arrays in it too
+            if (typeof item === 'object') {
+                cleanRecordJSON(item);
+            }
+        }
+
+        return recordJSON;
+    }
 
     return mixin;
 });
