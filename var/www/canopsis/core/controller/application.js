@@ -39,6 +39,7 @@ define([
     'app/lib/loaders/utils',
     'app/lib/utils/forms',
     'app/lib/utils/data',
+    'app/lib/utils/debug',
     'app/lib/utils/hash',
     'app/lib/utils/notification',
     'app/serializers/cservice',
@@ -69,6 +70,7 @@ define([
     utils,
     formsUtils,
     dataUtils,
+    debugUtils,
     hashUtils,
     notificationUtils) {
 
@@ -234,6 +236,15 @@ define([
         },
 
         actions: {
+            /**
+             * @event inspect
+             * @param {object} object
+             * Show debug info in console and put widget var in window.$E
+             */
+            inspect: function (object) {
+                debugUtils.inspectObject(object);
+            },
+
             /**
              * @event editConfig
              * @descriptions Shows a form to edit the frontend configuration
