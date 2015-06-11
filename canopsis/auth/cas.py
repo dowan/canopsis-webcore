@@ -138,8 +138,7 @@ class CASBackend(BaseBackend):
 
                 record = self.rights.save_user(self.ws, record)
 
-            else:
-                record['_id'] = record.get('_id', user)
+            record['_id'] = record.get('_id', user)
 
             self.logger.info(
                 'Authentication validated by CAS server for user {0}'.format(
