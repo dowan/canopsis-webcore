@@ -17,6 +17,8 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+//TODO: check this module is not call and not load by init.js
+
 define([
     'ember',
     'app/controller/application',
