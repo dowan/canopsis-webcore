@@ -1,6 +1,0 @@
-[{
-	"name": "snmp-ui",
-	"version": "0.1",
-	"routes": "routes.json",
-	"files": "files.json"
-}]
