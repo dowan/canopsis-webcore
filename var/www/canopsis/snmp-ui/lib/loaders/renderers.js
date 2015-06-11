@@ -18,8 +18,8 @@
 */
 
 var renderers = [
-    { name: 'renderer-snmpoid', template: 'canopsis/monitoring/renderers/snmpoid.hbs'},
-    { name: 'renderer-snmpvars', template: 'canopsis/monitoring/renderers/snmpvars.hbs'}
+    { name: 'renderer-snmpoid', template: 'canopsis/snmp-ui/renderers/snmpoid.hbs'},
+    { name: 'renderer-snmpvars', template: 'canopsis/snmp-ui/renderers/snmpvars.hbs'}
 ];
 
 loader.loadWithTemplates(renderers);

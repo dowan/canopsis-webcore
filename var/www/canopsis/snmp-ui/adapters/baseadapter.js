@@ -1,4 +1,4 @@
-define([
+lsdefine([
     'ember',
     'canopsis/canopsis-backend-ui-connector/adapters/application',
     'app/lib/utils/modelsolve'
