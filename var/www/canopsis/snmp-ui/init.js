@@ -17,8 +17,15 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var editors = [
-    { name: 'editor-metricselector', template: 'canopsis/monitoring/editors/metricselector.hbs' }
-];
-
-loader.loadWithTemplates(editors);
+define([
+    'canopsis/snmp-ui/adapters/snmprule',
+	'canopsis/snmp-ui/adapters/snmpmib',
+	'canopsis/snmp-ui/adapters/baseadapter',
+	'canopsis/snmp-ui/adapters/application',
+	'canopsis/snmp-ui/serializers/snmprule',
+	'canopsis/snmp-ui/reopens/application',
+	'canopsis/snmp-ui/lib/loaders/editors',
+	'canopsis/snmp-ui/lib/loaders/components',
+	'canopsis/snmp-ui/lib/loaders/mixins',
+	'canopsis/snmp-ui/lib/loaders/renderers'
+], function () {});

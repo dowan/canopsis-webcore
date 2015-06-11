@@ -17,8 +17,8 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var editors = [
-    { name: 'editor-metricselector', template: 'canopsis/monitoring/editors/metricselector.hbs' }
+var mixins = [
+    { name: 'uploadmib', url: 'canopsis/monitoring/mixins/uploadmib', classes: ['list']}
 ];
 
-loader.loadWithTemplates(editors);
+loader.loadWithTemplates(mixins);

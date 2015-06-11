@@ -17,8 +17,9 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var editors = [
-    { name: 'editor-metricselector', template: 'canopsis/monitoring/editors/metricselector.hbs' }
+var renderers = [
+    { name: 'renderer-snmpoid', template: 'canopsis/monitoring/renderers/snmpoid.hbs'},
+    { name: 'renderer-snmpvars', template: 'canopsis/monitoring/renderers/snmpvars.hbs'}
 ];
 
-loader.loadWithTemplates(editors);
+loader.loadWithTemplates(renderers);
