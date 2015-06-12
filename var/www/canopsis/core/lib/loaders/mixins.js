@@ -20,7 +20,6 @@
 var mixins = [
     { name: 'validation', url: 'app/mixins/validation', classes: ["action"]},
     { name: 'mixinArray', url: 'app/mixins/mixinArray', classes: ["test"]},
-    { name: 'tagsoptionfilter', url: 'app/mixins/tagsoptionfilter', classes: ["widget"]},
     { name: 'criticitylevels', url: 'app/mixins/criticitylevels', classes: ['widget']},
 //    { name: 'customhtml', url: 'app/mixins/customhtml', classes: ['widget']}
 ];
