@@ -29,6 +29,9 @@ define([
         isNone = Ember.isNone;
 
 
+    /**
+     * @class EditorComponent
+     */
     var component = Ember.Component.extend({
         tagName: 'span',
 

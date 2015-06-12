@@ -25,8 +25,9 @@ define([
         set = Ember.set,
         isNone = Ember.isNone;
 
-    //{{component-editor attr=attr form=this}}
-
+    /**
+     * @class WrapperComponent
+     */
     var component = Ember.Component.extend({
         tagName: 'span',
         init: function() {

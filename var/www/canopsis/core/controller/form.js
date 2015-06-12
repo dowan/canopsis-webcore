@@ -85,6 +85,9 @@ define([
     var controller = eventedController.extend({
         needs: ['application'],
 
+        /**
+         * @method init
+         */
         init: function() {
             var formParent = get(this, 'formParent');
             set(this, 'previousForm', formParent);

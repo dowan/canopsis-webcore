@@ -35,9 +35,19 @@ define([
     var controller = eventedController.extend({
         // used only here
         config: canopsisConfiguration,
+
+        /**
+         * @property debug
+         * @type boolean
+         *
+         * @description See {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
+         */
         debug: Ember.computed.alias('config.DEBUG'),
 
         actions: {
+            /**
+             * @event show
+             */
             show: function() {
                 console.log("FormwrapperController show", this, get(this, 'widgetwrapperView'));
                 get(this, 'widgetwrapperView').showPopup();

@@ -27,7 +27,12 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-
+    /**
+     * @function removeMixinsPartials
+     * @private
+     * @param widget
+     * @param mixinName
+     */
     function removeMixinsPartials(widget, mixinName) {
         console.log('removing mixin partials', arguments);
 

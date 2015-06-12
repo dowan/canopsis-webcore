@@ -102,7 +102,7 @@ define([], function() {
                 appInstance[classifiedName] = classToRegister;
             } else {
                 if(!Ember.isNone(Ember.Application.initializers[name])) {
-                    console.error('Initializer', name, 'is already declared. Please choose another initializer name.');
+                    console.error('Initializer "', name, '" is already declared. Please choose another initializer name.');
                 } else {
                     Ember.Application.initializer({
                         name: name,

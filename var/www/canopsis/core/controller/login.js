@@ -28,7 +28,15 @@ define([
         get = Ember.get,
         isNone = Ember.isNone;
 
+    /**
+     * @class LoginController
+     * @extends Ember.ObjectController
+     * @constructor
+     */
     var controller = Ember.ObjectController.extend({
+        /**
+         * @property content
+         */
         content: {},
 
         init: function() {
@@ -41,6 +49,9 @@ define([
             set(this, 'store', store);
         },
 
+        /**
+         * @property authkey
+         */
         authkey: function () {
             var authkey = localStorage.cps_authkey;
             if (authkey === 'undefined') {
@@ -49,6 +60,10 @@ define([
             return authkey;
         }.property('authkey'),
 
+        /**
+         * @method authkeyChanged
+         * @observes authkey
+         */
         authkeyChanged: function() {
             localStorage.cps_authkey = get(this, 'authkey');
         }.observes('authkey')

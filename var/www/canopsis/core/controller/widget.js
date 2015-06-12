@@ -48,13 +48,40 @@ define([
 
         /**
          * This is useful mostly for debug, to know that a printend object is a widget
+         *
+         * @property abstractType
+         * @type string
          */
         abstractType: 'widget',
 
+        /**
+         * @property canopsisConfiguration
+         * @type Object
+         */
         canopsisConfiguration: canopsisConfiguration,
+
+        /**
+         * @property debug
+         * @type boolean
+         *
+         * true is the Frontend is in debug mode
+         */
         debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
 
+        /**
+         * @property editMode
+         * @type boolean
+         */
         editMode : Ember.computed.alias('controllers.application.editMode'),
+
+        /**
+         * @property config
+         * @deprecated
+         * @type DS.Model
+         *
+         * Alias for content
+         */
+        config: Ember.computed.alias('content'),
 
         init: function () {
 
@@ -91,14 +118,21 @@ define([
             this.refreshContent();
         },
 
+
+        /**
+         * @method mixinsOptionsReady
+         */
         mixinsOptionsReady: function () {
             //can be overriden to trigger action when mixins options ready.
         },
 
+        /**
+         * @method addMixinView
+         * @param viewMixin
+         *
+         * Adds mixins view to the current widget controller
+         */
         addMixinView: function (viewMixin) {
-            /**
-                Adds mixins view to the current widget controller
-            **/
             var viewMixins = get(this, 'viewMixins');
             if (isNone(viewMixins)) {
                 viewMixins = [];
@@ -107,14 +141,24 @@ define([
             viewMixins.push(viewMixin);
         },
 
+        /**
+         * @method updateInterval
+         * @param interval
+         */
         updateInterval: function (interval) {
             console.warn('This method should be overriden for current widget', get(this, 'id'), interval);
         },
 
+        /**
+         * @method stopRefresh
+         */
         stopRefresh: function () {
             set(this, 'isRefreshable', false);
         },
 
+        /**
+         * @method startRefresh
+         */
         startRefresh: function () {
             this.setProperties({
                 'isRefreshable': true,
@@ -122,6 +166,9 @@ define([
             });
         },
 
+        /**
+         * @method isRollbackable
+         */
         isRollbackable: function() {
             if(get(this, 'isDirty') && get(this, 'dirtyType') === 'updated' && get(this, 'rollbackable') === true) {
                 return true;
@@ -134,12 +181,18 @@ define([
         actions: {
 
             /**
+             * @event inspect
+             * @param object
              * Show debug info in console and put widget var in window.$E
              */
-            inspect: function (widget) {
-                debugUtils.inspectObject(widget);
+            inspect: function (object) {
+                debugUtils.inspectObject(object);
             },
 
+            /**
+             * @event do
+             * @param action
+             */
             do: function(action) {
                 var params = [];
 
@@ -150,10 +203,18 @@ define([
                 this.send(action, params);
             },
 
+            /**
+             * @event creationForm
+             * @param itemType
+             */
             creationForm: function(itemType) {
                 formsUtils.addRecord(itemType);
             },
 
+            /**
+             * @event rollback
+             * @param widget
+             */
             rollback: function(widget){
                 console.log('rollback changes', arguments);
                 set(widget, 'volatile', {});
@@ -161,6 +222,10 @@ define([
                 set(widget, 'rollbackable', false);
             },
 
+            /**
+             * @event editWidget
+             * @param widget
+             */
             editWidget: function (widget) {
                 console.info('edit widget', widget);
 
@@ -185,6 +250,11 @@ define([
                 });
             },
 
+            /**
+             * @event editMixin
+             * @param widget
+             * @param mixinName
+             */
             editMixin: function (widget, mixinName) {
                 console.info('edit mixin', widget, mixinName);
 
@@ -223,7 +293,8 @@ define([
             },
 
             /**
-             * Deletes the widget from its parents saves the view, and refresh it
+             * @event removeWidget
+             * @param widget
              */
             removeWidget: function (widget) {
 
@@ -260,6 +331,9 @@ define([
             },
 
             /**
+             * @event movedown
+             * @param widgetwrapper
+             *
              * Moves the widget under the next one, if any
              */
             movedown: function(widgetwrapper) {
@@ -311,6 +385,9 @@ define([
             },
 
             /**
+             * @event moveup
+             * @param widgetwrapper
+             *
              * Moves the widget above the previous one, if any
              */
             moveup: function(widgetwrapper) {
@@ -364,14 +441,20 @@ define([
             }
         },
 
-        config: Ember.computed.alias('content'),
 
+        /**
+         * @property itemController
+         * @type string
+         */
         itemController: function() {
             if(get(this, 'itemType')) {
                 return get(this, 'itemType').capitalize();
             }
         }.property('itemType'),
 
+        /**
+         * @method refreshContent
+         */
         refreshContent: function() {
 
             console.log('refreshContent', get(this, 'xtype'));
@@ -385,10 +468,17 @@ define([
             });
         },
 
+        /**
+         * @method findItems
+         */
         findItems: function() {
             console.warn('findItems not implemented', this);
         },
 
+        /**
+         * @method extractItems
+         * @param queryResult
+         */
         extractItems: function(queryResult) {
             console.log('extractItems', queryResult);
 
@@ -396,6 +486,10 @@ define([
             set(this, 'widgetData', queryResult);
         },
 
+        /**
+         * @property availableTitlebarButtons
+         * @type array
+         */
         availableTitlebarButtons: function(){
             var buttons = get(this, '_partials.titlebarsbuttons');
 

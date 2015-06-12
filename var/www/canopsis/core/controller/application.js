@@ -100,13 +100,16 @@ define([
          */
         editMode: false,
 
+        /**
+         * @property runtimeConfiguration
+         * @see {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
+
+         */
         runtimeConfiguration: canopsisConfiguration,
 
         /**
          * @property debug
-         * @type Object
-         *
-         * @description See {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
+         * @type boolean
          */
         debug: Ember.computed.alias('runtimeConfiguration.DEBUG'),
 
@@ -238,7 +241,8 @@ define([
         actions: {
             /**
              * @event editConfig
-             * @descriptions Shows a form to edit the frontend configuration
+             *
+             * Shows a form to edit the frontend configuration
              */
             editConfig: function() {
                 var frontendConfig = get(this, 'frontendConfig');
