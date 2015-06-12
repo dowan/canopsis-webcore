@@ -101,12 +101,16 @@ define([], function() {
             if(appInstance) {
                 appInstance[classifiedName] = classToRegister;
             } else {
-                Ember.Application.initializer({
-                    name: name,
-                    initialize: function(container, application) {
-                        application.register(name, classToRegister);
-                    }
-                });
+                if(!Ember.isNone(Ember.Application.initializers[name])) {
+                    console.error('Initializer', name, 'is already declared. Please choose another initializer name.');
+                } else {
+                    Ember.Application.initializer({
+                        name: name,
+                        initialize: function(container, application) {
+                            application.register(name, classToRegister);
+                        }
+                    });
+                }
             }
         }
     };
