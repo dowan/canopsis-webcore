@@ -33,38 +33,24 @@ define([
         __ = Ember.String.loc;
 
 
-    recursiveDeleteKeys = function(object, keysToRemove) {
-        var objectKeys = Ember.keys(object);
-        alert('recursiveDeleteKeys ' + objectKeys.length);
-
-        for (var i = 0, li = objectKeys.length; i < li; i++) {
-            var currentKey = objectKeys[i],
-                currentObject = object[objectKeys[i]];
-
-            alert(currentKey);
-            if(keysToRemove.contains(currentKey)) {
-                alert('delete key ' + currentKey);
-                delete object[currentKey];
-            } else if(Ember.isArray(currentObject)) {
-                var buffer = [];
-
-                for (var j = 0, lj = currentObject.length; j < lj; j++) {
-                    buffer.pushObject(recursiveDeleteKeys(currentObject[j], keysToRemove));
-                }
-
-                object[currentKey] = recursiveDeleteKeys(object[currentKey], keysToRemove);
-            } else if(typeof currentKey === 'object') {
-                object[currentKey] = recursiveDeleteKeys(object[currentKey], keysToRemove);
-            }
-        }
-
-        return object;
-    }
-
+    /**
+     * @class UserviewController
+     * @extends Ember.ObjectController
+     * @constructor
+     * @uses InspectableItemMixin
+     * @uses Ember.Evented
+     */
     var controller = Ember.ObjectController.extend(InspectableItem, Ember.Evented, {
         needs: ['application'],
 
         actions: {
+
+            /**
+             * @event insertWidget
+             * @param {ContainerWidget} containerController
+             *
+             * Pop up a widget chooser form, and when the form sequence is over, inserts the widget into the container specified as first parameter
+             */
             insertWidget: function(containerController) {
                 console.log("insertWidget", containerController);
                 var widgetChooserForm = formUtils.showNew('widgetform', this);
@@ -89,48 +75,69 @@ define([
                 });
             },
 
+            /**
+             * @event duplicateWidgetAndContent
+             * @param {WidgetWrapper} widgetwrapperModel
+             * @param {ContainerWidget} containerModel
+             */
             duplicateWidgetAndContent: function(widgetwrapperModel, containerModel) {
                 console.error('duplicateWidgetAndContent', widgetwrapperModel, containerModel);
-                this.copyWidget(widgetwrapperModel, containerModel);
+                copyWidget(this, widgetwrapperModel, containerModel);
 
                 this.get('model').save();
 
             },
 
+            /**
+             * @event refreshView
+             */
             refreshView: function() {
                 console.log('refresh view');
                 this.trigger('refreshView');
             }
-        },
-        copyWidget: function(widgetwrapperModel, containerModel) {
-            console.error('copyWidget', arguments);
-            var widgetwrapperJson = cleanRecord(widgetwrapperModel.toJSON());
-            widgetwrapperJson.widget = null;
-            var duplicatedWrapper = this.store.createRecord('widgetwrapper', widgetwrapperJson);
-
-            var widgetJson = cleanRecord(widgetwrapperModel.get('widget').toJSON());
-            console.error(widgetJson);
-
-            var duplicatedWidget = this.store.createRecord(widgetJson.xtype, widgetJson);
-
-            if(!isNone(widgetwrapperModel.get('widget.items'))) {
-                var items = widgetwrapperModel.get('widget.items.content');
-
-                console.error('copying items', items);
-
-                for (var i = 0; i < items.length; i++) {
-                    var subWrapperModel = items[i];
-                    console.error('copying subwidget wrapper', subWrapperModel);
-
-                    this.copyWidget(subWrapperModel, duplicatedWidget);
-                }
-            }
-
-            duplicatedWrapper.set('widget',  duplicatedWidget);
-            containerModel.get('items.content').pushObject(duplicatedWrapper);
         }
     });
 
+
+    /**
+     * @method copyWidget
+     * @param {UserviewController} self
+     * @param {Widgetwrapper} widgetwrapperModel
+     * @param {ContainerWidget} containerModel
+     */
+    copyWidget = function(self, widgetwrapperModel, containerModel) {
+        console.error('copyWidget', arguments);
+        var widgetwrapperJson = cleanRecord(widgetwrapperModel.toJSON());
+        widgetwrapperJson.widget = null;
+        var duplicatedWrapper = self.store.createRecord('widgetwrapper', widgetwrapperJson);
+
+        var widgetJson = cleanRecord(widgetwrapperModel.get('widget').toJSON());
+        console.error(widgetJson);
+
+        var duplicatedWidget = self.store.createRecord(widgetJson.xtype, widgetJson);
+
+        if(!isNone(widgetwrapperModel.get('widget.items'))) {
+            var items = widgetwrapperModel.get('widget.items.content');
+
+            console.error('copying items', items);
+
+            for (var i = 0; i < items.length; i++) {
+                var subWrapperModel = items[i];
+                console.error('copying subwidget wrapper', subWrapperModel);
+
+                copyWidget(self, subWrapperModel, duplicatedWidget);
+            }
+        }
+
+        duplicatedWrapper.set('widget',  duplicatedWidget);
+        containerModel.get('items.content').pushObject(duplicatedWrapper);
+    }
+
+    /**
+     * @function cleanRecord
+     * @param {Object} recordJSON
+     * @return {Object} the cleaned record
+     */
     function cleanRecord(recordJSON) {
         for (var key in recordJSON) {
             var item = recordJSON[key];
@@ -153,6 +160,7 @@ define([
 
         return recordJSON;
     }
+
 
     loader.register('controller:userview', controller);
 

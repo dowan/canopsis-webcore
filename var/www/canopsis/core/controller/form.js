@@ -27,7 +27,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-
+    //TODO refactor this
     var eventedController = Ember.Controller.extend(Ember.Evented, {
 
         mergedProperties: ['partials'],
@@ -92,6 +92,11 @@ define([
             this._super.apply(this, arguments);
         },
 
+
+        /**
+         * @property confirmation
+         * @type boolean
+         */
         confirmation: false,
 
         /**

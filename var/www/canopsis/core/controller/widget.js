@@ -38,6 +38,11 @@ define([
         isNone = Ember.isNone;
 
 
+    /**
+     * @class WidgetController
+     * @extends PartialslotAbleController
+     * @constructor
+     */
     var controller = PartialslotAbleController.extend({
         needs: ['application', 'login'],
 

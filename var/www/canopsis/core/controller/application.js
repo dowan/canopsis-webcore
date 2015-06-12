@@ -227,6 +227,10 @@ define([
             }
         },
 
+        /**
+         * @method didSaveView
+         * @descriptions method triggered when an userview is saved
+         */
         didSaveView: function(userview) {
             this.transitionToRoute("/userview/" + get(userview, 'id'));
         },
@@ -245,6 +249,7 @@ define([
                     frontendConfig.save();
                 });
             },
+
             /**
              * @event editAuthConfiguration
              * @param {String} authType
