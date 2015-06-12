@@ -34,6 +34,7 @@ define([
     'app/mixins/documentation',
     'app/mixins/schemamanager',
     'app/mixins/consolemanager',
+    'app/mixins/loadingindicator',
     'app/mixins/promisemanager',
     'app/mixins/notifications',
     'app/lib/loaders/utils',
@@ -64,6 +65,7 @@ define([
     DocumentationMixin,
     SchemamanagerMixin,
     ConsolemanagerMixin,
+    LoadingindicatorMixin,
     PromisemanagerMixin,
     NotificationsMixin,
     utils,
@@ -134,6 +136,20 @@ define([
         mixinsRegistry: mixinsRegistry,
 
         /**
+         * @method addConcurrentLoading
+         * @type Ember.K
+         * @see LoadingindicatorMixin
+         */
+        addConcurrentLoading: Ember.K,
+
+        /**
+         * @method removeConcurrentLoading
+         * @type Ember.K
+         * @see LoadingindicatorMixin
+         */
+        removeConcurrentLoading: Ember.K,
+
+        /**
          * @property inflectionsRegistry
          * @type Object
          * @description Reference to the inflections registry
@@ -146,13 +162,6 @@ define([
          * @description Reference to the form registry
          */
         formsRegistry: formsRegistry,
-
-        /**
-         * @property isLoading
-         * @type Number
-         * @description the number of concurrent loadings (usually requests) pending
-         */
-        isLoading:0,
 
         /**
          * @property utils
@@ -391,7 +400,6 @@ define([
                 var recordWizard = formsUtils.showNew('modelform', userview, { title: __("Add ") + type });
 
                 recordWizard.submit.done(function() {
-                    set(applicationController, 'isLoading', get(applicationController, 'isLoading') + 1);
                     userview.save().then(function() {
                         applicationController.didSaveView(userview);
                     });
@@ -432,6 +440,7 @@ define([
             PromisemanagerMixin,
             ConsolemanagerMixin,
             NotificationsMixin,
+            // LoadingindicatorMixin,
             RequirejsmocksmanagerMixin,
             ScreentoolstatusmenuMixin,
             DocumentationMixin,
@@ -440,6 +449,7 @@ define([
         controller = PartialslotAbleController.extend(
             UserprofilestatusmenuMixin,
             NotificationsMixin,
+            // LoadingindicatorMixin,
             DocumentationMixin,
             ApplicationControllerDict);
     }
