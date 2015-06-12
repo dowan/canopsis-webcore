@@ -65,11 +65,9 @@ define([
     'app/routes/index',
     'app/routes/userview',
     'css3-mediaqueries'
-], function(Application, Canopsis) {
+], function(Canopsis) {
 
     window.getCanopsis = function () {
         return Canopsis;
     };
-
-    return Application;
 });
