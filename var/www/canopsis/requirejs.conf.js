@@ -112,10 +112,10 @@ define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18
         }
         deps.push('text!app/bower.json');
 
-        if(canopsisConfiguration.DEBUG) {
-            deps.push('canopsis/environment.debug');
+        if(window.environment) {
+            deps.push('canopsis/environment.' + window.environment);
         } else {
-            deps.push('canopsis/environment.prod');
+            deps.push('canopsis/environment.production');
         }
 
         deps.push('app/lib/wrappers/extend');
@@ -145,10 +145,9 @@ define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18
                 window.appShouldNowBeLoaded = true;
 
                 setLoadingInfo('Fetching application starting point', 'fa-plug');
-                require(['app/init'], function(Application) {
+                require(['app/application'], function(Application) {
                     setLoadingInfo('Initializing user interface', 'fa-desktop');
 
-                    Application.advanceReadiness();
                 });
             });
         });

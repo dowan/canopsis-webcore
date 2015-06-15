@@ -429,71 +429,85 @@ define([
         },
 
         fetchStylizedMetrics: function(from, to, replace) {
-            var store = get(this, 'widgetDataStore');
+            var store = get(this, 'widgetDataStore'),
+                stylizedmetrics = get(this, 'config.metrics'),
+                series = [],
+                seriesById = {},
+                curveIds = [],
+                me = this;
 
-            var stylizedmetrics = get(this, 'config.metrics');
-            var series = [];
-            var seriesById = {};
-            var curveIds = [];
+            var fetchDone = function() {
+                curveIds = JSON.stringify(curveIds);
+
+                console.log('series:', seriesById);
+                console.log('curves:', curveIds);
+
+                store.findQuery('curve', {ids: curveIds}).then(function(curveResult) {
+                    var virtualResult = {
+                        meta: {
+                            total: series.length
+                        },
+                        content: series,
+                    };
+
+                    me.genChartConfig([virtualResult, curveResult], seriesById, from, to, replace);
+                });    
+            };
 
             if(!isNone(stylizedmetrics)) {
+                var metricIds = [];
+
                 for(var i = 0, l = stylizedmetrics.length ; i < l ; i++) {
                     var metricId = get(stylizedmetrics[i], 'metric');
-                    var metricTuple = metricId.split('/');
-                    metricTuple.shift();
-                    var isComponentMetric = (metricTuple.length === 5);
 
-                    var metricInfo = {
-                        connector: metricTuple[1],
-                        connector_name: metricTuple[2],
-                        component: metricTuple[3]
-                    };
+                    metricIds.push(metricId);
+                }
 
-                    if(isComponentMetric) {
-                        metricInfo.resource = '';
-                        metricInfo.name = metricTuple[4];
-                    } else {
-                        metricInfo.resource = metricTuple[4];
-                        metricInfo.name = metricTuple[5];
+                store.findQuery('ctxmetric', {
+                    _filter: JSON.stringify({
+                        _id: {
+                            '$in': metricIds
+                        }
+                    })
+                }).then(function(result) {
+                    var metricsById = {},
+                        i, l;
+
+                    for(i = 0, l = get(result, 'content.length') ; i < l; i++) {
+                        var info = get(result, 'content')[i];
+
+                        metricsById[get(info, 'id')] = info;
                     }
 
-                    var serieconf = Ember.Object.create({
-                        id: metricId,
-                        virtual: true,
-                        crecord_name: metricInfo.name,
-                        metrics: [metricId],
-                        aggregate_method: 'none',
-                        unit: get(stylizedmetrics[i], 'unit')
-                    });
+                    for(i = 0, l = stylizedmetrics.length; i < l; i++) {
+                        var metricId = get(stylizedmetrics[i], 'metric');
+                        var metricInfo = metricsById[metricId];
 
-                    seriesById[metricId] = {
-                        style: stylizedmetrics[i],
-                        serie: serieconf,
-                        curve: undefined
-                    };
+                        var serieconf = Ember.Object.create({
+                            id: metricId,
+                            virtual: true,
+                            crecord_name: get(metricInfo, 'name'),
+                            metrics: [metricId],
+                            aggregate_method: 'none',
+                            unit: get(stylizedmetrics[i], 'unit')
+                        });
 
-                    series.push(serieconf);
-                    curveIds.push(get(stylizedmetrics[i], 'curve'));
-                }
+                        seriesById[metricId] = {
+                            style: stylizedmetrics[i],
+                            serie: serieconf,
+                            curve: undefined
+                        };
+
+                        series.push(serieconf);
+                        curveIds.push(get(stylizedmetrics[i], 'curve'));
+                    }
+
+                    fetchDone();
+                });
             }
-
-            curveIds = JSON.stringify(curveIds);
-
-            console.log('series:', seriesById);
-            console.log('curves:', curveIds);
-
-            var me = this;
-
-            store.findQuery('curve', {ids: curveIds}).then(function(curveResult) {
-                var virtualResult = {
-                    meta: {
-                        total: series.length
-                    },
-                    content: series,
-                };
-
-                me.genChartConfig([virtualResult, curveResult], seriesById, from, to, replace);
-            });
+            else {
+                fetchDone();
+            }
         },
 
         genChartConfig: function(pargs, series, from, to, replace) {

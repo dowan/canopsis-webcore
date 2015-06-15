@@ -19,13 +19,12 @@
 
 define([
     'ember',
-    'app/application',
     'summernote',
     'codemirror',
     'summernote',
     // 'link!canopsis/uibase/lib/externals/summernote/summernote-bs3.css'
     'link!canopsis/uibase/lib/externals/summernote/dist/summernote.css',
-], function(Ember, Application) {
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set;

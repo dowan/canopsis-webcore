@@ -28,7 +28,7 @@ define([
         set = Ember.set,
         isNone = Ember.isNone;
 
-    var mixin = Mixin('detail', {
+    var mixin = Mixin('listlinedetail', {
 
         partials: {
             columnsLine: ["actionbutton-foldable"],
@@ -59,7 +59,7 @@ define([
             this._super.apply(this, arguments);
 
             var tmplId = get(this, 'detailTemplate'),
-                tmpl = get(this, 'mixinOptions.detail.template');
+                tmpl = get(this, 'mixinOptions.listlinedetail.template');
 
             if (isNone(tmpl)) {
                 tmpl = 'No template defined';

@@ -1,7 +1,7 @@
 define([
     'jquery',
     'app/lib/factories/widget',
-    'canopsis/uibase/mixins/detail',
+    'canopsis/uibase/mixins/listlinedetail',
     'canopsis/uibase/widgets/list/controller'
 ], function($, WidgetFactory , DetailMixin , ListController) {
 

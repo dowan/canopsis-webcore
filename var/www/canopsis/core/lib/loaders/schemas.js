@@ -21,13 +21,13 @@
 var schemaFiles = [
 ];
 
-var schemasDeps = ['ember-data', 'app/application', 'app/lib/loaders/utils', 'app/lib/schemasregistry'];
+var schemasDeps = ['ember-data', 'app/lib/utils/data', 'app/lib/objects/loader', 'canopsis/canopsis-backend-ui-connector/adapters/schema', 'app/lib/loaders/utils', 'app/lib/schemasregistry'];
 
 for (var i = 0, l = schemaFiles.length; i < l; i++) {
     schemasDeps.push('text!schemas/' + schemaFiles[i] + '.json');
 }
 
-define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
+define(schemasDeps, function(DS, dataUtils, loader, SchemaAdapter, utils, schemasRegistry) {
 
     function compare(a,b) {
       if (a.id < b.id) {
@@ -49,7 +49,7 @@ define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
             schema: schema
         };
 
-        Application[name.capitalize()] = emberModel;
+        loader.register('model:' + name, emberModel);
         schemasRegistry.add(registryEntry, name);
     }
 
@@ -194,7 +194,7 @@ define(schemasDeps, function(DS, Application, utils, schemasRegistry) {
             var schemasLoader = this;
             var shemasLimit = 200;
 
-            var adapter = Application.__container__.lookup('adapter:schema');
+            var adapter = SchemaAdapter.create();
 
             var successFunction = function(payload) {
                 if (payload.success) {

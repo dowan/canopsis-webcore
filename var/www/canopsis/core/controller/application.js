@@ -21,7 +21,6 @@ define([
     'jquery',
     'ember',
     'ember-data',
-    'app/application',
     'canopsis/canopsisConfiguration',
     'app/controller/partialslotablecontroller',
     'app/lib/widgetsregistry',
@@ -52,7 +51,6 @@ define([
     $,
     Ember,
     DS,
-    Application,
     canopsisConfiguration,
     PartialslotAbleController,
     widgetsRegistry,
@@ -80,7 +78,8 @@ define([
         __ = Ember.String.loc;
 
 
-    Application.IndexController = Ember.Controller.extend(Ember.Evented, {});
+    var indexController = Ember.Controller.extend(Ember.Evented, {});
+    loader.register('controller:index', indexController);
 
     /**
      * @class ApplicationController
@@ -174,7 +173,8 @@ define([
             {label: __('Event Filter'), value: 'view.filters'},
             {label: __('Performance Data'), value: 'view.series'},
             {label: __('Scheduled Jobs'), value: 'view.jobs'},
-            {label: __('Link list'), value: 'view.linklist'}
+            {label: __('Link list'), value: 'view.linklist'},
+            {label: __('Snmp rules'), value: 'view.snmprule'}
         ],
 
         /**

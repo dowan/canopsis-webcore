@@ -54,21 +54,27 @@ define([
             return get(this, 'content') === 3;
         }.property('content'),
 
+        previousIs: function (state) {
+            if (get(this, 'showAll')) {
+                return false;
+            }
+            return get(this, 'hidePrevious') && get(this, 'previousContent') === state;
+        },
 
         previousIsInfo:function () {
-            return get(this, 'hidePrevious') && get(this, 'previousContent') === 0;
+            return this.previousIs(0);
         }.property('previousContent'),
 
         previousIsMinor:function () {
-            return get(this, 'hidePrevious') && get(this, 'previousContent') === 1;
+            return this.previousIs(1);
         }.property('previousContent'),
 
         previousIsMajor:function () {
-            return get(this, 'hidePrevious') && get(this, 'previousContent') === 2;
+            return this.previousIs(2);
         }.property('previousContent'),
 
         previousIsCritical:function () {
-            return get(this, 'hidePrevious') && get(this, 'previousContent') === 3;
+            return this.previousIs(3);
         }.property('previousContent'),
 
 

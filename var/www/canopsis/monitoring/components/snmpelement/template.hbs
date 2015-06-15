@@ -1,0 +1,10 @@
+{{input class="oidelement form-control" value=content type='text'}}
+{{#if showObjects}}
+    <ul class="list-group scrollableList" style="position:absolute;z-index:100">
+        {{#each mibObject in mibObjects}}
+            <li class="list-group-item">
+                <a href="#" {{action 'addObject' mibObject}}>{{mibObject}}</a>
+            </li>
+        {{/each}}
+    </ul>
+{{/if}}

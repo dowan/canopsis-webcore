@@ -19,8 +19,7 @@
 
 define([
     'ember',
-    'app/lib/abstractclassregistry',
-    'app/application'
+    'app/lib/abstractclassregistry'
 ], function(Ember, Abstractclassregistry) {
 
     var contexts = [{

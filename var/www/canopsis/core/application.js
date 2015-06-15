@@ -20,9 +20,10 @@
 define([
     'ember',
     'ember-data',
-    'app/lib/externals/requirejs-domready/domReady', //TODO remove, seems to be useless
+    'app/lib/utils/data',
+    'app/lib/inflections',
     'jsonselect',
-], function(Ember, DS, domReady) {
+], function(Ember, DS, dataUtils, inflectionsManager) {
 
     if(window.appShouldNowBeLoaded !== true) {
         console.error('Application module is required too early, and it is probably leading to bad application behaviour and errors. Please do NOT require "app/application" in your modules.');
@@ -44,6 +45,7 @@ define([
     });
 
     loader.setApplication(Application);
+    dataUtils.setEmberApplicationSingleton(Application);
 
     Ember.Application.initializer({
         name:"RESTAdaptertransforms",
@@ -55,6 +57,10 @@ define([
             application.register('transform:object', DS.ObjectTransform);
         }
     });
+    Application.advanceReadiness();
+    window.$A = Application;
+
+    inflectionsManager.loadInflections();
 
     return Application;
 });

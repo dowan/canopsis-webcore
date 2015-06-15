@@ -18,37 +18,30 @@
 */
 
 define([
-    'ember',
-    'app/lib/attributepresetregistry'
-], function(Ember, attributepresetRegistry) {
+    'canopsis/canopsis-backend-ui-connector/adapters/application'
+], function(ApplicationAdapter) {
 
-    var get = Ember.get,
-        set = Ember.set;
+    var adapter = ApplicationAdapter.extend({
 
+        buildURL: function(type, id) {
+            void(id);
+            return '/trap';
+        },
 
-    var component = Ember.Component.extend({
+        findQuery: function(store, type, query) {
 
-        value: undefined,
-        field: undefined,
+            var url = '/trap';
 
-        choices: function(){
-            var field = get(this, 'field');
+            if (query.skip !== undefined){
+                query.start = query.skip;
+                delete query.skip;
+            }
 
-            var presets = attributepresetRegistry.getByClassName(field);
-            console.log('choices CP presets', presets);
-
-            return presets;
-
-        }.property('field')
-    });
-
-
-    Ember.Application.initializer({
-        name:"component-attributepreset",
-        initialize: function(container, application) {
-            application.register('component:component-attributepreset', component);
+            return this.ajax(url, 'GET', { data: query });
         }
     });
 
-    return component;
+    loader.register('adapter:trap', adapter);
+
+    return adapter;
 });
