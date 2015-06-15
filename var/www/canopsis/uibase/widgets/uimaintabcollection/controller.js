@@ -36,6 +36,7 @@ define([
 
         tagName: 'span',
 
+        userCanShowEditionMenu: true,
         userCanEditView: true,
         userCanCreateView: true,
 
