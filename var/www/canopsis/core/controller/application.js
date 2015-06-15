@@ -136,20 +136,6 @@ define([
         mixinsRegistry: mixinsRegistry,
 
         /**
-         * @method addConcurrentLoading
-         * @type Ember.K
-         * @see LoadingindicatorMixin
-         */
-        addConcurrentLoading: Ember.K,
-
-        /**
-         * @method removeConcurrentLoading
-         * @type Ember.K
-         * @see LoadingindicatorMixin
-         */
-        removeConcurrentLoading: Ember.K,
-
-        /**
          * @property inflectionsRegistry
          * @type Object
          * @description Reference to the inflections registry
@@ -440,7 +426,7 @@ define([
             PromisemanagerMixin,
             ConsolemanagerMixin,
             NotificationsMixin,
-            // LoadingindicatorMixin,
+            LoadingindicatorMixin,
             RequirejsmocksmanagerMixin,
             ScreentoolstatusmenuMixin,
             DocumentationMixin,
@@ -449,7 +435,7 @@ define([
         controller = PartialslotAbleController.extend(
             UserprofilestatusmenuMixin,
             NotificationsMixin,
-            // LoadingindicatorMixin,
+            LoadingindicatorMixin,
             DocumentationMixin,
             ApplicationControllerDict);
     }

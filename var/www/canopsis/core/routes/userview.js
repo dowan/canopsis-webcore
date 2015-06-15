@@ -38,7 +38,6 @@ define([
     var route = AuthenticatedRoute.extend({
         beforeModel: function(transition) {
             var app = this.controllerFor('application');
-            console.error('beforeModel');
 
             app.addConcurrentLoading('userview');
 
@@ -47,7 +46,6 @@ define([
 
         afterModel: function(view, transition) {
             var app = this.controllerFor('application');
-            console.error('afterModel');
             app.removeConcurrentLoading('userview');
 
             return this._super(view, transition);
