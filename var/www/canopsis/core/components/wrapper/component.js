@@ -29,7 +29,15 @@ define([
      * @class WrapperComponent
      */
     var component = Ember.Component.extend({
+        /**
+         * @property tagName
+         * @type string
+         */
         tagName: 'span',
+
+        /**
+         * @method init
+         */
         init: function() {
             this._super();
             console.log("init wrapper component");

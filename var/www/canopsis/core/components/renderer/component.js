@@ -28,7 +28,16 @@ define([
         isNone = Ember.isNone;
 
 
+    /**
+     * Component displaying the correct renderer for an attribute.
+     * It is possible to specify the renderer type to use. If not specified, it will try to get the correct type on its own.
+     *
+     * @class RendererComponent
+     */
     var component = Ember.Component.extend({
+        /**
+         * @method init
+         */
         init: function() {
             var record = get(this, 'record'),
                 attrName = get(this, 'attrName');
@@ -67,7 +76,16 @@ define([
             this._super.apply(this, arguments);
         },
 
+        /**
+         * @property runtimeConfiguration
+         * @see {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
+         */
         canopsisConfiguration: canopsisConfiguration,
+
+        /**
+         * @property debug
+         * @type boolean
+         */
         debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
 
         actions: {
@@ -84,6 +102,11 @@ define([
                 get(this, 'parentView.controller').send(action, params);
             }
         },
+
+        /**
+         * @property tagName
+         * @type string
+         */
         tagName: 'span',
 
         attr: function() {
