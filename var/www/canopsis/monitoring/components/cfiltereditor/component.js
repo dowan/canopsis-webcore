@@ -25,7 +25,8 @@ define([
 ], function($, Ember, indexesregistry, Canopsis) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
 
     var component = Ember.Component.extend({
@@ -219,7 +220,7 @@ define([
             },
             {
                 label: '!regex',
-                value: '$notregex'
+                value: '$not'
             }
         ],
 
@@ -284,14 +285,23 @@ define([
                     if (field.key !== undefined) {
                         var item = {};
                         console.log('field', field);
-                        var operator = '$eq';
+                        var operator = {
+                            label: '=',
+                            value: '$eq'
+                        };
 
                         if (field.operator !== undefined) {
                             operator = this.getMongoOperatorForLabel(field.operator);
                         }
 
+                        if(isNone(operator.format)) {
+                            operator.format = function(x) {
+                                return x;
+                            };
+                        }
+
                         item[field.key] = {};
-                        item[field.key][operator] = field.value;
+                        item[field.key][operator.value] = operator.format(field.value);
 
                         subfilter.$and.pushObject(item);
                     }
@@ -318,7 +328,7 @@ define([
         getMongoOperatorForLabel: function(label) {
             for (var i = 0, l = this.operators.length; i < l; i++) {
                 if (this.operators[i].label === label) {
-                    return this.operators[i].value;
+                    return this.operators[i];
                 }
             }
 

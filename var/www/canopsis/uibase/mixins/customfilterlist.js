@@ -85,7 +85,7 @@ define([
 
         computeFilterFragmentsList: function() {
             var list = this._super(),
-                mixinOptions = get(this, 'model.mixins').findBy('name', 'Customfilterlist'),
+                mixinOptions = get(this, 'model.mixins').findBy('name', 'customfilterlist'),
                 userFilter;
 
             if(get(this, 'model.selected_filter.filter') !== null && get(this, 'model.selected_filter.filter') !== undefined) {
