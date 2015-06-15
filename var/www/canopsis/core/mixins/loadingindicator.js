@@ -37,6 +37,9 @@ define([
      * @static
      */
     var mixin = Mixin('loadingindicator', {
+        /**
+         * @method init
+         */
         init: function() {
             if(isNone(get(this, 'partials.indicators'))) {
                 set(this, 'partials.indicators', []);
