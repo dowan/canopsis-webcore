@@ -26,8 +26,15 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-
+    /**
+     * @class WidgetslotView
+     * @extends Ember.View
+     * @constructor
+     */
     var view = Ember.View.extend({
+        /**
+         * @method init
+         */
         init: function() {
             console.log('widgetslot init', get(this, 'controller.content.widgetslotTemplate'));
 
@@ -39,7 +46,16 @@ define([
             this._super.apply(this, arguments);
         },
 
+        /**
+         * @property templateName
+         * @type string
+         */
         templateName:'widgetslot-default',
+
+        /**
+         * @property classNames
+         * @type Array
+         */
         classNames: ['widgetslot']
     });
 

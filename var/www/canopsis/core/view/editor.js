@@ -24,9 +24,20 @@ define([
     'app/lib/utils/hash'
 ], function(Ember, hashUtils) {
 
+    /**
+     * @class EditorView
+     * @extends Ember.View
+     * @constructor
+     */
     var view = Ember.View.extend({
+        /**
+         * @property attrBinding
+         */
         attrBinding: "templateData.keywords.attr.value",
 
+        /**
+         * @method init
+         */
         init: function() {
             var id = utils.hash.generateId(this.templateName);
             this.elementId = id;

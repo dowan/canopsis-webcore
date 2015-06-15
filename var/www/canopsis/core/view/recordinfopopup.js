@@ -28,8 +28,15 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+    /**
+     * @class RecordinfopopupView
+     * @extends Ember.View
+     * @constructor
+     */
     var view = Ember.View.extend({
-
+        /**
+         * @method didInsertElement
+         */
         didInsertElement: function () {
             console.log('Recordinfopopup dom element');
 

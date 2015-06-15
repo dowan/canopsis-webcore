@@ -28,9 +28,15 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+    /**
+     * @class ApplicationView
+     * @extends Ember.View
+     * @constructor
+     */
     var view = Ember.View.extend({
         /**
-         * @property the css class of the main container
+         * @property rightSideCssClasses
+         * the css class of the main container
          */
         rightSideCssClasses: function(){
             if(get(this, 'controller.fullscreenMode')) {

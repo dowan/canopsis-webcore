@@ -19,9 +19,9 @@
  * @module canopsis-frontend-core
  */
 
-define(['ember', 'app/view/form'], function(Ember, FormView) {
+define(['ember'], function(Ember) {
 
-    Ember.Handlebars.helper('formview', FormView);
+    Ember.Handlebars.helper('formview', Ember.View);
 });
 
 

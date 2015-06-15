@@ -21,9 +21,8 @@
 
 define([
     'app/controller/form',
-    "app/lib/formsregistry",
-    'app/view/form'
-], function(FormController, formsregistry, FormView) {
+    "app/lib/formsregistry"
+], function(FormController, formsregistry) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -73,7 +72,6 @@ define([
 
 
         var controllerClass = options.subclass.extend.apply(options.subclass, extendArguments);
-        loader.register('view:' + formViewName, FormView.extend());
         loader.register('controller:' + formControllerName, controllerClass);
 
 

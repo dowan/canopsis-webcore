@@ -93,17 +93,30 @@ define([
         return {array: mixinArray, mixinOptions: mixinOptions};
     }
 
-
+    /**
+     * @class WidgetView
+     * @extends Ember.View
+     * @constructor
+     */
     var view = Ember.View.extend({
         templateName:'widget',
         classNames: ['widget'],
 
         /**
+         * @property widgetController
+         * @type Array
          * Used to visually display error messages to the user (in the widget template)
          */
         errorMessages : Ember.A(),
+
+        /**
+         * @property widgetController
+         */
         widgetController: undefined,
 
+        /**
+         * @method init
+         */
         init: function() {
             console.group('widget initialisation :', get(this.widget, "xtype"), this.widget, get(this, 'widget.tagName'));
             set(this, 'target', get(this, 'controller'));
@@ -133,6 +146,9 @@ define([
             console.groupEnd();
         },
 
+        /**
+         * @method applyAllViewMixins
+         */
         applyAllViewMixins: function(){
             var controller = get(this, 'controller');
             console.group('apply widget view mixins', controller.viewMixins);
@@ -152,6 +168,9 @@ define([
             console.groupEnd();
         },
 
+        /**
+         * @method intializeController
+         */
         intializeController: function(widget) {
             console.group('set controller for widget', widget);
 
@@ -167,6 +186,11 @@ define([
             console.groupEnd();
         },
 
+        /**
+         * @method instantiateCorrectController
+         * @param {DS.Model} widget
+         * @return WidgetController
+         */
         instantiateCorrectController: function(widget) {
             //for a widget that have xtype=widget, controllerName=WidgetController
             console.log('instantiateCorrectController', arguments);
@@ -218,15 +242,20 @@ define([
             return widgetControllerInstance;
         },
 
+        /**
+         * @method didInsertElement
+         */
         didInsertElement : function() {
             console.log("inserted widget, view:", this);
 
             this.registerHooks();
-            var result = this._super.apply(this, arguments);
 
-            return result;
+            return this._super.apply(this, arguments);
         },
 
+        /**
+         * @method willDestroyElement
+         */
         willDestroyElement: function () {
             clearInterval(get(this, 'widgetRefreshInterval'));
 
@@ -235,13 +264,18 @@ define([
             return this._super.apply(this, arguments);
         },
 
-        //Controller -> View Hooks
+        /**
+         * @method registerHooks
+         */
         registerHooks: function() {
             console.log("registerHooks", get(this, "controller"), get(this, "controller").on);
             get(this, "controller").on('refresh', this, this.rerender);
             return this._super();
         },
 
+        /**
+         * @method unregisterHooks
+         */
         unregisterHooks: function() {
             get(this, "controller").off('refresh', this, this.rerender);
             return this._super();

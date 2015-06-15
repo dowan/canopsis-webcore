@@ -27,6 +27,13 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
+    //TODO @gwen check if it's possible to remove this class, or move it to uibase
+
+    /**
+     * @class TabledraggablethView
+     * @extends Ember.View
+     * @constructor
+     */
     var view = Ember.View.extend({
         templateName: 'tabledraggableth',
         tagName: 'th',

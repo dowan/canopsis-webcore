@@ -29,7 +29,13 @@ define([
         get = Ember.get,
         isNone = Ember.isNone;
 
+    //TODO @gwen check if it's possible to remove this class
 
+    /**
+     * @class MixineditdropdownView
+     * @extends Ember.View
+     * @constructor
+     */
     var view = Ember.View.extend({
         tagName: 'span',
         templateName: 'mixineditdropdown',

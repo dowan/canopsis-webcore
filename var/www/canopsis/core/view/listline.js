@@ -27,7 +27,13 @@ define([
     var set = Ember.set,
         get = Ember.get;
 
+    //TODO @gwen check if it's possible to remove this class
 
+    /**
+     * @class ListlineView
+     * @extends Ember.View
+     * @constructor
+     */
     var view = Ember.View.extend({
         tagName:'tr',
         templateName: 'listline',

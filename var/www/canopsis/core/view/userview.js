@@ -29,16 +29,32 @@ define([
         set = Ember.set,
         isNone = Ember.isNone;
 
+
+    /**
+     * @class UserviewView
+     * @extends Ember.View
+     * @constructor
+     */
     var view = Ember.View.extend({
         actions: {
+            /**
+             * @event refreshView
+             */
             refreshView: function() {
                 this.rerender();
             }
         },
 
+        /**
+         * @property hookRegistered
+         * @type boolean
+         */
         hookRegistered: false,
 
-        //Controller -> View Hooks
+        /**
+         * @method registerHooks
+         * Controller -> View Hooks
+         */
         registerHooks: function() {
             if (!get(this, 'hookRegistered')) {
                 get(this, 'controller').on('refreshView', this, this.rerender);
@@ -46,11 +62,17 @@ define([
             }
         },
 
+        /**
+         * @method unregisterHooks
+         */
         unregisterHooks: function() {
             get(this, 'controller').off('refreshView', this, this.rerender);
             this.set('hookRegistered', false);
         },
 
+        /**
+         * @method rerender
+         */
         rerender: function() {
             console.info('refreshing view', this);
             if (get(this, 'state') === 'destroying') {
@@ -61,6 +83,9 @@ define([
             this.registerHooks();
         },
 
+        /**
+         * @method didInsertElement
+         */
         didInsertElement : function() {
             console.log("inserted view", this);
 
@@ -68,6 +93,9 @@ define([
             return this._super.apply(this, arguments);
         },
 
+        /**
+         * @method willClearRender
+         */
         willClearRender: function() {
             this.unregisterHooks();
             return this._super.apply(this, arguments);

@@ -22,15 +22,22 @@
 define([
     'jquery',
     'ember',
-    'app/view/form',
     'app/lib/utils/drag',
-], function($, Ember, FormView, drag) {
+], function($, Ember, drag) {
 
     var get = Ember.get,
         set = Ember.set,
         isNone =Ember.isNone;
 
+    /**
+     * @class FormwrapperView
+     * @extends Ember.View
+     * @constructor
+     */
     var view = Ember.View.extend({
+        /**
+         * @method init
+         */
         init: function() {
             this._super();
             console.log("formwrapper view init", this, get(this, 'controller'));
@@ -38,18 +45,26 @@ define([
             set(this,'controller.widgetwrapperView', this);
         },
 
-        formViewClass : FormView,
-
+        /**
+         * @method didInsertElement
+         */
         didInsertElement: function () {
             drag.setDraggable(this.$('#formwrapper .modal-title'), this.$('#formwrapper'));
         },
 
+        /**
+         * @method willDestroyElement
+         */
         willDestroyElement: function () {
             this.$("#formwrapper").modal("hide");
             this._super();
         },
 
-        //Controller -> View Hooks
+
+        /**
+         * @method registerHooks
+         * Controller -> View Hooks
+         */
         registerHooks: function() {
             this.hooksRegistered = true;
 
@@ -65,13 +80,19 @@ define([
             });
         },
 
+        /**
+         * @method unregisterHooks
+         */
         unregisterHooks: function() {
             this.get("controller").off('validate', this, this.hidePopup);
             this.get("controller").off('hide', this, this.hidePopup);
             this.get("controller").off('rerender', this, this.rerender);
         },
 
-        //regular methods
+
+        /**
+         * @method showPopup
+         */
         showPopup: function() {
             console.log("view showPopup");
             if(!this.hooksRegistered) {
@@ -86,11 +107,17 @@ define([
             }
         },
 
+        /**
+         * @method hidePopup
+         */
         hidePopup: function() {
             console.log("view hidePopup");
             this.$("#formwrapper").modal("hide");
         },
 
+        /**
+         * @method onPopupHidden
+         */
         onPopupHidden: function() {
             console.log("onPopupHidden", arguments);
             var submit = get(this, 'controller.form.submit');

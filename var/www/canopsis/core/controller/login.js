@@ -47,12 +47,14 @@ define([
         init: function() {
             this._super.apply(this, arguments);
 
+            //TODO delete store in this#destroy
             var store = DS.Store.create({
                 container: get(this, "container")
             });
 
             set(this, 'store', store);
         },
+
 
         /**
          * @property authkey

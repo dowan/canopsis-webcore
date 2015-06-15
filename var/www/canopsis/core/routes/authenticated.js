@@ -42,7 +42,7 @@ define([
             var route = this;
             var store = DS.Store.create({ container: get(this, "container") });
 
-            //FIXME dirty, risky
+            //FIXME use store#adapterFor
             loggedaccountAdapter = dataUtils.getEmberApplicationSingleton().__container__.lookup('adapter:loggedaccount');
 
             var loginPromise = store.findAll('loggedaccount');

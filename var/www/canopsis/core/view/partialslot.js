@@ -24,13 +24,42 @@ define([
     'canopsis/canopsisConfiguration'
 ], function(Ember, canopsisConfiguration) {
 
+    /**
+     * @class PartialslotView
+     * @extends Ember.View
+     * @constructor
+     */
     var view = Ember.View.extend({
+        /**
+         * @property canopsisConfiguration
+         * @see {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
+         */
         canopsisConfiguration: canopsisConfiguration,
+
+        /**
+         * @property showPartialslots
+         * @see {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
+         * @type boolean
+         */
         showPartialslots: Ember.computed.alias('canopsisConfiguration.showPartialslots'),
 
+        /**
+         * @property templateName
+         * @type string
+         */
         templateName: 'partialslot',
+
+        /**
+         * @property tagName
+         * @type string
+         */
         tagName: 'span',
 
+        /**
+         * @property slot
+         * @type string
+         * @required
+         */
         slot: Ember.required()
     });
 
