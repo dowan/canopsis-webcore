@@ -45,6 +45,20 @@ define([
             return viewId && rightsflagsUtils.canRead(get(rights, viewId + '.checksum'));
         },
 
+        userCanShowEditionMenu: function() {
+            if(get(this, 'loggedaccountId') === "root") {
+                return true;
+            }
+
+            var rights = get(this, 'loggedaccountRights');
+
+            if (get(rights, 'tabs_showeditionmenu.checksum')) {
+                return true;
+            }
+
+            return false;
+        }.property(),
+
          userCanEditView: function() {
             if(get(this, 'loggedaccountId') === "root") {
                 return true;
@@ -63,7 +77,7 @@ define([
         }.property('currentViewId'),
 
         userCanCreateView: function() {
-            if(get(this, 'loggedaccountId')) {
+            if(get(this, 'loggedaccountId') === "root") {
                 return true;
             }
 

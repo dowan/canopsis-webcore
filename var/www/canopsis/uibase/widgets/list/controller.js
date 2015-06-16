@@ -191,7 +191,7 @@ define([
                 var me = this;
 
                 var appController = get(this, 'controllers.application');
-                set(appController, 'isLoading', get(appController, 'isLoading') + 1);
+                appController.addConcurrentLoading('list-data');
 
                 if (isNone(get(this, 'widgetDataStore'))) {
                     set(this, 'widgetDataStore', DS.Store.create({
@@ -221,7 +221,7 @@ define([
                         queryResults.content[i].set('pendingOperation', false);
                     }
 
-                    set(appController, 'isLoading', get(appController, 'isLoading') - 1);
+                    appController.removeConcurrentLoading('list-data');
                 }).catch(function (promiseProxy) {
                     console.warn('Catching error', promiseProxy);
                     //TODO add an error in displayedErrors array, to warn the user that the data cannot be displayed

@@ -36,22 +36,22 @@ define([
     var initialLoadDone = false;
 
     var route = AuthenticatedRoute.extend({
+        beforeModel: function(transition) {
+            var app = this.controllerFor('application');
+
+            app.addConcurrentLoading('userview');
+
+            return this._super(transition);
+        },
+
+        afterModel: function(view, transition) {
+            var app = this.controllerFor('application');
+            app.removeConcurrentLoading('userview');
+
+            return this._super(view, transition);
+        },
+
         actions: {
-            loading: function() {
-                if(initialLoadDone === false) {
-                    var app = this.controllerFor('application'),
-                        isLoading;
-
-                    if(get(app, 'isLoading')) {
-                        isLoading = get(app, 'isLoading');
-                    } else {
-                        isLoading = 0;
-                    }
-
-                    set(app, 'isLoading', isLoading + 1);
-                }
-            },
-
             error: function(error, transition){
                 if (error.status === 0) {
                     console.debug('no error detected in access status');
@@ -227,7 +227,6 @@ define([
             set(this.controllerFor('application'), 'currentViewId', get(model, 'id'));
 
             var app = this.controllerFor('application');
-            set(app, 'isLoading', get(app, 'isLoading') - 1);
 
             if(controller.trigger) {
                 controller.trigger('refreshView');
