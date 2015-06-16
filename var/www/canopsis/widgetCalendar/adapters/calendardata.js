@@ -38,6 +38,15 @@ define([
             return result;
         },
 
+        findQuery: function(store, type, query) {
+            var url = this.buildURL(type, null);
+            url = url.concat('/values');
+
+            console.log('findQuery', query);
+            var me = this;
+            return this.ajax(url, 'GET', {data: query});
+        },
+
         createRecord: function(store, type, record) {
             return _upsertRecord(this, 'PUT', store, type, record);
         },
@@ -51,7 +60,7 @@ define([
         }
     });
 
-    loader.register('adapter:vevent', adapter);
+    loader.register('adapter:calendardata', adapter);
 
     return adapter;
 });

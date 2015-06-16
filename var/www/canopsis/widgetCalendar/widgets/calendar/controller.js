@@ -32,12 +32,6 @@ define([
 
     var viewMixin = Ember.Mixin.create({
 
-        actions: {
-            dragStart: function(){
-                alert('toto');
-            }
-        },
-
         didInsertElement: function() {
 
             this.$('.calendar').fullCalendar({
@@ -50,7 +44,7 @@ define([
                 editable: true,
                 events: [
                     {
-                        title: 'Long Event',
+                        title: get(widget.calendarTab[0], 'description'),
                         start: '2015-05-07',
                         end: '2015-05-10'
                     },
@@ -106,33 +100,45 @@ define([
         findItems: function(){
             var component = this;
 
-            /** getting event data from schemas */
-            var calevent = this.get('model.calendarevent');
-            if (calevent === undefined) {
-                console.log('empty content');
-            } else {
-                console.log('no empty content', calevent);
-            }
-
+            /* getting event data from schemas */
+            //TODO @florent query with params
             var params = {
-                limit: 20
+                category: 1
             };
 
             var store = get(this, 'widgetDataStore');
 
-            store.findQuery('calendardata', params).then(function (data) {
-                var eventObjects = get(data, 'content');
+            store.findQuery('calendardata').then(function (result) {
+                console.log('result', result);
+                var eventObjects = get(result, 'content');
                 console.log('eventObjects', eventObjects);
                 set(component, 'eventObjects', eventObjects);
+                calendarTab = [];
+                for (var i = 0, li = eventObjects.length; i < li; i++) {
+                    var data = get(eventObjects[i],'_data');
+                    console.log('data', data);
+                    var description = get(data, 'output');
+                    var startEvent = moment(get(data, 'dtstart')).format();
+                    var endEvent = moment(get(data, 'dtend')).format();
+                    console.log('my event', description, 'from', startEvent, 'to', endEvent);
+                    calendarTab.push({
+                        title: description,
+                        start: startEvent,
+                        end: endEvent
+                    });
+                }
+                console.log('display of calendarTab', calendarTab);
+                set(component, 'calendarTab', calendarTab);
             });
         },
+
         actions:{
             save: function(){
                 var store = get(this, 'widgetDataStore');
                 var newEvent = store.createRecord(store, 'calendardata',{
                     category: '3',
                     description:'awesome project',
-                    date: 1427982754
+                    dtstart: '2015-05-12T10:30:00'
                 });
                 newEvent.save();
                 console.log('model created');
