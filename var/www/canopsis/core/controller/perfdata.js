@@ -35,7 +35,6 @@ define([
             var app = get(this, 'controllers.application');
             set(app, 'isLoading', get(app, 'isLoading') + 1);
 
-            //FIXME refactor this to stop using getCanopsis
             var pojoAdapter = dataUtils.getEmberApplicationSingleton().__container__.lookup('adapter:pojo');
             var requestOptions = {
                 'metric_id': metric_id,
@@ -66,7 +65,6 @@ define([
         },
 
         aggregate: function(metric_id, tstart, tend, method, interval) {
-            //FIXME refactor this to stop using getCanopsis
             var pojoAdapter = getCanopsis().Application.__container__.lookup('adapter:pojo');
             var requestOptions = {
                 'metric_id': metric_id,
