@@ -47,7 +47,7 @@ define([
 
                 var weatherController = this;
 
-                set(weatherController, 'controllers.application.isLoading', get(weatherController, 'controllers.application.isLoading') + 1);
+                // set(weatherController, 'controllers.application.isLoading', get(weatherController, 'controllers.application.isLoading') + 1);
 
                 transition.promise.then(function(routeInfos){
                     console.log('transition done', routeInfos);
