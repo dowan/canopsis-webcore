@@ -13,4 +13,4 @@ pyperfstore2/*.egg*
 # Temp files
 #####################
 *~
-var/www/canopsis/widgetCalendar/*
+var/www/canopsis/widgetCalendar
