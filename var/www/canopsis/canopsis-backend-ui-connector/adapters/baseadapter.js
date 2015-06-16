@@ -15,6 +15,7 @@ define([
             return '/';
         },
 
+        //TODO @eric, switch post by get verb
         findQuery: function(store, type, query) {
             var url = this.buildURL(type, null);
 
