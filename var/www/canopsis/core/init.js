@@ -55,7 +55,6 @@ define([
     'app/serializers/ctxtopology',
     'app/serializers/linklist',
     'app/serializers/snmprule',
-    'app/lib/wrappers/console',
     'app/lib/wrappers/ionicons',
     'app/lib/loaders/forms',
     'app/lib/loaders/validators',
