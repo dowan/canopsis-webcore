@@ -26,9 +26,8 @@ define([
     'app/lib/utils/data',
     'app/lib/utils/forms',
     'app/lib/utils/widgetSelectors',
-    'app/lib/utils/actions',
     'app/serializers/userview'
-], function(Ember, AuthenticatedRoute, utils, dataUtils, formUtils, widgetSelectorsUtils, actionsUtils) {
+], function(Ember, AuthenticatedRoute, utils, dataUtils, formUtils, widgetSelectorsUtils) {
 
     var set = Ember.set,
         get = Ember.get,
@@ -227,8 +226,6 @@ define([
         setupController: function(controller, model) {
             console.log('UserviewRoute setupController', arguments);
 
-            actionsUtils.setDefaultTarget(controller);
-
             this._super.apply(this, arguments);
 
             controller.setProperties({
@@ -250,7 +247,13 @@ define([
     });
 
 
-    loader.register('route:userview', route);
+
+    Ember.Application.initializer({
+        name:"UserviewRoute",
+        initialize: function(container, application) {
+            application.register('route:userview', route);
+        }
+    });
 
     return route;
 });

@@ -21,8 +21,7 @@
 
 define([
     'app/routes/authenticated',
-    'app/lib/utils/actions'
-], function(AuthenticatedRoute, actionsUtils) {
+], function(AuthenticatedRoute) {
 
     var set = Ember.set,
         get = Ember.get;
@@ -32,21 +31,15 @@ define([
      * @extends AuthenticatedRoute
      * @constructor
      */
-    var route = AuthenticatedRoute.extend({
-        /**
-         * @method setupController
-         * @param controller
-         */
-        setupController: function(controller) {
-            this.controllerFor('application').onIndexRoute = true;
-            actionsUtils.setDefaultTarget(controller);
+    var route = AuthenticatedRoute.extend({});
 
-            console.log('beforemodel');
+
+    Ember.Application.initializer({
+        name:"IndexRoute",
+        initialize: function(container, application) {
+            application.register('route:index', route);
         }
     });
-
-
-    loader.register('route:index', route);
 
     return route;
 });

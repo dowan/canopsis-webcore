@@ -26,9 +26,8 @@ define([
     'app/lib/formsregistry',
     'app/lib/utils/routes',
     'app/lib/utils/actions',
-    'app/lib/loaders/utils',
     'app/lib/loaders/forms'
-], function(Ember, DS, AuthenticatedRoute, formsregistry, routesUtils, actionsUtils, utils) {
+], function(Ember, DS, AuthenticatedRoute, formsregistry, routesUtils, actionsUtils) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -281,8 +280,12 @@ define([
         }
     });
 
-
-    loader.register('route:application', route);
+    Ember.Application.initializer({
+        name:"ApplicationRoute",
+        initialize: function(container, application) {
+            application.register('route:application', route);
+        }
+    });
 
     return route;
 });

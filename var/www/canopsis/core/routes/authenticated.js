@@ -23,10 +23,10 @@ define([
     'ember',
     'ember-data',
     'app/controller/application',
-    'app/lib/loaders/utils',
     'app/lib/utils/data',
+    'app/lib/utils/actions',
     'app/controller/login',
-], function(Ember, DS, ApplicationController, utils, dataUtils) {
+], function(Ember, DS, ApplicationController, dataUtils, actionsUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -37,6 +37,16 @@ define([
      * @constructor
      */
     var route = Ember.Route.extend({
+        /**
+         * @method setupController
+         * @param controller
+         */
+        setupController: function(controller) {
+            this.controllerFor('application').onIndexRoute = true;
+            actionsUtils.setDefaultTarget(controller);
+
+            return this._super.apply(this, arguments);
+        },
 
         beforeModel: function(transition) {
             var route = this;
@@ -61,7 +71,6 @@ define([
 
                 for (var i = 0, l = enginesviews.length; i < l; i++) {
                     var item = enginesviews[i];
-                    //FIXME stop using utils to store data!
                     if(get(loginController, 'record._id') === "root") {
                         set(item, 'displayable', true);
                     } else {
@@ -119,8 +128,12 @@ define([
         }
     });
 
-
-    loader.register('route:authenticated', route);
+    Ember.Application.initializer({
+        name:"AuthenticatedRoute",
+        initialize: function(container, application) {
+            application.register('route:authenticated', route);
+        }
+    });
 
     return route;
 });
