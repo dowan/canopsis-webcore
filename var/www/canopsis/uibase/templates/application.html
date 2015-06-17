@@ -178,8 +178,4 @@
         {{/if}}
     </aside>
 </div>
-{{#if isLoading}}
-    <div class="loadtooltip">
-        <i class="fa fa-2x fa-refresh fa-spin fa-inverse"></i>
-    </div>
-{{/if}}
+{{partialslot slot=controller._partials.indicators}}

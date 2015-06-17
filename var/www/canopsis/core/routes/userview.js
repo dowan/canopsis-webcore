@@ -43,48 +43,21 @@ define([
      * @constructor
      */
     var route = AuthenticatedRoute.extend({
-        /**
-         * @method beforeModel
-         * @param {Transition} transition
-         * @return {Promise}
-         *
-         * Toggle editMode if the view id changes.
-         */
         beforeModel: function(transition) {
-            var applicationController = this.controllerFor('application'),
-                viewId = get(transition, 'params.userview.userview_id');
+            var app = this.controllerFor('application');
+            app.addConcurrentLoading('userview');
 
-            if(get(applicationController, 'currentViewId') !== viewId) {
-                //if the id has changed, the user actually transitionned to another view, disable the edit mode
-                set(applicationController, 'editMode', false);
-            }
-
-            return this._super.apply(this, arguments);
+            return this._super(transition);
         },
+
+        afterModel: function(view, transition) {
+            var app = this.controllerFor('application');
+            app.removeConcurrentLoading('userview');
+
+            return this._super(view, transition);
+        },
+
         actions: {
-            /**
-             * @event loading
-             */
-            loading: function() {
-                if(initialLoadDone === false) {
-                    var app = this.controllerFor('application'),
-                        isLoading;
-
-                    if(get(app, 'isLoading')) {
-                        isLoading = get(app, 'isLoading');
-                    } else {
-                        isLoading = 0;
-                    }
-
-                    set(app, 'isLoading', isLoading + 1);
-                }
-            },
-
-            /**
-             * @event error
-             * @param error
-             * @param transition
-             */
             error: function(error, transition){
                 if (error.status === 0) {
                     console.debug('no error detected in access status');
@@ -270,7 +243,6 @@ define([
             set(this.controllerFor('application'), 'currentViewId', get(model, 'id'));
 
             var app = this.controllerFor('application');
-            set(app, 'isLoading', get(app, 'isLoading') - 1);
 
             if(controller.trigger) {
                 controller.trigger('refreshView');

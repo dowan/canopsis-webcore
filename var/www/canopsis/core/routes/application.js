@@ -68,10 +68,6 @@ define([
                 console.log('ShowView action', arguments);
 
                 var currentViewId = routesUtils.getCurrentViewId();
-                var app = this.controllerFor('application');
-                if(currentViewId !== undefined && currentViewId !== id) {
-                    set(app, 'isLoading', get(app, 'isLoading') + 1);
-                }
 
                 this.transitionTo('userview', id);
             },
