@@ -22,7 +22,9 @@ define([
     'jquery',
     'app/lib/wrappers/console'
 ], function($) {
-
+    return {
+        additionnalBricks: ['development']
+    }
 });
 
 var mocks = localStorage.getItem('files_mocks');

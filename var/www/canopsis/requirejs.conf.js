@@ -80,9 +80,27 @@ setModuleInfo = function (modules, showmodules) {
     }
 };
 
-define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18n', 'app/lib/objects/loader', 'jquery'], function(enabled, canopsisConfiguration, i18n) {
+var depsStage1 = ['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18n'];
+
+if(window.environment) {
+    depsStage1.push('canopsis/environment.' + window.environment);
+} else {
+    depsStage1.push('canopsis/environment.production');
+}
+
+depsStage1.push('app/lib/objects/loader');
+depsStage1.push('jquery');
+
+define(depsStage1, function(enabled, canopsisConfiguration, i18n, environment) {
 
     enabled.getEnabledModules(function (enabledPlugins) {
+
+        if(environment && environment.additionnalBricks) {
+            var additionnalBricks = environment.additionnalBricks;
+            for (var i = 0, li = additionnalBricks.length; i < li; i++) {
+                enabledPlugins.push(additionnalBricks[i]);
+            }
+        }
 
         setLoadingInfo('Fetching frontend bricks', 'fa-cubes');
         setModuleInfo(enabledPlugins, canopsisConfiguration.SHOWMODULES);
@@ -101,30 +119,24 @@ define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18
 
         Ember.STRINGS = i18n.translations[language] || {};
 
-        var deps = [];
+        var depsStage2 = [];
 
-        for (var i = 0; i < enabledPlugins.length; i++) {
+        for (var i = 0, li = enabledPlugins.length; i < li; i++) {
             var currentPlugin = enabledPlugins[i];
 
             if(currentPlugin !== 'core') {
-                deps.push('text!canopsis/'+ currentPlugin +'/bower.json');
+                depsStage2.push('text!canopsis/'+ currentPlugin +'/bower.json');
             }
         }
-        deps.push('text!app/bower.json');
+        depsStage2.push('text!app/bower.json');
 
-        if(window.environment) {
-            deps.push('canopsis/environment.' + window.environment);
-        } else {
-            deps.push('canopsis/environment.production');
-        }
+        depsStage2.push('app/lib/wrappers/extend');
+        depsStage2.push('link');
 
-        deps.push('app/lib/wrappers/extend');
-        deps.push('link');
-
-        require(deps, function() {
+        require(depsStage2, function() {
             var initFiles = [];
 
-            for (var i = 0, l = enabledPlugins.length; i < l; i++) {
+            for (var i = 0, li = enabledPlugins.length, l = li; i < l; i++) {
                 var currentPlugin = enabledPlugins[i];
                 if(currentPlugin !== 'core') {
                     var brickManifest = JSON.parse(arguments[i]);

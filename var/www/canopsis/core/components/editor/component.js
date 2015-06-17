@@ -41,15 +41,9 @@ define([
             //FIXME auto-detect if we need standalone mode or not, stop using a variable, for a better comprehension
             if(get(this, 'mode') === 'standalone') {
                 set(this, 'attr', { value: undefined });
-                Ember.addObserver(this, 'attr.value', this, this.onValueChange);
             }
 
             this._super();
-        },
-
-        onValueChange: function () {
-            alert('value change');
-            set(this, 'value', get(this, 'attr.value'));
         },
 
         actions: {
