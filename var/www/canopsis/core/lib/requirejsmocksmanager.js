@@ -32,7 +32,7 @@ define([
      * @class RequirejsMockManager
      * @static
      */
-    var MocksManager = Ember.Object.extend({
+    var MocksRegistryClass = Ember.Object.extend({
         init: function() {
             this._super();
 
@@ -156,5 +156,14 @@ define([
         }
     });
 
-    return MocksManager.create();
+    var registry = MocksRegistryClass.create();
+
+    Ember.Application.initializer({
+        name:"MocksRegistry",
+        initialize: function(container, application) {
+            application.register('registry:mocks', registry);
+        }
+    });
+
+    return registry;
 });

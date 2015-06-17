@@ -38,5 +38,12 @@ define([
         tableColumns: [{title: 'name', name: 'name'}]
     });
 
+    Ember.Application.initializer({
+        name:"MixinsRegistry",
+        initialize: function(container, application) {
+            application.register('registry:mixins', registry);
+        }
+    });
+
     return registry;
 });

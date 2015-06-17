@@ -31,11 +31,11 @@ define([
      * @extends Abstractclassregistry
      * @static
      */
-    var manager = Abstractclassregistry.create({
+    var registry = Abstractclassregistry.create({
         name: 'indexes'
     });
 
-    manager.add(Ember.Object.create({
+    registry.add(Ember.Object.create({
         name: 'event',
         tree: {
             'component': {
@@ -68,7 +68,7 @@ define([
         }
     }));
 
-    manager.add(Ember.Object.create({
+    registry.add(Ember.Object.create({
         name: 'crecord',
         tree: {
             'crecord_type': {
@@ -85,5 +85,12 @@ define([
         }
     }));
 
-    return manager;
+    Ember.Application.initializer({
+        name:"IndexesRegistry",
+        initialize: function(container, application) {
+            application.register('registry:indexes', registry);
+        }
+    });
+
+    return registry;
 });

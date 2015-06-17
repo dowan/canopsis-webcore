@@ -30,7 +30,7 @@ define([
      * @extends Abstractclassregistry
      * @static
      */
-    var widgetsManager = Abstractclassregistry.create({
+    var registry = Abstractclassregistry.create({
         name: 'schemas',
 
         all: {},
@@ -56,5 +56,12 @@ define([
         tableColumns: [{title: 'icon', name: 'icon'}, {title: 'name', name: 'name'}]
     });
 
-    return widgetsManager;
+    Ember.Application.initializer({
+        name:"SchemasRegistry",
+        initialize: function(container, application) {
+            application.register('registry:schemas', registry);
+        }
+    });
+
+    return registry;
 });

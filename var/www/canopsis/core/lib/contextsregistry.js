@@ -38,7 +38,7 @@ define([
             modelName: 'ctxtopology'
         }];
 
-    var contextsManager = Abstractclassregistry.create({
+    var registry = Abstractclassregistry.create({
         name: 'contexts',
 
         all: [],
@@ -53,11 +53,18 @@ define([
     });
 
     for (var i = 0, l = contexts.length; i < l; i++) {
-        contextsManager.all.pushObject({
+        registry.all.pushObject({
             name: contexts[i].name,
             modelName: contexts[i].modelName
         });
     }
 
-    return contextsManager;
+    Ember.Application.initializer({
+        name:"ContextsRegistry",
+        initialize: function(container, application) {
+            application.register('registry:contexts', registry);
+        }
+    });
+
+    return registry;
 });

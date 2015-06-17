@@ -40,7 +40,7 @@ define([
      * @extends Abstractclassregistry
      * @static
      */
-    var inflectionsRegistry = Abstractclassregistry.create({
+    var registry = Abstractclassregistry.create({
         name: 'inflections',
 
         all: [],
@@ -49,7 +49,7 @@ define([
 
         loadInflections: function() {
             for (var i = 0, l = inflexions.length; i < l; i++) {
-                inflectionsRegistry.all.pushObject({
+                registry.all.pushObject({
                     name: inflexions[i][0] + ' -> ' + inflexions[i][1],
                     singular: inflexions[i][0],
                     plural: inflexions[i][1]
@@ -59,7 +59,12 @@ define([
         }
     });
 
+    Ember.Application.initializer({
+        name:"InflexionsRegistry",
+        initialize: function(container, application) {
+            application.register('registry:inflexions', registry);
+        }
+    });
 
-
-    return inflectionsRegistry;
+    return registry;
 });

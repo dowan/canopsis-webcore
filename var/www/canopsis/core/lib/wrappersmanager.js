@@ -21,6 +21,10 @@
 
 define([], function() {
 
+    /**
+     * @class wrappersManager
+     * @deprecated
+     */
     var wrappersManager = {
         loadedLibraries: {}
     };

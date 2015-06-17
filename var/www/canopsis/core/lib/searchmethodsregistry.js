@@ -52,7 +52,7 @@ define([
      * @extends Abstractclassregistry
      * @static
      */
-    var searchMethodsRegistry = Abstractclassregistry.create({
+    var registry = Abstractclassregistry.create({
         name: 'searchMethods',
 
         all: [],
@@ -61,8 +61,15 @@ define([
     });
 
     for (var i = 0, l = searchMethods.length; i < l; i++) {
-        searchMethodsRegistry.all.pushObject(searchMethods[i]);
+        registry.all.pushObject(searchMethods[i]);
     }
 
-    return searchMethodsRegistry;
+    Ember.Application.initializer({
+        name:"SearchmethodsRegistry",
+        initialize: function(container, application) {
+            application.register('registry:searchmethods', registry);
+        }
+    });
+
+    return registry;
 });

@@ -22,12 +22,12 @@
 define([
     'ember',
     'app/routes/authenticated',
-    'app/lib/loaders/utils',
     'app/lib/utils/data',
+    'app/lib/utils/notification',
     'app/lib/utils/forms',
     'app/lib/utils/widgetSelectors',
     'app/serializers/userview'
-], function(Ember, AuthenticatedRoute, utils, dataUtils, formUtils, widgetSelectorsUtils) {
+], function(Ember, AuthenticatedRoute, dataUtils, notificationUtils, formUtils, widgetSelectorsUtils) {
 
     var set = Ember.set,
         get = Ember.get,
@@ -67,7 +67,7 @@ define([
                     this.transitionTo('/userview/view.404');
                 } else {
                     console.error(error);
-                    utils.notification.error(__('Impossible to load view.'));
+                    notificationUtils.error(__('Impossible to load view.'));
                 }
             },
 

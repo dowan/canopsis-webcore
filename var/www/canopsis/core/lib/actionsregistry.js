@@ -30,7 +30,7 @@ define([
      * @extends Abstractclassregistry
      * @static
      */
-    var actionsRegistry = Abstractclassregistry.create({
+    var registry = Abstractclassregistry.create({
         name: 'actions',
 
         all: [{
@@ -68,5 +68,13 @@ define([
         tableColumns: [{title: 'name', name: 'name'}]
     });
 
-    return actionsRegistry;
+    Ember.Application.initializer({
+        name:"ActionsRegistry",
+        initialize: function(container, application) {
+            application.register('registry:actions', registry);
+        }
+    });
+
+
+    return registry;
 });

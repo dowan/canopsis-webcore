@@ -30,7 +30,7 @@ define([
      * @extends Abstractclassregistry
      * @static
      */
-    var manager = Abstractclassregistry.create({
+    var registry = Abstractclassregistry.create({
         name: 'renderers',
 
         all: [],
@@ -38,5 +38,12 @@ define([
         tableColumns: [{title: 'name', name: 'name'}]
     });
 
-    return manager;
+    Ember.Application.initializer({
+        name:"RenderersRegistry",
+        initialize: function(container, application) {
+            application.register('registry:renderers', registry);
+        }
+    });
+
+    return registry;
 });

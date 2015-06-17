@@ -28,12 +28,19 @@ define(['app/lib/abstractclassregistry'], function(Abstractclassregistry) {
      * @extends Abstractclassregistry
      * @static
      */
-    var formsManager = Abstractclassregistry.create({
+    var registry = Abstractclassregistry.create({
         name: 'forms',
 
         formwrapper: undefined,
         tableColumns: [{title: 'name', name: 'name'}]
     });
 
-    return formsManager;
+    Ember.Application.initializer({
+        name:"FormsRegistry",
+        initialize: function(container, application) {
+            application.register('registry:forms', registry);
+        }
+    });
+
+    return registry;
 });

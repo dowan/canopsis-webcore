@@ -125,5 +125,14 @@ define([
         }
     });
 
+
+    Ember.Application.initializer({
+        name:"AbstracteClassRegistry",
+        initialize: function(container, application) {
+            application.register('registry:abstractclass', AbstractClassRegistry);
+        }
+    });
+
+
     return AbstractClassRegistry;
 });

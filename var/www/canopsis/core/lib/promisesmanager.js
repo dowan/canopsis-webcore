@@ -26,7 +26,7 @@ define([
     var get = Ember.get,
         set = Ember.set;
 
-    var promiseManager = Abstractclassregistry.create({
+    var registry = Abstractclassregistry.create({
         name: 'promises',
 
         all: [],
@@ -77,6 +77,12 @@ define([
         }
     });
 
+    Ember.Application.initializer({
+        name:"PromisesRegistry",
+        initialize: function(container, application) {
+            application.register('registry:promises', registry);
+        }
+    });
 
-    return promiseManager;
+    return registry;
 });
