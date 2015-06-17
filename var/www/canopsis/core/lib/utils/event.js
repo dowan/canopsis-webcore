@@ -29,6 +29,7 @@ define([
         __ = Ember.String.loc,
         isNone = Ember.isNone;
 
+    //TODO delete this, as it looks more like a registry than an util
     var eventUtil= Utility.create({
 
         name: 'event',

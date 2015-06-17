@@ -64,6 +64,53 @@ define([
             else {
                 return x + units[nstep] + unit;
             }
+        },
+
+        castValue: function(value, type) {
+            type = type.toLowerCase();
+            var types = ['string', 'boolean', 'number', 'array'];
+            if (types.indexOf(type) === -1) {
+                console.warn('type', type, 'not recognized. Expected one of', types.join(','));
+                return value;
+            }
+            if (type === 'string') {
+                //simple no dump case, can be improved
+                return value + '';
+            }
+            if (type === 'number') {
+                try {
+                    value = parseFloat(value);
+                } catch (err) {
+                    console.warn('unable to case to number value', value);
+                }
+                if (isNaN(value)) {
+                    return 0;
+                }
+                return value;
+            }
+            if (type === 'boolean') {
+                try {
+                    if (value === 'true') {
+                        return true;
+                    }
+                    if (value === 'false'){
+                        return false;
+                    }
+                    value = !!value;
+                } catch (err) {
+                    console.warn('unable to case to boolean value', value);
+                }
+                return value;
+            }
+            if (type === 'array') {
+                try {
+                    value = value.split(',');
+                } catch (err) {
+                    console.warn('unable to case to array value', value);
+                }
+                return value;
+            }
+
         }
     });
 
