@@ -17,37 +17,36 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-//TODO: check this module is not call and not load by init.js
-
 define([
     'ember',
-    'app/controller/application',
-    'canopsis/canopsis-rights/objects/rightsregistry'
-], function(
-    Ember,
-    Applicationcontroller,
-    rightsRegistry) {
+    'jquery',
+], function(Ember, $) {
+	var get = Ember.get,
+      set = Ember.set;
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone,
-        __ = Ember.String.loc;
+    var component = Ember.Component.extend({
+      classNames: [ 'draggableItem' ]
+  	 /* attributeBindings: [ 'draggable' ],
+  	  draggable: 'true',*/
 
+	  /*dragStart: function(event) {
+    	return event.dataTransfer.setData('text/data');
+  	},*/
 
     /**
-     * @class ApplicationController
-     * @extends PartialslotAbleController
-     * @constructor
-     * @description ApplicationController reopen
+     * @method willDestroyElement
      */
-    Applicationcontroller.reopen({
-        /**
-         * @property rightsRegistry
-         * @type Object
-         * @description Reference to the rights registry
-         */
-        rightsRegistry: rightsRegistry
-    });
+    /*willDestroyElement: function() {
+      this._super();
+    }*/
+	});
 
-    return Applicationcontroller;
+  Ember.Application.initializer({
+    name:"component-draggableitem",
+    initialize: function(container, application) {
+        application.register('component:component-draggableitem', component);
+    }
+  });
+
+	return component;
 });
