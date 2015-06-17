@@ -22,9 +22,8 @@
 define([
     'ember',
     'ember-data',
-    'app/lib/utils/test',
     'app/lib/factories/mixin'
-], function(Ember, DS, testUtils, Mixin) {
+], function(Ember, DS, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -44,17 +43,13 @@ define([
         },
 
         notifications: function(){
-            testUtils.pre(this, function () {
-                assert('The notification store should be an instance of DS.Store', DS.Store.detectInstance(this.store));
-            });
+            assert('The notification store should be an instance of DS.Store', DS.Store.detectInstance(this.store));
 
             return this.store.find("notification");
         }.property(),
 
         createNotification: function (level, message) {
-            testUtils.pre(this, function () {
-                assert('The notification store should be an instance of DS.Store', DS.Store.detectInstance(this.store));
-            });
+            assert('The notification store should be an instance of DS.Store', DS.Store.detectInstance(this.store));
 
             var falevel = level;
 

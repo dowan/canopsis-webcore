@@ -21,10 +21,17 @@
 
 define(['app/lib/utilityclass', 'app/lib/utils/data'], function(Utility, dataUtils) {
 
+    /**
+     * @class RoutesUtils
+     * @extends Utility
+     */
     var routesUtils = Utility.create({
-
         name: 'routes',
 
+        /**
+         * @method getCurrentRouteController
+         * @return Ember.Controller
+         */
         getCurrentRouteController: function() {
             var currentHandlers = dataUtils.getEmberApplicationSingleton().__container__.lookup("router:main").router.currentHandlerInfos;
             var currentRouteController = currentHandlers[currentHandlers.length - 1].handler.controller;
@@ -35,6 +42,10 @@ define(['app/lib/utilityclass', 'app/lib/utils/data'], function(Utility, dataUti
             return currentRouteController;
         },
 
+        /**
+         * @method getCurrentViewId
+         * @return string
+         */
         getCurrentViewId: function() {
             return dataUtils.getEmberApplicationSingleton().__container__.lookup("router:main").router.currentHandlerInfos[1].params.userview_id;
         }

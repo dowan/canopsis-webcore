@@ -33,6 +33,14 @@ define(['ember', 'app/lib/utilityclass'], function(Ember, Utility) {
             set(this, 'inspectedObject', object);
 
             console.info('--- inspect object :', this.inspectedObject);
+        },
+
+        getViewFromJqueryElement: function($el, className) {
+            if(className) {
+                return Ember.View.views[$el.closest('.ember-view .' + className).attr('id')];
+            } else {
+                return Ember.View.views[$el.closest('.ember-view').attr('id')];
+            }
         }
     });
 

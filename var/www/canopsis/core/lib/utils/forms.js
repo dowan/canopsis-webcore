@@ -32,7 +32,6 @@ define([
         __ = Ember.String.loc;
 
     var formUtils = Utility.create({
-
         name: 'forms',
 
         instantiateForm: function(formName, formContext, options) {

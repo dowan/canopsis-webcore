@@ -21,9 +21,8 @@
 
 define([
     'ember',
-    'app/lib/utils/test',
     'app/controller/userview'
-], function(Ember, testUtils) {
+], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set,

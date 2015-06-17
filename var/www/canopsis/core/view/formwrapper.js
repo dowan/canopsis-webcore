@@ -49,6 +49,7 @@ define([
          * @method didInsertElement
          */
         didInsertElement: function () {
+            //TODO watch out ! garbage collector might not work here! Possible memory leak.
             drag.setDraggable(this.$('#formwrapper .modal-title'), this.$('#formwrapper'));
         },
 
@@ -75,6 +76,7 @@ define([
 
             var formwrapperView = this;
 
+            //TODO "on" without "off"
             this.$('#formwrapper').on('hidden.bs.modal', function () {
                 formwrapperView.onPopupHidden.apply(formwrapperView, arguments);
             });

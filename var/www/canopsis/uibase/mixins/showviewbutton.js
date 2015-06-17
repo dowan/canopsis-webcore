@@ -20,10 +20,9 @@
 define([
     'ember',
     'app/lib/utils/routes',
-    'app/lib/utils/test',
     'app/lib/factories/mixin',
     'app/lib/utils/forms',
-], function(Ember, routesUtils, testUtils, Mixin, formsUtils) {
+], function(Ember, routesUtils, Mixin, formsUtils) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -37,9 +36,7 @@ define([
 
         actions: {
             show: function(id) {
-                testUtils.pre(this, function () {
-                    Ember.assert('There should be an id passed as first argument', !isNone(id));
-                });
+                Ember.assert('There should be an id passed as first argument', !isNone(id));
 
                 console.log("Show action", arguments);
                 routesUtils.getCurrentRouteController().send('showView', id);

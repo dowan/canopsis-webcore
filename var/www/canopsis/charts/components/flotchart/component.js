@@ -19,9 +19,8 @@
 define([
     'jquery',
     'ember',
-    'app/lib/utils/dom',
     'app/lib/utils/values'
-], function($, Ember, DOM, values) {
+], function($, Ember, values) {
 
     var get = Ember.get,
         set = Ember.set,

@@ -21,11 +21,20 @@
 
 define(['app/lib/utilityclass'], function(Utility) {
 
-    //TODO delete this, seems to be unused
+    /**
+     * @class SlugUtils
+     * @extends Utility
+     *
+     * Used to remove spaces and special characters for urls, DOM element IDs and si on
+     */
     var slugify = Utility.create({
-
         name: 'slug',
 
+        /**
+         * @method slug
+         * @param {string} value
+         * @return {string}
+         */
         slug: function(value) {
             var rExps = [
                 { re: /[\xC0-\xC6]/g, ch: 'A' },

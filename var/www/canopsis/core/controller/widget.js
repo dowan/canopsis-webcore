@@ -20,7 +20,6 @@
  */
 
 define([
-    'jquery',
     'ember',
     'ember-data',
     'app/controller/partialslotablecontroller',
@@ -31,9 +30,8 @@ define([
     'app/lib/utils/debug',
     'app/lib/utils/data',
     'app/lib/schemasregistry',
-    'app/lib/mixinsregistry',
     'app/view/mixineditdropdown'
-], function($, Ember, DS, PartialslotAbleController, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, dataUtils, schemasregistry, mixinsregistry) {
+], function(Ember, DS, PartialslotAbleController, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, dataUtils, schemasregistry) {
 
     var get = Ember.get,
         set = Ember.set,

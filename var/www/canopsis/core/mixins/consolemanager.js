@@ -31,6 +31,7 @@ define([
         __ = Ember.String.loc;
 
 
+    //TODO move this to development brick
     /**
      * Mixin allowing console and various js runtime settings
      *

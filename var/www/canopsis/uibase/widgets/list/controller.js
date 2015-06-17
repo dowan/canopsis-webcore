@@ -26,7 +26,6 @@ define([
     'app/mixins/inspectablearray',
     'canopsis/userpreferences/mixins/userconfiguration',
     'canopsis/uibase/mixins/draggablecolumns',
-    'app/lib/utils/dom',
     'app/lib/utils/routes',
     'app/lib/utils/forms',
     'app/view/listline'
@@ -38,7 +37,6 @@ define([
     InspectableArrayMixin,
     UserConfigurationMixin,
     DraggableColumnsMixin,
-    domUtils,
     routesUtils,
     formsUtils,
     ListlineController
