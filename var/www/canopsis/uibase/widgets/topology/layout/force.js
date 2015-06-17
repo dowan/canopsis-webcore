@@ -17,10 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'jquery',
-    'd3'
-], function($, d3) {
+define([], function() {
     var get = Ember.get,
         set = Ember.set;
 

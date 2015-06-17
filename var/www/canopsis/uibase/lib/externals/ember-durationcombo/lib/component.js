@@ -18,9 +18,7 @@
 */
 
 
-define([
-    'ember'
-], function(Ember) {
+(function() {
 
     var get = Ember.get,
         set = Ember.set,
@@ -71,8 +69,6 @@ define([
 
         init: function () {
             this._super.apply(this, arguments);
-
-
 
             if (get(this, 'useFullPeriodInformation')) {
                 //initialization fromobject that contains full information
@@ -186,4 +182,4 @@ define([
     });
 
     return component;
-});
+})();

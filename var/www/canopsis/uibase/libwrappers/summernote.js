@@ -19,11 +19,7 @@
 
 define([
     'app/lib/factories/wrapper',
-    'jquery',
-    'canopsis/uibase/lib/externals/summernote/dist/summernote.min',
-    'link!canopsis/uibase/lib/externals/codemirror/lib/codemirror.css',
-    'canopsis/uibase/libwrappers/codemirror',
-    'ember-summernote'
+
 ], function(Wrapper, $) {
 
     return Wrapper("summernote", undefined, arguments);

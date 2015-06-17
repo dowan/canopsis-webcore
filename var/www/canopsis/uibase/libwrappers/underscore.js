@@ -19,12 +19,12 @@
 
 //plugin compatibility
 
-$.browser = {msie: isIE};
+// $.browser = {msie: isIE};
 
-define([
-    'app/lib/factories/wrapper',
-    'canopsis/uibase/lib/externals/underscore/underscore'
-], function(Wrapper) {
+// define([
+//     'app/lib/factories/wrapper',
+//     'canopsis/uibase/lib/externals/underscore/underscore'
+// ], function(Wrapper) {
 
-    return Wrapper("underscore", _, arguments, "1.7.0");
-});
+//     return Wrapper("underscore", _, arguments, "1.7.0");
+// });

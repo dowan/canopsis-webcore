@@ -1,0 +1,20 @@
+{
+  "name": "canopsis-uibase",
+  "version": "0.0.0",
+  "description": "a",
+  "main": "init.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "AGPL",
+  "devDependencies": {
+    "broccoli": "^0.16.3",
+    "broccoli-clean-css": "^1.0.0",
+    "broccoli-concat": "0.0.13",
+    "broccoli-gzip": "^0.2.1",
+    "broccoli-merge-trees": "^0.2.1",
+    "broccoli-static-compiler": "^0.2.1",
+    "broccoli-umd": "^0.1.1"
+  }
+}

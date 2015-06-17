@@ -20,9 +20,6 @@
 define([
     'app/lib/factories/wrapper',
     'jquery',
-    'codemirror',
-    'link!canopsis/uibase/lib/externals/codemirror/theme/ambiance.css',
-    'link!canopsis/uibase/lib/externals/codemirror/lib/codemirror.css'
 ], function(Wrapper, $) {
 
     return Wrapper("codemirror", $, arguments);

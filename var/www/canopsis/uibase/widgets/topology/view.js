@@ -64,9 +64,8 @@
 */
 define([
     'ember',
-    'jquery',
-    'd3'
-], function(Ember, $, d3) {
+    'jquery'
+], function(Ember, $) {
     var get = Ember.get,
         set = Ember.set;
 

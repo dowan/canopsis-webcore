@@ -21,8 +21,7 @@
 define([
     'ember',
     'app/lib/utils/hash',
-    'app/lib/utils/dates',
-    'daterangepicker'
+    'app/lib/utils/dates'
 ], function(Ember, hashUtils, datesUtils) {
 
     var get = Ember.get,

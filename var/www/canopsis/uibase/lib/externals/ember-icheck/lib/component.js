@@ -17,14 +17,9 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'canopsis/uibase/libwrappers/icheck'
-], function(Ember) {
-
+(function() {
     var set = Ember.set,
         get = Ember.get;
-
 
     var component = Ember.Component.extend({
         template: Ember.HTMLBars.compile('{{input type="checkbox" checked=checked class="toggle"}}'),
@@ -75,6 +70,5 @@ define([
             application.register('component:component-checkbox', component);
         }
     });
+})();
 
-    return component;
-});
