@@ -83,7 +83,6 @@ define([
              * @param {ContainerWidget} containerModel
              */
             duplicateWidgetAndContent: function(widgetwrapperModel, containerModel) {
-                console.error('duplicateWidgetAndContent', widgetwrapperModel, containerModel);
                 copyWidget(this, widgetwrapperModel, containerModel);
 
                 this.get('model').save();
@@ -108,24 +107,19 @@ define([
      * @param {ContainerWidget} containerModel
      */
     copyWidget = function(self, widgetwrapperModel, containerModel) {
-        console.error('copyWidget', arguments);
         var widgetwrapperJson = cleanRecord(widgetwrapperModel.toJSON());
         widgetwrapperJson.widget = null;
         var duplicatedWrapper = self.store.createRecord('widgetwrapper', widgetwrapperJson);
 
         var widgetJson = cleanRecord(widgetwrapperModel.get('widget').toJSON());
-        console.error(widgetJson);
 
         var duplicatedWidget = self.store.createRecord(widgetJson.xtype, widgetJson);
 
         if(!isNone(widgetwrapperModel.get('widget.items'))) {
             var items = widgetwrapperModel.get('widget.items.content');
 
-            console.error('copying items', items);
-
             for (var i = 0; i < items.length; i++) {
                 var subWrapperModel = items[i];
-                console.error('copying subwidget wrapper', subWrapperModel);
 
                 copyWidget(self, subWrapperModel, duplicatedWidget);
             }
