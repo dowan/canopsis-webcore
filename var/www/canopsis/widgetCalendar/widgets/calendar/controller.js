@@ -32,6 +32,21 @@ define([
 
     var viewMixin = Ember.Mixin.create({
 
+        eventsDidChange: function(){
+            this.$('.calendar').fullCalendar('destroy');
+            console.log('>> refresh', calendarTab);
+            this.$('.calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,basicWeek,basicDay'
+                },
+                editable: false,
+                events: calendarTab
+            });
+            this._super();
+        }.observes('widget.calendarTab.@each.title'),
+
         didInsertElement: function() {
 
             this.$('.calendar').fullCalendar({
@@ -41,38 +56,8 @@ define([
                     right: 'month,basicWeek,basicDay'
                 },
 
-                editable: true,
-                events: [
-                    {
-                        title: get(widget.calendarTab[0], 'description'),
-                        start: '2015-05-07',
-                        end: '2015-05-10'
-                    },
-                    {
-                        id: 999,
-                        title: 'Repeating Event',
-                        start: '2015-05-09T16:00:00'
-                    },
-                    {
-                        id: 999,
-                        title: 'Repeating Event',
-                        start: '2015-05-16T16:00:00'
-                    },
-                    {
-                        title: 'Conference',
-                        start: '2015-05-11',
-                        end: '2015-05-13'
-                    },
-                    {
-                        title: 'Meeting',
-                        start: '2015-05-12T10:30:00',
-                        end: '2015-05-12T12:30:00'
-                    },
-                    {
-                        title: 'Birthday Party',
-                        start: '2015-05-13T07:00:00'
-                    }
-                ]
+                editable: false,
+                events: []
             });
             this._super();
         },
@@ -109,39 +94,50 @@ define([
             var store = get(this, 'widgetDataStore');
 
             store.findQuery('calendardata').then(function (result) {
-                console.log('result', result);
                 var eventObjects = get(result, 'content');
-                console.log('eventObjects', eventObjects);
-                set(component, 'eventObjects', eventObjects);
-                calendarTab = [];
+                window.calendarTab = [];
                 for (var i = 0, li = eventObjects.length; i < li; i++) {
                     var data = get(eventObjects[i],'_data');
-                    console.log('data', data);
                     var description = get(data, 'output');
-                    var startEvent = moment(get(data, 'dtstart')).format();
-                    var endEvent = moment(get(data, 'dtend')).format();
+                    var startEvent = moment(get(data, 'dtstart')*1000).format();
+                    var endEvent = moment(get(data, 'dtend')*1000).format();
                     console.log('my event', description, 'from', startEvent, 'to', endEvent);
-                    calendarTab.push({
+                    window.calendarTab.pushObject({
                         title: description,
                         start: startEvent,
                         end: endEvent
                     });
                 }
-                console.log('display of calendarTab', calendarTab);
-                set(component, 'calendarTab', calendarTab);
+                set(component, 'calendarTab', window.calendarTab);
             });
         },
 
         actions:{
             save: function(){
+                var component = this;
+
+                //TODO @florent bring data from form
+                var category = '7';
+                var output = 'test of refresh';
+                var dtstart = moment('2015-06-22T10:30:00').unix();
+                var dtend = moment('2015-06-23T10:30:00').unix();
+
                 var store = get(this, 'widgetDataStore');
-                var newEvent = store.createRecord(store, 'calendardata',{
-                    category: '3',
-                    description:'awesome project',
-                    dtstart: '2015-05-12T10:30:00'
+                var newEvent = store.createRecord('calendardata',{
+                    category: '7',
+                    output:'test of refresh',
+                    dtstart: moment('2015-06-22T10:30:00').unix(),
+                    dtend: moment('2015-06-23T10:30:00').unix()
                 });
                 newEvent.save();
-                console.log('model created');
+                eventTab = get(component, 'calendarTab');
+                window.calendarTab.pushObject({
+                    title: output,
+                    start: dtstart,
+                    end: dtend
+                });
+                set(component, 'calendarTab', window.calendarTab);
+                component.notifyPropertyChange('calendarTab');
             },
         }
     });

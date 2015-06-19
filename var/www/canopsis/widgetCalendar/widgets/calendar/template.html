@@ -1,17 +1,11 @@
 <div class='timeManager'>
 	<div class='eventManager'>
-		<div class='events'>
-			<h4>Draggable Events</h4>
-			{{#each eventObject in controller.eventObjects}}
-				<div class='mydraggable fc-event'>{{eventObject.category}} - {{eventObject.output}} - {{eventObject.dtstart}}</div>
-			{{/each}}
-		</div>
-
 		<div class='eventInsertion'>
 			<h4>Create event</h4>
 			<input type='text' placeholder='Description'/>
 			<input type='text' placeholder='Category'/>
-			<input type='date' placeholder='Date' />
+			<input type='date' placeholder='Start date' />
+			<input type='date' placeholder='End date' />
 			<div class='input-group-btn'>
 				<button type='button' class='btn btn-primary btn-flat' {{action "save"}}>Add</button>
 			</div>

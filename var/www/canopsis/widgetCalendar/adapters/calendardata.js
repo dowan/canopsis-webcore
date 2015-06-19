@@ -11,13 +11,11 @@ define([
 
     var _upsertRecord = function(adapter, verb, store, type, record) {
         var serializer = store.serializerFor(type.typeKey);
-        var data = serializer.serializeIntoHash({}, type, record, verb, { includeId: true
+        var serializedRecords = serializer.serializeIntoHash({}, type, record, verb, { includeId: true
         });
 
         var query = {
-            data: {
-                'document': data
-            }
+            data: serializedRecords[0]
         };
 
         return adapter.ajax(adapter.buildURL(), verb, query);
@@ -48,7 +46,7 @@ define([
         },
 
         createRecord: function(store, type, record) {
-            return _upsertRecord(this, 'PUT', store, type, record);
+            return _upsertRecord(this, 'POST', store, type, record);
         },
 
         updateRecord: function(store, type, record) {
