@@ -54,24 +54,30 @@ def exports(ws):
 
     @route(
         ws.application.post, name='calendar',
-        payload=['category', 'output']
+        payload=['category', 'output', 'dtstart', 'dtend']
     )
     @route(
         ws.application.put, name='calendar',
-        payload=['category', 'output']
+        payload=['category', 'output', 'dtstart', 'dtend']
     )
-    def put(calendar, source=None, info=None):
+    def put(category, output, dtstart, dtend, source=None, info=None):
         """Add calendar events (and optionally data) related to input source.
 
         :param str source: calendardata source if not None.
-        :param list calendars: calendars (document, str or ical vevent).
         :param dict info: calendar event info.
-        :param bool cache: if True (default False), use storage cache.
+        :param str category: category of the event.
+        :param str output: description of the event.
+        :param int dtstart: beginning date.
+        :param int dtend: ending date.
         :return: new documents.
         :rtype: list
         """
+        calendarDocument = cm.get_document(
+            category=category, output=output,
+            dtstart=dtstart, dtend=dtend
+        )
 
-        result = cm.put(source=source, vevents=calendar)
+        result = cm.put(source=source, vevents=calendarDocument)
 
         return result
 
