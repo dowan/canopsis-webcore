@@ -44,5 +44,12 @@ define(['ember', 'app/lib/utilityclass'], function(Ember, Utility) {
         }
     });
 
+    Ember.Application.initializer({
+        name:"DebugUtils",
+        initialize: function(container, application) {
+            application.register('utility:debug', debugUtils);
+        }
+    });
+
     return debugUtils;
 });

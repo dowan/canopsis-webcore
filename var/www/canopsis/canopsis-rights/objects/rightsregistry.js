@@ -18,8 +18,9 @@
 */
 
 define([
+    'ember',
     'app/lib/abstractclassregistry'
-], function(Abstractclassregistry) {
+], function(Ember, Abstractclassregistry) {
 
     /**
      * @class rightsRegistry
@@ -31,6 +32,14 @@ define([
         name: 'rights',
 
         tableColumns: [{title: 'name', name: 'name'}, {title: 'description', name: 'description'}]
+    });
+
+
+    Ember.Application.initializer({
+        name:"RightsRegistry",
+        initialize: function(container, application) {
+            application.register('registry:rights', rightsRegistry);
+        }
     });
 
     return rightsRegistry;

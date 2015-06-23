@@ -138,5 +138,12 @@ define([
         }
     });
 
+    Ember.Application.initializer({
+        name:"FormsUtils",
+        initialize: function(container, application) {
+            application.register('utility:forms', formUtils);
+        }
+    });
+
     return formUtils;
 });

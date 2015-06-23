@@ -50,5 +50,12 @@ define(['ember', 'app/lib/utilityclass'], function(Ember, Utility) {
         },
     });
 
+    Ember.Application.initializer({
+        name:"ModelsolveUtils",
+        initialize: function(container, application) {
+            application.register('utility:modelsolve', modelsolve);
+        }
+    });
+
     return modelsolve;
 });

@@ -62,5 +62,12 @@ define(['app/lib/utilityclass'], function(Utility) {
         }
     });
 
+    Ember.Application.initializer({
+        name:"DataUtils",
+        initialize: function(container, application) {
+            application.register('utility:data', dataUtils);
+        }
+    });
+
     return dataUtils;
 });

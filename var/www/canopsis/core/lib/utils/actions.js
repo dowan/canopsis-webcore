@@ -46,5 +46,12 @@ define([
         }
     });
 
+    Ember.Application.initializer({
+        name:"ActionsUtils",
+        initialize: function(container, application) {
+            application.register('utility:actions', actionsUtils);
+        }
+    });
+
     return actionsUtils;
 });

@@ -159,5 +159,12 @@ define(['ember', 'app/lib/utilityclass'], function(Ember, Utility) {
         }
     });
 
+    Ember.Application.initializer({
+        name:"WidgetSelectorsUtils",
+        initialize: function(container, application) {
+            application.register('utility:widget-selectors', widgetSelectors);
+        }
+    });
+
     return widgetSelectors;
 });

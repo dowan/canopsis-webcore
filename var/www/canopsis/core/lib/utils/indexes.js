@@ -76,5 +76,12 @@ define([
         }
     });
 
+    Ember.Application.initializer({
+        name:"IndexesUtils",
+        initialize: function(container, application) {
+            application.register('utility:indexes', indexes);
+        }
+    });
+
     return indexes;
 });

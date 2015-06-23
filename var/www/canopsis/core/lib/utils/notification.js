@@ -58,5 +58,12 @@ define(['app/lib/utilityclass'], function(Utility) {
         }
     });
 
+    Ember.Application.initializer({
+        name:"NotificationUtils",
+        initialize: function(container, application) {
+            application.register('utility:notification', notification);
+        }
+    });
+
     return notification;
 });

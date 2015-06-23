@@ -59,5 +59,12 @@ define([
         }
     });
 
+    Ember.Application.initializer({
+        name:"HashUtils",
+        initialize: function(container, application) {
+            application.register('utility:hash', hash);
+        }
+    });
+
     return hash;
 });

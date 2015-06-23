@@ -202,5 +202,12 @@ define([
         }
     });
 
+    Ember.Application.initializer({
+        name:"DatesUtils",
+        initialize: function(container, application) {
+            application.register('utility:dates', dates);
+        }
+    });
+
     return dates;
 });

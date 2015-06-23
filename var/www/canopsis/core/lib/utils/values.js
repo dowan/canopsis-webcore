@@ -114,5 +114,12 @@ define([
         }
     });
 
+    Ember.Application.initializer({
+        name:"ValuesUtils",
+        initialize: function(container, application) {
+            application.register('utility:values', values);
+        }
+    });
+
     return values;
 });

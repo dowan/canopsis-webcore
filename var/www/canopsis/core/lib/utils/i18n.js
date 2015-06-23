@@ -21,9 +21,10 @@
 
 define([
     'jquery',
+    'ember',
     'canopsis/canopsisConfiguration',
     'app/lib/utilityclass'
-], function($, conf, Utility) {
+], function($, Ember, conf, Utility) {
 
 
     var i18n = Utility.create({
@@ -163,6 +164,13 @@ define([
 
         }, 10000);
     }
+
+    Ember.Application.initializer({
+        name:"I18nUtils",
+        initialize: function(container, application) {
+            application.register('utility:i18n', i18n);
+        }
+    });
 
     return i18n;
 });

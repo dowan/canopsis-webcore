@@ -50,5 +50,12 @@ define([
         },
     });
 
+    Ember.Application.initializer({
+        name:"EventUtils",
+        initialize: function(container, application) {
+            application.register('utility:event', eventUtil);
+        }
+    });
+
     return eventUtil;
 });

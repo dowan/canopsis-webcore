@@ -65,5 +65,12 @@ define(['app/lib/utilityclass'], function(Utility) {
         }
     });
 
+    Ember.Application.initializer({
+        name:"SlugUtils",
+        initialize: function(container, application) {
+            application.register('utility:slug', slugify);
+        }
+    });
+
     return slugify;
 });
