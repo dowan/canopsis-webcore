@@ -1,15 +1,16 @@
 <div class='timeManager'>
 	<div class='eventManager'>
 		<div class='eventInsertion'>
-			<h4>Create event</h4>
-			<input type='text' placeholder='Description'/>
-			<input type='text' placeholder='Category'/>
-			<input type='date' placeholder='Start date' />
-			<input type='date' placeholder='End date' />
+			<h4>Create event</h4>{{eventConfirmation}}
+			{{input type="text" required="required" value=description placeholder="Description"}}
+			{{input type="text" value=category placeholder="Category"}}
+			{{input type="date" value=dtstart placeholder="Start date"}}
+			{{input type="date" value=dtend placeholder="End date"}}
 			<div class='input-group-btn'>
-				<button type='button' class='btn btn-primary btn-flat' {{action "save"}}>Add</button>
+				<input type='submit' value="Add" class='btn btn-primary btn-flat' {{action "save" description category dtstart dtend}}/>
 			</div>
 		</div>
+		{{view modelform controller=eventForm}}
 	</div>
 	<div class='calendar'></div>
 

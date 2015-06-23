@@ -21,21 +21,24 @@ define([
     'ember',
     'jquery',
     'app/lib/factories/widget',
+    'app/lib/utils/forms',
     'canopsis/widgetCalendar/lib/utils/moment/min/moment.min',
     'canopsis/widgetCalendar/lib/utils/fullcalendar/dist/fullcalendar.min',
     'link!canopsis/widgetCalendar/lib/utils/fullcalendar/dist/fullcalendar.min.css',
     'link!canopsis/widgetCalendar/style.css'
-], function(Ember, $, WidgetFactory, moment, WidgetCalendar) {
+], function(Ember, $, WidgetFactory, formUtils, moment, WidgetCalendar) {
 
     var get = Ember.get,
         set = Ember.set;
 
     var viewMixin = Ember.Mixin.create({
 
-        eventsDidChange: function(){
-            this.$('.calendar').fullCalendar('destroy');
+        eventsDidChange: function(calendarTab){
+            $('.calendar').fullCalendar('destroy');
+            var toto = get(this, 'calendarTab');
+            console.log('toto', toto);
             console.log('>> refresh', calendarTab);
-            this.$('.calendar').fullCalendar({
+            $('.calendar').fullCalendar({
                 header: {
                     left: 'prev,next today',
                     center: 'title',
@@ -44,12 +47,16 @@ define([
                 editable: false,
                 events: calendarTab
             });
-            this._super();
-        }.observes('widget.calendarTab.@each.title'),
+        },
 
         didInsertElement: function() {
+            var component = this;
+            var eventForm = formUtils.instantiateForm('confirmform', 'task', {});
+            set(component, 'eventForm', eventForm);
+            console.log('eventForm', eventForm);
 
-            this.$('.calendar').fullCalendar({
+
+            $('.calendar').fullCalendar({
                 header: {
                     left: 'prev,next today',
                     center: 'title',
@@ -95,49 +102,45 @@ define([
 
             store.findQuery('calendardata').then(function (result) {
                 var eventObjects = get(result, 'content');
-                window.calendarTab = [];
+                var calendarTab = [];
                 for (var i = 0, li = eventObjects.length; i < li; i++) {
                     var data = get(eventObjects[i],'_data');
                     var description = get(data, 'output');
                     var startEvent = moment(get(data, 'dtstart')*1000).format();
                     var endEvent = moment(get(data, 'dtend')*1000).format();
-                    console.log('my event', description, 'from', startEvent, 'to', endEvent);
-                    window.calendarTab.pushObject({
+                    calendarTab.pushObject({
                         title: description,
                         start: startEvent,
                         end: endEvent
                     });
                 }
-                set(component, 'calendarTab', window.calendarTab);
+                set(component, 'calendarTab', calendarTab);
+                viewMixin.mixins[0].properties.eventsDidChange(calendarTab);
             });
         },
 
         actions:{
-            save: function(){
+            save: function(description, category, dtstart, dtend){
                 var component = this;
+                var eventConfirmation = 'event created';
 
-                //TODO @florent bring data from form
-                var category = '7';
-                var output = 'test of refresh';
-                var dtstart = moment('2015-06-22T10:30:00').unix();
-                var dtend = moment('2015-06-23T10:30:00').unix();
+                if(moment(dtstart).unix() > moment(dtend).unix()){
+                    console.log('the starting date is after the ending date');
+                    eventConfirmation = 'creation problem: dates are not correct';
+                }
+                else {
 
-                var store = get(this, 'widgetDataStore');
-                var newEvent = store.createRecord('calendardata',{
-                    category: '7',
-                    output:'test of refresh',
-                    dtstart: moment('2015-06-22T10:30:00').unix(),
-                    dtend: moment('2015-06-23T10:30:00').unix()
-                });
-                newEvent.save();
-                eventTab = get(component, 'calendarTab');
-                window.calendarTab.pushObject({
-                    title: output,
-                    start: dtstart,
-                    end: dtend
-                });
-                set(component, 'calendarTab', window.calendarTab);
-                component.notifyPropertyChange('calendarTab');
+                    var store = get(this, 'widgetDataStore');
+                    var newEvent = store.createRecord('calendardata',{
+                        category: category,
+                        output: description,
+                        dtstart: moment(dtstart).unix(),
+                        dtend: moment(dtend).unix()
+                    });
+                    newEvent.save().then(function(){
+                        component.findItems();
+                    });
+                }
             },
         }
     });
