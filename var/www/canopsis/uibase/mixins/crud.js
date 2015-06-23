@@ -122,22 +122,31 @@ define([
              * @event duplicate
              * @param {DS.Model} record
              */
+             //TODO Support relationships : detect them, set them to null before store#createRecord, and reattach them between store#createRecord and showEditFormAndSaveRecord
             duplicate: function (record) {
                 console.error('copyWidget', arguments);
                 var recordJson = cleanRecordJSON(record.toJSON());
                 recordType = recordJson.xtype || recordJson.crecord_type;
-
-                this._super.apply(this, arguments);
+                if(recordType = 'view') {
+                    recordType = 'userview';
+                    recordJson.containerwidget = null;
+                }
 
                 console.log("add", recordType);
 
-                var record = get(this, "widgetDataStore").createRecord(recordType, recordJson);
+                var newrecord = get(this, "widgetDataStore").createRecord(recordType, recordJson);
+
+                if(recordType = 'userview') {
+                    newrecord.set('containerwidget', record.get('containerwidget'));
+                }
 
                 var formoptions = {
                     title: 'Duplicate ' + recordType
                 };
 
-                showEditFormAndSaveRecord(this, record, formoptions);
+                showEditFormAndSaveRecord(this, newrecord, formoptions);
+
+                this._super.apply(this, arguments);
             },
 
 
