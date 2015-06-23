@@ -17,30 +17,24 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/abstractclassregistry'
-], function(Ember, Abstractclassregistry) {
+Ember.Application.initializer({
+    name:"RightsRegistry",
+    after: "AbstractClassRegistry",
+    initialize: function(container, application) {
+        AbstractClassRegistry = container.lookupFactory('registry:abstractclass');
 
-    /**
-     * @class rightsRegistry
-     * @extends Abstractclassregistry
-     * @static
-     * @description List all rights
-     */
-    var rightsRegistry = Abstractclassregistry.create({
-        name: 'rights',
+        /**
+         * @class rightsRegistry
+         * @extends Abstractclassregistry
+         * @static
+         * @description List all rights
+         */
+        var rightsRegistry = AbstractClassRegistry.create({
+            name: 'rights',
 
-        tableColumns: [{title: 'name', name: 'name'}, {title: 'description', name: 'description'}]
-    });
+            tableColumns: [{title: 'name', name: 'name'}, {title: 'description', name: 'description'}]
+        });
 
-
-    Ember.Application.initializer({
-        name:"RightsRegistry",
-        initialize: function(container, application) {
-            application.register('registry:rights', rightsRegistry);
-        }
-    });
-
-    return rightsRegistry;
+        application.register('registry:rights', rightsRegistry);
+    }
 });

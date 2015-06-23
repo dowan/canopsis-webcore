@@ -21,8 +21,8 @@ define([
     'ember',
     'ember-data',
     'app/routes/application',
-    'canopsis/canopsis-rights/objects/rightsregistry'
-], function(Ember, DS, ApplicationRoute, rightsRegistry) {
+    'app/lib/utils/data'
+], function(Ember, DS, ApplicationRoute, dataUtils) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -43,6 +43,7 @@ define([
          * Fetch all the registered rights in the backend and fill the rightsRegistry
          */
         beforeModel: function(transition) {
+            rightsRegistry = dataUtils.getEmberApplicationSingleton().__container__.lookupFactory('registry:rights');
             var route = this;
 
             var store = DS.Store.create({ container: get(this, "container") });

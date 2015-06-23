@@ -20,9 +20,8 @@
 define([
     'ember',
     'canopsis/canopsis-backend-ui-connector/adapters/userview',
-    'canopsis/canopsis-rights/objects/rightsregistry',
     'app/lib/utils/data'
-], function(Ember, UserviewAdapter, rightsRegistry, dataUtils) {
+], function(Ember, UserviewAdapter, dataUtils) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -46,6 +45,7 @@ define([
          * Note that the createRecord method is never used with the userview adapter.
          */
         updateRecord: function(store, type, userview) {
+            rightsRegistry = dataUtils.getEmberApplicationSingleton().__container__.lookupFactory('registry:rights');
 
             formattedViewId = get(userview, 'id').replace('.', '_');
 
@@ -91,6 +91,7 @@ define([
          * Manage right deletion when the user deletes the userview.
          */
         deleteRecord: function(store, type, userview) {
+            rightsRegistry = dataUtils.getEmberApplicationSingleton().__container__.lookupFactory('registry:rights');
 
             formattedViewId = get(userview, 'id').replace('.', '_');
             var right = rightsRegistry.getByName(formattedViewId);
