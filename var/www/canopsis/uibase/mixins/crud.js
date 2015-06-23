@@ -97,57 +97,6 @@ define([
             this._super.apply(this, arguments);
         },
 
-        /**
-         * @method showEditFormAndSaveRecord
-         * @param {DS.Model} record the record to edit
-         *
-         * Display an edition form for the record passed as first parameter, and make the changes persistant when the user saves the form.
-         */
-        showEditFormAndSaveRecord: function(record) {
-            this.onRecordReady(record);
-
-            console.log('temp record', record, formsUtils);
-
-            var extraoptions = get(this, 'mixinOptions.crud.formoptions'),
-                formclass = get(this, 'mixinOptions.crud.form');
-
-            var formoptions = {
-                title: 'Add ' + recordType
-            };
-
-            if(!isNone(extraoptions)) {
-                $.extend(formoptions, extraoptions);
-            }
-
-            if(isNone(formclass)) {
-                formclass = 'modelform';
-            }
-
-            console.log('open form:', formclass, formoptions);
-
-            var recordWizard = formsUtils.showNew(formclass, record, formoptions);
-
-            var ctrl = this;
-
-            recordWizard.submit.then(function(form) {
-                console.log('record going to be saved', record, form);
-
-                //Dirty hack to make acl routes work
-                if(get(record, 'crecord_type') === 'group') {
-                    set(record, 'id', hashUtils.generateId('group'));
-                }
-                if(get(record, 'crecord_type') === 'profile') {
-                    console.error('set id for profile', record);
-                    set(record, 'id', hashUtils.generateId('profile'));
-                }
-
-                record = get(form, 'formContext');
-                record.save().then(function() {
-                    ctrl.refreshContent();
-                });
-            });
-        },
-
         actions: {
             /**
              * @event add
@@ -162,7 +111,11 @@ define([
                     crecord_type: recordType
                 });
 
-                this.showEditFormAndSaveRecord(record);
+                var formoptions = {
+                    title: 'Add ' + recordType
+                };
+
+                showEditFormAndSaveRecord(this, record, formoptions);
             },
 
             /**
@@ -180,7 +133,11 @@ define([
 
                 var record = get(this, "widgetDataStore").createRecord(recordType, recordJson);
 
-                this.showEditFormAndSaveRecord(record);
+                var formoptions = {
+                    title: 'Duplicate ' + recordType
+                };
+
+                showEditFormAndSaveRecord(this, record, formoptions);
             },
 
 
@@ -299,6 +256,56 @@ define([
         }
 
         return recordJSON;
+    }
+
+    /**
+     * @method showEditFormAndSaveRecord
+     * @private
+     * @param {This} self
+     * @param {DS.Model} record the record to edit
+     * @param {string} recordType
+     *
+     * Display an edition form for the record passed as first parameter, and make the changes persistant when the user saves the form.
+     */
+    showEditFormAndSaveRecord = function(self, record, formoptions) {
+        self.onRecordReady(record);
+
+        console.log('temp record', record, formsUtils);
+
+        var extraoptions = get(self, 'mixinOptions.crud.formoptions'),
+            formclass = get(self, 'mixinOptions.crud.form');
+
+        if(!isNone(extraoptions)) {
+            $.extend(formoptions, extraoptions);
+        }
+
+        if(isNone(formclass)) {
+            formclass = 'modelform';
+        }
+
+        console.log('open form:', formclass, formoptions);
+
+        var recordWizard = formsUtils.showNew(formclass, record, formoptions);
+
+        var ctrl = self;
+
+        recordWizard.submit.then(function(form) {
+            console.log('record going to be saved', record, form);
+
+            //Dirty hack to make acl routes work
+            if(get(record, 'crecord_type') === 'group') {
+                set(record, 'id', hashUtils.generateId('group'));
+            }
+            if(get(record, 'crecord_type') === 'profile') {
+                console.error('set id for profile', record);
+                set(record, 'id', hashUtils.generateId('profile'));
+            }
+
+            record = get(form, 'formContext');
+            record.save().then(function() {
+                ctrl.refreshContent();
+            });
+        });
     }
 
     return mixin;
