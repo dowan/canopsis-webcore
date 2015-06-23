@@ -55,7 +55,6 @@ define([
      */
 
     var mixin = Mixin('embeddedRecordSerializer', {
-
         /**
          * Sideload a JSON object to the payload
          *
