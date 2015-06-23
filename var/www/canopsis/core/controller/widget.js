@@ -159,7 +159,9 @@ define([
             editWidget: function (widget) {
                 console.info('edit widget', widget);
 
-                var widgetWizard = formsUtils.showNew('modelform', widget, { title: __('Edit widget') });
+                var widgetTitle = get(widget, 'title') || '';
+
+                var widgetWizard = formsUtils.showNew('modelform', widget, { title: __('Edit widget') + ' ' + widgetTitle});
                 console.log('widgetWizard', widgetWizard);
 
                 var widgetController = this;
