@@ -10,7 +10,14 @@
 				<input type='submit' value="Add" class='btn btn-primary btn-flat' {{action "save" description category dtstart dtend}}/>
 			</div>
 		</div>
-		{{view modelform controller=eventForm}}
+		<h1>FORM2</h1>
+		{{#if controller.eventForm}}
+			<hr/>
+			<h1>FORM</h1>
+			{{view testFormView controller=controller.eventForm}}
+			<hr/>
+		{{/if}}
+		<h1>FINFORM2</h1>
 	</div>
 	<div class='calendar'></div>
 
