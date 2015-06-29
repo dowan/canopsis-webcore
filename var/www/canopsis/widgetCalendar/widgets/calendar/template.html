@@ -1,24 +1,15 @@
 <div class='timeManager'>
-	<div class='eventManager'>
-		<div class='eventInsertion'>
-			<h4>Create event</h4>{{eventConfirmation}}
-			{{input type="text" required="required" value=description placeholder="Description"}}
-			{{input type="text" value=category placeholder="Category"}}
-			{{input type="date" value=dtstart placeholder="Start date"}}
-			{{input type="date" value=dtend placeholder="End date"}}
-			<div class='input-group-btn'>
-				<input type='submit' value="Add" class='btn btn-primary btn-flat' {{action "save" description category dtstart dtend}}/>
-			</div>
+	<div class='eventInsertion'>
+		<h4>Create event</h4>{{eventConfirmation}}
+		{{input type="text" required="required" value=description placeholder="Description"}}
+		{{input type="text" value=category placeholder="Category"}}
+		{{input type="date" value=dtstart placeholder="Start date"}}
+		{{input type="date" value=dtend placeholder="End date"}}
+		<div class='input-group-btn'>
+			<input type='submit' value="Add" class='btn btn-primary btn-flat' {{action "save" description category dtstart dtend}}/>
 		</div>
-		<h1>FORM2</h1>
-		{{#if controller.eventForm}}
-			<hr/>
-			<h1>FORM</h1>
-			{{view testFormView controller=controller.eventForm}}
-			<hr/>
-		{{/if}}
-		<h1>FINFORM2</h1>
 	</div>
+
 	<div class='calendar'></div>
 
 	<div style='clear:both'></div>

@@ -36,8 +36,6 @@ define([
         eventsDidChange: function(calendarTab){
             $('.calendar').fullCalendar('destroy');
             var toto = get(this, 'calendarTab');
-            console.log('toto', toto);
-            console.log('>> refresh', calendarTab);
             $('.calendar').fullCalendar({
                 header: {
                     left: 'prev,next today',
@@ -55,7 +53,6 @@ define([
             set(component, 'eventForm', eventForm);
             console.log('eventForm', eventForm);
 
-
             $('.calendar').fullCalendar({
                 header: {
                     left: 'prev,next today',
@@ -66,6 +63,7 @@ define([
                 editable: false,
                 events: []
             });
+
             this._super();
         },
 
@@ -91,16 +89,17 @@ define([
 
         findItems: function(){
             var component = this;
+            console.log ('controller calendar', component);
 
             /* getting event data from schemas */
             //TODO @florent query with params
             var params = {
-                category: 1
+                output: "test"
             };
 
             var store = get(this, 'widgetDataStore');
 
-            store.findQuery('calendardata').then(function (result) {
+            store.findQuery('calendardata', params).then(function (result) {
                 var eventObjects = get(result, 'content');
                 var calendarTab = [];
                 for (var i = 0, li = eventObjects.length; i < li; i++) {
@@ -132,8 +131,8 @@ define([
 
                     var store = get(this, 'widgetDataStore');
                     var newEvent = store.createRecord('calendardata',{
-                        category: category,
-                        output: description,
+                        category: String(category),
+                        output: String(description),
                         dtstart: moment(dtstart).unix(),
                         dtend: moment(dtend).unix()
                     });
