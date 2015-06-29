@@ -105,6 +105,8 @@ define([
                 var viewModel = this.controllerFor('userview').get('model');
                 var viewJSON = viewModel.serialize();
 
+                viewJSON = dataUtils.cleanJSONIds(viewJSON);
+
                 dataUtils.download(JSON.stringify(viewJSON), get(viewModel, 'crecord_name') + '.json', 'application/json');
             },
 

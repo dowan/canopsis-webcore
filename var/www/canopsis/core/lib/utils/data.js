@@ -17,7 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/lib/utilityclass'], function(Utility) {
+define(['app/lib/utilityclass', 'app/lib/utils/hash'], function(Utility, hashUtils) {
 
     var _loggedUserController,
         _applicationSingleton;
@@ -57,7 +57,57 @@ define(['app/lib/utilityclass'], function(Utility) {
                 console.log("addRecordToRelationship belongsTo", relationshipKey, arguments, parentElement);
                 parentElement.set(relationshipKey, record);
             }
+        },
+
+        /**
+         * @method download
+         * @param {string} content the file content
+         * @param {string} filename the file name
+         * @param {string} contentType the file content type
+         *
+         * Automatically download content as a file
+         */
+        download: function (content, filename, contentType) {
+            if(!contentType) {
+                contentType = 'application/octet-stream';
+            }
+
+            var a = document.createElement('a');
+            var blob = new Blob([content], {'type': contentType});
+            a.href = window.URL.createObjectURL(blob);
+            a.download = filename;
+            a.click();
+        },
+
+        /**
+         * @function cleanJSONIds
+         * @param {Object} recordJSON
+         * @return {Object} the cleaned record
+         */
+        cleanJSONIds: function (recordJSON) {
+            for (var key in recordJSON) {
+                var item = recordJSON[key];
+                //see if the key need to be cleaned
+                if(key === 'id' || key === '_id' || key === 'widgetId' || key === 'preference_id' || key === 'EmberClass') {
+                    delete recordJSON[key];
+                }
+
+                //if this item is an object, then recurse into it
+                //to remove empty arrays in it too
+                if (typeof item === 'object') {
+                    this.cleanJSONIds(item);
+                }
+            }
+
+            if(recordJSON !== null && recordJSON !== undefined && (recordJSON.crecord_type !== undefined || recordJSON.xtype !== undefined)) {
+                recordJSON['id'] = hashUtils.generateId(recordJSON.xtype || recordJSON.crecord_type || 'item');
+                recordJSON['_id'] = recordJSON['id'];
+            }
+
+            return recordJSON;
         }
+
+
     });
 
     return dataUtils;
