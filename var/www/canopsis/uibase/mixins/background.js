@@ -17,53 +17,56 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/utils/forms',
-    'app/lib/utils/hash',
-    'app/lib/factories/mixin'
-], function(Ember, formsUtils, hashUtils, Mixin) {
-
-    var get = Ember.get,
-        set = Ember.set;
+Ember.Application.initializer({
+    name:'BackgroundMixin',
+    after: ['MixinFactory', 'FormsUtils', 'HashUtils'],
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
+        var formsUtils = container.lookupFactory('utility:forms');
+        var hashUtils = container.lookupFactory('utility:hash');
 
 
-    var viewMixin = Ember.Mixin.create({
-        didInsertElement: function() {
-            var imageUrl = get(this, 'controller.mixinOptions.background.imageUrl'),
-                position = get(this, 'controller.mixinOptions.background.position'),
-                repeat = get(this, 'controller.mixinOptions.background.repeat'),
-                size = get(this, 'controller.mixinOptions.background.size'),
-                backgroundcolor = get(this, 'controller.mixinOptions.background.backgroundcolor'),
-                element = this.$();
+        var get = Ember.get,
+            set = Ember.set;
 
-            if(imageUrl) {
-                element.css('background-image', 'url(' + imageUrl + ')');
+
+        var viewMixin = Ember.Mixin.create({
+            didInsertElement: function() {
+                var imageUrl = get(this, 'controller.mixinOptions.background.imageUrl'),
+                    position = get(this, 'controller.mixinOptions.background.position'),
+                    repeat = get(this, 'controller.mixinOptions.background.repeat'),
+                    size = get(this, 'controller.mixinOptions.background.size'),
+                    backgroundcolor = get(this, 'controller.mixinOptions.background.backgroundcolor'),
+                    element = this.$();
+
+                if(imageUrl) {
+                    element.css('background-image', 'url(' + imageUrl + ')');
+                }
+                if(position) {
+                    element.css('background-position', position);
+                }
+                if(size) {
+                    element.css('background-size', size);
+                }
+                if(repeat) {
+                    element.css('background-repeat', repeat);
+                }
+                if(backgroundcolor) {
+                    element.css('background-color', backgroundcolor);
+                }
+
+                this._super();
             }
-            if(position) {
-                element.css('background-position', position);
-            }
-            if(size) {
-                element.css('background-size', size);
-            }
-            if(repeat) {
-                element.css('background-repeat', repeat);
-            }
-            if(backgroundcolor) {
-                element.css('background-color', backgroundcolor);
-            }
-
-            this._super();
-        }
-    });
+        });
 
 
-    var mixin = Mixin('background', {
-        init: function() {
-            this._super();
-            this.addMixinView(viewMixin);
-        }
-    });
+        var mixin = Mixin('background', {
+            init: function() {
+                this._super();
+                this.addMixinView(viewMixin);
+            }
+        });
 
-    return mixin;
+        application.register('mixin:background', mixin);
+    }
 });

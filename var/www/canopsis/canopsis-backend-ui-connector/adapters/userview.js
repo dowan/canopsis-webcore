@@ -17,20 +17,22 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'canopsis/canopsis-backend-ui-connector/adapters/application'
-], function(ApplicationAdapter) {
 
-    var adapter = ApplicationAdapter.extend({
-        buildURL: function(type) {
-            type = "view";
+Ember.Application.initializer({
+    name:"UserviewAdapter",
+    after: "ApplicationAdapter",
+    initialize: function(container, application) {
+        var ApplicationAdapter = container.lookupFactory('adapter:application');
 
-            return this._super.apply(this, arguments);
-        }
-    });
+        var adapter = ApplicationAdapter.extend({
+            buildURL: function(type) {
+                type = "view";
 
+                return this._super.apply(this, arguments);
+            }
+        });
 
-    loader.register('adapter:userview', adapter);
-
-    return adapter;
+        application.register('adapter:userview', adapter);
+    }
 });
+

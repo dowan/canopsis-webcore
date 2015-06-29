@@ -41,64 +41,60 @@ require.config({
     },
 
     shim: {
-        'flotchart': {
-            deps: ['jquery'],
-        },
-
         'flotchart-canvas': {
-            deps: ['jquery', 'flotchart']
+            deps: ['flotchart']
         },
 
         'flotchart-categories': {
-            deps: ['jquery', 'flotchart']
+            deps: ['flotchart']
         },
 
         'flotchart-crosshair': {
-            deps: ['jquery', 'flotchart']
+            deps: ['flotchart']
         },
 
         'flotchart-errorbars': {
-            deps: ['jquery', 'flotchart']
+            deps: ['flotchart']
         },
 
         'flotchart-fillbetween': {
-            deps: ['jquery', 'flotchart']
+            deps: ['flotchart']
         },
 
         'flotchart-image': {
-            deps: ['jquery', 'flotchart']
+            deps: ['flotchart']
         },
 
         'flotchart-navigate': {
-            deps: ['jquery', 'flotchart']
+            deps: ['flotchart']
         },
 
         'flotchart-pie': {
-            deps: ['jquery', 'flotchart']
+            deps: ['flotchart']
         },
 
         'flotchart-resize': {
-            deps: ['jquery', 'flotchart']
+            deps: ['flotchart']
         },
 
         'flotchart-selection': {
-            deps: ['jquery', 'flotchart']
+            deps: ['flotchart']
         },
 
         'flotchart-stack': {
-            deps: ['jquery', 'flotchart']
+            deps: ['flotchart']
         },
 
         'flotchart-symbol': {
-            deps: ['jquery', 'flotchart']
+            deps: ['flotchart']
         },
 
         'flotchart-threshold': {
-            deps: ['jquery', 'flotchart']
+            deps: ['flotchart']
         },
 
         'flotchart-time': {
-            deps: ['jquery', 'flotchart']
+            deps: ['flotchart']
         },
 
         'flotchart-valuelabel': {
@@ -121,5 +117,24 @@ define([
     'canopsis/charts/lib/loaders/mixins',
     'canopsis/charts/lib/loaders/widgets',
     'canopsis/charts/lib/loaders/templates',
-    'canopsis/charts/libwrappers/flotchart'
+    'canopsis/charts/libwrappers/flotchart',
+    'flotchart',
+    'flotchart-canvas',
+    'flotchart-categories',
+    'flotchart-crosshair',
+    'flotchart-errorbars',
+    'flotchart-fillbetween',
+    'flotchart-image',
+//    'flotchart-navigate',
+    'flotchart-pie',
+    'flotchart-resize',
+    'flotchart-selection',
+    'flotchart-stack',
+    'flotchart-symbol',
+    'flotchart-threshold',
+    'flotchart-time',
+    'flotchart-valuelabel',
+    'flotchart-tooltip',
+    'flotchart-chartvalues'
+
 ], function () {});

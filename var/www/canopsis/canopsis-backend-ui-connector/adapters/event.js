@@ -17,31 +17,31 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'canopsis/canopsis-backend-ui-connector/adapters/application'
-], function(ApplicationAdapter) {
+Ember.Application.initializer({
+    name:"EventAdapter",
+    after: "ApplicationAdapter",
+    initialize: function(container, application) {
+        var ApplicationAdapter = container.lookupFactory('adapter:application');
 
-    var adapter = ApplicationAdapter.extend({
+        var adapter = ApplicationAdapter.extend({
+            buildURL: function(type, id) {
+                void(id);
+                return "/event";
+            },
 
-        buildURL: function(type, id) {
-            void(id);
-            return "/event";
-        },
+            findQuery: function(store, type, query) {
 
-        findQuery: function(store, type, query) {
+                var url = "/rest/events";
 
-            var url = "/rest/events";
+                if (query.skip !== undefined){
+                    query.start = query.skip;
+                    delete query.skip;
+                }
 
-            if (query.skip !== undefined){
-                query.start = query.skip;
-                delete query.skip;
+                return this.ajax(url, 'GET', { data: query });
             }
+        });
 
-            return this.ajax(url, 'GET', { data: query });
-        }
-    });
-
-    loader.register('adapter:event', adapter);
-
-    return adapter;
+        application.register('adapter:event', adapter);
+    }
 });

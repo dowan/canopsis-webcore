@@ -16,8 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
-define(['ember'], function(Ember) {
-
+(function(){
     Ember.Handlebars.helper('rights', function(value) {
 
         var rightsTocheck = ["r","w"];
@@ -42,4 +41,4 @@ define(['ember'], function(Ember) {
         return result;
 
     });
-});
+})();

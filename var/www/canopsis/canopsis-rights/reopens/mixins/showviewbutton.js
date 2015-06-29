@@ -17,32 +17,32 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'canopsis/uibase/mixins/showviewbutton',
-    'app/lib/utils/forms'
-], function(Ember, ShowviewbuttonMixin, formsUtils) {
+Ember.Application.initializer({
+    name:"RightsBrickShowViewButtonMixinReopen",
+    after: ["ShowViewButtonMixin", "FormsUtils"],
+    initialize: function(container, application) {
+        var ShowViewButtonMixin = container.lookupFactory('mixin:show-view-button');
+        var formsUtils = container.lookupFactory('utility:forms');
 
-    var get = Ember.get,
-        __ = Ember.String.loc;
+        var get = Ember.get,
+            __ = Ember.String.loc;
 
 
-    ShowviewbuttonMixin.reopen({
-        init: function () {
-            this.get('partials.itemactionbuttons').pushObject('actionbutton-viewrights');
-            return this._super();
-        },
+        ShowViewButtonMixin.reopen({
+            init: function () {
+                this.get('partials.itemactionbuttons').pushObject('actionbutton-viewrights');
+                return this._super();
+            },
 
-        actions: {
-            editUserviewRights: function(view) {
-                var viewName = get(view, 'crecord_name');
-                console.log('editUserviewRights view', view, viewName);
-                var formTitle = __('Edit rights for view : ') +  '"' + viewName + '"';
+            actions: {
+                editUserviewRights: function(view) {
+                    var viewName = get(view, 'crecord_name');
+                    console.log('editUserviewRights view', view, viewName);
+                    var formTitle = __('Edit rights for view : ') +  '"' + viewName + '"';
 
-                formsUtils.showNew('viewrightsform', view, { title: formTitle});
+                    formsUtils.showNew('viewrightsform', view, { title: formTitle});
+                }
             }
-        }
-    });
-
-    return ShowviewbuttonMixin;
+        });
+    }
 });

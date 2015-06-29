@@ -18,92 +18,86 @@
 */
 
 
-define([
-    'ember',
-    'app/lib/mixinsregistry',
-    'app/lib/utils/forms'
-], function(Ember, mixinsRegistry, formsUtils) {
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+Ember.Application.initializer({
+    name:"component-mixinselector",
+    after: ['MixinsRegistry', 'FormsUtils'],
+    initialize: function(container, application) {
+        var mixinsRegistry = container.lookupFactory('registry:mixins');
+        var formsUtils = container.lookupFactory('utility:forms');
+
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
 
-    var component = Ember.Component.extend({
+        var component = Ember.Component.extend({
 
-        init: function() {
-            this._super.apply(this, arguments);
+            init: function() {
+                this._super.apply(this, arguments);
 
-            if(isNone(get(this, 'content'))) {
-                set(this, 'content', Ember.A());
-            }
+                if(isNone(get(this, 'content'))) {
+                    set(this, 'content', Ember.A());
+                }
 
-            set(this, 'selectionPrepared', Ember.A());
+                set(this, 'selectionPrepared', Ember.A());
 
-            var content = get(this, 'content');
+                var content = get(this, 'content');
 
-            if(content) {
-                for (var i = 0, l = content.length; i < l; i++) {
-                    if(typeof content[i] === 'string') {
-                        content[i] = { name: content[i] };
+                if(content) {
+                    for (var i = 0, l = content.length; i < l; i++) {
+                        if(typeof content[i] === 'string') {
+                            content[i] = { name: content[i] };
+                        }
                     }
                 }
-            }
-            set(this, 'selectionPrepared', content);
-        },
-
-
-        /*
-         * Compute a structure with classified item each time the 'items' property changed
-         */
-        classifiedItems: mixinsRegistry,
-        selectionUnprepared: Ember.computed.alias('content'),
-
-        recomputeSelection: function() {
-            var selection = get(this, 'selectionPrepared');
-            console.log('recomputeSelection', selection, get(this, 'selectionPrepared'));
-
-            var content = get(this, 'content');
-
-            var resBuffer = Ember.A();
-            if(selection) {
-                for (var i = 0, l = selection.length; i < l; i++) {
-                    var currentItem = selection[i];
-                    var currentItemName = get(currentItem, 'name');
-                    var newResBufferItem;
-
-                    var existingContentItem = content.findBy('name', currentItemName);
-                    if(existingContentItem) {
-                        newResBufferItem = existingContentItem;
-                    } else {
-                        newResBufferItem = {
-                            name: currentItemName
-                        };
-                    }
-                    resBuffer.pushObject(newResBufferItem);
-                }
-            }
-
-            set(this, 'content', resBuffer);
-        },
-
-        actions: {
-            selectItem: function() {
-                this.recomputeSelection();
+                set(this, 'selectionPrepared', content);
             },
-            unselectItem: function(){
-                this.recomputeSelection();
+
+            /*
+             * Compute a structure with classified item each time the 'items' property changed
+             */
+            classifiedItems: mixinsRegistry,
+            selectionUnprepared: Ember.computed.alias('content'),
+
+            recomputeSelection: function() {
+                var selection = get(this, 'selectionPrepared');
+                console.log('recomputeSelection', selection, get(this, 'selectionPrepared'));
+
+                var content = get(this, 'content');
+
+                var resBuffer = Ember.A();
+                if(selection) {
+                    for (var i = 0, l = selection.length; i < l; i++) {
+                        var currentItem = selection[i];
+                        var currentItemName = get(currentItem, 'name');
+                        var newResBufferItem;
+
+                        var existingContentItem = content.findBy('name', currentItemName);
+                        if(existingContentItem) {
+                            newResBufferItem = existingContentItem;
+                        } else {
+                            newResBufferItem = {
+                                name: currentItemName
+                            };
+                        }
+                        resBuffer.pushObject(newResBufferItem);
+                    }
+                }
+
+                set(this, 'content', resBuffer);
+            },
+
+            actions: {
+                selectItem: function() {
+                    this.recomputeSelection();
+                },
+                unselectItem: function(){
+                    this.recomputeSelection();
+                }
             }
-        }
-    });
+        });
 
-
-    Ember.Application.initializer({
-        name:"component-mixinselector",
-        initialize: function(container, application) {
-            application.register('component:component-mixinselector', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-mixinselector', component);
+    }
 });

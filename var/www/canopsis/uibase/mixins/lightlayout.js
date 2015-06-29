@@ -17,16 +17,18 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+Ember.Application.initializer({
+    name:'LightLayoutMixin',
+    after: 'MixinFactory',
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
 
-    var mixin = Mixin('lightlayout', {
-        partials: {
-            layout: ['lightlayout']
-        }
-    });
+        var mixin = Mixin('lightlayout', {
+            partials: {
+                layout: ['lightlayout']
+            }
+        });
 
-    return mixin;
+        application.register('mixin:light-layout', mixin);
+    }
 });

@@ -17,19 +17,20 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember-data',
-    'app/serializers/application',
-    'app/mixins/embeddedrecordserializer'
-], function(DS, ApplicationSerializer, EmbeddedRecordSerializerMixin) {
+Ember.Application.initializer({
+    name:"TaskSerializer",
+    after: ['ApplicationSerializer', 'EmbeddedRecordSerializerMixin'],
+    initialize: function(container, application) {
+        var EmbeddedRecordSerializerMixin = container.lookupFactory('mixin:embedded-record-serializer');
+        var ApplicationSerializer = container.lookupFactory('serializer:application');
 
-    var serializer = ApplicationSerializer.extend(
-        EmbeddedRecordSerializerMixin,
-        {}
-    );
+        var serializer = ApplicationSerializer.extend(
+            EmbeddedRecordSerializerMixin,
+            {}
+        );
 
-    loader.register('serializer:task', serializer);
-    loader.register('serializer:taskmail', serializer.extend({}));
-
-    return serializer;
+        application.register('serializer:task', serializer);
+        application.register('serializer:taskmail', serializer);
+    }
 });
+

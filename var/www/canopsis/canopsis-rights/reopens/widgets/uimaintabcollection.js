@@ -17,79 +17,79 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'canopsis/uibase/widgets/uimaintabcollection/controller',
-    'canopsis/canopsis-rights/utils/rightsflags'
-], function(Ember, UimaintabcollectionWidget, rightsflagsUtils) {
+Ember.Application.initializer({
+    name:'RightsBrickUimaintabcollectionWidgetReopen',
+    after: ['UserviewAdapter', 'DataUtils', 'UimaintabcollectionWidget'],
+    initialize: function(container, application) {
+        UimaintabcollectionWidget = container.lookupFactory('controller:uimaintabcollection');
+        rightsflagsUtils = container.lookupFactory('utility:rightsflags');
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone,
-        __ = Ember.String.loc;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone,
+            __ = Ember.String.loc;
 
+        //TODO make this work without requirejs
+        UimaintabcollectionWidget.reopen({
 
-    UimaintabcollectionWidget.reopen({
+            loggedaccountId: Ember.computed.alias('controllers.login.record._id'),
+            loggedaccountRights: Ember.computed.alias('controllers.login.record.rights'),
 
-        loggedaccountId: Ember.computed.alias('controllers.login.record._id'),
-        loggedaccountRights: Ember.computed.alias('controllers.login.record.rights'),
+            isViewDisplayable: function(viewId) {
+                var user = get(this, 'loggedaccountId'),
+                    rights = get(this, 'loggedaccountRights');
 
-        isViewDisplayable: function(viewId) {
-            var user = get(this, 'loggedaccountId'),
-                rights = get(this, 'loggedaccountRights');
+                if (user === 'root') {
+                    return true;
+                }
 
-            if (user === 'root') {
-                return true;
-            }
+                return viewId && rightsflagsUtils.canRead(get(rights, viewId + '.checksum'));
+            },
 
-            return viewId && rightsflagsUtils.canRead(get(rights, viewId + '.checksum'));
-        },
+            userCanShowEditionMenu: function() {
+                if(get(this, 'loggedaccountId') === "root") {
+                    return true;
+                }
 
-        userCanShowEditionMenu: function() {
-            if(get(this, 'loggedaccountId') === "root") {
-                return true;
-            }
+                var rights = get(this, 'loggedaccountRights');
 
-            var rights = get(this, 'loggedaccountRights');
+                if (get(rights, 'tabs_showeditionmenu.checksum')) {
+                    return true;
+                }
 
-            if (get(rights, 'tabs_showeditionmenu.checksum')) {
-                return true;
-            }
+                return false;
+            }.property(),
 
-            return false;
-        }.property(),
+             userCanEditView: function() {
+                if(get(this, 'loggedaccountId') === "root") {
+                    return true;
+                }
 
-         userCanEditView: function() {
-            if(get(this, 'loggedaccountId') === "root") {
-                return true;
-            }
+                var rights = get(this, 'loggedaccountRights'),
+                    viewId = get(this, 'currentViewId');
 
-            var rights = get(this, 'loggedaccountRights'),
-                viewId = get(this, 'currentViewId');
+                viewId = viewId.replace('.', '_');
 
-            viewId = viewId.replace('.', '_');
+                if (rightsflagsUtils.canWrite(get(rights, viewId + '.checksum'))) {
+                    return true;
+                }
 
-            if (rightsflagsUtils.canWrite(get(rights, viewId + '.checksum'))) {
-                return true;
-            }
+                return false;
+            }.property('currentViewId'),
 
-            return false;
-        }.property('currentViewId'),
+            userCanCreateView: function() {
+                if(get(this, 'loggedaccountId') === "root") {
+                    return true;
+                }
 
-        userCanCreateView: function() {
-            if(get(this, 'loggedaccountId') === "root") {
-                return true;
-            }
+                var rights = get(this, 'loggedaccountRights');
 
-            var rights = get(this, 'loggedaccountRights');
+                if (get(rights, 'userview_create.checksum')) {
+                    return true;
+                }
 
-            if (get(rights, 'userview_create.checksum')) {
-                return true;
-            }
-
-            return false;
-        }.property()
-    });
-
-    return UimaintabcollectionWidget;
+                return false;
+            }.property()
+        });
+    }
 });

@@ -1,0 +1,1 @@
+/home/gwen/programmation/canopsis/sources/webcore/var/www/canopsis/uibase/lib/externals/iCheck/icheck.js

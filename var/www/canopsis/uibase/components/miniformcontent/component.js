@@ -17,25 +17,18 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember'
-], function(Ember, typesUtils) {
+Ember.Application.initializer({
+    name:"component-miniformcontent",
+    initialize: function(container, application) {
+        var get = Ember.get,
+            set = Ember.set;
 
-    var get = Ember.get,
-        set = Ember.set;
 
+        var component = Ember.Component.extend({
+            classNames: ['panel-collapse', 'collapse', 'in'],
+            formBase: Ember.computed.alias('parentView')
+        });
 
-    var component = Ember.Component.extend({
-        classNames: ['panel-collapse', 'collapse', 'in'],
-        formBase: Ember.computed.alias('parentView')
-    });
-
-    Ember.Application.initializer({
-        name:"component-miniformcontent",
-        initialize: function(container, application) {
-            application.register('component:component-miniformcontent', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-miniformcontent', component);
+    }
 });

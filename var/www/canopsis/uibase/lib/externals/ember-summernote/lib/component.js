@@ -17,87 +17,74 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'summernote',
-    'codemirror',
-    'summernote',
-    // 'link!canopsis/uibase/lib/externals/summernote/summernote-bs3.css'
-    'link!canopsis/uibase/lib/externals/summernote/dist/summernote.css',
-], function(Ember) {
-
-    var get = Ember.get,
-        set = Ember.set;
+Ember.Application.initializer({
+    name:'component:summernote-editor',
+    initialize: function(container, application) {
+        var get = Ember.get,
+            set = Ember.set;
 
 
-    var component = Ember.Component.extend({
-        classNames: ['wysiwyg-editor'],
-        template: Ember.HTMLBars.compile('<div class="wysiwyg-container">{{textarea valueBinding=content}}</div>'),
+        var component = Ember.Component.extend({
+            classNames: ['wysiwyg-editor'],
+            template: Ember.HTMLBars.compile('<div class="wysiwyg-container">{{textarea valueBinding=content}}</div>'),
 
-        btnSize: 'btn-xs',
-        height: 120,
+            btnSize: 'btn-xs',
+            height: 120,
 
-        willDestroyElement: function() {
-            this.$('textarea').destroy();
-        },
+            willDestroyElement: function() {
+                this.$('textarea').destroy();
+            },
 
-        didInsertElement: function() {
-            var btnSize = get(this, 'btnSize');
-            var height = get(this, 'height');
+            didInsertElement: function() {
+                var btnSize = get(this, 'btnSize');
+                var height = get(this, 'height');
 
-            var component = this;
+                var component = this;
 
-            this.$('textarea').summernote({
-                height: height,
-                toolbar: [
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['fontsize', ['fontsize']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['height', ['height']],
-                    ['insert', ['link', 'hr', 'picture']],
-                    ['table', ['table']],
-                    ['help', ['help']],
-                    ['misc', ['codeview']]
-                ],
-                codemirror: { // codemirror options
-                    theme: 'ambiance',
-                    mode: 'htmlmixed'
-                },
-                onChange: function ($editable, sHtml) {
-                    component.doUpdate();
-                    console.log('onChange', arguments);
-                }
+                this.$('textarea').summernote({
+                    height: height,
+                    toolbar: [
+                        ['style', ['bold', 'italic', 'underline', 'clear']],
+                        ['fontsize', ['fontsize']],
+                        ['color', ['color']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['height', ['height']],
+                        ['insert', ['link', 'hr', 'picture']],
+                        ['table', ['table']],
+                        ['help', ['help']],
+                        ['misc', ['codeview']]
+                    ],
+                    codemirror: { // codemirror options
+                        theme: 'ambiance',
+                        mode: 'htmlmixed'
+                    },
+                    onChange: function ($editable, sHtml) {
+                        component.doUpdate();
+                        console.log('onChange', arguments);
+                    }
 
-            });
+                });
 
-            var content = get(this, 'content');
-            this.$('textarea').code(content);
-            this.$('.btn').addClass(btnSize);
-        },
+                var content = get(this, 'content');
+                this.$('textarea').code(content);
+                this.$('.btn').addClass(btnSize);
+            },
 
-        keyUp: function() {
-            this.doUpdate();
-        },
+            keyUp: function() {
+                this.doUpdate();
+            },
 
-        click: function() {
-            this.doUpdate();
-        },
+            click: function() {
+                this.doUpdate();
+            },
 
-        doUpdate: function() {
-            var content = this.$('.note-editable').html();
-            // console.log("doUpdate", content);
-            set(this, 'content', content);
-        }
-    });
+            doUpdate: function() {
+                var content = this.$('.note-editable').html();
+                // console.log("doUpdate", content);
+                set(this, 'content', content);
+            }
+        });
 
-
-    Ember.Application.initializer({
-        name:'component:summernote-editor',
-        initialize: function(container, application) {
-            application.register('component:summernote-editor', component);
-        }
-    });
-
-    return component;
+        application.register('component:summernote-editor', component);
+    }
 });

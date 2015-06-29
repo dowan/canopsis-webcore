@@ -19,8 +19,8 @@
 
 var forms = [
     { name: 'jobform', url: 'canopsis/canopsis-ui/forms/jobform/controller', template: 'canopsis/canopsis-ui/forms/jobform/template.html' },
-    { name: 'taskform', url: 'canopsis/canopsis-ui/forms/taskform/controller', template: 'app/forms/modelform/template.html' },
-    { name: 'scheduleform', url: 'canopsis/canopsis-ui/forms/scheduleform/controller', template: 'app/forms/modelform/template.html' }
+    { name: 'taskform', url: 'canopsis/canopsis-ui/forms/taskform/controller', template: 'app/src/forms/modelform/template.html' },
+    { name: 'scheduleform', url: 'canopsis/canopsis-ui/forms/scheduleform/controller', template: 'app/src/forms/modelform/template.html' }
 ];
 
 loader.loadWithTemplates(forms);

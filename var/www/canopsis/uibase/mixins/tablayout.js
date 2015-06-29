@@ -17,40 +17,41 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+Ember.Application.initializer({
+    name:'TabLayoutMixin',
+    after: 'MixinFactory',
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
+        var get = Ember.get,
+            set = Ember.set;
 
-    var get = Ember.get,
-        set = Ember.set;
-
-    var mixin = Mixin('tablayout', {
-        init: function() {
-            if(get(this, 'items.content').length >= 0 && !Ember.isEmpty(get(this, 'items.content')[0])) {
-                console.log('init tabs', get(this, 'items.content')[0].get('widget'));
-                this.send('selectTab', get(this, 'items.content')[0].get('widget'));
-                set(get(this, 'items.content')[0], 'tabSelected', true);
-            }
-
-            this._super.apply(this, arguments);
-        },
-
-        actions: {
-            selectTab: function(item) {
-                console.info('select tab', item);
-                if(get(this, 'selectedItem')) {
-                    set(this, 'selectedItem.tabSelected', false);
+        var mixin = Mixin('tablayout', {
+            init: function() {
+                if(get(this, 'items.content').length >= 0 && !Ember.isEmpty(get(this, 'items.content')[0])) {
+                    console.log('init tabs', get(this, 'items.content')[0].get('widget'));
+                    this.send('selectTab', get(this, 'items.content')[0].get('widget'));
+                    set(get(this, 'items.content')[0], 'tabSelected', true);
                 }
-                set(item, 'tabSelected', true);
-                set(this, 'selectedItem', item);
+
+                this._super.apply(this, arguments);
+            },
+
+            actions: {
+                selectTab: function(item) {
+                    console.info('select tab', item);
+                    if(get(this, 'selectedItem')) {
+                        set(this, 'selectedItem.tabSelected', false);
+                    }
+                    set(item, 'tabSelected', true);
+                    set(this, 'selectedItem', item);
+                }
+            },
+
+            partials: {
+                layout: ['tablayout']
             }
-        },
+        });
 
-        partials: {
-            layout: ['tablayout']
-        }
-    });
-
-    return mixin;
+        application.register('mixin:tab-layout', mixin);
+    }
 });

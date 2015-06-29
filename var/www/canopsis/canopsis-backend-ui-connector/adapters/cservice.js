@@ -17,37 +17,34 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'canopsis/canopsis-backend-ui-connector/adapters/application',
-    'app/lib/schemasregistry'
-], function(ApplicationAdapter, schemasregistry) {
+Ember.Application.initializer({
+    name:"CserviceAdapter",
+    after: ['ApplicationAdapter', 'SchemasRegistry'],
+    initialize: function(container, application) {
+        var ApplicationAdapter = container.lookupFactory('adapter:application');
+        var schemasregistry = container.lookupFactory('registry:schemas');
 
-    console.group('CserviceAdapter');
+        var adapter = ApplicationAdapter.extend({
+            buildURL: function(type, id) {
+                type = 'cservice';
 
-    var adapter = ApplicationAdapter.extend({
-        buildURL: function(type, id) {
-            type = 'cservice';
+                return this._super(type, id);
+            }
+        });
 
-            return this._super(type, id);
+        for(var sname in schemasregistry.all) {
+            var schema = schemasregistry.getByName(sname);
+
+            //TODO: do not use userPreferencesModelName
+            var modelname = schema.modelDict.userPreferencesModelName;
+
+            if(modelname.indexOf('crecord.cservice.') === 0) {
+                console.log('Add adapter:', sname);
+
+                loader.register('adapter:' + sname, adapter.extend());
+            }
         }
-    });
 
-    for(var sname in schemasregistry.all) {
-        var schema = schemasregistry.getByName(sname);
-
-        //TODO: do not use userPreferencesModelName
-        var modelname = schema.modelDict.userPreferencesModelName;
-
-        if(modelname.indexOf('crecord.cservice.') === 0) {
-            console.log('Add adapter:', sname);
-
-            loader.register('adapter:' + sname, adapter.extend());
-        }
+        application.register('adapter:cservice', adapter);
     }
-
-    console.groupEnd();
-
-    loader.register('adapter:cservice', adapter);
-
-    return adapter;
 });

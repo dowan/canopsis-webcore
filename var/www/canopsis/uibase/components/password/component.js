@@ -17,53 +17,47 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/utils/hash'
-], function(Ember, hash) {
+Ember.Application.initializer({
+    name:"component-password",
+    after: 'HashUtils',
+    initialize: function(container, application) {
+        var hash = container.lookupFactory('utility:hash');
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone,
+            __ = Ember.String.loc;
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone,
-        __ = Ember.String.loc;
 
+        var component = Ember.Component.extend({
 
-    var component = Ember.Component.extend({
+            init: function () {
+                this._super.apply(this, arguments);
 
-        init: function () {
-            this._super.apply(this, arguments);
+                var allowed_methods = ['sha1', 'md5'];
+                var method_name = get(this, 'method');
 
-            var allowed_methods = ['sha1', 'md5'];
-            var method_name = get(this, 'method');
+                if (!isNone(method_name) && allowed_methods.indexOf(method_name) === -1) {
+                    console.warning('Invalid method, using sha1:', method_name);
+                    set(this, 'method', 'sha1');
+                }
+            },
 
-            if (!isNone(method_name) && allowed_methods.indexOf(method_name) === -1) {
-                console.warning('Invalid method, using sha1:', method_name);
-                set(this, 'method', 'sha1');
-            }
-        },
+            onUpdate: function () {
+                var pass = get(this, 'password');
+                var method_name = get(this, 'method');
 
-        onUpdate: function () {
-            var pass = get(this, 'password');
-            var method_name = get(this, 'method');
+                if (!isNone(method_name)) {
+                    var method = get(hash, method_name);
 
-            if (!isNone(method_name)) {
-                var method = get(hash, method_name);
+                    pass = method(pass);
+                }
 
-                pass = method(pass);
-            }
+                set(this, 'content', pass);
 
-            set(this, 'content', pass);
+            }.observes('password')
 
-        }.observes('password')
+        });
 
-    });
-
-    Ember.Application.initializer({
-        name:"component-password",
-        initialize: function(container, application) {
-            application.register('component:component-password', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-password', component);
+    }
 });

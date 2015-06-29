@@ -17,66 +17,67 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/utils/dates'
-], function(Ember, datesUtils) {
+Ember.Application.initializer({
+    name: 'StatusViewHelper',
+    after: 'DatesUtils',
+    initialize: function(container, application) {
+        var datesUtils = container.lookupFactory('utility:dates');
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone,
-         __ = Ember.String.loc;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone,
+             __ = Ember.String.loc;
 
 
-    Ember.Handlebars.helper('statusview', function(status, crecord) {
-        /**
-            # status legend:
-            # 0 == Ok
-            # 1 == On going
-            # 2 == Stealthy
-            # 3 == Bagot
-            # 4 == Canceled
-        **/
+        Ember.Handlebars.helper('statusview', function(status, crecord) {
+            /**
+                # status legend:
+                # 0 == Ok
+                # 1 == On going
+                # 2 == Stealthy
+                # 3 == Bagot
+                # 4 == Canceled
+            **/
 
-        var statuses = {
-            0: 'Off',
-            1: 'On going',
-            2: 'Stealthy',
-            3: 'Bagot',
-            4: 'Cancelled',
-        };
+            var statuses = {
+                0: 'Off',
+                1: 'On going',
+                2: 'Stealthy',
+                3: 'Bagot',
+                4: 'Cancelled',
+            };
 
-        if (isNone(status)) {
-            status = get(crecord, 'status');
-        }
-
-        var value = statuses[status] || '';
-        set(crecord, 'statusvalue', __(value));
-
-        if(status === 4) {
-
-            //displays cancel information if any onto the status field
-            var cancel = get(crecord, 'record.cancel');
-            console.log('statusview', status, cancel);
-
-            if(!isNone(cancel)) {
-
-                var timestamp = get(cancel, 'timestamp');
-                var comment = get(cancel, 'comment');
-                var author = get(cancel, 'author');
-
-                set(crecord, 'statushtml', [
-                    '<center>',
-                    '<i>' , __('Date') , '</i> : <br/>',
-                    datesUtils.timestamp2String(timestamp) ,' <br/> ',
-                    __('By'), ' : ' , author ,' <br/><br/> ',
-                    '<i>', __('Comment') ,'</i> : <br/>' , comment,
-                    '</center>'
-                ].join(''));
+            if (isNone(status)) {
+                status = get(crecord, 'status');
             }
 
-        }
-        return "";
-    });
+            var value = statuses[status] || '';
+            set(crecord, 'statusvalue', __(value));
 
+            if(status === 4) {
+
+                //displays cancel information if any onto the status field
+                var cancel = get(crecord, 'record.cancel');
+                console.log('statusview', status, cancel);
+
+                if(!isNone(cancel)) {
+
+                    var timestamp = get(cancel, 'timestamp');
+                    var comment = get(cancel, 'comment');
+                    var author = get(cancel, 'author');
+
+                    set(crecord, 'statushtml', [
+                        '<center>',
+                        '<i>' , __('Date') , '</i> : <br/>',
+                        datesUtils.timestamp2String(timestamp) ,' <br/> ',
+                        __('By'), ' : ' , author ,' <br/><br/> ',
+                        '<i>', __('Comment') ,'</i> : <br/>' , comment,
+                        '</center>'
+                    ].join(''));
+                }
+
+            }
+            return "";
+        });
+    }
 });

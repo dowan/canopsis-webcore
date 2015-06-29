@@ -17,32 +17,32 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+Ember.Application.initializer({
+    name:'HistoryMixin',
+    after: 'MixinFactory',
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
+        /**
+          Implements history collection finder
+        */
+        var mixin = Mixin('history', {
 
-    /**
-      Implements history collection finder
-    */
-    var mixin = Mixin('history', {
+            historyMixinFindOptions: function () {
+                console.warn('this should be overriden');
+            }.property(),
 
-        historyMixinFindOptions: function () {
-            console.warn('this should be overriden');
-        }.property(),
+            isHistory: function () {
+                return this.get('historyMixinFindOptions');
+            },
 
-        isHistory: function () {
-            return this.get('historyMixinFindOptions');
-        },
-
-        actions: {
-            history: function () {
-                this.set('historyMixinFindOptions', !this.get('historyMixinFindOptions'));
-                this.findItems();
+            actions: {
+                history: function () {
+                    this.set('historyMixinFindOptions', !this.get('historyMixinFindOptions'));
+                    this.findItems();
+                }
             }
-        }
-    });
+        });
 
-
-    return mixin;
+        application.register('mixin:history', mixin);
+    }
 });

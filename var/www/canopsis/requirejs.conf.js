@@ -17,19 +17,23 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+console.time('bench_startup');
+
 require.config({
     baseUrl: '/static/',
     paths: {
         'app': 'canopsis/core',
 
-        'text': 'canopsis/core/lib/externals/requirejs-text/text',
-        'link': 'canopsis/core/lib/externals/requirejs-link/link',
+        'text': 'canopsis/brickloader/lib/requirejs-text/text',
+        'link': 'canopsis/brickloader/lib/requirejs-link/link',
+        'i18n': 'canopsis/brickloader/src/i18n',
 
-        'jquery': 'canopsis/core/lib/wrappers/jquery',
-        'handlebars': 'canopsis/core/lib/externals/handlebars/handlebars',
-        'ember-template-compiler': 'canopsis/core/lib/externals/min/ember-template-compiler',
-        'ember': 'canopsis/core/lib/wrappers/ember',
-        'ember-data': 'canopsis/core/lib/wrappers/ember-data'
+        'jquery': 'canopsis/brickloader/src/jquery',
+        'handlebars': 'canopsis/brickloader/lib/handlebars/handlebars',
+        'ember-template-compiler': 'canopsis/brickloader/lib/ember-template-compiler',
+        'ember': 'canopsis/brickloader/src/ember',
+        'ember-data': 'canopsis/brickloader/src/ember-data',
+        'object-loader': 'canopsis/brickloader/src/loader'
     },
     shim: {
         'ember': {
@@ -37,6 +41,12 @@ require.config({
         },
         'ember-data': {
             deps: ['ember']
+        },
+        'object-loader': {
+            deps: ['ember']
+        },
+        'i18n': {
+            deps: ['jquery']
         }
     }
 });
@@ -81,14 +91,14 @@ setModuleInfo = function (modules, showmodules) {
     }
 };
 
-define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18n', 'app/lib/objects/loader', 'jquery'], function(enabled, canopsisConfiguration, i18n) {
+define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'i18n', 'object-loader', 'jquery', 'ember', 'ember-data'], function(enabled) {
 
     enabled.getEnabledModules(function (enabledPlugins) {
 
         setLoadingInfo('Fetching frontend bricks', 'fa-cubes');
-        setModuleInfo(enabledPlugins, canopsisConfiguration.SHOWMODULES);
-        var language = i18n.lang;
-        console.log('i18n language:', language.toUpperCase(), 'translations:', i18n.translations);
+        setModuleInfo(enabledPlugins, window.canopsisConfiguration.SHOWMODULES);
+        var language = window.i18n.lang;
+        console.log('i18n language:', language.toUpperCase(), 'translations:', window.i18n.translations);
 
         if(!language) {
             language = 'en';
@@ -96,11 +106,11 @@ define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18
 
         var loc = Ember.String.loc;
         Ember.String.loc = function (fieldToTranslate) {
-            i18n._(fieldToTranslate, true);
+            window.i18n._(fieldToTranslate, true);
             return loc(fieldToTranslate);
         };
 
-        Ember.STRINGS = i18n.translations[language] || {};
+        Ember.STRINGS = window.i18n.translations[language] || {};
 
         var deps = [];
 
@@ -119,7 +129,7 @@ define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18
             deps.push('canopsis/environment.production');
         }
 
-        deps.push('app/lib/wrappers/extend');
+        deps.push('canopsis/brickloader/src/extend');
         deps.push('link');
 
         require(deps, function() {
@@ -146,7 +156,9 @@ define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18
                 window.appShouldNowBeLoaded = true;
 
                 setLoadingInfo('Fetching application starting point', 'fa-plug');
-                require(['app/application'], function(Application) {
+
+                require(['app/src/application'], function(Application) {
+                    console.timeEnd('bench_startup');
                     setLoadingInfo('Initializing user interface', 'fa-desktop');
 
                 });

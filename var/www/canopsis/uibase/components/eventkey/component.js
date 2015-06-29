@@ -17,71 +17,65 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/utils/event'
-], function(Ember, eventUtils) {
+Ember.Application.initializer({
+    name:"component-eventkey",
+    after: ['EventUtils'],
+    initialize: function(container, application) {
+        var eventUtils = container.lookupFactory('utility:event');
 
-    var get = Ember.get,
-        set = Ember.set,
-        __ = Ember.String.loc;
+        var get = Ember.get,
+            set = Ember.set,
+            __ = Ember.String.loc;
 
 
-    var component = Ember.Component.extend({
+        var component = Ember.Component.extend({
+            init:function () {
+                this._super();
+                set(this,'selectedMode',__('List'));
 
-        init:function () {
-            this._super();
-            set(this,'selectedMode',__('List'));
+                set(this, 'modes',[
+                    __('List'),
+                    __('Custom')
+                ]);
 
-            set(this, 'modes',[
-                __('List'),
-                __('Custom')
-            ]);
+                var eventFields = eventUtils.getFields();
+                console.log('eventFields', eventFields);
+                var selectableProperties = [];
+                var length = eventFields.length;
+                for (var i=0; i<length; i++) {
+                    selectableProperties.push({field: eventFields[i]});
+                }
 
-            var eventFields = eventUtils.getFields();
-            console.log('eventFields', eventFields);
-            var selectableProperties = [];
-            var length = eventFields.length;
-            for (var i=0; i<length; i++) {
-                selectableProperties.push({field: eventFields[i]});
+                set(this, 'selectableProperties', selectableProperties);
+            },
+
+            useTextField: function () {
+                return get(this, 'selectedMode') === __('Custom');
+            }.property('selectedMode'),
+
+            useList: function () {
+                return get(this, 'selectedMode') === __('List');
+            }.property('selectedMode'),
+
+            testActive: function () {
+                var properties = get(this, 'selectableProperties');
+                var len = properties.length;
+                for (var i=0; i<len; i++) {
+                    var isActive = properties[i].field === get(this, 'content');
+                    set(properties[i], 'isActive', isActive);
+                    console.log('compare', properties[i].field ,'and',  get(this, 'content'));
+                }
+            }.observes('content'),
+
+            actions : {
+                setProperty: function (field) {
+                    set(this, 'content', field);
+                    console.log('content is now', get(this, 'content'));
+                }
             }
 
-            set(this, 'selectableProperties', selectableProperties);
-        },
+        });
 
-        useTextField: function () {
-            return get(this, 'selectedMode') === __('Custom');
-        }.property('selectedMode'),
-
-        useList: function () {
-            return get(this, 'selectedMode') === __('List');
-        }.property('selectedMode'),
-
-        testActive: function () {
-            var properties = get(this, 'selectableProperties');
-            var len = properties.length;
-            for (var i=0; i<len; i++) {
-                var isActive = properties[i].field === get(this, 'content');
-                set(properties[i], 'isActive', isActive);
-                console.log('compare', properties[i].field ,'and',  get(this, 'content'));
-            }
-        }.observes('content'),
-
-        actions : {
-            setProperty: function (field) {
-                set(this, 'content', field);
-                console.log('content is now', get(this, 'content'));
-            }
-        }
-
-    });
-
-    Ember.Application.initializer({
-        name:"component-eventkey",
-        initialize: function(container, application) {
-            application.register('component:component-eventkey', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-eventkey', component);
+    }
 });

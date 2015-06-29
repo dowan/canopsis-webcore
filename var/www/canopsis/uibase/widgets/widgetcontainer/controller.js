@@ -17,16 +17,16 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'app/lib/factories/widget',
-    'canopsis/uibase/widgets/canvas/controller'
-], function(WidgetFactory, CanvasController) {
+Ember.Application.initializer({
+    name:"WidgetcontainerWidget",
+    after: ['Schemas', 'WidgetFactory'],
+    initialize: function(container, application) {
+        var WidgetFactory = container.lookupFactory('factory:widget');
 
-    var widget = WidgetFactory('widgetcontainer', {
-        partials: {
-            titlebarsbuttons : ['titlebarbutton-duplicate', 'titlebarbutton-moveup','titlebarbutton-movedown', 'titlebarbutton-widgeterrors']
-        }
-    }, {subclass: CanvasController});
-
-    return widget;
+        var widget = WidgetFactory('widgetcontainer', {
+            partials: {
+                titlebarsbuttons : ['titlebarbutton-duplicate', 'titlebarbutton-moveup','titlebarbutton-movedown', 'titlebarbutton-widgeterrors']
+            }
+        });
+    }
 });

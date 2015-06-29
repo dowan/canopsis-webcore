@@ -17,37 +17,38 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/utils/routes',
-    'app/lib/factories/mixin',
-    'app/lib/utils/forms',
-], function(Ember, routesUtils, Mixin, formsUtils) {
+Ember.Application.initializer({
+    name:'ShowViewButtonMixin',
+    after: ['MixinFactory', 'RoutesUtils', 'FormsUtils'],
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
+        var routesUtils = container.lookupFactory('utility:routes');
+        var formsUtils = container.lookupFactory('utility:forms');
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
 
-    var mixin = Mixin('showviewbutton', {
-        partials: {
-            itemactionbuttons: ['actionbutton-show']
-        },
-
-        actions: {
-            show: function(id) {
-                Ember.assert('There should be an id passed as first argument', !isNone(id));
-
-                console.log("Show action", arguments);
-                routesUtils.getCurrentRouteController().send('showView', id);
+        var mixin = Mixin('showviewbutton', {
+            partials: {
+                itemactionbuttons: ['actionbutton-show']
             },
 
-            viewrights: function(view) {
-                formsUtils.showNew('viewrightsform', view, { title: __('Edit view rights') });
+            actions: {
+                show: function(id) {
+                    Ember.assert('There should be an id passed as first argument', !isNone(id));
+
+                    console.log("Show action", arguments);
+                    routesUtils.getCurrentRouteController().send('showView', id);
+                },
+
+                viewrights: function(view) {
+                    formsUtils.showNew('viewrightsform', view, { title: __('Edit view rights') });
+                }
             }
-        }
-    });
+        });
 
-
-    return mixin;
+        application.register('mixin:show-view-button', mixin);
+    }
 });

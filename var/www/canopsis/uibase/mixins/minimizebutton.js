@@ -17,19 +17,19 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+Ember.Application.initializer({
+    name:'MinimizeButtonMixin',
+    after: 'MixinFactory',
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
 
-    var set = Ember.set;
+        var mixin = Mixin('minimizebutton', {
+            init: function() {
+                this._super();
+                set(this, 'model.isMinimizable', true);
+            },
+        });
 
-    var mixin = Mixin('minimizebutton', {
-        init: function() {
-            this._super();
-            set(this, 'model.isMinimizable', true);
-        },
-    });
-
-    return mixin;
+        application.register('mixin:minimize-button', mixin);
+    }
 });

@@ -17,13 +17,15 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember-data',
-    'canopsis/canopsis-backend-ui-connector/serializers/ctx',
-], function(DS, CtxSerializer) {
+Ember.Application.initializer({
+    name:"ContextComponentSerializer",
+    after: "ContextSerializer",
+    initialize: function(container, application) {
+        var CtxSerializer = container.lookupFactory('serializer:context');
 
-    var serializer = CtxSerializer.extend({});
+        var serializer = CtxSerializer.extend({});
 
-    loader.register('serializer:ctxcomponent', serializer);
-    return serializer;
+        application.register('serializer:ctxcomponent', serializer);
+    }
 });
+

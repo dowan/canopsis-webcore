@@ -16,24 +16,3 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
-
-define([
-    'jquery',
-    'app/lib/factories/widget'
-], function($, WidgetFactory) {
-
-    var widget = WidgetFactory('uimaindropdown',{
-        tagName: 'span',
-        actions: {
-            do: function(action, params) {
-                if(params === undefined || params === null){
-                    params = [];
-                }
-
-                this.send(action, params);
-            }
-        }
-    });
-
-    return widget;
-});

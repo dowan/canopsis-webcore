@@ -17,18 +17,18 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember-data',
-    'app/serializers/application',
-    'app/mixins/embeddedrecordserializer'
-], function(DS, ApplicationSerializer, EmbeddedRecordSerializerMixin) {
+Ember.Application.initializer({
+    name:"TicketSerializer",
+    after: ['ApplicationSerializer', 'EmbeddedRecordSerializerMixin'],
+    initialize: function(container, application) {
+        var ApplicationSerializer = container.lookupFactory('serializer:application');
+        var EmbeddedRecordSerializerMixin = container.lookupFactory('mixin:embedded-record-serializer');
 
-    var serializer = ApplicationSerializer.extend(
-        EmbeddedRecordSerializerMixin,
-        {}
-    );
+        var serializer = ApplicationSerializer.extend(
+            EmbeddedRecordSerializerMixin,
+            {}
+        );
 
-    loader.register('serializer:ticket', serializer);
-
-    return serializer;
+        application.register('serializer:ticket', serializer);
+    }
 });

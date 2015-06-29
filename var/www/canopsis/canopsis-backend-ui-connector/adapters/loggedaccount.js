@@ -16,52 +16,52 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
+Ember.Application.initializer({
+    name:"LoggedaccountAdapter",
+    after: "ApplicationAdapter",
+    initialize: function(container, application) {
 
-define([
-        'canopsis/canopsis-backend-ui-connector/adapters/application'
-], function(ApplicationAdapter) {
+        var ApplicationAdapter = container.lookupFactory('adapter:application');
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
 
-    var adapter = ApplicationAdapter.extend({
-        buildURL: function(type, id) {
-            return '/account/me';
-        },
+        var adapter = ApplicationAdapter.extend({
+            buildURL: function(type, id) {
+                return '/account/me';
+            },
 
-        find: function () {
-            return this.ajax('/account/me', 'GET', {});
-        },
+            find: function () {
+                return this.ajax('/account/me', 'GET', {});
+            },
 
-        updateRecord: function(store, type, record) {
-            var me = this,
-                id = get(record, '_id');
+            updateRecord: function(store, type, record) {
+                var me = this,
+                    id = get(record, '_id');
 
-            if (isNone(type) || isNone(type.typeKey)) {
-                console.error('Error while retrieving typeKey from type is it is none.');
+                if (isNone(type) || isNone(type.typeKey)) {
+                    console.error('Error while retrieving typeKey from type is it is none.');
+                }
+
+                return new Ember.RSVP.Promise(function(resolve, reject) {
+                    var hash = me.serialize(record, {includeId: true});
+                    var url = '/account/user';
+
+                    var payload = JSON.stringify({
+                        user: hash
+                    });
+
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: payload
+                    });
+                });
             }
+        });
 
-            return new Ember.RSVP.Promise(function(resolve, reject) {
-                var hash = me.serialize(record, {includeId: true});
-                var url = '/account/user';
-
-                var payload = JSON.stringify({
-                    user: hash
-                });
-
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: payload
-                });
-            });
-        }
-    });
-
-
-    loader.register('adapter:loggedaccount', adapter);
-
-    return adapter;
+        application.register('adapter:loggedaccount', adapter);
+    }
 });

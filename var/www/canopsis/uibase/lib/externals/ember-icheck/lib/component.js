@@ -18,63 +18,57 @@
 */
 
 define([
-    'ember',
     'canopsis/uibase/libwrappers/icheck'
-], function(Ember) {
-
-    var set = Ember.set,
-        get = Ember.get;
-
-
-    var component = Ember.Component.extend({
-        template: Ember.HTMLBars.compile('{{input type="checkbox" checked=checked class="toggle"}}'),
-
-        didInsertElement: function(){
-            var $input = this.$('input');
-
-            Ember.assert('There is no checkbox in the DOM of the checkbox component.', !Ember.isNone($input));
-
-            $input.iCheck({
-                checkboxClass: 'icheckbox_minimal-grey',
-                radioClass: 'iradio_minimal-grey'
-            });
-
-            var checkboxComponent = this;
-            $input.on('ifChecked', function(){
-                set(checkboxComponent, 'checked', true);
-            });
-
-            $input.on('ifUnchecked', function(){
-                set(checkboxComponent, 'checked', false);
-            });
-        },
-
-        checkedChanged: function(){
-            var $input = this.$('input');
-
-            if(get(this, 'checked')) {
-                $input.iCheck('check');
-            } else {
-                $input.iCheck('uncheck');
-            }
-        }.observes('checked'),
-
-        willDestroyElement: function() {
-            var $input = this.$('input');
-
-            Ember.assert('There is no checkbox in the DOM of the checkbox component.', !Ember.isNone($input));
-
-            $input.iCheck('destroy');
-        }
-    });
-
-
+], function() {
     Ember.Application.initializer({
         name:"component-checkbox",
         initialize: function(container, application) {
+            var set = Ember.set,
+                get = Ember.get;
+
+
+            var component = Ember.Component.extend({
+                template: Ember.HTMLBars.compile('{{input type="checkbox" checked=checked class="toggle"}}'),
+
+                didInsertElement: function(){
+                    var $input = this.$('input');
+
+                    Ember.assert('There is no checkbox in the DOM of the checkbox component.', !Ember.isNone($input));
+
+                    $input.iCheck({
+                        checkboxClass: 'icheckbox_minimal-grey',
+                        radioClass: 'iradio_minimal-grey'
+                    });
+
+                    var checkboxComponent = this;
+                    $input.on('ifChecked', function(){
+                        set(checkboxComponent, 'checked', true);
+                    });
+
+                    $input.on('ifUnchecked', function(){
+                        set(checkboxComponent, 'checked', false);
+                    });
+                },
+
+                checkedChanged: function(){
+                    var $input = this.$('input');
+
+                    if(get(this, 'checked')) {
+                        $input.iCheck('check');
+                    } else {
+                        $input.iCheck('uncheck');
+                    }
+                }.observes('checked'),
+
+                willDestroyElement: function() {
+                    var $input = this.$('input');
+
+                    Ember.assert('There is no checkbox in the DOM of the checkbox component.', !Ember.isNone($input));
+
+                    $input.iCheck('destroy');
+                }
+            });
             application.register('component:component-checkbox', component);
         }
     });
-
-    return component;
 });

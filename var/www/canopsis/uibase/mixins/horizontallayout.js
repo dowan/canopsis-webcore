@@ -17,25 +17,27 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/factories/mixin'
-], function(Ember, Mixin) {
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+Ember.Application.initializer({
+    name:'HorizontalLayoutMixin',
+    after: 'MixinFactory',
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
 
-    var mixin = Mixin('horizontallayout', {
-        partials: {
-            layout: ['horizontallayout']
-        },
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
-        section: function () {
-            return get(this, 'mixinOptions.horizontallayout.cellCssClass') || 'col-lg-3 col-md-6 col-xs-12';
-        },
+        var mixin = Mixin('horizontallayout', {
+            partials: {
+                layout: ['horizontallayout']
+            },
 
-    });
+            section: function () {
+                return get(this, 'mixinOptions.horizontallayout.cellCssClass') || 'col-lg-3 col-md-6 col-xs-12';
+            },
 
-    return mixin;
+        });
+        application.register('mixin:horizontal-layout', mixin);
+    }
 });

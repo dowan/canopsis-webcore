@@ -17,34 +17,34 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'jquery',
-    'ember',
-    'canopsis/canopsis-vevent/adapters/vevent'
-], function($, Ember, VEventAdapter) {
+Ember.Application.initializer({
+    name:"PbehaviourAdapter",
+    after: "VeventAdapter",
+    initialize: function(container, application) {
+        var VEventAdapter = container.lookupFactory('adapter:vevent');
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
-    var adapter = VEventAdapter.extend({
+        var adapter = VEventAdapter.extend({
 
-        buildURL: function(type, id, record) {
-            void(type);
-            void(record);
+            buildURL: function(type, id, record) {
+                void(type);
+                void(record);
 
-            var result = '/pbehavior';
+                var result = '/pbehavior';
 
-            if (!isNone(id)) {
-                result += '/' + id;
+                if (!isNone(id)) {
+                    result += '/' + id;
+                }
+
+                return result;
             }
 
-            return result;
-        }
+        });
 
-    });
-
-    loader.register('adapter:pbehavior', adapter);
-
-    return adapter;
+        application.register('adapter:pbehavior', adapter);
+    }
 });
+

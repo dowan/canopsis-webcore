@@ -17,33 +17,33 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/utils/dates'
-], function(Ember, datesUtils) {
+Ember.Application.initializer({
+    name: 'TimestampHelper',
+    after: 'DatesUtils',
+    initialize: function(container, application) {
+        var datesUtils = container.lookupFactory('utility:dates');
+        var get = Ember.get,
+            isNone = Ember.isNone;
 
-    var get = Ember.get,
-        isNone = Ember.isNone;
 
+        Ember.Handlebars.helper('timestamp', function(value, attr, record) {
 
-    Ember.Handlebars.helper('timestamp', function(value, attr, record) {
+            if (!isNone(record)) {
+                value = get(record, 'timeStampState') || value;
+            }
 
-        if (!isNone(record)) {
-            value = get(record, 'timeStampState') || value;
-        }
+            if(value && !isNone(attr)) {
+                format = get(attr, 'options.format');
+            }
 
-        if(value && !isNone(attr)) {
-            format = get(attr, 'options.format');
-        }
+            var format;
+            if (datesUtils.isToday(value)) {
+                format = 'timeOnly';
+            }
 
-        var format;
-        if (datesUtils.isToday(value)) {
-            format = 'timeOnly';
-        }
+            var time = datesUtils.timestamp2String(value, format, true);
 
-        var time = datesUtils.timestamp2String(value, format, true);
-
-        return new Ember.Handlebars.SafeString(time);
-    });
-
+            return new Ember.Handlebars.SafeString(time);
+        });
+    }
 });

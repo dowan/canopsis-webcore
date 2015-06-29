@@ -17,43 +17,44 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+Ember.Application.initializer({
+    name:'RecordInfoPopupMixin',
+    after: 'MixinFactory',
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
+        var get = Ember.get;
 
-    var get = Ember.get;
 
+        var mixin = Mixin('recordinfopopup', {
+            actions: {
+                sendDisplayRecord: function (record) {
+                    //This method is not ugly TODO refactor, it would be better if event bubble until application directly
+                    // but at the moment, event doen t bubble properly
+                    console.log('sendDisplayRecord action called with params', record);
 
-    var mixin = Mixin('recordinfopopup', {
-        actions: {
-            sendDisplayRecord: function (record) {
-                //This method is not ugly TODO refactor, it would be better if event bubble until application directly
-                // but at the moment, event doen t bubble properly
-                console.log('sendDisplayRecord action called with params', record);
+                    var template = get(this, 'mixinOptions.recordinfopopup.popup_template');
+                    if (Ember.isNone(template)) {
+                        template = '';
+                    }
 
-                var template = get(this, 'mixinOptions.recordinfopopup.popup_template');
-                if (Ember.isNone(template)) {
-                    template = '';
+                    console.log('Template is ', template);
+
+                    var recordinfopopupController = get(this, 'controllers.recordinfopopup');
+
+                    recordinfopopupController.send('show', record, template);
                 }
+            },
 
-                console.log('Template is ', template);
-
-                var recordinfopopupController = get(this, 'controllers.recordinfopopup');
-
-                recordinfopopupController.send('show', record, template);
+            rendererFor: function(attribute) {
+                var clickableColumn = get(this, 'mixinOptions.recordinfopopup.clickable_column');
+                console.log('recordinfopopup rendererFor', attribute, clickableColumn);
+                if(attribute.field === clickableColumn){
+                    return 'renderer-recordinfopopup';
+                }
+                return this._super(attribute);
             }
-        },
+        });
 
-        rendererFor: function(attribute) {
-            var clickableColumn = get(this, 'mixinOptions.recordinfopopup.clickable_column');
-            console.log('recordinfopopup rendererFor', attribute, clickableColumn);
-            if(attribute.field === clickableColumn){
-                return 'renderer-recordinfopopup';
-            }
-            return this._super(attribute);
-        }
-    });
-
-    return mixin;
+        application.register('mixin:record-info-popup', mixin);
+    }
 });

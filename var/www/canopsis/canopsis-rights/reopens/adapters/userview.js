@@ -17,93 +17,94 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'canopsis/canopsis-backend-ui-connector/adapters/userview',
-    'app/lib/utils/data'
-], function(Ember, UserviewAdapter, dataUtils) {
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+Ember.Application.initializer({
+    name:"RightsBrickUserviewAdapterReopen",
+    after: ["UserviewAdapter", "DataUtils"],
+    initialize: function(container, application) {
+        var UserviewAdapter = container.lookupFactory('adapter:userview');
+        var dataUtils = container.lookupFactory('utility:Data');
 
-    /**
-     * @class UserviewAdapter
-     * @extends ApplicationAdapter
-     * @constructor
-     * @description UserviewAdapter reopen
-     */
-    UserviewAdapter.reopen({
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
+
         /**
-         * @method updateRecord
-         * @param {DS.Store} store
-         * @param {subclass of DS.Model} type
-         * @param {DS.Model} userview
-         * @return {Promise} promise
-         *
-         * Manage right creation and modification on view creation or update.
-         * Note that the createRecord method is never used with the userview adapter.
+         * @class UserviewAdapter
+         * @extends ApplicationAdapter
+         * @constructor
+         * @description UserviewAdapter reopen
          */
-        updateRecord: function(store, type, userview) {
-            rightsRegistry = dataUtils.getEmberApplicationSingleton().__container__.lookupFactory('registry:rights');
+        UserviewAdapter.reopen({
+            /**
+             * @method updateRecord
+             * @param {DS.Store} store
+             * @param {subclass of DS.Model} type
+             * @param {DS.Model} userview
+             * @return {Promise} promise
+             *
+             * Manage right creation and modification on view creation or update.
+             * Note that the createRecord method is never used with the userview adapter.
+             */
+            updateRecord: function(store, type, userview) {
+                rightsRegistry = dataUtils.getEmberApplicationSingleton().__container__.lookupFactory('registry:rights');
 
-            formattedViewId = get(userview, 'id').replace('.', '_');
+                formattedViewId = get(userview, 'id').replace('.', '_');
 
-            if(isNone(rightsRegistry.getByName(formattedViewId))) {
-                //The right does not exists, assume that the view is brand new
+                if(isNone(rightsRegistry.getByName(formattedViewId))) {
+                    //The right does not exists, assume that the view is brand new
 
-                var right = dataUtils.getStore().createRecord('action', {
-                      enable: true,
-                      crecord_type: 'action',
-                      type: 'RW',
-                      _id: formattedViewId,
-                      id: formattedViewId,
-                      crecord_name: formattedViewId,
-                      desc: 'Rights on view : ' + get(userview, 'crecord_name')
-                });
+                    var right = dataUtils.getStore().createRecord('action', {
+                          enable: true,
+                          crecord_type: 'action',
+                          type: 'RW',
+                          _id: formattedViewId,
+                          id: formattedViewId,
+                          crecord_name: formattedViewId,
+                          desc: 'Rights on view : ' + get(userview, 'crecord_name')
+                    });
+                    right.save();
+
+                    rightsRegistry.add(right, get(right, 'crecord_name'));
+
+                    //TODO Add the correct right to the current user, to allow him to display the view
+                    var loginController = dataUtils.getLoggedUserController();
+
+                    var rights = get(loginController, 'record.rights');
+
+                    set(rights, formattedViewId, { checksum : 7 });
+                    var record = get(loginController, 'record');
+                    record.save();
+                } else {
+                    //TODO the right already exists, it's an update
+                    //TODO replace the userview name if it has changed
+                }
+
+                return this._super.apply(this, arguments);
+            },
+
+            /**
+             * @method deleteRecord
+             * @param {DS.Store} store
+             * @param {subclass of DS.Model} type
+             * @param {DS.Model} userview
+             * @return {Promise} promise
+             *
+             * Manage right deletion when the user deletes the userview.
+             */
+            deleteRecord: function(store, type, userview) {
+                rightsRegistry = dataUtils.getEmberApplicationSingleton().__container__.lookupFactory('registry:rights');
+
+                formattedViewId = get(userview, 'id').replace('.', '_');
+                var right = rightsRegistry.getByName(formattedViewId);
+                console.log('deleteRecord', formattedViewId, rightsRegistry, right);
+                right.deleteRecord();
                 right.save();
 
-                rightsRegistry.add(right, get(right, 'crecord_name'));
+                //TODO delete user right in payload
 
-                //TODO Add the correct right to the current user, to allow him to display the view
-                var loginController = dataUtils.getLoggedUserController();
-
-                var rights = get(loginController, 'record.rights');
-
-                set(rights, formattedViewId, { checksum : 7 });
-                var record = get(loginController, 'record');
-                record.save();
-            } else {
-                //TODO the right already exists, it's an update
-                //TODO replace the userview name if it has changed
+                return this._super.apply(this, arguments);
             }
-
-            return this._super.apply(this, arguments);
-        },
-
-        /**
-         * @method deleteRecord
-         * @param {DS.Store} store
-         * @param {subclass of DS.Model} type
-         * @param {DS.Model} userview
-         * @return {Promise} promise
-         *
-         * Manage right deletion when the user deletes the userview.
-         */
-        deleteRecord: function(store, type, userview) {
-            rightsRegistry = dataUtils.getEmberApplicationSingleton().__container__.lookupFactory('registry:rights');
-
-            formattedViewId = get(userview, 'id').replace('.', '_');
-            var right = rightsRegistry.getByName(formattedViewId);
-            console.log('deleteRecord', formattedViewId, rightsRegistry, right);
-            right.deleteRecord();
-            right.save();
-
-            //TODO delete user right in payload
-
-            return this._super.apply(this, arguments);
-        }
-    });
-
-    return UserviewAdapter;
+        });
+    }
 });

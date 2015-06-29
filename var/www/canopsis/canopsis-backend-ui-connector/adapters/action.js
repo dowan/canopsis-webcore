@@ -17,22 +17,20 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+Ember.Application.initializer({
+    name:"ActionAdapter",
+    after: "ApplicationAdapter",
+    initialize: function(container, application) {
+        var ApplicationAdapter = container.lookupFactory('adapter:application');
 
-define([
-    'ember',
-    'canopsis/canopsis-backend-ui-connector/adapters/application',
-], function(Ember, ApplicationAdapter) {
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+        var adapter = ApplicationAdapter.extend({
+            namespace: 'default_rights'
+        });
 
-
-    var adapter = ApplicationAdapter.extend({
-        namespace: 'default_rights'
-    });
-
-    loader.register('adapter:action', adapter);
-
-    return adapter;
+        application.register('adapter:action', adapter);
+    }
 });

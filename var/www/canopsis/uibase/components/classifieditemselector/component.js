@@ -20,256 +20,248 @@
 //TODO fuzzy search
 //TODO hover effect
 
-define([
-    'ember'
-], function(Ember) {
+Ember.Application.initializer({
+    name:"component-classifieditemselector",
+    initialize: function(container, application) {
+        var set = Ember.set,
+            get = Ember.get,
+            isNone = Ember.isNone;
 
-    var set = Ember.set,
-        get = Ember.get,
-        isNone = Ember.isNone;
 
+        var component = Ember.Component.extend({
 
-    var component = Ember.Component.extend({
+            multiselect: true,
+            showselection: true,
 
-        multiselect: true,
-        showselection: true,
+            init: function(){
+                this._super.apply(this, arguments);
+                set(this, 'allCollapsed', true);
 
-        init: function(){
-            this._super.apply(this, arguments);
-            set(this, 'allCollapsed', true);
-
-            if(!Ember.isArray(get(this, 'selection'))) {
-                console.warn('override selection property');
-                set(this, 'selection', Ember.A());
-            }
-        },
-
-        actions: {
-            setListMode: function() {
-                set(this, 'mode', 'list');
-            },
-
-            setIconMode: function() {
-                set(this, 'mode', 'icon');
-            },
-
-            unselectItem: function (item) {
-                get(this, "selection").removeObject(item);
-
-                if(get(this, 'target')) {
-                    get(this, 'target').send('unselectItem', item.name);
+                if(!Ember.isArray(get(this, 'selection'))) {
+                    console.warn('override selection property');
+                    set(this, 'selection', Ember.A());
                 }
             },
 
-            selectItem: function(item) {
-                console.log('selectItem', arguments);
-                if(get(this, 'multiselect') === false) {
-                    set(this, 'selection', [item]);
-                } else {
-                    //TODO use searchmethodsregistry instead of plain old static code
-                    var search = get(this, 'selection').filter(function(loopItem, index, enumerable){
-                        return loopItem === item;
-                    });
-                    if(search.length === 0){
-                        get(this, 'selection').pushObject(item);
+            actions: {
+                setListMode: function() {
+                    set(this, 'mode', 'list');
+                },
+
+                setIconMode: function() {
+                    set(this, 'mode', 'icon');
+                },
+
+                unselectItem: function (item) {
+                    get(this, "selection").removeObject(item);
+
+                    if(get(this, 'target')) {
+                        get(this, 'target').send('unselectItem', item.name);
                     }
-                }
+                },
 
-                if(get(this, 'target')) {
-                    get(this, 'target').send('selectItem', item.name);
-                } else {
-                    console.warn('no target attribute for Classifieditemselector', this);
-                }
-            },
-
-            collapse: function(theClass){
-                if(theClass === "all") {
-                    if(get(this, 'allCollapsed') === true)
-                        set(this, 'allCollapsed', false);
-                    else
-                        set(this, 'allCollapsed', true);
-                } else if(theClass === "selection") {
-                    if(get(this, 'selectionCollapsed') === true)
-                        set(this, 'selectionCollapsed', false);
-                    else
-                        set(this, 'selectionCollapsed', true);
-                } else {
-                    var originClass = get(this, 'classes').findBy('key', theClass.key);
-
-                    console.log("collapse", theClass, theClass.key, originClass);
-
-                    if(originClass.isCollapsed === true){
-                        set(originClass, 'isCollapsed', false);
-                        set(theClass, 'isCollapsed', false);
-                    }
-                    else {
-                        set(originClass, 'isCollapsed', true);
-                        set(theClass, 'isCollapsed', true);
-                    }
-                }
-            }
-        },
-
-        searchFilter: '',
-
-        allCollapsed: false,
-        selectionCollapsed: false,
-        classesCollapsed: true,
-
-        mode: 'list',
-
-        defaultIcon: 'unchecked',
-
-        iconModeButtonCssClass: function(){
-            if(get(this, 'mode') === 'icon')
-                return "btn btn-default active";
-            else
-                return "btn btn-default";
-        }.property("mode"),
-
-        listModeButtonCssClass: function(){
-            if(get(this, 'mode') === 'list')
-                return 'btn btn-default active';
-            else
-                return 'btn btn-default';
-        }.property('mode'),
-
-        listGroupClass: function() {
-            return 'list-group ' + get(this, 'mode');
-        }.property('mode'),
-
-        classAllPanelId: function(){
-            return get(this, "elementId") + "_" + "all";
-        }.property(),
-
-        classAllPanelHref: function(){
-            return '#' + get(this, 'classAllPanelId');
-        }.property(),
-
-        allClasses: function() {
-            var searchFilter = get(this, 'searchFilter');
-            var res = get(this, 'content.all');
-
-            if(!isNone(res)) {
-                var component = this;
-                res = get(this, 'content.all').filter(function(item, index, enumerable){
-                    console.log('filter', item);
-                    var systemClass = component.get('content.byClass.system');
-
-                    if(!isNone(systemClass)) {
-                        if(systemClass.filterBy('name', item.get('name')).length > 0) {
-                            console.log('filtered!', item);
-                            return false;
+                selectItem: function(item) {
+                    console.log('selectItem', arguments);
+                    if(get(this, 'multiselect') === false) {
+                        set(this, 'selection', [item]);
+                    } else {
+                        //TODO use searchmethodsregistry instead of plain old static code
+                        var search = get(this, 'selection').filter(function(loopItem, index, enumerable){
+                            return loopItem === item;
+                        });
+                        if(search.length === 0){
+                            get(this, 'selection').pushObject(item);
                         }
                     }
 
-                    return true;
-                });
+                    if(get(this, 'target')) {
+                        get(this, 'target').send('selectItem', item.name);
+                    } else {
+                        console.warn('no target attribute for Classifieditemselector', this);
+                    }
+                },
 
-                //TODO use searchmethodsregistry instead of plain old static code
-                if(searchFilter !== '') {
-                    res = res.filter(function(item, index, enumerable){
-                        var doesItStartsWithSearchFilter = item.name.slice(0, searchFilter.length) == searchFilter;
-                        return doesItStartsWithSearchFilter;
+                collapse: function(theClass){
+                    if(theClass === "all") {
+                        if(get(this, 'allCollapsed') === true)
+                            set(this, 'allCollapsed', false);
+                        else
+                            set(this, 'allCollapsed', true);
+                    } else if(theClass === "selection") {
+                        if(get(this, 'selectionCollapsed') === true)
+                            set(this, 'selectionCollapsed', false);
+                        else
+                            set(this, 'selectionCollapsed', true);
+                    } else {
+                        var originClass = get(this, 'classes').findBy('key', theClass.key);
+
+                        console.log("collapse", theClass, theClass.key, originClass);
+
+                        if(originClass.isCollapsed === true){
+                            set(originClass, 'isCollapsed', false);
+                            set(theClass, 'isCollapsed', false);
+                        }
+                        else {
+                            set(originClass, 'isCollapsed', true);
+                            set(theClass, 'isCollapsed', true);
+                        }
+                    }
+                }
+            },
+
+            searchFilter: '',
+
+            allCollapsed: false,
+            selectionCollapsed: false,
+            classesCollapsed: true,
+
+            mode: 'list',
+
+            defaultIcon: 'unchecked',
+
+            iconModeButtonCssClass: function(){
+                if(get(this, 'mode') === 'icon')
+                    return "btn btn-default active";
+                else
+                    return "btn btn-default";
+            }.property("mode"),
+
+            listModeButtonCssClass: function(){
+                if(get(this, 'mode') === 'list')
+                    return 'btn btn-default active';
+                else
+                    return 'btn btn-default';
+            }.property('mode'),
+
+            listGroupClass: function() {
+                return 'list-group ' + get(this, 'mode');
+            }.property('mode'),
+
+            classAllPanelId: function(){
+                return get(this, "elementId") + "_" + "all";
+            }.property(),
+
+            classAllPanelHref: function(){
+                return '#' + get(this, 'classAllPanelId');
+            }.property(),
+
+            allClasses: function() {
+                var searchFilter = get(this, 'searchFilter');
+                var res = get(this, 'content.all');
+
+                if(!isNone(res)) {
+                    var component = this;
+                    res = get(this, 'content.all').filter(function(item, index, enumerable){
+                        console.log('filter', item);
+                        var systemClass = component.get('content.byClass.system');
+
+                        if(!isNone(systemClass)) {
+                            if(systemClass.filterBy('name', item.get('name')).length > 0) {
+                                console.log('filtered!', item);
+                                return false;
+                            }
+                        }
+
+                        return true;
+                    });
+
+                    //TODO use searchmethodsregistry instead of plain old static code
+                    if(searchFilter !== '') {
+                        res = res.filter(function(item, index, enumerable){
+                            var doesItStartsWithSearchFilter = item.name.slice(0, searchFilter.length) == searchFilter;
+                            return doesItStartsWithSearchFilter;
+                        });
+                    }
+                }
+
+
+                console.log('recompute allClasses', res);
+                return res;
+            }.property('searchFilter'),
+
+            collapsedPanelCssClass: 'list-group collapse',
+            expandedPanelCssClass: 'list-group',
+
+            classList: function(){
+                var contentByClass = get(this, 'content.byClass');
+                console.log('contentByClass', contentByClass);
+
+                if(contentByClass !== null && contentByClass !== undefined) {
+                    return $.map(contentByClass, function(value, key) {
+                        if (contentByClass.hasOwnProperty(key)) {
+                            return key;
+                        }
                     });
                 }
-            }
+            }.property('content'),
 
+            classesFiltered: function(){
+                var classes = get(this, 'classes');
+                var searchFilter = get(this, 'searchFilter');
 
-            console.log('recompute allClasses', res);
-            return res;
-        }.property('searchFilter'),
+                var res = Ember.A();
 
-        collapsedPanelCssClass: 'list-group collapse',
-        expandedPanelCssClass: 'list-group',
+                //TODO use searchmethodsregistry instead of plain old static code
+                var filterFunction = function(item, index, enumerable) {
+                    var doesItStartsWithSearchFilter = item.name.indexOf(searchFilter) !== -1;
+                    return doesItStartsWithSearchFilter;
+                };
 
-        classList: function(){
-            var contentByClass = get(this, 'content.byClass');
-            console.log('contentByClass', contentByClass);
+                for (var i = 0, l = classes.length; i < l; i++) {
+                    var currentClass = Ember.Object.create({
+                        key: classes[i].key,
+                        items: classes[i].items,
+                        id: classes[i].id,
+                        titleHref: classes[i].titleHref,
+                        isCollapsed: classes[i].isCollapsed || get(this, 'classesCollapsed')
+                    });
 
-            if(contentByClass !== null && contentByClass !== undefined) {
-                return $.map(contentByClass, function(value, key) {
-                    if (contentByClass.hasOwnProperty(key)) {
-                        return key;
+                    var classItems = currentClass.items;
+                    console.log("classItems", classItems);
+                    if(searchFilter !== "") {
+                        console.log('filter', classItems);
+                        classItems = classItems.filter(filterFunction);
+
+                        currentClass.items = classItems;
+
+                        console.log('filterEnd', classItems);
                     }
-                });
-            }
-        }.property('content'),
-
-        classesFiltered: function(){
-            var classes = get(this, 'classes');
-            var searchFilter = get(this, 'searchFilter');
-
-            var res = Ember.A();
-
-            //TODO use searchmethodsregistry instead of plain old static code
-            var filterFunction = function(item, index, enumerable) {
-                var doesItStartsWithSearchFilter = item.name.indexOf(searchFilter) !== -1;
-                return doesItStartsWithSearchFilter;
-            };
-
-            for (var i = 0, l = classes.length; i < l; i++) {
-                var currentClass = Ember.Object.create({
-                    key: classes[i].key,
-                    items: classes[i].items,
-                    id: classes[i].id,
-                    titleHref: classes[i].titleHref,
-                    isCollapsed: classes[i].isCollapsed || get(this, 'classesCollapsed')
-                });
-
-                var classItems = currentClass.items;
-                console.log("classItems", classItems);
-                if(searchFilter !== "") {
-                    console.log('filter', classItems);
-                    classItems = classItems.filter(filterFunction);
-
-                    currentClass.items = classItems;
-
-                    console.log('filterEnd', classItems);
+                    res.push(currentClass);
                 }
-                res.push(currentClass);
-            }
-            console.log('classesFiltered CP end');
-            return res;
+                console.log('classesFiltered CP end');
+                return res;
 
-        }.property('classes', 'searchFilter'),
+            }.property('classes', 'searchFilter'),
 
-        classes: function(){
-            var component = this;
-            var contentByClass = get(this, 'content.byClass');
+            classes: function(){
+                var component = this;
+                var contentByClass = get(this, 'content.byClass');
 
-            console.log('classes CP', arguments, this, contentByClass);
+                console.log('classes CP', arguments, this, contentByClass);
 
-            if(contentByClass !== undefined) {
-                return $.map(contentByClass, function(value, key) {
-                    if (contentByClass.hasOwnProperty(key)) {
-                        var newObject = Ember.Object.create({
-                            key: key,
-                            items: value,
-                            id: get(component, 'elementId') + "_" + key,
-                            titleHref: "#" + get(component, 'elementId') + "_" + key
-                        });
-                        var res = [newObject];
+                if(contentByClass !== undefined) {
+                    return $.map(contentByClass, function(value, key) {
+                        if (contentByClass.hasOwnProperty(key)) {
+                            var newObject = Ember.Object.create({
+                                key: key,
+                                items: value,
+                                id: get(component, 'elementId') + "_" + key,
+                                titleHref: "#" + get(component, 'elementId') + "_" + key
+                            });
+                            var res = [newObject];
 
-                        set(res, 'isCollapsed', contentByClass[key].isCollapsed);
+                            set(res, 'isCollapsed', contentByClass[key].isCollapsed);
 
-                        return res;
-                    }
-                });
-            } else {
-                set(component, 'allCollapsed', true);
-                return [];
-            }
-        }.property('content')
-    });
+                            return res;
+                        }
+                    });
+                } else {
+                    set(component, 'allCollapsed', true);
+                    return [];
+                }
+            }.property('content')
+        });
 
-
-    Ember.Application.initializer({
-        name:"component-classifieditemselector",
-        initialize: function(container, application) {
-            application.register('component:component-classifieditemselector', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-classifieditemselector', component);
+    }
 });

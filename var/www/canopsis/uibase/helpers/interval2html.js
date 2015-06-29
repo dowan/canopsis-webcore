@@ -17,31 +17,34 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember', 'app/lib/utils/dates'], function(Ember, datesUtils) {
+Ember.Application.initializer({
+    name: 'Interval2HtmlHelper',
+    after: 'DatesUtils',
+    initialize: function(container, application) {
+        var datesUtils = container.lookupFactory('utility:dates');
+        var set = Ember.set,
+            isNone = Ember.isNone;
 
-    var set = Ember.set,
-        isNone = Ember.isNone;
 
+        Ember.Handlebars.helper('interval2html', function(from , to) {
 
-    Ember.Handlebars.helper('interval2html', function(from , to) {
+            var html = '';//'<div style="min-width:200px"></div>';
 
-        var html = '';//'<div style="min-width:200px"></div>';
+            if(!isNone(from)) {
+                html += __('From') + ' ' + datesUtils.timestamp2String(from);
+            }
 
-        if(!isNone(from)) {
-            html += __('From') + ' ' + datesUtils.timestamp2String(from);
-        }
+            if(!isNone(from) && !isNone(to)) {
+                html += ' ';
+            }
 
-        if(!isNone(from) && !isNone(to)) {
-            html += ' ';
-        }
+            if(!isNone(to)) {
+                html += __('to') + ' ' + datesUtils.timestamp2String(to);
+            }
 
-        if(!isNone(to)) {
-            html += __('to') + ' ' + datesUtils.timestamp2String(to);
-        }
+            console.debug('generated html form interval2html is', html);
 
-        console.debug('generated html form interval2html is', html);
-
-        return html;
-    });
-
+            return html;
+        });
+    }
 });

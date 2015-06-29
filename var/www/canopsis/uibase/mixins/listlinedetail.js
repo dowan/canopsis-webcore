@@ -16,92 +16,92 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
-define([
-    'jquery',
-    'ember',
-    'app/lib/formsregistry',
-    'app/lib/factories/mixin',
-    'app/lib/utils/hash'
-], function($, Ember, formsregistry, Mixin, hash) {
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+Ember.Application.initializer({
+    name:'ListlineDetailMixin',
+    after: ['MixinFactory', 'HashUtils'],
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
+        var hash = container.lookupFactory('utility:hash');
 
-    var mixin = Mixin('listlinedetail', {
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
-        partials: {
-            columnsLine: ["actionbutton-foldable"],
-            columnsHead: ["column-unfold"]
-        },
+        var mixin = Mixin('listlinedetail', {
 
-        actions: {
-            unfold: function(view) {
-                var unfolded = get(view, 'unfolded');
+            partials: {
+                columnsLine: ["actionbutton-foldable"],
+                columnsHead: ["column-unfold"]
+            },
 
-                if (isNone(unfolded)) {
-                    set(view, 'unfolded', true);
+            actions: {
+                unfold: function(view) {
+                    var unfolded = get(view, 'unfolded');
+
+                    if (isNone(unfolded)) {
+                        set(view, 'unfolded', true);
+                    }
+                    else {
+                        set(view, 'unfolded', !unfolded);
+                    }
                 }
-                else {
-                    set(view, 'unfolded', !unfolded);
+            },
+
+            init: function() {
+                this._super.apply(this, arguments);
+
+                var tmplId = hash.generateId('dynamic-listline-detail');
+                set(this, 'detailTemplate', tmplId);
+            },
+
+            mixinsOptionsReady: function() {
+                this._super.apply(this, arguments);
+
+                var tmplId = get(this, 'detailTemplate'),
+                    tmpl = get(this, 'mixinOptions.listlinedetail.template');
+
+                if (isNone(tmpl)) {
+                    tmpl = 'No template defined';
                 }
-            }
-        },
 
-        init: function() {
-            this._super.apply(this, arguments);
+                set(Ember.TEMPLATES, tmplId, Ember.Handlebars.compile(tmpl));
+            },
 
-            var tmplId = hash.generateId('dynamic-listline-detail');
-            set(this, 'detailTemplate', tmplId);
-        },
+            colspan: function() {
+                var nbColumns = get(this, 'controller.shown_columns.length');
+                var nbExtraColumns = get(this, 'controller._partials.columnsLine.length');
+                var haveItemActions = get(this, 'controller._partials.itemactionbuttons');
 
-        mixinsOptionsReady: function() {
-            this._super.apply(this, arguments);
+                if (isNone(nbColumns)) {
+                    nbColumns = 0;
+                }
 
-            var tmplId = get(this, 'detailTemplate'),
-                tmpl = get(this, 'mixinOptions.listlinedetail.template');
+                if (isNone(nbExtraColumns)) {
+                    nbExtraColumns = 0;
+                }
 
-            if (isNone(tmpl)) {
-                tmpl = 'No template defined';
-            }
+                if (isNone(haveItemActions)) {
+                    haveItemActions = false;
+                }
 
-            set(Ember.TEMPLATES, tmplId, Ember.Handlebars.compile(tmpl));
-        },
+                haveItemActions = !!haveItemActions;
 
-        colspan: function() {
-            var nbColumns = get(this, 'controller.shown_columns.length');
-            var nbExtraColumns = get(this, 'controller._partials.columnsLine.length');
-            var haveItemActions = get(this, 'controller._partials.itemactionbuttons');
-
-            if (isNone(nbColumns)) {
-                nbColumns = 0;
-            }
-
-            if (isNone(nbExtraColumns)) {
-                nbExtraColumns = 0;
-            }
-
-            if (isNone(haveItemActions)) {
-                haveItemActions = false;
-            }
-
-            haveItemActions = !!haveItemActions;
-
-            /* checkbox */
-            nbColumns++;
-
-            /* columnsLine */
-            nbColumns += nbExtraColumns;
-
-            /* item actions */
-            if (haveItemActions) {
+                /* checkbox */
                 nbColumns++;
-            }
 
-            return nbColumns;
-        }.property("controller.shown_columns")
-    });
+                /* columnsLine */
+                nbColumns += nbExtraColumns;
 
+                /* item actions */
+                if (haveItemActions) {
+                    nbColumns++;
+                }
 
-    return mixin;
+                return nbColumns;
+            }.property("controller.shown_columns")
+        });
+
+        application.register('mixin:listline-detail', mixin);
+    }
 });

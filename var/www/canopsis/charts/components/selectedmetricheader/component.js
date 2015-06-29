@@ -17,57 +17,50 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'ember-data',
-    'app/lib/utils/hash'
-], function(Ember, DS, hash) {
+Ember.Application.initializer({
+    name:"component-selectedmetricheader",
+    after: 'HashUtils',
+    initialize: function(container, application) {
+        var hash = container.lookupFactory('utility:hash');
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone,
-        __ = Ember.String.loc;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone,
+            __ = Ember.String.loc;
 
-    var component = Ember.Component.extend({
-        /**
-         * @type {string} the rk of the metric
-         */
-        rk: undefined,
+        var component = Ember.Component.extend({
+            /**
+             * @type {string} the rk of the metric
+             */
+            rk: undefined,
 
-        splittedRk: function() {
-            return get(this, 'rk').split('/');
-        }.property('rk'),
+            splittedRk: function() {
+                return get(this, 'rk').split('/');
+            }.property('rk'),
 
-        connectorType: function() {
-            return get(this, 'splittedRk')[2];
-        }.property('splittedRk'),
+            connectorType: function() {
+                return get(this, 'splittedRk')[2];
+            }.property('splittedRk'),
 
-        component: function() {
-            return get(this, 'splittedRk')[4];
-        }.property('splittedRk'),
+            component: function() {
+                return get(this, 'splittedRk')[4];
+            }.property('splittedRk'),
 
-        resource: function() {
-            var splittedRk = get(this, 'splittedRk');
-            if(splittedRk.length === 7) {
-                return splittedRk[5];
-            } else {
-                return '';
-            }
-        }.property('splittedRk'),
+            resource: function() {
+                var splittedRk = get(this, 'splittedRk');
+                if(splittedRk.length === 7) {
+                    return splittedRk[5];
+                } else {
+                    return '';
+                }
+            }.property('splittedRk'),
 
-        metricName: function() {
-            var splittedRk = get(this, 'splittedRk');
-            return splittedRk[splittedRk.length - 1];
-        }.property('splittedRk')
-    });
+            metricName: function() {
+                var splittedRk = get(this, 'splittedRk');
+                return splittedRk[splittedRk.length - 1];
+            }.property('splittedRk')
+        });
 
-
-    Ember.Application.initializer({
-        name:"component-selectedmetricheader",
-        initialize: function(container, application) {
-            application.register('component:component-selectedmetricheader', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-selectedmetricheader', component);
+    }
 });

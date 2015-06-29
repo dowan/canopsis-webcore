@@ -17,30 +17,24 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/utils/actions'
-], function(Ember, actionsUtils) {
+Ember.Application.initializer({
+    name:"component-actionbutton",
+    after: 'ActionsUtils',
+    initialize: function(container, application) {
+        var actionsUtils = container.lookupFactory('utility:actions');
 
-    var get = Ember.get,
-        set = Ember.set;
+        var get = Ember.get,
+            set = Ember.set;
 
 
-    var component = Ember.Component.extend({
-        actions: {
-            doAction: function (actionName, param) {
-                actionsUtils.doAction(actionName, param);
+        var component = Ember.Component.extend({
+            actions: {
+                doAction: function (actionName, param) {
+                    actionsUtils.doAction(actionName, param);
+                }
             }
-        }
-    });
+        });
 
-
-    Ember.Application.initializer({
-        name:"component-actionbutton",
-        initialize: function(container, application) {
-            application.register('component:component-actionbutton', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-actionbutton', component);
+    }
 });

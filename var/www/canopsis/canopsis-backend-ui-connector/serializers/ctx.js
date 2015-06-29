@@ -17,24 +17,22 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember-data',
-    'app/serializers/application'
-], function(DS, ApplicationSerializer) {
+Ember.Application.initializer({
+    name:"ContextSerializer",
+    after: 'ApplicationSerializer',
+    initialize: function(container, application) {
+        ApplicationSerializer = container.lookupFactory('serializer:application');
 
-    var serializer = ApplicationSerializer.extend({
+        var serializer = ApplicationSerializer.extend({
+            normalize: function (type, hash) {
+                console.log('normalize', arguments);
+                hash.xtype = 'context';  //TODO: autodetect xtype
+                hash.id = hash._id;
+                return this._super(type, hash);
+            }
+        });
 
-        normalize: function (type, hash) {
-            console.log('normalize', arguments);
-            hash.xtype = 'context';  //TODO: autodetect xtype
-            hash.id = hash._id;
-            return this._super(type, hash);
-        }
-
-    });
-
-    loader.register('serializer:ctx', serializer);
-    loader.register('serializer:context', serializer);
-
-    return serializer;
+        application.register('serializer:ctx', serializer);
+        application.register('serializer:context', serializer);
+    }
 });

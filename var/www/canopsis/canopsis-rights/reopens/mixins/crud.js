@@ -17,63 +17,62 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'canopsis/uibase/mixins/crud',
-    'canopsis/canopsis-rights/utils/rightsflags'
-], function(Ember, CrudMixin, rightsflagsUtils) {
+Ember.Application.initializer({
+    name:"RightsBrickCrudMixinReopen",
+    after: ["CrudMixin", "RightsflagsUtils"],
+    initialize: function(container, application) {
+        var CrudMixin = container.lookupFactory('mixin:crud');
+        var rightsflagsUtils = container.lookupFactory('utility:rightsflags');
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone,
+            __ = Ember.String.loc;
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone,
-        __ = Ember.String.loc;
 
+        CrudMixin.reopen({
+            userCanReadRecord: function() {
+                if(get(this, 'user') === "root") {
+                    return true;
+                }
 
-    CrudMixin.reopen({
-        userCanReadRecord: function() {
-            if(get(this, 'user') === "root") {
-                return true;
-            }
+                var crecord_type = get(this, 'listed_crecord_type');
+                var checksum = get(this, 'rights.models_' + crecord_type + '.checksum');
 
-            var crecord_type = get(this, 'listed_crecord_type');
-            var checksum = get(this, 'rights.models_' + crecord_type + '.checksum');
+                return rightsflagsUtils.canRead(checksum);
+            }.property('config.listed_crecord_type'),
 
-            return rightsflagsUtils.canRead(checksum);
-        }.property('config.listed_crecord_type'),
+            userCanCreateRecord: function() {
+                if(get(this, 'user') === "root") {
+                    return true;
+                }
 
-        userCanCreateRecord: function() {
-            if(get(this, 'user') === "root") {
-                return true;
-            }
+                var crecord_type = get(this, 'listed_crecord_type');
+                var checksum = get(this, 'rights.models_' + crecord_type + '.checksum');
 
-            var crecord_type = get(this, 'listed_crecord_type');
-            var checksum = get(this, 'rights.models_' + crecord_type + '.checksum');
+                return rightsflagsUtils.canCreate(checksum);
+            }.property('config.listed_crecord_type'),
 
-            return rightsflagsUtils.canCreate(checksum);
-        }.property('config.listed_crecord_type'),
+            userCanUpdateRecord: function() {
+                if(get(this, 'user') === "root") {
+                    return true;
+                }
 
-        userCanUpdateRecord: function() {
-            if(get(this, 'user') === "root") {
-                return true;
-            }
+                var crecord_type = get(this, 'listed_crecord_type');
+                var checksum = get(this, 'rights.models_' + crecord_type + '.checksum');
 
-            var crecord_type = get(this, 'listed_crecord_type');
-            var checksum = get(this, 'rights.models_' + crecord_type + '.checksum');
+                return rightsflagsUtils.canUpdate(checksum);
+            }.property('config.listed_crecord_type'),
 
-            return rightsflagsUtils.canUpdate(checksum);
-        }.property('config.listed_crecord_type'),
+            userCanDeleteRecord: function() {
+                if(get(this, 'user') === "root") {
+                    return true;
+                }
 
-        userCanDeleteRecord: function() {
-            if(get(this, 'user') === "root") {
-                return true;
-            }
+                var crecord_type = get(this, 'listed_crecord_type');
+                var checksum = get(this, 'rights.models_' + crecord_type + '.checksum');
 
-            var crecord_type = get(this, 'listed_crecord_type');
-            var checksum = get(this, 'rights.models_' + crecord_type + '.checksum');
-
-            return rightsflagsUtils.canDelete(checksum);
-        }.property('config.listed_crecord_type')
-    });
-
-    return CrudMixin;
+                return rightsflagsUtils.canDelete(checksum);
+            }.property('config.listed_crecord_type')
+        });
+    }
 });

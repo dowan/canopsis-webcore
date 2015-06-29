@@ -17,24 +17,25 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/utils/forms',
-    'app/lib/utils/hash',
-    'app/lib/factories/mixin'
-], function(Ember, formsUtils, hashUtils, Mixin) {
+Ember.Application.initializer({
+    name:'EventHistoryMixin',
+    after: ['MixinFactory', 'FormsUtils', 'HashUtils'],
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
+        var formsUtils = container.lookupFactory('utility:forms');
+        var hashUtils = container.lookupFactory('utility:hash');
 
-    var get = Ember.get,
-        set = Ember.set;
+        var get = Ember.get,
+            set = Ember.set;
 
 
-    var mixin = Mixin('eventhistory', {
-        partials: {
-            actionToolbarButtons: [
-                'actionbutton-eventnavigation'
-            ]
-        }
-    });
-
-    return mixin;
+        var mixin = Mixin('eventhistory', {
+            partials: {
+                actionToolbarButtons: [
+                    'actionbutton-eventnavigation'
+                ]
+            }
+        });
+        application.register('mixin:event-history', mixin);
+    }
 });

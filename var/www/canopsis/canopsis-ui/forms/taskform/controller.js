@@ -17,87 +17,84 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/factories/form',
-    'app/forms/modelform/controller',
-    'app/lib/utils/forms'
-], function(Ember, FormFactory, ModelFormController, formsUtils) {
+Ember.Application.initializer({
+    name:"TaskForm",
+    after: ['ModelForm', 'FormsUtils'],
+    initialize: function(container, application) {
+        var ModelFormController = container.lookupFactory('form:model');
+        var formsUtils = container.lookupFactory('utility:forms');
 
-    var get = Ember.get,
-        set = Ember.set;
+        var get = Ember.get,
+            set = Ember.set;
 
-    var formOptions = {
-        subclass: ModelFormController
-    };
+        var form = ModelFormController.extend({
+            title: 'Configure Job settings',
+            scheduled: true,
 
-    var form = FormFactory('taskform', {
-        title: 'Configure Job settings',
-        scheduled: true,
+            parentContext: function() {
+                return get(this, 'formParent.formContext');
+            }.property('formParent'),
 
-        parentContext: function() {
-            return get(this, 'formParent.formContext');
-        }.property('formParent'),
+            init: function() {
+                this._super();
 
-        init: function() {
-            this._super();
-
-            set(this, 'store', DS.Store.create({
-                container: get(this, "container")
-            }));
-
-            if(get(this, 'scheduled') === true) {
-                set(this, 'partials.buttons', ["formbutton-next", "formbutton-cancel"]);
-            } else {
-                set(this, 'partials.buttons', ["formbutton-cancel", "formbutton-submit"]);
-            }
-
-            var wizard = formsUtils.showNew('scheduleform', get(this, 'parentContext'), {
-                formParent: this,
-                title: 'Configure Schedule'
-            });
-
-            set(this, 'nextForm', wizard);
-            this.refreshPartialsList();
-        },
-
-        actions: {
-            next: function() {
-                console.group('configureTask');
-
-                console.log('parent:', get(this, 'parentContext'));
-                console.log('ctx:', get(this, 'formContext'));
-                console.log('form:', get(this, 'nextForm'));
-
-                formsUtils.showInstance(get(this, 'nextForm'));
-
-                console.groupEnd();
-            },
-
-            submit: function() {
-                console.group('submitTask');
-
-                var parentForm = get(this, 'formParent'),
-                    ctx = get(this, 'formContext');
-                var job = get(parentForm, 'formContext');
-
-                set(job, 'params', ctx);
-
-                console.groupEnd();
+                set(this, 'store', DS.Store.create({
+                    container: get(this, "container")
+                }));
 
                 if(get(this, 'scheduled') === true) {
-                    this._super(arguments);
+                    set(this, 'partials.buttons', ["formbutton-next", "formbutton-cancel"]);
+                } else {
+                    set(this, 'partials.buttons', ["formbutton-cancel", "formbutton-submit"]);
                 }
-                else {
-                    this._super([job]);
+
+                var wizard = formsUtils.showNew('scheduleform', get(this, 'parentContext'), {
+                    formParent: this,
+                    title: 'Configure Schedule'
+                });
+
+                set(this, 'nextForm', wizard);
+                this.refreshPartialsList();
+            },
+
+            actions: {
+                next: function() {
+                    console.group('configureTask');
+
+                    console.log('parent:', get(this, 'parentContext'));
+                    console.log('ctx:', get(this, 'formContext'));
+                    console.log('form:', get(this, 'nextForm'));
+
+                    formsUtils.showInstance(get(this, 'nextForm'));
+
+                    console.groupEnd();
+                },
+
+                submit: function() {
+                    console.group('submitTask');
+
+                    var parentForm = get(this, 'formParent'),
+                        ctx = get(this, 'formContext');
+                    var job = get(parentForm, 'formContext');
+
+                    set(job, 'params', ctx);
+
+                    console.groupEnd();
+
+                    if(get(this, 'scheduled') === true) {
+                        this._super(arguments);
+                    }
+                    else {
+                        this._super([job]);
+                    }
                 }
-            }
-        },
+            },
 
-        partials: {
-            buttons: ["formbutton-cancel", "formbutton-next"]
-        },
-    }, formOptions);
+            partials: {
+                buttons: ["formbutton-cancel", "formbutton-next"]
+            },
+        });
 
-    return form;
+        application.register('form:task', form);
+    }
 });

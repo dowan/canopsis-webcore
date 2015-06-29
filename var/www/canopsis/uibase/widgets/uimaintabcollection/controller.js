@@ -17,88 +17,85 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'jquery',
-    'ember',
-    'app/lib/factories/widget',
-    'app/lib/utils/forms',
-    'app/lib/utils/routes'
-], function($, Ember, WidgetFactory, formsUtils, routesUtils) {
+Ember.Application.initializer({
+    name:"UimaintabcollectionWidget",
+    after: ['Schemas', 'WidgetFactory', 'FormsUtils', 'RoutesUtils'],
+    initialize: function(container, application) {
+        var WidgetFactory = container.lookupFactory('factory:widget');
+        var formsUtils = container.lookupFactory('utility:forms');
+        var routesUtils = container.lookupFactory('utility:routes');
+        var get = Ember.get,
+            set = Ember.set;
 
-    var get = Ember.get,
-        set = Ember.set;
+        var widget = WidgetFactory('uimaintabcollection', {
+            needs: ['application', 'login'],
 
+            currentViewId: Ember.computed.alias('controllers.application.currentViewId'),
 
-    var widget = WidgetFactory('uimaintabcollection', {
-        needs: ['application', 'login'],
+            tagName: 'span',
 
-        currentViewId: Ember.computed.alias('controllers.application.currentViewId'),
+            userCanShowEditionMenu: true,
+            userCanEditView: true,
+            userCanCreateView: true,
 
-        tagName: 'span',
-
-        userCanShowEditionMenu: true,
-        userCanEditView: true,
-        userCanCreateView: true,
-
-        isViewDisplayable: function(viewId) {
-            return true;
-        },
-
-        preparedTabs: function() {
-            var uimaintabcollectionController = this;
-
-            var res = Ember.A();
-
-            get(this, 'tabs').forEach(function(item, index) {
-                if(item.value === get(uimaintabcollectionController, 'currentViewId')) {
-                    set(item, 'isActive', true);
-                } else {
-                    set(item, 'isActive', false);
-                }
-
-
-                viewId = item.value;
-                viewId = viewId.replace('.', '_');
-                if (uimaintabcollectionController.isViewDisplayable(viewId)) {
-                    set(item, 'displayable', true);
-                } else {
-                    set(item, 'displayable', false);
-                }
-
-                res.pushObject(item);
-            });
-
-            return res;
-        }.property('tabs', 'currentViewId'),
-
-        actions: {
-            do: function(action, params) {
-                if(params === undefined || params === null){
-                    params = [];
-                }
-
-                this.send(action, params);
+            isViewDisplayable: function(viewId) {
+                return true;
             },
 
-            showViewOptions: function() {
+            preparedTabs: function() {
+                var uimaintabcollectionController = this;
 
-                var userviewController = routesUtils.getCurrentRouteController();
-                var userview = userviewController.get('model');
+                var res = Ember.A();
 
-                var widgetWizard = formsUtils.showNew('viewtreeform', userview, { title: __('Edit userview') });
-                console.log('widgetWizard', widgetWizard);
+                get(this, 'tabs').forEach(function(item, index) {
+                    if(item.value === get(uimaintabcollectionController, 'currentViewId')) {
+                        set(item, 'isActive', true);
+                    } else {
+                        set(item, 'isActive', false);
+                    }
 
-                var widgetController = this;
 
-                widgetWizard.submit.done(function() {
-                    userview.save().then(function(){
-                        get(widgetController, 'viewController').send('refresh');
-                    });
+                    viewId = item.value;
+                    viewId = viewId.replace('.', '_');
+                    if (uimaintabcollectionController.isViewDisplayable(viewId)) {
+                        set(item, 'displayable', true);
+                    } else {
+                        set(item, 'displayable', false);
+                    }
+
+                    res.pushObject(item);
                 });
 
-            }
-        }
-    });
+                return res;
+            }.property('tabs', 'currentViewId'),
 
-    return widget;
+            actions: {
+                do: function(action, params) {
+                    if(params === undefined || params === null){
+                        params = [];
+                    }
+
+                    this.send(action, params);
+                },
+
+                showViewOptions: function() {
+
+                    var userviewController = routesUtils.getCurrentRouteController();
+                    var userview = userviewController.get('model');
+
+                    var widgetWizard = formsUtils.showNew('viewtreeform', userview, { title: __('Edit userview') });
+                    console.log('widgetWizard', widgetWizard);
+
+                    var widgetController = this;
+
+                    widgetWizard.submit.done(function() {
+                        userview.save().then(function(){
+                            get(widgetController, 'viewController').send('refresh');
+                        });
+                    });
+
+                }
+            }
+        });
+    }
 });

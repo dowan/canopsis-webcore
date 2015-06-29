@@ -17,62 +17,54 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-define([
-    'ember',
-], function(Ember) {
-
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone,
-        __ = Ember.String.loc;
+Ember.Application.initializer({
+    name:'component-snmpelement',
+    initialize: function(container, application) {
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone,
+            __ = Ember.String.loc;
 
 
-    var component = Ember.Component.extend({
+        var component = Ember.Component.extend({
 
-        mibObjects: Ember.computed.alias('crecord.form.mibObjects'),
+            mibObjects: Ember.computed.alias('crecord.form.mibObjects'),
 
-        init: function() {
-            this._super();
-            set(this, 'showObjects', false);
+            init: function() {
+                this._super();
+                set(this, 'showObjects', false);
 
-            //Clean content initialization
-            var content = get(this, 'content');
-            if (isNone(content)) {
-                set(this, 'content', '');
-            }
-        },
-
-
-        didInsertElement: function () {
-            var snmpElementComponent = this;
-            snmpElementComponent.$('.oidelement').click(function () {
-                set(snmpElementComponent, 'showObjects', true);
-            });
-            snmpElementComponent.$('.oidelement').focusout(function () {
-                //Defferate action in order to let action be performed
-                setTimeout(function () {
-                    set(snmpElementComponent, 'showObjects', false);
-                }, 300);
-            });
-        },
-
-        actions: {
-            addObject: function (mibObject) {
+                //Clean content initialization
                 var content = get(this, 'content');
-                content += '{{ ' + mibObject + ' }}';
-                set(this, 'content', content);
+                if (isNone(content)) {
+                    set(this, 'content', '');
+                }
+            },
+
+
+            didInsertElement: function () {
+                var snmpElementComponent = this;
+                snmpElementComponent.$('.oidelement').click(function () {
+                    set(snmpElementComponent, 'showObjects', true);
+                });
+                snmpElementComponent.$('.oidelement').focusout(function () {
+                    //Defferate action in order to let action be performed
+                    setTimeout(function () {
+                        set(snmpElementComponent, 'showObjects', false);
+                    }, 300);
+                });
+            },
+
+            actions: {
+                addObject: function (mibObject) {
+                    var content = get(this, 'content');
+                    content += '{{ ' + mibObject + ' }}';
+                    set(this, 'content', content);
+                }
             }
-        }
 
-    });
+        });
 
-    Ember.Application.initializer({
-        name:'component-snmpelement',
-        initialize: function(container, application) {
-            application.register('component:component-snmpelement', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-snmpelement', component);
+    }
 });

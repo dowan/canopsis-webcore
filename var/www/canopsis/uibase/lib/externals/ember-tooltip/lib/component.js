@@ -17,77 +17,71 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember'
-], function(Ember) {
 
-    var get = Ember.get,
-        set = Ember.set,
-        __ = Ember.String.loc;
+Ember.Application.initializer({
+    name:"component-tooltip",
+    initialize: function(container, application) {
+        var get = Ember.get,
+            set = Ember.set,
+            __ = Ember.String.loc;
 
 
-    var component = Ember.Component.extend({
-        tagName: 'span',
-        template: Ember.HTMLBars.compile('{{yield}}'),
+        var component = Ember.Component.extend({
+            tagName: 'span',
+            template: Ember.HTMLBars.compile('{{yield}}'),
 
-        htmlEnabled: true,
-        placement: 'top',
-        triggerEvent: 'hover',
-        noTranslation: false,
+            htmlEnabled: true,
+            placement: 'top',
+            triggerEvent: 'hover',
+            noTranslation: false,
 
-        didInsertElement: function() {
-            this.popoverTargets = this.$("[data-toggle=popover]");
-            if(this.popoverTargets) {
-                this.popoverTargets.popover();
-            }
-
-            var component = this;
-
-            var options = {
-                html : get(component, 'htmlEnabled'),
-                placement: get(component, 'placement'),
-                trigger: get(component, 'triggerEvent'),
-                container:'body'
-            };
-
-            var content = get(component, 'content');
-
-            if (!Ember.isNone(content)) {
-                if(get(component, 'noTranslation')) {
-                    options.content = content;
-                } else {
-                    options.content = __(content);
+            didInsertElement: function() {
+                this.popoverTargets = this.$("[data-toggle=popover]");
+                if(this.popoverTargets) {
+                    this.popoverTargets.popover();
                 }
-            }
 
-            var title = get(component, 'title');
+                var component = this;
 
-            if (!Ember.isNone(title)) {
-                if(get(component, 'noTranslation')) {
-                    options.title = title;
-                } else {
-                    options.title = __(title);
+                var options = {
+                    html : get(component, 'htmlEnabled'),
+                    placement: get(component, 'placement'),
+                    trigger: get(component, 'triggerEvent'),
+                    container:'body'
+                };
+
+                var content = get(component, 'content');
+
+                if (!Ember.isNone(content)) {
+                    if(get(component, 'noTranslation')) {
+                        options.content = content;
+                    } else {
+                        options.content = __(content);
+                    }
                 }
+
+                var title = get(component, 'title');
+
+                if (!Ember.isNone(title)) {
+                    if(get(component, 'noTranslation')) {
+                        options.title = title;
+                    } else {
+                        options.title = __(title);
+                    }
+                }
+
+                this.$().popover(options);
+            },
+
+            willDestroyElement: function() {
+                if(this.popoverTargets) {
+                    this.popoverTargets.popover('destroy');
+                }
+
+                this.$().popover('destroy');
             }
+        });
 
-            this.$().popover(options);
-        },
-
-        willDestroyElement: function() {
-            if(this.popoverTargets) {
-                this.popoverTargets.popover('destroy');
-            }
-
-            this.$().popover('destroy');
-        }
-    });
-
-    Ember.Application.initializer({
-        name:"component-tooltip",
-        initialize: function(container, application) {
-            application.register('component:component-tooltip', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-tooltip', component);
+    }
 });

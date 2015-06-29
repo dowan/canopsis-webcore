@@ -17,14 +17,14 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'canopsis/canopsis-backend-ui-connector/adapters/event'
-], function(EventAdapter) {
+Ember.Application.initializer({
+    name:"EueAdapter",
+    after: "EventAdapter",
+    initialize: function(container, application) {
+        var EventAdapter = container.lookupFactory('adapter:event');
 
-    var adapter = EventAdapter;
+        var adapter = EventAdapter;
 
-
-    loader.register('adapter:eue', adapter);
-
-    return adapter;
+        application.register('adapter:eue', adapter);
+    }
 });

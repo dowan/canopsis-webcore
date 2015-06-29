@@ -17,50 +17,44 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/utils/data'
-], function(Ember, dataUtils) {
+Ember.Application.initializer({
+    name:"component-sessioneditor",
+    after: 'DataUtils',
+    initialize: function(container, application) {
+        var dataUtils = container.lookupFactory('utility:data');
 
-    var get = Ember.get,
-        set = Ember.set;
+        var get = Ember.get,
+            set = Ember.set;
 
 
-    var component = Ember.Component.extend({
-        fieldValue: function() {
-            var key = this.get('attr.model.options.valueFrom');
-            var loginController = dataUtils.getLoggedUserController();
+        var component = Ember.Component.extend({
+            fieldValue: function() {
+                var key = this.get('attr.model.options.valueFrom');
+                var loginController = dataUtils.getLoggedUserController();
 
-            var value = loginController.get('record.' + key);
+                var value = loginController.get('record.' + key);
 
-            console.group('editor-session');
-            console.log('key:', key);
-            console.log('value:', value);
-            console.groupEnd();
+                console.group('editor-session');
+                console.log('key:', key);
+                console.log('value:', value);
+                console.groupEnd();
 
-            return value;
-        }.property('attr.field'),
+                return value;
+            }.property('attr.field'),
 
-        init: function() {
-            this._super(arguments);
+            init: function() {
+                this._super(arguments);
 
-            if(get(this, 'attr.value') === undefined) {
-                set(this, 'attr.value', get(this, 'fieldValue'));
+                if(get(this, 'attr.value') === undefined) {
+                    set(this, 'attr.value', get(this, 'fieldValue'));
+                }
+            },
+            validate: function(){
+                if(isRed(value))
+                    return true;
             }
-        },
-        validate: function(){
-            if(isRed(value))
-                return true;
-        }
-    });
+        });
 
-
-    Ember.Application.initializer({
-        name:"component-sessioneditor",
-        initialize: function(container, application) {
-            application.register('component:component-sessioneditor', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-sessioneditor', component);
+    }
 });

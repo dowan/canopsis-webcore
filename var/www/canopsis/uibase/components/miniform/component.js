@@ -17,26 +17,19 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember'
-], function(Ember, typesUtils) {
+Ember.Application.initializer({
+    name:"component-miniform",
+    initialize: function(container, application) {
+        var get = Ember.get,
+            set = Ember.set;
 
-    var get = Ember.get,
-        set = Ember.set;
 
+        var component = Ember.Component.extend({
+            classNames: ['panel', 'panel-default'],
+            attributeBindings: ['style'],
+            style: 'margin-bottom:0'
+        });
 
-    var component = Ember.Component.extend({
-        classNames: ['panel', 'panel-default'],
-        attributeBindings: ['style'],
-        style: 'margin-bottom:0'
-    });
-
-    Ember.Application.initializer({
-        name:"component-miniform",
-        initialize: function(container, application) {
-            application.register('component:component-miniform', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-miniform', component);
+    }
 });

@@ -17,257 +17,252 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'jquery',
-    'ember',
-    'ember-data',
-    'app/lib/factories/widget',
-    'app/controller/serie',
-    'canopsis/canopsisConfiguration',
-    'app/lib/utils/values',
-    'app/controller/perfdata',
-], function($, Ember, DS, WidgetFactory, Serie, canopsisConfiguration, values) {
+ Ember.Application.initializer({
+    name: 'TextWidget',
+    after: ['Schemas', 'WidgetFactory', 'SerieController', 'ValuesUtils'],
+    initialize: function(container, application) {
+        values = container.lookupFactory('utility:values');
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
-    var widget = WidgetFactory('text', {
+        var WidgetFactory = container.lookupFactory('factory:widget');
 
-        needs: ['serie', 'perfdata'],
+        var widget = WidgetFactory('text', {
 
-        perfdata: Ember.computed.alias('controllers.perfdata'),
+            needs: ['serie', 'perfdata'],
 
-        init: function() {
-            this._super.apply(this, arguments);
-            set(this, 'widgetDataStore', DS.Store.create({
-                container: get(this, "container")
-            }));
-            this.registerHelpers();
-        },
+            perfdata: Ember.computed.alias('controllers.perfdata'),
 
-        findItems: function() {
+            init: function() {
+                this._super.apply(this, arguments);
+                set(this, 'widgetDataStore', DS.Store.create({
+                    container: get(this, "container")
+                }));
+                this.registerHelpers();
+            },
 
-            //Contextual information for template compilation from user creation.
-            Ember.setProperties(this, {
-                'templateContext': Ember.Object.create({
-                    serie: {},
-                    event: {}
-                }),
-                'ready': {}
-            });
+            findItems: function() {
 
-            var now = new Date().getTime();
-            var to = now;
-            //fetch time window of 5 minutes hoping there are metrics since.
-            var from = now - 300000;
+                //Contextual information for template compilation from user creation.
+                Ember.setProperties(this, {
+                    'templateContext': Ember.Object.create({
+                        serie: {},
+                        event: {}
+                    }),
+                    'ready': {}
+                });
 
-            //When specific from / to dates specified into the controller,
-            //the widget will use them. This helps manage live reporting.
-            if (!isNone(get(this, 'from'))) {
-                from = get(this, 'from');
-            }
-            if (!isNone(get(this, 'to'))) {
-                to = get(this, 'to');
-            }
+                var now = new Date().getTime();
+                var to = now;
+                //fetch time window of 5 minutes hoping there are metrics since.
+                var from = now - 300000;
 
-            //This will trigger api queries for events and series in lasy philosophy.
-            //If no contextual information set by user, no query is done.
-            this.fetchEvents();
-            this.fetchSeries(from, to);
-
-        },
-
-        fetchEvents: function (){
-
-            var controller = this,
-                events_information = get(this, 'events'),
-                rks = [];
-
-            if (!isNone(events_information)) {
-                var events_information_length = events_information.length;
-
-                for(var i=0; i<events_information_length; i++) {
-                    rks.push(events_information[i].rk);
+                //When specific from / to dates specified into the controller,
+                //the widget will use them. This helps manage live reporting.
+                if (!isNone(get(this, 'from'))) {
+                    from = get(this, 'from');
                 }
-            }
+                if (!isNone(get(this, 'to'))) {
+                    to = get(this, 'to');
+                }
 
-            if (rks.length) {
-                //Does the widget have to manage event information
-                var event_query = get(this, "widgetDataStore").findQuery(
-                    'event',
-                    {
-                        filter: JSON.stringify({_id: {'$in': rks}}),
-                        limit: 50,
+                //This will trigger api queries for events and series in lasy philosophy.
+                //If no contextual information set by user, no query is done.
+                this.fetchEvents();
+                this.fetchSeries(from, to);
+
+            },
+
+            fetchEvents: function (){
+
+                var controller = this,
+                    events_information = get(this, 'events'),
+                    rks = [];
+
+                if (!isNone(events_information)) {
+                    var events_information_length = events_information.length;
+
+                    for(var i=0; i<events_information_length; i++) {
+                        rks.push(events_information[i].rk);
                     }
-                ).then(function (data) {
+                }
 
-                    console.log('Fetched events', data.content);
+                if (rks.length) {
+                    //Does the widget have to manage event information
+                    var event_query = get(this, "widgetDataStore").findQuery(
+                        'event',
+                        {
+                            filter: JSON.stringify({_id: {'$in': rks}}),
+                            limit: 50,
+                        }
+                    ).then(function (data) {
 
-                    //Turn event information and labels to dictionnary for easy retreiving below
-                    var labels_for_rk = {},
-                        i;
+                        console.log('Fetched events', data.content);
 
-                    for (i=0; i<events_information_length; i++) {
+                        //Turn event information and labels to dictionnary for easy retreiving below
+                        var labels_for_rk = {},
+                            i;
 
-                        labels_for_rk[events_information[i].rk] = events_information[i].label;
+                        for (i=0; i<events_information_length; i++) {
 
-                    }
+                            labels_for_rk[events_information[i].rk] = events_information[i].label;
 
-                    //mapping between template context data and fetched events information from their labels
-                    var length = data.content.length;
-                    for (i=0; i<length; i++) {
-
-                        var rk = get(data.content[i], 'id'),
-                            label = labels_for_rk[rk].replace(/ /g,'_');
-                            if (!isNone(label)) {
-                                var eventjson = data.content[i].toJson();
-                                eventjson.id = get(data.content[i], 'id');
-                                set(controller, 'templateContext.event.' + label, eventjson);
-                            } else {
-                                console.warn('Event label not set, no render possible for rk ' + rk);
-                            }
-
-                    }
-
-                    controller.setReady('event');
-
-                });
-            } else {
-                controller.setReady('event');
-            }
-        },
-
-        fetchSeries: function (from, to){
-
-            var controller = this,
-                seriesController = get(controller, 'controllers.serie'),
-                series;
-
-
-            var seriesValues = get(this, 'series');
-            if (!isNone(seriesValues)) {
-
-                //Declared here for translation purposes
-                var valueNotDefined = __('No data available');
-
-                var seriesFilter = JSON.stringify({
-                    crecord_name: {'$in': seriesValues}
-                });
-
-                console.log('widget text series duration queries', from, to);
-                get(this, 'widgetDataStore').findQuery(
-                    'serie',
-                    {filter: seriesFilter}
-                    ).then(function(results) {
-
-                    series = get(results, 'content');
-                    console.log('series records', series);
-
-                    //Event query is the first param if any rk have to be fetched
-                    var seriesQueries = [];
-                    for (var i = 0, l = series.length; i < l; i++) {
-                        seriesQueries.push(seriesController.fetch(
-                            series[i],
-                            from,
-                            to
-                        ));
-                    }
-
-                    console.log('seriesQueries', seriesQueries);
-
-                    Ember.RSVP.all(seriesQueries).then(function(pargs) {
-
-                        for (var i = 0, l = pargs.length; i < l; i++) {
-                            var data = pargs[i];
-                            console.log('series pargs', pargs);
-                            var displayValue = valueNotDefined;
-                            if (data.length) {
-                                //choosing the value for the last point when any
-                                displayValue = data[data.length - 1][1];
-                            }
-                            var serieName = get(series[i], 'crecord_name').replace(/ /g,'_');
-                            set(controller, 'templateContext.serie.' + serieName, displayValue);
                         }
 
-                        controller.setReady('serie');
+                        //mapping between template context data and fetched events information from their labels
+                        var length = data.content.length;
+                        for (i=0; i<length; i++) {
+
+                            var rk = get(data.content[i], 'id'),
+                                label = labels_for_rk[rk].replace(/ /g,'_');
+                                if (!isNone(label)) {
+                                    var eventjson = data.content[i].toJson();
+                                    eventjson.id = get(data.content[i], 'id');
+                                    set(controller, 'templateContext.event.' + label, eventjson);
+                                } else {
+                                    console.warn('Event label not set, no render possible for rk ' + rk);
+                                }
+
+                        }
+
+                        controller.setReady('event');
+
+                    });
+                } else {
+                    controller.setReady('event');
+                }
+            },
+
+            fetchSeries: function (from, to){
+
+                var controller = this,
+                    seriesController = get(controller, 'controllers.serie'),
+                    series;
+
+
+                var seriesValues = get(this, 'series');
+                if (!isNone(seriesValues)) {
+
+                    //Declared here for translation purposes
+                    var valueNotDefined = __('No data available');
+
+                    var seriesFilter = JSON.stringify({
+                        crecord_name: {'$in': seriesValues}
                     });
 
+                    console.log('widget text series duration queries', from, to);
+                    get(this, 'widgetDataStore').findQuery(
+                        'serie',
+                        {filter: seriesFilter}
+                        ).then(function(results) {
 
-                });
-            } else {
-                controller.setReady('serie');
-            }
+                        series = get(results, 'content');
+                        console.log('series records', series);
 
-        },
-
-        setReady: function (element) {
-            set(this, 'ready.' + element, true);
-            if (get(this, 'ready.serie') && get(this, 'ready.event')) {
-                set(this, 'ready', {});
-                this.renderTemplate();
-            }
-            console.log('widget ready', get(this, 'ready'), get(this, 'templateContext') );
-        },
-
-        registerHelpers: function (){
-            var controller = this;
-            var invalidNumber = __('Not a valid number');
-
-            var helpers = {
-                hr: function (value) {
-                    console.log('found value for human readable : ', value);
-                    var unit = get(value, 'hash.unit');
-                    var value = get(value, 'hash.value');
-                    //only second option unit is available for now
-                    //otherwise, values are considered as number base 10
-                    if (unit !== 's') {
-                        unit = '';
-                    }
-
-                    if(isNaN(value)) {
-                        value = parseFloat(value);
-                        if(isNaN(value)) {
-                            return invalidNumber;
+                        //Event query is the first param if any rk have to be fetched
+                        var seriesQueries = [];
+                        for (var i = 0, l = series.length; i < l; i++) {
+                            seriesQueries.push(seriesController.fetch(
+                                series[i],
+                                from,
+                                to
+                            ));
                         }
-                    }
-                    value = values.humanize(value, unit);
-                    return value;
-                },
-                action: function () {
-                    return 'action from helper';
-                },
-            };
 
-            for (var helper in helpers) {
-                Handlebars.registerHelper(helper, helpers[helper]);
-            }
-        },
+                        console.log('seriesQueries', seriesQueries);
+
+                        Ember.RSVP.all(seriesQueries).then(function(pargs) {
+
+                            for (var i = 0, l = pargs.length; i < l; i++) {
+                                var data = pargs[i];
+                                console.log('series pargs', pargs);
+                                var displayValue = valueNotDefined;
+                                if (data.length) {
+                                    //choosing the value for the last point when any
+                                    displayValue = data[data.length - 1][1];
+                                }
+                                var serieName = get(series[i], 'crecord_name').replace(/ /g,'_');
+                                set(controller, 'templateContext.serie.' + serieName, displayValue);
+                            }
+
+                            controller.setReady('serie');
+                        });
 
 
-        renderTemplate: function (){
-
-            var template = get(this, 'html'),
-                html = 'Unable to render template.';
-
-            //Avoid give undefined template to the handlebars compilator.
-            if (isNone(template)) {
-                template = '';
-            }
-
-            try {
-                html = Handlebars.compile(template)(get(this, 'templateContext'));
-            } catch (err) {
-                html = '<i>An error occured while compiling the template with the record.' +
-                ' please check if the template is correct</i>';
-                if (canopsisConfiguration.DEBUG) {
-                    html += '<p>' + err + '</p>';
+                    });
+                } else {
+                    controller.setReady('serie');
                 }
+
+            },
+
+            setReady: function (element) {
+                set(this, 'ready.' + element, true);
+                if (get(this, 'ready.serie') && get(this, 'ready.event')) {
+                    set(this, 'ready', {});
+                    this.renderTemplate();
+                }
+                console.log('widget ready', get(this, 'ready'), get(this, 'templateContext') );
+            },
+
+            registerHelpers: function (){
+                var controller = this;
+                var invalidNumber = __('Not a valid number');
+
+                var helpers = {
+                    hr: function (value) {
+                        console.log('found value for human readable : ', value);
+                        var unit = get(value, 'hash.unit');
+                        var value = get(value, 'hash.value');
+                        //only second option unit is available for now
+                        //otherwise, values are considered as number base 10
+                        if (unit !== 's') {
+                            unit = '';
+                        }
+
+                        if(isNaN(value)) {
+                            value = parseFloat(value);
+                            if(isNaN(value)) {
+                                return invalidNumber;
+                            }
+                        }
+                        value = values.humanize(value, unit);
+                        return value;
+                    },
+                    action: function () {
+                        return 'action from helper';
+                    },
+                };
+
+                for (var helper in helpers) {
+                    Handlebars.registerHelper(helper, helpers[helper]);
+                }
+            },
+
+
+            renderTemplate: function (){
+
+                var template = get(this, 'html'),
+                    html = 'Unable to render template.';
+
+                //Avoid give undefined template to the handlebars compilator.
+                if (isNone(template)) {
+                    template = '';
+                }
+
+                try {
+                    html = Handlebars.compile(template)(get(this, 'templateContext'));
+                } catch (err) {
+                    html = '<i>An error occured while compiling the template with the record.' +
+                    ' please check if the template is correct</i>';
+                    if (window.canopsisConfiguration.DEBUG) {
+                        html += '<p>' + err + '</p>';
+                    }
+                }
+                set(this, 'htmlRender', new Ember.Handlebars.SafeString(html));
             }
-            set(this, 'htmlRender', new Ember.Handlebars.SafeString(html));
-        },
-
-    });
-
-    return widget;
+        });
+    }
 });

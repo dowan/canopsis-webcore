@@ -17,23 +17,23 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'jquery',
-    'app/lib/factories/widget'
-], function($, WidgetFactory) {
+Ember.Application.initializer({
+    name:"UiactionbuttonWidget",
+    after: ['Schemas', 'WidgetFactory'],
+    initialize: function(container, application) {
+        var WidgetFactory = container.lookupFactory('factory:widget');
 
-    var widget = WidgetFactory('uiactionbutton',{
-        tagName: 'span',
-        actions: {
-            do: function(action, params) {
-                if(params === undefined || params === null){
-                    params = [];
+        var widget = WidgetFactory('uiactionbutton', {
+            tagName: 'span',
+            actions: {
+                do: function(action, params) {
+                    if(params === undefined || params === null){
+                        params = [];
+                    }
+
+                    this.send(action, params);
                 }
-
-                this.send(action, params);
             }
-        }
-    });
-
-    return widget;
+        });
+    }
 });

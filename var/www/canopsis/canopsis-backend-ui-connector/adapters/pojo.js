@@ -17,34 +17,33 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'jquery',
-    'ember',
-    'canopsis/canopsis-backend-ui-connector/adapters/application'
-], function($, Ember, ApplicationAdapter) {
+Ember.Application.initializer({
+    name:"PojoAdapter",
+    after: "ApplicationAdapter",
+    initialize: function(container, application) {
+        var ApplicationAdapter = container.lookupFactory('adapter:application');
 
-    var adapter = ApplicationAdapter.extend({
-        buildURL: function(type, id) {
-            return '/' + type + (!!id ? "/" + id : "");
-        },
+        var adapter = ApplicationAdapter.extend({
+            buildURL: function(type, id) {
+                return '/' + type + (!!id ? "/" + id : "");
+            },
 
-        find: function (type, id) {
-            return this.ajax(this.buildURL(type, id), 'GET', undefined);
-        },
+            find: function (type, id) {
+                return this.ajax(this.buildURL(type, id), 'GET', undefined);
+            },
 
-        createRecord: function (type, id, options) {
-            var url = this.buildURL(type, id);
-            return new Ember.RSVP.Promise(function(resolve, reject) {
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: options
-                }).then(resolve, reject);
-            });
-        }
-    });
+            createRecord: function (type, id, options) {
+                var url = this.buildURL(type, id);
+                return new Ember.RSVP.Promise(function(resolve, reject) {
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: options
+                    }).then(resolve, reject);
+                });
+            }
+        });
 
-    loader.register('adapter:pojo', adapter);
-
-    return adapter;
+        application.register('adapter:pojo', adapter);
+    }
 });

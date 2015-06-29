@@ -17,32 +17,30 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'jquery',
-    'ember',
-    'canopsis/canopsis-backend-ui-connector/adapters/application'
-], function($, Ember, ApplicationAdapter) {
+Ember.Application.initializer({
+    name:"SchemaAdapter",
+    after: "ApplicationAdapter",
+    initialize: function(container, application) {
+        var shemasLimit = 200;
+        var ApplicationAdapter = container.lookupFactory('adapter:application');
 
-    var shemasLimit = 200;
+        var adapter = ApplicationAdapter.extend({
+            findAll: function (callback) {
+                return this.findAllSyncronous(callback);
+            },
 
-    var adapter = ApplicationAdapter.extend({
-        findAll: function (callback) {
-            return this.findAllSyncronous(callback);
-        },
+            //TODO make this asyncronous
+            findAllSyncronous: function (successCallback) {
+                return $.ajax({
+                    url: '/rest/schemas',
+                    data: {limit: shemasLimit},
+                    success: successCallback,
+                    async: false
+                });
 
-        //TODO make this asyncronous
-        findAllSyncronous: function (successCallback) {
-            return $.ajax({
-                url: '/rest/schemas',
-                data: {limit: shemasLimit},
-                success: successCallback,
-                async: false
-            });
+            }
+        });
 
-        }
-    });
-
-    loader.register('adapter:schema', adapter);
-
-    return adapter;
+        application.register('adapter:schema', adapter);
+    }
 });

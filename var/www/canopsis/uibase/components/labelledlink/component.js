@@ -17,33 +17,20 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-], function(Ember) {
-
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone,
-        __ = Ember.String.loc;
-
-
-    var component = Ember.Component.extend({
-        label_placeholder: __('label'),
-        url_placeholder: __('url'),
-
-        init: function () {
-            this._super();
-        },
+Ember.Application.initializer({
+    name:"component-labelledlink",
+    initialize: function(container, application) {
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone,
+            __ = Ember.String.loc;
 
 
-    });
+        var component = Ember.Component.extend({
+            label_placeholder: __('label'),
+            url_placeholder: __('url')
+        });
 
-    Ember.Application.initializer({
-        name:"component-labelledlink",
-        initialize: function(container, application) {
-            application.register('component:component-labelledlink', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-labelledlink', component);
+    }
 });

@@ -17,189 +17,186 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'ember-data',
-    'app/lib/loaders/utils',
-    'app/lib/utils/data',
-    'app/lib/utils/forms',
-    'app/lib/utils/notification',
-    'app/lib/factories/mixin'
-], function(Ember, DS, utils, dataUtils, formsUtils, notificationUtils, Mixin) {
+Ember.Application.initializer({
+    name:'CustomFilterListMixin',
+    after: ['MixinFactory', 'FormsUtils', 'HashUtils', 'NotificationUtils'],
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
+        var formsUtils = container.lookupFactory('utility:forms');
+        var hashUtils = container.lookupFactory('utility:hash');
+        var notificationUtils = container.lookupFactory('utility:notification');
+
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
 
+        /**
+          * Implements Custom filter management for list
+          * A filter is a combination of a cfilter and a title.
+          * Custom cfilter allow perform selelection on a list with custom filter information.
+        */
+        var mixin = Mixin('customfilterlist', {
+            partials: {
+                subHeader: ['customfilters']
+            },
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+            init: function() {
+                this._super();
 
+                if(!get(this, 'model.user_filters')) {
+                    set(this, 'model.user_filters', Ember.A());
+                }
+            },
 
-    /**
-      * Implements Custom filter management for list
-      * A filter is a combination of a cfilter and a title.
-      * Custom cfilter allow perform selelection on a list with custom filter information.
-    */
-    var mixin = Mixin('customfilterlist', {
-        partials: {
-            subHeader: ['customfilters']
-        },
+            isSelectedFilter: function (filterList) {
+                if(!filterList || !filterList.length) {
+                    return false;
+                }
 
-        init: function() {
-            this._super();
+                var filterLen = filterList.length;
+                var currentTitle = get(this, 'model.selected_filter.title');
+                for (var i = 0; i < filterLen; i++) {
 
-            if(!get(this, 'model.user_filters')) {
-                set(this, 'model.user_filters', Ember.A());
-            }
-        },
+                    var compareTitle = get(filterList[i], 'title');
 
-        isSelectedFilter: function (filterList) {
-            if(!filterList || !filterList.length) {
-                return false;
-            }
+                    console.log('compare filters',currentTitle, compareTitle);
 
-            var filterLen = filterList.length;
-            var currentTitle = get(this, 'model.selected_filter.title');
-            for (var i = 0; i < filterLen; i++) {
+                    if (currentTitle === compareTitle) {
+                        set(filterList[i], 'isActive', true);
+                    } else {
+                        set(filterList[i], 'isActive', false);
+                    }
+                }
 
-                var compareTitle = get(filterList[i], 'title');
+                return filterList;
+            },
 
-                console.log('compare filters',currentTitle, compareTitle);
+            filters_list: function () {
+                return this.isSelectedFilter(get(this, 'mixinOptions.customfilterlist.filters'));
+            }.property('mixinOptions.customfilterlist.filters', 'model.selected_filter'),
 
-                if (currentTitle === compareTitle) {
-                    set(filterList[i], 'isActive', true);
+            user_filters: function () {
+                return this.isSelectedFilter(get(this, 'model.user_filters'));
+            }.property('model.user_filters', 'model.selected_filter'),
+
+            computeFilterFragmentsList: function() {
+                var list = this._super(),
+                    mixinOptions = get(this, 'model.mixins').findBy('name', 'customfilterlist'),
+                    userFilter;
+
+                if(get(this, 'model.selected_filter.filter') !== null && get(this, 'model.selected_filter.filter') !== undefined) {
+                    userFilter = get(this, 'model.selected_filter.filter');
+                } else if(get(this, 'model.selected_filter') && !get(this, 'model.selected_filter.filter')) {
+                    userFilter = {};
+                } else if(mixinOptions && mixinOptions.default_filter) {
+                    userFilter = mixinOptions.default_filter;
+                    userFilter = JSON.parse(userFilter);
                 } else {
-                    set(filterList[i], 'isActive', false);
-                }
-            }
-
-            return filterList;
-        },
-
-        filters_list: function () {
-            return this.isSelectedFilter(get(this, 'mixinOptions.customfilterlist.filters'));
-        }.property('mixinOptions.customfilterlist.filters', 'model.selected_filter'),
-
-        user_filters: function () {
-            return this.isSelectedFilter(get(this, 'model.user_filters'));
-        }.property('model.user_filters', 'model.selected_filter'),
-
-        computeFilterFragmentsList: function() {
-            var list = this._super(),
-                mixinOptions = get(this, 'model.mixins').findBy('name', 'customfilterlist'),
-                userFilter;
-
-            if(get(this, 'model.selected_filter.filter') !== null && get(this, 'model.selected_filter.filter') !== undefined) {
-                userFilter = get(this, 'model.selected_filter.filter');
-            } else if(get(this, 'model.selected_filter') && !get(this, 'model.selected_filter.filter')) {
-                userFilter = {};
-            } else if(mixinOptions && mixinOptions.default_filter) {
-                userFilter = mixinOptions.default_filter;
-                userFilter = JSON.parse(userFilter);
-            } else {
-                userFilter = {};
-            }
-
-            list.pushObject(userFilter);
-
-            return list;
-        },
-
-        actions: {
-            setFilter: function (filter) {
-
-                var query = get(filter, 'filter');
-
-                set(filter, 'isActive', true);
-                //current user filter set for list management
-                set(this, 'model.selected_filter', filter);
-                //user filter for list be able to reload properly
-                set(this, 'model.userFilter', query);
-                //push userparams to db
-                this.saveUserConfiguration();
-
-                //changing pagination information
-                if (!isNone(get(this, 'currentPage'))) {
-                    set(this, 'currentPage', 1);
+                    userFilter = {};
                 }
 
-                this.refreshContent();
+                list.pushObject(userFilter);
+
+                return list;
             },
 
-            addUserFilter: function () {
-                var widgetController = this;
+            actions: {
+                setFilter: function (filter) {
 
-                var record = dataUtils.getStore().createRecord('customfilter', {
-                    crecord_type: 'customfilter'
-                });
+                    var query = get(filter, 'filter');
 
-                var recordWizard = formsUtils.showNew('modelform', record, {
-                    title: __('Create a custom filter for current list')
-                });
+                    set(filter, 'isActive', true);
+                    //current user filter set for list management
+                    set(this, 'model.selected_filter', filter);
+                    //user filter for list be able to reload properly
+                    set(this, 'model.userFilter', query);
+                    //push userparams to db
+                    this.saveUserConfiguration();
 
-                recordWizard.submit.then(function(form) {
-                    record = form.get('formContext');
+                    //changing pagination information
+                    if (!isNone(get(this, 'currentPage'))) {
+                        set(this, 'currentPage', 1);
+                    }
 
-                    get(widgetController, 'model.user_filters').pushObject(record);
+                    this.refreshContent();
+                },
 
-                    widgetController.notifyPropertyChange('model.user_filters');
+                addUserFilter: function () {
+                    var widgetController = this;
+
+                    var record = dataUtils.getStore().createRecord('customfilter', {
+                        crecord_type: 'customfilter'
+                    });
+
+                    var recordWizard = formsUtils.showNew('modelform', record, {
+                        title: __('Create a custom filter for current list')
+                    });
+
+                    recordWizard.submit.then(function(form) {
+                        record = form.get('formContext');
+
+                        get(widgetController, 'model.user_filters').pushObject(record);
+
+                        widgetController.notifyPropertyChange('model.user_filters');
 
 
-                    console.log('Custom filter created', record, form);
-                    notificationUtils.info(__('Custom filter created'));
+                        console.log('Custom filter created', record, form);
+                        notificationUtils.info(__('Custom filter created'));
 
-                    // get(widgetController, 'viewController').get('content').save();
+                        // get(widgetController, 'viewController').get('content').save();
 
-                    widgetController.saveUserConfiguration();
-                });
-            },
+                        widgetController.saveUserConfiguration();
+                    });
+                },
 
-            editFilter: function (filter) {
+                editFilter: function (filter) {
 
-                var widgetController = this;
+                    var widgetController = this;
 
-                //rebuild a crecord as data may be simple js object saved to userpreferences
-                var record = dataUtils.getStore().createRecord('customfilter', {
-                    crecord_type: 'customfilter',
-                    filter: get(filter, 'filter'),
-                    title: get(filter, 'title'),
-                });
+                    //rebuild a crecord as data may be simple js object saved to userpreferences
+                    var record = dataUtils.getStore().createRecord('customfilter', {
+                        crecord_type: 'customfilter',
+                        filter: get(filter, 'filter'),
+                        title: get(filter, 'title'),
+                    });
 
-                var recordWizard = formsUtils.showNew('modelform', record, {
-                    title: __('Edit filter for current list')
-                });
+                    var recordWizard = formsUtils.showNew('modelform', record, {
+                        title: __('Edit filter for current list')
+                    });
 
-                recordWizard.submit.then(function(form) {
-                    widgetController.get('model.user_filters').removeObject(filter);
-                    record = form.get('formContext');
-                    widgetController.get('model.user_filters').pushObject(record);
-                    console.log('Custom filter created', record, form);
-                    notificationUtils.info(__('Custom filter created'));
+                    recordWizard.submit.then(function(form) {
+                        widgetController.get('model.user_filters').removeObject(filter);
+                        record = form.get('formContext');
+                        widgetController.get('model.user_filters').pushObject(record);
+                        console.log('Custom filter created', record, form);
+                        notificationUtils.info(__('Custom filter created'));
 
-                    widgetController.saveUserConfiguration();
-                });
-            },
+                        widgetController.saveUserConfiguration();
+                    });
+                },
 
-            removeFilter: function (filter) {
+                removeFilter: function (filter) {
 
-                var title = get(filter, 'title');
+                    var title = get(filter, 'title');
 
-                var recordWizard = formsUtils.showNew('confirmform', {}, {
-                    title: __('Are you sure to delete filter') + ' ' + title + '?'
-                });
+                    var recordWizard = formsUtils.showNew('confirmform', {}, {
+                        title: __('Are you sure to delete filter') + ' ' + title + '?'
+                    });
 
-                var widgetController = this;
+                    var widgetController = this;
 
-                recordWizard.submit.then(function(form) {
-                    widgetController.get('model.user_filters').removeObject(filter);
-                    notificationUtils.info(__('Custom filter removed'));
+                    recordWizard.submit.then(function(form) {
+                        widgetController.get('model.user_filters').removeObject(filter);
+                        notificationUtils.info(__('Custom filter removed'));
 
-                    // get(widgetController, 'viewController').get('content').save();
+                        // get(widgetController, 'viewController').get('content').save();
 
-                    widgetController.saveUserConfiguration();
-                });
+                        widgetController.saveUserConfiguration();
+                    });
+                }
             }
-        }
-    });
-
-    return mixin;
+        });
+        application.register('mixin:custom-filter-list', mixin);
+    }
 });

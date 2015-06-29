@@ -17,100 +17,95 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'canopsis/uibase/components/classifiedcrecordselector/component'
-], function(Ember, Classifiedcrecordselector) {
+Ember.Application.initializer({
+    name:"component-arrayclassifiedcrecordselector",
+    after: 'component-classifiedcrecordselector',
+    initialize: function(container, application) {
+        var Classifiedcrecordselector = container.lookupFactory('component:component-classifiedcrecordselector');
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
 
-    var component = Classifiedcrecordselector.extend({
-        multiselect: true,
+        var component = Classifiedcrecordselector.extend({
+            multiselect: true,
 
-        setInitialContent: function(initialContent) {
-            var valueKey = get(this, 'valueKey');
+            setInitialContent: function(initialContent) {
+                var valueKey = get(this, 'valueKey');
 
-            console.log('setInitialContent', valueKey, typeof initialContent, initialContent);
-            if(initialContent) {
+                console.log('setInitialContent', valueKey, typeof initialContent, initialContent);
+                if(initialContent) {
+                    if(valueKey) {
+                        set(this, 'loadingInitialContent', "true");
+                    } else {
+                        var resBuffer = [];
+
+                        var selectionUnprepared = get(this, 'selectionUnprepared');
+                        for (var i = 0, l = initialContent.length; i < l; i++) {
+                            selectionUnprepared.pushObject({'name': initialContent[i]});
+                        }
+                    }
+                }
+            },
+
+            selectionChanged: function(){
+                this._super();
+                //additional code ensuring single item selection and use of possible custom valueKey.
+                var selection = get(this, 'selection');
+
+                var valueKey = get(this, 'valueKey');
+                if (isNone(valueKey)) {
+                    valueKey = 'name';
+                }
+
+                //simple cache object to avoid duplicates values
+                var cache = {};
+                //no duplication selection list computation
+                var new_selection = [];
+                //simple content values computation
+                var content = [];
+
+                //iteraing over previous selection in order to recompute it.
+                for (var i=0; i<selection.length; i++) {
+                    var value = get(selection[i], valueKey);
+                    if (!cache[value]) {
+                        cache[value] = 1;
+                        content.push(value);
+                        new_selection.push(selection[i]);
+                    }
+
+
+                }
+                set(this, 'selection', new_selection);
+                set(this, 'content', content);
+
+            }.observes('selectionUnprepared', 'selectionUnprepared.@each'),
+
+            extractItems: function(items) {
+                var valueKey = get(this, 'valueKey');
+                var initialContent = get(this, 'content');
+
                 if(valueKey) {
-                    set(this, 'loadingInitialContent', "true");
-                } else {
                     var resBuffer = [];
-
-                    var selectionUnprepared = get(this, 'selectionUnprepared');
+                    console.log('extractItems', arguments);
                     for (var i = 0, l = initialContent.length; i < l; i++) {
-                        selectionUnprepared.pushObject({'name': initialContent[i]});
+                        var currentInitialItem = initialContent[i];
+
+                        var correspondingExtractedItem = items.findBy('id', initialContent);
+
+                        if(correspondingExtractedItem !== undefined) {
+                            resBuffer.pushObject({ name: correspondingExtractedItem.get(valueKey)});
+                        }
                     }
+                    this.setProperties({
+                        selectionUnprepared: resBuffer,
+                        loadingInitialContent: false
+                    });
                 }
             }
-        },
+        });
 
-        selectionChanged: function(){
-            this._super();
-            //additional code ensuring single item selection and use of possible custom valueKey.
-            var selection = get(this, 'selection');
-
-            var valueKey = get(this, 'valueKey');
-            if (isNone(valueKey)) {
-                valueKey = 'name';
-            }
-
-            //simple cache object to avoid duplicates values
-            var cache = {};
-            //no duplication selection list computation
-            var new_selection = [];
-            //simple content values computation
-            var content = [];
-
-            //iteraing over previous selection in order to recompute it.
-            for (var i=0; i<selection.length; i++) {
-                var value = get(selection[i], valueKey);
-                if (!cache[value]) {
-                    cache[value] = 1;
-                    content.push(value);
-                    new_selection.push(selection[i]);
-                }
-
-
-            }
-            set(this, 'selection', new_selection);
-            set(this, 'content', content);
-
-        }.observes('selectionUnprepared', 'selectionUnprepared.@each'),
-
-        extractItems: function(items) {
-            var valueKey = get(this, 'valueKey');
-            var initialContent = get(this, 'content');
-
-            if(valueKey) {
-                var resBuffer = [];
-                console.log('extractItems', arguments);
-                for (var i = 0, l = initialContent.length; i < l; i++) {
-                    var currentInitialItem = initialContent[i];
-
-                    var correspondingExtractedItem = items.findBy('id', initialContent);
-
-                    if(correspondingExtractedItem !== undefined) {
-                        resBuffer.pushObject({ name: correspondingExtractedItem.get(valueKey)});
-                    }
-                }
-                this.setProperties({
-                    selectionUnprepared: resBuffer,
-                    loadingInitialContent: false
-                });
-            }
-        }
-    });
-
-    Ember.Application.initializer({
-        name:"component-arrayclassifiedcrecordselector",
-        initialize: function(container, application) {
-            application.register('component:component-arrayclassifiedcrecordselector', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-arrayclassifiedcrecordselector', component);
+    }
 });

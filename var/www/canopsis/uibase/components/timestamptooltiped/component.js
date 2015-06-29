@@ -17,37 +17,32 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/utils/dates',
-], function(Ember, dateUtils) {
+Ember.Application.initializer({
+    name:"component-timestamptooltiped",
+    after: 'DatesUtils',
+    initialize: function(container, application) {
+        var dateUtils = container.lookupFactory('utility:dates');
 
-    var get = Ember.get,
-        set = Ember.set,
-        __ = Ember.String.loc;
+        var get = Ember.get,
+            set = Ember.set,
+            __ = Ember.String.loc;
 
 
-    var component = Ember.Component.extend({
-        showMainTimestamp :function () {
-            var maintitle = get(this, 'maintitle');
-            var timestamp = get(this, 'maintimestamp');
-            return __(maintitle) + '<br/><i>' +
-                dateUtils.timestamp2String(timestamp) + '</i>';
-        }.property(),
+        var component = Ember.Component.extend({
+            showMainTimestamp :function () {
+                var maintitle = get(this, 'maintitle');
+                var timestamp = get(this, 'maintimestamp');
+                return __(maintitle) + '<br/><i>' +
+                    dateUtils.timestamp2String(timestamp) + '</i>';
+            }.property(),
 
-        showOptionalElapsed: function () {
-            var optionaltimestamp = get(this, 'optionaltimestamp');
-            return dateUtils.durationFromNow(optionaltimestamp);
-        }.property(),
+            showOptionalElapsed: function () {
+                var optionaltimestamp = get(this, 'optionaltimestamp');
+                return dateUtils.durationFromNow(optionaltimestamp);
+            }.property(),
 
-    });
+        });
 
-    Ember.Application.initializer({
-        name:"component-timestamptooltiped",
-        initialize: function(container, application) {
-            application.register('component:component-timestamptooltiped', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-timestamptooltiped', component);
+    }
 });

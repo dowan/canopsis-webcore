@@ -17,14 +17,14 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember-data',
-    'canopsis/canopsis-backend-ui-connector/serializers/ctx'
-], function(DS, ContextSerializer) {
+Ember.Application.initializer({
+    name:"PbehaviourSerializer",
+    after: "ContextSerializer",
+    initialize: function(container, application) {
+        var ContextSerializer = container.lookupFactory('serializer:context');
 
-    var serializer = ContextSerializer.extend({});
+        var serializer = ContextSerializer.extend({});
 
-    loader.register('serializer:pbehavior', serializer);
-
-    return serializer;
+        application.register('serializer:pbehavior', serializer);
+    }
 });

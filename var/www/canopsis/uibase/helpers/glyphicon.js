@@ -17,10 +17,6 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
-
-    Ember.Handlebars.helper('glyphicon', function(icon) {
-        return new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-' + icon + '"></span>');
-    });
-
+Ember.Handlebars.helper('glyphicon', function(icon) {
+    return new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-' + icon + '"></span>');
 });

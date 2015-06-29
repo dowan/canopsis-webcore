@@ -17,21 +17,21 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/factories/mixin'
-], function(Ember, Mixin) {
-
-    var get = Ember.get,
-        set = Ember.set;
-
-
-    var mixin = Mixin('infobutton', {
-        partials: {
-            itemactionbuttons: ['actionbutton-info']
-        },
-    });
+Ember.Application.initializer({
+    name:'InfoButtonMixin',
+    after: 'MixinFactory',
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
+        var get = Ember.get,
+            set = Ember.set;
 
 
-    return mixin;
+        var mixin = Mixin('infobutton', {
+            partials: {
+                itemactionbuttons: ['actionbutton-info']
+            },
+        });
+
+        application.register('mixin:info-button', mixin);
+    }
 });

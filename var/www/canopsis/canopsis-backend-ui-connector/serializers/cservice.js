@@ -17,32 +17,31 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember-data',
-    'app/serializers/application',
-    'app/mixins/embeddedrecordserializer',
-    'app/lib/loaders/utils'
-], function(DS, ApplicationSerializer, EmbeddedRecordSerializerMixin, utils) {
+Ember.Application.initializer({
+    name:"CserviceSerializer",
+    after: ['ApplicationSerializer', 'EmbeddedRecordSerializerMixin'],
+    initialize: function(container, application) {
+        var ApplicationSerializer = container.lookupFactory('serializer:application');
+        var EmbeddedRecordSerializerMixin = container.lookupFactory('mixin:embedded-record-serializer');
 
-    var serializer = ApplicationSerializer.extend(
-        EmbeddedRecordSerializerMixin,
-        {}
-    );
+        var serializer = ApplicationSerializer.extend(
+            EmbeddedRecordSerializerMixin,
+            {}
+        );
 
-    //TODO don't use utils.schemaList, it is deprecated. Use registries
-    for(var sname in utils.schemaList) {
-        if(sname.indexOf('Crecord.cservice.') === 0) {
-            var xtype = sname.slice('Crecord.cservice.'.length);
-            var modelname = xtype[0].toUpperCase() + xtype.slice(1);
+        //TODO don't use utils.schemaList, it is deprecated. Use registries
+        // for(var sname in utils.schemaList) {
+        //     if(sname.indexOf('Crecord.cservice.') === 0) {
+        //         var xtype = sname.slice('Crecord.cservice.'.length);
+        //         var modelname = xtype[0].toUpperCase() + xtype.slice(1);
 
-            var serializerName = modelname.dasherize();
-            console.log('Add serializer:', serializerName);
+        //         var serializerName = modelname.dasherize();
+        //         console.log('Add serializer:', serializerName);
 
-            loader.register('serializer:' + serializerName, serializer.extend({}));
-        }
+        //         loader.register('serializer:' + serializerName, serializer.extend({}));
+        //     }
+        // }
+
+        application.register('serializer:cservice', serializer);
     }
-
-    loader.register('serializer:cservice', serializer);
-
-    return serializer;
 });

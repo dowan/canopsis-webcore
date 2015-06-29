@@ -17,7 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
+(function() {
 
     Ember.Handlebars.helper('stateview', function(state) {
 
@@ -34,4 +34,4 @@ define(['ember'], function(Ember) {
         return new Ember.Handlebars.SafeString(state_template);
     });
 
-});
+})();

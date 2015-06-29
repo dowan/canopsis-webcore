@@ -17,29 +17,26 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/factories/form',
-    'app/forms/modelform/controller'
-], function(Ember, FormFactory, ModelFormController) {
+Ember.Application.initializer({
+    name:"ScheduleForm",
+    after: 'ModelForm',
+    initialize: function(container, application) {
+        var ModelFormController = container.lookupFactory('form:model');
 
-    var formOptions = {
-        subclass: ModelFormController
-    };
+        var form = ModelFormController.extend({
+            title: 'Configure Schedule',
 
+            init: function() {
+                this._super();
+                this.refreshPartialsList();
+            },
 
-    var form = FormFactory('scheduleform', {
-        title: 'Configure Schedule',
+            partials: {
+                buttons: ["formbutton-previous", "formbutton-cancel", "formbutton-submit"]
+            },
+        });
 
-        init: function() {
-            this._super();
-            this.refreshPartialsList();
-        },
-
-        partials: {
-            buttons: ["formbutton-previous", "formbutton-cancel", "formbutton-submit"]
-        },
-    }, formOptions);
-
-    return form;
+        application.register('form:schedule', form);
+    }
 });
+

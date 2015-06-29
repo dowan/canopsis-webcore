@@ -36,5 +36,7 @@ define([], function () {
         SHOWMODULES: false,
     };
 
+    window.canopsisConfiguration = canopsisConfiguration;
+
     return canopsisConfiguration;
 });

@@ -17,13 +17,11 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
-
+(function(){
     Ember.Handlebars.helper('percent', function(value) {
 
         value = value + '%';
         return new Ember.Handlebars.SafeString(value);
 
     });
-
-});
+})();

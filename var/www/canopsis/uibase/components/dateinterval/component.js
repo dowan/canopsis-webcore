@@ -17,95 +17,86 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+Ember.Application.initializer({
+    name: 'component-dateinterval',
+    after: ['DatesUtils', 'HashUtils'],
+    initialize: function(container, application) {
+        var hashUtils = container.lookupFactory('utility:hash');
+        var datesUtils = container.lookupFactory('utility:dates');
 
-define([
-    'ember',
-    'app/lib/utils/hash',
-    'app/lib/utils/dates',
-    'daterangepicker'
-], function(Ember, hashUtils, datesUtils) {
-
-    var get = Ember.get,
-        set = Ember.set;
+        var get = Ember.get,
+            set = Ember.set;
 
 
-    var component = Ember.Component.extend({
+        var component = Ember.Component.extend({
 
-        init: function () {
-            this._super.apply(this, arguments);
-            set(this, 'id', hashUtils.generate_GUID());
-        },
+            init: function () {
+                this._super.apply(this, arguments);
+                set(this, 'id', hashUtils.generate_GUID());
+            },
 
-        didInsertElement: function (){
-            var datepickerComponent = this;
+            didInsertElement: function (){
+                var datepickerComponent = this;
 
-            var daterangepicker = this.$('#' + get(this, 'id'));
+                var daterangepicker = this.$('#' + get(this, 'id'));
 
-            daterangepicker.daterangepicker(
-                {
-                    timePickerIncrement: 5,
-                    timePicker: true,
-                    ranges: {
-                        'Today': [moment(), moment()],
-                        'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
-                        'Last 7 Days': [moment().subtract('days', 6), moment()],
-                        'Last 30 Days': [moment().subtract('days', 29), moment()],
-                        'This Month': [moment().startOf('month'), moment().endOf('month')],
-                        'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+                daterangepicker.daterangepicker(
+                    {
+                        timePickerIncrement: 5,
+                        timePicker: true,
+                        ranges: {
+                            'Today': [moment(), moment()],
+                            'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
+                            'Last 7 Days': [moment().subtract('days', 6), moment()],
+                            'Last 30 Days': [moment().subtract('days', 29), moment()],
+                            'This Month': [moment().startOf('month'), moment().endOf('month')],
+                            'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+                        },
+                        startDate: moment().subtract('days', 29),
+                        endDate: moment()
                     },
-                    startDate: moment().subtract('days', 29),
-                    endDate: moment()
-                },
-                function(start, end, label) {
-                    set(datepickerComponent, 'label', label);
-                    var startTimestamp = parseInt(new Date(start).getTime() / 1000);
-                    var stopTimestamp = parseInt(new Date(end).getTime() / 1000);
-                    console.log('startTimestamp', startTimestamp, 'stopTimestamp', stopTimestamp);
+                    function(start, end, label) {
+                        set(datepickerComponent, 'label', label);
+                        var startTimestamp = parseInt(new Date(start).getTime() / 1000);
+                        var stopTimestamp = parseInt(new Date(end).getTime() / 1000);
+                        console.log('startTimestamp', startTimestamp, 'stopTimestamp', stopTimestamp);
 
-                    if (startTimestamp === stopTimestamp) {
-                        console.log('We are on the same day, let compute the start of the day');
-                        startTimestamp = datesUtils.startOfTheDay();
-                        console.log('NEW -> startTimestamp',startTimestamp,'stopTimestamp',stopTimestamp);
-                    }
+                        if (startTimestamp === stopTimestamp) {
+                            console.log('We are on the same day, let compute the start of the day');
+                            startTimestamp = datesUtils.startOfTheDay();
+                            console.log('NEW -> startTimestamp',startTimestamp,'stopTimestamp',stopTimestamp);
+                        }
 
-                    //Translate result into mongo form filter
-                    filter = {};
-                    //we ve got an interval
-                    var timestamp = {};
-                    var hasLimit = false;
-
-                    if (startTimestamp) {
-                        timestamp.$gte = startTimestamp;
-                        hasLimit = true;
-
-                    }
-
-                    if (stopTimestamp) {
-                        timestamp.$lte = stopTimestamp;
-                        hasLimit = true;
-                    }
-
-                    if (hasLimit) {
-                        filter = {'timestamp': timestamp};
-                    } else {
+                        //Translate result into mongo form filter
                         filter = {};
+                        //we ve got an interval
+                        var timestamp = {};
+                        var hasLimit = false;
+
+                        if (startTimestamp) {
+                            timestamp.$gte = startTimestamp;
+                            hasLimit = true;
+
+                        }
+
+                        if (stopTimestamp) {
+                            timestamp.$lte = stopTimestamp;
+                            hasLimit = true;
+                        }
+
+                        if (hasLimit) {
+                            filter = {'timestamp': timestamp};
+                        } else {
+                            filter = {};
+                        }
+
+                        set(datepickerComponent, 'content', filter);
+
+                        console.log(get(datepickerComponent, 'content'));
                     }
-
-                    set(datepickerComponent, 'content', filter);
-
-                    console.log(get(datepickerComponent, 'content'));
-                }
-            );
-        }
-    });
-
-
-    Ember.Application.initializer({
-        name:"component-dateinterval",
-        initialize: function(container, application) {
-            application.register('component:component-dateinterval', component);
-        }
-    });
-
-    return component;
+                );
+            }
+        });
+        application.register('component:component-dateinterval', component);
+    }
 });

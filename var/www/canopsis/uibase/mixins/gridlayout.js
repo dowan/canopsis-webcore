@@ -17,125 +17,126 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/factories/mixin',
-], function(Ember, Mixin) {
+Ember.Application.initializer({
+    name:'GridLayoutMixin',
+    after: 'MixinFactory',
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
-    var viewMixin = Ember.Mixin.create({
-        didInsertElement: function() {
-            //iteration over all content widget to set them the appropriage css class
-            var wrappers = get(this, 'controller.items.content');
-            //if view update, push it to db
-            var haveToSaveView = false;
+        var viewMixin = Ember.Mixin.create({
+            didInsertElement: function() {
+                //iteration over all content widget to set them the appropriage css class
+                var wrappers = get(this, 'controller.items.content');
+                //if view update, push it to db
+                var haveToSaveView = false;
 
-            var containerGridLayout,
-                forcelegacy = false;
+                var containerGridLayout,
+                    forcelegacy = false;
 
-            var containerMixins = get(this, 'controller.mixins');
-            if (!isNone(containerMixins)) {
-                containerGridLayout = containerMixins.findBy('name', 'gridlayout');
-                if (!isNone(containerGridLayout)) {
-                    forcelegacy = get(containerGridLayout, 'forcelegacy');
-                }
-            }
-            for (var i = wrappers.length - 1; i >= 0; i--) {
-
-                //Dynamic mixin values setting
-                var currentWrapperMixins = get(wrappers[i], 'mixins');
-                if (isNone(currentWrapperMixins)) {
-                    set(wrappers[i], 'mixins', []);
-                    currentWrapperMixins = get(wrappers[i], 'mixins');
-                }
-
-                if (isNone(currentWrapperMixins.findBy('name', 'gridlayout'))) {
-                    //Legacy management, defining sub wrapper container mixin data.
-                    if (isNone(containerGridLayout)) {
-                        containerGridLayout = {'name': 'gridlayout'};
+                var containerMixins = get(this, 'controller.mixins');
+                if (!isNone(containerMixins)) {
+                    containerGridLayout = containerMixins.findBy('name', 'gridlayout');
+                    if (!isNone(containerGridLayout)) {
+                        forcelegacy = get(containerGridLayout, 'forcelegacy');
                     }
-                    //Push fresh information
-                    currentWrapperMixins.pushObject(containerGridLayout);
-                    haveToSaveView = true;
                 }
+                for (var i = wrappers.length - 1; i >= 0; i--) {
 
-                //Manage legacy data from mixin to content wrappers
-                if (forcelegacy) {
-                    //Get it now because it may have just been added before
-                    var existingGridLayoutMixin = currentWrapperMixins.findBy('name', 'gridlayout');
-                    //Clean previous information
-                    if (!isNone(existingGridLayoutMixin)) {
-                        currentWrapperMixins.removeObject(existingGridLayoutMixin);
+                    //Dynamic mixin values setting
+                    var currentWrapperMixins = get(wrappers[i], 'mixins');
+                    if (isNone(currentWrapperMixins)) {
+                        set(wrappers[i], 'mixins', []);
+                        currentWrapperMixins = get(wrappers[i], 'mixins');
                     }
-                    //avoid side effects
-                    delete containerGridLayout.forcelegacy;
 
-                    //Add legacy information
-                    currentWrapperMixins.pushObject(containerGridLayout);
-                    haveToSaveView = true;
+                    if (isNone(currentWrapperMixins.findBy('name', 'gridlayout'))) {
+                        //Legacy management, defining sub wrapper container mixin data.
+                        if (isNone(containerGridLayout)) {
+                            containerGridLayout = {'name': 'gridlayout'};
+                        }
+                        //Push fresh information
+                        currentWrapperMixins.pushObject(containerGridLayout);
+                        haveToSaveView = true;
+                    }
+
+                    //Manage legacy data from mixin to content wrappers
+                    if (forcelegacy) {
+                        //Get it now because it may have just been added before
+                        var existingGridLayoutMixin = currentWrapperMixins.findBy('name', 'gridlayout');
+                        //Clean previous information
+                        if (!isNone(existingGridLayoutMixin)) {
+                            currentWrapperMixins.removeObject(existingGridLayoutMixin);
+                        }
+                        //avoid side effects
+                        delete containerGridLayout.forcelegacy;
+
+                        //Add legacy information
+                        currentWrapperMixins.pushObject(containerGridLayout);
+                        haveToSaveView = true;
+                    }
+
+                    //Computes class value
+                    var classValue = get(this, 'controller').getSection(currentWrapperMixins);
+
+                    Ember.setProperties(wrappers[i], {
+                        'classValue': classValue
+                    });
                 }
 
-                //Computes class value
-                var classValue = get(this, 'controller').getSection(currentWrapperMixins);
+                if (haveToSaveView) {
+                    get(this, 'controller.viewController.content').save();
+                }
 
-                Ember.setProperties(wrappers[i], {
-                    'classValue': classValue
-                });
+                this._super();
             }
+        });
 
-            if (haveToSaveView) {
-                get(this, 'controller.viewController.content').save();
+        var mixin = Mixin('gridlayout', {
+            partials: {
+                layout: ['gridlayout']
+            },
+
+            init: function() {
+                //Attach view to the mixin
+                this._super();
+                this.addMixinView(viewMixin);
+            },
+
+            isGridLayout: function () {
+                //Tells the controller of this mixin that it is a grid layout
+                return true;
+            }.property(),
+
+            getSection: function (currentWrapperMixins) {
+                /**
+                    Builds css classes for the widget wrapper that allow responsive parametrized diplay
+                    depending on legacy/overriden values.
+                **/
+                var gridLayoutMixin = currentWrapperMixins.findBy('name', 'gridlayout');
+                var columnXS = gridLayoutMixin.columnXS || '4';
+                var columnMD = gridLayoutMixin.columnMD || '4';
+                var columnLG = gridLayoutMixin.columnLG || '4';
+                var offset = gridLayoutMixin.offset || '0';
+
+                var classValue = [
+                    'col-md-',
+                    columnMD,
+                    ' col-xs-',
+                    columnXS,
+                    ' col-lg-',
+                    columnLG,
+                    ' col-md-offset-',
+                    offset
+                ].join('');
+
+                return classValue;
             }
+        });
 
-            this._super();
-        }
-    });
-
-    var mixin = Mixin('gridlayout', {
-        partials: {
-            layout: ['gridlayout']
-        },
-
-        init: function() {
-            //Attach view to the mixin
-            this._super();
-            this.addMixinView(viewMixin);
-        },
-
-        isGridLayout: function () {
-            //Tells the controller of this mixin that it is a grid layout
-            return true;
-        }.property(),
-
-        getSection: function (currentWrapperMixins) {
-            /**
-                Builds css classes for the widget wrapper that allow responsive parametrized diplay
-                depending on legacy/overriden values.
-            **/
-            var gridLayoutMixin = currentWrapperMixins.findBy('name', 'gridlayout');
-            var columnXS = gridLayoutMixin.columnXS || '4';
-            var columnMD = gridLayoutMixin.columnMD || '4';
-            var columnLG = gridLayoutMixin.columnLG || '4';
-            var offset = gridLayoutMixin.offset || '0';
-
-            var classValue = [
-                'col-md-',
-                columnMD,
-                ' col-xs-',
-                columnXS,
-                ' col-lg-',
-                columnLG,
-                ' col-md-offset-',
-                offset
-            ].join('');
-
-            return classValue;
-        },
-
-    });
-
-    return mixin;
+        application.register('mixin:grid-layout', mixin);
+    }
 });

@@ -19,5 +19,6 @@
 
 
 define([
-    'canopsis/userpreferences/lib/loaders/components'
+    'canopsis/userpreferences/lib/loaders/components',
+    'canopsis/userpreferences/mixins/userconfiguration'
 ], function () {});

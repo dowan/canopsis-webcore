@@ -6,40 +6,11 @@
  !**/
 
 /*
- * Global variables. If you change any of these vars, don't forget 
+ * Global variables. If you change any of these vars, don't forget
  * to change the values in the less files!
  */
 var left_side_width = 220; //Sidebar width in pixels
 
-define([], function() {
-
-	"use strict";
-
-	console.log("init adminLTE");
-
-	//Activate tooltips
-	//TODO uncomment while ready
-	
-//  $("[data-toggle='tooltip']").tooltip();
-
-	/*     
-	 * Add collapse and remove events to boxes
-	 */
-
-
-	/*
-	 * We are gonna initialize all checkbox and radio inputs to 
-	 * iCheck plugin in.
-	 * You can find the documentation at http://fronteed.com/iCheck/
-	 */
-	/* TODO uncomment while ready
-	$("input[type='checkbox'], input[type='radio']").iCheck({
-		checkboxClass: 'icheckbox_minimal',
-		radioClass: 'iradio_minimal'
-	});
-*/
-
-});
 function fix_sidebar() {
 	//Make sure the body tag has the .fixed class
 	if (!$("body").hasClass("fixed")) {
@@ -51,7 +22,7 @@ function fix_sidebar() {
 		height: ($(window).height() - $(".header").height()) + "px",
 		color: "rgba(0,0,0,0.2)"
 	});
-	
+
 }
 function change_layout() {
 	$("body").toggleClass("fixed");
@@ -382,12 +353,12 @@ $(window).load(function() {
 	}).call(this);
 });
 
-/* 
- * BOX REFRESH BUTTON 
+/*
+ * BOX REFRESH BUTTON
  * ------------------
  * This is a custom plugin to use with the compenet BOX. It allows you to add
  * a refresh button to the box. It converts the box's state to a loading state.
- * 
+ *
  * USAGE:
  *  $("#box-widget").boxRefresh( options );
  * */
@@ -464,13 +435,13 @@ $(window).load(function() {
  * SIDEBAR MENU
  * ------------
  * This is a custom plugin for the sidebar menu. It provides a tree view.
- * 
+ *
  * Usage:
  * $(".sidebar).tree();
- * 
+ *
  * Note: This plugin does not accept any options. Instead, it only requires a class
  *       added to the element that contains a sub-menu.
- *       
+ *
  * When used with the sidebar, for example, it would look something like this:
  * <ul class='sidebar-menu'>
  *      <li class="treeview active">
@@ -480,7 +451,7 @@ $(window).load(function() {
  *          </ul>
  *      </li>
  * </ul>
- * 
+ *
  * Add .active class to <li> elements if you want the menu to be open automatically
  * on page load. See above for an example.
  */
@@ -591,7 +562,7 @@ $(window).load(function() {
 /*
  * jQuery resize event - v1.1 - 3/14/2010
  * http://benalman.com/projects/jquery-resize-plugin/
- * 
+ *
  * Copyright (c) 2010 "Cowboy" Ben Alman
  * Dual licensed under the MIT and GPL licenses.
  * http://benalman.com/about/license/
@@ -655,8 +626,8 @@ $(window).load(function() {
 /*!
  * SlimScroll https://github.com/rochal/jQuery-slimScroll
  * =======================================================
- * 
- * Copyright (c) 2011 Piotr Rochala (http://rocha.la) Dual licensed under the MIT 
+ *
+ * Copyright (c) 2011 Piotr Rochala (http://rocha.la) Dual licensed under the MIT
  */
 (function(f) {
 	jQuery.fn.extend({slimScroll: function(h) {
@@ -967,4 +938,10 @@ $(window).load(function() {
 	console.log("adminLTE init @end", AdminLTE);
 
 	return AdminLTE;
+});
+
+Ember.Application.initializer({
+    name: 'AdminLTE',
+    initialize: function(container, application) {
+    }
 });

@@ -17,84 +17,81 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'ember-data',
-    'app/lib/promisesmanager'
-], function(Ember, DS, promisesmanager) {
+Ember.Application.initializer({
+    name:"ApplicationAdapter",
+    after: "PromisesRegistry",
+    initialize: function(container, application) {
+        var promisesmanager = container.lookupFactory('registry:promises');
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
-    var entities = ["nagios","shinken"];
+        var entities = ["nagios","shinken"];
 
-    var adapter = DS.RESTAdapter.extend({
+        var adapter = DS.RESTAdapter.extend({
 
-        /**
-         * Override allowing to use the promisemanager
-         */
-        ajax: function(url, type, hash) {
-            var promise = this._super(url, type, hash);
+            /**
+             * Override allowing to use the promisemanager
+             */
+            ajax: function(url, type, hash) {
+                var promise = this._super(url, type, hash);
 
-            promise.url = url;
-            promise.type = type;
-            promisesmanager.handlePromise(promise);
+                promise.url = url;
+                promise.type = type;
+                promisesmanager.handlePromise(promise);
 
-            promise.then(function() {
-                promisesmanager.promiseSuccess(promise);
-            });
+                promise.then(function() {
+                    promisesmanager.promiseSuccess(promise);
+                });
 
-            promise.catch(function() {
-                promisesmanager.promiseFail(promise);
-            });
+                promise.catch(function() {
+                    promisesmanager.promiseFail(promise);
+                });
 
-            promise.finally(function() {
-                promisesmanager.promiseFinally(promise);
-            });
+                promise.finally(function() {
+                    promisesmanager.promiseFinally(promise);
+                });
 
-            return promise;
-        },
+                return promise;
+            },
 
-        buildURL: function(type, id) {
-            var namespace = get(this, 'namespace');
+            buildURL: function(type, id) {
+                var namespace = get(this, 'namespace');
 
-            if(isNone(namespace)) {
-                namespace = ( entities.contains(type) ) ? "entities" :"object" ;
+                if(isNone(namespace)) {
+                    namespace = ( entities.contains(type) ) ? "entities" :"object" ;
+                }
+
+                return ("/rest/"+ namespace + "/" + type + (!!id ? "/" + id : ""));
+            },
+
+            createRecord: function(store, type, record) {
+                var data = {};
+                if (isNone(type) || isNone(type.typeKey)) {
+                    console.error('Error while retrieving typeKey from type is it is none.');
+                }
+                var serializer = store.serializerFor(type.typeKey);
+
+                data = serializer.serializeIntoHash(data, type, record, 'POST', { includeId: true });
+
+                return this.ajax(this.buildURL(type.typeKey, record.id, undefined, 'POST'), 'POST', { data: data });
+            },
+
+            updateRecord: function(store, type, record) {
+                var data = {};
+                if (isNone(type) || isNone(type.typeKey)) {
+                    console.error('Error while retrieving typeKey from type is it is none.');
+                }
+                var serializer = store.serializerFor(type.typeKey);
+
+                data = serializer.serializeIntoHash(data, type, record, 'PUT');
+
+                var id = Ember.get(record, 'id');
+
+                return this.ajax(this.buildURL(type.typeKey, id, undefined, 'PUT'), 'PUT', { data: data });
             }
-
-            return ("/rest/"+ namespace + "/" + type + (!!id ? "/" + id : ""));
-        },
-
-        createRecord: function(store, type, record) {
-            var data = {};
-            if (isNone(type) || isNone(type.typeKey)) {
-                console.error('Error while retrieving typeKey from type is it is none.');
-            }
-            var serializer = store.serializerFor(type.typeKey);
-
-            data = serializer.serializeIntoHash(data, type, record, 'POST', { includeId: true });
-
-            return this.ajax(this.buildURL(type.typeKey, record.id, undefined, 'POST'), 'POST', { data: data });
-        },
-
-        updateRecord: function(store, type, record) {
-            var data = {};
-            if (isNone(type) || isNone(type.typeKey)) {
-                console.error('Error while retrieving typeKey from type is it is none.');
-            }
-            var serializer = store.serializerFor(type.typeKey);
-
-            data = serializer.serializeIntoHash(data, type, record, 'PUT');
-
-            var id = Ember.get(record, 'id');
-
-            return this.ajax(this.buildURL(type.typeKey, id, undefined, 'PUT'), 'PUT', { data: data });
-        }
-    });
-
-
-    loader.register('adapter:application', adapter);
-
-    return adapter;
+        });
+        application.register('adapter:application', adapter);
+    }
 });

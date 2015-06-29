@@ -17,130 +17,124 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'ember-data',
-    'canopsis/uibase/mixins/pagination'
-], function(Ember, DS, PaginationMixin) {
+Ember.Application.initializer({
+    name:"component-table",
+    after: 'PaginationMixin',
+    initialize: function(container, application) {
+        var PaginationMixin = container.lookupFactory('mixin:pagination');
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
 
-    var component = Ember.Component.extend(PaginationMixin, {
-        model: undefined,
-        modelfilter: undefined,
-        data: undefined,
+        var component = Ember.Component.extend(PaginationMixin, {
+            model: undefined,
+            modelfilter: undefined,
+            data: undefined,
 
-        columns: [],
-        items: [],
+            columns: [],
+            items: [],
 
-        mixinOptions: {
-            pagination: {
-                itemsPerPage: 5
-            }
-        },
+            mixinOptions: {
+                pagination: {
+                    itemsPerPage: 5
+                }
+            },
 
-        onDataChange: function() {
-            this.refreshContent();
-        }.observes('data.@each'),
+            onDataChange: function() {
+                this.refreshContent();
+            }.observes('data.@each'),
 
-        onModelFilterChange: function() {
-            set(this, 'currentPage', 1);
-            this.refreshContent();
-        }.observes('modelfilter'),
+            onModelFilterChange: function() {
+                set(this, 'currentPage', 1);
+                this.refreshContent();
+            }.observes('modelfilter'),
 
-        init: function() {
-            this._super(arguments);
+            init: function() {
+                this._super(arguments);
 
-            if (!isNone(get(this, 'model'))) {
-                set(this, 'store', DS.Store.create({
-                    container: get(this, 'container')
-                }));
-            }
+                if (!isNone(get(this, 'model'))) {
+                    set(this, 'store', DS.Store.create({
+                        container: get(this, 'container')
+                    }));
+                }
 
-            set(this, 'widgetDataMetas', {total: 0});
+                set(this, 'widgetDataMetas', {total: 0});
 
-            if (isNone(get(this, 'items'))) {
-                set(this, 'items', []);
-            }
-        },
+                if (isNone(get(this, 'items'))) {
+                    set(this, 'items', []);
+                }
+            },
 
-        didInsertElement: function() {
-            this.refreshContent();
-        },
+            didInsertElement: function() {
+                this.refreshContent();
+            },
 
-        refreshContent: function() {
-            this._super(arguments);
+            refreshContent: function() {
+                this._super(arguments);
 
-            this.findItems();
+                this.findItems();
 
-            console.log(get(this, 'widgetDataMetas'));
-        },
+                console.log(get(this, 'widgetDataMetas'));
+            },
 
-        findItems: function() {
-            try {
-                var me = this;
+            findItems: function() {
+                try {
+                    var me = this;
 
-                var store = get(this, 'store'),
-                    model = get(this, 'model'),
-                    modelfilter = get(this, 'modelfilter');
+                    var store = get(this, 'store'),
+                        model = get(this, 'model'),
+                        modelfilter = get(this, 'modelfilter');
 
-                var query = {
-                    limit: get(this, 'paginationMixinFindOptions.limit')
-                };
+                    var query = {
+                        limit: get(this, 'paginationMixinFindOptions.limit')
+                    };
 
-                var queryStartOffsetKeyword = get(this, "queryStartOffsetKeyword") || 'skip';
-                query[queryStartOffsetKeyword] = get(this, 'paginationMixinFindOptions.start');
+                    var queryStartOffsetKeyword = get(this, "queryStartOffsetKeyword") || 'skip';
+                    query[queryStartOffsetKeyword] = get(this, 'paginationMixinFindOptions.start');
 
-                if (model !== undefined) {
-                    if(modelfilter !== null) {
-                        query.filter = modelfilter;
+                    if (model !== undefined) {
+                        if(modelfilter !== null) {
+                            query.filter = modelfilter;
+                        }
+
+                        store.findQuery(model, query).then(function(result) {
+                            console.log('Received data for table:', result);
+
+                            set(me, 'widgetDataMetas', get(result, 'meta'));
+                            set(me, 'items', get(result, 'content'));
+
+                        });
                     }
+                    else {
+                        var items = get(this, 'data').slice(
+                            query.skip,
+                            query.skip + query.limit
+                        );
 
-                    store.findQuery(model, query).then(function(result) {
-                        console.log('Received data for table:', result);
+                        set(this, 'widgetDataMetas', {
+                            total: get(this, 'data.length')
+                        });
 
-                        set(me, 'widgetDataMetas', get(result, 'meta'));
-                        set(me, 'items', get(result, 'content'));
+                        set(this, 'items', items);
 
-                    });
-                }
-                else {
-                    var items = get(this, 'data').slice(
-                        query.skip,
-                        query.skip + query.limit
-                    );
+                    }
+                } catch(err) {
+                    console.warn('extractItems not updated:', err);
 
-                    set(this, 'widgetDataMetas', {
-                        total: get(this, 'data.length')
-                    });
-
-                    set(this, 'items', items);
 
                 }
-            } catch(err) {
-                console.warn('extractItems not updated:', err);
+            },
 
-
+            actions: {
+                do: function(action, item) {
+                    this.targetObject.send(action, item);
+                }
             }
-        },
-
-        actions: {
-            do: function(action, item) {
-                this.targetObject.send(action, item);
-            }
-        }
-    });
+        });
 
 
-    Ember.Application.initializer({
-        name:"component-table",
-        initialize: function(container, application) {
-            application.register('component:component-table', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-table', component);
+    }
 });

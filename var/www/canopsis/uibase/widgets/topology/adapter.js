@@ -17,75 +17,74 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'jquery',
-    'ember',
-    'ember-data',
-    'canopsis/canopsis-backend-ui-connector/adapters/application',
-    'app/lib/promisesmanager',
-    'app/lib/utils/modelsolve'
-], function($, Ember, DS, ApplicationAdapter, promisesmanager, modelsolve) {
+Ember.Application.initializer({
+    name:"GraphAdapters",
+    after: ["ApplicationAdapter", "ModelsolveUtils", "NotificationUtils"],
+    initialize: function(container, application) {
+        var ApplicationAdapter = container.lookupFactory('adapter:application');
+        var modelsolve = container.lookupFactory('utility:modelsolve');
+        var notificationUtils = container.lookupFactory('utility:notification');
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
-    var adapter = ApplicationAdapter.extend({
+        var adapter = ApplicationAdapter.extend({
 
-        graphType: 'topology',
+            graphType: 'topology',
 
-        buildURL: function(type, id, record) {
-            void(id);
-            void(record);
-            return '/' + this.graphType + '/' + type + 's';
-        },
+            buildURL: function(type, id, record) {
+                void(id);
+                void(record);
+                return '/' + this.graphType + '/' + type + 's';
+            },
 
-        createRecord: function(store, type, record) {
+            createRecord: function(store, type, record) {
 
-            var data = {};
-            if (isNone(type) || isNone(type.typeKey)) {
-                console.error('Error while retrieving typeKey from type is it is none.');
-            }
-            var serializer = store.serializerFor(type.typeKey);
+                var data = {};
+                if (isNone(type) || isNone(type.typeKey)) {
+                    console.error('Error while retrieving typeKey from type is it is none.');
+                }
+                var serializer = store.serializerFor(type.typeKey);
 
-            data = serializer.serializeIntoHash(data, type, record, 'PUT', { includeId: true });
+                data = serializer.serializeIntoHash(data, type, record, 'PUT', { includeId: true });
 
-            var url = this.buildURL('graphelt');
+                var url = this.buildURL('graphelt');
 
-            return this.ajax(url, 'PUT', { data: {elts: data }});
-        },
+                return this.ajax(url, 'PUT', { data: {elts: data }});
+            },
 
-        updateRecord: function(store, type, record) {
+            updateRecord: function(store, type, record) {
 
-            return this.createRecord(store, type, record);
+                return this.createRecord(store, type, record);
 
-        },
+            },
 
-        deleteRecord: function(store, type, record) {
-            var url = this.buildURL('graphelt', null);
+            deleteRecord: function(store, type, record) {
+                var url = this.buildURL('graphelt', null);
 
-            var id = get(record, 'id');
-            var query = {data: {ids: id}};
+                var id = get(record, 'id');
+                var query = {data: {ids: id}};
 
-            return this.ajax(url, 'DELETE', query);
-        },
+                return this.ajax(url, 'DELETE', query);
+            },
 
-        findQuery: function(store, type, query) {
-            var url = this.buildURL(type.typeKey, null);
+            findQuery: function(store, type, query) {
+                var url = this.buildURL(type.typeKey, null);
 
-            return this.ajax(url, 'POST', {data: query});
-        },
+                return this.ajax(url, 'POST', {data: query});
+            },
 
-    });
-
-    loader.register('adapter:graphelt', adapter);
-    loader.register('adapter:graph', adapter);
-    loader.register('adapter:vertice', adapter);
-    loader.register('adapter:edge', adapter);
-    loader.register('adapter:toponode', adapter);
-    loader.register('adapter:topoedge', adapter);
-    loader.register('adapter:topo', adapter);
+        });
 
 
-    return adapter;
+
+        loader.register('adapter:graphelt', adapter);
+        loader.register('adapter:graph', adapter);
+        loader.register('adapter:vertice', adapter);
+        loader.register('adapter:edge', adapter);
+        loader.register('adapter:toponode', adapter);
+        loader.register('adapter:topoedge', adapter);
+        loader.register('adapter:topo', adapter);
+    }
 });

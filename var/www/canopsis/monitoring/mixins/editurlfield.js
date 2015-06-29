@@ -17,30 +17,30 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/factories/mixin',
-    'app/lib/utils/forms'
-], function(Ember, Mixin, forms) {
+Ember.Application.initializer({
+    name:'EditUrlFieldMixin',
+    after: ['MixinFactory', 'FormsUtils'],
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
+        var formsUtils = container.lookupFactory('utility:forms');
 
-    var get = Ember.get,
-        set = Ember.set;
+        var get = Ember.get,
+            set = Ember.set;
 
 
-    var mixin = Mixin('editurlfield', {
+        var mixin = Mixin('editurlfield', {
 
-        partials: {
-            actionToolbarButtons: ['actionbutton-editurlfield'],
-        },
+            partials: {
+                actionToolbarButtons: ['actionbutton-editurlfield'],
+            },
 
-        actions: {
-            editUrlField: function () {
-                forms.editSchemaRecord('linklistfieldsurl', get(this, "container"));
+            actions: {
+                editUrlField: function () {
+                    forms.editSchemaRecord('linklistfieldsurl', get(this, "container"));
+                }
             }
+        });
 
-        }
-    });
-
-
-    return mixin;
+        application.register('mixin:edit-url-field', mixin);
+    }
 });

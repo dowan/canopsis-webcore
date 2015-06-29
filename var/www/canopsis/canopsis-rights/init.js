@@ -20,6 +20,8 @@
 
 define([
     'canopsis/canopsis-rights/loaders/components',
+    'canopsis/canopsis-rights/objects/rightsregistry',
+    'canopsis/canopsis-rights/utils/rightsflags',
     'canopsis/canopsis-rights/loaders/forms',
     'canopsis/canopsis-rights/loaders/editors',
     'canopsis/canopsis-rights/loaders/renderers',

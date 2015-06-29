@@ -16,24 +16,24 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
+Ember.Application.initializer({
+    name:'Uiv1WeatherThemeMixin',
+    after: 'MixinFactory',
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
+        var get = Ember.get;
 
-define([
-    'ember',
-    'app/lib/factories/mixin'
-], function(Ember, Mixin) {
 
-    var get = Ember.get;
+        var mixin = Mixin('uiv1weathertheme', {
+            partials: {
+                weatherTheme: ['uiv1_themes_weather']
+            },
 
+            stateImage: function() {
+                return '/static/canopsis/uiv1_themes/images/state_' + get(this, 'worst_state') + '.png';
+            }.property('worst_state')
+        });
 
-    var mixin = Mixin('uiv1weathertheme', {
-        partials: {
-            weatherTheme: ['uiv1_themes_weather']
-        },
-
-        stateImage: function() {
-            return '/static/canopsis/uiv1_themes/images/state_' + get(this, 'worst_state') + '.png';
-        }.property('worst_state')
-    });
-
-    return mixin;
+        application.register('mixin:uiv1-weather-theme', mixin);
+    }
 });

@@ -17,28 +17,28 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/utils/dates'
-], function(Ember, datesUtils) {
+Ember.Application.initializer({
+    name: 'TimeSinceHelper',
+    after: 'DatesUtils',
+    initialize: function(container, application) {
+        var datesUtils = container.lookupFactory('utility:dates');
+        var __ = Ember.String.loc;
 
-    var __ = Ember.String.loc;
+        Ember.Handlebars.helper('timeSince', function(timestamp , record) {
 
-    Ember.Handlebars.helper('timeSince', function(timestamp , record) {
+            if(timestamp || record.timeStampState) {
+                timestamp = record.timeStampState || timestamp;
 
-        if(timestamp || record.timeStampState) {
-            timestamp = record.timeStampState || timestamp;
-
-
-            if (datesUtils.isToday(timestamp)) {
-                //This is today
-                return __('Today');
+                if (datesUtils.isToday(timestamp)) {
+                    //This is today
+                    return __('Today');
+                } else {
+                    var time = datesUtils.durationFromNow(timestamp);
+                    return time;
+                }
             } else {
-                var time = datesUtils.durationFromNow(timestamp);
-                return time;
+                return '';
             }
-        } else {
-            return '';
-        }
-    });
+        });
+    }
 });

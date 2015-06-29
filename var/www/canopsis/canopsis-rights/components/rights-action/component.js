@@ -18,32 +18,27 @@
 */
 
 
-define([
-    'ember',
-    'canopsis/canopsis-rights/objects/rightsregistry'
-], function(Ember, rightsRegistry) {
+Ember.Application.initializer({
+    name:"component-rights-action",
+    after: "RightsRegistry",
+    initialize: function(container, application) {
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone,
-        __ = Ember.String.loc;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone,
+            __ = Ember.String.loc;
 
+        var rightsRegistry = container.lookupFactory('registry:rights');
+        var component = Ember.Component.extend({
+            description: function() {
+                var value = get(this, 'value');
 
-    var component = Ember.Component.extend({
-        description: function() {
-            var value = get(this, 'value');
+                var action = rightsRegistry.getByName(value);
+                return action._data.desc;
+            }.property('value')
+        });
 
-            var action = rightsRegistry.getByName(value);
-            return action._data.desc;
-        }.property('value')
-    });
-
-    Ember.Application.initializer({
-        name:"component-rights-action",
-        initialize: function(container, application) {
-            application.register('component:component-rights-action', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-rights-action', component);
+    }
 });
+

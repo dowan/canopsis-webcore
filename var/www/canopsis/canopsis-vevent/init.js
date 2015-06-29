@@ -19,7 +19,8 @@
 
 
 define([
-    'canopsis/canopsis-vevent/serializers/vevent'
+    'canopsis/canopsis-vevent/serializers/vevent',
+    'canopsis/canopsis-vevent/adapters/vevent'
 ], function () {
 
 });

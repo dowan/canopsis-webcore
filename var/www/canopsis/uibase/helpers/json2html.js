@@ -17,8 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
-
+(function() {
     var set = Ember.set,
         isNone = Ember.isNone,
         isArray = Ember.isArray;
@@ -80,7 +79,4 @@ define(['ember'], function(Ember) {
 
     //declaring helper this way allow it to be used as simple function somewhere else.
     Ember.Handlebars.helper('json2html', helper);
-
-    return helper;
-
-});
+})();

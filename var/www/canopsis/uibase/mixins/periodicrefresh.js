@@ -17,76 +17,76 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'canopsis/canopsisConfiguration',
-    'app/lib/factories/mixin'
-], function(Ember, canopsisConfiguration, Mixin) {
+Ember.Application.initializer({
+    name:'PeriodicRefreshMixin',
+    after: 'MixinFactory',
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
 
+        var viewMixin = Ember.Mixin.create({
 
-    var viewMixin = Ember.Mixin.create({
+            willInsertElement: function() {
+                console.log('init periodicrefresh viewMixin');
+                this._super();
 
-        willInsertElement: function() {
-            console.log('init periodicrefresh viewMixin');
-            this._super();
+                //widget refresh management
+                var widgetController = get(this, 'controller');
 
-            //widget refresh management
-            var widgetController = get(this, 'controller');
+                var previousInterval = get(this, 'mixinOptions.periodicrefresh.refreshInterval');
+                if(previousInterval) {
+                    clearInterval(previousInterval);
+                }
 
-            var previousInterval = get(this, 'mixinOptions.periodicrefresh.refreshInterval');
-            if(previousInterval) {
-                clearInterval(previousInterval);
+                console.log('refreshInterval - > ', widgetController.get('mixinOptions.periodicrefresh.refreshInterval'));
+
+                var interval = get(this, 'widgetRefreshInterval');
+
+                interval = setInterval(function () {
+                    console.log('refreshing widget ' + get(widgetController, 'title'), widgetController.get('mixinOptions.periodicrefresh.refreshInterval'), widgetController);
+                    widgetController.refreshContent();
+                }, widgetController.get('mixinOptions.periodicrefresh.refreshInterval') * 1000);
+
+                //keep track of this interval
+                this.set('widgetRefreshInterval', interval);
+            },
+
+            willDestroyElement: function() {
+                clearInterval(get(this, 'widgetRefreshInterval'));
+
+                this._super();
             }
 
-            console.log('refreshInterval - > ', widgetController.get('mixinOptions.periodicrefresh.refreshInterval'));
-
-            var interval = get(this, 'widgetRefreshInterval');
-
-            interval = setInterval(function () {
-                console.log('refreshing widget ' + get(widgetController, 'title'), widgetController.get('mixinOptions.periodicrefresh.refreshInterval'), widgetController);
-                widgetController.refreshContent();
-            }, widgetController.get('mixinOptions.periodicrefresh.refreshInterval') * 1000);
-
-            //keep track of this interval
-            this.set('widgetRefreshInterval', interval);
-        },
-
-        willDestroyElement: function() {
-            clearInterval(get(this, 'widgetRefreshInterval'));
-
-            this._super();
-        }
-
-    });
+        });
 
 
-    var mixin = Mixin('periodicrefresh', {
+        var mixin = Mixin('periodicrefresh', {
 
-        init:function() {
-            console.log('init periodicrefresh');
-            this.addMixinView(viewMixin);
+            init:function() {
+                console.log('init periodicrefresh');
+                this.addMixinView(viewMixin);
 
-            var mixinsOptions = get(this, 'content.mixins');
+                var mixinsOptions = get(this, 'content.mixins');
 
-            if(mixinsOptions) {
-                periodicrefreshOptions = get(this, 'content.mixins').findBy('name', 'periodicrefresh');
-                this.mixinOptions.periodicrefresh = periodicrefreshOptions;
+                if(mixinsOptions) {
+                    periodicrefreshOptions = get(this, 'content.mixins').findBy('name', 'periodicrefresh');
+                    this.mixinOptions.periodicrefresh = periodicrefreshOptions;
+                }
+
+                this._super.apply(this, arguments);
+                this.startRefresh();
+
+                //setting default/minimal reload delay for current widget
+                if (get(this, 'mixinOptions.periodicrefresh.refreshInterval') < 10 || isNone(get(this, 'mixinOptions.periodicrefresh.refreshInterval'))) {
+                    set(this, 'mixinOptions.periodicrefresh.refreshInterval', 10);
+                }
+
             }
+        });
 
-            this._super.apply(this, arguments);
-            this.startRefresh();
-
-            //setting default/minimal reload delay for current widget
-            if (get(this, 'mixinOptions.periodicrefresh.refreshInterval') < 10 || isNone(get(this, 'mixinOptions.periodicrefresh.refreshInterval'))) {
-                set(this, 'mixinOptions.periodicrefresh.refreshInterval', 10);
-            }
-
-        }
-    });
-
-    return mixin;
+        application.register('mixin:periodic-refresh', mixin);
+    }
 });

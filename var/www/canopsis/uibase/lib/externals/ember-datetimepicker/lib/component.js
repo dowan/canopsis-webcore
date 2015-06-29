@@ -17,51 +17,48 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 define([
-    'ember',
     'datetimepicker'
-], function(Ember) {
-
-    var get = Ember.get,
-        set = Ember.set;
-
-    var component = Ember.Component.extend({
-
-        template: Ember.HTMLBars.compile('{{input class="form-control"}}'),
-
-        init: function () {
-            this._super.apply(this, arguments);
-        },
-
-        didInsertElement: function (){
-            //@doc http://eonasdan.github.io/bootstrap-datetimepicker/
-            var timepicker = this.$();
-
-            var timepickerComponent = this;
-
-            timepicker.datetimepicker({
-                useSeconds: true, //en/disables the seconds picker
-                useCurrent: true, //when true, picker will set the value to the current date/time
-                language: 'fr'
-            });
-
-            console.log('timestamp dom init complete');
-
-            timepicker.on("dp.change",function (e) {
-                var timestamp = new Date(e.date).getTime() / 1000;
-                set(timepickerComponent, 'content', timestamp);
-                console.log('timestamp date set', timestamp);
-            });
-        }
-    });
+], function() {
 
     Ember.Application.initializer({
         name:"component-datetimepicker",
         initialize: function(container, application) {
+
+            var get = Ember.get,
+                set = Ember.set;
+
+            var component = Ember.Component.extend({
+
+                template: Ember.HTMLBars.compile('{{input class="form-control"}}'),
+
+                init: function () {
+                    this._super.apply(this, arguments);
+                },
+
+                didInsertElement: function (){
+                    //@doc http://eonasdan.github.io/bootstrap-datetimepicker/
+                    var timepicker = this.$();
+
+                    var timepickerComponent = this;
+
+                    timepicker.datetimepicker({
+                        useSeconds: true, //en/disables the seconds picker
+                        useCurrent: true, //when true, picker will set the value to the current date/time
+                        language: 'fr'
+                    });
+
+                    console.log('timestamp dom init complete');
+
+                    timepicker.on("dp.change",function (e) {
+                        var timestamp = new Date(e.date).getTime() / 1000;
+                        set(timepickerComponent, 'content', timestamp);
+                        console.log('timestamp date set', timestamp);
+                    });
+                }
+            });
+
             application.register('component:component-datetimepicker', component);
         }
     });
-
-    return component;
 });

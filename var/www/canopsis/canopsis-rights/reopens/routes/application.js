@@ -17,56 +17,55 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'ember-data',
-    'app/routes/application',
-    'app/lib/utils/data'
-], function(Ember, DS, ApplicationRoute, dataUtils) {
+Ember.Application.initializer({
+    name:"RightsBrickApplicationRouteReopen",
+    after: ["ApplicationRoute", "DataUtils"],
+    initialize: function(container, application) {
+        var ApplicationRoute = container.lookupFactory('route:application');
+        var dataUtils = container.lookupFactory('utility:data');
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
-    /**
-     * @class ApplicationRoute
-     * @extends AuthenticatedRoute
-     * @constructor
-     * @description ApplicationRoute reopen
-     */
-    ApplicationRoute.reopen({
         /**
-         * @method beforeModel
-         * @param {Transition} transition
-         * @return {Promise}
-         *
-         * Fetch all the registered rights in the backend and fill the rightsRegistry
+         * @class ApplicationRoute
+         * @extends AuthenticatedRoute
+         * @constructor
+         * @description ApplicationRoute reopen
          */
-        beforeModel: function(transition) {
-            rightsRegistry = dataUtils.getEmberApplicationSingleton().__container__.lookupFactory('registry:rights');
-            var route = this;
+        ApplicationRoute.reopen({
+            /**
+             * @method beforeModel
+             * @param {Transition} transition
+             * @return {Promise}
+             *
+             * Fetch all the registered rights in the backend and fill the rightsRegistry
+             */
+            beforeModel: function(transition) {
+                rightsRegistry = dataUtils.getEmberApplicationSingleton().__container__.lookupFactory('registry:rights');
+                var route = this;
 
-            var store = DS.Store.create({ container: get(this, "container") });
-            var rightsPromise = store.findQuery('action', { limit: 1000 });
+                var store = DS.Store.create({ container: get(this, "container") });
+                var rightsPromise = store.findQuery('action', { limit: 1000 });
 
-            rightsPromise.then(function(queryResults) {
-                for (var i = 0, l = queryResults.content.length; i < l; i++) {
-                    var right = queryResults.content[i];
-                    rightsRegistry.add(right, get(right, 'crecord_name'));
-                }
-                store.destroy();
-            });
+                rightsPromise.then(function(queryResults) {
+                    for (var i = 0, l = queryResults.content.length; i < l; i++) {
+                        var right = queryResults.content[i];
+                        rightsRegistry.add(right, get(right, 'crecord_name'));
+                    }
+                    store.destroy();
+                });
 
-            var superPromise = this._super(transition);
+                var superPromise = this._super(transition);
 
-            var promiseArray = Ember.A([
-                superPromise,
-                rightsPromise
-            ]);
+                var promiseArray = Ember.A([
+                    superPromise,
+                    rightsPromise
+                ]);
 
-            return Ember.RSVP.Promise.all(promiseArray);
-        }
-    });
-
-    return ApplicationRoute;
+                return Ember.RSVP.Promise.all(promiseArray);
+            }
+        });
+    }
 });

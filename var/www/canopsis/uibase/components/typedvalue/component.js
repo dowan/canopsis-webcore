@@ -17,141 +17,136 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'app/lib/utils/values'
-], function(Ember, valuesUtils) {
+Ember.Application.initializer({
+    name: 'component-typedvalue',
+    after: 'ValuesUtils',
+    initialize: function(container, application) {
+        var valuesUtils = container.lookupFactory('utility:values');
 
-    var get = Ember.get,
-        set = Ember.set;
-
-
-    var component = Ember.Component.extend({
-
-        init: function () {
-            this._super();
-            set(this, 'selectedValueType','String');
-            set(this, 'valuesTypes',[
-                'String',
-                'Number',
-                'Boolean',
-                //'Array',//Not ready yet
-            ]);
-
-            var startValue;
-            var startContent;
-
-            console.log('Init content for typed value is', get(this, 'content'));
-
-            if (Ember.isNone(get(this, 'content'))) {
-
-                startValue = '';
-                startContent = '';
-
-            } else {
-
-                startContent = startValue = get(this, 'content');
-                //Intialize type value from content type
-                var valueType = (typeof startValue).capitalize();
-
-                set(this, 'selectedValueType', valueType);
-            }
-
-            set(this, 'content', startContent);
-            set(this, 'value', startValue);
-
-        },
+        var get = Ember.get,
+            set = Ember.set;
 
 
+        var component = Ember.Component.extend({
 
-        updateContent: function () {
-            console.log('get content from typed value:', get(this, 'value'));
+            init: function () {
+                this._super();
+                set(this, 'selectedValueType','String');
+                set(this, 'valuesTypes',[
+                    'String',
+                    'Number',
+                    'Boolean',
+                    //'Array',//Not ready yet
+                ]);
 
-            //Transform value to right typed value depending on wished type
-            var value = valuesUtils.castValue(
-                get(this, 'value'),
-                get(this, 'selectedValueType')
-            );
+                var startValue;
+                var startContent;
 
-            set(this, 'content', value);
+                console.log('Init content for typed value is', get(this, 'content'));
 
-            //contentType value is for debug purpose
-            set(this, 'contentType', typeof value);
+                if (Ember.isNone(get(this, 'content'))) {
 
+                    startValue = '';
+                    startContent = '';
 
-        }.observes('value'),
+                } else {
 
-        placeholder: function () {
+                    startContent = startValue = get(this, 'content');
+                    //Intialize type value from content type
+                    var valueType = (typeof startValue).capitalize();
 
-            var text = 'Type a value';
-            switch (get(this, 'selectedValueType')) {
-                case 'Number':text = 'Use an integer value or a decimal';break;
-                case 'String':text = 'Type a value';break;
-            }
+                    set(this, 'selectedValueType', valueType);
+                }
 
-            return __(text);
+                set(this, 'content', startContent);
+                set(this, 'value', startValue);
 
-        }.property('selectedValueType'),
-
-        updateContentType: function () {
-
-            var type = get(this, 'selectedValueType');
-
-            if (type === 'String') {
-                set(this, 'value', '');
-            }
-            if (type === 'Number') {
-                set(this, 'value', 0);
-            }
-            if (type === 'Boolean') {
-                set(this, 'value', true);
-            }
-            if (type === 'Array') {
-                set(this, 'value', {value : ['toto']});
-            }
-
-            console.log('updated content type with value', get(this, 'value'));
-
-        }.observes('selectedValueType'),
-
-
-        useTextField: function () {
-            return get(this, 'selectedValueType') === 'String' || get(this, 'selectedValueType') === 'Number';
-        }.property('selectedValueType'),
-
-        useBoolean: function () {
-            return get(this, 'selectedValueType') === 'Boolean';
-        }.property('selectedValueType'),
-
-        useArray: function () {
-            return get(this, 'selectedValueType') === 'Array';
-        }.property('selectedValueType'),
-
-        actions : {
-
-            switchContentValue: function () {
-                set(this, 'value', !get(this, 'value'));
-                console.log('switched boolean value', get(this, 'value'));
             },
 
-            addListElement:function (){
-                get(this, 'value').pushObject('');
-            },
 
-            removeItem: function (listElement) {
-                get(this, 'value').removeObject(listElement);
-            },
 
-        }
+            updateContent: function () {
+                console.log('get content from typed value:', get(this, 'value'));
 
-    });
+                //Transform value to right typed value depending on wished type
+                var value = valuesUtils.castValue(
+                    get(this, 'value'),
+                    get(this, 'selectedValueType')
+                );
 
-    Ember.Application.initializer({
-        name:"component-typedvalue",
-        initialize: function(container, application) {
-            application.register('component:component-typedvalue', component);
-        }
-    });
+                set(this, 'content', value);
 
-    return component;
+                //contentType value is for debug purpose
+                set(this, 'contentType', typeof value);
+
+
+            }.observes('value'),
+
+            placeholder: function () {
+
+                var text = 'Type a value';
+                switch (get(this, 'selectedValueType')) {
+                    case 'Number':text = 'Use an integer value or a decimal';break;
+                    case 'String':text = 'Type a value';break;
+                }
+
+                return __(text);
+
+            }.property('selectedValueType'),
+
+            updateContentType: function () {
+
+                var type = get(this, 'selectedValueType');
+
+                if (type === 'String') {
+                    set(this, 'value', '');
+                }
+                if (type === 'Number') {
+                    set(this, 'value', 0);
+                }
+                if (type === 'Boolean') {
+                    set(this, 'value', true);
+                }
+                if (type === 'Array') {
+                    set(this, 'value', {value : ['toto']});
+                }
+
+                console.log('updated content type with value', get(this, 'value'));
+
+            }.observes('selectedValueType'),
+
+
+            useTextField: function () {
+                return get(this, 'selectedValueType') === 'String' || get(this, 'selectedValueType') === 'Number';
+            }.property('selectedValueType'),
+
+            useBoolean: function () {
+                return get(this, 'selectedValueType') === 'Boolean';
+            }.property('selectedValueType'),
+
+            useArray: function () {
+                return get(this, 'selectedValueType') === 'Array';
+            }.property('selectedValueType'),
+
+            actions : {
+
+                switchContentValue: function () {
+                    set(this, 'value', !get(this, 'value'));
+                    console.log('switched boolean value', get(this, 'value'));
+                },
+
+                addListElement:function (){
+                    get(this, 'value').pushObject('');
+                },
+
+                removeItem: function (listElement) {
+                    get(this, 'value').removeObject(listElement);
+                },
+
+            }
+
+        });
+
+        application.register('component:component-typedvalue', component);
+    }
 });

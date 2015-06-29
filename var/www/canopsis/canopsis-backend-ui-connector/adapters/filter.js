@@ -17,24 +17,23 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'canopsis/canopsis-backend-ui-connector/adapters/application',
-], function(Ember, ApplicationAdapter) {
+Ember.Application.initializer({
+    name:"FilterAdapter",
+    after: "ApplicationAdapter",
+    initialize: function(container, application) {
+        var ApplicationAdapter = container.lookupFactory('adapter:application');
 
-    var set = Ember.set;
+        var set = Ember.set;
 
-    var adapter = ApplicationAdapter.extend({
-        updateRecord: function(store, type, record) {
-            //This value have to be reseted each update for user display purpose
-            set(record, 'run_once', false);
-            var promise = this._super(store, type, record);
-            return promise;
-        }
-    });
+        var adapter = ApplicationAdapter.extend({
+            updateRecord: function(store, type, record) {
+                //This value have to be reseted each update for user display purpose
+                set(record, 'run_once', false);
+                var promise = this._super(store, type, record);
+                return promise;
+            }
+        });
 
-
-    loader.register('adapter:filter', adapter);
-
-    return adapter;
+        application.register('adapter:filter', adapter);
+    }
 });

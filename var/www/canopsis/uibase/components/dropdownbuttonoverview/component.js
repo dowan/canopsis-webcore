@@ -17,37 +17,29 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'jquery',
-    'ember'
-], function($, Ember) {
+Ember.Application.initializer({
+    name:"component-dropdownbuttonoverview",
+    initialize: function(container, application) {
+        var get = Ember.get,
+            set = Ember.set;
 
-    var get = Ember.get,
-        set = Ember.set;
+        /**
+         * Component for seeing the chosen color in the dropdownbutton
+         *
+         * @class Dropdownbuttonoverview
+         * @static
+         */
+        var component = Ember.Component.extend({
+            classNames: ['dropdownbuttonoverview', 'dropdownbuttonoverview-default', 'overview'],
 
-    /**
-     * Component for seeing the chosen color in the dropdownbutton
-     *
-     * @class Dropdownbuttonoverview
-     * @static
-     */
-    var component = Ember.Component.extend({
-        classNames: ['dropdownbuttonoverview', 'dropdownbuttonoverview-default', 'overview'],
+            //update background color of the overview
+            attributeBindings: ['style'],
+            style: function() {
+                var code = get(this, 'color');
+                return 'background-color:' + code;
+            }.property('color')
+        });
 
-        //update background color of the overview
-        attributeBindings: ['style'],
-        style: function() {
-            var code = get(this, 'color');
-            return 'background-color:' + code;
-        }.property('color')
-    });
-
-    Ember.Application.initializer({
-        name:"component-dropdownbuttonoverview",
-        initialize: function(container, application) {
-            application.register('component:component-dropdownbuttonoverview', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-dropdownbuttonoverview', component);
+    }
 });

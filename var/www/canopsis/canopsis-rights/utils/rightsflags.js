@@ -17,28 +17,28 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember'
-], function() {
+Ember.Application.initializer({
+    name:'RightsflagsUtils',
+    initialize: function(container, application) {
+        var rightsflagsUtils = {
+            canRead: function(checksum) {
+                return (checksum >> 2) % 2 === 1;
+            },
+            canWrite: function(checksum) {
+                return (checksum >> 1) % 2 === 1;
+            },
 
-    var rightsflagsUtils = {
-        canRead: function(checksum) {
-            return (checksum >> 2) % 2 === 1;
-        },
-        canWrite: function(checksum) {
-            return (checksum >> 1) % 2 === 1;
-        },
+            canCreate: function(checksum) {
+                return (checksum >> 3) % 2 === 1;
+            },
+            canUpdate: function(checksum) {
+                return this.canWrite(checksum);
+            },
+            canDelete: function(checksum) {
+                return checksum % 2 === 1;
+            }
+        };
 
-        canCreate: function(checksum) {
-            return (checksum >> 3) % 2 === 1;
-        },
-        canUpdate: function(checksum) {
-            return this.canWrite(checksum);
-        },
-        canDelete: function(checksum) {
-            return checksum % 2 === 1;
-        }
-    };
-
-    return rightsflagsUtils;
+        application.register('utility:rightsflags', rightsflagsUtils);
+    }
 });
