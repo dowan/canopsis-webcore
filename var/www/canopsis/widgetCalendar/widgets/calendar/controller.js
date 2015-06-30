@@ -18,15 +18,11 @@
 */
 
 define([
-    'ember',
-    'jquery',
     'app/lib/factories/widget',
     'app/lib/utils/forms',
     'canopsis/widgetCalendar/lib/utils/moment/min/moment.min',
-    'canopsis/widgetCalendar/lib/utils/fullcalendar/dist/fullcalendar.min',
-    'link!canopsis/widgetCalendar/lib/utils/fullcalendar/dist/fullcalendar.min.css',
-    'link!canopsis/widgetCalendar/style.css'
-], function(Ember, $, WidgetFactory, formUtils, moment, WidgetCalendar) {
+    'canopsis/widgetCalendar/lib/utils/fullcalendar/dist/fullcalendar.min'
+], function(WidgetFactory, formUtils, moment, WidgetCalendar) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -34,9 +30,12 @@ define([
     var viewMixin = Ember.Mixin.create({
 
         eventsDidChange: function(calendarTab){
-            $('.calendar').fullCalendar('destroy');
-            var toto = get(this, 'calendarTab');
-            $('.calendar').fullCalendar({
+            /**
+                refresh fullcalendar with fetched events
+                @param calendarTab: event list formated for fullCalendar
+            **/
+            this.$('.calendar').fullCalendar('destroy');
+            this.$('.calendar').fullCalendar({
                 header: {
                     left: 'prev,next today',
                     center: 'title',
@@ -48,12 +47,12 @@ define([
         },
 
         didInsertElement: function() {
-            var component = this;
+            var view = this;
             var eventForm = formUtils.instantiateForm('confirmform', 'task', {});
-            set(component, 'eventForm', eventForm);
+            set(view, 'eventForm', eventForm);
             console.log('eventForm', eventForm);
 
-            $('.calendar').fullCalendar({
+            view.$('.calendar').fullCalendar({
                 header: {
                     left: 'prev,next today',
                     center: 'title',
@@ -63,13 +62,16 @@ define([
                 editable: false,
                 events: []
             });
+            var ctrl = get(view, "controller");
+            ctrl.on('eventsDidChange',view, view.eventsDidChange);
 
-            this._super();
+            view._super();
         },
 
         willDestroyElement: function(){
             this._super();
             this.$('.calendar').fullCalendar('destroy');
+            this.off('eventsDidChange',this, this.eventsDidChange);
         }
     });
 
@@ -88,59 +90,84 @@ define([
         },
 
         findItems: function(){
-            var component = this;
-            console.log ('controller calendar', component);
+            var controller = this;
+            console.log ('controller calendar', controller);
 
             /* getting event data from schemas */
-            //TODO @florent query with params
             var params = {
-                output: "test"
+                query: {
+                    "category": "2"
+                }
             };
 
-            var store = get(this, 'widgetDataStore');
+            var store = get(controller, 'widgetDataStore');
 
             store.findQuery('calendardata', params).then(function (result) {
-                var eventObjects = get(result, 'content');
-                var calendarTab = [];
-                for (var i = 0, li = eventObjects.length; i < li; i++) {
-                    var data = get(eventObjects[i],'_data');
-                    var description = get(data, 'output');
-                    var startEvent = moment(get(data, 'dtstart')*1000).format();
-                    var endEvent = moment(get(data, 'dtend')*1000).format();
-                    calendarTab.pushObject({
-                        title: description,
-                        start: startEvent,
-                        end: endEvent
-                    });
+
+                var events = get(result, 'content'),
+                    calendarTab = [],
+                    eventslength = events.length;
+
+                for (var i = 0, li = eventslength; i < li; i++) {
+                    formated_cevent = controller.getCalendarEvent(events[i]);
+                    calendarTab.pushObject(formated_cevent);
                 }
-                set(component, 'calendarTab', calendarTab);
-                viewMixin.mixins[0].properties.eventsDidChange(calendarTab);
+
+                controller.trigger('eventsDidChange', calendarTab);
             });
         },
 
-        actions:{
-            save: function(description, category, dtstart, dtend){
-                var component = this;
-                var eventConfirmation = 'event created';
+        getCalendarEvent: function (cevent) {
+            return {
+                title: get(cevent, 'output'),
+                start: moment(get(cevent, 'dtstart')*1000).format(),
+                end: moment(get(cevent, 'dtend')*1000).format()
+            };
+        },
 
-                if(moment(dtstart).unix() > moment(dtend).unix()){
+        actions:{
+            save: function(){
+                var controller = this,
+                    eventConfirmation = 'event created';
+
+                var dtstart = moment(get(this, 'dtstart') || 0).unix();
+                var dtend = moment(get(this, 'dtend') || 0).unix();
+
+                if(dtstart > dtend){
                     console.log('the starting date is after the ending date');
-                    eventConfirmation = 'creation problem: dates are not correct';
+                    controller.showUserMessage(
+                        'Creation problem: dates are not correct',
+                        'warning'
+                    );
                 }
                 else {
 
                     var store = get(this, 'widgetDataStore');
                     var newEvent = store.createRecord('calendardata',{
-                        category: String(category),
-                        output: String(description),
-                        dtstart: moment(dtstart).unix(),
-                        dtend: moment(dtend).unix()
+                        category: String(get(this, 'category')),
+                        output: String(get(this, 'description')),
+                        dtstart: dtstart,
+                        dtend: dtend
                     });
                     newEvent.save().then(function(){
-                        component.findItems();
+                        controller.showUserMessage(
+                            'Event save success',
+                            'success'
+                        );
+                        controller.findItems();
                     });
                 }
             },
+        },
+
+        showUserMessage: function (message, level) {
+            var controller = this;
+            set(controller, 'errorMessage', message);
+            set(controller, 'errorLevel', 'alert-' + level);
+            setTimeout(function () {
+                set(controller, 'errorMessage', '');
+                set(controller, 'errorLevel', '');
+            },3000);
         }
     });
 

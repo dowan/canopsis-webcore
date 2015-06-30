@@ -1,12 +1,15 @@
 <div class='timeManager'>
+	{{#if controller.errorMessage}}
+		<div {{bind-attr class=":alert controller.errorLevel"}} role="alert">{{controller.errorMessage}}</div>
+	{{/if}}
 	<div class='eventInsertion'>
-		<h4>Create event</h4>{{eventConfirmation}}
+		<h4>Create event</h4>
 		{{input type="text" required="required" value=description placeholder="Description"}}
 		{{input type="text" value=category placeholder="Category"}}
 		{{input type="date" value=dtstart placeholder="Start date"}}
 		{{input type="date" value=dtend placeholder="End date"}}
 		<div class='input-group-btn'>
-			<input type='submit' value="Add" class='btn btn-primary btn-flat' {{action "save" description category dtstart dtend}}/>
+			<input type='submit' value="Add" class='btn btn-primary btn-flat' {{action "save"}}/>
 		</div>
 	</div>
 

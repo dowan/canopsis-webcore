@@ -96,11 +96,12 @@ def exports(ws):
 
         return result
 
-    test_query = {"category": "1"}
-
-    @route(ws.application.get, name='calendar/values')
+    @route(
+        ws.application.get, name='calendar/values',
+        payload=['query']
+    )
     def values(
-        sources=None, dtstart=None, dtend=None, query={},
+        query=None, sources=None, dtstart=None, dtend=None,
         limit=0, skip=0, sort=None, projection=None, with_count=False
     ):
         """Get source vevent document values.
