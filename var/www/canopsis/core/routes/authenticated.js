@@ -47,7 +47,6 @@ define([
                 var loginController = route.controllerFor('login');
 
                 set(loginController, 'record', record);
-
                 dataUtils.setLoggedUserController(loginController);
 
                 var appController = route.controllerFor('application');

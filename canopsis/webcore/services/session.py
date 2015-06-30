@@ -84,7 +84,7 @@ def exports(ws):
 
     @route(ws.application.get, payload=['username'], adapt=False)
     def keepalive(username):
-        session_manager.keepalive(username)
+        session_manager.keep_alive(username)
 
     @route(ws.application.get, payload=['username'], adapt=False)
     def sessionstart(username):

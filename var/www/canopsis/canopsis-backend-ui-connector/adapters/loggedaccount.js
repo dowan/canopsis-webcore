@@ -57,7 +57,22 @@ define([
                     data: payload
                 });
             });
-        }
+        },
+        keepAlive: function (username) {
+            $.ajax({
+                url: '/keepalive',
+                type:'GET',
+                data: {username: username}
+            });
+        },
+
+        sessionStart: function (username) {
+            $.ajax({
+                url: '/sessionstart',
+                type:'GET',
+                data: {username: username}
+            });
+        },
     });
 
 

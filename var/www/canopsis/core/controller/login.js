@@ -21,8 +21,9 @@ define([
     'jquery',
     'ember',
     'ember-data',
-    'app/lib/loaders/utils'
-], function($, Ember, DS, utils) {
+    'app/lib/loaders/utils',
+    'app/lib/utils/data'
+], function($, Ember, DS, utils, dataUtils) {
 
     var set = Ember.set,
         get = Ember.get,
@@ -63,7 +64,21 @@ define([
 
         authkeyChanged: function() {
             localStorage.cps_authkey = get(this, 'authkey');
-        }.observes('authkey')
+        }.observes('authkey'),
+
+        sessionStart: function () {
+            loggedaccountAdapter = dataUtils.getEmberApplicationSingleton().__container__.lookup('adapter:loggedaccount');
+            username = get(this, 'record._id');
+            loggedaccountAdapter.sessionStart(username);
+
+            //Keep alive every 4"30'
+            setInterval(function () {
+                loggedaccountAdapter.keepAlive(username);
+            },1000 * 60 * 4.5);
+        }
+
+
+
     });
 
     loader.register('controller:login', controller);
