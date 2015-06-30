@@ -31,6 +31,8 @@ define([
     var controller = Ember.ObjectController.extend({
         content: {},
 
+        needs: ['application'],
+
         init: function() {
             this._super.apply(this, arguments);
 
@@ -40,6 +42,16 @@ define([
 
             set(this, 'store', store);
         },
+
+        userRoute: function () {
+            var loginController = utils.data.getLoggedUserController();
+            var record = get(loginController, 'record');
+            var defaultview = get(record, 'defaultview');
+            if (!defaultview) {
+                defaultview = get(this, 'controllers.application.frontendConfig.defaultview');
+            }
+            return defaultview;
+        }.property(),
 
         authkey: function () {
             var authkey = localStorage.cps_authkey;
