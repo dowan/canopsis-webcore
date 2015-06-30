@@ -80,6 +80,53 @@ define(['app/lib/utilityclass', 'app/lib/utils/hash'], function(Utility, hashUti
         },
 
         /**
+         * @method uploadFilePopup
+         * @param {fn(fileInput)} callback to handle when the user select a file
+         *
+         * Shows a file selection popup window
+         */
+        uploadFilePopup: function(callback) {
+            if (window.File && window.FileReader && window.FileList && window.Blob) {
+                //do your stuff!
+                var input = $(document.createElement('input'));
+                input.attr("type", "file");
+                input.trigger('click'); // opening dialog
+                input.change(function () {
+                    if(typeof callback === 'function') {
+                        callback(this);
+                    }
+                });
+            } else {
+                alert('The File APIs are not fully supported by your browser.');
+            }
+        },
+
+        /**
+         * @method uploadTextFilePopup
+         * @param {fn(name:string, filetype:string, filesize:number, content:string)} callback to handle when the user select a file
+         *
+         * Shows a file selection popup window, and handle it with a callback dedicated to a single text file.
+         */
+        uploadTextFilePopup: function(callback) {
+            this.uploadFilePopup(function(fileInput) {
+                var file = fileInput.files[0];
+
+                if (file) {
+                    var r = new FileReader();
+                    r.onload = function(e) {
+                        var contents = e.target.result;
+                        if(typeof callback === 'function') {
+                            callback(file.name, file.type, file.size, contents);
+                        }
+                    }
+                    r.readAsText(file);
+                } else {
+                    alert("Failed to load file");
+                }
+            })
+        },
+
+        /**
          * @function cleanJSONIds
          * @param {Object} recordJSON
          * @return {Object} the cleaned record

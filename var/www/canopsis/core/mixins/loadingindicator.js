@@ -61,11 +61,9 @@ define([
          * @param {string} name the name of the loading process that is starting
          */
         addConcurrentLoading: function(name) {
-            console.log('addConcurrentLoading', name, concurrentLoadingsPending);
             if(isNone(get(concurrentLoadingsPending, name))) {
                 set(concurrentLoadingsPending, name, { count: 1 });
             } else {
-                console.log(concurrentLoadingsPending);
                 concurrentLoadingsPending.incrementProperty(name + '.count');
             }
 
@@ -77,7 +75,6 @@ define([
          * @param {string} name the name of the loading process that is ending
          */
         removeConcurrentLoading: function(name) {
-            console.log('removeConcurrentLoading', name, concurrentLoadingsPending );
             concurrentLoadingsPending.decrementProperty(name + '.count');
 
             if(get(concurrentLoadingsPending, name + '.count') <= 0) {
@@ -103,7 +100,6 @@ define([
             totalCount += get(selectedConcurrentLoading, 'count') || 0;
         }
 
-        console.log('totalCount', totalCount);
         set(controller, 'isLoading', totalCount > 0);
     };
 

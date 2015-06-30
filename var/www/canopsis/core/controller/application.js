@@ -365,9 +365,9 @@ define([
              * @descriptions Shows a form to create a new userview
              */
             addNewView: function () {
-                var type = "userview";
+                var type = 'userview';
                 var applicationController = this;
-                console.log("add", type);
+                console.log('add', type);
 
                 var containerwidgetId = hashUtils.generateId('container');
                 var viewId = hashUtils.generateId('userview');
@@ -400,6 +400,25 @@ define([
                     userview.save().then(function() {
                         applicationController.didSaveView(userview);
                     });
+                });
+            },
+
+            /**
+             * @event importView
+             * @descriptions Shows a file upload window, and then import the selected view
+             */
+            importView: function () {
+                var applicationController = this;
+
+                dataUtils.uploadTextFilePopup(function(name, type, size, content) {
+                    content = JSON.parse(content);
+
+                    var res = applicationController.get('store').pushPayload('userview', {
+                        userview: content
+                    });
+
+                    console.error('done', res, applicationController.get('store').getById('userview', content.id));
+                    applicationController.get('store').getById('userview', content.id).save();
                 });
             },
 
