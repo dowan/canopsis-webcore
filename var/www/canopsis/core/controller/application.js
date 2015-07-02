@@ -20,9 +20,6 @@
  */
 
 define([
-    'jquery',
-    'ember',
-    'ember-data',
     'canopsis/canopsisConfiguration',
     'app/controller/partialslotablecontroller',
     'app/lib/widgetsregistry',
@@ -50,9 +47,6 @@ define([
     'app/controller/recordinfopopup',
     'app/controller/formwrapper'
 ], function(
-    $,
-    Ember,
-    DS,
     canopsisConfiguration,
     PartialslotAbleController,
     widgetsRegistry,
