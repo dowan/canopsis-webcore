@@ -51,10 +51,6 @@ define([
 
         updateRecord: function(store, type, record) {
             return _upsertRecord(this, 'PUT', store, type, record);
-        },
-
-        find: function(store, type, id) {
-            return _upsertRecord(this, 'GET', store, id);
         }
     });
 

@@ -102,7 +102,7 @@ define([
 
             var store = get(controller, 'widgetDataStore');
 
-            store.findQuery('calendardata', params).then(function (result) {
+            store.findQuery('calendardata').then(function (result) {
 
                 var events = get(result, 'content'),
                     calendarTab = [],
@@ -127,7 +127,16 @@ define([
 
         actions:{
             save: function(){
-                var controller = this,
+                //TODO @florent instanciate new model form
+                var newRecord = {
+                    category: 'maintenance',
+                    output: 'test',
+                    dtstart: 0,
+                    dtend: 0
+                };
+                formUtils.showNew('modelform',newRecord);
+
+                /*var controller = this,
                     eventConfirmation = 'event created';
 
                 var dtstart = moment(get(this, 'dtstart') || 0).unix();
@@ -149,6 +158,7 @@ define([
                         dtstart: dtstart,
                         dtend: dtend
                     });
+                    console.log("record created");
                     newEvent.save().then(function(){
                         controller.showUserMessage(
                             'Event save success',
@@ -156,7 +166,7 @@ define([
                         );
                         controller.findItems();
                     });
-                }
+                }*/
             },
         },
 
