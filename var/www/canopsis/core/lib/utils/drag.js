@@ -18,10 +18,8 @@
 */
 
 define([
-    'jquery',
-    'ember',
     'app/lib/utilityclass'
-], function($, Ember, Utility) {
+], function(Utility) {
 
     var __ = Ember.String.loc,
         isNone = Ember.isNone;

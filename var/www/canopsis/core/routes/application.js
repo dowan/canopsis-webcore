@@ -18,15 +18,13 @@
 */
 
 define([
-    'ember',
-    'ember-data',
     'app/routes/authenticated',
     'app/lib/formsregistry',
     'app/lib/utils/routes',
     'app/lib/utils/actions',
     'app/lib/loaders/utils',
     'app/lib/loaders/forms'
-], function(Ember, DS, AuthenticatedRoute, formsregistry, routesUtils, actionsUtils, utils) {
+], function(AuthenticatedRoute, formsregistry, routesUtils, actionsUtils, utils) {
 
     var get = Ember.get,
         set = Ember.set,
