@@ -23,8 +23,9 @@ define([
     'ember',
     'app/lib/schemasregistry',
     'app/lib/utils/hash',
+    'app/lib/utils/data',
     'app/lib/factories/mixin'
-], function(Ember, schemasregistry, hashUtils, Mixin) {
+], function(Ember, schemasregistry, hashUtils, dataUtils, Mixin) {
 
     var isNone = Ember.isNone,
         get = Ember.get;
@@ -68,10 +69,6 @@ define([
                 console.log("sideLoad", type, item.xtype);
                 console.log("payload before sideLoad", payload);
 
-                if(item.xtype === undefined) {
-                    console.error('no xtype for widget', type, item, payload);
-                    return undefined;
-                }
                 if(schemasregistry.getByName(item.xtype).EmberModel === undefined) {
                     console.error(payload, 'bad xtype for widget :' + item.xtype);
                     return undefined;
@@ -331,6 +328,46 @@ define([
             }
 
             console.log("serializedSubDocuments", json[key]);
+        },
+
+        /**
+         * @method normalize
+         *
+         * @todo check if useful
+         *
+         * @param typeClass
+         * @param hash
+         * @param prop
+         */
+        normalize: function(typeClass, hash, prop) {
+            typeClass.eachRelationship(function(key, relationship) {
+                if(hash[key]) {
+                    hash[key].type = hash[key].xtype;
+                }
+            });
+            return this._super.apply(this, arguments);
+        },
+
+        /**
+         * @method pushPayload
+         *
+         * Used in record duplications
+         *
+         * @param {DS.Store} store
+         * @param {Object} payload
+         */
+        pushPayload: function(store, payload) {
+            var payload = dataUtils.cleanJSONIds(payload);
+
+            var payloadKeys = Ember.keys(payload);
+
+            for (var i = 0, l = payloadKeys.length; i < l; i++) {
+                var currentKey = payloadKeys[i];
+                var typeClass = schemasregistry.getByName(currentKey).EmberModel;
+                this.extractRelationships(payload, payload[currentKey], typeClass);
+            }
+
+            return this._super(store, payload);
         }
     });
 

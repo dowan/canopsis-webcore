@@ -19,7 +19,7 @@
  * @module canopsis-frontend-core
  */
 
-define(['app/lib/utilityclass'], function(Utility) {
+define(['app/lib/utilityclass', 'app/lib/utils/hash'], function(Utility, hashUtils) {
 
     var _loggedUserController,
         _applicationSingleton;
@@ -59,7 +59,104 @@ define(['app/lib/utilityclass'], function(Utility) {
                 console.log("addRecordToRelationship belongsTo", relationshipKey, arguments, parentElement);
                 parentElement.set(relationshipKey, record);
             }
+        },
+
+        /**
+         * @method download
+         * @param {string} content the file content
+         * @param {string} filename the file name
+         * @param {string} contentType the file content type
+         *
+         * Automatically download content as a file
+         */
+        download: function (content, filename, contentType) {
+            if(!contentType) {
+                contentType = 'application/octet-stream';
+            }
+
+            var a = document.createElement('a');
+            var blob = new Blob([content], {'type': contentType});
+            a.href = window.URL.createObjectURL(blob);
+            a.download = filename;
+            a.click();
+        },
+
+        /**
+         * @method uploadFilePopup
+         * @param {fn(fileInput)} callback to handle when the user select a file
+         *
+         * Shows a file selection popup window
+         */
+        uploadFilePopup: function(callback) {
+            if (window.File && window.FileReader && window.FileList && window.Blob) {
+                //do your stuff!
+                var input = $(document.createElement('input'));
+                input.attr("type", "file");
+                input.trigger('click'); // opening dialog
+                input.change(function () {
+                    if(typeof callback === 'function') {
+                        callback(this);
+                    }
+                });
+            } else {
+                alert('The File APIs are not fully supported by your browser.');
+            }
+        },
+
+        /**
+         * @method uploadTextFilePopup
+         * @param {fn(name:string, filetype:string, filesize:number, content:string)} callback to handle when the user select a file
+         *
+         * Shows a file selection popup window, and handle it with a callback dedicated to a single text file.
+         */
+        uploadTextFilePopup: function(callback) {
+            this.uploadFilePopup(function(fileInput) {
+                var file = fileInput.files[0];
+
+                if (file) {
+                    var r = new FileReader();
+                    r.onload = function(e) {
+                        var contents = e.target.result;
+                        if(typeof callback === 'function') {
+                            callback(file.name, file.type, file.size, contents);
+                        }
+                    }
+                    r.readAsText(file);
+                } else {
+                    alert("Failed to load file");
+                }
+            })
+        },
+
+        /**
+         * @function cleanJSONIds
+         * @param {Object} recordJSON
+         * @return {Object} the cleaned record
+         */
+        cleanJSONIds: function (recordJSON) {
+            for (var key in recordJSON) {
+                var item = recordJSON[key];
+                //see if the key need to be cleaned
+                if(key === 'id' || key === '_id' || key === 'widgetId' || key === 'preference_id' || key === 'EmberClass') {
+                    delete recordJSON[key];
+                }
+
+                //if this item is an object, then recurse into it
+                //to remove empty arrays in it too
+                if (typeof item === 'object') {
+                    this.cleanJSONIds(item);
+                }
+            }
+
+            if(recordJSON !== null && recordJSON !== undefined && (recordJSON.crecord_type !== undefined || recordJSON.xtype !== undefined)) {
+                recordJSON['id'] = hashUtils.generateId(recordJSON.xtype || recordJSON.crecord_type || 'item');
+                recordJSON['_id'] = recordJSON['id'];
+            }
+
+            return recordJSON;
         }
+
+
     });
 
     Ember.Application.initializer({
