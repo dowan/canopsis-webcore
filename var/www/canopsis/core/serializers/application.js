@@ -23,8 +23,9 @@ define([
     'ember-data',
     'app/mixins/metaserializer',
     'app/mixins/hashserializer',
-    'app/lib/utils/notification'
-], function(DS, MetaSerializerMixin, HashSerializerMixin, notificationUtils) {
+    'app/lib/utils/notification',
+    'app/mixins/embeddedrecordserializer'
+], function(DS, MetaSerializerMixin, HashSerializerMixin, notificationUtils, EmbeddedRecordSerializerMixin) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -33,6 +34,7 @@ define([
     var serializer = DS.RESTSerializer.extend(
         MetaSerializerMixin,
         HashSerializerMixin,
+        EmbeddedRecordSerializerMixin,
         {
             /**
              * @method normalizeId

@@ -155,8 +155,6 @@ define(['app/lib/utilityclass', 'app/lib/utils/hash'], function(Utility, hashUti
 
             return recordJSON;
         }
-
-
     });
 
     Ember.Application.initializer({

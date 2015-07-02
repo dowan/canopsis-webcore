@@ -367,6 +367,8 @@ define([
                 this.extractRelationships(payload, payload[currentKey], typeClass);
             }
 
+            payload[currentKey].id = hashUtils.generateId(payload[currentKey].xtype || payload[currentKey].crecord_type || 'item');
+
             return this._super(store, payload);
         }
     });

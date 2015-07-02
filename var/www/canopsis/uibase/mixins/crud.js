@@ -18,12 +18,11 @@
 */
 
 define([
-    'jquery',
-    'ember',
     'app/lib/utils/forms',
     'app/lib/utils/hash',
+    'app/lib/utils/data',
     'app/lib/factories/mixin'
-], function($, Ember, formsUtils, hashUtils, Mixin) {
+], function(formsUtils, hashUtils, dataUtils, Mixin) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -122,31 +121,24 @@ define([
              * @event duplicate
              * @param {DS.Model} record
              */
-             //TODO Support relationships : detect them, set them to null before store#createRecord, and reattach them between store#createRecord and showEditFormAndSaveRecord
             duplicate: function (record) {
-                console.error('copyWidget', arguments);
-                var recordJson = cleanRecordJSON(record.toJSON());
-                recordType = recordJson.xtype || recordJson.crecord_type;
-                if(recordType = 'view') {
-                    recordType = 'userview';
-                    recordJson.containerwidget = null;
-                }
+                var store = dataUtils.getStore(),
+                    recordJson = dataUtils.cleanJSONIds(record.serialize()),
+                    recordType = record.constructor.typeKey,
+                    payload = {};
 
-                console.log("add", recordType);
+                payload[recordType] = recordJson;
 
-                var newrecord = get(this, "widgetDataStore").createRecord(recordType, recordJson);
+                store.pushPayload(recordType, payload);
 
-                if(recordType = 'userview') {
-                    newrecord.set('containerwidget', record.get('containerwidget'));
-                }
+                var newRecord = store.getById(recordType, recordJson.id);
 
                 var formoptions = {
-                    title: 'Duplicate ' + recordType
+                    title: 'Duplicate ' + recordType,
+                    inspectedItemType: recordType
                 };
 
-                showEditFormAndSaveRecord(this, newrecord, formoptions);
-
-                this._super.apply(this, arguments);
+                showEditFormAndSaveRecord(this, newRecord, formoptions);
             },
 
 
