@@ -35,6 +35,9 @@ def exports(ws):
         if os.path.isfile(lang_file):
             try:
                 po = polib.pofile(lang_file)
+                # When language file is properly loaded
+                for entry in po:
+                    translations[entry.msgid] = entry.msgstr
 
             except Exception as e:
                 return HTTPError(
@@ -43,12 +46,5 @@ def exports(ws):
                         lang, e, lang_file
                     )
                 )
-
-        else:
-            return HTTPError(404, 'Not found: {0}'.format(lang_file))
-
-        # When language file is properly loaded
-        for entry in po:
-            translations[entry.msgid] = entry.msgstr
 
         return translations

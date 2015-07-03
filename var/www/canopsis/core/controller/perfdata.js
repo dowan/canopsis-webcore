@@ -69,7 +69,7 @@ define([
             applicationController.addConcurrentLoading('perfdata');
 
             //FIXME refactor this to stop using getCanopsis
-            var pojoAdapter = getCanopsis().Application.__container__.lookup('adapter:pojo');
+            var pojoAdapter = dataUtils.getEmberApplicationSingleton().__container__.lookup('adapter:pojo');
             var requestOptions = {
                 'metric_id': metric_id,
                 'timewindow': JSON.stringify({
