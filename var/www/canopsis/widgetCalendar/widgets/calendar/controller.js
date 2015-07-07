@@ -19,10 +19,12 @@
 
 define([
     'app/lib/factories/widget',
+    'app/lib/utils/data',
     'app/lib/utils/forms',
+    'app/lib/utils/notification',
     'canopsis/widgetCalendar/lib/utils/moment/min/moment.min',
     'canopsis/widgetCalendar/lib/utils/fullcalendar/dist/fullcalendar.min'
-], function(WidgetFactory, formUtils, moment, WidgetCalendar) {
+], function(WidgetFactory, dataUtils, formUtils, notificationUtils, moment, WidgetCalendar) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -127,46 +129,35 @@ define([
 
         actions:{
             save: function(){
-                //TODO @florent instanciate new model form
-                var newRecord = {
-                    category: 'maintenance',
-                    output: 'test',
-                    dtstart: 0,
-                    dtend: 0
-                };
-                formUtils.showNew('modelform',newRecord);
+                var controller = this;
 
-                /*var controller = this,
-                    eventConfirmation = 'event created';
-
-                var dtstart = moment(get(this, 'dtstart') || 0).unix();
-                var dtend = moment(get(this, 'dtend') || 0).unix();
-
-                if(dtstart > dtend){
-                    console.log('the starting date is after the ending date');
-                    controller.showUserMessage(
-                        'Creation problem: dates are not correct',
-                        'warning'
-                    );
-                }
-                else {
-
-                    var store = get(this, 'widgetDataStore');
-                    var newEvent = store.createRecord('calendardata',{
-                        category: String(get(this, 'category')),
-                        output: String(get(this, 'description')),
-                        dtstart: dtstart,
-                        dtend: dtend
-                    });
-                    console.log("record created");
-                    newEvent.save().then(function(){
+                var record = dataUtils.getStore().createRecord('calendardata', {
+                    crecord_type: 'calendardata'
+                });
+                var recordWizard = formUtils.showNew('modelform', record, {
+                    title: __('Create a new calendar event')
+                });
+                recordWizard.submit.then(function(form){
+                    record = form.get('formContext');
+                    var beginDate = get(record, 'dtstart');
+                    var endDate = get(record, 'dtend');
+                    if (beginDate > endDate){
+                        console.log('the starting date is after the ending date');
                         controller.showUserMessage(
-                            'Event save success',
-                            'success'
+                            'Creation problem: dates are not correct',
+                            'warning'
                         );
-                        controller.findItems();
-                    });
-                }*/
+                    }else{
+                        record.save().then(function(){
+                            controller.showUserMessage(
+                                'Event save success',
+                                'success'
+                            );
+                            controller.findItems();
+                        });
+                    }
+                    notificationUtils.info(__('event calendar created'));
+                });
             },
         },
 
