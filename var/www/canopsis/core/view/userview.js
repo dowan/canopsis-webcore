@@ -63,7 +63,13 @@ define([
             console.log("inserted view", this);
 
             this.registerHooks();
-            return this._super.apply(this, arguments);
+            var result = this._super.apply(this, arguments);
+
+            if (window.canopsisUiReady) {
+                window.canopsisUiReady();
+            }
+
+            return result;
         },
 
         willClearRender: function() {
