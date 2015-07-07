@@ -178,7 +178,7 @@ define([
                             label = 'default_' + i;
                         } else {
                             //avoid space in names
-                            label = label.replace(/ /g,'_');
+                            label = label.trim();
                         }
                         selectedRks.push({
                             rk: get(selectedEvents[i], 'id'),
