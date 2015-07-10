@@ -18,22 +18,31 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(function() {
+define([
+	'canopsis/canopsisConfiguration',
+	'canopsis/core/lib/externals/ember-qunit-builds/ember-qunit.amd',
+    'link!canopsis/core/lib/externals/qunit/qunit/qunit.css'
+], function(canopsisConfiguration) {
 
-    console.tags = {
-        add:function() {},
-        remove:function() {}
-    };
+    if (!canopsisConfiguration.DEBUG) {
+        console.tags = {
+            add:function() {},
+            remove:function() {}
+        };
 
-    console.log = function(){};
-    console.info = function(){};
-    console.error = function(){};
-    console.group = function(){};
-    console.groupEnd = function(){};
-    console.warn = function(){};
+        console.log = function(){};
+        console.info = function(){};
+        console.error = function(){};
+        console.group = function(){};
+        console.groupEnd = function(){};
+        console.warn = function(){};
+    }
 
-    window.canopsisUiReady = function () {
+    window.startCanopsisTests = function () {
         console.log('Starting automated tests');
+        require([
+            'canopsis/monitoring/tests/ackworkflow'
+        ]);
     };
 });
 

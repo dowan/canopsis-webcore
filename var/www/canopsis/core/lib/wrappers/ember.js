@@ -23,6 +23,7 @@ define([
     'app/lib/utils/i18n',
     'canopsis/canopsisConfiguration',
     'app/lib/externals/min/ember',
+    'app/lib/externals/ember-template-compiler',
     'app/lib/externals/jquery-resize/jquery.ba-resize'
 ], function(Wrapper, i18n, canopsisConfiguration) {
 

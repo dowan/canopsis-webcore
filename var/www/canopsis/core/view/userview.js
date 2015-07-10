@@ -65,10 +65,6 @@ define([
             this.registerHooks();
             var result = this._super.apply(this, arguments);
 
-            if (window.canopsisUiReady) {
-                window.canopsisUiReady();
-            }
-
             return result;
         },
 
