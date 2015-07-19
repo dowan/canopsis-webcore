@@ -37,8 +37,8 @@ def exports(ws):
         name='topology/graphelts'
     )
     def get_elts(
-        ids=None, types=None, graph_ids=None, info=None, base_type=None,
-        query=None
+            ids=None, types=None, graph_ids=None, info=None, base_type=None,
+            query=None
     ):
         """
         Get topology element(s) related to input ids, types and query.
@@ -166,7 +166,7 @@ def exports(ws):
         name='topology/refs'
     )
     def del_edge_refs(
-        ids=None, vids=None, sources=None, targets=None, cache=False
+            ids=None, vids=None, sources=None, targets=None, cache=False
     ):
         """
         Delete references of vertices from edges.
@@ -193,8 +193,8 @@ def exports(ws):
         name='topology/graphs'
     )
     def get_graphs(
-        ids=None, types=None, elts=None, graph_ids=None, info=None,
-        query=None, add_elts=False
+            ids=None, types=None, elts=None, graph_ids=None, info=None,
+            query=None, add_elts=False
     ):
         """
         Get one or more graphs related to input ids, types and elts.
@@ -248,9 +248,9 @@ def exports(ws):
         name='topology/sources'
     )
     def get_sources(
-        ids=None, graph_ids=None, info=None, query=None, types=None,
-        edge_ids=None, add_edges=None, edge_types=None, edge_data=None,
-        edge_query=None
+            ids=None, graph_ids=None, info=None, query=None, types=None,
+            edge_ids=None, add_edges=None, edge_types=None, edge_data=None,
+            edge_query=None
     ):
 
         result = manager.get_sources(
@@ -285,9 +285,9 @@ def exports(ws):
         name='topology/targets'
     )
     def get_targets(
-        ids=None, graph_ids=None, info=None, query=None, types=None,
-        edge_ids=None, add_edges=None, edge_types=None, edge_data=None,
-        edge_query=None
+            ids=None, graph_ids=None, info=None, query=None, types=None,
+            edge_ids=None, add_edges=None, edge_types=None, edge_data=None,
+            edge_query=None
     ):
 
         result = manager.get_targets(
@@ -322,14 +322,15 @@ def exports(ws):
         name='topology/neighbourhood'
     )
     def get_neighbourhood(
-        ids=None, sources=False, targets=True,
-        graph_ids=None,
-        info=None, source_data=None, target_data=None,
-        types=None, source_types=None, target_types=None,
-        edge_ids=None, edge_types=None, add_edges=False,
-        source_edge_types=None, target_edge_types=None,
-        edge_data=None,
-        query=None, edge_query=None, source_query=None, target_query=None
+            ids=None, sources=False, targets=True,
+            graph_ids=None,
+            info=None, source_data=None, target_data=None,
+            types=None, source_types=None, target_types=None,
+            edge_ids=None, edge_types=None, add_edges=False,
+            source_edge_types=None, target_edge_types=None,
+            edge_data=None,
+            query=None, edge_query=None, source_query=None, target_query=None,
+            depth=None
     ):
         """
         Get neighbour vertices identified by context parameters.
@@ -368,6 +369,9 @@ def exports(ws):
         :param dict edge_query: additional edge query.
         :param dict source_query: additional source query.
         :param dict target_query: additional target query.
+        :param int depth: if not None (default), repeat recursively the depth
+            search and sort results by depth in ensuring a minimal depth for
+            found neighbourhoods.
         :return: list of neighbour vertices designed by ids, or dict of
             {edge: list(vertices)} if add_edges.
         :rtype: list or dict
@@ -384,7 +388,7 @@ def exports(ws):
             edge_data=edge_data,
             query=query, edge_query=edge_query, source_query=source_query,
             target_query=target_query,
-            serialize=False
+            serialize=False, depth=depth
         )
 
         if result is not None and not isinstance(result, dict):
@@ -435,8 +439,8 @@ def exports(ws):
         name='topology/edges'
     )
     def get_edges(
-        ids=None, types=None, sources=None, targets=None, graph_ids=None,
-        info=None, query=None
+            ids=None, types=None, sources=None, targets=None, graph_ids=None,
+            info=None, query=None
     ):
         """
         Get edges related to input ids, types and source/target ids.
@@ -472,5 +476,47 @@ def exports(ws):
 
         if result is not None and not isinstance(result, dict):
             result = list(result)
+
+        return result
+
+    @route(ws.application.get, name='topology/causals')
+    def causals(vertice, depth=-1, errstate=None):
+        """Get error causal vertices related to input vertices.
+
+        Such vertices are the source vertices from input vertice where state
+        matches with input state.
+
+        :param Vertice vertice: starting vertice from where find much more
+            possible causal vertices.
+        :param int depth: maximal iteration of depth search. If negative,
+            search without limit.
+        :param int errstate: minimal error state which allow recursive depth
+            search.
+        """
+
+        result = manager.causals(
+            vertice=vertice, depth=depth, errstate=errstate
+        )
+
+        return result
+
+    @route(ws.application.get, name='topology/consequences')
+    def consequences(vertice, depth=-1, errstate=None):
+        """Get error consequence vertices related to input vertices.
+
+        Such vertices are the target vertices from input vertice where state
+        matches with input state.
+
+        :param Vertice vertice: starting vertice from where find much more
+            possible causal vertices.
+        :param int depth: maximal iteration of depth search. If negative,
+            search without limit.
+        :param int errstate: minimal error state which allow recursive depth
+            search.
+        """
+
+        result = manager.consequences(
+            vertice=vertice, depth=depth, errstate=errstate
+        )
 
         return result
