@@ -1,9 +1,7 @@
 
 define([
-    'jquery',
-    'ember',
     'canopsis/canopsis-backend-ui-connector/adapters/baseadapter'
-], function($, Ember, BaseAdapter) {
+], function(BaseAdapter) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -41,12 +39,12 @@ define([
             url = url.concat('/values');
 
             console.log('findQuery', query);
-            var me = this;
             return this.ajax(url, 'GET', {data: query});
         },
 
         createRecord: function(store, type, record) {
-            return _upsertRecord(this, 'POST', store, type, record);
+            var createdRecord = _upsertRecord(this, 'POST', store, type, record);
+            return createdRecord;
         },
 
         updateRecord: function(store, type, record) {

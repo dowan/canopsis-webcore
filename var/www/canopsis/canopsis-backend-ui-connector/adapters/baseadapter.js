@@ -20,7 +20,6 @@ define([
             var url = this.buildURL(type, null);
 
             console.log('findQuery', query);
-            var me = this;
             return this.ajax(url, 'POST', {data: query});
         },
 

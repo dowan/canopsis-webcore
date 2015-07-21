@@ -98,11 +98,10 @@ def exports(ws):
 
     @route(
         ws.application.get, name='calendar/values',
-        payload=['query']
+        payload=['query', 'source', 'dtstart', 'dtend']
     )
     def values(
-        query=None, sources=None, dtstart=None, dtend=None,
-        limit=0, skip=0, sort=None, projection=None, with_count=False
+        query=None, sources=None, dtstart=None, dtend=None
     ):
         """Get source vevent document values.
 
@@ -122,11 +121,9 @@ def exports(ws):
         :return: matchable documents.
         :rtype: list
         """
-
+        ws.logger.info("dtend, {}".format(dtend))
         result = cm.values(
-            sources=sources, dtstart=dtstart, dtend=dtend, query=query,
-            limit=limit, skip=skip, sort=sort, projection=projection,
-            with_count=with_count
+            sources=sources, dtstart=dtstart, dtend=dtend, query=query
         )
 
         return result

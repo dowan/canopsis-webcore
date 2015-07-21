@@ -1,19 +1,16 @@
-<div class='timeManager'>
+<div class="timeManager">
 	{{#if controller.errorMessage}}
 		<div {{bind-attr class=":alert controller.errorLevel"}} role="alert">{{controller.errorMessage}}</div>
 	{{/if}}
-	<div class='eventInsertion'>
-		<h4>Create event</h4>
-		{{input type="text" required="required" value=description placeholder="Description"}}
-		{{input type="text" value=category placeholder="Category"}}
-		{{input type="date" value=dtstart placeholder="Start date"}}
-		{{input type="date" value=dtend placeholder="End date"}}
-		<div class='input-group-btn'>
-			<input type='submit' value="Add" class='btn btn-primary btn-flat' {{action "save"}}/>
+	{{partialslot slot=controller._partials.subHeader}}
+		<div class="eventInsertion">
+			<button class="btn btn-primary btn-flat" {{action "createEvent"}}>{{tr "Add event"}}</button>
+			<button class="btn btn-primary btn-flat editCat" {{action "editCategories"}}>{{tr "Edit categories"}}</button>
+			<div class="eventselection">
+				{{controller.eventcategories}}
+			</div>
 		</div>
-	</div>
+	<div class="calendar"></div>
 
-	<div class='calendar'></div>
-
-	<div style='clear:both'></div>
+	<div style="clear:both"></div>
 </div>
