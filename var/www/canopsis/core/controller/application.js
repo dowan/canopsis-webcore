@@ -34,11 +34,13 @@ define([
     'app/mixins/documentation',
     'app/mixins/schemamanager',
     'app/mixins/consolemanager',
+    'app/mixins/loadingindicator',
     'app/mixins/promisemanager',
     'app/mixins/notifications',
     'app/lib/loaders/utils',
     'app/lib/utils/forms',
     'app/lib/utils/data',
+    'app/lib/utils/debug',
     'app/lib/utils/hash',
     'app/lib/utils/notification',
     'app/serializers/cservice',
@@ -64,11 +66,13 @@ define([
     DocumentationMixin,
     SchemamanagerMixin,
     ConsolemanagerMixin,
+    LoadingindicatorMixin,
     PromisemanagerMixin,
     NotificationsMixin,
     utils,
     formsUtils,
     dataUtils,
+    debugUtils,
     hashUtils,
     notificationUtils) {
 
@@ -146,13 +150,6 @@ define([
          * @description Reference to the form registry
          */
         formsRegistry: formsRegistry,
-
-        /**
-         * @property isLoading
-         * @type Number
-         * @description the number of concurrent loadings (usually requests) pending
-         */
-        isLoading:0,
 
         /**
          * @property utils
@@ -233,6 +230,15 @@ define([
         },
 
         actions: {
+            /**
+             * @event inspect
+             * @param {object} object
+             * Show debug info in console and put widget var in window.$E
+             */
+            inspect: function (object) {
+                debugUtils.inspectObject(object);
+            },
+
             /**
              * @event editConfig
              * @descriptions Shows a form to edit the frontend configuration
@@ -390,7 +396,6 @@ define([
                 var recordWizard = formsUtils.showNew('modelform', userview, { title: __("Add ") + type });
 
                 recordWizard.submit.done(function() {
-                    set(applicationController, 'isLoading', get(applicationController, 'isLoading') + 1);
                     userview.save().then(function() {
                         applicationController.didSaveView(userview);
                     });
@@ -431,6 +436,7 @@ define([
             PromisemanagerMixin,
             ConsolemanagerMixin,
             NotificationsMixin,
+            LoadingindicatorMixin,
             RequirejsmocksmanagerMixin,
             ScreentoolstatusmenuMixin,
             DocumentationMixin,
@@ -439,6 +445,7 @@ define([
         controller = PartialslotAbleController.extend(
             UserprofilestatusmenuMixin,
             NotificationsMixin,
+            LoadingindicatorMixin,
             DocumentationMixin,
             ApplicationControllerDict);
     }

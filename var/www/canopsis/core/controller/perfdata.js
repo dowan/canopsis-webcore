@@ -32,10 +32,9 @@ define([
         needs: ['application'],
 
         fetch: function(metric_id, tstart, tend) {
-            var app = get(this, 'controllers.application');
-            set(app, 'isLoading', get(app, 'isLoading') + 1);
+            var applicationController = get(this, 'controllers.application');
+            applicationController.addConcurrentLoading('perfdata');
 
-            //FIXME refactor this to stop using getCanopsis
             var pojoAdapter = dataUtils.getEmberApplicationSingleton().__container__.lookup('adapter:pojo');
             var requestOptions = {
                 'metric_id': metric_id,
@@ -53,9 +52,9 @@ define([
             var promise = pojoAdapter.createRecord('perfdata', undefined, requestOptions);
 
             promise.then(function() {
-                set(app, 'isLoading', get(app, 'isLoading') - 1);
+                applicationController.removeConcurrentLoading('perfdata');
             }, function() {
-                set(app, 'isLoading', get(app, 'isLoading') - 1);
+                applicationController.removeConcurrentLoading('perfdata');
             });
 
             return promise;
@@ -66,8 +65,11 @@ define([
         },
 
         aggregate: function(metric_id, tstart, tend, method, interval) {
+            var applicationController = get(this, 'controllers.application');
+            applicationController.addConcurrentLoading('perfdata');
+
             //FIXME refactor this to stop using getCanopsis
-            var pojoAdapter = getCanopsis().Application.__container__.lookup('adapter:pojo');
+            var pojoAdapter = dataUtils.getEmberApplicationSingleton().__container__.lookup('adapter:pojo');
             var requestOptions = {
                 'metric_id': metric_id,
                 'timewindow': JSON.stringify({
@@ -87,9 +89,9 @@ define([
             var promise = pojoAdapter.createRecord('perfdata', undefined, requestOptions);
 
             promise.then(function() {
-                set(app, 'isLoading', get(app, 'isLoading') - 1);
+                applicationController.removeConcurrentLoading('perfdata');
             }, function() {
-                set(app, 'isLoading', get(app, 'isLoading') - 1);
+                applicationController.removeConcurrentLoading('perfdata');
             });
 
             return promise;

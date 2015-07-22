@@ -112,10 +112,10 @@ define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18
         }
         deps.push('text!app/bower.json');
 
-        if(canopsisConfiguration.DEBUG) {
-            deps.push('canopsis/environment.debug');
+        if(window.environment) {
+            deps.push('canopsis/environment.' + window.environment);
         } else {
-            deps.push('canopsis/environment.prod');
+            deps.push('canopsis/environment.production');
         }
 
         deps.push('app/lib/wrappers/extend');
