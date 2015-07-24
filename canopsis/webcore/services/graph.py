@@ -33,8 +33,8 @@ def exports(ws):
         name='graph/elts'
     )
     def get_elts(
-        ids=None, types=None, graph_ids=None, data=None, base_type=None,
-        query=None
+            ids=None, types=None, graph_ids=None, data=None, base_type=None,
+            query=None
     ):
         """
         Get graph element(s) related to input ids, types and query.
@@ -126,7 +126,7 @@ def exports(ws):
         name='graph/refs'
     )
     def del_edge_refs(
-        ids=None, vids=None, sources=None, targets=None, cache=False
+            ids=None, vids=None, sources=None, targets=None, cache=False
     ):
         """
         Delete references of vertices from edges.
@@ -153,8 +153,8 @@ def exports(ws):
         name='graph/graphs'
     )
     def get_graphs(
-        ids=None, types=None, elts=None, graph_ids=None, data=None,
-        query=None, add_elts=False
+            ids=None, types=None, elts=None, graph_ids=None, data=None,
+            query=None, add_elts=False
     ):
         """
         Get one or more graphs related to input ids, types and elts.
@@ -212,9 +212,9 @@ def exports(ws):
         name='graph/sources'
     )
     def get_sources(
-        ids=None, graph_ids=None, data=None, query=None, types=None,
-        edge_ids=None, add_edges=None, edge_types=None, edge_data=None,
-        edge_query=None
+            ids=None, graph_ids=None, data=None, query=None, types=None,
+            edge_ids=None, add_edges=None, edge_types=None, edge_data=None,
+            edge_query=None
     ):
 
         result = manager.get_sources(
@@ -249,9 +249,9 @@ def exports(ws):
         name='graph/targets'
     )
     def get_targets(
-        ids=None, graph_ids=None, data=None, query=None, types=None,
-        edge_ids=None, add_edges=None, edge_types=None, edge_data=None,
-        edge_query=None
+            ids=None, graph_ids=None, data=None, query=None, types=None,
+            edge_ids=None, add_edges=None, edge_types=None, edge_data=None,
+            edge_query=None
     ):
 
         result = manager.get_targets(
@@ -286,14 +286,15 @@ def exports(ws):
         name='graph/neighbourhood'
     )
     def get_neighbourhood(
-        ids=None, sources=False, targets=True,
-        graph_ids=None,
-        data=None, source_data=None, target_data=None,
-        types=None, source_types=None, target_types=None,
-        edge_ids=None, edge_types=None, add_edges=False,
-        source_edge_types=None, target_edge_types=None,
-        edge_data=None,
-        query=None, edge_query=None, source_query=None, target_query=None
+            ids=None, sources=False, targets=True,
+            graph_ids=None,
+            data=None, source_data=None, target_data=None,
+            types=None, source_types=None, target_types=None,
+            edge_ids=None, edge_types=None, add_edges=False,
+            source_edge_types=None, target_edge_types=None,
+            edge_data=None,
+            query=None, edge_query=None, source_query=None, target_query=None,
+            depth=None
     ):
         """
         Get neighbour vertices identified by context parameters.
@@ -332,6 +333,9 @@ def exports(ws):
         :param dict edge_query: additional edge query.
         :param dict source_query: additional source query.
         :param dict target_query: additional target query.
+        :param int depth: if not None (default), repeat recursively the depth
+            search and sort results by depth in ensuring a minimal depth for
+            found neighbourhoods.
         :return: list of neighbour vertices designed by ids, or dict of
             {edge: list(vertices)} if add_edges.
         :rtype: list or dict
@@ -347,7 +351,7 @@ def exports(ws):
             target_edge_types=target_edge_types,
             edge_data=edge_data,
             query=query, edge_query=edge_query, source_query=source_query,
-            target_query=target_query
+            target_query=target_query, depth=depth
         )
 
         return result
