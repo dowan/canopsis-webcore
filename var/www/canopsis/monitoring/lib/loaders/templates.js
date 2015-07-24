@@ -19,7 +19,6 @@
 
 var templates = [
     { name: 'actionbutton-editurlfield', template: 'canopsis/monitoring/templates/actionbutton-editurlfield.hbs', classes: ["action", "toolbar"],icon : "list-alt", label : "Edit url fields" },
-    { name: 'actionbutton-uploadmib', template: 'canopsis/monitoring/templates/actionbutton-uploadmib.hbs', classes: ["action", "toolbar"],icon : "list-alt", label : "Upload mib file" },
 ];
 
 loader.loadWithTemplates(templates);

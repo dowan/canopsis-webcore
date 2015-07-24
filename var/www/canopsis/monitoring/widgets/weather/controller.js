@@ -112,10 +112,8 @@ define([
         },
 
         fetchStates: function () {
-
-            var that = this;
-
-            var eventMetas = get(that, 'config.event_selection'),
+            var weatherWidget = this;
+            var eventMetas = get(weatherWidget, 'config.event_selection'),
                 rks = [];
 
             console.log('rk information for weather', rks);
@@ -132,7 +130,7 @@ define([
                     rksLabels[meta.rk] = meta.label;
                     rks.push(meta.rk);
                 }
-                set(that,'rksLabels', rksLabels);
+                set(weatherWidget,'rksLabels', rksLabels);
             }
 
 
@@ -147,12 +145,12 @@ define([
                 data: params,
                 success: function(data) {
                     if (data.success) {
-                        that.computeWeather(data.data);
+                        weatherWidget.computeWeather(data.data);
                     } else {
                         console.error('Unable to load event information for weather widget from API');
                     }
-                    that.trigger('refresh');
-                    console.log(' + Weather content', get(that, 'config.event_selection'));
+                    weatherWidget.trigger('refresh');
+                    console.log(' + Weather content', get(weatherWidget, 'config.event_selection'));
                 }
             });
         },
