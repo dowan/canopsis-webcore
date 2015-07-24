@@ -37,86 +37,87 @@ define([
 
     var viewMixin = Ember.Mixin.create({
 
-        eventsDidChange: function(calendarTab) {
+        addEventCalendar: function(calendarTab) {
             /**
-             *  @method eventsDidChange: refresh fullcalendar with fetched events
-             *  @param calendarTab: event list formated for fullCalendar
+             *  @method addEventCalendar: add a new fullcalendar eventSource
+             *  @param calendarTab: eventSource as an array formated for fullCalendar
              */
 
-            var view = this;
-            var calendar = view.$('.calendar');
-
-            // TODO find an other solution ! -- quit the function if the view is in destroy state
-            // Sometime, findItem method fetch data when dom is not ready and try to refresh view when it does not exists
-
-            if(isNone(calendar)) {
+             // TODO find other solution: on refresh of the mixin this.$('.calendar') is undefined...
+            var calendar = this.$('.calendar');
+            if(calendar === undefined){
                 return;
             }
-            console.log('execution du eventsDidchange');
-            // Replace old source by the new one: in order to refresh the eventSource
-            calendar.fullCalendar( 'removeEventSource', calendarTab );
-            calendar.fullCalendar( 'addEventSource', {
-                events: calendarTab,
-                color: 'yellow',
-                textColor: 'black'
+
+            this.$('.calendar').fullCalendar( 'addEventSource', {
+                events: calendarTab
             });
         },
 
-        didInsertElement: function(calendarTab) {
+        removeEventCalendar: function(calendarTab){
+            /**
+             *  @method removeEventCalendar: remove a old fullcalendar eventSource
+             *  @param calendarTab: eventSource as an array formated for fullCalendar
+             */
+
+            this.$('.calendar').fullCalendar( 'removeEventSource', {
+                    events: calendarTab
+                });
+        },
+
+        didInsertElement: function() {
+            /**
+             * @method didInsertElement: create the fullcalendar at the beginning and catch every changed view
+             */
             var globalView = this;
             globalView._super();
-            //var calendarTab = [];
-            if(calendarTab === undefined) {
-                calendarTab = [];
-                var calendar = globalView.$('.calendar');
-                // Create fullCalendar
-                console.log('execution du didInsertElement');
-                calendar.fullCalendar({
-                    header: {
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'month,basicWeek,basicDay'
-                    },
-                    fixedWeekCount : false,
-                    editable: false,
-                    lazyFetching: false,
-                    viewRender: function(month, calendar) {
-                        //always call findItems twice in spite of the if condition
-                        var controller = get(globalView, "controller");
-                        var calview = globalView.$('.calendar').fullCalendar('getView');
-                        set(controller, 'calendarStart', moment(calview.start.format()).format('x')/1000);
-                        set(controller, 'calendarEnd', moment(calview.end.format()).format('x')/1000);
-                        if (calendarTab !== []) {
-                            controller.findItems();
-                        }
-                    },
-                    eventSources: [
-                        {
-                            events: calendarTab,
-                            color: 'yellow',
-                            textColor: 'black'
-                        }
-                    ]
-                });
-            }
-            else {
-                console.log('coucou');
-                globalView.$('.calendar').fullCalendar( 'removeEventSource', calendarTab );
-                globalView.$('.calendar').fullCalendar( 'addEventSource', {
-                    events: calendarTab,
-                    color: 'yellow',
-                    textColor: 'black'
-                });
-            }
-            // Sync controller and view for eventsDidchange event
+
+            calendarTab = [];
+            var calendar = globalView.$('.calendar');
+
+            // Create fullCalendar
+            calendar.fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,basicWeek,basicDay'
+                },
+                fixedWeekCount : false,
+                editable: false,
+                lazyFetching: false,
+                viewRender: function(month, calendar) {
+                    var controller = get(globalView, "controller");
+                    var calview = globalView.$('.calendar').fullCalendar('getView');
+
+                    set(controller, 'calendarStart', moment(calview.start.format()).format('x')/1000);
+                    set(controller, 'calendarEnd', moment(calview.end.format()).format('x')/1000);
+
+                    var calTab = get(controller, 'calendarTab');
+                    if(calTab === undefined){
+                        calTab = [];
+                    }
+                    globalView.removeEventCalendar(calTab);
+                    if (get(controller, 'calendarStart') !== undefined){
+                        controller.loadEvents();
+                    }
+                },
+                eventSources: [
+                    {
+                        events: calendarTab
+                    }
+                ]
+            });
+            var controller = get(globalView, "controller");
+
+            // Sync controller and view for addEventCalendar event
             var ctrl = get(this, "controller");
-            ctrl.on('eventsDidChange',this, this.didInsertElement);
+            ctrl.on('addEventCalendar',this, this.addEventCalendar);
         },
 
         willDestroyElement: function() {
             this._super();
             this.$('.calendar').fullCalendar('destroy');
-            this.off('eventsDidChange',this, this.eventsDidChange);
+            this.off('addEventCalendar',this, this.addEventCalendar);
         }
     });
 
@@ -141,17 +142,20 @@ define([
 
         },
 
-        findItems: function() {
+        loadEvents: function() {
+            /**
+             * @method loadEvents: similar to findItems, get data form backend
+             */
             var controller = this;
-            var store = get(controller, 'widgetDataStore');
+            var initialized = get(controller, 'fullCalendarInitialized');
 
-            /** get event data from schemas */
+            var store = get(controller, 'widgetDataStore');
 
             /** get userfilters from customfilterlist mixin */
 
             var widgetMixins = get(controller, 'model.mixins');
             var widgetMixinsLength = widgetMixins.length;
-            console.log('execution du findItems');
+
             for (var i = 0; i < widgetMixinsLength; i++){
 
                 var widgetFilters = get(widgetMixins[i], 'filters');
@@ -162,39 +166,100 @@ define([
                     var titleFilter = get(widgetFilters[j], 'title');
                     var descriptionFilter = get(widgetFilters[j], 'filter');
                     console.log('finish', titleFilter, descriptionFilter);
+                    set(controller, 'titleFilter', titleFilter);
+                    set(controller, 'descriptionFilter', descriptionFilter);
                 }
             }
 
             /** query to select events (by filters) */
             controller.getDateCalendarView();
-                /*query: JSON.stringify({
-                    "dtstart": dtstart,
-                    "dtend": dtend
-                })*/
-            var params = {
+
+            var userEventsParams = {
                 dtstart: get(this, 'calendarStart'),
                 dtend: get(this, 'calendarEnd')
             };
 
             /**
              * get data from storage and refresh view by
-             * calling "eventsDidchange"
+             * calling "addEventCalendar"
              */
-            store.findQuery('calendardata', params).then(function (result) {
+            store.findQuery('calendardata', userEventsParams).then(function (result) {
 
                 var events = get(result, 'content'),
                     calendarTab = [],
                     eventslength = events.length;
 
                 for (var i = 0, li = eventslength; i < li; i++) {
-                    formated_cevent = controller.getCalendarEvent(events[i]);
+                    var formated_cevent = controller.getCalendarEvent(events[i]);
                     calendarTab.pushObject(formated_cevent);
                 }
-                controller.trigger('eventsDidChange', calendarTab);
+
+                controller.trigger('addEventCalendar', calendarTab);
+                set(controller,'calendarTab', calendarTab);
+            });
+
+            /**
+             * get events log with the user filter of customfilter list
+             */
+            console.log('date pour filtre eventsLog', get(this, 'calendarStart'), get(this, 'calendarEnd'));
+
+            //do a count until 33 (days) ---- do a FOR
+            var beginDay = moment(get(this, 'calendarStart')*1000);
+            var beginDayMidnight = moment(get(this, 'calendarStart')*1000);
+
+            beginDayMidnight.add(23, 'hours');
+            beginDayMidnight.add(59, 'minutes');
+            beginDayMidnight.add(59, 'seconds');
+
+            var timezone = [];
+
+            for (var cpt = 0; cpt < 69; cpt++) {
+
+                var eventsLogDate = {
+                    "begin": beginDay.format('x')/1000,
+                    "end": beginDayMidnight.format('x')/1000
+                };
+
+                timezone.pushObject(eventsLogDate);
+
+                beginDay = beginDay.add(1 , 'days');
+                beginDayMidnight = beginDayMidnight.add(1 , 'days');
+
+                cpt++;
+
+            }
+
+            console.log('value of timezone,', timezone);
+
+            //getEventLogCount(beginDay.format('x')/1000, beginDayMidnight.format('x')/1000);
+            var eventsLogParams = {
+                filter: JSON.stringify({
+                    "$or":[
+                    {
+                        "resource":{
+                            "$eq":"task_linklist"
+                        }
+                    }]
+                }),
+                count: true,
+                timezone: timezone
+            };
+
+            console.log('display of eventsLogParams', eventsLogParams);
+
+            store.findQuery('eventlog', eventsLogParams).then(function (result) {
+                console.log('result of THE findQuery for get Events log', result);
+                /*var eventsLogCount = get(result, 'meta.total');
+                console.log('eventslogCount: ', eventsLogCount);
+
+                set(controller,'eventsLogCount', eventsLogCount);*/
             });
         },
 
         getDateCalendarView: function () {
+            /**
+             * @method getDateCalendarView: set date view with the actual month if undefined
+             */
             if(get(this, 'calendarStart') ===  undefined) {
                 set(this, 'calendarStart', parseInt(moment().startOf('month').format('x')/1000));
             }
@@ -206,7 +271,7 @@ define([
         getCalendarEvent: function (cevent) {
             /**
              *  @method getCalendarEvent: format the calendar event for fullCalendar
-             *  @param cevent: object that contains params to format
+             *  @param cevent: object that contains event to format
              *  @return object
              */
             return {
@@ -214,6 +279,58 @@ define([
                 start: moment(get(cevent, 'dtstart')*1000).format(),
                 end: moment(get(cevent, 'dtend')*1000).format()
             };
+        },
+
+        getEventLogCount: function(start, end) {
+
+            var controller = this;
+            var initialized = get(controller, 'fullCalendarInitialized');
+            var store = get(controller, 'widgetDataStore');
+
+            var eventsLogParams = {
+                filter: JSON.stringify({
+                    "$and":[
+                    {
+                        "resource":{
+                            "$eq":"task_linklist"
+                        }
+                    },
+                    {
+                        "timestamp":{
+                            "$gte":start,
+                            "$lte":end
+                        }
+                    }]
+                }),
+                count: true
+            };
+
+            store.findQuery('eventlog', eventsLogParams).then(function (result) {
+
+                var eventsLogCount = get(result, 'meta.total');
+                console.log('eventslogCount: ', eventsLogCount);
+
+                set(controller,'eventsLogCount', eventsLogCount);
+            });
+        },
+
+        formatEventLog: function (eventsLog) {
+            /**
+             *  @method getEventLog: format the event log for fullCalendar
+             *  @param eventsLog: object that contains event to format
+             *  @return object
+             */
+
+             //TODO get the timestamp
+             console.log('get the timestamp', get(eventsLog,'timestamp'));
+
+             //TODO get the DAY of the related timestamp --> momentjs
+
+             //TODO count event Log on this day
+
+             return {
+                title: get(this, 'titleFilter')
+             };
         },
 
         actions:{
@@ -237,6 +354,8 @@ define([
                     var recordWizard = formUtils.showNew('modelform', eventCalendarRecord, {
                         title: __('Create a new calendar event')
                     });
+
+                    // creation of the event and inform the user of this action by a message
                     recordWizard.submit.then(function(form){
                         eventCalendarRecord = form.get('formContext');
                         var beginDate = get(eventCalendarRecord, 'dtstart');
@@ -254,7 +373,7 @@ define([
                                     'Event save success',
                                     'success'
                                 );
-                                controller.findItems();
+                                controller.loadEvents();
                             });
                         }
                         notificationUtils.info(__('event calendar created'));
@@ -263,6 +382,9 @@ define([
             },
 
             editCategories: function () {
+                /**
+                 * @method editCategories: open a form to edit eventcategories
+                 */
                 var container = get(this, 'container');
                 formUtils.editSchemaRecord('eventcategories', container);
             }

@@ -29,7 +29,10 @@ from base64 import b64decode
 import json
 
 
-def get_records(ws, namespace, ctype=None, _id=None, **params):
+def get_records(
+    ws, namespace, ctype=None, _id=None, count=False, **params
+):
+
     options = {
         'limit': 20,
         'start': 0,
@@ -124,14 +127,21 @@ def get_records(ws, namespace, ctype=None, _id=None, **params):
             return HTTPError(404, 'IDs not found: {0}'.format(ids))
 
     else:
-        records, total = ws.db.find(
+        results = ws.db.find(
             mfilter,
             sort=msort,
             limit=options['limit'],
             offset=options['start'],
-            with_total=True,
-            namespace=namespace
+            with_total=not count,
+            namespace=namespace,
+            count=count
         )
+
+        if count:
+            total = results
+            records = []
+        else:
+            records, total = results
 
     # Generate output
     output = []
@@ -159,8 +169,11 @@ def get_records(ws, namespace, ctype=None, _id=None, **params):
                             del data[item]
 
                 output.append(data)
-
-    return output, total
+    if count:
+        results = total
+    else:
+        results = output, total
+    return results
 
 
 def save_records(ws, namespace, ctype, _id, items):
@@ -299,16 +312,63 @@ def exports(ws):
             'noInternal',
             'ids',
             'multi',
-            'fields'
+            'fields',
+            'count',
+            'timezone'
         ],
         adapt=False
     )
     def rest(namespace, ctype=None, _id=None, **params):
-        records, nrecords = get_records(
-            ws, namespace,
-            ctype=ctype, _id=_id,
-            **params
-        )
+        eventfilter = params.get('filter', {})
+        count = params.get('count', False)
+        timezone = params.get('timezone', [])
+
+        # if timezone (array of object that contain beginning and ending dates)
+        # browse the array to set filters for every set of timestamp
+
+        if timezone != []:
+            results = []
+            for date in timezone:
+                new_eventfilter = {}
+                new_eventfilter['$and'] = eventfilter['$or']
+
+                selection = {}
+                selection['$gte'] = date['begin']
+                selection['$lte'] = date['end']
+
+                timestamp_selection = {}
+                timestamp_selection['timestamp'] = selection
+
+                new_eventfilter['$and'].append(timestamp_selection)
+
+                params['filter'] = new_eventfilter
+
+                nrecords = get_records(
+                    ws, namespace,
+                    ctype=ctype,
+                    _id=_id,
+                    **params
+                )
+                records = []
+
+                results.append(nrecords)
+                records = results
+
+            return records, results
+
+        if not count:
+            records, nrecords = get_records(
+                ws, namespace,
+                ctype=ctype, _id=_id,
+                **params
+            )
+        else:
+            nrecords = get_records(
+                ws, namespace,
+                ctype=ctype, _id=_id,
+                **params
+            )
+            records = []
 
         for record in records:
             if record['crecord_type'] == 'event':
