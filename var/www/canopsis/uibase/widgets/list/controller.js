@@ -46,9 +46,6 @@ define([
         set = Ember.set,
         isNone = Ember.isNone;
 
-    Ember.Handlebars.registerBoundHelper('renderListline', function(callingContext, event, options) {
-        return Ember.Handlebars.helpers.render.helperFunction(callingContext, "listlineTest", 'event', options);
-    });
 
     var listOptions = {
         mixins: [
@@ -69,7 +66,7 @@ define([
              */
             standardListDisplay: true,
 
-            dynamicTemplateName: 'listlineTest',
+            dynamicTemplateName: 'loading',
 
             //TODO test if this is needed (used in cloaked mode)
             listlineControllerClass: ListlineController,
