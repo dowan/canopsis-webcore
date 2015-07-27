@@ -267,14 +267,9 @@ define([
                         set(clause.and[j], 'isLast', false);
                     }
 
-                    if (clause.and[j].operator === 'in' || clause.and[j].operator === 'not in') {
+                    if (!Ember.isArray(clause.and[j].value) && (clause.and[j].operator === 'in' || clause.and[j].operator === 'not in')) {
                         console.log('Operator in detected');
-                        try {
-                            clause.and[j].value = clause.and[j].value.split(',');
-                        } catch (err) {
-                            console.warn('Malformed list for in operator');
-                            clause.and[j].value = [clause.and[j].value];
-                        }
+                        clause.and[j].value = clause.and[j].value.split(',');
                     } else {
                         //manage numbers inputs and cast them to number if numeric.
                         if (typeof clause.and[j].value === 'string' && $.isNumeric(clause.and[j].value)) {
