@@ -44,7 +44,7 @@ define([
                 var searchPhrase = get(this, 'value');
                 console.log('searchItems', this, this.controller, searchPhrase);
 
-                this.controller.target.set('searchCriterion', searchPhrase);
+                get(this, 'controller').target.set('searchCriterion', searchPhrase);
             },
 
             clearSearch: function () {
