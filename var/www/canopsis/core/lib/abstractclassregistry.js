@@ -20,9 +20,8 @@
  */
 
 define([
-    'ember',
     'app/lib/registries'
-], function(Ember, registries) {
+], function(registries) {
 
     var get = Ember.get,
         set = Ember.set,

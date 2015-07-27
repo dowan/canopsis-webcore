@@ -20,11 +20,9 @@
  */
 
 define([
-    'jquery',
-    'ember',
     'hashes',
     'app/lib/utilityclass'
-], function($, Ember, Hashes, Utility) {
+], function(Hashes, Utility) {
 
     var hash = Utility.create({
         generate_GUID: function() {

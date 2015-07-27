@@ -20,9 +20,8 @@
  */
 
 define([
-    'ember',
     'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+], function(Mixin) {
 
     var mixin = Mixin('hashSerializer', {
         serializeIntoHash: function(hash, type, record, method, options) {

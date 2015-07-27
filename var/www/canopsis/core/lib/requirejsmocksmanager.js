@@ -20,9 +20,8 @@
  */
 
 define([
-    'ember',
     'app/lib/utils/forms'
-], function(Ember, formsUtils) {
+], function(formsUtils) {
 
     var set = Ember.set;
 

@@ -20,13 +20,10 @@
  */
 
 define([
-    'jquery',
-    'ember',
-    'ember-data',
     'math',
     'app/lib/utils/hash',
     'app/controller/perfdata'
-], function($, Ember, DS, math, hash) {
+], function(math, hash) {
 
     var get = Ember.get,
         set = Ember.set;

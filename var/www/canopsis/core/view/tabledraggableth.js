@@ -19,10 +19,7 @@
  * @module canopsis-frontend-core
  */
 
-define([
-    'jquery',
-    'ember',
-], function($, Ember) {
+define([], function() {
 
     var get = Ember.get,
         set = Ember.set;

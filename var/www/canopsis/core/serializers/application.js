@@ -20,12 +20,11 @@
  */
 
 define([
-    'ember-data',
     'app/mixins/metaserializer',
     'app/mixins/hashserializer',
     'app/lib/utils/notification',
     'app/mixins/embeddedrecordserializer'
-], function(DS, MetaSerializerMixin, HashSerializerMixin, notificationUtils, EmbeddedRecordSerializerMixin) {
+], function(MetaSerializerMixin, HashSerializerMixin, notificationUtils, EmbeddedRecordSerializerMixin) {
 
     var get = Ember.get,
         set = Ember.set,

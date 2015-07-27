@@ -19,7 +19,7 @@
  * @module canopsis-frontend-core
  */
 
-define(['ember', 'app/view/partialslot'], function(Ember, PartialslotView) {
+define(['app/view/partialslot'], function(PartialslotView) {
 
     /**
      * Helper to display a partial slot in widgets or components.

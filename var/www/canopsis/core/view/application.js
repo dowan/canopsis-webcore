@@ -20,10 +20,8 @@
  */
 
 define([
-    'jquery',
-    'ember',
     'app/controller/application'
-], function($, Ember, ApplicationController) {
+], function(ApplicationController) {
 
     var get = Ember.get,
         set = Ember.set;

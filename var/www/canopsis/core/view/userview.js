@@ -20,9 +20,8 @@
  */
 
 define([
-    'ember',
     'app/controller/userview'
-], function(Ember) {
+], function() {
 
     var get = Ember.get,
         set = Ember.set,

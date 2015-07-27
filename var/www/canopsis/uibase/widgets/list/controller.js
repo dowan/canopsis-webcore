@@ -18,9 +18,6 @@
 */
 
 define([
-    'jquery',
-    'ember',
-    'ember-data',
     'app/lib/factories/widget',
     'canopsis/uibase/mixins/pagination',
     'app/mixins/inspectablearray',
@@ -29,9 +26,7 @@ define([
     'app/lib/utils/routes',
     'app/lib/utils/forms',
     'app/view/listline'
-], function($,
-    Ember,
-    DS,
+], function(
     WidgetFactory,
     PaginationMixin,
     InspectableArrayMixin,

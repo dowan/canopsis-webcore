@@ -1,7 +1,6 @@
 define([
-    'ember',
     'canopsis/canopsis-backend-ui-connector/adapters/baseadapter'
-], function(Ember, BaseAdapter) {
+], function(BaseAdapter) {
 
     var isNone = Ember.isNone,
         get = Ember.get;

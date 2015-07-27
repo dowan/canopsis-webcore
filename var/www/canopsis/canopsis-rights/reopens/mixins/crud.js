@@ -18,10 +18,9 @@
 */
 
 define([
-    'ember',
     'canopsis/uibase/mixins/crud',
     'canopsis/canopsis-rights/utils/rightsflags'
-], function(Ember, CrudMixin, rightsflagsUtils) {
+], function(CrudMixin, rightsflagsUtils) {
 
     var get = Ember.get,
         set = Ember.set,

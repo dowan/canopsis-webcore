@@ -20,9 +20,8 @@
  */
 
 define([
-    'ember',
     'app/lib/utils/hash'
-], function(Ember, hashUtils) {
+], function(hashUtils) {
 
     /**
      * @class EditorView

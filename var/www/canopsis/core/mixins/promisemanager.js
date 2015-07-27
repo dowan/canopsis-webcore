@@ -20,12 +20,10 @@
  */
 
 define([
-    'ember',
     'app/lib/promisesmanager',
-    'app/lib/factories/mixin'
-], function(Ember, promisesmanager, Mixin) {
-    var get = Ember.get,
-        set = Ember.set;
+    'app/lib/factories/mixin',
+    'ember'
+], function(promisesmanager, Mixin) {
 
     /**
      * Mixin allowing to show promises on the status bar

@@ -20,10 +20,9 @@
  */
 
 define([
-    'ember',
     'jsonselect',
     'app/lib/schemasregistry'
-], function(Ember, JSONSelect, schemasRegistry) {
+], function(JSONSelect, schemasRegistry) {
 
     var set = Ember.set,
         get = Ember.get,

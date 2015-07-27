@@ -20,12 +20,11 @@
  */
 
 define([
-    'ember',
     'app/lib/utils/routes',
     'app/lib/utils/data',
     'app/lib/formsregistry',
     'app/lib/utilityclass'
-], function(Ember, routesUtils, dataUtils, formsregistry, Utility) {
+], function(routesUtils, dataUtils, formsregistry, Utility) {
 
     var get = Ember.get,
         set = Ember.set,

@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
     'app/lib/utils/values'
-], function(Ember, valuesUtils) {
+], function(valuesUtils) {
 
     var get = Ember.get,
         set = Ember.set;

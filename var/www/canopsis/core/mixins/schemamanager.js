@@ -20,14 +20,13 @@
  */
 
 define([
-    'ember',
     'canopsis/canopsisConfiguration',
     'app/lib/loaders/schemas',
     'app/lib/factories/mixin',
     'app/lib/utils/forms',
     'app/lib/utils/data',
     'app/lib/searchmethodsregistry'
-], function(Ember, canopsisConfiguration, schemasLoader, Mixin, formsUtils, dataUtils, searchmethodsRegistry) {
+], function(canopsisConfiguration, schemasLoader, Mixin, formsUtils, dataUtils, searchmethodsRegistry) {
 
     var get = Ember.get,
         set = Ember.set,

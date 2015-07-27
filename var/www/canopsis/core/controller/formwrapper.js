@@ -20,10 +20,9 @@
  */
 
 define([
-    'ember',
     'canopsis/canopsisConfiguration',
     'app/view/formwrapper'
-], function(Ember, canopsisConfiguration) {
+], function(canopsisConfiguration) {
 
     var get = Ember.get;
 

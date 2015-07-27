@@ -20,9 +20,8 @@
  */
 
 define([
-    'ember',
     'jsonselect'
-], function(Ember, JSONSelect) {
+], function(JSONSelect) {
 
     var set = Ember.set,
         get = Ember.get;

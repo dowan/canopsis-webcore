@@ -18,14 +18,11 @@
 */
 
 define([
-    'jquery',
-    'ember',
-    'ember-data',
     'app/lib/utils/hash',
     'app/lib/utils/data',
     'app/lib/factories/mixin',
     'app/lib/loaders/utils'
-], function($, Ember, DS, hashUtils, dataUtils, Mixin, utils) {
+], function(hashUtils, dataUtils, Mixin, utils) {
 
     var get = Ember.get,
         set = Ember.set;

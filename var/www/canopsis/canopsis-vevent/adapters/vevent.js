@@ -18,10 +18,8 @@
 */
 
 define([
-    'jquery',
-    'ember',
     'canopsis/canopsis-backend-ui-connector/adapters/baseadapter'
-], function($, Ember, BaseAdapter) {
+], function(BaseAdapter) {
 
     var get = Ember.get,
         set = Ember.set,

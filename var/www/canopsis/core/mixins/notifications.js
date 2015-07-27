@@ -20,10 +20,8 @@
  */
 
 define([
-    'ember',
-    'ember-data',
     'app/lib/factories/mixin'
-], function(Ember, DS, Mixin) {
+], function(Mixin) {
 
     var get = Ember.get,
         set = Ember.set;

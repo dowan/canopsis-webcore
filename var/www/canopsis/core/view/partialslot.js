@@ -20,9 +20,8 @@
  */
 
 define([
-    'ember',
     'canopsis/canopsisConfiguration'
-], function(Ember, canopsisConfiguration) {
+], function(canopsisConfiguration) {
 
     /**
      * @class PartialslotView

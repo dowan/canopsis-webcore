@@ -19,8 +19,7 @@
  * @module canopsis-frontend-core
  */
 define([
-    'ember',
-], function(Ember) {
+], function() {
 
     var get = Ember.get,
         set = Ember.set,

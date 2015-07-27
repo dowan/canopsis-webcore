@@ -20,9 +20,8 @@
  */
 
 define([
-    'ember',
     'app/lib/utilityclass'
-], function(Ember, Utility) {
+], function(Utility) {
 
     var actionsDefaultTarget;
 

@@ -29,20 +29,20 @@ var validatorsArray = [
     'maxItems'
 ];
 
-var deps = ['ember'];
+var deps = [];
 
 for (var i = 0; i < validatorsArray.length; i++) {
     var validatorUrl = 'app/validators/' + validatorsArray[i] + '/validator';
     deps.push(validatorUrl);
 }
 
-define(deps, function(Ember) {
+define(deps, function() {
 
     var validators = {};
     console.log("Begin load validators", arguments);
 
-    for (var i = 1, l = arguments.length; i < l; i++) {
-        var validatorName = validatorsArray[i-1];
+    for (var i = 0, l = arguments.length; i < l; i++) {
+        var validatorName = validatorsArray[i];
         console.log("load validator", validatorName);
         validators[validatorName] = arguments[i];
     }

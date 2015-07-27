@@ -18,10 +18,8 @@
 */
 
 define([
-    'ember',
-    'jquery',
     'app/lib/factories/widget'
-], function(Ember, $, WidgetFactory) {
+], function(WidgetFactory) {
 
     var get = Ember.get,
         set = Ember.set,

@@ -18,10 +18,9 @@
 */
 
 define([
-    'ember',
     'app/lib/utils/forms',
     'app/mixins/validationfield'
-], function(Ember, formsUtils, ValidationFieldMixin) {
+], function(formsUtils, ValidationFieldMixin) {
 
     var get = Ember.get,
         set = Ember.set;

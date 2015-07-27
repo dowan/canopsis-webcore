@@ -18,11 +18,9 @@
 */
 
 define([
-    'ember',
-    'ember-data',
     'app/routes/userview',
     'canopsis/canopsis-rights/utils/rightsflags'
-], function(Ember, DS, UserviewRoute, rightsflagsUtils) {
+], function(UserviewRoute, rightsflagsUtils) {
 
     var get = Ember.get,
         set = Ember.set,

@@ -29,7 +29,7 @@ for (var i = 0, l = schemaFiles.length; i < l; i++) {
     schemasDeps.push('text!schemas/' + schemaFiles[i] + '.json');
 }
 
-define(schemasDeps, function(DS, dataUtils, loader, SchemaAdapter, utils, schemasRegistry) {
+define(schemasDeps, function(EmberData, dataUtils, loader, SchemaAdapter, utils, schemasRegistry) {
 
     function compare(a,b) {
       if (a.id < b.id) {

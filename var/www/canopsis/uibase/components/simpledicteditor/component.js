@@ -18,9 +18,7 @@
 */
 
 define([
-    'jquery',
-    'ember'
-], function($, Ember) {
+], function() {
 
     var get = Ember.get,
         set = Ember.set,

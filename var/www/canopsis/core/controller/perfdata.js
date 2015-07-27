@@ -20,11 +20,8 @@
  */
 
 define([
-    'jquery',
-    'ember',
-    'ember-data',
     'app/lib/utils/data'
-], function($, Ember, DS, dataUtils) {
+], function(dataUtils) {
 
     var get = Ember.get,
         set = Ember.set;

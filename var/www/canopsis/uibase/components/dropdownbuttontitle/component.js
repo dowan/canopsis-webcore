@@ -17,10 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'jquery',
-    'ember'
-], function($, Ember) {
+define([], function() {
 
     var get = Ember.get,
         set = Ember.set;
@@ -29,7 +26,7 @@ define([
      * Component for defining the title of the dropdownbutton
      *
      * @class Dropdownbuttontitle
-     * @static 
+     * @static
      */
     var component = Ember.Component.extend({
         name: undefined,

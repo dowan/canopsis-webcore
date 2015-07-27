@@ -19,7 +19,7 @@
  * @module canopsis-frontend-core
  */
 
-define(['ember'], function(Ember) {
+define([], function() {
 
     // Helper to render any widget template
     Ember.Handlebars.registerBoundHelper('renderWidget',function(callingContext, widget, options) {

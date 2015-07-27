@@ -20,14 +20,13 @@
  */
 
 define([
-    'jquery',
-    'ember',
     'canopsis/canopsisConfiguration',
-    'app/lib/utilityclass'
-], function($, Ember, conf, Utility) {
+    'jquery',
+    'ember'
+], function(conf) {
 
 
-    var i18n = Utility.create({
+    var i18n = {
 
         name: 'i18n',
 
@@ -147,7 +146,7 @@ define([
                 i18n.uploadDefinitions();
             });
         }
-    });
+    };
 
     window.__ = i18n._;
 

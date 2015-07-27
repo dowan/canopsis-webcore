@@ -19,7 +19,7 @@
  * @module canopsis-frontend-core
  */
 
-define(['ember', 'app/view/widgetslot', 'app/view/widget'], function(Ember, WidgetslotView, WidgetView) {
+define(['app/view/widgetslot', 'app/view/widget'], function(WidgetslotView, WidgetView) {
 
     /**
      * Helper to display an editor. Uses the context to get attribute value and options, so take care to where you call this helper.

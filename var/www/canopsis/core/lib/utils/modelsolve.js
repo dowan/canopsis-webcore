@@ -19,7 +19,7 @@
  * @module canopsis-frontend-core
  */
 
-define(['ember', 'app/lib/utilityclass'], function(Ember, Utility) {
+define(['app/lib/utilityclass'], function(Utility) {
 
 
     var modelsolve = Utility.create({

@@ -18,10 +18,8 @@
 */
 
 define([
-    'jquery',
-    'ember',
     'canopsis/canopsis-backend-ui-connector/adapters/application'
-], function($, Ember, ApplicationAdapter) {
+], function(ApplicationAdapter) {
 
     var shemasLimit = 200;
 

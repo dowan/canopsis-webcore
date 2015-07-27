@@ -20,11 +20,10 @@
  */
 
 define([
-    'ember',
     'canopsis/canopsisConfiguration',
     'app/lib/utils/debug',
     'app/lib/helpers/validationtextfield'
-], function(Ember, canopsisConfiguration, debugUtils) {
+], function(canopsisConfiguration, debugUtils) {
 
     var get = Ember.get,
         set = Ember.set,

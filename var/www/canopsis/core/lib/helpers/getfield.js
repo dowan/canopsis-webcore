@@ -19,10 +19,9 @@
  * @module canopsis-frontend-core
  */
 
-define(['ember'], function(Ember) {
+define([], function() {
 
     var get = Ember.get;
-
 
     Ember.Handlebars.helper('getfield', function(ctx, fieldname) {
         var field = get(ctx, fieldname) || '';

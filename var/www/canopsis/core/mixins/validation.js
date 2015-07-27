@@ -20,10 +20,9 @@
  */
 
 define([
-    'ember',
     'app/lib/utils/forms',
     'app/lib/factories/mixin'
-], function(Ember, formUtils , Mixin) {
+], function(formUtils , Mixin) {
 
     var get = Ember.get,
         set = Ember.set;

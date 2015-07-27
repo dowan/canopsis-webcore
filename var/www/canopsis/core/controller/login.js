@@ -19,12 +19,7 @@
  * @module canopsis-frontend-core
  */
 
-define([
-    'jquery',
-    'ember',
-    'ember-data',
-    'app/lib/loaders/utils'
-], function($, Ember, DS, utils) {
+define([], function() {
 
     var set = Ember.set,
         get = Ember.get,

@@ -20,13 +20,11 @@
  */
 
 define([
-    'ember',
-    'ember-data',
     'app/controller/application',
     'app/lib/utils/data',
     'app/lib/utils/actions',
     'app/controller/login',
-], function(Ember, DS, ApplicationController, dataUtils, actionsUtils) {
+], function(ApplicationController, dataUtils, actionsUtils) {
 
     var get = Ember.get,
         set = Ember.set;

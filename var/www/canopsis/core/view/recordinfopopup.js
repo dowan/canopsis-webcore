@@ -20,10 +20,8 @@
  */
 
 define([
-    'jquery',
-    'ember',
     'app/lib/utils/drag',
-], function($, Ember, drag) {
+], function(drag) {
 
     var get = Ember.get,
         set = Ember.set;

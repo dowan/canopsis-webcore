@@ -20,12 +20,10 @@
  */
 
 define([
-    'jquery',
-    'ember',
     'app/lib/schemasregistry',
     'app/lib/utils/notification',
     'app/lib/factories/mixin'
-], function($, Ember, Schemasregistry, notificationUtils, Mixin) {
+], function(Schemasregistry, notificationUtils, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;

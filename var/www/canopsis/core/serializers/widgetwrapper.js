@@ -20,16 +20,14 @@
  */
 
 define([
-    'ember-data',
     'app/serializers/application',
     'app/mixins/embeddedrecordserializer'
-], function(DS, ApplicationSerializer, EmbeddedRecordSerializerMixin) {
+], function(ApplicationSerializer, EmbeddedRecordSerializerMixin) {
 
     var serializerClass = ApplicationSerializer.extend(
         EmbeddedRecordSerializerMixin,
         {}
     );
-
 
     loader.register('serializer:widgetwrapper', serializerClass.extend());
 

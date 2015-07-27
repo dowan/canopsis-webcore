@@ -20,10 +20,9 @@
  */
 
 define([
-    'ember',
     'app/lib/factories/mixin',
     'app/lib/requirejsmocksmanager',
-], function(Ember, Mixin, requirejsmocksmanager) {
+], function(Mixin, requirejsmocksmanager) {
 
     /**
      * Mixin allowing to mock js code from inside the UI, adding a dedicated statusbar button into the app statusbar only in debug mode

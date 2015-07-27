@@ -18,10 +18,8 @@
 */
 
 define([
-    'ember',
-    'ember-data',
     'app/lib/utils/hash'
-], function(Ember, DS, hash) {
+], function(hash) {
 
     var get = Ember.get,
         set = Ember.set,

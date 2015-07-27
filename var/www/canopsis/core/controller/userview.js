@@ -20,14 +20,13 @@
  */
 
 define([
-    'ember',
     'app/lib/utils/forms',
     'app/lib/utils/hash',
     'app/lib/schemasregistry',
     'app/mixins/inspectableitem',
     'app/routes/userview',
     'app/serializers/userview'
-], function(Ember, formUtils, hashUtils, schemasregistry, InspectableItem) {
+], function(formUtils, hashUtils, schemasregistry, InspectableItem) {
 
     var get = Ember.get,
         set = Ember.set,

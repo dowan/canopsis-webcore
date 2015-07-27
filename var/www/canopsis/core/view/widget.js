@@ -20,14 +20,13 @@
  */
 
 define([
-    'ember',
     'canopsis/canopsisConfiguration',
     'app/lib/mixinsregistry',
     'app/lib/schemasregistry',
     'app/lib/widgetsregistry',
     'app/controller/widget',
     'app/lib/loaders/mixins'
-], function(Ember, canopsisConfiguration, mixinsregistry, schemasregistry, widgetsregistry, WidgetController) {
+], function(canopsisConfiguration, mixinsregistry, schemasregistry, widgetsregistry, WidgetController) {
 
     var get = Ember.get,
         set = Ember.set;

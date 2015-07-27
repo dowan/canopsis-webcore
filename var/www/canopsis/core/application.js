@@ -20,12 +20,10 @@
  */
 
 define([
-    'ember',
-    'ember-data',
     'app/lib/utils/data',
     'app/lib/inflections',
     'jsonselect',
-], function(Ember, DS, dataUtils, inflectionsManager) {
+], function(dataUtils, inflectionsManager) {
 
     if(window.appShouldNowBeLoaded !== true) {
         console.error('Application module is required too early, and it is probably leading to bad application behaviour and errors. Please do NOT require "app/application" in your modules.');

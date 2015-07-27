@@ -18,10 +18,9 @@
  */
 
 define([
-    'ember',
     'canopsis/uibase/mixins/crud',
     'canopsis/canopsis-pbehavior/adapters/pbehavior'
-], function(Ember, CrudMixin) {
+], function(CrudMixin) {
 
     var get = Ember.get,
         set = Ember.set;

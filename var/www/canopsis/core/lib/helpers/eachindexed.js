@@ -19,7 +19,7 @@
  * @module canopsis-frontend-core
  */
 
-define(['ember'], function(Ember) {
+define([], function() {
 
     Ember.Handlebars.registerHelper('eachIndexed', function eachHelper(path, options) {
         var keywordName = 'item',

@@ -20,9 +20,8 @@
  */
 
 define([
-    'ember',
     'app/lib/abstractclassregistry'
-], function(Ember, Abstractclassregistry) {
+], function(Abstractclassregistry) {
     var get = Ember.get,
         set = Ember.set;
 

@@ -20,9 +20,8 @@
  */
 
 define([
-    'ember',
     'app/lib/factories/form'
-], function(Ember, FormFactory) {
+], function(FormFactory) {
 
     var formOptions = {};
     var form = FormFactory('viewtreeform', {

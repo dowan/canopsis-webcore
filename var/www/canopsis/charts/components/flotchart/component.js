@@ -17,10 +17,8 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 define([
-    'jquery',
-    'ember',
     'app/lib/utils/values'
-], function($, Ember, values) {
+], function(values) {
 
     var get = Ember.get,
         set = Ember.set,

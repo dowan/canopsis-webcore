@@ -20,12 +20,11 @@
  */
 
 define([
-    'ember',
     'app/lib/schemasregistry',
     'app/lib/utils/hash',
     'app/lib/utils/data',
     'app/lib/factories/mixin'
-], function(Ember, schemasregistry, hashUtils, dataUtils, Mixin) {
+], function(schemasregistry, hashUtils, dataUtils, Mixin) {
 
     var isNone = Ember.isNone,
         get = Ember.get;

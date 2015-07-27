@@ -18,11 +18,10 @@
 */
 
 define([
-    'ember',
     'app/lib/utils/widgets',
     'app/lib/mixinsregistry',
     'app/lib/helpers/partialslot'
-], function(Ember, widgetUtils, mixinsRegistry) {
+], function(widgetUtils, mixinsRegistry) {
 
     var get = Ember.get,
         set = Ember.set;

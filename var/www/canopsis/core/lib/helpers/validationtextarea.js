@@ -19,7 +19,7 @@
  * @module canopsis-frontend-core
  */
 
-define(['ember', 'app/view/validationtextarea'], function(Ember, ValidationtextareaView) {
+define(['app/view/validationtextarea'], function(ValidationtextareaView) {
 
     Ember.Handlebars.helper('component-validationtextarea', ValidationtextareaView);
 });

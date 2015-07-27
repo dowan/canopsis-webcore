@@ -18,10 +18,9 @@
 */
 
 define([
-    'ember',
     'canopsis/canopsis-backend-ui-connector/adapters/userview',
     'app/lib/utils/data'
-], function(Ember, UserviewAdapter, dataUtils) {
+], function(UserviewAdapter, dataUtils) {
 
     var get = Ember.get,
         set = Ember.set,

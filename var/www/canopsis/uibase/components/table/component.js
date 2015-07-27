@@ -18,10 +18,8 @@
 */
 
 define([
-    'ember',
-    'ember-data',
     'canopsis/uibase/mixins/pagination'
-], function(Ember, DS, PaginationMixin) {
+], function(PaginationMixin) {
 
     var get = Ember.get,
         set = Ember.set,

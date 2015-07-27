@@ -20,11 +20,9 @@
  */
 
 define([
-    'jquery',
-    'ember',
     'app/lib/utils/forms',
     'app/lib/utils/debug'
-], function($, Ember, formUtils, debugUtils) {
+], function(formUtils, debugUtils) {
 
     var get = Ember.get,
         set = Ember.set;

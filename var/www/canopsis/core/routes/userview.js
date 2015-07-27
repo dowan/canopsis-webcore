@@ -20,14 +20,13 @@
  */
 
 define([
-    'ember',
     'app/routes/authenticated',
     'app/lib/utils/data',
     'app/lib/utils/notification',
     'app/lib/utils/forms',
     'app/lib/utils/widgetSelectors',
     'app/serializers/userview'
-], function(Ember, AuthenticatedRoute, dataUtils, notificationUtils, formUtils, widgetSelectorsUtils) {
+], function(AuthenticatedRoute, dataUtils, notificationUtils, formUtils, widgetSelectorsUtils) {
 
     var set = Ember.set,
         get = Ember.get,

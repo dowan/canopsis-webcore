@@ -20,9 +20,8 @@
  */
 
 define([
-    'ember',
     'app/lib/factories/mixin',
-], function(Ember, Mixin) {
+], function(Mixin) {
 
     /**
      * Put a "view documentation button on the status bar"

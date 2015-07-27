@@ -18,12 +18,10 @@
 */
 
 define([
-    'ember',
-    'ember-data',
     'canopsis/canopsis-backend-ui-connector/adapters/application',
     'app/lib/utils/notification',
     'app/lib/utils/modelsolve'
-], function(Ember, DS, ApplicationAdapter, notificationUtils, modelsolve) {
+], function(ApplicationAdapter, notificationUtils, modelsolve) {
 
     var isNone = Ember.isNone;
 

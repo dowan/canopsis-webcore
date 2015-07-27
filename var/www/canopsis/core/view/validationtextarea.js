@@ -20,9 +20,8 @@
  */
 
 define([
-  'ember',
   'app/mixins/validationfield'
-], function(Ember, ValidationFieldMixin) {
+], function(ValidationFieldMixin) {
 
     //TODO move this to components dir
 

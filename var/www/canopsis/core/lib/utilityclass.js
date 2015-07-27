@@ -19,9 +19,7 @@
  * @module canopsis-frontend-core
  */
 
-define([
-    'ember',
-], function(Ember) {
+define([], function() {
 
     var set = Ember.set,
         get = Ember.get;

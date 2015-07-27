@@ -20,9 +20,8 @@
  */
 
 define([
-    'ember',
     'app/lib/factories/mixin',
-], function(Ember, Mixin) {
+], function(Mixin) {
 
     /**
      * Mixin allowing to virtually resize the screen, adding a dedicated statusbar button into the app statusbar only in debug mode

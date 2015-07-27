@@ -20,14 +20,13 @@
  */
 
 define([
-    'ember',
     'app/lib/factories/mixin',
     'app/lib/requirejsmocksmanager',
     'app/lib/loaders/utils',
     'app/lib/utils/forms',
     'app/lib/utils/data',
     'app/lib/utils/notification'
-], function(Ember, Mixin, requirejsmocksmanager, utils, formsUtils, dataUtils, notificationUtils) {
+], function(Mixin, requirejsmocksmanager, utils, formsUtils, dataUtils, notificationUtils) {
 
     var get = Ember.get,
         set = Ember.set,

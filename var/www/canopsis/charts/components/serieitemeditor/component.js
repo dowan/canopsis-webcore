@@ -19,10 +19,9 @@
 
 
 define([
-    'ember',
     'app/lib/schemasregistry',
     'canopsis/uibase/components/stringclassifiedcrecordselector/component'
-], function(Ember, schemasregistry) {
+], function(schemasregistry) {
 
     var get = Ember.get,
         set = Ember.set;

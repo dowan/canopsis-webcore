@@ -31,8 +31,7 @@ define([], function() {
         var jsDeps = [];
         var htmlDeps = [];
         var htmlNames = [];
-        //ember is requied here and works with arguments + 1 in loadwithtemplates function
-        var deps = ['ember'];
+        var deps = [];
 
         //building html and js dependencies
 
@@ -66,12 +65,12 @@ define([], function() {
 
             var info = makeDeps(items);
 
-            define(info.deps, function(Ember) {
+            define(info.deps, function() {
 
                 var len = info.htmlNames.length;
 
                 for (var i = 0; i < len; i++) {
-                    Ember.TEMPLATES[info.htmlNames[i]] = Ember.Handlebars.compile(arguments[i + 1]);
+                    Ember.TEMPLATES[info.htmlNames[i]] = Ember.Handlebars.compile(arguments[i]);
                 }
 
             });

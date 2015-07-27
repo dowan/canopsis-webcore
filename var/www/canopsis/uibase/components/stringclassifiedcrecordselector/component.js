@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
     'canopsis/uibase/components/classifiedcrecordselector/component'
-], function(Ember, Classifiedcrecordselector) {
+], function(Classifiedcrecordselector) {
 
     var get = Ember.get,
         set = Ember.set;

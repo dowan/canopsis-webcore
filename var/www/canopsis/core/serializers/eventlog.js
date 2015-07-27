@@ -20,9 +20,8 @@
  */
 
 define([
-    'ember-data',
     'app/serializers/application'
-], function(DS, ApplicationSerializer) {
+], function(ApplicationSerializer) {
 
     var serializerClass = ApplicationSerializer.extend({
         extractRelationships: function(payload, item, type){

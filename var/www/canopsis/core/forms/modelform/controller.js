@@ -20,13 +20,12 @@
  */
 
 define([
-    'ember',
     'app/lib/factories/form',
     'app/lib/schemasregistry',
     'app/mixins/inspectableitem',
     'app/mixins/validation',
     'app/lib/utils/slug'
-], function(Ember, FormFactory, schemasRegistry, InspectableitemMixin, ValidationMixin, slugUtils) {
+], function(FormFactory, schemasRegistry, InspectableitemMixin, ValidationMixin, slugUtils) {
 
     var set = Ember.set,
         get = Ember.get,

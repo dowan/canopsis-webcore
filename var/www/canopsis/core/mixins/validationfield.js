@@ -20,11 +20,9 @@
  */
 
 define([
-    'jquery',
-    'ember',
     'app/lib/formsregistry',
     'app/lib/factories/mixin'
-], function($, Ember, formsregistry, Mixin) {
+], function(formsregistry, Mixin) {
 
     var get = Ember.get,
         set = Ember.set,

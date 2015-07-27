@@ -18,10 +18,8 @@
 */
 
 define([
-    'jquery',
-    'ember',
     'canopsis/canopsis-vevent/adapters/vevent'
-], function($, Ember, VEventAdapter) {
+], function(VEventAdapter) {
 
     var get = Ember.get,
         set = Ember.set,

@@ -18,11 +18,9 @@
 */
 
 define([
-    'ember',
-    'ember-data',
     'app/routes/application',
     'app/lib/utils/data'
-], function(Ember, DS, ApplicationRoute, dataUtils) {
+], function(ApplicationRoute, dataUtils) {
 
     var get = Ember.get,
         set = Ember.set,
