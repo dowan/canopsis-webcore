@@ -24,6 +24,12 @@ define([
 
     var serializer = CtxSerializer.extend({});
 
-    loader.register('serializer:ctxresource', serializer);
+    Ember.Application.initializer({
+        name: 'CtxresourceSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:ctxresource', serializer);
+        }
+    });
+
     return serializer;
 });

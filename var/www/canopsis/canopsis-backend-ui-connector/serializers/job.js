@@ -28,7 +28,12 @@ define([
         {}
     );
 
-    loader.register('serializer:job', serializer);
+    Ember.Application.initializer({
+        name: 'JobSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:job', serializer);
+        }
+    });
 
     return serializer;
 });

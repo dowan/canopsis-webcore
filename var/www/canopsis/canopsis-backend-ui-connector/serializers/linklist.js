@@ -24,6 +24,12 @@ define([
 
     var serializer = CtxSerializer.extend({});
 
-    loader.register('serializer:linklist', serializer);
+    Ember.Application.initializer({
+        name: 'LinklistSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:linklist', serializer);
+        }
+    });
+
     return serializer;
 });

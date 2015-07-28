@@ -32,8 +32,12 @@ define([
         }
     });
 
-
-    loader.register('adapter:filter', adapter);
+    Ember.Application.initializer({
+        name: 'FilterAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:filter', adapter);
+        }
+    });
 
     return adapter;
 });

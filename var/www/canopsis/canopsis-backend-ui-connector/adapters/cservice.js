@@ -22,8 +22,6 @@ define([
     'app/lib/schemasregistry'
 ], function(ApplicationAdapter, schemasregistry) {
 
-    console.group('CserviceAdapter');
-
     var adapter = ApplicationAdapter.extend({
         buildURL: function(type, id) {
             type = 'cservice';
@@ -45,9 +43,12 @@ define([
         }
     }
 
-    console.groupEnd();
-
-    loader.register('adapter:cservice', adapter);
+    Ember.Application.initializer({
+        name: 'CserviceAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:cservice', adapter);
+        }
+    });
 
     return adapter;
 });

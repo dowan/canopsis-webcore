@@ -40,7 +40,12 @@ define([
         }
     });
 
-    loader.register('adapter:schema', adapter);
+    Ember.Application.initializer({
+        name: 'SchemaAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:schema', adapter);
+        }
+    });
 
     return adapter;
 });

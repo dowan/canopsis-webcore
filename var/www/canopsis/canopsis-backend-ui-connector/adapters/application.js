@@ -91,8 +91,12 @@ define([
         }
     });
 
-
-    loader.register('adapter:application', adapter);
+    Ember.Application.initializer({
+        name: 'ApplicationAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:application', adapter);
+        }
+    });
 
     return adapter;
 });

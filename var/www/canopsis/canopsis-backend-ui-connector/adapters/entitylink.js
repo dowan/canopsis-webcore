@@ -32,7 +32,12 @@ define([
         },
     });
 
-    loader.register('adapter:entitylink', adapter);
+    Ember.Application.initializer({
+        name: 'EntityLinkAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:entitylink', adapter);
+        }
+    });
 
     return adapter;
 });

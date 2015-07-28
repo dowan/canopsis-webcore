@@ -33,8 +33,13 @@ define([
 
     });
 
-    loader.register('serializer:ctx', serializer);
-    loader.register('serializer:context', serializer);
+    Ember.Application.initializer({
+        name: 'ContextSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:ctx', serializer);
+            application.register('serializer:context', serializer);
+        }
+    });
 
     return serializer;
 });

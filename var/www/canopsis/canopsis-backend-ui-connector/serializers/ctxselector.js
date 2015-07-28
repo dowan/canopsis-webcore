@@ -24,6 +24,13 @@ define([
 
     var serializer = CtxSerializer.extend({});
 
-    loader.register('serializer:ctxselector', serializer);
+
+    Ember.Application.initializer({
+        name: 'CtxselectorSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:ctxselector', serializer);
+        }
+    });
+
     return serializer;
 });

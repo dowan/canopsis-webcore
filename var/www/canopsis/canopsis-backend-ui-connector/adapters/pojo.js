@@ -42,7 +42,12 @@ define([
         }
     });
 
-    loader.register('adapter:pojo', adapter);
+    Ember.Application.initializer({
+        name: 'PojoAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:pojo', adapter);
+        }
+    });
 
     return adapter;
 });

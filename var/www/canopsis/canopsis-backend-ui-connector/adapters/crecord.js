@@ -38,8 +38,12 @@ define([
         }
     });
 
-
-    loader.register('adapter:crecord', adapter);
+    Ember.Application.initializer({
+        name: 'CrecordAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:crecord', adapter);
+        }
+    });
 
     return adapter;
 });

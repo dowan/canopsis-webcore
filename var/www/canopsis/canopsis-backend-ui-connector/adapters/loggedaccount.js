@@ -60,8 +60,12 @@ define([
         }
     });
 
-
-    loader.register('adapter:loggedaccount', adapter);
+    Ember.Application.initializer({
+        name: 'LoggedAccountAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:loggedaccount', adapter);
+        }
+    });
 
     return adapter;
 });

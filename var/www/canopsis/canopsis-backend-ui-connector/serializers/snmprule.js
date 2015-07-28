@@ -24,6 +24,13 @@ define([
 
     var serializer = CtxSerializer.extend({});
 
-    loader.register('serializer:snmprule', serializer);
+
+    Ember.Application.initializer({
+        name: 'SnmpruleSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:snmprule', serializer);
+        }
+    });
+
     return serializer;
 });

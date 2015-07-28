@@ -42,7 +42,12 @@ define([
         }
     }
 
-    loader.register('serializer:cservice', serializer);
+    Ember.Application.initializer({
+        name: 'CserviceSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:cservice', serializer);
+        }
+    });
 
     return serializer;
 });

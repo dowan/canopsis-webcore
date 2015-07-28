@@ -52,7 +52,12 @@ define([
 
     });
 
-    loader.register('adapter:baseadapter', adapter);
+    Ember.Application.initializer({
+        name: 'BaseAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:baseadapter', adapter);
+        }
+    });
 
     return adapter;
 });

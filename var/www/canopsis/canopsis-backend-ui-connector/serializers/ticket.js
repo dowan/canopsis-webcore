@@ -28,7 +28,12 @@ define([
         {}
     );
 
-    loader.register('serializer:ticket', serializer);
+    Ember.Application.initializer({
+        name: 'TicketSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:ticket', serializer);
+        }
+    });
 
     return serializer;
 });

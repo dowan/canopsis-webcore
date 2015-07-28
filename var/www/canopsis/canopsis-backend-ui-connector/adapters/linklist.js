@@ -15,8 +15,12 @@ define([
 
     });
 
-
-    loader.register('adapter:linklist', adapter);
+    Ember.Application.initializer({
+        name: 'LinklistAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:linklist', adapter);
+        }
+    });
 
     return adapter;
 });

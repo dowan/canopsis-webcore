@@ -41,7 +41,12 @@ define([
         }
     });
 
-    loader.register('adapter:event', adapter);
+    Ember.Application.initializer({
+        name: 'EventAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:event', adapter);
+        }
+    });
 
     return adapter;
 });
