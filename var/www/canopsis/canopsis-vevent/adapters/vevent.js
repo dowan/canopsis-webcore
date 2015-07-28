@@ -76,7 +76,12 @@ define([
 
     });
 
-    loader.register('adapter:vevent', adapter);
+    Ember.Application.initializer({
+        name: 'VeventAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:vevent', adapter);
+        }
+    });
 
     return adapter;
 });

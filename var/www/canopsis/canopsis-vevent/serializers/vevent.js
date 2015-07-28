@@ -24,7 +24,13 @@ define([
 
     var serializer = ContextSerializer.extend({});
 
-    loader.register('serializer:vevent', serializer);
+
+    Ember.Application.initializer({
+        name: 'VeventSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:vevent', serializer);
+        }
+    });
 
     return serializer;
 });
