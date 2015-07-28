@@ -106,7 +106,12 @@ define([
         }
     });
 
-    loader.register('component:component-periodicbehaviormanager', component);
+    Ember.Application.initializer({
+        name:"component-periodicbehaviormanager",
+        initialize: function(container, application) {
+            application.register('component:component-periodicbehaviormanager', component);
+        }
+    });
 
     return component;
 });

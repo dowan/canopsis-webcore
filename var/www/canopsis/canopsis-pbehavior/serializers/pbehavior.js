@@ -24,7 +24,12 @@ define([
 
     var serializer = ContextSerializer.extend({});
 
-    loader.register('serializer:pbehavior', serializer);
+    Ember.Application.initializer({
+        name: 'PbehaviorSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:pbehavior', serializer);
+        }
+    });
 
     return serializer;
 });
