@@ -138,10 +138,6 @@ define([
             try {
                 console.log("payload before extractRelationships", payload);
 
-                if (isNone(primaryType.store)) {
-                    primaryType.store = parentType.store;
-                }
-
                 console.log('primaryType', primaryType, recordJSON.xtype);
                 if (primaryType === schemasregistry.getByName('widget').EmberModel) {
                     var concreteWidgetType = schemasregistry.getByName(recordJSON.xtype).EmberModel;
