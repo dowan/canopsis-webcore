@@ -100,8 +100,12 @@ define([
         }
     });
 
-
-    loader.register('view:userview', view);
+    Ember.Application.initializer({
+        name: 'UserviewView',
+        initialize: function(container, application) {
+            application.register('view:userview', view);
+        }
+    });
 
     return view;
 });

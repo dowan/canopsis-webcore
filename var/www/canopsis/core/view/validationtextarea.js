@@ -27,8 +27,12 @@ define([
 
     var component = Ember.TextArea.extend(ValidationFieldMixin, {});
 
-
-    loader.register('component:component-validationtextarea', component);
+    Ember.Application.initializer({
+        name:"component-validationtextarea",
+        initialize: function(container, application) {
+            application.register('component:component-validationtextarea', component);
+        }
+    });
 
     return component;
 });

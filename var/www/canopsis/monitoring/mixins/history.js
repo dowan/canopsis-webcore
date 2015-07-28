@@ -42,6 +42,5 @@ define([
         }
     });
 
-
     return mixin;
 });

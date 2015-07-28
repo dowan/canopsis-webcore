@@ -141,7 +141,12 @@ define([
         }
     });
 
-    loader.register('controller:serie', controller);
+    Ember.Application.initializer({
+        name: 'SerieController',
+        initialize: function(container, application) {
+            application.register('controller:serie', controller);
+        }
+    });
 
     return controller;
 });

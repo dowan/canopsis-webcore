@@ -45,7 +45,6 @@ define([
         needs: ['application'],
 
         actions: {
-
             /**
              * @event insertWidget
              * @param {ContainerWidget} containerController
@@ -156,8 +155,12 @@ define([
         return recordJSON;
     }
 
-
-    loader.register('controller:userview', controller);
+    Ember.Application.initializer({
+        name: 'UserviewController',
+        initialize: function(container, application) {
+            application.register('controller:userview', controller);
+        }
+    });
 
     return controller;
 });

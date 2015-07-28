@@ -29,8 +29,12 @@ define([
         {}
     );
 
-
-    loader.register('serializer:userview', serializerClass);
+    Ember.Application.initializer({
+        name: 'UserviewSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:userview', serializerClass);
+        }
+    });
 
     return serializerClass;
 });

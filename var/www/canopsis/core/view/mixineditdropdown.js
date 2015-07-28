@@ -66,8 +66,12 @@ define([
         }.property('mixins')
     });
 
-
-    loader.register('view:mixineditdropdown', view);
+    Ember.Application.initializer({
+        name: 'MixineditdropdownView',
+        initialize: function(container, application) {
+            application.register('view:mixineditdropdown', view);
+        }
+    });
 
     return view;
 });

@@ -164,8 +164,12 @@ define([], function() {
         }
     });
 
-
-    loader.register('view:tabledraggableth', view);
+    Ember.Application.initializer({
+        name: 'TabledraggablethView',
+        initialize: function(container, application) {
+            application.register('view:tabledraggableth', view);
+        }
+    });
 
     return view;
 });

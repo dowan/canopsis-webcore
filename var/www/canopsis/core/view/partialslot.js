@@ -63,7 +63,12 @@ define([
     });
 
 
-    loader.register('view:partialslot', view);
+    Ember.Application.initializer({
+        name: 'PartialslotView',
+        initialize: function(container, application) {
+            application.register('view:partialslot', view);
+        }
+    });
 
     return view;
 });

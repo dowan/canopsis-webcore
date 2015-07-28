@@ -103,10 +103,7 @@ define([
                 set(this, 'ackcolor', "bg-purple");
                 set(this, 'acktitle', __("Acknowleged"));
             }
-
-        },
-
-
+        }
     });
 
     Ember.Application.initializer({

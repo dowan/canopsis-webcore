@@ -29,7 +29,12 @@ define([
         {}
     );
 
-    loader.register('serializer:widgetwrapper', serializerClass.extend());
+    Ember.Application.initializer({
+        name: 'WidgetwrapperSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:widgetwrapper', serializerClass);
+        }
+    });
 
     return serializerClass;
 });

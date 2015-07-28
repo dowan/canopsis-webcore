@@ -85,24 +85,6 @@ define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18
 
     var get = Ember.get;
 
-    Ember.Object.reopen({
-        toJson: function() {
-            return JSON.parse(JSON.stringify(this));
-        }
-    });
-
-    var controllerDict = {
-        init: function() {
-            if(get(this, 'isGenerated')) {
-                console.error('Ember is Instantiating a generated controller. This practice is not encouraged, as it might also be an underlying requireJS problem.', this);
-            }
-            this._super.apply(this, arguments);
-        }
-    };
-
-    Ember.Controller.reopen(controllerDict);
-    Ember.ArrayController.reopen(controllerDict);
-    Ember.ObjectController.reopen(controllerDict);
     canopsisConfiguration.EmberIsLoaded = true;
 
 

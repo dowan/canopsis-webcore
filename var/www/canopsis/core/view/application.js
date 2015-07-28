@@ -45,8 +45,12 @@ define([
         }.property('controller.fullscreenMode')
     });
 
-
-    loader.register('view:application', view);
+    Ember.Application.initializer({
+        name: 'ApplicationView',
+        initialize: function(container, application) {
+            application.register('view:application', view);
+        }
+    });
 
     return view;
 });

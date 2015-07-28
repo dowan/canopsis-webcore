@@ -46,8 +46,12 @@ define([
         }.observes('controller.isAllSelected')
     });
 
-
-    loader.register('view:listline', view);
+    Ember.Application.initializer({
+        name: 'ListlineView',
+        initialize: function(container, application) {
+            application.register('view:listline', view);
+        }
+    });
 
     return view;
 });

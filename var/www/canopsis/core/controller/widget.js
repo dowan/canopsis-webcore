@@ -522,7 +522,12 @@ define([
         }.property()
     });
 
-    loader.register('controller:widget', controller);
+    Ember.Application.initializer({
+        name: 'WidgetController',
+        initialize: function(container, application) {
+            application.register('controller:widget', controller);
+        }
+    });
 
     return controller;
 });

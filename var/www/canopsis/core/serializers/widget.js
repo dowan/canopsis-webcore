@@ -29,8 +29,12 @@ define([
         {}
     );
 
-
-    loader.register('serializer:widget', serializerClass.extend());
+    Ember.Application.initializer({
+        name: 'WidgetSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:widget', serializerClass);
+        }
+    });
 
     return serializerClass;
 });

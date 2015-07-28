@@ -57,8 +57,12 @@ define([], function() {
         classNames: ['widgetslot']
     });
 
-
-    loader.register('view:widgetslot', view);
+    Ember.Application.initializer({
+        name: 'WidgetslotView',
+        initialize: function(container, application) {
+            application.register('view:widgetslot', view);
+        }
+    });
 
     return view;
 });

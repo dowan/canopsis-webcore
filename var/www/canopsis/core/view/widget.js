@@ -281,8 +281,12 @@ define([
         }
     });
 
-
-    loader.register('view:widget', view);
+    Ember.Application.initializer({
+        name: 'WidgetView',
+        initialize: function(container, application) {
+            application.register('view:widget', view);
+        }
+    });
 
     return view;
 });

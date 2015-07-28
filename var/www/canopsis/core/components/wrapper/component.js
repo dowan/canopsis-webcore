@@ -18,8 +18,7 @@
  *
  * @module canopsis-frontend-core
  */
-define([
-], function() {
+define([], function() {
 
     var get = Ember.get,
         set = Ember.set,
@@ -91,7 +90,6 @@ define([
 
         }.property('editor-type'),
     });
-
 
     Ember.Application.initializer({
         name:"component-wrapper",

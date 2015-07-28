@@ -48,8 +48,12 @@ define([
         }
     });
 
-
-    loader.register('view:recordinfopopup', view);
+    Ember.Application.initializer({
+        name: 'RecordinfopopupView',
+        initialize: function(container, application) {
+            application.register('view:recordinfopopup', view);
+        }
+    });
 
     return view;
 });

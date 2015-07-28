@@ -149,7 +149,12 @@ define([
         }
     });
 
-    loader.register('controller:partialslot-able', controller);
+    Ember.Application.initializer({
+        name: 'PartialslotAbleController',
+        initialize: function(container, application) {
+            application.register('controller:partialslot-able', controller);
+        }
+    });
 
     return controller;
 });

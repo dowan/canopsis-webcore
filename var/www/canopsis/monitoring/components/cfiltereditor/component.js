@@ -666,7 +666,6 @@ define([
         }
     });
 
-
     Ember.Application.initializer({
         name:"component-cfiltereditor",
         initialize: function(container, application) {

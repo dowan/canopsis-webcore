@@ -71,7 +71,12 @@ define([], function() {
         }.observes('authkey')
     });
 
-    loader.register('controller:login', controller);
+    Ember.Application.initializer({
+        name: 'LoginController',
+        initialize: function(container, application) {
+            application.register('controller:login', controller);
+        }
+    });
 
     return controller;
 });

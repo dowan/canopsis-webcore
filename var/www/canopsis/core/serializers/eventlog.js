@@ -38,8 +38,12 @@ define([
         }
     });
 
-
-    loader.register('serializer:eventlog', serializerClass);
+    Ember.Application.initializer({
+        name: 'EventlogSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:eventlog', serializerClass);
+        }
+    });
 
     return serializerClass;
 });

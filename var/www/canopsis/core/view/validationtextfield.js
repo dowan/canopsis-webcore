@@ -28,8 +28,12 @@
 
     var component = Ember.TextField.extend(ValidationFieldMixin, {});
 
-
-    loader.register('component:component-validationtextfield', component);
+    Ember.Application.initializer({
+        name:"component-validationtextfield",
+        initialize: function(container, application) {
+            application.register('component:component-validationtextfield', component);
+        }
+    });
 
     return component;
 });

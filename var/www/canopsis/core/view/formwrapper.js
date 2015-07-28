@@ -129,7 +129,12 @@ define([
     });
 
 
-    loader.register('view:formwrapper', view);
+    Ember.Application.initializer({
+        name: 'FormwrapperView',
+        initialize: function(container, application) {
+            application.register('view:formwrapper', view);
+        }
+    });
 
     return view;
 });

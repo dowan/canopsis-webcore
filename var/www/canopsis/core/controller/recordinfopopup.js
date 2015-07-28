@@ -64,7 +64,12 @@ define([
 
     });
 
-    loader.register('controller:recordinfopopup', controller);
+    Ember.Application.initializer({
+        name: 'RecordinfopopupController',
+        initialize: function(container, application) {
+            application.register('controller:recordinfopopup', controller);
+        }
+    });
 
     return controller;
 });

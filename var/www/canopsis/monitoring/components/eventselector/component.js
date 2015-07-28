@@ -223,7 +223,6 @@ define([], function() {
         }
     });
 
-
     Ember.Application.initializer({
         name:"component-eventselector",
         initialize: function(container, application) {

@@ -17,21 +17,17 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
+Ember.Handlebars.helper('stateview', function(state) {
 
-    Ember.Handlebars.helper('stateview', function(state) {
+    var statelist = {
+        0: {color: 'green', text: 'Info'},
+        1: {color: 'yellow', text: 'Minor'},
+        2: {color: 'orange', text: 'Major'},
+        3: {color: 'red', text: 'Critical'},
+    };
 
-        var statelist = {
-            0: {color: 'green', text: 'Info'},
-            1: {color: 'yellow', text: 'Minor'},
-            2: {color: 'orange', text: 'Major'},
-            3: {color: 'red', text: 'Critical'},
-        };
+    var stateSelection = statelist[state];
+    var state_template = '<span class="badge bg-%@">%@</span>'.fmt(stateSelection.color, __(stateSelection.text));
 
-        var stateSelection = statelist[state];
-        var state_template = '<span class="badge bg-%@">%@</span>'.fmt(stateSelection.color, __(stateSelection.text));
-
-        return new Ember.Handlebars.SafeString(state_template);
-    });
-
+    return new Ember.Handlebars.SafeString(state_template);
 });

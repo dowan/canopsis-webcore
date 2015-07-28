@@ -473,5 +473,12 @@ define([
 
     loader.register('controller:application', controller);
 
+    Ember.Application.initializer({
+        name: 'ApplicationController',
+        initialize: function(container, application) {
+            application.register('controller:application', controller);
+        }
+    });
+
     return controller;
 });

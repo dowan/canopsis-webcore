@@ -101,8 +101,12 @@ define([
         }
     });
 
-
-    loader.register('controller:perfdata', controller);
+    Ember.Application.initializer({
+        name: 'PerfdataController',
+        initialize: function(container, application) {
+            application.register('controller:perfdata', controller);
+        }
+    });
 
     return controller;
 });

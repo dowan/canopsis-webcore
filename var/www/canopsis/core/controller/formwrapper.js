@@ -56,7 +56,12 @@ define([
         }
     });
 
-    loader.register('controller:formwrapper', controller);
+    Ember.Application.initializer({
+        name: 'FormwrapperController',
+        initialize: function(container, application) {
+            application.register('controller:formwrapper', controller);
+        }
+    });
 
     return controller;
 });

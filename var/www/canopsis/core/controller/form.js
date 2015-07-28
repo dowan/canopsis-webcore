@@ -223,7 +223,12 @@ define([
         }.property()
     });
 
-    loader.register('controller:form', controller);
+    Ember.Application.initializer({
+        name: 'FormController',
+        initialize: function(container, application) {
+            application.register('controller:form', controller);
+        }
+    });
 
     return controller;
 });

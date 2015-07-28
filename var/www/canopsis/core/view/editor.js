@@ -43,7 +43,12 @@ define([
         }
     });
 
-    loader.register('view:editor', view);
+    Ember.Application.initializer({
+        name: 'EditorView',
+        initialize: function(container, application) {
+            application.register('view:editor', view);
+        }
+    });
 
     return view;
 });
