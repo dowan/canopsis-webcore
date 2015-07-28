@@ -352,17 +352,12 @@ define([
         }
     });
 
-
-    loader.register('component:component-flotchart', component);
-
-    /* TODO: use this snippet instead of loader.register, but this is still buggy
     Ember.Application.initializer({
         name: 'component-flotchart',
         initialize: function(container, application) {
             application.register('component:component-flotchart', component);
         }
     });
-    */
 
     return component;
 });

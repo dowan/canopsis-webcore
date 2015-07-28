@@ -29,22 +29,24 @@ define([
         {}
     );
 
-    //TODO don't use utils.schemaList, it is deprecated. Use registries
-    for(var sname in utils.schemaList) {
-        if(sname.indexOf('Crecord.cservice.') === 0) {
-            var xtype = sname.slice('Crecord.cservice.'.length);
-            var modelname = xtype[0].toUpperCase() + xtype.slice(1);
-
-            var serializerName = modelname.dasherize();
-            console.log('Add serializer:', serializerName);
-
-            loader.register('serializer:' + serializerName, serializer.extend({}));
-        }
-    }
 
     Ember.Application.initializer({
         name: 'CserviceSerializer',
         initialize: function(container, application) {
+
+            //TODO don't use utils.schemaList, it is deprecated. Use registries
+            for(var sname in utils.schemaList) {
+                if(sname.indexOf('Crecord.cservice.') === 0) {
+                    var xtype = sname.slice('Crecord.cservice.'.length);
+                    var modelname = xtype[0].toUpperCase() + xtype.slice(1);
+
+                    var serializerName = modelname.dasherize();
+                    console.log('Add serializer:', serializerName);
+
+                    application.register('serializer:' + serializerName, serializer.extend({}));
+                }
+            }
+
             application.register('serializer:cservice', serializer);
         }
     });

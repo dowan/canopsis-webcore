@@ -24,6 +24,13 @@ define([
 
     var serializer = CtxSerializer.extend({});
 
-    loader.register('serializer:ctxtopology', serializer);
+
+    Ember.Application.initializer({
+        name: 'CtxtopologySerializer',
+        initialize: function(container, application) {
+            application.register('serializer:ctxtopology', serializer);
+        }
+    });
+
     return serializer;
 });

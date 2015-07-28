@@ -90,6 +90,8 @@ define([], function() {
          * @argument classToRegister {object} the Ember class to register
          */
         register: function(name, classToRegister) {
+            Ember.deprecate('Using loader#register is deprecated. Please use Ember Initializers instead (http://guides.emberjs.com/v1.10.0/understanding-ember/dependency-injection-and-service-lookup/#toc_dependency-injection-with-code-register-inject-code)');
+
                 var splittedName = name.split(':');
 
                 var dasherizedName = splittedName[1] + '-' + splittedName[0];

@@ -72,8 +72,15 @@ define([
 
 
         var controllerClass = options.subclass.extend.apply(options.subclass, extendArguments);
-        loader.register('controller:' + formControllerName, controllerClass);
 
+        var initializerName = formControllerName.capitalize() + 'Controller';
+
+        Ember.Application.initializer({
+            name: initializerName,
+            initialize: function(container, application) {
+                application.register('controller:' + formControllerName, controllerClass);
+            }
+        });
 
         formsregistry.all[formName] = {
             EmberClass: controllerClass

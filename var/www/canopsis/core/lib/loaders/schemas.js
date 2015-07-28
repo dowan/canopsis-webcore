@@ -51,7 +51,15 @@ define(schemasDeps, function(EmberData, dataUtils, loader, SchemaAdapter, utils,
             schema: schema
         };
 
-        loader.register('model:' + name, emberModel);
+        var initializerName = name.capitalize() + 'Model';
+
+        Ember.Application.initializer({
+            name: initializerName,
+            initialize: function(container, application) {
+                application.register('model:' + name, emberModel);
+            }
+        });
+
         schemasRegistry.add(registryEntry, name);
     }
 

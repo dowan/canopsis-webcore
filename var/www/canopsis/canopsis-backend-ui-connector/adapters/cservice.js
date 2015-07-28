@@ -39,7 +39,13 @@ define([
         if(modelname.indexOf('crecord.cservice.') === 0) {
             console.log('Add adapter:', sname);
 
-            loader.register('adapter:' + sname, adapter.extend());
+            var initializerName = sname.capitalize() + 'Adapter';
+            Ember.Application.initializer({
+                name: initializerName,
+                initialize: function(container, application) {
+                    application.register('adapter:' + sname, adapter.extend());
+                }
+            });
         }
     }
 

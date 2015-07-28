@@ -81,15 +81,27 @@ define([
             console.log("extendArguments", extendArguments);
             console.log("subclass", options.subclass);
 
-
-            loader.register('controller:' + widgetControllerName, controllerClass);
+            var initializerName = widgetSerializerName.capitalize() + 'Controller';
+            Ember.Application.initializer({
+                name: initializerName,
+                initialize: function(container, application) {
+                    application.register('controller:' + widgetControllerName, controllerClass);
+                }
+            });
 
             //dynamically create a serializer that implements EmbeddedRecordMixin if a custom serializer is not already defined in Application
             var serializer = ApplicationSerializer.extend(
                 EmbeddedRecordSerializerMixin,
                 {}
             );
-            loader.register('serializer:' + widgetSerializerName, WidgetSerializer.extend());
+
+            initializerName = widgetSerializerName.capitalize() + 'Serializer';
+            Ember.Application.initializer({
+                name: initializerName,
+                initialize: function(container, application) {
+                    application.register('serializer:' + widgetSerializerName, WidgetSerializer.extend());
+                }
+            });
 
             console.log("widget", widgetName.camelize().capitalize(), widgetModel);
             var capitalizedWidgetName = widgetName.camelize().capitalize();
