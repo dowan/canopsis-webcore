@@ -354,7 +354,7 @@ define([
             var arrayToDelete = {
                 nodes: [],
                 links: []
-            }
+            };
             Object.keys(shapesById).forEach(
                 function(shapeId) {
                     if (recordsById[shapeId] === undefined) {
@@ -524,22 +524,22 @@ define([
                     ;*/
                 };
                 var dragstart = function(d, i) {
-                    force.stop() // stops the force auto positioning before you start dragging
-                }
+                    force.stop(); // stops the force auto positioning before you start dragging
+                };
                 var dragmove = function(d, i) {
                     d.px += d3.event.dx;
                     d.py += d3.event.dy;
                     d.x += d3.event.dx;
                     d.y += d3.event.dy;
                     tick(); // this is the key to make it work together with updating both px,py,x,y on d !
-                }
+                };
                 var dragend = function(d, i) {
                     d.fixed = true; // of course set the node to fixed so the force doesn't include the node in its auto positioning stuff
                     tick();
                     if (layout.activated) {
                         force.resume();
                     }
-                }
+                };
                 var drag = d3.behavior.drag()
                     .on('dragstart', dragstart)
                     .on('drag', dragmove)
@@ -591,7 +591,6 @@ define([
                         .classed("overlay", true)
                         .attr("width", width)
                         .attr("height", height);
-                ;
             }
             // save overlay in memory
             me.overlay = overlay;
@@ -742,7 +741,15 @@ define([
                     this
                 );
                 // remove useless links
-                for (verticeId in d3Edge[key]) {
+                var cleanLink = function(linkId) {
+                    var link = this.shapesById[linkId];
+                    // delete from model
+                    delete d3Edge[key][verticeId][linkId];
+                    // delete from view
+                    delete this.shapesById[linkId];
+                    linkPosToDelete.push(link.index);
+                };
+                for (var verticeId in d3Edge[key]) {
                     var neighbourCount = neighbourCounts[key][verticeId];
                     var index = 0; // index to start to remove links
                     if (neighbourCount !== undefined) {
@@ -751,14 +758,7 @@ define([
                     // delete links from model
                     var linkIdToDelete = Object.keys(d3Edge[key][verticeId]).splice(index);
                     linkIdToDelete.forEach(
-                        function(linkId) {
-                            var link = this.shapesById[linkId];
-                            // delete from model
-                            delete d3Edge[key][verticeId][linkId];
-                            // delete from view
-                            delete this.shapesById[linkId];
-                            linkPosToDelete.push(link.index);
-                        },
+                        cleanLink,
                         this
                     );
                 }
@@ -861,7 +861,7 @@ define([
                 ;
             newToolbox // add hyperlink with name
                 .append('text')
-                    .text(function(d) { return d.name});
+                    .text(function(d) { return d.name;});
             // move all toolbox to mouse coordinates
             this.toolbox
             // attach handlers
@@ -964,22 +964,22 @@ define([
         addHandler: function(data) {
             d3.event.stopPropagation();
             var controller = get(this, 'controller');
+            var callback = function(record) {
+                this.getNode(record);
+                controller.trigger('refresh');
+            };
             if (this.source === null) { // in case of node
-                function callback(record) {
-                    this.getNode(record);
-                    controller.trigger('refresh');
-                }
                 var record = controller.newRecord(
                     controller.verticeEltType, undefined, true, callback, undefined, this
-                    );
+                );
             } else { // in case of edge
-                function success(record) {
+                var success = function(record) {
                     this.removeTmpLink();
                     controller.trigger('refresh');
-                }
-                function failure(record) {
+                };
+                var failure = function(record) {
                     this.removeTmpLink();
-                }
+                };
                 this.addLink(this.source, data, true, success, failure, this);
             }
         },
@@ -1135,19 +1135,19 @@ define([
                         {
                             'ndok': function(d) {
                                 var record = recordsById[d.id];
-                                return !record.get('info').state;
+                                return (!record.get('info').state) || record.get('info').state == 0;
                             },
                             'ndminor': function(d) {
                                 var record = recordsById[d.id];
-                                return record.get('info').state === 1;
+                                return record.get('info').state == 1;
                             },
                             'ndmajor': function(d) {
                                 var record = recordsById[d.id];
-                                return record.get('info').state === 2;
+                                return record.get('info').state == 2;
                             },
                             'ndcritical': function(d) {
                                 var record = recordsById[d.id];
-                                return record.get('info').state === 3;
+                                return record.get('info').state == 3;
                             }
                         }
                     )
@@ -1299,19 +1299,19 @@ define([
                         },
                         'lnok': function(d) {
                             var record = recordsById[d.edge.id];
-                            return !record.get('info').state;
+                            return (!record.get('info').state) || record.get('info').state == 0;
                         },
                         'lnminor': function(d) {
                             var record = recordsById[d.edge.id];
-                            return record.get('info').state === 1;
+                            return record.get('info').state == 1;
                         },
                         'lnmajor': function(d) {
                             var record = recordsById[d.edge.id];
-                            return record.get('info').state === 2;
+                            return record.get('info').state == 2;
                         },
                         'lncritical': function(d) {
                             var record = recordsById[d.edge.id];
-                            return record.get('info').state === 3;
+                            return record.get('info').state == 3;
                         }
                     }
                 )
@@ -1440,7 +1440,7 @@ define([
                         y: 0,
                         px: 0,
                         py: 0
-                    }
+                    };
                     // add node in nodes
                     this.nodes.push(result);
                 } else { // result becomes old node
@@ -1449,7 +1449,7 @@ define([
                 // update this shapesById
                 this.shapesById[recordId] = result;
             }
-            return result
+            return result;
         },
 
         /**
@@ -1480,7 +1480,7 @@ define([
                 if (failure !== undefined) {
                     failure.call(context, reason);
                 }
-            }
+            };
             // get a target
             if (target === undefined) {
                 // create a callback
@@ -1490,7 +1490,7 @@ define([
                     target.px = target.x = coordinates[0];
                     target.py = target.y = coordinates[1];
                     this.addLink(source, target, edit, success, failure, context);
-                }
+                };
                 // edit a new vertice if target does not exist
                 target = controller.newRecord(controller.verticeEltType, undefined, edit, _success, _failure, this);
                 if (edit) return;
@@ -1519,7 +1519,7 @@ define([
                     if (success !== undefined) {
                         success.call(context, record);
                     }
-                }
+                };
                 var edge = controller.newRecord(
                     controller.edgeEltType,
                     {
@@ -1548,7 +1548,7 @@ define([
                 transform: transform,
                 type: 'toolbox'
             };
-            return result
+            return result;
         },
 
         /**
@@ -1563,7 +1563,7 @@ define([
                     this.newToolBoxItem('close', 'triangle-down'),
                     this.newToolBoxItem('cancel', 'cross', 'rotate(45)'),
                     this.newToolBoxItem('add', 'cross')
-                )
+                );
             } else {
                 // default result
                 result.push(
@@ -1575,7 +1575,7 @@ define([
                     var info = record.get('info');
                     if (info) {
                         if (info.entity) {
-                            result.push(this.newToolBoxItem('eventpool', 'triangle-up'))
+                            result.push(this.newToolBoxItem('eventpool', 'triangle-up'));
                         }
                     }
                     if (get(this, 'controller').graphModel.selected[data.id] !== undefined) {
@@ -1611,14 +1611,14 @@ define([
         * Show only d3 elements where entity names correspond to input filter.
         * @param filter string which specifies node regex entity name to show. If undefined, show all d3 nodes.
         */
-        filter: function(filter) {
+        /*filter: function(filter) {
             if (filter === undefined) {
                 filter = '*';
-            };
+            }
             var toShow = this.panel.selectAll('.node').where(function(d) {
-                var result = d.entity && d.entity.name
+                var result = d.entity && d.entity.name;
             });
-        },
+        },*/
 
         actions: {
             /**
