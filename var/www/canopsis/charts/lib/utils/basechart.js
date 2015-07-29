@@ -60,7 +60,7 @@ define([
             renderChart: function() {
                 var chart = get(this, 'chart');
 
-                if(chart !== null) {
+                if(!isNone(chart)) {
                     console.log('Destroy chart');
                     chart.destroy();
                 }
