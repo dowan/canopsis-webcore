@@ -1,0 +1,150 @@
+/*
+# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+#
+# This file is part of Canopsis.
+#
+# Canopsis is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Canopsis is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+*/
+
+define([
+    'ember',
+], function(Ember) {
+
+    var get = Ember.get,
+        set = Ember.set,
+        isNone = Ember.isNone;
+
+
+    var controller = Ember.ObjectController.extend({
+
+        fetchStylizedMetrics: function(store, from, to, replace, stylizedmetrics, callback) {
+
+            var series = [],
+                seriesById = {},
+                curveIds = [];
+
+            var fetchDone = function() {
+                curveIds = JSON.stringify(curveIds);
+
+                console.log('series:', seriesById);
+                console.log('curves:', curveIds);
+
+                store.findQuery('curve', {ids: curveIds}).then(function(curveResult) {
+                    var virtualResult = {
+                        meta: {
+                            total: series.length
+                        },
+                        content: series,
+                    };
+
+                    callback([virtualResult, curveResult], seriesById, from, to, replace);
+                });
+            };
+
+            if(!isNone(stylizedmetrics)) {
+                var metricIds = [];
+
+                for(var i = 0, l = stylizedmetrics.length ; i < l ; i++) {
+                    var metricId = get(stylizedmetrics[i], 'metric');
+
+                    metricIds.push(metricId);
+                }
+
+                store.findQuery('ctxmetric', {
+                    _filter: JSON.stringify({
+                        _id: {
+                            '$in': metricIds
+                        }
+                    })
+                }).then(function(result) {
+                    var metricsById = {}, i, l;
+
+                    for(i = 0, l = get(result, 'content.length') ; i < l; i++) {
+                        var info = get(result, 'content')[i];
+
+                        metricsById[get(info, 'id')] = info;
+                    }
+
+                    for(i = 0, l = stylizedmetrics.length; i < l; i++) {
+                        var metricId = get(stylizedmetrics[i], 'metric');
+                        var metricInfo = metricsById[metricId];
+
+                        var serieconf = Ember.Object.create({
+                            id: metricId,
+                            virtual: true,
+                            crecord_name: get(metricInfo, 'name'),
+                            metrics: [metricId],
+                            aggregate_method: 'none',
+                            unit: get(stylizedmetrics[i], 'unit')
+                        });
+
+                        seriesById[metricId] = {
+                            style: stylizedmetrics[i],
+                            serie: serieconf,
+                            curve: undefined
+                        };
+
+                        series.push(serieconf);
+                        curveIds.push(get(stylizedmetrics[i], 'curve'));
+                    }
+
+                    fetchDone();
+                });
+            }
+            else {
+                fetchDone();
+            }
+        },
+
+        fetchStylizedSeries: function(store, from, to, replace, stylizedseries, callback) {
+
+            /* fetch stylized series */
+            var series = {};
+            var curveIds = [];
+
+            for(var i = 0, l = stylizedseries.length; i < l; i++) {
+                var serieId = get(stylizedseries[i], 'serie');
+
+                series[serieId] = {
+                    style: stylizedseries[i],
+                    serie: undefined,
+                    curve: undefined
+                };
+
+                curveIds.push(get(stylizedseries[i], 'curve'));
+            }
+
+            var serieIds = JSON.stringify(Object.keys(series));
+            curveIds = JSON.stringify(curveIds);
+
+            console.log('series:', serieIds);
+            console.log('curves:', curveIds);
+
+            /* load series configuration */
+
+            Ember.RSVP.all([
+                store.findQuery('serie', {ids: serieIds}),
+                store.findQuery('curve', {ids: curveIds})
+            ]).then(function(pargs) {
+                callback(pargs, series, from, to, replace);
+            });
+        },
+
+    });
+
+
+    loader.register('controller:metric', controller);
+
+    return controller;
+});

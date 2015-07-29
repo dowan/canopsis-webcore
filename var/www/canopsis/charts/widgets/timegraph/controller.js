@@ -24,9 +24,11 @@ define([
     'app/lib/factories/widget',
     'app/lib/utils/values',
     'app/lib/utils/dates',
+    'app/controller/metric',
     'app/controller/serie',
     'app/controller/perfdata'
 ], function($, Ember, DS, WidgetFactory, values, dates) {
+
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone;
@@ -280,7 +282,7 @@ define([
     });
 
     var widget = WidgetFactory('timegraph', {
-        needs: ['serie', 'perfdata'],
+        needs: ['serie', 'perfdata', 'metric'],
 
         viewMixins: [
             FlotChartViewMixin
@@ -353,12 +355,14 @@ define([
 
             this.updateAxisLimits(from, to);
 
+            var store = get(this, 'widgetDataStore');
+
             console.group('Load stylized series:');
-            this.fetchStylizedSeries(from, to, replace);
+            this.fetchStylizedSeries(store, from, to, replace, get(me, 'config.series'), me.genChartConfig);
             console.groupEnd();
 
             console.group('Load stylized metrics:');
-            this.fetchStylizedMetrics(from, to, replace);
+            this.fetchStylizedMetrics(store, from, to, replace, get(me, 'config.metrics'), me.genChartConfig);
             console.groupEnd();
         },
 
@@ -391,124 +395,6 @@ define([
             }
         },
 
-        fetchStylizedSeries: function(from, to, replace) {
-            var store = get(this, 'widgetDataStore');
-
-            /* fetch stylized series */
-            var stylizedseries = get(this, 'config.series');
-            var series = {};
-            var curveIds = [];
-
-            for(var i = 0, l = stylizedseries.length; i < l; i++) {
-                var serieId = get(stylizedseries[i], 'serie');
-
-                series[serieId] = {
-                    style: stylizedseries[i],
-                    serie: undefined,
-                    curve: undefined
-                };
-
-                curveIds.push(get(stylizedseries[i], 'curve'));
-            }
-
-            var serieIds = JSON.stringify(Object.keys(series));
-            curveIds = JSON.stringify(curveIds);
-
-            console.log('series:', serieIds);
-            console.log('curves:', curveIds);
-
-            /* load series configuration */
-            var me = this;
-
-            Ember.RSVP.all([
-                store.findQuery('serie', {ids: serieIds}),
-                store.findQuery('curve', {ids: curveIds})
-            ]).then(function(pargs) {
-                me.genChartConfig(pargs, series, from, to, replace);
-            });
-        },
-
-        fetchStylizedMetrics: function(from, to, replace) {
-            var store = get(this, 'widgetDataStore'),
-                stylizedmetrics = get(this, 'config.metrics'),
-                series = [],
-                seriesById = {},
-                curveIds = [],
-                me = this;
-
-            var fetchDone = function() {
-                curveIds = JSON.stringify(curveIds);
-
-                console.log('series:', seriesById);
-                console.log('curves:', curveIds);
-
-                store.findQuery('curve', {ids: curveIds}).then(function(curveResult) {
-                    var virtualResult = {
-                        meta: {
-                            total: series.length
-                        },
-                        content: series,
-                    };
-
-                    me.genChartConfig([virtualResult, curveResult], seriesById, from, to, replace);
-                });    
-            };
-
-            if(!isNone(stylizedmetrics)) {
-                var metricIds = [];
-
-                for(var i = 0, l = stylizedmetrics.length ; i < l ; i++) {
-                    var metricId = get(stylizedmetrics[i], 'metric');
-
-                    metricIds.push(metricId);
-                }
-
-                store.findQuery('ctxmetric', {
-                    _filter: JSON.stringify({
-                        _id: {
-                            '$in': metricIds
-                        }
-                    })
-                }).then(function(result) {
-                    var metricsById = {},
-                        i, l;
-
-                    for(i = 0, l = get(result, 'content.length') ; i < l; i++) {
-                        var info = get(result, 'content')[i];
-
-                        metricsById[get(info, 'id')] = info;
-                    }
-
-                    for(i = 0, l = stylizedmetrics.length; i < l; i++) {
-                        var metricId = get(stylizedmetrics[i], 'metric');
-                        var metricInfo = metricsById[metricId];
-
-                        var serieconf = Ember.Object.create({
-                            id: metricId,
-                            virtual: true,
-                            crecord_name: get(metricInfo, 'name'),
-                            metrics: [metricId],
-                            aggregate_method: 'none',
-                            unit: get(stylizedmetrics[i], 'unit')
-                        });
-
-                        seriesById[metricId] = {
-                            style: stylizedmetrics[i],
-                            serie: serieconf,
-                            curve: undefined
-                        };
-
-                        series.push(serieconf);
-                        curveIds.push(get(stylizedmetrics[i], 'curve'));
-                    }
-
-                    fetchDone();
-                });
-            }
-            else {
-                fetchDone();
-            }
-        },
 
         genChartConfig: function(pargs, series, from, to, replace) {
             console.group('Generate Chart series');
@@ -648,13 +534,12 @@ define([
             console.log('chartserie:', chartSerie);
             console.log('Fetch perfdata and compute serie');
 
-            var aggregation = (
-                (get(config, 'serie.aggregate_method') !== 'none')
-                ||
-                (get(config, 'serie.metrics.length') > 1)
-            );
+            var length = get(config, 'serie.metrics.length'),
+                method = get(config, 'serie.aggregate_method'),
+                min,
+                max;
 
-            var min, max;
+            var aggregation = method !== 'none' || length > 1;
 
             if(get(this, 'timenav')) {
                 min = get(this, 'timenavOptions.xaxis.min');
@@ -725,8 +610,6 @@ define([
                     }
                 }
             }
-
-            delete oldSeries;
 
             var series = Ember.A();
             var serieIds = Object.keys(chartSeries);
