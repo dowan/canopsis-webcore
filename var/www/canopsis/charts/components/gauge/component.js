@@ -16,10 +16,24 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
+define([
+    'ember',
+    'canopsis/charts/lib/utils/basechart'
+], function(Ember, BaseChart) {
 
-var widgets = [
-    { name:'timegraph', url:'canopsis/charts/widgets/timegraph/controller', template:'canopsis/charts/widgets/timegraph/template.html'},
-    { name:'categorychart', url:'canopsis/charts/widgets/categorychart/controller', template:'canopsis/charts/widgets/categorychart/template.hbs'}
-];
+    var get = Ember.get,
+        set = Ember.set,
+        isNone = Ember.isNone;
 
-loader.loadWithTemplates(widgets);
+    var component = BaseChart.extend({
+
+        init: function() {
+            this._super();
+        },
+
+    });
+
+    loader.register('component:component-gauge', component);
+
+    return component;
+});

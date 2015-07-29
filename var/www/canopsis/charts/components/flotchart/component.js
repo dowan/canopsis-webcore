@@ -20,14 +20,15 @@ define([
     'jquery',
     'ember',
     'app/lib/utils/dom',
-    'app/lib/utils/values'
-], function($, Ember, DOM, values) {
+    'app/lib/utils/values',
+    'canopsis/charts/lib/utils/basechart'
+], function($, Ember, DOM, values, BaseChart) {
 
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone;
 
-    var component = Ember.Component.extend({
+    var component = BaseChart.extend({
         tagName: 'div',
         classNames: 'flotchart',
 
@@ -48,33 +49,10 @@ define([
 
             this._super.apply(this, arguments);
 
-            this.addObserver('series.@each', this.onDataUpdate);
-            this.addObserver('options', this.onOptionsUpdate);
         },
 
-        onDataUpdate: function() {
-            this.send('renderChart');
-        },
-
-        onOptionsUpdate: function() {
-            this.send('renderChart');
-        },
-
-        didInsertElement: function() {
-            this.send('renderChart');
-        },
 
         actions: {
-            renderChart: function() {
-                var chart = get(this, 'chart');
-
-                if(chart !== null) {
-                    console.log('Destroy chart');
-                    chart.destroy();
-                }
-
-                this.createChart();
-            },
 
             toggleSerie: function(config) {
                 var label = config[0], serieIndex = config[1];
@@ -232,6 +210,7 @@ define([
         },
 
         createChart: function() {
+
             console.group('createChart:');
 
             var plotcontainer = this.$(),
