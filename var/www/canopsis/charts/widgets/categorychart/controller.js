@@ -22,7 +22,8 @@ define([
     'ember-data',
     'app/lib/factories/widget',
     'app/controller/serie',
-    'app/controller/perfdata'
+    'app/controller/perfdata',
+    'app/controller/metric',
 ], function(Ember, DS, WidgetFactory) {
 
     var get = Ember.get,
@@ -55,11 +56,34 @@ define([
     });
 
     var widget = WidgetFactory('categorychart', {
-        needs: ['serie', 'perfdata'],
+        needs: ['serie', 'perfdata', 'metric'],
 
         viewMixins: [
             CategoryChartViewMixin
         ],
+
+        init: function () {
+            set(this, 'series', []);
+            this._super();
+        },
+
+        findItems : function () {
+            var store = get(this, 'widgetDataStore'),
+                start = 0,
+                now = +new Date(),
+                replace = true,
+                series = get(this, 'series'),
+                metricController = get(this, 'controllers.metric');
+
+            metricController.fetchStylizedSeries(
+                store, start, now, replace, series, this.setConfiguration
+            );
+
+        },
+
+        setConfiguration: function () {
+            console.log('set configuration', arguments);
+        },
 
         isProgressbar: function () {
             return true;

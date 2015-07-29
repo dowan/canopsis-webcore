@@ -358,11 +358,11 @@ define([
             var store = get(this, 'widgetDataStore');
 
             console.group('Load stylized series:');
-            this.fetchStylizedSeries(store, from, to, replace, get(me, 'config.series'), me.genChartConfig);
+            get(this, 'controllers.metric').fetchStylizedSeries(store, from, to, replace, get(me, 'config.series'), me.genChartConfig);
             console.groupEnd();
 
             console.group('Load stylized metrics:');
-            this.fetchStylizedMetrics(store, from, to, replace, get(me, 'config.metrics'), me.genChartConfig);
+            get(this, 'controllers.metric').fetchStylizedMetrics(store, from, to, replace, get(me, 'config.metrics'), me.genChartConfig);
             console.groupEnd();
         },
 

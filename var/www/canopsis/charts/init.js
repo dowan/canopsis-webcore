@@ -37,10 +37,16 @@ require.config({
         'flotchart-time': 'canopsis/charts/lib/externals/flot/jquery.flot.time',
         'flotchart-valuelabel': 'canopsis/charts/lib/externals/flot-plugins/custom/jquery.flot.valuelabel',
         'flotchart-tooltip': 'canopsis/charts/lib/externals/flot.tooltip/js/jquery.flot.tooltip',
-        'flotchart-chartvalues': 'canopsis/charts/lib/externals/flot-plugins/custom/jquery.flot.chartvalues'
+        'flotchart-chartvalues': 'canopsis/charts/lib/externals/flot-plugins/custom/jquery.flot.chartvalues',
+        'c3': 'canopsis/charts/lib/externals/c3/c3.min',
+        'd3': 'canopsis/uibase/lib/externals/d3/d3'
     },
 
     shim: {
+        'c3': {
+            deps: ['d3'],
+        },
+
         'flotchart': {
             deps: ['jquery'],
         },

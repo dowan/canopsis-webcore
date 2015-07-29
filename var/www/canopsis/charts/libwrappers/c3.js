@@ -16,25 +16,13 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
+
 define([
-    'ember',
-    'canopsis/charts/lib/utils/basechart',
-    'canopsis/charts/libwrappers/c3'
-], function(Ember, BaseChart) {
-
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
-
-    var component = BaseChart.extend({
-
-        init: function() {
-            this._super();
-        },
-
-    });
-
-    loader.register('component:component-gauge', component);
-
-    return component;
+    'app/lib/factories/wrapper',
+    'jquery',
+    'd3',
+    'c3',
+    'link!canopsis/charts/lib/externals/c3/c3.css',
+], function(Wrapper, $) {
+    return Wrapper("c3", $, arguments, '0.4.10');
 });
