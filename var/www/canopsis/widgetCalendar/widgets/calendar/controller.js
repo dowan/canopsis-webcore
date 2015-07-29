@@ -142,10 +142,15 @@ define([
 
         },
 
-        loadEvents: function() {
+        saveUserConfiguration: function(){
+
+        },
+
             /**
              * @method loadEvents: similar to findItems, get data form backend
              */
+        loadEvents: function() {
+
             var controller = this;
             var initialized = get(controller, 'fullCalendarInitialized');
 
@@ -203,56 +208,31 @@ define([
              */
             console.log('date pour filtre eventsLog', get(this, 'calendarStart'), get(this, 'calendarEnd'));
 
-            //do a count until 33 (days) ---- do a FOR
-            var beginDay = moment(get(this, 'calendarStart')*1000);
-            var beginDayMidnight = moment(get(this, 'calendarStart')*1000);
-
-            beginDayMidnight.add(23, 'hours');
-            beginDayMidnight.add(59, 'minutes');
-            beginDayMidnight.add(59, 'seconds');
-
-            var timezone = [];
-
-            for (var cpt = 0; cpt < 69; cpt++) {
-
-                var eventsLogDate = {
-                    "begin": beginDay.format('x')/1000,
-                    "end": beginDayMidnight.format('x')/1000
-                };
-
-                timezone.pushObject(eventsLogDate);
-
-                beginDay = beginDay.add(1 , 'days');
-                beginDayMidnight = beginDayMidnight.add(1 , 'days');
-
-                cpt++;
-
-            }
-
-            console.log('value of timezone,', timezone);
-
-            //getEventLogCount(beginDay.format('x')/1000, beginDayMidnight.format('x')/1000);
             var eventsLogParams = {
-                filter: JSON.stringify({
-                    "$or":[
-                    {
-                        "resource":{
-                            "$eq":"task_linklist"
-                        }
-                    }]
-                }),
-                count: true,
-                timezone: timezone
+                tstart: get(this, 'calendarStart'),
+                tstop: get(this, 'calendarEnd'),
+                limit: 100,
+                select: get(controller, 'descriptionFilter')
             };
 
             console.log('display of eventsLogParams', eventsLogParams);
 
-            store.findQuery('eventlog', eventsLogParams).then(function (result) {
-                console.log('result of THE findQuery for get Events log', result);
-                /*var eventsLogCount = get(result, 'meta.total');
-                console.log('eventslogCount: ', eventsLogCount);
+            store.findQuery('calendarday', eventsLogParams).then(function (result) {
+                var contentsCount = get(result, 'content');
+                var countlength = contentsCount.length,
+                    calendarTab = [];
 
-                set(controller,'eventsLogCount', eventsLogCount);*/
+                for (var i = 0; i < countlength; i++) {
+                    var count = get(contentsCount[i], 'count');
+                    var date = get(contentsCount[i], 'date');
+                    if(count !== 0) {
+                        var formated_eventsLogCount = controller.getEventsLogCount(count, date);
+                        calendarTab.pushObject(formated_eventsLogCount);
+                    }
+                }
+
+                controller.trigger('addEventCalendar', calendarTab);
+
             });
         },
 
@@ -281,56 +261,19 @@ define([
             };
         },
 
-        getEventLogCount: function(start, end) {
-
-            var controller = this;
-            var initialized = get(controller, 'fullCalendarInitialized');
-            var store = get(controller, 'widgetDataStore');
-
-            var eventsLogParams = {
-                filter: JSON.stringify({
-                    "$and":[
-                    {
-                        "resource":{
-                            "$eq":"task_linklist"
-                        }
-                    },
-                    {
-                        "timestamp":{
-                            "$gte":start,
-                            "$lte":end
-                        }
-                    }]
-                }),
-                count: true
+        getEventsLogCount: function (count, date) {
+            var title = '';
+            if ( count > 100) {
+                title = ' ' + get(this, 'titleFilter') + ' more than 100';
+            }
+            else {
+                title = ' ' + get(this, 'titleFilter') + ' x' + count;
+            }
+            return {
+                title: title,
+                start: moment(get(date, 'begin')*1000).format(),
+                end: moment(get(date, 'end')*1000).format()
             };
-
-            store.findQuery('eventlog', eventsLogParams).then(function (result) {
-
-                var eventsLogCount = get(result, 'meta.total');
-                console.log('eventslogCount: ', eventsLogCount);
-
-                set(controller,'eventsLogCount', eventsLogCount);
-            });
-        },
-
-        formatEventLog: function (eventsLog) {
-            /**
-             *  @method getEventLog: format the event log for fullCalendar
-             *  @param eventsLog: object that contains event to format
-             *  @return object
-             */
-
-             //TODO get the timestamp
-             console.log('get the timestamp', get(eventsLog,'timestamp'));
-
-             //TODO get the DAY of the related timestamp --> momentjs
-
-             //TODO count event Log on this day
-
-             return {
-                title: get(this, 'titleFilter')
-             };
         },
 
         actions:{

@@ -21,8 +21,9 @@ define([
     'ember-data',
     'app/mixins/metaserializer',
     'app/mixins/hashserializer',
-    'app/lib/utils/notification'
-], function(DS, MetaSerializerMixin, HashSerializerMixin, notificationUtils) {
+    'app/lib/utils/notification',
+    'app/lib/utils/hash'
+], function(DS, MetaSerializerMixin, HashSerializerMixin, notificationUtils, hashUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -48,6 +49,14 @@ define([
                     payload.meta.messages = [];
                 }
                 payload.meta.messages.push(message);
+            },
+
+            normalize: function (type, hash) {
+                console.log('normalize', arguments);
+                if(hash.id === undefined) {
+                    hash.id = hashUtils.generateId('generatedId');
+                }
+                return this._super(type, hash);
             }
         }
     );

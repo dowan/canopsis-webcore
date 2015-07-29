@@ -50,6 +50,9 @@ config = {
         Parameter('enable_crossdomain_send_events', parser=Parameter.bool),
         Parameter('root_directory', parser=Parameter.path)
     ),
+    'storage': (
+        Parameter('events_log_uri'),
+    ),
     'auth': (
         Parameter('providers', parser=Parameter.array(), critical=True)
     ),
@@ -116,6 +119,15 @@ class WebServer(Configurable):
 
         if os.path.exists(value):
             self._rootdir = value
+
+    @property
+    def events_log_uri(self):
+        return setdefaultattr(self, '_events_log_uri', None)
+
+    @events_log_uri.setter
+    def events_log_uri(self, value):
+        self._events_log_uri = value
+        self.logger.info('blah!!! {0}'.format(value))
 
     @property
     def providers(self):

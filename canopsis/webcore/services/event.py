@@ -21,15 +21,16 @@
 from canopsis.common.utils import ensure_iterable
 from canopsis.common.ws import route
 from canopsis import schema
+from canopsis.event.eventslogmanager import EventsLog
 
 from bottle import HTTPError
 import requests
 import json
-import datetime
-import time
 
 
 def exports(ws):
+    manager = EventsLog()
+
     @route(ws.application.post, name='event', payload=['event', 'url'])
     @route(ws.application.put, name='event', payload=['event', 'url'])
     def send_event(event, url=None):
@@ -80,70 +81,23 @@ def exports(ws):
 
             return events
 
-    def get_timeperiod_occurence(tstart, tstop, granularity='days', number=1):
-        """ give an array with each day period of the timewindow
-            :param tstart: timestamp of the begin timewindow
-            :param tstop: timestamp of the end timewindow
-            :param granularity: occurence period
-            (seconds, minutes, days, months, years)
-            :return: array of timestamp period
-            :rtype: list
-        """
-        dstart = datetime.date.fromtimestamp(tstart)
-        dstop = datetime.date.fromtimestamp(tstop)
-        day = datetime.timedelta(granularity=number)
-
-        result = []
-
-        while dstart < dstop:
-
-            calendarday = {}
-            calendarday['begin'] = time.mktime(dstart.timetuple())
-            dstart += day
-            calendarday['end'] = time.mktime(dstart.timetuple())
-
-            result.append(calendarday)
-
-        return result
-
     @route(ws.application.get,
            name='eventslog/count',
-           payload=['tstart', 'tstop', 'limit', 'filter']
+           payload=['tstart', 'tstop', 'limit', 'select']
            )
-    def get_event_count_for_period(tstart, tstop, limit=100, filter=None):
-        """ give eventslog count for every days in the given period
+    def get_event_count_per_day(tstart, tstop, limit=100, select=None):
+        """ get eventslog log count for each days in a given period
+            :param tstart: timestamp of the begin period
+            :param tstop: timestamp of the end period
+            :param limit: limit the count number per day
+            :param select: filter for eventslog collection
+            :return: list in which each item contains an interval and the
+            related count
+            :rtype: list
         """
-        result = []
 
-        result = get_timeperiod_occurence(tstart, tstop)
+        results = manager.get_eventlog_count_by_period(
+            tstart, tstop, limit=limit, query=select
+        )
 
-        return result
-
-        """results = []
-        for date in timezone:
-            new_eventfilter = {}
-                new_eventfilter['$and'] = eventfilter['$or']
-
-                selection = {}
-                selection['$gte'] = date['begin']
-                selection['$lte'] = date['end']
-
-                timestamp_selection = {}
-                timestamp_selection['timestamp'] = selection
-
-                new_eventfilter['$and'].append(timestamp_selection)
-
-                params['filter'] = new_eventfilter
-
-                nrecords = get_records(
-                    ws, namespace,
-                    ctype=ctype,
-                    _id=_id,
-                    **params
-                )
-                records = []
-
-                results.append(nrecords)
-                records = results
-
-            return records, results"""
+        return results
