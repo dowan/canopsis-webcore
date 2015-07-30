@@ -22,11 +22,10 @@ define([
     'ember',
     'ember-data',
     'app/lib/factories/widget',
-    'app/controller/serie',
     'canopsis/canopsisConfiguration',
     'app/lib/utils/values',
-    'app/controller/perfdata',
-], function($, Ember, DS, WidgetFactory, Serie, canopsisConfiguration, values) {
+    'app/controller/metric',
+], function($, Ember, DS, WidgetFactory, canopsisConfiguration, values) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -34,9 +33,26 @@ define([
 
     var widget = WidgetFactory('text', {
 
-        needs: ['serie', 'perfdata'],
+        needs: ['metric'],
 
-        perfdata: Ember.computed.alias('controllers.perfdata'),
+        onSeriesFetch: function (pargs) {
+
+            var controller = this;
+
+            for (var i = 0, l = pargs.length; i < l; i++) {
+                var data = pargs[i];
+                console.log('series pargs', pargs);
+                var displayValue = __('No data available');
+                if (data.length) {
+                    //choosing the value for the last point when any
+                    displayValue = data[data.length - 1][1];
+                }
+                var serieName = get(series[i], 'crecord_name').replace(/ /g,'_');
+                set(controller, 'templateContext.serie.' + serieName, displayValue);
+            }
+
+            controller.setReady('serie');
+        },
 
         init: function() {
             this._super.apply(this, arguments);
@@ -74,7 +90,12 @@ define([
             //This will trigger api queries for events and series in lasy philosophy.
             //If no contextual information set by user, no query is done.
             this.fetchEvents();
-            this.fetchSeries(from, to);
+
+            if (!isNone(get(this, 'series'))) {
+                get(this, 'controllers.metric').fetchSeries(from, to, this.onSeriesFetch);
+            } else {
+                this.setReady('serie');
+            }
 
         },
 
@@ -138,68 +159,6 @@ define([
             }
         },
 
-        fetchSeries: function (from, to){
-
-            var controller = this,
-                seriesController = get(controller, 'controllers.serie'),
-                series;
-
-
-            var seriesValues = get(this, 'series');
-            if (!isNone(seriesValues)) {
-
-                //Declared here for translation purposes
-                var valueNotDefined = __('No data available');
-
-                var seriesFilter = JSON.stringify({
-                    crecord_name: {'$in': seriesValues}
-                });
-
-                console.log('widget text series duration queries', from, to);
-                get(this, 'widgetDataStore').findQuery(
-                    'serie',
-                    {filter: seriesFilter}
-                    ).then(function(results) {
-
-                    series = get(results, 'content');
-                    console.log('series records', series);
-
-                    //Event query is the first param if any rk have to be fetched
-                    var seriesQueries = [];
-                    for (var i = 0, l = series.length; i < l; i++) {
-                        seriesQueries.push(seriesController.fetch(
-                            series[i],
-                            from,
-                            to
-                        ));
-                    }
-
-                    console.log('seriesQueries', seriesQueries);
-
-                    Ember.RSVP.all(seriesQueries).then(function(pargs) {
-
-                        for (var i = 0, l = pargs.length; i < l; i++) {
-                            var data = pargs[i];
-                            console.log('series pargs', pargs);
-                            var displayValue = valueNotDefined;
-                            if (data.length) {
-                                //choosing the value for the last point when any
-                                displayValue = data[data.length - 1][1];
-                            }
-                            var serieName = get(series[i], 'crecord_name').replace(/ /g,'_');
-                            set(controller, 'templateContext.serie.' + serieName, displayValue);
-                        }
-
-                        controller.setReady('serie');
-                    });
-
-
-                });
-            } else {
-                controller.setReady('serie');
-            }
-
-        },
 
         setReady: function (element) {
             set(this, 'ready.' + element, true);

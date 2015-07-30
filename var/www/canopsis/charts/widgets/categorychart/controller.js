@@ -21,8 +21,6 @@ define([
     'ember',
     'ember-data',
     'app/lib/factories/widget',
-    'app/controller/serie',
-    'app/controller/perfdata',
     'app/controller/metric',
 ], function(Ember, DS, WidgetFactory) {
 
@@ -40,6 +38,8 @@ define([
 
 
             this._super.apply(this, arguments);
+
+
         },
 
         willDestroyElement: function() {
@@ -56,7 +56,7 @@ define([
     });
 
     var widget = WidgetFactory('categorychart', {
-        needs: ['serie', 'perfdata', 'metric'],
+        needs: ['metric'],
 
         viewMixins: [
             CategoryChartViewMixin
@@ -68,6 +68,7 @@ define([
         },
 
         findItems : function () {
+            /*
             var store = get(this, 'widgetDataStore'),
                 start = 0,
                 now = +new Date(),
@@ -78,6 +79,15 @@ define([
             metricController.fetchStylizedSeries(
                 store, start, now, replace, series, this.setConfiguration
             );
+            */
+            set(this, 'dataSeries', [
+                ['serie1', Math.random() * 50],
+                ['serie2', Math.random() * 50]
+            ]);
+
+            set(this, 'chartOptions', {
+                userMaxValue: 120
+            });
 
         },
 

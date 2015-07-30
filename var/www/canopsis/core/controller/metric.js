@@ -19,14 +19,59 @@
 
 define([
     'ember',
+    'app/controller/serie',
+    'app/controller/perfdata',
 ], function(Ember) {
 
     var get = Ember.get,
         set = Ember.set,
-        isNone = Ember.isNone;
+        isNone = Ember.isNone,
+        __ = Ember.String.loc;
 
 
     var controller = Ember.ObjectController.extend({
+
+        needs: ['serie', 'perfdata'],
+
+        fetchSeries: function (from, to, callback){
+
+            var controller = this,
+                seriesController = get(this, 'controllers.serie'),
+                series;
+
+            var seriesFilter = JSON.stringify({
+                crecord_name: {'$in': seriesValues}
+            });
+
+            console.log('widget text series duration queries', from, to);
+
+            get(this, 'widgetDataStore').findQuery(
+                'serie',
+                {filter: seriesFilter}
+                ).then(function(results) {
+
+                series = get(results, 'content');
+                console.log('series records', series);
+
+                //Event query is the first param if any rk have to be fetched
+                var seriesQueries = [];
+                for (var i = 0, l = series.length; i < l; i++) {
+                    seriesQueries.push(seriesController.fetch(
+                        series[i],
+                        from,
+                        to
+                    ));
+                }
+
+                console.log('seriesQueries', seriesQueries);
+
+                Ember.RSVP.all(seriesQueries).then(callback);
+
+            });
+
+        },
+
+
 
         fetchStylizedMetrics: function(store, from, to, replace, stylizedmetrics, callback) {
 

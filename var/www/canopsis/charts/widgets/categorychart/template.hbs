@@ -1,30 +1,4 @@
-<div class="chart-container">
-    <div class="chart-plot-container">
-        {{#if controller.isProgressbar}}
-            {{component-progressbar
-                options=controller.chartOptions
-                series=controller.dataSeries
-            }}
-        {{/if}}
-        {{#if controller.isGauge}}
-            {{component-gauge
-                options=controller.chartOptions
-                series=controller.dataSeries
-            }}
-        {{/if}}
-        {{#if controller.isPie}}
-            {{component-pie
-                options=controller.chartOptions
-                series=controller.dataSeries
-            }}
-        {{/if}}
-        {{#if controller.isDonut}}
-            {{component-donut
-                options=controller.chartOptions
-                series=controller.dataSeries
-            }}
-        {{/if}}
-    </div>
-
-    <div class="chart-legend-container"></div>
-</div>
+{{component-c3categorychart
+    options=controller.chartOptions
+    series=controller.dataSeries
+}}
