@@ -35,23 +35,33 @@ define([
 
         needs: ['metric'],
 
-        onSeriesFetch: function (pargs) {
+        onSeriesFetch: function (caller, series) {
 
-            var controller = this;
+            /**
+            Transform series information for widget text display facilities
+            series are fetched from metric manager and are made of a list of metrics as
+            [{meta: serieRecord, values: [[timestamp_0, value_0, [...]]]}, [...]]
+            **/
+            var length = series.length;
 
-            for (var i = 0, l = pargs.length; i < l; i++) {
-                var data = pargs[i];
-                console.log('series pargs', pargs);
-                var displayValue = __('No data available');
-                if (data.length) {
-                    //choosing the value for the last point when any
-                    displayValue = data[data.length - 1][1];
+            for(var i=0; i<length; i++) {
+
+                var values = get(series[i], 'values'),
+                    serieName = get(series[i].meta, 'crecord_name').replace(/ /g,'_');
+
+                var displayValue = __('No data available'),
+                    valueLength = values.length;
+
+                //choosing the value for the last point when any
+                if (valueLength) {
+                    displayValue = values[valueLength - 1][1];
                 }
-                var serieName = get(series[i], 'crecord_name').replace(/ /g,'_');
-                set(controller, 'templateContext.serie.' + serieName, displayValue);
+
+                //set values to reachable template place for user template combination
+                set(caller, 'templateContext.serie.' + serieName, displayValue);
             }
 
-            controller.setReady('serie');
+            caller.setReady('serie');
         },
 
         init: function() {
@@ -91,8 +101,11 @@ define([
             //If no contextual information set by user, no query is done.
             this.fetchEvents();
 
-            if (!isNone(get(this, 'series'))) {
-                get(this, 'controllers.metric').fetchSeries(from, to, this.onSeriesFetch);
+            var seriesMeta = get(this, 'series');
+            if (!isNone(seriesMeta)) {
+                get(this, 'controllers.metric').fetchSeriesFromSchemaValues(
+                    this, get(this, 'widgetDataStore'), from, to, seriesMeta, this.onSeriesFetch
+                );
             } else {
                 this.setReady('serie');
             }
@@ -177,7 +190,7 @@ define([
                 hr: function (value) {
                     console.log('found value for human readable : ', value);
                     var unit = get(value, 'hash.unit');
-                    var value = get(value, 'hash.value');
+                    value = get(value, 'hash.value');
                     //only second option unit is available for now
                     //otherwise, values are considered as number base 10
                     if (unit !== 's') {

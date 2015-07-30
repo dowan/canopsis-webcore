@@ -33,39 +33,59 @@ define([
 
         needs: ['serie', 'perfdata'],
 
-        fetchSeries: function (from, to, callback){
+        fetchSeriesFromSchemaValues: function (caller, store, from, to, seriesMeta, callback){
+            /**
+            Builds a series array from form series meta.
+            :param store: an Ember store allowing perform ajax queries
+            :param from: the from date since metric have to be fetched
+            :param to: date until metrics are fetched
+            :param seriesMeta: information related to series thare are provided by user forms
+            :param callback: called when series are fetched with the resulting series array
+            series looks like:
+                [{meta: serieRecord, values: [[timestamp_0, value_0, [...]]]}, [...]]
+            **/
 
             var controller = this,
-                seriesController = get(this, 'controllers.serie'),
-                series;
+                seriesController = get(this, 'controllers.serie');
 
             var seriesFilter = JSON.stringify({
-                crecord_name: {'$in': seriesValues}
+                crecord_name: {'$in': seriesMeta}
             });
 
             console.log('widget text series duration queries', from, to);
 
-            get(this, 'widgetDataStore').findQuery(
+            store.findQuery(
                 'serie',
                 {filter: seriesFilter}
                 ).then(function(results) {
 
-                series = get(results, 'content');
-                console.log('series records', series);
+                var metas = get(results, 'content');
+                console.log('series records metas', metas);
 
-                //Event query is the first param if any rk have to be fetched
                 var seriesQueries = [];
-                for (var i = 0, l = series.length; i < l; i++) {
+                var length = metas.length;
+                for (var i=0; i<length; i++) {
                     seriesQueries.push(seriesController.fetch(
-                        series[i],
-                        from,
-                        to
+                        metas[i], from, to
                     ));
                 }
 
                 console.log('seriesQueries', seriesQueries);
 
-                Ember.RSVP.all(seriesQueries).then(callback);
+                Ember.RSVP.all(seriesQueries).then(function (pargs) {
+                    var series = [];
+                    console.log('series pargs', pargs);
+                    var length = pargs.length;
+                    for (var i=0; i<length; i++) {
+                        var data = pargs[i];
+                        series.push({
+                            meta: metas[i].toJson(),
+                            values: data
+                        });
+                    }
+                    console.log('series fetched', caller, series);
+                    callback(caller, series);
+                });
 
             });
 
