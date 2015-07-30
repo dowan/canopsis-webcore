@@ -10,6 +10,6 @@
   "license": "GNU Affero General Public License",
   "dependencies": {
     "jsdoc": "^3.3.2",
-    "jsdoc-rst-template": "0.0.17"
+    "jsdoc-rst-template": "git://github.com/gwenaelp/jsdoc-rst-template.git"
   }
 }
