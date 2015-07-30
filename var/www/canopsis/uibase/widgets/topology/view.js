@@ -217,17 +217,17 @@ define([
         filterChanged: function() {
             this._filter = get(this, 'filter');
         }.observes('filter'),
-        autoLayout: function() {
+        autolayout: function() {
             return this._layout.activated;
-        }.property('autoLayout'),
-        autoLayoutChanged: function() {
-            this._layout.activated = get(this, 'autoLayout');
+        }.property('autolayout'),
+        autolayoutChanged: function() {
+            this._layout.activated = get(this, 'autolayout');
             if (this._layout.activated) {
                 this._layout.engine.start();
             } else {
                 this._layout.engine.stop();
             }
-        }.observes('autoLayout'),
+        }.observes('autolayout'),
         charge: function() {
             var result = this._layout[this._layout.type].charge;
             return result;
@@ -626,9 +626,12 @@ define([
             // refresh locked shapes
             this.refreshLockedShapes();
 
+            var _this = this;
             engine.on(
                 'tick',
                 function() {
+                    if (!get(_this, 'autolayout'))
+                        return;
                     if (!layout.activated) {
                         engine.stop();
                     }
