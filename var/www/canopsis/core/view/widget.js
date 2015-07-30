@@ -102,9 +102,10 @@ define([
         classNames: ['widget'],
 
         /**
+         * Used to visually display error messages to the user (in the widget template)
+         *
          * @property widgetController
          * @type Array
-         * Used to visually display error messages to the user (in the widget template)
          */
         errorMessages : Ember.A(),
 

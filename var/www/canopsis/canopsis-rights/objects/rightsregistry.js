@@ -26,6 +26,7 @@ Ember.Application.initializer({
         /**
          * @class rightsRegistry
          * @extends Abstractclassregistry
+         * @memberOf canopsis.frontend.canopsis-rights
          * @static
          * @description List all rights
          */

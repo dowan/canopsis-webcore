@@ -36,7 +36,7 @@ define([
         /**
          * @method updateRecord
          * @param {DS.Store} store
-         * @param {subclass of DS.Model} type
+         * @param {DS.Model} type
          * @param {DS.Model} userview
          * @return {Promise} promise
          *
@@ -83,7 +83,7 @@ define([
         /**
          * @method deleteRecord
          * @param {DS.Store} store
-         * @param {subclass of DS.Model} type
+         * @param {DS.Model} type
          * @param {DS.Model} userview
          * @return {Promise} promise
          *

@@ -15,8 +15,6 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
 define([], function() {
@@ -29,6 +27,7 @@ define([], function() {
      * Allow hooks on canopsis utility features
      *
      * @class Utility
+     * @memberOf canopsis.frontend.core
      * @extends Ember.Object
      */
     var Utility = Ember.Object.extend({

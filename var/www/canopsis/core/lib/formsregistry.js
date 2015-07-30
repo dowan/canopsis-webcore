@@ -15,8 +15,6 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
 define(['app/lib/abstractclassregistry'], function(Abstractclassregistry) {
@@ -25,6 +23,7 @@ define(['app/lib/abstractclassregistry'], function(Abstractclassregistry) {
      * Forms Registry
      *
      * @class FormsRegistry
+     * @memberOf canopsis.frontend.core
      * @extends Abstractclassregistry
      * @static
      */

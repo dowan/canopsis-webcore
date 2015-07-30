@@ -60,7 +60,7 @@ define([
          *
          * @method sideloadItem
          * @param {Object} payload JSON object representing the payload
-         * @param {subclass of DS.Model} type The DS.Model class of the item to be sideloaded
+         * @param {DS.Model} type The DS.Model class of the item to be sideloaded
          * @param {Object} item JSON object representing the record to sideload to the payload
          */
         sideloadItem: function(payload, type, item, parentJSON) {

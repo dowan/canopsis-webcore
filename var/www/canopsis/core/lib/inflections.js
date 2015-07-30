@@ -15,8 +15,6 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
 define([
@@ -36,6 +34,7 @@ define([
      * Inflections Registry
      *
      * @class InflectionsRegistry
+     * @memberOf canopsis.frontend.core
      * @extends Abstractclassregistry
      * @static
      */

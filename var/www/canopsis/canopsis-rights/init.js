@@ -17,6 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+/** @module canopsis.frontend.canopsis-rights */
 
 define([
     'canopsis/canopsis-rights/loaders/components',

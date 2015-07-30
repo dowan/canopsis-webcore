@@ -31,9 +31,16 @@ define([
     /**
      * Implement CRUD handling for widgets that manages collections
      *
-     * Useful in lists for example, where it adds buttons to CRUD list elements
+     * Useful in lists for example, where it adds buttons to CRUD list elements.
+     *
+     * This mixin add buttons on the widget :
+     *   - a "create" button, showing a form to create and insert a new element
+     *   - a "delete" button, allowing to delete the currently selected item
+     *   - an "edit" button, to show an edition form for the currently selected item
+     *   - a "duplicate" button, that allows to copy the selected item, and to show directly an edition form to make modifications on it.
      *
      * @class CrudMixin
+     * @memberOf canopsis.frontend.uibase
      * @static
      */
     var mixin = Mixin('crud', {

@@ -59,10 +59,10 @@ define([
         canopsisConfiguration: canopsisConfiguration,
 
         /**
+         * true is the Frontend is in debug mode
+         *
          * @property debug
          * @type boolean
-         *
-         * true is the Frontend is in debug mode
          */
         debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
 
@@ -73,11 +73,11 @@ define([
         editMode : Ember.computed.alias('controllers.application.editMode'),
 
         /**
+         * Alias for content
+         *
          * @property config
          * @deprecated
          * @type DS.Model
-         *
-         * Alias for content
          */
         config: Ember.computed.alias('content'),
 
@@ -128,10 +128,10 @@ define([
         },
 
         /**
+         * Adds mixins view to the current widget controller
+         *
          * @method addMixinView
          * @param viewMixin
-         *
-         * Adds mixins view to the current widget controller
          */
         addMixinView: function (viewMixin) {
             var viewMixins = get(this, 'viewMixins');
@@ -182,9 +182,10 @@ define([
         actions: {
 
             /**
+             * Show debug info in console and put widget var in window.$E
+             *
              * @event inspect
              * @param object
-             * Show debug info in console and put widget var in window.$E
              */
             inspect: function (object) {
                 debugUtils.inspectObject(object);
@@ -339,10 +340,10 @@ define([
             },
 
             /**
+             * Moves the widget under the next one, if any
+             *
              * @event movedown
              * @param widgetwrapper
-             *
-             * Moves the widget under the next one, if any
              */
             movedown: function(widgetwrapper) {
                 console.group('movedown', widgetwrapper);
@@ -393,10 +394,10 @@ define([
             },
 
             /**
+             * Moves the widget above the previous one, if any
+             *
              * @event moveup
              * @param widgetwrapper
-             *
-             * Moves the widget above the previous one, if any
              */
             moveup: function(widgetwrapper) {
                 console.group('moveup', widgetwrapper);

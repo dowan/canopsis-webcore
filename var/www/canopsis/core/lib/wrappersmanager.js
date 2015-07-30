@@ -15,14 +15,13 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
 define([], function() {
 
     /**
      * @class wrappersManager
+     * @memberOf canopsis.frontend.core
      * @deprecated
      */
     var wrappersManager = {

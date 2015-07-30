@@ -15,9 +15,9 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
+
+/** @module canopsis.frontend.core */
 
 require.config({
     paths: {
