@@ -22,6 +22,7 @@ from canopsis.common.utils import ensure_iterable
 from canopsis.common.ws import route
 from canopsis import schema
 from canopsis.event.eventslogmanager import EventsLog
+from canopsis.common.utils import singleton_per_scope
 
 from bottle import HTTPError
 import requests
@@ -29,7 +30,7 @@ import json
 
 
 def exports(ws):
-    manager = EventsLog()
+    manager = singleton_per_scope(EventsLog)
 
     @route(ws.application.post, name='event', payload=['event', 'url'])
     @route(ws.application.put, name='event', payload=['event', 'url'])
