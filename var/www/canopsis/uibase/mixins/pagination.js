@@ -184,7 +184,12 @@ define([
         }.property('widgetData'),
 
         itemsTotal: function() {
-            return get(this, 'widgetDataMetas').total;
+            var widgetDataMetas = get(this, 'widgetDataMetas');
+            if(widgetDataMetas) {
+                return get(this, 'widgetDataMetas').total;
+            } else {
+                return 0;
+            }
         }.property('widgetDataMetas', 'widgetData'),
 
         totalPages: function() {

@@ -86,7 +86,7 @@ def exports(ws):
            name='eventslog/count',
            payload=['tstart', 'tstop', 'limit', 'select']
            )
-    def get_event_count_per_day(tstart, tstop, limit=100, select=None):
+    def get_event_count_per_day(tstart, tstop, limit=100, select={}):
         """ get eventslog log count for each days in a given period
             :param tstart: timestamp of the begin period
             :param tstop: timestamp of the end period

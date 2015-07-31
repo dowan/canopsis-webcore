@@ -104,6 +104,27 @@ define([
             return list;
         },
 
+        hasOneActiveFilter: function(){
+            var list = get(this, 'model.user_filters');
+
+            if (!isNone(list)){
+                /*var list_len = list.length;
+                for (var j = 0; j < list_len; j++) {
+                    var activation = get(list[i], 'isActive');
+                    if (activation) {
+                        return true;
+                    }
+                }
+                return false;*/
+                console.log('value of list mixins');
+                if (this.isSelectedFilter(list).length > 0){
+                    return true;
+                }
+                //return true;
+            }
+            return false;
+        },
+
         actions: {
             setFilter: function (filter) {
 

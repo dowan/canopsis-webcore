@@ -37,13 +37,13 @@ define([
 
     var viewMixin = Ember.Mixin.create({
 
+        /**
+         *  @method addEventCalendar: add a new fullcalendar eventSource
+         *  @param calendarTab: eventSource as an array formated for fullCalendar
+         */
         addEventCalendar: function(calendarTab) {
-            /**
-             *  @method addEventCalendar: add a new fullcalendar eventSource
-             *  @param calendarTab: eventSource as an array formated for fullCalendar
-             */
-
              // TODO find other solution: on refresh of the mixin this.$('.calendar') is undefined...
+            console.log('sur le point d\'ajouter', calendarTab);
             var calendar = this.$('.calendar');
             if(calendar === undefined){
                 return;
@@ -54,21 +54,22 @@ define([
             });
         },
 
+        /**
+         *  @method removeEventCalendar: remove a old fullcalendar eventSource
+         *  @param calendarTab: eventSource as an array formated for fullCalendar
+         */
         removeEventCalendar: function(calendarTab){
-            /**
-             *  @method removeEventCalendar: remove a old fullcalendar eventSource
-             *  @param calendarTab: eventSource as an array formated for fullCalendar
-             */
-
+            console.log('supprimer eventcalendar');
             this.$('.calendar').fullCalendar( 'removeEventSource', {
                     events: calendarTab
                 });
         },
 
+        /**
+         * @method didInsertElement: create the fullcalendar at the beginning and catch every changed view
+         */
         didInsertElement: function() {
-            /**
-             * @method didInsertElement: create the fullcalendar at the beginning and catch every changed view
-             */
+
             var globalView = this;
             globalView._super();
 
@@ -84,6 +85,7 @@ define([
                 },
                 fixedWeekCount : false,
                 editable: false,
+                eventLimit: true,
                 lazyFetching: false,
                 viewRender: function(month, calendar) {
                     var controller = get(globalView, "controller");
@@ -93,12 +95,15 @@ define([
                     set(controller, 'calendarEnd', moment(calview.end.format()).format('x')/1000);
 
                     var calTab = get(controller, 'calendarTab');
+                    var eventLogTab = get(controller, 'eventsLog');
                     if(calTab === undefined){
                         calTab = [];
                     }
                     globalView.removeEventCalendar(calTab);
+                    globalView.removeEventCalendar(eventLogTab);
                     if (get(controller, 'calendarStart') !== undefined){
-                        controller.loadEvents();
+                        controller.loadCalendarEvents();
+                        controller.refreshContent();
                     }
                 },
                 eventSources: [
@@ -112,6 +117,7 @@ define([
             // Sync controller and view for addEventCalendar event
             var ctrl = get(this, "controller");
             ctrl.on('addEventCalendar',this, this.addEventCalendar);
+            ctrl.on('removeEventCalendar',this, this.removeEventCalendar);
         },
 
         willDestroyElement: function() {
@@ -142,39 +148,33 @@ define([
 
         },
 
-        saveUserConfiguration: function(){
+        saveUserConfiguration: function(){},
 
+        refreshContent: function() {
+            this._super();
+            //TODO find a way to get filterlist and determine if one of them is active or not!
+            var filterFragments = this.computeFilterFragmentsList();
+            console.log('debug computeFilterFragmentsList', filterFragments);
+
+            /*console.log('computeFilterFragmentsList', filterFragments[0]);*/
+            console.log('length of filterFragments', filterFragments.length);
+
+            if(typeof filterFragments[1] === "string"){
+                this.trigger('removeEventCalendar', get(this, 'eventsLog'));
+                set(this, 'descriptionFilter', filterFragments[1]);
+                this.loadEventsLog();
+            }
         },
 
-            /**
-             * @method loadEvents: similar to findItems, get data form backend
-             */
-        loadEvents: function() {
+        /**
+         * @method loadCalendarEvents: similar to findItems, get data form backend
+         */
+        loadCalendarEvents: function() {
 
             var controller = this;
             var initialized = get(controller, 'fullCalendarInitialized');
 
             var store = get(controller, 'widgetDataStore');
-
-            /** get userfilters from customfilterlist mixin */
-
-            var widgetMixins = get(controller, 'model.mixins');
-            var widgetMixinsLength = widgetMixins.length;
-
-            for (var i = 0; i < widgetMixinsLength; i++){
-
-                var widgetFilters = get(widgetMixins[i], 'filters');
-                var widgetFiltersLength = widgetFilters.length;
-
-                for (var j = 0; j < widgetFiltersLength; j++){
-
-                    var titleFilter = get(widgetFilters[j], 'title');
-                    var descriptionFilter = get(widgetFilters[j], 'filter');
-                    console.log('finish', titleFilter, descriptionFilter);
-                    set(controller, 'titleFilter', titleFilter);
-                    set(controller, 'descriptionFilter', descriptionFilter);
-                }
-            }
 
             /** query to select events (by filters) */
             controller.getDateCalendarView();
@@ -184,10 +184,7 @@ define([
                 dtend: get(this, 'calendarEnd')
             };
 
-            /**
-             * get data from storage and refresh view by
-             * calling "addEventCalendar"
-             */
+             /** get data from storage and refresh view by calling "addEventCalendar" */
             store.findQuery('calendardata', userEventsParams).then(function (result) {
 
                 var events = get(result, 'content'),
@@ -198,22 +195,38 @@ define([
                     var formated_cevent = controller.getCalendarEvent(events[i]);
                     calendarTab.pushObject(formated_cevent);
                 }
-
+                console.log('je vais ajouter les calendriers');
                 controller.trigger('addEventCalendar', calendarTab);
                 set(controller,'calendarTab', calendarTab);
             });
+        },
 
-            /**
-             * get events log with the user filter of customfilter list
-             */
+        loadEventsLog: function(){
+            var controller = this;
+            var store = get(controller, 'widgetDataStore');
+            controller.getDateCalendarView();
+
             console.log('date pour filtre eventsLog', get(this, 'calendarStart'), get(this, 'calendarEnd'));
 
-            var eventsLogParams = {
-                tstart: get(this, 'calendarStart'),
-                tstop: get(this, 'calendarEnd'),
-                limit: 100,
-                select: get(controller, 'descriptionFilter')
-            };
+            var mongoQuery = get(controller, 'descriptionFilter');
+
+            var eventsLogParams = {};
+
+            if (mongoQuery === "") {
+
+                eventsLogParams = {
+                    tstart: get(this, 'calendarStart'),
+                    tstop: get(this, 'calendarEnd'),
+                    limit: 100
+                };
+            } else {
+                eventsLogParams = {
+                    tstart: get(this, 'calendarStart'),
+                    tstop: get(this, 'calendarEnd'),
+                    limit: 100,
+                    select: mongoQuery
+                };
+            }
 
             console.log('display of eventsLogParams', eventsLogParams);
 
@@ -225,21 +238,28 @@ define([
                 for (var i = 0; i < countlength; i++) {
                     var count = get(contentsCount[i], 'count');
                     var date = get(contentsCount[i], 'date');
+                    console.log('valeur de count et de date', count, date);
                     if(count !== 0) {
+                        console.log('coucou');
                         var formated_eventsLogCount = controller.getEventsLogCount(count, date);
                         calendarTab.pushObject(formated_eventsLogCount);
                     }
                 }
-
+                console.log('je vais ajouter les logs');
                 controller.trigger('addEventCalendar', calendarTab);
+                set(controller,'eventsLog', calendarTab);
 
             });
         },
 
+        computeFilterFragmentsList: function() {
+            return [undefined];
+        },
+
+        /**
+         * @method getDateCalendarView: set date view with the actual month if undefined
+         */
         getDateCalendarView: function () {
-            /**
-             * @method getDateCalendarView: set date view with the actual month if undefined
-             */
             if(get(this, 'calendarStart') ===  undefined) {
                 set(this, 'calendarStart', parseInt(moment().startOf('month').format('x')/1000));
             }
@@ -248,12 +268,12 @@ define([
             }
         },
 
+        /**
+         *  @method getCalendarEvent: format the calendar event for fullCalendar
+         *  @param cevent: object that contains event to format
+         *  @return object
+         */
         getCalendarEvent: function (cevent) {
-            /**
-             *  @method getCalendarEvent: format the calendar event for fullCalendar
-             *  @param cevent: object that contains event to format
-             *  @return object
-             */
             return {
                 title: get(cevent, 'output'),
                 start: moment(get(cevent, 'dtstart')*1000).format(),
@@ -261,7 +281,14 @@ define([
             };
         },
 
+        /**
+         * @method getEventsLogCount: format the eventsLog count for fullCalendar
+         * @param count: count: integer that represents the count of events log relative to the given
+         * @param date: object that contains a 'begin' timestamp attribute and a 'end' timestamp attribute
+         * @return object
+         */
         getEventsLogCount: function (count, date) {
+            console.log('recoucou');
             var title = '';
             if ( count > 100) {
                 title = ' ' + get(this, 'titleFilter') + ' more than 100';
@@ -277,10 +304,11 @@ define([
         },
 
         actions:{
+            /**
+             *  @method createEvent: create an user event from the "add event" form in the widget
+             */
             createEvent: function() {
-                /**
-                 *  @method createEvent: create an user event from the "add event" form in the widget
-                 */
+
                 var controller = this;
                 var store = get(controller, 'widgetDataStore');
 
@@ -316,7 +344,7 @@ define([
                                     'Event save success',
                                     'success'
                                 );
-                                controller.loadEvents();
+                                controller.loadCalendarEvents();
                             });
                         }
                         notificationUtils.info(__('event calendar created'));
@@ -324,21 +352,21 @@ define([
                 });
             },
 
+            /**
+             * @method editCategories: open a form to edit eventcategories
+             */
             editCategories: function () {
-                /**
-                 * @method editCategories: open a form to edit eventcategories
-                 */
                 var container = get(this, 'container');
                 formUtils.editSchemaRecord('eventcategories', container);
             }
         },
 
+        /**
+         *  @method showUserMessage: inform the user about the last action made
+         *  @param message: string that is the information about the action to inform
+         *  @param level: string that indicate the information level (for Bootstrap color element)
+         */
         showUserMessage: function (message, level) {
-            /**
-             *  @method showUserMessage: inform the user about the last action made
-             *  @param message: string that is the information about the action to inform
-             *  @param level: string that indicate the information level (for Bootstrap color element)
-             */
             var controller = this;
             set(controller, 'errorMessage', message);
             set(controller, 'errorLevel', 'alert-' + level);
