@@ -47,10 +47,6 @@ define([
         },
 
         setDefaultChartOptions: function() {
-            //get the timestamp, and not the date object
-            var now = +new Date();
-
-            var ctrl = get(this, 'controller');
 
         }
     });
@@ -94,22 +90,6 @@ define([
         setConfiguration: function () {
             console.log('set configuration', arguments);
         },
-
-        isProgressbar: function () {
-            return true;
-        }.property(),
-
-        isGauge: function () {
-            return true;
-        }.property(),
-
-        isPie: function () {
-            return true;
-        }.property(),
-
-        isDonut: function () {
-            return true;
-        }.property(),
 
 
     }, widgetOptions);
