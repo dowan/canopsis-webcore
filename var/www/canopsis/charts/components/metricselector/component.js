@@ -188,7 +188,7 @@ define([
                         filter[key] = null;
                     }
 
-                    filters[key].$or.push(filter)
+                    filters[key].$or.push(filter);
                 }
 
                 var len = filters[key].$or.length;
