@@ -85,8 +85,8 @@ define([
 
             var now = new Date().getTime();
             var to = now;
-            //fetch time window of 5 minutes hoping there are metrics since.
-            var from = now - 300000;
+            //fetch time window of 10 minutes hoping there are metrics since.
+            var from = now - 600000;
 
             //When specific from / to dates specified into the controller,
             //the widget will use them. This helps manage live reporting.

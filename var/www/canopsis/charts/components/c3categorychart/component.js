@@ -36,6 +36,7 @@ define([
             set(this, 'uuid', hash.generateId('chartGauge'));
             set(this, 'leftValueLabel', __('Left until max'));
             this.refreshChart();
+            set(this, 'parentController.chartComponent', this);
         },
 
         maxValue: function () {
@@ -70,13 +71,14 @@ define([
                 sum += series[i][1];
             }
             return sum;
-        }.property('series@each'),
+        }.property(),
 
         refreshChart: function () {
 
             /**
             Generate chart required values to be displayed
             **/
+            console.log('chart series is now', get(this, 'series'));
 
             var restValue = get(this, 'maxValue') - get(this, 'seriesSum'),
                 seriesNames = [],
@@ -102,7 +104,9 @@ define([
                 'c3series': series,
                 'seriesNames': seriesNames
             });
-        },
+
+        }.observes('parentController.dataSeries'),
+
 
 
         didInsertElement: function () {
@@ -160,6 +164,7 @@ define([
             });
 
             set(this, 'chart', chart);
+
         },
 
         actions: {
@@ -180,7 +185,26 @@ define([
                     get(this, 'chart').transform(type);
                 }
 
+            },
+
+            update: function () {
+                var chart = get(this, 'chart'),
+                    previousSeriesNames = get(this, 'seriesNames');
+
+                this.refreshChart();
+
+                console.log('refreshing c3 chart with series', get(this, 'c3series'));
+
+                chart.unload({
+                    ids: previousSeriesNames
+                });
+
+                chart.load({
+                    columns: get(this, 'c3series'),
+                    groups: [get(this, 'seriesNames')]
+                });
             }
+
         }
 
     });

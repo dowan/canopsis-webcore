@@ -59,38 +59,84 @@ define([
         ],
 
         init: function () {
-            set(this, 'series', []);
+            this.setConfiguration();
             this._super();
+            var widgetController = this;
+            setInterval(function () {
+                var chart = get(widgetController, 'chartComponent');
+                chart.send('update');
+            }, 5000);
         },
 
         findItems : function () {
-            /*
-            var store = get(this, 'widgetDataStore'),
-                start = 0,
-                now = +new Date(),
-                replace = true,
-                series = get(this, 'series'),
-                metricController = get(this, 'controllers.metric');
 
-            metricController.fetchStylizedSeries(
-                store, start, now, replace, series, this.setConfiguration
-            );
-            */
-            set(this, 'dataSeries', [
-                ['serie1', Math.random() * 50],
-                ['serie2', Math.random() * 50]
-            ]);
+            /**
+            Serie and metrics data fetch and chart series formating are triggered here
+            The dataSerie array is there reset and updated to rerender the chart.
+            **/
 
+            set(this, 'dataSeries', []);
+
+            //data interval selection
+            var now = new Date().getTime();
+            //fetch time window of 10 minutes hoping there are metrics since.
+            var from = now - 600000;
+            var to = now;
+
+            var seriesMeta = get(this, 'series');
+
+            if (!isNone(seriesMeta)) {
+                get(this, 'controllers.metric').fetchSeriesFromSchemaValues(
+                    this, get(this, 'widgetDataStore'), from, to, seriesMeta, this.onSeriesFetch
+                );
+            }
+        },
+
+        onSeriesFetch: function (caller, series) {
+            /**
+            Transform series information for widget text display facilities
+            series are fetched from metric manager and are made of a list of metrics as
+            [{meta: serieRecord, values: [[timestamp_0, value_0, [...]]]}, [...]]
+            **/
+            var length = series.length,
+                chartSeries = [];
+
+            for(var i=0; i<length; i++) {
+
+                var values = get(series[i], 'values'),
+                    serieName = get(series[i].meta, 'crecord_name').replace(/ /g,'_'),
+                    value = 0;
+
+                var valueLength = values.length;
+
+                //choosing the value for the last point when any
+                if (valueLength) {
+                    value = values[valueLength - 1][1];
+                } else {
+                    serieName += ' ' + __('No data available');
+                }
+
+                chartSeries.push([serieName, value]);
+            }
+
+            caller.send('updateMetrics', 'series', chartSeries);
+        },
+
+
+        setConfiguration: function () {
             set(this, 'chartOptions', {
                 userMaxValue: 120
             });
-
-        },
-
-        setConfiguration: function () {
             console.log('set configuration', arguments);
         },
 
+        actions: {
+            updateSeries: function (type, series) {
+                set(this, 'dataSeries', series);
+                console.log(series);
+                debugger;
+            }
+        }
 
     }, widgetOptions);
 
