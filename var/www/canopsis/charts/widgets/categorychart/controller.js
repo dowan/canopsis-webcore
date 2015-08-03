@@ -30,28 +30,10 @@ define([
 
     var widgetOptions = {};
 
-    var CategoryChartViewMixin = Ember.Mixin.create({
-        didInsertElement: function() {
-            var ctrl = get(this, 'controller');
-
-            console.log('category chart init');
-
-
-            this._super.apply(this, arguments);
-
-
-        },
-
-        willDestroyElement: function() {
-
-        },
-
-        setDefaultChartOptions: function() {
-
-        }
-    });
+    var CategoryChartViewMixin = Ember.Mixin.create({});
 
     var widget = WidgetFactory('categorychart', {
+
         needs: ['metric'],
 
         viewMixins: [
@@ -59,13 +41,8 @@ define([
         ],
 
         init: function () {
-            this.setConfiguration();
             this._super();
-            var widgetController = this;
-            setInterval(function () {
-                var chart = get(widgetController, 'chartComponent');
-                chart.send('update');
-            }, 5000);
+            this.loadConfiguration();
         },
 
         findItems : function () {
@@ -92,7 +69,31 @@ define([
             }
         },
 
-        onSeriesFetch: function (caller, series) {
+        loadConfiguration: function () {
+            /**
+            Get options from chart configuration to send them to the chart display component
+            **/
+
+            //option list to fetch
+            var optionProperties = [
+                'display',
+                'allow_user_display',
+                'use_max_value',
+                'max_value'
+            ];
+
+            var options = {};
+
+            for(var i=0; i<optionProperties.length; i++) {
+                options[optionProperties[i]] = get(this, optionProperties[i]);
+            }
+
+            //set chart display component with option values list
+            console.log('category chart options', options);
+            set(this, 'options', options);
+        },
+
+        onSeriesFetch: function (chartController, series) {
             /**
             Transform series information for widget text display facilities
             series are fetched from metric manager and are made of a list of metrics as
@@ -118,25 +119,11 @@ define([
 
                 chartSeries.push([serieName, value]);
             }
-
-            caller.send('updateMetrics', 'series', chartSeries);
+            console.log(chartSeries);
+            var chart = get(chartController, 'chartComponent');
+            set(chart, 'series', chartSeries);
         },
 
-
-        setConfiguration: function () {
-            set(this, 'chartOptions', {
-                userMaxValue: 120
-            });
-            console.log('set configuration', arguments);
-        },
-
-        actions: {
-            updateSeries: function (type, series) {
-                set(this, 'dataSeries', series);
-                console.log(series);
-                debugger;
-            }
-        }
 
     }, widgetOptions);
 

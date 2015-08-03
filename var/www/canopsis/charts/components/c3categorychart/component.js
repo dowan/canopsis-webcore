@@ -33,10 +33,11 @@ define([
 
         init: function() {
             this._super();
-            set(this, 'uuid', hash.generateId('chartGauge'));
-            set(this, 'leftValueLabel', __('Left until max'));
-            this.refreshChart();
-            set(this, 'parentController.chartComponent', this);
+            Ember.setProperties(this, {
+                'uuid': hash.generateId('categoryChart'),
+                'leftValueLabel': __('Left until max'),
+                'parentController.chartComponent': this,
+            });
         },
 
         maxValue: function () {
@@ -44,36 +45,52 @@ define([
             /**
             User max value may be defined
             if it is defined, it must be greater than series values sum
+            max value is used only if configuration allowed it
             **/
 
-            var userMaxValue = get(this, 'options.userMaxValue'),
+            var maxValue = get(this, 'parentController.options.max_value'),
+                useMaxValue = get(this, 'parentController.options.use_max_value'),
                 seriesSum = get(this, 'seriesSum');
 
-            if (!isNone(userMaxValue) && userMaxValue > seriesSum) {
-                return userMaxValue;
+            if (useMaxValue && !isNone(maxValue) && maxValue > seriesSum) {
+                return maxValue;
             } else {
                 return seriesSum;
             }
-        }.property(),
 
-        processSeriesByType: function (series) {
-            //adapt data for correct display
-            var chartType = get(this, 'chartType');
-
-            if (chartType === 'gauge') {}
-            return series;
-        },
+        }.property('parentController.options.max_value'),
 
         seriesSum: function () {
+
+            /**
+            Compute all series values sum
+            **/
+
             var sum = 0,
                 series = get(this, 'series');
             for (var i=0; i<series.length; i++) {
                 sum += series[i][1];
             }
             return sum;
-        }.property(),
 
-        refreshChart: function () {
+        }.property('series'),
+
+        seriesNames: function () {
+            /**
+            Get the list of each distinct serie name.
+            **/
+
+            var seriesNames = [];
+            var series = get(this, 'series');
+            var length = series.length;
+            for (var i=0; i<length; i++) {
+                seriesNames.push(series[i][0]);
+            }
+            return seriesNames;
+
+        }.property('series'),
+
+        c3series: function () {
 
             /**
             Generate chart required values to be displayed
@@ -81,8 +98,9 @@ define([
             console.log('chart series is now', get(this, 'series'));
 
             var restValue = get(this, 'maxValue') - get(this, 'seriesSum'),
-                seriesNames = [],
-                series = $.extend(true, [], get(this, 'series'));//base series data deep copied
+                series = $.extend(true, [], get(this, 'series'));
+                //base series data deep copied
+
             //Compute difference between max value and series values sum
             if (restValue > 0) {
                 var leftValueLabel = get(this, 'leftValueLabel');
@@ -94,39 +112,90 @@ define([
                 return b[1] - a[1];
             });
 
-            series = this.processSeriesByType(series);
+            return series;
 
-            for (var i=0; i<series.length; i++) {
-                seriesNames.push(series[i][0]);
+        }.property('series'),
+
+        colors: function () {
+
+            /**
+            Compute the color dict for nice chart display from options
+            **/
+
+            var seriesNames = get(this, 'seriesNames');
+
+            var colors = {
+                leftValueLabel: '#EEEEEE',
+            };
+
+            for (var i=0; i<seriesNames.length; i++) {
+                colors[seriesNames[i]] = ['#FF0000', '#F97600'][i];
             }
+            return colors;
 
-            Ember.setProperties(this, {
-                'c3series': series,
-                'seriesNames': seriesNames
-            });
-
-        }.observes('parentController.dataSeries'),
-
+        }.property('seriesNames'),
 
 
         didInsertElement: function () {
-            this.generateChart();
+            /**
+            Tells the component is inserted into the dom
+            **/
+            set(this, 'domready', true);
         },
 
         generateChart: function () {
+
+            /**
+            Uses series and chart options to insert a C3js chart element in the dom
+            **/
+
+            if(isNone(get(this, 'domready'))) {
+                console.log('Dom is not ready for category chart, cannot draw');
+                return;
+            }
+
+            if(isNone(get(this, 'parentController.options'))) {
+                console.log('Chart options are not ready cannot draw');
+                return;
+            }
+
+
             var domElement = '#' + get(this, 'uuid'),
                 leftValueLabel = get(this, 'leftValueLabel'),
-                seriesSum = get(this, 'seriesSum').toFixed(2),
-                seriesNames = get(this, 'seriesNames');
+                seriesSum = get(this, 'seriesSum'),
+                seriesNames = get(this, 'seriesNames'),
+                c3series = get(this, 'c3series'),
+                colors = get(this, 'colors'),
+                maxValue = get(this, 'maxValue'),
+                chartType = get(this, 'parentController.options.display');
+                gauge = {
+                    label:{
+                        format: function(value, ratio){
+                            return seriesSum.toFixed(2);
+                        }
+                    }
+                };
 
             console.log('seriesNames', seriesNames);
+            console.log('c3series', c3series);
+
+            if (chartType == 'progressbar') {
+                //cheating alias becrause progress bar does not exists in c3 js yet
+                chartType = 'bar';
+            }
+
+            //define the max value of the chart and wether or not a delta serie is created
+            gauge.max = maxValue;
+            if (maxValue > seriesSum && $.inArray(leftValueLabel, seriesNames) === -1) {
+                seriesNames.push(leftValueLabel);
+            }
 
             var chart = c3.generate({
                 bindto: domElement,
                 groups: seriesNames,
                 data: {
-                    columns: get(this, 'c3series'),
-                    type: 'bar',
+                    columns: c3series,
+                    type: chartType,
                     groups: [seriesNames],
                     labels: {
                         format: function (v, id, i, j) {
@@ -135,23 +204,12 @@ define([
                     },
                     empty: {
                         label: {
-                            text: "No Data"
+                            text: __('No Data')
                         }
                     }
                 },
-                color: {
-                    serie1: '#FF0000',
-                    serie2: '#F97600',
-                    leftValueLabel: '#EEEEEE',
-                },
-                gauge: { //for gauge mode
-                    max: get(this, 'maxValue'),
-                    label:{
-                        format: function(value, ratio){
-                            return seriesSum;
-                        }
-                    },
-                },
+                color: colors,
+                gauge: gauge,
                 axis: { //for bar mode
                   rotated:true,
                   x: {
@@ -167,42 +225,41 @@ define([
 
         },
 
-        actions: {
-            transform: function (type) {
+        update: function () {
 
-                if (type === 'progressbar') {
-                    //bar mode is the progressbar display
-                    //transform does not work from any type to bar
-                    //chart is recomputed
-                    set(this, 'chartType', 'bar');
-                    get(this, 'chart').destroy();
-                    this.refreshChart();
-                    this.generateChart();
-                } else {
-                    //Otherwise, chart is juste destroyed
-                    set(this, 'chartType', type);
-                    this.refreshChart();
-                    get(this, 'chart').transform(type);
-                }
+            /**
+            Update the chart display with new values.
+            Insert a new chart if it does not exists yet.
+            **/
+            var chart = get(this, 'chart');
 
-            },
-
-            update: function () {
-                var chart = get(this, 'chart'),
-                    previousSeriesNames = get(this, 'seriesNames');
-
-                this.refreshChart();
-
+            if (isNone(chart)) {
+                this.generateChart();
+            } else {
                 console.log('refreshing c3 chart with series', get(this, 'c3series'));
 
-                chart.unload({
-                    ids: previousSeriesNames
-                });
+                var previousSeriesNames = get(this, 'seriesNames');
+
+                if (previousSeriesNames.length) {
+                    chart.unload({
+                        ids: previousSeriesNames
+                    });
+                }
 
                 chart.load({
                     columns: get(this, 'c3series'),
                     groups: [get(this, 'seriesNames')]
                 });
+            }
+
+
+        }.observes('series', 'ready', 'parentController.options'),
+
+        actions: {
+            transform: function (type) {
+                get(this, 'chart').destroy();
+                set(this, 'parentController.options.display', type);
+                this.generateChart();
             }
 
         }
