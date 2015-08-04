@@ -56,15 +56,17 @@ define([
         },
 
         set_tab: function(last_field_error){
-            var categories = this.categories;
+            var categories = this.categories,
+                i,
+                current;
 
-            for (var i = 0 ; i < categories.length ; i++){
-                var current = categories[i];
+            for (i = 0 ; i < categories.length ; i++){
+                current = categories[i];
                 this.changeTAB( current.slug , false );
                 Ember.set(current, "isDefault", false);
             }
-    outer:  for (var i = 0 ; i < categories.length ; i++){
-                var current = categories[i];
+    outer:  for (i = 0 ; i < categories.length ; i++){
+                current = categories[i];
 
                 for (var j = 0 ; j < current.keys.length ; j++){
                     var key = current.keys[j];

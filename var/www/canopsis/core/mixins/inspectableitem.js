@@ -81,7 +81,7 @@ define([
         },
 
         insertValueIntoAttribute: function(createdCategory, inspectedDataItem, key, attr, count) {
-            var value = (!this.isOnCreate)? get(inspectedDataItem, key) : attr.options["defaultValue"];
+            var value = (!this.isOnCreate)? get(inspectedDataItem, key) : attr.options.defaultValue;
 
             if (attr.type === "array"){
                 var value_temp = Ember.copy(value , true);

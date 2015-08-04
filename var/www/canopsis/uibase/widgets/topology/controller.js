@@ -109,7 +109,7 @@ define([
                 var elt = _delts[elt_id];
                 elt.id = elt_id;
                 var record = me.widgetDataStore.createRecord(
-                    elt['type'], elt
+                    elt.type, elt
                 );
                 recordsById[elt_id] = record;
                 // save record in order to bind it to the adapter
@@ -181,7 +181,7 @@ define([
                     );
                     var addGraph = function() {
                         me._addGraph(graph);
-                    }
+                    };
                     graph.save().then(
                         addGraph
                     );
@@ -367,7 +367,7 @@ define([
                         failed
                     );
                 }
-            }
+            };
             if (edit) {
                 this.editRecord(result, _success, _failure, this);
             } else {
@@ -421,14 +421,13 @@ define([
                         var action = params[actionName];
                         if (action !== undefined) {
                             var taskId = getShortId(action);
+                            var actionState = taskId;
                             if (taskId === 'change_state') {
                                 var actionParams = action.params;
                                 if (actionParams !== undefined) {
-                                    var actionState = actionParams.state;
+                                    actionState = actionParams.state;
                                     actionState = states[actionState];
                                 }
-                            } else {
-                                var actionState = taskId;
                             }
                             record.set(stateName, actionState);
                         }
@@ -550,7 +549,7 @@ define([
                         } else {
                             info = {
                                 task: {}
-                            }
+                            };
                             task = info.task;
                         }
                         // set entity
@@ -599,6 +598,7 @@ define([
                                 updateInfoAction(task, record, 'then_state', 'statement');
                                 // set else
                                 updateInfoAction(task, record, 'else_state', '_else');
+                                break;
                             default: break;
                         }
                         // update info
@@ -607,18 +607,18 @@ define([
                     default: break;
                 }
                 var _success = function(record) {
-                    var record = record[0];
+                    var _record = record[0];
                     if (success !== undefined) {
-                        success.call(context, record);
+                        success.call(context, _record);
                     }
                     me.trigger('refresh');
-                }
+                };
                 var _failure = function(record) {
                     console.error(record);
                     if (failure !== undefined) {
                         failure.call(context, record);
                     }
-                }
+                };
                 // save the record
                 me.saveRecords(record, _success, _failure, me);
             };
