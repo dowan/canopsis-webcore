@@ -11,5 +11,9 @@
   "dependencies": {
     "jsdoc": "^3.3.2",
     "jsdoc-rst-template": "git://github.com/gwenaelp/jsdoc-rst-template.git"
+  },
+  "scripts": {
+    "rst-doc": "./node_modules/.bin/jsdoc -t ./node_modules/jsdoc-rst-template/template --recurse canopsis -d docs/rst -c .jsdoc.conf.json",
+    "install-doc" : "rm -Rf ../lib/canopsis/doc/api/frontend && mkdir ../lib/canopsis/doc/api/frontend && cp -R docs/rst/* ../lib/canopsis/doc/api/frontend"
   }
 }
