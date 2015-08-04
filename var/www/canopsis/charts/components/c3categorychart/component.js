@@ -19,9 +19,9 @@
 define([
     'app/lib/utils/hash',
     'canopsis/charts/lib/utils/basechart',
-    'c3',
+    'canopsis/charts/lib/externals/c3/c3',
     'link!canopsis/charts/lib/externals/c3/c3.css',
-], function(hash, BaseChart, c3) {
+], function(hash, BaseChart) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -38,6 +38,11 @@ define([
                 'parentController.chartComponent': this,
             });
         },
+
+        willDestroyElement: function() {
+            get(this, 'chart').destroy();
+        },
+
 
         maxValue: function () {
 
@@ -80,7 +85,7 @@ define([
             **/
 
             var seriesNames = [];
-            var series = get(this, 'series');
+            var series = get(this, 'c3series');
             var length = series.length;
             for (var i=0; i<length; i++) {
                 seriesNames.push(series[i][0]);

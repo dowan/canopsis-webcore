@@ -48,7 +48,8 @@ define([
             Ember.setProperties(this, {
                 'seriesReady': false,
                 'metricsReady': false,
-                'tmpSeries': []
+                'tmpSeries': [],
+                'seriesMetas': {},
             });
         },
 
@@ -131,6 +132,9 @@ define([
                 var serieSplit = serieId.split('/');
                 var serieName = serieSplit[serieSplit.length - 1];
 
+                //get meta info for templating purposes
+                set(chartController, 'seriesMetas.' + serieName, serieId);
+
                 chartSeries.push([serieName, serieValue]);
 
             }
@@ -144,6 +148,7 @@ define([
             series are fetched from metric manager and are made of a list of metrics as
             [{meta: serieRecord, values: [[timestamp_0, value_0, [...]]]}, [...]]
             **/
+
             var length = series.length,
                 chartSeries = [];
 
@@ -161,6 +166,15 @@ define([
                 } else {
                     serieName += ' ' + __('No data available');
                 }
+
+                //start get meta information for template dispplay
+                var metrics = series[i].meta.metrics,
+                    contextId = '';
+                if (metrics.length) {
+                    contextId = series[i].meta.metrics[0];
+                }
+                set(chartController, 'seriesMetas.' + serieName, contextId);
+                //stop get meta
 
                 chartSeries.push([serieName, value]);
             }
