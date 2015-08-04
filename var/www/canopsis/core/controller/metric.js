@@ -172,6 +172,24 @@ define([
             }
         },
 
+        fetchMetricsFromIds: function (caller, from, to, metricIds, callback) {
+
+            var perfdataController = get(this, 'controllers.perfdata'),
+                perfdataQueries = [],
+                length = metricIds.length;
+
+            for (var i=0; i<length; i++) {
+                perfdataQueries.push(
+                    perfdataController.fetch(metricIds[i], from, to)
+                );
+            }
+
+            Ember.RSVP.all(perfdataQueries).then(function(pargs) {
+                callback(caller, pargs, from, to);
+            });
+
+        },
+
         fetchStylizedSeries: function(store, from, to, replace, stylizedseries, callback) {
 
             /* fetch stylized series */

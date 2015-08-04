@@ -43,6 +43,15 @@ define([
         init: function () {
             this._super();
             this.loadConfiguration();
+            this.initSeries();
+        },
+
+        initSeries: function () {
+            Ember.setProperties(this, {
+                'seriesReady': false,
+                'metricsReady': false,
+                'tmpSeries': []
+            });
         },
 
         findItems : function () {
@@ -52,19 +61,28 @@ define([
             The dataSerie array is there reset and updated to rerender the chart.
             **/
 
-            set(this, 'dataSeries', []);
-
             //data interval selection
             var now = new Date().getTime();
             //fetch time window of 10 minutes hoping there are metrics since.
             var from = now - 600000;
             var to = now;
 
-            var seriesMeta = get(this, 'series');
+            var store = get(this, 'widgetDataStore');
 
+            var metricsMeta = get(this, 'metrics');
+            console.log('metricsMeta', metricsMeta);
+            if (!isNone(metricsMeta)) {
+                get(this, 'controllers.metric').fetchMetricsFromIds(
+                    this, from, to, metricsMeta, this.onMetricFetch
+                );
+            }
+
+
+            var seriesMeta = get(this, 'series');
+            console.log('seriesMeta', seriesMeta);
             if (!isNone(seriesMeta)) {
                 get(this, 'controllers.metric').fetchSeriesFromSchemaValues(
-                    this, get(this, 'widgetDataStore'), from, to, seriesMeta, this.onSeriesFetch
+                    this, store, from, to, seriesMeta, this.onSeriesFetch
                 );
             }
         },
@@ -93,6 +111,32 @@ define([
             set(this, 'options', options);
         },
 
+        onMetricFetch: function (chartController, pargs, from, to) {
+
+            var length = pargs.length,
+                chartSeries = [];
+
+            for(var i=0; i<length; i++) {
+
+                var metric = pargs[i].data[0];
+                var serieId = metric.meta.data_id,
+                    pointsLength = metric.points.length,
+                    serieValue = 0;
+
+                if (pointsLength) {
+                    serieValue = metric.points[pointsLength - 1][1];
+                }
+
+                var serieSplit = serieId.split('/');
+                var serieName = serieSplit[serieSplit.length - 1];
+
+                chartSeries.push([serieName, serieValue]);
+
+            }
+
+            chartController.update('metrics', chartSeries);
+        },
+
         onSeriesFetch: function (chartController, series) {
             /**
             Transform series information for widget text display facilities
@@ -119,10 +163,31 @@ define([
 
                 chartSeries.push([serieName, value]);
             }
-            console.log(chartSeries);
-            var chart = get(chartController, 'chartComponent');
-            set(chart, 'series', chartSeries);
+
+            chartController.update('series', chartSeries);
         },
+
+        update: function (type, series) {
+            /**
+            when all series ready, tell the chart to display
+            and reset temp statuses until next widget refresh
+            **/
+            //set metric type ready
+            set(this, type + 'Ready', true);
+
+            //update temp series until all sources are ready
+            var chartSeries = get(this, 'tmpSeries');
+
+            chartSeries = chartSeries.concat(series);
+
+            set(this, 'tmpSeries', chartSeries);
+
+            if(get(this, 'seriesReady') && get(this, 'metricsReady')) {
+                var chart = get(this, 'chartComponent');
+                set(chart, 'series', chartSeries);
+                this.initSeries();
+            }
+        }
 
 
     }, widgetOptions);

@@ -184,10 +184,13 @@ define([
                 chartType = 'bar';
             }
 
-            //define the max value of the chart and wether or not a delta serie is created
-            gauge.max = maxValue;
-            if (maxValue > seriesSum && $.inArray(leftValueLabel, seriesNames) === -1) {
-                seriesNames.push(leftValueLabel);
+            //max value may be equal to 0 when series did not fetch points.
+            if (maxValue > 0) {
+                //define the max value of the chart and wether or not a delta serie is created
+                gauge.max = maxValue;
+                if (maxValue > seriesSum && $.inArray(leftValueLabel, seriesNames) === -1) {
+                    seriesNames.push(leftValueLabel);
+                }
             }
 
             var chart = c3.generate({
