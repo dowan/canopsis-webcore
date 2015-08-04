@@ -115,9 +115,9 @@ define([
                 depending on legacy/overriden values.
             **/
             var gridLayoutMixin = currentWrapperMixins.findBy('name', 'gridlayout');
-            var columnXS = gridLayoutMixin.columnXS || '4';
-            var columnMD = gridLayoutMixin.columnMD || '4';
-            var columnLG = gridLayoutMixin.columnLG || '4';
+            var columnXS = gridLayoutMixin.columnXS || '12';
+            var columnMD = gridLayoutMixin.columnMD || '6';
+            var columnLG = gridLayoutMixin.columnLG || '3';
             var offset = gridLayoutMixin.offset || '0';
 
             var classValue = [
