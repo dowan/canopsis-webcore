@@ -17,8 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 define([
-    'ember',
-], function(Ember) {
+], function() {
 
     var get = Ember.get,
         set = Ember.set,

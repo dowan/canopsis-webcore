@@ -18,10 +18,9 @@
 */
 
 define([
-    'ember',
     'app/controller/serie',
     'app/controller/perfdata',
-], function(Ember) {
+], function() {
 
     var get = Ember.get,
         set = Ember.set,

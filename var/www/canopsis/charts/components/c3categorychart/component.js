@@ -17,12 +17,11 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 define([
-    'ember',
     'app/lib/utils/hash',
     'canopsis/charts/lib/utils/basechart',
     'c3',
     'link!canopsis/charts/lib/externals/c3/c3.css',
-], function(Ember, hash, BaseChart, c3) {
+], function(hash, BaseChart, c3) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -160,7 +159,8 @@ define([
             }
 
 
-            var domElement = '#' + get(this, 'uuid'),
+            var c3Component = this,
+                domElement = '#' + get(this, 'uuid'),
                 leftValueLabel = get(this, 'leftValueLabel'),
                 seriesSum = get(this, 'seriesSum'),
                 seriesNames = get(this, 'seriesNames'),
@@ -168,13 +168,18 @@ define([
                 colors = get(this, 'colors'),
                 maxValue = get(this, 'maxValue'),
                 chartType = get(this, 'parentController.options.display');
-                gauge = {
+                showLegend = get(c3Component, 'parentController.options.show_legend'),
+                tooltip = get(c3Component, 'parentController.options.tooltip');
+
+
+            var gauge = {
                     label:{
                         format: function(value, ratio){
-                            return seriesSum.toFixed(2);
+                            return  showLegend ? seriesSum.toFixed(2): '';
                         }
                     }
-                };
+                },
+                label = {show : showLegend};
 
             console.log('seriesNames', seriesNames);
             console.log('c3series', c3series);
@@ -196,13 +201,17 @@ define([
             var chart = c3.generate({
                 bindto: domElement,
                 groups: seriesNames,
+                tooltip: {show: tooltip},
+                legend: {
+                    show: showLegend
+                },
                 data: {
                     columns: c3series,
                     type: chartType,
                     groups: [seriesNames],
                     labels: {
                         format: function (v, id, i, j) {
-                            return id + ' : ' + parseFloat(v).toFixed(2);
+                            return showLegend ? id + ' : ' + parseFloat(v).toFixed(2) : '';
                         }
                     },
                     empty: {
@@ -213,6 +222,8 @@ define([
                 },
                 color: colors,
                 gauge: gauge,
+                donut: {label: label},
+                pie: {label : label},
                 axis: { //for bar mode
                   rotated:true,
                   x: {

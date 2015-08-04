@@ -18,11 +18,9 @@
 */
 
 define([
-    'ember',
-    'ember-data',
     'app/lib/factories/widget',
     'app/controller/metric',
-], function(Ember, DS, WidgetFactory) {
+], function(WidgetFactory) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -97,7 +95,9 @@ define([
                 'display',
                 'allow_user_display',
                 'use_max_value',
-                'max_value'
+                'max_value',
+                'show_legend',
+                'tooltip'
             ];
 
             var options = {};
