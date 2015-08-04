@@ -18,11 +18,8 @@
 */
 
 define([
-    'ember',
-    'app/lib/utils/types',
     'app/lib/utils/event'
-
-], function(Ember, typesUtils, eventUtils) {
+], function(eventUtils) {
 
     var get = Ember.get,
         set = Ember.set,

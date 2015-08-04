@@ -19,9 +19,8 @@
 
 
 define([
-    'ember',
     'app/lib/utils/dates'
-], function(Ember, datesUtils) {
+], function(datesUtils) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -104,10 +103,7 @@ define([
                 set(this, 'ackcolor', "bg-purple");
                 set(this, 'acktitle', __("Acknowleged"));
             }
-
-        },
-
-
+        }
     });
 
     Ember.Application.initializer({

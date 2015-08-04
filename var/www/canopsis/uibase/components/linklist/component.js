@@ -19,9 +19,8 @@
 
 
 define([
-    'ember',
     'app/lib/utils/data'
-], function(Ember, dataUtils) {
+], function(dataUtils) {
 
     var get = Ember.get,
         set = Ember.set,

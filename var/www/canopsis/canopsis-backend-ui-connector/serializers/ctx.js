@@ -18,16 +18,28 @@
 */
 
 define([
-    'app/lib/abstractclassregistry'
-], function(Abstractclassregistry) {
+    'ember-data',
+    'app/serializers/application'
+], function(DS, ApplicationSerializer) {
 
-    var manager = Abstractclassregistry.create({
-        name: 'attributepresets',
+    var serializer = ApplicationSerializer.extend({
 
-        all: [],
-        byClass: {},
-        tableColumns: [{title: 'name', name: 'name'}]
+        normalize: function (type, hash) {
+            console.log('normalize', arguments);
+            hash.xtype = 'context';  //TODO: autodetect xtype
+            hash.id = hash._id;
+            return this._super(type, hash);
+        }
+
     });
 
-    return manager;
+    Ember.Application.initializer({
+        name: 'ContextSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:ctx', serializer);
+            application.register('serializer:context', serializer);
+        }
+    });
+
+    return serializer;
 });

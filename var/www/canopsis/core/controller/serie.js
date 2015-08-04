@@ -1,30 +1,29 @@
-/*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @module canopsis-frontend-core
+ */
 
 define([
-    'jquery',
-    'ember',
-    'ember-data',
     'math',
     'app/lib/utils/hash',
     'app/controller/perfdata'
-], function($, Ember, DS, math, hash) {
+], function(math, hash) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -34,10 +33,6 @@ define([
         needs: ['perfdata'],
 
         perfdata: Ember.computed.alias('controllers.perfdata'),
-
-        init: function() {
-            this._super();
-        },
 
         fetch: function(serie, from, to) {
             if(get(serie, 'metrics.length') > 1 && get(serie, 'aggregate_method') === 'none') {
@@ -146,7 +141,12 @@ define([
         }
     });
 
-    loader.register('controller:serie', controller);
+    Ember.Application.initializer({
+        name: 'SerieController',
+        initialize: function(container, application) {
+            application.register('controller:serie', controller);
+        }
+    });
 
     return controller;
 });

@@ -18,10 +18,8 @@
 */
 
 define([
-    'ember',
-    'ember-data',
     'app/lib/utils/hash'
-], function(Ember, DS, hash) {
+], function(hash) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -188,7 +186,7 @@ define([
                         filter[key] = null;
                     }
 
-                    filters[key].$or.push(filter)
+                    filters[key].$or.push(filter);
                 }
 
                 var len = filters[key].$or.length;

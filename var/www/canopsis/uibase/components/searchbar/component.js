@@ -17,9 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember'
-], function(Ember) {
+define([], function() {
 
     var get = Ember.get,
         set = Ember.set;
@@ -44,7 +42,7 @@ define([
                 var searchPhrase = get(this, 'value');
                 console.log('searchItems', this, this.controller, searchPhrase);
 
-                this.controller.target.set('searchCriterion', searchPhrase);
+                get(this, 'controller').target.set('searchCriterion', searchPhrase);
             },
 
             clearSearch: function () {

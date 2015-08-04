@@ -24,7 +24,7 @@ define([
 
     var widget = WidgetFactory('widgetcontainer', {
         partials: {
-            titlebarsbuttons : ['titlebarbutton-moveup','titlebarbutton-movedown', 'titlebarbutton-widgeterrors']
+            titlebarsbuttons : ['titlebarbutton-duplicate', 'titlebarbutton-moveup','titlebarbutton-movedown', 'titlebarbutton-widgeterrors']
         }
     }, {subclass: CanvasController});
 

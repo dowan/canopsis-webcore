@@ -17,12 +17,9 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 define([
-    'jquery',
-    'ember',
-    'app/lib/utils/dom',
     'app/lib/utils/values',
     'canopsis/charts/lib/utils/basechart'
-], function($, Ember, DOM, values, BaseChart) {
+], function(values, BaseChart) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -334,17 +331,12 @@ define([
         }
     });
 
-
-    loader.register('component:component-flotchart', component);
-
-    /* TODO: use this snippet instead of loader.register, but this is still buggy
     Ember.Application.initializer({
         name: 'component-flotchart',
         initialize: function(container, application) {
             application.register('component:component-flotchart', component);
         }
     });
-    */
 
     return component;
 });

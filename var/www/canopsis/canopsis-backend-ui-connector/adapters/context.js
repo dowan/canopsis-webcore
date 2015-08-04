@@ -18,12 +18,10 @@
 */
 
 define([
-    'ember',
-    'ember-data',
     'canopsis/canopsis-backend-ui-connector/adapters/application',
     'app/lib/utils/notification',
     'app/lib/utils/modelsolve'
-], function(Ember, DS, ApplicationAdapter, notificationUtils, modelsolve) {
+], function(ApplicationAdapter, notificationUtils, modelsolve) {
 
     var isNone = Ember.isNone;
 
@@ -96,63 +94,68 @@ define([
         }
     });
 
-    loader.register('adapter:context', adapter);
-    loader.register('adapter:entity', adapter);
+    Ember.Application.initializer({
+        name: 'ContextAdapters',
+        initialize: function(container, application) {
+            application.register('adapter:context', adapter);
+            application.register('adapter:entity', adapter);
 
-    loader.register('adapter:ctxconnector', adapter.extend({
-        buildURL: function(type, id) {
-            return '/context/connector' + (id ? ('/' + id) : '');
+            application.register('adapter:ctxconnector', adapter.extend({
+                buildURL: function(type, id) {
+                    return '/context/connector' + (id ? ('/' + id) : '');
+                }
+            }));
+
+
+            application.register('adapter:ctxconnectorname', adapter.extend({
+                buildURL: function(type, id) {
+                    return '/context/connector_name' + (id ? ('/' + id) : '');
+                }
+            }));
+
+            application.register('adapter:ctxcomponent', adapter.extend({
+                buildURL: function(type, id) {
+                    return '/context/component' + (id ? ('/' + id) : '');
+                }
+            }));
+
+            application.register('adapter:ctxresource', adapter.extend({
+                buildURL: function(type, id) {
+                    return '/context/resource' + (id ? ('/' + id) : '');
+                }
+            }));
+
+            application.register('adapter:ctxmetric', adapter.extend({
+                buildURL: function(type, id) {
+                    return '/context/metric' + (id ? ('/' + id) : '');
+                }
+            }));
+
+            application.register('adapter:ctxhostgroup', adapter.extend({
+                buildURL: function(type, id) {
+                    return '/context/hostgroup' + (id ? ('/' + id) : '');
+                }
+            }));
+
+            application.register('adapter:ctxservicegroup', adapter.extend({
+                buildURL: function(type, id) {
+                    return '/context/servicegroup' + (id ? ('/' + id) : '');
+                }
+            }));
+
+            application.register('adapter:ctxtopology', adapter.extend({
+                buildURL: function(type, id) {
+                    return '/context/topo' + (id ? ('/' + id) : '');
+                }
+            }));
+
+            application.register('adapter:ctxselector', adapter.extend({
+                buildURL: function(type, id) {
+                    return '/context/selector' + (id ? ('/' + id) : '');
+                }
+            }));
         }
-    }));
-
-
-    loader.register('adapter:ctxconnectorname', adapter.extend({
-        buildURL: function(type, id) {
-            return '/context/connector_name' + (id ? ('/' + id) : '');
-        }
-    }));
-
-    loader.register('adapter:ctxcomponent', adapter.extend({
-        buildURL: function(type, id) {
-            return '/context/component' + (id ? ('/' + id) : '');
-        }
-    }));
-
-    loader.register('adapter:ctxresource', adapter.extend({
-        buildURL: function(type, id) {
-            return '/context/resource' + (id ? ('/' + id) : '');
-        }
-    }));
-
-    loader.register('adapter:ctxmetric', adapter.extend({
-        buildURL: function(type, id) {
-            return '/context/metric' + (id ? ('/' + id) : '');
-        }
-    }));
-
-    loader.register('adapter:ctxhostgroup', adapter.extend({
-        buildURL: function(type, id) {
-            return '/context/hostgroup' + (id ? ('/' + id) : '');
-        }
-    }));
-
-    loader.register('adapter:ctxservicegroup', adapter.extend({
-        buildURL: function(type, id) {
-            return '/context/servicegroup' + (id ? ('/' + id) : '');
-        }
-    }));
-
-    loader.register('adapter:ctxtopology', adapter.extend({
-        buildURL: function(type, id) {
-            return '/context/topo' + (id ? ('/' + id) : '');
-        }
-    }));
-
-    loader.register('adapter:ctxselector', adapter.extend({
-        buildURL: function(type, id) {
-            return '/context/selector' + (id ? ('/' + id) : '');
-        }
-    }));
+    });
 
     return adapter;
 });

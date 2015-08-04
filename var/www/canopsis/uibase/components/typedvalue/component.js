@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
-    'app/lib/utils/types'
-], function(Ember, typesUtils) {
+    'app/lib/utils/values'
+], function(valuesUtils) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -68,7 +67,7 @@ define([
             console.log('get content from typed value:', get(this, 'value'));
 
             //Transform value to right typed value depending on wished type
-            var value = typesUtils.castValue(
+            var value = valuesUtils.castValue(
                 get(this, 'value'),
                 get(this, 'selectedValueType')
             );

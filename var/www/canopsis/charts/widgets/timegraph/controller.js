@@ -18,16 +18,13 @@
 */
 
 define([
-    'jquery',
-    'ember',
-    'ember-data',
     'app/lib/factories/widget',
     'app/lib/utils/values',
     'app/lib/utils/dates',
     'app/controller/metric',
     'app/controller/serie',
     'app/controller/perfdata'
-], function($, Ember, DS, WidgetFactory, values, dates) {
+], function(WidgetFactory, values, dates) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -394,7 +391,6 @@ define([
                 }
             }
         },
-
 
         genChartConfig: function(pargs, series, from, to, replace) {
             console.group('Generate Chart series');

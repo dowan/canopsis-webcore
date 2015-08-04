@@ -19,9 +19,8 @@
 
 
 define([
-    'ember',
     'canopsis/canopsis-backend-ui-connector/adapters/application',
-], function(Ember, ApplicationAdapter) {
+], function(ApplicationAdapter) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -32,7 +31,12 @@ define([
         namespace: 'default_rights'
     });
 
-    loader.register('adapter:action', adapter);
+    Ember.Application.initializer({
+        name: 'ActionAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:action', adapter);
+        }
+    });
 
     return adapter;
 });

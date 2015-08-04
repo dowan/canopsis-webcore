@@ -28,8 +28,12 @@ define([
         {}
     );
 
-    loader.register('serializer:task', serializer);
-    loader.register('serializer:taskmail', serializer.extend({}));
+    Ember.Application.initializer({
+        name: 'JobSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:job', serializer);
+        }
+    });
 
     return serializer;
 });

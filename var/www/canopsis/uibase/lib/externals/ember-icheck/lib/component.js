@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
     'canopsis/uibase/libwrappers/icheck'
-], function(Ember) {
+], function() {
 
     var set = Ember.set,
         get = Ember.get;

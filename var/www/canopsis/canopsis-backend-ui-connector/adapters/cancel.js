@@ -23,7 +23,12 @@ define([
 
     var adapter = EventAdapter.extend({});
 
-    loader.register('adapter:cancel', adapter);
+    Ember.Application.initializer({
+        name: 'CancelAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:cancel', adapter);
+        }
+    });
 
     return adapter;
 });

@@ -19,11 +19,9 @@
 */
 
 define([
-    'ember',
     'app/lib/factories/mixin',
-    'jquery',
     'app/view/tabledraggableth',
-], function(Ember, Mixin, $) {
+], function(Mixin) {
 
     var get = Ember.get,
         set = Ember.set;

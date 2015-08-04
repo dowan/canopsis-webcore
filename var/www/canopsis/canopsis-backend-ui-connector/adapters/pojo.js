@@ -18,10 +18,8 @@
 */
 
 define([
-    'jquery',
-    'ember',
     'canopsis/canopsis-backend-ui-connector/adapters/application'
-], function($, Ember, ApplicationAdapter) {
+], function(ApplicationAdapter) {
 
     var adapter = ApplicationAdapter.extend({
         buildURL: function(type, id) {
@@ -44,7 +42,12 @@ define([
         }
     });
 
-    loader.register('adapter:pojo', adapter);
+    Ember.Application.initializer({
+        name: 'PojoAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:pojo', adapter);
+        }
+    });
 
     return adapter;
 });

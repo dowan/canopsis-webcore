@@ -18,12 +18,10 @@
 */
 
 define([
-    'jquery',
-    'ember',
     'app/lib/factories/widget',
     'app/lib/utils/forms',
     'app/lib/utils/routes'
-], function($, Ember, WidgetFactory, formsUtils, routesUtils) {
+], function(WidgetFactory, formsUtils, routesUtils) {
 
     var get = Ember.get,
         set = Ember.set;

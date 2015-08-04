@@ -18,27 +18,20 @@
 */
 
 define([
-    'jquery',
-    'ember',
-    'ember-data',
     'app/lib/factories/widget',
     'canopsis/uibase/mixins/pagination',
     'app/mixins/inspectablearray',
     'canopsis/userpreferences/mixins/userconfiguration',
     'canopsis/uibase/mixins/draggablecolumns',
-    'app/lib/utils/dom',
     'app/lib/utils/routes',
     'app/lib/utils/forms',
     'app/view/listline'
-], function($,
-    Ember,
-    DS,
+], function(
     WidgetFactory,
     PaginationMixin,
     InspectableArrayMixin,
     UserConfigurationMixin,
     DraggableColumnsMixin,
-    domUtils,
     routesUtils,
     formsUtils,
     ListlineController
@@ -48,9 +41,6 @@ define([
         set = Ember.set,
         isNone = Ember.isNone;
 
-    Ember.Handlebars.registerBoundHelper('renderListline', function(callingContext, event, options) {
-        return Ember.Handlebars.helpers.render.helperFunction(callingContext, "listlineTest", 'event', options);
-    });
 
     var listOptions = {
         mixins: [
@@ -71,7 +61,7 @@ define([
              */
             standardListDisplay: true,
 
-            dynamicTemplateName: 'listlineTest',
+            dynamicTemplateName: 'loading',
 
             //TODO test if this is needed (used in cloaked mode)
             listlineControllerClass: ListlineController,

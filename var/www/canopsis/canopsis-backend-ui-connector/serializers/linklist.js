@@ -18,23 +18,18 @@
 */
 
 define([
-    'app/lib/attributepresetregistry'
-], function(attributepresetregistry) {
+    'ember-data',
+    'canopsis/canopsis-backend-ui-connector/serializers/ctx',
+], function(DS, CtxSerializer) {
 
-    var Attributepreset = Ember.Object.extend({
-        init: function(){
-            this._super.apply(this, arguments);
-            attributepresetregistry.add(this);
-        },
+    var serializer = CtxSerializer.extend({});
 
-        /**
-         * This boolean value is a constant that allows to recognize presets amongst regular dict and objects
-         * @see Transforms in ember-data wrapper
-         */
-        isAPreset: true,
-        name:'unnamed attribute',
-        value: undefined
+    Ember.Application.initializer({
+        name: 'LinklistSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:linklist', serializer);
+        }
     });
 
-    return Attributepreset;
+    return serializer;
 });

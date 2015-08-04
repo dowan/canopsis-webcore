@@ -28,7 +28,6 @@ define([
     'app/lib/indexesregistry',
     'app/lib/actionsregistry',
     'app/lib/schemasregistry',
-    'app/lib/attributepresetregistry',
     'app/lib/inflections',
     'app/lib/loaders/helpers',
     'app/lib/loaders/components',
@@ -42,7 +41,6 @@ define([
         indexesRegistry,
         actionsRegistry,
         schemasRegistry,
-        attributepresetRegistry,
         inflectionsRegistry,
         helpers,
         templates,
@@ -59,7 +57,6 @@ define([
     Canopsis.actions = actionsRegistry;
     Canopsis.schemas = schemasRegistry;
     Canopsis.indexes = indexesRegistry;
-    Canopsis.presets = attributepresetRegistry;
     Canopsis.inflections = inflectionsRegistry;
     Canopsis.forms = formsRegistry;
     Canopsis.helpers = helpers;

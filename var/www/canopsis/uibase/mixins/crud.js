@@ -18,12 +18,11 @@
 */
 
 define([
-    'jquery',
-    'ember',
     'app/lib/utils/forms',
     'app/lib/utils/hash',
+    'app/lib/utils/data',
     'app/lib/factories/mixin'
-], function($, Ember, formsUtils, hashUtils, Mixin) {
+], function(formsUtils, hashUtils, dataUtils, Mixin) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -32,7 +31,17 @@ define([
     /**
      * Implement CRUD handling for widgets that manages collections
      *
-     * Useful in lists for example, where it adds buttons to CRUD list elements
+     * Useful in lists for example, where it adds buttons to CRUD list elements.
+     *
+     * This mixin add buttons on the widget :
+     *   - a "create" button, showing a form to create and insert a new element
+     *   - a "delete" button, allowing to delete the currently selected item
+     *   - an "edit" button, to show an edition form for the currently selected item
+     *   - a "duplicate" button, that allows to copy the selected item, and to show directly an edition form to make modifications on it.
+     *
+     * @class CrudMixin
+     * @memberOf canopsis.frontend.uibase
+     * @static
      */
     var mixin = Mixin('crud', {
         partials: {
@@ -48,34 +57,57 @@ define([
             this._super();
 
             if (!get(this, 'mixinOptions.crud.hideRemove')) {
-                get(this,'partials.selectionToolbarButtons').push('actionbutton-removeselection');
-                get(this,'partials.itemactionbuttons').push('actionbutton-remove');
+                get(this,'partials.selectionToolbarButtons').pushObject('actionbutton-removeselection');
+                get(this,'partials.itemactionbuttons').pushObject('actionbutton-duplicate');
+                get(this,'partials.itemactionbuttons').pushObject('actionbutton-remove');
             }
             if (!get(this, 'mixinOptions.crud.hideEdit')) {
-                get(this,'partials.itemactionbuttons').push('actionbutton-edit');
+                get(this,'partials.itemactionbuttons').pushObject('actionbutton-edit');
             }
             if (!get(this, 'mixinOptions.crud.hideCreate')) {
-                get(this,'partials.actionToolbarButtons').push('actionbutton-create');
+                get(this,'partials.actionToolbarButtons').pushObject('actionbutton-create');
             }
 
             set(this, 'itemsPerPagePropositionSelected', get(this, 'itemsPerPage'));
         },
 
+        /**
+         * @property userCanReadRecord
+         * @type Boolean
+         * @description Whether the user can read the records handled by the mixin
+         */
         userCanReadRecord: true,
+
+        /**
+         * @property userCanCreateRecord
+         * @type Boolean
+         * @description Whether the user can read the records handled by the mixin
+         */
         userCanCreateRecord: true,
+
+        /**
+         * @property userCanUpdateRecord
+         * @type Boolean
+         * @description Whether the user can update the records handled by the mixin
+         */
         userCanUpdateRecord: true,
+
+        /**
+         * @property userCanDeleteRecord
+         * @type Boolean
+         * @description Whether the user can delete the records handled by the mixin
+         */
         userCanDeleteRecord: true,
 
         onRecordReady: function(record) {
             this._super.apply(this, arguments);
         },
 
-        askRefresh: function() {
-            this.refreshContent();
-            this.trigger('refresh');
-        },
-
         actions: {
+            /**
+             * @event add
+             * @param {string} recordType
+             */
             add: function (recordType) {
                 this._super.apply(this, arguments);
 
@@ -85,52 +117,43 @@ define([
                     crecord_type: recordType
                 });
 
-                this.onRecordReady(record);
-
-                console.log('temp record', record, formsUtils);
-
-                var extraoptions = get(this, 'mixinOptions.crud.formoptions'),
-                    formclass = get(this, 'mixinOptions.crud.form');
                 var formoptions = {
                     title: 'Add ' + recordType
                 };
 
-                if(!isNone(extraoptions)) {
-                    $.extend(formoptions, extraoptions);
-                }
-
-                if(isNone(formclass)) {
-                    formclass = 'modelform';
-                }
-
-                console.log('open form:', formclass, formoptions);
-
-                var recordWizard = formsUtils.showNew(formclass, record, formoptions);
-
-                var ctrl = this;
-
-                recordWizard.submit.then(function(form) {
-                    console.log('record going to be saved', record, form);
-
-                    //Dirty hack to make acl routes work
-                    if(get(record, 'crecord_type') === 'group') {
-                        set(record, 'id', hashUtils.generateId('group'));
-                    }
-                    if(get(record, 'crecord_type') === 'profile') {
-                        console.error('set id for profile', record);
-                        set(record, 'id', hashUtils.generateId('profile'));
-                    }
-
-                    record = get(form, 'formContext');
-                    record.save();
-
-                    /* wait 1s to let the previous request travel to the webserver */
-                    setTimeout(function() {
-                        ctrl.askRefresh();
-                    }, 1000);
-                });
+                showEditFormAndSaveRecord(this, record, formoptions);
             },
 
+            /**
+             * @event duplicate
+             * @param {DS.Model} record
+             */
+            duplicate: function (record) {
+                var store = dataUtils.getStore(),
+                    recordJson = dataUtils.cleanJSONIds(record.serialize()),
+                    recordType = record.constructor.typeKey,
+                    payload = {};
+
+                payload[recordType] = recordJson;
+
+                store.pushPayload(recordType, payload);
+
+                var newRecord = store.getById(recordType, recordJson.id);
+
+                var formoptions = {
+                    title: 'Duplicate ' + recordType,
+                    inspectedItemType: recordType
+                };
+
+                showEditFormAndSaveRecord(this, newRecord, formoptions);
+            },
+
+
+            /**
+             * @event edit
+             * @param {DS.Model} record
+             * @param {boolean} noconfirm
+             */
             edit: function (record) {
                 console.log("edit", record);
 
@@ -165,6 +188,11 @@ define([
                 });
             },
 
+            /**
+             * @event remove
+             * @param {DS.Model} record
+             * @param {boolean} noconfirm
+             */
             remove: function(record, noconfirm) {
                 console.info('removing record', record);
 
@@ -183,6 +211,9 @@ define([
                 }
             },
 
+            /**
+             * @event removeSelection
+             */
             removeSelection: function() {
                 var confirmform = formsUtils.showNew('confirmform', {}, {
                     title: __('Delete these records ?')
@@ -201,6 +232,89 @@ define([
             }
         }
     });
+
+    /**
+     * @function showEditFormAndSaveRecord
+     * @param {object} recordJSON
+     * @private
+     *
+     * remove keys that should not be present on a record exported to JSON, and generates new ids
+     */
+    function cleanRecordJSON(recordJSON) {
+        for (var key in recordJSON) {
+            var item = recordJSON[key];
+            //see if the key need to be cleaned
+            if(key === 'widgetId' || key === 'preference_id') {
+                delete recordJSON[key];
+            }
+
+            if(key === 'id') {
+                recordJSON['id'] = recordJSON['_id'] || hashUtils.generateId(recordJSON.xtype || recordJSON.crecord_type || 'item');
+            }
+
+            if(key === '_id') {
+                recordJSON['_id'] = recordJSON['id'] || hashUtils.generateId(recordJSON.xtype || recordJSON.crecord_type || 'item');
+            }
+
+            //if this item is an object, then recurse into it
+            //to remove empty arrays in it too
+            if (typeof item === 'object') {
+                cleanRecordJSON(item);
+            }
+        }
+
+        return recordJSON;
+    }
+
+    /**
+     * @method showEditFormAndSaveRecord
+     * @private
+     * @param {This} self
+     * @param {DS.Model} record the record to edit
+     * @param {string} recordType
+     *
+     * Display an edition form for the record passed as first parameter, and make the changes persistant when the user saves the form.
+     */
+    showEditFormAndSaveRecord = function(self, record, formoptions) {
+        self.onRecordReady(record);
+
+        console.log('temp record', record, formsUtils);
+
+        var extraoptions = get(self, 'mixinOptions.crud.formoptions'),
+            formclass = get(self, 'mixinOptions.crud.form');
+
+        if(!isNone(extraoptions)) {
+            $.extend(formoptions, extraoptions);
+        }
+
+        if(isNone(formclass)) {
+            formclass = 'modelform';
+        }
+
+        console.log('open form:', formclass, formoptions);
+
+        var recordWizard = formsUtils.showNew(formclass, record, formoptions);
+
+        var ctrl = self;
+
+        recordWizard.submit.then(function(form) {
+            console.log('record going to be saved', record, form);
+
+            //Dirty hack to make acl routes work
+            if(get(record, 'crecord_type') === 'group') {
+                set(record, 'id', hashUtils.generateId('group'));
+            }
+            if(get(record, 'crecord_type') === 'profile') {
+                console.error('set id for profile', record);
+                set(record, 'id', hashUtils.generateId('profile'));
+            }
+
+            record = get(form, 'formContext');
+            record.save().then(function() {
+                ctrl.refreshContent();
+            });
+        });
+    }
 
     return mixin;
 });

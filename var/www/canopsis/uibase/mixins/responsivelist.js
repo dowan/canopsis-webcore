@@ -18,13 +18,12 @@
 */
 
 define([
-    'ember',
     'app/lib/utils/forms',
     'app/lib/utils/hash',
     'app/lib/factories/mixin',
     'canopsis/uibase/lib/externals/stacktable/stacktable',
     'link!canopsis/uibase/lib/externals/stacktable/stacktable.css'
-], function(Ember, formsUtils, hashUtils, Mixin) {
+], function(formsUtils, hashUtils, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -166,6 +165,7 @@ define([
 
     var mixin = Mixin('responsivelist', {
         partials: {
+            //TODO check if still used
             alternativeListDisplay: ['groupedrowslistlayout'],
             subRowInformation: ['stackedcolumns']
         },

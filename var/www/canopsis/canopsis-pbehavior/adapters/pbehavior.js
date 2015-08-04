@@ -18,10 +18,8 @@
 */
 
 define([
-    'jquery',
-    'ember',
     'canopsis/canopsis-vevent/adapters/vevent'
-], function($, Ember, VEventAdapter) {
+], function(VEventAdapter) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -44,7 +42,12 @@ define([
 
     });
 
-    loader.register('adapter:pbehavior', adapter);
+    Ember.Application.initializer({
+        name: 'PbehaviorAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:pbehavior', adapter);
+        }
+    });
 
     return adapter;
 });

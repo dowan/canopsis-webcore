@@ -18,10 +18,9 @@
  */
 
 define([
-    'ember',
     'canopsis/uibase/mixins/crud',
     'canopsis/canopsis-pbehavior/adapters/pbehavior'
-], function(Ember, CrudMixin) {
+], function(CrudMixin) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -107,7 +106,12 @@ define([
         }
     });
 
-    loader.register('component:component-periodicbehaviormanager', component);
+    Ember.Application.initializer({
+        name:"component-periodicbehaviormanager",
+        initialize: function(container, application) {
+            application.register('component:component-periodicbehaviormanager', component);
+        }
+    });
 
     return component;
 });

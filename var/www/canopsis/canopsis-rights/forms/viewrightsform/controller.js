@@ -18,13 +18,11 @@
 */
 
 define([
-    'ember',
-    'ember-data',
     'app/lib/factories/form',
     'app/lib/utils/forms',
     'app/lib/utils/hash',
     'app/lib/widgetsregistry'
-], function(Ember, DS, FormFactory, formsUtils, hashUtils, widgets) {
+], function(FormFactory, formsUtils, hashUtils, widgets) {
 
     var get = Ember.get,
         set = Ember.set,

@@ -18,11 +18,10 @@
 */
 
 define([
-    'ember',
     'app/lib/factories/form',
     'app/forms/modelform/controller',
     'app/lib/utils/forms'
-], function(Ember, FormFactory, ModelFormController, formsUtils) {
+], function(FormFactory, ModelFormController, formsUtils) {
 
     var get = Ember.get,
         set = Ember.set;
