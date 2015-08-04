@@ -97,7 +97,8 @@ define([
                 'use_max_value',
                 'max_value',
                 'show_legend',
-                'tooltip'
+                'show_tooltip',
+                'show_labels',
             ];
 
             var options = {};

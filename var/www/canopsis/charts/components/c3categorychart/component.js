@@ -159,27 +159,26 @@ define([
             }
 
 
-            var c3Component = this,
-                domElement = '#' + get(this, 'uuid'),
+            var domElement = '#' + get(this, 'uuid'),
                 leftValueLabel = get(this, 'leftValueLabel'),
                 seriesSum = get(this, 'seriesSum'),
                 seriesNames = get(this, 'seriesNames'),
                 c3series = get(this, 'c3series'),
                 colors = get(this, 'colors'),
                 maxValue = get(this, 'maxValue'),
-                chartType = get(this, 'parentController.options.display');
-                showLegend = get(c3Component, 'parentController.options.show_legend'),
-                tooltip = get(c3Component, 'parentController.options.tooltip');
-
+                chartType = get(this, 'parentController.options.display'),
+                showLegend = get(this, 'parentController.options.show_legend'),
+                tooltip = get(this, 'parentController.options.showTooltip'),
+                showLabels = get(this, 'parentController.options.show_labels');
 
             var gauge = {
                     label:{
                         format: function(value, ratio){
-                            return  showLegend ? seriesSum.toFixed(2): '';
+                            return  showLabels ? seriesSum.toFixed(2): '';
                         }
                     }
                 },
-                label = {show : showLegend};
+                label = {show : showLabels};
 
             console.log('seriesNames', seriesNames);
             console.log('c3series', c3series);
@@ -202,25 +201,23 @@ define([
                 bindto: domElement,
                 groups: seriesNames,
                 tooltip: {show: tooltip},
-                legend: {
-                    show: showLegend
-                },
+                legend: {show: showLegend},
                 data: {
                     columns: c3series,
                     type: chartType,
                     groups: [seriesNames],
                     labels: {
                         format: function (v, id, i, j) {
-                            return showLegend ? id + ' : ' + parseFloat(v).toFixed(2) : '';
+                            return showLabels ? id + ' : ' + parseFloat(v).toFixed(2) : '';
                         }
                     },
                     empty: {
                         label: {
-                            text: __('No Data')
+                            text: showLabels ? __('No Data') : ''
                         }
                     }
                 },
-                color: colors,
+                //color: colors,
                 gauge: gauge,
                 donut: {label: label},
                 pie: {label : label},
