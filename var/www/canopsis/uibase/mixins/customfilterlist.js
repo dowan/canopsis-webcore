@@ -18,16 +18,12 @@
 */
 
 define([
-    'ember',
-    'ember-data',
     'app/lib/loaders/utils',
     'app/lib/utils/data',
     'app/lib/utils/forms',
     'app/lib/utils/notification',
     'app/lib/factories/mixin'
-], function(Ember, DS, utils, dataUtils, formsUtils, notificationUtils, Mixin) {
-
-
+], function(utils, dataUtils, formsUtils, notificationUtils, Mixin) {
 
     var get = Ember.get,
         set = Ember.set,

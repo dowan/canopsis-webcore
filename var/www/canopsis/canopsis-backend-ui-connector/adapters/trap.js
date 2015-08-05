@@ -41,7 +41,12 @@ define([
         }
     });
 
-    loader.register('adapter:trap', adapter);
+    Ember.Application.initializer({
+        name: 'TrapAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:trap', adapter);
+        }
+    });
 
     return adapter;
 });

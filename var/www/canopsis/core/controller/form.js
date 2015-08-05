@@ -1,33 +1,33 @@
-/*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @module canopsis-frontend-core
+ */
 
 define([
-    'jquery',
-    'ember',
     'app/lib/utils/forms',
     'app/lib/utils/debug'
-], function($, Ember, formUtils, debugUtils) {
+], function(formUtils, debugUtils) {
 
     var get = Ember.get,
         set = Ember.set;
 
-
+    //TODO refactor this
     var eventedController = Ember.Controller.extend(Ember.Evented, {
 
         mergedProperties: ['partials'],
@@ -73,7 +73,7 @@ define([
     });
     /**
      * @class FormController
-     * @controller
+     * @constructor
      * @description
      * Default is to display all fields of a given model if they are referenced into category list (in model)
      * options: is an object that can hold a set dictionnary of values to override
@@ -85,6 +85,9 @@ define([
     var controller = eventedController.extend({
         needs: ['application'],
 
+        /**
+         * @method init
+         */
         init: function() {
             var formParent = get(this, 'formParent');
             set(this, 'previousForm', formParent);
@@ -92,6 +95,11 @@ define([
             this._super.apply(this, arguments);
         },
 
+
+        /**
+         * @property confirmation
+         * @type boolean
+         */
         confirmation: false,
 
         /**
@@ -215,7 +223,12 @@ define([
         }.property()
     });
 
-    loader.register('controller:form', controller);
+    Ember.Application.initializer({
+        name: 'FormController',
+        initialize: function(container, application) {
+            application.register('controller:form', controller);
+        }
+    });
 
     return controller;
 });

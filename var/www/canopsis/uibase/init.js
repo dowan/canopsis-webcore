@@ -17,6 +17,8 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+/** @module canopsis.frontend.uibase */
+
 require.config({
     paths: {
         'bootstrap': 'canopsis/uibase/lib/externals/bootstrap/dist/js/bootstrap.min',

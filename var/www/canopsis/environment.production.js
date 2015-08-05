@@ -27,7 +27,6 @@ define(function() {
 
     console.log = function(){};
     console.info = function(){};
-    console.error = function(){};
     console.group = function(){};
     console.groupEnd = function(){};
     console.warn = function(){};

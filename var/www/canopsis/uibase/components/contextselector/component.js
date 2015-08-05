@@ -19,10 +19,9 @@
 
 
 define([
-    'ember',
     'app/lib/contextsregistry',
     'app/lib/utils/hash'
-], function(Ember, contextsregistry, hashUtils) {
+], function(contextsregistry, hashUtils) {
 
     var get = Ember.get,
         set = Ember.set,

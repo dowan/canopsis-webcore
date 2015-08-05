@@ -1,38 +1,44 @@
-/*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @module canopsis-frontend-core
+ */
 
 define([
-    'ember',
-    'ember-data',
     'app/routes/authenticated',
     'app/lib/formsregistry',
     'app/lib/utils/routes',
     'app/lib/utils/actions',
-    'app/lib/loaders/utils',
     'app/lib/loaders/forms'
-], function(Ember, DS, AuthenticatedRoute, formsregistry, routesUtils, actionsUtils, utils) {
+], function(AuthenticatedRoute, formsregistry, routesUtils, actionsUtils, utils) {
 
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone;
 
-
+    /**
+     * @function bindKey
+     * @param keyCombination
+     * @param actionName
+     *
+     * Bind a key combination to an action registered in the actionsRegistry.
+     * @see ActionsUtils#doAction
+     */
     function bindKey(keyCombination, actionName) {
         Mousetrap.bind([keyCombination], function(e) {
             console.log('binding', arguments);
@@ -42,8 +48,19 @@ define([
         });
     }
 
+    /**
+     * @class ApplicationRoute
+     * @extends AuthenticatedRoute
+     * @constructor
+     */
     var route = AuthenticatedRoute.extend({
         actions: {
+            /**
+             * @event showView
+             * @param {string} id the id of the view to display
+             *
+             * Changes the currently displayed view to a new one.
+             */
             showView: function(id) {
                 console.log('ShowView action', arguments);
 
@@ -52,6 +69,12 @@ define([
                 this.transitionTo('userview', id);
             },
 
+            /**
+             * @event showEditFormWithController
+             * @param formController
+             * @param formContext
+             * @param options
+             */
             showEditFormWithController: function(formController, formContext, options) {
                 if (formController.ArrayFields) {
                     while(formController.ArrayFields.length > 0) {
@@ -81,6 +104,13 @@ define([
             }
         },
 
+        /**
+         * @method beforeModel
+         * @param {Transition} transition
+         * @return {Promise}
+         *
+         * Feed the ApplicationController with extra views to be used alongside the current view, and additionnal config from the backend.
+         */
         beforeModel: function(transition) {
             var route = this;
 
@@ -171,8 +201,13 @@ define([
             return Ember.RSVP.Promise.all(get(this, 'promiseArray'));
         },
 
+        /**
+         * @method authConfig
+         * @private
+         * @param authType
+         * @param callback
+         */
         authConfig: function (authType, callback) {
-
             var authId = 'cservice.' + authType;
             var appController = this.controllerFor('application');
             var store = get(this, 'store');
@@ -210,12 +245,16 @@ define([
             return promise;
         },
 
+        //TODO check if this is still used
         model: function() {
             return {
                 title: 'Canopsis'
             };
         },
 
+        /**
+         * @method renderTemplate
+         */
         renderTemplate: function() {
             console.info('render application template');
             this.render();
@@ -239,8 +278,12 @@ define([
         }
     });
 
-
-    loader.register('route:application', route);
+    Ember.Application.initializer({
+        name:"ApplicationRoute",
+        initialize: function(container, application) {
+            application.register('route:application', route);
+        }
+    });
 
     return route;
 });

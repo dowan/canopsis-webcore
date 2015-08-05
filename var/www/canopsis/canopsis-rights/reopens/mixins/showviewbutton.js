@@ -18,10 +18,9 @@
 */
 
 define([
-    'ember',
     'canopsis/uibase/mixins/showviewbutton',
     'app/lib/utils/forms'
-], function(Ember, ShowviewbuttonMixin, formsUtils) {
+], function(ShowviewbuttonMixin, formsUtils) {
 
     var get = Ember.get,
         __ = Ember.String.loc;

@@ -19,11 +19,9 @@
 
 
 define([
-    'ember',
-    'ember-data',
     'app/lib/utils/hash',
     'app/lib/searchmethodsregistry'
-], function(Ember, DS, hashUtils, searchmethodsRegistry) {
+], function(hashUtils, searchmethodsRegistry) {
 
     var get = Ember.get,
         set = Ember.set,

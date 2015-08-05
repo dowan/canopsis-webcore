@@ -19,9 +19,8 @@
 
 
 define([
-    'ember',
     'canopsis/canopsis-rights/objects/rightsregistry'
-], function(Ember, rightsRegistry) {
+], function(rightsRegistry) {
 
     var get = Ember.get,
         set = Ember.set,

@@ -17,7 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember', 'app/lib/utils/dates'], function(Ember, datesUtils) {
+define(['app/lib/utils/dates'], function(datesUtils) {
 
     var set = Ember.set,
         isNone = Ember.isNone;

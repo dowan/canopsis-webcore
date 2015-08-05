@@ -19,10 +19,8 @@
 
 
 define([
-    'jquery',
-    'ember',
     'app/lib/utils/notification',
-], function($, Ember, notification) {
+], function(notification) {
 
     var set = Ember.set,
         get = Ember.get;

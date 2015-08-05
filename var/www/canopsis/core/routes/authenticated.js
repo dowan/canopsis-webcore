@@ -1,42 +1,56 @@
-/*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @module canopsis-frontend-core
+ */
 
 define([
-    'ember',
-    'ember-data',
     'app/controller/application',
-    'app/lib/loaders/utils',
     'app/lib/utils/data',
+    'app/lib/utils/actions',
     'app/controller/login',
-], function(Ember, DS, ApplicationController, utils, dataUtils) {
+], function(ApplicationController, dataUtils, actionsUtils) {
 
     var get = Ember.get,
         set = Ember.set;
 
-
+    /**
+     * @class ApplicationRoute
+     * @extends Ember.Route
+     * @constructor
+     */
     var route = Ember.Route.extend({
+        /**
+         * @method setupController
+         * @param controller
+         */
+        setupController: function(controller) {
+            this.controllerFor('application').onIndexRoute = true;
+            actionsUtils.setDefaultTarget(controller);
+
+            return this._super.apply(this, arguments);
+        },
 
         beforeModel: function(transition) {
             var route = this;
             var store = DS.Store.create({ container: get(this, "container") });
 
-            //FIXME dirty, risky
+            //FIXME use store#adapterFor
             loggedaccountAdapter = dataUtils.getEmberApplicationSingleton().__container__.lookup('adapter:loggedaccount');
 
             var loginPromise = store.findAll('loggedaccount');
@@ -55,7 +69,6 @@ define([
 
                 for (var i = 0, l = enginesviews.length; i < l; i++) {
                     var item = enginesviews[i];
-                    //FIXME stop using utils to store data!
                     if(get(loginController, 'record._id') === "root") {
                         set(item, 'displayable', true);
                     } else {
@@ -113,8 +126,12 @@ define([
         }
     });
 
-
-    loader.register('route:authenticated', route);
+    Ember.Application.initializer({
+        name:"AuthenticatedRoute",
+        initialize: function(container, application) {
+            application.register('route:authenticated', route);
+        }
+    });
 
     return route;
 });

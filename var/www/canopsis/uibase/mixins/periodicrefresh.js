@@ -18,10 +18,9 @@
 */
 
 define([
-    'ember',
     'canopsis/canopsisConfiguration',
     'app/lib/factories/mixin'
-], function(Ember, canopsisConfiguration, Mixin) {
+], function(canopsisConfiguration, Mixin) {
 
     var get = Ember.get,
         set = Ember.set,

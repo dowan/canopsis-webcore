@@ -18,10 +18,8 @@
 */
 
 define([
-    'jquery',
-    'ember',
     'canopsis/uibase/mixins/pagination'
-], function($, Ember, PaginationMixin) {
+], function(PaginationMixin) {
 
     var get = Ember.get,
         set = Ember.set;

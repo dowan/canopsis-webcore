@@ -1,34 +1,42 @@
-/*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
-
-define([
-    'ember',
-], function(Ember) {
+/**
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @module canopsis-frontend-core
+ */
+define([], function() {
 
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone;
 
-    //{{component-editor attr=attr form=this}}
-
+    /**
+     * @class WrapperComponent
+     */
     var component = Ember.Component.extend({
+        /**
+         * @property tagName
+         * @type string
+         */
         tagName: 'span',
+
+        /**
+         * @method init
+         */
         init: function() {
             this._super();
             console.log("init wrapper component");
@@ -41,6 +49,9 @@ define([
             });
         },
 
+        /**
+         * @method onContentUpdate
+         */
         onContentUpdate: function(){
 
             var callback = get(this, 'callback');
@@ -59,6 +70,10 @@ define([
 
         }.observes('attr.value'),
 
+        /**
+         * @property editorType
+         * @type string
+         */
         editorType: function() {
 
             var type = get(this, 'editor-type');
@@ -75,7 +90,6 @@ define([
 
         }.property('editor-type'),
     });
-
 
     Ember.Application.initializer({
         name:"component-wrapper",

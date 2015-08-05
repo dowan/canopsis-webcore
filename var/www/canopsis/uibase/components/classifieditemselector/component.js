@@ -20,9 +20,7 @@
 //TODO fuzzy search
 //TODO hover effect
 
-define([
-    'ember'
-], function(Ember) {
+define([], function() {
 
     var set = Ember.set,
         get = Ember.get,

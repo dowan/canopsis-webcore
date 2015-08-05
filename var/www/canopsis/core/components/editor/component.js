@@ -1,40 +1,62 @@
-/*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @module canopsis-frontend-core
+ */
 
 define([
-    'ember',
     'canopsis/canopsisConfiguration',
     'app/lib/utils/debug',
     'app/lib/helpers/validationtextfield'
-], function(Ember, canopsisConfiguration, debugUtils) {
+], function(canopsisConfiguration, debugUtils) {
 
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone;
 
-
+    /**
+     * Component displaying the correct editor for an attribute.
+     * It is possible to specify the editor type to use. If not specified, it will try to get the correct type on its own.
+     *
+     * @class EditorComponent
+     */
     var component = Ember.Component.extend({
+        /**
+         * @property tagName
+         * @type string
+         */
         tagName: 'span',
 
+        /**
+         * @property runtimeConfiguration
+         * @see {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
+         */
         canopsisConfiguration: canopsisConfiguration,
+
+        /**
+         * @property debug
+         * @type boolean
+         */
         debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
 
+        /**
+         * @method init
+         */
         init: function() {
             console.log('init editor compo');
 
@@ -47,6 +69,11 @@ define([
             this._super();
         },
 
+        /**
+         * @method onValueChange
+         *
+         * Triggered automatically when "attr.value" change
+         */
         onValueChange: function () {
             alert('value change');
             set(this, 'value', get(this, 'attr.value'));
@@ -58,10 +85,18 @@ define([
             }
         },
 
+        /**
+         * @property description
+         * @type string
+         */
         description: function () {
             return get(this, 'content.model.options.description');
         }.property(),
 
+        /**
+         * @property editorType
+         * @type string
+         */
         editorType: function() {
             console.group('editorType');
 
@@ -106,6 +141,9 @@ define([
             return editorName;
         }.property('content.type', 'content.role'),
 
+        /**
+         * @property attr
+         */
         attr: Ember.computed.alias('content')
     });
 

@@ -19,11 +19,27 @@
 
 define([
     'ember-data',
-    'app/serializers/ctx',
-], function(DS, CtxSerializer) {
+    'app/serializers/application'
+], function(DS, ApplicationSerializer) {
 
-    var serializer = CtxSerializer.extend({});
+    var serializer = ApplicationSerializer.extend({
 
-    loader.register('serializer:ctxtopology', serializer);
+        normalize: function (type, hash) {
+            console.log('normalize', arguments);
+            hash.xtype = 'context';  //TODO: autodetect xtype
+            hash.id = hash._id;
+            return this._super(type, hash);
+        }
+
+    });
+
+    Ember.Application.initializer({
+        name: 'ContextSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:ctx', serializer);
+            application.register('serializer:context', serializer);
+        }
+    });
+
     return serializer;
 });

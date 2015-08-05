@@ -19,10 +19,9 @@
 
 
 define([
-    'ember',
     'app/lib/mixinsregistry',
     'app/lib/utils/forms'
-], function(Ember, mixinsRegistry, formsUtils) {
+], function(mixinsRegistry, formsUtils) {
 
     var get = Ember.get,
         set = Ember.set,

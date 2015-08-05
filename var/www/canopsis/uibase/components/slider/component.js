@@ -19,9 +19,8 @@
 
 
 define([
-    'ember',
     'canopsis/core/lib/wrappers/slider',
-], function(Ember) {
+], function() {
 
     var get = Ember.get,
         set = Ember.set,

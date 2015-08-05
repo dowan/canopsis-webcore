@@ -1,33 +1,32 @@
-/*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @module canopsis-frontend-core
+ */
 
 define([
-    'ember',
     'app/routes/authenticated',
-    'app/lib/loaders/utils',
     'app/lib/utils/data',
+    'app/lib/utils/notification',
     'app/lib/utils/forms',
     'app/lib/utils/widgetSelectors',
-    'app/lib/utils/actions',
-    'app/lib/utils/test',
     'app/serializers/userview'
-], function(Ember, AuthenticatedRoute, utils, dataUtils, formUtils, widgetSelectorsUtils, actionsUtils, testUtils) {
+], function(AuthenticatedRoute, dataUtils, notificationUtils, formUtils, widgetSelectorsUtils) {
 
     var set = Ember.set,
         get = Ember.get,
@@ -35,10 +34,14 @@ define([
 
     var initialLoadDone = false;
 
+    /**
+     * @class UserviewRoute
+     * @extends AuthenticatedRoute
+     * @constructor
+     */
     var route = AuthenticatedRoute.extend({
         beforeModel: function(transition) {
             var app = this.controllerFor('application');
-
             app.addConcurrentLoading('userview');
 
             return this._super(transition);
@@ -63,7 +66,7 @@ define([
                     this.transitionTo('/userview/view.404');
                 } else {
                     console.error(error);
-                    utils.notification.error(__('Impossible to load view.'));
+                    notificationUtils.error(__('Impossible to load view.'));
                 }
             },
 
@@ -104,6 +107,8 @@ define([
             exportCurrentView: function() {
                 var viewModel = this.controllerFor('userview').get('model');
                 var viewJSON = viewModel.serialize();
+
+                viewJSON = dataUtils.cleanJSONIds(viewJSON);
 
                 dataUtils.download(JSON.stringify(viewJSON), get(viewModel, 'crecord_name') + '.json', 'application/json');
             },
@@ -181,6 +186,11 @@ define([
             }
         },
 
+
+        /**
+         * @method setReportingInterval
+         * @param interval
+         */
         setReportingInterval: function (interval) {
 
             set(this.controllerFor('application'), 'interval', interval);
@@ -209,10 +219,13 @@ define([
             }
         },
 
+        /**
+         * @method setupController
+         * @param controller
+         * @param model
+         */
         setupController: function(controller, model) {
             console.log('UserviewRoute setupController', arguments);
-
-            actionsUtils.setDefaultTarget(controller);
 
             this._super.apply(this, arguments);
 
@@ -235,7 +248,13 @@ define([
     });
 
 
-    loader.register('route:userview', route);
+
+    Ember.Application.initializer({
+        name:"UserviewRoute",
+        initialize: function(container, application) {
+            application.register('route:userview', route);
+        }
+    });
 
     return route;
 });

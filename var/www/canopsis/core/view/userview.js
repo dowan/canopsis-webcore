@@ -1,42 +1,58 @@
-/*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @module canopsis-frontend-core
+ */
 
 define([
-    'ember',
-    'app/lib/utils/test',
     'app/controller/userview'
-], function(Ember, testUtils) {
+], function() {
 
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone;
 
+
+    /**
+     * @class UserviewView
+     * @extends Ember.View
+     * @constructor
+     */
     var view = Ember.View.extend({
         actions: {
+            /**
+             * @event refreshView
+             */
             refreshView: function() {
                 this.rerender();
             }
         },
 
+        /**
+         * @property hookRegistered
+         * @type boolean
+         */
         hookRegistered: false,
 
-        //Controller -> View Hooks
+        /**
+         * @method registerHooks
+         * Controller -> View Hooks
+         */
         registerHooks: function() {
             if (!get(this, 'hookRegistered')) {
                 get(this, 'controller').on('refreshView', this, this.rerender);
@@ -44,11 +60,17 @@ define([
             }
         },
 
+        /**
+         * @method unregisterHooks
+         */
         unregisterHooks: function() {
             get(this, 'controller').off('refreshView', this, this.rerender);
             this.set('hookRegistered', false);
         },
 
+        /**
+         * @method rerender
+         */
         rerender: function() {
             console.info('refreshing view', this);
             if (get(this, 'state') === 'destroying') {
@@ -59,6 +81,9 @@ define([
             this.registerHooks();
         },
 
+        /**
+         * @method didInsertElement
+         */
         didInsertElement : function() {
             console.log("inserted view", this);
 
@@ -68,14 +93,21 @@ define([
             return result;
         },
 
+        /**
+         * @method willClearRender
+         */
         willClearRender: function() {
             this.unregisterHooks();
             return this._super.apply(this, arguments);
         }
     });
 
-
-    loader.register('view:userview', view);
+    Ember.Application.initializer({
+        name: 'UserviewView',
+        initialize: function(container, application) {
+            application.register('view:userview', view);
+        }
+    });
 
     return view;
 });
