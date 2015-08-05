@@ -1,0 +1,18 @@
+{
+  "name": "uibase js dependencies",
+  "version": "0.0.1",
+  "authors": [
+    "fdemeulenaere@capensis.fr <fdemeulenaere@capensis.fr>"
+  ],
+  "description": "uibase js dependencies",
+  "main": "../init.js",
+  "keywords": [
+    "core",
+    "libraries"
+  ],
+  "license": "MIT",
+  "homepage": "http://www.canopsis.org",
+  "dependencies": {
+    "rrule": "~2.1.0"
+  }
+}
