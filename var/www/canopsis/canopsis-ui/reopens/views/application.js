@@ -139,12 +139,6 @@ define([
 
             //Fix the fixed layout sidebar scroll bug
             fix_sidebar();
-
-            //This is the test environment entry point.
-            if(window.environment === 'test') {
-                window.startCanopsisTests();
-            }
-
         }
     });
 

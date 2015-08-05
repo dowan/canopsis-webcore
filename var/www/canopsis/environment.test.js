@@ -38,7 +38,11 @@ define([
         console.warn = function(){};
     }
 
-    window.startCanopsisTests = function () {
+    window.startCanopsisTests = function (application) {
+
+        application.setupForTesting();
+        application.injectTestHelpers();
+
         console.log('Starting automated tests');
         require([
             'canopsis/monitoring/tests/ackworkflow'

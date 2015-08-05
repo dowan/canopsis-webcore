@@ -60,6 +60,11 @@ define([
     Application.advanceReadiness();
     window.$A = Application;
 
+    //This is the test environment entry point.
+    if(window.environment === 'test') {
+        window.startCanopsisTests(Application);
+    }
+
     inflectionsManager.loadInflections();
 
     return Application;
