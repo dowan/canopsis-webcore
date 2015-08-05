@@ -45,7 +45,6 @@ define([
 
         console.log('Starting automated tests');
         enabledBricksUtil.getEnabledModules(function(enabledBricks) {
-            alert(JSON.stringify(enabledBricks));
             var bricksTestMainList = [];
             for (var i = 0, l = enabledBricks.length; i < l; i++) {
                 if(enabledBricks[i] !== 'core') {
