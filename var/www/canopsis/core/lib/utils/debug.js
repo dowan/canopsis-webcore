@@ -51,5 +51,8 @@ define(['app/lib/utilityclass'], function(Utility) {
         }
     });
 
+    window.$D = debugUtils;
+    //TODO remove this and put this damn util in Canopsis public API
+
     return debugUtils;
 });
