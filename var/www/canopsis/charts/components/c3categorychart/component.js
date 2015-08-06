@@ -94,6 +94,58 @@ define([
 
         }.property('series'),
 
+
+
+        seriesWithComputedNames: function () {
+
+            /**
+            Generate a new array for series with metric names computed from user template.
+            **/
+
+            var context = ['type', 'connector','connector_name', 'component','resource', 'metric'],
+                seriesWithMeta = $.extend(true, [], get(this, 'series')),
+                namedSeries = [],
+                i,
+                j;
+
+            console.log('seriesWithMeta', seriesWithMeta);
+
+            var length = seriesWithMeta.length;
+
+            for (i=0; i<length; i++) {
+                var serie = seriesWithMeta[i].serie,
+                    id = seriesWithMeta[i].id;
+
+                console.log('meta serie', id, serie);
+
+                var seriesInfo = id.split('/'),
+                    templateContext = {};
+                var lengthSeriesInfo = seriesInfo.length;
+
+                //Build template context
+                for (j=0; j<lengthSeriesInfo; j++) {
+                    //+1 is for preceding /
+                    templateContext[context[j]] = seriesInfo[j + 1];
+                }
+                console.log('Template context', templateContext, 'for metric', id);
+
+                var template = get(this, 'parentController.options.metric_template');
+
+                try {
+                    serie[0] = Handlebars.compile(template)(templateContext);
+                } catch (err) {
+                    console.log('could not proceed template feed', err);
+                }
+
+
+                namedSeries.push(serie);
+
+            }
+
+            return namedSeries;
+
+        }.property(),
+
         c3series: function () {
 
             /**
@@ -102,7 +154,7 @@ define([
             console.log('chart series is now', get(this, 'series'));
 
             var restValue = get(this, 'maxValue') - get(this, 'seriesSum'),
-                series = $.extend(true, [], get(this, 'series'));
+                series = get(this, 'seriesWithComputedNames');
                 //base series data deep copied
 
             //Compute difference between max value and series values sum
@@ -173,7 +225,7 @@ define([
                 maxValue = get(this, 'maxValue'),
                 chartType = get(this, 'parentController.options.display'),
                 showLegend = get(this, 'parentController.options.show_legend'),
-                tooltip = get(this, 'parentController.options.showTooltip'),
+                tooltip = get(this, 'parentController.options.show_tooltip'),
                 showLabels = get(this, 'parentController.options.show_labels');
 
             var gauge = {
@@ -242,7 +294,6 @@ define([
         },
 
         update: function () {
-
             /**
             Update the chart display with new values.
             Insert a new chart if it does not exists yet.

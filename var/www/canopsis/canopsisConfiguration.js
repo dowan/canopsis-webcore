@@ -108,7 +108,7 @@ define(['ember', 'ember-data'], function () {
      * from the whole application through the namespace Canopsis.conf.PROPERTY
      */
     var canopsisConfiguration = {
-        DEBUG: true,
+        DEBUG: false,
         VERBOSE: 1,
         showPartialslots: false,
         DISPLAY_SCHEMA_MANAGER: true,

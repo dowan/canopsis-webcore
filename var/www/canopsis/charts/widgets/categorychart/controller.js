@@ -48,8 +48,7 @@ define([
             Ember.setProperties(this, {
                 'seriesReady': false,
                 'metricsReady': false,
-                'tmpSeries': [],
-                'seriesMetas': {},
+                'tmpSeries': []
             });
         },
 
@@ -100,6 +99,7 @@ define([
                 'show_legend',
                 'show_tooltip',
                 'show_labels',
+                'metric_template'
             ];
 
             var options = {};
@@ -132,10 +132,10 @@ define([
                 var serieSplit = serieId.split('/');
                 var serieName = serieSplit[serieSplit.length - 1];
 
-                //get meta info for templating purposes
-                set(chartController, 'seriesMetas.' + serieName, serieId);
-
-                chartSeries.push([serieName, serieValue]);
+                chartSeries.push({
+                    id: serieId,
+                    serie: [serieName, serieValue]
+                });
 
             }
 
@@ -167,16 +167,16 @@ define([
                     serieName += ' ' + __('No data available');
                 }
 
-                //start get meta information for template dispplay
                 var metrics = series[i].meta.metrics,
-                    contextId = '';
+                    contextId = serieName;
                 if (metrics.length) {
                     contextId = series[i].meta.metrics[0];
                 }
-                set(chartController, 'seriesMetas.' + serieName, contextId);
-                //stop get meta
 
-                chartSeries.push([serieName, value]);
+                chartSeries.push({
+                    id: contextId,
+                    serie: [serieName, value]
+                });
             }
 
             chartController.update('series', chartSeries);
