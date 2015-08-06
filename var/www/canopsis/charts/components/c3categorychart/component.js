@@ -40,7 +40,10 @@ define([
         },
 
         willDestroyElement: function() {
-            get(this, 'chart').destroy();
+            var chart = get(this, 'chart');
+            if (!isNone(chart)) {
+                chart.destroy();
+            }
         },
 
 
@@ -71,7 +74,7 @@ define([
             **/
 
             var sum = 0,
-                series = get(this, 'series');
+                series = get(this, 'seriesWithComputedNames');
             for (var i=0; i<series.length; i++) {
                 sum += series[i][1];
             }
@@ -226,7 +229,11 @@ define([
                 chartType = get(this, 'parentController.options.display'),
                 showLegend = get(this, 'parentController.options.show_legend'),
                 tooltip = get(this, 'parentController.options.show_tooltip'),
-                showLabels = get(this, 'parentController.options.show_labels');
+                showLabels = get(this, 'parentController.options.show_labels'),
+                stacked = get(this, 'parentController.options.stacked'),
+                rotated = false,
+                showAxes = true,
+                isBarChart = true;
 
             var gauge = {
                     label:{
@@ -237,12 +244,21 @@ define([
                 },
                 label = {show : showLabels};
 
+            var donut = {
+                label: label,
+                title: (showLabels && seriesSum) ? seriesSum.toFixed(2): ''
+            };
+
             console.log('seriesNames', seriesNames);
             console.log('c3series', c3series);
 
             if (chartType == 'progressbar') {
                 //cheating alias becrause progress bar does not exists in c3 js yet
+                isBarChart = false;
                 chartType = 'bar';
+                rotated = true;
+                showAxes = false;
+                showLabels = false;
             }
 
             //max value may be equal to 0 when series did not fetch points.
@@ -254,7 +270,7 @@ define([
                 }
             }
 
-            var chart = c3.generate({
+            var options = {
                 bindto: domElement,
                 groups: seriesNames,
                 tooltip: {show: tooltip},
@@ -270,24 +286,32 @@ define([
                     },
                     empty: {
                         label: {
-                            text: showLabels ? __('No Data') : ''
+                            text: __('No Data')
                         }
                     }
                 },
                 //color: colors,
                 gauge: gauge,
-                donut: {label: label},
+                donut: donut,
                 pie: {label : label},
                 axis: { //for bar mode
-                  rotated:true,
+                  rotated:rotated,
                   x: {
-                    show: false
+                    show: showAxes
                   },
                   y: {
-                    show: false
+                    show: showAxes
                   }
                 },
-            });
+            };
+
+            if (chartType === 'bar' && !stacked) {
+                //no more stacked view bor bar charts
+                delete options.groups;
+                delete options.data.groups;
+            }
+
+            var chart = c3.generate(options);
 
             set(this, 'chart', chart);
 

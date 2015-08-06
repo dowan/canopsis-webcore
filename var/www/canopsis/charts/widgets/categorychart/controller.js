@@ -99,7 +99,8 @@ define([
                 'show_legend',
                 'show_tooltip',
                 'show_labels',
-                'metric_template'
+                'metric_template',
+                'stacked',
             ];
 
             var options = {};

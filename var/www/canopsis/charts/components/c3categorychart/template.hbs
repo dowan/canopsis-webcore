@@ -3,5 +3,11 @@
 	<button {{action "transform" "pie"}} class="btn btn-default"><i class="fa fa-pie-chart"></i></button>
 	<button {{action "transform" "donut"}} class="btn btn-default"><i class="fa fa-dot-circle-o"></i></button>
 	<button {{action "transform" "progressbar"}} class="btn btn-default"><i class="fa fa-battery-three-quarters"></i></button>
+	<button {{action "transform" "bar"}} class="btn btn-default"><i class="fa fa-bar-chart"></i></button>
 {{/if}}
+
 <div {{bind-attr id="uuid"}}></div>
+
+{{#unless chart}}
+	<h2 class="text-center">No data</h2>
+{{/unless}}
