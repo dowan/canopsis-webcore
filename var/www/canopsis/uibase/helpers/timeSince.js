@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
     'app/lib/utils/dates'
-], function(Ember, datesUtils) {
+], function(datesUtils) {
 
     var __ = Ember.String.loc;
 

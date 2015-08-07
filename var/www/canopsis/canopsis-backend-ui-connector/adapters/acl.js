@@ -19,9 +19,8 @@
 
 
 define([
-    'ember',
     'canopsis/canopsis-backend-ui-connector/adapters/application',
-], function(Ember, ApplicationAdapter) {
+], function(ApplicationAdapter) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -120,13 +119,17 @@ define([
     });
 
 
-    loader.register('adapter:role', adapter);
-    loader.register('adapter:group', adapter);
-    loader.register('adapter:account', adapter);
-    loader.register('adapter:user', adapter);
-    loader.register('adapter:role', adapter);
-    loader.register('adapter:right', adapter);
-    loader.register('adapter:profile', adapter);
+    Ember.Application.initializer({
+        name: 'AclAdapters',
+        initialize: function(container, application) {
+            application.register('adapter:role', adapter);
+            application.register('adapter:group', adapter);
+            application.register('adapter:account', adapter);
+            application.register('adapter:user', adapter);
+            application.register('adapter:right', adapter);
+            application.register('adapter:profile', adapter);
+        }
+    });
 
     return adapter;
 });

@@ -17,21 +17,10 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember'
-], function(Ember) {
+Ember.Handlebars.helper('recordcanbeack', function(crecord) {
+    console.debug('in recordcanbeack. record status is', Ember.get(crecord, 'status'));
+    recordcanbeack = Ember.get(crecord, 'status') !== 0 && Ember.get(crecord, 'status') !== 2;
+    Ember.set(crecord, 'recordcanbeack', recordcanbeack);
 
-    var get = Ember.get,
-        set = Ember.set;
-
-
-    Ember.Handlebars.helper('recordcanbeack', function(crecord) {
-
-        console.debug('in recordcanbeack. record status is', get(crecord, 'status'));
-        recordcanbeack = get(crecord, 'status') !== 0 && get(crecord, 'status') !== 2;
-        set(crecord, 'recordcanbeack', recordcanbeack);
-
-        return "";
-    });
-
+    return "";
 });

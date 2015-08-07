@@ -1,21 +1,23 @@
-/*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @module canopsis-frontend-core
+ */
 
 define([], function() {
 
@@ -29,8 +31,7 @@ define([], function() {
         var jsDeps = [];
         var htmlDeps = [];
         var htmlNames = [];
-        //ember is requied here and works with arguments + 1 in loadwithtemplates function
-        var deps = ['ember'];
+        var deps = [];
 
         //building html and js dependencies
 
@@ -64,12 +65,12 @@ define([], function() {
 
             var info = makeDeps(items);
 
-            define(info.deps, function(Ember) {
+            define(info.deps, function() {
 
                 var len = info.htmlNames.length;
 
                 for (var i = 0; i < len; i++) {
-                    Ember.TEMPLATES[info.htmlNames[i]] = Ember.Handlebars.compile(arguments[i + 1]);
+                    Ember.TEMPLATES[info.htmlNames[i]] = Ember.Handlebars.compile(arguments[i]);
                 }
 
             });
@@ -89,6 +90,8 @@ define([], function() {
          * @argument classToRegister {object} the Ember class to register
          */
         register: function(name, classToRegister) {
+            Ember.deprecate('Using loader#register is deprecated. Please use Ember Initializers instead (http://guides.emberjs.com/v1.10.0/understanding-ember/dependency-injection-and-service-lookup/#toc_dependency-injection-with-code-register-inject-code)');
+
                 var splittedName = name.split(':');
 
                 var dasherizedName = splittedName[1] + '-' + splittedName[0];
@@ -101,12 +104,16 @@ define([], function() {
             if(appInstance) {
                 appInstance[classifiedName] = classToRegister;
             } else {
-                Ember.Application.initializer({
-                    name: name,
-                    initialize: function(container, application) {
-                        application.register(name, classToRegister);
-                    }
-                });
+                if(!Ember.isNone(Ember.Application.initializers[name])) {
+                    console.error('Initializer "', name, '" is already declared. Please choose another initializer name.');
+                } else {
+                    Ember.Application.initializer({
+                        name: name,
+                        initialize: function(container, application) {
+                            application.register(name, classToRegister);
+                        }
+                    });
+                }
             }
         }
     };

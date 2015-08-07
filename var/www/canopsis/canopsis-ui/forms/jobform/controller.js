@@ -18,14 +18,12 @@
 */
 
 define([
-    'ember',
     'app/lib/factories/form',
     'app/lib/utils/forms',
     'app/lib/utils/hash',
     'app/lib/utils/data',
-    'app/lib/schemasregistry',
-    'app/serializers/job'
-], function(Ember, FormFactory, formsUtils, hashUtils, dataUtils, schemasRegistry) {
+    'app/lib/schemasregistry'
+], function(FormFactory, formsUtils, hashUtils, dataUtils, schemasRegistry) {
 
     var get = Ember.get,
         set = Ember.set,

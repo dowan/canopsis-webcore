@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
     'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+], function(Mixin) {
 
     /**
       Implements history collection finder
@@ -42,7 +41,6 @@ define([
             }
         }
     });
-
 
     return mixin;
 });

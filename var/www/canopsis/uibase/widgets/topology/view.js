@@ -63,10 +63,8 @@
 * A toolbox is provided in order to enrich interaction with the graph. Its instance is managed in the toolbox property. This last contains data or null if toolbox is not activated.
 */
 define([
-    'ember',
-    'jquery',
     'd3'
-], function(Ember, $, d3) {
+], function(d3) {
     var get = Ember.get,
         set = Ember.set;
 

@@ -18,10 +18,8 @@
 */
 
 define([
-    'ember',
-    'ember-data',
     'app/lib/promisesmanager'
-], function(Ember, DS, promisesmanager) {
+], function(promisesmanager) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -93,8 +91,12 @@ define([
         }
     });
 
-
-    loader.register('adapter:application', adapter);
+    Ember.Application.initializer({
+        name: 'ApplicationAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:application', adapter);
+        }
+    });
 
     return adapter;
 });

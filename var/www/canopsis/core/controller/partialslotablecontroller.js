@@ -18,16 +18,20 @@
 */
 
 define([
-    'ember',
     'app/lib/utils/widgets',
     'app/lib/mixinsregistry',
     'app/lib/helpers/partialslot'
-], function(Ember, widgetUtils, mixinsRegistry) {
+], function(widgetUtils, mixinsRegistry) {
 
     var get = Ember.get,
         set = Ember.set;
 
-
+    /**
+     * @function removeMixinsPartials
+     * @private
+     * @param widget
+     * @param mixinName
+     */
     function removeMixinsPartials(widget, mixinName) {
         console.log('removing mixin partials', arguments);
 
@@ -145,7 +149,12 @@ define([
         }
     });
 
-    loader.register('controller:partialslot-able', controller);
+    Ember.Application.initializer({
+        name: 'PartialslotAbleController',
+        initialize: function(container, application) {
+            application.register('controller:partialslot-able', controller);
+        }
+    });
 
     return controller;
 });

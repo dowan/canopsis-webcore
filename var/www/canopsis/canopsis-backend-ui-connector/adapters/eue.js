@@ -23,8 +23,12 @@ define([
 
     var adapter = EventAdapter;
 
-
-    loader.register('adapter:eue', adapter);
+    Ember.Application.initializer({
+        name: 'EueAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:eue', adapter);
+        }
+    });
 
     return adapter;
 });

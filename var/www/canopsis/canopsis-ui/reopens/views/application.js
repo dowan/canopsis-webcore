@@ -18,11 +18,9 @@
 */
 
 define([
-    'jquery',
-    'ember',
     'app/view/application',
     'adminLTE'
-], function($, Ember, ApplicationView, adminLTE) {
+], function(ApplicationView, adminLTE) {
 
     var get = Ember.get,
         set = Ember.set;

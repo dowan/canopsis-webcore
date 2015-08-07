@@ -17,9 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember'
-], function() {
+define([], function() {
 
     var rightsflagsUtils = {
         canRead: function(checksum) {

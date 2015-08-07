@@ -22,8 +22,6 @@ define([
     'app/lib/schemasregistry'
 ], function(ApplicationAdapter, schemasregistry) {
 
-    console.group('CserviceAdapter');
-
     var adapter = ApplicationAdapter.extend({
         buildURL: function(type, id) {
             type = 'cservice';
@@ -41,13 +39,22 @@ define([
         if(modelname.indexOf('crecord.cservice.') === 0) {
             console.log('Add adapter:', sname);
 
-            loader.register('adapter:' + sname, adapter.extend());
+            var initializerName = sname.capitalize() + 'Adapter';
+            Ember.Application.initializer({
+                name: initializerName,
+                initialize: function(container, application) {
+                    application.register('adapter:' + sname, adapter.extend());
+                }
+            });
         }
     }
 
-    console.groupEnd();
-
-    loader.register('adapter:cservice', adapter);
+    Ember.Application.initializer({
+        name: 'CserviceAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:cservice', adapter);
+        }
+    });
 
     return adapter;
 });

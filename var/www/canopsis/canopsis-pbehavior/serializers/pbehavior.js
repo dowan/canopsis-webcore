@@ -19,12 +19,17 @@
 
 define([
     'ember-data',
-    'app/serializers/ctx'
+    'canopsis/canopsis-backend-ui-connector/serializers/ctx'
 ], function(DS, ContextSerializer) {
 
     var serializer = ContextSerializer.extend({});
 
-    loader.register('serializer:pbehavior', serializer);
+    Ember.Application.initializer({
+        name: 'PbehaviorSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:pbehavior', serializer);
+        }
+    });
 
     return serializer;
 });

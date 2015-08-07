@@ -1,54 +1,49 @@
-/*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @module canopsis-frontend-core
+ */
 
 define([
-    'ember-data',
     'app/mixins/metaserializer',
     'app/mixins/hashserializer',
     'app/lib/utils/notification',
-    'app/lib/utils/hash'
-], function(DS, MetaSerializerMixin, HashSerializerMixin, notificationUtils, hashUtils) {
+    'app/lib/utils/hash',
+    'app/mixins/embeddedrecordserializer'
+], function(MetaSerializerMixin, HashSerializerMixin, notificationUtils, hashUtils, EmbeddedRecordSerializerMixin) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        isNone = Ember.isNone;
 
     var serializer = DS.RESTSerializer.extend(
         MetaSerializerMixin,
         HashSerializerMixin,
+        EmbeddedRecordSerializerMixin,
         {
             /**
-             * Add a message to payload's metadata
+             * @method normalizeId
+             * @private
              */
-            addMessage: function(payload, message, logLevel) {
-                void(logLevel); //TODO not implemented
-
-                //FIXME not working in here
-                notificationUtils.error(message);
-
-                //FIXME metadata does not seems to be handled properly
-                if(payload.meta === undefined) {
-                    payload.meta = {};
+            normalizeId: function(hash) {
+                if(isNone(hash.id)) {
+                    hash.id = hash._id;
                 }
-                if(payload.meta.messages === undefined) {
-                    payload.meta.messages = [];
-                }
-                payload.meta.messages.push(message);
             },
 
             normalize: function (type, hash) {
@@ -57,11 +52,17 @@ define([
                     hash.id = hashUtils.generateId('generatedId');
                 }
                 return this._super(type, hash);
+
             }
         }
     );
 
-    loader.register('serializer:application', serializer);
+    Ember.Application.initializer({
+        name: 'ApplicationSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:application', serializer);
+        }
+    });
 
     return serializer;
 });

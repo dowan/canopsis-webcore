@@ -19,9 +19,8 @@
 
 
 define([
-    'ember',
     'canopsis/uibase/libwrappers/rrule'
-], function(Ember) {
+], function() {
 
     var get = Ember.get,
         set = Ember.set,

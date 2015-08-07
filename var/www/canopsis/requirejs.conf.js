@@ -27,12 +27,13 @@ require.config({
 
         'jquery': 'canopsis/core/lib/wrappers/jquery',
         'handlebars': 'canopsis/core/lib/externals/handlebars/handlebars',
-        'ember': 'canopsis/core/lib/wrappers/ember',
-        'ember-data': 'canopsis/core/lib/wrappers/ember-data'
+        'ember-template-compiler': 'canopsis/core/lib/externals/min/ember-template-compiler',
+        'ember': 'canopsis/core/lib/externals/min/ember',
+        'ember-data': 'canopsis/core/lib/externals/min/ember-data'
     },
     shim: {
         'ember': {
-            deps: ['jquery', 'handlebars']
+            deps: ['jquery', 'ember-template-compiler', 'handlebars']
         },
         'ember-data': {
             deps: ['ember']
@@ -80,7 +81,74 @@ setModuleInfo = function (modules, showmodules) {
     }
 };
 
-define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18n', 'app/lib/objects/loader', 'jquery'], function(enabled, canopsisConfiguration, i18n) {
+define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18n', 'app/lib/objects/loader', 'jquery', 'ember', 'ember-data'], function(enabled, canopsisConfiguration, i18n) {
+
+    var get = Ember.get;
+
+    canopsisConfiguration.EmberIsLoaded = true;
+
+
+    DS.ArrayTransform = DS.Transform.extend({
+        deserialize: function(serialized) {
+            if (Ember.typeOf(serialized) === 'array') {
+                return serialized;
+            }
+
+            return [];
+        },
+
+        serialize: function(deserialized) {
+            var type = Ember.typeOf(deserialized);
+
+            if (type === 'array') {
+                return deserialized;
+            }
+            else if (type === 'string') {
+                return deserialized.split(',').map(function(item) {
+                    return jQuery.trim(item);
+                });
+            }
+
+            return [];
+        }
+    });
+
+    DS.IntegerTransform = DS.Transform.extend({
+        deserialize: function(serialized) {
+            if (typeof serialized === "number") {
+                return serialized;
+            } else {
+                // console.warn("deserialized value is not a number as it is supposed to be", arguments);
+                return 0;
+            }
+        },
+
+        serialize: function(deserialized) {
+            return Ember.isEmpty(deserialized) ? null : Number(deserialized);
+        }
+    });
+
+    DS.ObjectTransform = DS.Transform.extend({
+        deserialize: function(serialized) {
+            if (Ember.typeOf(serialized) === 'object') {
+                return Ember.Object.create(serialized);
+            }
+
+            return Ember.Object.create({});
+        },
+
+        serialize: function(deserialized) {
+            var type = Ember.typeOf(deserialized);
+
+            if (type === 'object' || type === 'instance') {
+                return Ember.Object.create(deserialized);
+            } else {
+                console.warn("bad format", type, deserialized);
+            }
+
+            return null;
+        }
+    });
 
     enabled.getEnabledModules(function (enabledPlugins) {
 

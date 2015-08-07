@@ -19,11 +19,17 @@
 
 define([
     'ember-data',
-    'app/serializers/ctx',
+    'canopsis/canopsis-backend-ui-connector/serializers/ctx',
 ], function(DS, CtxSerializer) {
 
     var serializer = CtxSerializer.extend({});
 
-    loader.register('serializer:ctxcomponent', serializer);
+    Ember.Application.initializer({
+        name: 'CtxmetricSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:ctxmetric', serializer);
+        }
+    });
+
     return serializer;
 });

@@ -19,9 +19,8 @@
 
 
 define([
-    'ember',
     'canopsis/uibase/helpers/json2html'
-], function(Ember, json2html) {
+], function(json2html) {
 
     var get = Ember.get,
         set = Ember.set,

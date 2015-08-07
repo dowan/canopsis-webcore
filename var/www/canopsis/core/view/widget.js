@@ -1,31 +1,32 @@
-/*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @module canopsis-frontend-core
+ */
 
 define([
-    'ember',
     'canopsis/canopsisConfiguration',
     'app/lib/mixinsregistry',
     'app/lib/schemasregistry',
     'app/lib/widgetsregistry',
     'app/controller/widget',
     'app/lib/loaders/mixins'
-], function(Ember, canopsisConfiguration, mixinsregistry, schemasregistry, widgetsregistry, WidgetController) {
+], function(canopsisConfiguration, mixinsregistry, schemasregistry, widgetsregistry, WidgetController) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -91,17 +92,31 @@ define([
         return {array: mixinArray, mixinOptions: mixinOptions};
     }
 
-
+    /**
+     * @class WidgetView
+     * @extends Ember.View
+     * @constructor
+     */
     var view = Ember.View.extend({
         templateName:'widget',
         classNames: ['widget'],
 
         /**
          * Used to visually display error messages to the user (in the widget template)
+         *
+         * @property widgetController
+         * @type Array
          */
         errorMessages : Ember.A(),
+
+        /**
+         * @property widgetController
+         */
         widgetController: undefined,
 
+        /**
+         * @method init
+         */
         init: function() {
             console.group('widget initialisation :', get(this.widget, "xtype"), this.widget, get(this, 'widget.tagName'));
             set(this, 'target', get(this, 'controller'));
@@ -131,6 +146,9 @@ define([
             console.groupEnd();
         },
 
+        /**
+         * @method applyAllViewMixins
+         */
         applyAllViewMixins: function(){
             var controller = get(this, 'controller');
             console.group('apply widget view mixins', controller.viewMixins);
@@ -150,6 +168,9 @@ define([
             console.groupEnd();
         },
 
+        /**
+         * @method intializeController
+         */
         intializeController: function(widget) {
             console.group('set controller for widget', widget);
 
@@ -165,6 +186,11 @@ define([
             console.groupEnd();
         },
 
+        /**
+         * @method instantiateCorrectController
+         * @param {DS.Model} widget
+         * @return WidgetController
+         */
         instantiateCorrectController: function(widget) {
             //for a widget that have xtype=widget, controllerName=WidgetController
             console.log('instantiateCorrectController', arguments);
@@ -216,15 +242,20 @@ define([
             return widgetControllerInstance;
         },
 
+        /**
+         * @method didInsertElement
+         */
         didInsertElement : function() {
             console.log("inserted widget, view:", this);
 
             this.registerHooks();
-            var result = this._super.apply(this, arguments);
 
-            return result;
+            return this._super.apply(this, arguments);
         },
 
+        /**
+         * @method willDestroyElement
+         */
         willDestroyElement: function () {
             clearInterval(get(this, 'widgetRefreshInterval'));
 
@@ -233,21 +264,30 @@ define([
             return this._super.apply(this, arguments);
         },
 
-        //Controller -> View Hooks
+        /**
+         * @method registerHooks
+         */
         registerHooks: function() {
             console.log("registerHooks", get(this, "controller"), get(this, "controller").on);
             get(this, "controller").on('refresh', this, this.rerender);
             return this._super();
         },
 
+        /**
+         * @method unregisterHooks
+         */
         unregisterHooks: function() {
             get(this, "controller").off('refresh', this, this.rerender);
             return this._super();
         }
     });
 
-
-    loader.register('view:widget', view);
+    Ember.Application.initializer({
+        name: 'WidgetView',
+        initialize: function(container, application) {
+            application.register('view:widget', view);
+        }
+    });
 
     return view;
 });

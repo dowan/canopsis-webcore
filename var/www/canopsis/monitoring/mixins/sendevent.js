@@ -18,13 +18,11 @@
 */
 
 define([
-    'ember',
-    'jquery',
     'app/lib/utils/forms',
     'app/lib/utils/dates',
     'app/lib/utils/notification',
     'app/lib/factories/mixin'
-], function(Ember, $, formsUtils, datesUtils, notificationUtils, Mixin) {
+], function(formsUtils, datesUtils, notificationUtils, Mixin) {
 
     var get = Ember.get,
         set = Ember.set,

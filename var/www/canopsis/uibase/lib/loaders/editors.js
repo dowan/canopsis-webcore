@@ -22,7 +22,6 @@ var editors = [
     { name: 'editor-actionfilter', template: 'canopsis/uibase/editors/actionfilter.html' },
     { name: 'editor-array', template: 'canopsis/uibase/editors/array.html' },
     { name: 'editor-arrayclassifiedcrecordselector', template: 'canopsis/uibase/editors/arrayclassifiedcrecordselector.html' },
-    { name: 'editor-attributepreset', template: 'canopsis/uibase/editors/attributepreset.html' },
     { name: 'editor-boolean', template: 'canopsis/uibase/editors/boolean.html' },
     { name: 'editor-cfilter', template: 'canopsis/uibase/editors/cfilter.html' },
     { name: 'editor-cfilterwithproperties', template: 'canopsis/uibase/editors/cfilterwithproperties.html' },
