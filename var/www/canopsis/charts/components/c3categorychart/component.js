@@ -34,7 +34,6 @@ define([
             this._super();
             Ember.setProperties(this, {
                 'uuid': hash.generateId('categoryChart'),
-                'leftValueLabel': __('Left until max'),
                 'parentController.chartComponent': this,
             });
         },
@@ -162,7 +161,7 @@ define([
 
             //Compute difference between max value and series values sum
             if (restValue > 0) {
-                var leftValueLabel = get(this, 'leftValueLabel');
+                var leftValueLabel = get(this, 'parentController.options.text_left_space');
                 series.push([leftValueLabel, restValue]);
             }
 
@@ -220,12 +219,12 @@ define([
 
 
             var domElement = '#' + get(this, 'uuid'),
-                leftValueLabel = get(this, 'leftValueLabel'),
                 seriesSum = get(this, 'seriesSum'),
                 seriesNames = get(this, 'seriesNames'),
                 c3series = get(this, 'c3series'),
                 colors = get(this, 'colors'),
                 maxValue = get(this, 'maxValue'),
+                leftValueLabel = get(this, 'parentController.options.text_left_space'),
                 chartType = get(this, 'parentController.options.display'),
                 showLegend = get(this, 'parentController.options.show_legend'),
                 tooltip = get(this, 'parentController.options.show_tooltip'),

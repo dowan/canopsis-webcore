@@ -101,6 +101,7 @@ define([
                 'show_labels',
                 'metric_template',
                 'stacked',
+                'text_left_space',
             ];
 
             var options = {};
