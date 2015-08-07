@@ -27,8 +27,8 @@ require.config({
         'ember-summernote': 'canopsis/uibase/lib/externals/ember-summernote/lib/component',
         'daterangepicker': 'canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker',
 
-        'rrule': 'canopsis/uibase/lib/externals/kb-rrule/lib/rrule',
-        'nlp': 'canopsis/uibase/lib/externals/kb-rrule/lib/nlp',
+        'rrule': 'canopsis/uibase/lib/externals/rrule/lib/rrule',
+        'nlp': 'canopsis/uibase/lib/externals/rrule/lib/nlp',
         'underscore' : 'canopsis/uibase/libwrappers/underscore',
 
         'moment': 'canopsis/uibase/lib/externals/moment/min/moment-with-locales.min',

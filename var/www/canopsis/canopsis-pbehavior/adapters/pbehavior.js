@@ -40,6 +40,12 @@ define([
             }
 
             return result;
+        },
+
+        findQuery: function(store, type, query){
+            var url = "/pbehavior";
+
+            return this.ajax(url, 'GET', { data: query });
         }
 
     });

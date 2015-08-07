@@ -23,8 +23,11 @@ define([
     'app/lib/utils/forms',
     'app/lib/loaders/schemas',
     'app/lib/utils/notification',
-    'canopsis/widgetCalendar/lib/utils/moment/min/moment.min',
-    'canopsis/widgetCalendar/lib/utils/fullcalendar/dist/fullcalendar.min'
+    'canopsis/widgetCalendar/lib/externals/moment/min/moment.min',
+    'canopsis/widgetCalendar/lib/externals/fullcalendar/dist/fullcalendar.min',
+    'link!canopsis/widgetCalendar/lib/externals/fullcalendar/dist/fullcalendar.min.css',
+    'link!canopsis/widgetCalendar/style.css',
+    'canopsis/uibase/libwrappers/rrule'
 ], function(WidgetFactory, dataUtils, formUtils, schemasUtils, notificationUtils, moment, WidgetCalendar) {
 
     var get = Ember.get,
@@ -46,7 +49,8 @@ define([
         addEventCalendar: function(calendarTab, backgroundColor, textColor) {
              // TODO find other solution: on refresh of the mixin this.$('.calendar') is undefined...
             var calendar = this.$('.calendar');
-            if(calendar === undefined){
+
+            if(isNone(calendar)) {
                 return;
             }
 
@@ -90,19 +94,24 @@ define([
                 editable: false,
                 eventLimit: true,
                 lazyFetching: false,
+
                 viewRender: function(month, calendar) {
                     var controller = get(globalView, "controller");
                     var calview = globalView.$('.calendar').fullCalendar('getView');
 
                     set(controller, 'calendarStart', moment(calview.start.format()).format('x')/1000);
                     set(controller, 'calendarEnd', moment(calview.end.format()).format('x')/1000);
+
                     var calTab = get(controller, 'calendarTab');
                     var eventLogTab = get(controller, 'eventsLog');
-                    if(calTab === undefined)
+
+                    if(isNone(calTab))
                         calTab = [];
+
                     globalView.removeEventCalendar(calTab);
                     globalView.removeEventCalendar(eventLogTab);
-                    if (get(controller, 'calendarStart') !== undefined){
+
+                    if (!isNone(get(controller, 'calendarStart'))) {
                         controller.loadCalendarEvents();
                         controller.getMixinFilter();
                     }
@@ -115,6 +124,7 @@ define([
             });
             var controller = get(globalView, "controller");
             set(controller, 'fullCalendarInitialized', true);
+
             // Sync controller and view for addEventCalendar event
             var ctrl = get(this, "controller");
             ctrl.on('addEventCalendar',this, this.addEventCalendar);
@@ -163,6 +173,7 @@ define([
             var controller = this;
             controller.trigger('willDestroyElement');
             controller.trigger('didInsertElement');
+            controller.loadPBehavior();
         },
 
         /**
@@ -174,7 +185,6 @@ define([
             this._super();
             var controller = this;
             var filterFragments = this.computeFilterFragmentsList();
-            console.log('debug computeFilterFragmentsList', filterFragments);
 
             if(typeof filterFragments[1] === "string"){
                 this.trigger('removeEventCalendar', get(this, 'eventsLog'));
@@ -192,7 +202,7 @@ define([
 
                         var titleFilter = get(widgetFilters[j], 'title');
                         var descriptionFilter = get(widgetFilters[j], 'filter');
-                        console.log('finish', titleFilter, descriptionFilter);
+
                         if (descriptionFilter === filterFragments[1]){
                             set(controller, 'titleFilter', titleFilter);
                         }
@@ -252,7 +262,6 @@ define([
             var eventsLogParams = {};
 
             if (mongoQuery === "") {
-
                 eventsLogParams = {
                     tstart: get(this, 'calendarStart'),
                     tstop: get(this, 'calendarEnd'),
@@ -275,6 +284,7 @@ define([
                 for (var i = 0; i < countlength; i++) {
                     var count = get(contentsCount[i], 'count');
                     var date = get(contentsCount[i], 'date');
+
                     if(count !== 0) {
                         var formated_eventsLogCount = controller.getEventsLogCount(count, date);
                         calendarTab.pushObject(formated_eventsLogCount);
@@ -287,6 +297,101 @@ define([
                 set(controller,'eventsLog', calendarTab);
 
             });
+        },
+
+        loadPBehavior: function(){
+            var controller = this;
+            var store = get(controller, 'widgetDataStore');
+            controller.getDateCalendarView();
+
+            var PBehaviorParams = {
+                start: get(this, 'calendarStart'),
+                end: get(this, 'calendarEnd')
+            };
+
+            store.findQuery('pbehavior', PBehaviorParams).then(function (result) {
+
+                var pbehaviorContent = get(result, 'content');
+                var pbehaviorContentLength = pbehaviorContent.length,
+                    calendarTab = [];
+
+                for (var i = 0; i < pbehaviorContentLength; i++) {
+
+                    var behaviors = get(pbehaviorContent[i], 'behaviors');
+                    var lBehavior = behaviors.length;
+                    var stringBehavior = '';
+
+                    for (var j = 0; j < lBehavior; j++){
+                        stringBehavior += behaviors[j];
+                    }
+
+                    var rule = controller.getDatesFromRrule(
+                        get(pbehaviorContent[i], 'rrule'),
+                        get(pbehaviorContent[i], 'dtstart'),
+                        get(pbehaviorContent[i], 'dtend')
+                    );
+
+                    var ruleLength = rule.length;
+                    for (var k = 0; k < ruleLength; k++) {
+                        var formated_eventPBehavior = controller.getPBehavior(
+                            rule[k],
+                            get(pbehaviorContent[i], 'duration'),
+                            get(pbehaviorContent[i], 'source'),
+                            stringBehavior
+                        );
+                        calendarTab.pushObject(formated_eventPBehavior);
+                    }
+                }
+
+                var pbehavior = get(controller, 'pbehavior');
+
+                controller.trigger('removeEventCalendar', pbehavior);
+                controller.trigger('addEventCalendar', calendarTab, '#FA6E69', 'black');
+                set(controller,'pbehavior', calendarTab);
+            });
+        },
+
+        getDatesFromRrule: function(rrule, dtstart, dtend){
+            /** bad implementation because we have to manipulate string
+             *  that could be different
+             *  this way: non respect of RFC rule in backend (date format)
+             */
+            var frequence = rrule.split('=');
+            var ruletest = new RRule({
+                freq: RRule[frequence[1]],
+                dtstart: new Date(dtstart*1000),
+                until: new Date(dtend*1000)
+            });
+
+            /*// good way of create a rrule from the backend data, need dtstart and dtend
+            this.getDateCalendarView();
+            var ruletest = RRule.fromString(rrule);*/
+            var eventRuleList = ruletest.between(
+                new Date(get(this, 'calendarStart')*1000),
+                new Date(get(this, 'calendarEnd')*1000)
+            );
+
+            var eventRuleListLength = eventRuleList.length,
+                result = [];
+
+            for (var k = 0; k < eventRuleListLength; k++) {
+                result.pushObject(moment(eventRuleList[k]).format());
+            }
+
+            return result;
+        },
+
+        getPBehavior: function(eventStart, duration, source, behavior) {
+            var dtstart = eventStart;
+            var dtend = parseInt(moment(eventStart).format('X')) + parseInt(duration);
+            dtend = moment(dtend*1000).format();
+            var title = behavior;
+
+            return {
+                title: title,
+                start: dtstart,
+                end: dtend
+            };
         },
 
         /**
@@ -303,10 +408,10 @@ define([
          * @method getDateCalendarView
          */
         getDateCalendarView: function () {
-            if(get(this, 'calendarStart') ===  undefined) {
+            if(isNone(get(this, 'calendarStart'))) {
                 set(this, 'calendarStart', parseInt(moment().startOf('month').format('x')/1000));
             }
-            if(get(this, 'calendarEnd') === undefined) {
+            if(isNone(get(this, 'calendarEnd'))) {
                 set(this, 'calendarEnd', parseInt(moment().endOf('month').format('x')/1000));
             }
         },
@@ -343,7 +448,8 @@ define([
             return {
                 title: title,
                 start: moment(get(date, 'begin')*1000).format(),
-                end: moment(get(date, 'end')*1000).format()
+                end: moment(get(date, 'end')*1000).format(),
+                allDay: true
             };
         },
 
@@ -374,8 +480,9 @@ define([
                     // creation of the event and inform the user of this action by a message
                     recordWizard.submit.then(function(form){
                         eventCalendarRecord = form.get('formContext');
-                        var beginDate = get(eventCalendarRecord, 'dtstart');
-                        var endDate = get(eventCalendarRecord, 'dtend');
+                        var beginDate = get(eventCalendarRecord, 'dtstart'),
+                            endDate = get(eventCalendarRecord, 'dtend');
+
                         if (beginDate > endDate) {
                             console.log('the starting date is after the ending date');
                             controller.showUserMessage(

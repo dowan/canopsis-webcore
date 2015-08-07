@@ -93,3 +93,25 @@ def exports(ws):
         result = pbm.remove(uids=ids)
 
         return result
+
+    @route(
+        ws.application.get,
+        payload=['start', 'end'],
+        name=DEFAULT_ROUTE
+    )
+    def find_pbehavior(start=None, end=None):
+        """
+        """
+
+        storage = pbm[PBehaviorManager.STORAGE]
+
+        pbehavior_list = storage.find_elements(query={
+            '$or': [
+                {
+                    'dtstart': {'$gte': start, '$lte': end},
+                    'dtend': {'$gte': start, '$lte': end}
+                }
+            ]
+        })
+
+        return list(pbehavior_list)

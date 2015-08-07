@@ -2,6 +2,7 @@
 	{{#if controller.errorMessage}}
 		<div {{bind-attr class=":alert controller.errorLevel"}} role="alert">{{controller.errorMessage}}</div>
 	{{/if}}
+	<button class="btn btn-flat calendarPbehavior" {{action "createEvent"}}>{{tr "Pbehavior"}}</button>
 	{{partialslot slot=controller._partials.subHeader}}
 		<div class="eventInsertion">
 			<button class="btn btn-primary btn-flat" {{action "createEvent"}}>{{tr "Add event"}}</button>
