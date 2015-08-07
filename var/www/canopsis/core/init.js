@@ -34,6 +34,7 @@ define([
     'canopsis/runtime.conf',
     'app/controller/application',
     'app/controller/formwrapper',
+    'app/controller/serie',
     'app/controller/login',
     'app/controller/userview',
     'app/view/userview',
