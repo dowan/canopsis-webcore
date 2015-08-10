@@ -280,6 +280,8 @@ define([
              * @param {String} location the location to redirect the user when he accepts to get redirected. Defaults to "/index.html"
              */
             promptReloadApplication: function(title, location) {
+                Ember.run(function(){
+
                 setTimeout(function (){
                     var recordWizard = formsUtils.showNew('confirmform', {}, {
                         title: __(title)
@@ -295,6 +297,7 @@ define([
                         }
                     });
                 }, 1500);
+            });
             },
 
             /**

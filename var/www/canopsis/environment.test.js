@@ -19,11 +19,10 @@
 */
 
 define([
-    'canopsis/enabled',
 	'canopsis/canopsisConfiguration',
 	'canopsis/core/lib/externals/ember-qunit-builds/ember-qunit.amd',
     'link!canopsis/core/lib/externals/qunit/qunit/qunit.css'
-], function(enabledBricksUtil, canopsisConfiguration) {
+], function(canopsisConfiguration) {
     if (!canopsisConfiguration.DEBUG) {
         console.tags = {
             add:function() {},
@@ -38,21 +37,5 @@ define([
         console.warn = function(){};
     }
 
-    window.startCanopsisTests = function (application) {
-
-        application.setupForTesting();
-        application.injectTestHelpers();
-
-        console.log('Starting automated tests');
-        enabledBricksUtil.getEnabledModules(function(enabledBricks) {
-            var bricksTestMainList = [];
-            for (var i = 0, l = enabledBricks.length; i < l; i++) {
-                if(enabledBricks[i] !== 'core') {
-                    bricksTestMainList.pushObject('canopsis/' + enabledBricks[i] + '/init.test');
-                }
-            }
-            require(bricksTestMainList);
-        });
-    };
 });
 

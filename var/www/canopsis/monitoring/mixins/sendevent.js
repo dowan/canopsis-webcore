@@ -140,19 +140,22 @@ define([
                 $.post('/event', {
                     event: JSON.stringify(post_events)
                 }).then(function(data) {
-                    record.rollback();
-                    record.unloadRecord();
-                    console.log('safe_mode', safe_mode);
+                    Ember.run(function(){
 
-                    if (safe_mode) {
-                        //Safe mode refresh data from server
-                        me.refreshContent();
-                    } else {
-                        //Refresh list at Ember level (js), do not triggers a server query yet.
-                        me.trigger('refresh');
-                    }
+                        record.rollback();
+                        record.unloadRecord();
+                        console.log('safe_mode', safe_mode);
 
-                    resolve(arguments);
+                        if (safe_mode) {
+                            //Safe mode refresh data from server
+                            me.refreshContent();
+                        } else {
+                            //Refresh list at Ember level (js), do not triggers a server query yet.
+                            me.trigger('refresh');
+                        }
+
+                        resolve(arguments);
+                    });
                 }, reject);
             });
         },
@@ -174,9 +177,11 @@ define([
 
             var me = this;
             var rollback = function() {
-                me.startRefresh();
-                record.rollback();
-                record.unloadRecord();
+                Ember.run(function(){
+                    me.startRefresh();
+                    record.rollback();
+                    record.unloadRecord();
+                });
             };
 
             wizard.submit.then(function(form) {

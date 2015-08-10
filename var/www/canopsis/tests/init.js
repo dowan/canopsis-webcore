@@ -21,6 +21,23 @@
 
 
 define([
+    'canopsis/enabled',
     'canopsis/tests/testhelpers/ajax-stub'
-], function () {
+], function (enabledBricksUtil) {
+
+    window.startCanopsisTests = function (application) {
+        application.setupForTesting();
+        application.injectTestHelpers();
+
+        console.log('Starting automated tests');
+        enabledBricksUtil.getEnabledModules(function(enabledBricks) {
+            var bricksTestMainList = [];
+            for (var i = 0, l = enabledBricks.length; i < l; i++) {
+                if(enabledBricks[i] !== 'core') {
+                    bricksTestMainList.pushObject('canopsis/' + enabledBricks[i] + '/init.test');
+                }
+            }
+            require(bricksTestMainList);
+        });
+    };
 });

@@ -18,6 +18,8 @@
 */
 
 Ember.Handlebars.helper('criticity', function(value, keep_state) {
+
+    var __ = Ember.String.loc;
     //displays keep status information if any onto the state field
     //keep state is generated when a user overrides the criticity of and acknowleged event
     console.log('keep_state', keep_state);

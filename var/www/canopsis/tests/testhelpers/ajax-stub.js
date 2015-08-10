@@ -19,11 +19,12 @@
 
 /** @module canopsis.frontend.tests */
 
-function stubEndpointForHttpRequest(url, json) {
+function stubEndpointForHttpRequest(url, json, response) {
     $.mockjax({
         url: url,
         dataType: 'json',
-        responseText: json
+        responseText: json,
+        response: response
     });
 }
 

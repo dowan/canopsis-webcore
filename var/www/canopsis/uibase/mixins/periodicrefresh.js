@@ -44,14 +44,20 @@ define([
             console.log('refreshInterval - > ', widgetController.get('mixinOptions.periodicrefresh.refreshInterval'));
 
             var interval = get(this, 'widgetRefreshInterval');
+            var mixin = this;
 
-            interval = setInterval(function () {
-                console.log('refreshing widget ' + get(widgetController, 'title'), widgetController.get('mixinOptions.periodicrefresh.refreshInterval'), widgetController);
-                widgetController.refreshContent();
-            }, widgetController.get('mixinOptions.periodicrefresh.refreshInterval') * 1000);
+            Ember.run(function(){
 
-            //keep track of this interval
-            this.set('widgetRefreshInterval', interval);
+                interval = setInterval(function () {
+                    console.log('refreshing widget ' + get(widgetController, 'title'), widgetController.get('mixinOptions.periodicrefresh.refreshInterval'), widgetController);
+                    Ember.run(function(){
+                        widgetController.refreshContent();
+                    });
+                }, widgetController.get('mixinOptions.periodicrefresh.refreshInterval') * 1000);
+
+                //keep track of this interval
+                set(mixin, 'widgetRefreshInterval', interval);
+            });
         },
 
         willDestroyElement: function() {

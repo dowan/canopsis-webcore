@@ -4,13 +4,17 @@ module('integration tests', {
 });
 
 test('delete will remove the person for a given row', function() {
-    expect(1);
+
+    expect(4);
+
     visit('/userview/view.event');
 
     andThen(function() {
         var listWidgetsCount = find('.widget.list').length;
         equal(listWidgetsCount, 1, 'One list widget found');
+    });
 
+    andThen(function() {
         var json = {
             total:0,
             data:[{
@@ -37,15 +41,31 @@ test('delete will remove the person for a given row', function() {
 
         $D.getViewFromJqueryElement($('.widget.list')).get('controller').refreshContent();
 
-        Ember.run.later(function(){
-            click('.listline button');
-            andThen(function() {
-                fillIn('.modal-content .ember-text-field', 'ticketNumber');
-                fillIn('.modal-content .ember-text-area', 'reason');
-                andThen(function() {
-                    click('.modal-footer .btn-success');
-                });
-            })
-        }, 1000);
     });
+
+    andThen(function() {
+        click('.listline button');
+    });
+
+    andThen(function() {
+        fillIn('.modal-content .ember-text-field', 'ticketNumber');
+        fillIn('.modal-content .ember-text-area', 'reason');
+    });
+
+    andThen(function() {
+        stubEndpointForHttpRequest(
+            '/event',
+            {success: true},
+            function (settings) {
+                sendEvent = JSON.parse(settings.data.event)[0];
+                equal(sendEvent.component, 'A', 'Expect the event component is equal to "A"');
+                equal(sendEvent.output, 'reason', 'Expect the event ouptut is equal to "reason"');
+                equal(sendEvent.event_type, 'ack', 'Expect the event type is equal to "ack"');
+            }
+        );
+
+        click('.modal-footer .btn-success');
+    });
+
+
 });

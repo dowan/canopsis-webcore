@@ -154,14 +154,16 @@ define([
     i18n.downloadDefinitions();
 
     if (conf.DEBUG && conf.TRANSLATE) {
-        setInterval(function () {
-            if (i18n.newTranslations) {
-                console.log('Uploading new translations');
-                i18n.newTranslations = false;
-                i18n.uploadDefinitions();
-            }
+        Ember.run(function(){
+            setInterval(function () {
+                if (i18n.newTranslations) {
+                    console.log('Uploading new translations');
+                    i18n.newTranslations = false;
+                    i18n.uploadDefinitions();
+                }
 
-        }, 10000);
+            }, 10000);
+        });
     }
 
     Ember.Application.initializer({

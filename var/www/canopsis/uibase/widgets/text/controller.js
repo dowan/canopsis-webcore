@@ -27,7 +27,8 @@ define([
 
     var get = Ember.get,
         set = Ember.set,
-        isNone = Ember.isNone;
+        isNone = Ember.isNone,
+        __ = Ember.String.loc;
 
     var widget = WidgetFactory('text', {
 
@@ -215,7 +216,7 @@ define([
                 hr: function (value) {
                     console.log('found value for human readable : ', value);
                     var unit = get(value, 'hash.unit');
-                    var value = get(value, 'hash.value');
+                    value = get(value, 'hash.value');
                     //only second option unit is available for now
                     //otherwise, values are considered as number base 10
                     if (unit !== 's') {
