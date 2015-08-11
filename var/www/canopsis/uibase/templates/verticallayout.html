@@ -1,5 +1,7 @@
 {{#each item in controller.model.items}}
+    {{widget-drop-target insertAtIndex=_view.contentIndex additionnalClass="horizontalDropTarget"}}
     <div>
         {{widgetslot item=item}}
     </div>
 {{/each}}
+{{widget-drop-target insertAtIndex=controller.model.items.length additionnalClass="horizontalDropTarget"}}

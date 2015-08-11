@@ -1,8 +1,11 @@
-<div>
+    <div style="min-height:100px">
     {{#each item in controller.items}}
+        {{widget-drop-target insertAtIndex=_view.contentIndex additionnalClass="verticalDropTarget"}}
+
         <div {{bind-attr class="controller.section"}} >
             {{widgetslot item=item}}
         </div>
     {{/each}}
+    {{widget-drop-target insertAtIndex=controller.model.items.length additionnalClass="verticalDropTarget"}}
     <div style="clear:both"></div>
 </div>

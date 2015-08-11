@@ -72,9 +72,11 @@ define([
     'canopsis/uibase/libwrappers/jsoneditor',
     'canopsis/uibase/libwrappers/summernote',
     'canopsis/uibase/libwrappers/codemirror',
+    'canopsis/uibase/views/widgettitlebar-drag-handle',
     'canopsis/uibase/lib/externals/ember-datetimepicker/lib/component',
     'canopsis/uibase/lib/externals/ember-icheck/lib/component',
     'canopsis/uibase/lib/externals/ember-tooltip/lib/component',
+    'canopsis/uibase/lib/externals/jquery-nearest/src/jquery.nearest',
     'canopsis/uibase/lib/externals/ember-durationcombo/lib/component',
     'link!canopsis/uibase/lib/externals/fontawesome/css/font-awesome.min.css',
     'link!canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker-bs3.css'

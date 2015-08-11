@@ -8,6 +8,9 @@
                 </button>
             </div>
         {{/if}}
+
+        {{partialslot slot=controller._partials.actionToolbarButtons}}
+
         <button class="btn btn-default btn-sm" {{action 'displayLiveReporting' this}} >
             <span class="glyphicon glyphicon-time"></span>
         </button>

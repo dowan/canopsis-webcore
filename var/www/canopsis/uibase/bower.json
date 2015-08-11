@@ -12,5 +12,6 @@
   "license": "GNU Affero General Public License",
   "homepage": "http://www.canopsis.org/",
   "dependencies": {
+    "jquery-nearest": "~1.3.1"
   }
 }

@@ -98,7 +98,9 @@ var templates = [
     { name: 'draggableheaders', template: 'canopsis/uibase/templates/draggableheaders.html'},
     { name: 'tabledraggableth', template: 'canopsis/uibase/templates/tabledraggableth.html'},
     { name: 'loading', template: 'canopsis/uibase/templates/loading.html'},
-    { name: 'loadingindicator', template: 'canopsis/uibase/templates/loadingindicator.hbs'}
+    { name: 'loadingindicator', template: 'canopsis/uibase/templates/loadingindicator.hbs'},
+    { name: 'widgettitlebar-drag-handle', template: 'canopsis/uibase/templates/widgettitlebar-drag-handle.hbs'},
+    { name: 'widget-drop-target', template: 'canopsis/uibase/templates/widget-drop-target.hbs'}
 ];
 
 loader.loadWithTemplates(templates);

@@ -2,10 +2,12 @@
     {{#if controller.isOnMainView}}
         <div>
             {{#each item in controller.items}}
+                {{widget-drop-target insertAtIndex=_view.contentIndex additionnalClass="horizontalDropTarget"}}
                 <div {{bind-attr class="controller.itemCssClass"}} >
                     {{widgetslot item=item}}
                 </div>
             {{/each}}
+            {{widget-drop-target insertAtIndex=controller.model.items.length additionnalClass="horizontalDropTarget"}}
             <div style="clear:both"></div>
         </div>
     {{else}}
@@ -30,3 +32,4 @@
         {{/if}}
     {{/each}}
 {{/if}}
+

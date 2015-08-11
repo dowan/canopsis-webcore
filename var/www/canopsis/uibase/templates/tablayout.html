@@ -1,11 +1,17 @@
 <section class="nav-tabs-custom">
     <ul class="nav nav-tabs ">
         {{#each item in controller.items.content}}
+
+                {{widget-drop-target insertAtIndex=_view.contentIndex additionnalClass="tabDropTarget" tagName="li"}}
                 <li {{bind-attr class="item.tabSelected:active"}}>
                     <a href="#" data-toggle="tab" {{action 'selectTab' item.widget}}>
-                        <span>
-                            {{item.widget.title}}
-                        </span>
+                        {{#if controller.editMode}}
+                            {{widgettitlebar-drag-handle widget=item title=item.widget.title xtype=item.widget.xtype}}
+                        {{else}}
+                            <span>
+                                {{item.widget.title}}
+                            </span>
+                        {{/if}}
 
                         {{#if controller.editMode}}
                             <span class="badge" {{action 'editWidget' item.widget}}>
@@ -18,9 +24,13 @@
                     </a>
                 </li>
         {{/each}}
+        {{#if controller.editMode}}
+            {{widget-drop-target insertAtIndex=controller.model.items.length additionnalClass="tabDropTarget" tagName="li"}}
+        {{/if}}
     </ul>
 
     {{#with controller.selectedItem}}
         {{widgethelper widget=controller.selectedItem}}
     {{/with}}
 </section>
+

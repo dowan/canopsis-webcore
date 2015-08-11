@@ -1,0 +1,14 @@
+
+{{#unless controller.hide_titles}}
+    {{#if view.title}}
+    	<span class="widgetDragHandle">
+    		{{view.title}}
+    	</span>
+    {{/if}}
+    {{#unless view.title}}
+    	<span class="widgetDragHandle">
+    		&lt; {{tr 'Untitled'}} {{view.xtype}} widget &gt;
+    	</span>
+    {{/unless}}
+{{/unless}}
+

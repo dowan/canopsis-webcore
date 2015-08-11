@@ -973,3 +973,33 @@ table.dataTableConnector {
     filter:alpha(opacity=0);
     -moz-opacity:0.0;
 }
+
+.nearest {
+    background: blue;
+}
+
+.horizontalDropTarget {
+    height:10px;
+}
+
+.verticalDropTarget {
+    width:10px;
+    height:100px;
+    margin-left: -10px;
+    float:left;
+}
+
+.tabDropTarget {
+    width:10px;
+    height:45px;
+    margin-left: -10px;
+    float:left;
+}
+
+.widgetDragHandle {
+    cursor: move;
+}
+
+.widgetDragHandle:hover {
+    background: grey;
+}
