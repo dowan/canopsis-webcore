@@ -108,8 +108,16 @@ def exports(ws):
         pbehavior_list = storage.find_elements(query={
             '$or': [
                 {
-                    'dtstart': {'$gte': start, '$lte': end},
-                    'dtend': {'$gte': start, '$lte': end}
+                    'dtstart': {'$gte': start},
+                    'dtstart': {'$lte': end}
+                },
+                {
+                    'dtend': {'$gte': start},
+                    'dtend': {'$lte': end}
+                },
+                {
+                    'dtstart': {'$lte': start},
+                    'dtend': {'gte': end}
                 }
             ]
         })

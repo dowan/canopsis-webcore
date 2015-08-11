@@ -47,6 +47,32 @@ define([
                 'output'
             ];
         },
+
+        /**
+         * apply a filter to an element before to transmit it to an other view.
+         * see goToInfo method of widgetCalendar for example
+         * @method applyVolatileFilter
+         * @param transition: promise to transmit the element to an other view
+         * @param element: concerned event
+         * @param filter: a mongoDB style query as a string
+         */
+        applyVolatileFilter: function (transition, element, filter) {
+            transition.promise.then(function(routeInfos){
+                var list = get(routeInfos, 'controller.content.containerwidget');
+                list = get(list, '_data.items')[0];
+                list = get(list, 'widget');
+                console.log(list);
+                if(filter !== '') {
+                    if(!get(list, 'volatile')) {
+                        set(list, 'volatile', {});
+                    }
+
+                    set(list, 'volatile.forced_filter', filter);
+                    set(list, 'rollbackable', true);
+                    set(list, 'title', element.title);
+                }
+            });
+        }
     });
 
     Ember.Application.initializer({

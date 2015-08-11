@@ -18,8 +18,9 @@
 */
 
 define([
-    'app/lib/factories/widget'
-], function(WidgetFactory) {
+    'app/lib/factories/widget',
+    'app/lib/utils/event'
+], function(WidgetFactory, eventUtil) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -42,36 +43,13 @@ define([
                 var transition = this.transitionToRoute('/userview/' + get(this, 'config.destination_view'));
 
                 var filter_pattern = get(this, 'model.filter_pattern');
-
-                var weatherController = this;
+                var template = filter_pattern;
+                var context = element;
+                var compiledFilterPattern = Handlebars.compile(template)(context);
+                console.log('compiledFilterPattern', compiledFilterPattern);
 
                 // set(weatherController, 'controllers.application.isLoading', get(weatherController, 'controllers.application.isLoading') + 1);
-
-                transition.promise.then(function(routeInfos){
-                    console.log('transition done', routeInfos);
-                    var list = get(routeInfos, 'controller.content.containerwidget');
-                    list = get(list, '_data.items')[0];
-                    list = get(list, 'widget');
-                    console.log(list);
-
-                    console.log('filter_pattern', filter_pattern);
-
-                    var template = filter_pattern;
-                    var context = element;
-                    var compiledFilterPattern = Handlebars.compile(template)(context);
-
-                    console.log('compiledFilterPattern', compiledFilterPattern);
-
-                    if(compiledFilterPattern !== '') {
-                        if(!get(list, 'volatile')) {
-                            set(list, 'volatile', {});
-                        }
-
-                        set(list, 'volatile.forced_filter', compiledFilterPattern);
-                        set(list, 'rollbackable', true);
-                        set(list, 'title', 'Info on events :', element.title);
-                    }
-                });
+                eventUtil.applyVolatileFilter(transition, element, compiledFilterPattern);
             }
         },
 
