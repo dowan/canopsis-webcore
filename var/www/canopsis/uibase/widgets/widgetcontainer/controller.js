@@ -19,12 +19,62 @@
 
 define([
     'app/lib/factories/widget',
-    'canopsis/uibase/widgets/canvas/controller'
-], function(WidgetFactory, CanvasController) {
+    'canopsis/uibase/widgets/canvas/controller',
+    'app/lib/utils/debug'
+], function(WidgetFactory, CanvasController, debugUtils) {
+
+    var get = Ember.get;
+
+    var ContainerViewMixin = Ember.Mixin.create({
+        /**
+         * @method registerHooks
+         */
+        registerHooks: function() {
+            get(this, 'controller').on('refreshChilds', this, this.refreshChilds);
+            return this._super();
+        },
+
+        /**
+         * @method unregisterHooks
+         */
+        unregisterHooks: function() {
+            get(this, 'controller').off('refreshChilds', this, this.refreshChilds);
+            return this._super();
+        },
+
+        refreshChilds: function() {
+            var children = this.$().children().find('.ember-view.widget');
+            var thisId = this.$().attr('id');
+            console.log('this id', thisId);
+
+            for (var i = 0, l = children.length; i < l; i++) {
+                if($(children[i]).parent().closest('.ember-view.widget').attr('id') === thisId) {
+                    var widgetViewToRefresh = debugUtils.getViewFromJqueryElement($(children[i]));
+                    var widgetControllerToRefresh = widgetViewToRefresh.get('controller');
+                    widgetControllerToRefresh.refreshContent();
+                }
+            }
+        }
+    });
 
     var widget = WidgetFactory('widgetcontainer', {
         partials: {
             titlebarsbuttons : ['titlebarbutton-duplicate', 'titlebarbutton-moveup','titlebarbutton-movedown', 'titlebarbutton-widgeterrors']
+        },
+
+        init: function() {
+            this.addMixinView(ContainerViewMixin);
+            this._super();
+        },
+
+        refreshContent: function() {
+            console.log('container startRefresh');
+
+            var widgetwrappers = get(this, 'items');
+
+            this.trigger('refreshChilds');
+
+            return this._super();
         }
     }, {subclass: CanvasController});
 
