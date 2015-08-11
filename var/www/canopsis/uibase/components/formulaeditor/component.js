@@ -21,7 +21,9 @@ define([], function() {
 
     var get = Ember.get,
         set = Ember.set,
-        isNone = Ember.isNone;
+        isNone = Ember.isNone,
+        __ = Ember.String.loc;
+
 
     var component = Ember.Component.extend({
         form: Ember.computed.alias('parentView.parentView.controller'),

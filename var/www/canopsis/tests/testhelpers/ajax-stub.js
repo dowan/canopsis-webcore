@@ -20,12 +20,18 @@
 /** @module canopsis.frontend.tests */
 
 function stubEndpointForHttpRequest(url, json, response) {
-    $.mockjax({
+
+    var options = {
         url: url,
         dataType: 'json',
         responseText: json,
-        response: response
-    });
+    };
+
+    if (response) {
+        options.response = response;
+    }
+
+    $.mockjax(options);
 }
 
 define([
