@@ -20,32 +20,30 @@
 
 define([], function() {
 
-    var get = Ember.get;
-
-
-    var component = Ember.Component.extend({
-        rightsArray: function() {
-            var rights = get(this, 'content') || {},
-                res = Ember.A();
-            var rightsKeys = Ember.keys(rights);
-
-
-            for (var i = 0, l = rightsKeys.length; i < l; i++) {
-                res.pushObject({
-                    name: rightsKeys[i]
-                });
-            }
-
-            return res;
-        }.property('content')
-    });
 
     Ember.Application.initializer({
         name:"component-rightsrenderer",
         initialize: function(container, application) {
+            var get = Ember.get;
+
+            var component = Ember.Component.extend({
+                rightsArray: function() {
+                    var rights = get(this, 'content') || {},
+                        res = Ember.A();
+                    var rightsKeys = Ember.keys(rights);
+
+
+                    for (var i = 0, l = rightsKeys.length; i < l; i++) {
+                        res.pushObject({
+                            name: rightsKeys[i]
+                        });
+                    }
+
+                    return res;
+                }.property('content')
+            });
+
             application.register('component:component-rightsrenderer', component);
         }
     });
-
-    return component;
 });

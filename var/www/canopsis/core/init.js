@@ -40,6 +40,7 @@ define([
     'app/view/userview',
     'app/controller/widget',
     'app/view/application',
+    'app/view/recordinfopopup'
     'app/view/formwrapper',
     'app/view/editor',
     'app/view/widget',
