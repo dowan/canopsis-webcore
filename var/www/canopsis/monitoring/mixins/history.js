@@ -42,5 +42,12 @@ define([
         }
     });
 
+    Ember.Application.initializer({
+        name:'HistoryMixin',
+        initialize: function(container, application) {
+            application.register('mixin:history', mixin);
+        }
+    });
+
     return mixin;
 });

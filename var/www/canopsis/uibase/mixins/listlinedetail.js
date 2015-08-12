@@ -101,5 +101,12 @@ define([
     });
 
 
+    Ember.Application.initializer({
+        name:'ListlinedetailMixin',
+        initialize: function(container, application) {
+            application.register('mixin:listlinedetail', mixin);
+        }
+    });
+
     return mixin;
 });

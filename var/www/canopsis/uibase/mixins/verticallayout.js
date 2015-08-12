@@ -28,5 +28,13 @@ define([
         }
     });
 
+
+    Ember.Application.initializer({
+        name:'VerticallayoutMixin',
+        initialize: function(container, application) {
+            application.register('mixin:verticallayout', mixin);
+        }
+    });
+
     return mixin;
 });

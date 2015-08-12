@@ -28,5 +28,13 @@ define([
         }
     });
 
+
+    Ember.Application.initializer({
+        name:'LightlayoutMixin',
+        initialize: function(container, application) {
+            application.register('mixin:lightlayout', mixin);
+        }
+    });
+
     return mixin;
 });

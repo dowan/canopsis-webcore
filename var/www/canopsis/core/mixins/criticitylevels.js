@@ -68,5 +68,12 @@ define([
         }
     });
 
+    Ember.Application.initializer({
+        name:'CriticitylevelsMixin',
+        initialize: function(container, application) {
+            application.register('mixin:criticitylevels', mixin);
+        }
+    });
+
     return mixin;
 });

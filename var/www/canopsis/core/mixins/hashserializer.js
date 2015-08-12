@@ -38,5 +38,13 @@ define([
         }
     });
 
+
+    Ember.Application.initializer({
+        name:'HashSerializerMixin',
+        initialize: function(container, application) {
+            application.register('mixin:hash-serializer', mixin);
+        }
+    });
+
     return mixin;
 });

@@ -184,5 +184,12 @@ define([
     });
 
 
+    Ember.Application.initializer({
+        name:'UserconfigurationMixin',
+        initialize: function(container, application) {
+            application.register('mixin:userconfiguration', mixin);
+        }
+    });
+
     return mixin;
 });

@@ -30,5 +30,13 @@ define([
         },
     });
 
+
+    Ember.Application.initializer({
+        name:'InfobuttonMixin',
+        initialize: function(container, application) {
+            application.register('mixin:infobutton', mixin);
+        }
+    });
+
     return mixin;
 });
