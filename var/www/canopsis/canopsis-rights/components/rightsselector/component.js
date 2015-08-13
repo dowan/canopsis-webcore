@@ -19,13 +19,14 @@
 
 
 define([
-    'canopsis/uibase/components/dictclassifiedcrecordselector/component',
     'canopsis/canopsis-rights/objects/rightsregistry'
-], function(DictclassifiedcrecordselectorComponent, rightsRegistry) {
+], function(rightsRegistry) {
 
     Ember.Application.initializer({
-        name:"component-rightsselector",
+        name: 'component-rightsselector',
+        after: 'component-dictclassifiedcrecordselector',
         initialize: function(container, application) {
+            var DictclassifiedcrecordselectorComponent = container.lookupFactory('component:component-dictclassifiedcrecordselector');
 
             var get = Ember.get,
                 set = Ember.set,

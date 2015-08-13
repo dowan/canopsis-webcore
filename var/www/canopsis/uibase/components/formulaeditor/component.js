@@ -17,118 +17,115 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+Ember.Application.initializer({
+    name: 'component-formulaeditor',
+    initialize: function(container, application) {
 
-    var component = Ember.Component.extend({
-        form: Ember.computed.alias('parentView.parentView.controller'),
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
-        metrics_cols: [
-            {name: 'component', title: __('Component')},
-            {name: 'resource', title: __('Resource')},
-            {name: 'id', title: __('Metric')},
-            {
-                action: 'insert',
-                actionAll: undefined,
-                title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-plus-sign"></span>'),
-                style: 'text-align: center;'
-            }
-        ],
+        var component = Ember.Component.extend({
+            form: Ember.computed.alias('parentView.parentView.controller'),
 
-        init: function() {
-            set(this, 'selectedMetrics', Ember.A());
+            metrics_cols: [
+                {name: 'component', title: __('Component')},
+                {name: 'resource', title: __('Resource')},
+                {name: 'id', title: __('Metric')},
+                {
+                    action: 'insert',
+                    actionAll: undefined,
+                    title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-plus-sign"></span>'),
+                    style: 'text-align: center;'
+                }
+            ],
 
-            this._super.apply(this, arguments);
+            init: function() {
+                set(this, 'selectedMetrics', Ember.A());
 
-            var categories = get(this, 'form.categories'),
-                found = false;
+                this._super.apply(this, arguments);
 
-            /* look for the field 'metrics' */
-            for(var i = 0, l = categories.length; i < l; i++) {
-                var category = categories[i];
+                var categories = get(this, 'form.categories'),
+                    found = false;
 
-                for(var j = 0, nkeys = category.keys.length; j < nkeys; j++) {
-                    var attr = category.keys[j];
+                /* look for the field 'metrics' */
+                for(var i = 0, l = categories.length; i < l; i++) {
+                    var category = categories[i];
 
-                    if (attr.field === 'metrics') {
-                        /* notify when user modify this value in another editor */
-                        Ember.addObserver(attr, 'value', this, this.metricDidChange);
-                        found = true;
+                    for(var j = 0, nkeys = category.keys.length; j < nkeys; j++) {
+                        var attr = category.keys[j];
+
+                        if (attr.field === 'metrics') {
+                            /* notify when user modify this value in another editor */
+                            Ember.addObserver(attr, 'value', this, this.metricDidChange);
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (found) {
                         break;
                     }
                 }
+            },
 
-                if (found) {
-                    break;
+            metricDidChange: function(attr, field) {
+                var metrics = get(attr, field);
+                var metas = [];
+
+                /* convert metric ids to metric metadata */
+                for(var i = 0, l = metrics.length; i < l; i++) {
+                    /* /metric/<connector>/<connector name>/<component>/<metric>
+                     * or
+                     * /metric/<connector>/<connector name>/<component>/<resource>/<metric>
+                     */
+
+                    var metric = metrics[i].split('/');
+                    var nmeta = metric.length;
+
+                    if (nmeta === 7) {
+                        metric = {
+                            component: metric[nmeta - 3],
+                            resource: metric[nmeta - 2],
+                            id: metric[nmeta - 1]
+                        };
+                    }
+                    else {
+                        metric = {
+                            component: metric[nmeta - 2],
+                            resource: null,
+                            id: metric[nmeta - 1]
+                        };
+                    }
+
+                    metas.push(metric);
+                }
+
+                set(this, 'selectedMetrics', metas);
+            },
+
+            actions: {
+                insert: function(metric) {
+                    var add_to_formula = ' ' + [
+                        '',
+                        get(metric, 'component'),
+                        get(metric, 'resource') || '',
+                        get(metric, 'id')
+                    ].join('/');
+
+                    var formula = get(this, 'content.value');
+
+                    if (isNone(formula)) {
+                        set(this, 'content.value', add_to_formula);
+                    }
+                    else {
+                        set(this, 'content.value', formula + add_to_formula);
+                    }
                 }
             }
-        },
+        });
 
-        metricDidChange: function(attr, field) {
-            var metrics = get(attr, field);
-            var metas = [];
-
-            /* convert metric ids to metric metadata */
-            for(var i = 0, l = metrics.length; i < l; i++) {
-                /* /metric/<connector>/<connector name>/<component>/<metric>
-                 * or
-                 * /metric/<connector>/<connector name>/<component>/<resource>/<metric>
-                 */
-
-                var metric = metrics[i].split('/');
-                var nmeta = metric.length;
-
-                if (nmeta === 7) {
-                    metric = {
-                        component: metric[nmeta - 3],
-                        resource: metric[nmeta - 2],
-                        id: metric[nmeta - 1]
-                    };
-                }
-                else {
-                    metric = {
-                        component: metric[nmeta - 2],
-                        resource: null,
-                        id: metric[nmeta - 1]
-                    };
-                }
-
-                metas.push(metric);
-            }
-
-            set(this, 'selectedMetrics', metas);
-        },
-
-        actions: {
-            insert: function(metric) {
-                var add_to_formula = ' ' + [
-                    '',
-                    get(metric, 'component'),
-                    get(metric, 'resource') || '',
-                    get(metric, 'id')
-                ].join('/');
-
-                var formula = get(this, 'content.value');
-
-                if (isNone(formula)) {
-                    set(this, 'content.value', add_to_formula);
-                }
-                else {
-                    set(this, 'content.value', formula + add_to_formula);
-                }
-            }
-        }
-    });
-
-    Ember.Application.initializer({
-        name: 'component-formulaeditor',
-        initialize: function(container, application) {
-            application.register('component:component-formulaeditor', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-formulaeditor', component);
+    }
 });

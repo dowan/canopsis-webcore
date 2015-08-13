@@ -17,134 +17,128 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
+Ember.Application.initializer({
+    name:"component-restobjectcombo",
+    initialize: function(container, application) {
+        var get = Ember.get,
+            set = Ember.set;
 
-    var get = Ember.get,
-        set = Ember.set;
 
+        var component = Ember.Component.extend({
 
-    var component = Ember.Component.extend({
+            isLoading: true,
 
-        isLoading: true,
+            init: function() {
+                this._super();
 
-        init: function() {
-            this._super();
+                set(this, 'store', DS.Store.create({
+                    container: this.get('container')
+                }));
+            },
 
-            set(this, 'store', DS.Store.create({
-                container: this.get('container')
-            }));
-        },
+            destroy: function() {
+                get(this, 'store').destroy();
+            },
 
-        destroy: function() {
-            get(this, 'store').destroy();
-        },
+            /**
+             * transforms the list of fetched elements into a categorized structure of elements, with a label and a value properties
+             */
+            categorizeElements: function(elements) {
+                var categorizedElements = {},
+                    component = this;
 
-        /**
-         * transforms the list of fetched elements into a categorized structure of elements, with a label and a value properties
-         */
-        categorizeElements: function(elements) {
-            var categorizedElements = {},
-                component = this;
-
-            function appendTo(name, element) {
-                if(categorizedElements[name] === undefined) {
-                    categorizedElements[name] = Ember.A();
-                }
-
-                if(element.get(get(component, 'valueField')) === get(component, 'selectedValue')) {
-                    categorizedElements[name].pushObject({
-                        label: get(element, get(component, 'labelField')),
-                        value: get(element, get(component, 'valueField')),
-                        selected: true
-                    });
-                } else {
-                    categorizedElements[name].pushObject({
-                        label: get(element, get(component, 'labelField')),
-                        value: get(element, get(component, 'valueField'))
-                    });
-                }
-            }
-
-            for (var i = 0, li = elements.length; i < li; i++) {
-                var tags = get(elements[i], 'tags');
-                if(tags && tags.length) {
-                    for (var j = 0, lj = tags.length; j < lj; j++) {
-                        appendTo(tags[j], elements[i]);
+                function appendTo(name, element) {
+                    if(categorizedElements[name] === undefined) {
+                        categorizedElements[name] = Ember.A();
                     }
-                } else {
-                    appendTo("untagged", elements[i]);
+
+                    if(element.get(get(component, 'valueField')) === get(component, 'selectedValue')) {
+                        categorizedElements[name].pushObject({
+                            label: get(element, get(component, 'labelField')),
+                            value: get(element, get(component, 'valueField')),
+                            selected: true
+                        });
+                    } else {
+                        categorizedElements[name].pushObject({
+                            label: get(element, get(component, 'labelField')),
+                            value: get(element, get(component, 'valueField'))
+                        });
+                    }
                 }
-            }
 
-            //transform dict into array
-            var keys = Ember.keys(categorizedElements);
-            var res = Ember.A();
-            for (i = 0; i < keys.length; i++) {
-                res.pushObject({ name: keys[i], content: categorizedElements[keys[i]]});
-            }
-            console.log('res', res);
-            return res;
-        },
+                for (var i = 0, li = elements.length; i < li; i++) {
+                    var tags = get(elements[i], 'tags');
+                    if(tags && tags.length) {
+                        for (var j = 0, lj = tags.length; j < lj; j++) {
+                            appendTo(tags[j], elements[i]);
+                        }
+                    } else {
+                        appendTo("untagged", elements[i]);
+                    }
+                }
 
-        filteredElements: function() {
-            var component = this;
+                //transform dict into array
+                var keys = Ember.keys(categorizedElements);
+                var res = Ember.A();
+                for (i = 0; i < keys.length; i++) {
+                    res.pushObject({ name: keys[i], content: categorizedElements[keys[i]]});
+                }
+                console.log('res', res);
+                return res;
+            },
 
-            if(!get(this, 'searchCriterion')) {
-                return this.categorizeElements(get(this, 'content'));
-            } else {
-                var searchCriterion = get(this, 'searchCriterion');
-                var filteredContent = get(this, 'content').filter(function(item){
-                    console.log('item', item);
-                    var doesItStartsWithSearchFilter = item.get(get(component, 'labelField')).slice(0, searchCriterion.length) == searchCriterion;
+            filteredElements: function() {
+                var component = this;
 
-                    var tags = item.get('tags');
-                    if(tags) {
-                        for (var i = 0, l = tags.length; i < l; i++) {
-                            var doesTagsStartsWithSearchFilter = tags[i].slice(0, searchCriterion.length) == searchCriterion;
-                            if(doesTagsStartsWithSearchFilter) {
-                                return true;
+                if(!get(this, 'searchCriterion')) {
+                    return this.categorizeElements(get(this, 'content'));
+                } else {
+                    var searchCriterion = get(this, 'searchCriterion');
+                    var filteredContent = get(this, 'content').filter(function(item){
+                        console.log('item', item);
+                        var doesItStartsWithSearchFilter = item.get(get(component, 'labelField')).slice(0, searchCriterion.length) == searchCriterion;
+
+                        var tags = item.get('tags');
+                        if(tags) {
+                            for (var i = 0, l = tags.length; i < l; i++) {
+                                var doesTagsStartsWithSearchFilter = tags[i].slice(0, searchCriterion.length) == searchCriterion;
+                                if(doesTagsStartsWithSearchFilter) {
+                                    return true;
+                                }
                             }
                         }
-                    }
-                    return doesItStartsWithSearchFilter;
-                });
-                return this.categorizeElements(filteredContent);
-            }
-        }.property('content', 'searchCriterion'),
-
-        didInsertElement: function() {
-            var component = this;
-
-            get(this, 'store').findQuery(get(this, 'schemaType'), {
-                limit: 10000
-            }).then(function(result) {
-                set(component, 'isLoading', false);
-                set(component, 'content', result.get('content'));
-
-                //insert the hook to manage selection change
-                Ember.run.schedule('afterRender', function bindEvents(){
-                    this.$('select').on('change', function manageSelectChange() {
-                        console.log('select value', this.value);
-                        set(component, 'attr.value', this.value);
+                        return doesItStartsWithSearchFilter;
                     });
+                    return this.categorizeElements(filteredContent);
+                }
+            }.property('content', 'searchCriterion'),
+
+            didInsertElement: function() {
+                var component = this;
+
+                get(this, 'store').findQuery(get(this, 'schemaType'), {
+                    limit: 10000
+                }).then(function(result) {
+                    set(component, 'isLoading', false);
+                    set(component, 'content', result.get('content'));
+
+                    //insert the hook to manage selection change
+                    Ember.run.schedule('afterRender', function bindEvents(){
+                        this.$('select').on('change', function manageSelectChange() {
+                            console.log('select value', this.value);
+                            set(component, 'attr.value', this.value);
+                        });
+                    });
+
                 });
 
-            });
+            },
 
-        },
+            willDestroyElement: function() {
+                this.$('select').off('change');
+            }
+        });
 
-        willDestroyElement: function() {
-            this.$('select').off('change');
-        }
-    });
-
-
-    Ember.Application.initializer({
-        name:"component-restobjectcombo",
-        initialize: function(container, application) {
-            application.register('component:component-restobjectcombo', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-restobjectcombo', component);
+    }
 });

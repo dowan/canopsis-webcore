@@ -17,91 +17,83 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+Ember.Application.initializer({
+    name:"component-slider",
+    initialize: function(container, application) {
 
-define([
-    'canopsis/core/lib/wrappers/slider',
-], function() {
-
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone,
-        __ = Ember.String.loc;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone,
+            __ = Ember.String.loc;
 
 
-    var component = Ember.Component.extend({
+        var component = Ember.Component.extend({
 
-        init: function() {
-            this._super();
+            init: function() {
+                this._super();
 
-        },
+            },
 
-        didInsertElement: function (){
+            didInsertElement: function (){
 
-            var sliderComponent = this;
+                var sliderComponent = this;
 
-            var options = get(this, 'options');
-            var min = get(options, 'min') || 0;
-            var max = get(options, 'max') || 100;
-            var step = get(options, 'step') || 1;
+                var options = get(this, 'options');
+                var min = get(options, 'min') || 0;
+                var max = get(options, 'max') || 100;
+                var step = get(options, 'step') || 1;
 
-            var value = parseInt(get(sliderComponent, 'content'));
-            if (isNone(value) || isNaN(value)) {
-                value = get(options, 'default') || min;
-            }
-
-            console.log('slider options', {
-                min: min,
-                max: max,
-                step: step,
-                value: value,
-            });
-
-            var slider = sliderComponent.$('#range_slider');
-
-            slider.ionRangeSlider({
-                min: min,
-                max: max,
-                from: value,
-                type: 'single',
-                step: step,
-                prefix: '',
-                onChange: function (data) {
-                    set(sliderComponent, 'content', get(data, 'fromNumber'));
+                var value = parseInt(get(sliderComponent, 'content'));
+                if (isNone(value) || isNaN(value)) {
+                    value = get(options, 'default') || min;
                 }
-            });
 
-            //hack as library does not manage properly the from parameter in this version.
-            var mockFrom = function () {
-                var irsLine = sliderComponent.$('.irs-line');
-                if (irsLine !== undefined) {
-                    if (irsLine.is(':visible')) {
-                        var width = irsLine.width();
-                        var proportion = width / max * value;
-                        //nice display ajustement....
-                        var maxwidth = width - 20;
-                        if (proportion > maxwidth) {
-                            proportion = maxwidth;
-                        }
-                        //Manually placing slider and tooltip proportionnaly to the width of the slider.
-                        sliderComponent.$('.irs-single').css('left', proportion);
-                        sliderComponent.$('.irs-slider').css('left', proportion);
-                    } else {
-                        setTimeout(mockFrom, 500);
+                console.log('slider options', {
+                    min: min,
+                    max: max,
+                    step: step,
+                    value: value,
+                });
+
+                var slider = sliderComponent.$('#range_slider');
+
+                slider.ionRangeSlider({
+                    min: min,
+                    max: max,
+                    from: value,
+                    type: 'single',
+                    step: step,
+                    prefix: '',
+                    onChange: function (data) {
+                        set(sliderComponent, 'content', get(data, 'fromNumber'));
                     }
-                }
+                });
 
-            };
-            //as from feature doesn t work on this slider...
-            mockFrom();
-        }
-    });
+                //hack as library does not manage properly the from parameter in this version.
+                var mockFrom = function () {
+                    var irsLine = sliderComponent.$('.irs-line');
+                    if (irsLine !== undefined) {
+                        if (irsLine.is(':visible')) {
+                            var width = irsLine.width();
+                            var proportion = width / max * value;
+                            //nice display ajustement....
+                            var maxwidth = width - 20;
+                            if (proportion > maxwidth) {
+                                proportion = maxwidth;
+                            }
+                            //Manually placing slider and tooltip proportionnaly to the width of the slider.
+                            sliderComponent.$('.irs-single').css('left', proportion);
+                            sliderComponent.$('.irs-slider').css('left', proportion);
+                        } else {
+                            setTimeout(mockFrom, 500);
+                        }
+                    }
 
-    Ember.Application.initializer({
-        name:"component-slider",
-        initialize: function(container, application) {
-            application.register('component:component-slider', component);
-        }
-    });
-
-    return component;
+                };
+                //as from feature doesn t work on this slider...
+                mockFrom();
+            }
+        });
+        application.register('component:component-slider', component);
+    }
 });

@@ -17,72 +17,64 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
+Ember.Application.initializer({
+    name:"component-listtree",
+    initialize: function(container, application) {
 
-    var get = Ember.get,
-        set = Ember.set;
+        var get = Ember.get,
+            set = Ember.set;
 
 
-var DragNDrop = Ember.Namespace.create();
+        var DragNDrop = Ember.Namespace.create();
 
-DragNDrop.cancel = function(event) {
-    event.preventDefault();
-    return false;
-};
-/*
-DragNDrop.Dragable = Ember.Mixin.create({
-    attributeBindings: 'draggable',
-    draggable: 'true',
-    dragStart: function(event) {
-        console.log('drag started !');
-        var dataTransfer = event.originalEvent.dataTransfer;
-        dataTransfer.setData(
-            'elementId', this.get('elementId'),
-            'content', get(this, 'content')
-        );
+        DragNDrop.cancel = function(event) {
+            event.preventDefault();
+            return false;
+        };
+        /*
+        DragNDrop.Dragable = Ember.Mixin.create({
+            attributeBindings: 'draggable',
+            draggable: 'true',
+            dragStart: function(event) {
+                console.log('drag started !');
+                var dataTransfer = event.originalEvent.dataTransfer;
+                dataTransfer.setData(
+                    'elementId', this.get('elementId'),
+                    'content', get(this, 'content')
+                );
 
+            }
+        });
+        */
+        DragNDrop.Droppable = Ember.Mixin.create({
+            dragEnter: DragNDrop.cancel,
+            dragOver: DragNDrop.cancel,
+            drop: function(event) {
+
+                console.log('drop done !');
+
+                var viewId = event.originalEvent.dataTransfer.getData('elementId');
+                var draggableView = Ember.View.views[viewId];
+                var treeElement = get(draggableView, 'content');
+                var condition = get(this, 'content');
+
+                console.log('clause',treeElement);
+                console.log('condition', condition);
+
+                treeElement.detach();
+                treeElement.attach(condition);
+
+
+
+                draggableView.destroy();
+                event.preventDefault();
+
+                return false;
+            }
+        });
+
+        var component = Ember.Component.extend(/*DragNDrop.Dragable,*/ DragNDrop.Droppable, {});
+
+        application.register('component:component-listtree', component);
     }
-});
-*/
-DragNDrop.Droppable = Ember.Mixin.create({
-    dragEnter: DragNDrop.cancel,
-    dragOver: DragNDrop.cancel,
-    drop: function(event) {
-
-        console.log('drop done !');
-
-        var viewId = event.originalEvent.dataTransfer.getData('elementId');
-        var draggableView = Ember.View.views[viewId];
-        var treeElement = get(draggableView, 'content');
-        var condition = get(this, 'content');
-
-        console.log('clause',treeElement);
-        console.log('condition', condition);
-
-        treeElement.detach();
-        treeElement.attach(condition);
-
-
-
-        draggableView.destroy();
-        event.preventDefault();
-
-        return false;
-    }
-});
-
-
-    var component = Ember.Component.extend(/*DragNDrop.Dragable,*/ DragNDrop.Droppable, {
-
-    });
-
-
-    Ember.Application.initializer({
-        name:"component-listtree",
-        initialize: function(container, application) {
-            application.register('component:component-listtree', component);
-        }
-    });
-
-    return component;
 });
