@@ -20,9 +20,10 @@
  */
 
 define([
-    'app/lib/formsregistry',
     'app/lib/factories/mixin'
-], function(formsregistry, Mixin) {
+], function(Mixin) {
+
+    var formsregistry;
 
     var get = Ember.get,
         set = Ember.set,
@@ -106,7 +107,9 @@ define([
 
     Ember.Application.initializer({
         name:'ValidationFieldMixin',
+        after: 'FormsRegistry',
         initialize: function(container, application) {
+            formsregistry = container.lookupFactory('registry:forms');
             application.register('mixin:validation-field', mixin);
         }
     });

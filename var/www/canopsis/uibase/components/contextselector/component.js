@@ -19,13 +19,15 @@
 
 
 define([
-    'app/lib/contextsregistry',
     'app/lib/utils/hash'
-], function(contextsregistry, hashUtils) {
+], function(hashUtils) {
 
     Ember.Application.initializer({
-        name:"component-contextselector",
+        name: 'component-contextselector',
+        after: ['ContextRegistry'],
         initialize: function(container, application) {
+            var contextsregistry = container.lookupFactory('registry:context');
+
             var get = Ember.get,
                 set = Ember.set,
                 isNone = Ember.isNone,

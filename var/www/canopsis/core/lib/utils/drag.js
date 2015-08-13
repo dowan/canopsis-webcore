@@ -46,7 +46,7 @@ define([
     });
 
     Ember.Application.initializer({
-        name:"DragUtils",
+        name:'DragUtils',
         initialize: function(container, application) {
             application.register('utility:drag', drag);
         }

@@ -17,31 +17,27 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+Ember.Application.initializer({
+    name:"component-rights-action",
+    after: 'RightsRegistry',
+    initialize: function(container, application) {
+        var rightsRegistry = container.lookupFactory('registry:rights');
 
-define([
-    'canopsis/canopsis-rights/objects/rightsregistry'
-], function(rightsRegistry) {
-
-    Ember.Application.initializer({
-        name:"component-rights-action",
-        initialize: function(container, application) {
-
-            var get = Ember.get,
-                set = Ember.set,
-                isNone = Ember.isNone,
-                __ = Ember.String.loc;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone,
+            __ = Ember.String.loc;
 
 
-            var component = Ember.Component.extend({
-                description: function() {
-                    var value = get(this, 'value');
+        var component = Ember.Component.extend({
+            description: function() {
+                var value = get(this, 'value');
 
-                    var action = rightsRegistry.getByName(value);
-                    return action._data.desc;
-                }.property('value')
-            });
+                var action = rightsRegistry.getByName(value);
+                return action._data.desc;
+            }.property('value')
+        });
 
-            application.register('component:component-rights-action', component);
-        }
-    });
+        application.register('component:component-rights-action', component);
+    }
 });

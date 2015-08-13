@@ -22,9 +22,10 @@
 define([
     'app/lib/utils/routes',
     'app/lib/utils/data',
-    'app/lib/formsregistry',
     'app/lib/utilityclass'
-], function(routesUtils, dataUtils, formsregistry, Utility) {
+], function(routesUtils, dataUtils, Utility) {
+
+    var formsregistry;
 
     var get = Ember.get,
         set = Ember.set,
@@ -139,7 +140,9 @@ define([
 
     Ember.Application.initializer({
         name:"FormsUtils",
+        after: 'FormsRegistry',
         initialize: function(container, application) {
+            formsregistry = container.lookupFactory('registry:forms');
             application.register('utility:forms', formUtils);
         }
     });

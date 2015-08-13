@@ -19,7 +19,7 @@
  * @module canopsis-frontend-core
  */
 
-define([], function() {
+(function() {
 
     Ember.Handlebars.helper('tr', function(value) {
 
@@ -33,4 +33,4 @@ define([], function() {
             return translation;
         }
     });
-});
+})();

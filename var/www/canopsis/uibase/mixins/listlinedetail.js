@@ -17,10 +17,11 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 define([
-    'app/lib/formsregistry',
     'app/lib/factories/mixin',
     'app/lib/utils/hash'
-], function(formsregistry, Mixin, hash) {
+], function(Mixin, hash) {
+
+    var FormsRegistry;
 
     var get = Ember.get,
         set = Ember.set,
@@ -103,7 +104,10 @@ define([
 
     Ember.Application.initializer({
         name:'ListlinedetailMixin',
+        after: 'FormsRegistry',
         initialize: function(container, application) {
+            FormsRegistry = container.lookupFactory('registry:forms');
+
             application.register('mixin:listlinedetail', mixin);
         }
     });

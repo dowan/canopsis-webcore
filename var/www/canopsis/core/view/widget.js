@@ -15,21 +15,19 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
 define([
     'canopsis/canopsisConfiguration',
     'app/lib/mixinsregistry',
     'app/lib/schemasregistry',
-    'app/lib/widgetsregistry',
     'app/controller/widget',
     'app/lib/loaders/mixins'
-], function(canopsisConfiguration, mixinsregistry, schemasregistry, widgetsregistry, WidgetController) {
+], function(canopsisConfiguration, mixinsregistry, schemasregistry, WidgetController) {
 
     var get = Ember.get,
-        set = Ember.set;
+        set = Ember.set,
+        widgetsregistry;
 
     function computeMixinsArray(view, widget) {
         var mixinsNames = get(widget, 'mixins');
@@ -118,13 +116,12 @@ define([
          * @method init
          */
         init: function() {
-            console.group('widget initialisation :', get(this.widget, "xtype"), this.widget, get(this, 'widget.tagName'));
+            console.group('widget initialisation :', get(this, "widget.xtype"), this.widget, get(this, 'widget.tagName'));
             set(this, 'target', get(this, 'controller'));
 
             this._super();
 
             set(this, 'displayedErrors', Ember.A());
-
             if (!! get(this, 'widget')) {
                 this.intializeController(this.widget);
                 this.applyAllViewMixins();
@@ -264,6 +261,8 @@ define([
             return this._super.apply(this, arguments);
         },
 
+        onWidgetRefresh: function() {},
+
         /**
          * @method registerHooks
          */
@@ -284,10 +283,14 @@ define([
 
     Ember.Application.initializer({
         name: 'WidgetView',
+        after: 'WidgetsRegistry',
         initialize: function(container, application) {
+            widgetsregistry = container.lookupFactory('registry:widgets');
+
             application.register('view:widget', view);
         }
     });
+
 
     return view;
 });

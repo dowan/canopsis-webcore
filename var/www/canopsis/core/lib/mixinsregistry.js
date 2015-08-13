@@ -38,7 +38,7 @@ define([
     });
 
     Ember.Application.initializer({
-        name:"MixinsRegistry",
+        name: 'MixinsRegistry',
         initialize: function(container, application) {
             application.register('registry:mixins', registry);
         }

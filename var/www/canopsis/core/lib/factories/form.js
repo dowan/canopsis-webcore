@@ -21,8 +21,7 @@
 
 define([
     'app/controller/form',
-    "app/lib/formsregistry"
-], function(FormController, formsregistry) {
+], function(FormController) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -77,14 +76,17 @@ define([
 
         Ember.Application.initializer({
             name: initializerName,
+            after: 'FormsRegistry',
             initialize: function(container, application) {
+                var formsRegistry = container.lookupFactory('registry:forms');
+
+                formsRegistry.all[formName] = {
+                    EmberClass: controllerClass
+                };
+
                 application.register('controller:' + formControllerName, controllerClass);
             }
         });
-
-        formsregistry.all[formName] = {
-            EmberClass: controllerClass
-        };
 
         console.groupEnd();
         console.tags.remove('factory');

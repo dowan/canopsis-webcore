@@ -39,8 +39,7 @@ define([
      * @static
      */
     var registry = Abstractclassregistry.create({
-        name: 'inflections',
-
+        name: 'InflectionsRegistry',
         all: [],
         byClass: {},
         tableColumns: [{title: 'name', name: 'name'}, {title: 'Singular', name: 'singular'}, {title: 'Plural', name: 'plural'}],

@@ -17,63 +17,57 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([
-    'app/lib/abstractclassregistry'
-], function(Abstractclassregistry) {
+Ember.Application.initializer({
+    name:"ActionsRegistry",
+    after: 'AbstractClassRegistry',
+    initialize: function(container, application) {
+        var Abstractclassregistry = container.lookupFactory('registry:abstractclass');
+        /**
+         * UI actions Registry
+         *
+         * @class ActionsRegistry
+         * @memberOf canopsis.frontend.core
+         * @extends Abstractclassregistry
+         * @static
+         */
+        var registry = Abstractclassregistry.create({
+            name: 'actions',
 
-    /**
-     * UI actions Registry
-     *
-     * @class ActionsRegistry
-     * @memberOf canopsis.frontend.core
-     * @extends Abstractclassregistry
-     * @static
-     */
-    var registry = Abstractclassregistry.create({
-        name: 'actions',
+            all: [{
+                name: 'gotoEventView',
+                actionData: ['showView', 'view.event']
+            },{
+                name: 'toggleEditMode',
+                actionData: ['toggleEditMode']
+            },{
+                name: 'promptReloadApplication',
+                actionData: ['promptReloadApplication']
+            },{
+                name: 'showUserProfile',
+                actionData: ['showUserProfile']
+            },{
+                name: 'editConfig',
+                actionData: ['editConfig']
+            },{
+                name: 'addNewView',
+                actionData: ['addNewView']
+            },{
+                name: 'logout',
+                actionData: ['logout']
+            },{
+                name: 'refresh',
+                actionData: ['refresh']
+            },{
+                name: 'toggleFullscreen',
+                actionData: ['toggleFullscreen']
+            },{
+                name: 'toggleDevTools',
+                actionData: ['toggleDevTools']
+            }],
+            byClass: {},
+            tableColumns: [{title: 'name', name: 'name'}]
+        });
 
-        all: [{
-            name: 'gotoEventView',
-            actionData: ['showView', 'view.event']
-        },{
-            name: 'toggleEditMode',
-            actionData: ['toggleEditMode']
-        },{
-            name: 'promptReloadApplication',
-            actionData: ['promptReloadApplication']
-        },{
-            name: 'showUserProfile',
-            actionData: ['showUserProfile']
-        },{
-            name: 'editConfig',
-            actionData: ['editConfig']
-        },{
-            name: 'addNewView',
-            actionData: ['addNewView']
-        },{
-            name: 'logout',
-            actionData: ['logout']
-        },{
-            name: 'refresh',
-            actionData: ['refresh']
-        },{
-            name: 'toggleFullscreen',
-            actionData: ['toggleFullscreen']
-        },{
-            name: 'toggleDevTools',
-            actionData: ['toggleDevTools']
-        }],
-        byClass: {},
-        tableColumns: [{title: 'name', name: 'name'}]
-    });
-
-    Ember.Application.initializer({
-        name:"ActionsRegistry",
-        initialize: function(container, application) {
-            application.register('registry:actions', registry);
-        }
-    });
-
-
-    return registry;
+        application.register('registry:actions', registry);
+    }
 });

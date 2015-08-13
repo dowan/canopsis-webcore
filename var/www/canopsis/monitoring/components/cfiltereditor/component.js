@@ -25,6 +25,7 @@ define([
     Ember.Application.initializer({
         name:"component-cfiltereditor",
         initialize: function(container, application) {
+            var indexesregistry = container.lookupFactory('registry:indexes');
             var get = Ember.get,
                 set = Ember.set,
                 isNone = Ember.isNone;

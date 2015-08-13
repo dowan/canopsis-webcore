@@ -17,51 +17,47 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([
-    'app/lib/abstractclassregistry'
-], function(Abstractclassregistry) {
+Ember.Application.initializer({
+    name:"ContextRegistry",
+    after: 'AbstractClassRegistry',
+    initialize: function(container, application) {
+        var Abstractclassregistry = container.lookupFactory('registry:abstractclass');
 
-    var contexts = [{
-            name: 'component',
-            modelName: 'ctxcomponent'
-        },{
-            name: 'resource',
-            modelName: 'ctxresource'
-        },{
-            name: 'selector',
-            modelName: 'ctxselector'
-        },{
-            name: 'topology',
-            modelName: 'ctxtopology'
-        }];
+        var contexts = [{
+                name: 'component',
+                modelName: 'ctxcomponent'
+            },{
+                name: 'resource',
+                modelName: 'ctxresource'
+            },{
+                name: 'selector',
+                modelName: 'ctxselector'
+            },{
+                name: 'topology',
+                modelName: 'ctxtopology'
+            }];
 
-    var registry = Abstractclassregistry.create({
-        name: 'contexts',
+        var registry = Abstractclassregistry.create({
+            name: 'contexts',
 
-        all: [],
-        byClass: {},
-        tableColumns: [{
-            title: 'name',
-            name: 'name'
-        },{
-            title: 'modelName',
-            name: 'modelName'
-        }]
-    });
-
-    for (var i = 0, l = contexts.length; i < l; i++) {
-        registry.all.pushObject({
-            name: contexts[i].name,
-            modelName: contexts[i].modelName
+            all: [],
+            byClass: {},
+            tableColumns: [{
+                title: 'name',
+                name: 'name'
+            },{
+                title: 'modelName',
+                name: 'modelName'
+            }]
         });
-    }
 
-    Ember.Application.initializer({
-        name:"ContextsRegistry",
-        initialize: function(container, application) {
-            application.register('registry:contexts', registry);
+        for (var i = 0, l = contexts.length; i < l; i++) {
+            registry.all.pushObject({
+                name: contexts[i].name,
+                modelName: contexts[i].modelName
+            });
         }
-    });
 
-    return registry;
+        application.register('registry:context', registry);
+    }
 });

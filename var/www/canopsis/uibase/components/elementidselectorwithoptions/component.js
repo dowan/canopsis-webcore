@@ -19,13 +19,14 @@
 
 
 define([
-    'app/lib/utils/hash',
-    'app/lib/searchmethodsregistry'
-], function(hashUtils, searchmethodsRegistry) {
+    'app/lib/utils/hash'
+], function(hashUtils) {
 
     Ember.Application.initializer({
-        name:"component-elementidselectorwithoptions",
+        name: 'component-elementidselectorwithoptions',
+        after: 'SearchmethodsRegistry',
         initialize: function(container, application) {
+            var searchmethodsRegistry = container.lookupFactory('registry:searchmethods');
 
             var get = Ember.get,
                 set = Ember.set,

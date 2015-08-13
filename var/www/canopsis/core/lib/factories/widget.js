@@ -21,7 +21,6 @@
 
 define([
     'app/controller/widget',
-    'app/lib/widgetsregistry',
     'app/lib/schemasregistry',
     'app/serializers/widget',
     'app/serializers/application',
@@ -29,7 +28,9 @@ define([
     'app/lib/utils/notification',
     'app/lib/utils/data',
     'app/lib/loaders/schemas'
-], function(WidgetController, WidgetsRegistry, schemasregistry, WidgetSerializer, ApplicationSerializer, EmbeddedRecordSerializerMixin, notificationUtils, dataUtils) {
+], function(WidgetController, schemasregistry, WidgetSerializer, ApplicationSerializer, EmbeddedRecordSerializerMixin, notificationUtils, dataUtils) {
+
+    var widgetRegistrationsCallbacks = [];
 
     var get = Ember.get,
         set = Ember.set,
@@ -108,30 +109,31 @@ define([
             var metadataDict = widgetModel.proto().metadata;
 
             console.log("metadataDict", widgetName, metadataDict);
+            widgetRegistrationsCallbacks.pushObject(function(WidgetsRegistry) {
+                var registryEntry = Ember.Object.create({
+                    name: widgetName,
+                    EmberClass: controllerClass
+                });
 
-            var registryEntry = Ember.Object.create({
-                name: widgetName,
-                EmberClass: controllerClass
-            });
+                if(!isNone(metadataDict)) {
+                    if(metadataDict.icon) {
+                        registryEntry.set('icon', metadataDict.icon);
+                    }
+                    if(metadataDict.classes) {
+                        var classes = metadataDict.classes;
+                        for (var j = 0, lj = classes.length; j < lj; j++) {
+                            var currentClass = classes[j];
+                            if(!Ember.isArray(get( WidgetsRegistry.byClass, currentClass))) {
+                                set(WidgetsRegistry.byClass, currentClass, Ember.A());
+                            }
 
-            if(!isNone(metadataDict)) {
-                if(metadataDict.icon) {
-                    registryEntry.set('icon', metadataDict.icon);
-                }
-                if(metadataDict.classes) {
-                    var classes = metadataDict.classes;
-                    for (var j = 0, lj = classes.length; j < lj; j++) {
-                        var currentClass = classes[j];
-                        if(!Ember.isArray(get( WidgetsRegistry.byClass, currentClass))) {
-                            set(WidgetsRegistry.byClass, currentClass, Ember.A());
+                            get(WidgetsRegistry.byClass, currentClass).push(registryEntry);
                         }
-
-                        get(WidgetsRegistry.byClass, currentClass).push(registryEntry);
                     }
                 }
-            }
 
-            WidgetsRegistry.all.push(registryEntry);
+                WidgetsRegistry.all.push(registryEntry);
+            });
         }
 
         console.groupEnd();
@@ -139,6 +141,21 @@ define([
 
         return controllerClass;
     }
+
+    Ember.Application.initializer({
+        name: 'WidgetFactory',
+        after: 'WidgetsRegistry',
+        initialize: function(container, application) {
+            var WidgetsRegistry = container.lookupFactory('registry:widgets');
+
+            //FIXME temporary hack for initializers refactoring
+            for (var i = 0; i < widgetRegistrationsCallbacks.length; i++) {
+                widgetRegistrationsCallbacks[i](WidgetsRegistry);
+            }
+
+            application.register('factory:widget', Widget);
+        }
+    });
 
     return Widget;
 });

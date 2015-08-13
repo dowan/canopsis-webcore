@@ -19,7 +19,7 @@
  * @module canopsis-frontend-core
  */
 
-define([], function() {
+(function() {
 
     var get = Ember.get,
         isNone = Ember.isNone;
@@ -52,4 +52,4 @@ define([], function() {
         return '';
     });
 
-});
+})();

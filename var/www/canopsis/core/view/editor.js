@@ -15,40 +15,31 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/utils/hash'
-], function(hashUtils) {
-
-    /**
-     * @class EditorView
-     * @extends Ember.View
-     * @constructor
-     */
-    var view = Ember.View.extend({
+Ember.Application.initializer({
+    name: 'EditorView',
+    initialize: function(container, application) {
         /**
-         * @property attrBinding
+         * @class EditorView
+         * @extends Ember.View
+         * @constructor
          */
-        attrBinding: "templateData.keywords.attr.value",
+        var view = Ember.View.extend({
+            /**
+             * @property attrBinding
+             */
+            attrBinding: "templateData.keywords.attr.value",
 
-        /**
-         * @method init
-         */
-        init: function() {
-            var id = utils.hash.generateId(this.templateName);
-            this.elementId = id;
-        }
-    });
+            /**
+             * @method init
+             */
+            init: function() {
+                var id = utils.hash.generateId(this.templateName);
+                this.elementId = id;
+            }
+        });
 
-    Ember.Application.initializer({
-        name: 'EditorView',
-        initialize: function(container, application) {
-            application.register('view:editor', view);
-        }
-    });
-
-    return view;
+        application.register('view:editor', view);
+    }
 });

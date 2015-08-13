@@ -15,13 +15,11 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/mixinsregistry'
-], function(mixinsRegistry) {
+define([], function() {
+
+    var mixinRegistrationsCallbacks = [];
 
     var get = Ember.get,
         set = Ember.set,
@@ -47,13 +45,30 @@ define([
             EmberClass: mixin
         });
 
-        mixinsRegistry.all.push(registryEntry);
+        mixinRegistrationsCallbacks.pushObject(function(mixinsRegistry) {
+            mixinsRegistry.all.push(registryEntry);
+        })
 
         console.groupEnd();
         console.tags.remove('factory');
 
         return mixin;
     }
+
+    Ember.Application.initializer({
+        name: 'MixinFactory',
+        after: 'MixinsRegistry',
+        initialize: function(container, application) {
+            var mixinsRegistry = container.lookupFactory('registry:mixins');
+
+            //FIXME temporary hack for initializers refactoring
+            for (var i = 0; i < mixinRegistrationsCallbacks.length; i++) {
+                mixinRegistrationsCallbacks[i](mixinsRegistry);
+            }
+
+            application.register('factory:mixin', Mixin);
+        }
+    });
 
     return Mixin;
 });
