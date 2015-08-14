@@ -18,9 +18,10 @@
  */
 
 Ember.Application.initializer({
-    name:"ContextRegistry",
+    name: 'ContextRegistry',
     after: 'AbstractClassRegistry',
     initialize: function(container, application) {
+
         var Abstractclassregistry = container.lookupFactory('registry:abstractclass');
 
         var contexts = [{

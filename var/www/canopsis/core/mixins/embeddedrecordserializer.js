@@ -20,11 +20,12 @@
  */
 
 define([
-    'app/lib/schemasregistry',
     'app/lib/utils/hash',
     'app/lib/utils/data',
     'app/lib/factories/mixin'
-], function(schemasregistry, hashUtils, dataUtils, Mixin) {
+], function(hashUtils, dataUtils, Mixin) {
+
+    var schemasregistry;
 
     var isNone = Ember.isNone,
         get = Ember.get;
@@ -370,8 +371,11 @@ define([
 
 
     Ember.Application.initializer({
-        name:'EmbeddedRecordSerializerMixin',
+        name: 'EmbeddedRecordSerializerMixin',
+        after: 'SchemasRegistry',
         initialize: function(container, application) {
+            schemasregistry = container.lookupFactory('registry:schemas');
+
             application.register('mixin:embedded-record-serializer', mixin);
         }
     });

@@ -23,27 +23,26 @@ define([
     'app/serializers/application'
 ], function(ApplicationSerializer) {
 
-    var serializerClass = ApplicationSerializer.extend({
-        extractRelationships: function(payload, item, type){
-            //TODO check if it's normal that there is no this._super. Are other extractRelationships still working?
-            console.log('extractRelationships', arguments);
-
-            void(payload);
-            void(type);
-
-            console.log('item.ack', item.ack);
-            if(item.ack === 1 || item.ack === true) {
-                item.ack = item.rk;
-            }
-        }
-    });
-
     Ember.Application.initializer({
         name: 'EventlogSerializer',
         initialize: function(container, application) {
+
+            var serializerClass = ApplicationSerializer.extend({
+                extractRelationships: function(payload, item, type){
+                    //TODO check if it's normal that there is no this._super. Are other extractRelationships still working?
+                    console.log('extractRelationships', arguments);
+
+                    void(payload);
+                    void(type);
+
+                    console.log('item.ack', item.ack);
+                    if(item.ack === 1 || item.ack === true) {
+                        item.ack = item.rk;
+                    }
+                }
+            });
+
             application.register('serializer:eventlog', serializerClass);
         }
     });
-
-    return serializerClass;
 });

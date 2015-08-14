@@ -28,66 +28,72 @@ define([
         __ = Ember.String.loc;
 
 
-    UimaintabcollectionWidget.reopen({
+    Ember.Application.initializer({
+        name:"CanopsisRightsUimaintabcollectionWidgetReopen",
+        initialize: function(container, application) {
 
-        loggedaccountId: Ember.computed.alias('controllers.login.record._id'),
-        loggedaccountRights: Ember.computed.alias('controllers.login.record.rights'),
+            UimaintabcollectionWidget.reopen({
 
-        isViewDisplayable: function(viewId) {
-            var user = get(this, 'loggedaccountId'),
-                rights = get(this, 'loggedaccountRights');
+                loggedaccountId: Ember.computed.alias('controllers.login.record._id'),
+                loggedaccountRights: Ember.computed.alias('controllers.login.record.rights'),
 
-            if (user === 'root') {
-                return true;
-            }
+                isViewDisplayable: function(viewId) {
+                    var user = get(this, 'loggedaccountId'),
+                        rights = get(this, 'loggedaccountRights');
 
-            return viewId && rightsflagsUtils.canRead(get(rights, viewId + '.checksum'));
-        },
+                    if (user === 'root') {
+                        return true;
+                    }
 
-        userCanShowEditionMenu: function() {
-            if(get(this, 'loggedaccountId') === "root") {
-                return true;
-            }
+                    return viewId && rightsflagsUtils.canRead(get(rights, viewId + '.checksum'));
+                },
 
-            var rights = get(this, 'loggedaccountRights');
+                userCanShowEditionMenu: function() {
+                    if(get(this, 'loggedaccountId') === "root") {
+                        return true;
+                    }
 
-            if (get(rights, 'tabs_showeditionmenu.checksum')) {
-                return true;
-            }
+                    var rights = get(this, 'loggedaccountRights');
 
-            return false;
-        }.property(),
+                    if (get(rights, 'tabs_showeditionmenu.checksum')) {
+                        return true;
+                    }
 
-         userCanEditView: function() {
-            if(get(this, 'loggedaccountId') === "root") {
-                return true;
-            }
+                    return false;
+                }.property(),
 
-            var rights = get(this, 'loggedaccountRights'),
-                viewId = get(this, 'currentViewId');
+                 userCanEditView: function() {
+                    if(get(this, 'loggedaccountId') === "root") {
+                        return true;
+                    }
 
-            viewId = viewId.replace('.', '_');
+                    var rights = get(this, 'loggedaccountRights'),
+                        viewId = get(this, 'currentViewId');
 
-            if (rightsflagsUtils.canWrite(get(rights, viewId + '.checksum'))) {
-                return true;
-            }
+                    viewId = viewId.replace('.', '_');
 
-            return false;
-        }.property('currentViewId'),
+                    if (rightsflagsUtils.canWrite(get(rights, viewId + '.checksum'))) {
+                        return true;
+                    }
 
-        userCanCreateView: function() {
-            if(get(this, 'loggedaccountId') === "root") {
-                return true;
-            }
+                    return false;
+                }.property('currentViewId'),
 
-            var rights = get(this, 'loggedaccountRights');
+                userCanCreateView: function() {
+                    if(get(this, 'loggedaccountId') === "root") {
+                        return true;
+                    }
 
-            if (get(rights, 'userview_create.checksum')) {
-                return true;
-            }
+                    var rights = get(this, 'loggedaccountRights');
 
-            return false;
-        }.property()
+                    if (get(rights, 'userview_create.checksum')) {
+                        return true;
+                    }
+
+                    return false;
+                }.property()
+            });
+        }
     });
 
     return UimaintabcollectionWidget;

@@ -21,6 +21,7 @@ Ember.Application.initializer({
     name: 'FormsRegistry',
     after: 'AbstractClassRegistry',
     initialize: function(container, application) {
+
         var Abstractclassregistry = container.lookupFactory('registry:abstractclass');
 
         /**

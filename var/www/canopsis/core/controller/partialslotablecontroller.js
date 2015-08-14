@@ -19,8 +19,7 @@
 
 define([
     'app/lib/utils/widgets',
-    'app/lib/mixinsregistry',
-    'app/lib/helpers/partialslot'
+    'app/lib/mixinsregistry'
 ], function(widgetUtils, mixinsRegistry) {
 
     var get = Ember.get,

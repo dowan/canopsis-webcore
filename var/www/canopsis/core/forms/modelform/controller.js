@@ -21,11 +21,12 @@
 
 define([
     'app/lib/factories/form',
-    'app/lib/schemasregistry',
     'app/mixins/inspectableitem',
     'app/mixins/validation',
     'app/lib/utils/slug'
-], function(FormFactory, schemasRegistry, InspectableitemMixin, ValidationMixin, slugUtils) {
+], function(FormFactory, InspectableitemMixin, ValidationMixin, slugUtils) {
+
+    var schemasRegistry;
 
     var set = Ember.set,
         get = Ember.get,
@@ -217,6 +218,16 @@ define([
         }
     },
     formOptions);
+
+    Ember.Application.initializer({
+        name: 'ModelForm',
+        after: 'SchemasRegistry',
+        initialize: function(container, application) {
+            schemasRegistry = container.lookupFactory('registry:schemas');
+
+            application.register('form:model', form);
+        }
+    });
 
     return form;
 });

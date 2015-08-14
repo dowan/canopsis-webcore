@@ -20,10 +20,11 @@
  */
 
 define([
-    'app/lib/schemasregistry',
     'app/lib/utils/notification',
     'app/lib/factories/mixin'
-], function(Schemasregistry, notificationUtils, Mixin) {
+], function(notificationUtils, Mixin) {
+
+    var Schemasregistry;
 
     var get = Ember.get,
         set = Ember.set;
@@ -241,7 +242,10 @@ define([
 
     Ember.Application.initializer({
         name:'InspectableItemMixin',
+        after: 'SchemasRegistry',
         initialize: function(container, application) {
+            Schemasregistry = container.lookupFactory('registry:schemas');
+
             application.register('mixin:inspectable-item', mixin);
         }
     });

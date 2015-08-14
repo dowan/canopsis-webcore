@@ -22,8 +22,6 @@
 define([
     'canopsis/canopsisConfiguration',
     'app/controller/partialslotablecontroller',
-    'app/lib/actionsregistry',
-    'app/lib/mixinsregistry',
     'app/mixins/userprofilestatusmenu',
     'app/mixins/requirejsmocksmanager',
     'app/mixins/screentoolstatusmenu',
@@ -38,16 +36,10 @@ define([
     'app/lib/utils/data',
     'app/lib/utils/debug',
     'app/lib/utils/hash',
-    'app/lib/utils/notification',
-    'app/lib/loaders/helpers',
-    'app/lib/wrappers/mousetrap',
-    'app/controller/recordinfopopup',
-    'app/controller/formwrapper'
+    'app/lib/utils/notification'
 ], function(
     canopsisConfiguration,
     PartialslotAbleController,
-    actionsRegistry,
-    mixinsRegistry,
     UserprofilestatusmenuMixin,
     RequirejsmocksmanagerMixin,
     ScreentoolstatusmenuMixin,
@@ -104,20 +96,6 @@ define([
          * @type boolean
          */
         debug: Ember.computed.alias('runtimeConfiguration.DEBUG'),
-
-        /**
-         * @property actionsRegistry
-         * @type Object
-         * @description Reference to the actions registry
-         */
-        actionsRegistry: actionsRegistry,
-
-        /**
-         * @property mixinsRegistry
-         * @type Object
-         * @description Reference to the mixins registry
-         */
-        mixinsRegistry: mixinsRegistry,
 
         /**
          * @property utils

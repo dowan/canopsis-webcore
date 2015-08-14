@@ -17,67 +17,63 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+Ember.Application.initializer({
+    name: 'component-metricitemeditor',
+    after: 'SchemasRegistry',
+    initialize: function(container, application) {
 
-define([
-    'app/lib/schemasregistry',
-    'canopsis/uibase/components/stringclassifiedcrecordselector/component'
-], function(schemaregistry) {
+        var schemaregistry = container.lookupFactory('registry:schemas');
 
-
-    Ember.Application.initializer({
-        name:"component-metricitemeditor",
-        initialize: function(container, application) {
-
-            var get = Ember.get,
-                set = Ember.set;
+        var get = Ember.get,
+            set = Ember.set;
 
 
-            var component = Ember.Component.extend({
-                init: function() {
-                    this._super(arguments);
+        var component = Ember.Component.extend({
+            init: function() {
+                this._super(arguments);
 
-                    set(this, "componentDataStore", DS.Store.create({
-                        container: get(this, "container")
-                    }));
+                set(this, "componentDataStore", DS.Store.create({
+                    container: get(this, "container")
+                }));
 
-                    var typekey = get(this, 'content.model.options.model');
-                    var typekeySplit = typekey.split('.');
+                var typekey = get(this, 'content.model.options.model');
+                var typekeySplit = typekey.split('.');
 
-                    var modelname = typekeySplit[typekeySplit.length - 1];
-                    var model = schemaregistry.getByName(modelname).EmberModel.proto();
-                    console.log('Fetch model:', modelname, model);
+                var modelname = typekeySplit[typekeySplit.length - 1];
+                var model = schemaregistry.getByName(modelname).EmberModel.proto();
+                console.log('Fetch model:', modelname, model);
 
-                    var item = {};
-                    var me = this;
+                var item = {};
+                var me = this;
 
-                    console.group('Create virtual attributes for serieitem:');
+                console.group('Create virtual attributes for serieitem:');
 
-                    model.eachAttribute(function(name, attr) {
-                        var contentKey = 'content.value.' + name;
-                        var itemKey = 'item.' + name + '.value';
+                model.eachAttribute(function(name, attr) {
+                    var contentKey = 'content.value.' + name;
+                    var itemKey = 'item.' + name + '.value';
 
-                        var val = get(me, contentKey);
-                        var defaultVal = get(attr, 'options.defaultValue');
+                    var val = get(me, contentKey);
+                    var defaultVal = get(attr, 'options.defaultValue');
 
-                        item[name] = Ember.Object.create({
-                            value: val || defaultVal,
-                            model: attr
-                        });
-
-                        me.addObserver(itemKey, function() {
-                            var val = get(me, itemKey);
-                            set(me, contentKey, val);
-                        });
-
-                        console.log(name, val, defaultVal, item[name]);
+                    item[name] = Ember.Object.create({
+                        value: val || defaultVal,
+                        model: attr
                     });
 
-                    console.groupEnd();
+                    me.addObserver(itemKey, function() {
+                        var val = get(me, itemKey);
+                        set(me, contentKey, val);
+                    });
 
-                    set(this, 'item', Ember.Object.create(item));
-                }
-            });
-            application.register('component:component-metricitemeditor', component);
-        }
-    });
+                    console.log(name, val, defaultVal, item[name]);
+                });
+
+                console.groupEnd();
+
+                set(this, 'item', Ember.Object.create(item));
+            }
+        });
+
+        application.register('component:component-metricitemeditor', component);
+    }
 });

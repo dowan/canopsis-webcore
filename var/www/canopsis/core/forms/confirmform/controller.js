@@ -40,5 +40,12 @@ define([
     },
     formOptions);
 
+    Ember.Application.initializer({
+        name: 'ConfirmForm',
+        initialize: function(container, application) {
+            application.register('form:confirm', form);
+        }
+    });
+
     return form;
 });

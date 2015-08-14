@@ -18,9 +18,10 @@
  */
 
 Ember.Application.initializer({
-    name:"EditorsRegistry",
+    name: 'EditorsRegistry',
     after: 'AbstractClassRegistry',
     initialize: function(container, application) {
+
         var Abstractclassregistry = container.lookupFactory('registry:abstractclass');
 
         /**

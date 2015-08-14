@@ -20,23 +20,17 @@
  */
 
 define([
-    'app/controller/widget',
     'app/lib/schemasregistry',
-    'app/serializers/widget',
-    'app/serializers/application',
-    'app/mixins/embeddedrecordserializer',
+    'app/controller/widget',
     'app/lib/utils/notification',
-    'app/lib/utils/data',
     'app/lib/loaders/schemas'
-], function(WidgetController, schemasregistry, WidgetSerializer, ApplicationSerializer, EmbeddedRecordSerializerMixin, notificationUtils, dataUtils) {
+], function(schemasregistry, WidgetController, notificationUtils) {
 
     var widgetRegistrationsCallbacks = [];
 
     var get = Ember.get,
         set = Ember.set,
-        isNone = Ember.isNone,
-        Application = dataUtils.getEmberApplicationSingleton();
-
+        isNone = Ember.isNone;
     /**
      * Widget factory. Creates a controller, stores it in Application
      * @param widgetName {string} the name of the new widget. lowercase
@@ -90,16 +84,12 @@ define([
                 }
             });
 
-            //dynamically create a serializer that implements EmbeddedRecordMixin if a custom serializer is not already defined in Application
-            var serializer = ApplicationSerializer.extend(
-                EmbeddedRecordSerializerMixin,
-                {}
-            );
-
             initializerName = widgetSerializerName.capitalize() + 'Serializer';
             Ember.Application.initializer({
                 name: initializerName,
+                after: 'WidgetSerializer',
                 initialize: function(container, application) {
+                    var WidgetSerializer = container.lookupFactory('serializer:widget');
                     application.register('serializer:' + widgetSerializerName, WidgetSerializer.extend());
                 }
             });
@@ -144,7 +134,7 @@ define([
 
     Ember.Application.initializer({
         name: 'WidgetFactory',
-        after: 'WidgetsRegistry',
+        after: ['WidgetsRegistry'],
         initialize: function(container, application) {
             var WidgetsRegistry = container.lookupFactory('registry:widgets');
 

@@ -19,8 +19,7 @@
 
 define([
     'canopsis/canopsis-backend-ui-connector/adapters/application',
-    'app/lib/schemasregistry'
-], function(ApplicationAdapter, schemasregistry) {
+], function(ApplicationAdapter) {
 
     var adapter = ApplicationAdapter.extend({
         buildURL: function(type, id) {
@@ -30,28 +29,33 @@ define([
         }
     });
 
-    for(var sname in schemasregistry.all) {
-        var schema = schemasregistry.getByName(sname);
-
-        //TODO: do not use userPreferencesModelName
-        var modelname = schema.modelDict.userPreferencesModelName;
-
-        if(modelname.indexOf('crecord.cservice.') === 0) {
-            console.log('Add adapter:', sname);
-
-            var initializerName = sname.capitalize() + 'Adapter';
-            Ember.Application.initializer({
-                name: initializerName,
-                initialize: function(container, application) {
-                    application.register('adapter:' + sname, adapter.extend());
-                }
-            });
-        }
-    }
 
     Ember.Application.initializer({
         name: 'CserviceAdapter',
+        after: 'SchemasRegistry',
         initialize: function(container, application) {
+
+            var schemasregistry = container.lookupFactory('registry:schemas');
+
+            for(var sname in schemasregistry.all) {
+                var schema = schemasregistry.getByName(sname);
+
+                //TODO: do not use userPreferencesModelName
+                var modelname = schema.modelDict.userPreferencesModelName;
+
+                if(modelname.indexOf('crecord.cservice.') === 0) {
+                    console.log('Add adapter:', sname);
+
+                    var initializerName = sname.capitalize() + 'Adapter';
+                    Ember.Application.initializer({
+                        name: initializerName,
+                        initialize: function(container, application) {
+                            application.register('adapter:' + sname, adapter.extend());
+                        }
+                    });
+                }
+            }
+
             application.register('adapter:cservice', adapter);
         }
     });

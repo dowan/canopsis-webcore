@@ -21,8 +21,7 @@
 
 define([
     'math',
-    'app/lib/utils/hash',
-    'app/controller/perfdata'
+    'app/lib/utils/hash'
 ], function(math, hash) {
 
     var get = Ember.get,

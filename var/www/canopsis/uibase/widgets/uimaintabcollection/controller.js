@@ -98,5 +98,12 @@ define([
         }
     });
 
+    Ember.Application.initializer({
+        name:"UimaintabcollectionWidget",
+        initialize: function(container, application) {
+            application.register('widget:uimaintabcollection', widget);
+        }
+    });
+
     return widget;
 });

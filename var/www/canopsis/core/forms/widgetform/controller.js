@@ -20,11 +20,13 @@
  */
 
 define([
+    'app/lib/widgetsregistry',
     'app/lib/factories/form',
     'app/lib/utils/forms',
     'app/lib/utils/hash',
-    'app/lib/widgetsregistry'
-], function(FormFactory, formsUtils, hashUtils, widgets) {
+], function(widgets, FormFactory, formsUtils, hashUtils) {
+
+    var widgets;
 
     var get = Ember.get,
         set = Ember.set;
@@ -118,6 +120,14 @@ define([
 
         parentContainerWidget: Ember.required(),
         parentUserview: Ember.required()
+    });
+
+    Ember.Application.initializer({
+        name: 'WidgetForm',
+        after: 'WidgetsRegistry',
+        initialize: function(container, application) {
+            application.register('form:widget', form);
+        }
     });
 
     return form;

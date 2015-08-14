@@ -18,10 +18,12 @@
  */
 
 Ember.Application.initializer({
-    name:"ActionsRegistry",
+    name: 'ActionsRegistry',
     after: 'AbstractClassRegistry',
     initialize: function(container, application) {
+
         var Abstractclassregistry = container.lookupFactory('registry:abstractclass');
+
         /**
          * UI actions Registry
          *

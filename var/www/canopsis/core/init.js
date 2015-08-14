@@ -34,15 +34,20 @@ define([
     'app/controller/application',
     'app/controller/formwrapper',
     'app/controller/login',
+    'app/controller/perfdata',
+    'app/controller/recordinfopopup',
     'app/controller/serie',
     'app/controller/userview',
     'app/controller/widget',
+    'app/lib/helpers/partialslot',
     'app/lib/contextsregistry',
     'app/lib/loaders/forms',
+    'app/lib/loaders/helpers',
     'app/lib/loaders/mixins',
     'app/lib/loaders/validators',
     'app/lib/wrappers/console',
     'app/lib/wrappers/ionicons',
+    'app/lib/wrappers/mousetrap',
     'app/routes/application',
     'app/routes/authenticated',
     'app/routes/index',
@@ -55,6 +60,7 @@ define([
     'app/view/application',
     'app/view/editor',
     'app/view/formwrapper',
+    'app/view/mixineditdropdown',
     'app/view/recordinfopopup',
     'app/view/userview',
     'app/view/validationtextarea',
@@ -63,7 +69,9 @@ define([
     'app/view/widgetslot',
     'canopsis/runtime.conf',
     'css3-mediaqueries',
-    'jsonselect'
+    'jsonselect',
+    'math',
+    'app/lib/utils/hash'
 ], function(Canopsis) {
 
     window.getCanopsis = function () {

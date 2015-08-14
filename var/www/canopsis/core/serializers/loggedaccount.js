@@ -23,14 +23,12 @@ define([
     'app/serializers/application'
 ], function(ApplicationSerializer) {
 
-    var serializer = ApplicationSerializer.extend();
 
     Ember.Application.initializer({
         name: 'LoggedaccountSerializer',
         initialize: function(container, application) {
+            var serializer = ApplicationSerializer.extend();
             application.register('serializer:loggedaccount', serializer);
         }
     });
-
-    return serializer;
 });

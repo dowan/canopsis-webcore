@@ -20,21 +20,21 @@
  */
 
 define([
-    'app/serializers/application',
-    'app/mixins/embeddedrecordserializer'
-], function(ApplicationSerializer, EmbeddedRecordSerializerMixin) {
-
-    var serializerClass = ApplicationSerializer.extend(
-        EmbeddedRecordSerializerMixin,
-        {}
-    );
+    'app/serializers/application'
+], function(ApplicationSerializer) {
 
     Ember.Application.initializer({
         name: 'UserviewSerializer',
+        after: 'EmbeddedRecordSerializerMixin',
         initialize: function(container, application) {
+            var EmbeddedRecordSerializerMixin = container.lookupFactory('mixin:embedded-record-serializer');
+
+            var serializerClass = ApplicationSerializer.extend(
+                EmbeddedRecordSerializerMixin,
+                {}
+            );
+
             application.register('serializer:userview', serializerClass);
         }
     });
-
-    return serializerClass;
 });

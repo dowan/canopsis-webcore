@@ -56,7 +56,7 @@ define([
     });
 
     Ember.Application.initializer({
-        name:"SchemasRegistry",
+        name: 'SchemasRegistry',
         initialize: function(container, application) {
             application.register('registry:schemas', registry);
         }

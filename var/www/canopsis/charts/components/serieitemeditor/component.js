@@ -18,66 +18,64 @@
 */
 
 
-define([
-    'app/lib/schemasregistry',
-    'canopsis/uibase/components/stringclassifiedcrecordselector/component'
-], function(schemasregistry) {
+Ember.Application.initializer({
+    name: 'component-serieitemeditor',
+    after: 'SchemasRegistry',
+    initialize: function(container, application) {
 
-    Ember.Application.initializer({
-        name:"component-serieitemeditor",
-        initialize: function(container, application) {
-
-            var get = Ember.get,
-                set = Ember.set;
+        var schemasregistry = container.lookupFactory('registry:schemas');
 
 
-            var component = Ember.Component.extend({
-                init: function() {
-                    this._super(arguments);
+        var get = Ember.get,
+            set = Ember.set;
 
-                    set(this, "componentDataStore", DS.Store.create({
-                        container: get(this, "container")
-                    }));
 
-                    var typekey = get(this, 'content.model.options.model');
-                    var typekeySplit = typekey.split('.');
+        var component = Ember.Component.extend({
+            init: function() {
+                this._super(arguments);
 
-                    var modelname = typekeySplit[typekeySplit.length - 1];
-                    var model = schemaregistry.getByName(modelname).EmberModel.proto();
-                    console.log('Fetch model:', modelname, model);
+                set(this, "componentDataStore", DS.Store.create({
+                    container: get(this, "container")
+                }));
 
-                    var item = {};
-                    var me = this;
+                var typekey = get(this, 'content.model.options.model');
+                var typekeySplit = typekey.split('.');
 
-                    console.group('Create virtual attributes for serieitem:');
+                var modelname = typekeySplit[typekeySplit.length - 1];
+                var model = schemaregistry.getByName(modelname).EmberModel.proto();
+                console.log('Fetch model:', modelname, model);
 
-                    model.eachAttribute(function(name, attr) {
-                        var contentKey = 'content.value.' + name;
-                        var itemKey = 'item.' + name + '.value';
+                var item = {};
+                var me = this;
 
-                        var val = get(me, contentKey);
-                        var defaultVal = get(attr, 'options.defaultValue');
+                console.group('Create virtual attributes for serieitem:');
 
-                        item[name] = Ember.Object.create({
-                            value: val || defaultVal,
-                            model: attr
-                        });
+                model.eachAttribute(function(name, attr) {
+                    var contentKey = 'content.value.' + name;
+                    var itemKey = 'item.' + name + '.value';
 
-                        me.addObserver(itemKey, function() {
-                            var val = get(me, itemKey);
-                            set(me, contentKey, val);
-                        });
+                    var val = get(me, contentKey);
+                    var defaultVal = get(attr, 'options.defaultValue');
 
-                        console.log(name, val, defaultVal, item[name]);
+                    item[name] = Ember.Object.create({
+                        value: val || defaultVal,
+                        model: attr
                     });
 
-                    console.groupEnd();
+                    me.addObserver(itemKey, function() {
+                        var val = get(me, itemKey);
+                        set(me, contentKey, val);
+                    });
 
-                    set(this, 'item', Ember.Object.create(item));
-                }
-            });
+                    console.log(name, val, defaultVal, item[name]);
+                });
 
-            application.register('component:component-serieitemeditor', component);
-        }
-    });
+                console.groupEnd();
+
+                set(this, 'item', Ember.Object.create(item));
+            }
+        });
+
+        application.register('component:component-serieitemeditor', component);
+    }
 });

@@ -27,9 +27,8 @@ define([
     'app/lib/utils/forms',
     'app/lib/utils/debug',
     'app/lib/utils/data',
-    'app/lib/schemasregistry',
-    'app/view/mixineditdropdown'
-], function(PartialslotAbleController, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, dataUtils, schemasregistry, mixinsregistry) {
+    'app/lib/schemasregistry'
+], function(PartialslotAbleController, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, dataUtils, schemasregistry) {
 
     var get = Ember.get,
         set = Ember.set,

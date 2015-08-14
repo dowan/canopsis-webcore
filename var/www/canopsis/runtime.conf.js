@@ -26,7 +26,6 @@ define([
     'app/lib/formsregistry',
     'app/lib/indexesregistry',
     'app/lib/actionsregistry',
-    'app/lib/schemasregistry',
     'app/lib/loaders/helpers',
     'app/lib/loaders/components',
     'canopsis/canopsisConfiguration',
@@ -37,7 +36,6 @@ define([
         formsRegistry,
         indexesRegistry,
         actionsRegistry,
-        schemasRegistry,
         helpers,
         templates,
         components,
@@ -50,7 +48,6 @@ define([
     Canopsis.utils = utils;
     Canopsis.wrappers = wrappersRegistry;
     Canopsis.actions = actionsRegistry;
-    Canopsis.schemas = schemasRegistry;
     Canopsis.indexes = indexesRegistry;
     Canopsis.forms = formsRegistry;
     Canopsis.helpers = helpers;
