@@ -15,34 +15,29 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/serializers/application'
-], function(ApplicationSerializer) {
+Ember.Application.initializer({
+    name: 'EventlogSerializer',
+    after: ['ApplicationSerializer'],
+    initialize: function(container, application) {
+        var ApplicationSerializer = container.lookupFactory('serializer:application');
 
-    Ember.Application.initializer({
-        name: 'EventlogSerializer',
-        initialize: function(container, application) {
+        var serializerClass = ApplicationSerializer.extend({
+            extractRelationships: function(payload, item, type){
+                //TODO check if it's normal that there is no this._super. Are other extractRelationships still working?
+                console.log('extractRelationships', arguments);
 
-            var serializerClass = ApplicationSerializer.extend({
-                extractRelationships: function(payload, item, type){
-                    //TODO check if it's normal that there is no this._super. Are other extractRelationships still working?
-                    console.log('extractRelationships', arguments);
+                void(payload);
+                void(type);
 
-                    void(payload);
-                    void(type);
-
-                    console.log('item.ack', item.ack);
-                    if(item.ack === 1 || item.ack === true) {
-                        item.ack = item.rk;
-                    }
+                console.log('item.ack', item.ack);
+                if(item.ack === 1 || item.ack === true) {
+                    item.ack = item.rk;
                 }
-            });
+            }
+        });
 
-            application.register('serializer:eventlog', serializerClass);
-        }
-    });
+        application.register('serializer:eventlog', serializerClass);
+    }
 });

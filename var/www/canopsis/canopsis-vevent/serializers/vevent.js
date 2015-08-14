@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember-data',
     'canopsis/canopsis-backend-ui-connector/serializers/ctx'
-], function(DS, ContextSerializer) {
+], function(ContextSerializer) {
 
     var serializer = ContextSerializer.extend({});
 

@@ -54,6 +54,7 @@ define([
     'app/routes/userview',
     'app/serializers/application',
     'app/serializers/loggedaccount',
+    'app/serializers/eventlog',
     'app/serializers/userview',
     'app/serializers/widget',
     'app/serializers/widgetwrapper',

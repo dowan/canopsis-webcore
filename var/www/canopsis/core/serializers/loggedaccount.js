@@ -15,20 +15,15 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/serializers/application'
-], function(ApplicationSerializer) {
+Ember.Application.initializer({
+    name: 'LoggedaccountSerializer',
+    after: ['ApplicationSerializer'],
+    initialize: function(container, application) {
+        var ApplicationSerializer = container.lookupFactory('serializer:application');
 
-
-    Ember.Application.initializer({
-        name: 'LoggedaccountSerializer',
-        initialize: function(container, application) {
-            var serializer = ApplicationSerializer.extend();
-            application.register('serializer:loggedaccount', serializer);
-        }
-    });
+        var serializer = ApplicationSerializer.extend();
+        application.register('serializer:loggedaccount', serializer);
+    }
 });

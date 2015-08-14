@@ -55,7 +55,7 @@ define([
     Ember.Application.initializer({
         name: 'BaseAdapter',
         initialize: function(container, application) {
-            application.register('adapter:baseadapter', adapter);
+            application.register('adapter:base', adapter);
         }
     });
 

@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember-data',
     'app/serializers/application'
-], function(DS, ApplicationSerializer) {
+], function(ApplicationSerializer) {
 
     var serializer = ApplicationSerializer.extend({
 
