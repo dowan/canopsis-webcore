@@ -973,3 +973,47 @@ table.dataTableConnector {
     filter:alpha(opacity=0);
     -moz-opacity:0.0;
 }
+
+/* Charts Tooltip */
+.charts-tooltip {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 5px;
+    border: 1px solid #000000;
+    color: white;
+    padding:10px;
+    font-size:10px;
+
+}
+
+.charts-tooltip .serieRow {
+     width:100%;
+    clear: both;
+
+}
+
+.charts-tooltip .serieColor {
+    display: block;
+     width:18px;
+    height:18px;
+    border:1px solid #000000; 
+    background-color: white;
+    margin-right:5px;
+    float:left;
+
+}
+
+.charts-tooltip .serieColor div {
+    display: block;
+    width:12px;
+    height:12px;
+    margin-left:2px;
+    margin-top:2px;
+
+}
+
+.charts-tooltip .serieValue {
+    float:left;
+    margin-top:3px;
+
+}
+

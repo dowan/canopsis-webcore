@@ -143,10 +143,12 @@ define([
                 tooltip: get(config, 'tooltip'),
                 tooltipOpts: {
                     id: this.$().closest('.ember-view').attr('id') + '-tooltip',
+                    cssClass: "charts-tooltip",
+                    defaultTheme: false,
                     content: function(label, xval, yval, item) {
                         var date = dates.timestamp2String(xval / 1000, 'f', true);
                         var unit = item.series.unit || '';
-                        var html = ['<p>', date, '</p><p><b>', label, ' :</b> '].join('');
+                        var html = ['<p>', date, '</p><div class="serieRow"><div class="serieColor"><div style="background-color:', item.series.color, '"></div></div><div class="serieValue">'].join('');
 
                         if (get(ctrl, 'human_readable') === true) {
                             html += values.humanize(yval, unit || '');
@@ -154,6 +156,8 @@ define([
                         else {
                             html += yval + ' ' + unit;
                         }
+
+                        html += '</div></div>';
 
                         return html;
                     },
