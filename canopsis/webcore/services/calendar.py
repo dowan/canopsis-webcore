@@ -58,14 +58,14 @@ def exports(ws):
     )
     @route(
         ws.application.put, name='calendar',
-        payload=['category', 'output', 'dtstart', 'dtend']
+        payload=['eventcategories', 'output', 'dtstart', 'dtend']
     )
-    def put(category, output, dtstart, dtend, source=None, info=None):
+    def put(eventcategories, output, dtstart, dtend, source=None, info=None):
         """Add calendar events (and optionally data) related to input source.
 
         :param str source: calendardata source if not None.
         :param dict info: calendar event info.
-        :param str category: category of the event.
+        :param str eventcategories: eventcategories of the event.
         :param str output: description of the event.
         :param int dtstart: beginning date.
         :param int dtend: ending date.
@@ -73,7 +73,7 @@ def exports(ws):
         :rtype: list
         """
         calendarDocument = cm.get_document(
-            category=category, output=output,
+            category=eventcategories, output=output,
             dtstart=dtstart, dtend=dtend
         )
 
