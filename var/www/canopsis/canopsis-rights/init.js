@@ -20,6 +20,7 @@
 /** @module canopsis.frontend.canopsis-rights */
 
 define([
+    'canopsis/canopsis-rights/objects/rightsregistry',
     'canopsis/canopsis-rights/loaders/components',
     'canopsis/canopsis-rights/loaders/forms',
     'canopsis/canopsis-rights/loaders/editors',
