@@ -76,5 +76,12 @@ define([
     });
 
 
+    Ember.Application.initializer({
+        name:'NotificationsMixin',
+        initialize: function(container, application) {
+            application.register('mixin:notifications', mixin);
+        }
+    });
+
     return mixin;
 });

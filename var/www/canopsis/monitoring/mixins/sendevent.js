@@ -673,5 +673,12 @@ define([
     });
 
 
+    Ember.Application.initializer({
+        name:'SendeventMixin',
+        initialize: function(container, application) {
+            application.register('mixin:sendevent', mixin);
+        }
+    });
+
     return mixin;
 });

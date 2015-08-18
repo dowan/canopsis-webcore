@@ -53,6 +53,12 @@ define([
         inspectedDataArray: function() { console.error("This must be defined on the base class"); }.property()
     });
 
+    Ember.Application.initializer({
+        name:'InspectableArrayMixin',
+        initialize: function(container, application) {
+            application.register('mixin:inspectable-array', mixin);
+        }
+    });
 
     return mixin;
 });

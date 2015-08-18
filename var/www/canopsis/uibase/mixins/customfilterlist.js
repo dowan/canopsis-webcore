@@ -209,5 +209,13 @@ define([
         }
     });
 
+
+    Ember.Application.initializer({
+        name:'CustomfilterlistMixin',
+        initialize: function(container, application) {
+            application.register('mixin:customfilterlist', mixin);
+        }
+    });
+
     return mixin;
 });

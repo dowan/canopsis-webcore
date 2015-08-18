@@ -17,25 +17,21 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'canopsis/uibase/components/classifiedcrecordselector/component'
-], function(Classifiedcrecordselector) {
+Ember.Application.initializer({
+    name:'component-dictclassifiedcrecordselector',
+    after: 'component-classifiedcrecordselector',
+    initialize: function(container, application) {
 
-    var get = Ember.get,
-        set = Ember.set;
+        var Classifiedcrecordselector = container.lookupFactory('component:component-classifiedcrecordselector');
 
-
-    var component = Classifiedcrecordselector.extend({
-        multiselect: true
-    });
+        var get = Ember.get,
+            set = Ember.set;
 
 
-    Ember.Application.initializer({
-        name:"component-dictclassifiedcrecordselector",
-        initialize: function(container, application) {
-            application.register('component:component-dictclassifiedcrecordselector', component);
-        }
-    });
+        var component = Classifiedcrecordselector.extend({
+            multiselect: true
+        });
 
-    return component;
+        application.register('component:component-dictclassifiedcrecordselector', component);
+    }
 });

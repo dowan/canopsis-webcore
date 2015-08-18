@@ -30,5 +30,12 @@ define([
         },
     });
 
+    Ember.Application.initializer({
+        name:'MinimizebuttonMixin',
+        initialize: function(container, application) {
+            application.register('mixin:minimizebutton', mixin);
+        }
+    });
+
     return mixin;
 });

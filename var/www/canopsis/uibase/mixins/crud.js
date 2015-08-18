@@ -316,5 +316,12 @@ define([
         });
     }
 
+    Ember.Application.initializer({
+        name:'CrudMixin',
+        initialize: function(container, application) {
+            application.register('mixin:crud', mixin);
+        }
+    });
+
     return mixin;
 });

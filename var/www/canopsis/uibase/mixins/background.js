@@ -64,5 +64,12 @@ define([
         }
     });
 
+    Ember.Application.initializer({
+        name:'BackgroundMixin',
+        initialize: function(container, application) {
+            application.register('mixin:background', mixin);
+        }
+    });
+
     return mixin;
 });

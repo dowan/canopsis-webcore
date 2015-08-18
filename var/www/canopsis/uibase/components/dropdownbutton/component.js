@@ -17,38 +17,34 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
+Ember.Application.initializer({
+    name:"component-dropdownbutton",
+    initialize: function(container, application) {
 
-    var get = Ember.get,
-        set = Ember.set;
+        var get = Ember.get,
+            set = Ember.set;
 
-    /**
-     * Global component for dropdownbutton
-     *
-     * @class Dropdownbutton
-     * @static
-     */
-    var component = Ember.Component.extend({
-        classNames: ['dropdown'],
-        opened: false,
+        /**
+         * Global component for dropdownbutton
+         *
+         * @class Dropdownbutton
+         * @static
+         */
+        var component = Ember.Component.extend({
+            classNames: ['dropdown'],
+            opened: false,
 
-        actions: {
-            hideContent: function() {
-                set(this, 'opened', false);
+            actions: {
+                hideContent: function() {
+                    set(this, 'opened', false);
+                }
+            },
+
+            didInsertElement: function() {
+                this.$().parents('td').css('overflow-x', 'visible').css('overflow-y', 'visible');
             }
-        },
+        });
 
-        didInsertElement: function() {
-            this.$().parents('td').css('overflow-x', 'visible').css('overflow-y', 'visible');
-        }
-    });
-
-    Ember.Application.initializer({
-        name:"component-dropdownbutton",
-        initialize: function(container, application) {
-            application.register('component:component-dropdownbutton', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-dropdownbutton', component);
+    }
 });

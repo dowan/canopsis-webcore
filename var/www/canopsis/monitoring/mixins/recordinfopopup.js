@@ -54,5 +54,13 @@ define([
         }
     });
 
+
+    Ember.Application.initializer({
+        name:'RecordinfopopupMixin',
+        initialize: function(container, application) {
+            application.register('mixin:recordinfopopup', mixin);
+        }
+    });
+
     return mixin;
 });

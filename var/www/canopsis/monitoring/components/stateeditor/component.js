@@ -18,78 +18,73 @@
 */
 
 
-define([], function() {
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+Ember.Application.initializer({
+    name:"component-stateeditor",
+    initialize: function(container, application) {
+
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
 
-    var component = Ember.Component.extend({
+        var component = Ember.Component.extend({
 
-        init: function() {
-            this._super();
-            set(this, 'previousContent', get(this, 'content'));
-            if(isNone(get(this, 'hidePrevious'))) {
-                //arbitrary default value currently used for change criticity action.
-                set(this, 'hidePrevious', true);
+            init: function() {
+                this._super();
+                set(this, 'previousContent', get(this, 'content'));
+                if(isNone(get(this, 'hidePrevious'))) {
+                    //arbitrary default value currently used for change criticity action.
+                    set(this, 'hidePrevious', true);
+                }
+            },
+
+            isInfo:function () {
+                return get(this, 'content') === 0;
+            }.property('content'),
+
+            isMinor:function () {
+                return get(this, 'content') === 1;
+            }.property('content'),
+
+            isMajor:function () {
+                return get(this, 'content') === 2;
+            }.property('content'),
+
+            isCritical:function () {
+                return get(this, 'content') === 3;
+            }.property('content'),
+
+            previousIs: function (state) {
+                if (get(this, 'showAll')) {
+                    return false;
+                }
+                return get(this, 'hidePrevious') && get(this, 'previousContent') === state;
+            },
+
+            previousIsInfo:function () {
+                return this.previousIs(0);
+            }.property('previousContent'),
+
+            previousIsMinor:function () {
+                return this.previousIs(1);
+            }.property('previousContent'),
+
+            previousIsMajor:function () {
+                return this.previousIs(2);
+            }.property('previousContent'),
+
+            previousIsCritical:function () {
+                return this.previousIs(3);
+            }.property('previousContent'),
+
+
+            actions: {
+                setState:function (state) {
+                    set(this, 'content', parseInt(state));
+                }
             }
-        },
-
-        isInfo:function () {
-            return get(this, 'content') === 0;
-        }.property('content'),
-
-        isMinor:function () {
-            return get(this, 'content') === 1;
-        }.property('content'),
-
-        isMajor:function () {
-            return get(this, 'content') === 2;
-        }.property('content'),
-
-        isCritical:function () {
-            return get(this, 'content') === 3;
-        }.property('content'),
-
-        previousIs: function (state) {
-            if (get(this, 'showAll')) {
-                return false;
-            }
-            return get(this, 'hidePrevious') && get(this, 'previousContent') === state;
-        },
-
-        previousIsInfo:function () {
-            return this.previousIs(0);
-        }.property('previousContent'),
-
-        previousIsMinor:function () {
-            return this.previousIs(1);
-        }.property('previousContent'),
-
-        previousIsMajor:function () {
-            return this.previousIs(2);
-        }.property('previousContent'),
-
-        previousIsCritical:function () {
-            return this.previousIs(3);
-        }.property('previousContent'),
-
-
-        actions: {
-            setState:function (state) {
-                set(this, 'content', parseInt(state));
-            }
-        }
-    });
-
-
-    Ember.Application.initializer({
-        name:"component-stateeditor",
-        initialize: function(container, application) {
-            application.register('component:component-stateeditor', component);
-        }
-    });
-
-    return component;
+        });
+        application.register('component:component-stateeditor', component);
+    }
 });

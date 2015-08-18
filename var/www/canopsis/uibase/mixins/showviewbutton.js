@@ -48,5 +48,12 @@ define([
     });
 
 
+    Ember.Application.initializer({
+        name:'ShowviewbuttonMixin',
+        initialize: function(container, application) {
+            application.register('mixin:showviewbutton', mixin);
+        }
+    });
+
     return mixin;
 });

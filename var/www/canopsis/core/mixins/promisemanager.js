@@ -42,5 +42,12 @@ define([
     });
 
 
+    Ember.Application.initializer({
+        name:'PromisemanagerMixin',
+        initialize: function(container, application) {
+            application.register('mixin:promisemanager', mixin);
+        }
+    });
+
     return mixin;
 });

@@ -189,5 +189,13 @@ define([
         }
     });
 
+
+    Ember.Application.initializer({
+        name:'ResponsivelistMixin',
+        initialize: function(container, application) {
+            application.register('mixin:responsivelist', mixin);
+        }
+    });
+
     return mixin;
 });

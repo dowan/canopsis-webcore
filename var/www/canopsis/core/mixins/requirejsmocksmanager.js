@@ -73,5 +73,12 @@ define([
     });
 
 
+    Ember.Application.initializer({
+        name:'RequirejsmocksmanagerMixin',
+        initialize: function(container, application) {
+            application.register('mixin:requirejsmocksmanager', mixin);
+        }
+    });
+
     return mixin;
 });

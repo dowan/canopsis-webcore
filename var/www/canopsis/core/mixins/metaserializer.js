@@ -81,6 +81,12 @@ define([
 
     });
 
+    Ember.Application.initializer({
+        name:'MetaSerializerMixin',
+        initialize: function(container, application) {
+            application.register('mixin:meta-serializer', mixin);
+        }
+    });
 
     return mixin;
 });

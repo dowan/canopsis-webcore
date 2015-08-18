@@ -37,5 +37,12 @@ define([
         },
     });
 
+    Ember.Application.initializer({
+        name:'DocumentationMixin',
+        initialize: function(container, application) {
+            application.register('mixin:documentation', mixin);
+        }
+    });
+
     return mixin;
 });

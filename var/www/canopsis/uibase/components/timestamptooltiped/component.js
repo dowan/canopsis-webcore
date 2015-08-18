@@ -21,32 +21,31 @@ define([
     'app/lib/utils/dates',
 ], function(dateUtils) {
 
-    var get = Ember.get,
-        set = Ember.set,
-        __ = Ember.String.loc;
-
-
-    var component = Ember.Component.extend({
-        showMainTimestamp :function () {
-            var maintitle = get(this, 'maintitle');
-            var timestamp = get(this, 'maintimestamp');
-            return __(maintitle) + '<br/><i>' +
-                dateUtils.timestamp2String(timestamp) + '</i>';
-        }.property(),
-
-        showOptionalElapsed: function () {
-            var optionaltimestamp = get(this, 'optionaltimestamp');
-            return dateUtils.durationFromNow(optionaltimestamp);
-        }.property(),
-
-    });
-
     Ember.Application.initializer({
         name:"component-timestamptooltiped",
         initialize: function(container, application) {
+
+            var get = Ember.get,
+                set = Ember.set,
+                __ = Ember.String.loc;
+
+
+            var component = Ember.Component.extend({
+                showMainTimestamp :function () {
+                    var maintitle = get(this, 'maintitle');
+                    var timestamp = get(this, 'maintimestamp');
+                    return __(maintitle) + '<br/><i>' +
+                        dateUtils.timestamp2String(timestamp) + '</i>';
+                }.property(),
+
+                showOptionalElapsed: function () {
+                    var optionaltimestamp = get(this, 'optionaltimestamp');
+                    return dateUtils.durationFromNow(optionaltimestamp);
+                }.property(),
+
+            });
+
             application.register('component:component-timestamptooltiped', component);
         }
     });
-
-    return component;
 });

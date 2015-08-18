@@ -21,48 +21,47 @@ define([
     'app/lib/utils/hash'
 ], function(hash) {
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone,
-        __ = Ember.String.loc;
-
-
-    var component = Ember.Component.extend({
-
-        init: function () {
-            this._super.apply(this, arguments);
-
-            var allowed_methods = ['sha1', 'md5'];
-            var method_name = get(this, 'method');
-
-            if (!isNone(method_name) && allowed_methods.indexOf(method_name) === -1) {
-                console.warning('Invalid method, using sha1:', method_name);
-                set(this, 'method', 'sha1');
-            }
-        },
-
-        onUpdate: function () {
-            var pass = get(this, 'password');
-            var method_name = get(this, 'method');
-
-            if (!isNone(method_name)) {
-                var method = get(hash, method_name);
-
-                pass = method(pass);
-            }
-
-            set(this, 'content', pass);
-
-        }.observes('password')
-
-    });
-
     Ember.Application.initializer({
         name:"component-password",
         initialize: function(container, application) {
+
+            var get = Ember.get,
+                set = Ember.set,
+                isNone = Ember.isNone,
+                __ = Ember.String.loc;
+
+
+            var component = Ember.Component.extend({
+
+                init: function () {
+                    this._super.apply(this, arguments);
+
+                    var allowed_methods = ['sha1', 'md5'];
+                    var method_name = get(this, 'method');
+
+                    if (!isNone(method_name) && allowed_methods.indexOf(method_name) === -1) {
+                        console.warning('Invalid method, using sha1:', method_name);
+                        set(this, 'method', 'sha1');
+                    }
+                },
+
+                onUpdate: function () {
+                    var pass = get(this, 'password');
+                    var method_name = get(this, 'method');
+
+                    if (!isNone(method_name)) {
+                        var method = get(hash, method_name);
+
+                        pass = method(pass);
+                    }
+
+                    set(this, 'content', pass);
+
+                }.observes('password')
+
+            });
+
             application.register('component:component-password', component);
         }
     });
-
-    return component;
 });

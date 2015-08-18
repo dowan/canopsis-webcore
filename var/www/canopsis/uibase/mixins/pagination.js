@@ -201,6 +201,14 @@ define([
         }.property('itemsTotal')
     });
 
+
+    Ember.Application.initializer({
+        name:'PaginationMixin',
+        initialize: function(container, application) {
+            application.register('mixin:pagination', mixin);
+        }
+    });
+
     return mixin;
 });
 

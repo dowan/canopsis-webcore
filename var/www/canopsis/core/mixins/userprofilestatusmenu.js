@@ -107,5 +107,12 @@ define([
     });
 
 
+    Ember.Application.initializer({
+        name:'UserprofilestatusmenuMixin',
+        initialize: function(container, application) {
+            application.register('mixin:userprofilestatusmenu', mixin);
+        }
+    });
+
     return mixin;
 });

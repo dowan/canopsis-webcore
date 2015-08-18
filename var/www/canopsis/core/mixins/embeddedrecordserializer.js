@@ -368,5 +368,13 @@ define([
         }
     });
 
+
+    Ember.Application.initializer({
+        name:'EmbeddedRecordSerializerMixin',
+        initialize: function(container, application) {
+            application.register('mixin:embedded-record-serializer', mixin);
+        }
+    });
+
     return mixin;
 });

@@ -136,5 +136,12 @@ define([
     });
 
 
+    Ember.Application.initializer({
+        name:'SortablearrayMixin',
+        initialize: function(container, application) {
+            application.register('mixin:sortablearray', mixin);
+        }
+    });
+
     return mixin;
 });

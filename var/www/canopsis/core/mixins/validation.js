@@ -126,5 +126,12 @@ define([
     });
 
 
+    Ember.Application.initializer({
+        name:'ValidationMixin',
+        initialize: function(container, application) {
+            application.register('mixin:validation', mixin);
+        }
+    });
+
     return mixin;
 });

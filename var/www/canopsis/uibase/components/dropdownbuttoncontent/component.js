@@ -17,41 +17,37 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
+Ember.Application.initializer({
+    name:"component-dropdownbuttoncontent",
+    initialize: function(container, application) {
 
-    var get = Ember.get,
-        set = Ember.set;
-
-    /**
-     * Component for switching between display and hide of the content
-     *
-     * @class Dropdownbuttoncontent
-     * @static
-     */
-    var component = Ember.Component.extend({
-        classNames: ['dropdownbuttoncontent'],
-        classNameBindings: ['dropdownContentMenu'],
+        var get = Ember.get,
+            set = Ember.set;
 
         /**
-         * Method for defining a boolean value on dropdownContentMenu
-         * thanks to opened attribute
-         * @method dropdownMenu
-         * @return {boolean}
+         * Component for switching between display and hide of the content
+         *
+         * @class Dropdownbuttoncontent
+         * @static
          */
-        dropdownContentMenu: function(){
-           return get(this, 'parentView.opened');
-        }.property('parentView.opened'),
+        var component = Ember.Component.extend({
+            classNames: ['dropdownbuttoncontent'],
+            classNameBindings: ['dropdownContentMenu'],
 
-        attributeBindings: ['aria-labelledby'],
-        'aria-labelledby': 'dropdownMenu1'
-    });
+            /**
+             * Method for defining a boolean value on dropdownContentMenu
+             * thanks to opened attribute
+             * @method dropdownMenu
+             * @return {boolean}
+             */
+            dropdownContentMenu: function(){
+               return get(this, 'parentView.opened');
+            }.property('parentView.opened'),
 
-    Ember.Application.initializer({
-        name:"component-dropdownbuttoncontent",
-        initialize: function(container, application) {
-            application.register('component:component-dropdownbuttoncontent', component);
-        }
-    });
+            attributeBindings: ['aria-labelledby'],
+            'aria-labelledby': 'dropdownMenu1'
+        });
 
-    return component;
+        application.register('component:component-dropdownbuttoncontent', component);
+    }
 });

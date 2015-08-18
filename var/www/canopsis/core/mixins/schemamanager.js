@@ -90,5 +90,12 @@ define([
     });
 
 
+    Ember.Application.initializer({
+        name:'SchemamanagerMixin',
+        initialize: function(container, application) {
+            application.register('mixin:schemamanager', mixin);
+        }
+    });
+
     return mixin;
 });

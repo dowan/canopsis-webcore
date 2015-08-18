@@ -15,62 +15,51 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/view/recordinfopopup'
-], function() {
+Ember.Application.initializer({
+    name: 'RecordinfopopupController',
+    initialize: function(container, application) {
+        var get = Ember.get,
+            set = Ember.set,
+            __ = Ember.String.loc;
 
-    var get = Ember.get,
-        set = Ember.set,
-        __ = Ember.String.loc;
 
+        var eventedController = Ember.Controller.extend(Ember.Evented);
 
-    var eventedController = Ember.Controller.extend(Ember.Evented);
-
-    var controller = eventedController.extend({
-        init: function () {
-            set(this, 'title',__('Information'));
-            console.log('initializing recordinfopopup controller');
-        },
-
-        actions: {
-            show: function(crecord, template) {
-                console.log('Show recordinfopopup', crecord, template);
-
-                var html;
-
-                try {
-                    html = Handlebars.compile(template)(crecord[0].toJson());
-                } catch (err) {
-                    console.warn('template compilation error', err);
-                    html = '<i>An error occured while compiling the template with the record. please if check the template is correct</i>';
-                }
-
-                set(this, 'content', new Ember.Handlebars.SafeString(html));
-
-                //FIXME do not use jquery for that kind of things on a controller
-                var left = ($(window).width() - $('#recordinfopopup').outerWidth()) / 2;
-                $('#recordinfopopup').css('left', left);
-                $('#recordinfopopup').fadeIn(500);
+        var controller = eventedController.extend({
+            init: function () {
+                set(this, 'title',__('Information'));
+                console.log('initializing recordinfopopup controller');
             },
 
-            hide: function() {
-                console.log('hiding recordinfopopup');
-                $('#recordinfopopup').fadeOut(500);
-            },
-        }
+            actions: {
+                show: function(crecord, template) {
+                    console.log('Show recordinfopopup', crecord, template);
 
-    });
+                    var html;
 
-    Ember.Application.initializer({
-        name: 'RecordinfopopupController',
-        initialize: function(container, application) {
-            application.register('controller:recordinfopopup', controller);
-        }
-    });
+                    try {
+                        html = Handlebars.compile(template)(crecord[0]._data);
+                    } catch (err) {
+                        html = '<i>An error occured while compiling the template with the record. please if check the template is correct</i>';
+                    }
 
-    return controller;
+                    set(this, 'content', new Ember.Handlebars.SafeString(html));
+
+                    //FIXME do not use jquery for that kind of things on a controller
+                    var left = ($(window).width() - $('#recordinfopopup').outerWidth()) / 2;
+                    $('#recordinfopopup').css('left', left);
+                    $('#recordinfopopup').fadeIn(500);
+                },
+
+                hide: function() {
+                    console.log('hiding recordinfopopup');
+                    $('#recordinfopopup').fadeOut(500);
+                },
+            }
+
+        });
+        application.register('controller:recordinfopopup', controller);
+    }
 });
