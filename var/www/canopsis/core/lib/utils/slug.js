@@ -15,62 +15,58 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define(['app/lib/utilityclass'], function(Utility) {
+Ember.Application.initializer({
+    name: 'SlugUtils',
+    after: ['UtilityClass'],
+    initialize: function(container, application) {
+        var Utility = container.lookupFactory('class:utility');
 
-    /**
-     * @class SlugUtils
-     * @extends Utility
-     *
-     * Used to remove spaces and special characters for urls, DOM element IDs and si on
-     */
-    var slugify = Utility.create({
-        name: 'slug',
-
-        /**
-         * @method slug
-         * @param {string} value
-         * @return {string}
+         /**
+         * @class SlugUtils
+         * @extends Utility
+         *
+         * Used to remove spaces and special characters for urls, DOM element IDs and si on
          */
-        slug: function(value) {
-            var rExps = [
-                { re: /[\xC0-\xC6]/g, ch: 'A' },
-                { re: /[\xE0-\xE6]/g, ch: 'a' },
-                { re: /[\xC8-\xCB]/g, ch: 'E' },
-                { re: /[\xE8-\xEB]/g, ch: 'e' },
-                { re: /[\xCC-\xCF]/g, ch: 'I' },
-                { re: /[\xEC-\xEF]/g, ch: 'i' },
-                { re: /[\xD2-\xD6]/g, ch: 'O' },
-                { re: /[\xF2-\xF6]/g, ch: 'o' },
-                { re: /[\xD9-\xDC]/g, ch: 'U' },
-                { re: /[\xF9-\xFC]/g, ch: 'u' },
-                { re: /[\xC7-\xE7]/g, ch: 'c' },
-                { re: /[\xD1]/g, ch: 'N' },
-                { re: /[\xF1]/g, ch:'n'}
-            ];
+        var slugify = Utility.create({
+            name: 'slug',
 
-            for(var i = 0, l = rExps.length; i < l; i++) {
-                value = value.replace(rExps[i].re, rExps[i].ch);
+            /**
+             * @method slug
+             * @param {string} value
+             * @return {string}
+             */
+            slug: function(value) {
+                var rExps = [
+                    { re: /[\xC0-\xC6]/g, ch: 'A' },
+                    { re: /[\xE0-\xE6]/g, ch: 'a' },
+                    { re: /[\xC8-\xCB]/g, ch: 'E' },
+                    { re: /[\xE8-\xEB]/g, ch: 'e' },
+                    { re: /[\xCC-\xCF]/g, ch: 'I' },
+                    { re: /[\xEC-\xEF]/g, ch: 'i' },
+                    { re: /[\xD2-\xD6]/g, ch: 'O' },
+                    { re: /[\xF2-\xF6]/g, ch: 'o' },
+                    { re: /[\xD9-\xDC]/g, ch: 'U' },
+                    { re: /[\xF9-\xFC]/g, ch: 'u' },
+                    { re: /[\xC7-\xE7]/g, ch: 'c' },
+                    { re: /[\xD1]/g, ch: 'N' },
+                    { re: /[\xF1]/g, ch:'n'}
+                ];
+
+                for(var i = 0, l = rExps.length; i < l; i++) {
+                    value = value.replace(rExps[i].re, rExps[i].ch);
+                }
+
+                value = value.toLowerCase();
+                value = value.replace(/\s+/g, '-');
+                value = value.replace(/[^a-z0-9-]/g, '');
+                value = value.replace(/\-{2,}/g,'-');
+
+                return value;
             }
+        });
 
-            value = value.toLowerCase();
-            value = value.replace(/\s+/g, '-');
-            value = value.replace(/[^a-z0-9-]/g, '');
-            value = value.replace(/\-{2,}/g,'-');
-
-            return value;
-        }
-    });
-
-    Ember.Application.initializer({
-        name:"SlugUtils",
-        initialize: function(container, application) {
-            application.register('utility:slug', slugify);
-        }
-    });
-
-    return slugify;
+        application.register('utility:slug', slugify);
+    }
 });

@@ -15,278 +15,272 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/routes/authenticated',
-    'app/lib/utils/routes',
-    'app/lib/utils/actions',
-    'app/lib/loaders/forms'
-], function(AuthenticatedRoute, routesUtils, actionsUtils, utils) {
-    var formsregistry;
+Ember.Application.initializer({
+    name: 'ApplicationRoute',
+    after: ['AuthenticatedRoute', 'FormsRegistry', 'RoutesUtils', 'ActionsUtils'],
+    initialize: function(container, application) {
+        var formsregistry, routesUtils, actionsUtils;
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+        var AuthenticatedRoute = container.lookupFactory('route:authenticated');
 
-    /**
-     * @function bindKey
-     * @param keyCombination
-     * @param actionName
-     *
-     * Bind a key combination to an action registered in the actionsRegistry.
-     * @see ActionsUtils#doAction
-     */
-    function bindKey(keyCombination, actionName) {
-        Mousetrap.bind([keyCombination], function(e) {
-            console.log('binding', arguments);
-            actionsUtils.doAction(actionName);
+        formsregistry = container.lookupFactory('registry:forms');
+        routesUtils = container.lookupFactory('utility:routes');
+        actionsUtils = container.lookupFactory('utility:actions');
 
-            return false;
-        });
-    }
 
-    /**
-     * @class ApplicationRoute
-     * @extends AuthenticatedRoute
-     * @constructor
-     */
-    var route = AuthenticatedRoute.extend({
-        actions: {
-            /**
-             * @event showView
-             * @param {string} id the id of the view to display
-             *
-             * Changes the currently displayed view to a new one.
-             */
-            showView: function(id) {
-                console.log('ShowView action', arguments);
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
-                var currentViewId = routesUtils.getCurrentViewId();
+        /**
+         * @function bindKey
+         * @param keyCombination
+         * @param actionName
+         *
+         * Bind a key combination to an action registered in the actionsRegistry.
+         * @see ActionsUtils#doAction
+         */
+        function bindKey(keyCombination, actionName) {
+            Mousetrap.bind([keyCombination], function(e) {
+                console.log('binding', arguments);
+                actionsUtils.doAction(actionName);
 
-                this.transitionTo('userview', id);
+                return false;
+            });
+        }
+
+        /**
+         * @class ApplicationRoute
+         * @extends AuthenticatedRoute
+         * @constructor
+         */
+        var route = AuthenticatedRoute.extend({
+            actions: {
+                /**
+                 * @event showView
+                 * @param {string} id the id of the view to display
+                 *
+                 * Changes the currently displayed view to a new one.
+                 */
+                showView: function(id) {
+                    console.log('ShowView action', arguments);
+
+                    var currentViewId = routesUtils.getCurrentViewId();
+
+                    this.transitionTo('userview', id);
+                },
+
+                /**
+                 * @event showEditFormWithController
+                 * @param formController
+                 * @param formContext
+                 * @param options
+                 */
+                showEditFormWithController: function(formController, formContext, options) {
+                    if (formController.ArrayFields) {
+                        while(formController.ArrayFields.length > 0) {
+                            formController.ArrayFields.pop();
+                        }
+                    }
+
+                    var formName = get(formController, 'formName');
+                    console.log('showEditFormWithController', formController, formName, formContext, options);
+
+                    var formwrapperController = this.controllerFor('formwrapper');
+                    set(formsregistry, 'formwrapper', formwrapperController);
+
+                    formController.setProperties({
+                        'formwrapper': formwrapperController,
+                        'formContext': formContext
+                    });
+
+                    formwrapperController.setProperties({
+                       'form': formController,
+                       'formName': formName
+                    });
+
+                    formwrapperController.send('show');
+
+                    return formController;
+                }
             },
 
             /**
-             * @event showEditFormWithController
-             * @param formController
-             * @param formContext
-             * @param options
+             * @method beforeModel
+             * @param {Transition} transition
+             * @return {Promise}
+             *
+             * Feed the ApplicationController with extra views to be used alongside the current view, and additionnal config from the backend.
              */
-            showEditFormWithController: function(formController, formContext, options) {
-                if (formController.ArrayFields) {
-                    while(formController.ArrayFields.length > 0) {
-                        formController.ArrayFields.pop();
-                    }
-                }
+            beforeModel: function(transition) {
+                var route = this;
 
-                var formName = get(formController, 'formName');
-                console.log('showEditFormWithController', formController, formName, formContext, options);
+                var store = DS.Store.create({ container: get(this, "container") });
+                var footerPromise = store.find('userview', 'view.app_footer');
+                var headerPromise = store.find('userview', 'view.app_header');
+                var devtoolsPromise = store.find('userview', 'view.app_devtools');
+                var frontendConfigPromise = store.find('frontend', 'cservice.frontend');
+                var ticketPromise = store.find('ticket', 'cservice.ticket');
+                var appController = route.controllerFor('application');
 
-                var formwrapperController = this.controllerFor('formwrapper');
-                set(formsregistry, 'formwrapper', formwrapperController);
-
-                formController.setProperties({
-                    'formwrapper': formwrapperController,
-                    'formContext': formContext
+                ticketPromise.then(function(queryResults) {
+                    appController.ticketConfig = queryResults;
                 });
 
-                formwrapperController.setProperties({
-                   'form': formController,
-                   'formName': formName
-                });
+                frontendConfigPromise.then(function(queryResults) {
+                    console.log('frontend config found');
+                    appController.frontendConfig = queryResults;
 
-                formwrapperController.send('show');
+                    var keybindings = get(queryResults, 'keybindings');
 
-                return formController;
-            }
-        },
+                    console.log('load keybindings', keybindings);
 
-        /**
-         * @method beforeModel
-         * @param {Transition} transition
-         * @return {Promise}
-         *
-         * Feed the ApplicationController with extra views to be used alongside the current view, and additionnal config from the backend.
-         */
-        beforeModel: function(transition) {
-            var route = this;
+                    for (var i = 0, l = keybindings.length; i < l; i++) {
+                        var currentKeybinding = keybindings[i];
+                        console.log('Mousetrap define', currentKeybinding);
 
-            var store = DS.Store.create({ container: get(this, "container") });
-            var footerPromise = store.find('userview', 'view.app_footer');
-            var headerPromise = store.find('userview', 'view.app_header');
-            var devtoolsPromise = store.find('userview', 'view.app_devtools');
-            var frontendConfigPromise = store.find('frontend', 'cservice.frontend');
-            var ticketPromise = store.find('ticket', 'cservice.ticket');
-            var appController = route.controllerFor('application');
-
-            ticketPromise.then(function(queryResults) {
-                appController.ticketConfig = queryResults;
-            });
-
-            frontendConfigPromise.then(function(queryResults) {
-                console.log('frontend config found');
-                appController.frontendConfig = queryResults;
-
-                var keybindings = get(queryResults, 'keybindings');
-
-                console.log('load keybindings', keybindings);
-
-                for (var i = 0, l = keybindings.length; i < l; i++) {
-                    var currentKeybinding = keybindings[i];
-                    console.log('Mousetrap define', currentKeybinding);
-
-                    bindKey(currentKeybinding.label, currentKeybinding.value);
-                }
-
-                console.log('transition', transition);
-                if(get(transition, 'targetName') === 'index') {
-                    console.info('on index route, redirecting to the appropriate route');
-
-                    var defaultview = get(appController, 'frontendConfig.defaultview');
-
-                    if(!isNone(defaultview)) {
-                        console.log('redirect to view', defaultview);
-                        route.transitionTo('/userview/' + defaultview);
+                        bindKey(currentKeybinding.label, currentKeybinding.value);
                     }
-                }
-            });
 
-            headerPromise.then(function(queryResults) {
-                appController.headerUserview = queryResults;
-            });
+                    console.log('transition', transition);
+                    if(get(transition, 'targetName') === 'index') {
+                        console.info('on index route, redirecting to the appropriate route');
 
-            footerPromise.then(function(queryResults) {
-                appController.footerUserview = queryResults;
-            });
+                        var defaultview = get(appController, 'frontendConfig.defaultview');
 
-            devtoolsPromise.then(function(queryResults) {
-                appController.devtoolsUserview = queryResults;
-            });
-
-            var superPromise = this._super(transition);
-
-            set(this, 'promiseArray', [
-                superPromise,
-                footerPromise,
-                headerPromise,
-                devtoolsPromise,
-                frontendConfigPromise,
-                ticketPromise,
-            ]);
-
-            set(this, 'store', store);
-
-            var authpromise = this.authConfig('authconfiguration', function (authconfigurationRecord) {
-
-                var serviceList = get(authconfigurationRecord, 'services');
-
-                console.log('authconfigurationRecord', authconfigurationRecord, serviceList);
-
-                if(!isNone(serviceList)) {
-                    for(var i = 0, l = serviceList.length; i < l; i++) {
-                        //this test avoids empty strings
-                        if(serviceList[i]) {
-                            var promise = route.authConfig(serviceList[i]);
-                            get(route, 'promiseArray').pushObject(promise);
+                        if(!isNone(defaultview)) {
+                            console.log('redirect to view', defaultview);
+                            route.transitionTo('/userview/' + defaultview);
                         }
                     }
-                }
-            });
-
-            get(this, 'promiseArray').pushObject(authpromise);
-
-            return Ember.RSVP.Promise.all(get(this, 'promiseArray'));
-        },
-
-        /**
-         * @method authConfig
-         * @private
-         * @param authType
-         * @param callback
-         */
-        authConfig: function (authType, callback) {
-            var authId = 'cservice.' + authType;
-            var appController = this.controllerFor('application');
-            var store = get(this, 'store');
-
-            var onReadyRecord = function(appController, authType, record, callback) {
-                appController[authType] = record;
-                if(!appController.authTypes) {
-                    appController.authTypes = [];
-                }
-
-                appController.authTypes.pushObject(authType);
-
-                if(!isNone(callback)) {
-                    callback(record);
-                }
-            };
-
-            var promise = store.find(authType, authId);
-            promise.then(function(queryResults) {
-
-                console.log(authType, 'config found', queryResults);
-                onReadyRecord(appController, authType, queryResults, callback);
-
-            }, function() {
-                console.log('create base ' + authType + ' config');
-
-                var record = store.createRecord(authType, {
-                    crecord_name: authType
                 });
 
-                record.id = authId;
-                onReadyRecord(appController, authType, record, callback);
-            });
+                headerPromise.then(function(queryResults) {
+                    appController.headerUserview = queryResults;
+                });
 
-            return promise;
-        },
+                footerPromise.then(function(queryResults) {
+                    appController.footerUserview = queryResults;
+                });
 
-        //TODO check if this is still used
-        model: function() {
-            return {
-                title: 'Canopsis'
-            };
-        },
+                devtoolsPromise.then(function(queryResults) {
+                    appController.devtoolsUserview = queryResults;
+                });
 
-        /**
-         * @method renderTemplate
-         */
-        renderTemplate: function() {
-            console.info('render application template');
-            this.render();
+                var superPromise = this._super(transition);
 
-            //getting the generated controller
-            var formwrapperController = this.controllerFor('formwrapper');
+                set(this, 'promiseArray', [
+                    superPromise,
+                    footerPromise,
+                    headerPromise,
+                    devtoolsPromise,
+                    frontendConfigPromise,
+                    ticketPromise,
+                ]);
 
-            this.render('formwrapper', {
-                outlet: 'formwrapper',
-                into: 'application',
-                controller: formwrapperController
-            });
+                set(this, 'store', store);
 
-            var recordinfopopupController = this.controllerFor('recordinfopopup');
+                var authpromise = this.authConfig('authconfiguration', function (authconfigurationRecord) {
 
-            this.render('recordinfopopup', {
-                outlet: 'recordinfopopup',
-                into: 'application',
-                controller: recordinfopopupController
-            });
-        }
-    });
+                    var serviceList = get(authconfigurationRecord, 'services');
 
-    Ember.Application.initializer({
-        name: 'ApplicationRoute',
-        after: 'FormsRegistry',
-        initialize: function(container, application) {
-            formsregistry = container.lookupFactory('registry:forms');
+                    console.log('authconfigurationRecord', authconfigurationRecord, serviceList);
 
-            application.register('route:application', route);
-        }
-    });
+                    if(!isNone(serviceList)) {
+                        for(var i = 0, l = serviceList.length; i < l; i++) {
+                            //this test avoids empty strings
+                            if(serviceList[i]) {
+                                var promise = route.authConfig(serviceList[i]);
+                                get(route, 'promiseArray').pushObject(promise);
+                            }
+                        }
+                    }
+                });
 
-    return route;
+                get(this, 'promiseArray').pushObject(authpromise);
+
+                return Ember.RSVP.Promise.all(get(this, 'promiseArray'));
+            },
+
+            /**
+             * @method authConfig
+             * @private
+             * @param authType
+             * @param callback
+             */
+            authConfig: function (authType, callback) {
+                var authId = 'cservice.' + authType;
+                var appController = this.controllerFor('application');
+                var store = get(this, 'store');
+
+                var onReadyRecord = function(appController, authType, record, callback) {
+                    appController[authType] = record;
+                    if(!appController.authTypes) {
+                        appController.authTypes = [];
+                    }
+
+                    appController.authTypes.pushObject(authType);
+
+                    if(!isNone(callback)) {
+                        callback(record);
+                    }
+                };
+
+                var promise = store.find(authType, authId);
+                promise.then(function(queryResults) {
+
+                    console.log(authType, 'config found', queryResults);
+                    onReadyRecord(appController, authType, queryResults, callback);
+
+                }, function() {
+                    console.log('create base ' + authType + ' config');
+
+                    var record = store.createRecord(authType, {
+                        crecord_name: authType
+                    });
+
+                    record.id = authId;
+                    onReadyRecord(appController, authType, record, callback);
+                });
+
+                return promise;
+            },
+
+            //TODO check if this is still used
+            model: function() {
+                return {
+                    title: 'Canopsis'
+                };
+            },
+
+            /**
+             * @method renderTemplate
+             */
+            renderTemplate: function() {
+                console.info('render application template');
+                this.render();
+
+                //getting the generated controller
+                var formwrapperController = this.controllerFor('formwrapper');
+
+                this.render('formwrapper', {
+                    outlet: 'formwrapper',
+                    into: 'application',
+                    controller: formwrapperController
+                });
+
+                var recordinfopopupController = this.controllerFor('recordinfopopup');
+
+                this.render('recordinfopopup', {
+                    outlet: 'recordinfopopup',
+                    into: 'application',
+                    controller: recordinfopopupController
+                });
+            }
+        });
+
+        application.register('route:application', route);
+    }
 });

@@ -18,7 +18,7 @@
  */
 
 Ember.Application.initializer({
-    name:"component-wrapper",
+    name: 'component-wrapper',
     initialize: function(container, application) {
         var get = Ember.get,
             set = Ember.set,

@@ -17,46 +17,42 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
- define([
-    'app/lib/utils/modelsolve'
-], function(modelsolve) {
+Ember.Application.initializer({
+    name: 'EntityLinkAdapter',
+    after: ['ApplicationAdapter', 'ModelsolveUtils'],
+    initialize: function(container, application) {
+        var ApplicationAdapter = container.lookupFactory('adapter:application');
+        var modelsolve = container.lookupFactory('utility:modelsolve');
 
-    Ember.Application.initializer({
-        name: 'EntityLinkAdapter',
-        after: 'ApplicationAdapter',
-        initialize: function(container, application) {
-            var ApplicationAdapter = container.lookupFactory('adapter:application');
+        var isNone = Ember.isNone,
+            get = Ember.get;
 
-            var isNone = Ember.isNone,
-                get = Ember.get;
+        var adapter = ApplicationAdapter.extend({
 
-            var adapter = ApplicationAdapter.extend({
+            init: function () {
+                this._super();
+            },
 
-                init: function () {
-                    this._super();
-                },
+            buildURL: function(type, id) {
+                void(id);
 
-                buildURL: function(type, id) {
-                    void(id);
+                return '/entitylink';
+            },
 
-                    return '/entitylink';
-                },
+            findEventLinks: function(type, query) {
+                var url = this.buildURL(type, null);
 
-                findEventLinks: function(type, query) {
-                    var url = this.buildURL(type, null);
+                console.log('findQuery', query);
+                var me = this;
+                return new Ember.RSVP.Promise(function(resolve, reject) {
+                    var funcres = modelsolve.gen_resolve(resolve);
+                    var funcrej = modelsolve.gen_reject(reject);
+                    $.post(url, query).then(funcres, funcrej);
+                });
 
-                    console.log('findQuery', query);
-                    var me = this;
-                    return new Ember.RSVP.Promise(function(resolve, reject) {
-                        var funcres = modelsolve.gen_resolve(resolve);
-                        var funcrej = modelsolve.gen_reject(reject);
-                        $.post(url, query).then(funcres, funcrej);
-                    });
+            },
+        });
 
-                },
-            });
-
-            application.register('adapter:entitylink', adapter);
-        }
-    });
+        application.register('adapter:entitylink', adapter);
+    }
 });

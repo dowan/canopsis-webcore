@@ -15,39 +15,31 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/promisesmanager',
-    'app/lib/factories/mixin',
-    'ember'
-], function(promisesmanager, Mixin) {
+Ember.Application.initializer({
+    name:'PromisemanagerMixin',
+    after: ['PromisesRegistry', 'MixinFactory'],
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
+        var promisesmanager = container.lookupFactory('registry:promises');
 
-    /**
-     * Mixin allowing to show promises on the status bar
-     *
-     * @class PromisemanagerMixin
-     * @extensionfor ApplicationController
-     * @static
-     */
-    var mixin = Mixin('promisemanager', {
-        promises: promisesmanager,
+        /**
+         * Mixin allowing to show promises on the status bar
+         *
+         * @class PromisemanagerMixin
+         * @extensionfor ApplicationController
+         * @static
+         */
+        var mixin = Mixin('promisemanager', {
+            promises: promisesmanager,
 
-        init: function() {
-            this.partials.statusbar.pushObject('promisemanagerstatusmenu');
-            this._super();
-        }
-    });
+            init: function() {
+                this.partials.statusbar.pushObject('promisemanagerstatusmenu');
+                this._super();
+            }
+        });
 
-
-    Ember.Application.initializer({
-        name:'PromisemanagerMixin',
-        initialize: function(container, application) {
-            application.register('mixin:promisemanager', mixin);
-        }
-    });
-
-    return mixin;
+        application.register('mixin:promisemanager', mixin);
+    }
 });

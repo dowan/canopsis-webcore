@@ -17,7 +17,6 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 Ember.Application.initializer({
     name: 'PojoAdapter',
     after: 'ApplicationAdapter',

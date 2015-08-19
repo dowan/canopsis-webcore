@@ -18,49 +18,49 @@
  */
 
 define([
-    'hashes',
-    'app/lib/utilityclass'
-], function(Hashes, Utility) {
-
-    var hash = Utility.create({
-        generate_GUID: function() {
-            //Generates a random GUID
-            var s4 = function () {
-                return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-            };
-
-            var token = s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-
-            return token;
-        },
-
-        generateId: function(prefix) {
-
-            var token = hash.generate_GUID();
-
-            if(!Ember.isNone(prefix)) {
-                token = prefix + '_' + token;
-            }
-            return token;
-        },
-
-        md5: function(data) {
-            var md5 = new Hashes.MD5();
-            return md5.hex(data);
-        },
-
-        sha1: function(data) {
-            var sha1 = new Hashes.SHA1();
-            return sha1.hex(data);
-        }
-    });
+    'hashes'
+], function(Hashes) {
 
     Ember.Application.initializer({
-        name:"HashUtils",
+        name: 'HashUtils',
+        after: ['UtilityClass', 'HashUtils'],
         initialize: function(container, application) {
+            var Utility = container.lookupFactory('class:utility');
+
+            var hash = Utility.create({
+                generate_GUID: function() {
+                    //Generates a random GUID
+                    var s4 = function () {
+                        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+                    };
+
+                    var token = s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+
+                    return token;
+                },
+
+                generateId: function(prefix) {
+
+                    var token = hash.generate_GUID();
+
+                    if(!Ember.isNone(prefix)) {
+                        token = prefix + '_' + token;
+                    }
+                    return token;
+                },
+
+                md5: function(data) {
+                    var md5 = new Hashes.MD5();
+                    return md5.hex(data);
+                },
+
+                sha1: function(data) {
+                    var sha1 = new Hashes.SHA1();
+                    return sha1.hex(data);
+                }
+            });
+
             application.register('utility:hash', hash);
         }
     });
-
-    return hash;
 });

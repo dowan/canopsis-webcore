@@ -18,10 +18,8 @@
  */
 
 define([
-    'app/lib/utils/data',
-    'app/lib/inflections',
-    'jsonselect',
-], function(dataUtils, inflectionsManager) {
+    'jsonselect'
+], function() {
 
     if(window.appShouldNowBeLoaded !== true) {
         console.error('Application module is required too early, and it is probably leading to bad application behaviour and errors. Please do NOT require "app/application" in your modules.');
@@ -43,7 +41,18 @@ define([
     });
 
     loader.setApplication(Application);
-    dataUtils.setEmberApplicationSingleton(Application);
+
+    Ember.Application.initializer({
+        name: 'AppLaunch',
+        after: ['DataUtils', 'InflexionsRegistry'],
+        initialize: function(container, application) {
+            var dataUtils = container.lookupFactory('utility:data');
+            var inflectionsManager = container.lookupFactory('registry:inflexions');
+
+            dataUtils.setEmberApplicationSingleton(Application);
+            inflectionsManager.loadInflections();
+        }
+    });
 
     Ember.Application.initializer({
         name:"RESTAdaptertransforms",
@@ -58,7 +67,6 @@ define([
     Application.advanceReadiness();
     window.$A = Application;
 
-    inflectionsManager.loadInflections();
 
     return Application;
 });

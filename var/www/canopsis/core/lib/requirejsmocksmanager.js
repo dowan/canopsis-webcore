@@ -17,151 +17,147 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([
-    'app/lib/utils/forms'
-], function(formsUtils) {
+Ember.Application.initializer({
+    name: 'MocksRegistry',
+    after: 'FormsUtils',
+    initialize: function(container, application) {
 
-    var set = Ember.set;
+        var formsUtils = container.lookupFactory('utility:forms');
 
-    /**
-     * Singleton for handling requirejs module mocking
-     *
-     * @class RequirejsMockManager
-     * @memberOf canopsis.frontend.core
-     * @static
-     */
-    var MocksRegistryClass = Ember.Object.extend({
-        init: function() {
-            this._super();
-
-            this.feedMocks();
-        },
+        var set = Ember.set;
 
         /**
-         * Refresh mocks list
+         * Singleton for handling requirejs module mocking
          *
-         * @method feedMocks
+         * @class RequirejsMockManager
+         * @memberOf canopsis.frontend.core
+         * @static
          */
-        feedMocks : function() {
-            var mocks = localStorage.getItem('files_mocks');
-            var mocksArray = Ember.A();
+        var MocksRegistryClass = Ember.Object.extend({
+            init: function() {
+                this._super();
 
-            try {
-                mocks = JSON.parse(mocks);
+                this.feedMocks();
+            },
 
-                if(!!mocks) {
-                    for(var key in mocks) {
-                        mocks[key].modulePath = key;
-                        mocksArray.push(mocks[key]);
+            /**
+             * Refresh mocks list
+             *
+             * @method feedMocks
+             */
+            feedMocks : function() {
+                var mocks = localStorage.getItem('files_mocks');
+                var mocksArray = Ember.A();
+
+                try {
+                    mocks = JSON.parse(mocks);
+
+                    if(!!mocks) {
+                        for(var key in mocks) {
+                            mocks[key].modulePath = key;
+                            mocksArray.push(mocks[key]);
+                        }
                     }
+                } catch (e) {
+                    console.error('Impossible to parse mocks JSON.');
                 }
-            } catch (e) {
-                console.error('Impossible to parse mocks JSON.');
-            }
 
-            set(this, 'mocks', mocksArray);
-        },
+                set(this, 'mocks', mocksArray);
+            },
 
-        /**
-         * Causes a mock to be edited, by showing an appropriate form, and handling the persistance of the mock
-         *
-         * @method editMock
-         * @param mock {object} the mock to edit
-         */
-        editMock: function(mock) {
-            var mocksManager = this;
+            /**
+             * Causes a mock to be edited, by showing an appropriate form, and handling the persistance of the mock
+             *
+             * @method editMock
+             * @param mock {object} the mock to edit
+             */
+            editMock: function(mock) {
+                var mocksManager = this;
 
-            var recordWizard = formsUtils.showNew('modelform', mock, {
-                title: __('Edit mock') + ' ' + mock.modulePath,
-                inspectedItemType: 'requirejsmock'
-            });
+                var recordWizard = formsUtils.showNew('modelform', mock, {
+                    title: __('Edit mock') + ' ' + mock.modulePath,
+                    inspectedItemType: 'requirejsmock'
+                });
 
-            recordWizard.submit.then(function(form) {
+                recordWizard.submit.then(function(form) {
+                    var mocks = localStorage.getItem('files_mocks');
+                    try {
+                        mocks = JSON.parse(mocks);
+
+                        var mockModulePath = mock.modulePath;
+                        delete mock.modulePath;
+                        mock.module = mock.module;
+                        mocks[mockModulePath] = mock;
+
+                        localStorage.setItem('files_mocks', JSON.stringify(mocks));
+                    } catch (e) {
+                        console.error('Impossible to parse mocks JSON.');
+                    }
+
+                    mocksManager.feedMocks();
+                });
+            },
+
+            /**
+             * Causes a mock to be added, by showing an appropriate form, and handling the persistance of the mock
+             *
+             * @method addMock
+             */
+            addMock: function() {
+                var mocksManager = this;
+
+                var mock = {
+                    modulePath: "",
+                    module: "",
+                    requirements: []
+                };
+
+                var recordWizard = formsUtils.showNew('modelform', mock, {
+                    title: __('Add mock'),
+                    inspectedItemType: 'requirejsmock'
+                });
+
+                recordWizard.submit.then(function(form) {
+                    var mocks = localStorage.getItem('files_mocks');
+                    try {
+                        mocks = JSON.parse(mocks);
+
+                        var mockModulePath = mock.modulePath;
+                        delete mock.modulePath;
+                        mock.module = mock.module;
+                        mocks[mockModulePath] = mock;
+
+                        localStorage.setItem('files_mocks', JSON.stringify(mocks));
+                    } catch (e) {
+                        console.error('Impossible to parse mocks JSON.');
+                    }
+
+                    mocksManager.feedMocks();
+                });
+            },
+
+            /**
+             * Causes a mock to be deleted and the persistance done
+             *
+             * @method deleteMock
+             * @param {String} modulePath The full path of the JS module
+             */
+            deleteMock: function(modulePath) {
                 var mocks = localStorage.getItem('files_mocks');
+
                 try {
                     mocks = JSON.parse(mocks);
-
-                    var mockModulePath = mock.modulePath;
-                    delete mock.modulePath;
-                    mock.module = mock.module;
-                    mocks[mockModulePath] = mock;
-
+                    delete mocks[modulePath];
                     localStorage.setItem('files_mocks', JSON.stringify(mocks));
                 } catch (e) {
                     console.error('Impossible to parse mocks JSON.');
                 }
 
-                mocksManager.feedMocks();
-            });
-        },
-
-        /**
-         * Causes a mock to be added, by showing an appropriate form, and handling the persistance of the mock
-         *
-         * @method addMock
-         */
-        addMock: function() {
-            var mocksManager = this;
-
-            var mock = {
-                modulePath: "",
-                module: "",
-                requirements: []
-            };
-
-            var recordWizard = formsUtils.showNew('modelform', mock, {
-                title: __('Add mock'),
-                inspectedItemType: 'requirejsmock'
-            });
-
-            recordWizard.submit.then(function(form) {
-                var mocks = localStorage.getItem('files_mocks');
-                try {
-                    mocks = JSON.parse(mocks);
-
-                    var mockModulePath = mock.modulePath;
-                    delete mock.modulePath;
-                    mock.module = mock.module;
-                    mocks[mockModulePath] = mock;
-
-                    localStorage.setItem('files_mocks', JSON.stringify(mocks));
-                } catch (e) {
-                    console.error('Impossible to parse mocks JSON.');
-                }
-
-                mocksManager.feedMocks();
-            });
-        },
-
-        /**
-         * Causes a mock to be deleted and the persistance done
-         *
-         * @method deleteMock
-         * @param {String} modulePath The full path of the JS module
-         */
-        deleteMock: function(modulePath) {
-            var mocks = localStorage.getItem('files_mocks');
-
-            try {
-                mocks = JSON.parse(mocks);
-                delete mocks[modulePath];
-                localStorage.setItem('files_mocks', JSON.stringify(mocks));
-            } catch (e) {
-                console.error('Impossible to parse mocks JSON.');
+                this.feedMocks();
             }
+        });
 
-            this.feedMocks();
-        }
-    });
-
-    var registry = MocksRegistryClass.create();
-
-    Ember.Application.initializer({
-        name:"MocksRegistry",
-        initialize: function(container, application) {
-            application.register('registry:mocks', registry);
-        }
-    });
-
-    return registry;
+        var registry = MocksRegistryClass.create();
+        application.register('registry:mocks', registry);
+    }
 });

@@ -15,91 +15,88 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/schemasregistry',
-    'app/controller/widget',
-    'app/lib/utils/notification',
-    'app/lib/loaders/schemas'
-], function(schemasregistry, WidgetController, notificationUtils) {
+Ember.Application.initializer({
+    name: 'WidgetFactory',
+    after: ['WidgetsRegistry', 'SchemasRegistry', 'WidgetController', 'NotificationUtils', 'SchemasLoader'],
+    initialize: function(container, application) {
+        var WidgetsRegistry = container.lookupFactory('registry:widgets');
+        var schemasregistry = container.lookupFactory('registry:schemas');
+        var WidgetController = container.lookupFactory('controller:widget');
+        var notificationUtils = container.lookupFactory('utility:notification');
 
-    var widgetRegistrationsCallbacks = [];
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
+        /**
+         * Widget factory. Creates a controller, stores it in Application
+         * @param widgetName {string} the name of the new widget. lowercase
+         * @param classdict {dict} the controller dict
+         * @param options {dict} options :
+         *            - subclass: to handle widget's controller inheritance: default is WidgetController
+         *            - templateName: to use another template in the editor
+         *
+         * @author Gwenael Pluchon <info@gwenp.fr>
+         */
+        function Widget(widgetName, classdict, options) {
+            console.tags.add('factory');
+            console.group("widget factory call", arguments);
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
-    /**
-     * Widget factory. Creates a controller, stores it in Application
-     * @param widgetName {string} the name of the new widget. lowercase
-     * @param classdict {dict} the controller dict
-     * @param options {dict} options :
-     *            - subclass: to handle widget's controller inheritance: default is WidgetController
-     *            - templateName: to use another template in the editor
-     *
-     * @author Gwenael Pluchon <info@gwenp.fr>
-     */
-    function Widget(widgetName, classdict, options) {
-        console.tags.add('factory');
-        console.group("widget factory call", arguments);
+            var extendArguments = [];
 
-        var extendArguments = [];
-
-        if (options === undefined) {
-            options = {};
-        }
-
-        //This option allows to manually define inheritance for widgets
-        if (options.subclass === undefined) {
-            options.subclass = WidgetController;
-        }
-
-        //TODO check if this is still needed, as mixins are in configuration now
-        if (options.mixins !== undefined) {
-            for (var i = 0, l = options.mixins.length; i < l; i++) {
-                extendArguments.push(options.mixins[i]);
+            if (options === undefined) {
+                options = {};
             }
-        }
 
-        extendArguments.push(classdict);
+            //This option allows to manually define inheritance for widgets
+            if (options.subclass === undefined) {
+                options.subclass = WidgetController;
+            }
 
-        var widgetControllerName = widgetName.dasherize();
-        var widgetSerializerName = widgetName.dasherize();
-        var widgetModel = schemasregistry.getByName(widgetName).EmberModel;
-        var controllerClass = options.subclass.extend.apply(options.subclass, extendArguments);
-
-        if(isNone(widgetModel)) {
-            notificationUtils.error('No model found for the widget ' + widgetName + '. There might be no schema concerning this widget on the database');
-        } else {
-            console.log("extendArguments", extendArguments);
-            console.log("subclass", options.subclass);
-
-            var initializerName = widgetSerializerName.capitalize() + 'Controller';
-            Ember.Application.initializer({
-                name: initializerName,
-                initialize: function(container, application) {
-                    application.register('controller:' + widgetControllerName, controllerClass);
+            //TODO check if this is still needed, as mixins are in configuration now
+            if (options.mixins !== undefined) {
+                for (var i = 0, l = options.mixins.length; i < l; i++) {
+                    extendArguments.push(options.mixins[i]);
                 }
-            });
+            }
 
-            initializerName = widgetSerializerName.capitalize() + 'Serializer';
-            Ember.Application.initializer({
-                name: initializerName,
-                after: 'WidgetSerializer',
-                initialize: function(container, application) {
-                    var WidgetSerializer = container.lookupFactory('serializer:widget');
-                    application.register('serializer:' + widgetSerializerName, WidgetSerializer.extend());
-                }
-            });
+            extendArguments.push(classdict);
 
-            console.log("widget", widgetName.camelize().capitalize(), widgetModel);
-            var capitalizedWidgetName = widgetName.camelize().capitalize();
-            var metadataDict = widgetModel.proto().metadata;
+            var widgetControllerName = widgetName.dasherize();
+            var widgetSerializerName = widgetName.dasherize();
+            var widgetModel = schemasregistry.getByName(widgetName).EmberModel;
+            var controllerClass = options.subclass.extend.apply(options.subclass, extendArguments);
 
-            console.log("metadataDict", widgetName, metadataDict);
-            widgetRegistrationsCallbacks.pushObject(function(WidgetsRegistry) {
+            if(isNone(widgetModel)) {
+                notificationUtils.error('No model found for the widget ' + widgetName + '. There might be no schema concerning this widget on the database');
+            } else {
+                console.log("extendArguments", extendArguments);
+                console.log("subclass", options.subclass);
+
+                var initializerName = widgetSerializerName.capitalize() + 'Controller';
+                Ember.Application.initializer({
+                    name: initializerName,
+                    initialize: function(container, application) {
+                        application.register('controller:' + widgetControllerName, controllerClass);
+                    }
+                });
+
+                initializerName = widgetSerializerName.capitalize() + 'Serializer';
+                Ember.Application.initializer({
+                    name: initializerName,
+                    after: 'WidgetSerializer',
+                    initialize: function(container, application) {
+                        var WidgetSerializer = container.lookupFactory('serializer:widget');
+                        application.register('serializer:' + widgetSerializerName, WidgetSerializer.extend());
+                    }
+                });
+
+                console.log("widget", widgetName.camelize().capitalize(), widgetModel);
+                var capitalizedWidgetName = widgetName.camelize().capitalize();
+                var metadataDict = widgetModel.proto().metadata;
+
+                console.log("metadataDict", widgetName, metadataDict);
                 var registryEntry = Ember.Object.create({
                     name: widgetName,
                     EmberClass: controllerClass
@@ -123,29 +120,14 @@ define([
                 }
 
                 WidgetsRegistry.all.push(registryEntry);
-            });
-        }
-
-        console.groupEnd();
-        console.tags.remove('factory');
-
-        return controllerClass;
-    }
-
-    Ember.Application.initializer({
-        name: 'WidgetFactory',
-        after: ['WidgetsRegistry'],
-        initialize: function(container, application) {
-            var WidgetsRegistry = container.lookupFactory('registry:widgets');
-
-            //FIXME temporary hack for initializers refactoring
-            for (var i = 0; i < widgetRegistrationsCallbacks.length; i++) {
-                widgetRegistrationsCallbacks[i](WidgetsRegistry);
             }
 
-            application.register('factory:widget', Widget);
-        }
-    });
+            console.groupEnd();
+            console.tags.remove('factory');
 
-    return Widget;
+            return controllerClass;
+        }
+
+        application.register('factory:widget', Widget);
+    }
 });

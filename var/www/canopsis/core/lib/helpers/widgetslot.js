@@ -25,8 +25,6 @@ define(['app/view/widgetslot', 'app/view/widget'], function(WidgetslotView, Widg
      *
      * @author Gwenael Pluchon <info@gwenp.fr>
      */
-    Ember.Handlebars.helper('widgetslot', WidgetslotView);
-    Ember.Handlebars.helper('widgethelper', WidgetView);
 });
 
 

@@ -17,10 +17,7 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([
-    'canopsis/canopsis-backend-ui-connector/adapters/application'
-], function(ApplicationAdapter) {
-
+define(['canopsis/canopsis-backend-ui-connector/adapters/application'], function (ApplicationAdapter) {
     var shemasLimit = 200;
 
     var adapter = ApplicationAdapter.extend({
@@ -42,11 +39,10 @@ define([
 
     Ember.Application.initializer({
         name: 'SchemaAdapter',
-        after: 'ApplicationAdapter',
         initialize: function(container, application) {
             application.register('adapter:schema', adapter);
         }
     });
 
     return adapter;
-});
+})

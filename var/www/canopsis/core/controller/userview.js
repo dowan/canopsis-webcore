@@ -15,152 +15,145 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/utils/forms',
-    'app/lib/utils/hash',
-    'app/lib/schemasregistry',
-    'app/mixins/inspectableitem',
-    'app/routes/userview',
-    'app/serializers/userview'
-], function(formUtils, hashUtils, schemasregistry, InspectableItem) {
+Ember.Application.initializer({
+    name: 'UserviewController',
+    after: ['FormsUtils', 'HashUtils', 'SchemasRegistry', 'InspectableItemMixin'],
+    initialize: function(container, application) {
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone,
-        __ = Ember.String.loc;
+        var formUtils = container.lookupFactory('utility:forms');
+        var hashUtils = container.lookupFactory('utility:hash');
+        var schemasregistry = container.lookupFactory('registry:schemas');
+        var InspectableItem = container.lookupFactory('mixin:inspectable-item');
+
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone,
+            __ = Ember.String.loc;
 
 
-    /**
-     * @class UserviewController
-     * @extends Ember.ObjectController
-     * @constructor
-     * @uses InspectableItemMixin
-     * @uses Ember.Evented
-     */
-    var controller = Ember.ObjectController.extend(InspectableItem, Ember.Evented, {
-        needs: ['application'],
+        /**
+         * @class UserviewController
+         * @extends Ember.ObjectController
+         * @constructor
+         * @uses InspectableItemMixin
+         * @uses Ember.Evented
+         */
+        var controller = Ember.ObjectController.extend(InspectableItem, Ember.Evented, {
+            needs: ['application'],
 
-        actions: {
-            /**
-             * @event insertWidget
-             * @param {ContainerWidget} containerController
-             *
-             * Pop up a widget chooser form, and when the form sequence is over, inserts the widget into the container specified as first parameter
-             */
-            insertWidget: function(containerController) {
-                console.log("insertWidget", containerController);
-                var widgetChooserForm = formUtils.showNew('widgetform', this);
+            actions: {
+                /**
+                 * @event insertWidget
+                 * @param {ContainerWidget} containerController
+                 *
+                 * Pop up a widget chooser form, and when the form sequence is over, inserts the widget into the container specified as first parameter
+                 */
+                insertWidget: function(containerController) {
+                    console.log("insertWidget", containerController);
+                    var widgetChooserForm = formUtils.showNew('widgetform', this);
 
-                var userviewController = this;
+                    var userviewController = this;
 
-                widgetChooserForm.submit.done(function(form, newWidgetWrappers) {
-                    void (form);
-                    var newWidgetWrapper = newWidgetWrappers[0];
+                    widgetChooserForm.submit.done(function(form, newWidgetWrappers) {
+                        void (form);
+                        var newWidgetWrapper = newWidgetWrappers[0];
 
-                    console.log('onsubmit, adding widgetwrapper to containerwidget', newWidgetWrapper, containerController);
-                    console.log('containerwidget items', get(containerController, 'model.items.content'));
-                    //FIXME wrapper does not seems to have a widget
-                    get(containerController, 'model.items.content').pushObject(newWidgetWrapper);
+                        console.log('onsubmit, adding widgetwrapper to containerwidget', newWidgetWrapper, containerController);
+                        console.log('containerwidget items', get(containerController, 'model.items.content'));
+                        //FIXME wrapper does not seems to have a widget
+                        get(containerController, 'model.items.content').pushObject(newWidgetWrapper);
 
-                    console.log("saving view");
-                    get(userviewController, 'model').save();
-                });
+                        console.log("saving view");
+                        get(userviewController, 'model').save();
+                    });
 
-                widgetChooserForm.submit.fail(function() {
-                    console.info('Widget insertion canceled');
-                });
-            },
+                    widgetChooserForm.submit.fail(function() {
+                        console.info('Widget insertion canceled');
+                    });
+                },
 
-            /**
-             * @event duplicateWidgetAndContent
-             * @param {WidgetWrapper} widgetwrapperModel
-             * @param {ContainerWidget} containerModel
-             */
-            duplicateWidgetAndContent: function(widgetwrapperModel, containerModel) {
-                copyWidget(this, widgetwrapperModel, containerModel);
+                /**
+                 * @event duplicateWidgetAndContent
+                 * @param {WidgetWrapper} widgetwrapperModel
+                 * @param {ContainerWidget} containerModel
+                 */
+                duplicateWidgetAndContent: function(widgetwrapperModel, containerModel) {
+                    copyWidget(this, widgetwrapperModel, containerModel);
 
-                this.get('model').save();
+                    this.get('model').save();
 
-            },
+                },
 
-            /**
-             * @event refreshView
-             */
-            refreshView: function() {
-                console.log('refresh view');
-                this.trigger('refreshView');
+                /**
+                 * @event refreshView
+                 */
+                refreshView: function() {
+                    console.log('refresh view');
+                    this.trigger('refreshView');
+                }
             }
-        }
-    });
+        });
 
 
-    /**
-     * @method copyWidget
-     * @param {UserviewController} self
-     * @param {Widgetwrapper} widgetwrapperModel
-     * @param {ContainerWidget} containerModel
-     */
-    copyWidget = function(self, widgetwrapperModel, containerModel) {
-        var widgetwrapperJson = cleanRecord(widgetwrapperModel.toJSON());
-        widgetwrapperJson.widget = null;
-        var duplicatedWrapper = self.store.createRecord('widgetwrapper', widgetwrapperJson);
+        /**
+         * @method copyWidget
+         * @param {UserviewController} self
+         * @param {Widgetwrapper} widgetwrapperModel
+         * @param {ContainerWidget} containerModel
+         */
+        copyWidget = function(self, widgetwrapperModel, containerModel) {
+            var widgetwrapperJson = cleanRecord(widgetwrapperModel.toJSON());
+            widgetwrapperJson.widget = null;
+            var duplicatedWrapper = self.store.createRecord('widgetwrapper', widgetwrapperJson);
 
-        var widgetJson = cleanRecord(widgetwrapperModel.get('widget').toJSON());
+            var widgetJson = cleanRecord(widgetwrapperModel.get('widget').toJSON());
 
-        var duplicatedWidget = self.store.createRecord(widgetJson.xtype, widgetJson);
+            var duplicatedWidget = self.store.createRecord(widgetJson.xtype, widgetJson);
 
-        if(!isNone(widgetwrapperModel.get('widget.items'))) {
-            var items = widgetwrapperModel.get('widget.items.content');
+            if(!isNone(widgetwrapperModel.get('widget.items'))) {
+                var items = widgetwrapperModel.get('widget.items.content');
 
-            for (var i = 0; i < items.length; i++) {
-                var subWrapperModel = items[i];
+                for (var i = 0; i < items.length; i++) {
+                    var subWrapperModel = items[i];
 
-                copyWidget(self, subWrapperModel, duplicatedWidget);
+                    copyWidget(self, subWrapperModel, duplicatedWidget);
+                }
             }
+
+            duplicatedWrapper.set('widget',  duplicatedWidget);
+            containerModel.get('items.content').pushObject(duplicatedWrapper);
         }
 
-        duplicatedWrapper.set('widget',  duplicatedWidget);
-        containerModel.get('items.content').pushObject(duplicatedWrapper);
+        /**
+         * @function cleanRecord
+         * @param {Object} recordJSON
+         * @return {Object} the cleaned record
+         */
+        function cleanRecord(recordJSON) {
+            for (var key in recordJSON) {
+                var item = recordJSON[key];
+                //see if the key need to be cleaned
+                if(key === 'id' || key === '_id' || key === 'widgetId' || key === 'preference_id') {
+                    delete recordJSON[key];
+                }
+
+                //if this item is an object, then recurse into it
+                //to remove empty arrays in it too
+                if (typeof item === 'object') {
+                    cleanRecord(item);
+                }
+            }
+
+            if(recordJSON !== null && recordJSON !== undefined) {
+                recordJSON['id'] = hashUtils.generateId(recordJSON.xtype || recordJSON.crecord_type || 'item');
+                recordJSON['_id'] = recordJSON['id'];
+            }
+
+            return recordJSON;
+        }
+
+        application.register('controller:userview', controller);
     }
-
-    /**
-     * @function cleanRecord
-     * @param {Object} recordJSON
-     * @return {Object} the cleaned record
-     */
-    function cleanRecord(recordJSON) {
-        for (var key in recordJSON) {
-            var item = recordJSON[key];
-            //see if the key need to be cleaned
-            if(key === 'id' || key === '_id' || key === 'widgetId' || key === 'preference_id') {
-                delete recordJSON[key];
-            }
-
-            //if this item is an object, then recurse into it
-            //to remove empty arrays in it too
-            if (typeof item === 'object') {
-                cleanRecord(item);
-            }
-        }
-
-        if(recordJSON !== null && recordJSON !== undefined) {
-            recordJSON['id'] = hashUtils.generateId(recordJSON.xtype || recordJSON.crecord_type || 'item');
-            recordJSON['_id'] = recordJSON['id'];
-        }
-
-        return recordJSON;
-    }
-
-    Ember.Application.initializer({
-        name: 'UserviewController',
-        initialize: function(container, application) {
-            application.register('controller:userview', controller);
-        }
-    });
-
-    return controller;
 });

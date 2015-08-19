@@ -15,54 +15,50 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([], function() {
+Ember.Application.initializer({
+    name: 'WidgetslotView',
+    initialize: function(container, application) {
 
-    var get = Ember.get,
-        set = Ember.set;
-
-    /**
-     * @class WidgetslotView
-     * @extends Ember.View
-     * @constructor
-     */
-    var view = Ember.View.extend({
-        /**
-         * @method init
-         */
-        init: function() {
-            console.log('widgetslot init', get(this, 'controller.content.widgetslotTemplate'));
-
-            var widgetslotTemplate = get(this, 'controller.content.widgetslotTemplate');
-
-            if(widgetslotTemplate !== undefined && widgetslotTemplate !== null && Ember.TEMPLATES[widgetslotTemplate] !== undefined) {
-                set(this, 'templateName', widgetslotTemplate);
-            }
-            this._super.apply(this, arguments);
-        },
+        var get = Ember.get,
+            set = Ember.set;
 
         /**
-         * @property templateName
-         * @type string
+         * @class WidgetslotView
+         * @extends Ember.View
+         * @constructor
          */
-        templateName:'widgetslot-default',
+        var view = Ember.View.extend({
+            /**
+             * @method init
+             */
+            init: function() {
+                console.log('widgetslot init', get(this, 'controller.content.widgetslotTemplate'));
 
-        /**
-         * @property classNames
-         * @type Array
-         */
-        classNames: ['widgetslot']
-    });
+                var widgetslotTemplate = get(this, 'controller.content.widgetslotTemplate');
 
-    Ember.Application.initializer({
-        name: 'WidgetslotView',
-        initialize: function(container, application) {
-            application.register('view:widgetslot', view);
-        }
-    });
+                if(widgetslotTemplate !== undefined && widgetslotTemplate !== null && Ember.TEMPLATES[widgetslotTemplate] !== undefined) {
+                    set(this, 'templateName', widgetslotTemplate);
+                }
+                this._super.apply(this, arguments);
+            },
 
-    return view;
+            /**
+             * @property templateName
+             * @type string
+             */
+            templateName:'widgetslot-default',
+
+            /**
+             * @property classNames
+             * @type Array
+             */
+            classNames: ['widgetslot']
+        });
+
+        Ember.Handlebars.helper('widgetslot', view);
+
+        application.register('view:widgetslot', view);
+    }
 });
