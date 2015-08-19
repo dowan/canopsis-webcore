@@ -117,6 +117,6 @@ Ember.Application.initializer({
             }
         });
 
-        application.register('form:job', form);
+        application.register('form:jobform', form);
     }
 });

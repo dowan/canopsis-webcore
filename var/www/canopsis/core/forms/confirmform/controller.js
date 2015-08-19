@@ -40,6 +40,6 @@ Ember.Application.initializer({
         },
         formOptions);
 
-        application.register('form:confirm', form);
+        application.register('form:confirmform', form);
     }
 });

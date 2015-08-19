@@ -100,5 +100,6 @@ Ember.Application.initializer({
             },
         }, formOptions);
 
+        application.register('form:taskform', form);
     }
 });
