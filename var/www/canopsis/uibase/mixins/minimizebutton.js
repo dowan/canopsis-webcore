@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
     'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+], function(Mixin) {
 
     var set = Ember.set;
 
@@ -29,6 +28,13 @@ define([
             this._super();
             set(this, 'model.isMinimizable', true);
         },
+    });
+
+    Ember.Application.initializer({
+        name:'MinimizebuttonMixin',
+        initialize: function(container, application) {
+            application.register('mixin:minimizebutton', mixin);
+        }
     });
 
     return mixin;

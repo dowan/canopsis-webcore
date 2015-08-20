@@ -1,26 +1,25 @@
-/*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @module canopsis-frontend-core
+ */
 
 define([
-    'jquery',
-    'ember',
-    'ember-data',
     'app/controller/partialslotablecontroller',
     'canopsis/canopsisConfiguration',
     'app/lib/utils/widgets',
@@ -29,28 +28,62 @@ define([
     'app/lib/utils/debug',
     'app/lib/utils/data',
     'app/lib/schemasregistry',
-    'app/lib/mixinsregistry',
     'app/view/mixineditdropdown'
-], function($, Ember, DS, PartialslotAbleController, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, dataUtils, schemasregistry, mixinsregistry) {
+], function(PartialslotAbleController, canopsisConfiguration, widgetUtils, routesUtils, formsUtils, debugUtils, dataUtils, schemasregistry, mixinsregistry) {
 
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone;
 
 
+    /**
+     * @class WidgetController
+     * @extends PartialslotAbleController
+     * @constructor
+     */
     var controller = PartialslotAbleController.extend({
         needs: ['application', 'login'],
 
         /**
          * This is useful mostly for debug, to know that a printend object is a widget
+         *
+         * @property abstractType
+         * @type string
          */
         abstractType: 'widget',
 
+        /**
+         * @property canopsisConfiguration
+         * @type Object
+         */
         canopsisConfiguration: canopsisConfiguration,
+
+        /**
+         * true is the Frontend is in debug mode
+         *
+         * @property debug
+         * @type boolean
+         */
         debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
 
+        /**
+         * @property editMode
+         * @type boolean
+         */
         editMode : Ember.computed.alias('controllers.application.editMode'),
 
+        /**
+         * Alias for content
+         *
+         * @property config
+         * @deprecated
+         * @type DS.Model
+         */
+        config: Ember.computed.alias('content'),
+
+        /**
+         * @method init
+         */
         init: function () {
 
             set(this, 'userParams', {});
@@ -86,14 +119,21 @@ define([
             this.refreshContent();
         },
 
+
+        /**
+         * @method mixinsOptionsReady
+         */
         mixinsOptionsReady: function () {
             //can be overriden to trigger action when mixins options ready.
         },
 
+        /**
+         * Adds mixins view to the current widget controller
+         *
+         * @method addMixinView
+         * @param viewMixin
+         */
         addMixinView: function (viewMixin) {
-            /**
-                Adds mixins view to the current widget controller
-            **/
             var viewMixins = get(this, 'viewMixins');
             if (isNone(viewMixins)) {
                 viewMixins = [];
@@ -102,14 +142,24 @@ define([
             viewMixins.push(viewMixin);
         },
 
+        /**
+         * @method updateInterval
+         * @param interval
+         */
         updateInterval: function (interval) {
             console.warn('This method should be overriden for current widget', get(this, 'id'), interval);
         },
 
+        /**
+         * @method stopRefresh
+         */
         stopRefresh: function () {
             set(this, 'isRefreshable', false);
         },
 
+        /**
+         * @method startRefresh
+         */
         startRefresh: function () {
             this.setProperties({
                 'isRefreshable': true,
@@ -117,6 +167,9 @@ define([
             });
         },
 
+        /**
+         * @method isRollbackable
+         */
         isRollbackable: function() {
             if(get(this, 'isDirty') && get(this, 'dirtyType') === 'updated' && get(this, 'rollbackable') === true) {
                 return true;
@@ -130,11 +183,18 @@ define([
 
             /**
              * Show debug info in console and put widget var in window.$E
+             *
+             * @event inspect
+             * @param object
              */
-            inspect: function (widget) {
-                debugUtils.inspectObject(widget);
+            inspect: function (object) {
+                debugUtils.inspectObject(object);
             },
 
+            /**
+             * @event do
+             * @param action
+             */
             do: function(action) {
                 var params = [];
 
@@ -145,10 +205,18 @@ define([
                 this.send(action, params);
             },
 
+            /**
+             * @event creationForm
+             * @param itemType
+             */
             creationForm: function(itemType) {
                 formsUtils.addRecord(itemType);
             },
 
+            /**
+             * @event rollback
+             * @param widget
+             */
             rollback: function(widget){
                 console.log('rollback changes', arguments);
                 set(widget, 'volatile', {});
@@ -156,6 +224,10 @@ define([
                 set(widget, 'rollbackable', false);
             },
 
+            /**
+             * @event editWidget
+             * @param widget
+             */
             editWidget: function (widget) {
                 console.info('edit widget', widget);
 
@@ -187,6 +259,11 @@ define([
                 });
             },
 
+            /**
+             * @event editMixin
+             * @param widget
+             * @param mixinName
+             */
             editMixin: function (widget, mixinName) {
                 console.info('edit mixin', widget, mixinName);
 
@@ -225,7 +302,8 @@ define([
             },
 
             /**
-             * Deletes the widget from its parents saves the view, and refresh it
+             * @event removeWidget
+             * @param widget
              */
             removeWidget: function (widget) {
 
@@ -255,9 +333,7 @@ define([
 
                     var userview = get(widgetController, 'viewController.content');
 
-                    userview.save().then(function() {
-                        get(widgetController, 'viewController').send('refresh');
-                    });
+                    userview.save();
 
                     console.groupEnd();
                 });
@@ -265,6 +341,9 @@ define([
 
             /**
              * Moves the widget under the next one, if any
+             *
+             * @event movedown
+             * @param widgetwrapper
              */
             movedown: function(widgetwrapper) {
                 console.group('movedown', widgetwrapper);
@@ -306,9 +385,7 @@ define([
                         var widgetController = this,
                             userview = get(this, 'viewController.content');
 
-                        userview.save().then(function() {
-                            get(widgetController, 'viewController').send('refresh');
-                        });
+                        userview.save();
                     }
                 } catch (e) {
                     console.error(e.stack, e.message);
@@ -318,6 +395,9 @@ define([
 
             /**
              * Moves the widget above the previous one, if any
+             *
+             * @event moveup
+             * @param widgetwrapper
              */
             moveup: function(widgetwrapper) {
                 console.group('moveup', widgetwrapper);
@@ -361,9 +441,7 @@ define([
                         var widgetController = this,
                             userview = get(widgetUtils.getParentViewForWidget(this), 'content');
 
-                        userview.save().then(function() {
-                            get(widgetController, 'viewController').send('refresh');
-                        });
+                        userview.save();
                     }
                 } catch (e) {
                     console.error(e.stack, e.message);
@@ -372,14 +450,20 @@ define([
             }
         },
 
-        config: Ember.computed.alias('content'),
 
+        /**
+         * @property itemController
+         * @type string
+         */
         itemController: function() {
             if(get(this, 'itemType')) {
                 return get(this, 'itemType').capitalize();
             }
         }.property('itemType'),
 
+        /**
+         * @method refreshContent
+         */
         refreshContent: function() {
 
             console.log('refreshContent', get(this, 'xtype'));
@@ -393,10 +477,17 @@ define([
             });
         },
 
+        /**
+         * @method findItems
+         */
         findItems: function() {
             console.warn('findItems not implemented', this);
         },
 
+        /**
+         * @method extractItems
+         * @param queryResult
+         */
         extractItems: function(queryResult) {
             console.log('extractItems', queryResult);
 
@@ -404,6 +495,10 @@ define([
             set(this, 'widgetData', queryResult);
         },
 
+        /**
+         * @property availableTitlebarButtons
+         * @type array
+         */
         availableTitlebarButtons: function(){
             var buttons = get(this, '_partials.titlebarsbuttons');
 
@@ -428,7 +523,12 @@ define([
         }.property()
     });
 
-    loader.register('controller:widget', controller);
+    Ember.Application.initializer({
+        name: 'WidgetController',
+        initialize: function(container, application) {
+            application.register('controller:widget', controller);
+        }
+    });
 
     return controller;
 });

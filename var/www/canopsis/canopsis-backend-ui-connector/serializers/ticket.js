@@ -19,11 +19,21 @@
 
 define([
     'ember-data',
-    'app/serializers/ctx',
-], function(DS, CtxSerializer) {
+    'app/serializers/application',
+    'app/mixins/embeddedrecordserializer'
+], function(DS, ApplicationSerializer, EmbeddedRecordSerializerMixin) {
 
-    var serializer = CtxSerializer.extend({});
+    var serializer = ApplicationSerializer.extend(
+        EmbeddedRecordSerializerMixin,
+        {}
+    );
 
-    loader.register('serializer:linklist', serializer);
+    Ember.Application.initializer({
+        name: 'TicketSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:ticket', serializer);
+        }
+    });
+
     return serializer;
 });

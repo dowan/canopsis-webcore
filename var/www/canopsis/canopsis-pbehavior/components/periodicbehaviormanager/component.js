@@ -18,96 +18,99 @@
  */
 
 define([
-    'ember',
     'canopsis/uibase/mixins/crud',
     'canopsis/canopsis-pbehavior/adapters/pbehavior'
-], function(Ember, CrudMixin) {
+], function(CrudMixin) {
 
-    var get = Ember.get,
-        set = Ember.set;
+    Ember.Application.initializer({
+        name:"component-periodicbehaviormanager",
+        initialize: function(container, application) {
+
+            var get = Ember.get,
+                set = Ember.set;
 
 
-    var CrudEventedComponent = Ember.Component.extend(Ember.Evented, CrudMixin);
+            var CrudEventedComponent = Ember.Component.extend(Ember.Evented, CrudMixin);
 
-    var component = CrudEventedComponent.extend({
-        init: function() {
-            /* mixin options for mixins */
-            set(this, 'mixinOptions', {
-                /* specific to crud mixin */
-                crud: {
-                    form: 'modelform'
+            var component = CrudEventedComponent.extend({
+                init: function() {
+                    /* mixin options for mixins */
+                    set(this, 'mixinOptions', {
+                        /* specific to crud mixin */
+                        crud: {
+                            form: 'modelform'
+                        }
+                    });
+
+                    this._super.apply(this, arguments);
+
+                    /* store for pbehaviors fetching */
+                    var store = DS.Store.create({
+                        container: get(this, 'container')
+                    });
+
+                    set(this, 'widgetDataStore', store);
+
+                    this.refreshContent();
+                    this.on('refresh', this.refreshContent);
+                },
+
+                refreshContent: function() {
+                    console.group('Fetching periodic behaviors');
+                    console.log('context:', get(this, 'contextId'));
+
+                    var store = get(this, 'widgetDataStore'),
+                        ctrl = this;
+
+                    store.findQuery(
+                        'pbehavior',
+                        {
+                            entity_ids: get(this, 'contextId')
+                        }
+                    ).then(
+                        function(result) {
+                            set(ctrl, 'behaviors', get(result, 'content'));
+                            console.log('behaviors:', get(ctrl, 'behaviors'));
+                        }
+                    );
+
+                    console.groupEnd();
+                },
+
+                onRecordReady: function(record) {
+                    this._super.apply(this, arguments);
+
+                    var contextId = get(this, 'contextId');
+                    set(record, 'source', contextId);
+                },
+
+                tableColumns: [
+                    {name: 'dtstart', title: __('From')},
+                    {name: 'dtend', title: __('To')},
+                    {name: 'rrule', title: __('Recursion')},
+                    {name: 'duration', title: __('Duration')},
+                    {name: 'behaviors', title: __('Behaviors')},
+                    {
+                        title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-plus-sign"></span>'),
+                        action: 'edit',
+                        actionAll: 'addBehavior',
+                        style: 'text-align: center;'
+                    },
+                    {
+                        title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-trash"></span>'),
+                        action: 'remove',
+                        style: 'text-align: center;'
+                    }
+                ],
+
+                actions: {
+                    addBehavior: function() {
+                        this.send('add', 'pbehavior');
+                    }
                 }
             });
 
-            this._super.apply(this, arguments);
-
-            /* store for pbehaviors fetching */
-            var store = DS.Store.create({
-                container: get(this, 'container')
-            });
-
-            set(this, 'widgetDataStore', store);
-
-            this.refreshContent();
-            this.on('refresh', this.refreshContent);
-        },
-
-        refreshContent: function() {
-            console.group('Fetching periodic behaviors');
-            console.log('context:', get(this, 'contextId'));
-
-            var store = get(this, 'widgetDataStore'),
-                ctrl = this;
-
-            store.findQuery(
-                'pbehavior',
-                {
-                    entity_ids: get(this, 'contextId')
-                }
-            ).then(
-                function(result) {
-                    set(ctrl, 'behaviors', get(result, 'content'));
-                    console.log('behaviors:', get(ctrl, 'behaviors'));
-                }
-            );
-
-            console.groupEnd();
-        },
-
-        onRecordReady: function(record) {
-            this._super.apply(this, arguments);
-
-            var contextId = get(this, 'contextId');
-            set(record, 'source', contextId);
-        },
-
-        tableColumns: [
-            {name: 'dtstart', title: __('From')},
-            {name: 'dtend', title: __('To')},
-            {name: 'rrule', title: __('Recursion')},
-            {name: 'duration', title: __('Duration')},
-            {name: 'behaviors', title: __('Behaviors')},
-            {
-                title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-plus-sign"></span>'),
-                action: 'edit',
-                actionAll: 'addBehavior',
-                style: 'text-align: center;'
-            },
-            {
-                title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-trash"></span>'),
-                action: 'remove',
-                style: 'text-align: center;'
-            }
-        ],
-
-        actions: {
-            addBehavior: function() {
-                this.send('add', 'pbehavior');
-            }
+            application.register('component:component-periodicbehaviormanager', component);
         }
     });
-
-    loader.register('component:component-periodicbehaviormanager', component);
-
-    return component;
 });

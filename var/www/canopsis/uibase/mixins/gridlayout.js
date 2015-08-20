@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
     'app/lib/factories/mixin',
-], function(Ember, Mixin) {
+], function(Mixin) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -94,6 +93,16 @@ define([
         }
     });
 
+
+    /**
+     * Provides a responsive grid layout to a container widget.
+     *
+     * The grid is managed by bootstrap CSS classes.
+     *
+     * @class GridLayoutMixin
+     * @memberOf canopsis.frontend.uibase
+     * @static
+     */
     var mixin = Mixin('gridlayout', {
         partials: {
             layout: ['gridlayout']
@@ -110,15 +119,15 @@ define([
             return true;
         }.property(),
 
+        /**
+         *   Builds css classes for the widget wrapper that allow responsive parametrized diplay
+         *  depending on legacy/overriden values.
+         **/
         getSection: function (currentWrapperMixins) {
-            /**
-                Builds css classes for the widget wrapper that allow responsive parametrized diplay
-                depending on legacy/overriden values.
-            **/
             var gridLayoutMixin = currentWrapperMixins.findBy('name', 'gridlayout');
-            var columnXS = gridLayoutMixin.columnXS || '4';
-            var columnMD = gridLayoutMixin.columnMD || '4';
-            var columnLG = gridLayoutMixin.columnLG || '4';
+            var columnXS = gridLayoutMixin.columnXS || '12';
+            var columnMD = gridLayoutMixin.columnMD || '6';
+            var columnLG = gridLayoutMixin.columnLG || '3';
             var offset = gridLayoutMixin.offset || '0';
 
             var classValue = [
@@ -135,6 +144,14 @@ define([
             return classValue;
         },
 
+    });
+
+
+    Ember.Application.initializer({
+        name:'GridlayoutMixin',
+        initialize: function(container, application) {
+            application.register('mixin:gridlayout', mixin);
+        }
     });
 
     return mixin;

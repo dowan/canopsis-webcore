@@ -18,13 +18,20 @@
 */
 
 define([
-    'ember',
     'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+], function(Mixin) {
 
     var mixin = Mixin('verticallayout', {
         partials: {
             layout: ['verticallayout']
+        }
+    });
+
+
+    Ember.Application.initializer({
+        name:'VerticallayoutMixin',
+        initialize: function(container, application) {
+            application.register('mixin:verticallayout', mixin);
         }
     });
 

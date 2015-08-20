@@ -17,6 +17,8 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+/** @module canopsis.frontend.uibase */
+
 require.config({
     paths: {
         'bootstrap': 'canopsis/uibase/lib/externals/bootstrap/dist/js/bootstrap.min',
@@ -70,6 +72,9 @@ define([
     'canopsis/uibase/libwrappers/jsoneditor',
     'canopsis/uibase/libwrappers/summernote',
     'canopsis/uibase/libwrappers/codemirror',
+    'canopsis/uibase/libwrappers/colpick',
+    'canopsis/uibase/libwrappers/rrule',
+    'canopsis/core/lib/wrappers/slider',
     'canopsis/uibase/lib/externals/ember-datetimepicker/lib/component',
     'canopsis/uibase/lib/externals/ember-icheck/lib/component',
     'canopsis/uibase/lib/externals/ember-tooltip/lib/component',

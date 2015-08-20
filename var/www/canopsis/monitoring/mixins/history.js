@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
     'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+], function(Mixin) {
 
     /**
       Implements history collection finder
@@ -43,6 +42,12 @@ define([
         }
     });
 
+    Ember.Application.initializer({
+        name:'HistoryMixin',
+        initialize: function(container, application) {
+            application.register('mixin:history', mixin);
+        }
+    });
 
     return mixin;
 });

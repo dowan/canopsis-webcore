@@ -18,13 +18,10 @@
 */
 
 define([
-    'jquery',
-    'ember',
-    'ember-data',
     'canopsis/canopsis-backend-ui-connector/adapters/application',
     'app/lib/promisesmanager',
     'app/lib/utils/modelsolve'
-], function($, Ember, DS, ApplicationAdapter, promisesmanager, modelsolve) {
+], function(ApplicationAdapter, promisesmanager, modelsolve) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -78,14 +75,18 @@ define([
 
     });
 
-    loader.register('adapter:graphelt', adapter);
-    loader.register('adapter:graph', adapter);
-    loader.register('adapter:vertice', adapter);
-    loader.register('adapter:edge', adapter);
-    loader.register('adapter:toponode', adapter);
-    loader.register('adapter:topoedge', adapter);
-    loader.register('adapter:topo', adapter);
-
+    Ember.Application.initializer({
+        name: 'TopologyAdapters',
+        initialize: function(container, application) {
+            application.register('adapter:graphelt', adapter);
+            application.register('adapter:graph', adapter);
+            application.register('adapter:vertice', adapter);
+            application.register('adapter:edge', adapter);
+            application.register('adapter:toponode', adapter);
+            application.register('adapter:topoedge', adapter);
+            application.register('adapter:topo', adapter);
+        }
+    });
 
     return adapter;
 });

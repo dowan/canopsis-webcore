@@ -1,26 +1,25 @@
-/*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @module canopsis-frontend-core
+ */
 
 define([
-    'jquery',
-    'ember',
-    'ember-data',
     'canopsis/canopsisConfiguration',
     'app/controller/partialslotablecontroller',
     'app/lib/widgetsregistry',
@@ -43,16 +42,11 @@ define([
     'app/lib/utils/debug',
     'app/lib/utils/hash',
     'app/lib/utils/notification',
-    'app/serializers/cservice',
-    'app/lib/loaders/helpers',
     'app/lib/loaders/helpers',
     'app/lib/wrappers/mousetrap',
     'app/controller/recordinfopopup',
     'app/controller/formwrapper'
 ], function(
-    $,
-    Ember,
-    DS,
     canopsisConfiguration,
     PartialslotAbleController,
     widgetsRegistry,
@@ -83,7 +77,6 @@ define([
 
 
     var indexController = Ember.Controller.extend(Ember.Evented, {});
-    loader.register('controller:index', indexController);
 
     /**
      * @class ApplicationController
@@ -106,13 +99,15 @@ define([
          */
         editMode: false,
 
+        /**
+         * @property runtimeConfiguration
+         * @see {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
+         */
         runtimeConfiguration: canopsisConfiguration,
 
         /**
          * @property debug
-         * @type Object
-         *
-         * @description See {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
+         * @type boolean
          */
         debug: Ember.computed.alias('runtimeConfiguration.DEBUG'),
 
@@ -170,8 +165,7 @@ define([
             {label: __('Event Filter'), value: 'view.filters'},
             {label: __('Performance Data'), value: 'view.series'},
             {label: __('Scheduled Jobs'), value: 'view.jobs'},
-            {label: __('Link list'), value: 'view.linklist'},
-            {label: __('Snmp rules'), value: 'view.snmprule'}
+            {label: __('Link list'), value: 'view.linklist'}
         ],
 
         /**
@@ -226,6 +220,10 @@ define([
             }
         },
 
+        /**
+         * @method didSaveView
+         * @descriptions method triggered when an userview is saved
+         */
         didSaveView: function(userview) {
             this.transitionToRoute("/userview/" + get(userview, 'id'));
         },
@@ -242,7 +240,8 @@ define([
 
             /**
              * @event editConfig
-             * @descriptions Shows a form to edit the frontend configuration
+             *
+             * Shows a form to edit the frontend configuration
              */
             editConfig: function() {
                 var frontendConfig = get(this, 'frontendConfig');
@@ -253,6 +252,7 @@ define([
                     frontendConfig.save();
                 });
             },
+
             /**
              * @event editAuthConfiguration
              * @param {String} authType
@@ -365,9 +365,9 @@ define([
              * @descriptions Shows a form to create a new userview
              */
             addNewView: function () {
-                var type = "userview";
+                var type = 'userview';
                 var applicationController = this;
-                console.log("add", type);
+                console.log('add', type);
 
                 var containerwidgetId = hashUtils.generateId('container');
                 var viewId = hashUtils.generateId('userview');
@@ -400,6 +400,25 @@ define([
                     userview.save().then(function() {
                         applicationController.didSaveView(userview);
                     });
+                });
+            },
+
+            /**
+             * @event importView
+             * @descriptions Shows a file upload window, and then import the selected view
+             */
+            importView: function () {
+                var applicationController = this;
+
+                dataUtils.uploadTextFilePopup(function(name, type, size, content) {
+                    content = JSON.parse(content);
+
+                    var res = applicationController.get('store').pushPayload('userview', {
+                        userview: content
+                    });
+
+                    console.error('done', res, applicationController.get('store').getById('userview', content.id));
+                    applicationController.get('store').getById('userview', content.id).save();
                 });
             },
 
@@ -451,7 +470,14 @@ define([
             ApplicationControllerDict);
     }
 
-    loader.register('controller:application', controller);
+
+    Ember.Application.initializer({
+        name: 'ApplicationController',
+        initialize: function(container, application) {
+            application.register('controller:application', controller);
+            application.register('controller:index', indexController);
+        }
+    });
 
     return controller;
 });

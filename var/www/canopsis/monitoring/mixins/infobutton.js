@@ -18,13 +18,11 @@
 */
 
 define([
-    'ember',
     'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+], function(Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
-
 
     var mixin = Mixin('infobutton', {
         partials: {
@@ -32,6 +30,13 @@ define([
         },
     });
 
+
+    Ember.Application.initializer({
+        name:'InfobuttonMixin',
+        initialize: function(container, application) {
+            application.register('mixin:infobutton', mixin);
+        }
+    });
 
     return mixin;
 });

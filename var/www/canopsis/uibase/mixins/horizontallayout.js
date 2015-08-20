@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
     'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+], function(Mixin) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -35,6 +34,14 @@ define([
             return get(this, 'mixinOptions.horizontallayout.cellCssClass') || 'col-lg-3 col-md-6 col-xs-12';
         },
 
+    });
+
+
+    Ember.Application.initializer({
+        name:'HorizontallayoutMixin',
+        initialize: function(container, application) {
+            application.register('mixin:horizontallayout', mixin);
+        }
     });
 
     return mixin;

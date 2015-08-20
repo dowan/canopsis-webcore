@@ -17,12 +17,10 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 define([
-    'jquery',
-    'ember',
     'app/lib/formsregistry',
     'app/lib/factories/mixin',
     'app/lib/utils/hash'
-], function($, Ember, formsregistry, Mixin, hash) {
+], function(formsregistry, Mixin, hash) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -102,6 +100,13 @@ define([
         }.property("controller.shown_columns")
     });
 
+
+    Ember.Application.initializer({
+        name:'ListlinedetailMixin',
+        initialize: function(container, application) {
+            application.register('mixin:listlinedetail', mixin);
+        }
+    });
 
     return mixin;
 });

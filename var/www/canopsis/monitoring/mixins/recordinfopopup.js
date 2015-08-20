@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
     'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+], function(Mixin) {
 
     var get = Ember.get;
 
@@ -52,6 +51,14 @@ define([
                 return 'renderer-recordinfopopup';
             }
             return this._super(attribute);
+        }
+    });
+
+
+    Ember.Application.initializer({
+        name:'RecordinfopopupMixin',
+        initialize: function(container, application) {
+            application.register('mixin:recordinfopopup', mixin);
         }
     });
 

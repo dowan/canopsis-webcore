@@ -1,28 +1,30 @@
-/*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @module canopsis-frontend-core
+ */
 
 define([
-    'ember',
     'app/lib/schemasregistry',
     'app/lib/utils/hash',
+    'app/lib/utils/data',
     'app/lib/factories/mixin'
-], function(Ember, schemasregistry, hashUtils, Mixin) {
+], function(schemasregistry, hashUtils, dataUtils, Mixin) {
 
     var isNone = Ember.isNone,
         get = Ember.get;
@@ -53,13 +55,12 @@ define([
      */
 
     var mixin = Mixin('embeddedRecordSerializer', {
-
         /**
          * Sideload a JSON object to the payload
          *
          * @method sideloadItem
          * @param {Object} payload JSON object representing the payload
-         * @param {subclass of DS.Model} type The DS.Model class of the item to be sideloaded
+         * @param {DS.Model} type The DS.Model class of the item to be sideloaded
          * @param {Object} item JSON object representing the record to sideload to the payload
          */
         sideloadItem: function(payload, type, item, parentJSON) {
@@ -67,10 +68,6 @@ define([
                 console.log("sideLoad", type, item.xtype);
                 console.log("payload before sideLoad", payload);
 
-                if(item.xtype === undefined) {
-                    console.error('no xtype for widget', type, item, payload);
-                    return undefined;
-                }
                 if(schemasregistry.getByName(item.xtype).EmberModel === undefined) {
                     console.error(payload, 'bad xtype for widget :' + item.xtype);
                     return undefined;
@@ -140,10 +137,6 @@ define([
 
             try {
                 console.log("payload before extractRelationships", payload);
-
-                if (isNone(primaryType.store)) {
-                    primaryType.store = parentType.store;
-                }
 
                 console.log('primaryType', primaryType, recordJSON.xtype);
                 if (primaryType === schemasregistry.getByName('widget').EmberModel) {
@@ -330,6 +323,56 @@ define([
             }
 
             console.log("serializedSubDocuments", json[key]);
+        },
+
+        /**
+         * @method normalize
+         *
+         * @todo check if useful
+         *
+         * @param typeClass
+         * @param hash
+         * @param prop
+         */
+        normalize: function(typeClass, hash, prop) {
+            typeClass.eachRelationship(function(key, relationship) {
+                if(hash[key]) {
+                    hash[key].type = hash[key].xtype;
+                }
+            });
+            return this._super.apply(this, arguments);
+        },
+
+        /**
+         * @method pushPayload
+         *
+         * Used in record duplications
+         *
+         * @param {DS.Store} store
+         * @param {Object} payload
+         */
+        pushPayload: function(store, payload) {
+            var payload = dataUtils.cleanJSONIds(payload);
+
+            var payloadKeys = Ember.keys(payload);
+
+            for (var i = 0, l = payloadKeys.length; i < l; i++) {
+                var currentKey = payloadKeys[i];
+                var typeClass = schemasregistry.getByName(currentKey).EmberModel;
+                this.extractRelationships(payload, payload[currentKey], typeClass);
+            }
+
+            payload[currentKey].id = hashUtils.generateId(payload[currentKey].xtype || payload[currentKey].crecord_type || 'item');
+
+            return this._super(store, payload);
+        }
+    });
+
+
+    Ember.Application.initializer({
+        name:'EmbeddedRecordSerializerMixin',
+        initialize: function(container, application) {
+            application.register('mixin:embedded-record-serializer', mixin);
         }
     });
 

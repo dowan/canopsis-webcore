@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
     'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+], function(Mixin) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -195,6 +194,14 @@ define([
                 return Math.ceil(get(this, 'itemsTotal') / itemsPerPage);
             }
         }.property('itemsTotal')
+    });
+
+
+    Ember.Application.initializer({
+        name:'PaginationMixin',
+        initialize: function(container, application) {
+            application.register('mixin:pagination', mixin);
+        }
     });
 
     return mixin;

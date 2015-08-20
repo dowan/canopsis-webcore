@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
     'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+], function(Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -158,6 +157,14 @@ define([
                 console.log('new searchableAttributes computed from widget parameters', searchableAttributes);
             }
         }.observes('shown_columns')
+    });
+
+
+    Ember.Application.initializer({
+        name:'ArraysearchMixin',
+        initialize: function(container, application) {
+            application.register('mixin:arraysearch', mixin);
+        }
     });
 
     return mixin;

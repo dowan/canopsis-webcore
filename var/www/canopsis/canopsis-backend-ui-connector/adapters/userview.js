@@ -29,8 +29,12 @@ define([
         }
     });
 
-
-    loader.register('adapter:userview', adapter);
+    Ember.Application.initializer({
+        name: 'UserviewAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:userview', adapter);
+        }
+    });
 
     return adapter;
 });

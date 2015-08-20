@@ -19,22 +19,18 @@
 
 define([
     'ember-data',
-    'app/serializers/application'
-], function(DS, ApplicationSerializer) {
+    'canopsis/canopsis-backend-ui-connector/serializers/ctx',
+], function(DS, CtxSerializer) {
 
-    var serializer = ApplicationSerializer.extend({
+    var serializer = CtxSerializer.extend({});
 
-        normalize: function (type, hash) {
-            console.log('normalize', arguments);
-            hash.xtype = 'context';  //TODO: autodetect xtype
-            hash.id = hash._id;
-            return this._super(type, hash);
+
+    Ember.Application.initializer({
+        name: 'SnmpruleSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:snmprule', serializer);
         }
-
     });
-
-    loader.register('serializer:ctx', serializer);
-    loader.register('serializer:context', serializer);
 
     return serializer;
 });

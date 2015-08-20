@@ -1,26 +1,25 @@
-/*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 define([
-    'ember',
     'app/lib/registries'
-], function(Ember, registries) {
+], function(registries) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -33,6 +32,7 @@ define([
      * Abstract class to provide a common API to every registry
      *
      * @class AbstractClassRegistry
+     * @memberOf canopsis.frontend.core
      * @constructor
      */
     var AbstractClassRegistry = Ember.Object.extend({
@@ -122,6 +122,15 @@ define([
             return get(this.byClass, name);
         }
     });
+
+
+    Ember.Application.initializer({
+        name:"AbstractClassRegistry",
+        initialize: function(container, application) {
+            application.register('registry:abstractclass', AbstractClassRegistry);
+        }
+    });
+
 
     return AbstractClassRegistry;
 });

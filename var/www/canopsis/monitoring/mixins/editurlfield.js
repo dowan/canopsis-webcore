@@ -18,10 +18,9 @@
 */
 
 define([
-    'ember',
     'app/lib/factories/mixin',
     'app/lib/utils/forms'
-], function(Ember, Mixin, forms) {
+], function(Mixin, forms) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -41,6 +40,13 @@ define([
         }
     });
 
+
+    Ember.Application.initializer({
+        name:'EditurlfieldMixin',
+        initialize: function(container, application) {
+            application.register('mixin:editurlfield', mixin);
+        }
+    });
 
     return mixin;
 });

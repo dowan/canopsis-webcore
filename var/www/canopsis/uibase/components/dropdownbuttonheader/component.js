@@ -17,62 +17,55 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'jquery',
-    'ember'
-], function($, Ember) {
+Ember.Application.initializer({
+    name:"component-dropdownbuttonheader",
+    initialize: function(container, application) {
 
-    var get = Ember.get,
-        set = Ember.set;
-
-    /**
-     * Component that contains the title and optional other components
-     * for dropdownbutton
-     *
-     * @class Dropdownbuttonheader
-     * @static
-     */
-    var component = Ember.Component.extend({
-        tagName: 'a',
-        classNameBindings: ['classAttribute'],
-
-        classAttribute: function() {
-            var opened = get(this, 'parentView.opened'),
-                res = 'btn btn-secondary dropdown-toggle opening';
-
-            if(opened) {
-                res += ' active';
-            }
-
-            return res;
-        }.property('parentView.opened'),
-
-        attributeBindings: ['aria-expanded'],
-        'aria-expanded': 'true',
-
-         /**
-          * method calling toggle method on click
-          * @method click
-          */
-        click: function(){
-            this.toggle();
-        },
+        var get = Ember.get,
+            set = Ember.set;
 
         /**
-         * Method to switch boolean value of opened attribute
-         * @method toggle
+         * Component that contains the title and optional other components
+         * for dropdownbutton
+         *
+         * @class Dropdownbuttonheader
+         * @static
          */
-        toggle: function(){
-            this.toggleProperty('parentView.opened');
-        }
-    });
+        var component = Ember.Component.extend({
+            tagName: 'a',
+            classNameBindings: ['classAttribute'],
 
-    Ember.Application.initializer({
-        name:"component-dropdownbuttonheader",
-        initialize: function(container, application) {
-            application.register('component:component-dropdownbuttonheader', component);
-        }
-    });
+            classAttribute: function() {
+                var opened = get(this, 'parentView.opened'),
+                    res = 'btn btn-secondary dropdown-toggle opening';
 
-    return component;
+                if(opened) {
+                    res += ' active';
+                }
+
+                return res;
+            }.property('parentView.opened'),
+
+            attributeBindings: ['aria-expanded'],
+            'aria-expanded': 'true',
+
+             /**
+              * method calling toggle method on click
+              * @method click
+              */
+            click: function(){
+                this.toggle();
+            },
+
+            /**
+             * Method to switch boolean value of opened attribute
+             * @method toggle
+             */
+            toggle: function(){
+                this.toggleProperty('parentView.opened');
+            }
+        });
+
+        application.register('component:component-dropdownbuttonheader', component);
+    }
 });

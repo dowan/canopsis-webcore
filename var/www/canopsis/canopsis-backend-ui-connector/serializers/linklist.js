@@ -18,16 +18,18 @@
 */
 
 define([
-    'app/lib/abstractclassregistry'
-], function(Abstractclassregistry) {
+    'ember-data',
+    'canopsis/canopsis-backend-ui-connector/serializers/ctx',
+], function(DS, CtxSerializer) {
 
-    var manager = Abstractclassregistry.create({
-        name: 'attributepresets',
+    var serializer = CtxSerializer.extend({});
 
-        all: [],
-        byClass: {},
-        tableColumns: [{title: 'name', name: 'name'}]
+    Ember.Application.initializer({
+        name: 'LinklistSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:linklist', serializer);
+        }
     });
 
-    return manager;
+    return serializer;
 });

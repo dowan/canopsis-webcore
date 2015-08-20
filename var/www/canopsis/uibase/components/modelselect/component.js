@@ -17,80 +17,74 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember'
-], function(Ember) {
+Ember.Application.initializer({
+    name:"component-modelselect",
+    initialize: function(container, application) {
 
-    var get = Ember.get,
-        set = Ember.set;
+        var get = Ember.get,
+            set = Ember.set;
 
 
-    var component = Ember.Component.extend({
-        model: function() {
-            var model = get(this, 'content.model.options.model');
+        var component = Ember.Component.extend({
+            model: function() {
+                var model = get(this, 'content.model.options.model');
 
-            var typekeySplit = model.split('.');
-            var typekey = typekeySplit[typekeySplit.length - 1].capitalize();
+                var typekeySplit = model.split('.');
+                var typekey = typekeySplit[typekeySplit.length - 1].capitalize();
 
-            return typekey;
-        }.property('content.model.options.model'),
+                return typekey;
+            }.property('content.model.options.model'),
 
-        newModelSelected: function() {
-            var model = get(this, 'selectedModel');
-            console.log('Select record:', model);
+            newModelSelected: function() {
+                var model = get(this, 'selectedModel');
+                console.log('Select record:', model);
 
-            set(this, 'content.value', get(model, 'id'));
-        }.observes('selectedModel'),
+                set(this, 'content.value', get(model, 'id'));
+            }.observes('selectedModel'),
 
-        availableModels: function() {
-            var store = get(this, 'componentDataStore');
-            var model = get(this, 'model');
-
-            return store.findAll(model);
-        }.property('model'),
-
-        init: function() {
-            this._super.apply(this, arguments);
-
-            var store = DS.Store.create({
-                container: get(this, "container")
-            });
-
-            set(this, "componentDataStore", store);
-
-            var selectedId = get(this, 'content.value');
-            var promise;
-            var me = this;
-
-            if(selectedId) {
-                console.log('Select model instance:', selectedId);
-
+            availableModels: function() {
+                var store = get(this, 'componentDataStore');
                 var model = get(this, 'model');
-                promise = store.find(model, selectedId);
 
-                promise.then(function(record) {
-                    set(me, 'selectedModel', record);
+                return store.findAll(model);
+            }.property('model'),
+
+            init: function() {
+                this._super.apply(this, arguments);
+
+                var store = DS.Store.create({
+                    container: get(this, "container")
                 });
-            } else {
-                console.log('Select first available model');
-                promise = get(this, 'availableModels');
 
-                promise.then(function(result) {
-                    var first = result.content[0];
+                set(this, "componentDataStore", store);
 
-                    set(me, 'selectedModel', first);
-                });
+                var selectedId = get(this, 'content.value');
+                var promise;
+                var me = this;
+
+                if(selectedId) {
+                    console.log('Select model instance:', selectedId);
+
+                    var model = get(this, 'model');
+                    promise = store.find(model, selectedId);
+
+                    promise.then(function(record) {
+                        set(me, 'selectedModel', record);
+                    });
+                } else {
+                    console.log('Select first available model');
+                    promise = get(this, 'availableModels');
+
+                    promise.then(function(result) {
+                        var first = result.content[0];
+
+                        set(me, 'selectedModel', first);
+                    });
+                }
             }
-        }
-    });
+        });
 
-
-    Ember.Application.initializer({
-        name:"component-modelselect",
-        initialize: function(container, application) {
-            application.register('component:component-modelselect', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-modelselect', component);
+    }
 });
+

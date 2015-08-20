@@ -18,12 +18,10 @@
 */
 
 define([
-    'jquery',
-    'ember',
     'app/lib/utils/forms',
     'app/lib/utils/hash',
     'app/lib/factories/mixin'
-], function($, Ember, formsUtils, hashUtils, Mixin) {
+], function(formsUtils, hashUtils, Mixin) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -135,6 +133,14 @@ define([
                     listController.trigger('refresh');
                 });
             }
+        }
+    });
+
+
+    Ember.Application.initializer({
+        name:'DowntimeMixin',
+        initialize: function(container, application) {
+            application.register('mixin:downtime', mixin);
         }
     });
 

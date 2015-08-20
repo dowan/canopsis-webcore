@@ -17,30 +17,21 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember'
-], function(Ember) {
+Ember.Application.initializer({
+    name:"component-miniformtitle",
+    initialize: function(container, application) {
+        var get = Ember.get;
 
-    var get = Ember.get,
-        set = Ember.set;
+        var component = Ember.Component.extend({
+            formBase: Ember.computed.alias('parentView.parentView'),
 
-
-    var component = Ember.Component.extend({
-        formBase: Ember.computed.alias('parentView.parentView'),
-
-        actions: {
-            toggleContent: function() {
-                get(this, 'formBase').toggleProperty('contentShown');
+            actions: {
+                toggleContent: function() {
+                    get(this, 'formBase').toggleProperty('contentShown');
+                }
             }
-        }
-    });
+        });
 
-    Ember.Application.initializer({
-        name:"component-miniformtitle",
-        initialize: function(container, application) {
-            application.register('component:component-miniformtitle', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-miniformtitle', component);
+    }
 });

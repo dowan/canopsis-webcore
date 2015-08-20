@@ -19,12 +19,18 @@
 
 define([
     'ember-data',
-    'app/serializers/ctx'
+    'canopsis/canopsis-backend-ui-connector/serializers/ctx'
 ], function(DS, ContextSerializer) {
 
     var serializer = ContextSerializer.extend({});
 
-    loader.register('serializer:vevent', serializer);
+
+    Ember.Application.initializer({
+        name: 'VeventSerializer',
+        initialize: function(container, application) {
+            application.register('serializer:vevent', serializer);
+        }
+    });
 
     return serializer;
 });

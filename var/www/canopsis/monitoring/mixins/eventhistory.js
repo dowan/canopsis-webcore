@@ -18,11 +18,10 @@
 */
 
 define([
-    'ember',
     'app/lib/utils/forms',
     'app/lib/utils/hash',
     'app/lib/factories/mixin'
-], function(Ember, formsUtils, hashUtils, Mixin) {
+], function(formsUtils, hashUtils, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -33,6 +32,14 @@ define([
             actionToolbarButtons: [
                 'actionbutton-eventnavigation'
             ]
+        }
+    });
+
+
+    Ember.Application.initializer({
+        name:'EventhistoryMixin',
+        initialize: function(container, application) {
+            application.register('mixin:eventhistory', mixin);
         }
     });
 

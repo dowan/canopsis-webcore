@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
     'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+], function(Mixin) {
 
     var get = Ember.get;
 
@@ -33,6 +32,14 @@ define([
         stateImage: function() {
             return '/static/canopsis/uiv1_themes/images/state_' + get(this, 'worst_state') + '.png';
         }.property('worst_state')
+    });
+
+
+    Ember.Application.initializer({
+        name:'Uiv1weatherthemeMixin',
+        initialize: function(container, application) {
+            application.register('mixin:uiv1weathertheme', mixin);
+        }
     });
 
     return mixin;

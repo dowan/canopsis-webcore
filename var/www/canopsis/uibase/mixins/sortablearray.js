@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
     'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+], function(Mixin) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -136,6 +135,13 @@ define([
         }.property("inspectedProperty", "inspectedDataArray")
     });
 
+
+    Ember.Application.initializer({
+        name:'SortablearrayMixin',
+        initialize: function(container, application) {
+            application.register('mixin:sortablearray', mixin);
+        }
+    });
 
     return mixin;
 });

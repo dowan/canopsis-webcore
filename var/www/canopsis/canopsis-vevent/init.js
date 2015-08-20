@@ -17,6 +17,7 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/** @module canopsis.frontend.canopsis-vevent */
 
 define([
     'canopsis/canopsis-vevent/serializers/vevent'

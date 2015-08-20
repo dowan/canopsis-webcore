@@ -17,79 +17,69 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'jquery',
-    'ember'
-], function($, Ember) {
-
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+Ember.Application.initializer({
+    name:"component-simpledicteditor",
+    initialize: function(container, application) {
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
 
-    var component = Ember.Component.extend({
-        actions: {
-            addKey: function() {
-                var newValue = get(this, 'newValue');
-                var newKey = get(this, 'newKey');
+        var component = Ember.Component.extend({
+            actions: {
+                addKey: function() {
+                    var newValue = get(this, 'newValue');
+                    var newKey = get(this, 'newKey');
 
-                if(isNone(get(this, 'content'))) {
-                    set(this, 'content', {});
-                }
+                    if(isNone(get(this, 'content'))) {
+                        set(this, 'content', {});
+                    }
 
-                if(!isNone(newValue) && !isNone(newKey)) {
-                    set(this, 'content.' + newKey, newValue);
+                    if(!isNone(newValue) && !isNone(newKey)) {
+                        set(this, 'content.' + newKey, newValue);
+                        this.contentChanged();
+
+                        set(this, 'newKey');
+                        set(this, 'newValue');
+                    }
+                },
+                select: function() {
+                    console.warn('select', arguments);
+                },
+                removeKey: function(keyToDelete) {
+                    delete this.content[keyToDelete];
+
                     this.contentChanged();
-
-                    set(this, 'newKey');
-                    set(this, 'newValue');
                 }
             },
-            select: function() {
-                console.warn('select', arguments);
-            },
-            removeKey: function(keyToDelete) {
-                delete this.content[keyToDelete];
 
+            didInsertElement: function() {
+                this._super.apply(this);
                 this.contentChanged();
-            }
-        },
+            },
 
-        didInsertElement: function() {
-            this._super.apply(this);
-            this.contentChanged();
-        },
+            contentChanged: function(){
+                var buffer = Ember.A();
+                var content = get(this, 'content');
 
-        contentChanged: function(){
-            var buffer = Ember.A();
-            var content = get(this, 'content');
+                if(content) {
+                    var keys = Ember.keys(content);
 
-            if(content) {
-                var keys = Ember.keys(content);
+                    console.warn(content, keys);
 
-                console.warn(content, keys);
+                    for (var i = 0, l = keys.length; i < l; i++) {
+                        var currentKey = keys[i];
+                        buffer.pushObject(Ember.Object.create({
+                            key: currentKey,
+                            value: content[currentKey]
+                        }));
+                    }
+                    console.warn('dictAsArray', buffer);
 
-                for (var i = 0, l = keys.length; i < l; i++) {
-                    var currentKey = keys[i];
-                    buffer.pushObject(Ember.Object.create({
-                        key: currentKey,
-                        value: content[currentKey]
-                    }));
+                    set(this, 'dictAsArray', buffer);
                 }
-                console.warn('dictAsArray', buffer);
-
-                set(this, 'dictAsArray', buffer);
             }
-        }
-    });
-
-
-    Ember.Application.initializer({
-        name:"component-simpledicteditor",
-        initialize: function(container, application) {
-            application.register('component:component-simpledicteditor', component);
-        }
-    });
-
-    return component;
+        });
+        application.register('component:component-simpledicteditor', component);
+    }
 });

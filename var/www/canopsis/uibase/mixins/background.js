@@ -18,11 +18,10 @@
 */
 
 define([
-    'ember',
     'app/lib/utils/forms',
     'app/lib/utils/hash',
     'app/lib/factories/mixin'
-], function(Ember, formsUtils, hashUtils, Mixin) {
+], function(formsUtils, hashUtils, Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -62,6 +61,13 @@ define([
         init: function() {
             this._super();
             this.addMixinView(viewMixin);
+        }
+    });
+
+    Ember.Application.initializer({
+        name:'BackgroundMixin',
+        initialize: function(container, application) {
+            application.register('mixin:background', mixin);
         }
     });
 

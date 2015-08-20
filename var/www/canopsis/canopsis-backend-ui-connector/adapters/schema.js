@@ -18,10 +18,8 @@
 */
 
 define([
-    'jquery',
-    'ember',
     'canopsis/canopsis-backend-ui-connector/adapters/application'
-], function($, Ember, ApplicationAdapter) {
+], function(ApplicationAdapter) {
 
     var shemasLimit = 200;
 
@@ -42,7 +40,12 @@ define([
         }
     });
 
-    loader.register('adapter:schema', adapter);
+    Ember.Application.initializer({
+        name: 'SchemaAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:schema', adapter);
+        }
+    });
 
     return adapter;
 });

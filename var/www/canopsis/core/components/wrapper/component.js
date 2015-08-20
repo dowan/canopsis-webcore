@@ -1,88 +1,96 @@
-/*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-define([
-    'ember',
-], function(Ember) {
+Ember.Application.initializer({
+    name:"component-wrapper",
+    initialize: function(container, application) {
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+        /**
+         * @class WrapperComponent
+         */
+        var component = Ember.Component.extend({
+            /**
+             * @property tagName
+             * @type string
+             */
+            tagName: 'span',
 
-    //{{component-editor attr=attr form=this}}
+            /**
+             * @method init
+             */
+            init: function() {
+                this._super();
+                console.log("init wrapper component");
+                console.log("wrapper component type", get(this, 'editor-type'));
+                //mock attr
+                set(this, 'attr', {
+                    model: {
+                        options:{}
+                    }
+                });
+            },
 
-    var component = Ember.Component.extend({
-        tagName: 'span',
-        init: function() {
-            this._super();
-            console.log("init wrapper component");
-            console.log("wrapper component type", get(this, 'editor-type'));
-            //mock attr
-            set(this, 'attr', {
-                model: {
-                    options:{}
+            /**
+             * @method onContentUpdate
+             */
+            onContentUpdate: function(){
+
+                var callback = get(this, 'callback');
+
+                var referer = get(this, 'referer');
+
+                if (isNone(referer)) {
+                    console.warn('Referer not defined in component template. callbacks cannot work');
                 }
-            });
-        },
 
-        onContentUpdate: function(){
+                if (!isNone(callback)) {
+                    callback(get(this, 'attr.value'), referer);
+                } else {
+                    console.log('Callback is not valid : ', callback, this);
+                }
 
-            var callback = get(this, 'callback');
+            }.observes('attr.value'),
 
-            var referer = get(this, 'referer');
+            /**
+             * @property editorType
+             * @type string
+             */
+            editorType: function() {
 
-            if (isNone(referer)) {
-                console.warn('Referer not defined in component template. callbacks cannot work');
-            }
+                var type = get(this, 'editor-type');
 
-            if (!isNone(callback)) {
-                callback(get(this, 'attr.value'), referer);
-            } else {
-                console.log('Callback is not valid : ', callback, this);
-            }
+                console.log('editor-type:', type);
 
-        }.observes('attr.value'),
+                var editorName = 'editor-' + type;
 
-        editorType: function() {
+                if (Ember.TEMPLATES[editorName] === undefined) {
+                    editorName = 'editor-defaultpropertyeditor';
+                }
 
-            var type = get(this, 'editor-type');
+                return editorName;
 
-            console.log('editor-type:', type);
+            }.property('editor-type'),
+        });
 
-            var editorName = 'editor-' + type;
-
-            if (Ember.TEMPLATES[editorName] === undefined) {
-                editorName = 'editor-defaultpropertyeditor';
-            }
-
-            return editorName;
-
-        }.property('editor-type'),
-    });
-
-
-    Ember.Application.initializer({
-        name:"component-wrapper",
-        initialize: function(container, application) {
-            application.register('component:component-wrapper', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-wrapper', component);
+    }
 });

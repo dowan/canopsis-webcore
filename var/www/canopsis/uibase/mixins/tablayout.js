@@ -18,9 +18,8 @@
 */
 
 define([
-    'ember',
     'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+], function(Mixin) {
 
     var get = Ember.get,
         set = Ember.set;
@@ -49,6 +48,14 @@ define([
 
         partials: {
             layout: ['tablayout']
+        }
+    });
+
+
+    Ember.Application.initializer({
+        name:'TablayoutMixin',
+        initialize: function(container, application) {
+            application.register('mixin:tablayout', mixin);
         }
     });
 

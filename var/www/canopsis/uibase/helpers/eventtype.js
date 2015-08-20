@@ -17,7 +17,7 @@
 # along with Canopsis. If not,  see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember', 'app/lib/loaders/utils'], function(Ember,  utils) {
+define(['app/lib/loaders/utils'], function(utils) {
 
     var isNone = Ember.isNone,
         __ = Ember.String.loc,

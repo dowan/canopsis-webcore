@@ -18,15 +18,12 @@
 */
 
 define([
-    'jquery',
-    'ember',
-    'ember-data',
     'app/lib/factories/widget',
     'app/lib/utils/values',
     'app/lib/utils/dates',
     'app/controller/serie',
     'app/controller/perfdata'
-], function($, Ember, DS, WidgetFactory, values, dates) {
+], function(WidgetFactory, values, dates) {
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone;
@@ -451,7 +448,7 @@ define([
                     };
 
                     me.genChartConfig([virtualResult, curveResult], seriesById, from, to, replace);
-                });    
+                });
             };
 
             if(!isNone(stylizedmetrics)) {

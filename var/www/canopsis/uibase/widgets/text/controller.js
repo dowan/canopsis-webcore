@@ -18,15 +18,12 @@
 */
 
 define([
-    'jquery',
-    'ember',
-    'ember-data',
     'app/lib/factories/widget',
     'app/controller/serie',
     'canopsis/canopsisConfiguration',
     'app/lib/utils/values',
     'app/controller/perfdata',
-], function($, Ember, DS, WidgetFactory, Serie, canopsisConfiguration, values) {
+], function(WidgetFactory, Serie, canopsisConfiguration, values) {
 
     var get = Ember.get,
         set = Ember.set,

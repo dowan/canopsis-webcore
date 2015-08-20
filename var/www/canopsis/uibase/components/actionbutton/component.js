@@ -18,29 +18,25 @@
 */
 
 define([
-    'ember',
     'app/lib/utils/actions'
-], function(Ember, actionsUtils) {
-
-    var get = Ember.get,
-        set = Ember.set;
-
-
-    var component = Ember.Component.extend({
-        actions: {
-            doAction: function (actionName, param) {
-                actionsUtils.doAction(actionName, param);
-            }
-        }
-    });
-
+], function(actionsUtils) {
 
     Ember.Application.initializer({
         name:"component-actionbutton",
         initialize: function(container, application) {
+            var get = Ember.get,
+                set = Ember.set;
+
+
+            var component = Ember.Component.extend({
+                actions: {
+                    doAction: function (actionName, param) {
+                        actionsUtils.doAction(actionName, param);
+                    }
+                }
+            });
+
             application.register('component:component-actionbutton', component);
         }
     });
-
-    return component;
 });

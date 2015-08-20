@@ -19,134 +19,130 @@
 
 
 define([
-    'ember',
-    'canopsis/uibase/components/dictclassifiedcrecordselector/component',
     'canopsis/canopsis-rights/objects/rightsregistry'
-], function(Ember, DictclassifiedcrecordselectorComponent, rightsRegistry) {
-
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
-
-
-    var component = DictclassifiedcrecordselectorComponent.extend({
-        nameKey: '_id',
-        idKey: '_id',
-        /*
-         * Compute a structure with classified item each time the 'items' property changed
-         */
-        classifiedItems : function(){
-            var items = get(this, 'items');
-            var valueKey = get(this, 'valueKey') || get(this, 'valueKeyDefault');
-            var nameKey = get(this, 'nameKey') || get(this, 'nameKeyDefault');
-
-            console.log("recompute classifiedItems", get(this, 'items'), valueKey);
-
-            var res = Ember.Object.create({
-                all: Ember.A(),
-                byClass: {}
-            });
-
-            for (var i = 0, l = items.length; i < l; i++) {
-                var currentItem = items[i];
-
-                var objDict = {
-                    name: currentItem.get(nameKey)
-                };
-
-                if(valueKey) {
-                    console.log('add valueKey', currentItem.get(valueKey));
-                    objDict.value = currentItem.get(valueKey);
-                    console.log('objDict value', objDict);
-                }
-
-                this.serializeAdditionnalData(currentItem, objDict);
-
-                res.all.pushObject(Ember.Object.create(objDict));
-
-                possibleClassSplit = objDict.name.split("_");
-                if(possibleClassSplit.length > 1) {
-                    var className = possibleClassSplit[0];
-
-                    if(isNone(res.byClass[className])) {
-                        res.byClass[className] = [];
-                    }
-
-                    res.byClass[className].pushObject(objDict);
-                }
-            }
-
-            console.log('recompute classifiedItems done', res);
-            return res;
-        }.property('items', 'items.@each'),
-
-        recomputeValue: function(){
-            console.group('recomputeValue', get(this, 'selectionUnprepared'));
-
-            var selection = get(this, 'selectionUnprepared');
-
-            var buffer = {};
-            if(selection && selection.length) {
-                for (var i = 0, l = selection.length; i < l; i++) {
-                    var currentItem = selection[i];
-                    console.log('iteration', currentItem, get(currentItem, 'checksum'));
-                    set(buffer, currentItem.name, {
-                        checksum: get(currentItem, 'checksum') || 19
-                    });
-                }
-            }
-
-            console.log('buffer', buffer);
-
-            set(this, 'content', buffer);
-            console.groupEnd();
-        }.observes('selectionUnprepared', 'selectionUnprepared.@each', 'selectionUnprepared.@each.checksum'),
-
-        findItems: function() {
-            var me = this;
-
-            var store = this.get('store_' + get(this, 'elementId'));
-
-            var query = {
-                start: 0,
-                limit: 10000
-            };
-
-            query.filter = JSON.stringify({'crecord_type': this.get('crecordtype')});
-            console.log('findItems', this.get('crecordtype'), query);
-
-            store.findQuery('action', query).then(function(result) {
-                me.set('widgetDataMetas', result.meta);
-                var items = result.get('content');
-
-                me.set('items', items);
-
-                Ember.run.scheduleOnce('afterRender', {}, function() {
-                    me.rerender();
-                });
-
-                me.extractItems(items);
-            });
-        },
-
-        deserializeAdditionnalData: function(item) {
-            console.log('deserializeAdditionnalData', arguments);
-            return {checksum: item.checksum};
-        },
-
-        serializeAdditionnalData: function(additionnalData) {
-            console.log('serializeAdditionnalData', arguments);
-        }
-
-    });
-
+], function(rightsRegistry) {
 
     Ember.Application.initializer({
-        name:"component-rightsselector",
+        name: 'component-rightsselector',
+        after: 'component-dictclassifiedcrecordselector',
         initialize: function(container, application) {
+            var DictclassifiedcrecordselectorComponent = container.lookupFactory('component:component-dictclassifiedcrecordselector');
+
+            var get = Ember.get,
+                set = Ember.set,
+                isNone = Ember.isNone;
+
+
+            var component = DictclassifiedcrecordselectorComponent.extend({
+                nameKey: '_id',
+                idKey: '_id',
+                /*
+                 * Compute a structure with classified item each time the 'items' property changed
+                 */
+                classifiedItems : function(){
+                    var items = get(this, 'items');
+                    var valueKey = get(this, 'valueKey') || get(this, 'valueKeyDefault');
+                    var nameKey = get(this, 'nameKey') || get(this, 'nameKeyDefault');
+
+                    console.log("recompute classifiedItems", get(this, 'items'), valueKey);
+
+                    var res = Ember.Object.create({
+                        all: Ember.A(),
+                        byClass: {}
+                    });
+
+                    for (var i = 0, l = items.length; i < l; i++) {
+                        var currentItem = items[i];
+
+                        var objDict = {
+                            name: currentItem.get(nameKey)
+                        };
+
+                        if(valueKey) {
+                            console.log('add valueKey', currentItem.get(valueKey));
+                            objDict.value = currentItem.get(valueKey);
+                            console.log('objDict value', objDict);
+                        }
+
+                        this.serializeAdditionnalData(currentItem, objDict);
+
+                        res.all.pushObject(Ember.Object.create(objDict));
+
+                        possibleClassSplit = objDict.name.split("_");
+                        if(possibleClassSplit.length > 1) {
+                            var className = possibleClassSplit[0];
+
+                            if(isNone(res.byClass[className])) {
+                                res.byClass[className] = [];
+                            }
+
+                            res.byClass[className].pushObject(objDict);
+                        }
+                    }
+
+                    console.log('recompute classifiedItems done', res);
+                    return res;
+                }.property('items', 'items.@each'),
+
+                recomputeValue: function(){
+                    console.group('recomputeValue', get(this, 'selectionUnprepared'));
+
+                    var selection = get(this, 'selectionUnprepared');
+
+                    var buffer = {};
+                    if(selection && selection.length) {
+                        for (var i = 0, l = selection.length; i < l; i++) {
+                            var currentItem = selection[i];
+                            console.log('iteration', currentItem, get(currentItem, 'checksum'));
+                            set(buffer, currentItem.name, {
+                                checksum: get(currentItem, 'checksum') || 19
+                            });
+                        }
+                    }
+
+                    console.log('buffer', buffer);
+
+                    set(this, 'content', buffer);
+                    console.groupEnd();
+                }.observes('selectionUnprepared', 'selectionUnprepared.@each', 'selectionUnprepared.@each.checksum'),
+
+                findItems: function() {
+                    var me = this;
+
+                    var store = this.get('store_' + get(this, 'elementId'));
+
+                    var query = {
+                        start: 0,
+                        limit: 10000
+                    };
+
+                    query.filter = JSON.stringify({'crecord_type': this.get('crecordtype')});
+                    console.log('findItems', this.get('crecordtype'), query);
+
+                    store.findQuery('action', query).then(function(result) {
+                        me.set('widgetDataMetas', result.meta);
+                        var items = result.get('content');
+
+                        me.set('items', items);
+
+                        Ember.run.scheduleOnce('afterRender', {}, function() {
+                            me.rerender();
+                        });
+
+                        me.extractItems(items);
+                    });
+                },
+
+                deserializeAdditionnalData: function(item) {
+                    console.log('deserializeAdditionnalData', arguments);
+                    return {checksum: item.checksum};
+                },
+
+                serializeAdditionnalData: function(additionnalData) {
+                    console.log('serializeAdditionnalData', arguments);
+                }
+            });
             application.register('component:component-rightsselector', component);
         }
     });
-
-    return component;
 });

@@ -37,8 +37,12 @@ define([
         }
     });
 
-
-    loader.register('adapter:eventlog', adapter);
+    Ember.Application.initializer({
+        name: 'EventlogAdapter',
+        initialize: function(container, application) {
+            application.register('adapter:eventlog', adapter);
+        }
+    });
 
     return adapter;
 });

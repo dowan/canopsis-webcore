@@ -18,10 +18,9 @@
 */
 
 define([
-    'ember',
     'canopsis/canopsisConfiguration',
     'app/lib/factories/mixin'
-], function(Ember, canopsisConfiguration, Mixin) {
+], function(canopsisConfiguration, Mixin) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -85,6 +84,14 @@ define([
                 set(this, 'mixinOptions.periodicrefresh.refreshInterval', 10);
             }
 
+        }
+    });
+
+
+    Ember.Application.initializer({
+        name:'PeriodicrefreshMixin',
+        initialize: function(container, application) {
+            application.register('mixin:periodicrefresh', mixin);
         }
     });
 
