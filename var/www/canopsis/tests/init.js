@@ -29,6 +29,8 @@ define([
         application.setupForTesting();
         application.injectTestHelpers();
 
+        window.App = application;
+
         console.log('Starting automated tests');
         enabledBricksUtil.getEnabledModules(function(enabledBricks) {
             var bricksTestMainList = [];

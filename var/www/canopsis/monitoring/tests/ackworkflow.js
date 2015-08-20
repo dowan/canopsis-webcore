@@ -1,11 +1,14 @@
-QUnit.module('Ack workflow', {
-    afterEach: function() {
-        $.mockjaxClear();
-        alert('clear !');
+module('Ack workflow', {
+    setup: function () {
+        App.reset();
+    },
+    teardown: function() {
+        $.mockjax.clear();
+        alert('teardown')
     }
 });
 
-QUnit.test('Test ack workflow', function() {
+test('Test ack workflow', function() {
 
     expect(4);
 
@@ -72,10 +75,10 @@ QUnit.test('Test ack workflow', function() {
 
 });
 
-test('Test ack workflow', function() {
-    $.mockjaxClear();
+test('Test cancel workflow', function() {
 
-    expect(4);
+
+    expect(3);
 
     visit('/userview/view.event');
 
@@ -87,7 +90,7 @@ test('Test ack workflow', function() {
                 "crecord_type":"event",
                 "event_type":"check",
                 "timestamp":1438698464,
-                "component":"Ap",
+                "component":"A",
                 "source_type":"resource",
                 "id":"Engine.engine.check.resource.A.B",
                 "resource":"B",
@@ -116,11 +119,10 @@ test('Test ack workflow', function() {
         click('.canopsis-toolbar .glyphicon-refresh');
 
     });
-/*
-    andThen(function() {
-        click('.listline glyphicon-ban-circle');
-    });
 
+    andThen(function() {
+        click('.listline .glyphicon-ban-circle');
+    });
 
     andThen(function() {
         fillIn(".modal-content [name='output']", 'cancel ack');
@@ -134,11 +136,10 @@ test('Test ack workflow', function() {
                 sendEvent = JSON.parse(settings.data.event)[0];
                 equal(sendEvent.component, 'A', 'Expect the event component is equal to "A"');
                 equal(sendEvent.output, 'cancel ack', 'Expect the event ouptut is equal to "reason"');
-                equal(sendEvent.event_type, 'ack', 'Expect the event type is equal to "ack"');
+                equal(sendEvent.event_type, 'ackremove', 'Expect the event type is equal to "ack"');
             }
         );
 
-        click('.modal-footer .btn-success');
+        click('.modal-footer .btn-primary');
     });
-*/
 });
