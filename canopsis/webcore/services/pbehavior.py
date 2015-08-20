@@ -47,14 +47,43 @@ def exports(ws):
         :rtype: list
         """
 
-        query = PBehaviorManager.get_query(behaviors)
+        if entity_ids is not None:
 
-        entity_ids = ensure_iterable(entity_ids)
+            query = PBehaviorManager.get_query(behaviors)
 
-        result = pbm.values(
-            sources=entity_ids, query=query, dtstart=start, dtend=end
-        )
+            entity_ids = ensure_iterable(entity_ids)
 
+            result = pbm.values(
+                sources=entity_ids, query=query, dtstart=start, dtend=end
+            )
+        else:
+            storage = pbm[PBehaviorManager.STORAGE]
+            date_filter = {
+                '$or': [
+                    {
+                        'dtstart': {'$gte': start},
+                        'dtstart': {'$lte': end}
+                    },
+                    {
+                        'dtend': {'$gte': start},
+                        'dtend': {'$lte': end}
+                    },
+                    {
+                        'dtstart': {'$lte': start},
+                        'dtend': {'gte': end}
+                    }
+                ]
+            }
+            if behaviors is None:
+                pbehavior_list = storage.find_elements(query=date_filter)
+            else:
+                pbehavior_list = storage.find_elements(query={
+                    '$and': [
+                        {'behaviors': behaviors},
+                        date_filter
+                    ]
+                })
+            result = list(pbehavior_list)
         return result
 
     @route(
@@ -96,30 +125,53 @@ def exports(ws):
 
     @route(
         ws.application.get,
-        payload=['start', 'end'],
-        name=DEFAULT_ROUTE
+        payload=['behaviors', 'start', 'end'],
+        name='pbehavior/calendar'
     )
-    def find_pbehavior(start=None, end=None):
+    def find_pbehavior(behaviors=None, start=None, end=None):
         """
         """
 
         storage = pbm[PBehaviorManager.STORAGE]
 
-        pbehavior_list = storage.find_elements(query={
-            '$or': [
-                {
-                    'dtstart': {'$gte': start},
-                    'dtstart': {'$lte': end}
-                },
-                {
-                    'dtend': {'$gte': start},
-                    'dtend': {'$lte': end}
-                },
-                {
-                    'dtstart': {'$lte': start},
-                    'dtend': {'gte': end}
-                }
-            ]
-        })
+        if behaviors is None:
+            pbehavior_list = storage.find_elements(query={
+                '$or': [
+                    {
+                        'dtstart': {'$gte': start},
+                        'dtstart': {'$lte': end}
+                    },
+                    {
+                        'dtend': {'$gte': start},
+                        'dtend': {'$lte': end}
+                    },
+                    {
+                        'dtstart': {'$lte': start},
+                        'dtend': {'gte': end}
+                    }
+                ]
+            })
+        else:
+            pbehavior_list = storage.find_elements(query={
+                '$and': [
+                    {'behaviors': behaviors},
+                    {
+                        '$or': [
+                            {
+                                'dtstart': {'$gte': start},
+                                'dtstart': {'$lte': end}
+                            },
+                            {
+                                'dtend': {'$gte': start},
+                                'dtend': {'$lte': end}
+                            },
+                            {
+                                'dtstart': {'$lte': start},
+                                'dtend': {'gte': end}
+                            }
+                        ]
+                    }
+                ]
+            })
 
         return list(pbehavior_list)

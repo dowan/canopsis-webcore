@@ -40,11 +40,11 @@ define([
             return result;
         },
 
-        findQuery: function(store, type, query){
-            var url = "/pbehavior";
-
+        /*findAll: function(store, type, query){
+            var url = "/pbehavior/calendar";
+            console.log('display query findAll', query);
             return this.ajax(url, 'GET', { data: query });
-        }
+        }*/
 
     });
 
