@@ -19,9 +19,10 @@
 define([
     'app/lib/utils/hash',
     'canopsis/charts/lib/utils/basechart',
+    'app/lib/utils/values',
     'canopsis/charts/lib/externals/c3/c3',
     'link!canopsis/charts/lib/externals/c3/c3.css',
-], function(hash, BaseChart) {
+], function(hash, BaseChart, values) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -230,23 +231,27 @@ define([
                 tooltip = get(this, 'parentController.options.show_tooltip'),
                 showLabels = get(this, 'parentController.options.show_labels'),
                 stacked = get(this, 'parentController.options.stacked'),
+                humanReadable = get(this, 'parentController.options.human_readable'),
                 rotated = false,
                 showAxes = true,
                 isBarChart = true;
 
-            var gauge = {
-                    label:{
-                        format: function(value, ratio){
-                            return  showLabels ? seriesSum.toFixed(2): '';
-                        }
-                    }
-                },
-                label = {show : showLabels};
+            seriesSum = humanReadable ? values.humanize(seriesSum, ''): seriesSum.toFixed(2);
 
-            var donut = {
-                label: label,
-                title: (showLabels && seriesSum) ? seriesSum.toFixed(2): ''
+            var label = {
+                show : showLabels,
+                format: function(value, ratio){
+                    return  showLabels ? seriesSum: '';
+                }
             };
+
+            var gauge = {
+                    label:label
+                },
+                pie = {},
+                donut = {
+                    title: (showLabels && seriesSum) ? seriesSum: ''
+                };
 
             console.log('seriesNames', seriesNames);
             console.log('c3series', c3series);
@@ -280,7 +285,8 @@ define([
                     groups: [seriesNames],
                     labels: {
                         format: function (v, id, i, j) {
-                            return showLabels ? id + ' : ' + parseFloat(v).toFixed(2) : '';
+                            v = humanReadable ? values.humanize(v, '') : parseFloat(v).toFixed(2);
+                            return showLabels ? id + ' : ' + v : '';
                         }
                     },
                     empty: {
@@ -292,13 +298,18 @@ define([
                 //color: colors,
                 gauge: gauge,
                 donut: donut,
-                pie: {label : label},
+                pie: pie,
                 axis: { //for bar mode
                   rotated:rotated,
                   x: {
                     show: showAxes
                   },
                   y: {
+                    tick: {
+                        format: function (v) {
+                            return humanReadable ? values.humanize(v, '') : parseFloat(v).toFixed(2);
+                        }
+                    },
                     show: showAxes
                   }
                 },
