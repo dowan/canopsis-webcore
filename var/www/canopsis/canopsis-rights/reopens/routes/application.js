@@ -17,11 +17,11 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 Ember.Application.initializer({
-    name: 'CanopsisRightsUserviewRouteReopen',
+    name: 'CanopsisRightsApplicationRouteReopen',
     after: ['ApplicationRoute', 'DataUtils'],
     initialize: function(container, application) {
+
         var ApplicationRoute = container.lookupFactory('route:application');
         var dataUtils = container.lookupFactory('utility:data');
 
@@ -44,6 +44,7 @@ Ember.Application.initializer({
              * Fetch all the registered rights in the backend and fill the rightsRegistry
              */
             beforeModel: function(transition) {
+
                 rightsRegistry = dataUtils.getEmberApplicationSingleton().__container__.lookupFactory('registry:rights');
                 var route = this;
 

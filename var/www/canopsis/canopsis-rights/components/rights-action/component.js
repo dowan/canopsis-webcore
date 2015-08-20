@@ -34,7 +34,9 @@ Ember.Application.initializer({
                 var value = get(this, 'value');
 
                 var action = rightsRegistry.getByName(value);
-                return action._data.desc;
+                if(action && action._data) {
+                    return action._data.desc;
+                }
             }.property('value')
         });
 

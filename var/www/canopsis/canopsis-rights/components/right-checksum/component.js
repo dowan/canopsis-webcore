@@ -71,7 +71,9 @@ Ember.Application.initializer({
             checksumType: function() {
                 var value = get(this, 'right.name');
                 var action = rightsRegistry.getByName(value);
-                return action._data.type;
+                if(action && action._data) {
+                    return action._data.type;
+                }
             }.property('right.name'),
 
             checksumIsRW: function() {
