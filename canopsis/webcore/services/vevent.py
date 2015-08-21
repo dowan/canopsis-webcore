@@ -21,12 +21,12 @@
 from canopsis.common.ws import route
 from canopsis.vevent.manager import VEventManager
 
-vem = VEventManager()
-
 DEFAULT_ROUTE = 'vevent'  #: route specifics to vevents document
 
 
 def exports(ws):
+
+    vem = VEventManager()
 
     @route(ws.application.get, name=DEFAULT_ROUTE)
     def get_by_uids(

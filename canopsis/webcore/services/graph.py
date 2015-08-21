@@ -21,10 +21,10 @@
 from canopsis.common.ws import route
 from canopsis.graph.manager import GraphManager
 
-manager = GraphManager()
-
 
 def exports(ws):
+
+    manager = GraphManager()
 
     @route(ws.application.get, name='graph/elts')
     @route(

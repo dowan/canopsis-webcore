@@ -21,10 +21,10 @@
 from canopsis.common.ws import route
 from canopsis.check.manager import CheckManager
 
-manager = CheckManager()
-
 
 def exports(ws):
+
+    manager = CheckManager()
 
     @route(ws.application.get, name='check')
     @route(

@@ -24,11 +24,11 @@ from canopsis.graph.elements import GraphElement
 from canopsis.old.rabbitmq import Amqp
 from canopsis.check import Check
 
-manager = TopologyManager()
-publisher = Amqp()
-
 
 def exports(ws):
+
+    manager = TopologyManager()
+    publisher = Amqp()
 
     @route(ws.application.get, name='topology/graphelts')
     @route(

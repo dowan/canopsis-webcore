@@ -21,10 +21,10 @@
 from canopsis.common.ws import route
 from canopsis.ccalendar.manager import CalendarManager
 
-cm = CalendarManager()
-
 
 def exports(ws):
+
+    cm = CalendarManager()
 
     @route(ws.application.get, name='calendar')
     def get_by_uids(

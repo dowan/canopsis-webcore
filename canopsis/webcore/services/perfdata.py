@@ -23,10 +23,10 @@ from canopsis.perfdata.manager import PerfData
 from canopsis.timeserie.timewindow import TimeWindow, Period
 from canopsis.timeserie.core import TimeSerie
 
-manager = PerfData()
-
 
 def exports(ws):
+
+    manager = PerfData()
 
     @route(ws.application.post, payload=['metric_id', 'timewindow'])
     def perfdata_count(metric_id, timewindow=None):
