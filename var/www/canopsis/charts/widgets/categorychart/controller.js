@@ -58,6 +58,7 @@ define([
             Serie and metrics data fetch and chart series formating are triggered here
             The dataSerie array is there reset and updated to rerender the chart.
             **/
+            this.initSeries();
 
             //data interval selection
             var now = new Date().getTime();
@@ -203,7 +204,6 @@ define([
             if(get(this, 'seriesReady') && get(this, 'metricsReady')) {
                 var chart = get(this, 'chartComponent');
                 set(chart, 'series', chartSeries);
-                this.initSeries();
             }
         }
 

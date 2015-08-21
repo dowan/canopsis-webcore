@@ -18,18 +18,17 @@
 */
 define([
     'app/lib/utils/hash',
-    'canopsis/charts/lib/utils/basechart',
     'app/lib/utils/values',
     'canopsis/charts/lib/externals/c3/c3',
     'link!canopsis/charts/lib/externals/c3/c3.css',
-], function(hash, BaseChart, values) {
+], function(hash, values) {
 
     var get = Ember.get,
         set = Ember.set,
         isNone = Ember.isNone,
         __ = Ember.String.loc;
 
-    var component = BaseChart.extend({
+    var component = Ember.Component.extend({
 
         init: function() {
             this._super();
