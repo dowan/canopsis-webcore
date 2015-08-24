@@ -47,43 +47,14 @@ def exports(ws):
         :rtype: list
         """
 
-        if entity_ids is not None:
+        query = PBehaviorManager.get_query(behaviors)
 
-            query = PBehaviorManager.get_query(behaviors)
+        entity_ids = ensure_iterable(entity_ids)
 
-            entity_ids = ensure_iterable(entity_ids)
+        result = pbm.values(
+            sources=entity_ids, query=query, dtstart=start, dtend=end
+        )
 
-            result = pbm.values(
-                sources=entity_ids, query=query, dtstart=start, dtend=end
-            )
-        else:
-            storage = pbm[PBehaviorManager.STORAGE]
-            date_filter = {
-                '$or': [
-                    {
-                        'dtstart': {'$gte': start},
-                        'dtstart': {'$lte': end}
-                    },
-                    {
-                        'dtend': {'$gte': start},
-                        'dtend': {'$lte': end}
-                    },
-                    {
-                        'dtstart': {'$lte': start},
-                        'dtend': {'gte': end}
-                    }
-                ]
-            }
-            if behaviors is None:
-                pbehavior_list = storage.find_elements(query=date_filter)
-            else:
-                pbehavior_list = storage.find_elements(query={
-                    '$and': [
-                        {'behaviors': behaviors},
-                        date_filter
-                    ]
-                })
-            result = list(pbehavior_list)
         return result
 
     @route(

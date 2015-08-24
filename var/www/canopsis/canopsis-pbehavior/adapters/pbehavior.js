@@ -18,8 +18,9 @@
 */
 
 define([
-    'canopsis/canopsis-vevent/adapters/vevent'
-], function(VEventAdapter) {
+    'canopsis/canopsis-vevent/adapters/vevent',
+    'app/lib/utils/modelsolve'
+], function(VEventAdapter, modelsolve) {
 
     var get = Ember.get,
         set = Ember.set,
@@ -40,11 +41,17 @@ define([
             return result;
         },
 
-        /*findAll: function(store, type, query){
+        findCalendarPBehavior: function(type, query){
             var url = "/pbehavior/calendar";
             console.log('display query findAll', query);
-            return this.ajax(url, 'GET', { data: query });
-        }*/
+            //return this.ajax(url, 'GET', query);
+
+            return new Ember.RSVP.Promise(function(resolve, reject) {
+                var funcres = modelsolve.gen_resolve(resolve);
+                var funcrej = modelsolve.gen_reject(reject);
+                $.get(url, query).then(funcres, funcrej);
+            });
+        }
 
     });
 
