@@ -46,7 +46,7 @@ Ember.Application.initializer({
                 var store = get(this, 'componentDataStore');
                 var model = get(this, 'model');
 
-                return store.findAll(model);
+                return store.findAll(model.dasherize());
             }.property('model'),
 
             init: function() {
