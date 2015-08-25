@@ -43,7 +43,7 @@ define([
                     var typekeySplit = typekey.split('.');
 
                     var modelname = typekeySplit[typekeySplit.length - 1];
-                    var model = schemaregistry.getByName(modelname).EmberModel.proto();
+                    var model = schemasregistry.getByName(modelname).EmberModel.proto();
                     console.log('Fetch model:', modelname, model);
 
                     var item = {};
