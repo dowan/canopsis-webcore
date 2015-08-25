@@ -20,11 +20,12 @@
 Ember.Application.initializer({
     name:'SendeventMixin',
     after: 'MixinFactory',
-    after: ['MixinFactory', 'FormsUtils', 'DatesUtils'],
+    after: ['MixinFactory', 'FormsUtils', 'DatesUtils', 'NotificationUtils'],
     initialize: function(container, application) {
         var Mixin = container.lookupFactory('factory:mixin');
         var formsUtils = container.lookupFactory('utility:forms');
         var datesUtils = container.lookupFactory('utility:dates');
+        var notificationUtils = container.lookupFactory('utility:notification');
 
         var get = Ember.get,
             set = Ember.set,
