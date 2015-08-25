@@ -145,9 +145,10 @@ Ember.Application.initializer({
                     offset
                 ].join('');
 
-                return classValue;
-            },
+                set(this, 'defaultItemCssClass', classValue);
 
+                return classValue;
+            }
         });
 
         application.register('mixin:gridlayout', mixin);
