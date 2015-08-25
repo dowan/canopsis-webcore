@@ -98,7 +98,7 @@ Ember.Application.initializer({
 
                         console.log("collapse", theClass, theClass.key, originClass);
 
-                        if(originClass.isCollapsed === true){
+                        if(originClass.isCollapsed === true || originClass.isCollapsed === undefined){
                             set(originClass, 'isCollapsed', false);
                             set(theClass, 'isCollapsed', false);
                         }
