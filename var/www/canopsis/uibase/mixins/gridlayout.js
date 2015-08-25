@@ -18,7 +18,6 @@
  */
 
 
-
 Ember.Application.initializer({
     name:'GridlayoutMixin',
     after: 'MixinFactory',
@@ -46,8 +45,28 @@ Ember.Application.initializer({
                         forcelegacy = get(containerGridLayout, 'forcelegacy');
                     }
                 }
-                for (var i = wrappers.length - 1; i >= 0; i--) {
 
+                var gridLayoutMixin = get(this, 'controller.mixins').findBy('name', 'gridlayout');
+                var columnXS = get(gridLayoutMixin, 'columnXS') || '12';
+                var columnMD = get(gridLayoutMixin, 'columnMD') || '6';
+                var columnLG = get(gridLayoutMixin, 'columnLG') || '3';
+                var offset = get(gridLayoutMixin, 'offset') || '0';
+
+                var classValue = [
+                    'col-md-',
+                    columnMD,
+                    ' col-xs-',
+                    columnXS,
+                    ' col-lg-',
+                    columnLG,
+                    ' col-md-offset-',
+                    offset
+                ].join('');
+
+                set(this, 'controller.defaultItemCssClass', classValue);
+
+
+                for (var i = wrappers.length - 1; i >= 0; i--) {
                     //Dynamic mixin values setting
                     var currentWrapperMixins = get(wrappers[i], 'mixins');
                     if (isNone(currentWrapperMixins)) {
@@ -82,7 +101,7 @@ Ember.Application.initializer({
                     }
 
                     //Computes class value
-                    var classValue = get(this, 'controller').getSection(currentWrapperMixins);
+                    classValue = get(this, 'controller').getSection(currentWrapperMixins);
 
                     Ember.setProperties(wrappers[i], {
                         'classValue': classValue
