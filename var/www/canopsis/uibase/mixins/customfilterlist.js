@@ -40,7 +40,7 @@ Ember.Application.initializer({
         */
         var mixin = Mixin('customfilterlist', {
             partials: {
-                actionToolbarButtons: ['customfilters']
+                subHeader: ['customfilters']
             },
 
             init: function() {

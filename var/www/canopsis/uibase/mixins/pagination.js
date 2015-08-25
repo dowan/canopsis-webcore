@@ -38,7 +38,8 @@ Ember.Application.initializer({
         */
         var mixin = Mixin('pagination', {
             partials: {
-                subHeader: ['pagination', 'itemsperpage'],
+                subHeader: ['itemsperpage'],
+                actionToolbarButtons: ['pagination'],
                 footer: ['pagination', 'pagination-infos']
             },
 
