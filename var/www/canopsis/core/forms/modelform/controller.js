@@ -155,7 +155,7 @@ define([
                 if (this.validation !== undefined && !this.validation()) {
                     return;
                 }
-                console.log('submit action');
+                console.log('submit action', arguments);
 
                 var override_inverse = {};
 
@@ -208,11 +208,13 @@ define([
                         set(this, 'formContext.' + categoryKeyField, attr.value);
                     }
                 }
-                //Update value of array
-              //  this.updateArray();
 
                 console.log('this is a widget', get(this, 'formContext'));
-                this._super(get(this, 'formContext'));
+
+                var args = [get(this, 'formContext')];
+                args.addObjects(arguments);
+
+                this._super.apply(this, args);
             }
         }
     },
