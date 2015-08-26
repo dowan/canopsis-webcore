@@ -54,7 +54,7 @@ def exports(ws):
 
     @route(
         ws.application.post, name='calendar',
-        payload=['category', 'output', 'dtstart', 'dtend']
+        payload=['eventcategories', 'output', 'dtstart', 'dtend']
     )
     @route(
         ws.application.put, name='calendar',
@@ -73,7 +73,7 @@ def exports(ws):
         :rtype: list
         """
         calendarDocument = cm.get_document(
-            category=eventcategories, output=output,
+            eventcategories=eventcategories, output=output,
             dtstart=dtstart, dtend=dtend
         )
 
