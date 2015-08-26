@@ -420,8 +420,11 @@ Ember.Application.initializer({
 
                     var userSortedAttribute = get(this, 'model.user_sortedAttribute');
 
-                    if (userSortedAttribute !== undefined) {
+                    if (userSortedAttribute === undefined && get(this, 'model.default_column_sort') !== undefined) {
+                        params.sort = JSON.stringify([ get(this, 'model.default_column_sort') ]);
+                        console.log('defaultSortedAttribute', get(this, 'model.default_column_sort'));
 
+                    } else {
                         var direction;
                         if(get(userSortedAttribute, 'headerClassName') === 'sorting_asc') {
                             direction = 'ASC';
@@ -438,5 +441,8 @@ Ember.Application.initializer({
                     return params;
                 }
         }, listOptions);
+
+        application.register('widget:list', widget);
+
     }
 });
