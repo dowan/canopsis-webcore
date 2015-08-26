@@ -53,9 +53,6 @@ require.config({
         },
         'icheck': {
             deps: ['jquery']
-        },
-        'jsoneditorlib': {
-            deps: ['ember']
         }
     }
 });
