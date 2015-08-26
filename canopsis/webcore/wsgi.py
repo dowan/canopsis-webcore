@@ -22,7 +22,7 @@ import gevent
 from gevent import monkey
 monkey.patch_all()
 
-from bottle import default_app as BottleApplication, HTTPError
+from bottle import default_app as BottleApplication, HTTPError, redirect
 from beaker.middleware import SessionMiddleware
 import mongodb_beaker  # needed by beaker
 
@@ -77,7 +77,8 @@ class EnsureAuthenticated(object):
             s = self.session.get()
 
             if not s.get('auth_on', False):
-                return HTTPError(401, 'Not authorized')
+                #return HTTPError(401, 'Not authorized')
+                redirect('/?logerror=1')
 
             return callback(*args, **kwargs)
 

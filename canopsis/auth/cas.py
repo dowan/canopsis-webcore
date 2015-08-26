@@ -71,7 +71,8 @@ class CASBackend(BaseBackend):
                     return res
 
                 elif not res:
-                    return HTTPError(403, 'Forbidden')
+                    #return HTTPError(403, 'Forbidden')
+                    redirect('/?logerror=1')
 
             elif request.path in ['/logout', '/disconnect']:
                 self.undo_auth(s, server, service)
