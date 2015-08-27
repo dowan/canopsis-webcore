@@ -1,9 +1,32 @@
 {{#if parentController.options.allow_user_display}}
-	<button {{action "transform" "gauge"}} class="btn btn-default"><i class="fa fa-tachometer"></i></button>
-	<button {{action "transform" "pie"}} class="btn btn-default"><i class="fa fa-pie-chart"></i></button>
-	<button {{action "transform" "donut"}} class="btn btn-default"><i class="fa fa-dot-circle-o"></i></button>
-	<button {{action "transform" "progressbar"}} class="btn btn-default"><i class="fa fa-battery-three-quarters"></i></button>
-	<button {{action "transform" "bar"}} class="btn btn-default"><i class="fa fa-bar-chart"></i></button>
+	{{#component-dropdownbutton}}
+		{{#component-dropdownbuttonheader}}
+			{{#component-dropdownbuttontitle}}
+				{{#component-tooltip content="Display"}}
+					<i class="fa fa-eye"></i>
+				{{/component-tooltip}}
+			{{/component-dropdownbuttontitle}}
+		{{/component-dropdownbuttonheader}}
+		{{#component-dropdownbuttoncontent}}
+			<ul class="list-group">
+			  	<li class="list-group-item pointer" {{action "transform" "gauge"}}>
+			  		<i class="fa fa-tachometer"></i> {{tr "gauge"}}
+			  	</li>
+			  	<li class="list-group-item pointer" {{action "transform" "pie"}}>
+			  		<i class="fa fa-pie-chart"></i> {{tr "pie"}}
+			  	</li>
+			  	<li class="list-group-item pointer" {{action "transform" "donut"}}>
+			  		<i class="fa fa-dot-circle-o"></i> {{tr "donut"}}
+			  	</li>
+			  	<li class="list-group-item pointer" {{action "transform" "progressbar"}}>
+			  		<i class="fa fa-battery-three-quarters"></i> {{tr "progressbar"}}
+			  	</li>
+			  	<li class="list-group-item pointer" {{action "transform" "bar"}}>
+			  		<i class="fa fa-bar-chart"></i> {{tr "bar"}}
+			  	</li>
+			</ul>
+		{{/component-dropdownbuttoncontent}}
+	{{/component-dropdownbutton}}
 {{/if}}
 
 <div {{bind-attr id="uuid"}}></div>
