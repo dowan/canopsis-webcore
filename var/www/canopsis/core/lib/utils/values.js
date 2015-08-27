@@ -15,111 +15,106 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/utils/dates',
-    'app/lib/utilityclass'
-], function(dateUtils, Utility) {
 
-    var units = [ ' ', ' k', ' M', ' G', ' T' ];
+Ember.Application.initializer({
+    name: 'ValuesUtils',
+    after: ['UtilityClass', 'DatesUtils'],
+    initialize: function(container, application) {
+        var Utility = container.lookupFactory('class:utility');
+        var datesUtils = container.lookupFactory('utility:dates');
 
-    var values = Utility.create({
+        var units = [ ' ', ' k', ' M', ' G', ' T' ];
 
-        name: 'values',
+        var values = Utility.create({
 
-        humanize: function(x, unit) {
+            name: 'values',
 
-            //This is time to convert
-            //premptive transformation
-            if (unit.toLowerCase() === 's') {
-                return dateUtils.second2Duration(x);
-            }
+            humanize: function(x, unit) {
 
-            var step = 1000;
-            var negative = (x < 0);
-
-            if(negative) {
-                x = -x;
-            }
-
-            if(unit === 'o' || unit === 'o/s') {
-                step = 1024;
-            }
-
-            var nstep = 0;
-            var cur = parseInt(x / step);
-
-            while(cur > 0) {
-                x = cur;
-                cur = parseInt(x / step);
-                nstep++;
-            }
-
-            if(negative) {
-                return '-' + x + units[nstep] + unit;
-            }
-            else {
-                return x + units[nstep] + unit;
-            }
-        },
-
-        castValue: function(value, type) {
-            type = type.toLowerCase();
-            var types = ['string', 'boolean', 'number', 'array'];
-            if (types.indexOf(type) === -1) {
-                console.warn('type', type, 'not recognized. Expected one of', types.join(','));
-                return value;
-            }
-            if (type === 'string') {
-                //simple no dump case, can be improved
-                return value + '';
-            }
-            if (type === 'number') {
-                try {
-                    value = parseFloat(value);
-                } catch (err) {
-                    console.warn('unable to case to number value', value);
+                //This is time to convert
+                //premptive transformation
+                if (unit.toLowerCase() === 's') {
+                    return dateUtils.second2Duration(x);
                 }
-                if (isNaN(value)) {
-                    return 0;
+
+                var step = 1000;
+                var negative = (x < 0);
+
+                if(negative) {
+                    x = -x;
                 }
-                return value;
-            }
-            if (type === 'boolean') {
-                try {
-                    if (value === 'true') {
-                        return true;
+
+                if(unit === 'o' || unit === 'o/s') {
+                    step = 1024;
+                }
+
+                var nstep = 0;
+                var cur = parseInt(x / step);
+
+                while(cur > 0) {
+                    x = cur;
+                    cur = parseInt(x / step);
+                    nstep++;
+                }
+
+                if(negative) {
+                    return '-' + x + units[nstep] + unit;
+                }
+                else {
+                    return x + units[nstep] + unit;
+                }
+            },
+
+            castValue: function(value, type) {
+                type = type.toLowerCase();
+                var types = ['string', 'boolean', 'number', 'array'];
+                if (types.indexOf(type) === -1) {
+                    console.warn('type', type, 'not recognized. Expected one of', types.join(','));
+                    return value;
+                }
+                if (type === 'string') {
+                    //simple no dump case, can be improved
+                    return value + '';
+                }
+                if (type === 'number') {
+                    try {
+                        value = parseFloat(value);
+                    } catch (err) {
+                        console.warn('unable to case to number value', value);
                     }
-                    if (value === 'false'){
-                        return false;
+                    if (isNaN(value)) {
+                        return 0;
                     }
-                    value = !!value;
-                } catch (err) {
-                    console.warn('unable to case to boolean value', value);
+                    return value;
                 }
-                return value;
-            }
-            if (type === 'array') {
-                try {
-                    value = value.split(',');
-                } catch (err) {
-                    console.warn('unable to case to array value', value);
+                if (type === 'boolean') {
+                    try {
+                        if (value === 'true') {
+                            return true;
+                        }
+                        if (value === 'false'){
+                            return false;
+                        }
+                        value = !!value;
+                    } catch (err) {
+                        console.warn('unable to case to boolean value', value);
+                    }
+                    return value;
                 }
-                return value;
+                if (type === 'array') {
+                    try {
+                        value = value.split(',');
+                    } catch (err) {
+                        console.warn('unable to case to array value', value);
+                    }
+                    return value;
+                }
+
             }
+        });
 
-        }
-    });
-
-    Ember.Application.initializer({
-        name:"ValuesUtils",
-        initialize: function(container, application) {
-            application.register('utility:values', values);
-        }
-    });
-
-    return values;
+        application.register('utility:values', values);
+    }
 });

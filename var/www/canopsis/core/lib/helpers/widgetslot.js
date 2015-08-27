@@ -15,8 +15,6 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
 define(['app/view/widgetslot', 'app/view/widget'], function(WidgetslotView, WidgetView) {
@@ -27,8 +25,6 @@ define(['app/view/widgetslot', 'app/view/widget'], function(WidgetslotView, Widg
      *
      * @author Gwenael Pluchon <info@gwenp.fr>
      */
-    Ember.Handlebars.helper('widgetslot', WidgetslotView);
-    Ember.Handlebars.helper('widgethelper', WidgetView);
 });
 
 

@@ -17,7 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember', 'ember-data'], function () {
+define(['ember-lib', 'ember-data-lib'], function () {
 
     var get = Ember.get;
 

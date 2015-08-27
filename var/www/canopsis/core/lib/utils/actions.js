@@ -15,42 +15,35 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/utilityclass'
-], function(Utility) {
+Ember.Application.initializer({
+    name: 'ActionsUtils',
+    after: 'UtilityClass',
+    initialize: function(container, application) {
+        var Utility = container.lookupFactory('class:utility');
+        var actionsDefaultTarget;
 
-    var actionsDefaultTarget;
+        var actionsUtils = Utility.create({
 
-    var actionsUtils = Utility.create({
+            name: 'actions',
 
-        name: 'actions',
+            setDefaultTarget: function (target) {
+                actionsDefaultTarget = target;
+            },
 
-        setDefaultTarget: function (target) {
-            actionsDefaultTarget = target;
-        },
+            /**
+             * send an action to the default target (usually ApplicationController instance)
+             */
+            doAction: function (actionName, actionParam) {
+                console.info('doAction', actionsDefaultTarget, actionName, actionParam);
 
-        /**
-         * send an action to the default target (usually ApplicationController instance)
-         */
-        doAction: function (actionName, actionParam) {
-            console.info('doAction', actionsDefaultTarget, actionName, actionParam);
+                Ember.assert('The actionsDefaultTarget variable is none', !Ember.isNone(actionsDefaultTarget));
 
-            Ember.assert('The actionsDefaultTarget variable is none', !Ember.isNone(actionsDefaultTarget));
+                actionsDefaultTarget.send.apply(actionsDefaultTarget, [actionName, actionParam]);
+            }
+        });
 
-            actionsDefaultTarget.send.apply(actionsDefaultTarget, [actionName, actionParam]);
-        }
-    });
-
-    Ember.Application.initializer({
-        name:"ActionsUtils",
-        initialize: function(container, application) {
-            application.register('utility:actions', actionsUtils);
-        }
-    });
-
-    return actionsUtils;
+        application.register('utility:actions', actionsUtils);
+    }
 });

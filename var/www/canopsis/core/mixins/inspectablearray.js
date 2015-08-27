@@ -15,50 +15,44 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/factories/mixin'
-], function(Mixin) {
+Ember.Application.initializer({
+    name:'InspectableArrayMixin',
+    after: 'MixinFactory',
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
 
-    var mixin = Mixin('InspectableArray', {
-        attributesKeys: function() {
-            var attributes = [];
+        var mixin = Mixin('InspectableArray', {
+            attributesKeys: function() {
+                var attributes = [];
 
-            var attributesDict = this.get('inspectedDataArray.type.attributes.values');
-            console.log("attributesDict", attributesDict);
+                var attributesDict = this.get('inspectedDataArray.type.attributes.values');
+                console.log("attributesDict", attributesDict);
 
-            for (var key in attributesDict) {
-                var attr = attributesDict[key];
+                for (var key in attributesDict) {
+                    var attr = attributesDict[key];
 
-                if (attr.options.hiddenInLists === false || attr.options.hiddenInLists === undefined) {
-                    attributes.pushObject({
-                        field: attr.name,
-                        type: attr.type,
-                        options: attr.options
-                    });
+                    if (attr.options.hiddenInLists === false || attr.options.hiddenInLists === undefined) {
+                        attributes.pushObject({
+                            field: attr.name,
+                            type: attr.type,
+                            options: attr.options
+                        });
 
-                    console.log("pushed attr", {
-                        field: attr.name,
-                        type: attr.type,
-                        options: attr.options
-                    });
+                        console.log("pushed attr", {
+                            field: attr.name,
+                            type: attr.type,
+                            options: attr.options
+                        });
+                    }
                 }
-            }
-            return attributes;
-        }.property("inspectedProperty", "inspectedDataArray"),
+                return attributes;
+            }.property("inspectedProperty", "inspectedDataArray"),
 
-        inspectedDataArray: function() { console.error("This must be defined on the base class"); }.property()
-    });
+            inspectedDataArray: function() { console.error("This must be defined on the base class"); }.property()
+        });
 
-    Ember.Application.initializer({
-        name:'InspectableArrayMixin',
-        initialize: function(container, application) {
-            application.register('mixin:inspectable-array', mixin);
-        }
-    });
-
-    return mixin;
+        application.register('mixin:inspectable-array', mixin);
+    }
 });

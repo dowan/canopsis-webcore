@@ -15,43 +15,34 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'jsonselect'
-], function(JSONSelect) {
+Ember.Application.initializer({
+    name: 'ListlineView',
+    initialize: function(container, application) {
+        var set = Ember.set,
+            get = Ember.get;
 
-    var set = Ember.set,
-        get = Ember.get;
+        //TODO @gwen check if it's possible to remove this class
 
-    //TODO @gwen check if it's possible to remove this class
+        /**
+         * @class ListlineView
+         * @extends Ember.View
+         * @constructor
+         */
+        var view = Ember.View.extend({
+            tagName:'tr',
+            templateName: 'listline',
+            classNames: ['listline'],
 
-    /**
-     * @class ListlineView
-     * @extends Ember.View
-     * @constructor
-     */
-    var view = Ember.View.extend({
-        tagName:'tr',
-        templateName: 'listline',
-        classNames: ['listline'],
+            checkChanged: function() {
+                var checkbox = this.$('.toggle');
+                if(checkbox !== undefined) {
+                    checkbox.iCheck('check');
+                }
+            }.observes('controller.isAllSelected')
+        });
 
-        checkChanged: function() {
-            var checkbox = this.$('.toggle');
-            if(checkbox !== undefined) {
-                checkbox.iCheck('check');
-            }
-        }.observes('controller.isAllSelected')
-    });
-
-    Ember.Application.initializer({
-        name: 'ListlineView',
-        initialize: function(container, application) {
-            application.register('view:listline', view);
-        }
-    });
-
-    return view;
+        application.register('view:listline', view);
+    }
 });

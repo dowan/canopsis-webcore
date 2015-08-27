@@ -15,42 +15,36 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/utilityclass'
-], function(Utility) {
+Ember.Application.initializer({
+    name: 'DragUtils',
+    after: ['UtilityClass'],
+    initialize: function(container, application) {
+        var Utility = container.lookupFactory('class:utility');
 
-    var __ = Ember.String.loc,
-        isNone = Ember.isNone;
+        var __ = Ember.String.loc,
+            isNone = Ember.isNone;
 
-    var drag = Utility.create({
+        var drag = Utility.create({
 
-        name: 'drag',
+            name: 'drag',
 
-        setDraggable: function (handle, dragElement) {
-            handle.on('mousedown', function() {
-                console.log('mousedown', $(this));
-                dragElement.addClass('draggable').parents().on('mousemove', function(e) {
-                    $('.draggable').offset({
-                        top: e.pageY - 50,
-                        left: e.pageX - $('.draggable').outerWidth() / 2
-                    }).on('mouseup', function() {
-                        dragElement.removeClass('draggable');
+            setDraggable: function (handle, dragElement) {
+                handle.on('mousedown', function() {
+                    console.log('mousedown', $(this));
+                    dragElement.addClass('draggable').parents().on('mousemove', function(e) {
+                        $('.draggable').offset({
+                            top: e.pageY - 50,
+                            left: e.pageX - $('.draggable').outerWidth() / 2
+                        }).on('mouseup', function() {
+                            dragElement.removeClass('draggable');
+                        });
                     });
                 });
-            });
-        }
-    });
+            }
+        });
 
-    Ember.Application.initializer({
-        name:"DragUtils",
-        initialize: function(container, application) {
-            application.register('utility:drag', drag);
-        }
-    });
-
-    return drag;
+        application.register('utility:drag', drag);
+    }
 });

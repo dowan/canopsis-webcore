@@ -15,44 +15,38 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/mixins/metaserializer',
-    'app/mixins/hashserializer',
-    'app/lib/utils/notification',
-    'app/mixins/embeddedrecordserializer'
-], function(MetaSerializerMixin, HashSerializerMixin, notificationUtils, EmbeddedRecordSerializerMixin) {
+Ember.Application.initializer({
+    name: 'ApplicationSerializer',
+    after: ['MetaSerializerMixin', 'HashSerializerMixin', 'EmbeddedRecordSerializerMixin', 'NotificationUtils'],
+    initialize: function(container, application) {
+        var MetaSerializerMixin = container.lookupFactory('mixin:meta-serializer');
+        var HashSerializerMixin = container.lookupFactory('mixin:hash-serializer');
+        var EmbeddedRecordSerializerMixin = container.lookupFactory('mixin:embedded-record-serializer');
+        var notificationUtils = container.lookupFactory('utility:notification');
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
-    var serializer = DS.RESTSerializer.extend(
-        MetaSerializerMixin,
-        HashSerializerMixin,
-        EmbeddedRecordSerializerMixin,
-        {
-            /**
-             * @method normalizeId
-             * @private
-             */
-            normalizeId: function(hash) {
-                if(isNone(hash.id)) {
-                    hash.id = hash._id;
+        var serializer = DS.RESTSerializer.extend(
+            MetaSerializerMixin,
+            HashSerializerMixin,
+            EmbeddedRecordSerializerMixin,
+            {
+                /**
+                 * @method normalizeId
+                 * @private
+                 */
+                normalizeId: function(hash) {
+                    if(isNone(hash.id)) {
+                        hash.id = hash._id;
+                    }
                 }
             }
-        }
-    );
+        );
 
-    Ember.Application.initializer({
-        name: 'ApplicationSerializer',
-        initialize: function(container, application) {
-            application.register('serializer:application', serializer);
-        }
-    });
-
-    return serializer;
+        application.register('serializer:application', serializer);
+    }
 });

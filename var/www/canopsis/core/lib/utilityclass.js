@@ -39,5 +39,11 @@ define([], function() {
 
     });
 
+    Ember.Application.initializer({
+        name: 'UtilityClass',
+        initialize: function(container, application) {
+            application.register('class:utility', Utility);
+        }
+    });
     return Utility;
 });

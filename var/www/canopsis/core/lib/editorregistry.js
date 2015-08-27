@@ -17,33 +17,29 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([
-    'app/lib/abstractclassregistry'
-], function(Abstractclassregistry) {
+Ember.Application.initializer({
+    name: 'EditorsRegistry',
+    after: 'AbstractClassRegistry',
+    initialize: function(container, application) {
 
-    /**
-     * Editors Registry
-     *
-     * @class EditorRegistry
-     * @memberOf canopsis.frontend.core
-     * @extends Abstractclassregistry
-     * @static
-     */
-    var registry = Abstractclassregistry.create({
-        name: 'editors',
+        var Abstractclassregistry = container.lookupFactory('registry:abstractclass');
 
-        all: [],
-        byClass: {},
-        tableColumns: [{title: 'name', name: 'name'}]
-    });
+        /**
+         * Editors Registry
+         *
+         * @class EditorRegistry
+         * @memberOf canopsis.frontend.core
+         * @extends Abstractclassregistry
+         * @static
+         */
+        var registry = Abstractclassregistry.create({
+            name: 'editors',
 
+            all: [],
+            byClass: {},
+            tableColumns: [{title: 'name', name: 'name'}]
+        });
 
-    Ember.Application.initializer({
-        name:"EditorsRegistry",
-        initialize: function(container, application) {
-            application.register('registry:editors', registry);
-        }
-    });
-
-    return registry;
+        application.register('registry:editors', registry);
+    }
 });

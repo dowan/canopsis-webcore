@@ -15,17 +15,13 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([], function() {
-
+(function() {
     var get = Ember.get;
 
     Ember.Handlebars.helper('getfield', function(ctx, fieldname) {
         var field = get(ctx, fieldname) || '';
         return new Ember.Handlebars.SafeString(field);
     });
-
-});
+})();

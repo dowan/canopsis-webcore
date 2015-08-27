@@ -15,47 +15,42 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define(['app/lib/utilityclass'], function(Utility) {
+Ember.Application.initializer({
+    name: 'ModelsolveUtils',
+    after: ['UtilityClass'],
+    initialize: function(container, application) {
+        var Utility = container.lookupFactory('class:utility');
 
+        var modelsolve = Utility.create({
 
-    var modelsolve = Utility.create({
+            name: 'modelsolve',
 
-        name: 'modelsolve',
+            gen_resolve: function(callback) {
+                return function(data) {
+                    for (var i = 0; i < data.data.length; i++) {
+                        //data.data[i].id = data.data[i]._id;
+                        //delete data.data[i]._id;
+                    }
 
-        gen_resolve: function(callback) {
-            return function(data) {
-                for (var i = 0; i < data.data.length; i++) {
-                    //data.data[i].id = data.data[i]._id;
-                    //delete data.data[i]._id;
-                }
+                    if(data.success === false && data.data.msg) {
+                        console.error('Server Error', data.data.msg, data.data.type);
+                        console.error(data.data.traceback);
+                    }
 
-                if(data.success === false && data.data.msg) {
-                    console.error('Server Error', data.data.msg, data.data.type);
-                    console.error(data.data.traceback);
-                }
+                    Ember.run(null, callback, data);
+                };
+            },
 
-                Ember.run(null, callback, data);
-            };
-        },
+            gen_reject: function(callback) {
+                return function(xhr) {
+                    xhr.then = null;
+                    Ember.run(null, callback, xhr);
+                };
+            },
+        });
 
-        gen_reject: function(callback) {
-            return function(xhr) {
-                xhr.then = null;
-                Ember.run(null, callback, xhr);
-            };
-        },
-    });
-
-    Ember.Application.initializer({
-        name:"ModelsolveUtils",
-        initialize: function(container, application) {
-            application.register('utility:modelsolve', modelsolve);
-        }
-    });
-
-    return modelsolve;
+        application.register('utility:modelsolve', modelsolve);
+    }
 });

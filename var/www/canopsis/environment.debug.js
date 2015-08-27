@@ -19,9 +19,8 @@
 */
 
 define([
-    'jquery',
     'app/lib/wrappers/console'
-], function($) {
+], function() {
 
 });
 

@@ -15,13 +15,8 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([], function() {
-
-    Ember.Handlebars.helper('formview', Ember.View);
-});
+Ember.Handlebars.helper('formview', Ember.View);
 
 

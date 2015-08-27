@@ -17,40 +17,28 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([
-    'app/lib/abstractclassregistry'
-], function(Abstractclassregistry) {
+Ember.Application.initializer({
+    name: 'IndexesRegistry',
+    after: 'AbstractClassRegistry',
+    initialize: function(container, application) {
 
-    /**
-     * Indexes Registry
-     *
-     * @class IndexesRegistry
-     * @memberOf canopsis.frontend.core
-     * @extends Abstractclassregistry
-     * @static
-     */
-    var registry = Abstractclassregistry.create({
-        name: 'indexes'
-    });
+        var Abstractclassregistry = container.lookupFactory('registry:abstractclass');
 
-    registry.add(Ember.Object.create({
-        name: 'event',
-        tree: {
-            'component': {
-                '_metas': {
-                    'name': "Component"
-                },
-                'resource': {
-                    '_metas': {
-                        'name': "Resource",
-                        'final':true
-                    }
-                }
-            },
-            'connector': {
-                '_metas': {
-                    'name': "connector"
-                },
+        /**
+         * Indexes Registry
+         *
+         * @class IndexesRegistry
+         * @memberOf canopsis.frontend.core
+         * @extends Abstractclassregistry
+         * @static
+         */
+        var registry = Abstractclassregistry.create({
+            name: 'indexes'
+        });
+
+        registry.add(Ember.Object.create({
+            name: 'event',
+            tree: {
                 'component': {
                     '_metas': {
                         'name': "Component"
@@ -61,34 +49,43 @@ define([
                             'final':true
                         }
                     }
-                }
-            }
-        }
-    }));
-
-    registry.add(Ember.Object.create({
-        name: 'crecord',
-        tree: {
-            'crecord_type': {
-                '_metas': {
-                    'name': "Crecord type"
                 },
-                'crecord_name': {
+                'connector': {
                     '_metas': {
-                        'name': "Crecord name",
-                        'final':true
+                        'name': "connector"
+                    },
+                    'component': {
+                        '_metas': {
+                            'name': "Component"
+                        },
+                        'resource': {
+                            '_metas': {
+                                'name': "Resource",
+                                'final':true
+                            }
+                        }
                     }
                 }
             }
-        }
-    }));
+        }));
 
-    Ember.Application.initializer({
-        name:"IndexesRegistry",
-        initialize: function(container, application) {
-            application.register('registry:indexes', registry);
-        }
-    });
+        registry.add(Ember.Object.create({
+            name: 'crecord',
+            tree: {
+                'crecord_type': {
+                    '_metas': {
+                        'name': "Crecord type"
+                    },
+                    'crecord_name': {
+                        '_metas': {
+                            'name': "Crecord name",
+                            'final':true
+                        }
+                    }
+                }
+            }
+        }));
 
-    return registry;
+        application.register('registry:indexes', registry);
+    }
 });
