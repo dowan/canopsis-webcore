@@ -15,22 +15,24 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/factories/form'
-], function(FormFactory) {
+Ember.Application.initializer({
+    name: 'ViewTreeForm',
+    after: ['FormFactory'],
+    initialize: function(container, application) {
+        var FormFactory = container.lookupFactory('factory:form');
 
-    var formOptions = {};
-    var form = FormFactory('viewtreeform', {
-        partials: {
-            buttons: ["formbutton-submit"],
-            debugButtons: ['formbutton-inspectform']
-        }
-    },
-    formOptions);
+        var formOptions = {};
 
-    return form;
+        var form = FormFactory('viewtreeform', {
+            partials: {
+                buttons: ["formbutton-submit"],
+                debugButtons: ['formbutton-inspectform']
+            }
+        },
+        formOptions);
+
+        application.register('form:viewtree', form);
+    }
 });

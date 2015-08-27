@@ -1,63 +1,77 @@
-define([
-    'canopsis/canopsis-backend-ui-connector/adapters/application',
-    'app/lib/utils/modelsolve'
-], function(ApplicationAdapter, modelsolve) {
+/*
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-    var isNone = Ember.isNone,
-        get = Ember.get;
+Ember.Application.initializer({
+    name: 'BaseAdapter',
+    after: ['ApplicationAdapter'],
+    initialize: function(container, application) {
+        var ApplicationAdapter = container.lookupFactory('adapter:application');
 
-    var adapter = ApplicationAdapter.extend({
+        var isNone = Ember.isNone,
+            get = Ember.get;
 
-        buildURL: function(type, id) {
-            void(id);
-            console.warn('This method have to be overriden');
-            return '/';
-        },
+        var adapter = ApplicationAdapter.extend({
 
-        //TODO @eric, switch post by get verb
-        findQuery: function(store, type, query) {
-            var url = this.buildURL(type, null);
+            buildURL: function(type, id) {
+                void(id);
+                console.warn('This method have to be overriden');
+                return '/';
+            },
 
-            console.log('findQuery', query);
-            return this.ajax(url, 'POST', {data: query});
-        },
+            findQuery: function(store, type, query) {
+                var url = this.buildURL(type, null);
 
-        createRecord: function(store, type, record) {
-            var context = {};
-            if (isNone(type) || isNone(type.typeKey)) {
-                console.error('Error while retrieving typeKey from type is it is none.');
-            }
-            var serializer = store.serializerFor(type.typeKey);
+                console.log('findQuery', query);
+                var me = this;
+                return this.ajax(url, 'POST', {data: query});
+            },
 
-            context = serializer.serializeIntoHash(context, type, record, 'POST', { includeId: true })[0];
+            createRecord: function(store, type, record) {
+                var context = {};
+                if (isNone(type) || isNone(type.typeKey)) {
+                    console.error('Error while retrieving typeKey from type is it is none.');
+                }
+                var serializer = store.serializerFor(type.typeKey);
 
-            console.log('document', context);
+                context = serializer.serializeIntoHash(context, type, record, 'POST', { includeId: true })[0];
 
-            var url = this.buildURL(type.typeKey, record.id) + '/put';
+                console.log('document', context);
 
-            return this.ajax(url, 'POST', {data: {document: context}});
-        },
+                var url = this.buildURL(type.typeKey, record.id) + '/put';
 
-        updateRecord: function(store, type, record) {
-            return this.createRecord(store, type, record);
-        },
+                return this.ajax(url, 'POST', {data: {document: context}});
+            },
 
-        deleteRecord: function(store, type, record) {
-            var id = get(record, 'id');
-            var data = { ids: id};
-            var url = this.buildURL(type.typeKey, id);
+            updateRecord: function(store, type, record) {
+                return this.createRecord(store, type, record);
+            },
 
-            return this.ajax(url, 'DELETE', {data: {ids: [id]}});
-        },
+            deleteRecord: function(store, type, record) {
+                var id = get(record, 'id');
+                var data = { ids: id};
+                var url = this.buildURL(type.typeKey, id);
 
-    });
+                return this.ajax(url, 'DELETE', {data: {ids: [id]}});
+            },
 
-    Ember.Application.initializer({
-        name: 'BaseAdapter',
-        initialize: function(container, application) {
-            application.register('adapter:baseadapter', adapter);
-        }
-    });
+        });
 
-    return adapter;
+        application.register('adapter:base', adapter);
+    }
 });

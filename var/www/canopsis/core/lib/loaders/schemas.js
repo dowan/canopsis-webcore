@@ -15,22 +15,12 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-//add your custom schemas files here.
-var schemaFiles = [
-];
-
-var schemasDeps = ['ember-data', 'app/lib/utils/data', 'app/lib/objects/loader', 'canopsis/canopsis-backend-ui-connector/adapters/schema', 'app/lib/loaders/utils', 'app/lib/schemasregistry'];
-
-for (var i = 0, l = schemaFiles.length; i < l; i++) {
-    schemasDeps.push('text!schemas/' + schemaFiles[i] + '.json');
-}
-
-define(schemasDeps, function(EmberData, dataUtils, loader, SchemaAdapter, utils, schemasRegistry) {
-
+define([
+    'canopsis/canopsis-backend-ui-connector/adapters/schema',
+    'app/lib/schemasregistry'
+], function (SchemaAdapter, schemasRegistry) {
     function compare(a,b) {
       if (a.id < b.id) {
          return -1;
@@ -93,6 +83,7 @@ define(schemasDeps, function(EmberData, dataUtils, loader, SchemaAdapter, utils,
         },
 
         loadSchema: function(schemaId, schema) {
+            console.log('>>>>> loadSchema', arguments);
             var schemaName = this.getSchemaName(schemaId, schema);
             // console.log('schemaName', schemaName);
 
@@ -231,5 +222,11 @@ define(schemasDeps, function(EmberData, dataUtils, loader, SchemaAdapter, utils,
 
     console.tags.remove('loader');
 
-    return schemasLoader;
+    Ember.Application.initializer({
+        name: 'SchemasLoader',
+        initialize: function(container, application) {
+
+            application.register('deprecated:schemasLoader', schemasLoader);
+        }
+    });
 });

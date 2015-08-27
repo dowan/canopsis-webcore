@@ -17,53 +17,50 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([
-    'app/lib/abstractclassregistry'
-], function(Abstractclassregistry) {
+Ember.Application.initializer({
+    name: 'InflexionsRegistry',
+    after: 'AbstractClassRegistry',
+    initialize: function(container, application) {
+        var Abstractclassregistry = container.lookupFactory('registry:abstractclass');
 
-    var inflexions = [
-        ['nagios' , 'nagios'],
-        ['tcp2canopsis' , 'tcp2canopsis'],
-        ['curve', 'curves'],
-        ['serie', 'serie'],
-        ['enabledmodules', 'enabledmodules'],
-        ['calendardata','calendardata'],
-        ['eventcategories', 'eventcategories']
-    ];
 
-    /**
-     * Inflections Registry
-     *
-     * @class InflectionsRegistry
-     * @memberOf canopsis.frontend.core
-     * @extends Abstractclassregistry
-     * @static
-     */
-    var registry = Abstractclassregistry.create({
-        name: 'inflections',
+        var inflexions = [
+            ['nagios' , 'nagios'],
+            ['tcp2canopsis' , 'tcp2canopsis'],
+            ['curve', 'curves'],
+            ['serie', 'serie'],
+            ['enabledmodules', 'enabledmodules'],
+            ['calendardata','calendardata'],
+            ['eventcategories', 'eventcategories']
+        ];
 
-        all: [],
-        byClass: {},
-        tableColumns: [{title: 'name', name: 'name'}, {title: 'Singular', name: 'singular'}, {title: 'Plural', name: 'plural'}],
 
-        loadInflections: function() {
-            for (var i = 0, l = inflexions.length; i < l; i++) {
-                registry.all.pushObject({
-                    name: inflexions[i][0] + ' -> ' + inflexions[i][1],
-                    singular: inflexions[i][0],
-                    plural: inflexions[i][1]
-                });
-                Ember.Inflector.inflector.irregular(inflexions[i][0], inflexions[i][1]);
+        /**
+         * Inflections Registry
+         *
+         * @class InflectionsRegistry
+         * @memberOf canopsis.frontend.core
+         * @extends Abstractclassregistry
+         * @static
+         */
+        var registry = Abstractclassregistry.create({
+            name: 'InflectionsRegistry',
+            all: [],
+            byClass: {},
+            tableColumns: [{title: 'name', name: 'name'}, {title: 'Singular', name: 'singular'}, {title: 'Plural', name: 'plural'}],
+
+            loadInflections: function() {
+                for (var i = 0, l = inflexions.length; i < l; i++) {
+                    registry.all.pushObject({
+                        name: inflexions[i][0] + ' -> ' + inflexions[i][1],
+                        singular: inflexions[i][0],
+                        plural: inflexions[i][1]
+                    });
+                    Ember.Inflector.inflector.irregular(inflexions[i][0], inflexions[i][1]);
+                }
             }
-        }
-    });
+        });
 
-    Ember.Application.initializer({
-        name:"InflexionsRegistry",
-        initialize: function(container, application) {
-            application.register('registry:inflexions', registry);
-        }
-    });
-
-    return registry;
+        application.register('registry:inflexions', registry);
+    }
 });

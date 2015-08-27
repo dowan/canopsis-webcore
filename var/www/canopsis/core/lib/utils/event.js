@@ -15,72 +15,67 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/utilityclass'
-], function(Utility) {
 
-    var get = Ember.get,
-        set = Ember.set,
-        __ = Ember.String.loc,
-        isNone = Ember.isNone;
+Ember.Application.initializer({
+    name: 'EventUtils',
+    after: ['UtilityClass'],
+    initialize: function(container, application) {
+        var Utility = container.lookupFactory('class:utility');
 
-    //TODO delete this, as it looks more like a registry than an util
-    var eventUtil= Utility.create({
+        var get = Ember.get,
+            set = Ember.set,
+            __ = Ember.String.loc,
+            isNone = Ember.isNone;
 
-        name: 'event',
+        //TODO delete this, as it looks more like a registry than an util
+        var eventUtil= Utility.create({
 
-        getFields: function() {
-            return [
-                'connector',
-                'connector_name',
-                'component',
-                'resource',
-                'perimeter',
-                'domain',
-                'state',
-                'status',
-                'timestamp',
-                'output'
-            ];
-        },
+            name: 'event',
 
-        /**
-         * apply a filter to an element before to transmit it to an other view.
-         * see goToInfo method of widgetCalendar for example
-         * @method applyVolatileFilter
-         * @param transition: promise to transmit the element to an other view
-         * @param element: concerned event
-         * @param filter: a mongoDB style query as a string
-         */
-        applyVolatileFilter: function (transition, element, filter) {
-            transition.promise.then(function(routeInfos){
-                var list = get(routeInfos, 'controller.content.containerwidget');
-                list = get(list, '_data.items')[0];
-                list = get(list, 'widget');
-                console.log(list);
-                if(filter !== '') {
-                    if(!get(list, 'volatile')) {
-                        set(list, 'volatile', {});
+            getFields: function() {
+                return [
+                    'connector',
+                    'connector_name',
+                    'component',
+                    'resource',
+                    'perimeter',
+                    'domain',
+                    'state',
+                    'status',
+                    'timestamp',
+                    'output'
+                ];
+            },
+
+            /**
+             * apply a filter to an element before to transmit it to an other view.
+             * see goToInfo method of widgetCalendar for example
+             * @method applyVolatileFilter
+             * @param transition: promise to transmit the element to an other view
+             * @param element: concerned event
+             * @param filter: a mongoDB style query as a string
+             */
+            applyVolatileFilter: function (transition, element, filter) {
+                transition.promise.then(function(routeInfos){
+                    var list = get(routeInfos, 'controller.content.containerwidget');
+                    list = get(list, '_data.items')[0];
+                    list = get(list, 'widget');
+                    console.log(list);
+                    if(filter !== '') {
+                        if(!get(list, 'volatile')) {
+                            set(list, 'volatile', {});
+                        }
+
+                        set(list, 'volatile.forced_filter', filter);
+                        set(list, 'rollbackable', true);
+                        set(list, 'title', element.title);
                     }
+                });
+            }
+        });
 
-                    set(list, 'volatile.forced_filter', filter);
-                    set(list, 'rollbackable', true);
-                    set(list, 'title', element.title);
-                }
-            });
-        }
-    });
-
-    Ember.Application.initializer({
-        name:"EventUtils",
-        initialize: function(container, application) {
-            application.register('utility:event', eventUtil);
-        }
-    });
-
-    return eventUtil;
+        application.register('utility:event', eventUtil);
+    }
 });

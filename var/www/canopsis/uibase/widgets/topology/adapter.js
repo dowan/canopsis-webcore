@@ -19,9 +19,7 @@
 
 define([
     'canopsis/canopsis-backend-ui-connector/adapters/application',
-    'app/lib/promisesmanager',
-    'app/lib/utils/modelsolve'
-], function(ApplicationAdapter, promisesmanager, modelsolve) {
+], function(ApplicationAdapter) {
 
     var get = Ember.get,
         set = Ember.set,

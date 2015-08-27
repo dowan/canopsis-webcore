@@ -15,73 +15,67 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/factories/mixin'
-], function(Mixin) {
 
-    var get = Ember.get,
-        set = Ember.set;
-        assert = Ember.assert;
+Ember.Application.initializer({
+    name:'NotificationsMixin',
+    after: 'MixinFactory',
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
 
-    /**
-     * Mixin handling frontend-wide notifications. Used on the Application controller
-     *
-     * @class NotificationsMixin
-     * @extensionfor ApplicationController
-     * @static
-     */
-    var mixin = Mixin('notifications', {
-        init: function() {
-            this.partials.statusbar.pushObject('notificationsstatusmenu');
-            this._super();
-        },
+        var get = Ember.get,
+            set = Ember.set;
+            assert = Ember.assert;
 
-        notifications: function(){
-            assert('The notification store should be an instance of DS.Store', DS.Store.detectInstance(this.store));
+        /**
+         * Mixin handling frontend-wide notifications. Used on the Application controller
+         *
+         * @class NotificationsMixin
+         * @extensionfor ApplicationController
+         * @static
+         */
+        var mixin = Mixin('notifications', {
+            init: function() {
+                this.partials.statusbar.pushObject('notificationsstatusmenu');
+                this._super();
+            },
 
-            return this.store.find("notification");
-        }.property(),
+            notifications: function(){
+                assert('The notification store should be an instance of DS.Store', DS.Store.detectInstance(this.store));
 
-        createNotification: function (level, message) {
-            assert('The notification store should be an instance of DS.Store', DS.Store.detectInstance(this.store));
+                return this.store.find("notification");
+            }.property(),
 
-            var falevel = level;
+            createNotification: function (level, message) {
+                assert('The notification store should be an instance of DS.Store', DS.Store.detectInstance(this.store));
 
-            if (message === undefined || level === undefined) {
-                message = 'missing information for notification';
-                falevel = 'warning';
-                level = 'warning';
-            }
-            if (level === 'error') {
-                falevel = 'warning';
-                level = 'danger';
-            }
-            var notification = this.store.createRecord('notification',{
-                level: level,
-                message: message,
-                timestamp: new Date().getTime(),
-                falevel: 'fa-' + falevel
-            });
+                var falevel = level;
 
-            notification.save();
-        },
+                if (message === undefined || level === undefined) {
+                    message = 'missing information for notification';
+                    falevel = 'warning';
+                    level = 'warning';
+                }
+                if (level === 'error') {
+                    falevel = 'warning';
+                    level = 'danger';
+                }
+                var notification = this.store.createRecord('notification',{
+                    level: level,
+                    message: message,
+                    timestamp: new Date().getTime(),
+                    falevel: 'fa-' + falevel
+                });
 
-        notificationCount: function () {
-            return get(this, 'notifications.length');
-        }.property('notifications.length')
-    });
+                notification.save();
+            },
 
+            notificationCount: function () {
+                return get(this, 'notifications.length');
+            }.property('notifications.length')
+        });
 
-    Ember.Application.initializer({
-        name:'NotificationsMixin',
-        initialize: function(container, application) {
-            application.register('mixin:notifications', mixin);
-        }
-    });
-
-    return mixin;
+        application.register('mixin:notifications', mixin);
+    }
 });

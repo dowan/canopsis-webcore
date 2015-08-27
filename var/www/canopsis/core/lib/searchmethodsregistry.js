@@ -17,56 +17,51 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([
-    'app/lib/abstractclassregistry'
-], function(Abstractclassregistry) {
+Ember.Application.initializer({
+    name: 'SearchmethodsRegistry',
+    after: 'AbstractClassRegistry',
+    initialize: function(container, application) {
+        var Abstractclassregistry = container.lookupFactory('registry:abstractclass');
 
-    var searchMethods = [
-        {
-            name: 'simple',
-            filter: function(array, options) {
-                var propertyToCheck = options.propertyToCheck;
-                var searchCriterion = options.searchCriterion;
+        var searchMethods = [
+            {
+                name: 'simple',
+                filter: function(array, options) {
+                    var propertyToCheck = options.propertyToCheck;
+                    var searchCriterion = options.searchCriterion;
 
-                var res = array.filter(function(loopItem, index, enumerable){
-                    void(index);
-                    void(enumerable);
+                    var res = array.filter(function(loopItem, index, enumerable){
+                        void(index);
+                        void(enumerable);
 
-                    var doesItStartsWithSearchFilter = loopItem.name.slice(0, searchCriterion.length) == searchCriterion;
-                    return doesItStartsWithSearchFilter;
-                });
+                        var doesItStartsWithSearchFilter = loopItem.name.slice(0, searchCriterion.length) == searchCriterion;
+                        return doesItStartsWithSearchFilter;
+                    });
 
-                console.log("##" ,res);
-                return res;
+                    console.log("##" ,res);
+                    return res;
+                }
             }
+        ];
+
+        /**
+         * Singleton to register and manage search algorithms and their options
+         *
+         * @class SearchMethodsRegistry
+         * @extends Abstractclassregistry
+         * @static
+         */
+        var registry = Abstractclassregistry.create({
+            name: 'searchMethods',
+
+            all: [],
+            byClass: {},
+            tableColumns: [{title: 'name', name: 'name'}]
+        });
+
+        for (var i = 0, l = searchMethods.length; i < l; i++) {
+            registry.all.pushObject(searchMethods[i]);
         }
-    ];
-
-    /**
-     * Singleton to register and manage search algorithms and their options
-     *
-     * @class SearchMethodsRegistry
-     * @extends Abstractclassregistry
-     * @static
-     */
-    var registry = Abstractclassregistry.create({
-        name: 'searchMethods',
-
-        all: [],
-        byClass: {},
-        tableColumns: [{title: 'name', name: 'name'}]
-    });
-
-    for (var i = 0, l = searchMethods.length; i < l; i++) {
-        registry.all.pushObject(searchMethods[i]);
+        application.register('registry:searchmethods', registry);
     }
-
-    Ember.Application.initializer({
-        name:"SearchmethodsRegistry",
-        initialize: function(container, application) {
-            application.register('registry:searchmethods', registry);
-        }
-    });
-
-    return registry;
 });

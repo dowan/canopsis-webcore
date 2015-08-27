@@ -1,26 +1,23 @@
-define([
-    'canopsis/canopsis-backend-ui-connector/adapters/baseadapter'
-], function(BaseAdapter) {
 
-    var isNone = Ember.isNone,
-        get = Ember.get;
+Ember.Application.initializer({
+    name: 'LinklistAdapter',
+    after: 'BaseAdapter',
+    initialize: function(container, application) {
+        var BaseAdapter = container.lookupFactory('adapter:base');
 
-    var adapter = BaseAdapter.extend({
+        var isNone = Ember.isNone,
+            get = Ember.get;
 
-        buildURL: function(type, id) {
-            void(id);
+        var adapter = BaseAdapter.extend({
 
-            return '/linklist';
-        },
+            buildURL: function(type, id) {
+                void(id);
 
-    });
+                return '/linklist';
+            },
 
-    Ember.Application.initializer({
-        name: 'LinklistAdapter',
-        initialize: function(container, application) {
-            application.register('adapter:linklist', adapter);
-        }
-    });
+        });
 
-    return adapter;
+        application.register('adapter:linklist', adapter);
+    }
 });

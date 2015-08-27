@@ -15,18 +15,18 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
 define([
-    'canopsis/canopsisConfiguration',
-    'app/lib/utils/debug'
-], function(canopsisConfiguration, debugUtils) {
+    'canopsis/canopsisConfiguration'
+], function(canopsisConfiguration) {
 
     Ember.Application.initializer({
         name:"component-renderer",
+        after: 'DebugUtils',
         initialize: function(container, application) {
+            var debugUtils = container.lookupFactory('utility:debug');
+
             var get = Ember.get,
                 set = Ember.set,
                 isNone = Ember.isNone;

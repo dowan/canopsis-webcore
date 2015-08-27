@@ -15,78 +15,72 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/factories/mixin'
-], function(Mixin) {
+Ember.Application.initializer({
+    name: 'MetaSerializerMixin',
+    after: 'MixinFactory',
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
 
-    var isNone = Ember.isNone;
+        var isNone = Ember.isNone;
 
-    /**
-     * @mixin This mixin should be used with serializers
-     * It aims to handle request metadata (total, errors, ...)
-     */
-    var mixin = Mixin('metaSerializer', {
-        extractMeta: function(store, type, payload) {
-            console.log("extractMeta", store, type, payload);
-            if (payload.meta === undefined) {
-                payload.meta = {};
+        /**
+         * @mixin This mixin should be used with serializers
+         * It aims to handle request metadata (total, errors, ...)
+         */
+        var mixin = Mixin('metaSerializer', {
+            extractMeta: function(store, type, payload) {
+                console.log("extractMeta", store, type, payload);
+                if (payload.meta === undefined) {
+                    payload.meta = {};
+                }
+
+                if (payload && payload.total !== undefined) {
+                    payload.meta.total = payload.total;
+                }
+
+                if (payload && payload.messages) {
+                    payload.meta.totalmessages = payload.messages;
+                }
+
+                delete payload.total;
+                delete payload.messages;
+                delete payload.success;
+
+                console.log('normalizePayload', arguments);
+
+                if (isNone(type) || isNone(type.typeKey)) {
+                    console.error('Error while retrieving typeKey from model is it is none.');
+                }
+
+                var typeKey = type.typeKey,
+                    typeKeyPlural = typeKey.pluralize();
+
+                payload[typeKeyPlural] = payload.data;
+                delete payload.data;
+
+                console.log('payload', typeKeyPlural, payload);
+                // Many items (findMany, findAll)
+                if (payload && payload[typeKeyPlural] && typeof payload[typeKeyPlural] !== 'undefined') {
+                    payload[typeKeyPlural].forEach(function(item) {
+                            this.extractRelationships(payload, item, type);
+                    }, this);
+                }
+
+                // Single item (find)
+                else if (typeof payload[typeKey] !== 'undefined') {
+                    this.extractRelationships(payload, payload[typeKey], type);
+                }
+                return this._super(store, type, payload);
+            },
+
+            extractRelationships: function(payload, item, type){
+                this._super.apply(this, arguments);
             }
 
-            if (payload && payload.total !== undefined) {
-                payload.meta.total = payload.total;
-            }
+        });
 
-            if (payload && payload.messages) {
-                payload.meta.totalmessages = payload.messages;
-            }
-
-            delete payload.total;
-            delete payload.messages;
-            delete payload.success;
-
-            console.log('normalizePayload', arguments);
-
-            if (isNone(type) || isNone(type.typeKey)) {
-                console.error('Error while retrieving typeKey from model is it is none.');
-            }
-
-            var typeKey = type.typeKey,
-                typeKeyPlural = typeKey.pluralize();
-
-            payload[typeKeyPlural] = payload.data;
-            delete payload.data;
-
-            console.log('payload', typeKeyPlural, payload);
-            // Many items (findMany, findAll)
-            if (payload && payload[typeKeyPlural] && typeof payload[typeKeyPlural] !== 'undefined') {
-                payload[typeKeyPlural].forEach(function(item) {
-                        this.extractRelationships(payload, item, type);
-                }, this);
-            }
-
-            // Single item (find)
-            else if (typeof payload[typeKey] !== 'undefined') {
-                this.extractRelationships(payload, payload[typeKey], type);
-            }
-            return this._super(store, type, payload);
-        },
-
-        extractRelationships: function(payload, item, type){
-            this._super.apply(this, arguments);
-        }
-
-    });
-
-    Ember.Application.initializer({
-        name:'MetaSerializerMixin',
-        initialize: function(container, application) {
-            application.register('mixin:meta-serializer', mixin);
-        }
-    });
-
-    return mixin;
+        application.register('mixin:meta-serializer', mixin);
+    }
 });

@@ -15,41 +15,38 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define(['app/lib/utilityclass'], function(Utility) {
 
-    var set = Ember.set;
+Ember.Application.initializer({
+    name: 'DebugUtils',
+    after: ['UtilityClass'],
+    initialize: function(container, application) {
+        var Utility = container.lookupFactory('class:utility');
 
-    var debugUtils = Utility.create({
+        var set = Ember.set;
 
-        name: 'debug',
+        var debugUtils = Utility.create({
 
-        inspectObject: function(object) {
-            window.$E = object;
+            name: 'debug',
 
-            set(this, 'inspectedObject', object);
+            inspectObject: function(object) {
+                window.$E = object;
 
-            console.info('--- inspect object :', this.inspectedObject);
-        },
+                set(this, 'inspectedObject', object);
 
-        getViewFromJqueryElement: function($el, className) {
-            if(className) {
-                return Ember.View.views[$el.closest('.ember-view .' + className).attr('id')];
-            } else {
-                return Ember.View.views[$el.closest('.ember-view').attr('id')];
+                console.info('--- inspect object :', this.inspectedObject);
+            },
+
+            getViewFromJqueryElement: function($el, className) {
+                if(className) {
+                    return Ember.View.views[$el.closest('.ember-view .' + className).attr('id')];
+                } else {
+                    return Ember.View.views[$el.closest('.ember-view').attr('id')];
+                }
             }
-        }
-    });
+        });
 
-    Ember.Application.initializer({
-        name:"DebugUtils",
-        initialize: function(container, application) {
-            application.register('utility:debug', debugUtils);
-        }
-    });
-
-    return debugUtils;
+        application.register('utility:debug', debugUtils);
+    }
 });
