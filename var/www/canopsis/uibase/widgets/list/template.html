@@ -67,6 +67,9 @@
     </div>
     <div class="btn-toolbar canopsis-toolbar" role="toolbar">
         {{partialslot slot=controller._partials.footer}}
+        <div class="pull-right">
+            {{partialslot slot=controller._partials.rightFooter}}
+        </div>
         <div style="clear:both"></div>
         <div class="pull-left">
             {{#if controller._partials.selectionToolbarButtons}}

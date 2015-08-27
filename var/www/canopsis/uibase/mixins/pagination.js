@@ -40,7 +40,8 @@ Ember.Application.initializer({
             partials: {
                 subHeader: ['itemsperpage'],
                 actionToolbarButtons: ['pagination'],
-                footer: ['pagination', 'pagination-infos']
+                footer: ['pagination-infos'],
+                rightFooter: ['pagination']
             },
 
             init: function() {
