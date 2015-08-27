@@ -148,7 +148,8 @@ Ember.Application.initializer({
                     if(get(transition, 'targetName') === 'index') {
                         console.info('on index route, redirecting to the appropriate route');
 
-                        var defaultview = get(appController, 'frontendConfig.defaultview');
+                        var loginController = route.controllerFor('login');
+                        var defaultview = get(loginController, 'userRoute');
 
                         if(!isNone(defaultview)) {
                             console.log('redirect to view', defaultview);
