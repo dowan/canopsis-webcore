@@ -40,14 +40,9 @@ require.config({
         'flotchart-tooltip': 'canopsis/charts/lib/externals/flot.tooltip/js/jquery.flot.tooltip',
         'flotchart-chartvalues': 'canopsis/charts/lib/externals/flot-plugins/custom/jquery.flot.chartvalues',
         'd3': 'canopsis/uibase/lib/externals/d3/d3',
-        //'requirec3': 'canopsis/charts/lib/externals/c3/c3'
     },
 
     shim: {
-/*        'c3': {
-            deps: ['requirec3', 'd3'],
-        },
-*/
         'flotchart': {
             deps: ['jquery'],
         },
