@@ -19,7 +19,11 @@
 
 Ember.Application.initializer({
     name: 'LoginController',
+    after: 'DataUtils',
     initialize: function(container, application) {
+
+        var DataUtils = container.lookupFactory('utility:data');
+
         var set = Ember.set,
             get = Ember.get,
             isNone = Ember.isNone;
@@ -35,6 +39,8 @@ Ember.Application.initializer({
              */
             content: {},
 
+            needs: ['application'],
+
             /**
              * @method init
              */
@@ -49,6 +55,19 @@ Ember.Application.initializer({
                 set(this, 'store', store);
             },
 
+            /**
+            * @property userRoute
+            * compute route to view when login for current user
+            **/
+            userRoute: function () {
+                var loginController = DataUtils.data.getLoggedUserController();
+                var record = get(loginController, 'record');
+                var defaultview = get(record, 'defaultview');
+                if (!defaultview) {
+                    defaultview = get(this, 'controllers.application.frontendConfig.defaultview');
+                }
+                return defaultview;
+            }.property(),
 
             /**
              * @property authkey
