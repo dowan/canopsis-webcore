@@ -146,5 +146,13 @@ define([
 
     });
 
+
+    Ember.Application.initializer({
+        name:'GridlayoutMixin',
+        initialize: function(container, application) {
+            application.register('mixin:gridlayout', mixin);
+        }
+    });
+
     return mixin;
 });

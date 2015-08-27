@@ -17,29 +17,24 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
+Ember.Application.initializer({
+    name:"component-dropdownbuttontitle",
+    initialize: function(container, application) {
 
-    var get = Ember.get,
-        set = Ember.set;
+        var get = Ember.get,
+            set = Ember.set;
 
-    /**
-     * Component for defining the title of the dropdownbutton
-     *
-     * @class Dropdownbuttontitle
-     * @static
-     */
-    var component = Ember.Component.extend({
-        name: undefined,
-        classNames: ['dropdownbuttontitle', 'dropdownbuttontitle-default'],
-    });
+        /**
+         * Component for defining the title of the dropdownbutton
+         *
+         * @class Dropdownbuttontitle
+         * @static
+         */
+        var component = Ember.Component.extend({
+            name: undefined,
+            classNames: ['dropdownbuttontitle', 'dropdownbuttontitle-default'],
+        });
 
-
-    Ember.Application.initializer({
-        name:"component-dropdownbuttontitle",
-        initialize: function(container, application) {
-            application.register('component:component-dropdownbuttontitle', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-dropdownbuttontitle', component);
+    }
 });

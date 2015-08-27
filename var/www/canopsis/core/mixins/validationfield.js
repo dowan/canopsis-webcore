@@ -104,5 +104,12 @@ define([
     });
 
 
+    Ember.Application.initializer({
+        name:'ValidationFieldMixin',
+        initialize: function(container, application) {
+            application.register('mixin:validation-field', mixin);
+        }
+    });
+
     return mixin;
 });

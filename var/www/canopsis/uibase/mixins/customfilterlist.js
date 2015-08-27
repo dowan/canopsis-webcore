@@ -37,7 +37,7 @@ define([
     */
     var mixin = Mixin('customfilterlist', {
         partials: {
-            subHeader: ['customfilters']
+            actionToolbarButtons: ['customfilters']
         },
 
         init: function() {
@@ -194,6 +194,14 @@ define([
                     widgetController.saveUserConfiguration();
                 });
             }
+        }
+    });
+
+
+    Ember.Application.initializer({
+        name:'CustomfilterlistMixin',
+        initialize: function(container, application) {
+            application.register('mixin:customfilterlist', mixin);
         }
     });
 

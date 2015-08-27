@@ -113,5 +113,13 @@ define([
         perfdata: {count : 0}
     });
 
+
+    Ember.Application.initializer({
+        name:'LoadingindicatorMixin',
+        initialize: function(container, application) {
+            application.register('mixin:loadingindicator', mixin);
+        }
+    });
+
     return mixin;
 });

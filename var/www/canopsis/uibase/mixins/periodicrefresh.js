@@ -87,5 +87,13 @@ define([
         }
     });
 
+
+    Ember.Application.initializer({
+        name:'PeriodicrefreshMixin',
+        initialize: function(container, application) {
+            application.register('mixin:periodicrefresh', mixin);
+        }
+    });
+
     return mixin;
 });

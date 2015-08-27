@@ -22,109 +22,106 @@ define([
     'app/lib/utils/notification',
 ], function(notification) {
 
-    var set = Ember.set,
-        get = Ember.get;
-
-
-    var component = Ember.Component.extend({
-        init: function() {
-            this._super();
-            this.getUserPreferences();
-        },
-
-        getUserPreferences: function () {
-            var component = this;
-
-            var user = get(this, 'userId');
-
-            if (Ember.isNone(user)) {
-                //no user id, nothing to do is it a normal case ?
-                console.warn('No user id found for user preferences');
-                return;
-            }
-
-            console.debug('loading configuration for user ' + user);
-
-
-            $.ajax({
-                url: '/rest/userpreferences/userpreferences',
-                async: false,
-                data: {
-                    limit: 100,
-                    filter: JSON.stringify({
-                        crecord_name: user,
-                    })
-                },
-                success: function(data) {
-                    if (data.success) {
-                        console.log('User configuration load for widget complete', data);
-
-                        var informations = [];
-
-                        var len = data.data.length;
-                        for (var i = 0; i < len; i++) {
-
-                            var labels = [];
-                            for (var preference_label in data.data[i].widget_preferences) {
-                                labels.push(preference_label);
-                            }
-                            informations.push({
-                                labels: labels,
-                                widgetId: data.data[i].widget_id,
-                                widgetXtype: get(data.data[i], 'widgetXtype'),
-                                viewId: get(data.data[i], 'viewId'),
-                                title: get(data.data[i], 'title'),
-                                preferenceId: get(data.data[i], '_id')
-                            });
-                        }
-
-                        set(component, 'informations', informations);
-
-
-                    } else {
-                        console.debug('No user preference exists for widget' + get(component, 'title'));
-                    }
-                }
-            }).fail(
-                function (error) {
-                    void (error);
-                    console.log('No user s preference found for this widget');
-                }
-            );
-        },
-
-        actions: {
-            removeUserPreference: function (preferenceId){
-
-                var userpreference = this;
-                var user = get(this, 'controllers.login.record._id');
-                console.debug('will remove user preference with preference id ' + preferenceId + ' for user ' + user);
-                $.ajax({
-                    url: '/rest/userpreferences/userpreferences/' + preferenceId,
-                    type :'DELETE',
-                    success: function(data) {
-                            userpreference.getUserPreferences();
-                            notification.info('successfuly removed user preference');
-                    }
-                }).fail(
-                    function (error) {
-                        void (error);
-                        console.log('Unable to remove user preference');
-                        notification.error('Unable to remove user preference');
-                    }
-                );
-
-            }
-        }
-
-    });
-
     Ember.Application.initializer({
         name:"component-userpreferencesmanager",
         initialize: function(container, application) {
+            var set = Ember.set,
+                get = Ember.get;
+
+
+            var component = Ember.Component.extend({
+                init: function() {
+                    this._super();
+                    this.getUserPreferences();
+                },
+
+                getUserPreferences: function () {
+                    var component = this;
+
+                    var user = get(this, 'userId');
+
+                    if (Ember.isNone(user)) {
+                        //no user id, nothing to do is it a normal case ?
+                        console.warn('No user id found for user preferences');
+                        return;
+                    }
+
+                    console.debug('loading configuration for user ' + user);
+
+
+                    $.ajax({
+                        url: '/rest/userpreferences/userpreferences',
+                        async: false,
+                        data: {
+                            limit: 100,
+                            filter: JSON.stringify({
+                                crecord_name: user,
+                            })
+                        },
+                        success: function(data) {
+                            if (data.success) {
+                                console.log('User configuration load for widget complete', data);
+
+                                var informations = [];
+
+                                var len = data.data.length;
+                                for (var i = 0; i < len; i++) {
+
+                                    var labels = [];
+                                    for (var preference_label in data.data[i].widget_preferences) {
+                                        labels.push(preference_label);
+                                    }
+                                    informations.push({
+                                        labels: labels,
+                                        widgetId: data.data[i].widget_id,
+                                        widgetXtype: get(data.data[i], 'widgetXtype'),
+                                        viewId: get(data.data[i], 'viewId'),
+                                        title: get(data.data[i], 'title'),
+                                        preferenceId: get(data.data[i], '_id')
+                                    });
+                                }
+
+                                set(component, 'informations', informations);
+
+
+                            } else {
+                                console.debug('No user preference exists for widget' + get(component, 'title'));
+                            }
+                        }
+                    }).fail(
+                        function (error) {
+                            void (error);
+                            console.log('No user s preference found for this widget');
+                        }
+                    );
+                },
+
+                actions: {
+                    removeUserPreference: function (preferenceId){
+
+                        var userpreference = this;
+                        var user = get(this, 'controllers.login.record._id');
+                        console.debug('will remove user preference with preference id ' + preferenceId + ' for user ' + user);
+                        $.ajax({
+                            url: '/rest/userpreferences/userpreferences/' + preferenceId,
+                            type :'DELETE',
+                            success: function(data) {
+                                    userpreference.getUserPreferences();
+                                    notification.info('successfuly removed user preference');
+                            }
+                        }).fail(
+                            function (error) {
+                                void (error);
+                                console.log('Unable to remove user preference');
+                                notification.error('Unable to remove user preference');
+                            }
+                        );
+
+                    }
+                }
+
+            });
             application.register('component:component-userpreferencesmanager', component);
         }
     });
-
-    return component;
 });

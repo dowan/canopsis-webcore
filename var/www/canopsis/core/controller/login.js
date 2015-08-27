@@ -15,68 +15,60 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([], function() {
-
-    var set = Ember.set,
-        get = Ember.get,
-        isNone = Ember.isNone;
-
-    /**
-     * @class LoginController
-     * @extends Ember.ObjectController
-     * @constructor
-     */
-    var controller = Ember.ObjectController.extend({
-        /**
-         * @property content
-         */
-        content: {},
+Ember.Application.initializer({
+    name: 'LoginController',
+    initialize: function(container, application) {
+        var set = Ember.set,
+            get = Ember.get,
+            isNone = Ember.isNone;
 
         /**
-         * @method init
+         * @class LoginController
+         * @extends Ember.ObjectController
+         * @constructor
          */
-        init: function() {
-            this._super.apply(this, arguments);
+        var controller = Ember.ObjectController.extend({
+            /**
+             * @property content
+             */
+            content: {},
 
-            //TODO delete store in this#destroy
-            var store = DS.Store.create({
-                container: get(this, "container")
-            });
+            /**
+             * @method init
+             */
+            init: function() {
+                this._super.apply(this, arguments);
 
-            set(this, 'store', store);
-        },
+                //TODO delete store in this#destroy
+                var store = DS.Store.create({
+                    container: get(this, "container")
+                });
+
+                set(this, 'store', store);
+            },
 
 
-        /**
-         * @property authkey
-         */
-        authkey: function () {
-            var authkey = localStorage.cps_authkey;
-            if (authkey === 'undefined') {
-                authkey = undefined;
-            }
-            return authkey;
-        }.property('authkey'),
+            /**
+             * @property authkey
+             */
+            authkey: function () {
+                var authkey = localStorage.cps_authkey;
+                if (authkey === 'undefined') {
+                    authkey = undefined;
+                }
+                return authkey;
+            }.property('authkey'),
 
-        /**
-         * @method authkeyChanged
-         * @observes authkey
-         */
-        authkeyChanged: function() {
-            localStorage.cps_authkey = get(this, 'authkey');
-        }.observes('authkey')
-    });
-
-    Ember.Application.initializer({
-        name: 'LoginController',
-        initialize: function(container, application) {
-            application.register('controller:login', controller);
-        }
-    });
-
-    return controller;
+            /**
+             * @method authkeyChanged
+             * @observes authkey
+             */
+            authkeyChanged: function() {
+                localStorage.cps_authkey = get(this, 'authkey');
+            }.observes('authkey')
+        });
+        application.register('controller:login', controller);
+    }
 });

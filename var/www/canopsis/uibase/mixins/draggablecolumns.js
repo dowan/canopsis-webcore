@@ -46,5 +46,13 @@ define([
         }
     });
 
+
+    Ember.Application.initializer({
+        name:'DraggablecolumnsMixin',
+        initialize: function(container, application) {
+            application.register('mixin:draggablecolumns', mixin);
+        }
+    });
+
     return mixin;
 });

@@ -36,5 +36,13 @@ define([
 
     });
 
+
+    Ember.Application.initializer({
+        name:'HorizontallayoutMixin',
+        initialize: function(container, application) {
+            application.register('mixin:horizontallayout', mixin);
+        }
+    });
+
     return mixin;
 });

@@ -17,42 +17,39 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'canopsis/uibase/components/classifiedcrecordselector/component'
-], function(Classifiedcrecordselector) {
 
-    var get = Ember.get,
-        set = Ember.set;
+Ember.Application.initializer({
+    name:"component-stringclassifiedcrecordselector",
+    after: 'component-classifiedcrecordselector',
+    initialize: function(container, application) {
+
+        var Classifiedcrecordselector = container.lookupFactory('component:component-classifiedcrecordselector');
+
+        var get = Ember.get,
+            set = Ember.set;
 
 
-    var component = Classifiedcrecordselector.extend({
-        multiselect:false,
+        var component = Classifiedcrecordselector.extend({
+            multiselect:false,
 
-        selectionChanged: function(){
-            var selectionUnprepared = get(this, 'selectionUnprepared')[0];
-            var res;
+            selectionChanged: function(){
+                var selectionUnprepared = get(this, 'selectionUnprepared')[0];
+                var res;
 
-            var valueKey = get(this, 'valueKey');
+                var valueKey = get(this, 'valueKey');
 
-            if(!Ember.isNone(selectionUnprepared)) {
-                if(valueKey) {
-                    res = get(selectionUnprepared, 'value');
-                } else {
-                    res = get(selectionUnprepared, 'name');
+                if(!Ember.isNone(selectionUnprepared)) {
+                    if(valueKey) {
+                        res = get(selectionUnprepared, 'value');
+                    } else {
+                        res = get(selectionUnprepared, 'name');
+                    }
+                    console.log('selection changed', res);
                 }
-                console.log('selection changed', res);
-            }
-            set(this, 'selection', res);
-        }.observes('selectionUnprepared', 'selectionUnprepared.@each')
-    });
+                set(this, 'selection', res);
+            }.observes('selectionUnprepared', 'selectionUnprepared.@each')
+        });
 
-
-    Ember.Application.initializer({
-        name:"component-stringclassifiedcrecordselector",
-        initialize: function(container, application) {
-            application.register('component:component-stringclassifiedcrecordselector', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-stringclassifiedcrecordselector', component);
+    }
 });

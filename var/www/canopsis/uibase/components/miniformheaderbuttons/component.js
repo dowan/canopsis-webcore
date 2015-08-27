@@ -17,18 +17,13 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
+Ember.Application.initializer({
+    name:"component-miniformheaderbuttons",
+    initialize: function(container, application) {
+        var component = Ember.Component.extend({
+            classNames: ['fright']
+        });
 
-    var component = Ember.Component.extend({
-        classNames: ['fright']
-    });
-
-    Ember.Application.initializer({
-        name:"component-miniformheaderbuttons",
-        initialize: function(container, application) {
-            application.register('component:component-miniformheaderbuttons', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-miniformheaderbuttons', component);
+    }
 });

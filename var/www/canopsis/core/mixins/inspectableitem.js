@@ -239,6 +239,12 @@ define([
         }.property("inspectedDataItem", "inspectedItemType")
     });
 
+    Ember.Application.initializer({
+        name:'InspectableItemMixin',
+        initialize: function(container, application) {
+            application.register('mixin:inspectable-item', mixin);
+        }
+    });
 
     return mixin;
 });

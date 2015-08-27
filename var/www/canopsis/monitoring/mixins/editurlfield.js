@@ -41,5 +41,12 @@ define([
     });
 
 
+    Ember.Application.initializer({
+        name:'EditurlfieldMixin',
+        initialize: function(container, application) {
+            application.register('mixin:editurlfield', mixin);
+        }
+    });
+
     return mixin;
 });

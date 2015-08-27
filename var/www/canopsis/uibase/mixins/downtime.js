@@ -136,5 +136,13 @@ define([
         }
     });
 
+
+    Ember.Application.initializer({
+        name:'DowntimeMixin',
+        initialize: function(container, application) {
+            application.register('mixin:downtime', mixin);
+        }
+    });
+
     return mixin;
 });

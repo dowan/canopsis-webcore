@@ -18,13 +18,20 @@
 */
 
 define([
-    'ember',
     'app/lib/factories/mixin'
-], function(Ember, Mixin) {
+], function(Mixin) {
 
     var mixin = Mixin('lightlayout', {
         partials: {
             layout: ['lightlayout']
+        }
+    });
+
+
+    Ember.Application.initializer({
+        name:'LightlayoutMixin',
+        initialize: function(container, application) {
+            application.register('mixin:lightlayout', mixin);
         }
     });
 

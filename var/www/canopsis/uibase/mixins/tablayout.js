@@ -51,5 +51,13 @@ define([
         }
     });
 
+
+    Ember.Application.initializer({
+        name:'TablayoutMixin',
+        initialize: function(container, application) {
+            application.register('mixin:tablayout', mixin);
+        }
+    });
+
     return mixin;
 });

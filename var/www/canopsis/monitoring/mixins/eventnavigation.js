@@ -35,5 +35,13 @@ define([
         }
     });
 
+
+    Ember.Application.initializer({
+        name:'EventnavigationMixin',
+        initialize: function(container, application) {
+            application.register('mixin:eventnavigation', mixin);
+        }
+    });
+
     return mixin;
 });

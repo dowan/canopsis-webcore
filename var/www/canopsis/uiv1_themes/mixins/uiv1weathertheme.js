@@ -34,5 +34,13 @@ define([
         }.property('worst_state')
     });
 
+
+    Ember.Application.initializer({
+        name:'Uiv1weatherthemeMixin',
+        initialize: function(container, application) {
+            application.register('mixin:uiv1weathertheme', mixin);
+        }
+    });
+
     return mixin;
 });

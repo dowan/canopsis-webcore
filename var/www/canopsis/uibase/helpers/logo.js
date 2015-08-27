@@ -29,7 +29,8 @@ define([], function() {
         cucumber: folderPath + 'cucumberlogo.png',
         watir: folderPath + 'watirlogo.png',
         jmeter: folderPath + 'jmeterlogo.jpg',
-        centreon: folderPath + 'centreonlogo.png'
+        centreon: folderPath + 'centreonlogo.png',
+        Engine: folderPath + 'engine.png'
 
     };
 

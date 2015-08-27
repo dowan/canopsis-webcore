@@ -59,5 +59,12 @@ define([
     });
 
 
+    Ember.Application.initializer({
+        name:'ScreentoolstatusmenuMixin',
+        initialize: function(container, application) {
+            application.register('mixin:screentoolstatusmenu', mixin);
+        }
+    });
+
     return mixin;
 });

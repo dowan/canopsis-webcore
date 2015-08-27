@@ -17,42 +17,36 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function() {
+Ember.Application.initializer({
+    name:"component-draggablebutton",
+    initialize: function(container, application) {
 
-    var get = Ember.get,
-        set = Ember.set;
-
-
-    var DragNDrop = Ember.Namespace.create();
-
-    DragNDrop.Dragable = Ember.Mixin.create({
-        attributeBindings: 'draggable',
-        draggable: 'true',
-        dragStart: function(event) {
-
-            console.log('drag started !');
-
-            var dataTransfer = event.originalEvent.dataTransfer;
-
-            dataTransfer.setData('elementId', get(this,'elementId'));
-
-        }
-    });
+        var get = Ember.get,
+            set = Ember.set;
 
 
-    var component = Ember.Component.extend(DragNDrop.Dragable, {
-        didInsertElement: function (){
-            this.$().css('display', 'inline').css('width', '5px');
-        }
-    });
+        var DragNDrop = Ember.Namespace.create();
 
+        DragNDrop.Dragable = Ember.Mixin.create({
+            attributeBindings: 'draggable',
+            draggable: 'true',
+            dragStart: function(event) {
 
-    Ember.Application.initializer({
-        name:"component-draggablebutton",
-        initialize: function(container, application) {
-            application.register('component:component-draggablebutton', component);
-        }
-    });
+                console.log('drag started !');
 
-    return component;
+                var dataTransfer = event.originalEvent.dataTransfer;
+
+                dataTransfer.setData('elementId', get(this,'elementId'));
+
+            }
+        });
+
+        var component = Ember.Component.extend(DragNDrop.Dragable, {
+            didInsertElement: function (){
+                this.$().css('display', 'inline').css('width', '5px');
+            }
+        });
+
+        application.register('component:component-draggablebutton', component);
+    }
 });

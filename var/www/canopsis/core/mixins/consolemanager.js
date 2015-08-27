@@ -78,5 +78,12 @@ define([
         }.property()
     });
 
+    Ember.Application.initializer({
+        name:'ConsolemanagerMixin',
+        initialize: function(container, application) {
+            application.register('mixin:consolemanager', mixin);
+        }
+    });
+
     return mixin;
 });

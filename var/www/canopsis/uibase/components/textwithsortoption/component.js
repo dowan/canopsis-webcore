@@ -17,42 +17,36 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+Ember.Application.initializer({
+    name:"component-textwithsortoption",
+    initialize: function(container, application) {
 
-define([], function() {
-
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
 
-    var component = Ember.Component.extend({
+        var component = Ember.Component.extend({
 
-        directionTypes: ['ASC', 'DESC'],
+            directionTypes: ['ASC', 'DESC'],
 
-        init: function () {
-            this._super.apply(this, arguments);
-            if (!isNone(this.get('content'))) {
-                set(this, 'property', get(this, 'content.property'));
-                set(this, 'direction', get(this, 'content.direction'));
-            }
-        },
+            init: function () {
+                this._super.apply(this, arguments);
+                if (!isNone(this.get('content'))) {
+                    set(this, 'property', get(this, 'content.property'));
+                    set(this, 'direction', get(this, 'content.direction'));
+                }
+            },
 
-        onUpdate: function() {
-            this.set('content', {
-                property: get(this, 'property'),
-                direction: get(this, 'direction')
-            });
-            console.debug('update sortable content', get(this, 'content'));
-        }.observes('property', 'direction')
+            onUpdate: function() {
+                this.set('content', {
+                    property: get(this, 'property'),
+                    direction: get(this, 'direction')
+                });
+                console.debug('update sortable content', get(this, 'content'));
+            }.observes('property', 'direction')
+        });
 
-    });
-
-    Ember.Application.initializer({
-        name:"component-textwithsortoption",
-        initialize: function(container, application) {
-            application.register('component:component-textwithsortoption', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-textwithsortoption', component);
+    }
 });
