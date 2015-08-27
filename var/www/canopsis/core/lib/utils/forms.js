@@ -49,7 +49,7 @@ Ember.Application.initializer({
                 classDict.target = routesUtils.getCurrentRouteController();
                 classDict.container = dataUtils.getEmberApplicationSingleton().__container__;
 
-                if(formsregistry.all[formName] === undefined) {
+                if(container.lookupFactory('form:' + formName) === undefined) {
                     console.error('the form', formName, 'was not found');
                 }
 
