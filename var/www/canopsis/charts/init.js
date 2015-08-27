@@ -124,4 +124,6 @@ define([
     'canopsis/charts/lib/loaders/widgets',
     'canopsis/charts/lib/loaders/templates',
     'canopsis/charts/libwrappers/flotchart',
+    'canopsis/charts/lib/externals/c3/c3',
+    'link!canopsis/charts/lib/externals/c3/c3.css',
 ], function () {});

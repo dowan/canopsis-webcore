@@ -16,12 +16,15 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
-define([
-    'app/lib/utils/hash',
-    'app/lib/utils/values',
-    'canopsis/charts/lib/externals/c3/c3',
-    'link!canopsis/charts/lib/externals/c3/c3.css',
-], function(hash, values) {
+
+Ember.Application.initializer({
+    name:"component-c3categorychart",
+    after: ['HashUtils', 'ValuesUtils'],
+    initialize: function(container, application) {
+
+    var HashUtils = container.lookupFactory('utility:hash');
+    var ValuesUtils = container.lookupFactory('utility:values');
+
 
     var get = Ember.get,
         set = Ember.set,
@@ -33,7 +36,7 @@ define([
         init: function() {
             this._super();
             Ember.setProperties(this, {
-                'uuid': hash.generateId('categoryChart'),
+                'uuid': HashUtils.generateId('categoryChart'),
                 'parentController.chartComponent': this,
             });
         },
@@ -235,7 +238,7 @@ define([
                 showAxes = true,
                 isBarChart = true;
 
-            seriesSum = humanReadable ? values.humanize(seriesSum, ''): seriesSum.toFixed(2);
+            seriesSum = humanReadable ? ValuesUtils.humanize(seriesSum, ''): seriesSum.toFixed(2);
 
             var label = {
                 show : showLabels,
@@ -284,7 +287,7 @@ define([
                     groups: [seriesNames],
                     labels: {
                         format: function (v, id, i, j) {
-                            v = humanReadable ? values.humanize(v, '') : parseFloat(v).toFixed(2);
+                            v = humanReadable ? ValuesUtils.humanize(v, '') : parseFloat(v).toFixed(2);
                             return showLabels ? id + ' : ' + v : '';
                         }
                     },
@@ -306,7 +309,7 @@ define([
                   y: {
                     tick: {
                         format: function (v) {
-                            return humanReadable ? values.humanize(v, '') : parseFloat(v).toFixed(2);
+                            return humanReadable ? ValuesUtils.humanize(v, '') : parseFloat(v).toFixed(2);
                         }
                     },
                     show: showAxes
@@ -366,7 +369,7 @@ define([
 
     });
 
-    loader.register('component:component-c3categorychart', component);
+    application.register('component:component-c3categorychart', component);
 
-    return component;
+    }
 });
