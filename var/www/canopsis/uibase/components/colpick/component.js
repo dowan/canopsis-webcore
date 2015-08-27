@@ -103,13 +103,6 @@ Ember.Application.initializer({
                 }
 
                 /*
-                 * close the dropdownbutton
-                 */
-                 component.$('.closeDropdown').click(function(){
-
-                 });
-
-                /*
                  *switch display between colorPicker and colorGrid
                  */
                 component.$('.colorGrid').hide();

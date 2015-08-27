@@ -84,9 +84,11 @@ define([
                 mixinOptions = get(this, 'model.mixins').findBy('name', 'customfilterlist'),
                 userFilter;
 
-            if(get(this, 'model.selected_filter.filter') !== null && get(this, 'model.selected_filter.filter') !== undefined) {
-                userFilter = get(this, 'model.selected_filter.filter');
-            } else if(get(this, 'model.selected_filter') && !get(this, 'model.selected_filter.filter')) {
+            var filterFilter = get(this, 'model.selected_filter.filter');
+
+            if(!isNone(filterFilter)) {
+                userFilter = filterFilter;
+            } else if(get(this, 'model.selected_filter') && !filterFilter) {
                 userFilter = {};
             } else if(mixinOptions && mixinOptions.default_filter) {
                 userFilter = mixinOptions.default_filter;
