@@ -19,9 +19,10 @@
 
 Ember.Application.initializer({
     name: 'PbehaviorAdapter',
-    after: 'VeventAdapter',
+    after: ['VeventAdapter', 'ModelsolveUtils'],
     initialize: function(container, application) {
         var VEventAdapter = container.lookupFactory('adapter:vevent');
+        var modelsolve = container.lookupFactory('utility:modelsolve');
 
         var get = Ember.get,
             set = Ember.set,
