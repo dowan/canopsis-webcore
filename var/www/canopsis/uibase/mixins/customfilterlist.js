@@ -24,7 +24,7 @@ Ember.Application.initializer({
         var formsUtils = container.lookupFactory('utility:forms');
         var dataUtils = container.lookupFactory('utility:data');
         var MixinFactory = container.lookupFactory('factory:mixin');
-        var NotificationUtils = container.lookupFactory('utility:notification');
+        var notificationUtils = container.lookupFactory('utility:notification');
 
         var get = Ember.get,
             set = Ember.set,
