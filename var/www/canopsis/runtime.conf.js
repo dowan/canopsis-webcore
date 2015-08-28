@@ -24,12 +24,8 @@ define([
     'app/lib/registries',
     'app/lib/wrappersmanager',
     'app/lib/formsregistry',
-    'app/lib/widgetsregistry',
     'app/lib/indexesregistry',
     'app/lib/actionsregistry',
-    'app/lib/schemasregistry',
-    'app/lib/attributepresetregistry',
-    'app/lib/inflections',
     'app/lib/loaders/helpers',
     'app/lib/loaders/components',
     'canopsis/canopsisConfiguration',
@@ -38,12 +34,8 @@ define([
         registries,
         wrappersRegistry,
         formsRegistry,
-        widgetsRegistry,
         indexesRegistry,
         actionsRegistry,
-        schemasRegistry,
-        attributepresetRegistry,
-        inflectionsRegistry,
         helpers,
         templates,
         components,
@@ -55,12 +47,8 @@ define([
     Canopsis.tooltips = {};
     Canopsis.utils = utils;
     Canopsis.wrappers = wrappersRegistry;
-    Canopsis.widgets = widgetsRegistry;
     Canopsis.actions = actionsRegistry;
-    Canopsis.schemas = schemasRegistry;
     Canopsis.indexes = indexesRegistry;
-    Canopsis.presets = attributepresetRegistry;
-    Canopsis.inflections = inflectionsRegistry;
     Canopsis.forms = formsRegistry;
     Canopsis.helpers = helpers;
     Canopsis.templates = templates;

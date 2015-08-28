@@ -17,6 +17,8 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+/** @module canopsis.frontend.uibase */
+
 require.config({
     paths: {
         'bootstrap': 'canopsis/uibase/lib/externals/bootstrap/dist/js/bootstrap.min',
@@ -51,9 +53,6 @@ require.config({
         },
         'icheck': {
             deps: ['jquery']
-        },
-        'jsoneditorlib': {
-            deps: ['ember']
         }
     }
 });
@@ -70,11 +69,39 @@ define([
     'canopsis/uibase/libwrappers/jsoneditor',
     'canopsis/uibase/libwrappers/summernote',
     'canopsis/uibase/libwrappers/codemirror',
+    'canopsis/uibase/libwrappers/colpick',
+    'canopsis/uibase/libwrappers/rrule',
+    'canopsis/core/lib/wrappers/slider',
+    'canopsis/uibase/mixins/arraysearch',
+    'canopsis/uibase/mixins/customfilterlist',
+    'canopsis/uibase/mixins/draggablecolumns',
+    'canopsis/uibase/mixins/gridlayout',
+    'canopsis/uibase/mixins/horizontallayout',
+    'canopsis/uibase/mixins/lightlayout',
+    'canopsis/uibase/mixins/listlinedetail',
+    'canopsis/uibase/mixins/minimizebutton',
+    'canopsis/uibase/mixins/pagination',
+    'canopsis/uibase/mixins/periodicrefresh',
+    'canopsis/uibase/mixins/responsivelist',
+    'canopsis/uibase/mixins/showviewbutton',
+    'canopsis/uibase/mixins/sortablearray',
+    'canopsis/uibase/mixins/tablayout',
+    'canopsis/uibase/mixins/verticallayout',
+    'canopsis/uibase/mixins/downtime',
+    'canopsis/uibase/mixins/crud',
+    'canopsis/uibase/mixins/background',
+    'canopsis/uibase/widgets/topology/controller',
+    'canopsis/uibase/widgets/topology/view',
+    'canopsis/uibase/widgets/topology/adapter',
+    'link!canopsis/uibase/widgets/topology/style.css',
     'canopsis/uibase/lib/externals/ember-datetimepicker/lib/component',
     'canopsis/uibase/lib/externals/ember-icheck/lib/component',
     'canopsis/uibase/lib/externals/ember-tooltip/lib/component',
     'canopsis/uibase/lib/externals/ember-durationcombo/lib/component',
     'link!canopsis/uibase/lib/externals/fontawesome/css/font-awesome.min.css',
-    'link!canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker-bs3.css'
+    'link!canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker-bs3.css',
+    'canopsis/uibase/lib/externals/stacktable/stacktable',
+    'link!canopsis/uibase/lib/externals/stacktable/stacktable.css',
+    'daterangepicker'
 ], function () {});
 

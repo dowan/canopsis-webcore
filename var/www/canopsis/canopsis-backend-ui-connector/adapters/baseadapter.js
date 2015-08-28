@@ -1,59 +1,59 @@
-define([
-    'ember',
-    'canopsis/canopsis-backend-ui-connector/adapters/application',
-    'app/lib/utils/modelsolve'
-], function(Ember, ApplicationAdapter, modelsolve) {
 
-    var isNone = Ember.isNone,
-        get = Ember.get;
+Ember.Application.initializer({
+    name: 'BaseAdapter',
+    after: ['ApplicationAdapter'],
+    initialize: function(container, application) {
+        var ApplicationAdapter = container.lookupFactory('adapter:application');
 
-    var adapter = ApplicationAdapter.extend({
+        var isNone = Ember.isNone,
+            get = Ember.get;
 
-        buildURL: function(type, id) {
-            void(id);
-            console.warn('This method have to be overriden');
-            return '/';
-        },
+        var adapter = ApplicationAdapter.extend({
 
-        findQuery: function(store, type, query) {
-            var url = this.buildURL(type, null);
+            buildURL: function(type, id) {
+                void(id);
+                console.warn('This method have to be overriden');
+                return '/';
+            },
 
-            console.log('findQuery', query);
-            var me = this;
-            return this.ajax(url, 'POST', {data: query});
-        },
+            findQuery: function(store, type, query) {
+                var url = this.buildURL(type, null);
 
-        createRecord: function(store, type, record) {
-            var context = {};
-            if (isNone(type) || isNone(type.typeKey)) {
-                console.error('Error while retrieving typeKey from type is it is none.');
-            }
-            var serializer = store.serializerFor(type.typeKey);
+                console.log('findQuery', query);
+                var me = this;
+                return this.ajax(url, 'POST', {data: query});
+            },
 
-            context = serializer.serializeIntoHash(context, type, record, 'POST', { includeId: true })[0];
+            createRecord: function(store, type, record) {
+                var context = {};
+                if (isNone(type) || isNone(type.typeKey)) {
+                    console.error('Error while retrieving typeKey from type is it is none.');
+                }
+                var serializer = store.serializerFor(type.typeKey);
 
-            console.log('document', context);
+                context = serializer.serializeIntoHash(context, type, record, 'POST', { includeId: true })[0];
 
-            var url = this.buildURL(type.typeKey, record.id) + '/put';
+                console.log('document', context);
 
-            return this.ajax(url, 'POST', {data: {document: context}});
-        },
+                var url = this.buildURL(type.typeKey, record.id) + '/put';
 
-        updateRecord: function(store, type, record) {
-            return this.createRecord(store, type, record);
-        },
+                return this.ajax(url, 'POST', {data: {document: context}});
+            },
 
-        deleteRecord: function(store, type, record) {
-            var id = get(record, 'id');
-            var data = { ids: id};
-            var url = this.buildURL(type.typeKey, id);
+            updateRecord: function(store, type, record) {
+                return this.createRecord(store, type, record);
+            },
 
-            return this.ajax(url, 'DELETE', {data: {ids: [id]}});
-        },
+            deleteRecord: function(store, type, record) {
+                var id = get(record, 'id');
+                var data = { ids: id};
+                var url = this.buildURL(type.typeKey, id);
 
-    });
+                return this.ajax(url, 'DELETE', {data: {ids: [id]}});
+            },
 
-    loader.register('adapter:baseadapter', adapter);
+        });
 
-    return adapter;
+        application.register('adapter:base', adapter);
+    }
 });

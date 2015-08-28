@@ -17,7 +17,90 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([], function () {
+define(['ember-lib', 'ember-data-lib'], function () {
+
+    var get = Ember.get;
+
+    Ember.Object.reopen({
+        toJson: function() {
+            return JSON.parse(JSON.stringify(this));
+        }
+    });
+
+    var controllerDict = {
+        init: function() {
+            if(get(this, 'isGenerated')) {
+                console.error('Ember is Instantiating a generated controller. This practice is not encouraged, as it might also be an underlying requireJS problem.', this);
+            }
+            this._super.apply(this, arguments);
+        }
+    };
+
+    Ember.Controller.reopen(controllerDict);
+    Ember.ArrayController.reopen(controllerDict);
+    Ember.ObjectController.reopen(controllerDict);
+
+    DS.ArrayTransform = DS.Transform.extend({
+        deserialize: function(serialized) {
+            if (Ember.typeOf(serialized) === 'array') {
+                return serialized;
+            }
+
+            return [];
+        },
+
+        serialize: function(deserialized) {
+            var type = Ember.typeOf(deserialized);
+
+            if (type === 'array') {
+                return deserialized;
+            }
+            else if (type === 'string') {
+                return deserialized.split(',').map(function(item) {
+                    return jQuery.trim(item);
+                });
+            }
+
+            return [];
+        }
+    });
+
+    DS.IntegerTransform = DS.Transform.extend({
+        deserialize: function(serialized) {
+            if (typeof serialized === "number") {
+                return serialized;
+            } else {
+                // console.warn("deserialized value is not a number as it is supposed to be", arguments);
+                return 0;
+            }
+        },
+
+        serialize: function(deserialized) {
+            return Ember.isEmpty(deserialized) ? null : Number(deserialized);
+        }
+    });
+
+    DS.ObjectTransform = DS.Transform.extend({
+        deserialize: function(serialized) {
+            if (Ember.typeOf(serialized) === 'object') {
+                return Ember.Object.create(serialized);
+            }
+
+            return Ember.Object.create({});
+        },
+
+        serialize: function(deserialized) {
+            var type = Ember.typeOf(deserialized);
+
+            if (type === 'object' || type === 'instance') {
+                return Ember.Object.create(deserialized);
+            } else {
+                console.warn("bad format", type, deserialized);
+            }
+
+            return null;
+        }
+    });
 
     /*
      * Here is the canopsis UI main configuration file.

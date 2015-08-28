@@ -17,6 +17,8 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+/** @module canopsis.frontend.development */
+
 loader.loadWithTemplates([
     { name:'webconsole', url:'canopsis/development/widgets/webconsole/controller', template:'canopsis/development/widgets/webconsole/template.html' },
     { name:'requestsmanager', url:'canopsis/development/widgets/requestsmanager/controller', template:'canopsis/development/widgets/requestsmanager/template.html' },

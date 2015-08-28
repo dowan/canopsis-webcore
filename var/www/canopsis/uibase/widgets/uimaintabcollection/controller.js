@@ -1,104 +1,104 @@
 /*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-define([
-    'jquery',
-    'ember',
-    'app/lib/factories/widget',
-    'app/lib/utils/forms',
-    'app/lib/utils/routes'
-], function($, Ember, WidgetFactory, formsUtils, routesUtils) {
+Ember.Application.initializer({
+    name: 'UimaintabcollectionWidget',
+    after: ['WidgetFactory', 'FormsUtils', 'RoutesUtils'],
+    initialize: function(container, application) {
+        var WidgetFactory = container.lookupFactory('factory:widget');
+        var formsUtils = container.lookupFactory('utility:forms');
+        var routesUtils = container.lookupFactory('utility:routes');
 
-    var get = Ember.get,
-        set = Ember.set;
-
-
-    var widget = WidgetFactory('uimaintabcollection', {
-        needs: ['application', 'login'],
-
-        currentViewId: Ember.computed.alias('controllers.application.currentViewId'),
-
-        tagName: 'span',
-
-        userCanShowEditionMenu: true,
-        userCanEditView: true,
-        userCanCreateView: true,
-
-        isViewDisplayable: function(viewId) {
-            return true;
-        },
-
-        preparedTabs: function() {
-            var uimaintabcollectionController = this;
-
-            var res = Ember.A();
-
-            get(this, 'tabs').forEach(function(item, index) {
-                if(item.value === get(uimaintabcollectionController, 'currentViewId')) {
-                    set(item, 'isActive', true);
-                } else {
-                    set(item, 'isActive', false);
-                }
+        var get = Ember.get,
+            set = Ember.set;
 
 
-                viewId = item.value;
-                viewId = viewId.replace('.', '_');
-                if (uimaintabcollectionController.isViewDisplayable(viewId)) {
-                    set(item, 'displayable', true);
-                } else {
-                    set(item, 'displayable', false);
-                }
+        var widget = WidgetFactory('uimaintabcollection', {
+            needs: ['application', 'login'],
 
-                res.pushObject(item);
-            });
+            currentViewId: Ember.computed.alias('controllers.application.currentViewId'),
 
-            return res;
-        }.property('tabs', 'currentViewId'),
+            tagName: 'span',
 
-        actions: {
-            do: function(action, params) {
-                if(params === undefined || params === null){
-                    params = [];
-                }
+            userCanShowEditionMenu: true,
+            userCanEditView: true,
+            userCanCreateView: true,
 
-                this.send(action, params);
+            isViewDisplayable: function(viewId) {
+                return true;
             },
 
-            showViewOptions: function() {
+            preparedTabs: function() {
+                var uimaintabcollectionController = this;
 
-                var userviewController = routesUtils.getCurrentRouteController();
-                var userview = userviewController.get('model');
+                var res = Ember.A();
 
-                var widgetWizard = formsUtils.showNew('viewtreeform', userview, { title: __('Edit userview') });
-                console.log('widgetWizard', widgetWizard);
+                get(this, 'tabs').forEach(function(item, index) {
+                    if(item.value === get(uimaintabcollectionController, 'currentViewId')) {
+                        set(item, 'isActive', true);
+                    } else {
+                        set(item, 'isActive', false);
+                    }
 
-                var widgetController = this;
 
-                widgetWizard.submit.done(function() {
-                    userview.save().then(function(){
-                        get(widgetController, 'viewController').send('refresh');
-                    });
+                    viewId = item.value;
+                    viewId = viewId.replace('.', '_');
+                    if (uimaintabcollectionController.isViewDisplayable(viewId)) {
+                        set(item, 'displayable', true);
+                    } else {
+                        set(item, 'displayable', false);
+                    }
+
+                    res.pushObject(item);
                 });
 
-            }
-        }
-    });
+                return res;
+            }.property('tabs', 'currentViewId'),
 
-    return widget;
+            actions: {
+                do: function(action, params) {
+                    if(params === undefined || params === null){
+                        params = [];
+                    }
+
+                    this.send(action, params);
+                },
+
+                showViewOptions: function() {
+
+                    var userviewController = routesUtils.getCurrentRouteController();
+                    var userview = userviewController.get('model');
+
+                    var widgetWizard = formsUtils.showNew('viewtreeform', userview, { title: __('Edit userview') });
+                    console.log('widgetWizard', widgetWizard);
+
+                    var widgetController = this;
+
+                    widgetWizard.submit.done(function() {
+                        userview.save().then(function(){
+                            get(widgetController, 'viewController').send('refresh');
+                        });
+                    });
+
+                }
+            }
+        });
+        application.register('widget:uimaintabcollection', widget);
+    }
 });

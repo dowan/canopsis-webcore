@@ -17,78 +17,70 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember'
-], function(Ember) {
+Ember.Application.initializer({
+    name:"component-searchbar",
+    initialize: function(container, application) {
+        var get = Ember.get,
+            set = Ember.set;
 
-    var get = Ember.get,
-        set = Ember.set;
 
+        /**
+         * Search bar component
+         *
+         * Includes 3 tabs :
+         *  - All : allow selection of every field
+         *  - Indexed : only for indexed fields
+         *  - filter : cfilter embedding
+         *
+         * This component is a WIP, it only supports basic search at the moment
+         */
+        var component = Ember.Component.extend({
+            showSearchOptions: false,
+            tagName: 'span',
 
-    /**
-     * Search bar component
-     *
-     * Includes 3 tabs :
-     *  - All : allow selection of every field
-     *  - Indexed : only for indexed fields
-     *  - filter : cfilter embedding
-     *
-     * This component is a WIP, it only supports basic search at the moment
-     */
-    var component = Ember.Component.extend({
-        showSearchOptions: false,
-        tagName: 'span',
+            actions: {
+                searchInputAction: function() {
+                    var searchPhrase = get(this, 'value');
+                    console.log('searchItems', this, this.controller, searchPhrase);
 
-        actions: {
-            searchInputAction: function() {
-                var searchPhrase = get(this, 'value');
-                console.log('searchItems', this, this.controller, searchPhrase);
+                    get(this, 'controller').target.set('searchCriterion', searchPhrase);
+                },
 
-                this.controller.target.set('searchCriterion', searchPhrase);
+                clearSearch: function () {
+                    console.log('clear search field');
+                    //clear text field
+                    this.set('value', '');
+                    //set search field
+                    this.controller.target.set('searchFieldValue', '');
+                    //trigger search
+                    this.send('searchInputAction', '');
+
+                }
+
             },
 
-            clearSearch: function () {
-                console.log('clear search field');
-                //clear text field
-                this.set('value', '');
-                //set search field
-                this.controller.target.set('searchFieldValue', '');
-                //trigger search
-                this.send('searchInputAction', '');
+            tabAllId: function() {
+                console.log('tabAllId');
 
-            }
+                return get(this, 'elementId') + 'TabAll';
+            }.property('elementId'),
+            tabIndexedId: function() {
+                return get(this, 'elementId') + 'TabIndexed';
+            }.property('elementId'),
+            tabFilterId: function() {
+                return get(this, 'elementId') + 'TabFilter';
+            }.property('elementId'),
+            tabAllHref: function() {
+                return "#" + get(this, 'elementId') + 'TabAll';
+            }.property('elementId'),
+            tabIndexedHref: function() {
+                return "#" + get(this, 'elementId') + 'TabIndexed';
+            }.property('elementId'),
+            tabFilterHref: function() {
+                return "#" + get(this, 'elementId') + 'TabFilter';
+            }.property('elementId')
+        });
 
-        },
-
-        tabAllId: function() {
-            console.log('tabAllId');
-
-            return get(this, 'elementId') + 'TabAll';
-        }.property('elementId'),
-        tabIndexedId: function() {
-            return get(this, 'elementId') + 'TabIndexed';
-        }.property('elementId'),
-        tabFilterId: function() {
-            return get(this, 'elementId') + 'TabFilter';
-        }.property('elementId'),
-        tabAllHref: function() {
-            return "#" + get(this, 'elementId') + 'TabAll';
-        }.property('elementId'),
-        tabIndexedHref: function() {
-            return "#" + get(this, 'elementId') + 'TabIndexed';
-        }.property('elementId'),
-        tabFilterHref: function() {
-            return "#" + get(this, 'elementId') + 'TabFilter';
-        }.property('elementId')
-    });
-
-
-    Ember.Application.initializer({
-        name:"component-searchbar",
-        initialize: function(container, application) {
-            application.register('component:component-searchbar', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-searchbar', component);
+    }
 });

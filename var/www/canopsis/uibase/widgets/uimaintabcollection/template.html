@@ -41,9 +41,17 @@
                                     </a>
                                 </li>
                             {{/if}}
+                            {{#if controller.userCanCreateView}}
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" {{action 'importView'}}>
+                                        <i class="fa fa-upload"></i>
+                                        {{tr 'Import a view'}}
+                                    </a>
+                                </li>
+                            {{/if}}
                             <li role="presentation">
                                 <a role="menuitem" tabindex="-1" {{action 'exportCurrentView'}}>
-                                    <i class="fa fa-clipboard"></i>
+                                    <i class="fa fa-download"></i>
                                     {{tr 'Export current view'}}
                                 </a>
                             </li>

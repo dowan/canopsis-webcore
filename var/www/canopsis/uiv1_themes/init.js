@@ -17,6 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+/** @module canopsis.frontend.uiv1-themes */
 
 define([
     'canopsis/uiv1_themes/lib/loaders/mixins',
