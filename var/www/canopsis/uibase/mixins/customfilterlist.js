@@ -21,7 +21,7 @@ Ember.Application.initializer({
     name:'CustomfilterlistMixin',
     after: ['FormsUtils', 'MixinFactory', 'DataUtils', 'NotificationUtils'],
     initialize: function(container, application) {
-        var formsUtils = container.lookupFactory('controller:application');
+        var formsUtils = container.lookupFactory('utility:forms');
         var dataUtils = container.lookupFactory('utility:data');
         var MixinFactory = container.lookupFactory('factory:mixin');
         var NotificationUtils = container.lookupFactory('utility:notification');
