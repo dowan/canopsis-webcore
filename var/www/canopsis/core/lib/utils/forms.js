@@ -26,7 +26,7 @@ Ember.Application.initializer({
         var routesUtils = container.lookupFactory('utility:routes');
         var dataUtils = container.lookupFactory('utility:data');
 
-        var formsregistry;
+        var formsregistry = container.lookupFactory('registry:forms');
 
         var get = Ember.get,
             set = Ember.set,
@@ -138,7 +138,7 @@ Ember.Application.initializer({
                 routesUtils.getCurrentRouteController().send('show_add_crecord_form', record_type);
             }
         });
-        formsregistry = container.lookupFactory('registry:forms');
+
         application.register('utility:forms', formUtils);
     }
 });

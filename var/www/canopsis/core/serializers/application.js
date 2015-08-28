@@ -25,7 +25,7 @@ Ember.Application.initializer({
         var HashSerializerMixin = container.lookupFactory('mixin:hash-serializer');
         var EmbeddedRecordSerializerMixin = container.lookupFactory('mixin:embedded-record-serializer');
         var notificationUtils = container.lookupFactory('utility:notification');
-        var HashUtils = container.lookupFactory('utility:hash');
+        var hashUtils = container.lookupFactory('utility:hash');
 
         var get = Ember.get,
             set = Ember.set,
