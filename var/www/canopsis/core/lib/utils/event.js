@@ -51,7 +51,7 @@ Ember.Application.initializer({
 
             /**
              * apply a filter to an element before to transmit it to an other view.
-             * see goToInfo method of widgetCalendar for example
+             * see goToInfo method of brick-calendar for example
              * @method applyVolatileFilter
              * @param transition: promise to transmit the element to an other view
              * @param element: concerned event
