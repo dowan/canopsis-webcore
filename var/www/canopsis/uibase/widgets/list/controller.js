@@ -420,9 +420,11 @@ Ember.Application.initializer({
 
                     var userSortedAttribute = get(this, 'model.user_sortedAttribute');
 
-                    if (userSortedAttribute === undefined && get(this, 'model.default_column_sort') !== undefined) {
-                        params.sort = JSON.stringify([ get(this, 'model.default_column_sort') ]);
-                        console.log('defaultSortedAttribute', get(this, 'model.default_column_sort'));
+                    if (isNone(userSortedAttribute)) {
+                        if(!isNone(get(this, 'model.default_column_sort'))) {
+                            params.sort = JSON.stringify([ get(this, 'model.default_column_sort') ]);
+                            console.log('defaultSortedAttribute', get(this, 'model.default_column_sort'));
+                        }
 
                     } else {
                         var direction;
