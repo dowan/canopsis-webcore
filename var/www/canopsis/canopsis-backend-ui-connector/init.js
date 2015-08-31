@@ -47,6 +47,4 @@ define([
     'canopsis/canopsis-backend-ui-connector/serializers/ctxselector',
     'canopsis/canopsis-backend-ui-connector/serializers/ctxtopology',
     'canopsis/canopsis-backend-ui-connector/serializers/linklist',
-    'canopsis/canopsis-backend-ui-connector/serializers/snmprule',
-
 ], function () {});

@@ -170,6 +170,7 @@ Ember.Application.initializer({
                         var modelAttributes = this.getAttributes();
 
                         var refModelCategories = referenceModel.proto().categories;
+
                         for (var i = 0, li = refModelCategories.length; refModelCategories && i < li; i++) {
 
                             var category = refModelCategories[i],

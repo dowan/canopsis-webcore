@@ -293,6 +293,7 @@ Ember.Application.initializer({
 
                     var inc = max + 30;
                     var incperc = (inc * 100.0) / max;
+                    var dec;
 
                     if (incperc > margin) {
                         inc = (max * margin) / 100.0;
@@ -301,7 +302,7 @@ Ember.Application.initializer({
                     /* calculate new min with margin */
                     if(min < 0 || min > 30) {
                         min = -min;
-                        var dec = min + 30;
+                        dec = min + 30;
                         var decperc = (min * 100.0) / min;
 
                         if (decperc > margin) {

@@ -72,7 +72,12 @@ def save_role(ws, role):
     rrights = role.get('rights', None)
     rprofile = role.get('profile', None)
 
+    defaultview = role.get('defaultview', None)
+
     role = rights.get_role(rid)
+
+    if defaultview is not None:
+        rights.update_fields(rid, 'role', {'defaultview': defaultview})
 
     if not role and not rights.create_role(rid, rprofile):
         raise ws.Error('Impossible to create role')
