@@ -25,6 +25,12 @@
             {{input class="form-control" value=send}}
             <label>{{tr 'Target engine'}}</label>
         {{/if}}
+
+        {{#if isExecJob}}
+            <label>{{tr 'Target job'}}</label>
+            {{input class="form-control" value=jobid}}
+            {{component-stringclassifiedcrecordselector crecordtype="job" modelfilter="{\"jtype\":\"notification\"}" valueKey="id" nameKey="task" content=jobid}}
+        {{/if}}
     </div>
 
     <div class="form-group">
