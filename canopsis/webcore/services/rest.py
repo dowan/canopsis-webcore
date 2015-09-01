@@ -56,6 +56,13 @@ def get_records(ws, namespace, ctype=None, _id=None, **params):
     else:
         sort = ensure_iterable(sort)
 
+    if isinstance(sort, basestring):
+        try:
+            sort = json.loads(sort)
+        except Exception as e:
+            ws.logger.warning('Unable to parse sort field : {}'.format(sort))
+            sort = []
+
     # Generate MongoDB sorting query
     msort = [
         (
