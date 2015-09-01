@@ -69,7 +69,7 @@ def get_records(ws, namespace, ctype=None, _id=None, **params):
             item['property'],
             1 if item['direction'] == 'DESC' else -1
         )
-        for item in sort
+        for item in sort if item.get('property', None) is not None
     ]
 
     # Generate MongoDB filter
