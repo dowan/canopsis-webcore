@@ -18,14 +18,15 @@
  */
 
 define([
-    'canopsis/canopsisConfiguration',
+    'canopsis/canopsisConfiguration'
 ], function(canopsisConfiguration) {
+
     Ember.Application.initializer({
         name: 'TextWidget',
         after: ['WidgetFactory', 'ValuesUtils'],
         initialize: function(container, application) {
             var WidgetFactory = container.lookupFactory('factory:widget');
-            var values = container.lookupFactory('utility:values');
+            var ValuesUtils = container.lookupFactory('utility:values');
 
             var get = Ember.get,
                 set = Ember.set,
@@ -33,9 +34,36 @@ define([
 
             var widget = WidgetFactory('text', {
 
-                needs: ['serie', 'perfdata'],
+                needs: ['metric'],
 
-                perfdata: Ember.computed.alias('controllers.perfdata'),
+                onSeriesFetch: function (caller, series) {
+
+                    /**
+                    Transform series information for widget text display facilities
+                    series are fetched from metric manager and are made of a list of metrics as
+                    [{meta: serieRecord, values: [[timestamp_0, value_0, [...]]]}, [...]]
+                    **/
+                    var length = series.length;
+
+                    for(var i=0; i<length; i++) {
+
+                        var values = get(series[i], 'values'),
+                            serieName = get(series[i].meta, 'crecord_name').replace(/ /g,'_');
+
+                        var displayValue = __('No data available'),
+                            valueLength = values.length;
+
+                        //choosing the value for the last point when any
+                        if (valueLength) {
+                            displayValue = values[valueLength - 1][1];
+                        }
+
+                        //set values to reachable template place for user template combination
+                        set(caller, 'templateContext.serie.' + serieName, displayValue);
+                    }
+
+                    caller.setReady('serie');
+                },
 
                 init: function() {
                     this._super.apply(this, arguments);
@@ -58,8 +86,8 @@ define([
 
                     var now = new Date().getTime();
                     var to = now;
-                    //fetch time window of 5 minutes hoping there are metrics since.
-                    var from = now - 300000;
+                    //fetch time window of 10 minutes hoping there are metrics since.
+                    var from = now - 600000;
 
                     //When specific from / to dates specified into the controller,
                     //the widget will use them. This helps manage live reporting.
@@ -73,7 +101,15 @@ define([
                     //This will trigger api queries for events and series in lasy philosophy.
                     //If no contextual information set by user, no query is done.
                     this.fetchEvents();
-                    this.fetchSeries(from, to);
+
+                    var seriesMeta = get(this, 'series');
+                    if (!isNone(seriesMeta)) {
+                        get(this, 'controllers.metric').fetchSeriesFromSchemaValues(
+                            this, get(this, 'widgetDataStore'), from, to, seriesMeta, this.onSeriesFetch
+                        );
+                    } else {
+                        this.setReady('serie');
+                    }
 
                 },
 
@@ -137,69 +173,6 @@ define([
                     }
                 },
 
-                fetchSeries: function (from, to){
-
-                    var controller = this,
-                        seriesController = get(controller, 'controllers.serie'),
-                        series;
-
-
-                    var seriesValues = get(this, 'series');
-                    if (!isNone(seriesValues)) {
-
-                        //Declared here for translation purposes
-                        var valueNotDefined = __('No data available');
-
-                        var seriesFilter = JSON.stringify({
-                            crecord_name: {'$in': seriesValues}
-                        });
-
-                        console.log('widget text series duration queries', from, to);
-                        get(this, 'widgetDataStore').findQuery(
-                            'serie',
-                            {filter: seriesFilter}
-                            ).then(function(results) {
-
-                            series = get(results, 'content');
-                            console.log('series records', series);
-
-                            //Event query is the first param if any rk have to be fetched
-                            var seriesQueries = [];
-                            for (var i = 0, l = series.length; i < l; i++) {
-                                seriesQueries.push(seriesController.fetch(
-                                    series[i],
-                                    from,
-                                    to
-                                ));
-                            }
-
-                            console.log('seriesQueries', seriesQueries);
-
-                            Ember.RSVP.all(seriesQueries).then(function(pargs) {
-
-                                for (var i = 0, l = pargs.length; i < l; i++) {
-                                    var data = pargs[i];
-                                    console.log('series pargs', pargs);
-                                    var displayValue = valueNotDefined;
-                                    if (data.length) {
-                                        //choosing the value for the last point when any
-                                        displayValue = data[data.length - 1][1];
-                                    }
-                                    var serieName = get(series[i], 'crecord_name').replace(/ /g,'_');
-                                    set(controller, 'templateContext.serie.' + serieName, displayValue);
-                                }
-
-                                controller.setReady('serie');
-                            });
-
-
-                        });
-                    } else {
-                        controller.setReady('serie');
-                    }
-
-                },
-
                 setReady: function (element) {
                     set(this, 'ready.' + element, true);
                     if (get(this, 'ready.serie') && get(this, 'ready.event')) {
@@ -217,7 +190,7 @@ define([
                         hr: function (value) {
                             console.log('found value for human readable : ', value);
                             var unit = get(value, 'hash.unit');
-                            var value = get(value, 'hash.value');
+                            value = get(value, 'hash.value');
                             //only second option unit is available for now
                             //otherwise, values are considered as number base 10
                             if (unit !== 's') {
@@ -230,7 +203,7 @@ define([
                                     return invalidNumber;
                                 }
                             }
-                            value = values.humanize(value, unit);
+                            value = ValuesUtils.humanize(value, unit);
                             return value;
                         },
                         action: function () {
@@ -243,8 +216,7 @@ define([
                     }
                 },
 
-
-                renderTemplate: function (){
+                renderTemplate: function () {
 
                     var template = get(this, 'html'),
                         html = 'Unable to render template.';
@@ -264,9 +236,10 @@ define([
                         }
                     }
                     set(this, 'htmlRender', new Ember.Handlebars.SafeString(html));
-                },
-
+                }
             });
+
+            application.register('widget:text', widget);
         }
     });
 });
