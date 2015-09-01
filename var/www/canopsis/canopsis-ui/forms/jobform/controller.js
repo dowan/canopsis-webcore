@@ -106,7 +106,9 @@ Ember.Application.initializer({
                     console.log('Show new form with context:', context, this.formContext);
                     var recordWizard = formsUtils.showNew('taskform', context, {
                         formParent: this,
-                        scheduled: get(this, 'scheduled')
+                        scheduled: get(this, 'scheduled'),
+                        inspectedItemType: xtype,
+                        inspectedDataItem: model
                     });
 
                     console.groupEnd();
