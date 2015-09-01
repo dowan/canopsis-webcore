@@ -23,6 +23,7 @@ Ember.Application.initializer({
     name:'CustomfilterlistMixin',
     after: ['MixinFactory', 'DataUtils', 'FormsUtils', 'NotificationUtils'],
     initialize: function(container, application) {
+
         var Mixin = container.lookupFactory('factory:mixin');
         var dataUtils = container.lookupFactory('utility:data');
         var formsUtils = container.lookupFactory('utility:forms');
@@ -43,53 +44,96 @@ Ember.Application.initializer({
                 subHeader: ['customfilters']
             },
 
+            /**
+            * Load custom filter if any form the widget model
+            **/
+
             init: function() {
                 this._super();
 
                 if(!get(this, 'model.user_filters')) {
                     set(this, 'model.user_filters', Ember.A());
                 }
+
+                set(this, 'multiFiltersTitle', []);
+                set(this, 'customFilterOperators', [
+                    {
+                        value: '$and',
+                        display: '&',
+                        active: true,
+                    },
+                    {
+                        value: '$or',
+                        display: '||',
+                        active: false,
+                    }
+                ]);
+
             },
+
+            /**
+            * Builds the list of active filters
+            *
+            * @param filterlist : a list of filter that contains
+            * a string mongo filter, a title and an active boolean
+            **/
 
             isSelectedFilter: function (filterList) {
                 if(!filterList || !filterList.length) {
                     return false;
                 }
 
-                var filterLen = filterList.length;
-                var currentTitle = get(this, 'model.selected_filter.title');
-                for (var i = 0; i < filterLen; i++) {
+                if (!get(this, 'mixinOptions.customfilterlist.can_mix_filters')) {
+                    var filterLen = filterList.length;
+                    var currentTitle = get(this, 'model.selected_filter.title');
+                    for (var i = 0; i < filterLen; i++) {
 
-                    var compareTitle = get(filterList[i], 'title');
+                        var compareTitle = get(filterList[i], 'title');
 
-                    console.log('compare filters',currentTitle, compareTitle);
+                        console.log('compare filters',currentTitle, compareTitle);
 
-                    if (currentTitle === compareTitle) {
-                        set(filterList[i], 'isActive', true);
-                    } else {
-                        set(filterList[i], 'isActive', false);
+                        if (currentTitle === compareTitle) {
+                            set(filterList[i], 'isActive', true);
+                        } else {
+                            set(filterList[i], 'isActive', false);
+                        }
                     }
                 }
 
                 return filterList;
             },
 
+            /**
+            * Get filter list from the mixin parameters
+            **/
+
             filters_list: function () {
                 return this.isSelectedFilter(get(this, 'mixinOptions.customfilterlist.filters'));
             }.property('mixinOptions.customfilterlist.filters', 'model.selected_filter'),
 
+            /**
+            * Get filter list from the user parameters
+            **/
+
             user_filters: function () {
                 return this.isSelectedFilter(get(this, 'model.user_filters'));
             }.property('model.user_filters', 'model.selected_filter'),
+
+            /**
+            * Compute the complete filter from user selected filters.
+            * It depends on what user selected in the UI
+            **/
 
             computeFilterFragmentsList: function() {
                 var list = this._super(),
                     mixinOptions = get(this, 'model.mixins').findBy('name', 'customfilterlist'),
                     userFilter;
 
-                if(get(this, 'model.selected_filter.filter') !== null && get(this, 'model.selected_filter.filter') !== undefined) {
-                    userFilter = get(this, 'model.selected_filter.filter');
-                } else if(get(this, 'model.selected_filter') && !get(this, 'model.selected_filter.filter')) {
+                var selectedFilterFilter = get(this, 'model.selected_filter.filter');
+
+                if(!isNone(selectedFilterFilter)) {
+                    userFilter = selectedFilterFilter;
+                } else if(get(this, 'model.selected_filter') && !selectedFilterFilter) {
                     userFilter = {};
                 } else if(mixinOptions && mixinOptions.default_filter) {
                     userFilter = mixinOptions.default_filter;
@@ -103,30 +147,142 @@ Ember.Application.initializer({
                 return list;
             },
 
+            /**
+            * Generate the complete filter from multi selection to be inserted in the computeFilterFragmentList
+            * Filters elements are the whole user filter selection from user filter and widget filter.
+            **/
+
+            generateMultiFilter: function () {
+
+                var widgetFilters = get(this, 'mixinOptions.customfilterlist.filters');
+                var userFilters = get(this, 'model.user_filters');
+
+                //get all filter available
+                var allFilters = [];
+                allFilters.addObjects(widgetFilters);
+                allFilters.addObjects(userFilters);
+
+                var length = allFilters.length,
+                    titles = get(this, 'multiFiltersTitle'),
+                    filter = {},
+                    i;
+
+                //get selector operator value
+                var operators = get(this, 'customFilterOperators');
+                var operatorLength = operators.length,
+                    operatorValue;
+
+                for(i=0; i<operatorLength; i++) {
+                    if (get(operators[i], 'active')) {
+                        operatorValue = get(operators[i], 'value');
+                    }
+                }
+
+                filter[operatorValue] = [];
+
+                //generate user selected filter list
+                for (i=0; i<length; i++) {
+                    var title = get(allFilters[i], 'title');
+                    if ($.inArray(title, titles) !== -1) {
+                        var subFilter = JSON.parse(get(allFilters[i], 'filter'));
+                        filter[operatorValue].pushObject(subFilter);
+                    }
+                }
+
+                //Test if there is sub filters.
+                if (filter[operatorValue].length === 0) {
+                    filter = {};
+                }
+
+                var multiFilter = JSON.stringify(filter);
+
+                set(this, 'model.selected_filter', {filter: multiFilter});
+
+            },
+
             actions: {
+
+                /**
+                * Set an operator active by desactivating all other operator and set active the one passed as parameter.
+                *
+                * @param operator: an operator dict that have to be set as active.
+                **/
+
+                setActiveOperator: function (operator) {
+
+                    var operators = get(this, 'customFilterOperators');
+                    var length = operators.length;
+
+                    for(var i=0; i<length; i++) {
+                        set(operators[i], 'active', false);
+                    }
+
+                    set(operator, 'active', true);
+
+                    //reload widget with new filter when operator is changed
+                    this.generateMultiFilter();
+
+                    this.refreshContent();
+
+                },
+
+
+                /**
+                * The entry point of the customfilterlist system.
+                * By selecting a filter in the list, the user trigger this function
+                * and make available a filter fragment into the widget.
+                *
+                * @param filter: a dict that contains a title and a string mongo filter and an active status.
+                **/
                 setFilter: function (filter) {
 
-                    var query = get(filter, 'filter');
+                    var canMixFilter = get(this, 'mixinOptions.customfilterlist.can_mix_filters');
 
-                    set(filter, 'isActive', true);
-                    //current user filter set for list management
-                    set(this, 'model.selected_filter', filter);
-                    //user filter for list be able to reload properly
-                    set(this, 'model.userFilter', query);
-                    //push userparams to db
-                    this.saveUserConfiguration();
+                    if (canMixFilter) {
+                        console.log('multi filter mode');
 
-                    //changing pagination information
-                    if (!isNone(get(this, 'currentPage'))) {
-                        set(this, 'currentPage', 1);
+                        var filters = get(this, 'multiFiltersTitle'),
+                            title = get(filter, 'title'),
+                            active = !get(filter, 'isActive');
+                        //set active filter
+                        set(filter, 'isActive', active);
+
+                        //when filter is active and not
+                        if (active) {
+                            filters.pushObject(title);
+                        } else {
+                            filters.removeObject(title);
+                        }
+
+                        this.generateMultiFilter();
+
+                    } else {
+                        console.log('single filter mode');
+
+                        var query = get(filter, 'filter');
+                        //current user filter set for list management
+                        set(this, 'model.selected_filter', filter);
+                        //user filter for list be able to reload properly
+                        set(this, 'model.userFilter', query);
+                        //push userparams to db
+                        this.saveUserConfiguration();
+
+                        //changing pagination information
+                        if (!isNone(get(this, 'currentPage'))) {
+                            set(this, 'currentPage', 1);
+                        }
                     }
 
                     this.refreshContent();
                 },
 
+                /**
+                * The action triggered when the user add a filter.
+                * This leads to a filter save into the user preference storage
+                **/
+
                 addUserFilter: function () {
                     var widgetController = this;
-
                     var record = dataUtils.getStore().createRecord('customfilter', {
                         crecord_type: 'customfilter'
                     });
@@ -151,6 +307,12 @@ Ember.Application.initializer({
                         widgetController.saveUserConfiguration();
                     });
                 },
+
+                /**
+                * Action allowing filter edition from one existing user filter.
+                *
+                * @param filter: a dict with filter information to update into the user preferences
+                **/
 
                 editFilter: function (filter) {
 
@@ -177,6 +339,12 @@ Ember.Application.initializer({
                         widgetController.saveUserConfiguration();
                     });
                 },
+
+                /**
+                * The action to remove a filter from the user filter list.
+                *
+                * @param filter: dict that contains a filter information.
+                **/
 
                 removeFilter: function (filter) {
 
