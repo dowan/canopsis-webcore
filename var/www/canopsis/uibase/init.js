@@ -1,21 +1,21 @@
 /*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /** @module canopsis.frontend.uibase */
 
@@ -36,7 +36,81 @@ require.config({
         'moment': 'canopsis/uibase/lib/externals/moment/min/moment-with-locales.min',
         'jsoneditorlib': 'canopsis/uibase/lib/externals/jsoneditor/jsoneditor',
         'ember-jsoneditor-lib': 'canopsis/uibase/lib/externals/ember-jsoneditor/ember-jsoneditor',
-        'd3': 'canopsis/uibase/lib/externals/d3/d3'
+        'd3': 'canopsis/uibase/lib/externals/d3/d3',
+
+        'application': 'canopsis/uibase/templates/application',
+        'index': 'canopsis/uibase/templates/index',
+        'formwrapper': 'canopsis/uibase/templates/formwrapper',
+        'recordinfopopup': 'canopsis/uibase/templates/recordinfopopup',
+        'widgettitlebar': 'canopsis/uibase/templates/widgettitlebar',
+        'userview': 'canopsis/uibase/templates/userview',
+        'widget': 'canopsis/uibase/templates/widget',
+        'listline': 'canopsis/uibase/templates/listline',
+        'widgetslot-default': 'canopsis/uibase/templates/widgetslot-default',
+        'widgetslot-grey': 'canopsis/uibase/templates/widgetslot-grey',
+        'widgetslot-light': 'canopsis/uibase/templates/widgetslot-light',
+        'partialslot': 'canopsis/uibase/templates/partialslot',
+        'pagination': 'canopsis/uibase/templates/pagination',
+        'pagination-infos': 'canopsis/uibase/templates/pagination-infos',
+        'itemsperpage': 'canopsis/uibase/templates/itemsperpage',
+        'search': 'canopsis/uibase/templates/search',
+        'customfilters': 'canopsis/uibase/templates/customfilters',
+        'userstatusmenu': 'canopsis/uibase/templates/userstatusmenu',
+        'screentoolstatusmenu': 'canopsis/uibase/templates/screentoolstatusmenu',
+        'documentation': 'canopsis/uibase/templates/documentation',
+        'schemamanagerstatusmenu': 'canopsis/uibase/templates/schemamanagerstatusmenu',
+        'notificationsstatusmenu': 'canopsis/uibase/templates/notificationsstatusmenu',
+        'consolemanagerstatusmenu': 'canopsis/uibase/templates/consolemanagerstatusmenu',
+        'requirejsmockingstatusmenu': 'canopsis/uibase/templates/requirejsmockingstatusmenu',
+        'promisemanagerstatusmenu': 'canopsis/uibase/templates/promisemanagerstatusmenu',
+        'presettoolbar': 'canopsis/uibase/templates/presettoolbar',
+        'actionbutton-edit': 'canopsis/uibase/templates/actionbutton-edit',
+        'actionbutton-duplicate': 'canopsis/uibase/templates/actionbutton-duplicate',
+        'actionbutton-ack': 'canopsis/uibase/templates/actionbutton-ack',
+        'actionbutton-ackselection': 'canopsis/uibase/templates/actionbutton-ackselection',
+        'actionbutton-cancel': 'canopsis/uibase/templates/actionbutton-cancel',
+        'actionbutton-cancelselection': 'canopsis/uibase/templates/actionbutton-cancelselection',
+        'actionbutton-changestate': 'canopsis/uibase/templates/actionbutton-changestate',
+        'actionbutton-show': 'canopsis/uibase/templates/actionbutton-show',
+        'actionbutton-info': 'canopsis/uibase/templates/actionbutton-info',
+        'actionbutton-create': 'canopsis/uibase/templates/actionbutton-create',
+        'actionbutton-removeselection': 'canopsis/uibase/templates/actionbutton-removeselection',
+        'actionbutton-remove': 'canopsis/uibase/templates/actionbutton-remove',
+        'actionbutton-incident': 'canopsis/uibase/templates/actionbutton-incident',
+        'actionbutton-ticketnumber': 'canopsis/uibase/templates/actionbutton-ticketnumber',
+        'actionbutton-history': 'canopsis/uibase/templates/actionbutton-history',
+        'actionbutton-eventnavigation': 'canopsis/uibase/templates/actionbutton-eventnavigation',
+        'formbutton-submit': 'canopsis/uibase/templates/formbutton-submit',
+        'formbutton-cancel': 'canopsis/uibase/templates/formbutton-cancel',
+        'formbutton-ack': 'canopsis/uibase/templates/formbutton-ack',
+        'formbutton-ackandproblem': 'canopsis/uibase/templates/formbutton-ackandproblem',
+        'formbutton-incident': 'canopsis/uibase/templates/formbutton-incident',
+        'formbutton-delete': 'canopsis/uibase/templates/formbutton-delete',
+        'formbutton-previous': 'canopsis/uibase/templates/formbutton-previous',
+        'formbutton-next': 'canopsis/uibase/templates/formbutton-next',
+        'formbutton-inspectform': 'canopsis/uibase/templates/formbutton-inspectform',
+        'titlebarbutton-duplicate': 'canopsis/uibase/templates/titlebarbutton-duplicate',
+        'titlebarbutton-moveup': 'canopsis/uibase/templates/titlebarbutton-moveup',
+        'titlebarbutton-movedown': 'canopsis/uibase/templates/titlebarbutton-movedown',
+        'titlebarbutton-moveleft': 'canopsis/uibase/templates/titlebarbutton-moveleft',
+        'titlebarbutton-moveright': 'canopsis/uibase/templates/titlebarbutton-moveright',
+        'titlebarbutton-minimize': 'canopsis/uibase/templates/titlebarbutton-minimize',
+        'titlebarbutton-widgeterrors': 'canopsis/uibase/templates/titlebarbutton-widgeterrors',
+        'actionbutton-foldable': 'canopsis/uibase/templates/actionbutton-foldable',
+        'column-unfold': 'canopsis/uibase/templates/column-unfold',
+        'groupedrowslistlayout': 'canopsis/uibase/templates/groupedrowslistlayout',
+        'groupedrowslistlinelayout': 'canopsis/uibase/templates/groupedrowslistlinelayout',
+        'stackedcolumns': 'canopsis/uibase/templates/stackedcolumns',
+        'verticallayout': 'canopsis/uibase/templates/verticallayout',
+        'horizontallayout': 'canopsis/uibase/templates/horizontallayout',
+        'gridlayout': 'canopsis/uibase/templates/gridlayout',
+        'lightlayout': 'canopsis/uibase/templates/lightlayout',
+        'tablayout': 'canopsis/uibase/templates/tablayout',
+        'mixineditdropdown': 'canopsis/uibase/templates/mixineditdropdown',
+        'draggableheaders': 'canopsis/uibase/templates/draggableheaders',
+        'tabledraggableth': 'canopsis/uibase/templates/tabledraggableth',
+        'loading': 'canopsis/uibase/templates/loading',
+        'loadingindicator': 'canopsis/uibase/templates/loadingindicator'
     },
     shim: {
         'rrule': {
@@ -102,6 +176,79 @@ define([
     'link!canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker-bs3.css',
     'canopsis/uibase/lib/externals/stacktable/stacktable',
     'link!canopsis/uibase/lib/externals/stacktable/stacktable.css',
-    'daterangepicker'
+    'daterangepicker',
+    'ehbs!application',
+    'ehbs!index',
+    'ehbs!formwrapper',
+    'ehbs!recordinfopopup',
+    'ehbs!widgettitlebar',
+    'ehbs!userview',
+    'ehbs!widget',
+    'ehbs!listline',
+    'ehbs!widgetslot-default',
+    'ehbs!widgetslot-grey',
+    'ehbs!widgetslot-light',
+    'ehbs!partialslot',
+    'ehbs!pagination',
+    'ehbs!pagination-infos',
+    'ehbs!itemsperpage',
+    'ehbs!search',
+    'ehbs!customfilters',
+    'ehbs!userstatusmenu',
+    'ehbs!screentoolstatusmenu',
+    'ehbs!documentation',
+    'ehbs!schemamanagerstatusmenu',
+    'ehbs!notificationsstatusmenu',
+    'ehbs!consolemanagerstatusmenu',
+    'ehbs!requirejsmockingstatusmenu',
+    'ehbs!promisemanagerstatusmenu',
+    'ehbs!presettoolbar',
+    'ehbs!actionbutton-edit',
+    'ehbs!actionbutton-duplicate',
+    'ehbs!actionbutton-ack',
+    'ehbs!actionbutton-ackselection',
+    'ehbs!actionbutton-cancel',
+    'ehbs!actionbutton-cancelselection',
+    'ehbs!actionbutton-changestate',
+    'ehbs!actionbutton-show',
+    'ehbs!actionbutton-info',
+    'ehbs!actionbutton-create',
+    'ehbs!actionbutton-removeselection',
+    'ehbs!actionbutton-remove',
+    'ehbs!actionbutton-incident',
+    'ehbs!actionbutton-ticketnumber',
+    'ehbs!actionbutton-history',
+    'ehbs!actionbutton-eventnavigation',
+    'ehbs!formbutton-submit',
+    'ehbs!formbutton-cancel',
+    'ehbs!formbutton-ack',
+    'ehbs!formbutton-ackandproblem',
+    'ehbs!formbutton-incident',
+    'ehbs!formbutton-delete',
+    'ehbs!formbutton-previous',
+    'ehbs!formbutton-next',
+    'ehbs!formbutton-inspectform',
+    'ehbs!titlebarbutton-duplicate',
+    'ehbs!titlebarbutton-moveup',
+    'ehbs!titlebarbutton-movedown',
+    'ehbs!titlebarbutton-moveleft',
+    'ehbs!titlebarbutton-moveright',
+    'ehbs!titlebarbutton-minimize',
+    'ehbs!titlebarbutton-widgeterrors',
+    'ehbs!actionbutton-foldable',
+    'ehbs!column-unfold',
+    'ehbs!groupedrowslistlayout',
+    'ehbs!groupedrowslistlinelayout',
+    'ehbs!stackedcolumns',
+    'ehbs!verticallayout',
+    'ehbs!horizontallayout',
+    'ehbs!gridlayout',
+    'ehbs!lightlayout',
+    'ehbs!tablayout',
+    'ehbs!mixineditdropdown',
+    'ehbs!draggableheaders',
+    'ehbs!tabledraggableth',
+    'ehbs!loading',
+    'ehbs!loadingindicator'
 ], function () {});
 
