@@ -19,7 +19,8 @@
 
 var widgets = [
     { name:'timegraph', url:'canopsis/charts/widgets/timegraph/controller', template:'canopsis/charts/widgets/timegraph/template.html'},
-    { name:'categorychart', url:'canopsis/charts/widgets/categorychart/controller', template:'canopsis/charts/widgets/categorychart/template.hbs'}
+    { name:'categorychart', url:'canopsis/charts/widgets/categorychart/controller', template:'canopsis/charts/widgets/categorychart/template.hbs'},
+    { name:'timechart', url:'canopsis/charts/widgets/timechart/controller', template:'canopsis/charts/widgets/timechart/template.hbs'}
 ];
 
 loader.loadWithTemplates(widgets);
