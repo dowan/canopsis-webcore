@@ -110,7 +110,6 @@ define([
                         }
                     }
                     var destination = get(this, 'controller');
-                    console.log('))))', insertAtIndex, get(destination, 'items.content').length );
                     if(insertAtIndex >  get(destination, 'items.content').length) {
                         insertAtIndex = get(destination, 'items.content').length;
                     }
