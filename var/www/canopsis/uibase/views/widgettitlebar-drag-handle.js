@@ -18,112 +18,114 @@
  */
 
 define([
-    'canopsis/canopsisConfiguration',
-    'app/lib/utils/debug'
-], function(canopsisConfiguration, debugUtils) {
-
-    var get = Ember.get;
-
-    var dragOrigin, dragOriginContainerController;
-    var $droppableZones;
-    var closestDropZone;
-
-    /**
-     * @class WidgettitlebarDragHandleView
-     * @extends Ember.View
-     * @memberOf canopsis.frontend.uibase
-     * @constructor
-     */
-    var view = Ember.View.extend({
-        tagName: 'span',
-        classNames: ['fleft'],
-
-        attributeBindings: 'draggable',
-        draggable: 'true',
-        dragStart: function(event) {
-            var dataTransfer = event.originalEvent.dataTransfer;
-            dataTransfer.setData('Text', this.get('elementId'));
-            dragOrigin = get(this, 'widget');
-            dragOriginContainerController = get(this, 'controller');
-            $droppableZones = $('.dropTarget');
-        },
-        drag: function(event) {
-            evt = event.originalEvent || window.event;
-            var x = evt.pageX,
-                y = evt.pageY;
-
-            if(x !== 0 && y !== 0) {
-                $droppableZones.removeClass('nearest');
-                closestDropZone = $droppableZones.nearest({ x: x, y: y });
-                closestDropZone.addClass('nearest');
-            }
-            // console.log($droppableZones.nearest({ x: x, y: y }), event);
-        },
-        dragEnd: function(event) {
-            if(closestDropZone.length) {
-                debugUtils.getViewFromJqueryElement(closestDropZone).dropWidget(event);
-                $droppableZones.removeClass('nearest');
-            }
-        },
-        templateName: 'widgettitlebar-drag-handle'
-    });
-
-    Ember.Handlebars.helper('widgettitlebar-drag-handle', view);
-
-    /**
-     * @class WidgettitlebarDragHandleView
-     * @extends Ember.View
-     * @memberOf canopsis.frontend.uibase
-     * @constructor
-     */
-    var view2 = Ember.View.extend({
-        init: function() {
-            this._super();
-
-            if(get(this, 'additionnalClass')) {
-                get(this, 'classNames').pushObject(get(this, 'additionnalClass'));
-            }
-        },
-
-        classNames: ['dropTarget'],
-
-        dropWidget: function(event) {
-            console.log('dropped', arguments, dragOrigin, get(this, 'insertAtIndex'));
-            var originItems = get(dragOriginContainerController, 'items.content');
-            console.log('items', originItems);
-
-            var removedIndex;
-            var insertAtIndex = get(this, 'insertAtIndex');
-            for (var i = 0, l = originItems.length; i < l; i++) {
-                // console.log(get(widgetController, 'content.items.content')[i]);
-
-                if (get(originItems[i], 'widget') === get(dragOrigin, 'widget')) {
-                    originItems.removeAt(i);
-                    console.log('deleteRecord ok');
-                    removedIndex = i;
-                    break;
-                }
-            }
-
-            var destination = get(this, 'controller');
-            get(destination, 'items.content').insertAt(insertAtIndex, dragOrigin);
-
-            get(this, 'controller.viewController.content').save();
-
-            event.preventDefault();
-            return false;
-        },
-        templateName: 'widget-drop-target'
-    });
-
-    Ember.Handlebars.helper('widget-drop-target', view2);
+    'canopsis/canopsisConfiguration'
+], function(canopsisConfiguration) {
 
     Ember.Application.initializer({
         name: 'WidgettitlebarDragHandleView',
+        after: 'DebugUtils',
         initialize: function(container, application) {
+            var debugUtils = container.lookupFactory('utility:debug');
+
+            var get = Ember.get;
+
+            var dragOrigin, dragOriginContainerController;
+            var $droppableZones;
+            var closestDropZone;
+
+            /**
+             * @class WidgettitlebarDragHandleView
+             * @extends Ember.View
+             * @memberOf canopsis.frontend.uibase
+             * @constructor
+             */
+            var view = Ember.View.extend({
+                tagName: 'span',
+                classNames: ['fleft'],
+
+                attributeBindings: 'draggable',
+                draggable: 'true',
+                dragStart: function(event) {
+                    var dataTransfer = event.originalEvent.dataTransfer;
+                    dataTransfer.setData('Text', this.get('elementId'));
+                    dragOrigin = get(this, 'widget');
+                    dragOriginContainerController = get(this, 'controller');
+                    $droppableZones = $('.dropTarget');
+                },
+                drag: function(event) {
+                    evt = event.originalEvent || window.event;
+                    var x = evt.pageX,
+                        y = evt.pageY;
+
+                    if(x !== 0 && y !== 0) {
+                        $droppableZones.removeClass('nearest');
+                        closestDropZone = $droppableZones.nearest({ x: x, y: y });
+                        closestDropZone.addClass('nearest');
+                    }
+                    // console.log($droppableZones.nearest({ x: x, y: y }), event);
+                },
+                dragEnd: function(event) {
+                    if(closestDropZone.length) {
+                        debugUtils.getViewFromJqueryElement(closestDropZone).dropWidget(event);
+                        $droppableZones.removeClass('nearest');
+                    }
+                },
+                templateName: 'widgettitlebar-drag-handle'
+            });
+
+            Ember.Handlebars.helper('widgettitlebar-drag-handle', view);
+
+            /**
+             * @class WidgetDropTargetView
+             * @extends Ember.View
+             * @memberOf canopsis.frontend.uibase
+             * @constructor
+             */
+            var view2 = Ember.View.extend({
+                init: function() {
+                    this._super();
+
+                    if(get(this, 'additionnalClass')) {
+                        get(this, 'classNames').pushObject(get(this, 'additionnalClass'));
+                    }
+                },
+
+                classNames: ['dropTarget'],
+
+                dropWidget: function(event) {
+                    console.log('dropped', arguments, dragOrigin, get(this, 'insertAtIndex'));
+                    var originItems = get(dragOriginContainerController, 'items.content');
+                    console.log('items', originItems);
+
+                    var removedIndex;
+                    var insertAtIndex = get(this, 'insertAtIndex');
+                    for (var i = 0, l = originItems.length; i < l; i++) {
+                        // console.log(get(widgetController, 'content.items.content')[i]);
+
+                        if (get(originItems[i], 'widget') === get(dragOrigin, 'widget')) {
+                            originItems.removeAt(i);
+                            console.log('deleteRecord ok');
+                            removedIndex = i;
+                            break;
+                        }
+                    }
+                    var destination = get(this, 'controller');
+                    console.log('))))', insertAtIndex, get(destination, 'items.content').length );
+                    if(insertAtIndex >  get(destination, 'items.content').length) {
+                        insertAtIndex = get(destination, 'items.content').length;
+                    }
+                    get(destination, 'items.content').insertAt(insertAtIndex, dragOrigin);
+
+                    get(this, 'controller.viewController.content').save();
+
+                    event.preventDefault();
+                    return false;
+                },
+                templateName: 'widget-drop-target'
+            });
+
+            Ember.Handlebars.helper('widget-drop-target', view2);
             application.register('view:widgettitlebar-drag-handle', view);
         }
     });
-
-    return view;
 });
