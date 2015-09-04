@@ -1,5 +1,6 @@
 <div>
     {{#each item in controller.items}}
+        {{widget-drop-target insertAtIndex=_view.contentIndex additionnalClass="verticalDropTarget"}}
         {{#if item.classValue}}
             <div {{bind-attr class="item.classValue"}} >
                 {{widgetslot item=item}}
@@ -10,5 +11,6 @@
             </div>
         {{/if}}
     {{/each}}
+    {{widget-drop-target insertAtIndex=controller.model.items.length additionnalClass="verticalDropTarget"}}
     <div style="clear:both"></div>
 </div>
