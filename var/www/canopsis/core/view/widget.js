@@ -57,7 +57,6 @@ define([
 
                         mixinOptions[currentName] = mixinsNames[i];
 
-                        if(isNone(mixinsregistry.getByName(currentName))) debugger;
                         var currentClass = mixinsregistry.getByName(currentName).EmberClass;
                         console.log('find mixin', currentName, currentClass);
 
