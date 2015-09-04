@@ -124,6 +124,7 @@ def get_records(ws, namespace, ctype=None, _id=None, **params):
             return HTTPError(404, 'IDs not found: {0}'.format(ids))
 
     else:
+        ws.logger.info('toto')
         records, total = ws.db.find(
             mfilter,
             sort=msort,
@@ -132,6 +133,7 @@ def get_records(ws, namespace, ctype=None, _id=None, **params):
             with_total=True,
             namespace=namespace
         )
+        ws.logger.info('value of total', total)
 
     # Generate output
     output = []
@@ -337,6 +339,7 @@ def exports(ws):
             return HTTPError(500, 'Impossible to parse body: {0}'.format(err))
 
         return save_records(ws, namespace, ctype, _id, items)
+
     @route(ws.application.delete, raw_body=True, adapt=False)
     def rest(namespace, ctype, _id=None, body='[]'):
         try:
