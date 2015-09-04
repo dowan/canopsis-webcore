@@ -28,8 +28,7 @@
 
         {{#if isExecJob}}
             <label>{{tr 'Target job'}}</label>
-            {{input class="form-control" value=jobid}}
-            {{component-stringclassifiedcrecordselector crecordtype="job" modelfilter="{\"jtype\":\"notification\"}" valueKey="id" nameKey="crecord_name" content=jobid}}
+            {{component-stringclassifiedcrecordselector crecordtype="job" modelfilter="{\"jtype\":\"notification\"}" valueKey="id" nameKey="crecord_name" selection=jobid}}
         {{/if}}
     </div>
 
