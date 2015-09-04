@@ -107,7 +107,6 @@ Ember.Application.initializer({
             var controller = get(viewMixin, 'controller');
 
             var shownColumns = get(controller, 'shown_columns');
-            if(Em.isNone(shownColumns)) debugger;
             for (var i = 0, l = shownColumns.length; i < shownColumns.length; i++) {
                 set(shownColumns[i], 'width', this.$('th.' + shownColumns[i].field).width());
                 set(shownColumns[i], 'index', i);

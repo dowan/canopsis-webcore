@@ -22,7 +22,7 @@ Ember.Application.initializer({
     after: ['FormFactory', 'ModelForm'],
     initialize: function(container, application) {
         var FormFactory = container.lookupFactory('factory:form');
-        var ModelFormController = container.lookupFactory('form:model');
+        var ModelFormController = container.lookupFactory('form:modelform');
 
         var formOptions = {
             subclass: ModelFormController

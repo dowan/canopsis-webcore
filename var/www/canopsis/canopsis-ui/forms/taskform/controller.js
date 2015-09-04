@@ -22,7 +22,7 @@ Ember.Application.initializer({
     after: ['FormFactory', 'ModelForm', 'FormsUtils'],
     initialize: function(container, application) {
         var FormFactory = container.lookupFactory('factory:form');
-        var ModelFormController = container.lookupFactory('form:model');
+        var ModelFormController = container.lookupFactory('form:modelform');
         var formsUtils = container.lookupFactory('utility:forms');
 
         var get = Ember.get,
