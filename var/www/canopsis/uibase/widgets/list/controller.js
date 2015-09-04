@@ -91,7 +91,7 @@ Ember.Application.initializer({
                     }
 
                     if(shown_columns === undefined || shown_columns.length === 0) {
-                        return undefined;
+                        return "<td> No column available to display. </td>";
                     }
 
                     for (var i = 0, l = shown_columns.length; i < l; i++) {
@@ -282,7 +282,7 @@ Ember.Application.initializer({
                         for (var i = 0, li = sorted_columns.length; i < li; i++) {
                             if (attributesKeysDict[sorted_columns[i]] !== undefined) {
                                 set(attributesKeysDict[sorted_columns[i]].options, 'show', true);
-                                shown_columns.push(attributesKeysDict[sorted_columns[i]]);
+                                shown_columns.pushObject(attributesKeysDict[sorted_columns[i]]);
                             }
                         }
                     } else {
@@ -349,7 +349,6 @@ Ember.Application.initializer({
                         if(oldTemplateName) {
                             delete Ember.TEMPLATES[oldTemplateName];
                         }
-
                         var dynamicTemplateName = 'dynamic-list' + Math.floor(Math.random() * 10000);
 
                         Ember.TEMPLATES[dynamicTemplateName] = tpl;

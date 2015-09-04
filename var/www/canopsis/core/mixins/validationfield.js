@@ -38,9 +38,6 @@ Ember.Application.initializer({
             attr : "",
 
             init: function(){
-                var form  =  formsregistry.formwrapper.form;
-                set(this, 'form', form );
-
                 var attributes = this.attr || this.content;
                 set(this, "attr", attributes);
 

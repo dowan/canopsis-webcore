@@ -27,8 +27,7 @@ Ember.Application.initializer({
             attributesKeys: function() {
                 var attributes = [];
 
-                var attributesDict = this.get('inspectedDataArray.type.attributes.values');
-                console.log("attributesDict", attributesDict);
+                var attributesDict = Ember.get(this, 'inspectedDataArray.type.attributes._values');
 
                 for (var key in attributesDict) {
                     var attr = attributesDict[key];
