@@ -22,85 +22,82 @@ define([
     'canopsis/uibase/helpers/json2html'
 ], function(json2html) {
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone,
-        __ = Ember.String.loc;
-
-
-    var component = Ember.Component.extend({
-        init: function() {
-            this._super();
-
-            var propertieslist;
-            try{
-                propertieslist = JSON.parse(get(this, 'properties'));
-                if (!Ember.isArray(propertieslist)) {
-                    throw 'Not an array';
-                }
-            }catch(err) {
-                console.warn('Unable to parse properties list');
-                propertieslist = [];
-            }
-            set(this, 'propertieslist', propertieslist);
-        },
-
-        propertiesAsHtml: function(){
-            //Generate a html rendering for choosen data in the properties list
-            var propertieslist = get(this, 'propertieslist');
-            var length = propertieslist.length;
-            var source = get(this, 'source');
-
-            if (isNone(source)) {
-                return '';
-            } else {
-                var data,
-                    i;
-                if (get(this, 'propertiesOnly')) {
-                    data = [];
-                } else {
-                    data = {};
-                }
-                for (i=0; i<length; i++) {
-                    var value = get(source, propertieslist[i]);
-                    //When data found
-                    if (!isNone(value)) {
-                        if (get(this, 'propertiesOnly')) {
-                            data.push(value);
-                        } else {
-                            data[propertieslist[i]] = value;
-                        }
-                    }
-                }
-                var html = json2html(data);
-                if(get(this, 'htmlOnly')) {
-                    return html;
-                } else {
-                    return html.toString();
-                }
-            }
-
-        }.property(),
-
-        icon: function () {
-            // allow set custom icon in the span display
-            var icon = get(this, 'customIcon');
-            if (isNone(icon)) {
-                return 'glyphicon-eye-open';
-            } else {
-                return icon;
-            }
-        }.property(),
-
-    });
-
 
     Ember.Application.initializer({
         name:"component-propertiestopopup",
         initialize: function(container, application) {
+            var get = Ember.get,
+                set = Ember.set,
+                isNone = Ember.isNone,
+                __ = Ember.String.loc;
+
+
+            var component = Ember.Component.extend({
+                init: function() {
+                    this._super();
+
+                    var propertieslist;
+                    try{
+                        propertieslist = JSON.parse(get(this, 'properties'));
+                        if (!Ember.isArray(propertieslist)) {
+                            throw 'Not an array';
+                        }
+                    }catch(err) {
+                        console.warn('Unable to parse properties list');
+                        propertieslist = [];
+                    }
+                    set(this, 'propertieslist', propertieslist);
+                },
+
+                propertiesAsHtml: function(){
+                    //Generate a html rendering for choosen data in the properties list
+                    var propertieslist = get(this, 'propertieslist');
+                    var length = propertieslist.length;
+                    var source = get(this, 'source');
+
+                    if (isNone(source)) {
+                        return '';
+                    } else {
+                        var data,
+                            i;
+                        if (get(this, 'propertiesOnly')) {
+                            data = [];
+                        } else {
+                            data = {};
+                        }
+                        for (i=0; i<length; i++) {
+                            var value = get(source, propertieslist[i]);
+                            //When data found
+                            if (!isNone(value)) {
+                                if (get(this, 'propertiesOnly')) {
+                                    data.push(value);
+                                } else {
+                                    data[propertieslist[i]] = value;
+                                }
+                            }
+                        }
+                        var html = json2html(data);
+                        if(get(this, 'htmlOnly')) {
+                            return html;
+                        } else {
+                            return html.toString();
+                        }
+                    }
+
+                }.property(),
+
+                icon: function () {
+                    // allow set custom icon in the span display
+                    var icon = get(this, 'customIcon');
+                    if (isNone(icon)) {
+                        return 'glyphicon-eye-open';
+                    } else {
+                        return icon;
+                    }
+                }.property(),
+
+            });
             application.register('component:component-propertiestopopup', component);
         }
     });
-
-    return component;
 });

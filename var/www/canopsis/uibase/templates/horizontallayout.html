@@ -3,7 +3,7 @@
         {{widget-drop-target insertAtIndex=_view.contentIndex additionnalClass="verticalDropTarget"}}
 
         <div {{bind-attr class="controller.section"}} >
-            {{widgetslot item=item}}
+            {{!widgetslot item=item}}
         </div>
     {{/each}}
     {{widget-drop-target insertAtIndex=controller.model.items.length additionnalClass="verticalDropTarget"}}

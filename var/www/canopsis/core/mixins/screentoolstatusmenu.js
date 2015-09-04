@@ -15,49 +15,49 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/factories/mixin',
-], function(Mixin) {
+Ember.Application.initializer({
+    name:'ScreentoolstatusmenuMixin',
+    after: 'MixinFactory',
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
 
-    /**
-     * Mixin allowing to virtually resize the screen, adding a dedicated statusbar button into the app statusbar only in debug mode
-     *
-     * @class ScreentoolstatusmenuMixin
-     * @extensionfor ApplicationController
-     * @static
-     */
-    var mixin = Mixin('Screentoolstatusmenu', {
+        /**
+         * Mixin allowing to virtually resize the screen, adding a dedicated statusbar button into the app statusbar only in debug mode
+         *
+         * @class ScreentoolstatusmenuMixin
+         * @extensionfor ApplicationController
+         * @static
+         */
+        var mixin = Mixin('Screentoolstatusmenu', {
 
-        init: function() {
-            this.partials.statusbar.pushObject('screentoolstatusmenu');
-            this._super();
-        },
+            init: function() {
+                this.partials.statusbar.pushObject('screentoolstatusmenu');
+                this._super();
+            },
 
-        actions: {
-            /**
-             * Change the size of the screen by resizing the body tag
-             *
-             * @event changeScreenSize
-             * @param {String} size The size of the screen
-             */
-            changeScreenSize: function (size) {
-                var cssSize = {
-                    small: '480px',
-                    medium: '940px',
-                    large: '100%',
-                }[size];
+            actions: {
+                /**
+                 * Change the size of the screen by resizing the body tag
+                 *
+                 * @event changeScreenSize
+                 * @param {String} size The size of the screen
+                 */
+                changeScreenSize: function (size) {
+                    var cssSize = {
+                        small: '480px',
+                        medium: '940px',
+                        large: '100%',
+                    }[size];
 
-                $('body').animate({
-                    width: cssSize
-                });
+                    $('body').animate({
+                        width: cssSize
+                    });
+                }
             }
-        }
-    });
+        });
 
-
-    return mixin;
+        application.register('mixin:screentoolstatusmenu', mixin);
+    }
 });

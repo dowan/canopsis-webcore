@@ -15,116 +15,119 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/utils/forms',
-    'app/lib/factories/mixin'
-], function(formUtils , Mixin) {
 
-    var get = Ember.get,
-        set = Ember.set;
+Ember.Application.initializer({
+    name: 'ValidationMixin',
+    after: ['MixinFactory', 'FormsUtils'],
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
+        var formUtils = container.lookupFactory('utility:forms');
 
-    /**
-     * Implements Validation in form
-     * You should define on the validationFields
-     * @mixin
-     */
-    var mixin = Mixin('validation', {
+        var formUtils;
 
-        validationFields: function() {
-            console.warn("Property \"validationFields\" must be defined on the concrete class.");
+        var get = Ember.get,
+            set = Ember.set;
 
-            return "<validationFields is null>";
-        },
+        /**
+         * Implements Validation in form
+         * You should define on the validationFields
+         * @mixin
+         */
+        var mixin = Mixin('validation', {
 
-        changeTAB: function( name , active){
-            var toFind = "#" + name + "_tab";
-            if(active)
-                $(toFind).addClass("active");
-            else
-                $(toFind).removeClass("active");
+            validationFields: function() {
+                console.warn("Property \"validationFields\" must be defined on the concrete class.");
+
+                return "<validationFields is null>";
+            },
+
+            changeTAB: function( name , active){
+                var toFind = "#" + name + "_tab";
+                if(active)
+                    $(toFind).addClass("active");
+                else
+                    $(toFind).removeClass("active");
 
 
-            var id = "#" + name;
-            if(active)
-                $(id).addClass("active");
-            else
-                $(id).removeClass("active");
-        },
+                var id = "#" + name;
+                if(active)
+                    $(id).addClass("active");
+                else
+                    $(id).removeClass("active");
+            },
 
-        set_tab: function(last_field_error){
-            var categories = this.categories,
-                i,
-                current;
+            set_tab: function(last_field_error){
+                var categories = this.categories,
+                    i,
+                    current;
 
-            for (i = 0 ; i < categories.length ; i++){
-                current = categories[i];
-                this.changeTAB( current.slug , false );
-                Ember.set(current, "isDefault", false);
-            }
-    outer:  for (i = 0 ; i < categories.length ; i++){
-                current = categories[i];
-
-                for (var j = 0 ; j < current.keys.length ; j++){
-                    var key = current.keys[j];
-                    var field = key.field;
-
-                    if (field === last_field_error ){
-                        this.changeTAB( current.slug , true );
-                        Ember.set(current, "isDefault", true);
-
-                        break outer;
-                    }
+                for (i = 0 ; i < categories.length ; i++){
+                    current = categories[i];
+                    this.changeTAB( current.slug , false );
+                    Ember.set(current, "isDefault", false);
                 }
-            }
-        },
+        outer:  for (i = 0 ; i < categories.length ; i++){
+                    current = categories[i];
 
-        empty_validationFields: function() {
-            set(this, 'validationFields' , Ember.A() );
-        },
+                    for (var j = 0 ; j < current.keys.length ; j++){
+                        var key = current.keys[j];
+                        var field = key.field;
 
-        validation: function() {
-            console.group("Form validation");
+                        if (field === last_field_error ){
+                            this.changeTAB( current.slug , true );
+                            Ember.set(current, "isDefault", true);
 
-            var validationFields = get(this, "validationFields");
-            var isValid = true;
-            var error_array = [];
-            var last_field_error = "";
-            var form = this;
-
-            if (validationFields) {
-                for (var z = 0, l = validationFields.length; z < l; z++) {
-                    console.log("check if field is valid", get(validationFields[z], 'attr.field'));
-                    var current = validationFields[z].validate();
-
-                    if (current.valid !== true) {
-                        error_array.push(current);
-                        console.log("Attribute not valid", validationFields[z]);
-                        last_field_error = validationFields[z].attr.field || validationFields[z].attr.parent.attr.field;
-                        isValid =  false ;
-
-                        if (validationFields[z].removedFromDOM){
-                            //var form = validationFields[z].get('form');
-                            form.validateOnInsert = true;
-                            formUtils.showInstance(form);
-                            break;
+                            break outer;
                         }
                     }
                 }
+            },
+
+            empty_validationFields: function() {
+                set(this, 'validationFields' , Ember.A() );
+            },
+
+            validation: function() {
+                console.group("Form validation");
+
+                var validationFields = get(this, "validationFields");
+                var isValid = true;
+                var error_array = [];
+                var last_field_error = "";
+                var form = this;
+
+                if (validationFields) {
+                    for (var z = 0, l = validationFields.length; z < l; z++) {
+                        console.log("check if field is valid", get(validationFields[z], 'attr.field'));
+                        var current = validationFields[z].validate();
+
+                        if (current.valid !== true) {
+                            error_array.push(current);
+                            console.log("Attribute not valid", validationFields[z]);
+                            last_field_error = validationFields[z].attr.field || validationFields[z].attr.parent.attr.field;
+                            isValid =  false ;
+
+                            if (validationFields[z].removedFromDOM){
+                                //var form = validationFields[z].get('form');
+                                form.validateOnInsert = true;
+                                formUtils.showInstance(form);
+                                break;
+                            }
+                        }
+                    }
+                }
+                if( !isValid ){
+                    console.log('form not valid');
+                    this.set_tab(last_field_error);
+                }
+
+                console.groupEnd();
+                return isValid;
             }
-            if( !isValid ){
-                console.log('form not valid');
-                this.set_tab(last_field_error);
-            }
+        });
 
-            console.groupEnd();
-            return isValid;
-        }
-    });
-
-
-    return mixin;
+        application.register('mixin:validation', mixin);
+    }
 });

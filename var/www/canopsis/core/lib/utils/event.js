@@ -15,46 +15,41 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/utilityclass'
-], function(Utility) {
 
-    var get = Ember.get,
-        set = Ember.set,
-        __ = Ember.String.loc,
-        isNone = Ember.isNone;
+Ember.Application.initializer({
+    name: 'EventUtils',
+    after: ['UtilityClass'],
+    initialize: function(container, application) {
+        var Utility = container.lookupFactory('class:utility');
 
-    //TODO delete this, as it looks more like a registry than an util
-    var eventUtil= Utility.create({
+        var get = Ember.get,
+            set = Ember.set,
+            __ = Ember.String.loc,
+            isNone = Ember.isNone;
 
-        name: 'event',
+        //TODO delete this, as it looks more like a registry than an util
+        var eventUtil= Utility.create({
 
-        getFields: function() {
-            return [
-                'connector',
-                'connector_name',
-                'component',
-                'resource',
-                'perimeter',
-                'domain',
-                'state',
-                'status',
-                'timestamp',
-                'output'
-            ];
-        },
-    });
+            name: 'event',
 
-    Ember.Application.initializer({
-        name:"EventUtils",
-        initialize: function(container, application) {
-            application.register('utility:event', eventUtil);
-        }
-    });
+            getFields: function() {
+                return [
+                    'connector',
+                    'connector_name',
+                    'component',
+                    'resource',
+                    'perimeter',
+                    'domain',
+                    'state',
+                    'status',
+                    'timestamp',
+                    'output'
+                ];
+            },
+        });
 
-    return eventUtil;
+        application.register('utility:event', eventUtil);
+    }
 });

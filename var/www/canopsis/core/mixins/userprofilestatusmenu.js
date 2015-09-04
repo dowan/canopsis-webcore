@@ -15,97 +15,95 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/factories/mixin',
-    'app/lib/requirejsmocksmanager',
-    'app/lib/loaders/utils',
-    'app/lib/utils/forms',
-    'app/lib/utils/data',
-    'app/lib/utils/notification'
-], function(Mixin, requirejsmocksmanager, utils, formsUtils, dataUtils, notificationUtils) {
+Ember.Application.initializer({
+    name:'UserprofilestatusmenuMixin',
+    after: ['MixinFactory', 'FormsUtils', 'DataUtils', 'NotificationUtils'],
+    initialize: function(container, application) {
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+        var Mixin = container.lookupFactory('factory:mixin');
 
-   /**
-     * Mixin allowing to manage the current user profile, adding a button into the app status bar
-     *
-     * @class UserprofilestatusmenuMixin
-     * @extensionfor ApplicationController
-     * @static
-     */
-    var mixin = Mixin('Userprofilestatusmenu', {
+        var formsUtils = container.lookupFactory('utility:forms');
+        var dataUtils = container.lookupFactory('utility:data');
+        var notificationUtils = container.lookupFactory('utility:notification');
 
-        requirejsmocksmanager: requirejsmocksmanager,
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
-        init: function() {
-            if (!isNone(this.partials.statusbar)) {
-                this.partials.statusbar.pushObject('userstatusmenu');
-            }
-            this._super();
-        },
+       /**
+         * Mixin allowing to manage the current user profile, adding a button into the app status bar
+         *
+         * @class UserprofilestatusmenuMixin
+         * @extensionfor ApplicationController
+         * @static
+         */
+        var mixin = Mixin('Userprofilestatusmenu', {
 
-        actions: {
-            /**
-             * @event showUserProfile
-             * @descriptions Shows a Modelform with the user profile
-             */
-            showUserProfile: function () {
-                var applicationController = this;
-
-                var ouser = get(this, 'controllers.login.record');
-                var recordWizard = formsUtils.showNew('modelform', ouser, {
-                    title: get(ouser, '_id') + ' ' + __('profile'),
-                    filterFieldByKey: {
-                        firstname: {readOnly: true},
-                        lastname: {readOnly: true},
-                        authkey: {readOnly: true},
-                        ui_language: true,
-                        mail: true,
-                        userpreferences: true,
-                    }
-                });
-
-                recordWizard.submit.then(function(form) {
-                    console.group('submit form:', form);
-
-                    //generated data by user form fill
-                    var editedUser = form.get('formContext');
-                    console.log('save record:', editedUser);
-
-                    set(editedUser, 'crecord_type', 'user');
-
-                    editedUser.id= editedUser._id;
-
-                    var editedUserRecord = dataUtils.getStore().createRecord('user', editedUser);
-
-                    editedUserRecord.save();
-
-                    notificationUtils.info(__('profile') + ' ' +__('updated'));
-
-                    uilang = get(editedUser, 'ui_language');
-                    ouilang = get(ouser, 'ui_language');
-
-                    console.log('Lang:', uilang, ouilang);
-                    if (uilang !== ouilang) {
-                        console.log('Language changed, will prompt for application reload');
-                        applicationController.send(
-                            'promptReloadApplication',
-                            'Interface language has changed, reload canopsis to apply changes ?'
-                        );
-                    }
-
-                    console.groupEnd();
-                });
+            init: function() {
+                if (!isNone(this.partials.statusbar)) {
+                    this.partials.statusbar.pushObject('userstatusmenu');
+                }
+                this._super();
             },
-        }
-    });
 
+            actions: {
+                /**
+                 * @event showUserProfile
+                 * @descriptions Shows a Modelform with the user profile
+                 */
+                showUserProfile: function () {
+                    var applicationController = this;
 
-    return mixin;
+                    var ouser = get(this, 'controllers.login.record');
+                    var recordWizard = formsUtils.showNew('modelform', ouser, {
+                        title: get(ouser, '_id') + ' ' + __('profile'),
+                        filterFieldByKey: {
+                            firstname: {readOnly: true},
+                            lastname: {readOnly: true},
+                            authkey: {readOnly: true},
+                            ui_language: true,
+                            mail: true,
+                            userpreferences: true,
+                        }
+                    });
+
+                    recordWizard.submit.then(function(form) {
+                        console.group('submit form:', form);
+
+                        //generated data by user form fill
+                        var editedUser = form.get('formContext');
+                        console.log('save record:', editedUser);
+
+                        set(editedUser, 'crecord_type', 'user');
+
+                        editedUser.id= editedUser._id;
+
+                        var editedUserRecord = dataUtils.getStore().createRecord('user', editedUser);
+
+                        editedUserRecord.save();
+
+                        notificationUtils.info(__('profile') + ' ' +__('updated'));
+
+                        uilang = get(editedUser, 'ui_language');
+                        ouilang = get(ouser, 'ui_language');
+
+                        console.log('Lang:', uilang, ouilang);
+                        if (uilang !== ouilang) {
+                            console.log('Language changed, will prompt for application reload');
+                            applicationController.send(
+                                'promptReloadApplication',
+                                'Interface language has changed, reload canopsis to apply changes ?'
+                            );
+                        }
+
+                        console.groupEnd();
+                    });
+                },
+            }
+        });
+
+        application.register('mixin:userprofilestatusmenu', mixin);
+    }
 });

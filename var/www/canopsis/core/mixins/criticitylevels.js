@@ -15,58 +15,59 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/factories/mixin'
-], function(Mixin) {
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+Ember.Application.initializer({
+    name:'CriticitylevelsMixin',
+    after: 'MixinFactory',
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
 
-    /**
-      Implements criticity levels in ArrayControllers
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
-      You should define on the ArrayController:
-          - the `findOptions` property
-          - the `findItems()` method
+        /**
+          Implements criticity levels in ArrayControllers
 
-    */
-    var mixin = Mixin('criticitylevels', {
+          You should define on the ArrayController:
+              - the `findOptions` property
+              - the `findItems()` method
 
-        init:function () {
+        */
+        var mixin = Mixin('criticitylevels', {
 
-            var mixinsOptions = get(this, 'content.mixins');
+            init:function () {
 
-            if(mixinsOptions) {
-                var criticitylevelsOptions = get(this, 'content.mixins').findBy('name', 'criticitylevels');
-                this.mixinOptions.criticitylevels = criticitylevelsOptions;
+                var mixinsOptions = get(this, 'content.mixins');
+
+                if(mixinsOptions) {
+                    var criticitylevelsOptions = get(this, 'content.mixins').findBy('name', 'criticitylevels');
+                    this.mixinOptions.criticitylevels = criticitylevelsOptions;
+                }
+
+                this._super();
+
+                set(this, 'warn_value', get(this, 'mixinOptions.criticitylevels.warn_value'));
+                set(this, 'crit_value', get(this, 'mixinOptions.criticitylevels.crit_value'));
+                set(this, 'unit_or_percent', get(this, 'mixinOptions.criticitylevels.unit_or_percent'));
+                set(this, 'standard_color', get(this, 'mixinOptions.criticitylevels.standard_color'));
+                set(this, 'warn_color', get(this, 'mixinOptions.criticitylevels.warn_color'));
+                set(this, 'critic_color', get(this, 'mixinOptions.criticitylevels.critic_color'));
+
+                if(isNone(get(this, 'background_color'))){
+                    set(this, 'background_color', '#3c8dbc');
+                }
+                if(isNone(get(this, 'warn_color'))){
+                    set(this, 'warn_color', '#f39c12');
+                }
+                if(isNone(get(this, 'critic_color'))){
+                    set(this, 'critic_color', '#f56954');
+                }
+
             }
-
-            this._super();
-
-            set(this, 'warn_value', get(this, 'mixinOptions.criticitylevels.warn_value'));
-            set(this, 'crit_value', get(this, 'mixinOptions.criticitylevels.crit_value'));
-            set(this, 'unit_or_percent', get(this, 'mixinOptions.criticitylevels.unit_or_percent'));
-            set(this, 'standard_color', get(this, 'mixinOptions.criticitylevels.standard_color'));
-            set(this, 'warn_color', get(this, 'mixinOptions.criticitylevels.warn_color'));
-            set(this, 'critic_color', get(this, 'mixinOptions.criticitylevels.critic_color'));
-
-            if(isNone(get(this, 'background_color'))){
-                set(this, 'background_color', '#3c8dbc');
-            }
-            if(isNone(get(this, 'warn_color'))){
-                set(this, 'warn_color', '#f39c12');
-            }
-            if(isNone(get(this, 'critic_color'))){
-                set(this, 'critic_color', '#f56954');
-            }
-
-        }
-    });
-
-    return mixin;
+        });
+        application.register('mixin:criticitylevels', mixin);
+    }
 });

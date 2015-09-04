@@ -17,32 +17,28 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([
-    'app/lib/abstractclassregistry'
-], function(Abstractclassregistry) {
+Ember.Application.initializer({
+    name: 'MixinsRegistry',
+    after: 'AbstractClassRegistry',
+    initialize: function(container, application) {
+        var Abstractclassregistry = container.lookupFactory('registry:abstractclass');
 
-    /**
-     * Mixins Registry
-     *
-     * @class MixinsRegistry
-     * @memberOf canopsis.frontend.core
-     * @extends Abstractclassregistry
-     * @static
-     */
-    var registry = Abstractclassregistry.create({
-        name: 'mixins',
+        /**
+         * Mixins Registry
+         *
+         * @class MixinsRegistry
+         * @memberOf canopsis.frontend.core
+         * @extends Abstractclassregistry
+         * @static
+         */
+        var registry = Abstractclassregistry.create({
+            name: 'mixins',
 
-        all: [],
-        byClass: {},
-        tableColumns: [{title: 'name', name: 'name'}]
-    });
+            all: [],
+            byClass: {},
+            tableColumns: [{title: 'name', name: 'name'}]
+        });
 
-    Ember.Application.initializer({
-        name:"MixinsRegistry",
-        initialize: function(container, application) {
-            application.register('registry:mixins', registry);
-        }
-    });
-
-    return registry;
+        application.register('registry:mixins', registry);
+    }
 });

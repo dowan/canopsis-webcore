@@ -15,25 +15,16 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
- define([
-  'app/mixins/validationfield'
-], function(ValidationFieldMixin) {
+Ember.Application.initializer({
+    name:"component-validationtextfield",
+    after: 'ValidationFieldMixin',
+    initialize: function(container, application) {
+        var ValidationFieldMixin = container.lookupFactory('mixin:validation-field');
+        //TODO move this to components dir
 
-
-    //TODO move this to components dir
-
-    var component = Ember.TextField.extend(ValidationFieldMixin, {});
-
-    Ember.Application.initializer({
-        name:"component-validationtextfield",
-        initialize: function(container, application) {
-            application.register('component:component-validationtextfield', component);
-        }
-    });
-
-    return component;
+        var component = Ember.TextField.extend(ValidationFieldMixin, {});
+        application.register('component:component-validationtextfield', component);
+    }
 });

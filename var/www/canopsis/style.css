@@ -313,6 +313,10 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
     background-image: url('/static/canopsis/media/images/bullet_red.png') !important;
 }
 
+.pointer {
+    cursor: pointer;
+}
+
 .handle{
     cursor: move;
 }

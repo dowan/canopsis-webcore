@@ -15,15 +15,9 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([], function() {
-
-    // Helper to render any widget template
-    Ember.Handlebars.registerBoundHelper('renderWidget',function(callingContext, widget, options) {
-        return Ember.Handlebars.helpers.render.call(callingContext, widget.get('widget_type'), 'widget', options);
-    });
-
+// Helper to render any widget template
+Ember.Handlebars.registerBoundHelper('renderWidget',function(callingContext, widget, options) {
+    return Ember.Handlebars.helpers.render.call(callingContext, widget.get('widget_type'), 'widget', options);
 });

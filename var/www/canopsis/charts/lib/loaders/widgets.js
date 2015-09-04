@@ -18,7 +18,8 @@
 */
 
 var widgets = [
-    { name:'timegraph', url:'canopsis/charts/widgets/timegraph/controller', template:'canopsis/charts/widgets/timegraph/template.html'}
+    { name:'timegraph', url:'canopsis/charts/widgets/timegraph/controller', template:'canopsis/charts/widgets/timegraph/template.html'},
+    { name:'categorychart', url:'canopsis/charts/widgets/categorychart/controller', template:'canopsis/charts/widgets/categorychart/template.hbs'}
 ];
 
 loader.loadWithTemplates(widgets);

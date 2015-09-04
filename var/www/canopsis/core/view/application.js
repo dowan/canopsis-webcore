@@ -15,42 +15,34 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/controller/application'
-], function(ApplicationController) {
+Ember.Application.initializer({
+    name: 'ApplicationView',
+    initialize: function(container, application) {
 
-    var get = Ember.get,
-        set = Ember.set;
+        var get = Ember.get,
+            set = Ember.set;
 
-    /**
-     * @class ApplicationView
-     * @extends Ember.View
-     * @constructor
-     */
-    var view = Ember.View.extend({
         /**
-         * @property rightSideCssClasses
-         * the css class of the main container
+         * @class ApplicationView
+         * @extends Ember.View
+         * @constructor
          */
-        rightSideCssClasses: function(){
-            if(get(this, 'controller.fullscreenMode')) {
-                return 'right-side strech fullscreen';
-            } else {
-                return 'right-side strech';
-            }
-        }.property('controller.fullscreenMode')
-    });
+        var view = Ember.View.extend({
+            /**
+             * @property rightSideCssClasses
+             * the css class of the main container
+             */
+            rightSideCssClasses: function(){
+                if(get(this, 'controller.fullscreenMode')) {
+                    return 'right-side strech fullscreen';
+                } else {
+                    return 'right-side strech';
+                }
+            }.property('controller.fullscreenMode')
+        });
 
-    Ember.Application.initializer({
-        name: 'ApplicationView',
-        initialize: function(container, application) {
-            application.register('view:application', view);
-        }
-    });
-
-    return view;
+        application.register('view:application', view);
+    }
 });

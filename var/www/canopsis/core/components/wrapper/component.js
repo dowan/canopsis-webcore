@@ -15,88 +15,82 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
-define([], function() {
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
-
-    /**
-     * @class WrapperComponent
-     */
-    var component = Ember.Component.extend({
-        /**
-         * @property tagName
-         * @type string
-         */
-        tagName: 'span',
+Ember.Application.initializer({
+    name: 'component-wrapper',
+    initialize: function(container, application) {
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
         /**
-         * @method init
+         * @class WrapperComponent
          */
-        init: function() {
-            this._super();
-            console.log("init wrapper component");
-            console.log("wrapper component type", get(this, 'editor-type'));
-            //mock attr
-            set(this, 'attr', {
-                model: {
-                    options:{}
+        var component = Ember.Component.extend({
+            /**
+             * @property tagName
+             * @type string
+             */
+            tagName: 'span',
+
+            /**
+             * @method init
+             */
+            init: function() {
+                this._super();
+                console.log("init wrapper component");
+                console.log("wrapper component type", get(this, 'editor-type'));
+                //mock attr
+                set(this, 'attr', {
+                    model: {
+                        options:{}
+                    }
+                });
+            },
+
+            /**
+             * @method onContentUpdate
+             */
+            onContentUpdate: function(){
+
+                var callback = get(this, 'callback');
+
+                var referer = get(this, 'referer');
+
+                if (isNone(referer)) {
+                    console.warn('Referer not defined in component template. callbacks cannot work');
                 }
-            });
-        },
 
-        /**
-         * @method onContentUpdate
-         */
-        onContentUpdate: function(){
+                if (!isNone(callback)) {
+                    callback(get(this, 'attr.value'), referer);
+                } else {
+                    console.log('Callback is not valid : ', callback, this);
+                }
 
-            var callback = get(this, 'callback');
+            }.observes('attr.value'),
 
-            var referer = get(this, 'referer');
+            /**
+             * @property editorType
+             * @type string
+             */
+            editorType: function() {
 
-            if (isNone(referer)) {
-                console.warn('Referer not defined in component template. callbacks cannot work');
-            }
+                var type = get(this, 'editor-type');
 
-            if (!isNone(callback)) {
-                callback(get(this, 'attr.value'), referer);
-            } else {
-                console.log('Callback is not valid : ', callback, this);
-            }
+                console.log('editor-type:', type);
 
-        }.observes('attr.value'),
+                var editorName = 'editor-' + type;
 
-        /**
-         * @property editorType
-         * @type string
-         */
-        editorType: function() {
+                if (Ember.TEMPLATES[editorName] === undefined) {
+                    editorName = 'editor-defaultpropertyeditor';
+                }
 
-            var type = get(this, 'editor-type');
+                return editorName;
 
-            console.log('editor-type:', type);
+            }.property('editor-type'),
+        });
 
-            var editorName = 'editor-' + type;
-
-            if (Ember.TEMPLATES[editorName] === undefined) {
-                editorName = 'editor-defaultpropertyeditor';
-            }
-
-            return editorName;
-
-        }.property('editor-type'),
-    });
-
-    Ember.Application.initializer({
-        name:"component-wrapper",
-        initialize: function(container, application) {
-            application.register('component:component-wrapper', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-wrapper', component);
+    }
 });
