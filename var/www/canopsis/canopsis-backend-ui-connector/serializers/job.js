@@ -19,7 +19,7 @@
 
 Ember.Application.initializer({
     name: 'JobSerializer',
-    after: 'ApplicationSerializer';
+    after: 'ApplicationSerializer',
     initialize: function(container, application) {
         var ApplicationSerializer = container.lookupFactory('serializer:application');
 
