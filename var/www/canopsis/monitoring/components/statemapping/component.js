@@ -29,7 +29,7 @@ Ember.Application.initializer({
              * Load data into the component when data are received on init
              */
 
-            onData: function () {
+            didInsertElement: function () {
                 var content = get(this, 'content');
                 var initialized = get(this, 'initialized');
 
