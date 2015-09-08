@@ -17,69 +17,66 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([
-    'app/lib/abstractclassregistry'
-], function(Abstractclassregistry) {
-    var get = Ember.get,
-        set = Ember.set;
+Ember.Application.initializer({
+    name: 'PromisesRegistry',
+    after: 'AbstractClassRegistry',
+    initialize: function(container, application) {
+        var Abstractclassregistry = container.lookupFactory('registry:abstractclass');
 
-    var registry = Abstractclassregistry.create({
-        name: 'promises',
+        var get = Ember.get,
+            set = Ember.set;
 
-        all: [],
+        var registry = Abstractclassregistry.create({
+            name: 'promises',
 
-        pending: Ember.A(),
-        errors: Ember.A(),
+            all: [],
 
-        pendingCount: 0,
-        errorsCount: 0,
+            pending: Ember.A(),
+            errors: Ember.A(),
 
-        byClass: {},
+            pendingCount: 0,
+            errorsCount: 0,
 
-        handlePromise: function(promise) {
-            var me = this;
-            Ember.run.schedule('sync', this, function() {
-                me.all.pushObject(promise);
-                me.pending.pushObject(promise);
-                set(me, 'pendingCount', me.pendingCount + 1);
-            });
-        },
+            byClass: {},
 
-        promiseSuccess: function(promise) {
-            console.info('promise success', promise);
-        },
-
-        promiseFail: function(promise) {
-            if(promise._detail !== undefined && promise._detail.status === 200) {
-                console.warn('promise failed with error code 200, assuming it\'s a success');
-                this.promiseSuccess(promise);
-            } else {
-                console.error('promise failed', promise, new Error().stack);
+            handlePromise: function(promise) {
                 var me = this;
                 Ember.run.schedule('sync', this, function() {
-                    console.error('promise failed', promise);
-                    get(me, 'errors').pushObject(promise);
-                    set(me, 'errorsCount', me.errorsCount + 1);
+                    me.all.pushObject(promise);
+                    me.pending.pushObject(promise);
+                    set(me, 'pendingCount', me.pendingCount + 1);
+                });
+            },
+
+            promiseSuccess: function(promise) {
+                console.info('promise success', promise);
+            },
+
+            promiseFail: function(promise) {
+                if(promise._detail !== undefined && promise._detail.status === 200) {
+                    console.warn('promise failed with error code 200, assuming it\'s a success');
+                    this.promiseSuccess(promise);
+                } else {
+                    console.error('promise failed', promise, new Error().stack);
+                    var me = this;
+                    Ember.run.schedule('sync', this, function() {
+                        console.error('promise failed', promise);
+                        get(me, 'errors').pushObject(promise);
+                        set(me, 'errorsCount', me.errorsCount + 1);
+                    });
+                }
+            },
+
+            promiseFinally: function (promise) {
+                var me = this;
+                Ember.run.schedule('sync', this, function() {
+                    console.log('finally');
+                    get(me, 'pending').removeObject(promise);
+                    set(me, 'pendingCount', me.pendingCount - 1);
                 });
             }
-        },
+        });
 
-        promiseFinally: function (promise) {
-            var me = this;
-            Ember.run.schedule('sync', this, function() {
-                console.log('finally');
-                get(me, 'pending').removeObject(promise);
-                set(me, 'pendingCount', me.pendingCount - 1);
-            });
-        }
-    });
-
-    Ember.Application.initializer({
-        name:"PromisesRegistry",
-        initialize: function(container, application) {
-            application.register('registry:promises', registry);
-        }
-    });
-
-    return registry;
+        application.register('registry:promises', registry);
+    }
 });

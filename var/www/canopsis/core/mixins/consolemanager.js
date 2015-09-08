@@ -15,68 +15,70 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/utils/forms',
-    'app/lib/utils/data',
-    'app/lib/factories/mixin'
-], function(formUtils, dataUtils, Mixin) {
+Ember.Application.initializer({
+    name:'ConsolemanagerMixin',
+    after: ['MixinFactory', 'FormsUtils', 'DataUtils'],
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
 
-    var get = Ember.get,
-        set = Ember.set,
-        __ = Ember.String.loc;
+        var formUtils = container.lookupFactory('utility:forms');
+        var dataUtils = container.lookupFactory('utility:data');
+
+        var get = Ember.get,
+            set = Ember.set,
+            __ = Ember.String.loc;
 
 
-    //TODO move this to development brick
-    /**
-     * Mixin allowing console and various js runtime settings
-     *
-     * @class ConsolemanagerMixin
-     * @extensionfor ApplicationController
-     * @static
-     */
-    var mixin = Mixin('consolemanager', {
-        init: function() {
-            this.partials.statusbar.pushObject('consolemanagerstatusmenu' );
-            this._super();
-        },
+        //TODO move this to development brick
+        /**
+         * Mixin allowing console and various js runtime settings
+         *
+         * @class ConsolemanagerMixin
+         * @extensionfor ApplicationController
+         * @static
+         */
+        var mixin = Mixin('consolemanager', {
+            init: function() {
+                this.partials.statusbar.pushObject('consolemanagerstatusmenu' );
+                this._super();
+            },
 
-        actions: {
-            /**
-             * Shows a form to edit runtime settings
-             *
-             * @event showConsoleSettings
-             */
-            showConsoleSettings: function(){
-                var jsruntimeconfigrecord = dataUtils.getStore().createRecord('jsruntimeconfiguration', {
-                    id: 0,
-                    selected_tags: window.console.tags._selectedTags,
-                    colors: window.console.style._colors
-                });
+            actions: {
+                /**
+                 * Shows a form to edit runtime settings
+                 *
+                 * @event showConsoleSettings
+                 */
+                showConsoleSettings: function(){
+                    var jsruntimeconfigrecord = dataUtils.getStore().createRecord('jsruntimeconfiguration', {
+                        id: 0,
+                        selected_tags: window.console.tags._selectedTags,
+                        colors: window.console.style._colors
+                    });
 
-                var editForm = formUtils.showNew('modelform', jsruntimeconfigrecord, { title: __('Edit JS runtime configuration'), inspectedItemType: "jsruntimeconfiguration" });
-                console.log("editForm deferred", editForm.submit);
-                editForm.submit.done(function() {
-                    console.log("jsruntimeconfigrecord saved", jsruntimeconfigrecord);
-                });
-                editForm.submit.always(function() {
-                    console.log("jsruntimeconfigrecord always", jsruntimeconfigrecord);
-                    window.console.tags._selectedTags = jsruntimeconfigrecord.get('selected_tags');
-                    window.console.style._colors = jsruntimeconfigrecord.get('colors');
-                    window.console.settings.save();
-                    jsruntimeconfigrecord.unloadRecord();
-                });
+                    var editForm = formUtils.showNew('modelform', jsruntimeconfigrecord, { title: __('Edit JS runtime configuration'), inspectedItemType: "jsruntimeconfiguration" });
+                    console.log("editForm deferred", editForm.submit);
+                    editForm.submit.done(function() {
+                        console.log("jsruntimeconfigrecord saved", jsruntimeconfigrecord);
+                    });
+                    editForm.submit.always(function() {
+                        console.log("jsruntimeconfigrecord always", jsruntimeconfigrecord);
+                        window.console.tags._selectedTags = jsruntimeconfigrecord.get('selected_tags');
+                        window.console.style._colors = jsruntimeconfigrecord.get('colors');
+                        window.console.settings.save();
+                        jsruntimeconfigrecord.unloadRecord();
+                    });
 
-            }
-        },
+                }
+            },
 
-        verbosity_mode: function() {
-            return __("custom");
-        }.property()
-    });
+            verbosity_mode: function() {
+                return __("custom");
+            }.property()
+        });
 
-    return mixin;
+        application.register('mixin:consolemanager', mixin);
+    }
 });

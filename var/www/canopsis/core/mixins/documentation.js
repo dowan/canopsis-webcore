@@ -15,27 +15,28 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/factories/mixin',
-], function(Mixin) {
+Ember.Application.initializer({
+    name:'DocumentationMixin',
+    after: 'MixinFactory',
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
 
-    /**
-     * Put a "view documentation button on the status bar"
-     *
-     * @class DocumentationMixin
-     * @extensionfor ApplicationController
-     * @static
-     */
-    var mixin = Mixin('Documentation', {
-        init: function() {
-            this.partials.statusbar.pushObject('documentation');
-            this._super();
-        },
-    });
+        /**
+         * Put a "view documentation button on the status bar"
+         *
+         * @class DocumentationMixin
+         * @extensionfor ApplicationController
+         * @static
+         */
+        var mixin = Mixin('Documentation', {
+            init: function() {
+                this.partials.statusbar.pushObject('documentation');
+                this._super();
+            },
+        });
 
-    return mixin;
+        application.register('mixin:documentation', mixin);
+    }
 });

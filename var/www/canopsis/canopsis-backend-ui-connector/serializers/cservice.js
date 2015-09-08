@@ -18,11 +18,10 @@
 */
 
 define([
-    'ember-data',
     'app/serializers/application',
     'app/mixins/embeddedrecordserializer',
     'app/lib/loaders/utils'
-], function(DS, ApplicationSerializer, EmbeddedRecordSerializerMixin, utils) {
+], function(ApplicationSerializer, EmbeddedRecordSerializerMixin, utils) {
 
     var serializer = ApplicationSerializer.extend(
         EmbeddedRecordSerializerMixin,

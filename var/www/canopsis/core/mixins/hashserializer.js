@@ -15,28 +15,29 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/factories/mixin'
-], function(Mixin) {
+Ember.Application.initializer({
+    name:'HashSerializerMixin',
+    after: 'MixinFactory',
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
 
-    var mixin = Mixin('hashSerializer', {
-        serializeIntoHash: function(hash, type, record, method, options) {
-            void (type);
-            console.log("serializeIntoHash", arguments);
-            hash = this.serialize(record, options);
+        var mixin = Mixin('hashSerializer', {
+            serializeIntoHash: function(hash, type, record, method, options) {
+                void (type);
+                console.log("serializeIntoHash", arguments);
+                hash = this.serialize(record, options);
 
-            if (method === "PUT") {
-                return hash;
-            } else if (method === "POST") {
-                return [hash];
+                if (method === "PUT") {
+                    return hash;
+                } else if (method === "POST") {
+                    return [hash];
+                }
+
             }
+        });
 
-        }
-    });
-
-    return mixin;
+        application.register('mixin:hash-serializer', mixin);
+    }
 });

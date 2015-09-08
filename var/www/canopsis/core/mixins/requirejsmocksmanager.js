@@ -15,63 +15,64 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/factories/mixin',
-    'app/lib/requirejsmocksmanager',
-], function(Mixin, requirejsmocksmanager) {
+Ember.Application.initializer({
+    name:'RequirejsmocksmanagerMixin',
+    after: ['MocksRegistry', 'MixinFactory'],
+    initialize: function(container, application) {
 
-    /**
-     * Mixin allowing to mock js code from inside the UI, adding a dedicated statusbar button into the app statusbar only in debug mode
-     *
-     * @class RequirejsmocksmanagerMixin
-     * @extensionfor ApplicationController
-     * @static
-     */
-    var mixin = Mixin('Requirejsmocksmanager', {
+        var Mixin = container.lookupFactory('factory:mixin');
+        var requirejsmocksmanager = container.lookupFactory('registry:mocks');
 
-        requirejsmocksmanager: requirejsmocksmanager,
+        /**
+         * Mixin allowing to mock js code from inside the UI, adding a dedicated statusbar button into the app statusbar only in debug mode
+         *
+         * @class RequirejsmocksmanagerMixin
+         * @extensionfor ApplicationController
+         * @static
+         */
+        var mixin = Mixin('Requirejsmocksmanager', {
 
-        init: function() {
-            this.partials.statusbar.pushObject('requirejsmockingstatusmenu');
-            this._super();
-        },
+            requirejsmocksmanager: requirejsmocksmanager,
 
-        actions: {
-            /**
-             * Causes a mock to be deleted
-             *
-             * @event deleteMock
-             * @param {String} modulePath The full path of the JS module
-             */
-            deleteMock: function(modulePath) {
-                requirejsmocksmanager.deleteMock(modulePath);
+            init: function() {
+                this.partials.statusbar.pushObject('requirejsmockingstatusmenu');
+                this._super();
             },
 
-            /**
-             * Causes a mock to be edited, by showing an appropriate form, and handling the persistance of the mock
-             *
-             * @event editMock
-             * @param {Object} mock The mock to edit
-             */
-            editMock: function(mock) {
-                requirejsmocksmanager.editMock(mock);
-            },
+            actions: {
+                /**
+                 * Causes a mock to be deleted
+                 *
+                 * @event deleteMock
+                 * @param {String} modulePath The full path of the JS module
+                 */
+                deleteMock: function(modulePath) {
+                    requirejsmocksmanager.deleteMock(modulePath);
+                },
 
-            /**
-             * Causes a mock to be added, by showing an appropriate form, and handling the persistance of the mock
-             *
-             * @event addMock
-             */
-            addMock: function() {
-                requirejsmocksmanager.addMock();
+                /**
+                 * Causes a mock to be edited, by showing an appropriate form, and handling the persistance of the mock
+                 *
+                 * @event editMock
+                 * @param {Object} mock The mock to edit
+                 */
+                editMock: function(mock) {
+                    requirejsmocksmanager.editMock(mock);
+                },
+
+                /**
+                 * Causes a mock to be added, by showing an appropriate form, and handling the persistance of the mock
+                 *
+                 * @event addMock
+                 */
+                addMock: function() {
+                    requirejsmocksmanager.addMock();
+                }
             }
-        }
-    });
+        });
 
-
-    return mixin;
+        application.register('mixin:requirejsmocksmanager', mixin);
+    }
 });

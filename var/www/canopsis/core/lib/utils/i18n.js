@@ -20,9 +20,7 @@
  */
 
 define([
-    'canopsis/canopsisConfiguration',
-    'jquery',
-    'ember'
+    'canopsis/canopsisConfiguration'
 ], function(conf) {
 
 

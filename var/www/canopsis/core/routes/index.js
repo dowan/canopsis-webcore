@@ -15,31 +15,24 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/routes/authenticated',
-], function(AuthenticatedRoute) {
+Ember.Application.initializer({
+    name: 'IndexRoute',
+    after: 'AuthenticatedRoute',
+    initialize: function(container, application) {
+        var AuthenticatedRoute = container.lookupFactory('route:authenticated');
 
-    var set = Ember.set,
-        get = Ember.get;
+        var set = Ember.set,
+            get = Ember.get;
 
-    /**
-     * @class IndexRoute
-     * @extends AuthenticatedRoute
-     * @constructor
-     */
-    var route = AuthenticatedRoute.extend({});
+        /**
+         * @class IndexRoute
+         * @extends AuthenticatedRoute
+         * @constructor
+         */
+        var route = AuthenticatedRoute.extend({});
 
-
-    Ember.Application.initializer({
-        name:"IndexRoute",
-        initialize: function(container, application) {
-            application.register('route:index', route);
-        }
-    });
-
-    return route;
+        application.register('route:index', route);
+    }
 });

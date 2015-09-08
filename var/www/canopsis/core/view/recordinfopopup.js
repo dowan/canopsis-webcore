@@ -15,45 +15,39 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/utils/drag',
-], function(drag) {
+Ember.Application.initializer({
+    name: 'RecordinfopopupView',
+    after: 'DragUtils',
+    initialize: function(container, application) {
+        var drag = container.lookupFactory('utility:drag');
 
-    var get = Ember.get,
-        set = Ember.set;
+        var get = Ember.get,
+            set = Ember.set;
 
-    /**
-     * @class RecordinfopopupView
-     * @extends Ember.View
-     * @constructor
-     */
-    var view = Ember.View.extend({
         /**
-         * @method didInsertElement
+         * @class RecordinfopopupView
+         * @extends Ember.View
+         * @constructor
          */
-        didInsertElement: function () {
-            console.log('Recordinfopopup dom element');
+        var view = Ember.View.extend({
+            /**
+             * @method didInsertElement
+             */
+            didInsertElement: function () {
+                console.log('Recordinfopopup dom element');
 
-            $(window).on('resize', function () {
-                var left = ($(window).width() - $('#recordinfopopup').outerWidth()) / 2;
-                $('#recordinfopopup').css('left', left);
-            });
+                $(window).on('resize', function () {
+                    var left = ($(window).width() - $('#recordinfopopup').outerWidth()) / 2;
+                    $('#recordinfopopup').css('left', left);
+                });
 
-            drag.setDraggable($('#recordinfopopup .hand'), $('#recordinfopopup'));
+                drag.setDraggable($('#recordinfopopup .hand'), $('#recordinfopopup'));
 
-        }
-    });
+            }
+        });
 
-    Ember.Application.initializer({
-        name: 'RecordinfopopupView',
-        initialize: function(container, application) {
-            application.register('view:recordinfopopup', view);
-        }
-    });
-
-    return view;
+        application.register('view:recordinfopopup', view);
+    }
 });

@@ -15,49 +15,45 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define(['app/lib/utilityclass', 'app/lib/utils/data'], function(Utility, dataUtils) {
-
-    /**
-     * @class RoutesUtils
-     * @extends Utility
-     */
-    var routesUtils = Utility.create({
-        name: 'routes',
+Ember.Application.initializer({
+    name: 'RoutesUtils',
+    after: ['UtilityClass', 'DataUtils'],
+    initialize: function(container, application) {
+        var Utility = container.lookupFactory('class:utility');
+        var dataUtils = container.lookupFactory('utility:data');
 
         /**
-         * @method getCurrentRouteController
-         * @return Ember.Controller
+         * @class RoutesUtils
+         * @extends Utility
          */
-        getCurrentRouteController: function() {
-            var currentHandlers = dataUtils.getEmberApplicationSingleton().__container__.lookup("router:main").router.currentHandlerInfos;
-            var currentRouteController = currentHandlers[currentHandlers.length - 1].handler.controller;
+        var routesUtils = Utility.create({
+            name: 'routes',
 
-            console.log("currentHandlers", currentHandlers);
-            console.log("currentRouteController", currentRouteController);
+            /**
+             * @method getCurrentRouteController
+             * @return Ember.Controller
+             */
+            getCurrentRouteController: function() {
+                var currentHandlers = dataUtils.getEmberApplicationSingleton().__container__.lookup("router:main").router.currentHandlerInfos;
+                var currentRouteController = currentHandlers[currentHandlers.length - 1].handler.controller;
 
-            return currentRouteController;
-        },
+                console.log("currentHandlers", currentHandlers);
+                console.log("currentRouteController", currentRouteController);
 
-        /**
-         * @method getCurrentViewId
-         * @return string
-         */
-        getCurrentViewId: function() {
-            return dataUtils.getEmberApplicationSingleton().__container__.lookup("router:main").router.currentHandlerInfos[1].params.userview_id;
-        }
+                return currentRouteController;
+            },
 
-    });
+            /**
+             * @method getCurrentViewId
+             * @return string
+             */
+            getCurrentViewId: function() {
+                return dataUtils.getEmberApplicationSingleton().__container__.lookup("router:main").router.currentHandlerInfos[1].params.userview_id;
+            }
+        });
 
-    Ember.Application.initializer({
-        name:"RoutesUtils",
-        initialize: function(container, application) {
-            application.register('utility:routes', routesUtils);
-        }
-    });
-
-    return routesUtils;
+        application.register('utility:routes', routesUtils);
+    }
 });

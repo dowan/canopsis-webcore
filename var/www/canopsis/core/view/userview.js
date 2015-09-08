@@ -15,99 +15,87 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/controller/userview'
-], function() {
+Ember.Application.initializer({
+    name: 'UserviewView',
+    initialize: function(container, application) {
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
 
+        /**
+         * @class UserviewView
+         * @extends Ember.View
+         * @constructor
+         */
+        var view = Ember.View.extend({
+            actions: {
+                /**
+                 * @event refreshView
+                 */
+                refreshView: function() {
+                    this.rerender();
+                }
+            },
 
-    /**
-     * @class UserviewView
-     * @extends Ember.View
-     * @constructor
-     */
-    var view = Ember.View.extend({
-        actions: {
             /**
-             * @event refreshView
+             * @property hookRegistered
+             * @type boolean
              */
-            refreshView: function() {
-                this.rerender();
+            hookRegistered: false,
+
+            /**
+             * @method registerHooks
+             * Controller -> View Hooks
+             */
+            registerHooks: function() {
+                if (!get(this, 'hookRegistered')) {
+                    get(this, 'controller').on('refreshView', this, this.rerender);
+                    this.set('hookRegistered', true);
+                }
+            },
+
+            /**
+             * @method unregisterHooks
+             */
+            unregisterHooks: function() {
+                get(this, 'controller').off('refreshView', this, this.rerender);
+                this.set('hookRegistered', false);
+            },
+
+            /**
+             * @method rerender
+             */
+            rerender: function() {
+                console.info('refreshing view', this);
+                if (get(this, 'state') === 'destroying') {
+                    console.warn('view is being destroying, cancel refresh');
+                    return;
+                }
+                this._super.apply(this, arguments);
+                this.registerHooks();
+            },
+
+            /**
+             * @method didInsertElement
+             */
+            didInsertElement : function() {
+                console.log("inserted view", this);
+                this.registerHooks();
+                return this._super.apply(this, arguments);
+            },
+
+            /**
+             * @method willClearRender
+             */
+            willClearRender: function() {
+                this.unregisterHooks();
+                return this._super.apply(this, arguments);
             }
-        },
+        });
 
-        /**
-         * @property hookRegistered
-         * @type boolean
-         */
-        hookRegistered: false,
-
-        /**
-         * @method registerHooks
-         * Controller -> View Hooks
-         */
-        registerHooks: function() {
-            if (!get(this, 'hookRegistered')) {
-                get(this, 'controller').on('refreshView', this, this.rerender);
-                this.set('hookRegistered', true);
-            }
-        },
-
-        /**
-         * @method unregisterHooks
-         */
-        unregisterHooks: function() {
-            get(this, 'controller').off('refreshView', this, this.rerender);
-            this.set('hookRegistered', false);
-        },
-
-        /**
-         * @method rerender
-         */
-        rerender: function() {
-            console.info('refreshing view', this);
-            if (get(this, 'state') === 'destroying') {
-                console.warn('view is being destroying, cancel refresh');
-                return;
-            }
-            this._super.apply(this, arguments);
-            this.registerHooks();
-        },
-
-        /**
-         * @method didInsertElement
-         */
-        didInsertElement : function() {
-            console.log("inserted view", this);
-
-            this.registerHooks();
-            var result = this._super.apply(this, arguments);
-
-            return result;
-        },
-
-        /**
-         * @method willClearRender
-         */
-        willClearRender: function() {
-            this.unregisterHooks();
-            return this._super.apply(this, arguments);
-        }
-    });
-
-    Ember.Application.initializer({
-        name: 'UserviewView',
-        initialize: function(container, application) {
-            application.register('view:userview', view);
-        }
-    });
-
-    return view;
+        application.register('view:userview', view);
+    }
 });

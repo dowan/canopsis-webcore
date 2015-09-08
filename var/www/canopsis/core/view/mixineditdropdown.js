@@ -15,63 +15,56 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'jsonselect',
-    'app/lib/schemasregistry'
-], function(JSONSelect, schemasRegistry) {
+Ember.Application.initializer({
+    name: 'MixineditdropdownView',
+    after: 'SchemasRegistry',
+    initialize: function(container, application) {
+        var schemasRegistry = container.lookupFactory('registry:schemas');
 
-    var set = Ember.set,
-        get = Ember.get,
-        isNone = Ember.isNone;
+        var set = Ember.set,
+            get = Ember.get,
+            isNone = Ember.isNone;
 
-    //TODO @gwen check if it's possible to remove this class
+        //TODO @gwen check if it's possible to remove this class
 
-    /**
-     * @class MixineditdropdownView
-     * @extends Ember.View
-     * @constructor
-     */
-    var view = Ember.View.extend({
-        tagName: 'span',
-        templateName: 'mixineditdropdown',
+        /**
+         * @class MixineditdropdownView
+         * @extends Ember.View
+         * @constructor
+         */
+        var view = Ember.View.extend({
+            tagName: 'span',
+            templateName: 'mixineditdropdown',
 
-        hasEditableMixins: function () {
-            return get(this, 'editableEnabledMixins.length') || get(this, 'wrapperMixins.length');
-        }.property('editableEnabledMixins', 'wrapperMixins'),
+            hasEditableMixins: function () {
+                return get(this, 'editableEnabledMixins.length') || get(this, 'wrapperMixins.length');
+            }.property('editableEnabledMixins', 'wrapperMixins'),
 
-        wrapperMixins: function () {
-            var mixins = Ember.A();
-            if (get(this, 'isGridLayout')) {
-                mixins.pushObject({'name': 'gridlayout'});
-            }
-            return mixins;
-        }.property('isGridLayout'),
+            wrapperMixins: function () {
+                var mixins = Ember.A();
+                if (get(this, 'isGridLayout')) {
+                    mixins.pushObject({'name': 'gridlayout'});
+                }
+                return mixins;
+            }.property('isGridLayout'),
 
-        editableEnabledMixins: function () {
-            var mixins = get(this, 'mixins');
-            var editableMixins = Ember.A();
-            if(mixins) {
-                for (var i = 0; i < mixins.length; i++) {
-                    if(schemasRegistry.getByName(mixins[i].name.camelize())) {
-                        editableMixins.pushObject(mixins[i]);
+            editableEnabledMixins: function () {
+                var mixins = get(this, 'mixins');
+                var editableMixins = Ember.A();
+                if(mixins) {
+                    for (var i = 0; i < mixins.length; i++) {
+                        if(schemasRegistry.getByName(mixins[i].name.camelize())) {
+                            editableMixins.pushObject(mixins[i]);
+                        }
                     }
                 }
-            }
 
-            return editableMixins;
-        }.property('mixins')
-    });
+                return editableMixins;
+            }.property('mixins')
+        });
 
-    Ember.Application.initializer({
-        name: 'MixineditdropdownView',
-        initialize: function(container, application) {
-            application.register('view:mixineditdropdown', view);
-        }
-    });
-
-    return view;
+        application.register('view:mixineditdropdown', view);
+    }
 });
