@@ -20,9 +20,11 @@
 
 define([
 	'canopsis/canopsisConfiguration',
+    'canopsis/enabled',
 	'canopsis/core/lib/externals/ember-qunit-builds/ember-qunit.amd',
-    'link!canopsis/core/lib/externals/qunit/qunit/qunit.css'
-], function(canopsisConfiguration) {
+    'link!canopsis/core/lib/externals/qunit/qunit/qunit.css',
+    'app/lib/wrappers/console'
+], function(canopsisConfiguration, enabled) {
     if (!canopsisConfiguration.DEBUG) {
         console.tags = {
             add:function() {},
@@ -36,6 +38,12 @@ define([
         console.groupEnd = function(){};
         console.warn = function(){};
     }
+
+    enabled.getEnabledModules(function (enabledPlugins) {
+        if ($.inArray('tests', enabledPlugins) === -1) {
+            alert('Module tests not registed, tests cannot work');
+        }
+    });
 
 });
 

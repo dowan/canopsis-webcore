@@ -4,7 +4,6 @@ module('Ack workflow', {
     },
     teardown: function() {
         $.mockjax.clear();
-        alert('teardown')
     }
 });
 
