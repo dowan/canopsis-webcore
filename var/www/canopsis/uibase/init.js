@@ -40,10 +40,10 @@ require.config({
     },
     shim: {
         'rrule': {
-             deps: ['jquery', 'underscore']
+            deps: ['jquery', 'underscore']
         },
         'nlp': {
-             deps: ['jquery', 'rrule', 'underscore']
+            'deps': ['jquery', 'rrule', 'underscore']
         },
         'bootstrap': {
             deps: ['jquery']
