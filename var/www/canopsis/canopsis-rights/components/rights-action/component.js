@@ -18,7 +18,7 @@
  */
 
 Ember.Application.initializer({
-    name:"component-rights-action",
+    name: 'component-rights-action',
     after: 'RightsRegistry',
     initialize: function(container, application) {
         var rightsRegistry = container.lookupFactory('registry:rights');
