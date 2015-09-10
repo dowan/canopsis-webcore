@@ -29,7 +29,6 @@ Ember.Application.initializer({
         var get = Ember.get,
             set = Ember.set;
 
-
         // /**
         //  * DS.Store hack to make transparent userpreferences persistence (when saving and retreiving models)
         //  */
@@ -147,8 +146,9 @@ Ember.Application.initializer({
                 if(record.userPreferencesModel.attributes.list && record.userPreferencesModel.attributes.list.length > 0) {
                     console.group('userpreferences for widget', record.get('title'), record);
                     var userpreferenceAttributes = record.userPreferencesModel.attributes.list;
+                    var loginController = dataUtils.getLoggedUserController();
                     var preference_id = get(record, 'preference_id'),
-                        user = get(this, 'controller.login.record._id');
+                        user = get(loginController, 'record._id');
 
                     if (preference_id === undefined) {
                         record.save();
