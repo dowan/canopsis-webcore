@@ -1,21 +1,21 @@
 /*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 define(['ember-lib', 'ember-data-lib'], function () {
 
@@ -30,7 +30,7 @@ define(['ember-lib', 'ember-data-lib'], function () {
     var controllerDict = {
         init: function() {
             if(get(this, 'isGenerated')) {
-                console.error('Ember is Instantiating a generated controller. This practice is not encouraged, as it might also be an underlying requireJS problem.', this);
+                console.error('Ember is Instantiating a generated controller for "' + get(this, '_debugContainerKey') + '". This practice is not encouraged, as it might also be an underlying requireJS problem.', this);
             }
             this._super.apply(this, arguments);
         }
@@ -54,8 +54,7 @@ define(['ember-lib', 'ember-data-lib'], function () {
 
             if (type === 'array') {
                 return deserialized;
-            }
-            else if (type === 'string') {
+            } else if (type === 'string') {
                 return deserialized.split(',').map(function(item) {
                     return jQuery.trim(item);
                 });
