@@ -15,34 +15,31 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define(['app/lib/utilityclass'], function(Utility) {
-    var get = Ember.get;
+Ember.Application.initializer({
+    name: 'WidgetsUtils',
+    after: ['UtilityClass'],
+    initialize: function(container, application) {
+        var Utility = container.lookupFactory('class:utility');
 
-    var widgetsUtils = Utility.create({
+        var get = Ember.get;
 
-        name: 'widgetsUtils',
+        var widgetsUtils = Utility.create({
 
-        getParentViewForWidget: function(widget) {
-            var currentItem = widget;
+            name: 'widgetsUtils',
 
-            while (get(currentItem, 'crecord_type') !== 'view') {
-                currentItem = get(currentItem, 'target');
+            getParentViewForWidget: function(widget) {
+                var currentItem = widget;
+
+                while (get(currentItem, 'crecord_type') !== 'view') {
+                    currentItem = get(currentItem, 'target');
+                }
+
+                return currentItem;
             }
+        });
 
-            return currentItem;
-        }
-    });
-
-    Ember.Application.initializer({
-        name:"WidgetsUtils",
-        initialize: function(container, application) {
-            application.register('utility:widgets', widgetsUtils);
-        }
-    });
-
-    return widgetsUtils;
+        application.register('utility:widgets', widgetsUtils);
+    }
 });

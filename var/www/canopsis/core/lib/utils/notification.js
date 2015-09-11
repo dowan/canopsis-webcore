@@ -15,55 +15,52 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define(['app/lib/utilityclass'], function(Utility) {
+Ember.Application.initializer({
+    name: 'NotificationUtils',
+    after: ['UtilityClass'],
+    initialize: function(container, application) {
+        var Utility = container.lookupFactory('class:utility');
 
-    targetcontroller = {
-        temp_buffer: [],
-        createNotification: function(notificationType, notificationMessage) {
-            this.temp_buffer.push({
-                notificationType: notificationType,
-                notificationMessage: notificationMessage
-            });
-        }
-    };
+        targetcontroller = {
+            temp_buffer: [],
+            createNotification: function(notificationType, notificationMessage) {
+                this.temp_buffer.push({
+                    notificationType: notificationType,
+                    notificationMessage: notificationMessage
+                });
+            }
+        };
 
 
 
-    var notification = Utility.create({
+        var notification = Utility.create({
 
-        name: 'notification',
-        /**
-         * Initialize the notification controller
-         * when the controller is not set up, it stores all the messages in a buffer stack.
-         */
-        setController: function(controller) {
-        },
+            name: 'notification',
+            /**
+             * Initialize the notification controller
+             * when the controller is not set up, it stores all the messages in a buffer stack.
+             */
+            setController: function(controller) {
+            },
 
-        //will be defined when notification controller is called.
-        info: function (message) {
-            //TODO doing it clean
-        },
-        warning: function (message) {
-            //TODO doing it clean
-        },
-        error: function (message) {
-            //TODO doing it clean
-        },
-        help: function () {
-            console.log("usage is: utils.notification.notificate('info'|'warning'|'error', 'my message');");
-        }
-    });
+            //will be defined when notification controller is called.
+            info: function (message) {
+                //TODO doing it clean
+            },
+            warning: function (message) {
+                //TODO doing it clean
+            },
+            error: function (message) {
+                //TODO doing it clean
+            },
+            help: function () {
+                console.log("usage is: utils.notification.notificate('info'|'warning'|'error', 'my message');");
+            }
+        });
 
-    Ember.Application.initializer({
-        name:"NotificationUtils",
-        initialize: function(container, application) {
-            application.register('utility:notification', notification);
-        }
-    });
-
-    return notification;
+        application.register('utility:notification', notification);
+    }
 });
+

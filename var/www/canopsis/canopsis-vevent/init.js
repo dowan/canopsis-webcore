@@ -20,6 +20,7 @@
 /** @module canopsis.frontend.canopsis-vevent */
 
 define([
+    'canopsis/canopsis-vevent/adapters/vevent',
     'canopsis/canopsis-vevent/serializers/vevent'
 ], function () {
 

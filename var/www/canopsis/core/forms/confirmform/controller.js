@@ -15,30 +15,31 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/factories/form',
-], function(FormFactory) {
+Ember.Application.initializer({
+    name: 'ConfirmForm',
+    after: ['FormFactory'],
+    initialize: function(container, application) {
+        var FormFactory = container.lookupFactory('factory:form');
 
-    var formOptions = {};
-    var form = FormFactory('confirmform', {
+        var formOptions = {};
+        var form = FormFactory('confirmform', {
 
-        partials: {
-            buttons: ["formbutton-cancel", "formbutton-submit"],
-        },
+            partials: {
+                buttons: ["formbutton-cancel", "formbutton-submit"],
+            },
 
-        confirmation: false,
-        actions: {
-            submit: function() {
-                console.log('confirmed !');
-                this._super();
+            confirmation: false,
+            actions: {
+                submit: function() {
+                    console.log('confirmed !');
+                    this._super();
+                }
             }
-        }
-    },
-    formOptions);
+        },
+        formOptions);
 
-    return form;
+        application.register('form:confirmform', form);
+    }
 });

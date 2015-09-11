@@ -15,45 +15,48 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([
-    'app/lib/mixinsregistry'
-], function(mixinsRegistry) {
+Ember.Application.initializer({
+    name: 'MixinFactory',
+    after: 'MixinsRegistry',
+    initialize: function(container, application) {
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
-    /**
-     * Mixin factory. Creates a controller, stores it in Application
-     * @param name {string} the name of the new mixin. lowercase
-     * @param classdict {dict} the controller dict
-     *
-     * @author Gwenael Pluchon <info@gwenp.fr>
-     */
-    function Mixin(name, mixindict) {
-        console.tags.add('factory');
-        console.group('mixin factory call', arguments);
+        var mixinsRegistry = container.lookupFactory('registry:mixins');
 
-        var mixinName = name.camelize().capitalize() + 'Mixin';
 
-        var mixin = Ember.Mixin.create(mixindict);
+        /**
+         * Mixin factory. Creates a controller, stores it in Application
+         * @param name {string} the name of the new mixin. lowercase
+         * @param classdict {dict} the controller dict
+         *
+         * @author Gwenael Pluchon <info@gwenp.fr>
+         */
+        function Mixin(name, mixindict) {
+            console.tags.add('factory');
+            console.group('mixin factory call', arguments);
 
-        var registryEntry = Ember.Object.create({
-            name: name,
-            EmberClass: mixin
-        });
+            var mixinName = name.camelize().capitalize() + 'Mixin';
 
-        mixinsRegistry.all.push(registryEntry);
+            var mixin = Ember.Mixin.create(mixindict);
 
-        console.groupEnd();
-        console.tags.remove('factory');
+            var registryEntry = Ember.Object.create({
+                name: name,
+                EmberClass: mixin
+            });
 
-        return mixin;
+            mixinsRegistry.all.push(registryEntry);
+
+            console.groupEnd();
+            console.tags.remove('factory');
+
+            return mixin;
+        }
+
+        application.register('factory:mixin', Mixin);
     }
-
-    return Mixin;
 });
