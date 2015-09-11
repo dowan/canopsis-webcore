@@ -17,6 +17,7 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+/** @module canopsis.frontend.canopsis-ui */
 
 require.config({
     paths: {
@@ -39,7 +40,8 @@ require.config({
 
 define([
     'canopsis/canopsis-ui/reopens/views/application',
-    'canopsis/canopsis-ui/loaders/forms'
+    'canopsis/canopsis-ui/loaders/forms',
+    'adminLTE'
 ], function () {
 
 });

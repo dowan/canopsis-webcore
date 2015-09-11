@@ -1,60 +1,93 @@
-/*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-define([
-    'jquery',
-    'ember',
-    'ember-data',
-    'app/lib/loaders/utils'
-], function($, Ember, DS, utils) {
+Ember.Application.initializer({
+    name: 'LoginController',
+    after: 'DataUtils',
+    initialize: function(container, application) {
 
-    var set = Ember.set,
-        get = Ember.get,
-        isNone = Ember.isNone;
+        var DataUtils = container.lookupFactory('utility:data');
 
-    var controller = Ember.ObjectController.extend({
-        content: {},
+        var set = Ember.set,
+            get = Ember.get,
+            isNone = Ember.isNone;
 
-        init: function() {
-            this._super.apply(this, arguments);
+        /**
+         * @class LoginController
+         * @extends Ember.ObjectController
+         * @constructor
+         */
+        var controller = Ember.ObjectController.extend({
+            /**
+             * @property content
+             */
+            content: {},
 
-            var store = DS.Store.create({
-                container: get(this, "container")
-            });
+            needs: ['application'],
 
-            set(this, 'store', store);
-        },
+            /**
+             * @method init
+             */
+            init: function() {
+                this._super.apply(this, arguments);
 
-        authkey: function () {
-            var authkey = localStorage.cps_authkey;
-            if (authkey === 'undefined') {
-                authkey = undefined;
-            }
-            return authkey;
-        }.property('authkey'),
+                //TODO delete store in this#destroy
+                var store = DS.Store.create({
+                    container: get(this, "container")
+                });
 
-        authkeyChanged: function() {
-            localStorage.cps_authkey = get(this, 'authkey');
-        }.observes('authkey')
-    });
+                set(this, 'store', store);
+            },
 
-    loader.register('controller:login', controller);
+            /**
+            * @property userRoute
+            * compute route to view when login for current user
+            **/
+            userRoute: function () {
+                var loginController = DataUtils.getLoggedUserController();
+                var record = get(loginController, 'record');
+                var defaultview = get(record, 'defaultview');
+                if (!defaultview) {
+                    defaultview = get(this, 'controllers.application.frontendConfig.defaultview');
+                }
+                return defaultview;
+            }.property(),
 
-    return controller;
+            /**
+             * @property authkey
+             */
+            authkey: function () {
+                var authkey = localStorage.cps_authkey;
+                if (authkey === 'undefined') {
+                    authkey = undefined;
+                }
+                return authkey;
+            }.property('authkey'),
+
+            /**
+             * @method authkeyChanged
+             * @observes authkey
+             */
+            authkeyChanged: function() {
+                localStorage.cps_authkey = get(this, 'authkey');
+            }.observes('authkey')
+        });
+        application.register('controller:login', controller);
+    }
 });

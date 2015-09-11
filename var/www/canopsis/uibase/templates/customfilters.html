@@ -19,7 +19,11 @@
                 <small class="badge bg-orange" {{action "removeFilter" filter}}> <i class="fa fa-minus"></i></small>
             </span>
         {{/each}}
-
+        {{#if controller.mixinOptions.customfilterlist.can_mix_filters}}
+            {{#each operator in controller.customFilterOperators}}
+                <button {{bind-attr class=":btn :btn-default :btn-sm operator.active:active"}} {{action "setActiveOperator" operator}}>{{operator.display}}</button>
+            {{/each}}
+        {{/if}}
         <button type="button" class="btn btn-primary btn-sm" {{action "addUserFilter"}} data-col="all">
             <i class="fa fa-plus"></i> {{tr 'Add filter'}}
         </button>

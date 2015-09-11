@@ -34,6 +34,7 @@ define([
             }
         }
     });
+    application.register('widget:uimaindropdown', widget);
 
     return widget;
 });
