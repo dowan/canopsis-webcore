@@ -6,10 +6,6 @@
                 {{view "mixineditdropdown" isGridLayout=controller.isGridLayout mixins=widget.mixins wrappermixins=this.mixins class="btn-group"}}
             {{/if}}
         <div class="btn-group">
-            {{#if widget.isMinimizable}}
-                {{partial 'titlebarbutton-minimize'}}
-            {{/if}}
-
             {{#if controller.editMode}}
                 <button type="button" class="btn btn-small btn-danger btn-xs" {{action 'removeWidget' widget}}>
                     <span class="glyphicon glyphicon-trash"></span>
@@ -48,5 +44,8 @@
         <code>
             <a {{action "inspect" widget}} style="font-size:80%; font-weight: bold">&gt;$E</a>
         </code>
+
+        <span class="label label-warning">{{xtype}} state: {{currentState.stateName}}</span>
+        <span class="label label-warning">{{widget.xtype}} state: {{widget.currentState.stateName}}</span>
     {{/if}}
 </div>

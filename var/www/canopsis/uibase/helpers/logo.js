@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
-define(['ember' , "app/application"], function(Ember , Application) {
+define([], function() {
 
     var folderPath = "/static/canopsis/media/images/";
 
@@ -29,7 +29,8 @@ define(['ember' , "app/application"], function(Ember , Application) {
         cucumber: folderPath + 'cucumberlogo.png',
         watir: folderPath + 'watirlogo.png',
         jmeter: folderPath + 'jmeterlogo.jpg',
-        centreon: folderPath + 'centreonlogo.png'
+        centreon: folderPath + 'centreonlogo.png',
+        Engine: folderPath + 'engine.png'
 
     };
 

@@ -27,6 +27,10 @@
                                 {{component-checkbox checked=controller.isAllSelected class="toggle"}}
                             </th>
 
+                            {{#each column in controller._partials.columnsLine}}
+                                <th></th>
+                            {{/each}}
+
                             {{#each attr in controller.shown_columns}}
                                 {{#if attr.options.show}}
                                     <th {{action "sort" attr}} {{bind-attr class=attr.field}}>
@@ -43,22 +47,16 @@
                 </thead>
                 <tbody>
                     {{#each controller.widgetData}}
-                        {{view "listline" templateName=controller.dynamicTemplateName parentController=controller tagName="tr"}}
+                        {{view "listline" templateName=controller.dynamicTemplateName parentController=controller tagName="tr" unfolded=unfolded}}
+                        <!-- TODO: put in its own partial slot -->
                         {{#if unfolded}}
-                            {{#if loaded}}
-                                {{partial templateName}}
-                            {{else}}
-                                <tr>
-                                    <td colspan=5>
-                                        <li class="dropdown tasks-menu">
-                                            <a href="#">
-                                                <i class="fa fa-refresh fa-spin"></i>
-                                            </a>
-                                        </li>
-                                    </td>
-                                </tr>
-                            {{/if}}
+                            <tr>
+                                <td {{bind-attr colspan=controller.colspan}}>
+                                    {{partial controller.detailTemplate}}
+                                </td>
+                            </tr>
                         {{/if}}
+                        <!-- End of TODO -->
                     {{/each}}
                 </tbody>
             </table>
@@ -69,6 +67,9 @@
     </div>
     <div class="btn-toolbar canopsis-toolbar" role="toolbar">
         {{partialslot slot=controller._partials.footer}}
+        <div class="pull-right">
+            {{partialslot slot=controller._partials.rightFooter}}
+        </div>
         <div style="clear:both"></div>
         <div class="pull-left">
             {{#if controller._partials.selectionToolbarButtons}}

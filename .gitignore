@@ -1,5 +1,4 @@
 build
-dist
 
 #####################
 # Python files
@@ -15,3 +14,4 @@ pyperfstore2/*.egg*
 #####################
 *~
 
+var/www/canopsis/widgetCalendar/

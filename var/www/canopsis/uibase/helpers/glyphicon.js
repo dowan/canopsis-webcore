@@ -17,10 +17,10 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['ember'], function(Ember) {
+define([], function() {
 
     Ember.Handlebars.helper('glyphicon', function(icon) {
-        return '<span class="glyphicon glyphicon-' + icon + '"></span>';
+        return new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-' + icon + '"></span>');
     });
 
 });

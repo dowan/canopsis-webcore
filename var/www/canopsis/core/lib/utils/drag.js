@@ -1,45 +1,50 @@
-/*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-define([
-    'jquery',
-    'ember',
-], function($, Ember) {
+Ember.Application.initializer({
+    name: 'DragUtils',
+    after: ['UtilityClass'],
+    initialize: function(container, application) {
+        var Utility = container.lookupFactory('class:utility');
 
-    var __ = Ember.String.loc,
-        isNone = Ember.isNone;
+        var __ = Ember.String.loc,
+            isNone = Ember.isNone;
 
-    var drag = {
-        setDraggable: function (handle, dragElement) {
-            handle.on('mousedown', function() {
-                console.log('mousedown', $(this));
-                dragElement.addClass('draggable').parents().on('mousemove', function(e) {
-                    $('.draggable').offset({
-                        top: e.pageY - 50,
-                        left: e.pageX - $('.draggable').outerWidth() / 2
-                    }).on('mouseup', function() {
-                        dragElement.removeClass('draggable');
+        var drag = Utility.create({
+
+            name: 'drag',
+
+            setDraggable: function (handle, dragElement) {
+                handle.on('mousedown', function() {
+                    console.log('mousedown', $(this));
+                    dragElement.addClass('draggable').parents().on('mousemove', function(e) {
+                        $('.draggable').offset({
+                            top: e.pageY - 50,
+                            left: e.pageX - $('.draggable').outerWidth() / 2
+                        }).on('mouseup', function() {
+                            dragElement.removeClass('draggable');
+                        });
                     });
                 });
-            });
-        }
-    };
+            }
+        });
 
-    return drag;
+        application.register('utility:drag', drag);
+    }
 });

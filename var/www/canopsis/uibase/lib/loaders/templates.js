@@ -38,6 +38,7 @@ var templates = [
 
     { name: 'userstatusmenu', template: 'canopsis/uibase/templates/userstatusmenu.html' },
     { name: 'screentoolstatusmenu', template: 'canopsis/uibase/templates/screentoolstatusmenu.html' },
+    { name: 'documentation', template: 'canopsis/uibase/templates/documentation.hbs' },
     { name: 'schemamanagerstatusmenu', template: 'canopsis/uibase/templates/schemamanagerstatusmenu.html' },
     { name: 'notificationsstatusmenu', template: 'canopsis/uibase/templates/notificationsstatusmenu.html' },
     { name: 'consolemanagerstatusmenu', template: 'canopsis/uibase/templates/consolemanagerstatusmenu.html' },
@@ -46,6 +47,7 @@ var templates = [
     { name: 'presettoolbar', template: 'canopsis/uibase/templates/presettoolbar.html' },
 
     { name: 'actionbutton-edit', template: 'canopsis/uibase/templates/actionbutton-edit.html', classes: ["action"], icon : "pencil", label : "Edit"},
+    { name: 'actionbutton-duplicate', template: 'canopsis/uibase/templates/actionbutton-duplicate.hbs', classes: ["action"], icon : "pencil", label : "Edit"},
     { name: 'actionbutton-ack', template: 'canopsis/uibase/templates/actionbutton-ack.html', classes: ["action", "toolbar"], icon : "ok", label : "Ack"},
     { name: 'actionbutton-ackselection', template: 'canopsis/uibase/templates/actionbutton-ackselection.html', classes: ["action", "toolbar"], icon : "ok", label : "Ack selection"},
     { name: 'actionbutton-cancel', template: 'canopsis/uibase/templates/actionbutton-cancel.html', classes: ["action", "toolbar"], icon : "ban-circle", label : "Cancel"},
@@ -73,6 +75,7 @@ var templates = [
     { name: 'formbutton-next', template: 'canopsis/uibase/templates/formbutton-next.html', classes: ["formbutton"] },
     { name: 'formbutton-inspectform', template: 'canopsis/uibase/templates/formbutton-inspectform.html', classes: ["formbutton"] },
 
+    { name: 'titlebarbutton-duplicate', template: 'canopsis/uibase/templates/titlebarbutton-duplicate.hbs', classes: ["titlebarbutton"] },
     { name: 'titlebarbutton-moveup', template: 'canopsis/uibase/templates/titlebarbutton-moveup.html', classes: ["titlebarbutton"] },
     { name: 'titlebarbutton-movedown', template: 'canopsis/uibase/templates/titlebarbutton-movedown.html', classes: ["titlebarbutton"] },
     { name: 'titlebarbutton-moveleft', template: 'canopsis/uibase/templates/titlebarbutton-moveleft.html', classes: ["titlebarbutton"] },
@@ -93,7 +96,9 @@ var templates = [
     { name: 'tablayout', template: 'canopsis/uibase/templates/tablayout.html' ,  classes: ["layout"]},
     { name: 'mixineditdropdown', template: 'canopsis/uibase/templates/mixineditdropdown.html'},
     { name: 'draggableheaders', template: 'canopsis/uibase/templates/draggableheaders.html'},
-    { name: 'tabledraggableth', template: 'canopsis/uibase/templates/tabledraggableth.html'}
+    { name: 'tabledraggableth', template: 'canopsis/uibase/templates/tabledraggableth.html'},
+    { name: 'loading', template: 'canopsis/uibase/templates/loading.html'},
+    { name: 'loadingindicator', template: 'canopsis/uibase/templates/loadingindicator.hbs'}
 ];
 
 loader.loadWithTemplates(templates);

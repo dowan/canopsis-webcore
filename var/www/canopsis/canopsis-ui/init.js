@@ -17,10 +17,12 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+/** @module canopsis.frontend.canopsis-ui */
 
 require.config({
     paths: {
-        'adminLTElib': 'webcore-libs/dev/AdminLTE',
+        'bootstrap': 'canopsis/uibase/lib/externals/bootstrap/dist/js/bootstrap.min',
+        'adminLTElib': 'canopsis/canopsis-ui/lib/adminlte/AdminLTE',
         'adminLTE': 'canopsis/canopsis-ui/wrappers/adminLTE'
     },
 
@@ -37,7 +39,9 @@ require.config({
 
 
 define([
-    'canopsis/canopsis-ui/reopens/views/application'
+    'canopsis/canopsis-ui/reopens/views/application',
+    'canopsis/canopsis-ui/loaders/forms',
+    'adminLTE'
 ], function () {
 
 });

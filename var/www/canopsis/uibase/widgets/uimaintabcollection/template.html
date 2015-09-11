@@ -24,43 +24,53 @@
     <section class="content-header nav-tabs-custom" style=" padding: 5px 0 0;margin-bottom:0px; ">
         <ul class="nav nav-tabs">
                 <li>
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <h4> <i class="fa fa-gear"></i> <span class="caret"></span></h4>
-                    </a>
-                    <ul class="dropdown-menu">
-                        {{#if controller.userCanEditView}}
+                    {{#if controller.userCanShowEditionMenu}}
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <h4> <i class="fa fa-gear"></i> <span class="caret"></span></h4>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {{#if controller.userCanEditView}}
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="#" {{action 'toggleEditMode'}}>
+                                        <i class="fa fa-pencil"></i>
+                                        {{#if controller.editMode}}
+                                            {{tr 'Leave edition mode'}}
+                                        {{else}}
+                                            {{tr 'Edit current view'}}
+                                        {{/if}}
+                                    </a>
+                                </li>
+                            {{/if}}
+                            {{#if controller.userCanCreateView}}
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" {{action 'importView'}}>
+                                        <i class="fa fa-upload"></i>
+                                        {{tr 'Import a view'}}
+                                    </a>
+                                </li>
+                            {{/if}}
                             <li role="presentation">
-                                <a role="menuitem" tabindex="-1" href="#" {{action 'toggleEditMode'}}>
-                                    <i class="fa fa-pencil"></i>
-                                    {{#if controller.editMode}}
-                                        {{tr 'Leave edition mode'}}
-                                    {{else}}
-                                        {{tr 'Edit current view'}}
-                                    {{/if}}
+                                <a role="menuitem" tabindex="-1" {{action 'exportCurrentView'}}>
+                                    <i class="fa fa-download"></i>
+                                    {{tr 'Export current view'}}
                                 </a>
                             </li>
-                        {{/if}}
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" {{action 'exportCurrentView'}}>
-                                <i class="fa fa-clipboard"></i>
-                                {{tr 'Export current view'}}
-                            </a>
-                        </li>
-                        {{#if controller.userCanCreateView}}
+                            {{#if controller.userCanCreateView}}
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="#" {{action 'addNewView'}}>
+                                        <i class="fa fa-plus"></i>
+                                        {{tr 'Add a view'}}
+                                    </a>
+                                </li>
+                            {{/if}}
+                            <li role="presentation" class="divider"></li>
                             <li role="presentation">
-                                <a role="menuitem" tabindex="-1" href="#" {{action 'addNewView'}}>
-                                    <i class="fa fa-plus"></i>
-                                    {{tr 'Add a view'}}
+                                <a role="menuitem" tabindex="-1" href="#" {{action 'showView' 'view.userviews'}}>
+                                    <i class="fa fa-wrench"></i> {{tr 'Manage views'}}
                                 </a>
                             </li>
-                        {{/if}}
-                        <li role="presentation" class="divider"></li>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="#" {{action 'showView' 'view.userviews'}}>
-                                <i class="fa fa-wrench"></i> {{tr 'Manage views'}}
-                            </a>
-                        </li>
-                    </ul>
+                        </ul>
+                    {{/if}}
                 </li>
             {{#each tab in controller.preparedTabs}}
                 <li {{bind-attr class="tab.isActive:active:"}}>

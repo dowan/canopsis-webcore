@@ -1,3 +1,9 @@
+.scrollableList {
+    max-height: 300px;
+    overflow-x:hidden;
+    overflow-y:auto;
+}
+
 /* Properties for colorGrid editor and dropdownbutton*/
 .btn-secondary{
     color: #333;
@@ -307,8 +313,12 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
     background-image: url('/static/canopsis/media/images/bullet_red.png') !important;
 }
 
+.pointer {
+    cursor: pointer;
+}
+
 .handle{
-    cursor:pointer;
+    cursor: move;
 }
 
 .underline:hover{
@@ -509,9 +519,7 @@ table.dataTable>thead>tr>th {
     right: auto !important;
 }
 
-.modal-header {
-    cursor: move;
-}
+
 .modal-dialog {
     margin-right: 0;
     margin-left: 0;
@@ -584,6 +592,14 @@ table.sortable th {
 #loadingInfo {
     position:absolute;
     top: 45%;
+    width:100%;
+    text-align:center;
+}
+
+#moduleList {
+    font-size: 9px;
+    position:absolute;
+    top: 65%;
     width:100%;
     text-align:center;
 }

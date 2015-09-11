@@ -18,7 +18,7 @@
 */
 
 var editors = [
-    { name: 'editor-metricselector', template: 'canopsis/monitoring/editors/metricselector.hbs' },
+    { name: 'editor-metricselector', template: 'canopsis/monitoring/editors/metricselector.hbs' }
 ];
 
 loader.loadWithTemplates(editors);
