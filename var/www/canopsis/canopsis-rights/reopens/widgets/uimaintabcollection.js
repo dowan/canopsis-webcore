@@ -19,7 +19,7 @@
 
 Ember.Application.initializer({
     name: 'CanopsisRightsUimaintabcollectionWidgetReopen',
-    after: ['RightsflagsUtils', 'UimaintabcollectionWidget'],
+    after: ['RightsflagsUtils', 'UimaintabcollectionWidget', 'WidgetsRegistry'],
     initialize: function(container, application) {
 
         var get = Ember.get,
@@ -27,7 +27,8 @@ Ember.Application.initializer({
             isNone = Ember.isNone,
             __ = Ember.String.loc;
 
-        var UimaintabcollectionWidget = container.lookupFactory('widget:uimaintabcollection');
+        var widgetsRegistry = container.lookupFactory('registry:widgets');
+        var UimaintabcollectionWidget = container.lookupFactory('widgetbase:uimaintabcollection');
         var rightsflagsUtils = container.lookupFactory('utility:rightsflags');
 
         UimaintabcollectionWidget.reopen({
@@ -91,5 +92,8 @@ Ember.Application.initializer({
                 return false;
             }.property()
         });
+        
+        application.register('widget:uimaintabcollection', UimaintabcollectionWidget);
+
     }
 });

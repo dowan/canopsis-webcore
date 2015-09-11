@@ -23,7 +23,7 @@ define([
 
     Ember.Application.initializer({
         name: 'WidgetController',
-        after: ['PartialslotAbleController', 'WidgetsUtils', 'RoutesUtils', 'FormsUtils', 'DebugUtils', 'DataUtils', 'SchemasRegistry'],
+        after: ['PartialslotAbleController', 'WidgetsUtils', 'RoutesUtils', 'FormsUtils', 'DebugUtils', 'DataUtils', 'SchemasRegistry', 'WidgetsRegistry'],
         initialize: function(container, application) {
             var PartialslotAbleController = container.lookupFactory('controller:partialslot-able');
 
@@ -33,11 +33,10 @@ define([
             var debugUtils = container.lookupFactory('utility:debug');
             var dataUtils = container.lookupFactory('utility:data');
             var schemasregistry = container.lookupFactory('registry:schemas');
-
+            var WidgetsRegistry = container.lookupFactory('registry:widgets');
             var get = Ember.get,
                 set = Ember.set,
                 isNone = Ember.isNone;
-
 
             /**
              * @class WidgetController
@@ -46,6 +45,10 @@ define([
              */
             var controller = PartialslotAbleController.extend({
                 needs: ['application', 'login'],
+
+                partials: {
+                    titlebarsbuttons : ['titlebarbutton-duplicate', 'titlebarbutton-moveup','titlebarbutton-movedown', 'titlebarbutton-widgeterrors']
+                },
 
                 /**
                  * This is useful mostly for debug, to know that a printend object is a widget
@@ -525,6 +528,62 @@ define([
                     return res;
                 }.property()
             });
+
+            application.reopen({
+                register: function (name, object) {
+
+                    if(name.split(':')[0] === 'widget') {
+                        var widgetName = name.split(':')[1];
+                        var initializerName = widgetName.capitalize() + 'Serializer';
+                        var widgetSerializerName = name.split(':')[1];
+                        var widgetModel = schemasregistry.getByName(widgetSerializerName).EmberModel;
+
+                        Ember.Application.initializer({
+                            name: initializerName,
+                            after: 'WidgetSerializer',
+                            initialize: function(container, application) {
+                                var WidgetSerializer = container.lookupFactory('serializer:widget');
+                                application.register('serializer:' + widgetSerializerName, WidgetSerializer.extend());
+                            }
+                        });
+
+                        if (isNone(widgetModel)) {
+                            notificationUtils.error('No model found for the widget ' + widgetName + '. There might be no schema concerning this widget on the database');
+                        } else {
+
+                            var capitalizedWidgetName = widgetName.camelize().capitalize();
+                            var metadataDict = widgetModel.proto().metadata;
+
+                            var registryEntry = Ember.Object.create({
+                                name: widgetName,
+                                EmberClass: object
+                            });
+
+                            if(!isNone(metadataDict)) {
+                                if(metadataDict.icon) {
+                                    registryEntry.set('icon', metadataDict.icon);
+                                }
+                                if(metadataDict.classes) {
+                                    var classes = metadataDict.classes;
+                                    for (var j = 0, lj = classes.length; j < lj; j++) {
+                                        var currentClass = classes[j];
+                                        if(!Ember.isArray(get( WidgetsRegistry.byClass, currentClass))) {
+                                            set(WidgetsRegistry.byClass, currentClass, Ember.A());
+                                        }
+
+                                        get(WidgetsRegistry.byClass, currentClass).pushObject(registryEntry);
+                                    }
+                                }
+                            }
+
+                            WidgetsRegistry.all.pushObject(registryEntry);
+                        }
+                    }
+
+                    return this._super.apply(this, arguments);
+                }
+            });
+
             application.register('controller:widget', controller);
         }
     });
