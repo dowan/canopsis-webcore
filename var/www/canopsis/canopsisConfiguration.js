@@ -24,7 +24,10 @@ define(['ember-lib', 'ember-data-lib'], function () {
     Ember.Object.reopen({
         toJson: function() {
             return JSON.parse(JSON.stringify(this));
-        }
+        },
+        json: function() {
+            return JSON.parse(JSON.stringify(this));
+        }.property()
     });
 
     var controllerDict = {
