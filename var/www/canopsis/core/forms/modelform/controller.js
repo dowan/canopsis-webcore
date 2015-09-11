@@ -84,7 +84,7 @@ Ember.Application.initializer({
              * @property categories
              * @type {Array}
              */
-            categories: function() {
+            categories: function(){
                 var res = get(this, 'categorized_attributes');
                 var category_selection = [];
                 if(res instanceof Array) {
@@ -209,16 +209,15 @@ Ember.Application.initializer({
                             set(this, 'formContext.' + categoryKeyField, attr.value);
                         }
                     }
+                    //Update value of array
+                  //  this.updateArray();
 
                     console.log('this is a widget', get(this, 'formContext'));
-
-                    var args = [get(this, 'formContext')];
-                    args.addObjects(arguments);
-
-                    this._super.apply(this, args);
+                    this._super(get(this, 'formContext'));
                 }
             }
-        });
+        },
+        formOptions);
 
         application.register('form:modelform', form);
     }
