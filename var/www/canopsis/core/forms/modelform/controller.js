@@ -84,7 +84,7 @@ Ember.Application.initializer({
              * @property categories
              * @type {Array}
              */
-            categories: function(){
+            categories: function() {
                 var res = get(this, 'categorized_attributes');
                 var category_selection = [];
                 if(res instanceof Array) {
@@ -217,8 +217,8 @@ Ember.Application.initializer({
 
                     this._super.apply(this, args);
                 }
-        },
-        formOptions);
+            }
+        });
 
         application.register('form:modelform', form);
     }
