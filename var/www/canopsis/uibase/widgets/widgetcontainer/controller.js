@@ -75,6 +75,6 @@ Ember.Application.initializer({
                 return this._super();
             }
         });
-
+        application.register('widget:widgetcontainer', widget);
     }
 });
