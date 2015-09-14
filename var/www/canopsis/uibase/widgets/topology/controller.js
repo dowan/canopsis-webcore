@@ -645,5 +645,7 @@ Ember.Application.initializer({
             },
 
         });
+        application.register('widget:topology', widget);
+
     }
 });

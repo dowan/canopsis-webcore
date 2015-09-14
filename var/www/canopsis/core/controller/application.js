@@ -118,6 +118,8 @@ define([
                     this.refreshPartialsList();
                     this._super.apply(this, arguments);
 
+                    dataUtils.setLoggedUserController(get(this, 'controllers.login'));
+
                     //close the init group
                     console.groupEnd();
                     console.tags.remove('init');
