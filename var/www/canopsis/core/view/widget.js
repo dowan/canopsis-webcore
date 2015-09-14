@@ -32,8 +32,7 @@ define([
             var schemasregistry = container.lookupFactory('registry:schemas');
 
             var get = Ember.get,
-                set = Ember.set,
-                widgetsregistry;
+                set = Ember.set;
 
             function computeMixinsArray(view, widget) {
                 var mixinsNames = get(widget, 'mixins');
@@ -43,6 +42,12 @@ define([
                 console.log('computeMixinsArray', mixinsNames, widget);
 
                 var mixinOptions = {};
+
+                //avoid lint error (do not declare function insisde a loop)
+                var transformmodel = function(item) {
+                    widget.userPreferencesModel[item.name] = mixinUserPreferenceModel[item.name];
+                    widget.userPreferencesModel.attributes.add(item);
+                };
 
                 if(mixinsNames) {
                     for (var i = 0, l = mixinsNames.length; i < l; i++) {
@@ -71,10 +76,7 @@ define([
                             var mixinUserPreferenceModelAttributes = get(mixinUserPreferenceModel, 'attributes');
                             console.log('mixinModelAttributes', mixinUserPreferenceModelAttributes);
 
-                            mixinUserPreferenceModelAttributes.forEach(function(item) {
-                                widget.userPreferencesModel[item.name] = mixinUserPreferenceModel[item.name];
-                                widget.userPreferencesModel.attributes.add(item);
-                            });
+                            mixinUserPreferenceModelAttributes.forEach(transformmodel);
                         }
 
                         if(currentClass) {
