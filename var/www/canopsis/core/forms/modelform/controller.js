@@ -15,6 +15,8 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @module canopsis-frontend-core
  */
 
 Ember.Application.initializer({
@@ -26,6 +28,7 @@ Ember.Application.initializer({
         var InspectableitemMixin = container.lookupFactory('mixin:inspectable-item');
         var ValidationMixin = container.lookupFactory('mixin:validation');
         var slugUtils = container.lookupFactory('utility:slug');
+
 
         var set = Ember.set,
             get = Ember.get,
@@ -112,7 +115,6 @@ Ember.Application.initializer({
                     if (category_selection.length) {
                         set(category_selection[0], 'isDefault', true);
                     }
-
                     return category_selection;
                 }
                 else {
@@ -156,7 +158,7 @@ Ember.Application.initializer({
                     if (this.validation !== undefined && !this.validation()) {
                         return;
                     }
-                    console.log('submit action');
+                    console.log('submit action', arguments);
 
                     var override_inverse = {};
 
@@ -209,11 +211,13 @@ Ember.Application.initializer({
                             set(this, 'formContext.' + categoryKeyField, attr.value);
                         }
                     }
-                    //Update value of array
-                  //  this.updateArray();
 
                     console.log('this is a widget', get(this, 'formContext'));
-                    this._super(get(this, 'formContext'));
+
+                    var args = [get(this, 'formContext')];
+                    args.addObjects(arguments);
+
+                    this._super.apply(this, args);
                 }
             }
         },

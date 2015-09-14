@@ -189,6 +189,11 @@ Ember.Application.initializer({
                     notificationUtils.info(__('event sent: ') + event_type);
                     me.submitEvents(crecords, record, event_type);
 
+                    //send a delayed declare ticket when the option reportIncident is matched
+                    if ($.inArray('reportIncident', arguments[1]) !== -1) {
+                        me.submitEvents(crecords, record, 'declareticket');
+                    }
+
                     rollback();
                 }, rollback);
             },
@@ -647,7 +652,7 @@ Ember.Application.initializer({
 
                     if (!isNone(crecord)) {
                         console.log('event:', event_type, crecord);
-                        crecords.push(crecord);
+                        crecords.pushObject(crecord);
                     }
                     else {
                         var content = get(this, 'widgetData.content');
@@ -674,6 +679,7 @@ Ember.Application.initializer({
                 }
             }
         });
+
 
         application.register('mixin:sendevent', mixin);
     }
