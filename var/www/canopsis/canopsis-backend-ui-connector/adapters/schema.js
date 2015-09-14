@@ -45,4 +45,4 @@ define(['canopsis/canopsis-backend-ui-connector/adapters/application'], function
     });
 
     return adapter;
-})
+});

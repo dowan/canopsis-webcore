@@ -24,6 +24,8 @@ Ember.Application.initializer({
         var Utility = container.lookupFactory('class:utility');
         var hashUtils = container.lookupFactory('utility:hash');
 
+        var isNone = Ember.isNone;
+
         var _loggedUserController,
             _applicationSingleton;
 
@@ -123,12 +125,12 @@ Ember.Application.initializer({
                             if(typeof callback === 'function') {
                                 callback(file.name, file.type, file.size, contents);
                             }
-                        }
+                        };
                         r.readAsText(file);
                     } else {
                         alert("Failed to load file");
                     }
-                })
+                });
             },
 
             /**
@@ -138,9 +140,10 @@ Ember.Application.initializer({
              */
             cleanJSONIds: function (recordJSON) {
                 for (var key in recordJSON) {
-                    var item = recordJSON[key];
+                    var item = recordJSON[key],
+                        keys =  ['id', '_id', 'widgetId', 'preference_id', 'EmberClass'];
                     //see if the key need to be cleaned
-                    if(key === 'id' || key === '_id' || key === 'widgetId' || key === 'preference_id' || key === 'EmberClass') {
+                    if(keys.indexOf(key) !== -1) {
                         delete recordJSON[key];
                     }
 
@@ -151,9 +154,9 @@ Ember.Application.initializer({
                     }
                 }
 
-                if(recordJSON !== null && recordJSON !== undefined && (recordJSON.crecord_type !== undefined || recordJSON.xtype !== undefined)) {
-                    recordJSON['id'] = hashUtils.generateId(recordJSON.xtype || recordJSON.crecord_type || 'item');
-                    recordJSON['_id'] = recordJSON['id'];
+                if(!isNone(recordJSON) && (!isNone(recordJSON.crecord_type) || !isNone(recordJSON.xtype))) {
+                    recordJSON.id = hashUtils.generateId(recordJSON.xtype || recordJSON.crecord_type || 'item');
+                    recordJSON._id = recordJSON.id;
                 }
 
                 return recordJSON;

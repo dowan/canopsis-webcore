@@ -115,10 +115,15 @@ define([
             modelDict.userPreferencesModel = {};
             modelDict.userPreferencesModelName = modelId;
 
+            var defaultValue = function(model, attribute) {
+                return attribute['default'];
+            };
+            var i;
+
             // console.log(modelId, 'dict:', modelDict, this.generatedModels.findBy('name', 'widget').modelDict);
             if(schema.properties) {
                 var propertiesKeys = Ember.keys(schema.properties);
-                for (var i = 0; i < propertiesKeys.length; i++) {
+                for (i = 0; i < propertiesKeys.length; i++) {
                     var currentKey = propertiesKeys[i];
                     // avoid to add id in model because ember has already added once
                     if (currentKey === 'id') {
@@ -128,9 +133,7 @@ define([
                     var currentProperty = schema.properties[currentKey];
 
                     if(currentProperty['default']) {
-                        currentProperty.defaultValue = function(model, attribute) {
-                            return attribute['default'];
-                        };
+                        currentProperty.defaultValue = defaultValue;
                     }
 
                     if (currentProperty.relationship === 'hasMany' && currentProperty.model !== undefined) {
@@ -154,7 +157,7 @@ define([
 
                 userPreferencesKeys = Ember.keys(modelDict.userPreferencesModel);
                 modelDict.userPreferencesModel.attributes = Ember.OrderedSet.create();
-                for (var i = 0; i < userPreferencesKeys.length; i++) {
+                for (i = 0; i < userPreferencesKeys.length; i++) {
                     var keyMeta = modelDict.userPreferencesModel[userPreferencesKeys[i]].meta();
                     keyMeta.name = userPreferencesKeys[i];
 
@@ -207,7 +210,7 @@ define([
                 } else {
                     console.error('Unable to load schemas from API');
                 }
-            }
+            };
 
             adapter.findAll(successFunction);
 

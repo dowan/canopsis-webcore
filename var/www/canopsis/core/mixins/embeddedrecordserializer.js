@@ -266,7 +266,7 @@ Ember.Application.initializer({
                 }
 
                 var res = this._super(record, options);
-                res['id'] = record.get('id');
+                res.id = record.get('id');
 
                 console.log(' - serialized record', record, res);
 
@@ -355,12 +355,13 @@ Ember.Application.initializer({
              * @param {Object} payload
              */
             pushPayload: function(store, payload) {
-                var payload = dataUtils.cleanJSONIds(payload);
+                payload = dataUtils.cleanJSONIds(payload);
 
-                var payloadKeys = Ember.keys(payload);
+                var payloadKeys = Ember.keys(payload),
+                    currentKey;
 
                 for (var i = 0, l = payloadKeys.length; i < l; i++) {
-                    var currentKey = payloadKeys[i];
+                    currentKey = payloadKeys[i];
                     var typeClass = schemasregistry.getByName(currentKey).EmberModel;
                     this.extractRelationships(payload, payload[currentKey], typeClass);
                 }
