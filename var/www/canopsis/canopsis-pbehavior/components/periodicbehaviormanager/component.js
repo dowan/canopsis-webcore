@@ -24,7 +24,8 @@ Ember.Application.initializer({
         var CrudMixin = container.lookupFactory('mixin:crud');
 
         var get = Ember.get,
-            set = Ember.set;
+            set = Ember.set,
+            __ = Ember.String.loc;
 
 
         var CrudEventedComponent = Ember.Component.extend(Ember.Evented, CrudMixin);

@@ -84,7 +84,7 @@ Ember.Application.initializer({
                 }.observes('model.rollbackable'),
 
                 generateListlineTemplate: function (shown_columns) {
-                    var html = '<td>{{#if pendingOperation}}<i class="fa fa-cog fa-spin"></i>{{/if}}{{component-checkbox checked=isSelected class="toggle"}}</td>';
+                    var html = '<td>{{#if pendingOperation}}<i class="fa fa-cog fa-spin"></i>{{/if}}{{component-checkbox checked=record.isSelected class="toggle"}}</td>';
 
                     if(get(this, '_partials.columnsLine')) {
                         html += '{{#each columns in controller._partials.columnsLine}}<td>{{partial columns}}</td>{{/each}}';
@@ -100,9 +100,9 @@ Ember.Application.initializer({
 
                         if(get(currentColumn, 'options.show')) {
                             if(currentColumn.renderer && get(this, 'model.useRenderers')) {
-                                html += ['<td class="', currentColumn.field, '">{{component-renderer rendererType="', currentColumn.renderer, '" value=this.', currentColumn.field, ' record=this field="', currentColumn.field, '" shown_columns=controller.shown_columns}}</td>'].join('');
+                                html += ['<td class="', currentColumn.field, '">{{component-renderer rendererType="', currentColumn.renderer, '" value=record.', currentColumn.field, ' record=record field="', currentColumn.field, '" shown_columns=controller.shown_columns}}</td>'].join('');
                             } else {
-                                html += ['<td class="', currentColumn.field, '">{{this.', currentColumn.field, '}}</td>'].join('');
+                                html += ['<td class="', currentColumn.field, '">{{record.', currentColumn.field, '}}</td>'].join('');
                             }
                         }
                     }
@@ -145,7 +145,7 @@ Ember.Application.initializer({
                 },
 
                 itemType: function() {
-                    var listed_crecord_type = get(this, 'listed_crecord_type');
+                    var listed_crecord_type = get(this, 'model.listed_crecord_type');
                     console.info('listed_crecord_type', listed_crecord_type);
                     if(listed_crecord_type !== undefined && listed_crecord_type !== null ) {
                         return get(this, 'listed_crecord_type');
@@ -299,12 +299,6 @@ Ember.Application.initializer({
                             delete shown_columns[column].options.canUseDisplayRecord;
                         }
 
-                        //set option display record field to true allow list line template to change renderer
-                        //diusplay and if true, an action can be triggrered from trusted column.
-                        if (shown_columns[column].field === get(this, 'display_record_field')) {
-                            shown_columns[column].options.canUseDisplayRecord = true;
-                        }
-
                         //Manage hidden colums from the list parameters information.
                         //If colname exists in hidden_column list, then it is not displayed.
                         if ($.inArray(shown_columns[column].field, get(this, 'hidden_columns')) === -1) {
@@ -358,6 +352,8 @@ Ember.Application.initializer({
                     return selected_columns;
 
                 }.property('attributesKeysDict', 'sorted_columns'),
+
+                hbsListline: function(){}.property(),
 
                 /**
                  * Computes the list of different filter fragments used to create a proper query

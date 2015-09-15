@@ -41,6 +41,7 @@ Ember.Application.initializer({
 
             needs: ['application'],
 
+            record: function(){}.property(),
             /**
              * @method init
              */

@@ -231,15 +231,15 @@ define([
                      * @event editWidget
                      * @param widget
                      */
-                    editWidget: function (widget) {
-                        console.info('edit widget', widget);
+                    editWidget: function (widgetModel) {
+                        console.info('edit widget', widgetModel);
 
-                        var widgetTitle = get(widget, 'title') || '';
-                        var widgetType = get(widget, 'xtype') || '';
+                        var widgetTitle = get(widgetModel, 'title') || '';
+                        var widgetType = get(widgetModel, 'xtype') || '';
 
                         var widgetWizard = formsUtils.showNew(
                             'modelform',
-                            widget,
+                            widgetModel,
                             { title: __('Edit widget') + ' ' + widgetType + ' ' + widgetTitle}
                         );
                         console.log('widgetWizard', widgetWizard);
@@ -247,10 +247,10 @@ define([
                         var widgetController = this;
 
                         widgetWizard.submit.done(function() {
-                            console.log('record going to be saved', widget);
+                            console.log('record going to be saved', widgetModel);
 
-                            if(!get(widget, 'widgetId')) {
-                                set(widget, 'widgetId', get(widget,'id'));
+                            if(!get(widgetModel, 'widgetId')) {
+                                set(widgetModel, 'widgetId', get(widgetModel, 'id'));
                             }
 
                             var userview = get(widgetController, 'viewController').get('content');
@@ -469,7 +469,7 @@ define([
                  */
                 refreshContent: function() {
 
-                    console.log('refreshContent', get(this, 'xtype'));
+                    console.log('refreshContent', get(this, 'model.xtype'));
 
                     this._super();
                     this.findItems();

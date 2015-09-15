@@ -38,7 +38,6 @@ define(['ember-lib', 'ember-data-lib'], function () {
 
     Ember.Controller.reopen(controllerDict);
     Ember.ArrayController.reopen(controllerDict);
-    Ember.ObjectController.reopen(controllerDict);
 
     DS.ArrayTransform = DS.Transform.extend({
         deserialize: function(serialized) {

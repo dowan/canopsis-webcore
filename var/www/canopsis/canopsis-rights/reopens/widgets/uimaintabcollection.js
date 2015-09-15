@@ -66,7 +66,7 @@ Ember.Application.initializer({
                 }
 
                 var rights = get(this, 'loggedaccountRights'),
-                    viewId = get(this, 'currentViewId');
+                    viewId = get(this, 'controllers.application.currentViewId');
 
                 viewId = viewId.replace('.', '_');
 
@@ -75,7 +75,7 @@ Ember.Application.initializer({
                 }
 
                 return false;
-            }.property('currentViewId'),
+            }.property('controllers.application.currentViewId'),
 
             userCanCreateView: function() {
                 if(get(this, 'loggedaccountId') === "root") {

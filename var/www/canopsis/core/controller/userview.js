@@ -63,6 +63,7 @@ Ember.Application.initializer({
                         console.log('onsubmit, adding widgetwrapper to containerwidget', newWidgetWrapper, containerController);
                         console.log('containerwidget items', get(containerController, 'model.items.content'));
                         //FIXME wrapper does not seems to have a widget
+
                         get(containerController, 'model.items.content').pushObject(newWidgetWrapper);
 
                         console.log("saving view");
@@ -93,7 +94,9 @@ Ember.Application.initializer({
                     console.log('refresh view');
                     this.trigger('refreshView');
                 }
-            }
+            },
+
+            isMainView: function() {}.property()
         });
 
 

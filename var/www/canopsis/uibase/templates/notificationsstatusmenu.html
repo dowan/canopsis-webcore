@@ -9,10 +9,10 @@
         <li class="header">{{tr 'You have'}} {{notificationCount}} {{tr 'notifications'}}</li>
         <li>
             <ul class="menu">
-                {{#each notifications}}
+                {{#each notification in notifications}}
                 <li>
                     <a href="#">
-                        <i class="fa" {{bind-attr class="level falevel"}}></i> {{message}}
+                        <i class="fa" {{bind-attr class="notification.level notification.falevel"}}></i> {{notification.message}}
                     </a>
                 </li>
                 {{/each}}

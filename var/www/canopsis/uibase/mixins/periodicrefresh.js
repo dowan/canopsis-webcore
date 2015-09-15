@@ -51,7 +51,7 @@ define([
                     var interval = get(this, 'widgetRefreshInterval');
 
                     interval = setInterval(function () {
-                        console.log('refreshing widget ' + get(widgetController, 'title'), widgetController.get('mixinOptions.periodicrefresh.refreshInterval'), widgetController);
+                        console.log('refreshing widget ' + get(widgetController, 'model.title'), widgetController.get('mixinOptions.periodicrefresh.refreshInterval'), widgetController);
                         widgetController.refreshContent();
                     }, widgetController.get('mixinOptions.periodicrefresh.refreshInterval') * 1000);
 
