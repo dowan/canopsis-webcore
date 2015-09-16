@@ -1,87 +1,107 @@
-/*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-define([
-    'jquery',
-    'ember',
-    'ember-data',
-    'app/lib/loaders/utils',
-    'app/lib/utils/data'
-], function($, Ember, DS, utils, dataUtils) {
+Ember.Application.initializer({
+    name: 'LoginController',
+    after: 'DataUtils',
+    initialize: function(container, application) {
 
-    var set = Ember.set,
-        get = Ember.get,
-        isNone = Ember.isNone;
+        var DataUtils = container.lookupFactory('utility:data');
 
-    var controller = Ember.ObjectController.extend({
-        content: {},
+        var set = Ember.set,
+            get = Ember.get,
+            isNone = Ember.isNone;
 
-        needs: ['application'],
+        var controller = Ember.ObjectController.extend({
 
-        init: function() {
-            this._super.apply(this, arguments);
+            /**
+             * @property content
+             */
+            content: {},
 
-            var store = DS.Store.create({
-                container: get(this, "container")
-            });
+            needs: ['application'],
 
-            set(this, 'store', store);
-        },
+            /**
+             * @method init
+             */
+            init: function() {
+                this._super.apply(this, arguments);
 
-        userRoute: function () {
-            var loginController = utils.data.getLoggedUserController();
-            var record = get(loginController, 'record');
-            var defaultview = get(record, 'defaultview');
-            if (!defaultview) {
-                defaultview = get(this, 'controllers.application.frontendConfig.defaultview');
+                //TODO delete store in this#destroy
+                var store = DS.Store.create({
+                    container: get(this, "container")
+                });
+
+                set(this, 'store', store);
+            },
+
+            /**
+            * @property userRoute
+            * compute route to view when login for current user
+            **/
+            userRoute: function () {
+                var loginController = DataUtils.getLoggedUserController();
+                var record = get(loginController, 'record');
+                var defaultview = get(record, 'defaultview');
+                if (!defaultview) {
+                    defaultview = get(this, 'controllers.application.frontendConfig.defaultview');
+                }
+                return defaultview;
+            }.property(),
+
+            /**
+             * @property authkey
+             */
+            authkey: function () {
+                var authkey = localStorage.cps_authkey;
+                if (authkey === 'undefined') {
+                    authkey = undefined;
+                }
+                return authkey;
+            }.property('authkey'),
+
+            /**
+             * @method authkeyChanged
+             * @observes authkey
+             */
+            authkeyChanged: function() {
+                localStorage.cps_authkey = get(this, 'authkey');
+            }.observes('authkey'),
+
+            /**
+             * @method sessionStart
+             * Tells the backend the user is logging in
+             **/
+
+            sessionStart: function () {
+                loggedaccountAdapter = dataUtils.getEmberApplicationSingleton().__container__.lookup('adapter:loggedaccount');
+                username = get(this, 'record._id');
+                loggedaccountAdapter.sessionStart(username);
+
+                //Keep alive every 4"30'
+                setInterval(function () {
+                    loggedaccountAdapter.keepAlive(username);
+                },1000 * 60 * 4.5);
             }
-            return defaultview;
-        }.property(),
 
-        authkey: function () {
-            var authkey = localStorage.cps_authkey;
-            if (authkey === 'undefined') {
-                authkey = undefined;
-            }
-            return authkey;
-        }.property('authkey'),
+        });
 
-        authkeyChanged: function() {
-            localStorage.cps_authkey = get(this, 'authkey');
-        }.observes('authkey'),
-
-        sessionStart: function () {
-            loggedaccountAdapter = dataUtils.getEmberApplicationSingleton().__container__.lookup('adapter:loggedaccount');
-            username = get(this, 'record._id');
-            loggedaccountAdapter.sessionStart(username);
-
-            //Keep alive every 4"30'
-            setInterval(function () {
-                loggedaccountAdapter.keepAlive(username);
-            },1000 * 60 * 4.5);
-        }
-
-
-
-    });
-
-    loader.register('controller:login', controller);
-
-    return controller;
+        application.register('controller:login', controller);
+    }
 });
