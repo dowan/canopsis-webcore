@@ -90,7 +90,7 @@ Ember.Application.initializer({
              **/
 
             sessionStart: function () {
-                loggedaccountAdapter = dataUtils.getEmberApplicationSingleton().__container__.lookup('adapter:loggedaccount');
+                loggedaccountAdapter = DataUtils.getEmberApplicationSingleton().__container__.lookup('adapter:loggedaccount');
                 username = get(this, 'record._id');
                 loggedaccountAdapter.sessionStart(username);
 
