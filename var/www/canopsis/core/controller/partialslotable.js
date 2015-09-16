@@ -88,7 +88,7 @@ Ember.Application.initializer({
              * @type Object
              */
             _partials: {},
-
+            partials: {},
             /**
              * @property mixinOptions
              * @type Object

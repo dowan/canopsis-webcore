@@ -1,9 +1,10 @@
+
 <div class="box-header">
     <div class="pull-right">
-        {{partialslot slot=controller._partials.titlebarsbuttons minified=true class="btn-group" tagName="span"}}
-        {{partialslot slot=widget.controller._partials.titlebarbuttons minified=true class="btn-group" tagName="span"}}
+        {{partialslot slot=controller._partials.titlebarsbuttons minified=true class="btn-group" tagName="span" widgetwrapper=widgetwrapper}}
+        {{partialslot slot=widgetwrapper.widget.controller._partials.titlebarbuttons minified=true class="btn-group" tagName="span" widgetwrapper=widgetwrapper}}
             {{#if controller.editMode}}
-                {{view "mixineditdropdown" isGridLayout=controller.isGridLayout mixins=widget.mixins wrappermixins=this.mixins class="btn-group"}}
+                {{view "mixineditdropdown" isGridLayout=controller.isGridLayout mixins=widgetwrapper.widget.mixins wrappermixins=widgetwrapper.mixins class="btn-group"}}
             {{/if}}
         <div class="btn-group">
             {{#if widget.isMinimizable}}
@@ -11,14 +12,14 @@
             {{/if}}
 
             {{#if controller.editMode}}
-                <button type="button" class="btn btn-small btn-danger btn-xs" {{action 'removeWidget' widget}}>
+                <button type="button" class="btn btn-small btn-danger btn-xs" {{action 'removeWidget' widgetwrapper.widget}}>
                     <span class="glyphicon glyphicon-trash"></span>
                 </button>
             {{/if}}
 
-            {{#if widget.rollbackable}}
-                {{#if widget.isDirty}}
-                    <button type="button" class="btn btn-small btn-danger btn-xs" {{action 'rollback' widget}}>
+            {{#if widgetwrapper.widget.rollbackable}}
+                {{#if widgetwrapper.widget.isDirty}}
+                    <button type="button" class="btn btn-small btn-danger btn-xs" {{action 'rollback' widgetwrapper.widget}}>
                         <i class="fa fa-undo"></i>
                     </button>
                 {{/if}}
@@ -37,21 +38,21 @@
 
     {{#if controller.editMode}}
         <h3 class="box-title">
-            {{widgettitlebar-drag-handle widget=this title=widget.title xtype=widget.xtype}}
+            {{widgettitlebar-drag-handle widget=widgetwrapper title=widgetwrapper.widget.title xtype=widgetwrapper.widget.xtype}}
         </h3>
     {{else}}
         {{#unless controller.hide_titles}}
-            {{#if widget.title}}
-                <h3 class="box-title">{{widget.title}}</h3>
+            {{#if widgetwrapper.widget.title}}
+                <h3 class="box-title">{{widgetwrapper.widget.title}}</h3>
             {{/if}}
         {{/unless}}
     {{/if}}
     {{#if controller.debug}}
         <code>
-            <a {{action "inspect" widget}} style="font-size:80%; font-weight: bold">&gt;$E</a>
+            <a {{action "inspect" widgetwrapper.widget}} style="font-size:80%; font-weight: bold">&gt;$E</a>
         </code>
 
-        <span class="label label-warning">{{xtype}} state: {{currentState.stateName}}</span>
-        <span class="label label-warning">{{widget.xtype}} state: {{widget.currentState.stateName}}</span>
+        <span class="label label-warning">{{widgetwrapper.xtype}} state: {{widgetwrapper.currentState.stateName}}</span>
+        <span class="label label-warning">{{widgetwrapper.widget.xtype}} state: {{widgetwrapper.widget.currentState.stateName}}</span>
     {{/if}}
 </div>

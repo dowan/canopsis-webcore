@@ -49,7 +49,7 @@ Ember.Application.initializer({
 
                 var res = Ember.A();
 
-                get(this, 'tabs').forEach(function(item, index) {
+                get(this, 'model.tabs').forEach(function(item, index) {
                     if(item.value === get(uimaintabcollectionController, 'currentViewId')) {
                         set(item, 'isActive', true);
                     } else {
@@ -69,7 +69,7 @@ Ember.Application.initializer({
                 });
 
                 return res;
-            }.property('tabs', 'currentViewId'),
+            }.property('model.tabs', 'currentViewId'),
 
             actions: {
                 do: function(action, params) {

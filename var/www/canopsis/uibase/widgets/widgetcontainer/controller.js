@@ -71,7 +71,7 @@ Ember.Application.initializer({
             refreshContent: function() {
                 console.log('container startRefresh');
 
-                var widgetwrappers = get(this, 'items');
+                var widgetwrappers = get(this, 'model.items');
 
                 this.trigger('refreshChilds');
 
