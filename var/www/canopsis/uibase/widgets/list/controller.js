@@ -19,7 +19,7 @@
 
 Ember.Application.initializer({
     name: 'ListWidget',
-    after: ['WidgetFactory','PaginationMixin', 'InspectableArrayMixin', 'UserconfigurationMixin', 'DraggablecolumnsMixin', 'RoutesUtils', 'FormsUtils', 'ListlineView'],
+    after: ['WidgetFactory', 'PaginationMixin', 'InspectableArrayMixin', 'UserconfigurationMixin', 'DraggablecolumnsMixin', 'RoutesUtils', 'FormsUtils', 'ListlineView'],
     initialize: function(container, application) {
         var WidgetFactory = container.lookupFactory('factory:widget');
         var PaginationMixin = container.lookupFactory('mixin:pagination');
@@ -271,7 +271,7 @@ Ember.Application.initializer({
                     }
 
                     var shown_columns = [];
-                    var displayed_columns = get(this, 'displayed_columns') || get(this, 'content._data.displayed_columns') ;
+                    var displayed_columns = get(this, 'displayed_columns') || get(this, 'model.displayed_columns') ;
                     if (displayed_columns !== undefined && displayed_columns.length > 0) {
 
                         var attributesKeysDict = this.get('attributesKeysDict');
@@ -289,7 +289,6 @@ Ember.Application.initializer({
                         console.log('no shown columns set, displaying everything');
                         shown_columns = this.get('attributesKeys');
                     }
-
                     var selected_columns = [];
                     var sortedAttribute = get(this, 'sortedAttribute');
                     var columnSort = get(this, 'default_column_sort');

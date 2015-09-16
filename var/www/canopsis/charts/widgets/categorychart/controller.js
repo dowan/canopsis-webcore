@@ -214,6 +214,6 @@ Ember.Application.initializer({
 
         }, widgetOptions);
 
-        application.register('widget:category-chart', Widget);
+        application.register('widget:categorychart', Widget);
     }
 });

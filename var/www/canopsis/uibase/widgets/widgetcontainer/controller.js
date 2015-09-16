@@ -59,9 +59,6 @@ Ember.Application.initializer({
         });
 
         var widget = WidgetFactory('widgetcontainer', {
-            partials: {
-                titlebarsbuttons : ['titlebarbutton-duplicate', 'titlebarbutton-moveup','titlebarbutton-movedown', 'titlebarbutton-widgeterrors']
-            },
 
             init: function() {
                 this.addMixinView(ContainerViewMixin);
@@ -78,6 +75,6 @@ Ember.Application.initializer({
                 return this._super();
             }
         });
-
+        application.register('widget:widgetcontainer', widget);
     }
 });

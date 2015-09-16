@@ -29,7 +29,8 @@ Ember.Application.initializer({
             ['curve', 'curves'],
             ['serie', 'serie'],
             ['enabledmodules', 'enabledmodules'],
-            ['calendardata','calendardata']
+            ['calendardata','calendardata'],
+            ['eventcategories', 'eventcategories']
         ];
 
         /**

@@ -32,9 +32,21 @@ Ember.Application.initializer({
         var component = DictclassifiedcrecordselectorComponent.extend({
             nameKey: '_id',
             idKey: '_id',
+
+            actions: {
+                selectItem: function() {
+                    this.recomputeValue();
+                },
+                unselectItem: function() {
+                    this.recomputeValue();
+                }
+            },
+
             /*
              * Compute a structure with classified item each time the 'items' property changed
              */
+
+
             classifiedItems : function(){
                 var items = get(this, 'items');
                 var valueKey = get(this, 'valueKey') || get(this, 'valueKeyDefault');

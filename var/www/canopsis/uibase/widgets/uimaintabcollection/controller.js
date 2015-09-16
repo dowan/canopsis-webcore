@@ -19,8 +19,9 @@
 
 Ember.Application.initializer({
     name: 'UimaintabcollectionWidget',
-    after: ['WidgetFactory', 'FormsUtils', 'RoutesUtils'],
+    after: ['WidgetFactory', 'WidgetController', 'FormsUtils', 'RoutesUtils'],
     initialize: function(container, application) {
+        var WidgetController = container.lookupFactory('controller:widget');
         var WidgetFactory = container.lookupFactory('factory:widget');
         var formsUtils = container.lookupFactory('utility:forms');
         var routesUtils = container.lookupFactory('utility:routes');
@@ -29,7 +30,7 @@ Ember.Application.initializer({
             set = Ember.set;
 
 
-        var widget = WidgetFactory('uimaintabcollection', {
+        var widget = WidgetController.extend({
             needs: ['application', 'login'],
 
             currentViewId: Ember.computed.alias('controllers.application.currentViewId'),
@@ -99,6 +100,8 @@ Ember.Application.initializer({
                 }
             }
         });
-        application.register('widget:uimaintabcollection', widget);
+
+        //FIXME: the factory "widgetbase" is a hack to make the canopsis rights reopen work. But it make the view "app_header" not working without the canopsis-rights brick
+        application.register('widgetbase:uimaintabcollection', widget);
     }
 });

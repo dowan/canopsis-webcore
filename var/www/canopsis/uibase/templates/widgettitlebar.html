@@ -7,10 +7,6 @@
                 {{view "mixineditdropdown" isGridLayout=controller.isGridLayout mixins=widgetwrapper.widget.mixins wrappermixins=widgetwrapper.mixins class="btn-group"}}
             {{/if}}
         <div class="btn-group">
-            {{#if widget.isMinimizable}}
-                {{partial 'titlebarbutton-minimize'}}
-            {{/if}}
-
             {{#if controller.editMode}}
                 <button type="button" class="btn btn-small btn-danger btn-xs" {{action 'removeWidget' widgetwrapper.widget}}>
                     <span class="glyphicon glyphicon-trash"></span>

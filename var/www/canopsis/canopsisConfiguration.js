@@ -24,13 +24,16 @@ define(['ember-lib', 'ember-data-lib'], function () {
     Ember.Object.reopen({
         toJson: function() {
             return JSON.parse(JSON.stringify(this));
-        }
+        },
+        json: function() {
+            return JSON.parse(JSON.stringify(this));
+        }.property()
     });
 
     var controllerDict = {
         init: function() {
             if(get(this, 'isGenerated')) {
-                console.error('Ember is Instantiating a generated controller. This practice is not encouraged, as it might also be an underlying requireJS problem.', this);
+                console.error('Ember is Instantiating a generated controller for "' + get(this, '_debugContainerKey') + '". This practice is not encouraged, as it might also be an underlying requireJS problem.', this);
             }
             this._super.apply(this, arguments);
         }
@@ -53,8 +56,7 @@ define(['ember-lib', 'ember-data-lib'], function () {
 
             if (type === 'array') {
                 return deserialized;
-            }
-            else if (type === 'string') {
+            } else if (type === 'string') {
                 return deserialized.split(',').map(function(item) {
                     return jQuery.trim(item);
                 });
