@@ -1,21 +1,21 @@
 /*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require.config({
     baseUrl: '/static/',
@@ -27,15 +27,16 @@ require.config({
 
         'jquery': 'canopsis/core/lib/wrappers/jquery',
         'handlebars': 'canopsis/core/lib/externals/handlebars/handlebars',
-        'ember': 'canopsis/core/lib/wrappers/ember',
-        'ember-data': 'canopsis/core/lib/wrappers/ember-data'
+        'ember-template-compiler': 'canopsis/core/lib/externals/min/ember-template-compiler',
+        'ember-lib': 'canopsis/core/lib/externals/min/ember',
+        'ember-data-lib': 'canopsis/core/lib/externals/min/ember-data'
     },
     shim: {
-        'ember': {
-            deps: ['jquery', 'handlebars']
+        'ember-lib': {
+            deps: ['jquery', 'ember-template-compiler', 'handlebars']
         },
-        'ember-data': {
-            deps: ['ember']
+        'ember-data-lib': {
+            deps: ['ember-lib']
         }
     }
 });
@@ -80,9 +81,80 @@ setModuleInfo = function (modules, showmodules) {
     }
 };
 
-define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18n', 'app/lib/objects/loader', 'jquery'], function(enabled, canopsisConfiguration, i18n) {
+define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18n', 'app/lib/objects/loader', 'ember-data-lib'], function(enabled, canopsisConfiguration, i18n) {
+
+    var get = Ember.get;
+
+    canopsisConfiguration.EmberIsLoaded = true;
+
+
+    DS.ArrayTransform = DS.Transform.extend({
+        deserialize: function(serialized) {
+            if (Ember.typeOf(serialized) === 'array') {
+                return serialized;
+            }
+
+            return [];
+        },
+
+        serialize: function(deserialized) {
+            var type = Ember.typeOf(deserialized);
+
+            if (type === 'array') {
+                return deserialized;
+            }
+            else if (type === 'string') {
+                return deserialized.split(',').map(function(item) {
+                    return jQuery.trim(item);
+                });
+            }
+
+            return [];
+        }
+    });
+
+    DS.IntegerTransform = DS.Transform.extend({
+        deserialize: function(serialized) {
+            if (typeof serialized === "number") {
+                return serialized;
+            } else {
+                // console.warn("deserialized value is not a number as it is supposed to be", arguments);
+                return 0;
+            }
+        },
+
+        serialize: function(deserialized) {
+            return Ember.isEmpty(deserialized) ? null : Number(deserialized);
+        }
+    });
+
+    DS.ObjectTransform = DS.Transform.extend({
+        deserialize: function(serialized) {
+            if (Ember.typeOf(serialized) === 'object') {
+                return Ember.Object.create(serialized);
+            }
+
+            return Ember.Object.create({});
+        },
+
+        serialize: function(deserialized) {
+            var type = Ember.typeOf(deserialized);
+
+            if (type === 'object' || type === 'instance') {
+                return Ember.Object.create(deserialized);
+            } else {
+                console.warn("bad format", type, deserialized);
+            }
+
+            return null;
+        }
+    });
 
     enabled.getEnabledModules(function (enabledPlugins) {
+
+        if (enabledPlugins.length === 0) {
+            alert('No module loaded in Canopsis UI. Cannot go beyond');
+        }
 
         setLoadingInfo('Fetching frontend bricks', 'fa-cubes');
         setModuleInfo(enabledPlugins, canopsisConfiguration.SHOWMODULES);

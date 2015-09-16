@@ -17,87 +17,78 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-define([
-    'ember'
-], function(Ember) {
-
-    var get = Ember.get,
-        set = Ember.set;
+Ember.Application.initializer({
+    name:"component-actionfilter",
+    initialize: function(container, application) {
+            var get = Ember.get,
+                set = Ember.set;
 
 
-    var component = Ember.Component.extend({
+            var component = Ember.Component.extend({
 
-        init: function() {
-            this._super();
-            //default value on load
-            this.set('selectedAction', 'pass');
-            console.log(' ! --- > content', this.get('content'));
-            //Use a temp variable to avoid content deletion and strange behaviors.
-            if (get(this, 'content') === undefined) {
-                set(this, 'contentUnprepared', Ember.A());
-            } else {
-                set(this, 'contentUnprepared', get(this, 'content'));
-            }
-        },
+                init: function() {
+                    this._super();
+                    //default value on load
+                    this.set('selectedAction', 'pass');
+                    console.log(' ! --- > content', this.get('content'));
+                    //Use a temp variable to avoid content deletion and strange behaviors.
+                    if (get(this, 'content') === undefined) {
+                        set(this, 'contentUnprepared', Ember.A());
+                    } else {
+                        set(this, 'contentUnprepared', get(this, 'content'));
+                    }
+                },
 
-        selectedAction: 'pass',
-        availableactions: ['pass','drop','override','remove'],
+                selectedAction: 'pass',
+                availableactions: ['pass','drop','override','remove'],
 
-        isOverride: function () {
-            console.log('isOverride', get(this, 'selectedAction'), get(this, 'selectedAction') === 'override');
-            return get(this, 'selectedAction') === 'override';
-        }.property('selectedAction'),
+                isOverride: function () {
+                    console.log('isOverride', get(this, 'selectedAction'), get(this, 'selectedAction') === 'override');
+                    return get(this, 'selectedAction') === 'override';
+                }.property('selectedAction'),
 
-        isRoute: function () {
-            //not used yet
-            return false;
-            //console.log('isRoute', this.get('selectedAction'), this.get('selectedAction') === 'route');
-            //return this.get('selectedAction') === 'route';
-        }.property('selectedAction'),
+                isRoute: function () {
+                    //not used yet
+                    return false;
+                    //console.log('isRoute', this.get('selectedAction'), this.get('selectedAction') === 'route');
+                    //return this.get('selectedAction') === 'route';
+                }.property('selectedAction'),
 
-        isRemove: function () {
-            console.log('isRemove', get(this, 'selectedAction'), get(this, 'selectedAction') === 'remove');
-            return get(this, 'selectedAction') === 'remove';
-        }.property('selectedAction'),
+                isRemove: function () {
+                    console.log('isRemove', get(this, 'selectedAction'), get(this, 'selectedAction') === 'remove');
+                    return get(this, 'selectedAction') === 'remove';
+                }.property('selectedAction'),
 
 
-        actions : {
-            addAction: function () {
-                var action = {
-                    type: get(this, 'selectedAction')
-                };
+                actions : {
+                    addAction: function () {
+                        var action = {
+                            type: get(this, 'selectedAction')
+                        };
 
-                if (get(this, 'selectedAction') === 'override') {
-                    action.field = get(this, 'field');
-                    action.value = get(this, 'value');
+                        if (get(this, 'selectedAction') === 'override') {
+                            action.field = get(this, 'field');
+                            action.value = get(this, 'value');
+                        }
+
+                        if (get(this, 'selectedAction') === 'remove') {
+                            action.key = get(this, 'key');
+                        }
+
+                        console.log('Adding action', action);
+                        get(this, 'contentUnprepared').pushObject(action);
+                        set(this, 'content', get(this, 'contentUnprepared'));
+                    },
+
+                    deleteAction: function (action) {
+                        console.log('Removing action', action);
+                        get(this, 'contentUnprepared').removeObject(action);
+                        set(this, 'content', get(this, 'contentUnprepared'));
+                    }
                 }
 
-                if (get(this, 'selectedAction') === 'remove') {
-                    action.key = get(this, 'key');
-                }
+            });
 
-                console.log('Adding action', action);
-                get(this, 'contentUnprepared').pushObject(action);
-                set(this, 'content', get(this, 'contentUnprepared'));
-            },
-
-            deleteAction: function (action) {
-                console.log('Removing action', action);
-                get(this, 'contentUnprepared').removeObject(action);
-                set(this, 'content', get(this, 'contentUnprepared'));
-            }
-        }
-
-    });
-
-
-    Ember.Application.initializer({
-        name:"component-actionfilter",
-        initialize: function(container, application) {
-            application.register('component:component-actionfilter', component);
-        }
-    });
-
-    return component;
+        application.register('component:component-actionfilter', component);
+    }
 });

@@ -17,11 +17,8 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define([
-    'ember',
-    'ember-data',
-    'app/lib/promisesmanager'
-], function(Ember, DS, promisesmanager) {
+define([], function(promisesmanager) {
+    var promisesmanager;
 
     var get = Ember.get,
         set = Ember.set,
@@ -93,8 +90,15 @@ define([
         }
     });
 
+    Ember.Application.initializer({
+        name: 'ApplicationAdapter',
+        after: 'PromisesRegistry',
+        initialize: function(container, application) {
+            promisesmanager = container.lookupFactory('registry:promises');
 
-    loader.register('adapter:application', adapter);
+            application.register('adapter:application', adapter);
+        }
+    });
 
     return adapter;
 });

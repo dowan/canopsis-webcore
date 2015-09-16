@@ -1,34 +1,26 @@
-/*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-//add your custom schemas files here.
-var schemaFiles = [
-];
-
-var schemasDeps = ['ember-data', 'app/lib/utils/data', 'app/lib/objects/loader', 'canopsis/canopsis-backend-ui-connector/adapters/schema', 'app/lib/loaders/utils', 'app/lib/schemasregistry'];
-
-for (var i = 0, l = schemaFiles.length; i < l; i++) {
-    schemasDeps.push('text!schemas/' + schemaFiles[i] + '.json');
-}
-
-define(schemasDeps, function(DS, dataUtils, loader, SchemaAdapter, utils, schemasRegistry) {
-
+define([
+    'canopsis/canopsis-backend-ui-connector/adapters/schema',
+    'app/lib/schemasregistry'
+], function (SchemaAdapter, schemasRegistry) {
     function compare(a,b) {
       if (a.id < b.id) {
          return -1;
@@ -49,7 +41,15 @@ define(schemasDeps, function(DS, dataUtils, loader, SchemaAdapter, utils, schema
             schema: schema
         };
 
-        loader.register('model:' + name, emberModel);
+        var initializerName = name.capitalize() + 'Model';
+
+        Ember.Application.initializer({
+            name: initializerName,
+            initialize: function(container, application) {
+                application.register('model:' + name, emberModel);
+            }
+        });
+
         schemasRegistry.add(registryEntry, name);
     }
 
@@ -83,6 +83,7 @@ define(schemasDeps, function(DS, dataUtils, loader, SchemaAdapter, utils, schema
         },
 
         loadSchema: function(schemaId, schema) {
+            console.log('>>>>> loadSchema', arguments);
             var schemaName = this.getSchemaName(schemaId, schema);
             // console.log('schemaName', schemaName);
 
@@ -218,5 +219,11 @@ define(schemasDeps, function(DS, dataUtils, loader, SchemaAdapter, utils, schema
 
     console.tags.remove('loader');
 
-    return schemasLoader;
+    Ember.Application.initializer({
+        name: 'SchemasLoader',
+        initialize: function(container, application) {
+
+            application.register('deprecated:schemasLoader', schemasLoader);
+        }
+    });
 });
