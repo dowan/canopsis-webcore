@@ -69,6 +69,7 @@ Ember.Application.initializer({
 
             itemsPerPage: function() {
                 var itemsPerPage = get(this, 'model.itemsPerPage') || get(this, 'mixinOptions.pagination.defaultItemsPerPage') || 5;
+
                 return itemsPerPage;
             }.property('model.itemsPerPage', 'mixinOptions.pagination.defaultItemsPerPage'),
 
@@ -125,6 +126,11 @@ Ember.Application.initializer({
                     }
                 }
 
+                var itemsPerPage = get(this, 'itemsPerPage');
+                if(!choices.contains(itemsPerPage)) {
+                    choices.pushObject(itemsPerPage);
+                }
+
                 choices.sort(function (a, b) {return a - b;});
 
                 return choices;
@@ -138,7 +144,7 @@ Ember.Application.initializer({
                 var userSelection = get(this, 'itemsPerPagePropositionSelected');
 
                 Ember.setProperties(this, {
-                    'model.itemsPerPage': userSelection,
+                    'itemsPerPage': userSelection,
                     'currentPage': 1
                 });
 

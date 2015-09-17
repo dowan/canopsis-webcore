@@ -108,7 +108,7 @@ Ember.Application.initializer({
                         formParent: this,
                         scheduled: get(this, 'scheduled'),
                         inspectedItemType: xtype,
-                        inspectedDataItem: model
+                        inspectedDataItem: context
                     });
 
                     console.groupEnd();
