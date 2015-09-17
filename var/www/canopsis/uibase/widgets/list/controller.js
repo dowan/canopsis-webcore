@@ -19,7 +19,7 @@
 
 Ember.Application.initializer({
     name: 'ListWidget',
-    after: ['WidgetFactory','PaginationMixin', 'InspectableArrayMixin', 'UserconfigurationMixin', 'DraggablecolumnsMixin', 'RoutesUtils', 'FormsUtils', 'ListlineView'],
+    after: ['WidgetFactory', 'PaginationMixin', 'InspectableArrayMixin', 'UserconfigurationMixin', 'DraggablecolumnsMixin', 'RoutesUtils', 'FormsUtils', 'ListlineView'],
     initialize: function(container, application) {
         var WidgetFactory = container.lookupFactory('factory:widget');
         var PaginationMixin = container.lookupFactory('mixin:pagination');
@@ -271,25 +271,21 @@ Ember.Application.initializer({
                     }
 
                     var shown_columns = [];
-                    var displayed_columns = get(this, 'displayed_columns') || get(this, 'content._data.displayed_columns') ;
+                    var displayed_columns = get(this, 'displayed_columns') || get(this, 'model.displayed_columns') ;
                     if (displayed_columns !== undefined && displayed_columns.length > 0) {
 
                         var attributesKeysDict = this.get('attributesKeysDict');
 
-                        //var sorted_columns = this.get('displayed_columns');
-                        var sorted_columns = displayed_columns;
-
-                        for (var i = 0, li = sorted_columns.length; i < li; i++) {
-                            if (attributesKeysDict[sorted_columns[i]] !== undefined) {
-                                set(attributesKeysDict[sorted_columns[i]].options, 'show', true);
-                                shown_columns.push(attributesKeysDict[sorted_columns[i]]);
+                        for (var i = 0, li = displayed_columns.length; i < li; i++) {
+                            if (attributesKeysDict[displayed_columns[i]] !== undefined) {
+                                set(attributesKeysDict[displayed_columns[i]].options, 'show', true);
+                                shown_columns.push(attributesKeysDict[displayed_columns[i]]);
                             }
                         }
                     } else {
                         console.log('no shown columns set, displaying everything');
                         shown_columns = this.get('attributesKeys');
                     }
-
                     var selected_columns = [];
                     var sortedAttribute = get(this, 'sortedAttribute');
                     var columnSort = get(this, 'default_column_sort');

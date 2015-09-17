@@ -154,6 +154,10 @@ define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18
 
     enabled.getEnabledModules(function (enabledPlugins) {
 
+        if (enabledPlugins.length === 0) {
+            alert('No module loaded in Canopsis UI. Cannot go beyond');
+        }
+
         setLoadingInfo('Fetching frontend bricks', 'fa-cubes');
         setModuleInfo(enabledPlugins, canopsisConfiguration.SHOWMODULES);
         var language = i18n.lang;
