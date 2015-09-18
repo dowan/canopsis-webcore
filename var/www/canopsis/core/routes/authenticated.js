@@ -78,6 +78,23 @@ Ember.Application.initializer({
                             }
                         }
                     }
+                    return Ember.RSVP.all([store.find('role', get(record, 'role')).then(function(role) {
+
+                        var loginController = route.controllerFor('login');
+
+                        set(loginController, 'role', role);
+                    })]).then(function() {
+                        if(get(transition, 'targetName') === 'index') {
+                            console.info('on index route, redirecting to the appropriate route');
+
+                            var ApplicationController = route.controllerFor('application');
+                            var defaultview = get(ApplicationController, 'defaultView');
+                            if(!isNone(defaultview)) {
+                                console.log('redirect to view', defaultview);
+                                route.transitionTo('/userview/' + defaultview);
+                            }
+                        }
+                    });
                 });
 
                 var superPromise = this._super(transition);
