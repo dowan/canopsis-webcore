@@ -18,7 +18,7 @@
  */
 
 define([
-    'canopsis/monitoring/tests/ackworkflow'
+    // 'canopsis/monitoring/tests/ackworkflow'
 ], function () {
 
 });
