@@ -23,7 +23,7 @@ define([
 
     Ember.Application.initializer({
         name: 'ApplicationController',
-        after: ['PartialslotAbleController', 'UserprofilestatusmenuMixin','RequirejsmocksmanagerMixin','ScreentoolstatusmenuMixin','DocumentationMixin','SchemamanagerMixin','ConsolemanagerMixin','LoadingindicatorMixin','PromisemanagerMixin','NotificationsMixin', 'FormsUtils', 'DataUtils', 'DebugUtils', 'HashUtils', 'NotificationUtils'],
+        after: ['PartialslotAbleController', 'UserprofilestatusmenuMixin', 'RequirejsmocksmanagerMixin', 'ScreentoolstatusmenuMixin', 'DocumentationMixin', 'SchemamanagerMixin', 'ConsolemanagerMixin', 'LoadingindicatorMixin', 'PromisemanagerMixin', 'NotificationsMixin', 'FormsUtils', 'DataUtils', 'DebugUtils', 'HashUtils', 'NotificationUtils'],
         initialize: function(container, application) {
             var PartialslotAbleController = container.lookupFactory('controller:partialslot-able');
 
@@ -85,6 +85,14 @@ define([
                  * @type boolean
                  */
                 debug: Ember.computed.alias('runtimeConfiguration.DEBUG'),
+
+                /**
+                 * @property defaultView
+                 * @type string
+                 */
+                defaultView: function() {
+                    return get(this, 'controllers.login.record.defaultview') || get(this, 'controllers.login.userRole.defaultview') || get(this, 'frontendConfig.defaultview');
+                }.property('frontendConfig.defaultview', 'controllers.login.defaultview'),
 
                 /**
                  * @property enginesviews
