@@ -25,6 +25,7 @@ Ember.Application.initializer({
 
         var get = Ember.get,
             set = Ember.set;
+            __ = Ember.String.loc;
 
 
         var CrudEventedComponent = Ember.Component.extend(Ember.Evented, CrudMixin);
