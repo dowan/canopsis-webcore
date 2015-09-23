@@ -67,6 +67,11 @@ define([
     Application.advanceReadiness();
     window.$A = Application;
 
+    //TODO create a more generic hook to provide a signal when app is ready, and put test handling in test brick
+    //This is the test environment entry point.
+    if(window.environment === 'test') {
+        window.startCanopsisTests(Application);
+    }
 
     return Application;
 });
