@@ -39,9 +39,6 @@ define([
                     bricksTestMainList.pushObject('canopsis/' + enabledBricks[i] + '/init.test');
                 }
             }
-
-            bricksTestMainList.pushObject('app/init.test');
-
             require(bricksTestMainList);
         });
     };
