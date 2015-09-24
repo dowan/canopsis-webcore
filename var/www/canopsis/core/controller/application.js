@@ -48,7 +48,8 @@ define([
             var get = Ember.get,
                 set = Ember.set,
                 isNone = Ember.isNone,
-                __ = Ember.String.loc;
+                __ = Ember.String.loc,
+                isEmpty = Ember.isEmpty;
 
 
             var indexController = Ember.Controller.extend(Ember.Evented, {});
@@ -91,7 +92,18 @@ define([
                  * @type string
                  */
                 defaultView: function() {
-                    return get(this, 'controllers.login.record.defaultview') || get(this, 'controllers.login.userRole.defaultview') || get(this, 'frontendConfig.defaultview');
+                    var userDefaultView = get(this, 'controllers.login.record.defaultview');
+                    var roleDefaultView = get(this, 'controllers.login.userRole.defaultview');
+                    var frontendDefaultView = get(this, 'frontendConfig.defaultview');
+
+                    if(!isEmpty(userDefaultView)) {
+                        return userDefaultView;
+                    } else if(!isEmpty(roleDefaultView)) {
+                        return roleDefaultView;
+                    } else {
+                        return frontendDefaultView;
+                    }
+
                 }.property('frontendConfig.defaultview', 'controllers.login.defaultview'),
 
                 /**
