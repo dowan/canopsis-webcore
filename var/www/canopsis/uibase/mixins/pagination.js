@@ -46,7 +46,6 @@ Ember.Application.initializer({
 
             init: function() {
                 this._super();
-                console.log('coucou pagination');
             },
 
             mixinsOptionsReady: function () {
