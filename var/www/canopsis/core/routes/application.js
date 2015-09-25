@@ -144,20 +144,6 @@ Ember.Application.initializer({
                         bindKey(currentKeybinding.label, currentKeybinding.value);
                     }
 
-                    console.log('transition', transition);
-                    var loginController = route.controllerFor('login');
-                    if(get(transition, 'targetName') === 'index') {
-                        console.info('on index route, redirecting to the appropriate route');
-
-                        var loginController = route.controllerFor('login');
-                        var defaultview = get(loginController, 'userRoute');
-
-                        if(!isNone(defaultview)) {
-                            console.log('redirect to view', defaultview);
-                            route.transitionTo('/userview/' + defaultview);
-                        }
-                    }
-                    loginController.sessionStart();
                 });
 
                 headerPromise.then(function(queryResults) {

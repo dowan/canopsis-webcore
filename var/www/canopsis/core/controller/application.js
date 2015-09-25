@@ -23,7 +23,7 @@ define([
 
     Ember.Application.initializer({
         name: 'ApplicationController',
-        after: ['PartialslotAbleController', 'UserprofilestatusmenuMixin','RequirejsmocksmanagerMixin','ScreentoolstatusmenuMixin','DocumentationMixin','SchemamanagerMixin','ConsolemanagerMixin','LoadingindicatorMixin','PromisemanagerMixin','NotificationsMixin', 'FormsUtils', 'DataUtils', 'DebugUtils', 'HashUtils', 'NotificationUtils'],
+        after: ['PartialslotAbleController', 'UserprofilestatusmenuMixin', 'RequirejsmocksmanagerMixin', 'ScreentoolstatusmenuMixin', 'DocumentationMixin', 'SchemamanagerMixin', 'ConsolemanagerMixin', 'LoadingindicatorMixin', 'PromisemanagerMixin', 'NotificationsMixin', 'FormsUtils', 'DataUtils', 'DebugUtils', 'HashUtils', 'NotificationUtils'],
         initialize: function(container, application) {
             var PartialslotAbleController = container.lookupFactory('controller:partialslot-able');
 
@@ -48,7 +48,8 @@ define([
             var get = Ember.get,
                 set = Ember.set,
                 isNone = Ember.isNone,
-                __ = Ember.String.loc;
+                __ = Ember.String.loc,
+                isEmpty = Ember.isEmpty;
 
 
             var indexController = Ember.Controller.extend(Ember.Evented, {});
@@ -85,6 +86,25 @@ define([
                  * @type boolean
                  */
                 debug: Ember.computed.alias('runtimeConfiguration.DEBUG'),
+
+                /**
+                 * @property defaultView
+                 * @type string
+                 */
+                defaultView: function() {
+                    var userDefaultView = get(this, 'controllers.login.record.defaultview');
+                    var roleDefaultView = get(this, 'controllers.login.userRole.defaultview');
+                    var frontendDefaultView = get(this, 'frontendConfig.defaultview');
+
+                    if(!isEmpty(userDefaultView)) {
+                        return userDefaultView;
+                    } else if(!isEmpty(roleDefaultView)) {
+                        return roleDefaultView;
+                    } else {
+                        return frontendDefaultView;
+                    }
+
+                }.property('frontendConfig.defaultview', 'controllers.login.defaultview'),
 
                 /**
                  * @property enginesviews

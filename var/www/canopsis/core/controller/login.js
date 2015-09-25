@@ -52,20 +52,6 @@ Ember.Application.initializer({
             },
 
             /**
-            * @property userRoute
-            * compute route to view when login for current user
-            **/
-            userRoute: function () {
-                var loginController = DataUtils.getLoggedUserController();
-                var record = get(loginController, 'record');
-                var defaultview = get(record, 'defaultview');
-                if (!defaultview) {
-                    defaultview = get(this, 'controllers.application.frontendConfig.defaultview');
-                }
-                return defaultview;
-            }.property(),
-
-            /**
              * @property authkey
              */
             authkey: function () {
