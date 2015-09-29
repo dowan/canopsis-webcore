@@ -93,7 +93,7 @@ define([
                  */
                 defaultView: function() {
                     var userDefaultView = get(this, 'controllers.login.record.defaultview');
-                    var roleDefaultView = get(this, 'controllers.login.userRole.defaultview');
+                    var roleDefaultView = get(this, 'controllers.login.role.defaultview');
                     var frontendDefaultView = get(this, 'frontendConfig.defaultview');
 
                     if(!isEmpty(userDefaultView)) {
