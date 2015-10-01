@@ -12,7 +12,7 @@
 <!-- header logo: style can be found in heaader.less -->
 {{#unless controller.fullscreenMode}}
     <header class="header">
-        <a {{action 'showView' controller.frontendConfig.defaultview}} class="logo">
+        <a {{action 'showView' controller.defaultView}} class="logo">
             <!-- Add the class icon to your logo image or logo icon to add the margining -->
             <img src="/static/canopsis/media/canopsis.png" alt="canopsis"/>
         </a>
@@ -49,7 +49,7 @@
                         </a>
                     </li>
                     <li class="active">
-                        <a {{action 'showView' controller.frontendConfig.defaultview}}>
+                        <a {{action 'showView' controller.defaultView}}>
                             <i class="fa fa-desktop"></i> <span>{{tr 'Dashboard'}}</span>
                         </a>
                     </li>
