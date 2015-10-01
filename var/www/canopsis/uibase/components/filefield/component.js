@@ -20,7 +20,8 @@
 Ember.Application.initializer({
     name:"component-filefield",
     initialize: function(container, application) {
-        var isEmpty = Ember.isEmpty;
+        var isEmpty = Ember.isEmpty,
+            get = Ember.get;
 
         /**
          * @class FileField
@@ -32,10 +33,11 @@ Ember.Application.initializer({
             attributeBindings: ['multiple'],
             multiple: false,
             change: function(e) {
-                var input = e.target;
+                var input = e.target,
+                    target = get(this, 'target');
 
                 if (!isEmpty (input.files)) {
-                    this.send('onFileUpload', input.files);
+                    target.send('onFileUpload', input.files);
                 }
             }
         });
