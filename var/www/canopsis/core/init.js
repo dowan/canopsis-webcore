@@ -31,6 +31,7 @@ require.config({
 });
 
 define([
+    'canopsis/runtime.conf',
     'app/controller/application',
     'app/controller/formwrapper',
     'app/controller/login',
