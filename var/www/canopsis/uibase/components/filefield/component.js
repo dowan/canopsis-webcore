@@ -39,6 +39,17 @@ Ember.Application.initializer({
                 if (!isEmpty (input.files)) {
                     target.send('onFileUpload', input.files);
                 }
+            },
+
+            actions: {
+                /**
+                 * @event activate
+                 *
+                 * Simulate click on hidden file input.
+                 */
+                activate: function() {
+                    this.$.find('input').click();
+                }
             }
         });
 
