@@ -29,11 +29,9 @@ define([], function(promisesmanager) {
     var adapter = DS.RESTAdapter.extend({
 
         /**
-         * Override allowing to use the promisemanager
+         * Encapsulate promise into promise manager.
          */
-        ajax: function(url, type, hash) {
-            var promise = this._super(url, type, hash);
-
+        managePromise: function(promise) {
             promise.url = url;
             promise.type = type;
             promisesmanager.handlePromise(promise);
@@ -51,6 +49,14 @@ define([], function(promisesmanager) {
             });
 
             return promise;
+        },
+
+        /**
+         * Override allowing to use the promisemanager
+         */
+        ajax: function(url, type, hash) {
+            var promise = this._super(url, type, hash);
+            return this.managePromise(promise);
         },
 
         buildURL: function(type, id) {
