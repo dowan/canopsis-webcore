@@ -19,7 +19,6 @@
 
 Ember.Application.initializer({
     name:'SendeventMixin',
-    after: 'MixinFactory',
     after: ['MixinFactory', 'FormsUtils', 'DatesUtils', 'NotificationUtils'],
     initialize: function(container, application) {
         var Mixin = container.lookupFactory('factory:mixin');
@@ -120,7 +119,6 @@ Ember.Application.initializer({
 
                 return new Ember.RSVP.Promise(function(resolve, reject) {
                     var post_events = [];
-
                     for(var i = 0; i < crecords.length; i++) {
                         console.log('Event:', get(record, 'author'), get(record, 'output'));
 
@@ -160,7 +158,7 @@ Ember.Application.initializer({
                             resolve(arguments);
                         });
                     });
-                }, reject);
+                });
             },
 
             /**
