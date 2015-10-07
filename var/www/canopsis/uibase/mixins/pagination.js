@@ -143,12 +143,14 @@ Ember.Application.initializer({
             itemsPerPagePropositionSelectedChanged: function() {
                 var userSelection = get(this, 'itemsPerPagePropositionSelected');
 
-                Ember.setProperties(this, {
-                    'model.itemsPerPage': userSelection,
-                    'currentPage': 1
-                });
+                if(get(this, 'loaded')) {
+                    Ember.setProperties(this, {
+                        'model.itemsPerPage': userSelection,
+                        'currentPage': 1
+                    });
 
-                this.saveUserConfiguration();
+                    this.saveUserConfiguration();
+                }
 
                 this.refreshContent();
 
