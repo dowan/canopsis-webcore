@@ -144,16 +144,15 @@ Ember.Application.initializer({
                 var userSelection = get(this, 'itemsPerPagePropositionSelected');
 
                 Ember.setProperties(this, {
-                    'itemsPerPage': userSelection,
+                    'model.itemsPerPage': userSelection,
                     'currentPage': 1
                 });
 
-                // this.saveUserConfiguration();
+                this.saveUserConfiguration();
 
                 this.refreshContent();
 
             }.observes('itemsPerPagePropositionSelected'),
-
 
             refreshContent: function() {
                 console.group('paginationMixin refreshContent', get(this, 'itemsPerPage'));
