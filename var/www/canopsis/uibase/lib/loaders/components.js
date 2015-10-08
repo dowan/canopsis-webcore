@@ -29,6 +29,7 @@ var components = [
     { name: 'components/component-dictclassifiedcrecordselector', url: 'canopsis/uibase/components/dictclassifiedcrecordselector/component', template: 'canopsis/uibase/components/dictclassifiedcrecordselector/template.html' },
     { name: 'components/component-eventkey', url: 'canopsis/uibase/components/eventkey/component', template: 'canopsis/uibase/components/eventkey/template.html' },
     { name: 'components/component-expandableaddbutton', url: 'canopsis/uibase/components/expandableaddbutton/component', template: 'canopsis/uibase/components/expandableaddbutton/template.html' },
+    { name: 'components/component-filefield', url: 'canopsis/uibase/components/filefield/component', template: 'canopsis/uibase/components/filefield/template.hbs' },
     { name: 'components/component-filterclause', url: 'canopsis/uibase/components/filterclause/component', template: 'canopsis/uibase/components/filterclause/template.html' },
     { name: 'components/component-listtree', url: 'canopsis/uibase/components/listtree/component', template: 'canopsis/uibase/components/listtree/template.html' },
     { name: 'components/component-modelselect', url: 'canopsis/uibase/components/modelselect/component', template: 'canopsis/uibase/components/modelselect/template.html' },
