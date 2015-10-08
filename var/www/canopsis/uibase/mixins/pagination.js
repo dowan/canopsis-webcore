@@ -58,8 +58,8 @@ Ember.Application.initializer({
             }.property('currentPage', 'paginationFirstItemIndex'),
 
             isLastPage: function () {
-                return get(this, 'paginationLastItemIndex') === get(this, 'itemsTotal');
-            }.property('paginationLastItemIndex', 'itemsTotal'),
+                return get(this, 'currentPage') === get(this, 'totalPages');
+            }.property('currentPage', 'totalPages'),
 
             hasOnePage: function () {
                 var onepage = get(this, 'totalPages') === 1;
