@@ -434,7 +434,7 @@ Ember.Application.initializer({
                     curveIds = [],
                     me = this;
 
-                var fetchDone = function() {
+                var fetchDone = function(curveIds) {
                     curveIds = JSON.stringify(curveIds);
 
                     console.log('series:', seriesById);
@@ -500,11 +500,11 @@ Ember.Application.initializer({
                             curveIds.push(get(stylizedmetrics[i], 'curve'));
                         }
 
-                        fetchDone();
+                        fetchDone(curveIds);
                     });
                 }
                 else {
-                    fetchDone();
+                    fetchDone(curveIds);
                 }
             },
 

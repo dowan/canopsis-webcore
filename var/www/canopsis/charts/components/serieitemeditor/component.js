@@ -17,7 +17,6 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 Ember.Application.initializer({
     name: 'component-serieitemeditor',
     after: 'SchemasRegistry',
@@ -53,6 +52,7 @@ Ember.Application.initializer({
 
                     var val = get(me, contentKey);
                     var defaultVal = get(attr, 'options.default');
+                    var value = val || defaultVal;
 
                     item[name] = Ember.Object.create({
                         value: val || defaultVal,
@@ -63,6 +63,11 @@ Ember.Application.initializer({
                         var val = get(me, itemKey);
                         set(me, contentKey, val);
                     });
+
+                    //ensure initilize content
+                    if (value !== undefined) {
+                        set(me, contentKey, value);
+                    }
 
                     console.log(name, val, defaultVal, item[name]);
                 });
