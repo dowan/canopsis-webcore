@@ -64,10 +64,12 @@ Ember.Application.initializer({
                 **/
                 this.initSeries();
 
+                var timewindowSeconds = (get(this, 'timewindow.seconds') || 600) * 1000;
+
                 //data interval selection
                 var now = new Date().getTime();
                 //fetch time window of 10 minutes hoping there are metrics since.
-                var from = now - 600000;
+                var from = now - timewindowSeconds;
                 var to = now;
 
                 var store = get(this, 'widgetDataStore');
