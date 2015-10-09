@@ -38,10 +38,7 @@ Ember.Application.initializer({
                     container: get(this, "container")
                 }));
 
-                var typekey = get(this, 'content.model.options.model');
-                var typekeySplit = typekey.split('.');
-
-                var modelname = typekeySplit[typekeySplit.length - 1];
+                var modelname = 'stylizedserie';
                 var model = schemasregistry.getByName(modelname).EmberModel.proto();
                 console.log('Fetch model:', modelname, model);
 
@@ -55,7 +52,7 @@ Ember.Application.initializer({
                     var itemKey = 'item.' + name + '.value';
 
                     var val = get(me, contentKey);
-                    var defaultVal = get(attr, 'options.defaultValue');
+                    var defaultVal = get(attr, 'options.default');
 
                     item[name] = Ember.Object.create({
                         value: val || defaultVal,
