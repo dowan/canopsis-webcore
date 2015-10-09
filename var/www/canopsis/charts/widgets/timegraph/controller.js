@@ -452,7 +452,7 @@ Ember.Application.initializer({
                     });
                 };
 
-                if(!isNone(stylizedmetrics)) {
+                if(stylizedmetrics.length > 0) {
                     var metricIds = [];
 
                     for(var i = 0, l = stylizedmetrics.length ; i < l ; i++) {
