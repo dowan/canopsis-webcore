@@ -462,7 +462,7 @@ Ember.Application.initializer({
                     }
 
                     store.findQuery('ctxmetric', {
-                        _filter: JSON.stringify({
+                        filter: JSON.stringify({
                             _id: {
                                 '$in': metricIds
                             }
