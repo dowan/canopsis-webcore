@@ -50,8 +50,7 @@ Ember.Application.initializer({
                     var itemKey = 'item.' + name + '.value';
 
                     var val = get(me, contentKey);
-                    var defaultVal = get(attr, 'options.defaultValue');
-
+                    var defaultVal = get(attr, 'options.default');
                     item[name] = Ember.Object.create({
                         value: val || defaultVal,
                         model: attr
