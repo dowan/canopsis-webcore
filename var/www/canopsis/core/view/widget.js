@@ -33,7 +33,7 @@ define([
 
             var get = Ember.get,
                 set = Ember.set,
-                widgetsregistry;
+                isNone = Ember.isNone;
 
             function computeMixinsArray(view, widget) {
                 var mixinsNames = get(widget, 'mixins');
@@ -45,6 +45,9 @@ define([
                 var mixinOptions = {};
 
                 if(mixinsNames) {
+
+                    var currentClass;
+
                     for (var i = 0, l = mixinsNames.length; i < l; i++) {
                         var currentName = mixinsNames[i];
 
@@ -57,12 +60,12 @@ define([
 
                         mixinOptions[currentName] = mixinsNames[i];
 
-                        var currentClass = mixinsregistry.getByName(currentName).EmberClass;
+                        currentClass = mixinsregistry.getByName(currentName).EmberClass;
                         console.log('find mixin', currentName, currentClass);
 
                         //merge mixin's userpreferences into the userpref model
                         var mixinModel = schemasregistry.getByName(currentName);
-                        if(mixinModel !== undefined) {
+                        if(!isNone(mixinModel)) {
                             mixinModel = mixinModel.EmberModel;
 
                             var mixinUserPreferenceModel = mixinModel.proto().userPreferencesModel;
@@ -77,7 +80,7 @@ define([
                             });
                         }
 
-                        if(currentClass) {
+                        if(!isNone(currentClass)) {
                             mixinArray.pushObject(currentClass);
                         } else {
                             get(view, 'displayedErrors').pushObject('mixin not found : ' + currentName);
@@ -155,13 +158,13 @@ define([
                 applyAllViewMixins: function(){
                     var controller = get(this, 'controller');
                     console.group('apply widget view mixins', controller.viewMixins);
-                    if(controller.viewMixins !== undefined) {
+                    if(!isNone(controller.viewMixins)) {
                         for (var i = 0, mixinsLength = controller.viewMixins.length; i < mixinsLength; i++) {
                             var mixinToApply = controller.viewMixins[i];
 
                             console.log('mixinToApply', mixinToApply);
 
-                            if(mixinToApply.mixins[0].properties.init !== undefined) {
+                            if(!isNone(mixinToApply.mixins[0].properties.init)) {
                                 console.warn('The mixin', mixinToApply, 'have a init method. This practice is not encouraged for view mixin as they are applied at runtime and the init method will not be triggerred');
                             }
 
@@ -198,11 +201,12 @@ define([
                     //for a widget that have xtype=widget, controllerName=WidgetController
                     console.log('instantiateCorrectController', arguments);
                     var xtype = get(widget, "xtype");
-                    if(xtype === undefined || xtype === null) {
+                    if(isNone(xtype)) {
                         console.error('no xtype for widget', widget, this);
                     }
 
-                    var mixins = computeMixinsArray(this, widget);
+                    var mixins = Ember.copy(computeMixinsArray(this, widget));
+                    console.log('mixins options', mixins);
 
                     mixins.array.pushObject({
                         model: widget,
@@ -213,7 +217,7 @@ define([
 
                     var widgetClass = widgetsregistry.getByName(get(widget, "xtype"));
 
-                    if(widgetClass !== undefined) {
+                    if(!isNone(widgetClass)) {
                         widgetClass = widgetClass.EmberClass;
                     } else {
                         widgetClass = WidgetController;

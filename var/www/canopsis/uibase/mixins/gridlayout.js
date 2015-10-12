@@ -47,24 +47,10 @@ Ember.Application.initializer({
                 }
 
                 var gridLayoutMixin = get(this, 'controller.mixins').findBy('name', 'gridlayout');
-                var columnXS = get(gridLayoutMixin, 'columnXS') || '12';
-                var columnMD = get(gridLayoutMixin, 'columnMD') || '6';
-                var columnLG = get(gridLayoutMixin, 'columnLG') || '3';
-                var offset = get(gridLayoutMixin, 'offset') || '0';
 
-                var classValue = [
-                    'col-md-',
-                    columnMD,
-                    ' col-xs-',
-                    columnXS,
-                    ' col-lg-',
-                    columnLG,
-                    ' col-md-offset-',
-                    offset
-                ].join('');
+                var classValue = get(this, 'controller').classValue(gridLayoutMixin);
 
                 set(this, 'controller.defaultItemCssClass', classValue);
-
 
                 for (var i = 0, j = wrappers.length; i < j; i++) {
                     //Dynamic mixin values setting
@@ -142,16 +128,11 @@ Ember.Application.initializer({
                 return true;
             }.property(),
 
-            /**
-             *   Builds css classes for the widget wrapper that allow responsive parametrized diplay
-             *  depending on legacy/overriden values.
-             **/
-            getSection: function (currentWrapperMixins) {
-                var gridLayoutMixin = currentWrapperMixins.findBy('name', 'gridlayout');
-                var columnXS = gridLayoutMixin.columnXS || '12';
-                var columnMD = gridLayoutMixin.columnMD || '6';
-                var columnLG = gridLayoutMixin.columnLG || '3';
-                var offset = gridLayoutMixin.offset || '0';
+            classValue: function (mixin) {
+                var columnXS = get(mixin, 'columnXS') || '12',
+                    columnMD = get(mixin, 'columnMD') || '6',
+                    columnLG = get(mixin, 'columnLG') || '3',
+                    offset = get(mixin, 'offset') || '0';
 
                 var classValue = [
                     'col-md-',
@@ -163,6 +144,19 @@ Ember.Application.initializer({
                     ' col-md-offset-',
                     offset
                 ].join('');
+
+                return classValue;
+
+            },
+
+            /**
+             *   Builds css classes for the widget wrapper that allow responsive parametrized diplay
+             *  depending on legacy/overriden values.
+             **/
+            getSection: function (currentWrapperMixins) {
+                var gridLayoutMixin = currentWrapperMixins.findBy('name', 'gridlayout');
+
+                var classValue = this.classValue(gridLayoutMixin);
 
                 set(this, 'defaultItemCssClass', classValue);
 
