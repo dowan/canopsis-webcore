@@ -66,7 +66,7 @@ Ember.Application.initializer({
                 set(this, 'controller.defaultItemCssClass', classValue);
 
 
-                for (var i = wrappers.length - 1; i >= 0; i--) {
+                for (var i = 0, j = wrappers.length; i < j; i++) {
                     //Dynamic mixin values setting
                     var currentWrapperMixins = get(wrappers[i], 'mixins');
                     if (isNone(currentWrapperMixins)) {
