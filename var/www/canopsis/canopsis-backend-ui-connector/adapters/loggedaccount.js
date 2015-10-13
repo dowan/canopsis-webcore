@@ -60,20 +60,21 @@ Ember.Application.initializer({
                     });
                 });
             },
+
             keepAlive: function (username) {
-                $.ajax({
-                    url: '/keepalive',
-                    type:'GET',
-                    data: {username: username}
-                });
+                this.ajax(
+                    '/keepalive',
+                    'GET',
+                    { data: {username: username} }
+                );
             },
 
             sessionStart: function (username) {
-                $.ajax({
-                    url: '/sessionstart',
-                    type:'GET',
-                    data: {username: username}
-                });
+                this.ajax(
+                    '/sessionstart',
+                    'GET',
+                    { data: {username: username} }
+                );
             },
         });
 
