@@ -40,7 +40,7 @@ Ember.Application.initializer({
                 },
 
                 selectedAction: 'pass',
-                availableactions: ['pass','drop','override','remove'],
+                availableactions: ['pass','drop','override','remove', 'execjob'],
 
                 isOverride: function () {
                     console.log('isOverride', get(this, 'selectedAction'), get(this, 'selectedAction') === 'override');
@@ -59,6 +59,10 @@ Ember.Application.initializer({
                     return get(this, 'selectedAction') === 'remove';
                 }.property('selectedAction'),
 
+                isExecJob: function(){
+                    console.log('isExecJob', get(this, 'selectedAction'), get(this, 'selectedAction') === 'execjob');
+                    return get(this, 'selectedAction') === 'execjob';
+                }.property('selectedAction'),
 
                 actions : {
                     addAction: function () {
@@ -73,6 +77,10 @@ Ember.Application.initializer({
 
                         if (get(this, 'selectedAction') === 'remove') {
                             action.key = get(this, 'key');
+                        }
+
+                        if (get(this, 'selectedAction') === 'execjob') {
+                            action.job = get(this, 'jobid');
                         }
 
                         console.log('Adding action', action);

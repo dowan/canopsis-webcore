@@ -93,7 +93,7 @@ define([
                  */
                 defaultView: function() {
                     var userDefaultView = get(this, 'controllers.login.record.defaultview');
-                    var roleDefaultView = get(this, 'controllers.login.userRole.defaultview');
+                    var roleDefaultView = get(this, 'controllers.login.role.defaultview');
                     var frontendDefaultView = get(this, 'frontendConfig.defaultview');
 
                     if(!isEmpty(userDefaultView)) {
@@ -118,6 +118,7 @@ define([
                     {label: __('Event Filter'), value: 'view.filters'},
                     {label: __('Performance Data'), value: 'view.series'},
                     {label: __('Scheduled Jobs'), value: 'view.jobs'},
+                    {label: __('Notifications'), value: 'view.notifications'},
                     {label: __('Link list'), value: 'view.linklist'}
                 ],
 

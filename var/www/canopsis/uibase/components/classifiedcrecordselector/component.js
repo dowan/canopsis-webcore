@@ -193,7 +193,8 @@ Ember.Application.initializer({
 
                 var query = {
                     start: 0,
-                    limit: 10000
+                    limit: 10000,
+                    filter: get(this, 'modelfilter')
                 };
 
                 console.log('findItems', this.get('crecordtype'), query);

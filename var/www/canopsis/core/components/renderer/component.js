@@ -53,13 +53,16 @@ define([
                         console.log('attrName:', attrName);
 
                         if(!isNone(record)) {
-                            var attr = get(record, 'constructor.attributes').get(attrName),
+                            var attr = get(record, 'constructor.attributes.' + attrName),
                                 value = get(record, attrName);
 
                             console.log('attr:', attr);
                             console.log('value:', value);
 
-                            var role = get(attr, 'options.role');
+                            var role;
+                            if (!isNone(attr)) {
+                                role = get(attr, 'options.role');
+                            }
 
                             if(!isNone(role)) {
                                 var renderer = 'renderer-' + role;
