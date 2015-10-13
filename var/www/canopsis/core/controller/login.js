@@ -28,6 +28,12 @@ Ember.Application.initializer({
             get = Ember.get,
             isNone = Ember.isNone;
 
+        /**
+         * @class LoginController
+         * @extends Ember.ObjectController
+         * @constructor
+         */
+
         var controller = Ember.ObjectController.extend({
 
             /**

@@ -62,6 +62,12 @@ Ember.Application.initializer({
             },
 
             keepAlive: function (username) {
+
+                /**
+                 * @method that tells the backend the user is still connected
+                 * called periodically
+                 */
+
                 this.ajax(
                     '/keepalive',
                     'GET',
@@ -70,6 +76,12 @@ Ember.Application.initializer({
             },
 
             sessionStart: function (username) {
+
+                /**
+                 * @method called at application statup
+                 * allow user session start information to be registered
+                 */
+
                 this.ajax(
                     '/sessionstart',
                     'GET',
