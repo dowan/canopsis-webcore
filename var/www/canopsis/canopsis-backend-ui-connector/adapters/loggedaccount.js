@@ -59,9 +59,38 @@ Ember.Application.initializer({
                         data: payload
                     });
                 });
-            }
+            },
+
+            keepAlive: function (username) {
+
+                /**
+                 * @method that tells the backend the user is still connected
+                 * called periodically
+                 */
+
+                this.ajax(
+                    '/keepalive',
+                    'GET',
+                    { data: {username: username} }
+                );
+            },
+
+            sessionStart: function (username) {
+
+                /**
+                 * @method called at application statup
+                 * allow user session start information to be registered
+                 */
+
+                this.ajax(
+                    '/sessionstart',
+                    'GET',
+                    { data: {username: username} }
+                );
+            },
         });
 
-        application.register('adapter:loggedaccount', adapter);
+
+       application.register('adapter:loggedaccount', adapter);
     }
 });

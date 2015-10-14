@@ -62,6 +62,9 @@ Ember.Application.initializer({
 
                     dataUtils.setLoggedUserController(loginController);
 
+                    //statistics session delay purposes
+                    loginController.sessionStart();
+
                     var appController = route.controllerFor('application');
                     var enginesviews = get(appController, 'enginesviews');
 
