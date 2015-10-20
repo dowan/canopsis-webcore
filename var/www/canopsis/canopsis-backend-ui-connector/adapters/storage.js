@@ -27,10 +27,14 @@ Ember.Application.initializer({
             isNone = Ember.isNone;
 
         var adapter = ApplicationAdapter.extend({
+            protocol: 'storage',
             data_type: 'default',
 
             buildURL: function(type, id) {
-                var url = '/storage/' + get(this, 'data_type');
+                var url = '/storage';
+
+                url += '/' + get(this, 'protocol')
+                url += '/' + get(this, 'data_type');
 
                 if (!isNone(type)) {
                     url += '/' + type;
