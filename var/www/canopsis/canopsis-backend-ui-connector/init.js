@@ -22,6 +22,7 @@ define([
     'canopsis/canopsis-backend-ui-connector/adapters/acl',
     'canopsis/canopsis-backend-ui-connector/adapters/action',
     'canopsis/canopsis-backend-ui-connector/adapters/application',
+    'canopsis/canopsis-backend-ui-connector/adapters/storage',
     'canopsis/canopsis-backend-ui-connector/adapters/baseadapter',
     'canopsis/canopsis-backend-ui-connector/adapters/cancel',
     'canopsis/canopsis-backend-ui-connector/adapters/context',
