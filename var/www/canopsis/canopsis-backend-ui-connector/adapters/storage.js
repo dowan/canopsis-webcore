@@ -41,7 +41,7 @@ Ember.Application.initializer({
                 }
 
                 return url;
-            }
+            },
 
             createRecord: function(store, type, record) {
                 return this.updateRecord(store, type, record);
