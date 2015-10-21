@@ -27,13 +27,29 @@ Ember.Application.initializer({
 
         var eventedController = Ember.Controller.extend(Ember.Evented);
 
+        /**
+         * Controller allowing to display a content customizable pop up in the canopsis UI
+         * @class RecordinfopopupController
+         **/
+
         var controller = eventedController.extend({
+
+            /**
+             * Initialization of the popup information
+             **/
             init: function () {
                 set(this, 'title',__('Information'));
                 console.log('initializing recordinfopopup controller');
             },
 
             actions: {
+
+                /**
+                 * Trigger the pop up display with the content to be inserted in
+                 * @param {object} crecord contextual object to populat the template
+                 * @param {string} template template to fill with the crecord data that is once compiled, displayed in the popup.
+                 **/
+
                 show: function(crecord, template) {
                     console.log('Show recordinfopopup', crecord, template);
 
@@ -52,6 +68,10 @@ Ember.Application.initializer({
                     $('#recordinfopopup').css('left', left);
                     $('#recordinfopopup').fadeIn(500);
                 },
+
+                /**
+                 * Hide the pop up information from the used interface
+                 **/
 
                 hide: function() {
                     console.log('hiding recordinfopopup');

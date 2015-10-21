@@ -1,21 +1,21 @@
-/*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ **/
 
 define([
     'app/controller/serie',
@@ -28,21 +28,27 @@ define([
         __ = Ember.String.loc;
 
 
+    /**
+     * Manage metrics data from API
+     * @class MetricController
+     **/
+
     var controller = Ember.ObjectController.extend({
 
         needs: ['serie', 'perfdata'],
 
+        /**
+         * Builds a series array from form series meta.
+         * @param {component} caller Ember component allowing perform ajax queries
+         * @param {store} store Ember store allowing keep execution context
+         * @param {int} from the from date since metric have to be fetched
+         * @param {int} date until metrics are fetched
+         * @param {object} seriesMeta information related to series thare are provided by user forms
+         * @param {function} callback called when series are fetched with the resulting series array
+         *
+         * @comment series looks like [{meta: serieRecord, values: [[timestamp_0, value_0, [...]]]}, [...]]
+         **/
         fetchSeriesFromSchemaValues: function (caller, store, from, to, seriesMeta, callback){
-            /**
-            Builds a series array from form series meta.
-            :param store: an Ember store allowing perform ajax queries
-            :param from: the from date since metric have to be fetched
-            :param to: date until metrics are fetched
-            :param seriesMeta: information related to series thare are provided by user forms
-            :param callback: called when series are fetched with the resulting series array
-            series looks like:
-                [{meta: serieRecord, values: [[timestamp_0, value_0, [...]]]}, [...]]
-            **/
 
             var controller = this,
                 seriesController = get(this, 'controllers.serie');
@@ -91,7 +97,15 @@ define([
         },
 
 
-
+        /**
+         * Fetch metrics from API depending on given parameters
+         * @param {store} store the Ember store used to fetch data from api
+         * @param {int} from start timestamp for data fetch
+         * @param {int} to end timestamp for data fetch
+         * @param {bool} replace tells wether or not replace data in the callback
+         * @param {array} stylizedmetrics contains visual information for serie representation
+         * @param {function} callback the method to call when api returns metric data
+         **/
         fetchStylizedMetrics: function(store, from, to, replace, stylizedmetrics, callback) {
 
             var series = [],
@@ -171,6 +185,15 @@ define([
             }
         },
 
+
+        /**
+         * Fetch metric data from given perfdata id
+         * @param {store} store the Ember store used to fetch data from api
+         * @param {int} from start timestamp for data fetch
+         * @param {int} to end timestamp for data fetch
+         * @param {array} metricIds list of metric identifier for whome data is fetched
+         * @param {function} callback the method to call when api returns metric data
+         **/
         fetchMetricsFromIds: function (caller, from, to, metricIds, callback) {
 
             var perfdataController = get(this, 'controllers.perfdata'),
@@ -189,6 +212,12 @@ define([
 
         },
 
+        /**
+         * Fetch series meta information
+         * @param {int} from start timestamp for data fetch
+         * @param {int} to end timestamp for data fetch
+         * @param {array} metricIds list of metric identifier for whome data is fetched
+         **/
         fetchStylizedSeries: function(store, from, to, replace, stylizedseries, callback) {
 
             /* fetch stylized series */

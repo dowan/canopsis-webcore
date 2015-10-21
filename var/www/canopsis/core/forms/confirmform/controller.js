@@ -21,6 +21,12 @@ Ember.Application.initializer({
     name: 'ConfirmForm',
     after: ['FormFactory'],
     initialize: function(container, application) {
+
+        /**
+         * @class FormFactory
+         * Factory for forms management that allow form management
+         **/
+
         var FormFactory = container.lookupFactory('factory:form');
 
         var formOptions = {};
@@ -31,7 +37,12 @@ Ember.Application.initializer({
             },
 
             confirmation: false,
+
+
             actions: {
+                /**
+                 * Action ran on form submit
+                 **/
                 submit: function() {
                     console.log('confirmed !');
                     this._super();

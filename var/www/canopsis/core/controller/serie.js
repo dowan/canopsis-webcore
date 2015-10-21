@@ -31,10 +31,22 @@ define([
                 set = Ember.set;
 
 
+            /**
+             * Metric data fetch depending on serie meta information
+             * @class SerieController
+             **/
+
             var controller = Ember.ObjectController.extend({
                 needs: ['perfdata'],
 
                 perfdata: Ember.computed.alias('controllers.perfdata'),
+
+                /**
+                 * Retrieve metric data from series meta information
+                 * @param {object} serie meta information for a serie
+                 * @param {int} from start date where start data selection
+                 * @param {int} to stop date where end data selection
+                 **/
 
                 fetch: function(serie, from, to) {
                     if(get(serie, 'metrics.length') > 1 && get(serie, 'aggregate_method') === 'none') {

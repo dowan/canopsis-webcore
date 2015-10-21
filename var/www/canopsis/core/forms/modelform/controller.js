@@ -122,10 +122,19 @@ Ember.Application.initializer({
                 }
             }.property('categorized_attributes'),
 
+            /**
+             * Change the form display allowing to show or hide all information within the form with or without tabs
+             **/
+
             onePageDisplay: function () {
                 //TODO search this value into schema
                 return false;
             }.property(),
+
+
+            /**
+             * Accessor to get form record content
+             **/
 
             inspectedDataItem: function() {
                 return get(this, 'formContext');
@@ -139,6 +148,7 @@ Ember.Application.initializer({
              * Used to dynamically create form editors and assign values to the edited model.
              * To force editing as a specific model type, override this property.
              */
+
             inspectedItemType: function() {
                 console.log('recompute inspectedItemType', get(this, 'formContext'));
 
@@ -154,6 +164,11 @@ Ember.Application.initializer({
             }.property('formContext'),
 
             actions: {
+
+                /**
+                 * Action triggered on form submit This will
+                 **/
+
                 submit: function() {
                     if (this.validation !== undefined && !this.validation()) {
                         return;

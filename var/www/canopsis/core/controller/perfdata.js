@@ -26,9 +26,20 @@ Ember.Application.initializer({
         var get = Ember.get,
             set = Ember.set;
 
+        /**
+         * Manage metric data fetch from API with possible aggregation in canopsis UI
+         * @class PerfdataController
+         **/
+
         var controller = Ember.ObjectController.extend({
             needs: ['application'],
 
+            /**
+             * Fetch metric data from api depending metric_id, start and stop date
+             * @param {string} metric_id the metric data identifier to fetch
+             * @param {int} tstart start date to fetch metric
+             * @param {int} tend stop date to fetch metric
+             **/
             fetch: function(metric_id, tstart, tend) {
                 var applicationController = get(this, 'controllers.application');
                 applicationController.addConcurrentLoading('perfdata');
@@ -58,9 +69,25 @@ Ember.Application.initializer({
                 return promise;
             },
 
+            /**
+             * Fetch many metric data at once
+             * @param {array} metrics is a metric id array
+             * @param {int} tstart start date to fetch metric
+             * @param {int} tend stop date to fetch metric
+             **/
+
             fetchMany: function(metrics, tstart, tend) {
                 return this.fetch(JSON.stringify(metrics), tstart, tend);
             },
+
+            /**
+             * Fetch aggregated metric data
+             * @param {string} metric_id is the metric identifier to fetch and aggregate
+             * @param {int} tstart start date to fetch metric
+             * @param {int} tend stop date to fetch metric
+             * @param {string} method aggregation method to apply to the fetched data
+             * @param {string} interval aggregation interval to apply to the fetched data
+             **/
 
             aggregate: function(metric_id, tstart, tend, method, interval) {
                 var applicationController = get(this, 'controllers.application');
@@ -94,6 +121,16 @@ Ember.Application.initializer({
 
                 return promise;
             },
+
+
+            /**
+             * Fetch many aggregated metric data at once
+             * @param {array} metrics metric identifier list to fetch and aggregate
+             * @param {int} tstart start date to fetch metric
+             * @param {int} tend stop date to fetch metric
+             * @param {string} method aggregation method to apply to the fetched data
+             * @param {string} interval aggregation interval to apply to the fetched data
+             **/
 
             aggregateMany: function(metrics, tstart, tend, method, interval) {
                 return this.aggregate(JSON.stringify(metrics), tstart, tend, method, interval);

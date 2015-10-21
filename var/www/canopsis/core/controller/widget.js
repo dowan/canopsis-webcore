@@ -530,6 +530,12 @@ define([
             });
 
             application.reopen({
+
+                /**
+                 * Reference an object in the registry binds classes together depending on the name by convention
+                 * @param {string} name convention to register objects that allow dynamic component links
+                 * @param {object} object the object to register within canopsis application
+                 **/
                 register: function (name, object) {
 
                     if(name.split(':')[0] === 'widget') {
