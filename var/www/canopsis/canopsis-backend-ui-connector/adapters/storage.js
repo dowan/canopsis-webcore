@@ -102,15 +102,30 @@ Ember.Application.initializer({
         });
 
         application.register('adapter:storage-default', adapter);
+
         application.register('adapter:storage-composite', adapter.extend({
-            data_type: 'composite'
+            data_type: 'composite',
+            path: [],
+
+            ajax: function(url, type, hash) {
+                if (isNone(get(hash, 'data'))) {
+                    hash.data = {};
+                }
+
+                hash.data.path = get(this, 'path');
+
+                return this._super(url, type, hash);
+            }
         }));
+
         application.register('adapter:storage-timed', adapter.extend({
             data_type: 'timed'
         }));
+
         application.register('adapter:storage-periodic', adapter.extend({
             data_type: 'periodic'
         }));
+
         application.register('adapter:storage-file', adapter.extend({
             data_type: 'file'
         }));
