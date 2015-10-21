@@ -267,6 +267,9 @@ define([
                     return this._super.apply(this, arguments);
                 },
 
+                /**
+                 * @method onWidgetRefresh
+                 */
                 onWidgetRefresh: function() {},
 
                 /**

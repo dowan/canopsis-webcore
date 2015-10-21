@@ -44,6 +44,10 @@ Ember.Application.initializer({
                 return this._super.apply(this, arguments);
             },
 
+            /**
+             * @method setupController
+             * @param transition
+             */
             beforeModel: function(transition) {
                 var route = this;
                 var store = DS.Store.create({ container: get(this, "container") });

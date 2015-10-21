@@ -35,6 +35,9 @@ Ember.Application.initializer({
             templateName: 'listline',
             classNames: ['listline'],
 
+            /**
+             * @property checkChanged
+             */
             checkChanged: function() {
                 var checkbox = this.$('.toggle');
                 if(checkbox !== undefined) {

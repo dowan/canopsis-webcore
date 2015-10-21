@@ -35,13 +35,28 @@ Ember.Application.initializer({
          * @constructor
          */
         var view = Ember.View.extend({
+            /**
+             * @property tagName
+             * @static
+             */
             tagName: 'span',
+
+            /**
+             * @property templateName
+             * @static
+             */
             templateName: 'mixineditdropdown',
 
+            /**
+             * @property hasEditableMixins
+             */
             hasEditableMixins: function () {
                 return get(this, 'editableEnabledMixins.length') || get(this, 'wrapperMixins.length');
             }.property('editableEnabledMixins', 'wrapperMixins'),
 
+            /**
+             * @property wrapperMixins
+             */
             wrapperMixins: function () {
                 var mixins = Ember.A();
                 if (get(this, 'isGridLayout')) {
@@ -50,12 +65,18 @@ Ember.Application.initializer({
                 return mixins;
             }.property('isGridLayout'),
 
+            /**
+             * @property editableEnabledMixins
+             */
             editableEnabledMixins: function () {
+                alert('editableEnabledMixins');
+
                 var mixins = get(this, 'mixins');
                 var editableMixins = Ember.A();
                 if(mixins) {
                     for (var i = 0; i < mixins.length; i++) {
-                        if(schemasRegistry.getByName(mixins[i].name.camelize())) {
+                        var schema = schemasRegistry.getByName(mixins[i].name.camelize());
+                        if(schema) {
                             editableMixins.pushObject(mixins[i]);
                         }
                     }
