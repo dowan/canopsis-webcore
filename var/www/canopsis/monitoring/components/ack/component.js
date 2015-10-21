@@ -30,6 +30,11 @@ Ember.Application.initializer({
             __ = Ember.String.loc;
 
 
+        /**
+         * @class AckComponent
+         * Manage ack display for renderers
+         **/
+
         var component = Ember.Component.extend({
             init: function() {
                 this._super();
