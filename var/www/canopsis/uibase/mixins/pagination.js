@@ -58,8 +58,8 @@ Ember.Application.initializer({
             }.property('currentPage', 'paginationFirstItemIndex'),
 
             isLastPage: function () {
-                return get(this, 'paginationLastItemIndex') === get(this, 'itemsTotal');
-            }.property('paginationLastItemIndex', 'itemsTotal'),
+                return get(this, 'currentPage') === get(this, 'totalPages');
+            }.property('currentPage', 'totalPages'),
 
             hasOnePage: function () {
                 var onepage = get(this, 'totalPages') === 1;
@@ -143,17 +143,18 @@ Ember.Application.initializer({
             itemsPerPagePropositionSelectedChanged: function() {
                 var userSelection = get(this, 'itemsPerPagePropositionSelected');
 
-                Ember.setProperties(this, {
-                    'itemsPerPage': userSelection,
-                    'currentPage': 1
-                });
+                if(get(this, 'loaded')) {
+                    Ember.setProperties(this, {
+                        'model.itemsPerPage': userSelection,
+                        'currentPage': 1
+                    });
 
-                // this.saveUserConfiguration();
+                    this.saveUserConfiguration();
+                }
 
                 this.refreshContent();
 
             }.observes('itemsPerPagePropositionSelected'),
-
 
             refreshContent: function() {
                 console.group('paginationMixin refreshContent', get(this, 'itemsPerPage'));

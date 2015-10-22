@@ -19,7 +19,6 @@
 
 Ember.Application.initializer({
     name:'SendeventMixin',
-    after: 'MixinFactory',
     after: ['MixinFactory', 'FormsUtils', 'DatesUtils', 'NotificationUtils'],
     initialize: function(container, application) {
         var Mixin = container.lookupFactory('factory:mixin');
@@ -120,7 +119,6 @@ Ember.Application.initializer({
 
                 return new Ember.RSVP.Promise(function(resolve, reject) {
                     var post_events = [];
-
                     for(var i = 0; i < crecords.length; i++) {
                         console.log('Event:', get(record, 'author'), get(record, 'output'));
 
@@ -143,20 +141,23 @@ Ember.Application.initializer({
                     $.post('/event', {
                         event: JSON.stringify(post_events)
                     }).then(function(data) {
-                        record.rollback();
-                        record.unloadRecord();
-                        console.log('safe_mode', safe_mode);
+                        Ember.run(function () {
 
-                        if (safe_mode) {
-                            //Safe mode refresh data from server
-                            me.refreshContent();
-                        } else {
-                            //Refresh list at Ember level (js), do not triggers a server query yet.
-                            me.trigger('refresh');
-                        }
+                            record.rollback();
+                            record.unloadRecord();
+                            console.log('safe_mode', safe_mode);
 
-                        resolve(arguments);
-                    }, reject);
+                            if (safe_mode) {
+                                //Safe mode refresh data from server
+                                me.refreshContent();
+                            } else {
+                                //Refresh list at Ember level (js), do not triggers a server query yet.
+                                me.trigger('refresh');
+                            }
+
+                            resolve(arguments);
+                        });
+                    });
                 });
             },
 

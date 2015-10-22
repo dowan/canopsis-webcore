@@ -90,7 +90,8 @@ Ember.Application.initializer({
                         params = {
                             id: hashUtils.generateId('task'),
                             crecord_type: xtype,
-                            xtype: xtype
+                            xtype: xtype,
+                            jtype: get(this, 'jtype')
                         };
 
                         console.log('Instanciate non-persistent model:', model, params);

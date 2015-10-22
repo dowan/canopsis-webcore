@@ -28,7 +28,7 @@ require.config({
         'jquery': 'canopsis/core/lib/wrappers/jquery',
         'handlebars': 'canopsis/core/lib/externals/handlebars/handlebars',
         'ember-template-compiler': 'canopsis/core/lib/externals/min/ember-template-compiler',
-        'ember-lib': 'canopsis/core/lib/externals/min/ember',
+        'ember-lib': 'canopsis/core/lib/externals/min/ember.debug',
         'ember-data-lib': 'canopsis/core/lib/externals/min/ember-data'
     },
     shim: {
@@ -151,6 +151,10 @@ define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18
     });
 
     enabled.getEnabledModules(function (enabledPlugins) {
+
+        if (enabledPlugins.length === 0) {
+            alert('No module loaded in Canopsis UI. Cannot go beyond');
+        }
 
         setLoadingInfo('Fetching frontend bricks', 'fa-cubes');
         setModuleInfo(enabledPlugins, canopsisConfiguration.SHOWMODULES);

@@ -434,7 +434,7 @@ Ember.Application.initializer({
                     curveIds = [],
                     me = this;
 
-                var fetchDone = function() {
+                var fetchDone = function(curveIds) {
                     curveIds = JSON.stringify(curveIds);
 
                     console.log('series:', seriesById);
@@ -452,7 +452,7 @@ Ember.Application.initializer({
                     });
                 };
 
-                if(!isNone(stylizedmetrics)) {
+                if(stylizedmetrics.length > 0) {
                     var metricIds = [];
 
                     for(var i = 0, l = stylizedmetrics.length ; i < l ; i++) {
@@ -462,7 +462,7 @@ Ember.Application.initializer({
                     }
 
                     store.findQuery('ctxmetric', {
-                        _filter: JSON.stringify({
+                        filter: JSON.stringify({
                             _id: {
                                 '$in': metricIds
                             }
@@ -500,11 +500,11 @@ Ember.Application.initializer({
                             curveIds.push(get(stylizedmetrics[i], 'curve'));
                         }
 
-                        fetchDone();
+                        fetchDone(curveIds);
                     });
                 }
                 else {
-                    fetchDone();
+                    fetchDone(curveIds);
                 }
             },
 

@@ -400,7 +400,7 @@ Ember.Application.initializer({
 
                     var params = {};
 
-                    params.limit = get(this, 'itemsPerPage');
+                    params.limit = get(this, 'itemsPerPagePropositionSelected');
 
                     //TODO check if useless or not
                     if(params.limit === 0) {

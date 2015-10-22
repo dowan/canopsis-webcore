@@ -33,7 +33,9 @@ Ember.Application.initializer({
          * @extends Ember.ObjectController
          * @constructor
          */
+
         var controller = Ember.ObjectController.extend({
+
             /**
              * @property content
              */
@@ -56,20 +58,6 @@ Ember.Application.initializer({
             },
 
             /**
-            * @property userRoute
-            * compute route to view when login for current user
-            **/
-            userRoute: function () {
-                var loginController = DataUtils.getLoggedUserController();
-                var record = get(loginController, 'record');
-                var defaultview = get(record, 'defaultview');
-                if (!defaultview) {
-                    defaultview = get(this, 'controllers.application.frontendConfig.defaultview');
-                }
-                return defaultview;
-            }.property(),
-
-            /**
              * @property authkey
              */
             authkey: function () {
@@ -86,8 +74,26 @@ Ember.Application.initializer({
              */
             authkeyChanged: function() {
                 localStorage.cps_authkey = get(this, 'authkey');
-            }.observes('authkey')
+            }.observes('authkey'),
+
+            /**
+             * @method sessionStart
+             * Tells the backend the user is logging in
+             **/
+
+            sessionStart: function () {
+                loggedaccountAdapter = DataUtils.getEmberApplicationSingleton().__container__.lookup('adapter:loggedaccount');
+                username = get(this, 'record._id');
+                loggedaccountAdapter.sessionStart(username);
+
+                //Keep alive every 4"30'
+                setInterval(function () {
+                    loggedaccountAdapter.keepAlive(username);
+                },1000 * 60 * 4.5);
+            }
+
         });
+
         application.register('controller:login', controller);
     }
 });
