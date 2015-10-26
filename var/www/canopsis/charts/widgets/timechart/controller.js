@@ -223,6 +223,6 @@ Ember.Application.initializer({
 
         }, widgetOptions);
 
-        application.register('factory:widget', Widget);
+        application.register('widget:timechart', Widget);
     }
 });

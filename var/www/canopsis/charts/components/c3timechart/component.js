@@ -36,7 +36,7 @@ Ember.Application.initializer({
         init: function() {
             this._super();
             Ember.setProperties(this, {
-                'uuid': HashUtils.generateId('categoryChart'),
+                'uuid': HashUtils.generateId('timeChart'),
                 'parentController.chartComponent': this,
             });
         },
@@ -49,159 +49,101 @@ Ember.Application.initializer({
         },
 
 
-        maxValue: function () {
-
-            /**
-            User max value may be defined
-            if it is defined, it must be greater than series values sum
-            max value is used only if configuration allowed it
-            **/
-
-            var maxValue = get(this, 'parentController.options.max_value'),
-                useMaxValue = get(this, 'parentController.options.use_max_value'),
-                seriesSum = get(this, 'seriesSum');
-
-            if (useMaxValue && !isNone(maxValue) && maxValue > seriesSum) {
-                return maxValue;
-            } else {
-                return seriesSum;
-            }
-
-        }.property('parentController.options.max_value'),
-
-        seriesSum: function () {
-
-            /**
-            Compute all series values sum
-            **/
-
-            var sum = 0,
-                series = get(this, 'seriesWithComputedNames');
-            for (var i=0; i<series.length; i++) {
-                sum += series[i][1];
-            }
-            return sum;
-
-        }.property('series'),
-
-        seriesNames: function () {
-            /**
-            Get the list of each distinct serie name.
-            **/
-
-            var seriesNames = [];
-            var series = get(this, 'c3series');
-            var length = series.length;
-            for (var i=0; i<length; i++) {
-                seriesNames.push(series[i][0]);
-            }
-            return seriesNames;
-
-        }.property('series'),
-
-
-
-        seriesWithComputedNames: function () {
-
-            /**
-            Generate a new array for series with metric names computed from user template.
-            **/
-
-            var context = ['type', 'connector','connector_name', 'component','resource', 'metric'],
-                seriesWithMeta = $.extend(true, [], get(this, 'series')),
-                namedSeries = [],
-                i,
-                j;
-
-            console.log('seriesWithMeta', seriesWithMeta);
-
-            var length = seriesWithMeta.length;
-
-            for (i=0; i<length; i++) {
-                var serie = seriesWithMeta[i].serie,
-                    id = seriesWithMeta[i].id;
-
-                console.log('meta serie', id, serie);
-
-                var seriesInfo = id.split('/'),
-                    templateContext = {};
-                var lengthSeriesInfo = seriesInfo.length;
-
-                //Build template context
-                for (j=0; j<lengthSeriesInfo; j++) {
-                    //+1 is for preceding /
-                    templateContext[context[j]] = seriesInfo[j + 1];
-                }
-                console.log('Template context', templateContext, 'for metric', id);
-
-                var template = get(this, 'parentController.options.metric_template');
-
-                try {
-                    serie[0] = Handlebars.compile(template)(templateContext);
-                } catch (err) {
-                    console.log('could not proceed template feed', err);
-                }
-
-
-                namedSeries.push(serie);
-
-            }
-
-            return namedSeries;
-
-        }.property(),
-
-        c3series: function () {
-
-            /**
-            Generate chart required values to be displayed
-            **/
-            console.log('chart series is now', get(this, 'series'));
-
-            var restValue = get(this, 'maxValue') - get(this, 'seriesSum'),
-                series = get(this, 'seriesWithComputedNames');
-                //base series data deep copied
-
-            //Compute difference between max value and series values sum
-            if (restValue > 0) {
-                var leftValueLabel = get(this, 'parentController.options.text_left_space');
-                series.push([leftValueLabel, restValue]);
-            }
-
-            //Sort series for clean display
-            series.sort(function(a, b) {
-                return b[1] - a[1];
-            });
-
-            return series;
-
-        }.property('series'),
-
-        colors: function () {
-
-            /**
-            Compute the color dict for nice chart display from options
-            **/
-
-            var seriesNames = get(this, 'seriesNames');
-
-            var colors = {
-                leftValueLabel: '#EEEEEE',
-            };
-
-            for (var i=0; i<seriesNames.length; i++) {
-                colors[seriesNames[i]] = ['#FF0000', '#F97600'][i];
-            }
-            return colors;
-
-        }.property('seriesNames'),
-
-
         didInsertElement: function () {
             /**
             Tells the component is inserted into the dom
             **/
             set(this, 'domready', true);
+        },
+
+        expandedSeries: function () {
+
+            var series = get(this, 'series');
+
+            var timestampSet = {};
+            var seriesNames = [];
+            var i, j, name, k, l;
+            var previousValue = {};
+
+            for(i=0, j=series.length; i<j; i++) {
+
+                var serie = series[i];
+                name = this.computeSerieName(serie.id);
+                seriesNames.push(name);
+
+                for(k=0, l=serie.serie.length; k<l; k++) {
+                    point = serie.serie[k];
+                    if (timestampSet[point[0]] === undefined) {
+                        timestampSet[point[0]] = {};
+                    }
+                    timestampSet[point[0]][name] = point[1];
+
+                    //populate the first value of each series
+                    if(previousValue[name] === undefined) {
+                        previousValue[name] = point[1];
+                    }
+                }
+
+            }
+
+
+            var finalSeries = [];
+            var timestamps = [];
+
+            for (var key in timestampSet) {
+                timestamps.push(key * 1000);
+            }
+            timestamps.sort();
+
+            for (i=0, j=seriesNames.length; i<j; i++) {
+                name = seriesNames[i];
+                var finalSerie = [name];
+
+                for (k=0, l=timestamps.length; k<l; k++) {
+
+                    var timestamp = timestamps[k];
+                    var value = timestampSet[timestamp][name];
+
+                    if (value === undefined) {
+                        value = previousValue[name];
+                    } else {
+                        previousValue[name] = value;
+                    }
+
+                    finalSerie.push(value);
+                }
+            }
+
+            console.log(JSON.stringify(series));
+        }.property (),
+
+        computeSerieName: function (serieId) {
+
+            /**
+            TODO Merge with the one of the category chart
+            **/
+
+            var context = ['type', 'connector','connector_name', 'component','resource', 'metric'];
+            var seriesInfo = serieId.split('/'),
+                templateContext = {};
+
+            //Build template context
+            for (i=0, j=seriesInfo.length; i<j; i++) {
+                //+1 is for preceding /
+                templateContext[context[i]] = seriesInfo[i + 1];
+            }
+            console.log('Template context', templateContext, 'for metric', id);
+
+            var template = get(this, 'parentController.options.metric_template');
+
+            try {
+                return Handlebars.compile(template)(templateContext);
+            } catch (err) {
+                console.log('could not proceed template feed', err);
+            }
+
+            return serieId;
+
         },
 
         generateChart: function () {
@@ -211,7 +153,7 @@ Ember.Application.initializer({
             **/
 
             if(isNone(get(this, 'domready'))) {
-                console.log('Dom is not ready for category chart, cannot draw');
+                console.log('Dom is not ready for time chart, cannot draw');
                 return;
             }
 
@@ -219,69 +161,41 @@ Ember.Application.initializer({
                 console.log('Chart options are not ready cannot draw');
                 return;
             }
+            debugger;
 
+            var series = get(this, 'expandedSeries');
+            var domElement = '#' + get(this, 'uuid');
 
-            var domElement = '#' + get(this, 'uuid'),
-                seriesSum = get(this, 'seriesSum'),
-                seriesNames = get(this, 'seriesNames'),
-                c3series = get(this, 'c3series'),
-                colors = get(this, 'colors'),
-                maxValue = get(this, 'maxValue'),
-                leftValueLabel = get(this, 'parentController.options.text_left_space'),
-                chartType = get(this, 'parentController.options.display'),
-                showLegend = get(this, 'parentController.options.show_legend'),
-                tooltip = get(this, 'parentController.options.show_tooltip'),
-                showLabels = get(this, 'parentController.options.show_labels'),
-                stacked = get(this, 'parentController.options.stacked'),
-                humanReadable = get(this, 'parentController.options.human_readable'),
-                rotated = false,
-                showAxes = true,
-                isBarChart = true;
+            var options = {
+                bindto: domElement,
+                data: {
+                    x: 'x',
+            //        xFormat: '%Y%m%d', // 'xFormat' can be used as custom format of 'x'
+                    columns: [
+                        ['x', 1445521373000, 1445522373000, 1445523373000],
 
-            seriesSum = humanReadable ? ValuesUtils.humanize(seriesSum, ''): seriesSum.toFixed(2);
-
-            var label = {
-                show : showLabels,
-                format: function(value, ratio){
-                    return  showLabels ? seriesSum: '';
+                        ['data1', 30, 200,  400],
+                        ['data2', 130, 340, 200]
+                    ]
+                },
+                axis: {
+                    x: {
+                        type: 'timeseries',
+                        tick: {
+                            format: '%Y-%m-%d'
+                        }
+                    }
                 }
             };
 
-            var gauge = {
-                    label:label
-                },
-                pie = {},
-                donut = {
-                    title: (showLabels && seriesSum) ? seriesSum: ''
-                };
-
-            console.log('seriesNames', seriesNames);
-            console.log('c3series', c3series);
-
-            if (chartType == 'progressbar') {
-                //cheating alias becrause progress bar does not exists in c3 js yet
-                isBarChart = false;
-                chartType = 'bar';
-                rotated = true;
-                showAxes = false;
-                showLabels = false;
-            }
-
-            //max value may be equal to 0 when series did not fetch points.
-            if (maxValue > 0) {
-                //define the max value of the chart and wether or not a delta serie is created
-                gauge.max = maxValue;
-                if (maxValue > seriesSum && $.inArray(leftValueLabel, seriesNames) === -1) {
-                    seriesNames.push(leftValueLabel);
-                }
-            }
-
+            /*
             var options = {
                 bindto: domElement,
                 groups: seriesNames,
                 tooltip: {show: tooltip},
                 legend: {show: showLegend},
                 data: {
+                    x: 'x',
                     columns: c3series,
                     type: chartType,
                     groups: [seriesNames],
@@ -316,12 +230,7 @@ Ember.Application.initializer({
                   }
                 },
             };
-
-            if (chartType === 'bar' && !stacked) {
-                //no more stacked view bor bar charts
-                delete options.groups;
-                delete options.data.groups;
-            }
+            */
 
             var chart = c3.generate(options);
 
@@ -339,6 +248,7 @@ Ember.Application.initializer({
             if (isNone(chart)) {
                 this.generateChart();
             } else {
+                /*
                 console.log('refreshing c3 chart with series', get(this, 'c3series'));
 
                 var previousSeriesNames = get(this, 'seriesNames');
@@ -353,6 +263,7 @@ Ember.Application.initializer({
                     columns: get(this, 'c3series'),
                     groups: [get(this, 'seriesNames')]
                 });
+                */
             }
 
 
