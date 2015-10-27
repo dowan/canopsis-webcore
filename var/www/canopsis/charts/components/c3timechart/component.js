@@ -61,7 +61,8 @@ Ember.Application.initializer({
             var series = get(this, 'series'),
                 xs = {},
                 columns = [],
-                c3Series = [];
+                c3Series = [],
+                uniq = 1;
 
             for(var i=0, j=series.length; i<j; i++) {
 
@@ -71,7 +72,7 @@ Ember.Application.initializer({
                     points = series[i].points;
 
                 if (xs[serieName] !== undefined) {
-                    serieName += ' ('+ i + ')';
+                    serieName += ' ('+ uniq++ + ')';
                 }
 
                 var dataSerie = [serieName],
@@ -146,11 +147,11 @@ Ember.Application.initializer({
 
 
 
-            var tickCount = 10,
-                humanReadable = get(this, 'parentController.options.human_readable'),
+            var humanReadable = get(this, 'parentController.options.human_readable'),
                 zoomable = get(this, 'parentController.options.zoomable'),
                 subchart = get(this, 'parentController.options.subchart'),
                 stacked = get(this, 'parentController.options.stacked'),
+                tickCount = get(this, 'parentController.options.tick_count'),
                 seriesNames = Object.keys(data.xs);
 
 

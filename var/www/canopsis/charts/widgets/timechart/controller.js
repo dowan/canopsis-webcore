@@ -108,6 +108,7 @@ Ember.Application.initializer({
                     'zoomable',
                     'subchart',
                     'stacked',
+                    'tick_count',
                 ];
 
                 var options = {};
