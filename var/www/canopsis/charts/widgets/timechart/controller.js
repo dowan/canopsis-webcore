@@ -105,6 +105,8 @@ Ember.Application.initializer({
                     'show_labels',
                     'metric_template',
                     'human_readable',
+                    'zoomable',
+                    'subchart',
                 ];
 
                 var options = {};
@@ -119,84 +121,30 @@ Ember.Application.initializer({
             },
 
             onMetricFetch: function (chartController, pargs, from, to) {
-
-                var length = pargs.length,
-                    chartSeries = [];
-
-                for(var i=0; i<length; i++) {
-
-                    var metric = pargs[i].data[0];
-                    var serieId = metric.meta.data_id,
-                        pointsLength = metric.points.length,
-                        serieValue = 0,
-                        serie = [];
-
-                    if (pointsLength) {
-                        serieValue = metric.points[pointsLength - 1][1];
-                    }
-
-                    var serieSplit = serieId.split('/');
-                    var serieName = serieSplit[serieSplit.length - 1];
-
-                    serie.pushObject(serieName);
-
-                    for (var j=0, l=metric.points.length; j<l; j++) {
-                        serie.pushObject(metric.points[j]);
-                    }
-
-                    chartSeries.push({
-                        id: serieId,
-                        serie: serie
-                    });
-
+                var series = [];
+                for (var i=0, l=pargs.length; i<l; i++) {
+                    series.push(pargs[i].data[0]);
                 }
-
-                chartController.update('metrics', chartSeries);
+                chartController.update('metrics', series);
             },
 
-            onSeriesFetch: function (chartController, series) {
-                /**
-                Transform series information for widget text display facilities
-                series are fetched from metric manager and are made of a list of metrics as
-                [{meta: serieRecord, values: [[timestamp_0, value_0, [...]]]}, [...]]
-                **/
+            onSeriesFetch: function (chartController, pargs) {
 
-                var length = series.length,
-                    chartSeries = [];
+                var series = [];
 
+                for (var i=0, l=pargs.length; i<l; i++) {
 
-                for(var i=0; i<length; i++) {
-
-                    var values = get(series[i], 'values'),
-                        serieName = get(series[i].meta, 'crecord_name').replace(/ /g,'_'),
-                        value = 0;
-
-                    var valueLength = values.length;
-
-                    //choosing the value for the last point when any
-                    if (!valueLength) {
-                        serieName += ' ' + __('No data available');
-                    }
-
-                    var serie = [serieName];
-
-                    for (var j=0, l=values.length; j<l; j++) {
-                        serie.pushObject(values[i]);
-                    }
-
-                    var metrics = series[i].meta.metrics,
-                        contextId = serieName;
-                    if (metrics.length) {
-                        contextId = series[i].meta.metrics[0];
-                    }
-
-                    chartSeries.push({
-                        id: contextId,
-                        serie: serie
+                    series.push({
+                        meta: {
+                            name: pargs[i].meta.crecord_name
+                        },
+                        serie: pargs[i]
                     });
+
                 }
 
-                chartController.update('series', chartSeries);
+
+                chartController.update('series', series);
             },
 
             update: function (type, series) {

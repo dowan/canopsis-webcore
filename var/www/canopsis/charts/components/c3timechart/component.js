@@ -56,66 +56,41 @@ Ember.Application.initializer({
             set(this, 'domready', true);
         },
 
-        expandedSeries: function () {
+        computeSeries: function () {
 
-            var series = get(this, 'series');
+            var series = get(this, 'series'),
+                xs = {},
+                columns = [],
+                c3Series = [];
 
-            var timestampSet = {};
-            var seriesNames = [];
-            var i, j, name, k, l;
-            var previousValue = {};
 
-            for(i=0, j=series.length; i<j; i++) {
+            for(var i=0, j=series.length; i<j; i++) {
 
-                var serie = series[i];
-                name = this.computeSerieName(serie.id);
-                seriesNames.push(name);
+                var id = get(series[i], 'meta.data_id');
+                var serieName = this.computeSerieName(id),
+                    timeName = 'x' + i,
+                    points = series[i].points;
 
-                for(k=0, l=serie.serie.length; k<l; k++) {
-                    point = serie.serie[k];
-                    if (timestampSet[point[0]] === undefined) {
-                        timestampSet[point[0]] = {};
-                    }
-                    timestampSet[point[0]][name] = point[1];
+                var dataSerie = [serieName],
+                    timeSerie = [timeName];
 
-                    //populate the first value of each series
-                    if(previousValue[name] === undefined) {
-                        previousValue[name] = point[1];
-                    }
+                xs[serieName] = timeName;
+
+                for(var k=0, l=points.length; k<l; k++) {
+                    timeSerie.pushObject(points[k][0] * 1000);
+                    dataSerie.pushObject(points[k][1]);
                 }
 
+                c3Series.push(timeSerie);
+                c3Series.push(dataSerie);
             }
 
+            return {
+                xs: xs,
+                columns: c3Series
+            };
 
-            var finalSeries = [];
-            var timestamps = [];
-
-            for (var key in timestampSet) {
-                timestamps.push(key * 1000);
-            }
-            timestamps.sort();
-
-            for (i=0, j=seriesNames.length; i<j; i++) {
-                name = seriesNames[i];
-                var finalSerie = [name];
-
-                for (k=0, l=timestamps.length; k<l; k++) {
-
-                    var timestamp = timestamps[k];
-                    var value = timestampSet[timestamp][name];
-
-                    if (value === undefined) {
-                        value = previousValue[name];
-                    } else {
-                        previousValue[name] = value;
-                    }
-
-                    finalSerie.push(value);
-                }
-            }
-
-            console.log(JSON.stringify(series));
-        }.property (),
+        }.property ('series'),
 
         computeSerieName: function (serieId) {
 
@@ -132,9 +107,9 @@ Ember.Application.initializer({
                 //+1 is for preceding /
                 templateContext[context[i]] = seriesInfo[i + 1];
             }
-            console.log('Template context', templateContext, 'for metric', id);
+            console.log('Template context', templateContext, 'for metric', serieId);
 
-            var template = get(this, 'parentController.options.metric_template');
+            var template = get(this, 'parentController.options.metric_template') || '{{metric}}';
 
             try {
                 return Handlebars.compile(template)(templateContext);
@@ -161,76 +136,53 @@ Ember.Application.initializer({
                 console.log('Chart options are not ready cannot draw');
                 return;
             }
-            debugger;
 
-            var series = get(this, 'expandedSeries');
+            var data = get(this, 'computeSeries');
             var domElement = '#' + get(this, 'uuid');
+
+
+            var tickCount = 10,
+                humanReadable = get(this, 'parentController.options.human_readable'),
+                showLabels = get(this, 'parentController.options.show_labels'),
+                zoomable = get(this, 'parentController.options.zoomable'),
+                subchart = get(this, 'parentController.options.subchart');
+
+            /*
+            data.labels = {
+                format: function (v, id, i, j) {
+                    v = humanReadable ? ValuesUtils.humanize(v, '') : parseFloat(v).toFixed(2);
+                    return showLabels ? id + ' : ' + v : '';
+                }
+            };
+            */
 
             var options = {
                 bindto: domElement,
-                data: {
-                    x: 'x',
-            //        xFormat: '%Y%m%d', // 'xFormat' can be used as custom format of 'x'
-                    columns: [
-                        ['x', 1445521373000, 1445522373000, 1445523373000],
-
-                        ['data1', 30, 200,  400],
-                        ['data2', 130, 340, 200]
-                    ]
+                data: data,
+                zoom: {
+                   enabled: zoomable
+                },
+                subchart: {
+                    show: subchart
                 },
                 axis: {
                     x: {
                         type: 'timeseries',
                         tick: {
-                            format: '%Y-%m-%d'
+                            format: '%Y-%m-%d',
+                            fit: true,
+                            count: tickCount
+                        }
+                    },
+                    y: {
+                        tick: {
+                            format: function (v) {
+                                return humanReadable ? ValuesUtils.humanize(v, '') : parseFloat(v).toFixed(2);
+                            }
                         }
                     }
                 }
             };
-
-            /*
-            var options = {
-                bindto: domElement,
-                groups: seriesNames,
-                tooltip: {show: tooltip},
-                legend: {show: showLegend},
-                data: {
-                    x: 'x',
-                    columns: c3series,
-                    type: chartType,
-                    groups: [seriesNames],
-                    labels: {
-                        format: function (v, id, i, j) {
-                            v = humanReadable ? ValuesUtils.humanize(v, '') : parseFloat(v).toFixed(2);
-                            return showLabels ? id + ' : ' + v : '';
-                        }
-                    },
-                    empty: {
-                        label: {
-                            text: __('No Data')
-                        }
-                    }
-                },
-                //color: colors,
-                gauge: gauge,
-                donut: donut,
-                pie: pie,
-                axis: { //for bar mode
-                  rotated:rotated,
-                  x: {
-                    show: showAxes
-                  },
-                  y: {
-                    tick: {
-                        format: function (v) {
-                            return humanReadable ? ValuesUtils.humanize(v, '') : parseFloat(v).toFixed(2);
-                        }
-                    },
-                    show: showAxes
-                  }
-                },
-            };
-            */
 
             var chart = c3.generate(options);
 
