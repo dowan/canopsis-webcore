@@ -107,6 +107,7 @@ Ember.Application.initializer({
                     'human_readable',
                     'zoomable',
                     'subchart',
+                    'stacked',
                 ];
 
                 var options = {};

@@ -63,13 +63,16 @@ Ember.Application.initializer({
                 columns = [],
                 c3Series = [];
 
-
             for(var i=0, j=series.length; i<j; i++) {
 
                 var id = get(series[i], 'meta.data_id');
                 var serieName = this.computeSerieName(id),
                     timeName = 'x' + i,
                     points = series[i].points;
+
+                if (xs[serieName] !== undefined) {
+                    serieName += ' ('+ i + ')';
+                }
 
                 var dataSerie = [serieName],
                     timeSerie = [timeName];
@@ -141,20 +144,19 @@ Ember.Application.initializer({
             var domElement = '#' + get(this, 'uuid');
 
 
+
+
             var tickCount = 10,
                 humanReadable = get(this, 'parentController.options.human_readable'),
-                showLabels = get(this, 'parentController.options.show_labels'),
                 zoomable = get(this, 'parentController.options.zoomable'),
-                subchart = get(this, 'parentController.options.subchart');
+                subchart = get(this, 'parentController.options.subchart'),
+                stacked = get(this, 'parentController.options.stacked'),
+                seriesNames = Object.keys(data.xs);
 
-            /*
-            data.labels = {
-                format: function (v, id, i, j) {
-                    v = humanReadable ? ValuesUtils.humanize(v, '') : parseFloat(v).toFixed(2);
-                    return showLabels ? id + ' : ' + v : '';
-                }
-            };
-            */
+
+            if (stacked) {
+                data.groups = [seriesNames];
+            }
 
             var options = {
                 bindto: domElement,
