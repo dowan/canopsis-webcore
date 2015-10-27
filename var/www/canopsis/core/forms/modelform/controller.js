@@ -208,6 +208,16 @@ Ember.Application.initializer({
                             if (override_inverse[attr.field]) {
                                 categoryKeyField = override_inverse[attr.field];
                             }
+
+                            if(get(this, 'mode') === 'creation' && attr.field === 'mixins') {
+                                var tempValue = [];
+                                for (var k = 0; k < attr.value.length; k++) {
+                                    tempValue.push({name: attr.value[k].name});
+                                }
+
+                                Ember.set(attr, 'value', tempValue);
+                            }
+
                             set(this, 'formContext.' + categoryKeyField, attr.value);
                         }
                     }
