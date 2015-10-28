@@ -126,6 +126,7 @@ Ember.Application.initializer({
                     'stacked',
                     'tick_count',
                     'multi_axes',
+                    'date_format',
                 ];
 
                 var options = {};

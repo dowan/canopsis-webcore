@@ -178,8 +178,12 @@ Ember.Application.initializer({
                 stacked = get(this, 'parentController.options.stacked'),
                 tickCount = get(this, 'parentController.options.tick_count'),
                 multiAxes = get(this, 'parentController.options.multi_axes'),
+                dateFormat = get(this, 'parentController.options.date_format'),
+                display = get(this, 'parentController.options.display'),
                 seriesNames = Object.keys(data.xs);
 
+
+            data.type = display;
 
             if (stacked) {
                 data.groups = [seriesNames];
@@ -200,11 +204,16 @@ Ember.Application.initializer({
                 subchart: {
                     show: subchart
                 },
+                bar: {
+                    width: {
+                        ratio: 0.1
+                    }
+                },
                 axis: {
                     x: {
                         type: 'timeseries',
                         tick: {
-                            format: '%Y-%m-%d',
+                            format: dateFormat,
                             fit: true,
                             count: tickCount
                         }
