@@ -125,6 +125,7 @@ Ember.Application.initializer({
                     'subchart',
                     'stacked',
                     'tick_count',
+                    'multi_axes',
                 ];
 
                 var options = {};

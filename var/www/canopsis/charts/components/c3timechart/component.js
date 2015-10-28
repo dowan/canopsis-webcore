@@ -177,12 +177,19 @@ Ember.Application.initializer({
                 subchart = get(this, 'parentController.options.subchart'),
                 stacked = get(this, 'parentController.options.stacked'),
                 tickCount = get(this, 'parentController.options.tick_count'),
+                multiAxes = get(this, 'parentController.options.multi_axes'),
                 seriesNames = Object.keys(data.xs);
 
 
             if (stacked) {
                 data.groups = [seriesNames];
             }
+
+            var tick = {
+                format: function (v) {
+                    return humanReadable ? ValuesUtils.humanize(v, '') : parseFloat(v).toFixed(2);
+                }
+            };
 
             var options = {
                 bindto: domElement,
@@ -203,14 +210,26 @@ Ember.Application.initializer({
                         }
                     },
                     y: {
-                        tick: {
-                            format: function (v) {
-                                return humanReadable ? ValuesUtils.humanize(v, '') : parseFloat(v).toFixed(2);
-                            }
-                        }
+                        tick: tick,
+                        show: true
+                    },
+                    y2: {
+                        tick: tick,
+                        show: multiAxes
                     }
                 }
             };
+
+
+            if (multiAxes) {
+                // depends on c3js options
+                // works only for ordered series 1 and 2
+                options.data.axes = {};
+                options.data.axes[seriesNames[0]] = 'y';
+                options.data.axes[seriesNames[1]] = 'y2';
+            }
+
+            console.log('chart options', options);
 
             var chart = c3.generate(options);
 
