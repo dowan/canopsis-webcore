@@ -31,8 +31,16 @@ Ember.Application.initializer({
         isNone = Ember.isNone,
         __ = Ember.String.loc;
 
+    /**
+     * Use c3js to display time chart from data managed by the timechart widget
+     * @class C3jsTimechart
+     **/
+
     var component = Ember.Component.extend({
 
+        /**
+         * Component initialization
+         **/
         init: function() {
             this._super();
             Ember.setProperties(this, {
@@ -41,6 +49,9 @@ Ember.Application.initializer({
             });
         },
 
+        /**
+         * Manage component destruction
+         **/
         willDestroyElement: function() {
             var chart = get(this, 'chart');
             if (!isNone(chart)) {
@@ -49,12 +60,17 @@ Ember.Application.initializer({
         },
 
 
+        /**
+         * Tells the component is inserted into the dom
+         **/
+
         didInsertElement: function () {
-            /**
-            Tells the component is inserted into the dom
-            **/
             set(this, 'domready', true);
         },
+
+        /**
+         * Transform and prepare data from the widget to the c3 format
+         **/
 
         computeSeries: function () {
 
@@ -96,6 +112,11 @@ Ember.Application.initializer({
 
         }.property ('series'),
 
+        /**
+         * Manage series names for displayed metrics
+         * @param {string} serieId the serie context identifier
+         **/
+
         computeSerieName: function (serieId) {
 
             /**
@@ -124,6 +145,10 @@ Ember.Application.initializer({
             return serieId;
 
         },
+
+        /**
+         * Create a chart with widget values depending on widget configuration
+         **/
 
         generateChart: function () {
 
@@ -193,11 +218,13 @@ Ember.Application.initializer({
 
         },
 
+        /**
+         * Manage new incomming data when metrics are fetched from the backend,
+         * Create a new c3js chart if not already done in the component
+         **/
+
         update: function () {
-            /**
-            Update the chart display with new values.
-            Insert a new chart if it does not exists yet.
-            **/
+
             var chart = get(this, 'chart');
 
             if (isNone(chart)) {
@@ -225,6 +252,11 @@ Ember.Application.initializer({
         }.observes('series', 'ready', 'parentController.options'),
 
         actions: {
+
+            /**
+             * Change the chart display style on the fly
+             **/
+
             transform: function (type) {
                 get(this, 'chart').destroy();
                 set(this, 'parentController.options.display', type);

@@ -34,6 +34,12 @@ Ember.Application.initializer({
 
         var TimeChartViewMixin = Ember.Mixin.create({});
 
+        /**
+         * Widget for timechart, manage data fetch and preparation
+         * a c3js component will display fetched data
+         * @class TimechartWidget
+         **/
+
         var Widget = WidgetFactory('timechart', {
 
             needs: ['metric'],
@@ -42,11 +48,19 @@ Ember.Application.initializer({
                 TimeChartViewMixin
             ],
 
+            /**
+             * Widget initialization
+             **/
+
             init: function () {
                 this._super();
                 this.loadConfiguration();
                 this.initSeries();
             },
+
+            /**
+             * Data fetch initialization
+             **/
 
             initSeries: function () {
                 Ember.setProperties(this, {
@@ -56,12 +70,13 @@ Ember.Application.initializer({
                 });
             },
 
+            /**
+             * Serie and metrics data fetch and chart series formating are triggered here
+             * The dataSerie array is there reset and updated to rerender the chart.
+             **/
+
             findItems : function () {
 
-                /**
-                Serie and metrics data fetch and chart series formating are triggered here
-                The dataSerie array is there reset and updated to rerender the chart.
-                **/
                 this.initSeries();
 
                 //data interval selection
@@ -90,10 +105,11 @@ Ember.Application.initializer({
                 }
             },
 
+            /**
+             * Make widget configuration values available to the c3js component
+             **/
+
             loadConfiguration: function () {
-                /**
-                Get options from chart configuration to send them to the chart display component
-                **/
 
                 //option list to fetch
                 var optionProperties = [
@@ -117,10 +133,18 @@ Ember.Application.initializer({
                     options[optionProperties[i]] = get(this, optionProperties[i]);
                 }
 
-                //set chart display component with option values list
+                //set widget option values list
                 console.log('time chart options', options);
                 set(this, 'options', options);
             },
+
+            /**
+             * Data management when api fetched metric data
+             * @param {string} chartController keep execution context.
+             * @param {string} pargs API data content to diplay
+             * @param {integer} from start date since when gather metric data
+             * @param {integer} to end date until when gather metric data
+             **/
 
             onMetricFetch: function (chartController, pargs, from, to) {
                 var series = [];
@@ -129,6 +153,13 @@ Ember.Application.initializer({
                 }
                 chartController.update('metrics', series);
             },
+
+
+            /**
+             * Data management when api fetched series data
+             * @param {string} chartController keep execution context.
+             * @param {string} pargs API data content to diplay
+             **/
 
             onSeriesFetch: function (chartController, pargs) {
 
@@ -149,11 +180,14 @@ Ember.Application.initializer({
                 chartController.update('series', series);
             },
 
+            /**
+             * when all series ready, tell the chart to display
+             * and reset temp statuses until next widget refresh
+             * @param {string} type tell what kind of data is ready [serie|metric]
+             * @param {array} series The normalized metric data fetched from the API
+             **/
+
             update: function (type, series) {
-                /**
-                when all series ready, tell the chart to display
-                and reset temp statuses until next widget refresh
-                **/
                 //set metric type ready
                 set(this, type + 'Ready', true);
 
