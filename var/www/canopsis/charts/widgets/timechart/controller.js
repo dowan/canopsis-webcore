@@ -127,6 +127,9 @@ Ember.Application.initializer({
                     'tick_count',
                     'multi_axes',
                     'date_format',
+                    'minor_threshold',
+                    'major_threshold',
+                    'critical_threshold',
                 ];
 
                 var options = {};

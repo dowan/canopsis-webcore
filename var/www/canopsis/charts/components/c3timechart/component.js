@@ -113,6 +113,36 @@ Ember.Application.initializer({
         }.property ('series'),
 
         /**
+         * This method will affect existing computed series with new series generated from theshold information
+         **/
+
+        computeThresholds: function () {
+
+            var lines = [],
+                levels = ['minor', 'major', 'critical'];
+
+            for (var i=0; i<levels.length; i++) {
+                var level = levels[i],
+                    levelValue = get(this, 'parentController.options.'+ level +'_threshold');
+
+                if (!isNone(levelValue) && !isNaN(levelValue) && levelValue !== 0) {
+                    lines.push({
+                        value: levelValue,
+                        class: 'c3threshold-' + level,
+                        text: level
+                    });
+                }
+            }
+
+            return {
+                y: {
+                    lines: lines
+                }
+            };
+
+        }.property(),
+
+        /**
          * Manage series names for displayed metrics
          * @param {string} serieId the serie context identifier
          **/
@@ -169,9 +199,6 @@ Ember.Application.initializer({
             var data = get(this, 'computeSeries');
             var domElement = '#' + get(this, 'uuid');
 
-
-
-
             var humanReadable = get(this, 'parentController.options.human_readable'),
                 zoomable = get(this, 'parentController.options.zoomable'),
                 subchart = get(this, 'parentController.options.subchart'),
@@ -201,6 +228,7 @@ Ember.Application.initializer({
                 zoom: {
                    enabled: zoomable
                 },
+                grid: get(this, 'computeThresholds'),
                 subchart: {
                     show: subchart
                 },

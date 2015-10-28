@@ -1,3 +1,25 @@
+<style>
+	.c3-ygrid-line.c3threshold-minor line {
+	    stroke: yellow;
+	}
+	.c3-ygrid-line.c3threshold-minor text {
+	    fill: yellow;
+	}
+
+	.c3-ygrid-line.c3threshold-major line {
+	    stroke: orange;
+	}
+	.c3-ygrid-line.c3threshold-major text {
+	    fill: orange;
+	}
+
+	.c3-ygrid-line.c3threshold-critical line {
+	    stroke: red;
+	}
+	.c3-ygrid-line.c3threshold-critical text {
+	    fill: red;
+	}
+</style>
 {{#if parentController.options.allow_user_display}}
 	{{#component-dropdownbutton}}
 		{{#component-dropdownbuttonheader}}
