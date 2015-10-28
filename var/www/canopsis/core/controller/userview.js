@@ -52,7 +52,7 @@ Ember.Application.initializer({
                  */
                 insertWidget: function(containerController) {
                     console.log("insertWidget", containerController);
-                    var widgetChooserForm = formUtils.showNew('widgetform', this, { mode: 'creation' });
+                    var widgetChooserForm = formUtils.showNew('widgetform', this);
 
                     var userviewController = this;
 

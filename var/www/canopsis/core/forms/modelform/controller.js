@@ -209,12 +209,19 @@ Ember.Application.initializer({
                                 categoryKeyField = override_inverse[attr.field];
                             }
 
-                            if(get(this, 'mode') === 'creation' && attr.field === 'mixins') {
+                            if(attr.field === 'mixins') {
                                 var tempValue = [];
-
                                 if(!isNone(attr.value)) {
                                     for (var k = 0; k < attr.value.length; k++) {
-                                        tempValue.push({name: attr.value[k].name});
+
+                                        var mixinKeys = Ember.keys(attr.value[k]);
+                                        var newMixinDict = {}
+
+                                        for (var l = 0; l < mixinKeys.length; l++) {
+                                            newMixinDict[mixinKeys[l]] = attr.value[k][mixinKeys[l]];
+                                        }
+                                        window.$M = newMixinDict;
+                                        tempValue.push(newMixinDict);
                                     }
                                 }
 
