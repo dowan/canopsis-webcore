@@ -211,8 +211,11 @@ Ember.Application.initializer({
 
                             if(get(this, 'mode') === 'creation' && attr.field === 'mixins') {
                                 var tempValue = [];
-                                for (var k = 0; k < attr.value.length; k++) {
-                                    tempValue.push({name: attr.value[k].name});
+
+                                if(!isNone(attr.value)) {
+                                    for (var k = 0; k < attr.value.length; k++) {
+                                        tempValue.push({name: attr.value[k].name});
+                                    }
                                 }
 
                                 Ember.set(attr, 'value', tempValue);
