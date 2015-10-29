@@ -88,14 +88,15 @@ Ember.Application.initializer({
 
                 var url = this.buildURL(type.typeKey);
 
-                if (typeof(query.filter) !== "string") {
-                    query._filter = query.filter;
-                }
-                else {
-                    query._filter = query.filter;
+                if (!isNone(query.filter)) {
+                    query.query = query.filter;
+                    delete query.filter;
                 }
 
-                delete query.filter;
+                if (!isNone(query.start)) {
+                    query.skip = query.start;
+                    delete query.start;
+                }
 
                 return this.ajax(url, 'POST', {data: query});
             }
