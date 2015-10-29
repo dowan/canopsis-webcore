@@ -79,7 +79,8 @@ define([
                     Ember.setProperties(this, {
                         'templateContext': Ember.Object.create({
                             serie: {},
-                            event: {}
+                            event: {},
+                            metric: {}
                         }),
                         'ready': {}
                     });
@@ -98,6 +99,16 @@ define([
                         to = get(this, 'to');
                     }
 
+
+                    var metricsMeta = get(this, 'metrics');
+                    console.log('metricsMeta', metricsMeta);
+                    if (!isNone(metricsMeta)) {
+                        get(this, 'controllers.metric').fetchMetricsFromIds(
+                            this, from, to, metricsMeta, this.onMetricFetch
+                        );
+                    }
+
+
                     //This will trigger api queries for events and series in lasy philosophy.
                     //If no contextual information set by user, no query is done.
                     this.fetchEvents();
@@ -110,6 +121,33 @@ define([
                     } else {
                         this.setReady('serie');
                     }
+
+                },
+
+                onMetricFetch: function (caller, pargs, from, to) {
+
+                    var length = pargs.length,
+                        chartSeries = [];
+
+                    for(var i=0; i<length; i++) {
+
+                        var metric = pargs[i].data[0];
+                        var serieId = metric.meta.data_id,
+                            pointsLength = metric.points.length,
+                            serieValue = __('No data available');
+
+                        if (pointsLength) {
+                            serieValue = metric.points[pointsLength - 1][1];
+                        }
+
+                        var serieSplit = serieId.split('/');
+                        var serieName = serieSplit[serieSplit.length - 1];
+
+                        set(caller, 'templateContext.metric.' + serieName, serieValue);
+
+                    }
+
+                    caller.setReady('metric');
 
                 },
 
@@ -175,7 +213,7 @@ define([
 
                 setReady: function (element) {
                     set(this, 'ready.' + element, true);
-                    if (get(this, 'ready.serie') && get(this, 'ready.event')) {
+                    if (get(this, 'ready.serie') && get(this, 'ready.event') && get(this, 'ready.metric')) {
                         set(this, 'ready', {});
                         this.renderTemplate();
                     }
