@@ -41,6 +41,7 @@ define([
     'canopsis/canopsis-backend-ui-connector/adapters/userview',
     'canopsis/canopsis-backend-ui-connector/adapters/trap',
     'canopsis/canopsis-backend-ui-connector/adapters/seriev2',
+    'canopsis/canopsis-backend-ui-connector/adapters/statsfilter',
     'canopsis/canopsis-backend-ui-connector/serializers/ticket',
     'canopsis/canopsis-backend-ui-connector/serializers/ctx',
     'canopsis/canopsis-backend-ui-connector/serializers/ctxmetric',
