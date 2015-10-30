@@ -88,7 +88,7 @@ define([
                     var now = new Date().getTime();
                     var to = now;
                     //fetch time window of 10 minutes hoping there are metrics since.
-                    var from = now - 600000;
+                    var from = now - get(this, 'time_window');
 
                     //When specific from / to dates specified into the controller,
                     //the widget will use them. This helps manage live reporting.
@@ -103,8 +103,8 @@ define([
                     var metricsMeta = get(this, 'metrics');
                     console.log('metricsMeta', metricsMeta);
                     if (!isNone(metricsMeta)) {
-                        get(this, 'controllers.metric').fetchMetricsFromIds(
-                            this, from, to, metricsMeta, this.onMetricFetch
+                        get(this, 'controllers.metric').aggregateMetricsFromIds(
+                            this, from, to, metricsMeta, this.onMetricFetch, 'last', 60
                         );
                     }
 
@@ -140,11 +140,36 @@ define([
                             serieValue = metric.points[pointsLength - 1][1];
                         }
 
-                        var serieSplit = serieId.split('/');
-                        var serieName = serieSplit[serieSplit.length - 1];
+                        var serieSplit = serieId.split('/'),
+                            component = undefined,
+                            resource = undefined,
+                            metricname = undefined;
 
-                        set(caller, 'templateContext.metric.' + serieName, serieValue);
+                        if (serieSplit.length === 5) {
+                            var component = serieSplit[3]
+                                metricname = serieSplit[4];
+                        }
+                        else {
+                            var component = serieSplit[3],
+                                resource = serieSplit[4],
+                                metricname = serieSplit[5];
+                        }
 
+                        var varname = 'templateContext.metric.' + component;
+
+                        if (isNone(get(caller, varname))) {
+                            set(caller, varname, {});
+                        }
+
+                        if (!isNone(resource)) {
+                            varname += '.' + resource;
+
+                            if (isNone(get(caller, varname))) {
+                                set(caller, varname, {});
+                            }
+                        }
+
+                        set(caller, varname + '.' + metricname, serieValue);
                     }
 
                     caller.setReady('metric');
