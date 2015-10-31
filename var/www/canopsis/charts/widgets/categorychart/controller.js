@@ -19,10 +19,11 @@
 
 Ember.Application.initializer({
     name: 'CategorychartWidget',
-    after: ['WidgetFactory', 'MetricConsumer'],
+    after: ['WidgetFactory', 'MetricConsumer', 'TimeWindowUtils'],
     initialize: function(container, application) {
         var WidgetFactory = container.lookupFactory('factory:widget'),
-            MetricConsumer = container.lookupFactory('mixin:metricconsumer');
+            MetricConsumer = container.lookupFactory('mixin:metricconsumer'),
+            TimeWindowUtils = container.lookupFactory('utility:timewindow');
 
         var get = Ember.get,
             set = Ember.set,
@@ -60,9 +61,12 @@ Ember.Application.initializer({
             },
 
             findItems: function() {
-                var now = new Date().getTime();
-                var to = now - (get(this, 'time_window_offset') || 0);
-                var from = to - (get(this, 'time_window') || 86400000);
+                var tw = TimeWindowUtils.getFromTo(
+                    get(this, 'time_window'),
+                    get(this, 'time_window_offset')
+                );
+                var from = tw[0],
+                    to = tw[1];
 
                 /* live reporting support */
                 var liveFrom = get(this, 'from'),
