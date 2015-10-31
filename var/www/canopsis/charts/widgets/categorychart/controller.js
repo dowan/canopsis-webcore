@@ -128,7 +128,7 @@ Ember.Application.initializer({
                         serie: [metricname, value]
                     });
                 });
-            }
+            },
 
             onSeries: function (series) {
                 var me = this;

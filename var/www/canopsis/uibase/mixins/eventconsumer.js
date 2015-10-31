@@ -29,7 +29,7 @@ Ember.Application.initializer({
             fetchEvents: function(events) {
                 var store = get(this, 'widgetDataStore'),
                     rks = [],
-                    labelsByRk: {},
+                    labelsByRk = {},
                     me = this;
 
                 events.forEach(function(evt) {

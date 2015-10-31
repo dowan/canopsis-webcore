@@ -59,7 +59,7 @@ Ember.Application.initializer({
                 var query = {
                     filter: JSON.stringify({
                         crecord_name: {'$in': series}
-                    });
+                    })
                 };
 
                 var promise = new Ember.RSVP.Promise(function(resolve, reject) {
