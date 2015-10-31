@@ -112,7 +112,6 @@ define([
     'app/view/validationtextarea',
     'app/view/validationtextfield',
     'app/view/widget',
-    'app/controller/metric',
     'app/view/widgetslot',
     'canopsis/runtime.conf',
     'css3-mediaqueries',

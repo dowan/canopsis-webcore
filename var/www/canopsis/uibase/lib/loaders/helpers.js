@@ -26,6 +26,7 @@ var helpers = [
     { name:'logo', url:'canopsis/uibase/helpers/logo' },
     { name:'glyphicon', url:'canopsis/uibase/helpers/glyphicon' },
     { name:'color', url:'canopsis/uibase/helpers/color' },
+    { name:'humanreadable', url:'canopsis/uibase/helpers/humanreadable' },
     { name:'rights', url:'canopsis/uibase/helpers/rights' },
     { name:'json2html', url:'canopsis/uibase/helpers/json2html' },
     { name:'interval2html', url:'canopsis/uibase/helpers/interval2html' }

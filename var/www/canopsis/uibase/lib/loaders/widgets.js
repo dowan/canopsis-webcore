@@ -18,7 +18,7 @@
 */
 
 var widgets = [
-    { name:'text', url:'canopsis/uibase/widgets/text/controller', template:'canopsis/uibase/widgets/text/template.html' },
+    { name:'text', url:'canopsis/uibase/widgets/text/controller', template:'canopsis/uibase/widgets/text/template.hbs' },
     { name:'list', url:'canopsis/uibase/widgets/list/controller', template:'canopsis/uibase/widgets/list/template.html' },
     { name:'widgetcontainer', url:'canopsis/uibase/widgets/widgetcontainer/controller', template:'canopsis/uibase/widgets/widgetcontainer/template.html' },
     { name:'uiactionbutton', url:'canopsis/uibase/widgets/uiactionbutton/controller', template:'canopsis/uibase/widgets/uiactionbutton/template.html' },
