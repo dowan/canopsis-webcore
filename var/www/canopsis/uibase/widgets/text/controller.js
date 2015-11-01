@@ -41,8 +41,6 @@ Ember.Application.initializer({
         };
 
         var widget = WidgetFactory('text', {
-            needs: ['perfdata', 'serie'],
-
             init: function() {
                 this._super.apply(this, arguments);
 
@@ -53,7 +51,7 @@ Ember.Application.initializer({
                 var template = undefined;
 
                 try {
-                    template = Ember.Handlebars.compile(get(this, 'html'));
+                    template = Handlebars.compile(get(this, 'html'));
                 }
                 catch(err) {
                     template = function() {
@@ -92,35 +90,26 @@ Ember.Application.initializer({
                 set(this, 'context.from', from);
                 set(this, 'context.to', to);
 
-                var promises = [];
-
                 var query = get(this, 'events');
                 if (!isNone(query) && query.length) {
-                    promises.push(this.fetchEvents(query));
+                    this.fetchEvents(query);
                 }
 
                 query = get(this, 'metrics');
                 if (!isNone(query) && query.length) {
-                    promises.push(this.aggregateMetrics(
+                    this.aggregateMetrics(
                         query,
                         from, to,
                         'last',
                         /* aggregation interval: the whole timewindow for only one point */
                         to - from
-                    ));
+                    );
                 }
 
                 query = get(this, 'series');
                 if (!isNone(query) && query.length) {
-                    promises.push(this.fetchSeries(query, from, to));
+                    this.fetchSeries(query, from, to);
                 }
-
-                /* wait for all fetch operations */
-                var me = this;
-
-                Ember.RSVP.all(promises, function() {
-                    me.renderTemplate();
-                });
             },
 
             onEvents: function(events, labelsByRk) {
@@ -159,14 +148,23 @@ Ember.Application.initializer({
                         resource = undefined,
                         metricname = undefined;
 
-                    if (mid.length === 5) {
-                        component = mid[3];
-                        metricname = mid[4];
+                    /* "/metric/<connector>/<connector_name>/<component>/[<resource>/]<name>"
+                     * once splitted:
+                     *  - ""
+                     * - "metric"
+                     * - "<connector>"
+                     * - "<connector_name>"
+                     * - "<component>"
+                     * - "<resource>" and/or "<name>"
+                     */
+                    if (mid.length === 6) {
+                        component = mid[4];
+                        metricname = mid[5];
                     }
                     else {
-                        component = mid[3];
-                        resource = mid[4];
-                        metricname = mid[5];
+                        component = mid[4];
+                        resource = mid[5];
+                        metricname = mid[6];
                     }
 
                     var varname = 'context.metric.' + component;
@@ -204,13 +202,12 @@ Ember.Application.initializer({
                 });
             },
 
-            renderTemplate: function() {
+            rendered: function() {
                 var template = get(this, 'template'),
                     context = get(this, 'context');
 
-                var html = new Ember.Handlebars.SafeString(template(context));
-                set(this, 'rendered', html);
-            }
+                return new Ember.Handlebars.SafeString(template(context));
+            }.property('context')
         }, widgetOptions);
 
         application.register('widget:text', widget);

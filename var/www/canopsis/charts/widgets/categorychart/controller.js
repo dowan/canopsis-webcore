@@ -80,25 +80,31 @@ Ember.Application.initializer({
                     to = liveTo;
                 }
 
-                var pmetrics = this.aggregateMetrics(
-                        get(this, 'metrics'),
+                var query = get(this, 'metrics');
+                if (!isNone(query) && query.length) {
+                    this.aggregateMetrics(
+                        query,
                         from, to,
                         'last',
                         /* aggregation interval: the whole timewindow for only one point */
                         to - from
-                    ),
-                    pseries = this.fetchSeries(get(this, 'series'), from, to);
+                    );
+                }
 
-                var me = this;
-                Ember.RSVP.all([pmetrics, pseries]).then(function() {
-                    var chartSeries = [];
+                query = get(this, 'series');
+                if (!isNone(query) && query.length) {
+                    this.fetchSeries(query, from, to);
+                }
+            },
 
-                    get(me, 'chartSeries').forEach(function(key, serie) {
-                        chartSeries.push(serie);
-                    });
+            updateChart: function() {
+                var chartSeries = [];
 
-                    set(me, 'chartComponent.series', chartSeries);
+                get(this, 'chartSeries').forEach(function(key, serie) {
+                    chartSeries.push(serie);
                 });
+
+                set(this, 'chartComponent.series', chartSeries);
             },
 
             onMetrics: function(metrics) {
@@ -128,6 +134,8 @@ Ember.Application.initializer({
                         serie: [metricname, value]
                     });
                 });
+
+                this.updateChart();
             },
 
             onSeries: function (series) {
@@ -147,6 +155,8 @@ Ember.Application.initializer({
                         serie: [label, value]
                     });
                 });
+
+                this.updateChart();
             }
         }, widgetOptions);
 

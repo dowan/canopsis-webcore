@@ -34,8 +34,20 @@ Ember.Application.initializer({
                 var promise = perfdata.aggregateMany(metrics, from, to, method, interval);
                 var me = this;
 
-                return promise.then(function(result) {
-                    me.onMetrics(get(result, 'data'));
+                return new Ember.RSVP.Promise(function(resolve, reject) {
+                    promise.then(function(result) {
+                        if (get(result, 'meta.success') === true) {
+                            me.onMetrics(get(result, 'data'));
+                            resolve(result);
+                        }
+                        else {
+                            console.error('Metric aggregation failed:', get(result, 'data'));
+                            reject(result);
+                        }
+                    }, function() {
+                        console.error('Metric aggregation request failed:', arguments);
+                        reject(arguments);
+                    });
                 });
             },
 
@@ -50,9 +62,13 @@ Ember.Application.initializer({
                             resolve(result);
                         }
                         else {
-                            reject(get(result, 'data'));
+                            console.error('Metrics fetching failed:', get(result, 'data'));
+                            reject(result);
                         }
-                    }
+                    }, function() {
+                        console.error('Metric fetch request failed:', arguments);
+                        reject(arguments);
+                    });
                 });
             },
 
@@ -72,14 +88,13 @@ Ember.Application.initializer({
 
                 var promise = new Ember.RSVP.Promise(function(resolve, reject) {
                     store.findQuery('serie', query).then(function(result) {
-                        var queries = [];
-
-                        if(get(result, 'success') !== true)
-                        {
-                            reject(get(result, 'content'));
+                        if(get(result, 'success') !== true) {
+                            console.error('Series fetching failed:', get(result, 'content'));
+                            reject(result);
                         }
-                        else
-                        {
+                        else {
+                            var queries = [];
+
                             get(result, 'content').forEach(function(serieconf) {
                                 queries.push(serie.fetch(serieconf, from, to));
                             });
@@ -94,14 +109,17 @@ Ember.Application.initializer({
                                     });
                                 });
 
+                                me.onSeries(chartSeries);
                                 resolve(chartSeries);
-                            }, reject);
+                            }, function() {
+                                console.error('Series computation failed:', arguments);
+                                reject(arguments);
+                            });
                         }
-                    }, reject);
-                });
-
-                return promise.then(function(series) {
-                    me.onSeries(series);
+                    }, function() {
+                        console.log('Series request failed:', arguments);
+                        reject(arguments)
+                    });
                 });
             },
 
