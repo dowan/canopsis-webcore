@@ -92,20 +92,33 @@ Ember.Application.initializer({
                 set(this, 'context.from', from);
                 set(this, 'context.to', to);
 
-                var pevents = this.fetchEvents(get(this, 'events')),
-                    pmetrics = this.aggregateMetrics(
-                        get(this, 'metrics'),
+                var promises = [];
+
+                var query = get(this, 'events');
+                if (!isNone(query) && query.length) {
+                    promises.push(this.fetchEvents(query));
+                }
+
+                query = get(this, 'metrics');
+                if (!isNone(query) && query.length) {
+                    promises.push(this.aggregateMetrics(
+                        query,
                         from, to,
                         'last',
                         /* aggregation interval: the whole timewindow for only one point */
                         to - from
-                    ),
-                    pseries = this.fetchSeries(get(this, 'series'), from, to);
+                    ));
+                }
+
+                query = get(this, 'series');
+                if (!isNone(query) && query.length) {
+                    promises.push(this.fetchSeries(query, from, to));
+                }
 
                 /* wait for all fetch operations */
                 var me = this;
 
-                Ember.RSVP.all([pevents, pmetrics, pseries], function() {
+                Ember.RSVP.all(promises, function() {
                     me.renderTemplate();
                 });
             },
