@@ -57,7 +57,7 @@ Ember.Application.initializer({
 
                 return new Ember.RSVP.Promise(function(resolve, reject) {
                     promise.then(function(result) {
-                        if (get(result, 'success') === true) {
+                        if (get(result, 'meta.success') === true) {
                             me.onMetrics(get(result, 'data'));
                             resolve(result);
                         }
@@ -88,7 +88,7 @@ Ember.Application.initializer({
 
                 var promise = new Ember.RSVP.Promise(function(resolve, reject) {
                     store.findQuery('serie', query).then(function(result) {
-                        if(get(result, 'success') !== true) {
+                        if(get(result, 'meta.success') !== true) {
                             console.error('Series fetching failed:', get(result, 'content'));
                             reject(result);
                         }
