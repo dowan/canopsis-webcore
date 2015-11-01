@@ -19,18 +19,16 @@
 
 Ember.Application.initializer({
     name: 'PerfdataController',
-    after: ['PojoAdapter', 'DataUtils'],
+    after: ['ApplicationController', 'PojoAdapter', 'DataUtils'],
     initialize: function(container, application) {
         var dataUtils = container.lookupFactory('utility:data'),
-            pojoAdapter = container.lookup('adapter:pojo');
+            pojoAdapter = container.lookup('adapter:pojo'),
+            applicationController = container.lookup('controller:application');
 
         var get = Ember.get;
 
         var controller = Ember.ObjectController.extend({
-            needs: ['application'],
-
             fetch: function(metric_id, tstart, tend) {
-                var applicationController = get(this, 'controllers.application');
                 applicationController.addConcurrentLoading('perfdata');
 
                 var requestOptions = {
@@ -62,7 +60,6 @@ Ember.Application.initializer({
             },
 
             aggregate: function(metric_id, tstart, tend, method, interval) {
-                var applicationController = get(this, 'controllers.application');
                 applicationController.addConcurrentLoading('perfdata');
 
                 var requestOptions = {

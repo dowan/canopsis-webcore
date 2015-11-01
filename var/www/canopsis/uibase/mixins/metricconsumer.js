@@ -43,8 +43,16 @@ Ember.Application.initializer({
                 var promise = perfdata.fetchMany(metrics, from, to);
                 var me = this;
 
-                return promise.then(function(result) {
-                    me.onMetrics(get(result, 'data'));
+                return new Ember.RSVP.Promise(function(resolve, reject) {
+                    promise.then(function(result) {
+                        if (get(result, 'success') === true) {
+                            me.onMetrics(get(result, 'data'));
+                            resolve(result);
+                        }
+                        else {
+                            reject(get(result, 'data'));
+                        }
+                    }
                 });
             },
 
@@ -66,22 +74,29 @@ Ember.Application.initializer({
                     store.findQuery('serie', query).then(function(result) {
                         var queries = [];
 
-                        get(result, 'content').forEach(function(serie) {
-                            queries.push(controller.fetch(serie, from, to));
-                        });
-
-                        Ember.RSVP.all(queries).then(function(pargs) {
-                            var series = [];
-
-                            pargs.forEach(function(data, i) {
-                                series.push({
-                                    label: series[i].replace(/ /g, '_'),
-                                    points: data
-                                });
+                        if(get(result, 'success') !== true)
+                        {
+                            reject(get(result, 'content'));
+                        }
+                        else
+                        {
+                            get(result, 'content').forEach(function(serieconf) {
+                                queries.push(serie.fetch(serieconf, from, to));
                             });
 
-                            resolve(series);
-                        }, reject);
+                            Ember.RSVP.all(queries).then(function(pargs) {
+                                var chartSeries = [];
+
+                                pargs.forEach(function(data, i) {
+                                    chartSeries.push({
+                                        label: series[i].replace(/ /g, '_'),
+                                        points: data
+                                    });
+                                });
+
+                                resolve(chartSeries);
+                            }, reject);
+                        }
                     }, reject);
                 });
 

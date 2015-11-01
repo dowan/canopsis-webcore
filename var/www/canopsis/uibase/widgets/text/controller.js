@@ -62,11 +62,6 @@ Ember.Application.initializer({
                 }
 
                 set(this, 'template', template);
-                set(this, 'context', Ember.Object.create({
-                    event: {},
-                    serie: {},
-                    metric: {}
-                }));
             },
 
             findItems: function() {
@@ -89,6 +84,11 @@ Ember.Application.initializer({
                     to = liveTo;
                 }
 
+                set(this, 'context', {
+                    event: {},
+                    serie: {},
+                    metric: {}
+                });
                 set(this, 'context.from', from);
                 set(this, 'context.to', to);
 
