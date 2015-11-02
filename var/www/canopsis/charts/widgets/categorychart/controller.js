@@ -35,8 +35,10 @@ Ember.Application.initializer({
 
         var Widget = WidgetFactory('categorychart', {
             init: function() {
-                this._super._apply(this, arguments);
-                
+                this._super.apply(this, arguments);
+            },
+
+            findItems: function() {
                 var props = [
                     'display',
                     'allow_user_display',
@@ -51,16 +53,15 @@ Ember.Application.initializer({
                     'human_readable',
                 ];
 
-                var me = this;
+                var options = {};
 
                 props.forEach(function(prop) {
-                    set(me, 'options.' + prop, get(me, prop));
+                    set(options, prop, get(me, prop));
                 });
 
+                set(this, 'options', options);
                 set(this, 'chartSeries', {});
-            },
 
-            findItems: function() {
                 var tw = TimeWindowUtils.getFromTo(
                     get(this, 'time_window'),
                     get(this, 'time_window_offset')
@@ -108,10 +109,10 @@ Ember.Application.initializer({
             },
 
             onMetrics: function(metrics) {
-                var me = this;
+                var chartSeries = get(this, 'chartSeries');
 
                 metrics.forEach(function(metric) {
-                    var mid = get(metric, 'meta.data_id').split('/'),
+                    var mid = get(metric, 'meta.data_id'),
                         points = get(metric, 'points');
 
                     /* initialize metric value */
@@ -119,27 +120,54 @@ Ember.Application.initializer({
                         value = 0;
 
                     if (npoints) {
-                        value = points[npoints - 1];
+                        value = points[npoints - 1][1];
                     }
 
                     /* compute metric name */
-                    var metricname = mid[3] + '.' + mid[4];
+                    var component = undefined,
+                        resource = undefined,
+                        metricname = undefined,
+                        midsplit = mid.split('/');
 
-                    if (mid.length !== 5) {
-                        metricname += '.' + mid[5];
+                    /* "/metric/<connector>/<connector_name>/<component>/[<resource>/]<name>"
+                     * once splitted:
+                     *  - ""
+                     * - "metric"
+                     * - "<connector>"
+                     * - "<connector_name>"
+                     * - "<component>"
+                     * - "<resource>" and/or "<name>"
+                     */
+                    if (midsplit.length === 6) {
+                        component = midsplit[4];
+                        metricname = midsplit[5];
+                    }
+                    else {
+                        component = midsplit[4];
+                        resource = midsplit[5];
+                        metricname = midsplit[6];
                     }
 
-                    set(this, 'chartSeries.' + metricname, {
+                    var label = component;
+
+                    if (!isNone(resource)) {
+                        label += '.' + resource;
+                    }
+
+                    label += '.' + metricname;
+
+                    set(chartSeries, mid, {
                         id: mid,
-                        serie: [metricname, value]
+                        serie: [label, value]
                     });
                 });
 
+                set(this, 'chartSeries', chartSeries);
                 this.updateChart();
             },
 
             onSeries: function (series) {
-                var me = this;
+                var chartSeries = get(this, 'chartSeries');
 
                 series.forEach(function(serie) {
                     var points = get(serie, 'points'),
@@ -147,15 +175,16 @@ Ember.Application.initializer({
                         value = 0;
 
                     if (points.length) {
-                        value = points[points.length - 1];
+                        value = points[points.length - 1][1];
                     }
 
-                    set(me, 'chartSeries.' + label, {
+                    set(chartSeries, label, {
                         id: label,
                         serie: [label, value]
                     });
                 });
 
+                set(this, 'chartSeries', chartSeries);
                 this.updateChart();
             }
         }, widgetOptions);

@@ -44,10 +44,6 @@ Ember.Application.initializer({
             init: function() {
                 this._super.apply(this, arguments);
 
-                set(this, 'store', DS.Store.create({
-                    container: get(this, 'container')
-                }));
-
                 var template = undefined;
 
                 try {
@@ -113,23 +109,26 @@ Ember.Application.initializer({
             },
 
             onEvents: function(events, labelsByRk) {
-                var me = this;
+                var context = get(this, 'context');
 
                 events.forEach(function(evt) {
                     var rk = get(evt, 'id');
                     var label = get(labelsByRk, rk);
 
                     if (!isNone(label)) {
-                        set(me, 'context.event.' + label, evt);
+                        set(context, 'event.' + label, evt);
                     }
                     else {
                         console.warn('No label found for event, will not be rendered:', rk);
                     }
                 });
+
+                set(this, 'context', context);
+                this.renderTemplate();
             },
 
             onMetrics: function(metrics) {
-                var me = this;
+                var context = get(this, 'context');
 
                 metrics.forEach(function(metric) {
                     var mid = get(metric, 'meta.data_id').split('/'),
@@ -140,7 +139,7 @@ Ember.Application.initializer({
                         value = __('No data available');
 
                     if (npoints) {
-                        value = points[npoints - 1];
+                        value = points[npoints - 1][1];
                     }
 
                     /* compute template context path of metric */
@@ -167,26 +166,29 @@ Ember.Application.initializer({
                         metricname = mid[6];
                     }
 
-                    var varname = 'context.metric.' + component;
+                    var varname = 'metric.' + component;
 
-                    if (isNone(get(me, varname))) {
-                        set(me, varname, {});
+                    if (isNone(get(context, varname))) {
+                        set(context, varname, {});
                     }
 
                     if (!isNone(resource)) {
                         varname += '.' + resource;
 
                         if (isNone(get(me, varname))) {
-                            set(me, varname, {});
+                            set(context, varname, {});
                         }
                     }
 
-                    set(me, varname + '.' + metricname, value);
+                    set(context, varname + '.' + metricname, value);
                 });
+
+                set(this, 'context', context);
+                this.renderTemplate();
             },
 
             onSeries: function(series) {
-                var me = this;
+                var context = get(this, 'context');
 
                 series.forEach(function(serie) {
                     var points = get(serie, 'points'),
@@ -198,16 +200,19 @@ Ember.Application.initializer({
                         value = points[points.length - 1][1];
                     }
 
-                    set(me, 'context.serie.' + label, value);
+                    set(context, 'serie.' + label, value);
                 });
+
+                set(this, 'context', context);
+                this.renderTemplate();
             },
 
-            rendered: function() {
+            renderTemplate: function() {
                 var template = get(this, 'template'),
                     context = get(this, 'context');
 
                 return new Ember.Handlebars.SafeString(template(context));
-            }.property('context')
+            }
         }, widgetOptions);
 
         application.register('widget:text', widget);

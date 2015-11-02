@@ -31,12 +31,13 @@ Ember.Application.initializer({
 
         var mixin = MixinFactory('metricconsumer', {
             aggregateMetrics: function(metrics, from, to, method, interval) {
-                var promise = perfdata.aggregateMany(metrics, from, to, method, interval);
                 var me = this;
 
                 return new Ember.RSVP.Promise(function(resolve, reject) {
+                    var promise = perfdata.aggregateMany(metrics, from, to, method, interval);
+
                     promise.then(function(result) {
-                        if (get(result, 'meta.success') === true) {
+                        if (get(result, 'success') === true) {
                             me.onMetrics(get(result, 'data'));
                             resolve(result);
                         }
@@ -52,12 +53,13 @@ Ember.Application.initializer({
             },
 
             fetchMetrics: function(metrics, from, to) {
-                var promise = perfdata.fetchMany(metrics, from, to);
                 var me = this;
 
                 return new Ember.RSVP.Promise(function(resolve, reject) {
+                    var promise = perfdata.fetchMany(metrics, from, to);
+
                     promise.then(function(result) {
-                        if (get(result, 'meta.success') === true) {
+                        if (get(result, 'success') === true) {
                             me.onMetrics(get(result, 'data'));
                             resolve(result);
                         }

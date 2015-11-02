@@ -72,7 +72,7 @@ Ember.Application.initializer({
                     'timeserie': JSON.stringify({
                         'aggregation': method,
                         'period': {
-                            'second': interval
+                            'second': interval / 1000
                         }
                     })
                 };

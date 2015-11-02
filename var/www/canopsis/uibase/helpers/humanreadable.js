@@ -25,9 +25,9 @@ Ember.Application.initializer({
 
         var get = Ember.get;
 
-        Ember.Handlebars.helper('hr', function(value) {
+        var helper = function(value) {
             var val = get(value, 'hash.value'),
-                unit = get(value, 'hash.unit');
+                unit = get(value, 'hash.unit') || '';
 
             if (isNaN(val)) {
                 ret = __('Not a valid number');
@@ -37,6 +37,9 @@ Ember.Application.initializer({
             }
 
             return new Ember.Handlebars.SafeString(ret);
-        });
+        };
+
+        Handlebars.registerHelper('hr', helper);
+        Ember.Handlebars.helper('hr', helper);
     }
 });
