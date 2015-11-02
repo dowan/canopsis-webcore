@@ -211,7 +211,7 @@ Ember.Application.initializer({
                 var template = get(this, 'template'),
                     context = get(this, 'context');
 
-                return new Ember.Handlebars.SafeString(template(context));
+                set(this, 'rendered', new Ember.Handlebars.SafeString(template(context)));
             }
         }, widgetOptions);
 
