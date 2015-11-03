@@ -40,6 +40,10 @@ Ember.Application.initializer({
             mixins: [EventConsumer, MetricConsumer]
         };
 
+        /**
+         * @class TextWidget
+         * @augments Widget
+         */
         var widget = WidgetFactory('text', {
             init: function() {
                 this._super.apply(this, arguments);
@@ -207,6 +211,11 @@ Ember.Application.initializer({
                 this.renderTemplate();
             },
 
+            /**
+             * @method renderTemplate
+             * @memberof TextWidget
+             * Render compiled template property with context property into the rendered property.
+             */
             renderTemplate: function() {
                 var template = get(this, 'template'),
                     context = get(this, 'context');

@@ -25,7 +25,18 @@ Ember.Application.initializer({
 
         var get = Ember.get;
 
+        /**
+         * @mixin EventConsumerMixin
+         * @augments Mixin
+         * Provide Event fetching mecanism to widgets.
+         */
         var mixin = MixinFactory('eventconsumer', {
+            /**
+             * @method fetchEvents
+             * @memberof EventConsumerMixin
+             * @param {array} events - Array of labelled events
+             * @returns promise
+             */
             fetchEvents: function(events) {
                 var store = get(this, 'widgetDataStore'),
                     rks = [],
@@ -49,6 +60,14 @@ Ember.Application.initializer({
                 });
             },
 
+            /**
+             * @abstract
+             * @method onEvents
+             * @memberOf EventConsumerMixin
+             * @param {array} events - Events fetched by ``fetchEvents()`` method
+             * @param {object} labelsByRk - Labels for each events
+             * Called by ``fetchEvents()`` method.
+             */
             onEvents: function(events, labelsByRk) {
                 ;
             }

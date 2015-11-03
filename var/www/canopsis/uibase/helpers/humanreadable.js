@@ -25,6 +25,12 @@ Ember.Application.initializer({
 
         var get = Ember.get;
 
+        /**
+         * @function HumanReadableHelper
+         * @param {object} value - Value with unit to humanize
+         * @returns {string} Humanized value.
+         * Handlebars helper used to humanize variables using ValuesUtility
+         */
         var helper = function(value) {
             var val = get(value, 'hash.value'),
                 unit = get(value, 'hash.unit') || '';

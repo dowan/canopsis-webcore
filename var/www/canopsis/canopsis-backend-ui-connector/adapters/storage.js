@@ -26,8 +26,21 @@ Ember.Application.initializer({
         var get = Ember.get,
             isNone = Ember.isNone;
 
+        /**
+         * @class StorageAdapter
+         * Request REST API for backend storage.
+         */
         var adapter = ApplicationAdapter.extend({
+            /**
+             * @property {string} protocol - Protocol used by backend storage (mongodb, sql, ...)
+             * @memberof StorageAdapter
+             */
             protocol: 'storage',
+
+            /**
+             * @property {string} data_type - Backend storage data-type (default, timed, periodic, composite, ...)
+             * @memberof StorageAdapter
+             */
             data_type: 'default',
 
             buildURL: function(type, id) {
@@ -102,10 +115,22 @@ Ember.Application.initializer({
             }
         });
 
+        /**
+         * @class StorageDefaultAdapter
+         * @augments StorageAdapter
+         */
         application.register('adapter:storage-default', adapter);
 
+        /**
+         * @class StorageCompositeAdapter
+         * @augments StorageAdapter
+         */
         application.register('adapter:storage-composite', adapter.extend({
             data_type: 'composite',
+            /**
+             * @property {array} path - Composition hierarchy in backend storage
+             * @memberof StorageAdapter
+             */
             path: [],
 
             ajax: function(url, type, hash) {
@@ -119,14 +144,26 @@ Ember.Application.initializer({
             }
         }));
 
+        /**
+         * @class StorageTimedAdapter
+         * @augments StorageAdapter
+         */
         application.register('adapter:storage-timed', adapter.extend({
             data_type: 'timed'
         }));
 
+        /**
+         * @class StoragePeriodicAdapter
+         * @augments StorageAdapter
+         */
         application.register('adapter:storage-periodic', adapter.extend({
             data_type: 'periodic'
         }));
 
+        /**
+         * @class StorageFileAdapter
+         * @augments StorageAdapter
+         */
         application.register('adapter:storage-file', adapter.extend({
             data_type: 'file'
         }));

@@ -33,6 +33,10 @@ Ember.Application.initializer({
             mixins: [MetricConsumer]
         };
 
+        /**
+         * @class CategoryChartWidget
+         * @augments Widget
+         */
         var Widget = WidgetFactory('categorychart', {
             init: function() {
                 this._super.apply(this, arguments);
@@ -98,6 +102,11 @@ Ember.Application.initializer({
                 }
             },
 
+            /**
+             * @method updateChart
+             * @memberof CategoryChartWidget
+             * Update inner chart component series.
+             */
             updateChart: function() {
                 var chartSeries = [];
 

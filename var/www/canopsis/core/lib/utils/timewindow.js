@@ -27,10 +27,30 @@ Ember.Application.initializer({
         var get = Ember.get,
             isNone = Ember.isNone;
 
+        /**
+         * @class TimeWindowUtility
+         * @augments Utility
+         */
         var timewindow = Utility.create({
+            /**
+             * @property {number} default_timewindow - Time window in seconds if not specified
+             * :memberof TimeWindowUtility
+             */
             default_timewindow: 86400,
+            /**
+             * @property {number} default_timewindow_offset - Time window offset (from now) in seconds if not specified
+             * :memberof TimeWindowUtility
+             */
             default_timewindow_offset: 0,
 
+            /**
+             * @method getFromTo
+             * @memberof TimeWindowUtility
+             * @param {number} time_window - Time window in seconds (optional)
+             * @param {number} time_window_offset - Time window offset (from now) in seconds (optional)
+             * @retruns {array} - [from, to] computed time window
+             * Compute time window and provide default values if not specified.
+             */
             getFromTo: function(time_window, time_window_offset) {
                 var now = new Date().getTime();
 

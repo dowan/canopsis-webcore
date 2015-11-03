@@ -24,6 +24,10 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var adapter = container.lookupFactory('adapter:storage-default');
 
+        /**
+         * @class Serie2Adapter
+         * @augments StorageDefaultAdapter
+         */
         application.register('adapter:serie2', adapter);
     }
 });

@@ -29,7 +29,22 @@ Ember.Application.initializer({
             set = Ember.set,
             isNone = Ember.isNone;
 
+        /**
+         * @mixin MetricConsumerMixin
+         * @augments Mixin
+         * Provide Metric fetching mecanism to widgets.
+         */
         var mixin = MixinFactory('metricconsumer', {
+            /**
+             * @method aggregateMetrics
+             * @memberOf MetricConsumerMixin
+             * @param {array} metrics - Metric IDs to aggregate
+             * @param {number} from - Beginning of time window
+             * @param {number} to - End of time window
+             * @param {string} method - Aggregation method
+             * @param {number} interval - Aggregation interval in seconds
+             * @returns Promise
+             */
             aggregateMetrics: function(metrics, from, to, method, interval) {
                 var me = this;
 
@@ -52,6 +67,14 @@ Ember.Application.initializer({
                 });
             },
 
+            /**
+             * @method fetchMetrics
+             * @memberOf MetricConsumerMixin
+             * @param {array} metrics - Metric IDs to fetch
+             * @param {number} from - Beginning of time window
+             * @param {number} to - End of time window
+             * @returns Promise
+             */
             fetchMetrics: function(metrics, from, to) {
                 var me = this;
 
@@ -74,10 +97,25 @@ Ember.Application.initializer({
                 });
             },
 
+            /**
+             * @abstract
+             * @method onMetrics
+             * @memberOf MetricConsumerMixin
+             * @param {array} metrics - Metrics fetched from PerfDataController
+             * Called by ``fetchMetrics()`` and ``aggregateMetrics()`` methods.
+             */
             onMetrics: function(metrics) {
                 ;
             },
 
+            /**
+             * @method fetchSeries
+             * @memberOf MetricConsumerMixin
+             * @param {array} series - Series name to fetch
+             * @param {number} from - Beginning of time window
+             * @param {number} to - End of time window
+             * @returns Promise
+             */
             fetchSeries: function (series, from, to) {
                 var store = get(this, 'widgetDataStore'),
                     me = this;
@@ -125,6 +163,13 @@ Ember.Application.initializer({
                 });
             },
 
+            /**
+             * @abstract
+             * @method onSeries
+             * @memberOf MetricConsumerMixin
+             * @param {array} series - Series fetched from SerieController
+             * Called by ``fetchSeries()`` method.
+             */
             onSeries: function(series) {
                 ;
             }
