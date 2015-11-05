@@ -179,7 +179,7 @@ Ember.Application.initializer({
                     if (!isNone(resource)) {
                         varname += '.' + resource;
 
-                        if (isNone(get(me, varname))) {
+                        if (isNone(get(context, varname))) {
                             set(context, varname, {});
                         }
                     }
