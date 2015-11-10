@@ -84,7 +84,7 @@ Ember.Application.initializer({
                     classValue += ' hidden-md';
                 }
                 if(get(gridLayoutMixin, 'hiddenXS')) {
-                    classValue += ' hidden-xs';
+                    classValue += ' hidden-xs hidden-sm';
                 }
 
                 set(this, 'controller.defaultItemCssClass', classValue);
@@ -205,7 +205,7 @@ Ember.Application.initializer({
                     classValue += ' hidden-md';
                 }
                 if(gridLayoutMixin.hiddenXS) {
-                    classValue += ' hidden-xs';
+                    classValue += ' hidden-xs hidden-sm';
                 }
 
                 set(this, 'defaultItemCssClass', classValue);
