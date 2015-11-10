@@ -173,5 +173,7 @@ Ember.Application.initializer({
                 set(this, 'events', events);
             }
         }, widgetOptions);
+
+        application.register('widget:statstable', widget);
     }
 });
