@@ -1,0 +1,111 @@
+<h1>Statistiques sur les utilisateurs</h1>
+
+<table class="table table-bordered table-responsive">
+    <thead>
+        <tr>
+            <th>Utilisateur</th>
+            <th colspan="3">Délais</th>
+            <th colspan="3">Délais cumulés</th>
+            <th>Compteurs d'acquittement</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th>Résolution</th>
+            <th>Acquittement</th>
+            <th>Résolution depuis acquittement</th>
+
+            <th>Résolution</th>
+            <th>Acquittement</th>
+            <th>Résolution depuis acquittement</th>
+
+            <th>Total</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{#each users}}
+            <tr>
+                <td>{{this.__name__}}</td>
+                <td>{{hr this.alarm_solved.last.value unit="s"}}</td>
+                <td>{{hr this.alarm_ack_delay.last.value unit="s"}}</td>
+                <td>{{hr this.alarm_ack_solved.last.value unit="s"}}</td>
+                <td>{{hr this.alarm_solved.sum.value unit="s"}}</td>
+                <td>{{hr this.alarm_ack_delay.sum.value unit="s"}}</td>
+                <td>{{hr this.alarm_ack_solved.sum.value unit="s"}}</td>
+                <td>{{hr this.alarm_ack.total.value}}</td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<h1>Statistiques sur les événements</h1>
+
+<table class="table table-bordered table-responsive">
+    <tbody>
+        <tr class="info">
+            <th colspan="2">Délais</th>
+        </tr>
+        <tr>
+            <td>Acquittement</td>
+            <td>{{hr events.__canopsis__.alarm_ack_delay.last.value unit="s"}}</td>
+        </tr>
+        <tr>
+            <td>Résolution</td>
+            <td>{{hr events.__canopsis__.alarm_solved_delay.last.value unit="s"}}</td>
+        </tr>
+        <tr>
+            <td>Résolution avec acquittement</td>
+            <td>{{hr events.__canopsis__.alarm_ack_solved_delay.last.value unit="s"}}</td>
+        </tr>
+
+        <tr class="info">
+            <th colspan="2">Délais cumulés</th>
+        </tr>
+        <tr>
+            <td>Acquittement</td>
+            <td>{{hr events.__canopsis__.alarm_ack_delay.sum.value unit="s"}}</td>
+        </tr>
+        <tr>
+            <td>Résolution</td>
+            <td>{{hr events.__canopsis__.alarm_solved_delay.sum.value unit="s"}}</td>
+        </tr>
+        <tr>
+            <td>Résolution avec acquittement</td>
+            <td>{{hr events.__canopsis__.alarm_ack_solved_delay.sum.value unit="s"}}</td>
+        </tr>
+        
+        <tr class="info">
+            <th colspan="2">Compteurs</th>
+        </tr>
+
+        <tr class="success"><td colspan="2">Total</td></tr>
+        {{#each events.__canopsis__.alarm}}
+            <tr>
+                <td>{{this.__name__}}</td>
+                <td>{{hr this.value}}</td>
+            </tr>
+        {{/each}}
+        <tr class="success"><td colspan="2">Acquittée</td></tr>
+        {{#each events.__canopsis__.alarm_ack}}
+            <tr>
+                <td>{{this.__name__}}</td>
+                <td>{{hr this.value}}</td>
+            </tr>
+        {{/each}}
+        <tr class="success"><td colspan="2">Résolue</td></tr>
+        {{#each events.__canopsis__.alarm_solved}}
+            <tr>
+                <td>{{this.__name__}}</td>
+                <td>{{hr this.value}}</td>
+            </tr>
+        {{/each}}
+        <tr class="success"><td colspan="2">Résolue avec acquittement</td></tr>
+        {{#each events.__canopsis__.alarm_ack_solved}}
+            <tr>
+                <td>{{this.__name__}}</td>
+                <td>{{hr this.value}}</td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
+
