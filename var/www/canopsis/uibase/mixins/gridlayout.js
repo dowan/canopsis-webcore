@@ -47,9 +47,23 @@ Ember.Application.initializer({
                 }
 
                 var gridLayoutMixin = get(this, 'controller.mixins').findBy('name', 'gridlayout');
-                var columnXS = get(gridLayoutMixin, 'columnXS') || '12';
-                var columnMD = get(gridLayoutMixin, 'columnMD') || '6';
-                var columnLG = get(gridLayoutMixin, 'columnLG') || '3';
+                var columnXS = '12';
+
+                if(!isNone(get(gridLayoutMixin, 'columnXS'))) {
+                    columnXS = get(gridLayoutMixin, 'columnXS');
+                }
+
+                var columnMD = '6';
+                if(!isNone(get(gridLayoutMixin, 'columnMD'))) {
+                    columnMD = get(gridLayoutMixin, 'columnMD');
+                }
+
+                var columnLG = '3';
+                if(!isNone(get(gridLayoutMixin, 'columnLG'))) {
+                    columnLG = get(gridLayoutMixin, 'columnLG');
+                }
+
+
                 var offset = get(gridLayoutMixin, 'offset') || '0';
 
                 var classValue = [
@@ -62,6 +76,16 @@ Ember.Application.initializer({
                     ' col-md-offset-',
                     offset
                 ].join('');
+
+                if(get(gridLayoutMixin, 'hiddenLG')) {
+                    classValue += ' hidden-lg';
+                }
+                if(get(gridLayoutMixin, 'hiddenMD')) {
+                    classValue += ' hidden-md';
+                }
+                if(get(gridLayoutMixin, 'hiddenXS')) {
+                    classValue += ' hidden-xs';
+                }
 
                 set(this, 'controller.defaultItemCssClass', classValue);
 
@@ -148,9 +172,19 @@ Ember.Application.initializer({
              **/
             getSection: function (currentWrapperMixins) {
                 var gridLayoutMixin = currentWrapperMixins.findBy('name', 'gridlayout');
-                var columnXS = gridLayoutMixin.columnXS || '12';
-                var columnMD = gridLayoutMixin.columnMD || '6';
-                var columnLG = gridLayoutMixin.columnLG || '3';
+                var columnXS = '12';
+                if(!isNone(gridLayoutMixin.columnXS)) {
+                    columnXS = gridLayoutMixin.columnXS;
+                }
+                var columnMD = '6';
+                if(!isNone(gridLayoutMixin.columnMD)) {
+                    columnMD = gridLayoutMixin.columnMD;
+                }
+                var columnLG = '3';
+                if(!isNone(gridLayoutMixin.columnLG)) {
+                    columnLG = gridLayoutMixin.columnLG;
+                }
+
                 var offset = gridLayoutMixin.offset || '0';
 
                 var classValue = [
@@ -163,6 +197,16 @@ Ember.Application.initializer({
                     ' col-md-offset-',
                     offset
                 ].join('');
+
+                if(gridLayoutMixin.hiddenLG) {
+                    classValue += ' hidden-lg';
+                }
+                if(gridLayoutMixin.hiddenMD) {
+                    classValue += ' hidden-md';
+                }
+                if(gridLayoutMixin.hiddenXS) {
+                    classValue += ' hidden-xs';
+                }
 
                 set(this, 'defaultItemCssClass', classValue);
 
