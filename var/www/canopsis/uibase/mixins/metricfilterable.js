@@ -46,7 +46,7 @@ Ember.Application.initializer({
                     name: []
                 };
 
-                $.each(regex_parts, function(part) {
+                $.each(regex_parts, function(idx, part) {
                     var prefix = part.slice(0, 3),
                         spec = {'$regex': part.slice(3)};
 
