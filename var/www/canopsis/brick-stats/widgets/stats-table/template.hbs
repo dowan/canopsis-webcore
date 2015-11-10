@@ -23,7 +23,7 @@
     </thead>
 
     <tbody>
-        {{#each users}}
+        {{#eachkey users}}
             <tr>
                 <td>{{this.__name__}}</td>
                 <td>{{hr this.alarm_solved.last.value unit="s"}}</td>
@@ -34,7 +34,7 @@
                 <td>{{hr this.alarm_ack_solved.sum.value unit="s"}}</td>
                 <td>{{hr this.alarm_ack.total.value}}</td>
             </tr>
-        {{/each}}
+        {{/eachkey}}
     </tbody>
 </table>
 
@@ -79,33 +79,33 @@
         </tr>
 
         <tr class="success"><td colspan="2">Total</td></tr>
-        {{#each events.__canopsis__.alarm}}
+        {{#eachkey events.__canopsis__.alarm}}
             <tr>
                 <td>{{this.__name__}}</td>
                 <td>{{hr this.value}}</td>
             </tr>
-        {{/each}}
+        {{/eachkey}}
         <tr class="success"><td colspan="2">Acquittée</td></tr>
-        {{#each events.__canopsis__.alarm_ack}}
+        {{#eachkey events.__canopsis__.alarm_ack}}
             <tr>
                 <td>{{this.__name__}}</td>
                 <td>{{hr this.value}}</td>
             </tr>
-        {{/each}}
+        {{/eachkey}}
         <tr class="success"><td colspan="2">Résolue</td></tr>
-        {{#each events.__canopsis__.alarm_solved}}
+        {{#eachkey events.__canopsis__.alarm_solved}}
             <tr>
                 <td>{{this.__name__}}</td>
                 <td>{{hr this.value}}</td>
             </tr>
-        {{/each}}
+        {{/eachkey}}
         <tr class="success"><td colspan="2">Résolue avec acquittement</td></tr>
-        {{#each events.__canopsis__.alarm_ack_solved}}
+        {{#eachkey events.__canopsis__.alarm_ack_solved}}
             <tr>
                 <td>{{this.__name__}}</td>
                 <td>{{hr this.value}}</td>
             </tr>
-        {{/each}}
+        {{/eachkey}}
     </tbody>
 </table>
 
