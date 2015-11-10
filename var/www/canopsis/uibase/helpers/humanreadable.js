@@ -23,7 +23,8 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var ValuesUtils = container.lookupFactory('utility:values');
 
-        var get = Ember.get;
+        var get = Ember.get,
+            isNone = Ember.isNone;
 
         /**
          * @function HumanReadableHelper
@@ -31,9 +32,15 @@ Ember.Application.initializer({
          * @returns {string} Humanized value.
          * Handlebars helper used to humanize variables using ValuesUtility
          */
-        var helper = function(value) {
-            var val = get(value, 'hash.value'),
-                unit = get(value, 'hash.unit') || '';
+        var helper = function(value, options) {
+            var val = value;
+
+            if (isNone(options)) {
+                options = value;
+                val = get(options, 'hash.value');
+            }
+
+            var unit = get(options, 'hash.unit') || '';
 
             if (isNaN(val)) {
                 ret = __('Not a valid number');
