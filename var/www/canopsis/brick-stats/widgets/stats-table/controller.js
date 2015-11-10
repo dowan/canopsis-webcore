@@ -23,11 +23,13 @@ Ember.Application.initializer({
         'WidgetFactory',
         'TimeWindowUtils',
         'MetricConsumer',
+        'MetricFilterable',
         'HumanReadableHelper'
     ],
     initialize: function(container, application) {
         var WidgetFactory = container.lookupFactory('factory:widget'),
             MetricConsumer = container.lookupFactory('mixin:metricconsumer'),
+            MetricFilterable = container.lookupFactory('mixin:metricfilterable'),
             TimeWindowUtils = container.lookupFactory('utility:timewindow');
 
         var get = Ember.get,
@@ -35,7 +37,7 @@ Ember.Application.initializer({
             isNone = Ember.isNone;
 
         var widgetOptions = {
-            mixins: [MetricConsumer]
+            mixins: [MetricConsumer, MetricFilterable]
         };
 
         /**
@@ -70,16 +72,29 @@ Ember.Application.initializer({
                 set(this, 'users', {});
                 set(this, 'events', {});
 
-                var query = get(this, 'metrics');
-                if (!isNone(query) && query.length) {
-                    this.aggregateMetrics(
-                        query,
-                        from, to,
-                        'last',
-                        /* aggregation interval: the whole timewindow for only one point */
-                        to - from
-                    );
-                }
+                /* find metric IDs */
+                var store = get(this, 'widgetDataStore'),
+                    me = this;
+
+                store.findQuery('ctxmetric', {
+                    filter: this.getMetricFilter()
+                }).then(function(result) {
+                    var metric_ids = [];
+
+                    get(result, 'content').forEach(function(ctx) {
+                        metric_ids.push(get(ctx, 'id'));
+                    });
+
+                    if (metric_ids.length > 0) {
+                        me.aggregateMetrics(
+                            metric_ids,
+                            from, to,
+                            'last',
+                            /* aggregation interval: the whole timewindow for only one point */
+                            to - from
+                        );
+                    }
+                });
             },
 
             onMetrics: function(metrics) {

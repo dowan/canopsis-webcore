@@ -21,6 +21,7 @@ var mixins = [
     { name: 'background', url: 'canopsis/uibase/mixins/background', classes: ['widget']},
     { name: 'eventconsumer', url: 'canopsis/uibase/mixins/eventconsumer', classes: ['widget']},
     { name: 'metricconsumer', url: 'canopsis/uibase/mixins/metricconsumer', classes: ['widget']},
+    { name: 'metricfilterable', url: 'canopsis/uibase/mixins/metricfilterable', classes: ['widget']},
     { name: 'verticallayout', url: 'canopsis/uibase/mixins/verticallayout', classes: ['widget', 'events']},
     { name: 'horizontallayout', url: 'canopsis/uibase/mixins/horizontallayout', classes: ['widget', 'events']},
     { name: 'gridlayout', url: 'canopsis/uibase/mixins/gridlayout', classes: ['widget', 'events']},
