@@ -74,7 +74,7 @@ Ember.Application.initializer({
                     if (items.length > 0) {
                         var local_mfilter = {'$or': []};
 
-                        $.each(items, function(item) {
+                        $.each(items, function(idx, item) {
                             var spec = {};
                             spec[key] = item;
 
