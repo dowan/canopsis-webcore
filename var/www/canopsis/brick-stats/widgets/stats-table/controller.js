@@ -47,6 +47,10 @@ Ember.Application.initializer({
         var widget = WidgetFactory('statstable', {
             init: function() {
                 this._super.apply(this, arguments);
+
+                set(this, 'excludeKeys', [
+                    '__name__'
+                ]);
             },
 
             findItems: function() {

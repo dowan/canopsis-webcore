@@ -79,28 +79,28 @@
         </tr>
 
         <tr class="success"><td colspan="2">Total</td></tr>
-        {{#component-eachkey object=controller.events.__canopsis__.alarm as |scope|}}
+        {{#component-eachkey object=controller.events.__canopsis__.alarm exclude=excludeKeys as |scope|}}
             <tr>
                 <td>{{scope.__name__}}</td>
                 <td>{{hr scope.value}}</td>
             </tr>
         {{/component-eachkey}}
         <tr class="success"><td colspan="2">Acquittée</td></tr>
-        {{#component-eachkey object=controller.events.__canopsis__.alarm_ack as |scope|}}
+        {{#component-eachkey object=controller.events.__canopsis__.alarm_ack exclude=excludeKeys  as |scope|}}
             <tr>
                 <td>{{scope.__name__}}</td>
                 <td>{{hr scope.value}}</td>
             </tr>
         {{/component-eachkey}}
         <tr class="success"><td colspan="2">Résolue</td></tr>
-        {{#component-eachkey object=controller.events.__canopsis__.alarm_solved as |scope|}}
+        {{#component-eachkey object=controller.events.__canopsis__.alarm_solved exclude=excludeKeys  as |scope|}}
             <tr>
                 <td>{{scope.__name__}}</td>
                 <td>{{hr scope.value}}</td>
             </tr>
         {{/component-eachkey}}
         <tr class="success"><td colspan="2">Résolue avec acquittement</td></tr>
-        {{#component-eachkey object=controller.events.__canopsis__.alarm_ack_solved as |scope|}}
+        {{#component-eachkey object=controller.events.__canopsis__.alarm_ack_solved exclude=excludeKeys  as |scope|}}
             <tr>
                 <td>{{scope.__name__}}</td>
                 <td>{{hr scope.value}}</td>

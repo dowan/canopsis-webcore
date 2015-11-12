@@ -30,17 +30,21 @@ Ember.Application.initializer({
         var component = Ember.Component.extend({
             tagName: '',
             object: undefined,
+            exclude: undefined
 
             iterator: function() {
                 var obj = get(this, 'object'),
+                    exclude = get(this, 'exclude') || [],
                     keys = Ember.A();
 
                 if (!isNone(obj)) {
                     $.each(obj, function(key, value) {
-                        keys.pushObject({
-                            'key': key,
-                            'value': value
-                        });
+                        if (exclude.indexOf(key) >= 0) {
+                            keys.pushObject({
+                                'key': key,
+                                'value': value
+                            });
+                        }
                     });
                 }
 
