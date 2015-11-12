@@ -23,16 +23,16 @@
     </thead>
 
     <tbody>
-        {{#component-eachkey object=users}}
+        {{#component-eachkey object=controller.users as |scope|}}
             <tr>
-                <td>{{this.__name__}}</td>
-                <td>{{hr this.alarm_solved.last.value unit="s"}}</td>
-                <td>{{hr this.alarm_ack_delay.last.value unit="s"}}</td>
-                <td>{{hr this.alarm_ack_solved.last.value unit="s"}}</td>
-                <td>{{hr this.alarm_solved.sum.value unit="s"}}</td>
-                <td>{{hr this.alarm_ack_delay.sum.value unit="s"}}</td>
-                <td>{{hr this.alarm_ack_solved.sum.value unit="s"}}</td>
-                <td>{{hr this.alarm_ack.total.value}}</td>
+                <td>{{scope.__name__}}</td>
+                <td>{{hr scope.alarm_solved.last.value unit="s"}}</td>
+                <td>{{hr scope.alarm_ack_delay.last.value unit="s"}}</td>
+                <td>{{hr scope.alarm_ack_solved.last.value unit="s"}}</td>
+                <td>{{hr scope.alarm_solved.sum.value unit="s"}}</td>
+                <td>{{hr scope.alarm_ack_delay.sum.value unit="s"}}</td>
+                <td>{{hr scope.alarm_ack_solved.sum.value unit="s"}}</td>
+                <td>{{hr scope.alarm_ack.total.value}}</td>
             </tr>
         {{/component-eachkey}}
     </tbody>
@@ -47,15 +47,15 @@
         </tr>
         <tr>
             <td>Acquittement</td>
-            <td>{{hr events.__canopsis__.alarm_ack_delay.last.value unit="s"}}</td>
+            <td>{{hr controller.events.__canopsis__.alarm_ack_delay.last.value unit="s"}}</td>
         </tr>
         <tr>
             <td>Résolution</td>
-            <td>{{hr events.__canopsis__.alarm_solved_delay.last.value unit="s"}}</td>
+            <td>{{hr controller.events.__canopsis__.alarm_solved_delay.last.value unit="s"}}</td>
         </tr>
         <tr>
             <td>Résolution avec acquittement</td>
-            <td>{{hr events.__canopsis__.alarm_ack_solved_delay.last.value unit="s"}}</td>
+            <td>{{hr controller.events.__canopsis__.alarm_ack_solved_delay.last.value unit="s"}}</td>
         </tr>
 
         <tr class="info">
@@ -63,15 +63,15 @@
         </tr>
         <tr>
             <td>Acquittement</td>
-            <td>{{hr events.__canopsis__.alarm_ack_delay.sum.value unit="s"}}</td>
+            <td>{{hr controller.events.__canopsis__.alarm_ack_delay.sum.value unit="s"}}</td>
         </tr>
         <tr>
             <td>Résolution</td>
-            <td>{{hr events.__canopsis__.alarm_solved_delay.sum.value unit="s"}}</td>
+            <td>{{hr controller.events.__canopsis__.alarm_solved_delay.sum.value unit="s"}}</td>
         </tr>
         <tr>
             <td>Résolution avec acquittement</td>
-            <td>{{hr events.__canopsis__.alarm_ack_solved_delay.sum.value unit="s"}}</td>
+            <td>{{hr controller.events.__canopsis__.alarm_ack_solved_delay.sum.value unit="s"}}</td>
         </tr>
         
         <tr class="info">
@@ -79,31 +79,31 @@
         </tr>
 
         <tr class="success"><td colspan="2">Total</td></tr>
-        {{#component-eachkey object=events.__canopsis__.alarm}}
+        {{#component-eachkey object=controller.events.__canopsis__.alarm as |scope|}}
             <tr>
-                <td>{{this.__name__}}</td>
-                <td>{{hr this.value}}</td>
+                <td>{{scope.__name__}}</td>
+                <td>{{hr scope.value}}</td>
             </tr>
         {{/component-eachkey}}
         <tr class="success"><td colspan="2">Acquittée</td></tr>
-        {{#component-eachkey object=events.__canopsis__.alarm_ack}}
+        {{#component-eachkey object=controller.events.__canopsis__.alarm_ack as |scope|}}
             <tr>
-                <td>{{this.__name__}}</td>
-                <td>{{hr this.value}}</td>
+                <td>{{scope.__name__}}</td>
+                <td>{{hr scope.value}}</td>
             </tr>
         {{/component-eachkey}}
         <tr class="success"><td colspan="2">Résolue</td></tr>
-        {{#component-eachkey object=events.__canopsis__.alarm_solved}}
+        {{#component-eachkey object=controller.events.__canopsis__.alarm_solved as |scope|}}
             <tr>
-                <td>{{this.__name__}}</td>
-                <td>{{hr this.value}}</td>
+                <td>{{scope.__name__}}</td>
+                <td>{{hr scope.value}}</td>
             </tr>
         {{/component-eachkey}}
         <tr class="success"><td colspan="2">Résolue avec acquittement</td></tr>
-        {{#component-eachkey object=events.__canopsis__.alarm_ack_solved}}
+        {{#component-eachkey object=controller.events.__canopsis__.alarm_ack_solved as |scope|}}
             <tr>
-                <td>{{this.__name__}}</td>
-                <td>{{hr this.value}}</td>
+                <td>{{scope.__name__}}</td>
+                <td>{{hr scope.value}}</td>
             </tr>
         {{/component-eachkey}}
     </tbody>

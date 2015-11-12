@@ -20,28 +20,34 @@
 Ember.Application.initializer({
     name: 'EachKeyComponent',
     initialize: function(container, application) {
-        var get = Ember.get;
+        var get = Ember.get,
+            isNone = Ember.isNone;
 
         /**
          * @class EachKeyComponent
          * Used to render template by looping over object keys.
          */
         var component = Ember.Component.extend({
+            tagName: '',
+            object: undefined,
+
             iterator: function() {
                 var obj = get(this, 'object'),
                     keys = Ember.A();
 
-                $.each(obj, function(key, value) {
-                    keys.pushObject({
-                        'key': key,
-                        'value': value
+                if (!isNone(obj)) {
+                    $.each(obj, function(key, value) {
+                        keys.pushObject({
+                            'key': key,
+                            'value': value
+                        });
                     });
-                });
+                }
 
                 return keys;
             }.property('object')
         });
 
-        application.register('component:component-eachkey');
+        application.register('component:component-eachkey', component);
     }
 });

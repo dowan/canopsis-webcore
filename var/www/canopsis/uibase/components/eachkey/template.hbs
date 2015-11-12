@@ -1,5 +1,5 @@
 {{#each iterator as |item|}}
-    {{#with item.value}}
-        {{yield}}
+    {{#with item.value as |scope|}}
+        {{yield scope}}
     {{/with}}
 {{/each}}
