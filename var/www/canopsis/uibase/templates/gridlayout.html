@@ -1,5 +1,5 @@
 <div>
-    {{#each item in controller.items}}
+    {{#each item in controller.model.items}}
         {{#if item.classValue}}
             <div {{bind-attr class="item.classValue"}} >
                 {{widgetslot item=item}}

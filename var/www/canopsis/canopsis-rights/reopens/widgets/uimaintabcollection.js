@@ -67,7 +67,7 @@ Ember.Application.initializer({
                 }
 
                 var rights = get(this, 'loggedaccountRights'),
-                    viewId = get(this, 'currentViewId');
+                    viewId = get(this, 'model.currentViewId');
 
                 viewId = viewId.replace('.', '_');
 
@@ -76,7 +76,7 @@ Ember.Application.initializer({
                 }
 
                 return false;
-            }.property('currentViewId'),
+            }.property('model.currentViewId'),
 
             userCanCreateView: function() {
                 if(get(this, 'loggedaccountId') === "root") {
@@ -92,7 +92,7 @@ Ember.Application.initializer({
                 return false;
             }.property()
         });
-        
+
         application.register('widget:uimaintabcollection', UimaintabcollectionWidget);
 
     }

@@ -91,18 +91,18 @@ define([
 
                     //When specific from / to dates specified into the controller,
                     //the widget will use them. This helps manage live reporting.
-                    if (!isNone(get(this, 'from'))) {
-                        from = get(this, 'from');
+                    if (!isNone(get(this, 'model.from'))) {
+                        from = get(this, 'model.from');
                     }
-                    if (!isNone(get(this, 'to'))) {
-                        to = get(this, 'to');
+                    if (!isNone(get(this, 'model.to'))) {
+                        to = get(this, 'model.to');
                     }
 
                     //This will trigger api queries for events and series in lasy philosophy.
                     //If no contextual information set by user, no query is done.
                     this.fetchEvents();
 
-                    var seriesMeta = get(this, 'series');
+                    var seriesMeta = get(this, 'model.series');
                     if (!isNone(seriesMeta)) {
                         get(this, 'controllers.metric').fetchSeriesFromSchemaValues(
                             this, get(this, 'widgetDataStore'), from, to, seriesMeta, this.onSeriesFetch
@@ -116,7 +116,7 @@ define([
                 fetchEvents: function (){
 
                     var controller = this,
-                        events_information = get(this, 'events'),
+                        events_information = get(this, 'model.events'),
                         rks = [];
 
                     if (!isNone(events_information)) {
@@ -129,7 +129,7 @@ define([
 
                     if (rks.length) {
                         //Does the widget have to manage event information
-                        var event_query = get(this, "widgetDataStore").findQuery(
+                        var event_query = get(this, 'widgetDataStore').findQuery(
                             'event',
                             {
                                 filter: JSON.stringify({_id: {'$in': rks}}),
@@ -218,7 +218,7 @@ define([
 
                 renderTemplate: function () {
 
-                    var template = get(this, 'html'),
+                    var template = get(this, 'model.html'),
                         html = 'Unable to render template.';
 
                     //Avoid give undefined template to the handlebars compilator.
@@ -235,7 +235,7 @@ define([
                             html += '<p>' + err + '</p>';
                         }
                     }
-                    set(this, 'htmlRender', new Ember.Handlebars.SafeString(html));
+                    set(this, 'model.htmlRender', new Ember.Handlebars.SafeString(html));
                 }
             });
 

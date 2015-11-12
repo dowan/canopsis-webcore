@@ -33,7 +33,7 @@ Ember.Application.initializer({
         var widget = WidgetController.extend({
             needs: ['application', 'login'],
 
-            currentViewId: Ember.computed.alias('controllers.application.currentViewId'),
+            currentViewId: Ember.computed.alias('controllers.application.model.currentViewId'),
 
             tagName: 'span',
 
@@ -51,7 +51,7 @@ Ember.Application.initializer({
                 var res = Ember.A();
 
                 get(this, 'tabs').forEach(function(item, index) {
-                    if(item.value === get(uimaintabcollectionController, 'currentViewId')) {
+                    if(item.value === get(uimaintabcollectionController, 'model.currentViewId')) {
                         set(item, 'isActive', true);
                     } else {
                         set(item, 'isActive', false);
@@ -70,7 +70,7 @@ Ember.Application.initializer({
                 });
 
                 return res;
-            }.property('tabs', 'currentViewId'),
+            }.property('tabs', 'model.currentViewId'),
 
             actions: {
                 do: function(action, params) {

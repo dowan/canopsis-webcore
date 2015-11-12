@@ -27,26 +27,26 @@ Ember.Application.initializer({
             attributesKeys: function() {
                 var attributes = [];
 
-                var attributesDict = this.get('inspectedDataArray.type.attributes.values');
-                console.log("attributesDict", attributesDict);
+                var attributesDict = this.get('inspectedDataArray.type.attributes');
 
-                for (var key in attributesDict) {
-                    var attr = attributesDict[key];
+                if(!isNone(attributesDict)) {
+                    attributesDict.forEach(function(attr) {
+                        if (attr.options.hiddenInLists === false || attr.options.hiddenInLists === undefined) {
+                            console.log("pushed attr", {
+                                field: attr.name,
+                                type: attr.type,
+                                options: attr.options
+                            });
 
-                    if (attr.options.hiddenInLists === false || attr.options.hiddenInLists === undefined) {
-                        attributes.pushObject({
-                            field: attr.name,
-                            type: attr.type,
-                            options: attr.options
-                        });
-
-                        console.log("pushed attr", {
-                            field: attr.name,
-                            type: attr.type,
-                            options: attr.options
-                        });
-                    }
+                            attributes.pushObject({
+                                field: attr.name,
+                                type: attr.type,
+                                options: attr.options
+                            });
+                        }
+                    });
                 }
+
                 return attributes;
             }.property("inspectedProperty", "inspectedDataArray"),
 

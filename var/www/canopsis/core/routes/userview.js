@@ -231,14 +231,14 @@ Ember.Application.initializer({
                 this._super.apply(this, arguments);
 
                 controller.setProperties({
-                    'isMainView': true
+                    'model.isMainView': true
                 });
 
                 if(initialLoadDone === false) {
                     initialLoadDone = true;
                 }
 
-                set(this.controllerFor('application'), 'currentViewId', get(model, 'id'));
+                set(this.controllerFor('application'), 'model.currentViewId', get(model, 'id'));
 
                 var app = this.controllerFor('application');
 

@@ -91,7 +91,7 @@ Ember.Application.initializer({
                     }
 
                     if(shown_columns === undefined || shown_columns.length === 0) {
-                        return undefined;
+                        return '<td>No columns to show</td>';
                     }
 
                     for (var i = 0, l = shown_columns.length; i < l; i++) {
@@ -272,6 +272,7 @@ Ember.Application.initializer({
 
                     var shown_columns = [];
                     var displayed_columns = get(this, 'displayed_columns') || get(this, 'model.displayed_columns') ;
+
                     if (displayed_columns !== undefined && displayed_columns.length > 0) {
 
                         var attributesKeysDict = this.get('attributesKeysDict');
@@ -286,6 +287,7 @@ Ember.Application.initializer({
                         console.log('no shown columns set, displaying everything');
                         shown_columns = this.get('attributesKeys');
                     }
+
                     var selected_columns = [];
                     var sortedAttribute = get(this, 'sortedAttribute');
                     var columnSort = get(this, 'default_column_sort');

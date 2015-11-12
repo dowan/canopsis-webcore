@@ -32,7 +32,7 @@ Ember.Application.initializer({
             getParentViewForWidget: function(widget) {
                 var currentItem = widget;
 
-                while (get(currentItem, 'crecord_type') !== 'view') {
+                while (get(currentItem, 'model.crecord_type') !== 'view') {
                     currentItem = get(currentItem, 'target');
                 }
 

@@ -10,8 +10,8 @@
         </div>
     {{else}}
         {{#each item in controller.items}}
-            {{#if controller.itemTagName}}
-                {{#view Ember.View tagName=controller.itemTagName classNames=controller.itemCssClassArray}}
+            {{#if controller.model.itemTagName}}
+                {{#view Ember.View tagName=controller.model.itemTagName classNames=controller.itemCssClassArray}}
                     {{widgethelper widget=item.widget target=controller}}
                 {{/view}}
             {{else}}
@@ -21,8 +21,8 @@
     {{/if}}
 {{else}}
     {{#each item in controller.items}}
-        {{#if controller.itemTagName}}
-            {{#view Ember.View tagName=controller.itemTagName classNames=controller.itemCssClassArray}}
+        {{#if controller.model.itemTagName}}
+            {{#view Ember.View tagName=controller.model.itemTagName classNames=controller.itemCssClassArray}}
                 {{widgethelper widget=item.widget target=controller}}
             {{/view}}
         {{else}}

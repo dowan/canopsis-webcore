@@ -107,7 +107,7 @@ define([
                         'model.controllerInstance': this,
                         'viewId': viewId,
                         'viewController': widgetUtils.getParentViewForWidget(this),
-                        'isOnMainView': get(widgetUtils.getParentViewForWidget(this), 'isMainView'),
+                        'isOnMainView': get(widgetUtils.getParentViewForWidget(this), 'model.isMainView'),
                         'container': container,
                         'widgetDataStore': store
                     });
@@ -121,7 +121,7 @@ define([
 
                     this._super();
 
-                    console.debug('user configuration loaded for widget ' + get(this, 'title'));
+                    console.debug('user configuration loaded for widget ' + get(this, 'model.title'));
                     this.refreshContent();
                 },
 
@@ -472,7 +472,7 @@ define([
                  */
                 refreshContent: function() {
 
-                    console.log('refreshContent', get(this, 'xtype'));
+                    console.log('refreshContent', get(this, 'model.xtype'));
 
                     this._super();
                     this.findItems();

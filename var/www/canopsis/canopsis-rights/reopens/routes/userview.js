@@ -50,8 +50,8 @@ Ember.Application.initializer({
                 var viewId = get(transition, 'params.userview.userview_id');
                 viewId = viewId.replace('.', '_');
 
-                var checksum = get(loginController, 'record.rights.' + viewId + '.checksum');
-                var userId = get(loginController, 'record._id');
+                var checksum = get(loginController, 'model.record.rights.' + viewId + '.checksum');
+                var userId = get(loginController, 'model.record._id');
 
                 if(!(rightsflagsUtils.canRead(checksum) || viewId === 'view_404' || viewId === 'view_401' || userId === 'root')) {
                     set(transition, 'hasToBeRedirected', true);
@@ -87,9 +87,9 @@ Ember.Application.initializer({
                     var viewId = get(this, 'controller.model.id');
                     viewId = viewId.replace('.', '_');
 
-                    var userId = get(loginController, 'record._id');
+                    var userId = get(loginController, 'model.record._id');
 
-                    var checksum = get(loginController, 'record.rights.' + viewId + '.checksum');
+                    var checksum = get(loginController, 'model.record.rights.' + viewId + '.checksum');
 
                     if(rightsflagsUtils.canWrite(checksum) || userId === 'root') {
                         //call the regular "toggleEditMode" action

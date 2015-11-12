@@ -20,7 +20,7 @@
         {{/each}}
     </ul>
 
-    {{#with controller.selectedItem}}
-        {{widgethelper widget=controller.selectedItem}}
+    {{#with controller.selectedItem as selectedItem}}
+        {{widgethelper widget=selectedItem}}
     {{/with}}
 </section>

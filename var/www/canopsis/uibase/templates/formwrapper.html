@@ -13,8 +13,8 @@
             </div>
             <div class="modal-body">
                 {{#if controller.form}}
-                    {{#with form}}
-                        {{formview templateName=controller.formName controller=this}}
+                    {{#with form as form}}
+                        {{formview templateName=controller.formName controller=form}}
                     {{/with}}
                 {{/if}}
             </div>
