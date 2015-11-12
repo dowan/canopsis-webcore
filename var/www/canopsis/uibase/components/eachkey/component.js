@@ -30,7 +30,7 @@ Ember.Application.initializer({
         var component = Ember.Component.extend({
             tagName: '',
             object: undefined,
-            exclude: undefined
+            exclude: undefined,
 
             iterator: function() {
                 var obj = get(this, 'object'),

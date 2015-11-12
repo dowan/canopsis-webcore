@@ -38,6 +38,18 @@
     </tbody>
 </table>
 
+<div class="flotchart-container">
+    <div class="flotchart-plot-container">
+        {{component-flotchart
+            options=controller.userChartOptions
+            series=controller.userSeries
+        }}
+    </div>
+
+    <div class="flotchart-legend-container">
+    </div>
+</div>
+
 <h1>Statistiques sur les événements</h1>
 
 <table class="table table-bordered table-responsive">

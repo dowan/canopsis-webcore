@@ -24,7 +24,9 @@ Ember.Application.initializer({
         'TimeWindowUtils',
         'MetricConsumer',
         'MetricFilterable',
-        'HumanReadableHelper'
+        'HumanReadableHelper',
+        'EachKeyComponent',
+        'component-flotchart'
     ],
     initialize: function(container, application) {
         var WidgetFactory = container.lookupFactory('factory:widget'),
@@ -75,6 +77,7 @@ Ember.Application.initializer({
 
                 set(this, 'users', {});
                 set(this, 'events', {});
+                set(this, 'series', []);
 
                 /* find metric IDs */
                 var store = get(this, 'widgetDataStore'),
@@ -103,7 +106,8 @@ Ember.Application.initializer({
 
             onMetrics: function(metrics) {
                 var users = get(this, 'users'),
-                    events = get(this, 'events');
+                    events = get(this, 'events'),
+                    series = get(this, 'series');
 
                 metrics.forEach(function(metric) {
                     var mid = get(metric, 'meta.data_id').split('/'),
@@ -141,6 +145,7 @@ Ember.Application.initializer({
                         metricname = mid[6];
                     }
 
+                    /* set metric in users or events dictionary */
                     var varname = component;
                     var context = undefined;
 
@@ -171,11 +176,69 @@ Ember.Application.initializer({
                         value: value,
                         __name__: metricname
                     });
+
+                    /* generate serie */
+                    var labelparts = [component];
+
+                    if(!isNone(resource)) {
+                        labelparts.push(resource);
+                    }
+
+                    labelparts.push(metricname);
+
+                    series.push({
+                        data: points,
+                        label: labelparts.join('.'),
+                        widgetMeta: {
+                            component: component,
+                            resource: resource,
+                            metric: metricname
+                        },
+                        clickable: true,
+                        hoverable: true
+                    });
+
                 });
 
                 set(this, 'users', users);
                 set(this, 'events', events);
-            }
+                set(this, 'series', series);
+            },
+
+            /* charts configuration */
+
+            userSeries: function() {
+                var series = get(this, 'series'),
+                    selected = [];
+
+                $.each(series, function(idx, serie) {
+                    if (get(serie, 'widgetMeta.component') !== '__canopsis__') {
+                        selected.push(serie);
+                    }
+                });
+
+                return selected
+            }.property('series'),
+
+            userChartOptions: function() {
+                return {
+                    series: {
+                        bars: {
+                            show: true,
+                            barWidth: 0.6,
+                            align: 'center'
+                        }
+                    },
+                    xaxis: {
+                        mode: 'categories',
+                        tickLength: 0
+                    },
+                    legend: {
+                        show: true,
+                        container: this.$('.flotchart-legend-container')
+                    }
+                };
+            }.property()
         }, widgetOptions);
 
         application.register('widget:statstable', widget);
