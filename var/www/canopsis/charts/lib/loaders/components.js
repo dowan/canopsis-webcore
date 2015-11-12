@@ -26,7 +26,8 @@ var components = [
     { name: 'components/component-metricselector', url: 'canopsis/charts/components/metricselector/component', template: 'canopsis/charts/components/metricselector/template.html' },
     { name: 'components/component-metricselector2', url: 'canopsis/charts/components/metricselector2/component', template: 'canopsis/charts/components/metricselector2/template.hbs' },
     { name: 'components/component-selectedmetricheader', url: 'canopsis/charts/components/selectedmetricheader/component', template: 'canopsis/charts/components/selectedmetricheader/template.hbs' },
-    { name: 'components/component-c3categorychart', url: 'canopsis/charts/components/c3categorychart/component', template: 'canopsis/charts/components/c3categorychart/template.hbs' }
+    { name: 'components/component-c3categorychart', url: 'canopsis/charts/components/c3categorychart/component', template: 'canopsis/charts/components/c3categorychart/template.hbs' },
+    { name: 'components/component-c3js', url: 'canopsis/charts/components/c3js/component', template: 'canopsis/charts/components/c3js/template.hbs' }
 ];
 
 loader.loadWithTemplates(components);

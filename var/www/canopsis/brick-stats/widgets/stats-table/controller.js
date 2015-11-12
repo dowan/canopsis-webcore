@@ -26,7 +26,7 @@ Ember.Application.initializer({
         'MetricFilterable',
         'HumanReadableHelper',
         'EachKeyComponent',
-        'component-flotchart'
+        'c3jsComponent'
     ],
     initialize: function(container, application) {
         var WidgetFactory = container.lookupFactory('factory:widget'),
@@ -178,26 +178,21 @@ Ember.Application.initializer({
                     });
 
                     /* generate serie */
-                    var labelparts = [component];
+                    var label = [component];
 
                     if(!isNone(resource)) {
-                        labelparts.push(resource);
+                        label.push(resource);
                     }
 
-                    labelparts.push(metricname);
+                    label.push(metricname);
+                    label = label.join('.');
 
                     series.push({
-                        data: points,
-                        label: labelparts.join('.'),
-                        widgetMeta: {
-                            component: component,
-                            resource: resource,
-                            metric: metricname
-                        },
-                        clickable: true,
-                        hoverable: true
+                        component: component,
+                        resource: resource,
+                        metric: metricname,
+                        data: points
                     });
-
                 });
 
                 set(this, 'users', users);
@@ -209,36 +204,59 @@ Ember.Application.initializer({
 
             userSeries: function() {
                 var series = get(this, 'series'),
-                    selected = [];
+                    selected = {},
+                    users = ['x'],
+                    groups = [];
 
                 $.each(series, function(idx, serie) {
-                    if (get(serie, 'widgetMeta.component') !== '__canopsis__') {
-                        selected.push(serie);
+                    var component = get(serie, 'component'),
+                        resource = get(serie, 'resource');
+
+                    if (component !== '__canopsis__') {
+                        /* generate chart categories */
+                        if (users.indexOf(component) === -1) {
+                            users.push(component);
+                        }
+
+                        /* generate groups in each categories */
+                        if (groups.indexOf(resource) === -1) {
+                            groups.push(resource);
+                            set(selected, resource, []);
+                        }
+
+                        /* add point to corresponding category/group */
+                        var points = get(serie, 'data'),
+                            point = null;
+
+                        if (points.length > 0) {
+                            point = points[points.length - 1];
+                        }
+
+                        get(selected, resource).push(point)
                     }
                 });
 
-                return selected
-            }.property('series'),
+                /* generate chart columns */
+                var columns = [users];
 
-            userChartOptions: function() {
+                $.each(selected, function(key, points) {
+                    columns.push([key].concat(points));
+                })
+
                 return {
-                    series: {
-                        bars: {
-                            show: true,
-                            barWidth: 0.6,
-                            align: 'center'
+                    data: {
+                        x: 'x',
+                        columns: columns,
+                        groups: groups,
+                        type: 'bar'
+                    },
+                    axis: {
+                        x: {
+                            type: 'category'
                         }
-                    },
-                    xaxis: {
-                        mode: 'categories',
-                        tickLength: 0
-                    },
-                    legend: {
-                        show: true,
-                        container: this.$('.flotchart-legend-container')
                     }
                 };
-            }.property()
+            }.property('series'),
         }, widgetOptions);
 
         application.register('widget:statstable', widget);
