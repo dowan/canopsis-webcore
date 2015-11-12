@@ -18,26 +18,30 @@
 */
 
 Ember.Application.initializer({
-    name: 'EachKeyHelper',
+    name: 'EachKeyComponent',
     initialize: function(container, application) {
+        var get = Ember.get;
 
         /**
-         * @function EachKeyHelper
-         * @param {object} obj - Object to use for looping
-         * @returns {string} Rendered looped template
-         * Handlebars helper used to loop over keys in an object.
+         * @class EachKeyComponent
+         * Used to render template by looping over object keys.
          */
-        var helper = function(obj, options) {
-            var rendered = '';
+        var component = Ember.Component.extend({
+            iterator: function() {
+                var obj = get(this, 'object'),
+                    keys = Ember.A();
 
-            $.each(obj, function(key, item) {
-                rendered += options.fn(item);
-            });
+                $.each(obj, function(key, value) {
+                    keys.pushObject({
+                        'key': key,
+                        'value': value
+                    });
+                });
 
-            return rendered;
-        };
+                return keys;
+            }.property('object')
+        });
 
-        Handlebars.registerHelper('eachkey', helper);
-        Ember.Handlebars.helper('eachkey', helper);
+        application.register('component:component-eachkey');
     }
 });

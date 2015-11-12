@@ -23,7 +23,7 @@
     </thead>
 
     <tbody>
-        {{#eachkey users}}
+        {{#component-eachkey object=users}}
             <tr>
                 <td>{{this.__name__}}</td>
                 <td>{{hr this.alarm_solved.last.value unit="s"}}</td>
@@ -34,7 +34,7 @@
                 <td>{{hr this.alarm_ack_solved.sum.value unit="s"}}</td>
                 <td>{{hr this.alarm_ack.total.value}}</td>
             </tr>
-        {{/eachkey}}
+        {{/component-eachkey}}
     </tbody>
 </table>
 
@@ -79,33 +79,33 @@
         </tr>
 
         <tr class="success"><td colspan="2">Total</td></tr>
-        {{#eachkey events.__canopsis__.alarm}}
+        {{#component-eachkey object=events.__canopsis__.alarm}}
             <tr>
                 <td>{{this.__name__}}</td>
                 <td>{{hr this.value}}</td>
             </tr>
-        {{/eachkey}}
+        {{/component-eachkey}}
         <tr class="success"><td colspan="2">Acquittée</td></tr>
-        {{#eachkey events.__canopsis__.alarm_ack}}
+        {{#component-eachkey object=events.__canopsis__.alarm_ack}}
             <tr>
                 <td>{{this.__name__}}</td>
                 <td>{{hr this.value}}</td>
             </tr>
-        {{/eachkey}}
+        {{/component-eachkey}}
         <tr class="success"><td colspan="2">Résolue</td></tr>
-        {{#eachkey events.__canopsis__.alarm_solved}}
+        {{#component-eachkey object=events.__canopsis__.alarm_solved}}
             <tr>
                 <td>{{this.__name__}}</td>
                 <td>{{hr this.value}}</td>
             </tr>
-        {{/eachkey}}
+        {{/component-eachkey}}
         <tr class="success"><td colspan="2">Résolue avec acquittement</td></tr>
-        {{#eachkey events.__canopsis__.alarm_ack_solved}}
+        {{#component-eachkey object=events.__canopsis__.alarm_ack_solved}}
             <tr>
                 <td>{{this.__name__}}</td>
                 <td>{{hr this.value}}</td>
             </tr>
-        {{/eachkey}}
+        {{/component-eachkey}}
     </tbody>
 </table>
 

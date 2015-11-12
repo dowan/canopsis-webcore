@@ -1,0 +1,5 @@
+{{#each iterator as |item|}}
+    {{#with item.value}}
+        {{yield}}
+    {{/with}}
+{{/each}}
