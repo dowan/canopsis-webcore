@@ -36,7 +36,7 @@ Ember.Application.initializer({
                 //This is time to convert
                 //premptive transformation
                 if (unit.toLowerCase() === 's') {
-                    return dateUtils.second2Duration(x);
+                    return datesUtils.second2Duration(x);
                 }
 
                 var step = 1000;
