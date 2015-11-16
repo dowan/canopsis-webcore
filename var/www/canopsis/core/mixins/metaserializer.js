@@ -54,8 +54,8 @@ Ember.Application.initializer({
                     console.error('Error while retrieving typeKey from model is it is none.');
                 }
 
-                var typeKey = type.typeKey,
-                    typeKeyPlural = typeKey.pluralize();
+                var typeKey = type.typeKey;
+                var typeKeyPlural = typeKey.pluralize();
 
                 payload[typeKeyPlural] = payload.data;
                 delete payload.data;

@@ -81,7 +81,7 @@
                     </div>
                 {{/if}}
                 {{#each clause in clauses}}
-                    <div class="row-fluid" {{bind-attr class=clause.current:cfilter-active:cfilter-inactive}} {{action "activate" clause}}>
+                    <div {{bind-attr class=":row-fluid clause.current:cfilter-active:cfilter-inactive"}} {{action "activate" clause}}>
                         {{#each andClausePart in clause.and}}
                             {{#if andClausePart.isFirst}}
                                 <div style="margin:3px">

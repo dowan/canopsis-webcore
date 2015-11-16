@@ -46,7 +46,7 @@
                     {{/if}}
                 </thead>
                 <tbody>
-                    {{#each controller.widgetData}}
+                    {{#each record in controller.widgetData}}
                         {{view "listline" templateName=controller.dynamicTemplateName parentController=controller tagName="tr" unfolded=unfolded}}
                         <!-- TODO: put in its own partial slot -->
                         {{#if unfolded}}

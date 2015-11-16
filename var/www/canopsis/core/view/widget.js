@@ -84,11 +84,6 @@ define([
                             console.error('mixin not found', currentName);
                         }
                     }
-                    var controller = view.get('controller');
-
-                    if(controller.onMixinsApplied) {
-                        controller.onMixinsApplied();
-                    }
                 }
 
                 mixinArray.pushObject(Ember.Evented);
@@ -220,6 +215,11 @@ define([
                     }
 
                     widgetControllerInstance = widgetClass.createWithMixins.apply(widgetClass, mixins.array);
+
+                    if(widgetControllerInstance.onMixinsApplied) {
+                        widgetControllerInstance.onMixinsApplied();
+                    }
+
                     widgetControllerInstance.refreshPartialsList();
 
                     Ember.setProperties(widgetControllerInstance, {

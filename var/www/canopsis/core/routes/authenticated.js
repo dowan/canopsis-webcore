@@ -58,7 +58,7 @@ Ember.Application.initializer({
                     var record = promiseResult.content[0];
                     var loginController = route.controllerFor('login');
 
-                    set(loginController, 'record', record);
+                    set(loginController, 'model.record', record);
 
                     dataUtils.setLoggedUserController(loginController);
 

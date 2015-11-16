@@ -42,7 +42,7 @@ Ember.Application.initializer({
                     console.group('userpreferences for widget', record.get('title'), record);
                     var userpreferenceAttributes = record.userPreferencesModel.attributes.list;
                     var preference_id = get(record, 'preference_id'),
-                        user = get(loginController,'record._id');
+                        user = get(loginController,'model.record._id');
 
                     if (preference_id === undefined) {
                         preference_id = hashUtils.generate_GUID();

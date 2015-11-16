@@ -100,9 +100,9 @@ Ember.Application.initializer({
 
                         if(get(currentColumn, 'options.show')) {
                             if(currentColumn.renderer && get(this, 'model.useRenderers')) {
-                                html += ['<td class="', currentColumn.field, '">{{component-renderer rendererType="', currentColumn.renderer, '" value=this.', currentColumn.field, ' record=this field="', currentColumn.field, '" shown_columns=controller.shown_columns}}</td>'].join('');
+                                html += ['<td class="', currentColumn.field, '">{{component-renderer rendererType="', currentColumn.renderer, '" value=record.', currentColumn.field, ' record=record field="', currentColumn.field, '" shown_columns=controller.shown_columns}}</td>'].join('');
                             } else {
-                                html += ['<td class="', currentColumn.field, '">{{this.', currentColumn.field, '}}</td>'].join('');
+                                html += ['<td class="', currentColumn.field, '">{{record.', currentColumn.field, '}}</td>'].join('');
                             }
                         }
                     }
