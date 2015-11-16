@@ -23,7 +23,7 @@
     </thead>
 
     <tbody>
-        {{#component-eachkey object=controller.users as |scope|}}
+        {{#each controller.userTable as |scope|}}
             <tr>
                 <td>{{scope.__name__}}</td>
                 <td>{{hr scope.alarm_solved.last.value unit="s"}}</td>
@@ -34,12 +34,14 @@
                 <td>{{hr scope.alarm_ack_solved.sum.value unit="s"}}</td>
                 <td>{{hr scope.alarm_ack.total.value}}</td>
             </tr>
-        {{/component-eachkey}}
+        {{/each}}
     </tbody>
 </table>
 
 <div class="chart-container">
-    {{component-c3js series=controller.userSeries}}
+    {{component-c3js series=controller.userDelaySeries}}
+
+    <p><center><b>Délais utilisateurs</b></center></p>
 </div>
 
 <h1>Statistiques sur les événements</h1>
@@ -83,33 +85,44 @@
         </tr>
 
         <tr class="success"><td colspan="2">Total</td></tr>
-        {{#component-eachkey object=controller.events.__canopsis__.alarm exclude=excludeKeys as |scope|}}
+        {{#each controller.eventCounterTotal as |scope|}}
             <tr>
                 <td>{{scope.__name__}}</td>
                 <td>{{hr scope.value}}</td>
             </tr>
-        {{/component-eachkey}}
+        {{/each}}
         <tr class="success"><td colspan="2">Acquittée</td></tr>
-        {{#component-eachkey object=controller.events.__canopsis__.alarm_ack exclude=excludeKeys  as |scope|}}
+        {{#each controller.eventCounterAck as |scope|}}
             <tr>
                 <td>{{scope.__name__}}</td>
                 <td>{{hr scope.value}}</td>
             </tr>
-        {{/component-eachkey}}
+        {{/each}}
         <tr class="success"><td colspan="2">Résolue</td></tr>
-        {{#component-eachkey object=controller.events.__canopsis__.alarm_solved exclude=excludeKeys  as |scope|}}
+        {{#each controller.eventCounterSolved as |scope|}}
             <tr>
                 <td>{{scope.__name__}}</td>
                 <td>{{hr scope.value}}</td>
             </tr>
-        {{/component-eachkey}}
+        {{/each}}
         <tr class="success"><td colspan="2">Résolue avec acquittement</td></tr>
-        {{#component-eachkey object=controller.events.__canopsis__.alarm_ack_solved exclude=excludeKeys  as |scope|}}
+        {{#each controller.eventCounterAckSolved as |scope|}}
             <tr>
                 <td>{{scope.__name__}}</td>
                 <td>{{hr scope.value}}</td>
             </tr>
-        {{/component-eachkey}}
+        {{/each}}
     </tbody>
 </table>
 
+<div class="chart-container">
+    {{component-c3js series=controller.alarmDelaySeries}}
+
+    <p><center><b>Délais d'événements</b></center></p>
+</div>
+
+<div class="chart-container">
+    {{component-c3js series=controller.alarmSeries}}
+
+    <p><center><b>Compteurs d'événements</b></center></p>
+</div>

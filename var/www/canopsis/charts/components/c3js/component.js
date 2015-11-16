@@ -25,16 +25,19 @@ Ember.Application.initializer({
             isNone = Ember.isNone;
 
         var component = Ember.Component.extend({
-            render: function() {
+            didInsertElement: function() {
+                this.renderChart();
+            },
+
+            renderChart: function() {
                 var series = get(this, 'series'),
-                    chart = get(this, 'chart'),
-                    element = this.$();
+                    chart = get(this, 'chart');
 
                 if (!isNone(chart)) {
                     chart.destroy();
                 }
 
-                set(series, 'bindto', element);
+                set(series, 'bindto', '#' + this.elementId);
                 chart = c3.generate(series);
 
                 set(this, 'chart', chart);

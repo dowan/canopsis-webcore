@@ -198,30 +198,38 @@ Ember.Application.initializer({
                 set(this, 'users', users);
                 set(this, 'events', events);
                 set(this, 'series', series);
+
+                this.notifyPropertyChange('users');
+                this.notifyPropertyChange('events');
+                this.notifyPropertyChange('series');
             },
 
             /* charts configuration */
 
-            userSeries: function() {
+            userDelaySeries: function() {
                 var series = get(this, 'series'),
+                    delayMetrics = ['last', 'sum', 'min', 'max', 'average'],
                     selected = {},
                     users = ['x'],
                     groups = [];
 
                 $.each(series, function(idx, serie) {
                     var component = get(serie, 'component'),
-                        resource = get(serie, 'resource');
+                        resource = get(serie, 'resource'),
+                        metric = get(serie, 'metric');
 
-                    if (component !== '__canopsis__') {
+                    if (component !== '__canopsis__' && delayMetrics.indexOf(metric) >= 0) {
+                        var groupname = resource + ' - ' + metric;
+
                         /* generate chart categories */
                         if (users.indexOf(component) === -1) {
                             users.push(component);
                         }
 
                         /* generate groups in each categories */
-                        if (groups.indexOf(resource) === -1) {
-                            groups.push(resource);
-                            set(selected, resource, []);
+                        if (groups.indexOf(groupname) === -1) {
+                            groups.push(groupname);
+                            set(selected, groupname, null);
                         }
 
                         /* add point to corresponding category/group */
@@ -229,25 +237,24 @@ Ember.Application.initializer({
                             point = null;
 
                         if (points.length > 0) {
-                            point = points[points.length - 1];
+                            point = points[points.length - 1][1];
                         }
 
-                        get(selected, resource).push(point)
+                        set(selected, groupname, point);
                     }
                 });
 
                 /* generate chart columns */
                 var columns = [users];
 
-                $.each(selected, function(key, points) {
-                    columns.push([key].concat(points));
-                })
+                $.each(selected, function(key, point) {
+                    columns.push([key, point]);
+                });
 
                 return {
                     data: {
                         x: 'x',
                         columns: columns,
-                        groups: groups,
                         type: 'bar'
                     },
                     axis: {
@@ -257,6 +264,191 @@ Ember.Application.initializer({
                     }
                 };
             }.property('series'),
+
+            alarmDelaySeries: function() {
+                var series = get(this, 'series'),
+                    delayMetrics = ['last', 'sum', 'min', 'max', 'average'],
+                    selected = {},
+                    alarms = ['x'],
+                    groups = [];
+
+                $.each(series, function(idx, serie) {
+                    var component = get(serie, 'component'),
+                        resource = get(serie, 'resource'),
+                        metric = get(serie, 'metric');
+
+                    if (component === '__canopsis__' && delayMetrics.indexOf(metric) >= 0) {
+                        /* generate chart categories */
+                        if (alarms.indexOf(resource) === -1) {
+                            alarms.push(resource);
+                        }
+
+                        /* generate groups in each categories */
+                        if (groups.indexOf(metric) === -1) {
+                            groups.push(metric);
+                            set(selected, metric, []);
+                        }
+
+                        /* add point to corresponding category/group */
+                        var points = get(serie, 'data'),
+                            point = null;
+
+                        if (points.length > 0) {
+                            point = points[points.length - 1][1];
+                        }
+
+                        get(selected, metric).push(point);
+                    }
+                });
+
+                /* generate chart columns */
+                var columns = [alarms];
+
+                $.each(selected, function(key, points) {
+                    columns.push([key].concat(points));
+                });
+
+                return {
+                    data: {
+                        x: 'x',
+                        columns: columns,
+                        type: 'bar'
+                    },
+                    axis: {
+                        x: {
+                            type: 'category'
+                        }
+                    }
+                };
+            }.property('series'),
+
+            alarmSeries: function() {
+                var series = get(this, 'series'),
+                    alarmMetrics = ['alarm', 'alarm_ack', 'alarm_solved', 'alarm_ack_solved'],
+                    selected = {};
+
+                $.each(series, function(idx, serie) {
+                    var component = get(serie, 'component'),
+                        resource = get(serie, 'resource'),
+                        metric = get(serie, 'metric');
+
+                    if (component === '__canopsis__' && alarmMetrics.indexOf(resource) >= 0) {
+                        if (isNone(get(selected, metric))) {
+                            set(selected, metric, []);
+                        }
+
+                        var points = get(serie, 'data'),
+                            point = null;
+
+                        if (points.length > 0) {
+                            point = points[points.length - 1][1];
+                        }
+
+                        get(selected, metric).push(point);
+                    }
+                });
+
+                var columns = [['x'].concat(alarmMetrics)];
+
+                $.each(selected, function(name, points) {
+                    columns.push([name].concat(points));
+                });
+
+                return {
+                    data: {
+                        x: 'x',
+                        columns: columns,
+                        type: 'bar'
+                    },
+                    axis: {
+                        x: {
+                            type: 'category'
+                        }
+                    }
+                };
+            }.property('series'),
+
+            /* table properties */
+
+            userTable: function() {
+                var users = get(this, 'users'),
+                    items = [],
+                    me = this;
+
+                if (!isNone(users)) {
+                    $.each(users, function(key, item) {
+                        if (users.hasOwnProperty(key) && me.excludeKeys.indexOf(key) === -1) {
+                            items.push(item);
+                        }
+                    });
+                }
+
+                return items;
+            }.property('users'),
+
+            eventCounterTotal: function() {
+                var events = get(this, 'events.__canopsis__.alarm'),
+                    items = [],
+                    me = this;
+
+                if (!isNone(events)) {
+                    $.each(events, function(key, item) {
+                        if (events.hasOwnProperty(key) && me.excludeKeys.indexOf(key) === -1) {
+                            items.push(item);
+                        }
+                    });
+                }
+
+                return items;
+            }.property('events'),
+
+            eventCounterAck: function() {
+                var events = get(this, 'events.__canopsis__.alarm_ack'),
+                    items = [],
+                    me = this;
+
+                if (!isNone(events)) {
+                    $.each(events, function(key, item) {
+                        if (events.hasOwnProperty(key) && me.excludeKeys.indexOf(key) === -1) {
+                            items.push(item);
+                        }
+                    });
+                }
+
+                return items;
+            }.property('events'),
+
+            eventCounterSolved: function() {
+                var events = get(this, 'events.__canopsis__.alarm_solved'),
+                    items = [],
+                    me = this;
+
+                if (!isNone(events)) {
+                    $.each(events, function(key, item) {
+                        if (events.hasOwnProperty(key) && me.excludeKeys.indexOf(key) === -1) {
+                            items.push(item);
+                        }
+                    });
+                }
+
+                return items;
+            }.property('events'),
+
+            eventCounterAckSolved: function() {
+                var events = get(this, 'events.__canopsis__.alarm_ack_solved'),
+                    items = [],
+                    me = this;
+
+                if (!isNone(events)) {
+                    $.each(events, function(key, item) {
+                        if (events.hasOwnProperty(key) && me.excludeKeys.indexOf(key) === -1) {
+                            items.push(item);
+                        }
+                    });
+                }
+
+                return items;
+            }.property('events')
         }, widgetOptions);
 
         application.register('widget:statstable', widget);
