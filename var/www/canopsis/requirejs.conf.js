@@ -27,11 +27,8 @@ require.config({
 
         'jquery': 'canopsis/core/lib/wrappers/jquery',
         'handlebars': 'canopsis/core/lib/externals/handlebars/handlebars',
-        // 'ember-template-compiler': 'canopsis/core/lib/externals/min/ember-template-compiler',
-        // 'ember-lib': 'canopsis/core/lib/externals/min/ember.debug',
-        // 'ember-data-lib': 'canopsis/core/lib/externals/min/ember-data'
-        'ember-template-compiler': 'canopsis/core/lib/externals/min/ember-1.13/ember-template-compiler',
-        'ember-lib': 'canopsis/core/lib/externals/min/ember-1.13/ember',
+        'ember-template-compiler': 'canopsis/core/lib/externals/min/ember-1.11/ember-template-compiler',
+        'ember-lib': 'canopsis/core/lib/externals/min/ember-1.11/ember',
         'ember-data-lib': 'canopsis/core/lib/externals/min/ember-1.11/ember-data'
     },
     shim: {
