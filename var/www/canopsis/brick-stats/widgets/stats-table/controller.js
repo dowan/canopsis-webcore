@@ -25,7 +25,6 @@ Ember.Application.initializer({
         'MetricConsumer',
         'MetricFilterable',
         'HumanReadableHelper',
-        'EachKeyComponent',
         'c3jsComponent'
     ],
     initialize: function(container, application) {
