@@ -1,12 +1,8 @@
 <div class="bg-grey">
-    {{#with item as item}}
+    {{#with item as view.item}}
         {{partial "widgettitlebar"}}
     {{/with}}
-    <div {{bind-attr class="view.minimized:hidden"}}>
-        {{widgethelper widget=item.widget target=controller}}
+    <div>
+        {{widgethelper widget=view.item.widget target=controller}}
     </div>
-
-    {{#if view.minimized}}
-        <hr/>
-    {{/if}}
 </div>
