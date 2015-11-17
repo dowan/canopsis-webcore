@@ -207,7 +207,7 @@ Ember.Application.initializer({
 
             userDelaySeries: function() {
                 var series = get(this, 'series'),
-                    delayMetrics = ['last', 'sum', 'min', 'max', 'average'],
+                    delayMetrics = ['min', 'max', 'average'],
                     selected = {},
                     users = ['x'],
                     groups = [];
@@ -266,7 +266,7 @@ Ember.Application.initializer({
 
             alarmDelaySeries: function() {
                 var series = get(this, 'series'),
-                    delayMetrics = ['last', 'sum', 'min', 'max', 'average'],
+                    delayMetrics = ['min', 'max', 'average'],
                     selected = {},
                     alarms = ['x'],
                     groups = [];
@@ -377,13 +377,43 @@ Ember.Application.initializer({
                 if (!isNone(users)) {
                     $.each(users, function(key, item) {
                         if (users.hasOwnProperty(key) && me.excludeKeys.indexOf(key) === -1) {
-                            items.push(item);
+                            var counters = [],
+                                ack = get(item, 'alarm_ack');
+
+                            if (!isNone(ack)) {
+                                $.each(ack, function(countername, counter) {
+                                    if(ack.hasOwnProperty(countername) && me.excludeKeys.indexOf(countername) === -1) {
+                                        counters.push(counter);
+                                    }
+                                });
+                            }
+
+                            items.push({
+                                user: item,
+                                counters: counters
+                            });
                         }
                     });
                 }
 
                 return items;
             }.property('users'),
+
+            userCounters: function() {
+                var users = get(this, 'usersTable'),
+                    items = [],
+                    me = this;
+
+                if (!isNone(users) && users.length > 0) {
+                    var counters = get(users[0], 'counters');
+
+                    $.each(counters, function(idx, name) {
+                        items.push(name);
+                    });
+                }
+
+                return items;
+            }.property('userTable'),
 
             eventCounterTotal: function() {
                 var events = get(this, 'events.__canopsis__.alarm'),
