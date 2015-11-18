@@ -17,6 +17,7 @@
   "fancyBrickName": "",
   "screenshots": "",
   "pre-commit": [
-    "lint"
+    "lint",
+    "doc"
   ]
 }
