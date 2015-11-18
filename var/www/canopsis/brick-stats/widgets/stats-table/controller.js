@@ -400,15 +400,15 @@ Ember.Application.initializer({
             }.property('users'),
 
             userCounters: function() {
-                var users = get(this, 'usersTable'),
+                var users = get(this, 'userTable'),
                     items = [],
                     me = this;
 
                 if (!isNone(users) && users.length > 0) {
                     var counters = get(users[0], 'counters');
 
-                    $.each(counters, function(idx, name) {
-                        items.push(name);
+                    $.each(counters, function(idx, counter) {
+                        items.push(counter.__name__);
                     });
                 }
 
