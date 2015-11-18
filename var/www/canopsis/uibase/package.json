@@ -5,8 +5,9 @@
   "main": "init.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "rm -Rf tmp/build && broccoli build tmp/build && cp tmp/build . -RT",
-    "lint": "eslint ."
+    "compile": "rm -Rf tmp/build && broccoli build tmp/build && cp tmp/build . -RT && npm run doc",
+    "lint": "eslint .",
+    "doc": "jsdoc -c .jsdoc.conf ."
   },
   "author": "Team Canopsis <maintainers@canopsis.org>",
   "license": "AGPL-3.0",
