@@ -636,11 +636,7 @@ Ember.Application.initializer({
                         failure.call(context, record);
                     }
                 };
-                recordWizard.submit.done(
-                    done
-                ).fail(
-                    fail
-                );
+                recordWizard.submit.done(done).fail(fail);
             }
 
         });
