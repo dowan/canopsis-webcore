@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/dropdownbuttontitle/component.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/dropdownbuttontitle/component.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see &lt;http://www.gnu.org/licenses/>.
+ */
+
+Ember.Application.initializer({
+    name: 'component-dropdownbuttontitle',
+    initialize: function(container, application) {
+
+        /**
+         * Component for defining the title of the dropdownbutton
+         *
+         * @class Dropdownbuttontitle
+         * @static
+         */
+        var component = Ember.Component.extend({
+            name: undefined,
+            classNames: ['dropdownbuttontitle', 'dropdownbuttontitle-default']
+        });
+
+        application.register('component:component-dropdownbuttontitle', component);
+    }
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="canopsis.frontend.module_uibase.html">uibase</a></li></ul><h3>Classes</h3><ul><li><a href="canopsis.frontend.uibase.CrudMixin.html">CrudMixin</a></li><li><a href="canopsis.frontend.uibase.GridLayoutMixin.html">GridLayoutMixin</a></li><li><a href="Colpick.html">Colpick</a></li><li><a href="Dropdownbutton.html">Dropdownbutton</a></li><li><a href="Dropdownbuttoncontent.html">Dropdownbuttoncontent</a></li><li><a href="Dropdownbuttonheader.html">Dropdownbuttonheader</a></li><li><a href="Dropdownbuttonoverview.html">Dropdownbuttonoverview</a></li><li><a href="Dropdownbuttontitle.html">Dropdownbuttontitle</a></li><li><a href="initialize.html#~component">component</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:add">add</a></li><li><a href="global.html#event:duplicate">duplicate</a></li><li><a href="global.html#event:edit">edit</a></li><li><a href="global.html#event:remove">remove</a></li><li><a href="global.html#event:removeSelection">removeSelection</a></li></ul><h3>Mixins</h3><ul><li><a href="initialize.html#~mixin">mixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_addGraph">_addGraph</a></li><li><a href="global.html#actions">actions</a></li><li><a href="global.html#addLink">addLink</a></li><li><a href="global.html#addLinks">addLinks</a></li><li><a href="global.html#addNodes">addNodes</a></li><li><a href="global.html#availableDataColumns">availableDataColumns</a></li><li><a href="global.html#categorizeElements">categorizeElements</a></li><li><a href="global.html#changeColor:actiontoupdatecssforrangesandsetthechosencolor">changeColor : action to update css for ranges and set the chosen color</a></li><li><a href="global.html#checkTargetLink">checkTargetLink</a></li><li><a href="global.html#click">click</a></li><li><a href="global.html#computeFilterFragmentsList">computeFilterFragmentsList</a></li><li><a href="global.html#deleteRecords">deleteRecords</a></li><li><a href="global.html#delLinks">delLinks</a></li><li><a href="global.html#delNodes">delNodes</a></li><li><a href="global.html#destroyToolBox">destroyToolBox</a></li><li><a href="global.html#didInsertElement">didInsertElement</a></li><li><a href="global.html#dropdownMenu">dropdownMenu</a></li><li><a href="global.html#editRecord">editRecord</a></li><li><a href="global.html#filters_list">filters_list</a></li><li><a href="global.html#findItems">findItems</a></li><li><a href="global.html#generateMultiFilter">generateMultiFilter</a></li><li><a href="global.html#generateVirtualAttribute">generateVirtualAttribute</a></li><li><a href="global.html#getEntitiesFromServer">getEntitiesFromServer</a></li><li><a href="global.html#getNode">getNode</a></li><li><a href="global.html#getSection">getSection</a></li><li><a href="global.html#getTimeInterval">getTimeInterval</a></li><li><a href="global.html#getToolBoxItems">getToolBoxItems</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#invisibleCellsCount">invisibleCellsCount</a></li><li><a href="global.html#isSelectedFilter">isSelectedFilter</a></li><li><a href="global.html#lock">lock</a></li><li><a href="global.html#newRecord">newRecord</a></li><li><a href="global.html#newToolBoxItem">newToolBoxItem</a></li><li><a href="global.html#onChange">onChange</a></li><li><a href="global.html#refreshLockedShapes">refreshLockedShapes</a></li><li><a href="global.html#refreshSelectedShapes">refreshSelectedShapes</a></li><li><a href="global.html#registerHooks">registerHooks</a></li><li><a href="global.html#removeTmpLink">removeTmpLink</a></li><li><a href="global.html#saveRecords">saveRecords</a></li><li><a href="global.html#select">select</a></li><li><a href="global.html#selectedItemHeaderRendererAttr">selectedItemHeaderRendererAttr</a></li><li><a href="global.html#selectedItemHeaderRendererType">selectedItemHeaderRendererType</a></li><li><a href="global.html#showToolBox">showToolBox</a></li><li><a href="global.html#standardListDisplay">standardListDisplay</a></li><li><a href="global.html#toggle">toggle</a></li><li><a href="global.html#unregisterHooks">unregisterHooks</a></li><li><a href="global.html#unselect">unselect</a></li><li><a href="global.html#updateInterval">updateInterval</a></li><li><a href="global.html#updateLinks">updateLinks</a></li><li><a href="global.html#updateModel">updateModel</a></li><li><a href="global.html#updateNodes">updateNodes</a></li><li><a href="global.html#user_filters">user_filters</a></li><li><a href="global.html#userCanCreateRecord">userCanCreateRecord</a></li><li><a href="global.html#userCanDeleteRecord">userCanDeleteRecord</a></li><li><a href="global.html#userCanReadRecord">userCanReadRecord</a></li><li><a href="global.html#userCanUpdateRecord">userCanUpdateRecord</a></li><li><a href="global.html#weaveLinks">weaveLinks</a></li><li><a href="global.html#willDestroyElement">willDestroyElement</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Nov 18 2015 15:45:08 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

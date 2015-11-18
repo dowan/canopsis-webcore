@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: mixins/customfilterlist.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: mixins/customfilterlist.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see &lt;http://www.gnu.org/licenses/>.
+ */
+
+
+
+Ember.Application.initializer({
+    name:'CustomfilterlistMixin',
+    after: ['MixinFactory', 'DataUtils', 'FormsUtils', 'NotificationUtils'],
+    initialize: function(container, application) {
+
+        var Mixin = container.lookupFactory('factory:mixin');
+        var dataUtils = container.lookupFactory('utility:data');
+        var formsUtils = container.lookupFactory('utility:forms');
+        var notificationUtils = container.lookupFactory('utility:notification');
+
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone,
+            __ = Ember.String.loc;
+
+        /**
+          * Implements Custom filter management for list
+          * A filter is a combination of a cfilter and a title.
+          * Custom cfilter allow perform selelection on a list with custom filter information.
+        */
+        var mixin = Mixin('customfilterlist', {
+            partials: {
+                subHeader: ['customfilters']
+            },
+
+            /**
+            * Load custom filter if any form the widget model
+            **/
+
+            init: function() {
+                this._super();
+
+                if(!get(this, 'model.user_filters')) {
+                    set(this, 'model.user_filters', Ember.A());
+                }
+
+                set(this, 'multiFiltersTitle', []);
+                set(this, 'customFilterOperators', [
+                    {
+                        value: '$and',
+                        display: '&amp;',
+                        active: true
+                    },
+                    {
+                        value: '$or',
+                        display: '||',
+                        active: false
+                    }
+                ]);
+
+            },
+
+            /**
+            * Builds the list of active filters
+            *
+            * @param filterlist : a list of filter that contains
+            * a string mongo filter, a title and an active boolean
+            **/
+
+            isSelectedFilter: function (filterList) {
+                if(!filterList || !filterList.length) {
+                    return false;
+                }
+
+                if (!get(this, 'mixinOptions.customfilterlist.can_mix_filters')) {
+                    var filterLen = filterList.length;
+                    var currentTitle = get(this, 'model.selected_filter.title');
+                    for (var i = 0; i &lt; filterLen; i++) {
+
+                        var compareTitle = get(filterList[i], 'title');
+
+                        console.log('compare filters',currentTitle, compareTitle);
+
+                        if (currentTitle === compareTitle) {
+                            set(filterList[i], 'isActive', true);
+                        } else {
+                            set(filterList[i], 'isActive', false);
+                        }
+                    }
+                }
+
+                return filterList;
+            },
+
+            /**
+            * Get filter list from the mixin parameters
+            **/
+
+            filters_list: function () {
+                return this.isSelectedFilter(get(this, 'mixinOptions.customfilterlist.filters'));
+            }.property('mixinOptions.customfilterlist.filters', 'model.selected_filter'),
+
+            /**
+            * Get filter list from the user parameters
+            **/
+
+            user_filters: function () {
+                return this.isSelectedFilter(get(this, 'model.user_filters'));
+            }.property('model.user_filters', 'model.selected_filter'),
+
+            /**
+            * Compute the complete filter from user selected filters.
+            * It depends on what user selected in the UI
+            **/
+
+            computeFilterFragmentsList: function() {
+                var list = this._super(),
+                    mixinOptions = get(this, 'model.mixins').findBy('name', 'customfilterlist'),
+                    userFilter;
+
+                var selectedFilterFilter = get(this, 'model.selected_filter.filter');
+
+                if(!isNone(selectedFilterFilter)) {
+                    userFilter = selectedFilterFilter;
+                } else if(get(this, 'model.selected_filter') &amp;&amp; !selectedFilterFilter) {
+                    userFilter = {};
+                } else if(mixinOptions &amp;&amp; mixinOptions.default_filter) {
+                    userFilter = mixinOptions.default_filter;
+                    userFilter = JSON.parse(userFilter);
+                } else {
+                    userFilter = {};
+                }
+
+                list.pushObject(userFilter);
+
+                return list;
+            },
+
+            /**
+            * Generate the complete filter from multi selection to be inserted in the computeFilterFragmentList
+            * Filters elements are the whole user filter selection from user filter and widget filter.
+            **/
+
+            generateMultiFilter: function () {
+
+                var widgetFilters = get(this, 'mixinOptions.customfilterlist.filters');
+                var userFilters = get(this, 'model.user_filters');
+
+                //get all filter available
+                var allFilters = [];
+                allFilters.addObjects(widgetFilters);
+                allFilters.addObjects(userFilters);
+
+                var length = allFilters.length,
+                    titles = get(this, 'multiFiltersTitle'),
+                    filter = {},
+                    i;
+
+                //get selector operator value
+                var operators = get(this, 'customFilterOperators');
+                var operatorLength = operators.length,
+                    operatorValue;
+
+                for(i=0; i&lt;operatorLength; i++) {
+                    if (get(operators[i], 'active')) {
+                        operatorValue = get(operators[i], 'value');
+                    }
+                }
+
+                filter[operatorValue] = [];
+
+                //generate user selected filter list
+                for (i=0; i&lt;length; i++) {
+                    var title = get(allFilters[i], 'title');
+                    if ($.inArray(title, titles) !== -1) {
+                        var subFilter = JSON.parse(get(allFilters[i], 'filter'));
+                        filter[operatorValue].pushObject(subFilter);
+                    }
+                }
+
+                //Test if there is sub filters.
+                if (filter[operatorValue].length === 0) {
+                    filter = {};
+                }
+
+                var multiFilter = JSON.stringify(filter);
+
+                set(this, 'model.selected_filter', {filter: multiFilter});
+
+            },
+
+            actions: {
+
+                /**
+                * Set an operator active by desactivating all other operator and set active the one passed as parameter.
+                *
+                * @param operator: an operator dict that have to be set as active.
+                **/
+
+                setActiveOperator: function (operator) {
+
+                    var operators = get(this, 'customFilterOperators');
+                    var length = operators.length;
+
+                    for(var i=0; i&lt;length; i++) {
+                        set(operators[i], 'active', false);
+                    }
+
+                    set(operator, 'active', true);
+
+                    //reload widget with new filter when operator is changed
+                    this.generateMultiFilter();
+
+                    this.refreshContent();
+
+                },
+
+
+                /**
+                * The entry point of the customfilterlist system.
+                * By selecting a filter in the list, the user trigger this function
+                * and make available a filter fragment into the widget.
+                *
+                * @param filter: a dict that contains a title and a string mongo filter and an active status.
+                **/
+                setFilter: function (filter) {
+
+                    var canMixFilter = get(this, 'mixinOptions.customfilterlist.can_mix_filters');
+
+                    if (canMixFilter) {
+                        console.log('multi filter mode');
+
+                        var filters = get(this, 'multiFiltersTitle'),
+                            title = get(filter, 'title'),
+                            active = !get(filter, 'isActive');
+                        //set active filter
+                        set(filter, 'isActive', active);
+
+                        //when filter is active and not
+                        if (active) {
+                            filters.pushObject(title);
+                        } else {
+                            filters.removeObject(title);
+                        }
+
+                        this.generateMultiFilter();
+
+                    } else {
+                        console.log('single filter mode');
+
+                        var query = get(filter, 'filter');
+                        //current user filter set for list management
+                        set(this, 'model.selected_filter', filter);
+                        //user filter for list be able to reload properly
+                        set(this, 'model.userFilter', query);
+                        //push userparams to db
+                        this.saveUserConfiguration();
+
+                        //changing pagination information
+                        if (!isNone(get(this, 'currentPage'))) {
+                            set(this, 'currentPage', 1);
+                        }
+                    }
+
+                    this.refreshContent();
+                },
+
+                /**
+                * The action triggered when the user add a filter.
+                * This leads to a filter save into the user preference storage
+                **/
+
+                addUserFilter: function () {
+                    var widgetController = this;
+                    var record = dataUtils.getStore().createRecord('customfilter', {
+                        crecord_type: 'customfilter'
+                    });
+
+                    var recordWizard = formsUtils.showNew('modelform', record, {
+                        title: __('Create a custom filter for current list')
+                    });
+
+                    recordWizard.submit.then(function(form) {
+                        record = form.get('formContext');
+
+                        get(widgetController, 'model.user_filters').pushObject(record);
+
+                        widgetController.notifyPropertyChange('model.user_filters');
+
+
+                        console.log('Custom filter created', record, form);
+                        notificationUtils.info(__('Custom filter created'));
+
+                        // get(widgetController, 'viewController').get('content').save();
+
+                        widgetController.saveUserConfiguration();
+                    });
+                },
+
+                /**
+                * Action allowing filter edition from one existing user filter.
+                *
+                * @param filter: a dict with filter information to update into the user preferences
+                **/
+
+                editFilter: function (filter) {
+
+                    var widgetController = this;
+
+                    //rebuild a crecord as data may be simple js object saved to userpreferences
+                    var record = dataUtils.getStore().createRecord('customfilter', {
+                        crecord_type: 'customfilter',
+                        filter: get(filter, 'filter'),
+                        title: get(filter, 'title')
+                    });
+
+                    var recordWizard = formsUtils.showNew('modelform', record, {
+                        title: __('Edit filter for current list')
+                    });
+
+                    recordWizard.submit.then(function(form) {
+                        widgetController.get('model.user_filters').removeObject(filter);
+                        record = form.get('formContext');
+                        widgetController.get('model.user_filters').pushObject(record);
+                        console.log('Custom filter created', record, form);
+                        notificationUtils.info(__('Custom filter created'));
+
+                        widgetController.saveUserConfiguration();
+                    });
+                },
+
+                /**
+                * The action to remove a filter from the user filter list.
+                *
+                * @param filter: dict that contains a filter information.
+                **/
+
+                removeFilter: function (filter) {
+
+                    var title = get(filter, 'title');
+
+                    var recordWizard = formsUtils.showNew('confirmform', {}, {
+                        title: __('Are you sure to delete filter') + ' ' + title + '?'
+                    });
+
+                    var widgetController = this;
+
+                    recordWizard.submit.then(function(form) {
+                        void(form);
+
+                        widgetController.get('model.user_filters').removeObject(filter);
+                        notificationUtils.info(__('Custom filter removed'));
+
+                        // get(widgetController, 'viewController').get('content').save();
+
+                        widgetController.saveUserConfiguration();
+                    });
+                }
+            }
+        });
+
+        application.register('mixin:customfilterlist', mixin);
+    }
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="canopsis.frontend.module_uibase.html">uibase</a></li></ul><h3>Classes</h3><ul><li><a href="canopsis.frontend.uibase.CrudMixin.html">CrudMixin</a></li><li><a href="canopsis.frontend.uibase.GridLayoutMixin.html">GridLayoutMixin</a></li><li><a href="Colpick.html">Colpick</a></li><li><a href="Dropdownbutton.html">Dropdownbutton</a></li><li><a href="Dropdownbuttoncontent.html">Dropdownbuttoncontent</a></li><li><a href="Dropdownbuttonheader.html">Dropdownbuttonheader</a></li><li><a href="Dropdownbuttonoverview.html">Dropdownbuttonoverview</a></li><li><a href="Dropdownbuttontitle.html">Dropdownbuttontitle</a></li><li><a href="initialize.html#~component">component</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:add">add</a></li><li><a href="global.html#event:duplicate">duplicate</a></li><li><a href="global.html#event:edit">edit</a></li><li><a href="global.html#event:remove">remove</a></li><li><a href="global.html#event:removeSelection">removeSelection</a></li></ul><h3>Mixins</h3><ul><li><a href="initialize.html#~mixin">mixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_addGraph">_addGraph</a></li><li><a href="global.html#actions">actions</a></li><li><a href="global.html#addLink">addLink</a></li><li><a href="global.html#addLinks">addLinks</a></li><li><a href="global.html#addNodes">addNodes</a></li><li><a href="global.html#availableDataColumns">availableDataColumns</a></li><li><a href="global.html#categorizeElements">categorizeElements</a></li><li><a href="global.html#changeColor:actiontoupdatecssforrangesandsetthechosencolor">changeColor : action to update css for ranges and set the chosen color</a></li><li><a href="global.html#checkTargetLink">checkTargetLink</a></li><li><a href="global.html#click">click</a></li><li><a href="global.html#computeFilterFragmentsList">computeFilterFragmentsList</a></li><li><a href="global.html#deleteRecords">deleteRecords</a></li><li><a href="global.html#delLinks">delLinks</a></li><li><a href="global.html#delNodes">delNodes</a></li><li><a href="global.html#destroyToolBox">destroyToolBox</a></li><li><a href="global.html#didInsertElement">didInsertElement</a></li><li><a href="global.html#dropdownMenu">dropdownMenu</a></li><li><a href="global.html#editRecord">editRecord</a></li><li><a href="global.html#filters_list">filters_list</a></li><li><a href="global.html#findItems">findItems</a></li><li><a href="global.html#generateMultiFilter">generateMultiFilter</a></li><li><a href="global.html#generateVirtualAttribute">generateVirtualAttribute</a></li><li><a href="global.html#getEntitiesFromServer">getEntitiesFromServer</a></li><li><a href="global.html#getNode">getNode</a></li><li><a href="global.html#getSection">getSection</a></li><li><a href="global.html#getTimeInterval">getTimeInterval</a></li><li><a href="global.html#getToolBoxItems">getToolBoxItems</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#invisibleCellsCount">invisibleCellsCount</a></li><li><a href="global.html#isSelectedFilter">isSelectedFilter</a></li><li><a href="global.html#lock">lock</a></li><li><a href="global.html#newRecord">newRecord</a></li><li><a href="global.html#newToolBoxItem">newToolBoxItem</a></li><li><a href="global.html#onChange">onChange</a></li><li><a href="global.html#refreshLockedShapes">refreshLockedShapes</a></li><li><a href="global.html#refreshSelectedShapes">refreshSelectedShapes</a></li><li><a href="global.html#registerHooks">registerHooks</a></li><li><a href="global.html#removeTmpLink">removeTmpLink</a></li><li><a href="global.html#saveRecords">saveRecords</a></li><li><a href="global.html#select">select</a></li><li><a href="global.html#selectedItemHeaderRendererAttr">selectedItemHeaderRendererAttr</a></li><li><a href="global.html#selectedItemHeaderRendererType">selectedItemHeaderRendererType</a></li><li><a href="global.html#showToolBox">showToolBox</a></li><li><a href="global.html#standardListDisplay">standardListDisplay</a></li><li><a href="global.html#toggle">toggle</a></li><li><a href="global.html#unregisterHooks">unregisterHooks</a></li><li><a href="global.html#unselect">unselect</a></li><li><a href="global.html#updateInterval">updateInterval</a></li><li><a href="global.html#updateLinks">updateLinks</a></li><li><a href="global.html#updateModel">updateModel</a></li><li><a href="global.html#updateNodes">updateNodes</a></li><li><a href="global.html#user_filters">user_filters</a></li><li><a href="global.html#userCanCreateRecord">userCanCreateRecord</a></li><li><a href="global.html#userCanDeleteRecord">userCanDeleteRecord</a></li><li><a href="global.html#userCanReadRecord">userCanReadRecord</a></li><li><a href="global.html#userCanUpdateRecord">userCanUpdateRecord</a></li><li><a href="global.html#weaveLinks">weaveLinks</a></li><li><a href="global.html#willDestroyElement">willDestroyElement</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Nov 18 2015 15:45:08 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
