@@ -28,17 +28,17 @@ Ember.Application.initializer({
 
 
         var component = Ember.Component.extend(ValidationFieldMixin, {
-            valueRefPath: "content.value",
-            valuePath: "value",
+            valueRefPath: 'content.value',
+            valuePath: 'value',
 
             init: function() {
                 this._super.apply(this, arguments);
 
-                set(this, "componentDataStore", DS.Store.create({
-                    container: get(this, "container")
+                set(this, 'componentDataStore', DS.Store.create({
+                    container: get(this, 'container')
                 }));
 
-                var value = get(this,"content.value") || [];
+                var value = get(this,'content.value') || [];
                 set(this, 'value', value);
                 set(this, 'content.value', value);
 
@@ -106,7 +106,7 @@ Ember.Application.initializer({
                         Ember.set(currentGeneratedAttr, 'model.options.' + key, content[key]);
                     }
                 }
-                console.log("generateVirtualAttribute virtual attribute", currentGeneratedAttr);
+                console.log('generateVirtualAttribute virtual attribute', currentGeneratedAttr);
 
                 Ember.addObserver(currentGeneratedAttr, 'value', function(attr) {
                     console.log('value changed', attr.value, attr.index);
@@ -115,7 +115,7 @@ Ember.Application.initializer({
                     console.log('content changed', componentArrayComponent.get('value'));
                 });
 
-                console.log("generateVirtualAttribute");
+                console.log('generateVirtualAttribute');
 
                 return currentGeneratedAttr;
             },
@@ -204,9 +204,9 @@ Ember.Application.initializer({
                 array.arrayContentDidChange(newIndex, 0, 1);
 
                 //update component value
-                var array = get(this, 'value');
+                array = get(this, 'value');
                 array.arrayContentWillChange(oldIndex, 1, 0);
-                var oldIndex_value = array[oldIndex];
+                oldIndex_value = array[oldIndex];
                 array.splice(oldIndex, 1);
                 array.splice(newIndex, 0, oldIndex_value);
 

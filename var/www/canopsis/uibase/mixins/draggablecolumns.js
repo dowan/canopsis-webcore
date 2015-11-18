@@ -24,26 +24,9 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var Mixin = container.lookupFactory('factory:mixin');
 
-        var get = Ember.get,
-            set = Ember.set;
-
-
         var mixin = Mixin('draggablecolumns', {
             partials: {
                 tableheader: ['draggableheaders']
-            },
-
-            didInsertElement: function() {
-                /*
-                this.$('th').sortable({
-                    update: function(event, ui) {
-                        var indexes = {};
-                        $(this).find('.item').each(function(index) {
-                            indexes[$(this).data('id')] = index;
-                        });
-                    }
-                });
-                */
             }
         });
 

@@ -25,7 +25,8 @@ Ember.Application.initializer({
         var datesUtils = container.lookupFactory('utility:dates');
 
         var get = Ember.get,
-            set = Ember.set;
+            set = Ember.set,
+            moment = window.moment;
 
 
         var component = Ember.Component.extend({
@@ -68,7 +69,7 @@ Ember.Application.initializer({
                         }
 
                         //Translate result into mongo form filter
-                        filter = {};
+                        var filter = {};
                         //we ve got an interval
                         var timestamp = {};
                         var hasLimit = false;

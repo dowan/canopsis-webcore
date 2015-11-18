@@ -18,7 +18,7 @@
  */
 
 Ember.Application.initializer({
-    name:"component-mixinselector",
+    name: 'component-mixinselector',
     after: 'MixinsRegistry',
     initialize: function(container, application) {
         var mixinsRegistry = container.lookupFactory('registry:mixins');

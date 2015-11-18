@@ -19,7 +19,7 @@
 
 
 Ember.Application.initializer({
-    name:"component-colpick",
+    name: 'component-colpick',
     initialize: function(container, application) {
         var get = Ember.get,
             set = Ember.set;
@@ -102,12 +102,11 @@ Ember.Application.initializer({
                     options.color = value;
                 }
 
+                //TODO remove because useless?
                 /*
                  * close the dropdownbutton
                  */
-                 component.$('.closeDropdown').click(function(){
-
-                 });
+                component.$('.closeDropdown').click(function(){});
 
                 /*
                  *switch display between colorPicker and colorGrid

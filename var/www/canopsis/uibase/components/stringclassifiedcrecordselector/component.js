@@ -19,7 +19,7 @@
 
 
 Ember.Application.initializer({
-    name:"component-stringclassifiedcrecordselector",
+    name: 'component-stringclassifiedcrecordselector',
     after: 'component-classifiedcrecordselector',
     initialize: function(container, application) {
 

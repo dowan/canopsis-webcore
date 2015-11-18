@@ -18,11 +18,10 @@
  */
 
 Ember.Application.initializer({
-    name:"component-draggablebutton",
+    name: 'component-draggablebutton',
     initialize: function(container, application) {
 
-        var get = Ember.get,
-            set = Ember.set;
+        var get = Ember.get;
 
 
         var DragNDrop = Ember.Namespace.create();

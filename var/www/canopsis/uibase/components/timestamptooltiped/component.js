@@ -18,13 +18,12 @@
  */
 
 Ember.Application.initializer({
-    name:"component-timestamptooltiped",
+    name: 'component-timestamptooltiped',
     after: 'DatesUtils',
     initialize: function(container, application) {
         var dateUtils = container.lookupFactory('utility:dates');
 
         var get = Ember.get,
-            set = Ember.set,
             __ = Ember.String.loc;
 
 
@@ -39,8 +38,7 @@ Ember.Application.initializer({
             showOptionalElapsed: function () {
                 var optionaltimestamp = get(this, 'optionaltimestamp');
                 return dateUtils.durationFromNow(optionaltimestamp);
-            }.property(),
-
+            }.property()
         });
 
         application.register('component:component-timestamptooltiped', component);

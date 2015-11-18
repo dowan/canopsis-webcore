@@ -18,13 +18,14 @@
  */
 
 Ember.Application.initializer({
-    name:"component-rrule",
+    name: 'component-rrule',
     initialize: function(container, application) {
 
         var get = Ember.get,
             set = Ember.set,
             isNone = Ember.isNone,
-             __ = Ember.String.loc;
+            __ = Ember.String.loc,
+            RRule = window.RRule;
 
         var component = Ember.Component.extend({
 
@@ -43,7 +44,7 @@ Ember.Application.initializer({
                 {value: RRule.DAILY, label: __('Daily')},
                 {value: RRule.HOURLY, label: __('Hourly')},
                 {value: RRule.MINUTELY, label: __('Minutely')},
-                {value: RRule.SECONDLY, label: __('Secondly')},
+                {value: RRule.SECONDLY, label: __('Secondly')}
             ],
 
             /*//not used yet
@@ -74,7 +75,7 @@ Ember.Application.initializer({
                 this._super();
 
                 var monthmodel = DS.Model.extend({
-                  label: DS.attr()
+                    label: DS.attr()
                 });
 
                 monthmodel.FIXTURES = get(this,'months');
@@ -150,7 +151,7 @@ Ember.Application.initializer({
 
                     get(this, 'rules').pushObject(ruleObject);
 
-                   this.updateContent();
+                    this.updateContent();
                 }
             },
 
@@ -168,8 +169,7 @@ Ember.Application.initializer({
 
             didInsertElement:function () {
                 console.log('recurrence input loaded', this.$());
-            },
-
+            }
         });
         application.register('component:component-rrule', component);
     }

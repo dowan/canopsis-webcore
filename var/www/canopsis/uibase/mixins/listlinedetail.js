@@ -18,10 +18,9 @@
  */
 
 Ember.Application.initializer({
-    name:'ListlinedetailMixin',
+    name: 'ListlinedetailMixin',
     after: ['MixinFactory', 'FormsRegistry', 'HashUtils'],
     initialize: function(container, application) {
-        var FormsRegistry = container.lookupFactory('registry:forms');
         var Mixin = container.lookupFactory('factory:mixin');
         var hash = container.lookupFactory('utility:hash');
 
@@ -32,8 +31,8 @@ Ember.Application.initializer({
         var mixin = Mixin('listlinedetail', {
 
             partials: {
-                columnsLine: ["actionbutton-foldable"],
-                columnsHead: ["column-unfold"]
+                columnsLine: ['actionbutton-foldable'],
+                columnsHead: ['column-unfold']
             },
 
             actions: {
@@ -100,7 +99,7 @@ Ember.Application.initializer({
                 }
 
                 return nbColumns;
-            }.property("controller.shown_columns")
+            }.property('controller.shown_columns')
         });
 
         application.register('mixin:listlinedetail', mixin);

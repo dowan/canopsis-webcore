@@ -19,7 +19,7 @@
 
 
 Ember.Application.initializer({
-    name:'MinimizebuttonMixin',
+    name: 'MinimizebuttonMixin',
     after: 'MixinFactory',
     initialize: function(container, application) {
         var Mixin = container.lookupFactory('factory:mixin');
@@ -30,7 +30,7 @@ Ember.Application.initializer({
             init: function() {
                 this._super();
                 set(this, 'model.isMinimizable', true);
-            },
+            }
         });
 
         application.register('mixin:minimizebutton', mixin);

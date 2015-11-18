@@ -18,11 +18,10 @@
  */
 
 Ember.Application.initializer({
-    name:"component-dropdownbuttoncontent",
+    name: 'component-dropdownbuttoncontent',
     initialize: function(container, application) {
 
-        var get = Ember.get,
-            set = Ember.set;
+        var get = Ember.get;
 
         /**
          * Component for switching between display and hide of the content
@@ -41,7 +40,7 @@ Ember.Application.initializer({
              * @return {boolean}
              */
             dropdownContentMenu: function(){
-               return get(this, 'parentView.opened');
+                return get(this, 'parentView.opened');
             }.property('parentView.opened'),
 
             attributeBindings: ['aria-labelledby'],

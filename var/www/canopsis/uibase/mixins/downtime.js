@@ -23,7 +23,6 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var Mixin = container.lookupFactory('factory:mixin');
         var formsUtils = container.lookupFactory('utility:forms');
-        var hashUtils = container.lookupFactory('utility:hash');
 
         var get = Ember.get,
             set = Ember.set,
@@ -62,7 +61,7 @@ Ember.Application.initializer({
             },
 
             userCanReadRecord: function() {
-                if(get(this, 'user') === "root") {
+                if(get(this, 'user') === 'root') {
                     return true;
                 }
 
@@ -72,7 +71,7 @@ Ember.Application.initializer({
             }.property('config.listed_crecord_type'),
 
             userCanCreateRecord: function() {
-                if(get(this, 'user') === "root") {
+                if(get(this, 'user') === 'root') {
                     return true;
                 }
 
@@ -82,7 +81,7 @@ Ember.Application.initializer({
             }.property('config.listed_crecord_type'),
 
             userCanUpdateRecord: function() {
-                if(get(this, 'user') === "root") {
+                if(get(this, 'user') === 'root') {
                     return true;
                 }
 
@@ -92,7 +91,7 @@ Ember.Application.initializer({
             }.property('config.listed_crecord_type'),
 
             userCanDeleteRecord: function() {
-                if(get(this, 'user') === "root") {
+                if(get(this, 'user') === 'root') {
                     return true;
                 }
 
@@ -104,7 +103,7 @@ Ember.Application.initializer({
             actions: {
 
                 edit: function (record) {
-                    console.log("edit", record);
+                    console.log('edit', record);
 
                     var extraoptions = get(this, 'mixinOptions.downtime.formoptions'),
                         formclass = get(this, 'mixinOptions.downtime.form');

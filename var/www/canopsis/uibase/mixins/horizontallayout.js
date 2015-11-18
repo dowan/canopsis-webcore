@@ -23,9 +23,7 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var Mixin = container.lookupFactory('factory:mixin');
 
-        var get = Ember.get,
-            set = Ember.set,
-            isNone = Ember.isNone;
+        var get = Ember.get;
 
         var mixin = Mixin('horizontallayout', {
             partials: {
@@ -34,8 +32,7 @@ Ember.Application.initializer({
 
             section: function () {
                 return get(this, 'mixinOptions.horizontallayout.cellCssClass') || 'col-lg-3 col-md-6 col-xs-12';
-            },
-
+            }
         });
 
         application.register('mixin:horizontallayout', mixin);

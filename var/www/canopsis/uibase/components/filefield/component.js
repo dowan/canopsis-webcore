@@ -18,7 +18,7 @@
  */
 
 Ember.Application.initializer({
-    name:"component-filefield",
+    name: 'component-filefield',
     initialize: function(container, application) {
         var isEmpty = Ember.isEmpty;
 

@@ -18,13 +18,12 @@
  */
 
 Ember.Application.initializer({
-    name:"component-slider",
+    name: 'component-slider',
     initialize: function(container, application) {
 
         var get = Ember.get,
             set = Ember.set,
-            isNone = Ember.isNone,
-            __ = Ember.String.loc;
+            isNone = Ember.isNone;
 
 
         var component = Ember.Component.extend({
@@ -52,7 +51,7 @@ Ember.Application.initializer({
                     min: min,
                     max: max,
                     step: step,
-                    value: value,
+                    value: value
                 });
 
                 var slider = sliderComponent.$('#range_slider');

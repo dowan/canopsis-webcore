@@ -45,7 +45,7 @@ Ember.Application.initializer({
                 var mixinsOptions = get(this, 'content.mixins');
 
                 if(mixinsOptions) {
-                    arraysearchOptions = get(this, 'content.mixins').findBy('name', 'arraysearch');
+                    var arraysearchOptions = get(this, 'content.mixins').findBy('name', 'arraysearch');
                     this.mixinOptions.arraysearch = arraysearchOptions;
                 }
 
@@ -69,7 +69,7 @@ Ember.Application.initializer({
 
                     set(this, 'findOptions', findOptions);
 
-                    if (get(this, currentPage) !== undefined) {
+                    if (get(this, 'currentPage') !== undefined) {
                         set(this, 'currentPage', 1);
                     }
 
@@ -94,12 +94,12 @@ Ember.Application.initializer({
             }.observes('searchCriterion'),
 
             computeFilterPartForCriterion: function(searchPhrase) {
-                console.log("search", get(this, "searchableAttributes"));
+                console.log('search', get(this, 'searchableAttributes'));
                 var searchableAttributes = get(this, 'searchableAttributes');
 
                 //TODO these checks should be asserts
                 if (searchableAttributes === undefined) {
-                    console.warn("searchableAttributes not defined in controller, but searchItems still called. Trying to recompute searchableAttributes.", this);
+                    console.warn('searchableAttributes not defined in controller, but searchItems still called. Trying to recompute searchableAttributes.', this);
 
                     this.searchableAttributesUpdate();
 
@@ -107,27 +107,27 @@ Ember.Application.initializer({
 
                     console.log('new searchableAttributes', searchableAttributes);
                     if(searchableAttributes === undefined) {
-                        console.warn("searchableAttributes not defined in controller, but searchItems still called. Doing nothing.", this);
+                        console.warn('searchableAttributes not defined in controller, but searchItems still called. Doing nothing.', this);
                         return;
                     }
                 }
-                if (typeof searchableAttributes !== "object") {
-                        console.warn("searchableAttributes should be an array.", this);
-                        return;
+                if (typeof searchableAttributes !== 'object') {
+                    console.warn('searchableAttributes should be an array.', this);
+                    return;
                 }
                 if (searchableAttributes.length === 0) {
-                        console.warn("Asking for a search on records with no searchableAttributes. Doing nothing.", this);
-                        return;
+                    console.warn('Asking for a search on records with no searchableAttributes. Doing nothing.', this);
+                    return;
                 }
 
                 var filter_orArray = [];
                 for (var i = 0, l = searchableAttributes.length; i < l; i++) {
                     var filter_orArrayItem = {};
-                    filter_orArrayItem[searchableAttributes[i]] = {"$regex": searchPhrase, "$options": "i"};
+                    filter_orArrayItem[searchableAttributes[i]] = {'$regex': searchPhrase, '$options': 'i'};
                     filter_orArray.pushObject(filter_orArrayItem);
                 }
 
-                return JSON.stringify({"$or": filter_orArray });
+                return JSON.stringify({'$or': filter_orArray });
             },
 
             searchableAttributesUpdate: function(){

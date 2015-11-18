@@ -53,10 +53,10 @@ Ember.Application.initializer({
                 this._super.apply(this, arguments);
 
                 var store = DS.Store.create({
-                    container: get(this, "container")
+                    container: get(this, 'container')
                 });
 
-                set(this, "componentDataStore", store);
+                set(this, 'componentDataStore', store);
 
                 var selectedId = get(this, 'content.value');
                 var promise;

@@ -18,11 +18,10 @@
  */
 
 Ember.Application.initializer({
-    name:"component-dropdownbutton",
+    name: 'component-dropdownbutton',
     initialize: function(container, application) {
 
-        var get = Ember.get,
-            set = Ember.set;
+        var set = Ember.set;
 
         /**
          * Global component for dropdownbutton

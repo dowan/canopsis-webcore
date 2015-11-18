@@ -21,8 +21,7 @@ Ember.Application.initializer({
     name: 'component-dropdownbuttonoverview',
     initialize: function(container, application) {
 
-        var get = Ember.get,
-            set = Ember.set;
+        var get = Ember.get;
 
         /**
          * Component for seeing the chosen color in the dropdownbutton

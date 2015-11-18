@@ -25,8 +25,7 @@ Ember.Application.initializer({
 
         var get = Ember.get,
             set = Ember.set,
-            isNone = Ember.isNone,
-            __ = Ember.String.loc;
+            isNone = Ember.isNone;
 
 
         var component = Ember.Component.extend({

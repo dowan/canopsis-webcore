@@ -18,7 +18,7 @@
  */
 
 Ember.Application.initializer({
-    name:"component-miniformtitle",
+    name: 'component-miniformtitle',
     initialize: function(container, application) {
         var get = Ember.get;
 

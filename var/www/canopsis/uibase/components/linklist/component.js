@@ -22,13 +22,12 @@ Ember.Application.initializer({
     name: 'component-linklist',
     after: ['DatesUtils', 'DataUtils'],
     initialize: function(container, application) {
-        var datesUtils = container.lookupFactory('utility:dates');
         var dataUtils = container.lookupFactory('utility:data');
 
         var get = Ember.get,
             set = Ember.set,
             isNone = Ember.isNone,
-            __ = Ember.String.loc;
+            Handlebars = window.Handlebars;
 
         /**
         This component loads labelled links information from entity link backend and make them
@@ -70,8 +69,7 @@ Ember.Application.initializer({
                 ).then(function(results) {
 
                     console.log('links from api results', results);
-                    var links = [],
-                        link_types = linklistComponent.link_types;
+                    var link_types = linklistComponent.link_types;
 
                     if (results.success) {
                         //when links found, make them available in the links array of the component

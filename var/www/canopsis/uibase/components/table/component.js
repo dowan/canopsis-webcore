@@ -18,7 +18,7 @@
  */
 
 Ember.Application.initializer({
-    name:"component-table",
+    name: 'component-table',
     after: 'PaginationMixin',
     initialize: function(container, application) {
         var PaginationMixin = container.lookupFactory('mixin:pagination');
@@ -91,7 +91,7 @@ Ember.Application.initializer({
                         limit: get(this, 'paginationMixinFindOptions.limit')
                     };
 
-                    var queryStartOffsetKeyword = get(this, "queryStartOffsetKeyword") || 'skip';
+                    var queryStartOffsetKeyword = get(this, 'queryStartOffsetKeyword') || 'skip';
                     query[queryStartOffsetKeyword] = get(this, 'paginationMixinFindOptions.start');
 
                     if (model !== undefined) {

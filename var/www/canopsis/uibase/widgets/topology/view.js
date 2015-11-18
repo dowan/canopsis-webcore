@@ -1,3 +1,4 @@
+/*eslint-disable*/
 /*
 # Copyright (c) 2015 "Capensis" [http://www.capensis.com]
 #

@@ -22,7 +22,6 @@ Ember.Application.initializer({
     after: ['SearchmethodsRegistry', 'HashUtils'],
     initialize: function(container, application) {
         var searchmethodsRegistry = container.lookupFactory('registry:searchmethods');
-        var hashUtils = container.lookupFactory('registry:hash');
 
         var get = Ember.get,
             set = Ember.set,

@@ -27,7 +27,6 @@ Ember.Application.initializer({
 
         var get = Ember.get,
             set = Ember.set,
-            isNone = Ember.isNone,
             __ = Ember.String.loc;
 
 
@@ -168,45 +167,45 @@ Ember.Application.initializer({
                 ];
 
                 switch(contextType) {
-                    case 'ctxtopology':
-                        return model1;
-                    case 'ctxselector':
-                        return model1;
-                    case 'ctxcomponent':
-                        return [
-                            {name: 'connector_name', title: __('Connector name')},
-                            {name: 'name', title: __('Component')},
-                            {
-                                action: 'select',
-                                actionAll: (get(this, 'multiselect') === true ? 'selectAll' : undefined),
-                                title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-plus-sign"></span>'),
-                                style: 'text-align: center;'
-                            }
-                        ];
-                    case 'ctxresource':
-                        return [
-                            {name: 'connector_name', title: __('Connector name')},
-                            {name: 'component', title: __('Component')},
-                            {name: 'name', title: __('Resource')},
-                            {
-                                action: 'select',
-                                actionAll: (get(this, 'multiselect') === true ? 'selectAll' : undefined),
-                                title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-plus-sign"></span>'),
-                                style: 'text-align: center;'
-                            }
-                        ];
-                    default:
-                        return [
-                            {name: 'component', title: __('Component')},
-                            {name: 'resource', title: __('Resource')},
-                            {name: 'id', title: __('Metric')},
-                            {
-                                action: 'select',
-                                actionAll: (get(this, 'multiselect') === true ? 'selectAll' : undefined),
-                                title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-plus-sign"></span>'),
-                                style: 'text-align: center;'
-                            }
-                        ];
+                case 'ctxtopology':
+                    return model1;
+                case 'ctxselector':
+                    return model1;
+                case 'ctxcomponent':
+                    return [
+                        {name: 'connector_name', title: __('Connector name')},
+                        {name: 'name', title: __('Component')},
+                        {
+                            action: 'select',
+                            actionAll: (get(this, 'multiselect') === true ? 'selectAll' : undefined),
+                            title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-plus-sign"></span>'),
+                            style: 'text-align: center;'
+                        }
+                    ];
+                case 'ctxresource':
+                    return [
+                        {name: 'connector_name', title: __('Connector name')},
+                        {name: 'component', title: __('Component')},
+                        {name: 'name', title: __('Resource')},
+                        {
+                            action: 'select',
+                            actionAll: (get(this, 'multiselect') === true ? 'selectAll' : undefined),
+                            title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-plus-sign"></span>'),
+                            style: 'text-align: center;'
+                        }
+                    ];
+                default:
+                    return [
+                        {name: 'component', title: __('Component')},
+                        {name: 'resource', title: __('Resource')},
+                        {name: 'id', title: __('Metric')},
+                        {
+                            action: 'select',
+                            actionAll: (get(this, 'multiselect') === true ? 'selectAll' : undefined),
+                            title: new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-plus-sign"></span>'),
+                            style: 'text-align: center;'
+                        }
+                    ];
                 }
             }.property('contextType')
         });

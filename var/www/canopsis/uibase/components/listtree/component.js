@@ -21,8 +21,7 @@ Ember.Application.initializer({
     name: 'component-listtree',
     initialize: function(container, application) {
 
-        var get = Ember.get,
-            set = Ember.set;
+        var get = Ember.get;
 
 
         var DragNDrop = Ember.Namespace.create();

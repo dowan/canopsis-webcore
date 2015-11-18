@@ -19,7 +19,7 @@
 
 
 Ember.Application.initializer({
-    name:'SortablearrayMixin',
+    name: 'SortablearrayMixin',
     after: 'MixinFactory',
     initialize: function(container, application) {
         var Mixin = container.lookupFactory('factory:mixin');
@@ -135,7 +135,7 @@ Ember.Application.initializer({
                     }
                 }
                 return keys;
-            }.property("inspectedProperty", "inspectedDataArray")
+            }.property('inspectedProperty', 'inspectedDataArray')
         });
 
         application.register('mixin:sortablearray', mixin);

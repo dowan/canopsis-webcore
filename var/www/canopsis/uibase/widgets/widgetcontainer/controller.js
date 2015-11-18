@@ -68,13 +68,12 @@ Ember.Application.initializer({
             refreshContent: function() {
                 console.log('container startRefresh');
 
-                var widgetwrappers = get(this, 'items');
-
                 this.trigger('refreshChilds');
 
                 return this._super();
             }
         });
+
         application.register('widget:widgetcontainer', widget);
     }
 });

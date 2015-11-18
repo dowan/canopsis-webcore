@@ -18,7 +18,7 @@
  */
 
 Ember.Application.initializer({
-    name:"component-textwithsortoption",
+    name: 'component-textwithsortoption',
     initialize: function(container, application) {
 
         var get = Ember.get,

@@ -18,15 +18,11 @@
  */
 
 Ember.Application.initializer({
-    name:"component-actionbutton",
+    name: 'component-actionbutton',
     after: 'ActionsUtils',
     initialize: function(container, application) {
 
         var actionsUtils = container.lookupFactory('utility:actions');
-
-        var get = Ember.get,
-            set = Ember.set;
-
 
         var component = Ember.Component.extend({
             actions: {

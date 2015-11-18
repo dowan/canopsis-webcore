@@ -22,12 +22,12 @@ Ember.Application.initializer({
     after: ['WidgetFactory', 'WidgetController', 'FormsUtils', 'RoutesUtils'],
     initialize: function(container, application) {
         var WidgetController = container.lookupFactory('controller:widget');
-        var WidgetFactory = container.lookupFactory('factory:widget');
         var formsUtils = container.lookupFactory('utility:forms');
         var routesUtils = container.lookupFactory('utility:routes');
 
         var get = Ember.get,
-            set = Ember.set;
+            set = Ember.set,
+            __ = Ember.String.loc;
 
 
         var widget = WidgetController.extend({
@@ -42,6 +42,8 @@ Ember.Application.initializer({
             userCanCreateView: true,
 
             isViewDisplayable: function(viewId) {
+                void(viewId);
+
                 return true;
             },
 
@@ -51,6 +53,8 @@ Ember.Application.initializer({
                 var res = Ember.A();
 
                 get(this, 'tabs').forEach(function(item, index) {
+                    void(index);
+
                     if(item.value === get(uimaintabcollectionController, 'currentViewId')) {
                         set(item, 'isActive', true);
                     } else {
@@ -58,7 +62,7 @@ Ember.Application.initializer({
                     }
 
 
-                    viewId = item.value;
+                    var viewId = item.value;
                     viewId = viewId.replace('.', '_');
                     if (uimaintabcollectionController.isViewDisplayable(viewId)) {
                         set(item, 'displayable', true);

@@ -68,16 +68,16 @@ Ember.Application.initializer({
                 console.log('setInitialContent', valueKey);
                 if(initialContent) {
                     if(valueKey) {
-                        set(this, 'loadingInitialContent', "true");
+                        set(this, 'loadingInitialContent', 'true');
                     }
 
                     //for the "if(valueKey)" case, check extractItems method
                     if(!valueKey) {
-                        if( typeof initialContent === "string") {
+                        if( typeof initialContent === 'string') {
                             //we assume here that there is only one value
                             set(this, 'selectionUnprepared', [{ 'name': initialContent}]);
                         } else {
-                            if( typeof initialContent === "object" && initialContent !== null) {
+                            if( typeof initialContent === 'object' && initialContent !== null) {
                                 var buffer = [];
 
                                 for (var key in initialContent) {
@@ -101,12 +101,12 @@ Ember.Application.initializer({
             /*
              * Compute a structure with classified item each time the 'items' property changed
              */
-            classifiedItems : function(){
+            classifiedItems : function() {
                 var items = get(this, 'items');
                 var valueKey = get(this, 'valueKey') || get(this, 'valueKeyDefault');
                 var nameKey = get(this, 'nameKey') || get(this, 'nameKeyDefault');
 
-                console.log("recompute classifiedItems", get(this, 'items'), valueKey);
+                console.log('recompute classifiedItems', get(this, 'items'), valueKey);
 
                 var res = Ember.Object.create({
                     all: Ember.A()
@@ -137,9 +137,9 @@ Ember.Application.initializer({
                 //witch value is used as data reference in the selection.
                 var valueKey = get(this, 'valueKey');
 
-                if(get(this, "multiselect")) {
+                if(get(this, 'multiselect')) {
                     res = Ember.A();
-                    console.log("Push", selectionUnprepared[0]);
+                    console.log('Push', selectionUnprepared[0]);
 
                     if(valueKey) {
                         for (var i = 0, li = selectionUnprepared.length; i < li; i++) {
@@ -224,7 +224,7 @@ Ember.Application.initializer({
                     //Fetch values with ajax request content
                     var correspondingExtractedItem;
 
-                    if(typeof initialContent === "string") {
+                    if(typeof initialContent === 'string') {
                         console.log('extractItems with valueKey', arguments, Ember.inspect(initialContent));
 
                         correspondingExtractedItem = items.findBy(idKey, initialContent);
@@ -232,10 +232,10 @@ Ember.Application.initializer({
                         console.log('correspondingExtractedItem', correspondingExtractedItem);
                         if(correspondingExtractedItem !== undefined) {
 
-                            selectionUnprepared = [{ name: get(correspondingExtractedItem, nameKey), value: get(correspondingExtractedItem, idKey)}];
+                            var selectionUnprepared = [{ name: get(correspondingExtractedItem, nameKey), value: get(correspondingExtractedItem, idKey)}];
                             set(this, 'selectionUnprepared', selectionUnprepared);
                         }
-                    } else if( typeof initialContent === "object" && initialContent !== null) {
+                    } else if( typeof initialContent === 'object' && initialContent !== null) {
                         var buffer = [];
                         var keys = Ember.keys(initialContent);
 
@@ -246,8 +246,6 @@ Ember.Application.initializer({
                                 var prop = get(initialContent, key);
                                 console.log('findBy', idKey, key, prop);
                                 correspondingExtractedItem = items.findBy(idKey, prop);
-
-                                var data = this.deserializeAdditionnalData(get(correspondingExtractedItem, key));
 
                                 var selectionObject = {
                                     name: get(correspondingExtractedItem, nameKey),
@@ -266,10 +264,14 @@ Ember.Application.initializer({
             },
 
             deserializeAdditionnalData: function(additionnalData) {
+                void(additionnalData);
+
                 console.log('deserializeAdditionnalData', arguments);
             },
 
             serializeAdditionnalData: function(additionnalData) {
+                void(additionnalData);
+
                 console.log('serializeAdditionnalData', arguments);
             }
         });

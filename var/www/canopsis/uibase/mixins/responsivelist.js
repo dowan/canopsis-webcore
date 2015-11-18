@@ -19,14 +19,15 @@
 
 
 Ember.Application.initializer({
-    name:'ResponsivelistMixin',
+    name: 'ResponsivelistMixin',
     after: ['MixinFactory', 'FormsUtils', 'HashUtils'],
     initialize: function(container, application) {
+
         var Mixin = container.lookupFactory('factory:mixin');
-        var formsUtils = container.lookupFactory('utility:forms');
-        var hashUtils = container.lookupFactory('utility:hash');
+
         var get = Ember.get,
-            set = Ember.set;
+            set = Ember.set,
+            isNone = Ember.isNone;
 
 
         function getColumnIndexesPriorities(viewMixin) {
@@ -35,7 +36,7 @@ Ember.Application.initializer({
             //FIXME undefined
             var shownColumns = get(controller, 'shown_columns');
 
-            columnStackingPriority = Ember.A();
+            var columnStackingPriority = Ember.A();
 
             console.log('stackableColumnsPriority', stackableColumnsPriority, shownColumns);
             if(stackableColumnsPriority) {
@@ -59,9 +60,9 @@ Ember.Application.initializer({
         function hideColumn(viewMixin, columnToHide) {
             console.log('hideColumn', columnToHide);
 
-            if(!!columnToHide) {
-                this.$('th.' + columnToHide.field).css("display", "none");
-                this.$('td.' + columnToHide.field).css("display", "none");
+            if(!isNone(columnToHide)) {
+                this.$('th.' + columnToHide.field).css('display', 'none');
+                this.$('td.' + columnToHide.field).css('display', 'none');
                 get(viewMixin, 'groupedColumns').pushObject(columnToHide);
                 viewMixin.notifyPropertyChange('groupedColumns');
             }
@@ -107,21 +108,9 @@ Ember.Application.initializer({
             var controller = get(viewMixin, 'controller');
 
             var shownColumns = get(controller, 'shown_columns');
-            for (var i = 0, l = shownColumns.length; i < shownColumns.length; i++) {
+            for (var i = 0, l = shownColumns.length; i < l; i++) {
                 set(shownColumns[i], 'width', this.$('th.' + shownColumns[i].field).width());
                 set(shownColumns[i], 'index', i);
-            }
-        }
-
-
-        function checkToToggleStandardDisplay(viewMixin, threshold) {
-            var isTableOverflowing = viewMixin.$('.table-responsive table').parent().width() < threshold;
-
-            var controller = get(viewMixin, 'controller');
-            if(isTableOverflowing) {
-                set(controller, 'standardListDisplay', false);
-            } else {
-                set(controller, 'standardListDisplay', true);
             }
         }
 
@@ -141,18 +130,10 @@ Ember.Application.initializer({
                 this._super.apply(this, arguments);
 
                 var viewMixin = this;
-                // get(viewMixin, 'controller.groupedColumns').clear();
-
-                var ths = this.$('th');
 
                 get(viewMixin, 'groupedColumns').clear();
 
                 var thresholds = getTableThresholds(viewMixin);
-
-                var searchable_columns = get(this, 'searchable_columns');
-
-                var controller = get(viewMixin, 'controller');
-                var shownColumns = get(controller, 'shown_columns');
 
                 console.log('resize call');
                 var tableContainerWidth = viewMixin.$('.table-responsive table').parent().width();
@@ -181,7 +162,7 @@ Ember.Application.initializer({
                 var mixinsOptions = get(this, 'content.mixins');
 
                 if(mixinsOptions) {
-                    responsivelistOptions = get(this, 'content.mixins').findBy('name', 'responsivelist');
+                    var responsivelistOptions = get(this, 'content.mixins').findBy('name', 'responsivelist');
                     this.mixinOptions.responsivelist = responsivelistOptions;
                 }
 

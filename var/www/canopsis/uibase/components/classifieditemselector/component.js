@@ -54,7 +54,7 @@ Ember.Application.initializer({
                 },
 
                 unselectItem: function (item) {
-                    get(this, "selection").removeObject(item);
+                    get(this, 'selection').removeObject(item);
 
                     if(get(this, 'target')) {
                         get(this, 'target').send('unselectItem', item.name);
@@ -68,6 +68,8 @@ Ember.Application.initializer({
                     } else {
                         //TODO use searchmethodsregistry instead of plain old static code
                         var search = get(this, 'selection').filter(function(loopItem, index, enumerable){
+                            void(enumerable);
+
                             return loopItem === item;
                         });
                         if(search.length === 0){
@@ -83,12 +85,12 @@ Ember.Application.initializer({
                 },
 
                 collapse: function(theClass){
-                    if(theClass === "all") {
+                    if(theClass === 'all') {
                         if(get(this, 'allCollapsed') === true)
                             set(this, 'allCollapsed', false);
                         else
                             set(this, 'allCollapsed', true);
-                    } else if(theClass === "selection") {
+                    } else if(theClass === 'selection') {
                         if(get(this, 'selectionCollapsed') === true)
                             set(this, 'selectionCollapsed', false);
                         else
@@ -96,13 +98,12 @@ Ember.Application.initializer({
                     } else {
                         var originClass = get(this, 'classes').findBy('key', theClass.key);
 
-                        console.log("collapse", theClass, theClass.key, originClass);
+                        console.log('collapse', theClass, theClass.key, originClass);
 
-                        if(originClass.isCollapsed === true || originClass.isCollapsed === undefined){
+                        if(originClass.isCollapsed === true ||originClass.isCollapsed === undefined) {
                             set(originClass, 'isCollapsed', false);
                             set(theClass, 'isCollapsed', false);
-                        }
-                        else {
+                        } else {
                             set(originClass, 'isCollapsed', true);
                             set(theClass, 'isCollapsed', true);
                         }
@@ -122,10 +123,10 @@ Ember.Application.initializer({
 
             iconModeButtonCssClass: function(){
                 if(get(this, 'mode') === 'icon')
-                    return "btn btn-default active";
+                    return 'btn btn-default active';
                 else
-                    return "btn btn-default";
-            }.property("mode"),
+                    return 'btn btn-default';
+            }.property('mode'),
 
             listModeButtonCssClass: function(){
                 if(get(this, 'mode') === 'list')
@@ -139,7 +140,7 @@ Ember.Application.initializer({
             }.property('mode'),
 
             classAllPanelId: function(){
-                return get(this, "elementId") + "_" + "all";
+                return get(this, 'elementId') + '_' + 'all';
             }.property(),
 
             classAllPanelHref: function(){
@@ -153,6 +154,8 @@ Ember.Application.initializer({
                 if(!isNone(res)) {
                     var component = this;
                     res = get(this, 'content.all').filter(function(item, index, enumerable){
+                        void(enumerable);
+
                         console.log('filter', item);
                         var systemClass = component.get('content.byClass.system');
 
@@ -169,6 +172,8 @@ Ember.Application.initializer({
                     //TODO use searchmethodsregistry instead of plain old static code
                     if(searchFilter !== '') {
                         res = res.filter(function(item, index, enumerable){
+                            void(enumerable);
+
                             var doesItStartsWithSearchFilter = item.name.slice(0, searchFilter.length) == searchFilter;
                             return doesItStartsWithSearchFilter;
                         });
@@ -204,6 +209,8 @@ Ember.Application.initializer({
 
                 //TODO use searchmethodsregistry instead of plain old static code
                 var filterFunction = function(item, index, enumerable) {
+                    void(enumerable);
+
                     var doesItStartsWithSearchFilter = item.name.indexOf(searchFilter) !== -1;
                     return doesItStartsWithSearchFilter;
                 };
@@ -218,8 +225,8 @@ Ember.Application.initializer({
                     });
 
                     var classItems = currentClass.items;
-                    console.log("classItems", classItems);
-                    if(searchFilter !== "") {
+                    console.log('classItems', classItems);
+                    if(searchFilter !== '') {
                         console.log('filter', classItems);
                         classItems = classItems.filter(filterFunction);
 
@@ -246,8 +253,8 @@ Ember.Application.initializer({
                             var newObject = Ember.Object.create({
                                 key: key,
                                 items: value,
-                                id: get(component, 'elementId') + "_" + key,
-                                titleHref: "#" + get(component, 'elementId') + "_" + key
+                                id: get(component, 'elementId') + '_' + key,
+                                titleHref: '#' + get(component, 'elementId') + '_' + key
                             });
                             var res = [newObject];
 

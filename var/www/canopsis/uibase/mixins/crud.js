@@ -19,7 +19,7 @@
 
 
 Ember.Application.initializer({
-    name:'CrudMixin',
+    name: 'CrudMixin',
     after: ['MixinFactory', 'FormsUtils', 'HashUtils', 'DataUtils'],
     initialize: function(container, application) {
         var Mixin = container.lookupFactory('factory:mixin');
@@ -30,7 +30,8 @@ Ember.Application.initializer({
 
         var get = Ember.get,
             set = Ember.set,
-            isNone = Ember.isNone;
+            isNone = Ember.isNone,
+            __ = Ember.String.loc;
 
         /**
          * Implement CRUD handling for widgets that manages collections
@@ -104,6 +105,7 @@ Ember.Application.initializer({
             userCanDeleteRecord: true,
 
             onRecordReady: function(record) {
+                void(record);
                 this._super.apply(this, arguments);
             },
 
@@ -115,9 +117,9 @@ Ember.Application.initializer({
                 add: function (recordType) {
                     this._super.apply(this, arguments);
 
-                    console.log("add", recordType);
+                    console.log('add', recordType);
 
-                    var record = get(this, "widgetDataStore").createRecord(recordType, {
+                    var record = get(this, 'widgetDataStore').createRecord(recordType, {
                         crecord_type: recordType
                     });
 
@@ -159,7 +161,7 @@ Ember.Application.initializer({
                  * @param {boolean} noconfirm
                  */
                 edit: function (record) {
-                    console.log("edit", record);
+                    console.log('edit', record);
 
                     var extraoptions = get(this, 'mixinOptions.crud.formoptions'),
                         formclass = get(this, 'mixinOptions.crud.form');
@@ -207,8 +209,10 @@ Ember.Application.initializer({
                         var confirmform = formsUtils.showNew('confirmform', {}, {
                             title: __('Delete this record ?')
                         });
-                        var crudController = this;
+
                         confirmform.submit.then(function(form) {
+                            void(form);
+
                             record.deleteRecord();
                             record.save();
                         });
@@ -224,51 +228,20 @@ Ember.Application.initializer({
                     });
                     var crudController = this;
                     confirmform.submit.then(function(form) {
-                        var selected = crudController.get("widgetData").filterBy('isSelected', true);
-                        console.log("remove action", selected);
+                        void(form);
+
+                        var selected = crudController.get('widgetData').filterBy('isSelected', true);
+                        console.log('remove action', selected);
 
                         for (var i = 0, l = selected.length; i < l; i++) {
                             var currentSelectedRecord = selected[i];
-                            crudController.send("remove", currentSelectedRecord, true);
+                            crudController.send('remove', currentSelectedRecord, true);
                         }
                     });
 
                 }
             }
         });
-
-        /**
-         * @function showEditFormAndSaveRecord
-         * @param {object} recordJSON
-         * @private
-         *
-         * remove keys that should not be present on a record exported to JSON, and generates new ids
-         */
-        function cleanRecordJSON(recordJSON) {
-            for (var key in recordJSON) {
-                var item = recordJSON[key];
-                //see if the key need to be cleaned
-                if(key === 'widgetId' || key === 'preference_id') {
-                    delete recordJSON[key];
-                }
-
-                if(key === 'id') {
-                    recordJSON['id'] = recordJSON['_id'] || hashUtils.generateId(recordJSON.xtype || recordJSON.crecord_type || 'item');
-                }
-
-                if(key === '_id') {
-                    recordJSON['_id'] = recordJSON['id'] || hashUtils.generateId(recordJSON.xtype || recordJSON.crecord_type || 'item');
-                }
-
-                //if this item is an object, then recurse into it
-                //to remove empty arrays in it too
-                if (typeof item === 'object') {
-                    cleanRecordJSON(item);
-                }
-            }
-
-            return recordJSON;
-        }
 
         /**
          * @method showEditFormAndSaveRecord
@@ -279,7 +252,7 @@ Ember.Application.initializer({
          *
          * Display an edition form for the record passed as first parameter, and make the changes persistant when the user saves the form.
          */
-        showEditFormAndSaveRecord = function(self, record, formoptions) {
+        function showEditFormAndSaveRecord(self, record, formoptions) {
             self.onRecordReady(record);
 
             console.log('temp record', record, formsUtils);

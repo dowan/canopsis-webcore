@@ -19,12 +19,13 @@
 
 
 Ember.Application.initializer({
-    name:"component-typedvalue",
+    name: 'component-typedvalue',
     after: 'ValuesUtils',
     initialize: function(container, application) {
         var valuesUtils = container.lookupFactory('utility:values');
         var get = Ember.get,
-            set = Ember.set;
+            set = Ember.set,
+            __ = Ember.String.loc;
 
 
         var component = Ember.Component.extend({
@@ -35,7 +36,7 @@ Ember.Application.initializer({
                 set(this, 'valuesTypes',[
                     'String',
                     'Number',
-                    'Boolean',
+                    'Boolean'
                     //'Array',//Not ready yet
                 ]);
 
@@ -86,8 +87,8 @@ Ember.Application.initializer({
 
                 var text = 'Type a value';
                 switch (get(this, 'selectedValueType')) {
-                    case 'Number':text = 'Use an integer value or a decimal';break;
-                    case 'String':text = 'Type a value';break;
+                case 'Number':text = 'Use an integer value or a decimal';break;
+                case 'String':text = 'Type a value';break;
                 }
 
                 return __(text);
@@ -141,8 +142,7 @@ Ember.Application.initializer({
 
                 removeItem: function (listElement) {
                     get(this, 'value').removeObject(listElement);
-                },
-
+                }
             }
 
         });

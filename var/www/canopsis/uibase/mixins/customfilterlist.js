@@ -31,8 +31,8 @@ Ember.Application.initializer({
 
         var get = Ember.get,
             set = Ember.set,
-            isNone = Ember.isNone;
-
+            isNone = Ember.isNone,
+            __ = Ember.String.loc;
 
         /**
           * Implements Custom filter management for list
@@ -60,12 +60,12 @@ Ember.Application.initializer({
                     {
                         value: '$and',
                         display: '&',
-                        active: true,
+                        active: true
                     },
                     {
                         value: '$or',
                         display: '||',
-                        active: false,
+                        active: false
                     }
                 ]);
 
@@ -322,7 +322,7 @@ Ember.Application.initializer({
                     var record = dataUtils.getStore().createRecord('customfilter', {
                         crecord_type: 'customfilter',
                         filter: get(filter, 'filter'),
-                        title: get(filter, 'title'),
+                        title: get(filter, 'title')
                     });
 
                     var recordWizard = formsUtils.showNew('modelform', record, {
@@ -357,6 +357,8 @@ Ember.Application.initializer({
                     var widgetController = this;
 
                     recordWizard.submit.then(function(form) {
+                        void(form);
+
                         widgetController.get('model.user_filters').removeObject(filter);
                         notificationUtils.info(__('Custom filter removed'));
 

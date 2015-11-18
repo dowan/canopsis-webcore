@@ -74,11 +74,11 @@ Ember.Application.initializer({
             }.property('model.itemsPerPage', 'mixinOptions.pagination.defaultItemsPerPage'),
 
             paginationMixinContent: function() {
-                console.warn("paginationMixinContent should be defined on the concrete class");
+                console.warn('paginationMixinContent should be defined on the concrete class');
             },
 
             paginationMixinFindOptions: function() {
-                console.warn("paginationMixinFindOptions should be defined on the concrete class");
+                console.warn('paginationMixinFindOptions should be defined on the concrete class');
             },
 
             actions: {

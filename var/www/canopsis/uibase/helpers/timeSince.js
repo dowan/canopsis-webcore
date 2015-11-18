@@ -21,6 +21,8 @@ Ember.Application.initializer({
     name: 'TimesinceHelper',
     after: 'DatesUtils',
     initialize: function(container, application) {
+        void(application);
+
         var datesUtils = container.lookupFactory('utility:dates');
         var __ = Ember.String.loc;
 

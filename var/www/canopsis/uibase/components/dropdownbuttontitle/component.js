@@ -21,9 +21,6 @@ Ember.Application.initializer({
     name: 'component-dropdownbuttontitle',
     initialize: function(container, application) {
 
-        var get = Ember.get,
-            set = Ember.set;
-
         /**
          * Component for defining the title of the dropdownbutton
          *
@@ -32,7 +29,7 @@ Ember.Application.initializer({
          */
         var component = Ember.Component.extend({
             name: undefined,
-            classNames: ['dropdownbuttontitle', 'dropdownbuttontitle-default'],
+            classNames: ['dropdownbuttontitle', 'dropdownbuttontitle-default']
         });
 
         application.register('component:component-dropdownbuttontitle', component);

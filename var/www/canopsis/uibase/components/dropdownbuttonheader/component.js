@@ -18,11 +18,10 @@
  */
 
 Ember.Application.initializer({
-    name:"component-dropdownbuttonheader",
+    name: 'component-dropdownbuttonheader',
     initialize: function(container, application) {
 
-        var get = Ember.get,
-            set = Ember.set;
+        var get = Ember.get;
 
         /**
          * Component that contains the title and optional other components

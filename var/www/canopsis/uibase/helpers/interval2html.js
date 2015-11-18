@@ -21,9 +21,11 @@ Ember.Application.initializer({
     name: 'Interval2htmlHelper',
     after: 'DatesUtils',
     initialize: function(container, application) {
+        void(application);
+
         var datesUtils = container.lookupFactory('utility:dates');
-        var set = Ember.set,
-            isNone = Ember.isNone;
+        var isNone = Ember.isNone,
+            __ = Ember.String.loc;
 
 
         Ember.Handlebars.helper('interval2html', function(from , to) {

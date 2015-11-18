@@ -20,9 +20,6 @@
 Ember.Application.initializer({
     name: 'component-miniformcontent',
     initialize: function(container, application) {
-        var get = Ember.get,
-            set = Ember.set;
-
 
         var component = Ember.Component.extend({
             classNames: ['panel-collapse', 'collapse', 'in'],

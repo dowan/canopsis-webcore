@@ -17,9 +17,8 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 Ember.Application.initializer({
-    name:'ShowviewbuttonMixin',
+    name: 'ShowviewbuttonMixin',
     after: ['MixinFactory', 'RoutesUtils', 'FormsUtils'],
     initialize: function(container, application) {
         var Mixin = container.lookupFactory('factory:mixin');
@@ -27,9 +26,8 @@ Ember.Application.initializer({
         var routesUtils = container.lookupFactory('utility:routes');
         var formsUtils = container.lookupFactory('utility:forms');
 
-        var get = Ember.get,
-            set = Ember.set,
-            isNone = Ember.isNone;
+        var isNone = Ember.isNone,
+            __ = Ember.String.loc;
 
 
         var mixin = Mixin('showviewbutton', {
@@ -41,7 +39,7 @@ Ember.Application.initializer({
                 show: function(id) {
                     Ember.assert('There should be an id passed as first argument', !isNone(id));
 
-                    console.log("Show action", arguments);
+                    console.log('Show action', arguments);
                     routesUtils.getCurrentRouteController().send('showView', id);
                 },
 

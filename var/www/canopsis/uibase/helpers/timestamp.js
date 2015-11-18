@@ -21,6 +21,8 @@ Ember.Application.initializer({
     name: 'TimestampHelper',
     after: 'DatesUtils',
     initialize: function(container, application) {
+        void(application);
+
         var datesUtils = container.lookupFactory('utility:dates');
 
         var get = Ember.get,

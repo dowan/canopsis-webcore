@@ -21,10 +21,6 @@ Ember.Application.initializer({
     name: 'component-miniform',
     initialize: function(container, application) {
 
-        var get = Ember.get,
-            set = Ember.set;
-
-
         var component = Ember.Component.extend({
             classNames: ['panel', 'panel-default'],
             attributeBindings: ['style'],

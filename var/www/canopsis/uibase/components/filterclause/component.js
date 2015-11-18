@@ -59,7 +59,7 @@ Ember.Application.initializer({
                 },
 
                 onAddKey: function(inputValue) {
-                    console.log("onAddKey", inputValue);
+                    console.log('onAddKey', inputValue);
                     var clauses = this.get('clauses');
                     var currentClauseIndex = this.get('currentClauseIndex');
 
@@ -90,7 +90,7 @@ Ember.Application.initializer({
                 },
 
                 focusOutKeyInput: function() {
-                    console.log("focusOutInput", arguments);
+                    console.log('focusOutInput', arguments);
                 },
 
                 validateClause: function(thisElement) {
@@ -99,7 +99,7 @@ Ember.Application.initializer({
 
                     var andClausePart = thisElement.clause.and;
 
-                    console.log("focusOutInput", arguments);
+                    console.log('focusOutInput', arguments);
                     if (inputValue !== undefined && inputValue !== null && inputValue !== '') {
                         var clauses = get(this, 'clauses');
                         var currentClauseIndex = get(this, 'currentClauseIndex');
@@ -128,7 +128,7 @@ Ember.Application.initializer({
                 var clauses = get(this, 'clauses');
                 var currentClause = clauses.objectAt(currentClauseIndex);
 
-                console.log("keyIsValid", inputValue, currentClauseIndex, currentClause, andClausePart);
+                console.log('keyIsValid', inputValue, currentClauseIndex, currentClause, andClausePart);
 
                 if (this.get('onlyAllowRegisteredIndexes') === true && andClausePart.options.available_indexes !== undefined) {
                     //detect if inputValue is in available_indexes

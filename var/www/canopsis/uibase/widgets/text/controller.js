@@ -30,7 +30,9 @@ define([
 
             var get = Ember.get,
                 set = Ember.set,
-                isNone = Ember.isNone;
+                isNone = Ember.isNone,
+                __ = Ember.String.loc,
+                Handlebars = window.Handlebars;
 
             var widget = WidgetFactory('text', {
 
@@ -68,7 +70,7 @@ define([
                 init: function() {
                     this._super.apply(this, arguments);
                     set(this, 'widgetDataStore', DS.Store.create({
-                        container: get(this, "container")
+                        container: get(this, 'container')
                     }));
                     this.registerHelpers();
                 },
@@ -129,11 +131,11 @@ define([
 
                     if (rks.length) {
                         //Does the widget have to manage event information
-                        var event_query = get(this, "widgetDataStore").findQuery(
+                        get(this, 'widgetDataStore').findQuery(
                             'event',
                             {
                                 filter: JSON.stringify({_id: {'$in': rks}}),
-                                limit: 50,
+                                limit: 50
                             }
                         ).then(function (data) {
 
@@ -155,18 +157,18 @@ define([
 
                                 var rk = get(data.content[i], 'id'),
                                     label = labels_for_rk[rk].replace(/ /g,'_');
-                                    if (!isNone(label)) {
-                                        var eventjson = data.content[i].toJson();
-                                        eventjson.id = get(data.content[i], 'id');
-                                        set(controller, 'templateContext.event.' + label, eventjson);
-                                    } else {
-                                        console.warn('Event label not set, no render possible for rk ' + rk);
-                                    }
+
+                                if (!isNone(label)) {
+                                    var eventjson = data.content[i].toJson();
+                                    eventjson.id = get(data.content[i], 'id');
+                                    set(controller, 'templateContext.event.' + label, eventjson);
+                                } else {
+                                    console.warn('Event label not set, no render possible for rk ' + rk);
+                                }
 
                             }
 
                             controller.setReady('event');
-
                         });
                     } else {
                         controller.setReady('event');
@@ -183,7 +185,6 @@ define([
                 },
 
                 registerHelpers: function (){
-                    var controller = this;
                     var invalidNumber = __('Not a valid number');
 
                     var helpers = {
@@ -208,7 +209,7 @@ define([
                         },
                         action: function () {
                             return 'action from helper';
-                        },
+                        }
                     };
 
                     for (var helper in helpers) {

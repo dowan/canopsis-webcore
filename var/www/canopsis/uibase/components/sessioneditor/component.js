@@ -19,7 +19,7 @@
 
 
 Ember.Application.initializer({
-    name:"component-sessioneditor",
+    name: 'component-sessioneditor',
     after: 'DataUtils',
     initialize: function(container, application) {
 
@@ -50,10 +50,6 @@ Ember.Application.initializer({
                 if(get(this, 'attr.value') === undefined) {
                     set(this, 'attr.value', get(this, 'fieldValue'));
                 }
-            },
-            validate: function(){
-                if(isRed(value))
-                    return true;
             }
         });
         application.register('component:component-sessioneditor', component);
