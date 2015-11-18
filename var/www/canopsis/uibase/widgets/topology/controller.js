@@ -1,4 +1,3 @@
-/*eslint-disable*/
 /*
  * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
  *
@@ -41,11 +40,9 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var WidgetFactory = container.lookupFactory('factory:widget');
         var formsUtils = container.lookupFactory('utility:forms');
-        var dataUtils = container.lookupFactory('utility:data');
         var TopologyViewMixin = container.lookupFactory('mixin:topology-view');
 
-        var get = Ember.get,
-            set = Ember.set;
+        var get = Ember.get;
 
         var widget = WidgetFactory('topology', {
 
@@ -86,7 +83,7 @@ Ember.Application.initializer({
                                 url: '/context/ids',
                                 type: 'POST',
                                 data: {
-                                    'ids': JSON.stringify(entityIds),
+                                    ids: JSON.stringify(entityIds)
                                 }
                             }
                         ).then(resolve, reject);
@@ -124,7 +121,7 @@ Ember.Application.initializer({
                     return record.save();
                 };
                 // and in doing the server request
-                records_to_save = Object.keys(_delts).map(
+                var records_to_save = Object.keys(_delts).map(
                     addRecord
                 );
                 var refresh = function() {
@@ -184,6 +181,7 @@ Ember.Application.initializer({
                     };
                     // if no graph exists, create a new one
                     var newGraph = function(reason) {
+                        void(reason);
                         var graph = me.widgetDataStore.createRecord(
                             me.graphEltType, {id: graphId}
                         );
@@ -281,7 +279,7 @@ Ember.Application.initializer({
                 if (! Array.isArray(records)) {
                     records = [records];
                 }
-                var deleteRecord = function(record) {
+                var deleteRecords = function(record) {
                     delete this.graphModel.selected[record.get('id')];
                 };
                 records.forEach(
@@ -327,7 +325,6 @@ Ember.Application.initializer({
             * @param failure edition failure callback. Takes record in parameter.
             */
             newRecord: function(type, properties, edit, success, failure, context) {
-                var me = this;
                 // initialize type with default vertice
                 if (type === undefined) {
                     type = this.verticeEltType;
@@ -362,12 +359,13 @@ Ember.Application.initializer({
                             }
                         };
                         var failed = function(reason) {
-                            var failure = function(reason) {
+                            void(reason);
+                            var __failure = function(reason) {
                                 console.error(reason);
                                 _failure(reason);
                             };
                             record.destroyRecord().then(
-                                _failure
+                                __failure
                             );
                         };
                         graph.save().then(
@@ -400,132 +398,132 @@ Ember.Application.initializer({
                 // fill operator data from record
                 var recordType = record.get('_type');
                 switch(recordType) {
-                    case 'edge':
-                        break;
-                    case 'vertice':
-                    case 'graph':
-                        var states = ['ok', 'minor', 'major', 'critical'];
-                        /**
-                        * Get task id.
-                        *
-                        * @param  task task from where get task id. Can be a string or a dictionary.
-                        */
-                        var getShortId = function(task) {
-                            var taskId = task.id || task;
-                            var lastIndex = taskId.lastIndexOf('.');
-                            var result = taskId.substring(lastIndex + 1);
-                            return result;
-                        };
-                        /**
-                        * Update form properties related to input params.
-                        *
-                        * @param params params from where get action params.
-                        * @param record form record.
-                        * @param actionName action name to retrieve from params.
-                        * @param stateName state name to retrieve from params.
-                        */
-                        var updateAction = function(params, record, actionName, stateName) {
-                            // set actionState
-                            var action = params[actionName];
-                            if (action !== undefined) {
-                                var taskId = getShortId(action);
-                                var actionState = taskId;
-                                if (taskId === 'change_state') {
-                                    var actionParams = action.params;
-                                    if (actionParams !== undefined) {
-                                        actionState = actionParams.state;
-                                        actionState = states[actionState];
-                                    }
+                case 'edge':
+                    break;
+                case 'vertice':
+                case 'graph':
+                    var states = ['ok', 'minor', 'major', 'critical'];
+                    /**
+                    * Get task id.
+                    *
+                    * @param  task task from where get task id. Can be a string or a dictionary.
+                    */
+                    var getShortId = function(task) {
+                        var taskId = task.id || task;
+                        var lastIndex = taskId.lastIndexOf('.');
+                        var result = taskId.substring(lastIndex + 1);
+                        return result;
+                    };
+                    /**
+                    * Update form properties related to input params.
+                    *
+                    * @param params params from where get action params.
+                    * @param record form record.
+                    * @param actionName action name to retrieve from params.
+                    * @param stateName state name to retrieve from params.
+                    */
+                    var updateAction = function(params, record, actionName, stateName) {
+                        // set actionState
+                        var action = params[actionName];
+                        if (action !== undefined) {
+                            var taskId = getShortId(action);
+                            var actionState = taskId;
+                            if (taskId === 'change_state') {
+                                var actionParams = action.params;
+                                if (actionParams !== undefined) {
+                                    actionState = actionParams.state;
+                                    actionState = states[actionState];
                                 }
-                                record.set(stateName, actionState);
                             }
+                            record.set(stateName, actionState);
+                        }
+                    };
+                    /**
+                    * Update record info.
+                    *
+                    * @param record record to update.
+                    * @param actionName action name to update in info.
+                    * @param action action to retrieve from record task params.
+                    */
+                    var updateInfoAction = function(task, record, actionName, action) {
+                        // set thenState
+                        var conState = record.get(actionName);
+                        task.params[action] = {
+                            id: 'canopsis.topology.rule.action.',
+                            params: {}
                         };
-                        /**
-                        * Update record info.
-                        *
-                        * @param record record to update.
-                        * @param actionName action name to update in info.
-                        * @param action action to retrieve from record task params.
-                        */
-                        var updateInfoAction = function(task, record, actionName, action) {
-                            // set thenState
-                            var conState = record.get(actionName);
-                            task.params[action] = {
-                                id: 'canopsis.topology.rule.action.',
-                                params: {}
-                            };
-                            switch(conState) {
-                                case 'worst_state':
-                                case 'best_state':
-                                    task.params[action].id += conState;
-                                    break;
-                                default:
-                                    conState = states.indexOf(conState);
-                                    task.params[action].id += 'change_state';
-                                    task.params[action].params.state = conState;
-                            }
-                        };
-                        var info = record.get('info');
-                        if (info !== undefined) {
-                            // set entity
-                            var entity = info.entity;
-                            if (entity !== undefined) {
-                                record.set('entity', entity);
-                            }
-                            // set label
-                            var label = info.label;
-                            if (label !== undefined) {
-                                record.set('label', label);
-                            }
-                            var task = info.task;
-                            if (task !== undefined) {
-                                var operator = task.id || task;
-                                if (operator !== undefined) {
-                                    var operatorName = getShortId(task);
-                                    if (operatorName === 'condition') {  // at least / nok
-                                        var params = task.params;
-                                        if (params !== undefined) {
-                                            var condition = params.condition;
-                                            if (condition !== undefined) {
-                                                var conditionName = getShortId(condition.id || condition);
-                                                record.set('operator', conditionName);
-                                                var condParams = condition.params;
-                                                if (condParams !== undefined) {
-                                                    // set inState
-                                                    if (conditionName === 'nok') {
-                                                        record.set('operator', 'nok');
+                        switch(conState) {
+                        case 'worst_state':
+                        case 'best_state':
+                            task.params[action].id += conState;
+                            break;
+                        default:
+                            conState = states.indexOf(conState);
+                            task.params[action].id += 'change_state';
+                            task.params[action].params.state = conState;
+                        }
+                    };
+                    var info = record.get('info');
+                    if (info !== undefined) {
+                        // set entity
+                        var entity = info.entity;
+                        if (entity !== undefined) {
+                            record.set('entity', entity);
+                        }
+                        // set label
+                        var label = info.label;
+                        if (label !== undefined) {
+                            record.set('label', label);
+                        }
+                        var task = info.task;
+                        if (task !== undefined) {
+                            var operator = task.id || task;
+                            if (operator !== undefined) {
+                                var operatorName = getShortId(task);
+                                if (operatorName === 'condition') {  // at least / nok
+                                    var params = task.params;
+                                    if (params !== undefined) {
+                                        var condition = params.condition;
+                                        if (condition !== undefined) {
+                                            var conditionName = getShortId(condition.id || condition);
+                                            record.set('operator', conditionName);
+                                            var condParams = condition.params;
+                                            if (condParams !== undefined) {
+                                                // set inState
+                                                if (conditionName === 'nok') {
+                                                    record.set('operator', 'nok');
+                                                } else {
+                                                    var inState = condParams.state;
+                                                    var f = condParams.f;
+                                                    if (f === 'canopsis.topology.rule.condition.is_nok') {
+                                                        inState = 'nok';
                                                     } else {
-                                                        var inState = condParams.state;
-                                                        var f = condParams.f;
-                                                        if (f === 'canopsis.topology.rule.condition.is_nok') {
-                                                            inState = 'nok';
-                                                        } else {
-                                                            if (inState !== undefined) {
-                                                                inState = states[inState];
-                                                                record.set('in_state', inState);
-                                                            }
+                                                        if (inState !== undefined) {
+                                                            inState = states[inState];
+                                                            record.set('in_state', inState);
                                                         }
                                                     }
-                                                    // set minWeight
-                                                    var minWeight = condParams.min_weight;
-                                                    if (minWeight !== undefined) {
-                                                        record.set('min_weight', minWeight);
-                                                    }
-                                                    // set thenState
-                                                    updateAction(params, record, 'statement', 'then_state');
-                                                    // set elseState
-                                                    updateAction(params, record, '_else', 'else_state');
                                                 }
+                                                // set minWeight
+                                                var minWeight = condParams.min_weight;
+                                                if (minWeight !== undefined) {
+                                                    record.set('min_weight', minWeight);
+                                                }
+                                                // set thenState
+                                                updateAction(params, record, 'statement', 'then_state');
+                                                // set elseState
+                                                updateAction(params, record, '_else', 'else_state');
                                             }
                                         }
-                                    } else {  // simple task
-                                        record.set('operator', operatorName);
                                     }
+                                } else {  // simple task
+                                    record.set('operator', operatorName);
                                 }
                             }
                         }
-                        break;
-                    default: break;
+                    }
+                    break;
+                default: break;
                 }
                 var recordWizard = formsUtils.showNew(
                     'modelform',
@@ -537,82 +535,82 @@ Ember.Application.initializer({
                 */
                 var done = function() {
                     switch(recordType) {
-                        case 'edge':
-                            break;
-                        case 'vertice':
-                        case 'graph':
-                            var info = record.get('info');
-                            var task = null;
-                            if (info !== undefined) {
-                                task = info.task;
-                                if (typeof task === 'string') {
-                                    info.task = {
-                                        id: task
-                                    };
-                                    task = info.task;
-                                } else if (task === undefined) {
-                                    info.task = {};
-                                    task = info.task;
-                                }
-                            } else {
-                                info = {
-                                    task: {}
+                    case 'edge':
+                        break;
+                    case 'vertice':
+                    case 'graph':
+                        var info = record.get('info');
+                        var task = null;
+                        if (info !== undefined) {
+                            task = info.task;
+                            if (typeof task === 'string') {
+                                info.task = {
+                                    id: task
                                 };
                                 task = info.task;
+                            } else if (task === undefined) {
+                                info.task = {};
+                                task = info.task;
                             }
-                            // set entity
-                            var entity = record.get('entity');
-                            if (entity !== undefined) {
-                                info.entity = entity;
+                        } else {
+                            info = {
+                                task: {}
+                            };
+                            task = info.task;
+                        }
+                        // set entity
+                        var entity = record.get('entity');
+                        if (entity !== undefined) {
+                            info.entity = entity;
+                        }
+                        // set label
+                        var label = record.get('label');
+                        if (label !== undefined) {
+                            info.label = label;
+                        }
+                        var operator = record.get('operator');
+                        switch(operator) {
+                        case 'change_state':
+                        case 'worst_state':
+                        case 'best_state':
+                            task.id = 'canopsis.topology.rule.action.' + operator;
+                            task.params = {};
+                            break;
+                        case '_all':
+                        case 'at_least':
+                        case 'nok':
+                            task.id = 'canopsis.task.condition.condition';
+                            task.params = {};
+                            task.params.condition = {
+                                id: 'canopsis.topology.rule.condition.' + operator,
+                                params: {}
+                            };
+                            // set minWeight
+                            if (operator !== '_all') {
+                                var minWeight = record.get('min_weight');
+                                task.params.condition.params.min_weight = minWeight;
                             }
-                            // set label
-                            var label = record.get('label');
-                            if (label !== undefined) {
-                                info.label = label;
+                            // set inState
+                            var inState = record.get('in_state');
+                            if (inState === 'nok') {
+                                if (operator !== 'nok') {
+                                    task.params.condition.params.f = 'canopsis.topology.rule.condition.is_nok';
+                                    task.params.condition.params.state = null;
+                                }
+                            } else {
+                                task.params.condition.params.state = states.indexOf(inState);
                             }
-                            var operator = record.get('operator');
-                            switch(operator) {
-                                case 'change_state':
-                                case 'worst_state':
-                                case 'best_state':
-                                    task.id = 'canopsis.topology.rule.action.' + operator;
-                                    task.params = {};
-                                    break;
-                                case '_all':
-                                case 'at_least':
-                                case 'nok':
-                                    task.id = 'canopsis.task.condition.condition';
-                                    task.params = {};
-                                    task.params.condition = {
-                                        id: 'canopsis.topology.rule.condition.' + operator,
-                                        params: {}
-                                    };
-                                    // set minWeight
-                                    if (operator !== '_all') {
-                                        var minWeight = record.get('min_weight');
-                                        task.params.condition.params.min_weight = minWeight;
-                                    }
-                                    // set inState
-                                    var inState = record.get('in_state');
-                                    if (inState === 'nok') {
-                                        if (operator !== 'nok') {
-                                            task.params.condition.params.f = 'canopsis.topology.rule.condition.is_nok';
-                                            task.params.condition.params.state = null;
-                                        }
-                                    } else {
-                                        task.params.condition.params.state = states.indexOf(inState);
-                                    }
-                                    // set statement
-                                    updateInfoAction(task, record, 'then_state', 'statement');
-                                    // set else
-                                    updateInfoAction(task, record, 'else_state', '_else');
-                                    break;
-                                default: break;
-                            }
-                            // update info
-                            record.set('info', info);
+                            // set statement
+                            updateInfoAction(task, record, 'then_state', 'statement');
+                            // set else
+                            updateInfoAction(task, record, 'else_state', '_else');
                             break;
                         default: break;
+                        }
+                        // update info
+                        record.set('info', info);
+                        break;
+                    default: break;
                     }
                     var _success = function(record) {
                         var _record = record[0];
@@ -643,7 +641,7 @@ Ember.Application.initializer({
                 ).fail(
                     fail
                 );
-            },
+            }
 
         });
         application.register('widget:topology', widget);
