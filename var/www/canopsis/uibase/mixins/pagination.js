@@ -210,4 +210,3 @@ Ember.Application.initializer({
         application.register('mixin:pagination', mixin);
     }
 });
-

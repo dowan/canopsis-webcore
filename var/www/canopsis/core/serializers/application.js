@@ -19,12 +19,13 @@
 
 Ember.Application.initializer({
     name: 'ApplicationSerializer',
-    after: ['MetaSerializerMixin', 'HashSerializerMixin', 'EmbeddedRecordSerializerMixin', 'NotificationUtils'],
+    after: ['MetaSerializerMixin', 'HashSerializerMixin', 'EmbeddedRecordSerializerMixin', 'NotificationUtils', 'HashUtils'],
     initialize: function(container, application) {
         var MetaSerializerMixin = container.lookupFactory('mixin:meta-serializer');
         var HashSerializerMixin = container.lookupFactory('mixin:hash-serializer');
         var EmbeddedRecordSerializerMixin = container.lookupFactory('mixin:embedded-record-serializer');
         var notificationUtils = container.lookupFactory('utility:notification');
+        var hashUtils = container.lookupFactory('utility:hash');
 
         var get = Ember.get,
             set = Ember.set,
@@ -43,6 +44,15 @@ Ember.Application.initializer({
                     if(isNone(hash.id)) {
                         hash.id = hash._id;
                     }
+                },
+
+                normalize: function (type, hash) {
+                    console.log('normalize', arguments);
+                    if(isNone(hash.id)) {
+                        hash.id = hashUtils.generateId('generatedId');
+                    }
+                    return this._super(type, hash);
+
                 }
             }
         );

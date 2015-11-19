@@ -39,11 +39,21 @@ define([
 
             var timepickerComponent = this;
 
-            timepicker.datetimepicker({
-                useSeconds: true, //en/disables the seconds picker
-                useCurrent: true, //when true, picker will set the value to the current date/time
-                language: 'fr'
-            });
+            console.log('timestamp init', get(this, 'content'));
+            if (get(this, 'content') === 2147483647 || get(this, 'content') === undefined) {
+                timepicker.datetimepicker({
+                    useSeconds: true, //en/disables the seconds picker
+                    useCurrent: true, //when true, picker will set the value to the current date/time
+                    language: 'fr'
+                });
+            } else {
+                timepicker.datetimepicker({
+                    useSeconds: true, //en/disables the seconds picker
+                    useCurrent: false, //when true, picker will set the value to the current date/time
+                    defaultDate: new Date(get(this, 'content')*1000),
+                    language: 'fr'
+                });
+            }
 
             console.log('timestamp dom init complete');
 

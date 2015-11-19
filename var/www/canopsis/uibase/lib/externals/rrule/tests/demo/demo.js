@@ -27,14 +27,23 @@
       _results = [];
       for (k in options) {
         v = options[k];
-        if (_.contains(["dtstart", "until"], k)) {
-          console.log(k, v);
+        if (v === null) {
+          v = 'null';
+        } else if (k === 'freq') {
+          v = 'RRule.' + RRule.FREQUENCIES[v];
+        } else if (k === "dtstart" || k === "until") {
           v = "new Date(" + [v.getFullYear(), v.getMonth(), v.getDate(), v.getHours(), v.getMinutes(), v.getSeconds()].join(', ') + ")";
         } else if (k === "byweekday") {
-          console.log('BBBB', v);
           if (v instanceof Array) {
-            v = _.map(v, function(d) {
-              return days[d.weekday];
+            v = v.map(function(wday) {
+              var s;
+
+              console.log('wday', wday);
+              s = days[wday.weekday];
+              if (wday.n) {
+                s += '.nth(' + wday.n + ')';
+              }
+              return s;
             });
           } else {
             v = days[v.weekday];
@@ -96,7 +105,7 @@
   };
 
   $(function() {
-    var $tabs, activateTab;
+    var $tabs, activateTab, processHash;
 
     $tabs = $("#tabs");
     activateTab = function($a) {
@@ -122,8 +131,8 @@
       $code = $(this);
       return $code.parents("section:first").find("input").val($code.text()).change();
     });
-    $("input, select").on("keyup change", function() {
-      var $in, $section, d, dates, e, freq, getDay, html, init, inputMethod, k, makeRule, max, options, rule, v, values,
+    $("input, select").on('keyup change', function() {
+      var $in, $section, date, dates, days, e, getDay, html, init, inputMethod, key, makeRule, max, options, rfc, rule, text, v, value, values,
         _this = this;
 
       $in = $(this);
@@ -145,78 +154,111 @@
         case 'options':
           values = getFormValues($in.parents("form"));
           options = {};
+          days = [RRule.MO, RRule.TU, RRule.WE, RRule.TH, RRule.FR, RRule.SA, RRule.SU];
           getDay = function(i) {
-            return [RRule.MO, RRule.TU, RRule.WE, RRule.TH, RRule.FR, RRule.SA, RRule.SU][i];
+            return days[i];
           };
-          for (k in values) {
-            v = values[k];
-            if (!v) {
+          for (key in values) {
+            value = values[key];
+            if (!value) {
               continue;
-            }
-            if (_.contains(["dtstart", "until"], k)) {
-              d = new Date(Date.parse(v));
-              v = new Date(d.getTime() + (d.getTimezoneOffset() * 60 * 1000));
-            } else if (k === 'byweekday') {
-              if (v instanceof Array) {
-                v = _.map(v, getDay);
+            } else if (key === 'dtstart' || key === 'until') {
+              date = new Date(Date.parse(value));
+              value = new Date(date.getTime() + (date.getTimezoneOffset() * 60 * 1000));
+            } else if (key === 'byweekday') {
+              if (value instanceof Array) {
+                value = value.map(getDay);
               } else {
-                v = getDay(v);
+                value = getDay(value);
               }
-            } else if (/^by/.test(k)) {
-              if (!(v instanceof Array)) {
-                v = _.compact(v.split(/[,\s]+/));
+            } else if (/^by/.test(key)) {
+              if (!value instanceof Array) {
+                value = value.split(/[,\s]+/);
               }
-              v = _.map(v, function(n) {
+              value = (function() {
+                var _i, _len, _results;
+
+                _results = [];
+                for (_i = 0, _len = value.length; _i < _len; _i++) {
+                  v = value[_i];
+                  if (v) {
+                    _results.push(v);
+                  }
+                }
+                return _results;
+              })();
+              value = value.map(function(n) {
                 return parseInt(n, 10);
               });
             } else {
-              v = parseInt(v, 10);
+              value = parseInt(value, 10);
             }
-            if (k === 'wkst') {
-              v = getDay(v);
+            if (key === 'wkst') {
+              value = getDay(value);
             }
-            if (k === 'interval' && v === 1) {
+            if (key === 'interval' && value === 1) {
               continue;
             }
-            options[k] = v;
+            options[key] = value;
           }
-          freq = options.freq;
-          delete options.freq;
           makeRule = function() {
-            return new RRule(freq, options);
+            return new RRule(options);
           };
-          init = "new RRule(RRule." + RRule.FREQUENCIES[freq] + ", " + getOptionsCode(options) + ")";
+          init = "new RRule(" + getOptionsCode(options) + ")";
           console.log(options);
       }
       $("#init").html(init);
-      $("#rfc-output").html("");
-      $("#text-output").html("");
+      $("#rfc-output a").html("");
+      $("#text-output a").html("");
+      $("#options-output").html("");
       $("#dates").html("");
       try {
         rule = makeRule();
       } catch (_error) {
         e = _error;
-      }
-      if (!rule) {
         $("#init").append($('<pre class="error"/>').text('=> ' + String(e || null)));
+        return;
       }
-      if (rule) {
-        $("#rfc-output").text(rule.toString());
-        $("#text-output").text(rule.toText());
-        max = 500;
-        dates = rule.all(function(date, i) {
-          if (!rule.options.count && i === max) {
-            return false;
-          }
-        });
-        html = makeRows(dates);
-        if (!rule.options.count) {
-          html += "<tr><td colspan='7'><em>Showing first " + max + " dates, set\n<code>count</code> to see more.</em></td></tr>";
+      rfc = rule.toString();
+      text = rule.toText();
+      $("#rfc-output a").text(rfc).attr('href', "#/rfc/" + rfc);
+      $("#text-output a").text(text).attr('href', "#/text/" + text);
+      $("#options-output").text(getOptionsCode(rule.origOptions));
+      if (inputMethod === 'options') {
+        $("#options-output").parents('tr').hide();
+      } else {
+        $("#options-output").parents('tr').show();
+      }
+      max = 500;
+      dates = rule.all(function(date, i) {
+        if (!rule.options.count && i === max) {
+          return false;
         }
-        return $("#dates").html(html);
+        return true;
+      });
+      html = makeRows(dates);
+      if (!rule.options.count) {
+        html += "<tr><td colspan='7'><em>Showing first " + max + " dates, set\n<code>count</code> to see more.</em></td></tr>";
       }
+      return $("#dates").html(html);
     });
-    return activateTab($tabs.find("a:first"));
+    activateTab($tabs.find("a:first"));
+    processHash = function() {
+      var arg, hash, match, method;
+
+      hash = location.hash.substring(1);
+      if (hash) {
+        match = /^\/(rfc|text)\/(.+)$/.exec(hash);
+        if (match) {
+          method = match[1];
+          arg = match[2];
+          activateTab($("a[href=#" + method + "-input]"));
+          return $("#" + method + "-input input:first").val(arg).change();
+        }
+      }
+    };
+    processHash();
+    return $(window).on('hashchange', processHash);
   });
 
 }).call(this);
