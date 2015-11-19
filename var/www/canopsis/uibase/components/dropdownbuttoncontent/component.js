@@ -22,7 +22,8 @@ Ember.Application.initializer({
     initialize: function(container, application) {
 
         var get = Ember.get,
-            set = Ember.set;
+            set = Ember.set,
+            isNone = Ember.isNone;
 
         /**
          * Component for switching between display and hide of the content
@@ -41,6 +42,17 @@ Ember.Application.initializer({
              * @return {boolean}
              */
             dropdownContentMenu: function(){
+                if(get(this, 'parentView.opened')) {
+
+                    //get callback if any and call it with caller parameter
+                    var callback = get(this,'callback');
+
+                    //if a callback is given, execute the call with its given parameter named 'caller'
+                    if(!isNone(callback)) {
+                        var caller = get(this,'caller');
+                        callback(caller);
+                    }
+                }
                return get(this, 'parentView.opened');
             }.property('parentView.opened'),
 

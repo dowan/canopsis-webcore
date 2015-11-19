@@ -28,9 +28,9 @@ var texts = [
     ['Every weekday', 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR'],
     ['Every day', 'FREQ=DAILY'],
     ['Every week', 'FREQ=WEEKLY'],
-    ['Every 2 weeks', 'FREQ=WEEKLY;INTERVAL=2'],
+    ['Every 2 weeks', 'INTERVAL=2;FREQ=WEEKLY'],
     ['Every month', 'FREQ=MONTHLY'],
-    ['Every 6 months', 'FREQ=MONTHLY;INTERVAL=6'],
+    ['Every 6 months', 'INTERVAL=6;FREQ=MONTHLY'],
     ['Every year', 'FREQ=YEARLY'],
     ['Every month on the 4th', 'FREQ=MONTHLY;BYMONTHDAY=4'],
     ['Every month on the 4th last', 'FREQ=MONTHLY;BYMONTHDAY=-4'],
@@ -48,6 +48,7 @@ test('fromText()', function() {
     $.each(texts, function(){
         var text = this[0],
             string = this[1];
+        console.log(text, string)
         equal(RRule.fromText(text).toString(), string,
             text + ' => ' + string);
     });
@@ -70,13 +71,28 @@ test('fromString()', function() {
 });
 
 
+testRecurring(
+    'missing Feb 28 https://github.com/jakubroztocil/rrule/issues/21',
+    new RRule({
+      freq: RRule.MONTHLY,
+      dtstart: new Date(2013, 0, 1),
+      count: 3,
+      bymonthday: [28]
+    }),
+    [
+        new Date(2013, 0, 28),
+        new Date(2013, 1, 28),
+        new Date(2013, 2, 28)
+    ]);
+
+
 //=============================================================================
 // The original `dateutil.rrule` test suite converted from Py to JS.
 //=============================================================================
 
 testRecurring('testBefore',
     {
-        rrule: new RRule(RRule.DAILY, {dtstart: parse("19970902T090000")}),
+        rrule: new RRule({freq: RRule.DAILY, dtstart: parse("19970902T090000")}),
         method: 'before',
         args: [parse("19970905T090000")]
     },
@@ -85,7 +101,7 @@ testRecurring('testBefore',
 
 testRecurring('testBeforeInc',
     {
-        rrule: new RRule(RRule.DAILY, {dtstart: parse("19970902T090000")}),
+        rrule: new RRule({freq: RRule.DAILY, dtstart: parse("19970902T090000")}),
         method: 'before',
         args: [parse("19970905T090000"), true]
     },
@@ -94,7 +110,7 @@ testRecurring('testBeforeInc',
 
 testRecurring('testAfter',
     {
-        rrule: new RRule(RRule.DAILY, {dtstart: parse("19970902T090000")}),
+        rrule: new RRule({freq: RRule.DAILY, dtstart: parse("19970902T090000")}),
         method: 'after',
         args: [parse("19970904T090000")]
     },
@@ -104,7 +120,7 @@ testRecurring('testAfter',
 
 testRecurring('testAfterInc',
     {
-        rrule: new RRule(RRule.DAILY, {dtstart: parse("19970902T090000")}),
+        rrule: new RRule({freq: RRule.DAILY, dtstart: parse("19970902T090000")}),
         method: 'after',
         args: [parse("19970904T090000"), true]
     },
@@ -113,7 +129,7 @@ testRecurring('testAfterInc',
 
 testRecurring('testBetween',
     {
-        rrule: new RRule(RRule.DAILY, {dtstart: parse("19970902T090000")}),
+        rrule: new RRule({freq: RRule.DAILY, dtstart: parse("19970902T090000")}),
         method: 'between',
         args: [parse("19970902T090000"), parse("19970906T090000")]
     },
@@ -126,7 +142,7 @@ testRecurring('testBetween',
 
 testRecurring('testBetweenInc',
     {
-        rrule: new RRule(RRule.DAILY, {dtstart: parse("19970902T090000")}),
+        rrule: new RRule({freq: RRule.DAILY, dtstart: parse("19970902T090000")}),
         method: 'between',
         args: [parse("19970902T090000"), parse("19970906T090000"), true]
     },
@@ -141,14 +157,14 @@ testRecurring('testBetweenInc',
 
 
 
-testRecurring('testYearly', new RRule(RRule.YEARLY, {
+testRecurring('testYearly', new RRule({freq: RRule.YEARLY,
     count:3,
     dtstart:parse("19970902T090000")}),
     [datetime(1997, 9, 2, 9, 0),
         datetime(1998, 9, 2, 9, 0),
         datetime(1999, 9, 2, 9, 0)]);
 
-testRecurring('testYearlyInterval', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyInterval', new RRule({freq: RRule.YEARLY,
     count:3,
     interval:2,
     dtstart:parse("19970902T090000")}),
@@ -156,7 +172,7 @@ testRecurring('testYearlyInterval', new RRule(RRule.YEARLY, {
         datetime(1999, 9, 2, 9, 0),
         datetime(2001, 9, 2, 9, 0)]);
 
-testRecurring('testYearlyIntervalLarge', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyIntervalLarge', new RRule({freq: RRule.YEARLY,
     count:3,
     interval:100,
     dtstart:parse("19970902T090000")}),
@@ -164,7 +180,7 @@ testRecurring('testYearlyIntervalLarge', new RRule(RRule.YEARLY, {
         datetime(2097, 9, 2, 9, 0),
         datetime(2197, 9, 2, 9, 0)]);
 
-testRecurring('testYearlyByMonth', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByMonth', new RRule({freq: RRule.YEARLY,
     count:3,
     bymonth:[1, 3],
     dtstart:parse("19970902T090000")}),
@@ -172,7 +188,7 @@ testRecurring('testYearlyByMonth', new RRule(RRule.YEARLY, {
         datetime(1998, 3, 2, 9, 0),
         datetime(1999, 1, 2, 9, 0)]);
 
-testRecurring('testYearlyByMonthDay', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByMonthDay', new RRule({freq: RRule.YEARLY,
     count:3,
     bymonthday:[1, 3],
     dtstart:parse("19970902T090000")}),
@@ -180,7 +196,7 @@ testRecurring('testYearlyByMonthDay', new RRule(RRule.YEARLY, {
         datetime(1997, 10, 1, 9, 0),
         datetime(1997, 10, 3, 9, 0)]);
 
-testRecurring('testYearlyByMonthAndMonthDay', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByMonthAndMonthDay', new RRule({freq: RRule.YEARLY,
     count:3,
     bymonth:[1, 3],
     bymonthday:[5, 7],
@@ -189,7 +205,7 @@ testRecurring('testYearlyByMonthAndMonthDay', new RRule(RRule.YEARLY, {
         datetime(1998, 1, 7, 9, 0),
         datetime(1998, 3, 5, 9, 0)]);
 
-testRecurring('testYearlyByWeekDay', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByWeekDay', new RRule({freq: RRule.YEARLY,
     count:3,
     byweekday:[RRule.TU, RRule.TH],
     dtstart:parse("19970902T090000")}),
@@ -197,23 +213,23 @@ testRecurring('testYearlyByWeekDay', new RRule(RRule.YEARLY, {
         datetime(1997, 9, 4, 9, 0),
         datetime(1997, 9, 9, 9, 0)]);
 
-testRecurring('testYearlyByNWeekDay', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByNWeekDay', new RRule({freq: RRule.YEARLY,
     count:3,
-    byweekday:[RRule.TU.clone(1), RRule.TH.clone(-1)],
+    byweekday:[RRule.TU.nth(1), RRule.TH.nth(-1)],
     dtstart:parse("19970902T090000")}),
     [datetime(1997, 12, 25, 9, 0),
         datetime(1998, 1, 6, 9, 0),
         datetime(1998, 12, 31, 9, 0)]);
 
-testRecurring('testYearlyByNWeekDayLarge', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByNWeekDayLarge', new RRule({freq: RRule.YEARLY,
     count:3,
-    byweekday:[RRule.TU.clone(3), RRule.TH.clone(-3)],
+    byweekday:[RRule.TU.nth(3), RRule.TH.nth(-3)],
     dtstart:parse("19970902T090000")}),
     [datetime(1997, 12, 11, 9, 0),
         datetime(1998, 1, 20, 9, 0),
         datetime(1998, 12, 17, 9, 0)]);
 
-testRecurring('testYearlyByMonthAndWeekDay', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByMonthAndWeekDay', new RRule({freq: RRule.YEARLY,
     count:3,
     bymonth:[1, 3],
     byweekday:[RRule.TU, RRule.TH],
@@ -222,25 +238,25 @@ testRecurring('testYearlyByMonthAndWeekDay', new RRule(RRule.YEARLY, {
         datetime(1998, 1, 6, 9, 0),
         datetime(1998, 1, 8, 9, 0)]);
 
-testRecurring('testYearlyByMonthAndNWeekDay', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByMonthAndNWeekDay', new RRule({freq: RRule.YEARLY,
     count:3,
     bymonth:[1, 3],
-    byweekday:[RRule.TU.clone(1), RRule.TH.clone(-1)],
+    byweekday:[RRule.TU.nth(1), RRule.TH.nth(-1)],
     dtstart:parse("19970902T090000")}),
     [datetime(1998, 1, 6, 9, 0),
         datetime(1998, 1, 29, 9, 0),
         datetime(1998, 3, 3, 9, 0)]);
 
-testRecurring('testYearlyByMonthAndNWeekDayLarge', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByMonthAndNWeekDayLarge', new RRule({freq: RRule.YEARLY,
     count:3,
     bymonth:[1, 3],
-    byweekday:[RRule.TU.clone(3), RRule.TH.clone(-3)],
+    byweekday:[RRule.TU.nth(3), RRule.TH.nth(-3)],
     dtstart:parse("19970902T090000")}),
     [datetime(1998, 1, 15, 9, 0),
         datetime(1998, 1, 20, 9, 0),
         datetime(1998, 3, 12, 9, 0)]);
 
-testRecurring('testYearlyByMonthDayAndWeekDay', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByMonthDayAndWeekDay', new RRule({freq: RRule.YEARLY,
     count:3,
     bymonthday:[1, 3],
     byweekday:[RRule.TU, RRule.TH],
@@ -249,7 +265,7 @@ testRecurring('testYearlyByMonthDayAndWeekDay', new RRule(RRule.YEARLY, {
         datetime(1998, 2, 3, 9, 0),
         datetime(1998, 3, 3, 9, 0)]);
 
-testRecurring('testYearlyByMonthAndMonthDayAndWeekDay', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByMonthAndMonthDayAndWeekDay', new RRule({freq: RRule.YEARLY,
     count:3,
     bymonth:[1, 3],
     bymonthday:[1, 3],
@@ -259,7 +275,7 @@ testRecurring('testYearlyByMonthAndMonthDayAndWeekDay', new RRule(RRule.YEARLY, 
         datetime(1998, 3, 3, 9, 0),
         datetime(2001, 3, 1, 9, 0)]);
 
-testRecurring('testYearlyByYearDay', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByYearDay', new RRule({freq: RRule.YEARLY,
     count:4,
     byyearday:[1, 100, 200, 365],
     dtstart:parse("19970902T090000")}),
@@ -268,7 +284,7 @@ testRecurring('testYearlyByYearDay', new RRule(RRule.YEARLY, {
         datetime(1998, 4, 10, 9, 0),
         datetime(1998, 7, 19, 9, 0)]);
 
-testRecurring('testYearlyByYearDayNeg', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByYearDayNeg', new RRule({freq: RRule.YEARLY,
     count:4,
     byyearday:[-365, -266, -166, -1],
     dtstart:parse("19970902T090000")}),
@@ -277,7 +293,7 @@ testRecurring('testYearlyByYearDayNeg', new RRule(RRule.YEARLY, {
         datetime(1998, 4, 10, 9, 0),
         datetime(1998, 7, 19, 9, 0)]);
 
-testRecurring('testYearlyByMonthAndYearDay', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByMonthAndYearDay', new RRule({freq: RRule.YEARLY,
     count:4,
     bymonth:[4, 7],
     byyearday:[1, 100, 200, 365],
@@ -287,7 +303,7 @@ testRecurring('testYearlyByMonthAndYearDay', new RRule(RRule.YEARLY, {
         datetime(1999, 4, 10, 9, 0),
         datetime(1999, 7, 19, 9, 0)]);
 
-testRecurring('testYearlyByMonthAndYearDayNeg', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByMonthAndYearDayNeg', new RRule({freq: RRule.YEARLY,
     count:4,
     bymonth:[4, 7],
     byyearday:[-365, -266, -166, -1],
@@ -297,7 +313,7 @@ testRecurring('testYearlyByMonthAndYearDayNeg', new RRule(RRule.YEARLY, {
         datetime(1999, 4, 10, 9, 0),
         datetime(1999, 7, 19, 9, 0)]);
 
-testRecurring('testYearlyByWeekNo', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByWeekNo', new RRule({freq: RRule.YEARLY,
     count:3,
     byweekno:20,
     dtstart:parse("19970902T090000")}),
@@ -308,7 +324,7 @@ testRecurring('testYearlyByWeekNo', new RRule(RRule.YEARLY, {
 testRecurring('testYearlyByWeekNoAndWeekDay',
     // That's a nice one. The first days of week number one
     // may be in the last year.
-    new RRule(RRule.YEARLY, {
+    new RRule({freq: RRule.YEARLY,
         count:3,
         byweekno:1,
         byweekday:RRule.MO,
@@ -320,7 +336,7 @@ testRecurring('testYearlyByWeekNoAndWeekDay',
 testRecurring('testYearlyByWeekNoAndWeekDayLarge',
     // Another nice test. The last days of week number 52/53
     // may be in the next year.
-    new RRule(RRule.YEARLY, {
+    new RRule({freq: RRule.YEARLY,
         count:3,
         byweekno:52,
         byweekday:RRule.SU,
@@ -329,7 +345,7 @@ testRecurring('testYearlyByWeekNoAndWeekDayLarge',
         datetime(1998, 12, 27, 9, 0),
         datetime(2000, 1, 2, 9, 0)]);
 
-testRecurring('testYearlyByWeekNoAndWeekDayLast', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByWeekNoAndWeekDayLast', new RRule({freq: RRule.YEARLY,
     count:3,
     byweekno:-1,
     byweekday:RRule.SU,
@@ -338,17 +354,14 @@ testRecurring('testYearlyByWeekNoAndWeekDayLast', new RRule(RRule.YEARLY, {
         datetime(1999, 1, 3, 9, 0),
         datetime(2000, 1, 2, 9, 0)]);
 
-
-/* byeaster not implemented
-assertRecurring('testYearlyByEaster', new RRule(RRule.YEARLY, {
-                          count: 3,
+testRecurring('testYearlyByEaster', new RRule({ count: 3,
                           byeaster: 0,
                           dtstart: parse("19970902T090000")}),
                      [datetime(1998, 4, 12, 9, 0),
                       datetime(1999, 4, 4, 9, 0),
                       datetime(2000, 4, 23, 9, 0)])
 
-assertRecurring('testYearlyByEasterPos', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByEasterPos', new RRule({freq: RRule.YEARLY,
                           count: 3,
                           byeaster: 1,
                           dtstart: parse("19970902T090000")}),
@@ -356,15 +369,15 @@ assertRecurring('testYearlyByEasterPos', new RRule(RRule.YEARLY, {
                       datetime(1999, 4, 5, 9, 0),
                       datetime(2000, 4, 24, 9, 0)])
 
-assertRecurring('testYearlyByEasterNeg', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByEasterNeg', new RRule({freq: RRule.YEARLY,
                           count: 3,
                           byeaster: -1,
                           dtstart: parse("19970902T090000")}),
                      [datetime(1998, 4, 11, 9, 0),
                       datetime(1999, 4, 3, 9, 0),
                       datetime(2000, 4, 22, 9, 0)])
-*/
-testRecurring('testYearlyByWeekNoAndWeekDay53', new RRule(RRule.YEARLY, {
+
+testRecurring('testYearlyByWeekNoAndWeekDay53', new RRule({freq: RRule.YEARLY,
     count:3,
     byweekno:53,
     byweekday:RRule.MO,
@@ -373,7 +386,7 @@ testRecurring('testYearlyByWeekNoAndWeekDay53', new RRule(RRule.YEARLY, {
         datetime(2004, 12, 27, 9, 0),
         datetime(2009, 12, 28, 9, 0)]);
 /* duplication
-assertRecurring('testYearlyByWeekNoAndWeekDay53', new RRule(RRule.YEARLY, {
+assertRecurring('testYearlyByWeekNoAndWeekDay53', new RRule({freq: RRule.YEARLY,
                           count: 3,
                           byweekno: 53,
                           byweekday: RRule.MO,
@@ -382,7 +395,7 @@ assertRecurring('testYearlyByWeekNoAndWeekDay53', new RRule(RRule.YEARLY, {
                       datetime(2004, 12, 27, 9, 0),
                       datetime(2009, 12, 28, 9, 0)])
  */
-testRecurring('testYearlyByHour', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByHour', new RRule({freq: RRule.YEARLY,
     count:3,
     byhour:[6, 18],
     dtstart:parse("19970902T090000")}),
@@ -390,7 +403,7 @@ testRecurring('testYearlyByHour', new RRule(RRule.YEARLY, {
         datetime(1998, 9, 2, 6, 0),
         datetime(1998, 9, 2, 18, 0)]);
 
-testRecurring('testYearlyByMinute', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByMinute', new RRule({freq: RRule.YEARLY,
     count:3,
     byminute:[6, 18],
     dtstart:parse("19970902T090000")}),
@@ -398,7 +411,7 @@ testRecurring('testYearlyByMinute', new RRule(RRule.YEARLY, {
         datetime(1997, 9, 2, 9, 18),
         datetime(1998, 9, 2, 9, 6)]);
 
-testRecurring('testYearlyBySecond', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyBySecond', new RRule({freq: RRule.YEARLY,
     count:3,
     bysecond:[6, 18],
     dtstart:parse("19970902T090000")}),
@@ -406,7 +419,7 @@ testRecurring('testYearlyBySecond', new RRule(RRule.YEARLY, {
         datetime(1997, 9, 2, 9, 0, 18),
         datetime(1998, 9, 2, 9, 0, 6)]);
 
-testRecurring('testYearlyByHourAndMinute', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByHourAndMinute', new RRule({freq: RRule.YEARLY,
     count:3,
     byhour:[6, 18],
     byminute:[6, 18],
@@ -415,7 +428,7 @@ testRecurring('testYearlyByHourAndMinute', new RRule(RRule.YEARLY, {
         datetime(1997, 9, 2, 18, 18),
         datetime(1998, 9, 2, 6, 6)]);
 
-testRecurring('testYearlyByHourAndSecond', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByHourAndSecond', new RRule({freq: RRule.YEARLY,
     count:3,
     byhour:[6, 18],
     bysecond:[6, 18],
@@ -424,7 +437,7 @@ testRecurring('testYearlyByHourAndSecond', new RRule(RRule.YEARLY, {
         datetime(1997, 9, 2, 18, 0, 18),
         datetime(1998, 9, 2, 6, 0, 6)]);
 
-testRecurring('testYearlyByMinuteAndSecond', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByMinuteAndSecond', new RRule({freq: RRule.YEARLY,
     count:3,
     byminute:[6, 18],
     bysecond:[6, 18],
@@ -433,7 +446,7 @@ testRecurring('testYearlyByMinuteAndSecond', new RRule(RRule.YEARLY, {
         datetime(1997, 9, 2, 9, 6, 18),
         datetime(1997, 9, 2, 9, 18, 6)]);
 
-testRecurring('testYearlyByHourAndMinuteAndSecond', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyByHourAndMinuteAndSecond', new RRule({freq: RRule.YEARLY,
     count:3,
     byhour:[6, 18],
     byminute:[6, 18],
@@ -443,7 +456,7 @@ testRecurring('testYearlyByHourAndMinuteAndSecond', new RRule(RRule.YEARLY, {
         datetime(1997, 9, 2, 18, 6, 18),
         datetime(1997, 9, 2, 18, 18, 6)]);
 
-testRecurring('testYearlyBySetPos', new RRule(RRule.YEARLY, {
+testRecurring('testYearlyBySetPos', new RRule({freq: RRule.YEARLY,
     count:3,
     bymonthday:15,
     byhour:[6, 18],
@@ -453,14 +466,14 @@ testRecurring('testYearlyBySetPos', new RRule(RRule.YEARLY, {
         datetime(1998, 2, 15, 6, 0),
         datetime(1998, 11, 15, 18, 0)]);
 
-testRecurring('testMonthly', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthly', new RRule({freq: RRule.MONTHLY,
     count:3,
     dtstart:parse("19970902T090000")}),
     [datetime(1997, 9, 2, 9, 0),
         datetime(1997, 10, 2, 9, 0),
         datetime(1997, 11, 2, 9, 0)]);
 
-testRecurring('testMonthlyInterval', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyInterval', new RRule({freq: RRule.MONTHLY,
     count:3,
     interval:2,
     dtstart:parse("19970902T090000")}),
@@ -468,7 +481,7 @@ testRecurring('testMonthlyInterval', new RRule(RRule.MONTHLY, {
         datetime(1997, 11, 2, 9, 0),
         datetime(1998, 1, 2, 9, 0)]);
 
-testRecurring('testMonthlyIntervalLarge', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyIntervalLarge', new RRule({freq: RRule.MONTHLY,
     count:3,
     interval:18,
     dtstart:parse("19970902T090000")}),
@@ -476,7 +489,7 @@ testRecurring('testMonthlyIntervalLarge', new RRule(RRule.MONTHLY, {
         datetime(1999, 3, 2, 9, 0),
         datetime(2000, 9, 2, 9, 0)]);
 
-testRecurring('testMonthlyByMonth', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByMonth', new RRule({freq: RRule.MONTHLY,
     count:3,
     bymonth:[1, 3],
     dtstart:parse("19970902T090000")}),
@@ -485,7 +498,7 @@ testRecurring('testMonthlyByMonth', new RRule(RRule.MONTHLY, {
         datetime(1999, 1, 2, 9, 0)]);
 
 
-testRecurring('testMonthlyByMonthDay', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByMonthDay', new RRule({freq: RRule.MONTHLY,
     count:3,
     bymonthday:[1, 3],
     dtstart:parse("19970902T090000")}),
@@ -493,7 +506,7 @@ testRecurring('testMonthlyByMonthDay', new RRule(RRule.MONTHLY, {
         datetime(1997, 10, 1, 9, 0),
         datetime(1997, 10, 3, 9, 0)]);
 
-testRecurring('testMonthlyByMonthAndMonthDay', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByMonthAndMonthDay', new RRule({freq: RRule.MONTHLY,
     count:3,
     bymonth:[1, 3],
     bymonthday:[5, 7],
@@ -502,7 +515,7 @@ testRecurring('testMonthlyByMonthAndMonthDay', new RRule(RRule.MONTHLY, {
         datetime(1998, 1, 7, 9, 0),
         datetime(1998, 3, 5, 9, 0)]);
 
-testRecurring('testMonthlyByWeekDay', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByWeekDay', new RRule({freq: RRule.MONTHLY,
     count:3,
     byweekday:[RRule.TU, RRule.TH],
     dtstart:parse("19970902T090000")}),
@@ -510,23 +523,23 @@ testRecurring('testMonthlyByWeekDay', new RRule(RRule.MONTHLY, {
         datetime(1997, 9, 4, 9, 0),
         datetime(1997, 9, 9, 9, 0)]);
 
-testRecurring('testMonthlyByNWeekDay', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByNWeekDay', new RRule({freq: RRule.MONTHLY,
     count:3,
-    byweekday:[RRule.TU.clone(1), RRule.TH.clone(-1)],
+    byweekday:[RRule.TU.nth(1), RRule.TH.nth(-1)],
     dtstart:parse("19970902T090000")}),
     [datetime(1997, 9, 2, 9, 0),
         datetime(1997, 9, 25, 9, 0),
         datetime(1997, 10, 7, 9, 0)]);
 
-testRecurring('testMonthlyByNWeekDayLarge', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByNWeekDayLarge', new RRule({freq: RRule.MONTHLY,
     count:3,
-    byweekday:[RRule.TU.clone(3), RRule.TH.clone(-3)],
+    byweekday:[RRule.TU.nth(3), RRule.TH.nth(-3)],
     dtstart:parse("19970902T090000")}),
     [datetime(1997, 9, 11, 9, 0),
         datetime(1997, 9, 16, 9, 0),
         datetime(1997, 10, 16, 9, 0)]);
 
-testRecurring('testMonthlyByMonthAndWeekDay', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByMonthAndWeekDay', new RRule({freq: RRule.MONTHLY,
     count:3,
     bymonth:[1, 3],
     byweekday:[RRule.TU, RRule.TH],
@@ -535,25 +548,25 @@ testRecurring('testMonthlyByMonthAndWeekDay', new RRule(RRule.MONTHLY, {
         datetime(1998, 1, 6, 9, 0),
         datetime(1998, 1, 8, 9, 0)]);
 
-testRecurring('testMonthlyByMonthAndNWeekDay', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByMonthAndNWeekDay', new RRule({freq: RRule.MONTHLY,
     count:3,
     bymonth:[1, 3],
-    byweekday:[RRule.TU.clone(1), RRule.TH.clone(-1)],
+    byweekday:[RRule.TU.nth(1), RRule.TH.nth(-1)],
     dtstart:parse("19970902T090000")}),
     [datetime(1998, 1, 6, 9, 0),
         datetime(1998, 1, 29, 9, 0),
         datetime(1998, 3, 3, 9, 0)]);
 
-testRecurring('testMonthlyByMonthAndNWeekDayLarge', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByMonthAndNWeekDayLarge', new RRule({freq: RRule.MONTHLY,
     count:3,
     bymonth:[1, 3],
-    byweekday:[RRule.TU.clone(3), RRule.TH.clone(-3)],
+    byweekday:[RRule.TU.nth(3), RRule.TH.nth(-3)],
     dtstart:parse("19970902T090000")}),
     [datetime(1998, 1, 15, 9, 0),
         datetime(1998, 1, 20, 9, 0),
         datetime(1998, 3, 12, 9, 0)]);
 
-testRecurring('testMonthlyByMonthDayAndWeekDay', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByMonthDayAndWeekDay', new RRule({freq: RRule.MONTHLY,
     count:3,
     bymonthday:[1, 3],
     byweekday:[RRule.TU, RRule.TH],
@@ -562,7 +575,7 @@ testRecurring('testMonthlyByMonthDayAndWeekDay', new RRule(RRule.MONTHLY, {
         datetime(1998, 2, 3, 9, 0),
         datetime(1998, 3, 3, 9, 0)]);
 
-testRecurring('testMonthlyByMonthAndMonthDayAndWeekDay', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByMonthAndMonthDayAndWeekDay', new RRule({freq: RRule.MONTHLY,
     count:3,
     bymonth:[1, 3],
     bymonthday:[1, 3],
@@ -572,7 +585,7 @@ testRecurring('testMonthlyByMonthAndMonthDayAndWeekDay', new RRule(RRule.MONTHLY
         datetime(1998, 3, 3, 9, 0),
         datetime(2001, 3, 1, 9, 0)]);
 
-testRecurring('testMonthlyByYearDay', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByYearDay', new RRule({freq: RRule.MONTHLY,
     count:4,
     byyearday:[1, 100, 200, 365],
     dtstart:parse("19970902T090000")}),
@@ -581,7 +594,7 @@ testRecurring('testMonthlyByYearDay', new RRule(RRule.MONTHLY, {
         datetime(1998, 4, 10, 9, 0),
         datetime(1998, 7, 19, 9, 0)]);
 
-testRecurring('testMonthlyByYearDayNeg', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByYearDayNeg', new RRule({freq: RRule.MONTHLY,
     count:4,
     byyearday:[-365, -266, -166, -1],
     dtstart:parse("19970902T090000")}),
@@ -590,7 +603,7 @@ testRecurring('testMonthlyByYearDayNeg', new RRule(RRule.MONTHLY, {
         datetime(1998, 4, 10, 9, 0),
         datetime(1998, 7, 19, 9, 0)]);
 
-testRecurring('testMonthlyByMonthAndYearDay', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByMonthAndYearDay', new RRule({freq: RRule.MONTHLY,
     count:4,
     bymonth:[4, 7],
     byyearday:[1, 100, 200, 365],
@@ -600,7 +613,7 @@ testRecurring('testMonthlyByMonthAndYearDay', new RRule(RRule.MONTHLY, {
         datetime(1999, 4, 10, 9, 0),
         datetime(1999, 7, 19, 9, 0)]);
 
-testRecurring('testMonthlyByMonthAndYearDayNeg', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByMonthAndYearDayNeg', new RRule({freq: RRule.MONTHLY,
     count:4,
     bymonth:[4, 7],
     byyearday:[-365, -266, -166, -1],
@@ -611,7 +624,7 @@ testRecurring('testMonthlyByMonthAndYearDayNeg', new RRule(RRule.MONTHLY, {
         datetime(1999, 7, 19, 9, 0)]);
 
 
-testRecurring('testMonthlyByWeekNo', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByWeekNo', new RRule({freq: RRule.MONTHLY,
     count:3,
     byweekno:20,
     dtstart:parse("19970902T090000")}),
@@ -622,7 +635,7 @@ testRecurring('testMonthlyByWeekNo', new RRule(RRule.MONTHLY, {
 testRecurring('testMonthlyByWeekNoAndWeekDay',
     // That's a nice one. The first days of week number one
     // may be in the last year.
-    new RRule(RRule.MONTHLY, {
+    new RRule({freq: RRule.MONTHLY,
         count:3,
         byweekno:1,
         byweekday:RRule.MO,
@@ -634,7 +647,7 @@ testRecurring('testMonthlyByWeekNoAndWeekDay',
 testRecurring('testMonthlyByWeekNoAndWeekDayLarge',
     // Another nice test. The last days of week number 52/53
     // may be in the next year.
-    new RRule(RRule.MONTHLY, {
+    new RRule({freq: RRule.MONTHLY,
         count:3,
         byweekno:52,
         byweekday:RRule.SU,
@@ -643,7 +656,7 @@ testRecurring('testMonthlyByWeekNoAndWeekDayLarge',
         datetime(1998, 12, 27, 9, 0),
         datetime(2000, 1, 2, 9, 0)]);
 
-testRecurring('testMonthlyByWeekNoAndWeekDayLast', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByWeekNoAndWeekDayLast', new RRule({freq: RRule.MONTHLY,
     count:3,
     byweekno:-1,
     byweekday:RRule.SU,
@@ -652,7 +665,7 @@ testRecurring('testMonthlyByWeekNoAndWeekDayLast', new RRule(RRule.MONTHLY, {
         datetime(1999, 1, 3, 9, 0),
         datetime(2000, 1, 2, 9, 0)]);
 
-testRecurring('testMonthlyByWeekNoAndWeekDay53', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByWeekNoAndWeekDay53', new RRule({freq: RRule.MONTHLY,
     count:3,
     byweekno:53,
     byweekday:RRule.MO,
@@ -661,7 +674,7 @@ testRecurring('testMonthlyByWeekNoAndWeekDay53', new RRule(RRule.MONTHLY, {
         datetime(2004, 12, 27, 9, 0),
         datetime(2009, 12, 28, 9, 0)]);
 /*
-assertRecurring('testMonthlyByEaster', new RRule(RRule.MONTHLY, {
+assertRecurring('testMonthlyByEaster', new RRule({freq: RRule.MONTHLY,
                           count: 3,
                           byeaster: 0,
                           dtstart: parse("19970902T090000")}),
@@ -669,7 +682,7 @@ assertRecurring('testMonthlyByEaster', new RRule(RRule.MONTHLY, {
                       datetime(1999, 4, 4, 9, 0),
                       datetime(2000, 4, 23, 9, 0)])
 
-assertRecurring('testMonthlyByEasterPos', new RRule(RRule.MONTHLY, {
+assertRecurring('testMonthlyByEasterPos', new RRule({freq: RRule.MONTHLY,
                           count: 3,
                           byeaster: 1,
                           dtstart: parse("19970902T090000")}),
@@ -677,7 +690,7 @@ assertRecurring('testMonthlyByEasterPos', new RRule(RRule.MONTHLY, {
                       datetime(1999, 4, 5, 9, 0),
                       datetime(2000, 4, 24, 9, 0)])
 
-assertRecurring('testMonthlyByEasterNeg', new RRule(RRule.MONTHLY, {
+assertRecurring('testMonthlyByEasterNeg', new RRule({freq: RRule.MONTHLY,
                           count: 3,
                           byeaster: -1,
                           dtstart: parse("19970902T090000")}),
@@ -685,7 +698,7 @@ assertRecurring('testMonthlyByEasterNeg', new RRule(RRule.MONTHLY, {
                       datetime(1999, 4, 3, 9, 0),
                       datetime(2000, 4, 22, 9, 0)])
 */
-testRecurring('testMonthlyByHour', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByHour', new RRule({freq: RRule.MONTHLY,
     count:3,
     byhour:[6, 18],
     dtstart:parse("19970902T090000")}),
@@ -693,7 +706,7 @@ testRecurring('testMonthlyByHour', new RRule(RRule.MONTHLY, {
         datetime(1997, 10, 2, 6, 0),
         datetime(1997, 10, 2, 18, 0)]);
 
-testRecurring('testMonthlyByMinute', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByMinute', new RRule({freq: RRule.MONTHLY,
     count:3,
     byminute:[6, 18],
     dtstart:parse("19970902T090000")}),
@@ -701,7 +714,7 @@ testRecurring('testMonthlyByMinute', new RRule(RRule.MONTHLY, {
         datetime(1997, 9, 2, 9, 18),
         datetime(1997, 10, 2, 9, 6)]);
 
-testRecurring('testMonthlyBySecond', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyBySecond', new RRule({freq: RRule.MONTHLY,
     count:3,
     bysecond:[6, 18],
     dtstart:parse("19970902T090000")}),
@@ -709,7 +722,7 @@ testRecurring('testMonthlyBySecond', new RRule(RRule.MONTHLY, {
         datetime(1997, 9, 2, 9, 0, 18),
         datetime(1997, 10, 2, 9, 0, 6)]);
 
-testRecurring('testMonthlyByHourAndMinute', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByHourAndMinute', new RRule({freq: RRule.MONTHLY,
     count:3,
     byhour:[6, 18],
     byminute:[6, 18],
@@ -718,7 +731,7 @@ testRecurring('testMonthlyByHourAndMinute', new RRule(RRule.MONTHLY, {
         datetime(1997, 9, 2, 18, 18),
         datetime(1997, 10, 2, 6, 6)]);
 
-testRecurring('testMonthlyByHourAndSecond', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByHourAndSecond', new RRule({freq: RRule.MONTHLY,
     count:3,
     byhour:[6, 18],
     bysecond:[6, 18],
@@ -727,7 +740,7 @@ testRecurring('testMonthlyByHourAndSecond', new RRule(RRule.MONTHLY, {
         datetime(1997, 9, 2, 18, 0, 18),
         datetime(1997, 10, 2, 6, 0, 6)]);
 
-testRecurring('testMonthlyByMinuteAndSecond', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByMinuteAndSecond', new RRule({freq: RRule.MONTHLY,
     count:3,
     byminute:[6, 18],
     bysecond:[6, 18],
@@ -736,7 +749,7 @@ testRecurring('testMonthlyByMinuteAndSecond', new RRule(RRule.MONTHLY, {
         datetime(1997, 9, 2, 9, 6, 18),
         datetime(1997, 9, 2, 9, 18, 6)]);
 
-testRecurring('testMonthlyByHourAndMinuteAndSecond', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyByHourAndMinuteAndSecond', new RRule({freq: RRule.MONTHLY,
     count:3,
     byhour:[6, 18],
     byminute:[6, 18],
@@ -746,7 +759,7 @@ testRecurring('testMonthlyByHourAndMinuteAndSecond', new RRule(RRule.MONTHLY, {
         datetime(1997, 9, 2, 18, 6, 18),
         datetime(1997, 9, 2, 18, 18, 6)]);
 
-testRecurring('testMonthlyBySetPos', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyBySetPos', new RRule({freq: RRule.MONTHLY,
     count:3,
     bymonthday:[13, 17],
     byhour:[6, 18],
@@ -756,7 +769,7 @@ testRecurring('testMonthlyBySetPos', new RRule(RRule.MONTHLY, {
         datetime(1997, 9, 17, 6, 0),
         datetime(1997, 10, 13, 18, 0)]);
 
-testRecurring('testMonthlyNegByMonthDayJanFebForNonLeapYear', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyNegByMonthDayJanFebForNonLeapYear', new RRule({freq: RRule.MONTHLY,
     count: 4,
     bymonthday: -1,
     dtstart: parse("20131201T0900000")}),
@@ -765,7 +778,7 @@ testRecurring('testMonthlyNegByMonthDayJanFebForNonLeapYear', new RRule(RRule.MO
         datetime(2014, 2, 28, 9, 0),
         datetime(2014, 3, 31, 9, 0)]);
 
-testRecurring('testMonthlyNegByMonthDayJanFebForLeapYear', new RRule(RRule.MONTHLY, {
+testRecurring('testMonthlyNegByMonthDayJanFebForLeapYear', new RRule({freq: RRule.MONTHLY,
     count: 4,
     bymonthday: -1,
     dtstart: parse("20151201T0900000")}),
@@ -774,14 +787,14 @@ testRecurring('testMonthlyNegByMonthDayJanFebForLeapYear', new RRule(RRule.MONTH
         datetime(2016, 2, 29, 9, 0),
         datetime(2016, 3, 31, 9, 0)]);
 
-testRecurring('testWeekly', new RRule(RRule.WEEKLY, {
+testRecurring('testWeekly', new RRule({freq: RRule.WEEKLY,
     count:3,
     dtstart:parse("19970902T090000")}),
     [datetime(1997, 9, 2, 9, 0),
         datetime(1997, 9, 9, 9, 0),
         datetime(1997, 9, 16, 9, 0)]);
 
-testRecurring('testWeeklyInterval', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyInterval', new RRule({freq: RRule.WEEKLY,
     count:3,
     interval:2,
     dtstart:parse("19970902T090000")}),
@@ -789,7 +802,7 @@ testRecurring('testWeeklyInterval', new RRule(RRule.WEEKLY, {
         datetime(1997, 9, 16, 9, 0),
         datetime(1997, 9, 30, 9, 0)]);
 
-testRecurring('testWeeklyIntervalLarge', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyIntervalLarge', new RRule({freq: RRule.WEEKLY,
     count:3,
     interval:20,
     dtstart:parse("19970902T090000")}),
@@ -797,7 +810,7 @@ testRecurring('testWeeklyIntervalLarge', new RRule(RRule.WEEKLY, {
         datetime(1998, 1, 20, 9, 0),
         datetime(1998, 6, 9, 9, 0)]);
 
-testRecurring('testWeeklyByMonth', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyByMonth', new RRule({freq: RRule.WEEKLY,
     count:3,
     bymonth:[1, 3],
     dtstart:parse("19970902T090000")}),
@@ -805,7 +818,7 @@ testRecurring('testWeeklyByMonth', new RRule(RRule.WEEKLY, {
         datetime(1998, 1, 13, 9, 0),
         datetime(1998, 1, 20, 9, 0)]);
 
-testRecurring('testWeeklyByMonthDay', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyByMonthDay', new RRule({freq: RRule.WEEKLY,
     count:3,
     bymonthday:[1, 3],
     dtstart:parse("19970902T090000")}),
@@ -813,7 +826,7 @@ testRecurring('testWeeklyByMonthDay', new RRule(RRule.WEEKLY, {
         datetime(1997, 10, 1, 9, 0),
         datetime(1997, 10, 3, 9, 0)]);
 
-testRecurring('testWeeklyByMonthAndMonthDay', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyByMonthAndMonthDay', new RRule({freq: RRule.WEEKLY,
     count:3,
     bymonth:[1, 3],
     bymonthday:[5, 7],
@@ -822,7 +835,7 @@ testRecurring('testWeeklyByMonthAndMonthDay', new RRule(RRule.WEEKLY, {
         datetime(1998, 1, 7, 9, 0),
         datetime(1998, 3, 5, 9, 0)]);
 
-testRecurring('testWeeklyByWeekDay', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyByWeekDay', new RRule({freq: RRule.WEEKLY,
     count:3,
     byweekday:[RRule.TU, RRule.TH],
     dtstart:parse("19970902T090000")}),
@@ -830,9 +843,9 @@ testRecurring('testWeeklyByWeekDay', new RRule(RRule.WEEKLY, {
         datetime(1997, 9, 4, 9, 0),
         datetime(1997, 9, 9, 9, 0)]);
 
-testRecurring('testWeeklyByNWeekDay', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyByNWeekDay', new RRule({freq: RRule.WEEKLY,
     count:3,
-    byweekday:[RRule.TU.clone(1), RRule.TH.clone(-1)],
+    byweekday:[RRule.TU.nth(1), RRule.TH.nth(-1)],
     dtstart:parse("19970902T090000")}),
     [datetime(1997, 9, 2, 9, 0),
         datetime(1997, 9, 4, 9, 0),
@@ -842,7 +855,7 @@ testRecurring('testWeeklyByMonthAndWeekDay',
     // This test is interesting, because it crosses the year
     // boundary in a weekly period to find day '1' as a
     // valid recurrence.
-    new RRule(RRule.WEEKLY, {
+    new RRule({freq: RRule.WEEKLY,
         count:3,
         bymonth:[1, 3],
         byweekday:[RRule.TU, RRule.TH],
@@ -851,16 +864,16 @@ testRecurring('testWeeklyByMonthAndWeekDay',
         datetime(1998, 1, 6, 9, 0),
         datetime(1998, 1, 8, 9, 0)]);
 
-testRecurring('testWeeklyByMonthAndNWeekDay', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyByMonthAndNWeekDay', new RRule({freq: RRule.WEEKLY,
     count:3,
     bymonth:[1, 3],
-    byweekday:[RRule.TU.clone(1), RRule.TH.clone(-1)],
+    byweekday:[RRule.TU.nth(1), RRule.TH.nth(-1)],
     dtstart:parse("19970902T090000")}),
     [datetime(1998, 1, 1, 9, 0),
         datetime(1998, 1, 6, 9, 0),
         datetime(1998, 1, 8, 9, 0)]);
 
-testRecurring('testWeeklyByMonthDayAndWeekDay', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyByMonthDayAndWeekDay', new RRule({freq: RRule.WEEKLY,
     count:3,
     bymonthday:[1, 3],
     byweekday:[RRule.TU, RRule.TH],
@@ -869,7 +882,7 @@ testRecurring('testWeeklyByMonthDayAndWeekDay', new RRule(RRule.WEEKLY, {
         datetime(1998, 2, 3, 9, 0),
         datetime(1998, 3, 3, 9, 0)]);
 
-testRecurring('testWeeklyByMonthAndMonthDayAndWeekDay', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyByMonthAndMonthDayAndWeekDay', new RRule({freq: RRule.WEEKLY,
     count:3,
     bymonth:[1, 3],
     bymonthday:[1, 3],
@@ -879,7 +892,7 @@ testRecurring('testWeeklyByMonthAndMonthDayAndWeekDay', new RRule(RRule.WEEKLY, 
         datetime(1998, 3, 3, 9, 0),
         datetime(2001, 3, 1, 9, 0)]);
 
-testRecurring('testWeeklyByYearDay', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyByYearDay', new RRule({freq: RRule.WEEKLY,
     count:4,
     byyearday:[1, 100, 200, 365],
     dtstart:parse("19970902T090000")}),
@@ -888,7 +901,7 @@ testRecurring('testWeeklyByYearDay', new RRule(RRule.WEEKLY, {
         datetime(1998, 4, 10, 9, 0),
         datetime(1998, 7, 19, 9, 0)]);
 
-testRecurring('testWeeklyByYearDayNeg', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyByYearDayNeg', new RRule({freq: RRule.WEEKLY,
     count:4,
     byyearday:[-365, -266, -166, -1],
     dtstart:parse("19970902T090000")}),
@@ -897,7 +910,7 @@ testRecurring('testWeeklyByYearDayNeg', new RRule(RRule.WEEKLY, {
         datetime(1998, 4, 10, 9, 0),
         datetime(1998, 7, 19, 9, 0)]);
 
-testRecurring('testWeeklyByMonthAndYearDay', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyByMonthAndYearDay', new RRule({freq: RRule.WEEKLY,
     count:4,
     bymonth:[1, 7],
     byyearday:[1, 100, 200, 365],
@@ -907,7 +920,7 @@ testRecurring('testWeeklyByMonthAndYearDay', new RRule(RRule.WEEKLY, {
         datetime(1999, 1, 1, 9, 0),
         datetime(1999, 7, 19, 9, 0)]);
 
-testRecurring('testWeeklyByMonthAndYearDayNeg', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyByMonthAndYearDayNeg', new RRule({freq: RRule.WEEKLY,
     count:4,
     bymonth:[1, 7],
     byyearday:[-365, -266, -166, -1],
@@ -917,7 +930,7 @@ testRecurring('testWeeklyByMonthAndYearDayNeg', new RRule(RRule.WEEKLY, {
         datetime(1999, 1, 1, 9, 0),
         datetime(1999, 7, 19, 9, 0)]);
 
-testRecurring('testWeeklyByWeekNo', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyByWeekNo', new RRule({freq: RRule.WEEKLY,
     count:3,
     byweekno:20,
     dtstart:parse("19970902T090000")}),
@@ -928,7 +941,7 @@ testRecurring('testWeeklyByWeekNo', new RRule(RRule.WEEKLY, {
 testRecurring('testWeeklyByWeekNoAndWeekDay',
     // That's a nice one. The first days of week number one
     // may be in the last year.
-    new RRule(RRule.WEEKLY, {
+    new RRule({freq: RRule.WEEKLY,
         count:3,
         byweekno:1,
         byweekday:RRule.MO,
@@ -940,7 +953,7 @@ testRecurring('testWeeklyByWeekNoAndWeekDay',
 testRecurring('testWeeklyByWeekNoAndWeekDayLarge',
     // Another nice test. The last days of week number 52/53
     // may be in the next year.
-    new RRule(RRule.WEEKLY, {
+    new RRule({freq: RRule.WEEKLY,
         count:3,
         byweekno:52,
         byweekday:RRule.SU,
@@ -949,7 +962,7 @@ testRecurring('testWeeklyByWeekNoAndWeekDayLarge',
         datetime(1998, 12, 27, 9, 0),
         datetime(2000, 1, 2, 9, 0)]);
 
-testRecurring('testWeeklyByWeekNoAndWeekDayLast', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyByWeekNoAndWeekDayLast', new RRule({freq: RRule.WEEKLY,
     count:3,
     byweekno:-1,
     byweekday:RRule.SU,
@@ -958,7 +971,7 @@ testRecurring('testWeeklyByWeekNoAndWeekDayLast', new RRule(RRule.WEEKLY, {
         datetime(1999, 1, 3, 9, 0),
         datetime(2000, 1, 2, 9, 0)]);
 
-testRecurring('testWeeklyByWeekNoAndWeekDay53', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyByWeekNoAndWeekDay53', new RRule({freq: RRule.WEEKLY,
     count:3,
     byweekno:53,
     byweekday:RRule.MO,
@@ -967,7 +980,7 @@ testRecurring('testWeeklyByWeekNoAndWeekDay53', new RRule(RRule.WEEKLY, {
         datetime(2004, 12, 27, 9, 0),
         datetime(2009, 12, 28, 9, 0)]);
 /*
-assertRecurring('testWeeklyByEaster', new RRule(RRule.WEEKLY, {
+assertRecurring('testWeeklyByEaster', new RRule({freq: RRule.WEEKLY,
                           count: 3,
                           byeaster: 0,
                           dtstart: parse("19970902T090000")}),
@@ -975,7 +988,7 @@ assertRecurring('testWeeklyByEaster', new RRule(RRule.WEEKLY, {
                       datetime(1999, 4, 4, 9, 0),
                       datetime(2000, 4, 23, 9, 0)])
 
-assertRecurring('testWeeklyByEasterPos', new RRule(RRule.WEEKLY, {
+assertRecurring('testWeeklyByEasterPos', new RRule({freq: RRule.WEEKLY,
                           count: 3,
                           byeaster: 1,
                           dtstart: parse("19970902T090000")}),
@@ -983,7 +996,7 @@ assertRecurring('testWeeklyByEasterPos', new RRule(RRule.WEEKLY, {
                       datetime(1999, 4, 5, 9, 0),
                       datetime(2000, 4, 24, 9, 0)])
 
-assertRecurring('testWeeklyByEasterNeg', new RRule(RRule.WEEKLY, {
+assertRecurring('testWeeklyByEasterNeg', new RRule({freq: RRule.WEEKLY,
                           count: 3,
                           byeaster: -1,
                           dtstart: parse("19970902T090000")}),
@@ -991,7 +1004,7 @@ assertRecurring('testWeeklyByEasterNeg', new RRule(RRule.WEEKLY, {
                       datetime(1999, 4, 3, 9, 0),
                       datetime(2000, 4, 22, 9, 0)])
  */
-testRecurring('testWeeklyByHour', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyByHour', new RRule({freq: RRule.WEEKLY,
     count:3,
     byhour:[6, 18],
     dtstart:parse("19970902T090000")}),
@@ -999,7 +1012,7 @@ testRecurring('testWeeklyByHour', new RRule(RRule.WEEKLY, {
         datetime(1997, 9, 9, 6, 0),
         datetime(1997, 9, 9, 18, 0)]);
 
-testRecurring('testWeeklyByMinute', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyByMinute', new RRule({freq: RRule.WEEKLY,
     count:3,
     byminute:[6, 18],
     dtstart:parse("19970902T090000")}),
@@ -1007,7 +1020,7 @@ testRecurring('testWeeklyByMinute', new RRule(RRule.WEEKLY, {
         datetime(1997, 9, 2, 9, 18),
         datetime(1997, 9, 9, 9, 6)]);
 
-testRecurring('testWeeklyBySecond', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyBySecond', new RRule({freq: RRule.WEEKLY,
     count:3,
     bysecond:[6, 18],
     dtstart:parse("19970902T090000")}),
@@ -1015,7 +1028,7 @@ testRecurring('testWeeklyBySecond', new RRule(RRule.WEEKLY, {
         datetime(1997, 9, 2, 9, 0, 18),
         datetime(1997, 9, 9, 9, 0, 6)]);
 
-testRecurring('testWeeklyByHourAndMinute', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyByHourAndMinute', new RRule({freq: RRule.WEEKLY,
     count:3,
     byhour:[6, 18],
     byminute:[6, 18],
@@ -1024,7 +1037,7 @@ testRecurring('testWeeklyByHourAndMinute', new RRule(RRule.WEEKLY, {
         datetime(1997, 9, 2, 18, 18),
         datetime(1997, 9, 9, 6, 6)]);
 
-testRecurring('testWeeklyByHourAndSecond', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyByHourAndSecond', new RRule({freq: RRule.WEEKLY,
     count:3,
     byhour:[6, 18],
     bysecond:[6, 18],
@@ -1033,7 +1046,7 @@ testRecurring('testWeeklyByHourAndSecond', new RRule(RRule.WEEKLY, {
         datetime(1997, 9, 2, 18, 0, 18),
         datetime(1997, 9, 9, 6, 0, 6)]);
 
-testRecurring('testWeeklyByMinuteAndSecond', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyByMinuteAndSecond', new RRule({freq: RRule.WEEKLY,
     count:3,
     byminute:[6, 18],
     bysecond:[6, 18],
@@ -1042,7 +1055,7 @@ testRecurring('testWeeklyByMinuteAndSecond', new RRule(RRule.WEEKLY, {
         datetime(1997, 9, 2, 9, 6, 18),
         datetime(1997, 9, 2, 9, 18, 6)]);
 
-testRecurring('testWeeklyByHourAndMinuteAndSecond', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyByHourAndMinuteAndSecond', new RRule({freq: RRule.WEEKLY,
     count:3,
     byhour:[6, 18],
     byminute:[6, 18],
@@ -1052,7 +1065,7 @@ testRecurring('testWeeklyByHourAndMinuteAndSecond', new RRule(RRule.WEEKLY, {
         datetime(1997, 9, 2, 18, 6, 18),
         datetime(1997, 9, 2, 18, 18, 6)]);
 
-testRecurring('testWeeklyBySetPos', new RRule(RRule.WEEKLY, {
+testRecurring('testWeeklyBySetPos', new RRule({freq: RRule.WEEKLY,
     count:3,
     byweekday:[RRule.TU, RRule.TH],
     byhour:[6, 18],
@@ -1062,14 +1075,14 @@ testRecurring('testWeeklyBySetPos', new RRule(RRule.WEEKLY, {
         datetime(1997, 9, 4, 6, 0),
         datetime(1997, 9, 9, 18, 0)]);
 
-testRecurring('testDaily', new RRule(RRule.DAILY, {
+testRecurring('testDaily', new RRule({freq: RRule.DAILY,
     count:3,
     dtstart:parse("19970902T090000")}),
     [datetime(1997, 9, 2, 9, 0),
         datetime(1997, 9, 3, 9, 0),
         datetime(1997, 9, 4, 9, 0)]);
 
-testRecurring('testDailyInterval', new RRule(RRule.DAILY, {
+testRecurring('testDailyInterval', new RRule({freq: RRule.DAILY,
     count:3,
     interval:2,
     dtstart:parse("19970902T090000")}),
@@ -1077,7 +1090,7 @@ testRecurring('testDailyInterval', new RRule(RRule.DAILY, {
         datetime(1997, 9, 4, 9, 0),
         datetime(1997, 9, 6, 9, 0)]);
 
-testRecurring('testDailyIntervalLarge', new RRule(RRule.DAILY, {
+testRecurring('testDailyIntervalLarge', new RRule({freq: RRule.DAILY,
     count:3,
     interval:92,
     dtstart:parse("19970902T090000")}),
@@ -1085,7 +1098,7 @@ testRecurring('testDailyIntervalLarge', new RRule(RRule.DAILY, {
         datetime(1997, 12, 3, 9, 0),
         datetime(1998, 3, 5, 9, 0)]);
 
-testRecurring('testDailyByMonth', new RRule(RRule.DAILY, {
+testRecurring('testDailyByMonth', new RRule({freq: RRule.DAILY,
     count:3,
     bymonth:[1, 3],
     dtstart:parse("19970902T090000")}),
@@ -1093,7 +1106,7 @@ testRecurring('testDailyByMonth', new RRule(RRule.DAILY, {
         datetime(1998, 1, 2, 9, 0),
         datetime(1998, 1, 3, 9, 0)]);
 
-testRecurring('testDailyByMonthDay', new RRule(RRule.DAILY, {
+testRecurring('testDailyByMonthDay', new RRule({freq: RRule.DAILY,
     count:3,
     bymonthday:[1, 3],
     dtstart:parse("19970902T090000")}),
@@ -1101,7 +1114,7 @@ testRecurring('testDailyByMonthDay', new RRule(RRule.DAILY, {
         datetime(1997, 10, 1, 9, 0),
         datetime(1997, 10, 3, 9, 0)]);
 
-testRecurring('testDailyByMonthAndMonthDay', new RRule(RRule.DAILY, {
+testRecurring('testDailyByMonthAndMonthDay', new RRule({freq: RRule.DAILY,
     count:3,
     bymonth:[1, 3],
     bymonthday:[5, 7],
@@ -1110,7 +1123,7 @@ testRecurring('testDailyByMonthAndMonthDay', new RRule(RRule.DAILY, {
         datetime(1998, 1, 7, 9, 0),
         datetime(1998, 3, 5, 9, 0)]);
 
-testRecurring('testDailyByWeekDay', new RRule(RRule.DAILY, {
+testRecurring('testDailyByWeekDay', new RRule({freq: RRule.DAILY,
     count:3,
     byweekday:[RRule.TU, RRule.TH],
     dtstart:parse("19970902T090000")}),
@@ -1118,15 +1131,15 @@ testRecurring('testDailyByWeekDay', new RRule(RRule.DAILY, {
         datetime(1997, 9, 4, 9, 0),
         datetime(1997, 9, 9, 9, 0)]);
 
-testRecurring('testDailyByNWeekDay', new RRule(RRule.DAILY, {
+testRecurring('testDailyByNWeekDay', new RRule({freq: RRule.DAILY,
     count:3,
-    byweekday:[RRule.TU.clone(1), RRule.TH.clone(-1)],
+    byweekday:[RRule.TU.nth(1), RRule.TH.nth(-1)],
     dtstart:parse("19970902T090000")}),
     [datetime(1997, 9, 2, 9, 0),
         datetime(1997, 9, 4, 9, 0),
         datetime(1997, 9, 9, 9, 0)]);
 
-testRecurring('testDailyByMonthAndWeekDay', new RRule(RRule.DAILY, {
+testRecurring('testDailyByMonthAndWeekDay', new RRule({freq: RRule.DAILY,
     count:3,
     bymonth:[1, 3],
     byweekday:[RRule.TU, RRule.TH],
@@ -1135,16 +1148,16 @@ testRecurring('testDailyByMonthAndWeekDay', new RRule(RRule.DAILY, {
         datetime(1998, 1, 6, 9, 0),
         datetime(1998, 1, 8, 9, 0)]);
 
-testRecurring('testDailyByMonthAndNWeekDay', new RRule(RRule.DAILY, {
+testRecurring('testDailyByMonthAndNWeekDay', new RRule({freq: RRule.DAILY,
     count:3,
     bymonth:[1, 3],
-    byweekday:[RRule.TU.clone(1), RRule.TH.clone(-1)],
+    byweekday:[RRule.TU.nth(1), RRule.TH.nth(-1)],
     dtstart:parse("19970902T090000")}),
     [datetime(1998, 1, 1, 9, 0),
         datetime(1998, 1, 6, 9, 0),
         datetime(1998, 1, 8, 9, 0)]);
 
-testRecurring('testDailyByMonthDayAndWeekDay', new RRule(RRule.DAILY, {
+testRecurring('testDailyByMonthDayAndWeekDay', new RRule({freq: RRule.DAILY,
     count:3,
     bymonthday:[1, 3],
     byweekday:[RRule.TU, RRule.TH],
@@ -1153,7 +1166,7 @@ testRecurring('testDailyByMonthDayAndWeekDay', new RRule(RRule.DAILY, {
         datetime(1998, 2, 3, 9, 0),
         datetime(1998, 3, 3, 9, 0)]);
 
-testRecurring('testDailyByMonthAndMonthDayAndWeekDay', new RRule(RRule.DAILY, {
+testRecurring('testDailyByMonthAndMonthDayAndWeekDay', new RRule({freq: RRule.DAILY,
     count:3,
     bymonth:[1, 3],
     bymonthday:[1, 3],
@@ -1163,7 +1176,7 @@ testRecurring('testDailyByMonthAndMonthDayAndWeekDay', new RRule(RRule.DAILY, {
         datetime(1998, 3, 3, 9, 0),
         datetime(2001, 3, 1, 9, 0)]);
 
-testRecurring('testDailyByYearDay', new RRule(RRule.DAILY, {
+testRecurring('testDailyByYearDay', new RRule({freq: RRule.DAILY,
     count:4,
     byyearday:[1, 100, 200, 365],
     dtstart:parse("19970902T090000")}),
@@ -1172,7 +1185,7 @@ testRecurring('testDailyByYearDay', new RRule(RRule.DAILY, {
         datetime(1998, 4, 10, 9, 0),
         datetime(1998, 7, 19, 9, 0)]);
 
-testRecurring('testDailyByYearDayNeg', new RRule(RRule.DAILY, {
+testRecurring('testDailyByYearDayNeg', new RRule({freq: RRule.DAILY,
     count:4,
     byyearday:[-365, -266, -166, -1],
     dtstart:parse("19970902T090000")}),
@@ -1181,7 +1194,7 @@ testRecurring('testDailyByYearDayNeg', new RRule(RRule.DAILY, {
         datetime(1998, 4, 10, 9, 0),
         datetime(1998, 7, 19, 9, 0)]);
 
-testRecurring('testDailyByMonthAndYearDay', new RRule(RRule.DAILY, {
+testRecurring('testDailyByMonthAndYearDay', new RRule({freq: RRule.DAILY,
     count:4,
     bymonth:[1, 7],
     byyearday:[1, 100, 200, 365],
@@ -1191,7 +1204,7 @@ testRecurring('testDailyByMonthAndYearDay', new RRule(RRule.DAILY, {
         datetime(1999, 1, 1, 9, 0),
         datetime(1999, 7, 19, 9, 0)]);
 
-testRecurring('testDailyByMonthAndYearDayNeg', new RRule(RRule.DAILY, {
+testRecurring('testDailyByMonthAndYearDayNeg', new RRule({freq: RRule.DAILY,
     count:4,
     bymonth:[1, 7],
     byyearday:[-365, -266, -166, -1],
@@ -1201,7 +1214,7 @@ testRecurring('testDailyByMonthAndYearDayNeg', new RRule(RRule.DAILY, {
         datetime(1999, 1, 1, 9, 0),
         datetime(1999, 7, 19, 9, 0)]);
 
-testRecurring('testDailyByWeekNo', new RRule(RRule.DAILY, {
+testRecurring('testDailyByWeekNo', new RRule({freq: RRule.DAILY,
     count:3,
     byweekno:20,
     dtstart:parse("19970902T090000")}),
@@ -1212,7 +1225,7 @@ testRecurring('testDailyByWeekNo', new RRule(RRule.DAILY, {
 testRecurring('testDailyByWeekNoAndWeekDay',
     // That's a nice one. The first days of week number one
     // may be in the last year.
-    new RRule(RRule.DAILY, {
+    new RRule({freq: RRule.DAILY,
         count:3,
         byweekno:1,
         byweekday:RRule.MO,
@@ -1224,7 +1237,7 @@ testRecurring('testDailyByWeekNoAndWeekDay',
 testRecurring('testDailyByWeekNoAndWeekDayLarge',
     // Another nice test. The last days of week number 52/53
     // may be in the next year.
-    new RRule(RRule.DAILY, {
+    new RRule({freq: RRule.DAILY,
         count:3,
         byweekno:52,
         byweekday:RRule.SU,
@@ -1233,7 +1246,7 @@ testRecurring('testDailyByWeekNoAndWeekDayLarge',
         datetime(1998, 12, 27, 9, 0),
         datetime(2000, 1, 2, 9, 0)]);
 
-testRecurring('testDailyByWeekNoAndWeekDayLast', new RRule(RRule.DAILY, {
+testRecurring('testDailyByWeekNoAndWeekDayLast', new RRule({freq: RRule.DAILY,
     count:3,
     byweekno:-1,
     byweekday:RRule.SU,
@@ -1242,7 +1255,7 @@ testRecurring('testDailyByWeekNoAndWeekDayLast', new RRule(RRule.DAILY, {
         datetime(1999, 1, 3, 9, 0),
         datetime(2000, 1, 2, 9, 0)]);
 
-testRecurring('testDailyByWeekNoAndWeekDay53', new RRule(RRule.DAILY, {
+testRecurring('testDailyByWeekNoAndWeekDay53', new RRule({freq: RRule.DAILY,
     count:3,
     byweekno:53,
     byweekday:RRule.MO,
@@ -1251,7 +1264,7 @@ testRecurring('testDailyByWeekNoAndWeekDay53', new RRule(RRule.DAILY, {
         datetime(2004, 12, 27, 9, 0),
         datetime(2009, 12, 28, 9, 0)]);
 /*
-assertRecurring('testDailyByEaster', new RRule(RRule.DAILY, {
+assertRecurring('testDailyByEaster', new RRule({freq: RRule.DAILY,
                           count: 3,
                           byeaster: 0,
                           dtstart: parse("19970902T090000")}),
@@ -1259,7 +1272,7 @@ assertRecurring('testDailyByEaster', new RRule(RRule.DAILY, {
                       datetime(1999, 4, 4, 9, 0),
                       datetime(2000, 4, 23, 9, 0)])
 
-assertRecurring('testDailyByEasterPos', new RRule(RRule.DAILY, {
+assertRecurring('testDailyByEasterPos', new RRule({freq: RRule.DAILY,
                           count: 3,
                           byeaster: 1,
                           dtstart: parse("19970902T090000")}),
@@ -1267,7 +1280,7 @@ assertRecurring('testDailyByEasterPos', new RRule(RRule.DAILY, {
                       datetime(1999, 4, 5, 9, 0),
                       datetime(2000, 4, 24, 9, 0)])
 
-assertRecurring('testDailyByEasterNeg', new RRule(RRule.DAILY, {
+assertRecurring('testDailyByEasterNeg', new RRule({freq: RRule.DAILY,
                           count: 3,
                           byeaster: -1,
                           dtstart: parse("19970902T090000")}),
@@ -1275,7 +1288,7 @@ assertRecurring('testDailyByEasterNeg', new RRule(RRule.DAILY, {
                       datetime(1999, 4, 3, 9, 0),
                       datetime(2000, 4, 22, 9, 0)])
  */
-testRecurring('testDailyByHour', new RRule(RRule.DAILY, {
+testRecurring('testDailyByHour', new RRule({freq: RRule.DAILY,
     count:3,
     byhour:[6, 18],
     dtstart:parse("19970902T090000")}),
@@ -1283,7 +1296,7 @@ testRecurring('testDailyByHour', new RRule(RRule.DAILY, {
         datetime(1997, 9, 3, 6, 0),
         datetime(1997, 9, 3, 18, 0)]);
 
-testRecurring('testDailyByMinute', new RRule(RRule.DAILY, {
+testRecurring('testDailyByMinute', new RRule({freq: RRule.DAILY,
     count:3,
     byminute:[6, 18],
     dtstart:parse("19970902T090000")}),
@@ -1291,7 +1304,7 @@ testRecurring('testDailyByMinute', new RRule(RRule.DAILY, {
         datetime(1997, 9, 2, 9, 18),
         datetime(1997, 9, 3, 9, 6)]);
 
-testRecurring('testDailyBySecond', new RRule(RRule.DAILY, {
+testRecurring('testDailyBySecond', new RRule({freq: RRule.DAILY,
     count:3,
     bysecond:[6, 18],
     dtstart:parse("19970902T090000")}),
@@ -1299,7 +1312,7 @@ testRecurring('testDailyBySecond', new RRule(RRule.DAILY, {
         datetime(1997, 9, 2, 9, 0, 18),
         datetime(1997, 9, 3, 9, 0, 6)]);
 
-testRecurring('testDailyByHourAndMinute', new RRule(RRule.DAILY, {
+testRecurring('testDailyByHourAndMinute', new RRule({freq: RRule.DAILY,
     count:3,
     byhour:[6, 18],
     byminute:[6, 18],
@@ -1308,7 +1321,7 @@ testRecurring('testDailyByHourAndMinute', new RRule(RRule.DAILY, {
         datetime(1997, 9, 2, 18, 18),
         datetime(1997, 9, 3, 6, 6)]);
 
-testRecurring('testDailyByHourAndSecond', new RRule(RRule.DAILY, {
+testRecurring('testDailyByHourAndSecond', new RRule({freq: RRule.DAILY,
     count:3,
     byhour:[6, 18],
     bysecond:[6, 18],
@@ -1317,7 +1330,7 @@ testRecurring('testDailyByHourAndSecond', new RRule(RRule.DAILY, {
         datetime(1997, 9, 2, 18, 0, 18),
         datetime(1997, 9, 3, 6, 0, 6)]);
 
-testRecurring('testDailyByMinuteAndSecond', new RRule(RRule.DAILY, {
+testRecurring('testDailyByMinuteAndSecond', new RRule({freq: RRule.DAILY,
     count:3,
     byminute:[6, 18],
     bysecond:[6, 18],
@@ -1326,7 +1339,7 @@ testRecurring('testDailyByMinuteAndSecond', new RRule(RRule.DAILY, {
         datetime(1997, 9, 2, 9, 6, 18),
         datetime(1997, 9, 2, 9, 18, 6)]);
 
-testRecurring('testDailyByHourAndMinuteAndSecond', new RRule(RRule.DAILY, {
+testRecurring('testDailyByHourAndMinuteAndSecond', new RRule({freq: RRule.DAILY,
     count:3,
     byhour:[6, 18],
     byminute:[6, 18],
@@ -1336,7 +1349,7 @@ testRecurring('testDailyByHourAndMinuteAndSecond', new RRule(RRule.DAILY, {
         datetime(1997, 9, 2, 18, 6, 18),
         datetime(1997, 9, 2, 18, 18, 6)]);
 
-testRecurring('testDailyBySetPos', new RRule(RRule.DAILY, {
+testRecurring('testDailyBySetPos', new RRule({freq: RRule.DAILY,
     count:3,
     byhour:[6, 18],
     byminute:[15, 45],
@@ -1346,14 +1359,14 @@ testRecurring('testDailyBySetPos', new RRule(RRule.DAILY, {
         datetime(1997, 9, 3, 6, 45),
         datetime(1997, 9, 3, 18, 15)]);
 
-testRecurring('testHourly', new RRule(RRule.HOURLY, {
+testRecurring('testHourly', new RRule({freq: RRule.HOURLY,
     count:3,
     dtstart:parse("19970902T090000")}),
     [datetime(1997, 9, 2, 9, 0),
         datetime(1997, 9, 2, 10, 0),
         datetime(1997, 9, 2, 11, 0)]);
 
-testRecurring('testHourlyInterval', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyInterval', new RRule({freq: RRule.HOURLY,
     count:3,
     interval:2,
     dtstart:parse("19970902T090000")}),
@@ -1361,7 +1374,7 @@ testRecurring('testHourlyInterval', new RRule(RRule.HOURLY, {
         datetime(1997, 9, 2, 11, 0),
         datetime(1997, 9, 2, 13, 0)]);
 
-testRecurring('testHourlyIntervalLarge', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyIntervalLarge', new RRule({freq: RRule.HOURLY,
     count:3,
     interval:769,
     dtstart:parse("19970902T090000")}),
@@ -1369,7 +1382,7 @@ testRecurring('testHourlyIntervalLarge', new RRule(RRule.HOURLY, {
         datetime(1997, 10, 4, 10, 0),
         datetime(1997, 11, 5, 11, 0)]);
 
-testRecurring('testHourlyByMonth', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByMonth', new RRule({freq: RRule.HOURLY,
     count:3,
     bymonth:[1, 3],
     dtstart:parse("19970902T090000")}),
@@ -1377,7 +1390,7 @@ testRecurring('testHourlyByMonth', new RRule(RRule.HOURLY, {
         datetime(1998, 1, 1, 1, 0),
         datetime(1998, 1, 1, 2, 0)]);
 
-testRecurring('testHourlyByMonthDay', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByMonthDay', new RRule({freq: RRule.HOURLY,
     count:3,
     bymonthday:[1, 3],
     dtstart:parse("19970902T090000")}),
@@ -1385,7 +1398,7 @@ testRecurring('testHourlyByMonthDay', new RRule(RRule.HOURLY, {
         datetime(1997, 9, 3, 1, 0),
         datetime(1997, 9, 3, 2, 0)]);
 
-testRecurring('testHourlyByMonthAndMonthDay', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByMonthAndMonthDay', new RRule({freq: RRule.HOURLY,
     count:3,
     bymonth:[1, 3],
     bymonthday:[5, 7],
@@ -1394,7 +1407,7 @@ testRecurring('testHourlyByMonthAndMonthDay', new RRule(RRule.HOURLY, {
         datetime(1998, 1, 5, 1, 0),
         datetime(1998, 1, 5, 2, 0)]);
 
-testRecurring('testHourlyByWeekDay', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByWeekDay', new RRule({freq: RRule.HOURLY,
     count:3,
     byweekday:[RRule.TU, RRule.TH],
     dtstart:parse("19970902T090000")}),
@@ -1402,15 +1415,15 @@ testRecurring('testHourlyByWeekDay', new RRule(RRule.HOURLY, {
         datetime(1997, 9, 2, 10, 0),
         datetime(1997, 9, 2, 11, 0)]);
 
-testRecurring('testHourlyByNWeekDay', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByNWeekDay', new RRule({freq: RRule.HOURLY,
     count:3,
-    byweekday:[RRule.TU.clone(1), RRule.TH.clone(-1)],
+    byweekday:[RRule.TU.nth(1), RRule.TH.nth(-1)],
     dtstart:parse("19970902T090000")}),
     [datetime(1997, 9, 2, 9, 0),
         datetime(1997, 9, 2, 10, 0),
         datetime(1997, 9, 2, 11, 0)]);
 
-testRecurring('testHourlyByMonthAndWeekDay', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByMonthAndWeekDay', new RRule({freq: RRule.HOURLY,
     count:3,
     bymonth:[1, 3],
     byweekday:[RRule.TU, RRule.TH],
@@ -1419,16 +1432,16 @@ testRecurring('testHourlyByMonthAndWeekDay', new RRule(RRule.HOURLY, {
         datetime(1998, 1, 1, 1, 0),
         datetime(1998, 1, 1, 2, 0)]);
 
-testRecurring('testHourlyByMonthAndNWeekDay', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByMonthAndNWeekDay', new RRule({freq: RRule.HOURLY,
     count:3,
     bymonth:[1, 3],
-    byweekday:[RRule.TU.clone(1), RRule.TH.clone(-1)],
+    byweekday:[RRule.TU.nth(1), RRule.TH.nth(-1)],
     dtstart:parse("19970902T090000")}),
     [datetime(1998, 1, 1, 0, 0),
         datetime(1998, 1, 1, 1, 0),
         datetime(1998, 1, 1, 2, 0)]);
 
-testRecurring('testHourlyByMonthDayAndWeekDay', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByMonthDayAndWeekDay', new RRule({freq: RRule.HOURLY,
     count:3,
     bymonthday:[1, 3],
     byweekday:[RRule.TU, RRule.TH],
@@ -1437,7 +1450,7 @@ testRecurring('testHourlyByMonthDayAndWeekDay', new RRule(RRule.HOURLY, {
         datetime(1998, 1, 1, 1, 0),
         datetime(1998, 1, 1, 2, 0)]);
 
-testRecurring('testHourlyByMonthAndMonthDayAndWeekDay', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByMonthAndMonthDayAndWeekDay', new RRule({freq: RRule.HOURLY,
     count:3,
     bymonth:[1, 3],
     bymonthday:[1, 3],
@@ -1447,7 +1460,7 @@ testRecurring('testHourlyByMonthAndMonthDayAndWeekDay', new RRule(RRule.HOURLY, 
         datetime(1998, 1, 1, 1, 0),
         datetime(1998, 1, 1, 2, 0)]);
 
-testRecurring('testHourlyByYearDay', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByYearDay', new RRule({freq: RRule.HOURLY,
     count:4,
     byyearday:[1, 100, 200, 365],
     dtstart:parse("19970902T090000")}),
@@ -1456,7 +1469,7 @@ testRecurring('testHourlyByYearDay', new RRule(RRule.HOURLY, {
         datetime(1997, 12, 31, 2, 0),
         datetime(1997, 12, 31, 3, 0)]);
 
-testRecurring('testHourlyByYearDayNeg', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByYearDayNeg', new RRule({freq: RRule.HOURLY,
     count:4,
     byyearday:[-365, -266, -166, -1],
     dtstart:parse("19970902T090000")}),
@@ -1465,7 +1478,7 @@ testRecurring('testHourlyByYearDayNeg', new RRule(RRule.HOURLY, {
         datetime(1997, 12, 31, 2, 0),
         datetime(1997, 12, 31, 3, 0)]);
 
-testRecurring('testHourlyByMonthAndYearDay', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByMonthAndYearDay', new RRule({freq: RRule.HOURLY,
     count:4,
     bymonth:[4, 7],
     byyearday:[1, 100, 200, 365],
@@ -1475,7 +1488,7 @@ testRecurring('testHourlyByMonthAndYearDay', new RRule(RRule.HOURLY, {
         datetime(1998, 4, 10, 2, 0),
         datetime(1998, 4, 10, 3, 0)]);
 
-testRecurring('testHourlyByMonthAndYearDayNeg', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByMonthAndYearDayNeg', new RRule({freq: RRule.HOURLY,
     count:4,
     bymonth:[4, 7],
     byyearday:[-365, -266, -166, -1],
@@ -1485,7 +1498,7 @@ testRecurring('testHourlyByMonthAndYearDayNeg', new RRule(RRule.HOURLY, {
         datetime(1998, 4, 10, 2, 0),
         datetime(1998, 4, 10, 3, 0)]);
 
-testRecurring('testHourlyByWeekNo', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByWeekNo', new RRule({freq: RRule.HOURLY,
     count:3,
     byweekno:20,
     dtstart:parse("19970902T090000")}),
@@ -1493,7 +1506,7 @@ testRecurring('testHourlyByWeekNo', new RRule(RRule.HOURLY, {
         datetime(1998, 5, 11, 1, 0),
         datetime(1998, 5, 11, 2, 0)]);
 
-testRecurring('testHourlyByWeekNoAndWeekDay', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByWeekNoAndWeekDay', new RRule({freq: RRule.HOURLY,
     count:3,
     byweekno:1,
     byweekday:RRule.MO,
@@ -1502,7 +1515,7 @@ testRecurring('testHourlyByWeekNoAndWeekDay', new RRule(RRule.HOURLY, {
         datetime(1997, 12, 29, 1, 0),
         datetime(1997, 12, 29, 2, 0)]);
 
-testRecurring('testHourlyByWeekNoAndWeekDayLarge', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByWeekNoAndWeekDayLarge', new RRule({freq: RRule.HOURLY,
     count:3,
     byweekno:52,
     byweekday:RRule.SU,
@@ -1511,7 +1524,7 @@ testRecurring('testHourlyByWeekNoAndWeekDayLarge', new RRule(RRule.HOURLY, {
         datetime(1997, 12, 28, 1, 0),
         datetime(1997, 12, 28, 2, 0)]);
 
-testRecurring('testHourlyByWeekNoAndWeekDayLast', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByWeekNoAndWeekDayLast', new RRule({freq: RRule.HOURLY,
     count:3,
     byweekno:-1,
     byweekday:RRule.SU,
@@ -1520,7 +1533,7 @@ testRecurring('testHourlyByWeekNoAndWeekDayLast', new RRule(RRule.HOURLY, {
         datetime(1997, 12, 28, 1, 0),
         datetime(1997, 12, 28, 2, 0)]);
 
-testRecurring('testHourlyByWeekNoAndWeekDay53', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByWeekNoAndWeekDay53', new RRule({freq: RRule.HOURLY,
     count:3,
     byweekno:53,
     byweekday:RRule.MO,
@@ -1529,7 +1542,7 @@ testRecurring('testHourlyByWeekNoAndWeekDay53', new RRule(RRule.HOURLY, {
         datetime(1998, 12, 28, 1, 0),
         datetime(1998, 12, 28, 2, 0)]);
 /*
-assertRecurring('testHourlyByEaster', new RRule(RRule.HOURLY, {
+assertRecurring('testHourlyByEaster', new RRule({freq: RRule.HOURLY,
                           count: 3,
                           byeaster: 0,
                           dtstart: parse("19970902T090000")}),
@@ -1537,7 +1550,7 @@ assertRecurring('testHourlyByEaster', new RRule(RRule.HOURLY, {
                       datetime(1998, 4, 12, 1, 0),
                       datetime(1998, 4, 12, 2, 0)])
 
-assertRecurring('testHourlyByEasterPos', new RRule(RRule.HOURLY, {
+assertRecurring('testHourlyByEasterPos', new RRule({freq: RRule.HOURLY,
                           count: 3,
                           byeaster: 1,
                           dtstart: parse("19970902T090000")}),
@@ -1545,7 +1558,7 @@ assertRecurring('testHourlyByEasterPos', new RRule(RRule.HOURLY, {
                       datetime(1998, 4, 13, 1, 0),
                       datetime(1998, 4, 13, 2, 0)])
 
-assertRecurring('testHourlyByEasterNeg', new RRule(RRule.HOURLY, {
+assertRecurring('testHourlyByEasterNeg', new RRule({freq: RRule.HOURLY,
                           count: 3,
                           byeaster: -1,
                           dtstart: parse("19970902T090000")}),
@@ -1553,7 +1566,7 @@ assertRecurring('testHourlyByEasterNeg', new RRule(RRule.HOURLY, {
                       datetime(1998, 4, 11, 1, 0),
                       datetime(1998, 4, 11, 2, 0)])
  */
-testRecurring('testHourlyByHour', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByHour', new RRule({freq: RRule.HOURLY,
     count:3,
     byhour:[6, 18],
     dtstart:parse("19970902T090000")}),
@@ -1561,7 +1574,7 @@ testRecurring('testHourlyByHour', new RRule(RRule.HOURLY, {
         datetime(1997, 9, 3, 6, 0),
         datetime(1997, 9, 3, 18, 0)]);
 
-testRecurring('testHourlyByMinute', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByMinute', new RRule({freq: RRule.HOURLY,
     count:3,
     byminute:[6, 18],
     dtstart:parse("19970902T090000")}),
@@ -1569,7 +1582,7 @@ testRecurring('testHourlyByMinute', new RRule(RRule.HOURLY, {
         datetime(1997, 9, 2, 9, 18),
         datetime(1997, 9, 2, 10, 6)]);
 
-testRecurring('testHourlyBySecond', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyBySecond', new RRule({freq: RRule.HOURLY,
     count:3,
     bysecond:[6, 18],
     dtstart:parse("19970902T090000")}),
@@ -1577,7 +1590,7 @@ testRecurring('testHourlyBySecond', new RRule(RRule.HOURLY, {
         datetime(1997, 9, 2, 9, 0, 18),
         datetime(1997, 9, 2, 10, 0, 6)]);
 
-testRecurring('testHourlyByHourAndMinute', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByHourAndMinute', new RRule({freq: RRule.HOURLY,
     count:3,
     byhour:[6, 18],
     byminute:[6, 18],
@@ -1586,7 +1599,7 @@ testRecurring('testHourlyByHourAndMinute', new RRule(RRule.HOURLY, {
         datetime(1997, 9, 2, 18, 18),
         datetime(1997, 9, 3, 6, 6)]);
 
-testRecurring('testHourlyByHourAndSecond', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByHourAndSecond', new RRule({freq: RRule.HOURLY,
     count:3,
     byhour:[6, 18],
     bysecond:[6, 18],
@@ -1595,7 +1608,7 @@ testRecurring('testHourlyByHourAndSecond', new RRule(RRule.HOURLY, {
         datetime(1997, 9, 2, 18, 0, 18),
         datetime(1997, 9, 3, 6, 0, 6)]);
 
-testRecurring('testHourlyByMinuteAndSecond', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByMinuteAndSecond', new RRule({freq: RRule.HOURLY,
     count:3,
     byminute:[6, 18],
     bysecond:[6, 18],
@@ -1604,7 +1617,7 @@ testRecurring('testHourlyByMinuteAndSecond', new RRule(RRule.HOURLY, {
         datetime(1997, 9, 2, 9, 6, 18),
         datetime(1997, 9, 2, 9, 18, 6)]);
 
-testRecurring('testHourlyByHourAndMinuteAndSecond', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyByHourAndMinuteAndSecond', new RRule({freq: RRule.HOURLY,
     count:3,
     byhour:[6, 18],
     byminute:[6, 18],
@@ -1614,7 +1627,7 @@ testRecurring('testHourlyByHourAndMinuteAndSecond', new RRule(RRule.HOURLY, {
         datetime(1997, 9, 2, 18, 6, 18),
         datetime(1997, 9, 2, 18, 18, 6)]);
 
-testRecurring('testHourlyBySetPos', new RRule(RRule.HOURLY, {
+testRecurring('testHourlyBySetPos', new RRule({freq: RRule.HOURLY,
     count:3,
     byminute:[15, 45],
     bysecond:[15, 45],
@@ -1624,14 +1637,14 @@ testRecurring('testHourlyBySetPos', new RRule(RRule.HOURLY, {
         datetime(1997, 9, 2, 9, 45, 15),
         datetime(1997, 9, 2, 10, 15, 45)]);
 
-testRecurring('testMinutely', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutely', new RRule({freq: RRule.MINUTELY,
     count:3,
     dtstart:parse("19970902T090000")}),
     [datetime(1997, 9, 2, 9, 0),
         datetime(1997, 9, 2, 9, 1),
         datetime(1997, 9, 2, 9, 2)]);
 
-testRecurring('testMinutelyInterval', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyInterval', new RRule({freq: RRule.MINUTELY,
     count:3,
     interval:2,
     dtstart:parse("19970902T090000")}),
@@ -1639,7 +1652,7 @@ testRecurring('testMinutelyInterval', new RRule(RRule.MINUTELY, {
         datetime(1997, 9, 2, 9, 2),
         datetime(1997, 9, 2, 9, 4)]);
 
-testRecurring('testMinutelyIntervalLarge', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyIntervalLarge', new RRule({freq: RRule.MINUTELY,
     count:3,
     interval:1501,
     dtstart:parse("19970902T090000")}),
@@ -1647,7 +1660,7 @@ testRecurring('testMinutelyIntervalLarge', new RRule(RRule.MINUTELY, {
         datetime(1997, 9, 3, 10, 1),
         datetime(1997, 9, 4, 11, 2)]);
 
-testRecurring('testMinutelyByMonth', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByMonth', new RRule({freq: RRule.MINUTELY,
     count:3,
     bymonth:[1, 3],
     dtstart:parse("19970902T090000")}),
@@ -1655,7 +1668,7 @@ testRecurring('testMinutelyByMonth', new RRule(RRule.MINUTELY, {
         datetime(1998, 1, 1, 0, 1),
         datetime(1998, 1, 1, 0, 2)]);
 
-testRecurring('testMinutelyByMonthDay', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByMonthDay', new RRule({freq: RRule.MINUTELY,
     count:3,
     bymonthday:[1, 3],
     dtstart:parse("19970902T090000")}),
@@ -1663,7 +1676,7 @@ testRecurring('testMinutelyByMonthDay', new RRule(RRule.MINUTELY, {
         datetime(1997, 9, 3, 0, 1),
         datetime(1997, 9, 3, 0, 2)]);
 
-testRecurring('testMinutelyByMonthAndMonthDay', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByMonthAndMonthDay', new RRule({freq: RRule.MINUTELY,
     count:3,
     bymonth:[1, 3],
     bymonthday:[5, 7],
@@ -1672,7 +1685,7 @@ testRecurring('testMinutelyByMonthAndMonthDay', new RRule(RRule.MINUTELY, {
         datetime(1998, 1, 5, 0, 1),
         datetime(1998, 1, 5, 0, 2)]);
 
-testRecurring('testMinutelyByWeekDay', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByWeekDay', new RRule({freq: RRule.MINUTELY,
     count:3,
     byweekday:[RRule.TU, RRule.TH],
     dtstart:parse("19970902T090000")}),
@@ -1680,15 +1693,15 @@ testRecurring('testMinutelyByWeekDay', new RRule(RRule.MINUTELY, {
         datetime(1997, 9, 2, 9, 1),
         datetime(1997, 9, 2, 9, 2)]);
 
-testRecurring('testMinutelyByNWeekDay', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByNWeekDay', new RRule({freq: RRule.MINUTELY,
     count:3,
-    byweekday:[RRule.TU.clone(1), RRule.TH.clone(-1)],
+    byweekday:[RRule.TU.nth(1), RRule.TH.nth(-1)],
     dtstart:parse("19970902T090000")}),
     [datetime(1997, 9, 2, 9, 0),
         datetime(1997, 9, 2, 9, 1),
         datetime(1997, 9, 2, 9, 2)]);
 
-testRecurring('testMinutelyByMonthAndWeekDay', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByMonthAndWeekDay', new RRule({freq: RRule.MINUTELY,
     count:3,
     bymonth:[1, 3],
     byweekday:[RRule.TU, RRule.TH],
@@ -1697,16 +1710,16 @@ testRecurring('testMinutelyByMonthAndWeekDay', new RRule(RRule.MINUTELY, {
         datetime(1998, 1, 1, 0, 1),
         datetime(1998, 1, 1, 0, 2)]);
 
-testRecurring('testMinutelyByMonthAndNWeekDay', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByMonthAndNWeekDay', new RRule({freq: RRule.MINUTELY,
     count:3,
     bymonth:[1, 3],
-    byweekday:[RRule.TU.clone(1), RRule.TH.clone(-1)],
+    byweekday:[RRule.TU.nth(1), RRule.TH.nth(-1)],
     dtstart:parse("19970902T090000")}),
     [datetime(1998, 1, 1, 0, 0),
         datetime(1998, 1, 1, 0, 1),
         datetime(1998, 1, 1, 0, 2)]);
 
-testRecurring('testMinutelyByMonthDayAndWeekDay', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByMonthDayAndWeekDay', new RRule({freq: RRule.MINUTELY,
     count:3,
     bymonthday:[1, 3],
     byweekday:[RRule.TU, RRule.TH],
@@ -1715,7 +1728,7 @@ testRecurring('testMinutelyByMonthDayAndWeekDay', new RRule(RRule.MINUTELY, {
         datetime(1998, 1, 1, 0, 1),
         datetime(1998, 1, 1, 0, 2)]);
 
-testRecurring('testMinutelyByMonthAndMonthDayAndWeekDay', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByMonthAndMonthDayAndWeekDay', new RRule({freq: RRule.MINUTELY,
     count:3,
     bymonth:[1, 3],
     bymonthday:[1, 3],
@@ -1725,7 +1738,7 @@ testRecurring('testMinutelyByMonthAndMonthDayAndWeekDay', new RRule(RRule.MINUTE
         datetime(1998, 1, 1, 0, 1),
         datetime(1998, 1, 1, 0, 2)]);
 
-testRecurring('testMinutelyByYearDay', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByYearDay', new RRule({freq: RRule.MINUTELY,
     count:4,
     byyearday:[1, 100, 200, 365],
     dtstart:parse("19970902T090000")}),
@@ -1734,7 +1747,7 @@ testRecurring('testMinutelyByYearDay', new RRule(RRule.MINUTELY, {
         datetime(1997, 12, 31, 0, 2),
         datetime(1997, 12, 31, 0, 3)]);
 
-testRecurring('testMinutelyByYearDayNeg', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByYearDayNeg', new RRule({freq: RRule.MINUTELY,
     count:4,
     byyearday:[-365, -266, -166, -1],
     dtstart:parse("19970902T090000")}),
@@ -1743,7 +1756,7 @@ testRecurring('testMinutelyByYearDayNeg', new RRule(RRule.MINUTELY, {
         datetime(1997, 12, 31, 0, 2),
         datetime(1997, 12, 31, 0, 3)]);
 
-testRecurring('testMinutelyByMonthAndYearDay', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByMonthAndYearDay', new RRule({freq: RRule.MINUTELY,
     count:4,
     bymonth:[4, 7],
     byyearday:[1, 100, 200, 365],
@@ -1753,7 +1766,7 @@ testRecurring('testMinutelyByMonthAndYearDay', new RRule(RRule.MINUTELY, {
         datetime(1998, 4, 10, 0, 2),
         datetime(1998, 4, 10, 0, 3)]);
 
-testRecurring('testMinutelyByMonthAndYearDayNeg', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByMonthAndYearDayNeg', new RRule({freq: RRule.MINUTELY,
     count:4,
     bymonth:[4, 7],
     byyearday:[-365, -266, -166, -1],
@@ -1763,7 +1776,7 @@ testRecurring('testMinutelyByMonthAndYearDayNeg', new RRule(RRule.MINUTELY, {
         datetime(1998, 4, 10, 0, 2),
         datetime(1998, 4, 10, 0, 3)]);
 
-testRecurring('testMinutelyByWeekNo', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByWeekNo', new RRule({freq: RRule.MINUTELY,
     count:3,
     byweekno:20,
     dtstart:parse("19970902T090000")}),
@@ -1771,7 +1784,7 @@ testRecurring('testMinutelyByWeekNo', new RRule(RRule.MINUTELY, {
         datetime(1998, 5, 11, 0, 1),
         datetime(1998, 5, 11, 0, 2)]);
 
-testRecurring('testMinutelyByWeekNoAndWeekDay', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByWeekNoAndWeekDay', new RRule({freq: RRule.MINUTELY,
     count:3,
     byweekno:1,
     byweekday:RRule.MO,
@@ -1780,7 +1793,7 @@ testRecurring('testMinutelyByWeekNoAndWeekDay', new RRule(RRule.MINUTELY, {
         datetime(1997, 12, 29, 0, 1),
         datetime(1997, 12, 29, 0, 2)]);
 
-testRecurring('testMinutelyByWeekNoAndWeekDayLarge', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByWeekNoAndWeekDayLarge', new RRule({freq: RRule.MINUTELY,
     count:3,
     byweekno:52,
     byweekday:RRule.SU,
@@ -1789,7 +1802,7 @@ testRecurring('testMinutelyByWeekNoAndWeekDayLarge', new RRule(RRule.MINUTELY, {
         datetime(1997, 12, 28, 0, 1),
         datetime(1997, 12, 28, 0, 2)]);
 
-testRecurring('testMinutelyByWeekNoAndWeekDayLast', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByWeekNoAndWeekDayLast', new RRule({freq: RRule.MINUTELY,
     count:3,
     byweekno:-1,
     byweekday:RRule.SU,
@@ -1798,7 +1811,7 @@ testRecurring('testMinutelyByWeekNoAndWeekDayLast', new RRule(RRule.MINUTELY, {
         datetime(1997, 12, 28, 0, 1),
         datetime(1997, 12, 28, 0, 2)]);
 
-testRecurring('testMinutelyByWeekNoAndWeekDay53', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByWeekNoAndWeekDay53', new RRule({freq: RRule.MINUTELY,
     count:3,
     byweekno:53,
     byweekday:RRule.MO,
@@ -1807,7 +1820,7 @@ testRecurring('testMinutelyByWeekNoAndWeekDay53', new RRule(RRule.MINUTELY, {
         datetime(1998, 12, 28, 0, 1),
         datetime(1998, 12, 28, 0, 2)]);
 /*
-assertRecurring('testMinutelyByEaster', new RRule(RRule.MINUTELY, {
+assertRecurring('testMinutelyByEaster', new RRule({freq: RRule.MINUTELY,
                           count: 3,
                           byeaster: 0,
                           dtstart: parse("19970902T090000")}),
@@ -1815,7 +1828,7 @@ assertRecurring('testMinutelyByEaster', new RRule(RRule.MINUTELY, {
                       datetime(1998, 4, 12, 0, 1),
                       datetime(1998, 4, 12, 0, 2)])
 
-assertRecurring('testMinutelyByEasterPos', new RRule(RRule.MINUTELY, {
+assertRecurring('testMinutelyByEasterPos', new RRule({freq: RRule.MINUTELY,
                           count: 3,
                           byeaster: 1,
                           dtstart: parse("19970902T090000")}),
@@ -1823,7 +1836,7 @@ assertRecurring('testMinutelyByEasterPos', new RRule(RRule.MINUTELY, {
                       datetime(1998, 4, 13, 0, 1),
                       datetime(1998, 4, 13, 0, 2)])
 
-assertRecurring('testMinutelyByEasterNeg', new RRule(RRule.MINUTELY, {
+assertRecurring('testMinutelyByEasterNeg', new RRule({freq: RRule.MINUTELY,
                           count: 3,
                           byeaster: -1,
                           dtstart: parse("19970902T090000")}),
@@ -1831,7 +1844,7 @@ assertRecurring('testMinutelyByEasterNeg', new RRule(RRule.MINUTELY, {
                       datetime(1998, 4, 11, 0, 1),
                       datetime(1998, 4, 11, 0, 2)])
  */
-testRecurring('testMinutelyByHour', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByHour', new RRule({freq: RRule.MINUTELY,
     count:3,
     byhour:[6, 18],
     dtstart:parse("19970902T090000")}),
@@ -1839,7 +1852,7 @@ testRecurring('testMinutelyByHour', new RRule(RRule.MINUTELY, {
         datetime(1997, 9, 2, 18, 1),
         datetime(1997, 9, 2, 18, 2)]);
 
-testRecurring('testMinutelyByMinute', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByMinute', new RRule({freq: RRule.MINUTELY,
     count:3,
     byminute:[6, 18],
     dtstart:parse("19970902T090000")}),
@@ -1847,7 +1860,7 @@ testRecurring('testMinutelyByMinute', new RRule(RRule.MINUTELY, {
         datetime(1997, 9, 2, 9, 18),
         datetime(1997, 9, 2, 10, 6)]);
 
-testRecurring('testMinutelyBySecond', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyBySecond', new RRule({freq: RRule.MINUTELY,
     count:3,
     bysecond:[6, 18],
     dtstart:parse("19970902T090000")}),
@@ -1855,7 +1868,7 @@ testRecurring('testMinutelyBySecond', new RRule(RRule.MINUTELY, {
         datetime(1997, 9, 2, 9, 0, 18),
         datetime(1997, 9, 2, 9, 1, 6)]);
 
-testRecurring('testMinutelyByHourAndMinute', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByHourAndMinute', new RRule({freq: RRule.MINUTELY,
     count:3,
     byhour:[6, 18],
     byminute:[6, 18],
@@ -1864,7 +1877,7 @@ testRecurring('testMinutelyByHourAndMinute', new RRule(RRule.MINUTELY, {
         datetime(1997, 9, 2, 18, 18),
         datetime(1997, 9, 3, 6, 6)]);
 
-testRecurring('testMinutelyByHourAndSecond', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByHourAndSecond', new RRule({freq: RRule.MINUTELY,
     count:3,
     byhour:[6, 18],
     bysecond:[6, 18],
@@ -1873,7 +1886,7 @@ testRecurring('testMinutelyByHourAndSecond', new RRule(RRule.MINUTELY, {
         datetime(1997, 9, 2, 18, 0, 18),
         datetime(1997, 9, 2, 18, 1, 6)]);
 
-testRecurring('testMinutelyByMinuteAndSecond', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByMinuteAndSecond', new RRule({freq: RRule.MINUTELY,
     count:3,
     byminute:[6, 18],
     bysecond:[6, 18],
@@ -1882,7 +1895,7 @@ testRecurring('testMinutelyByMinuteAndSecond', new RRule(RRule.MINUTELY, {
         datetime(1997, 9, 2, 9, 6, 18),
         datetime(1997, 9, 2, 9, 18, 6)]);
 
-testRecurring('testMinutelyByHourAndMinuteAndSecond', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyByHourAndMinuteAndSecond', new RRule({freq: RRule.MINUTELY,
     count:3,
     byhour:[6, 18],
     byminute:[6, 18],
@@ -1892,7 +1905,7 @@ testRecurring('testMinutelyByHourAndMinuteAndSecond', new RRule(RRule.MINUTELY, 
         datetime(1997, 9, 2, 18, 6, 18),
         datetime(1997, 9, 2, 18, 18, 6)]);
 
-testRecurring('testMinutelyBySetPos', new RRule(RRule.MINUTELY, {
+testRecurring('testMinutelyBySetPos', new RRule({freq: RRule.MINUTELY,
     count:3,
     bysecond:[15, 30, 45],
     bysetpos:[3, -3],
@@ -1901,14 +1914,14 @@ testRecurring('testMinutelyBySetPos', new RRule(RRule.MINUTELY, {
         datetime(1997, 9, 2, 9, 0, 45),
         datetime(1997, 9, 2, 9, 1, 15)]);
 
-testRecurring('testSecondly', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondly', new RRule({freq: RRule.SECONDLY,
     count:3,
     dtstart:parse("19970902T090000")}),
     [datetime(1997, 9, 2, 9, 0, 0),
         datetime(1997, 9, 2, 9, 0, 1),
         datetime(1997, 9, 2, 9, 0, 2)]);
 
-testRecurring('testSecondlyInterval', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyInterval', new RRule({freq: RRule.SECONDLY,
     count:3,
     interval:2,
     dtstart:parse("19970902T090000")}),
@@ -1916,7 +1929,7 @@ testRecurring('testSecondlyInterval', new RRule(RRule.SECONDLY, {
         datetime(1997, 9, 2, 9, 0, 2),
         datetime(1997, 9, 2, 9, 0, 4)]);
 
-testRecurring('testSecondlyIntervalLarge', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyIntervalLarge', new RRule({freq: RRule.SECONDLY,
     count:3,
     interval:90061,
     dtstart:parse("19970902T090000")}),
@@ -1924,7 +1937,7 @@ testRecurring('testSecondlyIntervalLarge', new RRule(RRule.SECONDLY, {
         datetime(1997, 9, 3, 10, 1, 1),
         datetime(1997, 9, 4, 11, 2, 2)]);
 
-testRecurring('testSecondlyByMonth', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByMonth', new RRule({freq: RRule.SECONDLY,
     count:3,
     bymonth:[1, 3],
     dtstart:parse("19970902T090000")}),
@@ -1932,7 +1945,7 @@ testRecurring('testSecondlyByMonth', new RRule(RRule.SECONDLY, {
         datetime(1998, 1, 1, 0, 0, 1),
         datetime(1998, 1, 1, 0, 0, 2)]);
 
-testRecurring('testSecondlyByMonthDay', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByMonthDay', new RRule({freq: RRule.SECONDLY,
     count:3,
     bymonthday:[1, 3],
     dtstart:parse("19970902T090000")}),
@@ -1940,7 +1953,7 @@ testRecurring('testSecondlyByMonthDay', new RRule(RRule.SECONDLY, {
         datetime(1997, 9, 3, 0, 0, 1),
         datetime(1997, 9, 3, 0, 0, 2)]);
 
-testRecurring('testSecondlyByMonthAndMonthDay', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByMonthAndMonthDay', new RRule({freq: RRule.SECONDLY,
     count:3,
     bymonth:[1, 3],
     bymonthday:[5, 7],
@@ -1949,7 +1962,7 @@ testRecurring('testSecondlyByMonthAndMonthDay', new RRule(RRule.SECONDLY, {
         datetime(1998, 1, 5, 0, 0, 1),
         datetime(1998, 1, 5, 0, 0, 2)]);
 
-testRecurring('testSecondlyByWeekDay', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByWeekDay', new RRule({freq: RRule.SECONDLY,
     count:3,
     byweekday:[RRule.TU, RRule.TH],
     dtstart:parse("19970902T090000")}),
@@ -1957,15 +1970,15 @@ testRecurring('testSecondlyByWeekDay', new RRule(RRule.SECONDLY, {
         datetime(1997, 9, 2, 9, 0, 1),
         datetime(1997, 9, 2, 9, 0, 2)]);
 
-testRecurring('testSecondlyByNWeekDay', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByNWeekDay', new RRule({freq: RRule.SECONDLY,
     count:3,
-    byweekday:[RRule.TU.clone(1), RRule.TH.clone(-1)],
+    byweekday:[RRule.TU.nth(1), RRule.TH.nth(-1)],
     dtstart:parse("19970902T090000")}),
     [datetime(1997, 9, 2, 9, 0, 0),
         datetime(1997, 9, 2, 9, 0, 1),
         datetime(1997, 9, 2, 9, 0, 2)]);
 
-testRecurring('testSecondlyByMonthAndWeekDay', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByMonthAndWeekDay', new RRule({freq: RRule.SECONDLY,
     count:3,
     bymonth:[1, 3],
     byweekday:[RRule.TU, RRule.TH],
@@ -1974,16 +1987,16 @@ testRecurring('testSecondlyByMonthAndWeekDay', new RRule(RRule.SECONDLY, {
         datetime(1998, 1, 1, 0, 0, 1),
         datetime(1998, 1, 1, 0, 0, 2)]);
 
-testRecurring('testSecondlyByMonthAndNWeekDay', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByMonthAndNWeekDay', new RRule({freq: RRule.SECONDLY,
     count:3,
     bymonth:[1, 3],
-    byweekday:[RRule.TU.clone(1), RRule.TH.clone(-1)],
+    byweekday:[RRule.TU.nth(1), RRule.TH.nth(-1)],
     dtstart:parse("19970902T090000")}),
     [datetime(1998, 1, 1, 0, 0, 0),
         datetime(1998, 1, 1, 0, 0, 1),
         datetime(1998, 1, 1, 0, 0, 2)]);
 
-testRecurring('testSecondlyByMonthDayAndWeekDay', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByMonthDayAndWeekDay', new RRule({freq: RRule.SECONDLY,
     count:3,
     bymonthday:[1, 3],
     byweekday:[RRule.TU, RRule.TH],
@@ -1992,7 +2005,7 @@ testRecurring('testSecondlyByMonthDayAndWeekDay', new RRule(RRule.SECONDLY, {
         datetime(1998, 1, 1, 0, 0, 1),
         datetime(1998, 1, 1, 0, 0, 2)]);
 
-testRecurring('testSecondlyByMonthAndMonthDayAndWeekDay', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByMonthAndMonthDayAndWeekDay', new RRule({freq: RRule.SECONDLY,
     count:3,
     bymonth:[1, 3],
     bymonthday:[1, 3],
@@ -2002,7 +2015,7 @@ testRecurring('testSecondlyByMonthAndMonthDayAndWeekDay', new RRule(RRule.SECOND
         datetime(1998, 1, 1, 0, 0, 1),
         datetime(1998, 1, 1, 0, 0, 2)]);
 
-testRecurring('testSecondlyByYearDay', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByYearDay', new RRule({freq: RRule.SECONDLY,
     count:4,
     byyearday:[1, 100, 200, 365],
     dtstart:parse("19970902T090000")}),
@@ -2011,7 +2024,7 @@ testRecurring('testSecondlyByYearDay', new RRule(RRule.SECONDLY, {
         datetime(1997, 12, 31, 0, 0, 2),
         datetime(1997, 12, 31, 0, 0, 3)]);
 
-testRecurring('testSecondlyByYearDayNeg', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByYearDayNeg', new RRule({freq: RRule.SECONDLY,
     count:4,
     byyearday:[-365, -266, -166, -1],
     dtstart:parse("19970902T090000")}),
@@ -2020,7 +2033,7 @@ testRecurring('testSecondlyByYearDayNeg', new RRule(RRule.SECONDLY, {
         datetime(1997, 12, 31, 0, 0, 2),
         datetime(1997, 12, 31, 0, 0, 3)]);
 
-testRecurring('testSecondlyByMonthAndYearDay', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByMonthAndYearDay', new RRule({freq: RRule.SECONDLY,
     count:4,
     bymonth:[4, 7],
     byyearday:[1, 100, 200, 365],
@@ -2030,7 +2043,7 @@ testRecurring('testSecondlyByMonthAndYearDay', new RRule(RRule.SECONDLY, {
         datetime(1998, 4, 10, 0, 0, 2),
         datetime(1998, 4, 10, 0, 0, 3)]);
 
-testRecurring('testSecondlyByMonthAndYearDayNeg', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByMonthAndYearDayNeg', new RRule({freq: RRule.SECONDLY,
     count:4,
     bymonth:[4, 7],
     byyearday:[-365, -266, -166, -1],
@@ -2040,7 +2053,7 @@ testRecurring('testSecondlyByMonthAndYearDayNeg', new RRule(RRule.SECONDLY, {
         datetime(1998, 4, 10, 0, 0, 2),
         datetime(1998, 4, 10, 0, 0, 3)]);
 
-testRecurring('testSecondlyByWeekNo', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByWeekNo', new RRule({freq: RRule.SECONDLY,
     count:3,
     byweekno:20,
     dtstart:parse("19970902T090000")}),
@@ -2048,7 +2061,7 @@ testRecurring('testSecondlyByWeekNo', new RRule(RRule.SECONDLY, {
         datetime(1998, 5, 11, 0, 0, 1),
         datetime(1998, 5, 11, 0, 0, 2)]);
 
-testRecurring('testSecondlyByWeekNoAndWeekDay', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByWeekNoAndWeekDay', new RRule({freq: RRule.SECONDLY,
     count:3,
     byweekno:1,
     byweekday:RRule.MO,
@@ -2057,7 +2070,7 @@ testRecurring('testSecondlyByWeekNoAndWeekDay', new RRule(RRule.SECONDLY, {
         datetime(1997, 12, 29, 0, 0, 1),
         datetime(1997, 12, 29, 0, 0, 2)]);
 
-testRecurring('testSecondlyByWeekNoAndWeekDayLarge', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByWeekNoAndWeekDayLarge', new RRule({freq: RRule.SECONDLY,
     count:3,
     byweekno:52,
     byweekday:RRule.SU,
@@ -2066,7 +2079,7 @@ testRecurring('testSecondlyByWeekNoAndWeekDayLarge', new RRule(RRule.SECONDLY, {
         datetime(1997, 12, 28, 0, 0, 1),
         datetime(1997, 12, 28, 0, 0, 2)]);
 
-testRecurring('testSecondlyByWeekNoAndWeekDayLast', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByWeekNoAndWeekDayLast', new RRule({freq: RRule.SECONDLY,
     count:3,
     byweekno:-1,
     byweekday:RRule.SU,
@@ -2075,7 +2088,7 @@ testRecurring('testSecondlyByWeekNoAndWeekDayLast', new RRule(RRule.SECONDLY, {
         datetime(1997, 12, 28, 0, 0, 1),
         datetime(1997, 12, 28, 0, 0, 2)]);
 
-testRecurring('testSecondlyByWeekNoAndWeekDay53', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByWeekNoAndWeekDay53', new RRule({freq: RRule.SECONDLY,
     count:3,
     byweekno:53,
     byweekday:RRule.MO,
@@ -2084,7 +2097,7 @@ testRecurring('testSecondlyByWeekNoAndWeekDay53', new RRule(RRule.SECONDLY, {
         datetime(1998, 12, 28, 0, 0, 1),
         datetime(1998, 12, 28, 0, 0, 2)]);
 /*
-assertRecurring('testSecondlyByEaster', new RRule(RRule.SECONDLY, {
+assertRecurring('testSecondlyByEaster', new RRule({freq: RRule.SECONDLY,
                           count: 3,
                           byeaster: 0,
                           dtstart: parse("19970902T090000")}),
@@ -2092,7 +2105,7 @@ assertRecurring('testSecondlyByEaster', new RRule(RRule.SECONDLY, {
                       datetime(1998, 4, 12, 0, 0, 1),
                       datetime(1998, 4, 12, 0, 0, 2)])
 
-assertRecurring('testSecondlyByEasterPos', new RRule(RRule.SECONDLY, {
+assertRecurring('testSecondlyByEasterPos', new RRule({freq: RRule.SECONDLY,
                           count: 3,
                           byeaster: 1,
                           dtstart: parse("19970902T090000")}),
@@ -2100,7 +2113,7 @@ assertRecurring('testSecondlyByEasterPos', new RRule(RRule.SECONDLY, {
                       datetime(1998, 4, 13, 0, 0, 1),
                       datetime(1998, 4, 13, 0, 0, 2)])
 
-assertRecurring('testSecondlyByEasterNeg', new RRule(RRule.SECONDLY, {
+assertRecurring('testSecondlyByEasterNeg', new RRule({freq: RRule.SECONDLY,
                           count: 3,
                           byeaster: -1,
                           dtstart: parse("19970902T090000")}),
@@ -2108,7 +2121,7 @@ assertRecurring('testSecondlyByEasterNeg', new RRule(RRule.SECONDLY, {
                       datetime(1998, 4, 11, 0, 0, 1),
                       datetime(1998, 4, 11, 0, 0, 2)])
  */
-testRecurring('testSecondlyByHour', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByHour', new RRule({freq: RRule.SECONDLY,
     count:3,
     byhour:[6, 18],
     dtstart:parse("19970902T090000")}),
@@ -2116,7 +2129,7 @@ testRecurring('testSecondlyByHour', new RRule(RRule.SECONDLY, {
         datetime(1997, 9, 2, 18, 0, 1),
         datetime(1997, 9, 2, 18, 0, 2)]);
 
-testRecurring('testSecondlyByMinute', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByMinute', new RRule({freq: RRule.SECONDLY,
     count:3,
     byminute:[6, 18],
     dtstart:parse("19970902T090000")}),
@@ -2124,7 +2137,7 @@ testRecurring('testSecondlyByMinute', new RRule(RRule.SECONDLY, {
         datetime(1997, 9, 2, 9, 6, 1),
         datetime(1997, 9, 2, 9, 6, 2)]);
 
-testRecurring('testSecondlyBySecond', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyBySecond', new RRule({freq: RRule.SECONDLY,
     count:3,
     bysecond:[6, 18],
     dtstart:parse("19970902T090000")}),
@@ -2132,7 +2145,7 @@ testRecurring('testSecondlyBySecond', new RRule(RRule.SECONDLY, {
         datetime(1997, 9, 2, 9, 0, 18),
         datetime(1997, 9, 2, 9, 1, 6)]);
 
-testRecurring('testSecondlyByHourAndMinute', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByHourAndMinute', new RRule({freq: RRule.SECONDLY,
     count:3,
     byhour:[6, 18],
     byminute:[6, 18],
@@ -2141,7 +2154,7 @@ testRecurring('testSecondlyByHourAndMinute', new RRule(RRule.SECONDLY, {
         datetime(1997, 9, 2, 18, 6, 1),
         datetime(1997, 9, 2, 18, 6, 2)]);
 
-testRecurring('testSecondlyByHourAndSecond', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByHourAndSecond', new RRule({freq: RRule.SECONDLY,
     count:3,
     byhour:[6, 18],
     bysecond:[6, 18],
@@ -2150,7 +2163,7 @@ testRecurring('testSecondlyByHourAndSecond', new RRule(RRule.SECONDLY, {
         datetime(1997, 9, 2, 18, 0, 18),
         datetime(1997, 9, 2, 18, 1, 6)]);
 
-testRecurring('testSecondlyByMinuteAndSecond', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByMinuteAndSecond', new RRule({freq: RRule.SECONDLY,
     count:3,
     byminute:[6, 18],
     bysecond:[6, 18],
@@ -2159,7 +2172,7 @@ testRecurring('testSecondlyByMinuteAndSecond', new RRule(RRule.SECONDLY, {
         datetime(1997, 9, 2, 9, 6, 18),
         datetime(1997, 9, 2, 9, 18, 6)]);
 
-testRecurring('testSecondlyByHourAndMinuteAndSecond', new RRule(RRule.SECONDLY, {
+testRecurring('testSecondlyByHourAndMinuteAndSecond', new RRule({freq: RRule.SECONDLY,
     count:3,
     byhour:[6, 18],
     byminute:[6, 18],
@@ -2169,7 +2182,7 @@ testRecurring('testSecondlyByHourAndMinuteAndSecond', new RRule(RRule.SECONDLY, 
         datetime(1997, 9, 2, 18, 6, 18),
         datetime(1997, 9, 2, 18, 18, 6)]);
 
-testRecurring('testUntilNotMatching', new RRule(RRule.DAILY, {
+testRecurring('testUntilNotMatching', new RRule({freq: RRule.DAILY,
     count:3,
     dtstart:parse("19970902T090000"),
     until:parse("19970905T080000")}),
@@ -2177,7 +2190,7 @@ testRecurring('testUntilNotMatching', new RRule(RRule.DAILY, {
         datetime(1997, 9, 3, 9, 0),
         datetime(1997, 9, 4, 9, 0)]);
 
-testRecurring('testUntilMatching', new RRule(RRule.DAILY, {
+testRecurring('testUntilMatching', new RRule({freq: RRule.DAILY,
     count:3,
     dtstart:parse("19970902T090000"),
     until:parse("19970904T090000")}),
@@ -2185,19 +2198,19 @@ testRecurring('testUntilMatching', new RRule(RRule.DAILY, {
         datetime(1997, 9, 3, 9, 0),
         datetime(1997, 9, 4, 9, 0)]);
 
-testRecurring('testUntilSingle', new RRule(RRule.DAILY, {
+testRecurring('testUntilSingle', new RRule({freq: RRule.DAILY,
     count:3,
     dtstart:parse("19970902T090000"),
     until:parse("19970902T090000")}),
     [datetime(1997, 9, 2, 9, 0)]);
 
-testRecurring('testUntilEmpty', new RRule(RRule.DAILY, {
+testRecurring('testUntilEmpty', new RRule({freq: RRule.DAILY,
     count:3,
     dtstart:parse("19970902T090000"),
     until:parse("19970901T090000")}),
     []);
 
-testRecurring('testUntilWithDate', new RRule(RRule.DAILY, {
+testRecurring('testUntilWithDate', new RRule({freq: RRule.DAILY,
     count:3,
     dtstart:parse("19970902T090000"),
     until:date(1997, 9, 5)}),
@@ -2205,7 +2218,7 @@ testRecurring('testUntilWithDate', new RRule(RRule.DAILY, {
         datetime(1997, 9, 3, 9, 0),
         datetime(1997, 9, 4, 9, 0)]);
 
-testRecurring('testWkStIntervalMO', new RRule(RRule.WEEKLY, {
+testRecurring('testWkStIntervalMO', new RRule({freq: RRule.WEEKLY,
     count:3,
     interval:2,
     byweekday:[RRule.TU, RRule.SU],
@@ -2215,7 +2228,7 @@ testRecurring('testWkStIntervalMO', new RRule(RRule.WEEKLY, {
         datetime(1997, 9, 7, 9, 0),
         datetime(1997, 9, 16, 9, 0)]);
 
-testRecurring('testWkStIntervalSU', new RRule(RRule.WEEKLY, {
+testRecurring('testWkStIntervalSU', new RRule({freq: RRule.WEEKLY,
     count:3,
     interval:2,
     byweekday:[RRule.TU, RRule.SU],
@@ -2225,21 +2238,21 @@ testRecurring('testWkStIntervalSU', new RRule(RRule.WEEKLY, {
         datetime(1997, 9, 14, 9, 0),
         datetime(1997, 9, 16, 9, 0)]);
 
-testRecurring('testDTStartIsDate', new RRule(RRule.DAILY, {
+testRecurring('testDTStartIsDate', new RRule({freq: RRule.DAILY,
     count:3,
     dtstart:date(1997, 9, 2)}),
     [datetime(1997, 9, 2, 0, 0),
         datetime(1997, 9, 3, 0, 0),
         datetime(1997, 9, 4, 0, 0)]);
 
-testRecurring('testDTStartWithMicroseconds', new RRule(RRule.DAILY, {
+testRecurring('testDTStartWithMicroseconds', new RRule({freq: RRule.DAILY,
     count:3,
     dtstart:parse("19970902T090000.5")}),
     [datetime(1997, 9, 2, 9, 0),
         datetime(1997, 9, 3, 9, 0),
         datetime(1997, 9, 4, 9, 0)]);
 
-testRecurring('testMaxYear', new RRule(RRule.YEARLY, {
+testRecurring('testMaxYear', new RRule({freq: RRule.YEARLY,
     count:3,
     bymonth:2,
     bymonthday:31,
@@ -2251,45 +2264,45 @@ testRecurring('testMaxYear', new RRule(RRule.YEARLY, {
 
 /* these tests basically test the iterator implementation only */
 /*
-assertRecurring('testGetItem', new RRule(RRule.DAILY, {
+assertRecurring('testGetItem', new RRule({freq: RRule.DAILY,
                            count: 3,
                             dtstart: parse("19970902T090000"))}[0],
                      datetime(1997, 9, 2, 9, 0))
 
-assertRecurring('testGetItemNeg', new RRule(RRule.DAILY, {
+assertRecurring('testGetItemNeg', new RRule({freq: RRule.DAILY,
                            count: 3,
                            dtstart: parse("19970902T090000"))[-1],
                      datetime(1997, 9, 4, 9, 0))
 
-assertRecurring('testGetItemSlice', new RRule(RRule.DAILY, {
+assertRecurring('testGetItemSlice', new RRule({freq: RRule.DAILY,
                            //count: 3,
                            dtstart: parse("19970902T090000"))[1:2],
                      [datetime(1997, 9, 3, 9, 0)])
 
-assertRecurring('testGetItemSliceEmpty', new RRule(RRule.DAILY, {
+assertRecurring('testGetItemSliceEmpty', new RRule({freq: RRule.DAILY,
                            count: 3,
                            dtstart: parse("19970902T090000"))[:],
                      [datetime(1997, 9, 2, 9, 0),
                       datetime(1997, 9, 3, 9, 0),
                       datetime(1997, 9, 4, 9, 0)])
 
-assertRecurring('testGetItemSliceStep', new RRule(RRule.DAILY, {
+assertRecurring('testGetItemSliceStep', new RRule({freq: RRule.DAILY,
                            count: 3,
                            dtstart: parse("19970902T090000"))[::-2],
                      [datetime(1997, 9, 4, 9, 0),
                       datetime(1997, 9, 2, 9, 0)])
 
-assertRecurring('testCount', new RRule(RRule.DAILY, {
+assertRecurring('testCount', new RRule({freq: RRule.DAILY,
                            count: 3,
                            dtstart: parse("19970902T090000")).count(),
                      3)
 
 assertRecurring('testContains',
-    rr :  new RRule(RRule.DAILY, { count: 3, dtstart: parse("19970902T090000"))
+    rr :  new RRule({freq: RRule.DAILY,  count: 3, dtstart: parse("19970902T090000"))
     datetime(1997, 9, 3, 9, 0) in rr, True)
 
 assertRecurring('testContainsNot',
-    rr :  new RRule(RRule.DAILY, { count: 3, dtstart: parse("19970902T090000"))
+    rr :  new RRule({freq: RRule.DAILY,  count: 3, dtstart: parse("19970902T090000"))
     datetime(1997, 9, 3, 9, 0) not in rr, False)
 */
 
@@ -2301,7 +2314,7 @@ assertRecurring('testContainsNot',
 //================================================
 /*
 assertRecurring('testCachePre',
-    rr :  new RRule(RRule.DAILY, { count: 15, cache: True,
+    rr :  new RRule({freq: RRule.DAILY,  count: 15, cache: True,
                dtstart: parse("19970902T090000"))
     rr),
                      [datetime(1997, 9, 2, 9, 0),
@@ -2321,7 +2334,7 @@ assertRecurring('testCachePre',
                       datetime(1997, 9, 16, 9, 0)])
 
 assertRecurring('testCachePost',
-    rr :  new RRule(RRule.DAILY, { count: 15, cache: True,
+    rr :  new RRule({freq: RRule.DAILY,  count: 15, cache: True,
                dtstart: parse("19970902T090000"))
     for x in rr: pass
     rr),
@@ -2342,7 +2355,7 @@ assertRecurring('testCachePost',
                       datetime(1997, 9, 16, 9, 0)])
 
 assertRecurring('testCachePostInternal',
-    rr :  new RRule(RRule.DAILY, { count: 15, cache: True,
+    rr :  new RRule({freq: RRule.DAILY,  count: 15, cache: True,
                dtstart: parse("19970902T090000"))
     for x in rr: pass
     rr._cache,
@@ -2363,12 +2376,12 @@ assertRecurring('testCachePostInternal',
                       datetime(1997, 9, 16, 9, 0)])
 
 assertRecurring('testCachePreContains',
-    rr :  new RRule(RRule.DAILY, { count: 3, cache: True,
+    rr :  new RRule({freq: RRule.DAILY,  count: 3, cache: True,
                dtstart: parse("19970902T090000"))
     datetime(1997, 9, 3, 9, 0) in rr, True)
 
 assertRecurring('testCachePostContains',
-    rr :  new RRule(RRule.DAILY, { count: 3, cache: True,
+    rr :  new RRule({freq: RRule.DAILY,  count: 3, cache: True,
                dtstart: parse("19970902T090000"))
     for x in rr: pass
     datetime(1997, 9, 3, 9, 0) in rr, True)
@@ -2379,9 +2392,9 @@ assertRecurring('testCachePostContains',
 /*
 assertRecurring('testSet',
     set :  rruleset()
-    set.rrule(new RRule(RRule.YEARLY, { count: 2, byweekday: RRule.TU,
+    set.rrule(new RRule({freq: RRule.YEARLY,  count: 2, byweekday: RRule.TU,
                     dtstart: parse("19970902T090000")))
-    set.rrule(new RRule(RRule.YEARLY, { count: 1, byweekday: RRule.TH,
+    set.rrule(new RRule({freq: RRule.YEARLY,  count: 1, byweekday: RRule.TH,
                     dtstart: parse("19970902T090000")))
     set),
                      [datetime(1997, 9, 2, 9, 0),
@@ -2390,7 +2403,7 @@ assertRecurring('testSet',
 
 assertRecurring('testSetDate',
     set :  rruleset()
-    set.rrule(new RRule(RRule.YEARLY, { count: 1, byweekday: RRule.TU,
+    set.rrule(new RRule({freq: RRule.YEARLY,  count: 1, byweekday: RRule.TU,
                     dtstart: parse("19970902T090000")))
     set.rdate(datetime(1997, 9, 4, 9))
     set.rdate(datetime(1997, 9, 9, 9))
@@ -2401,9 +2414,9 @@ assertRecurring('testSetDate',
 
 assertRecurring('testSetExRule',
     set :  rruleset()
-    set.rrule(new RRule(RRule.YEARLY, { count: 6, byweekday: [RRule.TU, RRule.TH],
+    set.rrule(new RRule({freq: RRule.YEARLY,  count: 6, byweekday: [RRule.TU, RRule.TH],
                     dtstart: parse("19970902T090000")))
-    set.exrule(new RRule(RRule.YEARLY, { count: 3, byweekday: RRule.TH,
+    set.exrule(new RRule({freq: RRule.YEARLY,  count: 3, byweekday: RRule.TH,
                     dtstart: parse("19970902T090000")))
     set),
                      [datetime(1997, 9, 2, 9, 0),
@@ -2412,7 +2425,7 @@ assertRecurring('testSetExRule',
 
 assertRecurring('testSetExDate',
     set :  rruleset()
-    set.rrule(new RRule(RRule.YEARLY, { count: 6, byweekday: [RRule.TU, RRule.TH],
+    set.rrule(new RRule({freq: RRule.YEARLY,  count: 6, byweekday: [RRule.TU, RRule.TH],
                     dtstart: parse("19970902T090000")))
     set.exdate(datetime(1997, 9, 4, 9))
     set.exdate(datetime(1997, 9, 11, 9))
@@ -2424,7 +2437,7 @@ assertRecurring('testSetExDate',
 
 assertRecurring('testSetExDateRevOrder',
     set :  rruleset()
-    set.rrule(new RRule(RRule.MONTHLY, { count: 5, bymonthday: 10,
+    set.rrule(new RRule({freq: RRule.MONTHLY,  count: 5, bymonthday: 10,
                     dtstart: parse("20040101T090000")))
     set.exdate(datetime(2004, 4, 10, 9, 0))
     set.exdate(datetime(2004, 2, 10, 9, 0))
@@ -2457,7 +2470,7 @@ assertRecurring('testSetDateAndExRule',
     set.rdate(datetime(1997, 9, 11, 9))
     set.rdate(datetime(1997, 9, 16, 9))
     set.rdate(datetime(1997, 9, 18, 9))
-    set.exrule(new RRule(RRule.YEARLY, { count: 3, byweekday: RRule.TH,
+    set.exrule(new RRule({freq: RRule.YEARLY,  count: 3, byweekday: RRule.TH,
                     dtstart: parse("19970902T090000")))
     set),
                      [datetime(1997, 9, 2, 9, 0),
@@ -2466,17 +2479,17 @@ assertRecurring('testSetDateAndExRule',
 
 assertRecurring('testSetCount',
     set :  rruleset()
-    set.rrule(new RRule(RRule.YEARLY, { count: 6, byweekday: [RRule.TU, RRule.TH],
+    set.rrule(new RRule({freq: RRule.YEARLY,  count: 6, byweekday: [RRule.TU, RRule.TH],
                     dtstart: parse("19970902T090000")))
-    set.exrule(new RRule(RRule.YEARLY, { count: 3, byweekday: RRule.TH,
+    set.exrule(new RRule({freq: RRule.YEARLY,  count: 3, byweekday: RRule.TH,
                     dtstart: parse("19970902T090000")))
     set.count(), 3)
 
 assertRecurring('testSetCachePre',
     set :  rruleset()
-    set.rrule(new RRule(RRule.YEARLY, { count: 2, byweekday: RRule.TU,
+    set.rrule(new RRule({freq: RRule.YEARLY,  count: 2, byweekday: RRule.TU,
                     dtstart: parse("19970902T090000")))
-    set.rrule(new RRule(RRule.YEARLY, { count: 1, byweekday: RRule.TH,
+    set.rrule(new RRule({freq: RRule.YEARLY,  count: 1, byweekday: RRule.TH,
                     dtstart: parse("19970902T090000")))
     set),
                      [datetime(1997, 9, 2, 9, 0),
@@ -2485,9 +2498,9 @@ assertRecurring('testSetCachePre',
 
 assertRecurring('testSetCachePost',
     set :  rruleset(cache: True)
-    set.rrule(new RRule(RRule.YEARLY, { count: 2, byweekday: RRule.TU,
+    set.rrule(new RRule({freq: RRule.YEARLY,  count: 2, byweekday: RRule.TU,
                     dtstart: parse("19970902T090000")))
-    set.rrule(new RRule(RRule.YEARLY, { count: 1, byweekday: RRule.TH,
+    set.rrule(new RRule({freq: RRule.YEARLY,  count: 1, byweekday: RRule.TH,
                     dtstart: parse("19970902T090000")))
     for x in set: pass
     set),
@@ -2497,9 +2510,9 @@ assertRecurring('testSetCachePost',
 
 assertRecurring('testSetCachePostInternal',
     set :  rruleset(cache: True)
-    set.rrule(new RRule(RRule.YEARLY, { count: 2, byweekday: RRule.TU,
+    set.rrule(new RRule({freq: RRule.YEARLY,  count: 2, byweekday: RRule.TU,
                     dtstart: parse("19970902T090000")))
-    set.rrule(new RRule(RRule.YEARLY, { count: 1, byweekday: RRule.TH,
+    set.rrule(new RRule({freq: RRule.YEARLY,  count: 1, byweekday: RRule.TH,
                     dtstart: parse("19970902T090000")))
     for x in set: pass
     set._cache),

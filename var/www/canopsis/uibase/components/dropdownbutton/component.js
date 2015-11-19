@@ -41,7 +41,11 @@ Ember.Application.initializer({
             },
 
             didInsertElement: function() {
+                var component = this;
                 this.$().parents('td').css('overflow-x', 'visible').css('overflow-y', 'visible');
+                this.$().mouseleave(function () {
+                    set(component, 'opened', false);
+                });
             }
         });
 
