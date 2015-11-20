@@ -208,6 +208,26 @@ Ember.Application.initializer({
                             if (override_inverse[attr.field]) {
                                 categoryKeyField = override_inverse[attr.field];
                             }
+
+                            if(attr.field === 'mixins') {
+                                var tempValue = [];
+                                if(!isNone(attr.value)) {
+                                    for (var k = 0; k < attr.value.length; k++) {
+
+                                        var mixinKeys = Ember.keys(attr.value[k]);
+                                        var newMixinDict = {}
+
+                                        for (var l = 0; l < mixinKeys.length; l++) {
+                                            newMixinDict[mixinKeys[l]] = attr.value[k][mixinKeys[l]];
+                                        }
+                                        window.$M = newMixinDict;
+                                        tempValue.push(newMixinDict);
+                                    }
+                                }
+
+                                Ember.set(attr, 'value', tempValue);
+                            }
+
                             set(this, 'formContext.' + categoryKeyField, attr.value);
                         }
                     }
