@@ -86,10 +86,30 @@
     </table>
 
     {{#if controller.show_advanced}}
-        <div class="chart-container">
-            {{component-c3js series=controller.userDelaySeries}}
+        <h2>Délais utilisateurs</h2>
 
-            <p><center><b>Délais utilisateurs</b></center></p>
+        <h3>Résolution</h3>
+
+        <div class="chart-container">
+            {{component-c3js series=controller.userAlarmSolvedSeries}}
+        </div>
+
+        <h3>Acquittement</h3>
+
+        <div class="chart-container">
+            {{component-c3js series=controller.userAlarmAckSeries}}
+        </div>
+
+        <h3>Résolution depuis acquittement</h3>
+
+        <div class="chart-container">
+            {{component-c3js series=controller.userAlarmAckSolvedSeries}}
+        </div>
+
+        <h2>Durées de session</h2>
+
+        <div class="chart-container">
+            {{component-c3js series=controller.userSessionSeries}}
         </div>
     {{/if}}
 {{/if}}
@@ -194,16 +214,30 @@
             </tbody>
         </table>
 
-        <div class="chart-container">
-            {{component-c3js series=controller.alarmDelaySeries}}
+        <h2>Délais d'événements</h2>
 
-            <p><center><b>Délais d'événements</b></center></p>
+        <h3>Résolution</h3>
+
+        <div class="chart-container">
+            {{component-c3js series=controller.alarmSolvedSeries}}
         </div>
 
-        <div class="chart-container">
-            {{component-c3js series=controller.alarmSeries}}
+        <h3>Acquittement</h3>
 
-            <p><center><b>Compteurs d'événements</b></center></p>
+        <div class="chart-container">
+            {{component-c3js series=controller.alarmAckSeries}}
+        </div>
+
+        <h3>Résolution depuis acquittement</h3>
+
+        <div class="chart-container">
+            {{component-c3js series=controller.alarmAckSolvedSeries}}
+        </div>
+
+        <h2>Compteurs d'événements</h2>
+
+        <div class="chart-container">
+            {{component-c3js series=controller.alarmCounters}}
         </div>
     {{/if}}
 {{/if}}

@@ -203,48 +203,62 @@ Ember.Application.initializer({
                 this.notifyPropertyChange('series');
             },
 
-            /* charts configuration */
-
-            userDelaySeries: function() {
+            getDelaySeries: function(resources, isUser) {
                 var series = get(this, 'series'),
                     delayMetrics = ['min', 'max', 'average'],
                     selected = {},
-                    users = ['x'],
+                    sources = ['x'],
                     groups = [];
+
+                var condition = function(cmp) {
+                    if (isUser) {
+                        return cmp !== '__canopsis__';
+                    }
+                    else {
+                        return cmp === '__canopsis__';
+                    }
+                };
 
                 $.each(series, function(idx, serie) {
                     var component = get(serie, 'component'),
                         resource = get(serie, 'resource'),
                         metric = get(serie, 'metric');
 
-                    if (component !== '__canopsis__' && delayMetrics.indexOf(metric) >= 0) {
-                        var groupname = resource + ' - ' + metric;
+                    if (condition(component) && delayMetrics.indexOf(metric) >= 0) {
+                        if (isNone(resources) || resources.indexOf(resource) >= 0) {
+                            var groupname = metric;
 
-                        /* generate chart categories */
-                        if (users.indexOf(component) === -1) {
-                            users.push(component);
+                            /* generate chart categories */
+                            if (sources.indexOf(component) === -1) {
+                                sources.push(component);
+                            }
+
+                            /* generate groups in each categories */
+                            if (groups.indexOf(groupname) === -1) {
+                                groups.push(groupname);
+                                set(selected, groupname, (isUser ? null : []));
+                            }
+
+                            /* add point to corresponding category/group */
+                            var points = get(serie, 'data'),
+                                point = null;
+
+                            if (points.length > 0) {
+                                point = points[points.length - 1][1];
+                            }
+
+                            if (isUser) {
+                                set(selected, groupname, point);
+                            }
+                            else {
+                                get(selected, groupname).push(point);
+                            }
                         }
-
-                        /* generate groups in each categories */
-                        if (groups.indexOf(groupname) === -1) {
-                            groups.push(groupname);
-                            set(selected, groupname, null);
-                        }
-
-                        /* add point to corresponding category/group */
-                        var points = get(serie, 'data'),
-                            point = null;
-
-                        if (points.length > 0) {
-                            point = points[points.length - 1][1];
-                        }
-
-                        set(selected, groupname, point);
                     }
                 });
 
                 /* generate chart columns */
-                var columns = [users];
+                var columns = [sources];
 
                 $.each(selected, function(key, point) {
                     columns.push([key, point]);
@@ -262,68 +276,52 @@ Ember.Application.initializer({
                         }
                     }
                 };
+            },
+
+            /* charts configuration */
+
+            userAlarmSolvedSeries: function() {
+                return this.getDelaySeries(['alarm_solved'], true);
             }.property('series'),
 
-            alarmDelaySeries: function() {
-                var series = get(this, 'series'),
-                    delayMetrics = ['min', 'max', 'average'],
-                    selected = {},
-                    alarms = ['x'],
-                    groups = [];
-
-                $.each(series, function(idx, serie) {
-                    var component = get(serie, 'component'),
-                        resource = get(serie, 'resource'),
-                        metric = get(serie, 'metric');
-
-                    if (component === '__canopsis__' && delayMetrics.indexOf(metric) >= 0) {
-                        /* generate chart categories */
-                        if (alarms.indexOf(resource) === -1) {
-                            alarms.push(resource);
-                        }
-
-                        /* generate groups in each categories */
-                        if (groups.indexOf(metric) === -1) {
-                            groups.push(metric);
-                            set(selected, metric, []);
-                        }
-
-                        /* add point to corresponding category/group */
-                        var points = get(serie, 'data'),
-                            point = null;
-
-                        if (points.length > 0) {
-                            point = points[points.length - 1][1];
-                        }
-
-                        get(selected, metric).push(point);
-                    }
-                });
-
-                /* generate chart columns */
-                var columns = [alarms];
-
-                $.each(selected, function(key, points) {
-                    columns.push([key].concat(points));
-                });
-
-                return {
-                    data: {
-                        x: 'x',
-                        columns: columns,
-                        type: 'bar'
-                    },
-                    axis: {
-                        x: {
-                            type: 'category'
-                        }
-                    }
-                };
+            userAlarmAckSeries: function() {
+                return this.getDelaySeries(['alarm_ack_delay'], true);
             }.property('series'),
 
-            alarmSeries: function() {
+            userAlarmAckSolvedSeries: function() {
+                return this.getDelaySeries(['alarm_ack_solved'], true);
+            }.property('series'),
+
+            userSessionSeries: function() {
+                return this.getDelaySeries(['session_duration'], true);
+            }.property('series'),
+
+            alarmSolvedSeries: function() {
+                return this.getDelaySeries(['alarm_solved_delay'], false);
+            }.property('series'),
+
+            alarmAckSeries: function() {
+                return this.getDelaySeries(['alarm_ack_delay'], false);
+            }.property('series'),
+
+            alarmAckSolvedSeries: function() {
+                return this.getDelaySeries(['alarm_ack_solved_delay'], false);
+            }.property('series'),
+
+            alarmCounters: function() {
                 var series = get(this, 'series'),
-                    alarmMetrics = ['alarm', 'alarm_ack', 'alarm_solved', 'alarm_ack_solved'],
+                    alarmMetrics = [
+                        'alarm',
+                        'alarm_ack',
+                        'alarm_solved',
+                        'alarm_ack_solved',
+                    ],
+                    alarmLabels = [
+                        'Alarms',
+                        'Acknowledged alarms',
+                        'Solved alarms',
+                        'Solved/Acknowledged alarms'
+                    ],
                     selected = {};
 
                 $.each(series, function(idx, serie) {
@@ -347,7 +345,7 @@ Ember.Application.initializer({
                     }
                 });
 
-                var columns = [['x'].concat(alarmMetrics)];
+                var columns = [['x'].concat(alarmLabels)];
 
                 $.each(selected, function(name, points) {
                     columns.push([name].concat(points));
