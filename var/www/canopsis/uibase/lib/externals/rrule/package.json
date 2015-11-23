@@ -1,8 +1,8 @@
 {
     "name": "rrule",
-    "version": "1.1.0",
+    "version": "2.1.0",
     "description": "JavaScript library for working with recurrence rules for calendar dates.",
-    "homepage": "https://github.com/jkbr/rrule",
+    "homepage": "http://jakubroztocil.github.io/rrule/",
     "keywords":[
         "dates",
         "recurrences",
@@ -14,9 +14,9 @@
     "main": "lib/rrule",
     "repository" :{
         "type": "git",
-        "url": "git://github.com/jkbr/rrule.git"
+        "url": "git://github.com/jakubroztocil/rrule.git"
     },
-    "dependencies": {
-        "underscore": ">= 1.3.3"
+    "scripts": {
+        "test": "echo Run tests in the browser at tests/index.html"
     }
 }

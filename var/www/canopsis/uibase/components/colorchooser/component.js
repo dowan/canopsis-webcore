@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
  *
  * This file is part of Canopsis.
@@ -17,35 +17,19 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 Ember.Application.initializer({
-    name: 'MixinsRegistry',
-    after: ['AbstractClassRegistry', 'SchemasRegistry'],
+    name:"component-colorchooser",
     initialize: function(container, application) {
-        var Abstractclassregistry = container.lookupFactory('registry:abstractclass');
 
-        /**
-         * Mixins Registry
-         *
-         * @class MixinsRegistry
-         * @memberOf canopsis.frontend.core
-         * @extends Abstractclassregistry
-         * @static
-         */
-        var registry = Abstractclassregistry.create({
-            name: 'mixins',
+            /**
+             * Component to wrap colpick component
+             *
+             * @class Colorchooser
+             */
 
-            all: [],
-            byClass: {},
-            tableColumns: [{title: 'name', name: 'name'}],
+        var component = Ember.Component.extend({});
 
-            add: function(item, name, classes) {
-                this.all.pushObject(Ember.Object.create({
-                    name: name,
-                    EmberClass: item
-                }));
-            }
-        });
-
-        application.register('registry:mixins', registry);
+        application.register('component:component-colorchooser', component);
     }
 });

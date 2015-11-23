@@ -18,7 +18,7 @@
  */
 
 Ember.Application.initializer({
-    name:"component-mixinselector",
+    name: 'component-mixinselector',
     after: 'MixinsRegistry',
     initialize: function(container, application) {
         var mixinsRegistry = container.lookupFactory('registry:mixins');
@@ -31,6 +31,7 @@ Ember.Application.initializer({
         var component = Ember.Component.extend({
 
             init: function() {
+
                 this._super.apply(this, arguments);
 
                 if(isNone(get(this, 'content'))) {
@@ -40,8 +41,8 @@ Ember.Application.initializer({
                 set(this, 'selectionPrepared', Ember.A());
 
                 var content = get(this, 'content');
-
                 if(content) {
+                    var schemasRegistry = container.lookupFactory('registry:schemas');
                     for (var i = 0, l = content.length; i < l; i++) {
                         if(typeof content[i] === 'string') {
                             content[i] = { name: content[i] };
@@ -55,7 +56,41 @@ Ember.Application.initializer({
             /*
              * Compute a structure with classified item each time the 'items' property changed
              */
-            classifiedItems: mixinsRegistry,
+            classifiedItems: function () {
+                var schemasRegistry = container.lookupFactory('registry:schemas');
+
+                mixinsRegistry.byClass = {};
+
+                for (var i = 0; i < mixinsRegistry.all.length; i++) {
+                    var currentMixinName = get(mixinsRegistry.all[i], 'name');
+                    var schema = schemasRegistry.getByName(currentMixinName);
+                    if(schema) {
+                        schema = schema.schema;
+                        if(schema) {
+                            if(get(schema, 'metadata.description')) {
+                                mixinsRegistry.all[i].description = get(schema, 'metadata.description');
+                            }
+                            if(get(schema, 'metadata.icon')) {
+                                mixinsRegistry.all[i].icon = get(schema, 'metadata.icon');
+                            }
+
+                            if(get(schema, 'metadata.classes')) {
+                                for (var j = 0; j < get(schema, 'metadata.classes').length; j++) {
+                                    var classes = get(schema, 'metadata.classes')[j];
+
+                                    if(isNone(mixinsRegistry.byClass[classes])) {
+                                        mixinsRegistry.byClass[classes] = Ember.A();
+                                    }
+
+                                    mixinsRegistry.byClass[classes].pushObject(mixinsRegistry.all[i]);
+                                }
+                            }
+                        }
+                    }
+                }
+                return mixinsRegistry;
+            }.property(),
+
             selectionUnprepared: Ember.computed.alias('content'),
 
             recomputeSelection: function() {
@@ -78,6 +113,11 @@ Ember.Application.initializer({
                             newResBufferItem = {
                                 name: currentItemName
                             };
+
+                            var model = container.lookupFactory('model:' + Ember.dasherize(currentItemName));
+                            if(model) {
+                                newResBufferItem.description = get(model.proto(), 'metadata.description');
+                            }
                         }
                         resBuffer.pushObject(newResBufferItem);
                     }
@@ -90,11 +130,13 @@ Ember.Application.initializer({
                 selectItem: function() {
                     this.recomputeSelection();
                 },
+
                 unselectItem: function(){
                     this.recomputeSelection();
                 }
             }
         });
+
         application.register('component:component-mixinselector', component);
     }
 });

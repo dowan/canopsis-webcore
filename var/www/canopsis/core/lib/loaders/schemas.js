@@ -88,6 +88,9 @@ define([
             // console.log('schemaName', schemaName);
 
             var parentModel = this.getParentModelForModelId(schemaId);
+            if(parentModel === undefined){
+                alert(schemaId);
+            }
             var modelDict = this.generateSchemaModelDict(schema, parentModel, schemaId);
 
             console.log(schemaId, modelDict);

@@ -280,6 +280,10 @@ define([
 
                         var mixinObject = get(widget, 'mixins').findBy('name', mixinName);
 
+                        if(isNone(mixinObject)) {
+                            mixinObject = get(widget, 'mixins').pushObject({name: mixinName});
+                        }
+
                         console.log('mixinObject', mixinObject);
 
                         var widgetController = this;
@@ -296,7 +300,6 @@ define([
                                 console.log('mixinObject', mixinObject);
 
                                 set(mixinObject, property.name, propertyValue);
-                                console.log(widget.get('mixins'));
 
                                 var userview = get(widgetController, 'viewController').get('content');
                                 userview.save().then(function(){

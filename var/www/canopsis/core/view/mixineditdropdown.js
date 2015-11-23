@@ -27,6 +27,23 @@ Ember.Application.initializer({
             get = Ember.get,
             isNone = Ember.isNone;
 
+        var containsAtLeastOneProperty = function(mixin) {
+            var mixin = schemasRegistry.getByName(mixin.name);
+
+            if(isNone(mixin)) return;
+            if(isNone(mixin.schema)) return;
+            if(isNone(mixin.schema.properties)) return;
+
+            var mixinProperties = mixin.schema.properties;
+
+            propertiesKeys = Ember.keys(mixinProperties);
+
+            for (var i = 0; i < propertiesKeys.length; i++) {
+                if(!mixinProperties[propertiesKeys[i]].isUserPreference)
+                    return true;
+            }
+        }
+
         //TODO @gwen check if it's possible to remove this class
 
         /**
@@ -55,7 +72,7 @@ Ember.Application.initializer({
                 var editableMixins = Ember.A();
                 if(mixins) {
                     for (var i = 0; i < mixins.length; i++) {
-                        if(schemasRegistry.getByName(mixins[i].name.camelize())) {
+                        if(schemasRegistry.getByName(mixins[i].name.camelize()) && containsAtLeastOneProperty(mixins[i])) {
                             editableMixins.pushObject(mixins[i]);
                         }
                     }

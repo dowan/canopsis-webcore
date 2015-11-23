@@ -26,7 +26,7 @@ Ember.Application.initializer({
         var routesUtils = container.lookupFactory('utility:routes');
         var dataUtils = container.lookupFactory('utility:data');
 
-        var formsregistry;
+        var formsregistry = container.lookupFactory('registry:forms');
 
         var get = Ember.get,
             set = Ember.set,
@@ -88,14 +88,17 @@ Ember.Application.initializer({
                 return formController;
             },
 
-            editRecord: function(record) {
+            editRecord: function(record, callback) {
                 var widgetWizard = this.showNew('modelform', record);
                 console.log('widgetWizard', widgetWizard);
 
                 widgetWizard.submit.then(function() {
                     console.log('record saved');
+                    var save = record.save();
+                    if (!isNone(callback)) {
+                        save.then(callback);
+                    }
 
-                    record.save();
                     widgetWizard.trigger('hidePopup');
                     widgetWizard.destroy();
                 });
@@ -103,7 +106,7 @@ Ember.Application.initializer({
                 return widgetWizard;
             },
 
-            editSchemaRecord: function (schemaName, container) {
+            editSchemaRecord: function (schemaName, container, callback) {
 
                 var forms = this;
 
@@ -127,10 +130,12 @@ Ember.Application.initializer({
                     ].join('');
 
                     if (record) {
-                        forms.editRecord(record);
+                        forms.editRecord(record, callback);
                      } else {
                         forms.error(errorMessage);
                     }
+
+
                 });
             },
 
@@ -138,7 +143,7 @@ Ember.Application.initializer({
                 routesUtils.getCurrentRouteController().send('show_add_crecord_form', record_type);
             }
         });
-        formsregistry = container.lookupFactory('registry:forms');
+
         application.register('utility:forms', formUtils);
     }
 });

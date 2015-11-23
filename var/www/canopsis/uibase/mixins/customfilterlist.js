@@ -17,29 +17,27 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
 Ember.Application.initializer({
     name:'CustomfilterlistMixin',
-    after: ['MixinFactory', 'DataUtils', 'FormsUtils', 'NotificationUtils'],
+    after: ['FormsUtils', 'MixinFactory', 'DataUtils', 'NotificationUtils'],
     initialize: function(container, application) {
 
         var Mixin = container.lookupFactory('factory:mixin');
-        var dataUtils = container.lookupFactory('utility:data');
         var formsUtils = container.lookupFactory('utility:forms');
+        var dataUtils = container.lookupFactory('utility:data');
+        var MixinFactory = container.lookupFactory('factory:mixin');
         var notificationUtils = container.lookupFactory('utility:notification');
 
         var get = Ember.get,
             set = Ember.set,
             isNone = Ember.isNone;
 
-
         /**
           * Implements Custom filter management for list
           * A filter is a combination of a cfilter and a title.
           * Custom cfilter allow perform selelection on a list with custom filter information.
         */
-        var mixin = Mixin('customfilterlist', {
+        var mixin = MixinFactory('customfilterlist', {
             partials: {
                 subHeader: ['customfilters']
             },
@@ -134,6 +132,7 @@ Ember.Application.initializer({
                 if(!isNone(selectedFilterFilter)) {
                     userFilter = selectedFilterFilter;
                 } else if(get(this, 'model.selected_filter') && !selectedFilterFilter) {
+
                     userFilter = {};
                 } else if(mixinOptions && mixinOptions.default_filter) {
                     userFilter = mixinOptions.default_filter;
