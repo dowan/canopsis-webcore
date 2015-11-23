@@ -54,6 +54,16 @@ Ember.Application.initializer({
                 ]);
             },
 
+            updateInterval: function(interval) {
+                var from = get(interval, 'timestamp.$lte'),
+                    to = get(interval, 'timestamp.$gte');
+
+                set(this, 'from', from);
+                set(this, 'to', to);
+
+                this.refreshContent();
+            },
+
             findItems: function() {
                 var tw = TimeWindowUtils.getFromTo(
                     get(this, 'time_window'),
@@ -73,6 +83,11 @@ Ember.Application.initializer({
                 if (!isNone(liveTo)) {
                     to = liveTo;
                 }
+
+                set(this, 'timewindow', {
+                    from: from,
+                    to: to
+                });
 
                 set(this, 'users', {});
                 set(this, 'events', {});
@@ -236,7 +251,7 @@ Ember.Application.initializer({
                             /* generate groups in each categories */
                             if (groups.indexOf(groupname) === -1) {
                                 groups.push(groupname);
-                                set(selected, groupname, (isUser ? null : []));
+                                set(selected, groupname, []);
                             }
 
                             /* add point to corresponding category/group */
@@ -247,12 +262,7 @@ Ember.Application.initializer({
                                 point = points[points.length - 1][1];
                             }
 
-                            if (isUser) {
-                                set(selected, groupname, point);
-                            }
-                            else {
-                                get(selected, groupname).push(point);
-                            }
+                            get(selected, groupname).push(point);
                         }
                     }
                 });
@@ -260,8 +270,8 @@ Ember.Application.initializer({
                 /* generate chart columns */
                 var columns = [sources];
 
-                $.each(selected, function(key, point) {
-                    columns.push([key, point]);
+                $.each(selected, function(key, points) {
+                    columns.push([key].concat(points));
                 });
 
                 return {
