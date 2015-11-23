@@ -17,47 +17,54 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-Ember.Application.initializer({
-    name:'ScreentoolstatusmenuMixin',
-    after: 'MixinFactory',
-    initialize: function(container, application) {
-        var Mixin = container.lookupFactory('factory:mixin');
+define([
+    'canopsis/canopsisConfiguration'
+], function(canopsisConfiguration) {
 
-        /**
-         * Mixin allowing to virtually resize the screen, adding a dedicated statusbar button into the app statusbar only in debug mode
-         *
-         * @class ScreentoolstatusmenuMixin
-         * @extensionfor ApplicationController
-         * @static
-         */
-        var mixin = Mixin('Screentoolstatusmenu', {
+    Ember.Application.initializer({
+        name:'ScreentoolstatusmenuMixin',
+        after: 'MixinFactory',
+        initialize: function(container, application) {
+            var Mixin = container.lookupFactory('factory:mixin');
 
-            init: function() {
-                this.partials.statusbar.pushObject('screentoolstatusmenu');
-                this._super();
-            },
+            /**
+             * Mixin allowing to virtually resize the screen, adding a dedicated statusbar button into the app statusbar only in debug mode
+             *
+             * @class ScreentoolstatusmenuMixin
+             * @extensionfor ApplicationController
+             * @static
+             */
+            var mixin = Mixin('Screentoolstatusmenu', {
 
-            actions: {
-                /**
-                 * Change the size of the screen by resizing the body tag
-                 *
-                 * @event changeScreenSize
-                 * @param {String} size The size of the screen
-                 */
-                changeScreenSize: function (size) {
-                    var cssSize = {
-                        small: '480px',
-                        medium: '940px',
-                        large: '100%',
-                    }[size];
+                configuration: canopsisConfiguration,
 
-                    $('body').animate({
-                        width: cssSize
-                    });
+                init: function() {
+                    this.partials.statusbar.pushObject('screentoolstatusmenu');
+                    this._super();
+                },
+
+                actions: {
+                    /**
+                     * Change the size of the screen by resizing the body tag
+                     *
+                     * @event changeScreenSize
+                     * @param {String} size The size of the screen
+                     */
+                    changeScreenSize: function (size) {
+                        var cssSize = {
+                            small: '480px',
+                            medium: '940px',
+                            large: '100%',
+                        }[size];
+
+                        $('body').animate({
+                            width: cssSize
+                        });
+                    }
                 }
-            }
-        });
+            });
 
-        application.register('mixin:screentoolstatusmenu', mixin);
-    }
+            application.register('mixin:screentoolstatusmenu', mixin);
+        }
+    });
 });
