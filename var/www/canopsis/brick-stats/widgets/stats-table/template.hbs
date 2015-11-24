@@ -1,7 +1,7 @@
-<ul>
-    <li>From: {{date controller.timewindow.from}}</li>
-    <li>To: {{date controller.timewindow.to}}</li>
-</ul>
+<p style="float: right;">
+    <b>From:</b> {{timestamp controller.timewindow.from}} |
+    <b>To:</b> {{timestamp controller.timewindow.to}}
+</p>
 
 {{#if controller.show_user}}
     <h1>Statistiques sur les utilisateurs</h1>

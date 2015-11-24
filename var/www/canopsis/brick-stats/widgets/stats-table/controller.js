@@ -25,6 +25,7 @@ Ember.Application.initializer({
         'MetricConsumer',
         'MetricFilterable',
         'HumanReadableHelper',
+        'TimestampHelper',
         'c3jsComponent'
     ],
     initialize: function(container, application) {
@@ -85,8 +86,8 @@ Ember.Application.initializer({
                 }
 
                 set(this, 'timewindow', {
-                    from: from,
-                    to: to
+                    from: from / 1000,
+                    to: to / 1000
                 });
 
                 set(this, 'users', {});
