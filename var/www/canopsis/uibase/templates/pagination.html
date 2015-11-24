@@ -4,26 +4,22 @@
             <span class="btn-group">
                 <button type="button" class="btn btn-sm btn-default" {{action "firstPage"}}>
                     <span class="glyphicon glyphicon-step-backward"></span>
-                    {{tr 'First'}}
                 </button>
                 <button type="button" class="btn btn-sm btn-default" {{action "prevPage"}}>
                     <span class="glyphicon glyphicon-chevron-left"></span>
-                    {{tr 'Previous'}}
                 </button>
             </span>
         {{/unless}}
 
         <span style="float:left; padding:4px">
-            {{tr 'Page'}} {{controller.currentPage}} / {{controller.totalPages}}
+            {{controller.currentPage}} / {{controller.totalPages}}
         </span>
         {{#unless controller.isLastPage}}
             <span class="btn-group">
                 <button type="button" class="btn btn-sm btn-default" {{action "nextPage"}}>
-                    {{tr 'Next'}}
                     <span class="glyphicon glyphicon-chevron-right"></span>
                 </button>
                 <button type="button" class="btn btn-sm btn-default" {{action "lastPage"}}>
-                    {{tr 'Last'}}
                     <span class="glyphicon glyphicon-step-forward"></span>
                 </button>
             </span>
