@@ -18,6 +18,7 @@
  */
 
 require.config({
+    waitSeconds: 30,
     baseUrl: '/static/',
     paths: {
         'app': 'canopsis/core',

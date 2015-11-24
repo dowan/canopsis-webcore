@@ -1,11 +1,10 @@
 /*!
  * rrule.js - Library for working with recurrence rules for calendar dates.
-  * v1.0.0-beta
- * https://github.com/jkbr/rrule
+ * https://github.com/jakubroztocil/rrule
  *
  * Copyright 2010, Jakub Roztocil and Lars Schoning
  * Licenced under the BSD licence.
- * https://github.com/jkbr/rrule/blob/master/LICENCE
+ * https://github.com/jakubroztocil/rrule/blob/master/LICENCE
  *
  */
 
@@ -22,21 +21,30 @@
 
 
 var serverSide = typeof module !== 'undefined' && module.exports;
-var _, RRule;
+var RRule;
 
 
 if (serverSide) {
-    _ = require('underscore');
     RRule = require('./rrule').RRule;
-} else if (root.RRule || root._) {
+} else if (root.RRule) {
     RRule = root.RRule;
-    _ = root._;
 } else if (typeof require !== 'undefined') {
     if (!RRule) {RRule = require('rrule');}
-    if (!_ && (typeof require !== 'undefined')) { _ = require('underscore');}
 } else {
-    throw 'rrule.js and underscore.js are required for rrule/nlp.js to work'
+    throw new Error('rrule.js is required for rrule/nlp.js to work')
 }
+
+
+//=============================================================================
+// Helper functions
+//=============================================================================
+
+/**
+ * Return true if a value is in an array
+ */
+var contains = function(arr, val) {
+    return arr.indexOf(val) != -1;
+};
 
 
 //=============================================================================
@@ -48,20 +56,18 @@ if (serverSide) {
  *
  * @param {RRule} rrule
  * Optional:
- * @param {Date} today - for formatting the UNTIL rule
  * @param {Function} gettext function
  * @param {Object} language definition
  * @constructor
  */
-var ToText = function(rrule, today, gettext, language) {
+var ToText = function(rrule, gettext, language) {
 
     this.gettext = gettext || function(id) {return id};
     this.language = language || ENGLISH;
-    this.today = today;
     this.text = '';
 
     this.rrule = rrule;
-    this.freq = rrule.freq;
+    this.freq = rrule.options.freq;
     this.options = rrule.options;
     this.origOptions = rrule.origOptions;
 
@@ -84,10 +90,10 @@ var ToText = function(rrule, today, gettext, language) {
                             : this.origOptions.byweekday;
         var days = String(byweekday);
         this.byweekday = {
-            allWeeks:_.filter(byweekday, function (weekday) {
+            allWeeks:byweekday.filter(function (weekday) {
                 return !Boolean(weekday.n);
             }),
-            someWeeks:_.filter(byweekday, function (weekday) {
+            someWeeks:byweekday.filter(function (weekday) {
                 return Boolean(weekday.n);
             }),
             isWeekdays:(
@@ -141,21 +147,21 @@ ToText.IMPLEMENTED[RRule.YEARLY]  = ['byweekno', 'byyearday'].concat(common);
 ToText.isFullyConvertible = function(rrule) {
     var canConvert = true;
 
-    if (!(rrule.freq in ToText.IMPLEMENTED)) {
+    if (!(rrule.options.freq in ToText.IMPLEMENTED)) {
         return false;
     }
     if (rrule.origOptions.until && rrule.origOptions.count) {
         return false;
     }
-    _.each(rrule.origOptions, function(value, key){
-        if (key == 'dtstart' || key == 'wkst') {
+    for (var key in rrule.origOptions) {
+        if (contains(['dtstart', 'wkst', 'freq'], key)) {
             return true;
         }
-        if (!_.include(ToText.IMPLEMENTED[rrule.freq], key)) {
+        if (!contains(ToText.IMPLEMENTED[rrule.options.freq], key)) {
             canConvert = false;
             return false;
         }
-    });
+    }
 
     return canConvert;
 };
@@ -170,7 +176,7 @@ ToText.prototype = {
 
 
     /**
-     * Perform the conversion. Only some some frequencies are supported.
+     * Perform the conversion. Only some of the frequencies are supported.
      * If some of the rrule's options aren't supported, they'll
      * be omitted from the output an "(~ approximate)" will be appended.
      * @return {*}
@@ -179,25 +185,21 @@ ToText.prototype = {
 
         var gettext = this.gettext;
 
-        if (!(this.freq in ToText.IMPLEMENTED)) {
+        if (!(this.options.freq in ToText.IMPLEMENTED)) {
             return gettext(
                 'RRule error: Unable to fully convert this rrule to text');
         }
 
         this.text = [gettext('every')];
 
-        this[RRule.FREQUENCIES[this.freq]]();
+        this[RRule.FREQUENCIES[this.options.freq]]();
 
         if (this.options.until) {
             this.add(gettext('until'));
             var until = this.options.until;
-            if (!this.today) {
-                this.add(this.language.monthNames[until.getMonth()])
-                    .add(until.getDate() + ',')
-                    .add(until.getFullYear());
-            } else {
-                // TODO
-            }
+            this.add(this.language.monthNames[until.getMonth()])
+                .add(until.getDate() + ',')
+                .add(until.getFullYear());
         } else if (this.options.count) {
             this.add(gettext('for'))
                 .add(this.options.count)
@@ -256,7 +258,7 @@ ToText.prototype = {
                     ? gettext('weekdays')
                     : gettext('weekday'));
             } else {
-                this.add(gettext('ON')).add(gettext('weekdays'));
+                this.add(gettext('on')).add(gettext('weekdays'));
             }
 
         } else {
@@ -301,6 +303,8 @@ ToText.prototype = {
         }
         if (this.bymonthday) {
             this._bymonthday();
+        } else if (this.byweekday && this.byweekday.isWeekdays) {
+            this.add(gettext('on')).add(gettext('weekdays'));
         } else if (this.byweekday) {
             this._byweekday();
         }
@@ -464,9 +468,9 @@ ToText.prototype = {
         };
 
         if (finalDelim) {
-            return delimJoin(_.map(arr, realCallback), delim, finalDelim);
+            return delimJoin(arr.map(realCallback), delim, finalDelim);
         } else {
-            return _.map(arr, realCallback).join(delim + ' ');
+            return arr.map(realCallback).join(delim + ' ');
         }
 
 
@@ -547,8 +551,11 @@ ToText.prototype = {
  * @param {String} text
  * @return {Object, Boolean} the rule, or null.
  */
+var fromText = function(text, language) {
+    return new RRule(parseText(text, language))
+};
 
-var fromText = function(text, dtstart, language) {
+var parseText = function(text, language) {
 
     var ttr = new Parser((language || ENGLISH).tokens);
 
@@ -556,16 +563,10 @@ var fromText = function(text, dtstart, language) {
         return null;
     }
 
-    var freq, options = {
-        'dtstart': dtstart
-    };
+    var options = {};
 
-    try {
-        S();
-        return new RRule(freq, options);
-    } catch(e) {
-        return null;
-    }
+    S();
+    return options;
 
     function S() {
         ttr.expect('every');
@@ -576,11 +577,11 @@ var fromText = function(text, dtstart, language) {
             options.interval = parseInt(n[0]);
 
         if(ttr.isDone())
-            throw 'Unexpected end';
+            throw new Error('Unexpected end');
 
         switch(ttr.symbol) {
         case 'day(s)':
-            freq = RRule.DAILY;
+            options.freq = RRule.DAILY;
             if (ttr.nextSymbol()) {
                 ON();
                 F();
@@ -590,7 +591,7 @@ var fromText = function(text, dtstart, language) {
             // FIXME Note: every 2 weekdays != every two weeks on weekdays.
             // DAILY on weekdays is not a valid rule
         case 'weekday(s)':
-            freq = RRule.WEEKLY;
+            options.freq = RRule.WEEKLY;
             options.byweekday = [
                 RRule.MO,
                 RRule.TU,
@@ -603,7 +604,7 @@ var fromText = function(text, dtstart, language) {
             break;
 
         case 'week(s)':
-            freq = RRule.WEEKLY;
+            options.freq = RRule.WEEKLY;
             if (ttr.nextSymbol()) {
                 ON();
                 F();
@@ -611,7 +612,7 @@ var fromText = function(text, dtstart, language) {
             break;
 
         case 'month(s)':
-            freq = RRule.MONTHLY;
+            options.freq = RRule.MONTHLY;
             if (ttr.nextSymbol()) {
                 ON();
                 F();
@@ -619,7 +620,7 @@ var fromText = function(text, dtstart, language) {
             break;
 
         case 'year(s)':
-            freq = RRule.YEARLY;
+            options.freq = RRule.YEARLY;
             if (ttr.nextSymbol()) {
                 ON();
                 F();
@@ -633,7 +634,7 @@ var fromText = function(text, dtstart, language) {
         case 'friday':
         case 'saturday':
         case 'sunday':
-            freq = RRule.WEEKLY;
+            options.freq = RRule.WEEKLY;
             options.byweekday = [RRule[ttr.symbol.substr(0, 2).toUpperCase()]];
 
             if(!ttr.nextSymbol())
@@ -642,12 +643,12 @@ var fromText = function(text, dtstart, language) {
             // TODO check for duplicates
             while (ttr.accept('comma')) {
                 if(ttr.isDone())
-                    throw 'Unexpected end';
+                    throw new Error('Unexpected end');
 
                 var wkd;
                 if(!(wkd = decodeWKD())) {
-                    throw 'Unexpected symbol ' + ttr.symbol
-                        + ', expected weekday';
+                    throw new Error('Unexpected symbol ' + ttr.symbol
+                        + ', expected weekday');
                 }
 
                 options.byweekday.push(RRule[wkd]);
@@ -669,7 +670,7 @@ var fromText = function(text, dtstart, language) {
         case 'october':
         case 'november':
         case 'december':
-            freq = RRule.YEARLY;
+            options.freq = RRule.YEARLY;
             options.bymonth = [decodeM()];
 
             if(!ttr.nextSymbol())
@@ -678,12 +679,12 @@ var fromText = function(text, dtstart, language) {
             // TODO check for duplicates
             while (ttr.accept('comma')) {
                 if(ttr.isDone())
-                    throw 'Unexpected end';
+                    throw new Error('Unexpected end');
 
                 var m;
                 if(!(m = decodeM())) {
-                    throw 'Unexpected symbol ' + ttr.symbol
-                        + ', expected month';
+                    throw new Error('Unexpected symbol ' + ttr.symbol
+                        + ', expected month');
                 }
 
                 options.bymonth.push(m);
@@ -695,7 +696,7 @@ var fromText = function(text, dtstart, language) {
             break;
 
         default:
-            throw 'Unknown symbol';
+            throw new Error('Unknown symbol');
 
         }
     }
@@ -721,7 +722,7 @@ var fromText = function(text, dtstart, language) {
                     if (!options.byweekday) {
                         options.byweekday = [];
                     }
-                    options.byweekday.push(RRule[wkd].clone(nth));
+                    options.byweekday.push(RRule[wkd].nth(nth));
                 } else {
                     if(!options.bymonthday) {
                         options.bymonthday = [];
@@ -749,14 +750,14 @@ var fromText = function(text, dtstart, language) {
                 ttr.nextSymbol();
                 var n;
                 if(!(n = ttr.accept('number'))) {
-                    throw 'Unexpected symbol ' + ttr.symbol
-                        + ', expected week number';
+                    throw new Error('Unexpected symbol ' + ttr.symbol
+                        + ', expected week number');
                 }
                 options.byweekno = [n[0]];
                 while(ttr.accept('comma')) {
                     if(!(n = ttr.accept('number'))) {
-                        throw 'Unexpected symbol ' + ttr.symbol
-                            + '; expected monthday';
+                        throw new Error('Unexpected symbol ' + ttr.symbol
+                            + '; expected monthday');
                     }
                     options.byweekno.push(n[0]);
                 }
@@ -839,7 +840,7 @@ var fromText = function(text, dtstart, language) {
         case 'nth':
             var v = parseInt(ttr.value[1]);
             if(v < -366 || v > 366)
-                throw 'Nth out of range: ' + v;
+                throw new Error('Nth out of range: ' + v);
 
             ttr.nextSymbol();
             return ttr.accept('last') ? -v : v;
@@ -865,8 +866,8 @@ var fromText = function(text, dtstart, language) {
         while(ttr.accept('comma')) {
 
             if (!(nth = decodeNTH())) {
-                throw 'Unexpected symbol ' + ttr.symbol
-                        + '; expected monthday';
+                throw new Error('Unexpected symbol ' + ttr.symbol
+                        + '; expected monthday');
             }
 
             options.bymonthday.push(nth);
@@ -882,7 +883,7 @@ var fromText = function(text, dtstart, language) {
             var date = Date.parse(ttr.text);
 
             if (!date) {
-                throw 'Cannot parse until date:' + ttr.text;
+                throw new Error('Cannot parse until date:' + ttr.text);
             }
             options.until = new Date(date);
         } else if(ttr.accept('for')){
@@ -925,8 +926,9 @@ Parser.prototype.nextSymbol = function() {
 
        best = null;
 
-       _.each(this.rules, function(rule, name) {
-           var match;
+       var match, rule;
+       for (var name in this.rules) {
+           rule = this.rules[name];
            if(match = rule.exec(p.text)) {
                if(best == null || match[0].length > best[0].length) {
                    best = match;
@@ -934,7 +936,7 @@ Parser.prototype.nextSymbol = function() {
                }
            }
 
-       });
+       }
 
        if(best != null) {
            this.text = this.text.substr(best[0].length);
@@ -977,7 +979,7 @@ Parser.prototype.expect = function(name) {
        return true;
    }
 
-   throw 'expected ' + name + ' but found ' + this.symbol;
+   throw new Error('expected ' + name + ' but found ' + this.symbol);
 };
 
 
@@ -1045,9 +1047,10 @@ var ENGLISH = {
 
 var nlp = {
     fromText: fromText,
+    parseText: parseText,
     isFullyConvertible: ToText.isFullyConvertible,
-    toText: function(rrule, today, gettext, language) {
-        return new ToText(rrule, today, gettext, language).toString();
+    toText: function(rrule, gettext, language) {
+        return new ToText(rrule, gettext, language).toString();
     }
 };
 

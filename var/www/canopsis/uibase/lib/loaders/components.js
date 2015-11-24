@@ -64,7 +64,8 @@ var components = [
     { name: 'components/component-dropdownbuttonheader', url: 'canopsis/uibase/components/dropdownbuttonheader/component', template: 'canopsis/uibase/components/dropdownbuttonheader/template.html' },
     { name: 'components/component-dropdownbuttoncontent', url: 'canopsis/uibase/components/dropdownbuttoncontent/component', template: 'canopsis/uibase/components/dropdownbuttoncontent/template.html' },
     { name: 'components/component-dropdownbuttontitle', url: 'canopsis/uibase/components/dropdownbuttontitle/component', template: 'canopsis/uibase/components/dropdownbuttontitle/template.html' },
-    { name: 'components/component-dropdownbuttonoverview', url: 'canopsis/uibase/components/dropdownbuttonoverview/component', template: 'canopsis/uibase/components/dropdownbuttonoverview/template.html' }
+    { name: 'components/component-dropdownbuttonoverview', url: 'canopsis/uibase/components/dropdownbuttonoverview/component', template: 'canopsis/uibase/components/dropdownbuttonoverview/template.html' },
+    { name: 'components/component-colorchooser', url: 'canopsis/uibase/components/colorchooser/component', template: 'canopsis/uibase/components/colorchooser/template.hbs' }
 ];
 
 loader.loadWithTemplates(components);

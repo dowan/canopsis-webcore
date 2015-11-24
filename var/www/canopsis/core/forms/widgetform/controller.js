@@ -107,7 +107,7 @@ Ember.Application.initializer({
 
                     console.info('show embedded widget wizard');
 
-                    formsUtils.showNew('modelform', newWidget, {formParent: this, title: "Add new " + widgetName});
+                    formsUtils.showNew('modelform', newWidget, { formParent: this, title: "Add new " + widgetName });
                     console.groupEnd();
                 }
             },

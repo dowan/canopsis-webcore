@@ -1,32 +1,21 @@
 /*!
  * rrule.js - Library for working with recurrence rules for calendar dates.
-  * v1.0.0-beta
- * https://github.com/jkbr/rrule
+ * https://github.com/jakubroztocil/rrule
  *
  * Copyright 2010, Jakub Roztocil and Lars Schoning
  * Licenced under the BSD licence.
- * https://github.com/jkbr/rrule/blob/master/LICENCE
+ * https://github.com/jakubroztocil/rrule/blob/master/LICENCE
  *
  * Based on:
  * python-dateutil - Extensions to the standard Python datetime module.
  * Copyright (c) 2003-2011 - Gustavo Niemeyer <gustavo@niemeyer.net>
  * Copyright (c) 2012 - Tomi Pieviläinen <tomi.pievilainen@iki.fi>
- * https://github.com/jkbr/rrule/blob/master/LICENCE
+ * https://github.com/jakubroztocil/rrule/blob/master/LICENCE
  *
  */
 (function(root){
 
 var serverSide = typeof module !== 'undefined' && module.exports;
-var _;
-
-if (serverSide) {
-    _ = require('underscore');
-} else if (root._) {
-    _ = root._;
-} else if (!_ && (typeof require !== 'undefined')){
-    //Client needs to load underscore with requirejs.
-    _ = require('underscore');
-}
 
 
 var getnlp = function() {
@@ -35,13 +24,13 @@ var getnlp = function() {
             // Lazy, runtime import to avoid circular refs.
             getnlp._nlp = require('./nlp')
         } else if (!(getnlp._nlp = root._RRuleNLP)) {
-            throw 'You need to include rrule/nlp.js ' +
-                  'for fromText/toText to work.'
+            throw new Error(
+                'You need to include rrule/nlp.js for fromText/toText to work.'
+            )
         }
     }
     return getnlp._nlp;
-}
-
+};
 
 
 //=============================================================================
@@ -148,7 +137,8 @@ var dateutil = {
     getMonthDays: function(date) {
         var month = date.getMonth();
         return month == 1 && dateutil.isLeapYear(date)
-            ? 29 : dateutil.MONTH_DAYS[month];
+            ? 29
+            : dateutil.MONTH_DAYS[month];
     },
 
     /**
@@ -333,12 +323,27 @@ var plb = function(obj) {
 };
 
 
+/**
+ * Return true if a value is in an array
+ */
+var contains = function(arr, val) {
+    return arr.indexOf(val) != -1;
+};
+
+
 //=============================================================================
 // Date masks
 //=============================================================================
 
 // Every mask is 7 days longer to handle cross-year weekly periods.
 
+var M365MASK = [].concat(
+    repeat(1, 31),  repeat(2, 28),  repeat(3, 31),
+    repeat(4, 30),  repeat(5, 31),  repeat(6, 30),
+    repeat(7, 31),  repeat(8, 31),  repeat(9, 30),
+    repeat(10, 31), repeat(11, 30), repeat(12, 31),
+    repeat(1, 7)
+);
 var M366MASK = [].concat(
     repeat(1, 31),  repeat(2, 29),  repeat(3, 31),
     repeat(4, 30),  repeat(5, 31),  repeat(6, 30),
@@ -346,13 +351,12 @@ var M366MASK = [].concat(
     repeat(10, 31), repeat(11, 30), repeat(12, 31),
     repeat(1, 7)
 );
-var M365MASK = [].concat(M366MASK);
 
 var
+    M28 = range(1, 29),
     M29 = range(1, 30),
     M30 = range(1, 31),
     M31 = range(1, 32);
-
 var MDAY366MASK = [].concat(
     M31, M29, M31,
     M30, M31, M30,
@@ -360,12 +364,18 @@ var MDAY366MASK = [].concat(
     M31, M30, M31,
     M31.slice(0, 7)
 );
-var MDAY365MASK = [].concat(MDAY366MASK);
+var MDAY365MASK = [].concat(
+    M31, M28, M31,
+    M30, M31, M30,
+    M31, M31, M30,
+    M31, M30, M31,
+    M31.slice(0, 7)
+);
 
+M28 = range(-28, 0);
 M29 = range(-29, 0);
 M30 = range(-30, 0);
 M31 = range(-31, 0);
-
 var NMDAY366MASK = [].concat(
     M31, M29, M31,
     M30, M31, M30,
@@ -373,10 +383,16 @@ var NMDAY366MASK = [].concat(
     M31, M30, M31,
     M31.slice(0, 7)
 );
-var NMDAY365MASK = [].concat(NMDAY366MASK);
+var NMDAY365MASK = [].concat(
+    M31, M28, M31,
+    M30, M31, M30,
+    M31, M31, M30,
+    M31, M30, M31,
+    M31.slice(0, 7)
+);
 
-var M366RANGE = [0,31,60,91,121,152,182,213,244,274,305,335,366];
-var M365RANGE = [0,31,59,90,120,151,181,212,243,273,304,334,365];
+var M366RANGE = [0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366];
+var M365RANGE = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365];
 
 var WDAYMASK = (function() {
     for (var wdaymask = [], i = 0; i < 55; i++) {
@@ -385,11 +401,6 @@ var WDAYMASK = (function() {
     return wdaymask;
 }());
 
-M29 = M30 = M31 = null;
-M365MASK = M365MASK.slice(0, 58).concat(M365MASK.slice(59, M365MASK.length));
-MDAY365MASK = MDAY365MASK.slice(0, 58).concat(MDAY365MASK.slice(59));
-NMDAY365MASK = NMDAY365MASK.slice(0, 31).concat(NMDAY365MASK.slice(32));
-
 
 //=============================================================================
 // Weekday
@@ -397,7 +408,7 @@ NMDAY365MASK = NMDAY365MASK.slice(0, 31).concat(NMDAY365MASK.slice(32));
 
 var Weekday = function(weekday, n) {
     if (n === 0) {
-        throw 'Can\'t create weekday with n == 0';
+        throw new Error('Can\'t create weekday with n == 0');
     }
     this.weekday = weekday;
     this.n = n;
@@ -406,8 +417,8 @@ var Weekday = function(weekday, n) {
 Weekday.prototype = {
 
     // __call__ - Cannot call the object directly, do it through
-    // e.g. RRule.TH.clone(-1) instead,
-    clone: function(n) {
+    // e.g. RRule.TH.nth(-1) instead,
+    nth: function(n) {
         return this.n == n ? this : new Weekday(this.weekday, n);
     },
 
@@ -438,63 +449,54 @@ Weekday.prototype = {
 
 /**
  *
- * @param {String} freq - one of RRule.YEARLY, RRule.MONTHLY, ...
  * @param {Object?} options - see <http://labix.org/python-dateutil/#head-cf004ee9a75592797e076752b2a889c10f445418>
+ *        The only required option is `freq`, one of RRule.YEARLY, RRule.MONTHLY, ...
  * @constructor
  */
-var RRule = function(freq, options) {
+var RRule = function(options, noCache) {
 
     // RFC string
     this._string = null;
 
-    options = options || {}
+    options = options || {};
 
-    this._cache = {
+    this._cache = noCache ? null : {
         all: false,
         before: [],
         after: [],
         between: []
     };
 
-    var defaults = {
-        cache:       true,
-        dtstart:     null,
-        interval:    1,
-        wkst:        0,
-        count:      null,
-        until:      null,
-        bysetpos:    null,
-        bymonth:     null,
-        bymonthday:  null,
-        byyearday:   null,
-        byweekno:    null,
-        byweekday:   null,
-        byhour:      null,
-        byminute:    null,
-        bysecond:    null,
-        // not implemented:
-        byeaster:    null
-    };
+    // used by toString()
+    this.origOptions = {};
 
-    var invalid = _(options)
-        .keys()
-        .reject(function(name){
-            return _.has(defaults, name)
-        })
-        .value();
+    var invalid = [],
+        keys = Object.keys(options),
+        defaultKeys = Object.keys(RRule.DEFAULT_OPTIONS);
+
+    // Shallow copy for origOptions and check for invalid
+    keys.forEach(function(key) {
+        this.origOptions[key] = options[key];
+        if (!contains(defaultKeys, key)) invalid.push(key);
+    }, this);
+
     if (invalid.length) {
-        throw 'Invalid options: ' + invalid.join(', ')
+        throw new Error('Invalid options: ' + invalid.join(', '))
     }
 
-    // used by toString()
-    this.origOptions = _.clone(options);
+    if (!RRule.FREQUENCIES[options.freq] && options.byeaster === null) {
+        throw new Error('Invalid frequency: ' + String(options.freq))
+    }
 
-    var opts;
-    this.freq = freq;
-    this.options = opts = _.extend(defaults, options);
+    // Merge in default options
+    defaultKeys.forEach(function(key) {
+        if (!contains(keys, key)) options[key] = RRule.DEFAULT_OPTIONS[key];
+    });
+
+    var opts = this.options = options;
 
     if (opts.byeaster !== null) {
-        throw new Error('byeaster not implemented');
+        opts.freq = RRule.YEARLY;
     }
 
     if (!opts.dtstart) {
@@ -517,7 +519,10 @@ var RRule = function(freq, options) {
         for (var i = 0; i < opts.bysetpos.length; i++) {
             var v = opts.bysetpos[i];
             if (v == 0 || !(-366 <= v && v <= 366)) {
-                throw 'bysetpos must be between 1 and 366, or between -366 and -1';
+                throw new Error(
+                    'bysetpos must be between 1 and 366,' +
+                        ' or between -366 and -1'
+                );
             }
         }
     }
@@ -526,7 +531,7 @@ var RRule = function(freq, options) {
         || plb(opts.bymonthday) || opts.byweekday !== null
         || opts.byeaster !== null))
     {
-        switch (this.freq) {
+        switch (opts.freq) {
             case RRule.YEARLY:
                 if (!opts.bymonth) {
                     opts.bymonth = opts.dtstart.getMonth() + 1;
@@ -597,7 +602,7 @@ var RRule = function(freq, options) {
 
     } else if (opts.byweekday instanceof Weekday) {
 
-        if (!opts.byweekday.n || this.freq > RRule.MONTHLY) {
+        if (!opts.byweekday.n || opts.freq > RRule.MONTHLY) {
             opts.byweekday = [opts.byweekday.weekday];
             opts.bynweekday = null;
         } else {
@@ -616,7 +621,7 @@ var RRule = function(freq, options) {
 
             if (typeof wday == 'number') {
                 byweekday.push(wday);
-            } else if (!wday.n || this.freq > RRule.MONTHLY) {
+            } else if (!wday.n || opts.freq > RRule.MONTHLY) {
                 byweekday.push(wday.weekday);
             } else {
                 bynweekday.push([wday.weekday, wday.n]);
@@ -628,7 +633,7 @@ var RRule = function(freq, options) {
 
     // byhour
     if (opts.byhour === null) {
-        opts.byhour = (this.freq < RRule.HOURLY)
+        opts.byhour = (opts.freq < RRule.HOURLY)
             ? [opts.dtstart.getHours()]
             : null;
     } else if (typeof opts.byhour == 'number') {
@@ -637,7 +642,7 @@ var RRule = function(freq, options) {
 
     // byminute
     if (opts.byminute === null) {
-        opts.byminute = (this.freq < RRule.MINUTELY)
+        opts.byminute = (opts.freq < RRule.MINUTELY)
             ? [opts.dtstart.getMinutes()]
             : null;
     } else if (typeof opts.byminute == 'number') {
@@ -646,14 +651,14 @@ var RRule = function(freq, options) {
 
     // bysecond
     if (opts.bysecond === null) {
-        opts.bysecond = (this.freq < RRule.SECONDLY)
+        opts.bysecond = (opts.freq < RRule.SECONDLY)
             ? [opts.dtstart.getSeconds()]
             : null;
     } else if (typeof opts.bysecond == 'number') {
         opts.bysecond = [opts.bysecond];
     }
 
-    if (this.freq >= RRule.HOURLY) {
+    if (opts.freq >= RRule.HOURLY) {
         this.timeset = null;
     } else {
         this.timeset = [];
@@ -699,9 +704,114 @@ RRule.FR = new Weekday(4);
 RRule.SA = new Weekday(5);
 RRule.SU = new Weekday(6);
 
+RRule.DEFAULT_OPTIONS = {
+    freq:        null,
+    dtstart:     null,
+    interval:    1,
+    wkst:        RRule.MO,
+    count:      null,
+    until:      null,
+    bysetpos:    null,
+    bymonth:     null,
+    bymonthday:  null,
+    byyearday:   null,
+    byweekno:    null,
+    byweekday:   null,
+    byhour:      null,
+    byminute:    null,
+    bysecond:    null,
+    byeaster:    null
+};
 
-RRule.fromText = function(text, dtstart, language) {
-    return getnlp().fromText(text, dtstart, language)
+
+
+RRule.parseText = function(text, language) {
+    return getnlp().parseText(text, language)
+};
+
+RRule.fromText = function(text, language) {
+    return getnlp().fromText(text, language)
+};
+
+RRule.optionsToString = function(options) {
+    var key, keys, defaultKeys, value, strValues, pairs = [];
+
+    keys = Object.keys(options);
+    defaultKeys = Object.keys(RRule.DEFAULT_OPTIONS);
+
+    for (var i = 0; i < keys.length; i++) {
+
+        if (!contains(defaultKeys, keys[i])) continue;
+
+        key = keys[i].toUpperCase();
+        value = options[keys[i]];
+        strValues = [];
+
+        if (value === null || value instanceof Array && !value.length) {
+            continue;
+        }
+
+        switch (key) {
+            case 'FREQ':
+                value = RRule.FREQUENCIES[options.freq];
+                break;
+            case 'WKST':
+                value = value.toString();
+                break;
+            case 'BYWEEKDAY':
+                /*
+                NOTE: BYWEEKDAY is a special case.
+                RRule() deconstructs the rule.options.byweekday array
+                into an array of Weekday arguments.
+                On the other hand, rule.origOptions is an array of Weekdays.
+                We need to handle both cases here.
+                It might be worth change RRule to keep the Weekdays.
+
+                Also, BYWEEKDAY (used by RRule) vs. BYDAY (RFC)
+
+                */
+                key = 'BYDAY';
+                if (!(value instanceof Array)) {
+                    value = [value];
+                }
+                for (var wday, j = 0; j < value.length; j++) {
+                    wday = value[j];
+                    if (wday instanceof Weekday) {
+                        // good
+                    } else if (wday instanceof Array) {
+                        wday = new Weekday(wday[0], wday[1]);
+                    } else {
+                        wday = new Weekday(wday);
+                    }
+                    strValues[j] = wday.toString();
+                }
+                value = strValues;
+                break;
+            case'DTSTART':
+            case'UNTIL':
+                value = dateutil.timeToUntilString(value);
+                break;
+            default:
+                if (value instanceof Array) {
+                    for (var j = 0; j < value.length; j++) {
+                        strValues[j] = String(value[j]);
+                    }
+                    value = strValues;
+                } else {
+                    value = String(value);
+                }
+
+        }
+        pairs.push([key, value]);
+    }
+
+    var strings = [];
+    for (var i = 0; i < pairs.length; i++) {
+        var attr = pairs[i];
+        strings.push(attr[0] + '=' + attr[1].toString());
+    }
+    return strings.join(';');
+
 };
 
 RRule.prototype = {
@@ -804,100 +914,15 @@ RRule.prototype = {
      * @return String
      */
     toString: function() {
-        var attrs = [], key, keys, value,
-            origValue, currentValue, strValues;
-
-        if (this._string) {
-            return this._string;
-        }
-
-        keys = [
-            'byhour', 'byminute', 'bymonth',
-            'bymonthday', 'bysecond', 'bysetpos',
-            'byweekday', 'byweekno', 'byyearday',
-            'count', 'interval', 'until', 'wkst'
-        ];
-
-        attrs.push(['FREQ', RRule.FREQUENCIES[this.freq]]);
-
-        for (var i = 0; i < keys.length; i++) {
-
-            key = keys[i];
-
-            // Only attributes specified in the options argument
-            // passed to the constructor will be included in the string
-            // representation
-            if (typeof this.origOptions[key] == 'undefined') {
-                continue;
-            }
-
-            // Do not modify the currentValue array, use this instead
-            // to store string values
-            strValues = [];
-
-            // Some values are taken from the original options array
-            // (this.origOptions), and some from the modified version
-            // (this.options).
-            currentValue = this.options[key];
-            origValue = this.origOptions[key];
-
-            key = key.toUpperCase();
-
-            switch (key) {
-                case 'WKST':
-                    value = new Weekday(currentValue).toString();
-                    break;
-                case 'BYWEEKDAY':
-                    key = 'BYDAY';
-                    // XXX: always use origValue, this won't work as expected
-                    //      when byweekday contains +n and also -n
-                    value = (currentValue === null)
-                                ? this.options.bynweekday
-                                : currentValue;
-                    for (var wday, j = 0; j < value.length; j++) {
-                        wday = value[j];
-                        if (wday instanceof Array) {
-                            wday = new Weekday(wday[0], wday[1]);
-                        } else {
-                            wday = new Weekday(wday);
-                        }
-                        strValues[j] = wday.toString();
-                    }
-                    value = strValues;
-                    break;
-                case'UNTIL':
-                    value = dateutil.timeToUntilString(currentValue);
-                    break;
-                default:
-                    if (origValue instanceof Array) {
-                        for (var j = 0; j < origValue.length; j++) {
-                            strValues[j] = String(origValue[j]);
-                        }
-                        value = strValues;
-                    } else {
-                        value = String(origValue);
-                    }
-
-            }
-            attrs.push([key, value]);
-        }
-
-        var strings = [];
-        for (var i = 0; i < attrs.length; i++) {
-            var attr = attrs[i];
-            strings.push(attr[0] + '=' + attr[1].toString());
-        }
-        this._string = strings.join(';');
-        return this._string;
-
+        return RRule.optionsToString(this.origOptions);
     },
 
 	/**
 	* Will convert all rules described in nlp:ToText
 	* to text.
 	*/
-	toText: function(today, gettext, language) {
-        return getnlp().toText(this, today, gettext, language);
+	toText: function(gettext, language) {
+        return getnlp().toText(this, gettext, language);
 	},
 
     isFullyConvertibleToText: function() {
@@ -911,7 +936,7 @@ RRule.prototype = {
      */
     _cacheAdd: function(what, value, args) {
 
-        if (!this.options.cache) return;
+        if (!this._cache) return;
 
         if (value) {
             value = (value instanceof Date)
@@ -937,7 +962,7 @@ RRule.prototype = {
      */
     _cacheGet: function(what, args) {
 
-        if (!this.options.cache) {
+        if (!this._cache) {
             return false;
         }
 
@@ -987,7 +1012,7 @@ RRule.prototype = {
      *          as this one (cache is not cloned)
      */
     clone: function() {
-        return new RRule(this.freq, this.origOptions);
+        return new RRule(this.origOptions);
     },
 
     _iter: function(iterResult) {
@@ -1011,8 +1036,8 @@ RRule.prototype = {
 
         // Some local variables to speed things up a bit
         var
-            freq = this.freq,
-            interval = parseInt(this.options.interval),
+            freq = this.options.freq,
+            interval = this.options.interval,
             wkst = this.options.wkst,
             until = this.options.until,
             bymonth = this.options.bymonth,
@@ -1050,9 +1075,9 @@ RRule.prototype = {
             gettimeset[RRule.MINUTELY] = ii.mtimeset;
             gettimeset[RRule.SECONDLY] = ii.stimeset;
             gettimeset = gettimeset[freq];
-            if ((freq >= RRule.HOURLY   && plb(byhour)   && !_.include(byhour, hour)) ||
-                (freq >= RRule.MINUTELY && plb(byminute) && !_.include(byminute, minute)) ||
-                (freq >= RRule.SECONDLY && plb(bysecond) && !_.include(bysecond, minute)))
+            if ((freq >= RRule.HOURLY   && plb(byhour)   && !contains(byhour, hour)) ||
+                (freq >= RRule.MINUTELY && plb(byminute) && !contains(byminute, minute)) ||
+                (freq >= RRule.SECONDLY && plb(bysecond) && !contains(bysecond, minute)))
             {
                 timeset = [];
             } else {
@@ -1078,15 +1103,15 @@ RRule.prototype = {
 
                 i = dayset[j];
 
-                if ((plb(bymonth) && !_.include(bymonth, ii.mmask[i])) ||
+                if ((plb(bymonth) && !contains(bymonth, ii.mmask[i])) ||
                     (plb(byweekno) && !ii.wnomask[i]) ||
-                    (plb(byweekday) && !_.include(byweekday, ii.wdaymask[i])) ||
+                    (plb(byweekday) && !contains(byweekday, ii.wdaymask[i])) ||
                     (plb(ii.nwdaymask) && !ii.nwdaymask[i]) ||
-                    (plb(byeaster) && !ii.eastermask[i]) ||
+                    (byeaster !== null && !contains(ii.eastermask, i)) ||
                     (
                         (plb(bymonthday) || plb(bynmonthday)) &&
-                        !_.include(bymonthday, ii.mdaymask[i]) &&
-                        !_.include(bynmonthday, ii.nmdaymask[i])
+                        !contains(bymonthday, ii.mdaymask[i]) &&
+                        !contains(bynmonthday, ii.nmdaymask[i])
                     )
                     ||
                     (
@@ -1095,14 +1120,14 @@ RRule.prototype = {
                         (
                             (
                                 i < ii.yearlen &&
-                                !_.include(byyearday, i + 1) &&
-                                !_.include(byyearday, -ii.yearlen + i)
+                                !contains(byyearday, i + 1) &&
+                                !contains(byyearday, -ii.yearlen + i)
                             )
                             ||
                             (
                                 i >= ii.yearlen &&
-                                !_.include(byyearday, i + 1 - ii.yearlen) &&
-                                !_.include(byyearday, -ii.nextyearlen + i - ii.yearlen)
+                                !contains(byyearday, i + 1 - ii.yearlen) &&
+                                !contains(byyearday, -ii.nextyearlen + i - ii.yearlen)
                             )
                         )
                     )
@@ -1150,7 +1175,7 @@ RRule.prototype = {
                         var res = dateutil.combine(date, time);
                         // XXX: can this ever be in the array?
                         // - compare the actual date instead?
-                        if (!_.include(poslist, res)) {
+                        if (!contains(poslist, res)) {
                             poslist.push(res);
                         }
                     } catch (e) {}
@@ -1259,7 +1284,7 @@ RRule.prototype = {
                         day += div;
                         fixday = true;
                     }
-                    if (!plb(byhour) || _.include(byhour, hour)) {
+                    if (!plb(byhour) || contains(byhour, hour)) {
                         break;
                     }
                 }
@@ -1288,8 +1313,8 @@ RRule.prototype = {
                             filtered = false;
                         }
                     }
-                    if ((!plb(byhour) || _.include(byhour, hour)) &&
-                        (!plb(byminute) || _.include(byminute, minute))) {
+                    if ((!plb(byhour) || contains(byhour, hour)) &&
+                        (!plb(byminute) || contains(byminute, minute))) {
                         break;
                     }
                 }
@@ -1325,9 +1350,9 @@ RRule.prototype = {
                             }
                         }
                     }
-                    if ((!plb(byhour) || _.include(byhour, hour)) &&
-                        (!plb(byminute) || _.include(byminute, minute)) &&
-                        (!plb(bysecond) || _.include(bysecond, second)))
+                    if ((!plb(byhour) || contains(byhour, hour)) &&
+                        (!plb(byminute) || contains(byminute, minute)) &&
+                        (!plb(bysecond) || contains(bysecond, second)))
                     {
                         break;
                     }
@@ -1359,17 +1384,16 @@ RRule.prototype = {
 
 };
 
-RRule.fromString = function(string, dtstart, options) {
 
-    string = string.replace(/^\s+|\s+$/, '');
-    if (!string.length) {
+RRule.parseString = function(rfcString) {
+    rfcString = rfcString.replace(/^\s+|\s+$/, '');
+    if (!rfcString.length) {
         return null;
     }
-    console.log (string)
 
-    var i, j, key, value, freq, attr,
-        attrs = string.split(';'),
-        options = (options == undefined ? {} : options);
+    var i, j, key, value, attr,
+        attrs = rfcString.split(';'),
+        options = {};
 
     for (i = 0; i < attrs.length; i++) {
         attr = attrs[i].split('=');
@@ -1377,10 +1401,10 @@ RRule.fromString = function(string, dtstart, options) {
         value = attr[1];
         switch (key) {
             case 'FREQ':
-                freq = RRule[value];
+                options.freq = RRule[value];
                 break;
             case 'WKST':
-                options.wkst = RRule[value].weekday;
+                options.wkst = RRule[value];
                 break;
             case 'COUNT':
             case 'INTERVAL':
@@ -1422,18 +1446,27 @@ RRule.fromString = function(string, dtstart, options) {
                     }
                 }
                 break;
+            case 'DTSTART':
+                options.dtstart = dateutil.untilStringToDate(value);
+                break;
             case 'UNTIL':
                 options.until = dateutil.untilStringToDate(value);
+                break;
+            case 'BYEASTER':
+                options.byeaster = Number(value);
                 break;
             default:
                 throw new Error("Unknown RRULE property '" + key + "'");
         }
     }
-
-    options.dtstart = dtstart;
-    return new RRule(freq, options);
-
+    return options;
 };
+
+
+RRule.fromString = function(string) {
+    return new RRule(RRule.parseString(string));
+};
+
 
 //=============================================================================
 // Iterinfo
@@ -1457,6 +1490,28 @@ var Iterinfo = function(rrule) {
     this.eastermask = null;
 };
 
+Iterinfo.prototype.easter = function(y, offset) {
+    offset = offset || 0;
+
+    var a = y % 19,
+        b = Math.floor(y / 100),
+        c = y % 100,
+        d = Math.floor(b / 4),
+        e = b % 4,
+        f = Math.floor((b + 8) / 25),
+        g = Math.floor((b - f + 1) / 3),
+        h = Math.floor(19 * a + b - d - g + 15) % 30,
+        i = Math.floor(c / 4),
+        k = c % 4,
+        l = Math.floor(32 + 2 * e + 2 * i - h - k) % 7,
+        m = Math.floor((a + 11 * h + 22 * l) / 451),
+        month = Math.floor((h + l - 7 * m + 114) / 31),
+        day = (h + l - 7 * m + 114) % 31 + 1,
+        date = Date.UTC(y, month - 1, day + offset),
+        yearStart = Date.UTC(y, 0, 1);
+
+    return [ Math.ceil((date - yearStart) / (1000 * 60 * 60 * 24)) ];
+}
 
 Iterinfo.prototype.rebuild = function(year, month) {
 
@@ -1531,7 +1586,7 @@ Iterinfo.prototype.rebuild = function(year, month) {
                 }
             }
 
-            if (_.include(rr.options.byweekno, 1)) {
+            if (contains(rr.options.byweekno, 1)) {
                 // Check week number 1 of next year as well
                 // orig-TODO : Check -numweeks for next year.
                 var i = no1wkst + numweeks * 7;
@@ -1559,7 +1614,7 @@ Iterinfo.prototype.rebuild = function(year, month) {
                 // days from last year's last week number in
                 // this year.
                 var lnumweeks;
-                if (!_.include(rr.options.byweekno, -1)) {
+                if (!contains(rr.options.byweekno, -1)) {
                     var lyearweekday = dateutil.getWeekday(
                         new Date(year - 1, 0, 1));
                     var lno1wkst = pymod(
@@ -1580,20 +1635,19 @@ Iterinfo.prototype.rebuild = function(year, month) {
                 } else {
                     lnumweeks = -1;
                 }
-                if (_.include(rr.options.byweekno, lnumweeks)) {
+                if (contains(rr.options.byweekno, lnumweeks)) {
                     for (var i = 0; i < no1wkst; i++) {
                         this.wnomask[i] = 1;
                     }
                 }
             }
         }
-
     }
 
     if (plb(rr.options.bynweekday)
         && (month != this.lastmonth || year != this.lastyear)) {
         var ranges = [];
-        if (rr.freq == RRule.YEARLY) {
+        if (rr.options.freq == RRule.YEARLY) {
             if (plb(rr.options.bymonth)) {
                 for (j = 0; j < rr.options.bymonth.length; j++) {
                     month = rr.options.bymonth[j];
@@ -1602,7 +1656,7 @@ Iterinfo.prototype.rebuild = function(year, month) {
             } else {
                 ranges = [[0, this.yearlen]];
             }
-        } else if (rr.freq == RRule.MONTHLY) {
+        } else if (rr.options.freq == RRule.MONTHLY) {
             ranges = [this.mrange.slice(month - 1, month + 1)];
         }
         if (plb(ranges)) {
@@ -1632,12 +1686,13 @@ Iterinfo.prototype.rebuild = function(year, month) {
 
         }
 
-        if (plb(rr.options.byeaster)) {/* not implemented */}
-
         this.lastyear = year;
         this.lastmonth = month;
     }
 
+    if (rr.options.byeaster !== null) {
+        this.eastermask = this.easter(year, rr.options.byeaster);
+    }
 };
 
 Iterinfo.prototype.ydayset = function(year, month, day) {
@@ -1806,18 +1861,22 @@ IterResult.prototype = {
 
 
 /**
- * IterResult subclass that calls a callback funciton on each add,
+ * IterResult subclass that calls a callback function on each add,
  * and stops iterating when the callback returns false.
  */
 var CallbackIterResult = function(method, args, iterator) {
     var allowedMethods = ['all', 'between'];
-    if (!_.include(allowedMethods, method)) {
-        throw 'Invalid method "' + method
-            + '". Only all and between works with iterator.'
+    if (!contains(allowedMethods, method)) {
+        throw new Error('Invalid method "' + method
+            + '". Only all and between works with iterator.');
     }
     this.add = function(date) {
-        this._result.push(date);
-        return iterator(date, this._result.length) !== false;
+        if (iterator(date, this._result.length)) {
+            this._result.push(date);
+            return true;
+        }
+        return false;
+
     };
 
     this.init(method, args);
