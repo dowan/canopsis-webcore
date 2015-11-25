@@ -57,13 +57,18 @@ Ember.Application.initializer({
                     },
                     function(start, end, label) {
                         set(datepickerComponent, 'label', label);
+                        console.log(label);
                         var startTimestamp = parseInt(new Date(start).getTime() / 1000);
                         var stopTimestamp = parseInt(new Date(end).getTime() / 1000);
                         console.log('startTimestamp', startTimestamp, 'stopTimestamp', stopTimestamp);
 
                         if (startTimestamp === stopTimestamp) {
                             console.log('We are on the same day, let compute the start of the day');
-                            startTimestamp = datesUtils.startOfTheDay();
+                            startTimestamp = datesUtils.startOfTheDay() ;
+                            if (label === 'Yesterday') {
+                                stopTimestamp = startTimestamp;
+                                startTimestamp -= 3600 * 24;
+                            }
                             console.log('NEW -> startTimestamp',startTimestamp,'stopTimestamp',stopTimestamp);
                         }
 

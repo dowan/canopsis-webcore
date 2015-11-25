@@ -56,11 +56,22 @@ Ember.Application.initializer({
             },
 
             updateInterval: function(interval) {
-                var from = get(interval, 'timestamp.$lte'),
-                    to = get(interval, 'timestamp.$gte');
+                var from = get(interval, 'timestamp.$gte'),
+                    to = get(interval, 'timestamp.$lte');
 
-                set(this, 'from', from);
-                set(this, 'to', to);
+                if(!isNone(from)) {
+                    set(this, 'from', from * 1000);
+                }
+                else {
+                    set(this, 'from', undefined);
+                }
+
+                if(!isNone(to)) {
+                    set(this, 'to', to * 1000);
+                }
+                else {
+                    set(this, 'to', undefined);
+                }
 
                 this.refreshContent();
             },
@@ -124,7 +135,7 @@ Ember.Application.initializer({
                     events = get(this, 'events'),
                     series = get(this, 'series');
 
-                metrics.forEach(function(metric) {
+                $.each(metrics, function(idx, metric) {
                     var mid = get(metric, 'meta.data_id').split('/'),
                         points = get(metric, 'points');
 

@@ -45,23 +45,6 @@ Ember.Application.initializer({
          * @augments Widget
          */
         var widget = WidgetFactory('text', {
-            init: function() {
-                this._super.apply(this, arguments);
-
-                var template = undefined;
-
-                try {
-                    template = Handlebars.compile(get(this, 'html'));
-                }
-                catch(err) {
-                    template = function() {
-                        return '<i>Impossible to render template:</i> ' + err;
-                    };
-                }
-
-                set(this, 'template', template);
-            },
-
             findItems: function() {
                 var tw = TimeWindowUtils.getFromTo(
                     get(this, 'time_window'),
@@ -90,9 +73,12 @@ Ember.Application.initializer({
                 set(this, 'context.from', from);
                 set(this, 'context.to', to);
 
+                var datafetch = false;
+
                 var query = get(this, 'events');
                 if (!isNone(query) && query.length) {
                     this.fetchEvents(query);
+                    datafetch = true;
                 }
 
                 query = get(this, 'metrics');
@@ -104,18 +90,25 @@ Ember.Application.initializer({
                         /* aggregation interval: the whole timewindow for only one point */
                         to - from
                     );
+                    datafetch = true;
                 }
 
                 query = get(this, 'series');
                 if (!isNone(query) && query.length) {
                     this.fetchSeries(query, from, to);
+                    datafetch = true;
+                }
+
+                /* when no data is requested, just render the template */
+                if (datafetch === false) {
+                    this.renderTemplate();
                 }
             },
 
             onEvents: function(events, labelsByRk) {
                 var context = get(this, 'context');
 
-                events.forEach(function(evt) {
+                $.each(events, function(idx, evt) {
                     var rk = get(evt, 'id');
                     var label = get(labelsByRk, rk);
 
@@ -134,7 +127,7 @@ Ember.Application.initializer({
             onMetrics: function(metrics) {
                 var context = get(this, 'context');
 
-                metrics.forEach(function(metric) {
+                $.each(metrics, function(idx, metric) {
                     var mid = get(metric, 'meta.data_id').split('/'),
                         points = get(metric, 'points');
 
@@ -194,7 +187,7 @@ Ember.Application.initializer({
             onSeries: function(series) {
                 var context = get(this, 'context');
 
-                series.forEach(function(serie) {
+                $.each(series, function(idx, serie) {
                     var points = get(serie, 'points'),
                         label = get(serie, 'label');
 
@@ -212,11 +205,35 @@ Ember.Application.initializer({
             },
 
             /**
+             * @method makeTemplate
+             * @memberof TextWidget
+             * Make sure template has been compiled.
+             */
+            makeTemplate: function() {
+                var template = get(this, 'template');
+
+                if (isNone(template)) {
+                    try {
+                        template = Handlebars.compile(get(this, 'html'));
+                    }
+                    catch(err) {
+                        template = function() {
+                            return '<i>Impossible to render template:</i> ' + err;
+                        };
+                    }
+
+                    set(this, 'template', template);
+                }
+            },
+
+            /**
              * @method renderTemplate
              * @memberof TextWidget
              * Render compiled template property with context property into the rendered property.
              */
             renderTemplate: function() {
+                this.makeTemplate();
+
                 var template = get(this, 'template'),
                     context = get(this, 'context');
 
