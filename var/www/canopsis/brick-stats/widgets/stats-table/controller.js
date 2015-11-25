@@ -59,8 +59,19 @@ Ember.Application.initializer({
                 var from = get(interval, 'timestamp.$lte'),
                     to = get(interval, 'timestamp.$gte');
 
-                set(this, 'from', from * 1000);
-                set(this, 'to', to * 1000);
+                if(!isNone(from)) {
+                    set(this, 'from', from * 1000);
+                }
+                else {
+                    set(this, 'from', undefined);
+                }
+
+                if(!isNone(to)) {
+                    set(this, 'to', to * 1000);
+                }
+                else {
+                    set(this, 'to', undefined);
+                }
 
                 this.refreshContent();
             },
