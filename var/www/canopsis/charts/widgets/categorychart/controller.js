@@ -57,7 +57,8 @@ Ember.Application.initializer({
                     'human_readable',
                 ];
 
-                var options = {};
+                var options = {},
+                    me = this;
 
                 props.forEach(function(prop) {
                     set(options, prop, get(me, prop));
