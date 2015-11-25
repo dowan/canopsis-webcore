@@ -19,7 +19,7 @@
 
 Ember.Application.initializer({
     name: 'MixinsRegistry',
-    after: ['AbstractClassRegistry', 'SchemasRegistry'],
+    after: 'AbstractClassRegistry',
     initialize: function(container, application) {
         var Abstractclassregistry = container.lookupFactory('registry:abstractclass');
 
@@ -36,14 +36,7 @@ Ember.Application.initializer({
 
             all: [],
             byClass: {},
-            tableColumns: [{title: 'name', name: 'name'}],
-
-            add: function(item, name, classes) {
-                this.all.pushObject(Ember.Object.create({
-                    name: name,
-                    EmberClass: item
-                }));
-            }
+            tableColumns: [{title: 'name', name: 'name'}]
         });
 
         application.register('registry:mixins', registry);

@@ -60,6 +60,7 @@
                         <li class="list-group-item">
                             {{#if selectedItemPartial}}
                                 <span style="float:right;">
+
                                     {{partial selectedItemPartial}}
                                 </span>
                             {{/if}}
@@ -75,9 +76,6 @@
                                         {{/if}}
                                     {{/if}}
                                     {{item.name}} {{#if item.value}}({{item.value}}){{/if}}
-                                    {{#if item.description}}
-                                        <br/>{{item.description}}
-                                    {{/if}}
                                 {{/if}}
                             </a>
                             <span style="clear:both"></span>
@@ -114,9 +112,6 @@
                                     {{/if}}
                                 {{/if}}
                                 {{item.name}}
-                                {{#if item.description}}
-                                    <br/>{{item.description}}
-                                {{/if}}
                             {{/if}}
                         </a>
                     </li>
@@ -150,9 +145,6 @@
                                         {{/if}}
                                     {{/if}}
                                     {{item.name}}
-                                    {{#if item.description}}
-                                        <br/>{{item.description}}
-                                    {{/if}}
                                 {{/if}}
                             </a>
                         </li>
