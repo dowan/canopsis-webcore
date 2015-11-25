@@ -110,7 +110,7 @@ Ember.Application.initializer({
 
                 $.each(events, function(idx, evt) {
                     var rk = get(evt, 'id');
-                    var label = get(labelsByRk, rk);
+                    var label = labelsByRk[rk];
 
                     if (!isNone(label)) {
                         set(context, 'event.' + label, evt);
@@ -210,20 +210,18 @@ Ember.Application.initializer({
              * Make sure template has been compiled.
              */
             makeTemplate: function() {
-                var template = get(this, 'template');
+                var template = undefined;
 
-                if (isNone(template)) {
-                    try {
-                        template = Handlebars.compile(get(this, 'html'));
-                    }
-                    catch(err) {
-                        template = function() {
-                            return '<i>Impossible to render template:</i> ' + err;
-                        };
-                    }
-
-                    set(this, 'template', template);
+                try {
+                    template = Handlebars.compile(get(this, 'html'));
                 }
+                catch(err) {
+                    template = function() {
+                        return '<i>Impossible to render template:</i> ' + err;
+                    };
+                }
+
+                set(this, 'template', template);
             },
 
             /**
