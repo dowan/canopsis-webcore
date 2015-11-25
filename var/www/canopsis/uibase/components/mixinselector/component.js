@@ -46,6 +46,7 @@ Ember.Application.initializer({
                     for (var i = 0, l = content.length; i < l; i++) {
                         if(typeof content[i] === 'string') {
                             content[i] = { name: content[i] };
+
                         }
                     }
                 }
@@ -59,32 +60,13 @@ Ember.Application.initializer({
             classifiedItems: function () {
                 var schemasRegistry = container.lookupFactory('registry:schemas');
 
-                mixinsRegistry.byClass = {};
-
                 for (var i = 0; i < mixinsRegistry.all.length; i++) {
                     var currentMixinName = get(mixinsRegistry.all[i], 'name');
                     var schema = schemasRegistry.getByName(currentMixinName);
                     if(schema) {
                         schema = schema.schema;
-                        if(schema) {
-                            if(get(schema, 'metadata.description')) {
-                                mixinsRegistry.all[i].description = get(schema, 'metadata.description');
-                            }
-                            if(get(schema, 'metadata.icon')) {
-                                mixinsRegistry.all[i].icon = get(schema, 'metadata.icon');
-                            }
-
-                            if(get(schema, 'metadata.categories')) {
-                                for (var j = 0; j < get(schema, 'metadata.categories').length; j++) {
-                                    var category = get(schema, 'metadata.categories')[j];
-
-                                    if(isNone(mixinsRegistry.byClass[category])) {
-                                        mixinsRegistry.byClass[category] = Ember.A();
-                                    }
-
-                                    mixinsRegistry.byClass[category].pushObject(mixinsRegistry.all[i]);
-                                }
-                            }
+                        if(schema && get(schema, 'metadata.description')) {
+                            mixinsRegistry.all[i].description = get(schema, 'metadata.description');
                         }
                     }
                 }
