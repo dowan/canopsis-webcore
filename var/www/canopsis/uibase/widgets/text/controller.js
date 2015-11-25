@@ -125,7 +125,7 @@ Ember.Application.initializer({
             onEvents: function(events, labelsByRk) {
                 var context = get(this, 'context');
 
-                events.forEach(function(evt) {
+                $.each(events, function(idx, evt) {
                     var rk = get(evt, 'id');
                     var label = get(labelsByRk, rk);
 
@@ -144,7 +144,7 @@ Ember.Application.initializer({
             onMetrics: function(metrics) {
                 var context = get(this, 'context');
 
-                metrics.forEach(function(metric) {
+                $.each(metrics, function(idx, metric) {
                     var mid = get(metric, 'meta.data_id').split('/'),
                         points = get(metric, 'points');
 
@@ -204,7 +204,7 @@ Ember.Application.initializer({
             onSeries: function(series) {
                 var context = get(this, 'context');
 
-                series.forEach(function(serie) {
+                $.each(series, function(idx, serie) {
                     var points = get(serie, 'points'),
                         label = get(serie, 'label');
 

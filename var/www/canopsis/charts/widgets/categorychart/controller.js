@@ -121,7 +121,7 @@ Ember.Application.initializer({
             onMetrics: function(metrics) {
                 var chartSeries = get(this, 'chartSeries');
 
-                metrics.forEach(function(metric) {
+                $.each(metrics, function(idx, metric) {
                     var mid = get(metric, 'meta.data_id'),
                         points = get(metric, 'points');
 

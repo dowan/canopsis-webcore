@@ -124,7 +124,7 @@ Ember.Application.initializer({
                     events = get(this, 'events'),
                     series = get(this, 'series');
 
-                metrics.forEach(function(metric) {
+                $.each(metrics, function(idx, metric) {
                     var mid = get(metric, 'meta.data_id').split('/'),
                         points = get(metric, 'points');
 
