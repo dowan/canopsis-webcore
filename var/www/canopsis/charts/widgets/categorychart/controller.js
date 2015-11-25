@@ -111,7 +111,7 @@ Ember.Application.initializer({
             updateChart: function() {
                 var chartSeries = [];
 
-                get(this, 'chartSeries').forEach(function(key, serie) {
+                $.each(get(this, 'chartSeries'), function(key, serie) {
                     chartSeries.push(serie);
                 });
 
@@ -166,7 +166,7 @@ Ember.Application.initializer({
 
                     label += '.' + metricname;
 
-                    set(chartSeries, mid, {
+                    set(chartSeries, label.replace(/\./g, '_'), {
                         id: mid,
                         serie: [label, value]
                     });
@@ -179,7 +179,7 @@ Ember.Application.initializer({
             onSeries: function (series) {
                 var chartSeries = get(this, 'chartSeries');
 
-                series.forEach(function(serie) {
+                $.each(series, function(idx, serie) {
                     var points = get(serie, 'points'),
                         label = get(serie, 'label'),
                         value = 0;
