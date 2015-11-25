@@ -74,15 +74,15 @@ Ember.Application.initializer({
                                 mixinsRegistry.all[i].icon = get(schema, 'metadata.icon');
                             }
 
-                            if(get(schema, 'metadata.classes')) {
-                                for (var j = 0; j < get(schema, 'metadata.classes').length; j++) {
-                                    var classes = get(schema, 'metadata.classes')[j];
+                            if(get(schema, 'metadata.categories')) {
+                                for (var j = 0; j < get(schema, 'metadata.categories').length; j++) {
+                                    var category = get(schema, 'metadata.categories')[j];
 
-                                    if(isNone(mixinsRegistry.byClass[classes])) {
-                                        mixinsRegistry.byClass[classes] = Ember.A();
+                                    if(isNone(mixinsRegistry.byClass[category])) {
+                                        mixinsRegistry.byClass[category] = Ember.A();
                                     }
 
-                                    mixinsRegistry.byClass[classes].pushObject(mixinsRegistry.all[i]);
+                                    mixinsRegistry.byClass[category].pushObject(mixinsRegistry.all[i]);
                                 }
                             }
                         }
