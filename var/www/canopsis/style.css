@@ -815,7 +815,7 @@ table.dataTableConnector {
     z-index: 1039;
 }
 
-.loadtooltip {
+/*.loadtooltip {
     background-color: #333;
     -webkit-background-clip: padding-box;
           background-clip: padding-box;
@@ -829,6 +829,14 @@ table.dataTableConnector {
     padding: 5px;
     bottom: 25px;
     right: 25px;
+}*/
+
+.loadtooltip {
+    color: #000;
+    position: fixed;
+    padding: 5px;
+    top: 8px;
+    right: 8px;
 }
 
 .box-header{
