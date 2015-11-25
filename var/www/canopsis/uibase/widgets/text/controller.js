@@ -90,9 +90,12 @@ Ember.Application.initializer({
                 set(this, 'context.from', from);
                 set(this, 'context.to', to);
 
+                var datafetch = false;
+
                 var query = get(this, 'events');
                 if (!isNone(query) && query.length) {
                     this.fetchEvents(query);
+                    datafetch = true;
                 }
 
                 query = get(this, 'metrics');
@@ -104,11 +107,18 @@ Ember.Application.initializer({
                         /* aggregation interval: the whole timewindow for only one point */
                         to - from
                     );
+                    datafetch = true;
                 }
 
                 query = get(this, 'series');
                 if (!isNone(query) && query.length) {
                     this.fetchSeries(query, from, to);
+                    datafetch = true;
+                }
+
+                /* when no data is requested, just render the template */
+                if (datafetch === false) {
+                    this.renderTemplate();
                 }
             },
 
