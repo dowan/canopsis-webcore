@@ -45,23 +45,6 @@ Ember.Application.initializer({
          * @augments Widget
          */
         var widget = WidgetFactory('text', {
-            init: function() {
-                this._super.apply(this, arguments);
-
-                var template = undefined;
-
-                try {
-                    template = Handlebars.compile(get(this, 'html'));
-                }
-                catch(err) {
-                    template = function() {
-                        return '<i>Impossible to render template:</i> ' + err;
-                    };
-                }
-
-                set(this, 'template', template);
-            },
-
             findItems: function() {
                 var tw = TimeWindowUtils.getFromTo(
                     get(this, 'time_window'),
@@ -222,11 +205,35 @@ Ember.Application.initializer({
             },
 
             /**
+             * @method makeTemplate
+             * @memberof TextWidget
+             * Make sure template has been compiled.
+             */
+            makeTemplate: function() {
+                var template = get(this, 'template');
+
+                if (isNone(template)) {
+                    try {
+                        template = Handlebars.compile(get(this, 'html'));
+                    }
+                    catch(err) {
+                        template = function() {
+                            return '<i>Impossible to render template:</i> ' + err;
+                        };
+                    }
+
+                    set(this, 'template', template);
+                }
+            },
+
+            /**
              * @method renderTemplate
              * @memberof TextWidget
              * Render compiled template property with context property into the rendered property.
              */
             renderTemplate: function() {
+                this.makeTemplate();
+
                 var template = get(this, 'template'),
                     context = get(this, 'context');
 
