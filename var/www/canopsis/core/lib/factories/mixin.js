@@ -44,8 +44,12 @@ Ember.Application.initializer({
 
             var mixin = Ember.Mixin.create(mixindict);
 
+            var registryEntry = Ember.Object.create({
+                name: name,
+                EmberClass: mixin
+            });
 
-            mixinsRegistry.add(mixin, name);
+            mixinsRegistry.all.push(registryEntry);
 
             console.groupEnd();
             console.tags.remove('factory');
