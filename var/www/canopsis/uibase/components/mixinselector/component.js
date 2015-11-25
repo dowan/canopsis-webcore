@@ -18,7 +18,7 @@
  */
 
 Ember.Application.initializer({
-    name: 'component-mixinselector',
+    name:"component-mixinselector",
     after: 'MixinsRegistry',
     initialize: function(container, application) {
         var mixinsRegistry = container.lookupFactory('registry:mixins');
@@ -31,7 +31,6 @@ Ember.Application.initializer({
         var component = Ember.Component.extend({
 
             init: function() {
-
                 this._super.apply(this, arguments);
 
                 if(isNone(get(this, 'content'))) {
@@ -41,12 +40,11 @@ Ember.Application.initializer({
                 set(this, 'selectionPrepared', Ember.A());
 
                 var content = get(this, 'content');
+
                 if(content) {
-                    var schemasRegistry = container.lookupFactory('registry:schemas');
                     for (var i = 0, l = content.length; i < l; i++) {
                         if(typeof content[i] === 'string') {
                             content[i] = { name: content[i] };
-
                         }
                     }
                 }
@@ -57,22 +55,7 @@ Ember.Application.initializer({
             /*
              * Compute a structure with classified item each time the 'items' property changed
              */
-            classifiedItems: function () {
-                var schemasRegistry = container.lookupFactory('registry:schemas');
-
-                for (var i = 0; i < mixinsRegistry.all.length; i++) {
-                    var currentMixinName = get(mixinsRegistry.all[i], 'name');
-                    var schema = schemasRegistry.getByName(currentMixinName);
-                    if(schema) {
-                        schema = schema.schema;
-                        if(schema && get(schema, 'metadata.description')) {
-                            mixinsRegistry.all[i].description = get(schema, 'metadata.description');
-                        }
-                    }
-                }
-                return mixinsRegistry;
-            }.property(),
-
+            classifiedItems: mixinsRegistry,
             selectionUnprepared: Ember.computed.alias('content'),
 
             recomputeSelection: function() {
@@ -95,11 +78,6 @@ Ember.Application.initializer({
                             newResBufferItem = {
                                 name: currentItemName
                             };
-
-                            var model = container.lookupFactory('model:' + Ember.dasherize(currentItemName));
-                            if(model) {
-                                newResBufferItem.description = get(model.proto(), 'metadata.description');
-                            }
                         }
                         resBuffer.pushObject(newResBufferItem);
                     }
@@ -112,13 +90,11 @@ Ember.Application.initializer({
                 selectItem: function() {
                     this.recomputeSelection();
                 },
-
                 unselectItem: function(){
                     this.recomputeSelection();
                 }
             }
         });
-
         application.register('component:component-mixinselector', component);
     }
 });
