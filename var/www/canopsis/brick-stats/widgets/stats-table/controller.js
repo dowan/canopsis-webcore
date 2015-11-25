@@ -56,8 +56,8 @@ Ember.Application.initializer({
             },
 
             updateInterval: function(interval) {
-                var from = get(interval, 'timestamp.$lte'),
-                    to = get(interval, 'timestamp.$gte');
+                var from = get(interval, 'timestamp.$gte'),
+                    to = get(interval, 'timestamp.$lte');
 
                 if(!isNone(from)) {
                     set(this, 'from', from * 1000);
