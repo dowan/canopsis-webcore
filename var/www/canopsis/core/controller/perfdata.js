@@ -19,21 +19,18 @@
 
 Ember.Application.initializer({
     name: 'PerfdataController',
-    after: 'DataUtils',
+    after: ['ApplicationController', 'PojoAdapter', 'DataUtils'],
     initialize: function(container, application) {
-        var dataUtils = container.lookupFactory('utility:data');
+        var dataUtils = container.lookupFactory('utility:data'),
+            pojoAdapter = container.lookup('adapter:pojo'),
+            applicationController = container.lookup('controller:application');
 
-        var get = Ember.get,
-            set = Ember.set;
+        var get = Ember.get;
 
         var controller = Ember.ObjectController.extend({
-            needs: ['application'],
-
             fetch: function(metric_id, tstart, tend) {
-                var applicationController = get(this, 'controllers.application');
                 applicationController.addConcurrentLoading('perfdata');
 
-                var pojoAdapter = dataUtils.getEmberApplicationSingleton().__container__.lookup('adapter:pojo');
                 var requestOptions = {
                     'metric_id': metric_id,
                     'timewindow': JSON.stringify({
@@ -63,11 +60,8 @@ Ember.Application.initializer({
             },
 
             aggregate: function(metric_id, tstart, tend, method, interval) {
-                var applicationController = get(this, 'controllers.application');
                 applicationController.addConcurrentLoading('perfdata');
 
-                //FIXME refactor this to stop using getCanopsis
-                var pojoAdapter = dataUtils.getEmberApplicationSingleton().__container__.lookup('adapter:pojo');
                 var requestOptions = {
                     'metric_id': metric_id,
                     'timewindow': JSON.stringify({
@@ -78,7 +72,7 @@ Ember.Application.initializer({
                     'timeserie': JSON.stringify({
                         'aggregation': method,
                         'period': {
-                            'second': interval
+                            'second': interval / 1000
                         }
                     })
                 };

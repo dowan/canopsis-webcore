@@ -32,7 +32,7 @@ Ember.Application.initializer({
         var mixin = Mixin('metaSerializer', {
             extractMeta: function(store, type, payload) {
                 console.log("extractMeta", store, type, payload);
-                if (payload.meta === undefined) {
+                if (payload && payload.meta === undefined) {
                     payload.meta = {};
                 }
 
@@ -42,6 +42,10 @@ Ember.Application.initializer({
 
                 if (payload && payload.messages) {
                     payload.meta.totalmessages = payload.messages;
+                }
+
+                if (payload && payload.success !== undefined) {
+                    payload.meta.success = payload.success;
                 }
 
                 delete payload.total;

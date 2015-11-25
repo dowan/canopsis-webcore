@@ -19,9 +19,10 @@
 
 Ember.Application.initializer({
     name: 'PbehaviorAdapter',
-    after: 'VeventAdapter',
+    after: ['VeventAdapter', 'ModelsolveUtils'],
     initialize: function(container, application) {
         var VEventAdapter = container.lookupFactory('adapter:vevent');
+        var modelsolve = container.lookupFactory('utility:modelsolve');
 
         var get = Ember.get,
             set = Ember.set,
@@ -40,6 +41,18 @@ Ember.Application.initializer({
                 }
 
                 return result;
+            },
+
+            findCalendarPBehavior: function(type, query){
+                var url = "/pbehavior/calendar";
+                console.log('display query findAll', query);
+                //return this.ajax(url, 'GET', query);
+
+                return new Ember.RSVP.Promise(function(resolve, reject) {
+                    var funcres = modelsolve.gen_resolve(resolve);
+                    var funcrej = modelsolve.gen_reject(reject);
+                    $.get(url, query).then(funcres, funcrej);
+                });
             }
 
         });

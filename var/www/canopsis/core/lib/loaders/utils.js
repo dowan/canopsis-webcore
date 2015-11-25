@@ -30,7 +30,8 @@ var utilsFiles = [
     'widgetSelectors',
     'dom',
     'event',
-    'drag'
+    'drag',
+    'timewindow'
 ];
 
 var deps = [];

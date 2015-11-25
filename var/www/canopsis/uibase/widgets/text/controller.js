@@ -17,229 +17,228 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([
-    'canopsis/canopsisConfiguration'
-], function(canopsisConfiguration) {
+Ember.Application.initializer({
+    name: 'TextWidget',
+    after: [
+        'WidgetFactory',
+        'TimeWindowUtils',
+        'EventConsumer',
+        'MetricConsumer',
+        'HumanReadableHelper'
+    ],
+    initialize: function(container, application) {
+        var WidgetFactory = container.lookupFactory('factory:widget'),
+            EventConsumer = container.lookupFactory('mixin:eventconsumer'),
+            MetricConsumer = container.lookupFactory('mixin:metricconsumer'),
+            TimeWindowUtils = container.lookupFactory('utility:timewindow');
 
-    Ember.Application.initializer({
-        name: 'TextWidget',
-        after: ['WidgetFactory', 'ValuesUtils'],
-        initialize: function(container, application) {
-            var WidgetFactory = container.lookupFactory('factory:widget');
-            var ValuesUtils = container.lookupFactory('utility:values');
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
-            var get = Ember.get,
-                set = Ember.set,
-                isNone = Ember.isNone;
+        var widgetOptions = {
+            mixins: [EventConsumer, MetricConsumer]
+        };
 
-            var widget = WidgetFactory('text', {
+        /**
+         * @class TextWidget
+         * @augments Widget
+         */
+        var widget = WidgetFactory('text', {
+            findItems: function() {
+                var tw = TimeWindowUtils.getFromTo(
+                    get(this, 'time_window'),
+                    get(this, 'time_window_offset')
+                );
+                var from = tw[0],
+                    to = tw[1];
 
-                needs: ['metric'],
+                /* live reporting support */
+                var liveFrom = get(this, 'from'),
+                    liveTo = get(this, 'to');
 
-                onSeriesFetch: function (caller, series) {
-
-                    /**
-                    Transform series information for widget text display facilities
-                    series are fetched from metric manager and are made of a list of metrics as
-                    [{meta: serieRecord, values: [[timestamp_0, value_0, [...]]]}, [...]]
-                    **/
-                    var length = series.length;
-
-                    for(var i=0; i<length; i++) {
-
-                        var values = get(series[i], 'values'),
-                            serieName = get(series[i].meta, 'crecord_name').replace(/ /g,'_');
-
-                        var displayValue = __('No data available'),
-                            valueLength = values.length;
-
-                        //choosing the value for the last point when any
-                        if (valueLength) {
-                            displayValue = values[valueLength - 1][1];
-                        }
-
-                        //set values to reachable template place for user template combination
-                        set(caller, 'templateContext.serie.' + serieName, displayValue);
-                    }
-
-                    caller.setReady('serie');
-                },
-
-                init: function() {
-                    this._super.apply(this, arguments);
-                    set(this, 'widgetDataStore', DS.Store.create({
-                        container: get(this, "container")
-                    }));
-                    this.registerHelpers();
-                },
-
-                findItems: function() {
-
-                    //Contextual information for template compilation from user creation.
-                    Ember.setProperties(this, {
-                        'templateContext': Ember.Object.create({
-                            serie: {},
-                            event: {}
-                        }),
-                        'ready': {}
-                    });
-
-                    var now = new Date().getTime();
-                    var to = now;
-                    //fetch time window of 10 minutes hoping there are metrics since.
-                    var from = now - 600000;
-
-                    //When specific from / to dates specified into the controller,
-                    //the widget will use them. This helps manage live reporting.
-                    if (!isNone(get(this, 'from'))) {
-                        from = get(this, 'from');
-                    }
-                    if (!isNone(get(this, 'to'))) {
-                        to = get(this, 'to');
-                    }
-
-                    //This will trigger api queries for events and series in lasy philosophy.
-                    //If no contextual information set by user, no query is done.
-                    this.fetchEvents();
-
-                    var seriesMeta = get(this, 'series');
-                    if (!isNone(seriesMeta)) {
-                        get(this, 'controllers.metric').fetchSeriesFromSchemaValues(
-                            this, get(this, 'widgetDataStore'), from, to, seriesMeta, this.onSeriesFetch
-                        );
-                    } else {
-                        this.setReady('serie');
-                    }
-
-                },
-
-                fetchEvents: function (){
-
-                    var controller = this,
-                        events_information = get(this, 'events'),
-                        rks = [];
-
-                    if (!isNone(events_information)) {
-                        var events_information_length = events_information.length;
-
-                        for(var i=0; i<events_information_length; i++) {
-                            rks.push(events_information[i].rk);
-                        }
-                    }
-
-                    if (rks.length) {
-                        //Does the widget have to manage event information
-                        var event_query = get(this, "widgetDataStore").findQuery(
-                            'event',
-                            {
-                                filter: JSON.stringify({_id: {'$in': rks}}),
-                                limit: 50,
-                            }
-                        ).then(function (data) {
-
-                            console.log('Fetched events', data.content);
-
-                            //Turn event information and labels to dictionnary for easy retreiving below
-                            var labels_for_rk = {},
-                                i;
-
-                            for (i=0; i<events_information_length; i++) {
-
-                                labels_for_rk[events_information[i].rk] = events_information[i].label;
-
-                            }
-
-                            //mapping between template context data and fetched events information from their labels
-                            var length = data.content.length;
-                            for (i=0; i<length; i++) {
-
-                                var rk = get(data.content[i], 'id'),
-                                    label = labels_for_rk[rk].replace(/ /g,'_');
-                                    if (!isNone(label)) {
-                                        var eventjson = data.content[i].toJson();
-                                        eventjson.id = get(data.content[i], 'id');
-                                        set(controller, 'templateContext.event.' + label, eventjson);
-                                    } else {
-                                        console.warn('Event label not set, no render possible for rk ' + rk);
-                                    }
-
-                            }
-
-                            controller.setReady('event');
-
-                        });
-                    } else {
-                        controller.setReady('event');
-                    }
-                },
-
-                setReady: function (element) {
-                    set(this, 'ready.' + element, true);
-                    if (get(this, 'ready.serie') && get(this, 'ready.event')) {
-                        set(this, 'ready', {});
-                        this.renderTemplate();
-                    }
-                    console.log('widget ready', get(this, 'ready'), get(this, 'templateContext') );
-                },
-
-                registerHelpers: function (){
-                    var controller = this;
-                    var invalidNumber = __('Not a valid number');
-
-                    var helpers = {
-                        hr: function (value) {
-                            console.log('found value for human readable : ', value);
-                            var unit = get(value, 'hash.unit');
-                            value = get(value, 'hash.value');
-                            //only second option unit is available for now
-                            //otherwise, values are considered as number base 10
-                            if (unit !== 's') {
-                                unit = '';
-                            }
-
-                            if(isNaN(value)) {
-                                value = parseFloat(value);
-                                if(isNaN(value)) {
-                                    return invalidNumber;
-                                }
-                            }
-                            value = ValuesUtils.humanize(value, unit);
-                            return value;
-                        },
-                        action: function () {
-                            return 'action from helper';
-                        },
-                    };
-
-                    for (var helper in helpers) {
-                        Handlebars.registerHelper(helper, helpers[helper]);
-                    }
-                },
-
-                renderTemplate: function () {
-
-                    var template = get(this, 'html'),
-                        html = 'Unable to render template.';
-
-                    //Avoid give undefined template to the handlebars compilator.
-                    if (isNone(template)) {
-                        template = '';
-                    }
-
-                    try {
-                        html = Handlebars.compile(template)(get(this, 'templateContext'));
-                    } catch (err) {
-                        html = '<i>An error occured while compiling the template with the record.' +
-                        ' please check if the template is correct</i>';
-                        if (canopsisConfiguration.DEBUG) {
-                            html += '<p>' + err + '</p>';
-                        }
-                    }
-                    set(this, 'htmlRender', new Ember.Handlebars.SafeString(html));
+                if (!isNone(liveFrom)) {
+                    from = liveFrom;
                 }
-            });
 
-            application.register('widget:text', widget);
-        }
-    });
+                if (!isNone(liveTo)) {
+                    to = liveTo;
+                }
+
+                set(this, 'context', {
+                    event: {},
+                    serie: {},
+                    metric: {}
+                });
+                set(this, 'context.from', from);
+                set(this, 'context.to', to);
+
+                var datafetch = false;
+
+                var query = get(this, 'events');
+                if (!isNone(query) && query.length) {
+                    this.fetchEvents(query);
+                    datafetch = true;
+                }
+
+                query = get(this, 'metrics');
+                if (!isNone(query) && query.length) {
+                    this.aggregateMetrics(
+                        query,
+                        from, to,
+                        'last',
+                        /* aggregation interval: the whole timewindow for only one point */
+                        to - from
+                    );
+                    datafetch = true;
+                }
+
+                query = get(this, 'series');
+                if (!isNone(query) && query.length) {
+                    this.fetchSeries(query, from, to);
+                    datafetch = true;
+                }
+
+                /* when no data is requested, just render the template */
+                if (datafetch === false) {
+                    this.renderTemplate();
+                }
+            },
+
+            onEvents: function(events, labelsByRk) {
+                var context = get(this, 'context');
+
+                $.each(events, function(idx, evt) {
+                    var rk = get(evt, 'id');
+                    var label = labelsByRk[rk];
+
+                    if (!isNone(label)) {
+                        set(context, 'event.' + label, evt);
+                    }
+                    else {
+                        console.warn('No label found for event, will not be rendered:', rk);
+                    }
+                });
+
+                set(this, 'context', context);
+                this.renderTemplate();
+            },
+
+            onMetrics: function(metrics) {
+                var context = get(this, 'context');
+
+                $.each(metrics, function(idx, metric) {
+                    var mid = get(metric, 'meta.data_id').split('/'),
+                        points = get(metric, 'points');
+
+                    /* initialize metric value for template context */
+                    var npoints = points.length,
+                        value = __('No data available');
+
+                    if (npoints) {
+                        value = points[npoints - 1][1];
+                    }
+
+                    /* compute template context path of metric */
+                    var component = undefined,
+                        resource = undefined,
+                        metricname = undefined;
+
+                    /* "/metric/<connector>/<connector_name>/<component>/[<resource>/]<name>"
+                     * once splitted:
+                     *  - ""
+                     * - "metric"
+                     * - "<connector>"
+                     * - "<connector_name>"
+                     * - "<component>"
+                     * - "<resource>" and/or "<name>"
+                     */
+                    if (mid.length === 6) {
+                        component = mid[4];
+                        metricname = mid[5];
+                    }
+                    else {
+                        component = mid[4];
+                        resource = mid[5];
+                        metricname = mid[6];
+                    }
+
+                    var varname = 'metric.' + component;
+
+                    if (isNone(get(context, varname))) {
+                        set(context, varname, {});
+                    }
+
+                    if (!isNone(resource)) {
+                        varname += '.' + resource;
+
+                        if (isNone(get(context, varname))) {
+                            set(context, varname, {});
+                        }
+                    }
+
+                    set(context, varname + '.' + metricname, value);
+                });
+
+                set(this, 'context', context);
+                this.renderTemplate();
+            },
+
+            onSeries: function(series) {
+                var context = get(this, 'context');
+
+                $.each(series, function(idx, serie) {
+                    var points = get(serie, 'points'),
+                        label = get(serie, 'label');
+
+                    var value = __('No data available');
+
+                    if (points.length) {
+                        value = points[points.length - 1][1];
+                    }
+
+                    set(context, 'serie.' + label, value);
+                });
+
+                set(this, 'context', context);
+                this.renderTemplate();
+            },
+
+            /**
+             * @method makeTemplate
+             * @memberof TextWidget
+             * Make sure template has been compiled.
+             */
+            makeTemplate: function() {
+                var template = undefined;
+
+                try {
+                    template = Handlebars.compile(get(this, 'html'));
+                }
+                catch(err) {
+                    template = function() {
+                        return '<i>Impossible to render template:</i> ' + err;
+                    };
+                }
+
+                set(this, 'template', template);
+            },
+
+            /**
+             * @method renderTemplate
+             * @memberof TextWidget
+             * Render compiled template property with context property into the rendered property.
+             */
+            renderTemplate: function() {
+                this.makeTemplate();
+
+                var template = get(this, 'template'),
+                    context = get(this, 'context');
+
+                set(this, 'rendered', new Ember.Handlebars.SafeString(template(context)));
+            }
+        }, widgetOptions);
+
+        application.register('widget:text', widget);
+    }
 });

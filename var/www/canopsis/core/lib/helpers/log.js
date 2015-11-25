@@ -28,8 +28,6 @@
      * @author Gwenael Pluchon <info@gwenp.fr>
      */
     Ember.Handlebars.registerBoundHelper('clog', function(message, options) {
-        void(options);
-
         console.tags.add("helper");
 
         var typeKey = get(this, 'model.type.typeKey');
@@ -38,7 +36,13 @@
             console.tags.add(typeKey);
         }
 
-        console.log(message);
+        var level = get(options, 'hash.level');
+
+        if (isNone(level)) {
+            level = 'log'
+        }
+
+        console[level](message);
 
         console.tags.remove("helper");
 

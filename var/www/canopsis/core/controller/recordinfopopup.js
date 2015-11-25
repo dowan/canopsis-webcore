@@ -40,7 +40,7 @@ Ember.Application.initializer({
                     var html;
 
                     try {
-                        html = Handlebars.compile(template)(crecord[0]._data);
+                        html = Handlebars.compile(template)(crecord[0].toJson());
                     } catch (err) {
                         html = '<i>An error occured while compiling the template with the record. please if check the template is correct</i>';
                     }

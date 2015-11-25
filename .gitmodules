@@ -1,0 +1,3 @@
+[submodule "var/www/canopsis/feature-widgetCalendar"]
+	path = var/www/canopsis/feature-widgetCalendar
+	url = git@git.canopsis.net:fdemeulenaere/feature-widgetCalendar.git

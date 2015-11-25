@@ -23,6 +23,7 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var Abstractclassregistry = container.lookupFactory('registry:abstractclass');
 
+
         var inflexions = [
             ['nagios' , 'nagios'],
             ['tcp2canopsis' , 'tcp2canopsis'],
@@ -32,6 +33,7 @@ Ember.Application.initializer({
             ['calendardata','calendardata'],
             ['eventcategories', 'eventcategories']
         ];
+
 
         /**
          * Inflections Registry

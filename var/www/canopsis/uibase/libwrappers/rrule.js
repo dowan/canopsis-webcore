@@ -24,13 +24,10 @@ $.browser = {msie: isIE};
 define([
     'app/lib/factories/wrapper',
     'underscore',
+    'rrule',
     'nlp'
 ], function(Wrapper, underscore) {
 
 
-    require(['rrule'], function (rrule) {
-        console.log('rrule wrapper');
-    });
-
-//    return Wrapper("rrule", undefined, arguments, "1.0.2");
+    return Wrapper("rrule", undefined, arguments, "1.0.2");
 });
