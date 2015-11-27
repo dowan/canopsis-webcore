@@ -20,7 +20,10 @@
 require.config({
     waitSeconds: 40,
     baseUrl: '/static/',
-    paths: {},
+    paths: {
+        'ember-lib': 'canopsis/core/lib/externals/min/ember.debug',
+        'ember-data-lib': 'canopsis/core/lib/externals/min/ember-data'
+    },
     shim: {}
 
 });
