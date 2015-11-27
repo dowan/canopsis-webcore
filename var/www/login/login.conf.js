@@ -21,11 +21,20 @@ require.config({
     waitSeconds: 40,
     baseUrl: '/static/',
     paths: {
+        'jquery': 'canopsis/core/lib/wrappers/jquery',
+        'handlebars': 'canopsis/core/lib/externals/handlebars/handlebars',
+        'ember-template-compiler': 'canopsis/core/lib/externals/min/ember-template-compiler',
         'ember-lib': 'canopsis/core/lib/externals/min/ember.debug',
         'ember-data-lib': 'canopsis/core/lib/externals/min/ember-data'
     },
-    shim: {}
-
+    shim: {
+        'ember-lib': {
+            deps: ['jquery', 'ember-template-compiler', 'handlebars']
+        },
+        'ember-data-lib': {
+            deps: ['ember-lib']
+        }
+    }
 });
 
 define([
