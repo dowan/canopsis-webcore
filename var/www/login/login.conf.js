@@ -21,13 +21,18 @@ require.config({
     waitSeconds: 40,
     baseUrl: '/static/',
     paths: {
+        'app': 'canopsis/core',
         'jquery': 'canopsis/core/lib/wrappers/jquery',
+        'bootstrap': 'canopsis/uibase/lib/externals/bootstrap/dist/js/bootstrap.min',
         'handlebars': 'canopsis/core/lib/externals/handlebars/handlebars',
         'ember-template-compiler': 'canopsis/core/lib/externals/min/ember-template-compiler',
         'ember-lib': 'canopsis/core/lib/externals/min/ember.debug',
         'ember-data-lib': 'canopsis/core/lib/externals/min/ember-data'
     },
     shim: {
+        'bootstrap': {
+            deps: ['jquery']
+        },
         'ember-lib': {
             deps: ['jquery', 'ember-template-compiler', 'handlebars']
         },
@@ -39,6 +44,7 @@ require.config({
 
 define([
     'canopsis/canopsisConfiguration',
+    'bootstrap'
 ], function(canopsisConfiguration) {
     console.log(canopsisConfiguration);
     //Set page title
