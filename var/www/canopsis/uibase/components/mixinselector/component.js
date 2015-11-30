@@ -114,7 +114,7 @@ Ember.Application.initializer({
                                 name: currentItemName
                             };
 
-                            var model = container.lookupFactory('model:' + Ember.dasherize(currentItemName));
+                            var model = container.lookupFactory('model:' + Ember.String.dasherize(currentItemName));
                             if(model) {
                                 newResBufferItem.description = get(model.proto(), 'metadata.description');
                             }
