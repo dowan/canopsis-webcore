@@ -87,7 +87,7 @@ Ember.Application.initializer({
                     query._filter = query.filter;
                 }
 
-                if(!query.limit) {
+                if(isNone(query.limit)) {
                     query.limit = 5;
                 }
 
