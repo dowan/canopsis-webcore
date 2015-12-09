@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
  *
  * This file is part of Canopsis.
@@ -17,45 +17,12 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-var utilsFiles = [
-    'forms',
-    'routes',
-    'data',
-    'notification',
-    'i18n',
-    'hash',
-    'dates',
-    'indexes',
-    'filterObject',
-    'widgetSelectors',
-    'dom',
-    'event',
-    'drag',
-    'timewindow'
+var widgets = [
+    {
+        name: 'statstable',
+        url: 'canopsis/brick-stats/widgets/stats-table/controller',
+        template: 'canopsis/brick-stats/widgets/stats-table/template.hbs'
+    }
 ];
 
-var deps = [];
-
-for (var i = 0, l = utilsFiles.length; i < l; i++) {
-    deps.push('app/lib/utils/' + utilsFiles[i]);
-}
-
-define(deps, function() {
-    var utils = {};
-
-    console.tags.add('loader');
-
-    console.group("Begin load utils", arguments);
-
-    for (var i = 0, l = arguments.length; i < l; i++) {
-        var utilName = utilsFiles[i];
-        console.log("load util", utilName);
-        utils[utilName] = arguments[i];
-    }
-
-    console.groupEnd();
-
-    console.tags.remove('loader');
-
-    return utils;
-});
+loader.loadWithTemplates(widgets);

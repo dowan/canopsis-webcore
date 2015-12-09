@@ -19,84 +19,31 @@
 
 Ember.Application.initializer({
     name: 'CategorychartWidget',
-    after: ['WidgetFactory'],
-
+    after: ['WidgetFactory', 'MetricConsumer', 'TimeWindowUtils'],
     initialize: function(container, application) {
-
-        var WidgetFactory = container.lookupFactory('factory:widget');
-
+        var WidgetFactory = container.lookupFactory('factory:widget'),
+            MetricConsumer = container.lookupFactory('mixin:metricconsumer'),
+            TimeWindowUtils = container.lookupFactory('utility:timewindow');
 
         var get = Ember.get,
             set = Ember.set,
             isNone = Ember.isNone;
 
-        var widgetOptions = {};
+        var widgetOptions = {
+            mixins: [MetricConsumer]
+        };
 
-        var CategoryChartViewMixin = Ember.Mixin.create({});
-
+        /**
+         * @class CategoryChartWidget
+         * @augments Widget
+         */
         var Widget = WidgetFactory('categorychart', {
-
-            needs: ['metric'],
-
-            viewMixins: [
-                CategoryChartViewMixin
-            ],
-
-            init: function () {
-                this._super();
-                this.loadConfiguration();
-                this.initSeries();
+            init: function() {
+                this._super.apply(this, arguments);
             },
 
-            initSeries: function () {
-                Ember.setProperties(this, {
-                    'seriesReady': false,
-                    'metricsReady': false,
-                    'tmpSeries': []
-                });
-            },
-
-            findItems : function () {
-
-                /**
-                Serie and metrics data fetch and chart series formating are triggered here
-                The dataSerie array is there reset and updated to rerender the chart.
-                **/
-                this.initSeries();
-
-                //data interval selection
-                var now = new Date().getTime();
-                //fetch time window of 10 minutes hoping there are metrics since.
-                var from = now - 600000;
-                var to = now;
-
-                var store = get(this, 'widgetDataStore');
-
-                var metricsMeta = get(this, 'metrics');
-                console.log('metricsMeta', metricsMeta);
-                if (!isNone(metricsMeta)) {
-                    get(this, 'controllers.metric').fetchMetricsFromIds(
-                        this, from, to, metricsMeta, this.onMetricFetch
-                    );
-                }
-
-
-                var seriesMeta = get(this, 'series');
-                console.log('seriesMeta', seriesMeta);
-                if (!isNone(seriesMeta)) {
-                    get(this, 'controllers.metric').fetchSeriesFromSchemaValues(
-                        this, store, from, to, seriesMeta, this.onSeriesFetch
-                    );
-                }
-            },
-
-            loadConfiguration: function () {
-                /**
-                Get options from chart configuration to send them to the chart display component
-                **/
-
-                //option list to fetch
-                var optionProperties = [
+            findItems: function() {
+                var props = [
                     'display',
                     'allow_user_display',
                     'use_max_value',
@@ -110,108 +57,146 @@ Ember.Application.initializer({
                     'human_readable',
                 ];
 
-                var options = {};
+                var options = {},
+                    me = this;
 
-                for(var i=0; i<optionProperties.length; i++) {
-                    options[optionProperties[i]] = get(this, optionProperties[i]);
-                }
+                props.forEach(function(prop) {
+                    set(options, prop, get(me, prop));
+                });
 
-                //set chart display component with option values list
-                console.log('category chart options', options);
                 set(this, 'options', options);
-            },
+                set(this, 'chartSeries', {});
 
-            onMetricFetch: function (chartController, pargs, from, to) {
+                var tw = TimeWindowUtils.getFromTo(
+                    get(this, 'time_window'),
+                    get(this, 'time_window_offset')
+                );
+                var from = tw[0],
+                    to = tw[1];
 
-                var length = pargs.length,
-                    chartSeries = [];
+                /* live reporting support */
+                var liveFrom = get(this, 'from'),
+                    liveTo = get(this, 'to');
 
-                for(var i=0; i<length; i++) {
-
-                    var metric = pargs[i].data[0];
-                    var serieId = metric.meta.data_id,
-                        pointsLength = metric.points.length,
-                        serieValue = 0;
-
-                    if (pointsLength) {
-                        serieValue = metric.points[pointsLength - 1][1];
-                    }
-
-                    var serieSplit = serieId.split('/');
-                    var serieName = serieSplit[serieSplit.length - 1];
-
-                    chartSeries.push({
-                        id: serieId,
-                        serie: [serieName, serieValue]
-                    });
-
+                if (!isNone(liveFrom)) {
+                    from = liveFrom;
                 }
 
-                chartController.update('metrics', chartSeries);
+                if (!isNone(liveTo)) {
+                    to = liveTo;
+                }
+
+                var query = get(this, 'metrics');
+                if (!isNone(query) && query.length) {
+                    this.aggregateMetrics(
+                        query,
+                        from, to,
+                        'last',
+                        /* aggregation interval: the whole timewindow for only one point */
+                        to - from
+                    );
+                }
+
+                query = get(this, 'series');
+                if (!isNone(query) && query.length) {
+                    this.fetchSeries(query, from, to);
+                }
             },
 
-            onSeriesFetch: function (chartController, series) {
-                /**
-                Transform series information for widget text display facilities
-                series are fetched from metric manager and are made of a list of metrics as
-                [{meta: serieRecord, values: [[timestamp_0, value_0, [...]]]}, [...]]
-                **/
+            /**
+             * @method updateChart
+             * @memberof CategoryChartWidget
+             * Update inner chart component series.
+             */
+            updateChart: function() {
+                var chartSeries = [];
 
-                var length = series.length,
-                    chartSeries = [];
+                $.each(get(this, 'chartSeries'), function(key, serie) {
+                    chartSeries.push(serie);
+                });
 
-                for(var i=0; i<length; i++) {
+                set(this, 'chartComponent.series', chartSeries);
+            },
 
-                    var values = get(series[i], 'values'),
-                        serieName = get(series[i].meta, 'crecord_name').replace(/ /g,'_'),
+            onMetrics: function(metrics) {
+                var chartSeries = get(this, 'chartSeries');
+
+                $.each(metrics, function(idx, metric) {
+                    var mid = get(metric, 'meta.data_id'),
+                        points = get(metric, 'points');
+
+                    /* initialize metric value */
+                    var npoints = points.length,
                         value = 0;
 
-                    var valueLength = values.length;
-
-                    //choosing the value for the last point when any
-                    if (valueLength) {
-                        value = values[valueLength - 1][1];
-                    } else {
-                        serieName += ' ' + __('No data available');
+                    if (npoints) {
+                        value = points[npoints - 1][1];
                     }
 
-                    var metrics = series[i].meta.metrics,
-                        contextId = serieName;
-                    if (metrics.length) {
-                        contextId = series[i].meta.metrics[0];
+                    /* compute metric name */
+                    var component = undefined,
+                        resource = undefined,
+                        metricname = undefined,
+                        midsplit = mid.split('/');
+
+                    /* "/metric/<connector>/<connector_name>/<component>/[<resource>/]<name>"
+                     * once splitted:
+                     *  - ""
+                     * - "metric"
+                     * - "<connector>"
+                     * - "<connector_name>"
+                     * - "<component>"
+                     * - "<resource>" and/or "<name>"
+                     */
+                    if (midsplit.length === 6) {
+                        component = midsplit[4];
+                        metricname = midsplit[5];
+                    }
+                    else {
+                        component = midsplit[4];
+                        resource = midsplit[5];
+                        metricname = midsplit[6];
                     }
 
-                    chartSeries.push({
-                        id: contextId,
-                        serie: [serieName, value]
+                    var label = component;
+
+                    if (!isNone(resource)) {
+                        label += '.' + resource;
+                    }
+
+                    label += '.' + metricname;
+
+                    set(chartSeries, label.replace(/\./g, '_'), {
+                        id: mid,
+                        serie: [label, value]
                     });
-                }
+                });
 
-                chartController.update('series', chartSeries);
+                set(this, 'chartSeries', chartSeries);
+                this.updateChart();
             },
 
-            update: function (type, series) {
-                /**
-                when all series ready, tell the chart to display
-                and reset temp statuses until next widget refresh
-                **/
-                //set metric type ready
-                set(this, type + 'Ready', true);
+            onSeries: function (series) {
+                var chartSeries = get(this, 'chartSeries');
 
-                //update temp series until all sources are ready
-                var chartSeries = get(this, 'tmpSeries');
+                $.each(series, function(idx, serie) {
+                    var points = get(serie, 'points'),
+                        label = get(serie, 'label'),
+                        value = 0;
 
-                chartSeries = chartSeries.concat(series);
+                    if (points.length) {
+                        value = points[points.length - 1][1];
+                    }
 
-                set(this, 'tmpSeries', chartSeries);
+                    set(chartSeries, label, {
+                        id: label,
+                        serie: [label, value]
+                    });
+                });
 
-                if(get(this, 'seriesReady') && get(this, 'metricsReady')) {
-                    var chart = get(this, 'chartComponent');
-                    set(chart, 'series', chartSeries);
-                }
+                set(this, 'chartSeries', chartSeries);
+                this.updateChart();
             }
-
-
         }, widgetOptions);
 
         application.register('widget:categorychart', Widget);
