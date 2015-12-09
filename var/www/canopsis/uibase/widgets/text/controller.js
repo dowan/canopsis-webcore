@@ -17,6 +17,8 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* TODO: recompute template when widget is saved */
+
 Ember.Application.initializer({
     name: 'TextWidget',
     after: [
