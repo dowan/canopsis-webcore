@@ -428,8 +428,7 @@ Ember.Application.initializer({
             },
 
             fetchStylizedMetrics: function(from, to, replace) {
-                window.$from = from;
-                window.$
+
                 var store = get(this, 'widgetDataStore'),
                     stylizedmetrics = get(this, 'config.metrics'),
                     series = [],
@@ -439,12 +438,15 @@ Ember.Application.initializer({
 
                 var contextMetric = ['type', 'connector','connector_name', 'component','resource', 'metric'],
                     namedMetrics = [],
-                    seriesWithMeta = [],
-                    i,
                     j,
                     tmpl;
-                //$.extend(seriesWithMeta, [], stylizedmetrics);
-                //var length = seriesWithMeta.length;
+
+                /**
+                 * Compile template for metric labels with the context given above (contextMetric)
+                 * @method tmpl
+                 * @param {object} metric Related metric to template with
+                 * @return {array} label
+                 */
                 tmpl = function(metric) {
                     console.log('metric tmpl', metric);
                     //debugger;
@@ -474,20 +476,9 @@ Ember.Application.initializer({
                         };
                     }
 
-                    var mavariable = namedMetrics.pushObject(serie);
-                    return mavariable;
+                    var label = namedMetrics.pushObject(serie);
+                    return label;
                 };
-
-                //tmpl = [namedMetrics];
-
-                /*try {
-                    tmpl = Handlebars.compile(get(this, 'config.metric_template'));
-                }
-                catch(e) {
-                    tmpl = function(context) {
-                        return get(context, 'name');
-                    };
-                }*/
 
                 var fetchDone = function(curveIds) {
                     curveIds = JSON.stringify(curveIds);
