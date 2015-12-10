@@ -739,7 +739,7 @@ Ember.Application.initializer({
 
                 set(this, 'dataSeries', series);
             }
-        }, widgetOptions);
+        });
 
         application.register('widget:timegraph', widget);
     }
