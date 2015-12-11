@@ -34,7 +34,7 @@ Ember.Application.initializer({
         var FlotChartViewMixin = Ember.Mixin.create({
             didInsertElement: function() {
                 var ctrl = get(this, 'controller');
-
+                alert('coco');
                 console.group('timegraph init');
 
                 var updateGrid = function(evt, ranges) {
@@ -72,7 +72,8 @@ Ember.Application.initializer({
                         component.send('renderChart');
                     });
                 }
-
+                this.on('willDestroyElement',this, this.willDestroyElement);
+                this.on('didInsertElement',this, this.didInsertElement);
                 console.groupEnd();
 
                 this._super.apply(this, arguments);
@@ -87,6 +88,8 @@ Ember.Application.initializer({
                     timecontainer.unbind('plotselected');
                     graphcontainer.unbind('toggleserie');
                 }
+                this.off('willDestroyElement',this, this.willDestroyElement);
+                this.off('didInsertElement',this, this.didInsertElement);
             },
 
             setDefaultChartOptions: function() {
@@ -306,6 +309,8 @@ Ember.Application.initializer({
                 set(this, 'chartSeries', Ember.Object.create({}));
                 set(this, 'dataSeries', Ember.A());
 
+                set(this, 'initializer', false);
+
                 this._super.apply(this, arguments);
             },
 
@@ -358,6 +363,12 @@ Ember.Application.initializer({
                 console.group('Load stylized metrics:');
                 this.fetchStylizedMetrics(from, to, replace);
                 console.groupEnd();
+
+                if(get(this, 'initializer')) {
+                    me.trigger('willDestroyElement');
+                }
+                set(this, 'initializer', true);
+                me.trigger('didInsertElement');
             },
 
             updateAxisLimits: function(from, to) {
