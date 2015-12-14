@@ -116,6 +116,8 @@ Ember.Application.initializer({
             didInsertElement: function() {
                 var component = this;
 
+                var valuePath = get(this, 'valuePath') || 'attr.value';
+
                 get(this, 'store').findQuery(get(this, 'schemaType'), {
                     limit: 10000
                 }).then(function(result) {
@@ -124,9 +126,9 @@ Ember.Application.initializer({
 
                     //insert the hook to manage selection change
                     Ember.run.schedule('afterRender', function bindEvents(){
-                        this.$('select').on('change', function manageSelectChange() {
+                        component.$('select').on('change', function manageSelectChange() {
                             console.log('select value', this.value);
-                            set(component, 'attr.value', this.value);
+                            set(component, valuePath, this.value);
                         });
                     });
 

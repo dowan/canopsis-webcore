@@ -73,6 +73,10 @@
                         var text = points[i + 1];
                         var c = plot.p2c(point);
 
+                        if(text === null || text == undefined) {
+                            text = 'no data';
+                        }
+
                         if(typeof text !== 'string') {
                             text = text.toString();
                         }

@@ -39,6 +39,7 @@ define([
     'canopsis/canopsis-backend-ui-connector/adapters/pojo',
     'canopsis/canopsis-backend-ui-connector/adapters/schema',
     'canopsis/canopsis-backend-ui-connector/adapters/userview',
+    'canopsis/canopsis-backend-ui-connector/adapters/userviewsimplemodel',
     'canopsis/canopsis-backend-ui-connector/adapters/trap',
     'canopsis/canopsis-backend-ui-connector/adapters/seriev2',
     'canopsis/canopsis-backend-ui-connector/adapters/statsfilter',
