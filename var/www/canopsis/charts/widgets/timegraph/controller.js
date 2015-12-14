@@ -34,7 +34,7 @@ Ember.Application.initializer({
         var FlotChartViewMixin = Ember.Mixin.create({
             didInsertElement: function() {
                 var ctrl = get(this, 'controller');
-                alert('coco');
+
                 console.group('timegraph init');
 
                 var updateGrid = function(evt, ranges) {
@@ -72,14 +72,16 @@ Ember.Application.initializer({
                         component.send('renderChart');
                     });
                 }
-                this.on('willDestroyElement',this, this.willDestroyElement);
-                this.on('didInsertElement',this, this.didInsertElement);
+                ctrl.on('onDestroyView', this, this.willDestroyElement);
+                ctrl.on('onInsertView', this, this.didInsertElement);
+                ctrl.on('onRerender', this, this.onRerender);
                 console.groupEnd();
 
                 this._super.apply(this, arguments);
             },
 
             willDestroyElement: function() {
+                var ctrl = get(this, 'controller');
                 var graphcontainer = this.$('.flotchart-plot-container .flotchart');
                 graphcontainer.unbind('plotselected');
 
@@ -88,8 +90,9 @@ Ember.Application.initializer({
                     timecontainer.unbind('plotselected');
                     graphcontainer.unbind('toggleserie');
                 }
-                this.off('willDestroyElement',this, this.willDestroyElement);
-                this.off('didInsertElement',this, this.didInsertElement);
+                ctrl.off('onDestroyView',this, this.willDestroyElement);
+                ctrl.off('onInsertView',this, this.didInsertElement);
+                ctrl.off('onRerender', this, this.onRerender);
             },
 
             setDefaultChartOptions: function() {
@@ -101,6 +104,16 @@ Ember.Application.initializer({
 
                 var chartOptions = {};
                 $.extend(chartOptions, get(ctrl, 'chartOptions'));
+
+                if(!get(ctrl, 'zooming')) {
+                    $.extend(chartOptions, {
+                        xaxis: {
+                            min: now - get(ctrl, 'time_window_offset') - get(ctrl, 'time_window'),
+                            max: now - get(ctrl, 'time_window_offset')
+                        }
+                    });
+                }
+
                 $.extend(chartOptions, {
                     zoom: {
                         interactive: false
@@ -118,11 +131,6 @@ Ember.Application.initializer({
                         hoverable: true,
                         clickable: true,
                         borderWidth: 2
-                    },
-
-                    xaxis: {
-                        min: now - get(ctrl, 'time_window_offset') - get(ctrl, 'time_window'),
-                        max: now - get(ctrl, 'time_window_offset')
                     },
 
                     yaxis: {},
@@ -233,10 +241,14 @@ Ember.Application.initializer({
             resetZoom: function() {
                 var ctrl = get(this, 'controller');
 
+                set(ctrl, 'zooming', false);
+
                 this.setDefaultChartOptions();
                 this.setDefaultTimenavOptions();
+            },
 
-                set(ctrl, 'zooming', false);
+            onRerender: function() {
+                this.rerender();
             },
 
             actions: {
@@ -364,11 +376,12 @@ Ember.Application.initializer({
                 this.fetchStylizedMetrics(from, to, replace);
                 console.groupEnd();
 
-                if(get(this, 'initializer')) {
-                    me.trigger('willDestroyElement');
-                }
-                set(this, 'initializer', true);
-                me.trigger('didInsertElement');
+                /*if(get(this, 'initializer')) {
+                    me.trigger('onDestroyView');
+                }*/
+                //set(this, 'initializer', true);
+                //me.trigger('onInsertView');
+                me.trigger('onRerender');
             },
 
             updateAxisLimits: function(from, to) {
