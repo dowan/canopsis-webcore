@@ -468,12 +468,8 @@ Ember.Application.initializer({
 
                     try {
                         serie = Handlebars.compile(template)(templateContext);
-                        console.log('serie', serie);
                     } catch (err) {
                         console.log('could not proceed template feed', err);
-                        serie = function(context) {
-                            return get(context, 'name');
-                        };
                     }
 
                     var label = namedMetrics.pushObject(serie);
