@@ -15,11 +15,10 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-/** @module canopsis.frontend.userpreferences */
+var components = [
+    { name: 'components/component-userpreferencesmanager', url: 'canopsis/userpreferences/src/components/userpreferencesmanager/component', template: 'canopsis/userpreferences/src/components/userpreferencesmanager/template.html' }
+];
 
-define([
-    'canopsis/userpreferences/src/lib/loaders/components',
-    'canopsis/userpreferences/src/mixins/userconfiguration'
-], function () {});
+loader.loadWithTemplates(components);

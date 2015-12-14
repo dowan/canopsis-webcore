@@ -1,14 +1,24 @@
 {
   "name": "userpreferences",
-  "version": "0.0.0",
+  "description": "User preferences brick for canopsis",
+  "version": "1.0.0",
   "authors": [
-    "Team Canopsis <maintainers@canopsis.org>"
+	""
   ],
-  "description": "User preferences management",
   "main": "init.js",
   "moduleType": [
     "amd"
   ],
-  "license": "GNU Affero General Public License",
-  "homepage": "http://www.canopsis.org/"
+  "keywords": [
+    "canopsis"
+  ],
+  "license": "AGPL",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    ".",
+    "test",
+    "tests"
+  ]
 }
