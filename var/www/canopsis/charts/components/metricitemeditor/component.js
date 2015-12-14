@@ -33,7 +33,8 @@ Ember.Application.initializer({
                 this._super(arguments);
 
                 set(this, "componentDataStore", DS.Store.create({
-                    container: get(this, "container")
+                    container: get(this, "container"),
+                    'parentController.chartComponent': this
                 }));
 
                 var modelname = 'stylizedmetric';

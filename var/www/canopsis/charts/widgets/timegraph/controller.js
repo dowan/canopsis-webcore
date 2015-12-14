@@ -100,7 +100,8 @@ Ember.Application.initializer({
                 var now = +new Date();
 
                 var ctrl = get(this, 'controller');
-                var config = get(ctrl, 'config');
+                var config = get(ctrl, 'config'),
+                    template = get(ctrl,'model.metric_template');
 
                 var chartOptions = {};
                 $.extend(chartOptions, get(ctrl, 'chartOptions'));
@@ -451,12 +452,53 @@ Ember.Application.initializer({
             },
 
             fetchStylizedMetrics: function(from, to, replace) {
+
                 var store = get(this, 'widgetDataStore'),
                     stylizedmetrics = get(this, 'config.metrics'),
                     series = [],
                     seriesById = {},
                     curveIds = [],
                     me = this;
+
+                var contextMetric = ['type', 'connector','connector_name', 'component','resource', 'metric'],
+                    namedMetrics = [],
+                    j,
+                    tmpl;
+
+                /**
+                 * Compile template for metric labels with the context given above (contextMetric)
+                 * @method tmpl
+                 * @param {object} metric Related metric to template with
+                 * @return {array} label
+                 */
+                tmpl = function(metric) {
+                    console.log('metric tmpl', metric);
+                    //debugger;
+                    var serie = metric.id;
+                    var seriesInfo = serie.split('/'),
+                        templateContext = {};
+                    var lengthSeriesInfo = seriesInfo.length;
+
+                    //Build template context
+                    for (j=0; j<lengthSeriesInfo; j++) {
+                        //+1 is for preceding /
+                        templateContext[contextMetric[j]] = seriesInfo[j + 1];
+                    }
+
+                    var template = get(me, 'config.metric_template');
+                    if (template === "") {
+                        template = "{{component}} - {{resource}} - {{metric}}";
+                    }
+
+                    try {
+                        serie = Handlebars.compile(template)(templateContext);
+                    } catch (err) {
+                        console.log('could not proceed template feed', err);
+                    }
+
+                    var label = namedMetrics.pushObject(serie);
+                    return label;
+                };
 
                 var fetchDone = function(curveIds) {
                     curveIds = JSON.stringify(curveIds);
@@ -504,11 +546,12 @@ Ember.Application.initializer({
                         for(i = 0, l = stylizedmetrics.length; i < l; i++) {
                             var metricId = get(stylizedmetrics[i], 'metric');
                             var metricInfo = metricsById[metricId];
-
+                            console.log('mectric info', metricInfo);
+                            //debugger;
                             var serieconf = Ember.Object.create({
                                 id: metricId,
                                 virtual: true,
-                                crecord_name: get(metricInfo, 'name'),
+                                crecord_name: tmpl(metricInfo),
                                 metrics: [metricId],
                                 aggregate_method: 'none',
                                 unit: get(stylizedmetrics[i], 'unit')
