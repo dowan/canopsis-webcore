@@ -18,7 +18,7 @@
  */
 
 var components = [
-    { name: 'components/component-userpreferencesmanager', url: 'canopsis/userpreferences/src/components/userpreferencesmanager/component', template: 'canopsis/userpreferences/src/components/userpreferencesmanager/template.html' }
+    { name: 'components/component-userpreferencesmanager', url: 'canopsis/userpreferences/src/components/userpreferencesmanager/component', template: 'canopsis/userpreferences/src/components/userpreferencesmanager/template.hbs' }
 ];
 
 loader.loadWithTemplates(components);

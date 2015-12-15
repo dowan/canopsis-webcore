@@ -19,10 +19,10 @@
 
 
 var components = [
-    { name: 'components/component-cfiltereditor', url: 'canopsis/monitoring/src/components/cfiltereditor/component', template: 'canopsis/monitoring/src/components/cfiltereditor/template.html' },
-    { name: 'components/component-ack', url: 'canopsis/monitoring/src/components/ack/component', template: 'canopsis/monitoring/src/components/ack/template.html' },
-    { name: 'components/component-stateeditor', url: 'canopsis/monitoring/src/components/stateeditor/component', template: 'canopsis/monitoring/src/components/stateeditor/template.html' },
-    { name: 'components/component-eventselector', url: 'canopsis/monitoring/src/components/eventselector/component', template: 'canopsis/monitoring/src/components/eventselector/template.html' },
+    { name: 'components/component-cfiltereditor', url: 'canopsis/monitoring/src/components/cfiltereditor/component', template: 'canopsis/monitoring/src/components/cfiltereditor/template.hbs' },
+    { name: 'components/component-ack', url: 'canopsis/monitoring/src/components/ack/component', template: 'canopsis/monitoring/src/components/ack/template.hbs' },
+    { name: 'components/component-stateeditor', url: 'canopsis/monitoring/src/components/stateeditor/component', template: 'canopsis/monitoring/src/components/stateeditor/template.hbs' },
+    { name: 'components/component-eventselector', url: 'canopsis/monitoring/src/components/eventselector/component', template: 'canopsis/monitoring/src/components/eventselector/template.hbs' },
     { name: 'components/component-statemapping', url: 'canopsis/monitoring/src/components/statemapping/component', template: 'canopsis/monitoring/src/components/statemapping/template.hbs' }
 
 ];

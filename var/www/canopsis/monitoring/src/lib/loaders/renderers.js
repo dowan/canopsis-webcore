@@ -18,15 +18,15 @@
  */
 
 var renderers = [
-    { name: 'renderer-ack', template: 'canopsis/monitoring/src/renderers/ack.html'},
-    { name: 'renderer-crecord-type',template: 'canopsis/monitoring/src/renderers/crecord-type.html'},
-    { name: 'renderer-criticity', template: 'canopsis/monitoring/src/renderers/criticity.html'},
-    { name: 'renderer-eventselector', template: 'canopsis/monitoring/src/renderers/eventselector.html'},
-    { name: 'renderer-state', template: 'canopsis/monitoring/src/renderers/state.html'},
-    { name: 'renderer-stateConnector', template: 'canopsis/monitoring/src/renderers/stateConnector.html'},
-    { name: 'renderer-status', template: 'canopsis/monitoring/src/renderers/status.html'},
-    { name: 'renderer-eventtype', template: 'canopsis/monitoring/src/renderers/eventtype.html'},
-    { name: 'renderer-eventtimestamp', template: 'canopsis/monitoring/src/renderers/eventtimestamp.html'}
+    { name: 'renderer-ack', template: 'canopsis/monitoring/src/renderers/ack.hbs'},
+    { name: 'renderer-crecord-type',template: 'canopsis/monitoring/src/renderers/crecord-type.hbs'},
+    { name: 'renderer-criticity', template: 'canopsis/monitoring/src/renderers/criticity.hbs'},
+    { name: 'renderer-eventselector', template: 'canopsis/monitoring/src/renderers/eventselector.hbs'},
+    { name: 'renderer-state', template: 'canopsis/monitoring/src/renderers/state.hbs'},
+    { name: 'renderer-stateConnector', template: 'canopsis/monitoring/src/renderers/stateConnector.hbs'},
+    { name: 'renderer-status', template: 'canopsis/monitoring/src/renderers/status.hbs'},
+    { name: 'renderer-eventtype', template: 'canopsis/monitoring/src/renderers/eventtype.hbs'},
+    { name: 'renderer-eventtimestamp', template: 'canopsis/monitoring/src/renderers/eventtimestamp.hbs'}
 ];
 
 loader.loadWithTemplates(renderers);

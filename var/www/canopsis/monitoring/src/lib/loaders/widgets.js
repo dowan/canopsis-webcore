@@ -18,7 +18,7 @@
  */
 
 var widgets = [
-    { name:'weather', url:'canopsis/monitoring/src/widgets/weather/controller', template:'canopsis/monitoring/src/widgets/weather/template.html' },
+    { name:'weather', url:'canopsis/monitoring/src/widgets/weather/controller', template:'canopsis/monitoring/src/widgets/weather/template.hbs' },
 ];
 
 loader.loadWithTemplates(widgets);
