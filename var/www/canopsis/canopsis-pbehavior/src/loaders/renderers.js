@@ -18,7 +18,7 @@
  */
 
 var renderers = [
-    { name: 'renderer-periodicbehaviors', template: 'canopsis/canopsis-pbehavior/renderers/periodicbehaviors.html'}
+    { name: 'renderer-periodicbehaviors', template: 'canopsis/canopsis-pbehavior/src/renderers/periodicbehaviors.hbs'}
 ];
 
 loader.loadWithTemplates(renderers);

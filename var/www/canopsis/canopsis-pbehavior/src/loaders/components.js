@@ -21,8 +21,8 @@
 var components = [
     {
         name: 'components/component-periodicbehaviormanager',
-        url: 'canopsis/canopsis-pbehavior/components/periodicbehaviormanager/component',
-        template: 'canopsis/canopsis-pbehavior/components/periodicbehaviormanager/template.html'
+        url: 'canopsis/canopsis-pbehavior/src/components/periodicbehaviormanager/component',
+        template: 'canopsis/canopsis-pbehavior/src/components/periodicbehaviormanager/template.hbs'
     }
 ];
 

@@ -20,8 +20,8 @@
 /** @module canopsis.frontend.canopsis-vevent */
 
 define([
-    'canopsis/canopsis-vevent/adapters/vevent',
-    'canopsis/canopsis-vevent/serializers/vevent'
+    'canopsis/canopsis-vevent/src/adapters/vevent',
+    'canopsis/canopsis-vevent/src/serializers/vevent'
 ], function () {
 
 });
