@@ -16,32 +16,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
-
-/** @module canopsis.frontend.canopsis-ui */
-
-require.config({
-    paths: {
-        'bootstrap': 'canopsis/uibase/lib/externals/bootstrap/dist/js/bootstrap.min',
-        'adminLTElib': 'canopsis/canopsis-ui/lib/adminlte/AdminLTE',
-        'adminLTE': 'canopsis/canopsis-ui/src/wrappers/adminLTE'
-    },
-
-    shim: {
-        'adminLTE': {
-            deps: ['jquery', 'bootstrap']
-        },
-
-        'adminLTElib': {
-            deps: ['jquery']
-        }
-    }
-});
-
-
 define([
-    'canopsis/canopsis-ui/src/reopens/views/application',
-    'canopsis/canopsis-ui/src/loaders/forms',
-    'adminLTE'
-], function () {
+    'app/lib/factories/wrapper',
+    'adminLTElib',
+    'link!canopsis/canopsis-ui/lib/adminlte/AdminLTE.css',
+    'link!canopsis/canopsis-ui/lib/adminlte/AdminLTE_extra.css',
+], function(Wrapper, AdminLteJs) {
 
+    console.log('AdminLTE wrapper', AdminLteJs);
+
+    return Wrapper("AdminLTE", AdminLteJs, arguments, "0.1");
 });

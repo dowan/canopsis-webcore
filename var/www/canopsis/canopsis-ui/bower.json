@@ -1,14 +1,24 @@
 {
   "name": "canopsis-ui",
-  "version": "0.0.0",
-  "authors": [
-    "Team Canopsis <maintainers@canopsis.org>"
-  ],
   "description": "Provides objects and templates that are not technically required by the UI, but that are always provided with Canopsis to provide some functionnal aspects of a Canopsis application",
+  "version": "0.0.1",
+  "authors": [
+	"Team Canopsis <maintainers@canopsis.org>"
+  ],
   "main": "init.js",
   "moduleType": [
     "amd"
   ],
-  "license": "GNU Affero General Public License",
-  "homepage": "http://www.canopsis.org/"
+  "keywords": [
+    "canopsis"
+  ],
+  "license": "AGPL-3.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    ".",
+    "test",
+    "tests"
+  ]
 }

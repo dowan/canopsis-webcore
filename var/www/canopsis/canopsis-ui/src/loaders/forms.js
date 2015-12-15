@@ -17,31 +17,10 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @module canopsis.frontend.canopsis-ui */
+var forms = [
+    { name: 'jobform', url: 'canopsis/canopsis-ui/src/forms/jobform/controller', template: 'canopsis/canopsis-ui/src/forms/jobform/template.html' },
+    { name: 'taskform', url: 'canopsis/canopsis-ui/src/forms/taskform/controller', template: 'app/forms/modelform/template.html' },
+    { name: 'scheduleform', url: 'canopsis/canopsis-ui/src/forms/scheduleform/controller', template: 'app/forms/modelform/template.html' }
+];
 
-require.config({
-    paths: {
-        'bootstrap': 'canopsis/uibase/lib/externals/bootstrap/dist/js/bootstrap.min',
-        'adminLTElib': 'canopsis/canopsis-ui/lib/adminlte/AdminLTE',
-        'adminLTE': 'canopsis/canopsis-ui/src/wrappers/adminLTE'
-    },
-
-    shim: {
-        'adminLTE': {
-            deps: ['jquery', 'bootstrap']
-        },
-
-        'adminLTElib': {
-            deps: ['jquery']
-        }
-    }
-});
-
-
-define([
-    'canopsis/canopsis-ui/src/reopens/views/application',
-    'canopsis/canopsis-ui/src/loaders/forms',
-    'adminLTE'
-], function () {
-
-});
+loader.loadWithTemplates(forms);
