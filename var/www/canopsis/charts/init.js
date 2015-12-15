@@ -118,12 +118,12 @@ require.config({
 });
 
 define([
-    'canopsis/charts/lib/loaders/editors',
-    'canopsis/charts/lib/loaders/components',
-    'canopsis/charts/lib/loaders/mixins',
-    'canopsis/charts/lib/loaders/widgets',
-    'canopsis/charts/lib/loaders/templates',
-    'canopsis/charts/libwrappers/flotchart',
+    'canopsis/charts/src/loaders/editors',
+    'canopsis/charts/src/loaders/components',
+    'canopsis/charts/src/loaders/mixins',
+    'canopsis/charts/src/loaders/widgets',
+    'canopsis/charts/src/loaders/templates',
+    'canopsis/charts/src/libwrappers/flotchart',
     'canopsis/charts/lib/externals/c3/c3',
     'link!canopsis/charts/lib/externals/c3/c3.css',
 ], function () {});

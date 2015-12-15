@@ -18,7 +18,7 @@
  *
  * @author Capensis
  */
-define(['jquery','canopsis/charts/libwrappers/flotchart'],
+define(['jquery','canopsis/charts/src/libwrappers/flotchart'],
     function($) {
         (function($) {
             var options = {
