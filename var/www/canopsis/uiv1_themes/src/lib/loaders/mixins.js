@@ -18,7 +18,7 @@
 */
 
 var mixins = [
-    { name: 'uiv1weathertheme', url: 'canopsis/uiv1_themes/mixins/uiv1weathertheme', classes: ["theme"]}
+    { name: 'uiv1weathertheme', url: 'canopsis/uiv1_themes/src/mixins/uiv1weathertheme', classes: ["theme"]}
 ];
 
 loader.loadWithTemplates(mixins);

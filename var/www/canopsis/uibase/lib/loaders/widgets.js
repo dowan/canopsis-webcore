@@ -23,10 +23,6 @@ var widgets = [
     { name:'widgetcontainer', url:'canopsis/uibase/src/widgets/widgetcontainer/controller', template:'canopsis/uibase/src/widgets/widgetcontainer/template.html' },
     { name:'uiactionbutton', url:'canopsis/uibase/src/widgets/uiactionbutton/controller', template:'canopsis/uibase/src/widgets/uiactionbutton/template.html' },
     { name:'uimaintabcollection', url:'canopsis/uibase/src/widgets/uimaintabcollection/controller', template:'canopsis/uibase/src/widgets/uimaintabcollection/template.html' },
-    //USELESS ATM : { name:'uimaindropdown', url:'canopsis/uibase/src/widgets/uimaindropdown/controller', template:'canopsis/uibase/src/widgets/uimaindropdown/template.html' },
-    //{ name:'multicrecordlist', url:'canopsis/uibase/src/widgets/multicrecordlist/controller', template:'canopsis/uibase/src/widgets/multicrecordlist/template.html' , TEMPLATE:'list'},
-    { name:'euewi', url:'canopsis/uibase/src/widgets/euewi/controller', template:'canopsis/uibase/src/widgets/list/template.html', TEMPLATE: 'list' },
-    //{ name:'wgraph', url:'canopsis/uibase/src/widgets/graph/controller', template:'canopsis/uibase/src/widgets/graph/template.html' },
     { name:'topology', url:'canopsis/uibase/src/widgets/topology/controller', template:'canopsis/uibase/src/widgets/topology/template.html' }
 ];
 

@@ -18,7 +18,7 @@
 */
 
 var templates = [
-    { name: 'uiv1_themes_weather', template: 'canopsis/uiv1_themes/templates/weather.html' }
+    { name: 'uiv1_themes_weather', template: 'canopsis/uiv1_themes/src/templates/weather.html' }
 ];
 
 loader.loadWithTemplates(templates);

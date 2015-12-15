@@ -20,8 +20,8 @@
 /** @module canopsis.frontend.uiv1-themes */
 
 define([
-    'canopsis/uiv1_themes/lib/loaders/mixins',
-    'canopsis/uiv1_themes/lib/loaders/templates'
+    'canopsis/uiv1_themes/src/lib/loaders/mixins',
+    'canopsis/uiv1_themes/src/lib/loaders/templates'
 ], function () {
 
 });
