@@ -20,8 +20,8 @@
 var widgets = [
     {
         name: 'statstable',
-        url: 'canopsis/brick-stats/widgets/stats-table/controller',
-        template: 'canopsis/brick-stats/widgets/stats-table/template.hbs'
+        url: 'canopsis/brick-stats/src/widgets/stats-table/controller',
+        template: 'canopsis/brick-stats/src/widgets/stats-table/template.hbs'
     }
 ];
 

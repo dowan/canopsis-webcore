@@ -18,5 +18,5 @@
  */
 
 define([
-    'canopsis/brick-stats/loaders/widgets'
+    'canopsis/brick-stats/src/loaders/widgets'
 ], function() {});

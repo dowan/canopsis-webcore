@@ -43,7 +43,7 @@ Ember.Application.initializer({
         };
 
         /**
-         * @class StatsTableWidget
+         * @widget Statstable
          * @augments Widget
          */
         var widget = WidgetFactory('statstable', {
