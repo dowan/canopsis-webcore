@@ -48,20 +48,41 @@ Ember.Application.initializer({
             needs: ['login', 'application', 'recordinfopopup'],
 
             /**
+             * @property standardListDisplay
              * Whether to display the list as the regular table or not.
              * Used with mixin that fill the partial slot "alternativeListDisplay", this can help to provide alternative displays
              */
             standardListDisplay: true,
 
+            /**
+             * @property dynamicTemplateName
+             */
             dynamicTemplateName: 'loading',
 
-            //TODO test if this is needed (used in cloaked mode)
+            /**
+             * @property listlineControllerClass
+             * @todo test if this is needed (used in cloaked mode)
+             */
             listlineControllerClass: ListlineController,
 
+            /**
+             * @property user
+             */
             user: Ember.computed.alias('controllers.login.record._id'),
+
+            /**
+             * @property rights
+             */
             rights: Ember.computed.alias('controllers.login.record.rights'),
+
+            /**
+             * @property safeMode
+             */
             safeMode: Ember.computed.alias('controllers.application.frontendConfig.safe_mode'),
 
+            /**
+             * @method init
+             */
             init: function() {
                 //prepare user configuration to fetch customer preference by reseting data.
                 //properties are set here to avoid same array references between instances.
@@ -75,6 +96,9 @@ Ember.Application.initializer({
                 this._super.apply(this, arguments);
             },
 
+            /**
+             * @event rollbackableChanged
+             */
             rollbackableChanged: function() {
                 var list = this;
                 if(get(this, 'model.rollbackable') === false) {
@@ -82,6 +106,10 @@ Ember.Application.initializer({
                 }
             }.observes('model.rollbackable'),
 
+            /**
+             * @method generateListlineTemplate
+             * @argument shown_columns
+             */
             generateListlineTemplate: function (shown_columns) {
                 var html = '<td>{{#if pendingOperation}}<i class="fa fa-cog fa-spin"></i>{{/if}}{{component-checkbox checked=isSelected class="toggle"}}</td>';
 
@@ -123,8 +151,10 @@ Ember.Application.initializer({
             },
 
             /**
-            * Manages how time filter is set to the widget
-            **/
+             * @method updateInterval
+             * Manages how time filter is set to the widget
+             * @argument interval
+             */
             updateInterval: function (interval){
                 console.warn('Set widget list time interval', interval);
                 set(this, 'timeIntervalFilter', interval);
@@ -132,8 +162,9 @@ Ember.Application.initializer({
             },
 
             /**
-            * Manages how time filter is get from the widget for refresh purposes
-            **/
+             * @methode getTimeInterval
+             * Manages how time filter is get from the widget for refresh purposes
+             */
             getTimeInterval: function () {
                 var interval = get(this, 'timeIntervalFilter');
                 if (isNone(interval)) {
@@ -143,6 +174,9 @@ Ember.Application.initializer({
                 }
             },
 
+            /**
+             * @property itemType
+             */
             itemType: function() {
                 var listed_crecord_type = get(this, 'listed_crecord_type');
                 console.info('listed_crecord_type', listed_crecord_type);
@@ -153,21 +187,41 @@ Ember.Application.initializer({
                 }
             }.property('listed_crecord_type'),
 
-
+            /**
+             * @event isAllSelectedChanged
+             */
             isAllSelectedChanged: function(){
                 get(this, 'widgetData').content.setEach('isSelected', get(this, 'isAllSelected'));
             }.observes('isAllSelected'),
 
             //Mixin aliases
             //history
+
+            /**
+             * @property historyMixinFindOptions
+             */
             historyMixinFindOptions: Ember.computed.alias('findOptions.useLogCollection'),
             //inspectedDataItemMixin
+
+            /**
+             * @property inspectedDataArray
+             */
             inspectedDataArray: Ember.computed.alias('widgetData'),
             //pagination
+
+            /**
+             * @property paginationMixinFindOptions
+             */
             paginationMixinFindOptions: Ember.computed.alias('findOptions'),
 
+            /**
+             * @property widgetDataMetas
+             */
             widgetDataMetas: {},
 
+            /**
+             * @method findItems
+             */
             findItems: function() {
                 var me = this;
 
@@ -213,10 +267,16 @@ Ember.Application.initializer({
                 });
             },
 
+            /**
+             * @event widgetDataChanged
+             */
             widgetDataChanged: function() {
                 this.trigger('refresh');
             }.observes('widgetData'),
 
+            /**
+             * @property attributesKeysDict
+             */
             attributesKeysDict: function() {
                 var res = {};
                 var attributesKeys = get(this, 'attributesKeys');
@@ -235,6 +295,10 @@ Ember.Application.initializer({
                 return res;
             }.property('attributesKeys'),
 
+            /**
+             * @method redenrerFor
+             * @argument attribute
+             */
             rendererFor: function(attribute) {
                 var type = get(attribute, 'type');
                 var role = get(attribute, 'options.role');
@@ -260,6 +324,9 @@ Ember.Application.initializer({
                 return rendererName;
             },
 
+            /**
+             * @property shown_columns
+             */
             shown_columns: function() {
                 console.log('compute shown_columns', get(this, 'sorted_columns'), get(this, 'sortedAttribute'));
 
@@ -356,6 +423,7 @@ Ember.Application.initializer({
             }.property('attributesKeysDict', 'sorted_columns'),
 
             /**
+             * @method computeFilterFragmentsList
              * Computes the list of different filter fragments used to create a proper query
              * @returns {Array} the list of fragments
              */
@@ -370,6 +438,9 @@ Ember.Application.initializer({
                 return list;
             },
 
+            /**
+             * @method computeFindParams
+             */
             computeFindParams: function(){
                 console.group('computeFindParams', get(this, 'model.selected_filter.filter'));
 

@@ -26,6 +26,10 @@ Ember.Application.initializer({
 
         var get = Ember.get;
 
+        /**
+         * @mixin ContainerViewMixin
+         * @private
+         */
         var ContainerViewMixin = Ember.Mixin.create({
             /**
              * @method registerHooks
@@ -43,6 +47,9 @@ Ember.Application.initializer({
                 return this._super();
             },
 
+            /**
+             * @method refreshChilds
+             */
             refreshChilds: function() {
                 var children = this.$().children().find('.ember-view.widget');
                 var thisId = this.$().attr('id');

@@ -45,6 +45,9 @@ Ember.Application.initializer({
          * @augments Widget
          */
         var widget = WidgetFactory('text', {
+            /**
+             * @method findItems
+             */
             findItems: function() {
                 var tw = TimeWindowUtils.getFromTo(
                     get(this, 'time_window'),
@@ -105,6 +108,11 @@ Ember.Application.initializer({
                 }
             },
 
+            /**
+             * @method onEvents
+             * @argument events
+             * @argument labelsByRk
+             */
             onEvents: function(events, labelsByRk) {
                 var context = get(this, 'context');
 
@@ -124,6 +132,10 @@ Ember.Application.initializer({
                 this.renderTemplate();
             },
 
+            /**
+             * @method onMetrics
+             * @argument metrics
+             */
             onMetrics: function(metrics) {
                 var context = get(this, 'context');
 
@@ -184,6 +196,10 @@ Ember.Application.initializer({
                 this.renderTemplate();
             },
 
+            /**
+             * @method onSeries
+             * @argument series
+             */
             onSeries: function(series) {
                 var context = get(this, 'context');
 
@@ -206,7 +222,6 @@ Ember.Application.initializer({
 
             /**
              * @method makeTemplate
-             * @memberof TextWidget
              * Make sure template has been compiled.
              */
             makeTemplate: function() {
@@ -226,7 +241,6 @@ Ember.Application.initializer({
 
             /**
              * @method renderTemplate
-             * @memberof TextWidget
              * Render compiled template property with context property into the rendered property.
              */
             renderTemplate: function() {

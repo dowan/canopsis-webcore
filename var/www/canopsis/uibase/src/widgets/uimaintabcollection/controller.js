@@ -99,7 +99,9 @@ Ember.Application.initializer({
             actions: {
 
                 /**
-                 * @method actions.do
+                 * @method actions_do
+                 * @argument action
+                 * @argument {array} params
                  */
                 do: function(action, params) {
                     if(params === undefined || params === null){
@@ -110,7 +112,7 @@ Ember.Application.initializer({
                 },
 
                 /**
-                 * @method actions.showViewOptions
+                 * @method actions_showViewOptions
                  */
                 showViewOptions: function() {
 

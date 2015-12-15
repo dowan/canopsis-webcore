@@ -29,6 +29,11 @@ Ember.Application.initializer({
         var widget = WidgetFactory('uiactionbutton',{
             tagName: 'span',
             actions: {
+                /**
+                 * @method actions_do
+                 * @argument action
+                 * @argument {array} params
+                 */
                 do: function(action, params) {
                     if(params === undefined || params === null){
                         params = [];
