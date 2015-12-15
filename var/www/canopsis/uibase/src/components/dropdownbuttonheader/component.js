@@ -24,11 +24,11 @@ Ember.Application.initializer({
         var get = Ember.get;
 
         /**
+         * @class Dropdownbuttonheader
+         *
+         * @description
          * Component that contains the title and optional other components
          * for dropdownbutton
-         *
-         * @class Dropdownbuttonheader
-         * @static
          */
         var component = Ember.Component.extend({
             tagName: 'a',

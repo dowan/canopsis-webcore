@@ -20,6 +20,10 @@
 Ember.Application.initializer({
     name: 'component-miniformheader',
     initialize: function(container, application) {
+
+        /**
+         * @component miniformheader
+         */
         var component = Ember.Component.extend({
             classNames: ['panel-heading']
         });

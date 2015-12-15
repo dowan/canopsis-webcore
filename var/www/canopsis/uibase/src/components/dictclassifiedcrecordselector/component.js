@@ -24,6 +24,9 @@ Ember.Application.initializer({
 
         var Classifiedcrecordselector = container.lookupFactory('component:component-classifiedcrecordselector');
 
+        /**
+         * @component dictclassifiedcrecordselector
+         */
         var component = Classifiedcrecordselector.extend({
             multiselect: true
         });

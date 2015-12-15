@@ -30,10 +30,12 @@ Ember.Application.initializer({
             Handlebars = window.Handlebars;
 
         /**
-        This component loads labelled links information from entity link backend and make them
-        available in the link list button.
-        **/
-
+         * @component linklist
+         *
+         * @description
+         * This component loads labelled links information from entity link backend and make them
+         * available in the link list button.
+         */
         var component = Ember.Component.extend({
 
             //events link that may exist in the entitylink payload where to look for labelled urls

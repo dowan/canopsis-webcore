@@ -25,7 +25,9 @@ Ember.Application.initializer({
             set = Ember.set,
             isNone = Ember.isNone;
 
-
+        /**
+         * @component textwithsortoption
+         */
         var component = Ember.Component.extend({
 
             directionTypes: ['ASC', 'DESC'],

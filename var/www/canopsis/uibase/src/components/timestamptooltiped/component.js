@@ -26,7 +26,9 @@ Ember.Application.initializer({
         var get = Ember.get,
             __ = Ember.String.loc;
 
-
+        /**
+         * @component timestamptooltiped
+         */
         var component = Ember.Component.extend({
             showMainTimestamp :function () {
                 var maintitle = get(this, 'maintitle');

@@ -27,7 +27,9 @@ Ember.Application.initializer({
             set = Ember.set,
             isNone = Ember.isNone;
 
-
+        /**
+         * @component mixinselector
+         */
         var component = Ember.Component.extend({
 
             init: function() {

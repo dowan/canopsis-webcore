@@ -28,7 +28,9 @@ Ember.Application.initializer({
             set = Ember.set,
             isNone = Ember.isNone;
 
-
+        /**
+         * @component arrayclassifiedcrecordselector
+         */
         var component = Classifiedcrecordselector.extend({
             multiselect: true,
 

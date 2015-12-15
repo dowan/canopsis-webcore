@@ -40,6 +40,9 @@ Ember.Application.initializer({
             }
         });
 
+        /**
+         * @component draggablebutton
+         */
         var component = Ember.Component.extend(DragNDrop.Dragable, {
             didInsertElement: function (){
                 this.$().css('display', 'inline').css('width', '5px');

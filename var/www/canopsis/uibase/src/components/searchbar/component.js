@@ -24,6 +24,9 @@ Ember.Application.initializer({
 
 
         /**
+         * @component searchbar
+         *
+         * @description
          * Search bar component
          *
          * Includes 3 tabs :

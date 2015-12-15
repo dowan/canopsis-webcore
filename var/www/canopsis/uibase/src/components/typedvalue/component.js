@@ -27,7 +27,9 @@ Ember.Application.initializer({
             set = Ember.set,
             __ = Ember.String.loc;
 
-
+        /**
+         * @component typedvalue
+         */
         var component = Ember.Component.extend({
 
             init: function () {

@@ -24,7 +24,9 @@ Ember.Application.initializer({
         var get = Ember.get,
             set = Ember.set;
 
-
+        /**
+         * @component modelselect
+         */
         var component = Ember.Component.extend({
             model: function() {
                 var model = get(this, 'content.model.options.model');

@@ -21,6 +21,9 @@ Ember.Application.initializer({
     name: 'component-miniformcontent',
     initialize: function(container, application) {
 
+        /**
+         * @component miniformcontent
+         */
         var component = Ember.Component.extend({
             classNames: ['panel-collapse', 'collapse', 'in'],
             formBase: Ember.computed.alias('parentView')

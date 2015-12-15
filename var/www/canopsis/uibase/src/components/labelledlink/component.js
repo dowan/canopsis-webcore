@@ -22,6 +22,9 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var __ = Ember.String.loc;
 
+        /**
+         * @component labelledlink
+         */
         var component = Ember.Component.extend({
             label_placeholder: __('label'),
             url_placeholder: __('url')

@@ -23,7 +23,7 @@ Ember.Application.initializer({
         var isEmpty = Ember.isEmpty;
 
         /**
-         * @class FileField
+         * @component FileField
          *
          * @description
          * Subclass Ember.TextField to allow file uploading.

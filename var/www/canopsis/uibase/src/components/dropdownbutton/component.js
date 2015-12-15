@@ -24,10 +24,10 @@ Ember.Application.initializer({
         var set = Ember.set;
 
         /**
-         * Global component for dropdownbutton
+         * @component Dropdownbutton
          *
-         * @class Dropdownbutton
-         * @static
+         * @description
+         * Global component for dropdownbutton
          */
         var component = Ember.Component.extend({
             classNames: ['dropdown'],

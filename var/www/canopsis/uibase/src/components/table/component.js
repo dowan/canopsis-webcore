@@ -27,7 +27,9 @@ Ember.Application.initializer({
             set = Ember.set,
             isNone = Ember.isNone;
 
-
+        /**
+         * @component table
+         */
         var component = Ember.Component.extend(PaginationMixin, {
             model: undefined,
             modelfilter: undefined,

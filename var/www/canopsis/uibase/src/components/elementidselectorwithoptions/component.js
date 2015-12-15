@@ -28,7 +28,9 @@ Ember.Application.initializer({
             isNone = Ember.isNone,
             __ = Ember.String.loc;
 
-
+        /**
+         * @component elementidselectorwithoptions
+         */
         var component = Ember.Component.extend({
             additionnalSelectionButtons: ['removeitembutton'],
 

@@ -28,7 +28,9 @@ Ember.Application.initializer({
         var get = Ember.get,
             set = Ember.set;
 
-
+        /**
+         * @component sessioneditor
+         */
         var component = Ember.Component.extend({
             fieldValue: function() {
                 var key = this.get('attr.model.options.valueFrom');

@@ -26,6 +26,9 @@ Ember.Application.initializer({
             __ = Ember.String.loc,
             RRule = window.RRule;
 
+        /**
+         * @component rrule
+         */
         var component = Ember.Component.extend({
 
             //translated by tooltip

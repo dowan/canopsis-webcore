@@ -28,7 +28,9 @@ Ember.Application.initializer({
             set = Ember.set,
             moment = window.moment;
 
-
+        /**
+         * @component dateinterval
+         */
         var component = Ember.Component.extend({
 
             init: function () {

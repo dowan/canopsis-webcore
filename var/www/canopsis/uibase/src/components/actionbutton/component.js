@@ -24,6 +24,9 @@ Ember.Application.initializer({
 
         var actionsUtils = container.lookupFactory('utility:actions');
 
+        /**
+         * @component actionbutton
+         */
         var component = Ember.Component.extend({
             actions: {
                 doAction: function (actionName, param) {

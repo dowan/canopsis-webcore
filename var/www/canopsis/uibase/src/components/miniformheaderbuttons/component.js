@@ -20,6 +20,10 @@
 Ember.Application.initializer({
     name: 'component-miniformheaderbuttons',
     initialize: function(container, application) {
+
+        /**
+         * @component miniformheaderbuttons
+         */
         var component = Ember.Component.extend({
             classNames: ['fright']
         });

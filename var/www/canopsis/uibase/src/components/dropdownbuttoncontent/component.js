@@ -24,10 +24,10 @@ Ember.Application.initializer({
         var get = Ember.get;
 
         /**
-         * Component for switching between display and hide of the content
+         * @component Dropdownbuttoncontent
          *
-         * @class Dropdownbuttoncontent
-         * @static
+         * @description
+         * Component for switching between display and hide of the content
          */
         var component = Ember.Component.extend({
             classNames: ['dropdownbuttoncontent'],

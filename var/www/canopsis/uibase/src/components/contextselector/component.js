@@ -29,7 +29,9 @@ Ember.Application.initializer({
             set = Ember.set,
             __ = Ember.String.loc;
 
-
+        /**
+         * @component contextselector
+         */
         var component = Ember.Component.extend({
             contexts: contextsregistry.all,
 

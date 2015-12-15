@@ -24,7 +24,9 @@ Ember.Application.initializer({
         var get = Ember.get,
             set = Ember.set;
 
-
+        /**
+         * @component filterclause
+         */
         var component = Ember.Component.extend({
             tagName: 'span',
             classNames: 'filterclause',

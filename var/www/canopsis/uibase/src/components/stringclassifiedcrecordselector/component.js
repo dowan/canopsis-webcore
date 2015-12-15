@@ -28,7 +28,9 @@ Ember.Application.initializer({
         var get = Ember.get,
             set = Ember.set;
 
-
+        /**
+         * @component stringclassifiedcrecordselector
+         */
         var component = Classifiedcrecordselector.extend({
             multiselect:false,
 

@@ -24,15 +24,14 @@ Ember.Application.initializer({
         var get = Ember.get,
             set = Ember.set;
 
-            /**
-             * Component for choosing a color.
-             * It let to choose between a colorpicker
-             * and a display of several ranges
-             *
-             * @class Colpick
-             * @static
-             */
-
+        /**
+         * @component colpick
+         *
+         * @description
+         * Component for choosing a color.
+         * It let to choose between a colorpicker
+         * and a display of several ranges
+         */
         var component = Ember.Component.extend({
             classNames: ['colorSelector dropdown-toggle'],
             /**

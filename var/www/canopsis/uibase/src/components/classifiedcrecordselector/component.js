@@ -23,7 +23,9 @@ Ember.Application.initializer({
         var get = Ember.get,
             set = Ember.set;
 
-
+        /**
+         * @component classifiedcrecordselector
+         */
         var component = Ember.Component.extend({
             model: undefined,
             modelfilter: undefined,

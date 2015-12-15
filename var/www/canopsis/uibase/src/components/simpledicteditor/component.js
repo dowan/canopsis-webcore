@@ -24,7 +24,9 @@ Ember.Application.initializer({
             set = Ember.set,
             isNone = Ember.isNone;
 
-
+        /**
+         * @component simpledicteditor
+         */
         var component = Ember.Component.extend({
             actions: {
                 addKey: function() {

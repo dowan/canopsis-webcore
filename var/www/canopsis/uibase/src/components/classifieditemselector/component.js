@@ -28,7 +28,9 @@ Ember.Application.initializer({
             get = Ember.get,
             isNone = Ember.isNone;
 
-
+        /**
+         * @component classifieditemselector
+         */
         var component = Ember.Component.extend({
 
             multiselect: true,

@@ -72,6 +72,9 @@ Ember.Application.initializer({
             }
         });
 
+        /**
+         * @component listtree
+         */
         var component = Ember.Component.extend(/*DragNDrop.Dragable,*/ DragNDrop.Droppable, {});
 
         application.register('component:component-listtree', component);

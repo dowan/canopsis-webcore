@@ -23,7 +23,9 @@ Ember.Application.initializer({
         var get = Ember.get,
             set = Ember.set;
 
-
+        /**
+         * @component restobjectcombo
+         */
         var component = Ember.Component.extend({
 
             isLoading: true,

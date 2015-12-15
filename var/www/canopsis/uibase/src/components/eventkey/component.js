@@ -28,6 +28,9 @@ Ember.Application.initializer({
             __ = Ember.String.loc;
 
 
+        /**
+         * @component eventkey
+         */
         var component = Ember.Component.extend({
 
             init:function () {

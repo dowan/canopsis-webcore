@@ -24,10 +24,10 @@ Ember.Application.initializer({
         var get = Ember.get;
 
         /**
-         * Component for seeing the chosen color in the dropdownbutton
+         * @component Dropdownbuttonoverview
          *
-         * @class Dropdownbuttonoverview
-         * @static
+         * @description
+         * Component for seeing the chosen color in the dropdownbutton
          */
         var component = Ember.Component.extend({
             classNames: ['dropdownbuttonoverview', 'dropdownbuttonoverview-default', 'overview'],

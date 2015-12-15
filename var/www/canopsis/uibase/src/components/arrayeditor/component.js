@@ -26,7 +26,9 @@ Ember.Application.initializer({
         var get = Ember.get,
             set = Ember.set;
 
-
+        /**
+         * @component arrayeditor
+         */
         var component = Ember.Component.extend(ValidationFieldMixin, {
             valueRefPath: 'content.value',
             valuePath: 'value',

@@ -27,6 +27,9 @@ Ember.Application.initializer({
             isNone = Ember.isNone,
             __ = Ember.String.loc;
 
+        /**
+         * @component formulaeditor
+         */
         var component = Ember.Component.extend({
             form: Ember.computed.alias('parentView.parentView.controller'),
 

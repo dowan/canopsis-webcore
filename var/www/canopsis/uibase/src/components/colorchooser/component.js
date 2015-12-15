@@ -22,12 +22,12 @@ Ember.Application.initializer({
     name:"component-colorchooser",
     initialize: function(container, application) {
 
-            /**
-             * Component to wrap colpick component
-             *
-             * @class Colorchooser
-             */
-
+        /**
+         * @component Colorchooser
+         *
+         * @description
+         * Component to wrap colpick component
+         */
         var component = Ember.Component.extend({});
 
         application.register('component:component-colorchooser', component);

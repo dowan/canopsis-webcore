@@ -22,6 +22,9 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var get = Ember.get;
 
+        /**
+         * @component miniformtitle
+         */
         var component = Ember.Component.extend({
             formBase: Ember.computed.alias('parentView.parentView'),
 
