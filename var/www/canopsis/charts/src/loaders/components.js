@@ -18,11 +18,11 @@
  */
 
 var components = [
-    { name: 'components/component-metricselector', url: 'canopsis/charts/src/components/metricselector/component', template: 'canopsis/charts/src/components/metricselector/template.html' },
-    { name: 'components/component-flotchart', url: 'canopsis/charts/src/components/flotchart/component', template: 'canopsis/charts/src/components/flotchart/template.html' },
-    { name: 'components/component-serieitemeditor', url: 'canopsis/charts/src/components/serieitemeditor/component', template: 'canopsis/charts/src/components/serieitemeditor/template.html' },
-    { name: 'components/component-metricitemeditor', url: 'canopsis/charts/src/components/metricitemeditor/component', template: 'canopsis/charts/src/components/metricitemeditor/template.html' },
-    { name: 'components/component-metricselector', url: 'canopsis/charts/src/components/metricselector/component', template: 'canopsis/charts/src/components/metricselector/template.html' },
+    { name: 'components/component-metricselector', url: 'canopsis/charts/src/components/metricselector/component', template: 'canopsis/charts/src/components/metricselector/template.hbs' },
+    { name: 'components/component-flotchart', url: 'canopsis/charts/src/components/flotchart/component', template: 'canopsis/charts/src/components/flotchart/template.hbs' },
+    { name: 'components/component-serieitemeditor', url: 'canopsis/charts/src/components/serieitemeditor/component', template: 'canopsis/charts/src/components/serieitemeditor/template.hbs' },
+    { name: 'components/component-metricitemeditor', url: 'canopsis/charts/src/components/metricitemeditor/component', template: 'canopsis/charts/src/components/metricitemeditor/template.hbs' },
+    { name: 'components/component-metricselector', url: 'canopsis/charts/src/components/metricselector/component', template: 'canopsis/charts/src/components/metricselector/template.hbs' },
     { name: 'components/component-metricselector2', url: 'canopsis/charts/src/components/metricselector2/component', template: 'canopsis/charts/src/components/metricselector2/template.hbs' },
     { name: 'components/component-selectedmetricheader', url: 'canopsis/charts/src/components/selectedmetricheader/component', template: 'canopsis/charts/src/components/selectedmetricheader/template.hbs' },
     { name: 'components/component-c3categorychart', url: 'canopsis/charts/src/components/c3categorychart/component', template: 'canopsis/charts/src/components/c3categorychart/template.hbs' },

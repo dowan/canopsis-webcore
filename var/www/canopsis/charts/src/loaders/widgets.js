@@ -18,7 +18,7 @@
  */
 
 var widgets = [
-    { name:'timegraph', url:'canopsis/charts/src/widgets/timegraph/controller', template:'canopsis/charts/src/widgets/timegraph/template.html'},
+    { name:'timegraph', url:'canopsis/charts/src/widgets/timegraph/controller', template:'canopsis/charts/src/widgets/timegraph/template.hbs'},
     { name:'categorychart', url:'canopsis/charts/src/widgets/categorychart/controller', template:'canopsis/charts/src/widgets/categorychart/template.hbs'}
 ];
 
