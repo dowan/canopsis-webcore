@@ -1,17 +1,24 @@
 {
   "name": "uibase",
-  "version": "0.0.0",
+  "description": "Base UI application layer for Canopsis frontend",
+  "version": "0.0.1",
   "authors": [
-    "Team Canopsis <maintainers@canopsis.org>"
+	"Team Canopsis <maintainers@canopsis.org>"
   ],
-  "description": "Provides required UI objects and templates required by the Canopsis UI",
   "main": "init.js",
   "moduleType": [
     "amd"
   ],
-  "license": "GNU Affero General Public License",
-  "homepage": "http://www.canopsis.org/",
-  "dependencies": {
-    "rrule": "~2.1.0"
-  }
+  "keywords": [
+    "canopsis"
+  ],
+  "license": "AGPL-3.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    ".",
+    "test",
+    "tests"
+  ]
 }

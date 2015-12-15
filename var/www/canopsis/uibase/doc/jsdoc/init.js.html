@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: init.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+
+    <h1 class="page-title">Source: init.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see &lt;http://www.gnu.org/licenses/>.
+ */
+
+/** @module canopsis.frontend.uibase */
+
+require.config({
+    paths: {
+        'bootstrap': 'canopsis/uibase/lib/externals/bootstrap/dist/js/bootstrap.min',
+        'datetimepicker': 'canopsis/uibase/libwrappers/datetimepicker',
+        'icheck': 'canopsis/uibase/lib/externals/iCheck/icheck',
+        'codemirror': 'canopsis/uibase/lib/externals/codemirror/lib/codemirror',
+        'summernote': 'canopsis/uibase/lib/externals/summernote/dist/summernote',
+        'ember-summernote': 'canopsis/uibase/lib/externals/ember-summernote/lib/component',
+        'daterangepicker': 'canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker',
+
+        'rrule': 'canopsis/uibase/lib/externals/rrule/lib/rrule',
+        'nlp': 'canopsis/uibase/lib/externals/rrule/lib/nlp',
+        'underscore' : 'canopsis/uibase/libwrappers/underscore',
+
+        'moment': 'canopsis/uibase/lib/externals/moment/min/moment-with-locales.min',
+        'jsoneditorlib': 'canopsis/uibase/lib/externals/jsoneditor/jsoneditor',
+        'ember-jsoneditor-lib': 'canopsis/uibase/lib/externals/ember-jsoneditor/ember-jsoneditor',
+        'd3': 'canopsis/uibase/lib/externals/d3/d3'
+    },
+    shim: {
+        'rrule': {
+            deps: ['jquery', 'underscore']
+        },
+        'nlp': {
+            'deps': ['jquery', 'rrule', 'underscore']
+        },
+        'bootstrap': {
+            deps: ['jquery']
+        },
+        'datetimepicker': {
+            deps: ['jquery', 'moment', 'bootstrap']
+        },
+        'icheck': {
+            deps: ['jquery']
+        }
+    }
+});
+
+define([
+    'jsoneditorlib',
+    'link!canopsis/uibase/lib/externals/jsoneditor/jsoneditor.css',
+    'canopsis/uibase/lib/loaders/editors',
+    'canopsis/uibase/lib/loaders/widgets',
+    'canopsis/uibase/lib/loaders/components',
+    'canopsis/uibase/lib/loaders/renderers',
+    'canopsis/uibase/lib/loaders/templates',
+    'canopsis/uibase/lib/loaders/helpers',
+    'canopsis/uibase/lib/loaders/mixins',
+    'canopsis/uibase/libwrappers/bootstrap',
+    'canopsis/uibase/libwrappers/jsoneditor',
+    'canopsis/uibase/libwrappers/summernote',
+    'canopsis/uibase/libwrappers/codemirror',
+    'canopsis/uibase/libwrappers/colpick',
+    'canopsis/uibase/libwrappers/rrule',
+    'canopsis/core/lib/wrappers/slider',
+    'canopsis/uibase/src/mixins/arraysearch',
+    'canopsis/uibase/src/mixins/customfilterlist',
+    'canopsis/uibase/src/mixins/draggablecolumns',
+    'canopsis/uibase/src/mixins/gridlayout',
+    'canopsis/uibase/src/mixins/horizontallayout',
+    'canopsis/uibase/src/mixins/lightlayout',
+    'canopsis/uibase/src/mixins/listlinedetail',
+    'canopsis/uibase/src/mixins/minimizebutton',
+    'canopsis/uibase/src/mixins/pagination',
+    'canopsis/uibase/src/mixins/periodicrefresh',
+    'canopsis/uibase/src/mixins/responsivelist',
+    'canopsis/uibase/src/mixins/showviewbutton',
+    'canopsis/uibase/src/mixins/sortablearray',
+    'canopsis/uibase/src/mixins/tablayout',
+    'canopsis/uibase/src/mixins/verticallayout',
+    'canopsis/uibase/src/mixins/downtime',
+    'canopsis/uibase/src/mixins/crud',
+    'canopsis/uibase/src/mixins/background',
+    'canopsis/uibase/src/widgets/topology/controller',
+    'canopsis/uibase/src/widgets/topology/view',
+    'canopsis/uibase/src/widgets/topology/adapter',
+    'link!canopsis/uibase/src/widgets/topology/style.css',
+    'canopsis/uibase/lib/externals/ember-datetimepicker/lib/component',
+    'canopsis/uibase/lib/externals/ember-icheck/lib/component',
+    'canopsis/uibase/lib/externals/ember-tooltip/lib/component',
+    'canopsis/uibase/lib/externals/ember-durationcombo/lib/component',
+    'link!canopsis/uibase/lib/externals/fontawesome/css/font-awesome.min.css',
+    'link!canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker-bs3.css',
+    'canopsis/uibase/lib/externals/stacktable/stacktable',
+    'link!canopsis/uibase/lib/externals/stacktable/stacktable.css',
+    'daterangepicker',
+    'canopsis/uibase/lib/externals/summernote/dist/summernote.min',
+    'link!canopsis/uibase/lib/externals/codemirror/lib/codemirror.css',
+    'canopsis/uibase/libwrappers/codemirror',
+    'ember-summernote',
+    'canopsis/uibase/lib/externals/underscore/underscore',
+    'underscore',
+    'nlp',
+    'bootstrap',
+    'link!canopsis/uibase/lib/externals/bootstrap/dist/css/bootstrap.min.css',
+    'codemirror',
+    'link!canopsis/uibase/lib/externals/codemirror/theme/ambiance.css',
+    'link!canopsis/uibase/lib/externals/codemirror/lib/codemirror.css',
+    'canopsis/uibase/lib/externals/colpick/js/colpick',
+    'link!canopsis/uibase/lib/externals/colpick/css/colpick.css',
+    'link!canopsis/uibase/lib/externals/eonasdan-bootstrap-datetimepicker/lib/css/bootstrap-datetimepicker.min.css',
+    'canopsis/uibase/lib/externals/eonasdan-bootstrap-datetimepicker/lib/js/bootstrap-datetimepicker.min',
+    'canopsis/uibase/lib/externals/iCheck/icheck',
+    'link!canopsis/uibase/lib/externals/iCheck/skins/all.css'
+], function (jsoneditor) {
+    window.jsoneditor = { JSONEditor: jsoneditor };
+
+    require(['ember-jsoneditor-lib'], function() {});
+
+    require(['rrule'], function () {});
+});
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="canopsis.frontend.uibase.module_CrudMixin.html">CrudMixin</a></li><li><a href="canopsis.frontend.uibase.module_GridLayoutMixin.html">GridLayoutMixin</a></li><li><a href="FileField%250A%250ASubclass%2520Ember.TextField%2520to%2520allow%2520file%2520uploading.module_.html">FileField
+
+Subclass Ember.TextField to allow file uploading.</a></li><li><a href="module-Colorchooser.html">Colorchooser</a></li><li><a href="module-Colpick.html">Colpick</a></li><li><a href="module-Dropdownbutton.html">Dropdownbutton</a></li><li><a href="module-Dropdownbuttonheader.html">Dropdownbuttonheader</a></li><li><a href="module-Dropdownbuttonoverview.html">Dropdownbuttonoverview</a></li><li><a href="module-Dropdownbuttontitle.html">Dropdownbuttontitle</a></li></ul><h3>Events</h3><ul><li><a href="canopsis.frontend.uibase.module_CrudMixin.html#~event:add">add</a></li><li><a href="canopsis.frontend.uibase.module_CrudMixin.html#~event:duplicate">duplicate</a></li><li><a href="canopsis.frontend.uibase.module_CrudMixin.html#~event:edit">edit</a></li><li><a href="canopsis.frontend.uibase.module_CrudMixin.html#~event:remove">remove</a></li><li><a href="canopsis.frontend.uibase.module_CrudMixin.html#~event:removeSelection">removeSelection</a></li></ul><h3>Mixins</h3><ul><li><a href="initialize-module_mixin.html">mixin</a></li><li><a href="module-EventConsumerMixin.html">EventConsumerMixin</a></li><li><a href="module-MetricConsumerMixin.html">MetricConsumerMixin</a></li><li><a href="module-MetricFilterableMixin.html">MetricFilterableMixin</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Mon Dec 14 2015 16:47:01 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

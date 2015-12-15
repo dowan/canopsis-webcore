@@ -18,19 +18,19 @@
  */
 
 var helpers = [
-    { name:'eventtype', url:'canopsis/uibase/helpers/eventtype' },
-    { name:'sorticon', url:'canopsis/uibase/helpers/sorticon' },
-    { name:'percent', url:'canopsis/uibase/helpers/percent' },
-    { name:'timestamp', url:'canopsis/uibase/helpers/timestamp' },
-    { name:'timeSince', url:'canopsis/uibase/helpers/timeSince' },
-    { name:'logo', url:'canopsis/uibase/helpers/logo' },
-    { name:'glyphicon', url:'canopsis/uibase/helpers/glyphicon' },
-    { name:'color', url:'canopsis/uibase/helpers/color' },
-    { name:'humanreadable', url:'canopsis/uibase/helpers/humanreadable' },
-    { name:'rights', url:'canopsis/uibase/helpers/rights' },
-    { name:'json2html', url:'canopsis/uibase/helpers/json2html' },
-    { name:'interval2html', url:'canopsis/uibase/helpers/interval2html' },
-    { name:'compare', url:'canopsis/uibase/helpers/compare' }
+    { name:'eventtype', url:'canopsis/uibase/src/helpers/eventtype' },
+    { name:'sorticon', url:'canopsis/uibase/src/helpers/sorticon' },
+    { name:'percent', url:'canopsis/uibase/src/helpers/percent' },
+    { name:'timestamp', url:'canopsis/uibase/src/helpers/timestamp' },
+    { name:'timeSince', url:'canopsis/uibase/src/helpers/timeSince' },
+    { name:'logo', url:'canopsis/uibase/src/helpers/logo' },
+    { name:'glyphicon', url:'canopsis/uibase/src/helpers/glyphicon' },
+    { name:'color', url:'canopsis/uibase/src/helpers/color' },
+    { name:'humanreadable', url:'canopsis/uibase/src/helpers/humanreadable' },
+    { name:'rights', url:'canopsis/uibase/src/helpers/rights' },
+    { name:'json2html', url:'canopsis/uibase/src/helpers/json2html' },
+    { name:'interval2html', url:'canopsis/uibase/src/helpers/interval2html' },
+    { name:'compare', url:'canopsis/uibase/src/helpers/compare' }
 ];
 
 loader.loadWithTemplates(helpers);

@@ -1,21 +1,21 @@
 /*
-# Copyright (c) 2015 "Capensis" [http://www.capensis.com]
-#
-# This file is part of Canopsis.
-#
-# Canopsis is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Canopsis is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /** @module canopsis.frontend.uibase */
 
@@ -58,6 +58,8 @@ require.config({
 });
 
 define([
+    'jsoneditorlib',
+    'link!canopsis/uibase/lib/externals/jsoneditor/jsoneditor.css',
     'canopsis/uibase/lib/loaders/editors',
     'canopsis/uibase/lib/loaders/widgets',
     'canopsis/uibase/lib/loaders/components',
@@ -72,28 +74,28 @@ define([
     'canopsis/uibase/libwrappers/colpick',
     'canopsis/uibase/libwrappers/rrule',
     'canopsis/core/lib/wrappers/slider',
-    'canopsis/uibase/mixins/arraysearch',
-    'canopsis/uibase/mixins/customfilterlist',
-    'canopsis/uibase/mixins/draggablecolumns',
-    'canopsis/uibase/mixins/gridlayout',
-    'canopsis/uibase/mixins/horizontallayout',
-    'canopsis/uibase/mixins/lightlayout',
-    'canopsis/uibase/mixins/listlinedetail',
-    'canopsis/uibase/mixins/minimizebutton',
-    'canopsis/uibase/mixins/pagination',
-    'canopsis/uibase/mixins/periodicrefresh',
-    'canopsis/uibase/mixins/responsivelist',
-    'canopsis/uibase/mixins/showviewbutton',
-    'canopsis/uibase/mixins/sortablearray',
-    'canopsis/uibase/mixins/tablayout',
-    'canopsis/uibase/mixins/verticallayout',
-    'canopsis/uibase/mixins/downtime',
-    'canopsis/uibase/mixins/crud',
-    'canopsis/uibase/mixins/background',
-    'canopsis/uibase/widgets/topology/controller',
-    'canopsis/uibase/widgets/topology/view',
-    'canopsis/uibase/widgets/topology/adapter',
-    'link!canopsis/uibase/widgets/topology/style.css',
+    'canopsis/uibase/src/mixins/arraysearch',
+    'canopsis/uibase/src/mixins/customfilterlist',
+    'canopsis/uibase/src/mixins/draggablecolumns',
+    'canopsis/uibase/src/mixins/gridlayout',
+    'canopsis/uibase/src/mixins/horizontallayout',
+    'canopsis/uibase/src/mixins/lightlayout',
+    'canopsis/uibase/src/mixins/listlinedetail',
+    'canopsis/uibase/src/mixins/minimizebutton',
+    'canopsis/uibase/src/mixins/pagination',
+    'canopsis/uibase/src/mixins/periodicrefresh',
+    'canopsis/uibase/src/mixins/responsivelist',
+    'canopsis/uibase/src/mixins/showviewbutton',
+    'canopsis/uibase/src/mixins/sortablearray',
+    'canopsis/uibase/src/mixins/tablayout',
+    'canopsis/uibase/src/mixins/verticallayout',
+    'canopsis/uibase/src/mixins/downtime',
+    'canopsis/uibase/src/mixins/crud',
+    'canopsis/uibase/src/mixins/background',
+    'canopsis/uibase/src/widgets/topology/controller',
+    'canopsis/uibase/src/widgets/topology/view',
+    'canopsis/uibase/src/widgets/topology/adapter',
+    'link!canopsis/uibase/src/widgets/topology/style.css',
     'canopsis/uibase/lib/externals/ember-datetimepicker/lib/component',
     'canopsis/uibase/lib/externals/ember-icheck/lib/component',
     'canopsis/uibase/lib/externals/ember-tooltip/lib/component',
@@ -102,6 +104,30 @@ define([
     'link!canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker-bs3.css',
     'canopsis/uibase/lib/externals/stacktable/stacktable',
     'link!canopsis/uibase/lib/externals/stacktable/stacktable.css',
-    'daterangepicker'
-], function () {});
+    'daterangepicker',
+    'canopsis/uibase/lib/externals/summernote/dist/summernote.min',
+    'link!canopsis/uibase/lib/externals/codemirror/lib/codemirror.css',
+    'canopsis/uibase/libwrappers/codemirror',
+    'ember-summernote',
+    'canopsis/uibase/lib/externals/underscore/underscore',
+    'underscore',
+    'nlp',
+    'bootstrap',
+    'link!canopsis/uibase/lib/externals/bootstrap/dist/css/bootstrap.min.css',
+    'codemirror',
+    'link!canopsis/uibase/lib/externals/codemirror/theme/ambiance.css',
+    'link!canopsis/uibase/lib/externals/codemirror/lib/codemirror.css',
+    'canopsis/uibase/lib/externals/colpick/js/colpick',
+    'link!canopsis/uibase/lib/externals/colpick/css/colpick.css',
+    'link!canopsis/uibase/lib/externals/eonasdan-bootstrap-datetimepicker/lib/css/bootstrap-datetimepicker.min.css',
+    'canopsis/uibase/lib/externals/eonasdan-bootstrap-datetimepicker/lib/js/bootstrap-datetimepicker.min',
+    'canopsis/uibase/lib/externals/iCheck/icheck',
+    'link!canopsis/uibase/lib/externals/iCheck/skins/all.css'
+], function (jsoneditor) {
+    window.jsoneditor = { JSONEditor: jsoneditor };
+
+    require(['ember-jsoneditor-lib'], function() {});
+
+    require(['rrule'], function () {});
+});
 
