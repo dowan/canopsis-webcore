@@ -18,22 +18,22 @@
  */
 
 var renderers = [
-    { name: 'renderer-actionfilter', template: 'canopsis/uibase/src/renderers/actionfilter.html'},
-    { name: 'renderer-boolean', template: 'canopsis/uibase/src/renderers/boolean.html'},
-    { name: 'renderer-cfilter', template: 'canopsis/uibase/src/renderers/cfilter.html'},
-    { name: 'renderer-cfilterwithproperties', template: 'canopsis/uibase/src/renderers/cfilterwithproperties.html'},
-    { name: 'renderer-color', template: 'canopsis/uibase/src/renderers/color.html'},
-    { name: 'renderer-conf', template: 'canopsis/uibase/src/renderers/conf.html'},
-    { name: 'renderer-mail', template: 'canopsis/uibase/src/renderers/mail.html'},
-    { name: 'renderer-object', template: 'canopsis/uibase/src/renderers/object.html'},
-    { name: 'renderer-percent', template: 'canopsis/uibase/src/renderers/percent.html'},
-    { name: 'renderer-richtext', template: 'canopsis/uibase/src/renderers/richtext.html'},
-    { name: 'renderer-source', template: 'canopsis/uibase/src/renderers/source.html'},
-    { name: 'renderer-subprocess', template: 'canopsis/uibase/src/renderers/subprocess.html'},
-    { name: 'renderer-tags', template: 'canopsis/uibase/src/renderers/tags.html'},
-    { name: 'renderer-timestamp', template: 'canopsis/uibase/src/renderers/timestamp.html'},
-    { name: 'renderer-translator', template: 'canopsis/uibase/src/renderers/translator.html'},
-    { name: 'renderer-recordinfopopup', template: 'canopsis/uibase/src/renderers/recordinfopopup.html'},
+    { name: 'renderer-actionfilter', template: 'canopsis/uibase/src/renderers/actionfilter.hbs'},
+    { name: 'renderer-boolean', template: 'canopsis/uibase/src/renderers/boolean.hbs'},
+    { name: 'renderer-cfilter', template: 'canopsis/uibase/src/renderers/cfilter.hbs'},
+    { name: 'renderer-cfilterwithproperties', template: 'canopsis/uibase/src/renderers/cfilterwithproperties.hbs'},
+    { name: 'renderer-color', template: 'canopsis/uibase/src/renderers/color.hbs'},
+    { name: 'renderer-conf', template: 'canopsis/uibase/src/renderers/conf.hbs'},
+    { name: 'renderer-mail', template: 'canopsis/uibase/src/renderers/mail.hbs'},
+    { name: 'renderer-object', template: 'canopsis/uibase/src/renderers/object.hbs'},
+    { name: 'renderer-percent', template: 'canopsis/uibase/src/renderers/percent.hbs'},
+    { name: 'renderer-richtext', template: 'canopsis/uibase/src/renderers/richtext.hbs'},
+    { name: 'renderer-source', template: 'canopsis/uibase/src/renderers/source.hbs'},
+    { name: 'renderer-subprocess', template: 'canopsis/uibase/src/renderers/subprocess.hbs'},
+    { name: 'renderer-tags', template: 'canopsis/uibase/src/renderers/tags.hbs'},
+    { name: 'renderer-timestamp', template: 'canopsis/uibase/src/renderers/timestamp.hbs'},
+    { name: 'renderer-translator', template: 'canopsis/uibase/src/renderers/translator.hbs'},
+    { name: 'renderer-recordinfopopup', template: 'canopsis/uibase/src/renderers/recordinfopopup.hbs'},
     { name: 'renderer-labelledlink', template: 'canopsis/uibase/src/renderers/labelledlink.hbs'}
 ];
 

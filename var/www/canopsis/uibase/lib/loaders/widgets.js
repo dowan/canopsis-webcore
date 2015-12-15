@@ -19,11 +19,11 @@
 
 var widgets = [
     { name:'text', url:'canopsis/uibase/src/widgets/text/controller', template:'canopsis/uibase/src/widgets/text/template.hbs' },
-    { name:'list', url:'canopsis/uibase/src/widgets/list/controller', template:'canopsis/uibase/src/widgets/list/template.html' },
-    { name:'widgetcontainer', url:'canopsis/uibase/src/widgets/widgetcontainer/controller', template:'canopsis/uibase/src/widgets/widgetcontainer/template.html' },
-    { name:'uiactionbutton', url:'canopsis/uibase/src/widgets/uiactionbutton/controller', template:'canopsis/uibase/src/widgets/uiactionbutton/template.html' },
-    { name:'uimaintabcollection', url:'canopsis/uibase/src/widgets/uimaintabcollection/controller', template:'canopsis/uibase/src/widgets/uimaintabcollection/template.html' },
-    { name:'topology', url:'canopsis/uibase/src/widgets/topology/controller', template:'canopsis/uibase/src/widgets/topology/template.html' }
+    { name:'list', url:'canopsis/uibase/src/widgets/list/controller', template:'canopsis/uibase/src/widgets/list/template.hbs' },
+    { name:'widgetcontainer', url:'canopsis/uibase/src/widgets/widgetcontainer/controller', template:'canopsis/uibase/src/widgets/widgetcontainer/template.hbs' },
+    { name:'uiactionbutton', url:'canopsis/uibase/src/widgets/uiactionbutton/controller', template:'canopsis/uibase/src/widgets/uiactionbutton/template.hbs' },
+    { name:'uimaintabcollection', url:'canopsis/uibase/src/widgets/uimaintabcollection/controller', template:'canopsis/uibase/src/widgets/uimaintabcollection/template.hbs' },
+    { name:'topology', url:'canopsis/uibase/src/widgets/topology/controller', template:'canopsis/uibase/src/widgets/topology/template.hbs' }
 ];
 
 loader.loadWithTemplates(widgets);
