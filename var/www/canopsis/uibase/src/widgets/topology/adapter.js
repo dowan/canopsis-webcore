@@ -18,7 +18,7 @@
  */
 
 define([
-    'canopsis/canopsis-backend-ui-connector/adapters/application'
+    'canopsis/canopsis-backend-ui-connector/src/adapters/application'
 ], function(ApplicationAdapter) {
 
     var get = Ember.get,

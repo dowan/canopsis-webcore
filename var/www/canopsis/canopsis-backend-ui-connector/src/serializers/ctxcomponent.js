@@ -17,9 +17,17 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @module canopsis.frontend.uiv1-themes */
 
-define([
-    'canopsis/uiv1_themes/src/lib/loaders/mixins',
-    'canopsis/uiv1_themes/src/lib/loaders/templates'
-], function () {});
+Ember.Application.initializer({
+    name: 'CtxcomponentSerializer',
+    after: 'ContextSerializer',
+   initialize: function(container, application) {
+        var CtxSerializer = container.lookupFactory('serializer:context');
+
+        /**
+         * @serializer ctxcomponent
+         */
+        var serializer = CtxSerializer.extend({});
+        application.register('serializer:ctxcomponent', serializer);
+    }
+});

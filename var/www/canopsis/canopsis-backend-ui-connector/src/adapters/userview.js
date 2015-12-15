@@ -17,9 +17,23 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @module canopsis.frontend.uiv1-themes */
+Ember.Application.initializer({
+    name: 'UserviewAdapter',
+    after: 'ApplicationAdapter',
+    initialize: function(container, application) {
+        var ApplicationAdapter = container.lookupFactory('adapter:application');
 
-define([
-    'canopsis/uiv1_themes/src/lib/loaders/mixins',
-    'canopsis/uiv1_themes/src/lib/loaders/templates'
-], function () {});
+        /**
+         * @adapter userview
+         */
+        var adapter = ApplicationAdapter.extend({
+            buildURL: function(type) {
+                type = "view";
+
+                return this._super.apply(this, arguments);
+            }
+        });
+
+        application.register('adapter:userview', adapter);
+    }
+});

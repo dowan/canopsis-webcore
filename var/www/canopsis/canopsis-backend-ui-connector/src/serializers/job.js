@@ -17,9 +17,16 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @module canopsis.frontend.uiv1-themes */
+Ember.Application.initializer({
+    name: 'JobSerializer',
+    after: 'ApplicationSerializer',
+    initialize: function(container, application) {
+        var ApplicationSerializer = container.lookupFactory('serializer:application');
 
-define([
-    'canopsis/uiv1_themes/src/lib/loaders/mixins',
-    'canopsis/uiv1_themes/src/lib/loaders/templates'
-], function () {});
+        /**
+         * @serializer job
+         */
+        var serializer = ApplicationSerializer.extend({});
+        application.register('serializer:job', serializer);
+    }
+});

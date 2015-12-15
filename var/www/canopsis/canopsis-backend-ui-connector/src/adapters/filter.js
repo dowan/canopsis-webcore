@@ -17,9 +17,26 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @module canopsis.frontend.uiv1-themes */
+Ember.Application.initializer({
+    name: 'FilterAdapter',
+    after: 'ApplicationAdapter',
+    initialize: function(container, application) {
+        var ApplicationAdapter = container.lookupFactory('adapter:application');
 
-define([
-    'canopsis/uiv1_themes/src/lib/loaders/mixins',
-    'canopsis/uiv1_themes/src/lib/loaders/templates'
-], function () {});
+        var set = Ember.set;
+
+        /**
+         * @adapter filter
+         */
+        var adapter = ApplicationAdapter.extend({
+            updateRecord: function(store, type, record) {
+                //This value have to be reseted each update for user display purpose
+                set(record, 'run_once', false);
+                var promise = this._super(store, type, record);
+                return promise;
+            }
+        });
+
+        application.register('adapter:filter', adapter);
+    }
+});

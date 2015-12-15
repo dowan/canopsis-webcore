@@ -18,7 +18,7 @@
  */
 
 define([
-    'canopsis/canopsis-backend-ui-connector/adapters/schema',
+    'canopsis/canopsis-backend-ui-connector/src/adapters/schema',
     'app/lib/schemasregistry'
 ], function (SchemaAdapter, schemasRegistry) {
     function compare(a,b) {

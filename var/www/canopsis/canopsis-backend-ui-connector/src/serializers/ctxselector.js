@@ -17,9 +17,16 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @module canopsis.frontend.uiv1-themes */
+Ember.Application.initializer({
+    name: 'CtxselectorSerializer',
+    after: 'ContextSerializer',
+   initialize: function(container, application) {
+        var CtxSerializer = container.lookupFactory('serializer:context');
 
-define([
-    'canopsis/uiv1_themes/src/lib/loaders/mixins',
-    'canopsis/uiv1_themes/src/lib/loaders/templates'
-], function () {});
+        /**
+         * @serializer ctxselector
+         */
+        var serializer = CtxSerializer.extend({});
+        application.register('serializer:ctxselector', serializer);
+    }
+});

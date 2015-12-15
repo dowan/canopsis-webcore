@@ -17,9 +17,30 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @module canopsis.frontend.uiv1-themes */
+Ember.Application.initializer({
+    name: 'EventlogAdapter',
+    after: 'ApplicationAdapter',
+    initialize: function(container, application) {
+        var ApplicationAdapter = container.lookupFactory('adapter:application');
 
-define([
-    'canopsis/uiv1_themes/src/lib/loaders/mixins',
-    'canopsis/uiv1_themes/src/lib/loaders/templates'
-], function () {});
+        /**
+         * @adapter eventlog
+         */
+        var adapter = ApplicationAdapter.extend({
+
+            buildURL: function(type, id) {
+                void(id);
+
+                return "/rest/events_log";
+            },
+
+            findQuery: function(store, type, query) {
+                var url = "/rest/events_log";
+
+                return this.ajax(url, 'GET', { data: query });
+            }
+        });
+
+        application.register('adapter:eventlog', adapter);
+    }
+});

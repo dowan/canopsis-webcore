@@ -17,9 +17,17 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @module canopsis.frontend.uiv1-themes */
+Ember.Application.initializer({
+    name: 'CancelAdapter',
+    after: 'EventAdapter',
+    initialize: function(container, application) {
+        var EventAdapter = container.lookupFactory('adapter:event');
 
-define([
-    'canopsis/uiv1_themes/src/lib/loaders/mixins',
-    'canopsis/uiv1_themes/src/lib/loaders/templates'
-], function () {});
+        /**
+         * @adapter cancel
+         */
+        var adapter = EventAdapter.extend({});
+
+        application.register('adapter:cancel', adapter);
+    }
+});

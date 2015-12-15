@@ -17,9 +17,16 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @module canopsis.frontend.uiv1-themes */
+Ember.Application.initializer({
+    name: 'LinklistSerializer',
+    after: 'ContextSerializer',
+    initialize: function(container, application) {
+        var ContextSerializer = container.lookupFactory('serializer:context');
 
-define([
-    'canopsis/uiv1_themes/src/lib/loaders/mixins',
-    'canopsis/uiv1_themes/src/lib/loaders/templates'
-], function () {});
+        /**
+         * @serializer linklist
+         */
+        var serializer = ContextSerializer.extend({});
+        application.register('serializer:linklist', serializer);
+    }
+});

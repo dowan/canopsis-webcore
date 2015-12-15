@@ -17,9 +17,23 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @module canopsis.frontend.uiv1-themes */
+Ember.Application.initializer({
+    name: 'ActionAdapter',
+    after: 'ApplicationAdapter',
+    initialize: function(container, application) {
+        var ApplicationAdapter = container.lookupFactory('adapter:application');
 
-define([
-    'canopsis/uiv1_themes/src/lib/loaders/mixins',
-    'canopsis/uiv1_themes/src/lib/loaders/templates'
-], function () {});
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
+
+        /**
+         * @adapter action
+         */
+        var adapter = ApplicationAdapter.extend({
+            namespace: 'default_rights'
+        });
+
+        application.register('adapter:action', adapter);
+    }
+});

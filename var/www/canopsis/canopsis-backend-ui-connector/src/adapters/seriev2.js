@@ -17,9 +17,17 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @module canopsis.frontend.uiv1-themes */
 
-define([
-    'canopsis/uiv1_themes/src/lib/loaders/mixins',
-    'canopsis/uiv1_themes/src/lib/loaders/templates'
-], function () {});
+Ember.Application.initializer({
+    name: 'SerieAdapterv2',
+    after: 'StorageAdapters',
+    initialize: function(container, application) {
+        var adapter = container.lookupFactory('adapter:storage-default');
+
+        /**
+         * @adapter Serie2
+         * @augments StorageDefaultAdapter
+         */
+        application.register('adapter:serie2', adapter);
+    }
+});
