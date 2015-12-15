@@ -17,16 +17,28 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @module canopsis.frontend.monitoring */
+Ember.Application.initializer({
+    name: 'EventnavigationMixin',
+    after: ['MixinFactory', 'FormsUtils', 'HashUtils'],
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
+        var formsUtils = container.lookupFactory('utility:forms');
+        var hashUtils = container.lookupFactory('utility:hash');
 
-define([
-    'canopsis/monitoring/src/lib/loaders/editors',
-    'canopsis/monitoring/src/lib/loaders/widgets',
-    'canopsis/monitoring/src/lib/loaders/components',
-    'canopsis/monitoring/src/lib/loaders/helpers',
-    'canopsis/monitoring/src/lib/loaders/mixins',
-    'canopsis/monitoring/src/lib/loaders/templates',
-    'canopsis/monitoring/src/lib/loaders/renderers'
-], function () {
+        var get = Ember.get,
+            set = Ember.set;
 
+        /**
+         * @mixin eventnavigation
+         */
+        var mixin = Mixin('eventnavigation', {
+            partials: {
+                actionToolbarButtons: [
+                    'actionbutton-history'
+                ]
+            }
+        });
+
+        application.register('mixin:eventnavigation', mixin);
+    }
 });
