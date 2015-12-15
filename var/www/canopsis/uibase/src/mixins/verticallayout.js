@@ -24,6 +24,9 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var Mixin = container.lookupFactory('factory:mixin');
 
+        /**
+         * @mixin verticallayout
+         */
         var mixin = Mixin('verticallayout', {
             partials: {
                 layout: ['verticallayout']

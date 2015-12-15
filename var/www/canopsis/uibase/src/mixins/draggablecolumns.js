@@ -24,6 +24,9 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var Mixin = container.lookupFactory('factory:mixin');
 
+        /**
+         * @mixin draggablecolumns
+         */
         var mixin = Mixin('draggablecolumns', {
             partials: {
                 tableheader: ['draggableheaders']

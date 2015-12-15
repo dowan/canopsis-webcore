@@ -29,7 +29,9 @@ Ember.Application.initializer({
         var isNone = Ember.isNone,
             __ = Ember.String.loc;
 
-
+        /**
+         * @mixin showviewbutton
+         */
         var mixin = Mixin('showviewbutton', {
             partials: {
                 itemactionbuttons: ['actionbutton-show']

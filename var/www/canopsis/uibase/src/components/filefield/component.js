@@ -25,6 +25,7 @@ Ember.Application.initializer({
         /**
          * @class FileField
          *
+         * @description
          * Subclass Ember.TextField to allow file uploading.
          */
         var component = Ember.TextField.extend(Ember.Evented, {

@@ -23,6 +23,9 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var Mixin = container.lookupFactory('factory:mixin');
 
+        /**
+         * @mixin lightlayout
+         */
         var mixin = Mixin('lightlayout', {
             partials: {
                 layout: ['lightlayout']

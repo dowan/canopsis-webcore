@@ -69,7 +69,9 @@ Ember.Application.initializer({
 
         });
 
-
+        /**
+         * @mixin periodicrefresh
+         */
         var mixin = Mixin('periodicrefresh', {
 
             init:function() {

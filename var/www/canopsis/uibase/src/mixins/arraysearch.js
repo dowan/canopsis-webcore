@@ -27,14 +27,14 @@ Ember.Application.initializer({
             set = Ember.set;
 
         /**
-         * Implements search in arraycontrollers
+         * @mixin arraysearch
+         *
+         * @description Implements search in arraycontrollers
          *
          * You should define on the ArrayController:
          *    - the `findOptions` property
          *    - the `refreshContent()` method
          *    - the searchableAttributes property
-         *
-         * @mixin
          */
         var mixin = Mixin('arraysearch', {
             partials: {

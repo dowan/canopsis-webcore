@@ -29,6 +29,9 @@ Ember.Application.initializer({
             isNone = Ember.isNone;
 
         /**
+         * @mixin downtime
+         *
+         * @description
          * Implement downtime handling for widgets that manages collections
          *
          * Useful in lists for example, where it adds buttons to donwtime list elements

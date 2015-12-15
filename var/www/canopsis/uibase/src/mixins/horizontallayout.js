@@ -25,6 +25,9 @@ Ember.Application.initializer({
 
         var get = Ember.get;
 
+        /**
+         * @mixin horizontallayout
+         */
         var mixin = Mixin('horizontallayout', {
             partials: {
                 layout: ['horizontallayout']

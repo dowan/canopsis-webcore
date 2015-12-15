@@ -146,9 +146,7 @@ Ember.Application.initializer({
          *
          * The grid is managed by bootstrap CSS classes.
          *
-         * @class GridLayoutMixin
-         * @memberOf canopsis.frontend.uibase
-         * @static
+         * @mixin Gridlayout
          */
         var mixin = Mixin('gridlayout', {
             partials: {

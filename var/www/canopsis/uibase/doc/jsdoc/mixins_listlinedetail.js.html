@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: mixins/listlinedetail.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+
+    <h1 class="page-title">Source: mixins/listlinedetail.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see &lt;http://www.gnu.org/licenses/>.
+ */
+
+Ember.Application.initializer({
+    name: 'ListlinedetailMixin',
+    after: ['MixinFactory', 'FormsRegistry', 'HashUtils'],
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
+        var hash = container.lookupFactory('utility:hash');
+
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
+
+        /**
+         * @mixin listlinedetail
+         */
+        var mixin = Mixin('listlinedetail', {
+
+            partials: {
+                columnsLine: ['actionbutton-foldable'],
+                columnsHead: ['column-unfold']
+            },
+
+            actions: {
+                unfold: function(view) {
+                    var unfolded = get(view, 'unfolded');
+
+                    if (isNone(unfolded)) {
+                        set(view, 'unfolded', true);
+                    }
+                    else {
+                        set(view, 'unfolded', !unfolded);
+                    }
+                }
+            },
+
+            init: function() {
+                this._super.apply(this, arguments);
+
+                var tmplId = hash.generateId('dynamic-listline-detail');
+                set(this, 'detailTemplate', tmplId);
+            },
+
+            mixinsOptionsReady: function() {
+                this._super.apply(this, arguments);
+
+                var tmplId = get(this, 'detailTemplate'),
+                    tmpl = get(this, 'mixinOptions.listlinedetail.template');
+
+                if (isNone(tmpl)) {
+                    tmpl = 'No template defined';
+                }
+
+                set(Ember.TEMPLATES, tmplId, Ember.Handlebars.compile(tmpl));
+            },
+
+            colspan: function() {
+                var nbColumns = get(this, 'controller.shown_columns.length');
+                var nbExtraColumns = get(this, 'controller._partials.columnsLine.length');
+                var haveItemActions = get(this, 'controller._partials.itemactionbuttons');
+
+                if (isNone(nbColumns)) {
+                    nbColumns = 0;
+                }
+
+                if (isNone(nbExtraColumns)) {
+                    nbExtraColumns = 0;
+                }
+
+                if (isNone(haveItemActions)) {
+                    haveItemActions = false;
+                }
+
+                haveItemActions = !!haveItemActions;
+
+                /* checkbox */
+                nbColumns++;
+
+                /* columnsLine */
+                nbColumns += nbExtraColumns;
+
+                /* item actions */
+                if (haveItemActions) {
+                    nbColumns++;
+                }
+
+                return nbColumns;
+            }.property('controller.shown_columns')
+        });
+
+        application.register('mixin:listlinedetail', mixin);
+    }
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Widgets</h3><ul><li><a href="widget_List.html">List</a></li><li><a href="widget_TextWidget.html">TextWidget</a></li><li><a href="widget_Uiactionbutton.html">Uiactionbutton</a></li><li><a href="widget_Uimaintabcollection.html">Uimaintabcollection</a></li><li><a href="widget_Widgetcontainer.html">Widgetcontainer</a></li></ul><h3>Classes</h3><ul><li><a href="module-Colorchooser.html">Colorchooser</a></li><li><a href="module-Colpick.html">Colpick</a></li><li><a href="module-Dropdownbutton.html">Dropdownbutton</a></li><li><a href="module-Dropdownbuttoncontent.html">Dropdownbuttoncontent</a></li><li><a href="module-Dropdownbuttonheader.html">Dropdownbuttonheader</a></li><li><a href="module-Dropdownbuttonoverview.html">Dropdownbuttonoverview</a></li><li><a href="module-Dropdownbuttontitle.html">Dropdownbuttontitle</a></li><li><a href="module-FileField.html">FileField</a></li></ul><h3>Events</h3><ul><li><a href="module-crud.html#~event:add">add</a></li><li><a href="module-crud.html#~event:duplicate">duplicate</a></li><li><a href="module-crud.html#~event:edit">edit</a></li><li><a href="module-List.html#~event:isAllSelectedChanged">isAllSelectedChanged</a></li><li><a href="module-crud.html#~event:remove">remove</a></li><li><a href="module-crud.html#~event:removeSelection">removeSelection</a></li><li><a href="module-List.html#~event:rollbackableChanged">rollbackableChanged</a></li><li><a href="module-List.html#~event:widgetDataChanged">widgetDataChanged</a></li></ul><h3>Mixins</h3><ul><li><a href="module-arraysearch.html">arraysearch</a></li><li><a href="module-background.html">background</a></li><li><a href="module-crud.html">crud</a></li><li><a href="module-customfilterlist.html">customfilterlist</a></li><li><a href="module-downtime.html">downtime</a></li><li><a href="module-draggablecolumns.html">draggablecolumns</a></li><li><a href="module-EventConsumerMixin.html">EventConsumerMixin</a></li><li><a href="module-Gridlayout.html">Gridlayout</a></li><li><a href="module-horizontallayout.html">horizontallayout</a></li><li><a href="module-lightlayout.html">lightlayout</a></li><li><a href="module-listlinedetail.html">listlinedetail</a></li><li><a href="module-MetricConsumer.html">MetricConsumer</a></li><li><a href="module-MetricFilterable.html">MetricFilterable</a></li><li><a href="module-minimizebutton.html">minimizebutton</a></li><li><a href="module-pagination.html">pagination</a></li><li><a href="module-periodicrefresh.html">periodicrefresh</a></li><li><a href="module-responsivelist.html">responsivelist</a></li><li><a href="module-showviewbutton.html">showviewbutton</a></li><li><a href="module-sortablearray.html">sortablearray</a></li><li><a href="module-tablayout.html">tablayout</a></li><li><a href="module-verticallayout.html">verticallayout</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Dec 15 2015 10:21:54 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -26,7 +26,7 @@ Ember.Application.initializer({
         var get = Ember.get;
 
         /**
-         * @mixin MetricFilterableMixin
+         * @mixin MetricFilterable
          * @augments Mixin
          * Provide metric filter support to widget.
          */

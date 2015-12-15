@@ -144,6 +144,9 @@ Ember.Application.initializer({
         });
 
 
+        /**
+         * @mixin responsivelist
+         */
         var mixin = Mixin('responsivelist', {
             partials: {
                 //TODO check if still used

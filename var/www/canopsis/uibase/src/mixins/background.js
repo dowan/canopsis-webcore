@@ -56,7 +56,9 @@ Ember.Application.initializer({
             }
         });
 
-
+        /**
+         * @mixin background
+         */
         var mixin = Mixin('background', {
             init: function() {
                 this._super();

@@ -34,9 +34,11 @@ Ember.Application.initializer({
             __ = Ember.String.loc;
 
         /**
-          * Implements Custom filter management for list
-          * A filter is a combination of a cfilter and a title.
-          * Custom cfilter allow perform selelection on a list with custom filter information.
+         * @mixin customfilterlist
+         * @description
+         * Implements Custom filter management for list
+         * A filter is a combination of a cfilter and a title.
+         * Custom cfilter allow perform selelection on a list with custom filter information.
         */
         var mixin = MixinFactory('customfilterlist', {
             partials: {

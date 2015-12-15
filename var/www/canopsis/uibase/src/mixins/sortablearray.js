@@ -29,6 +29,9 @@ Ember.Application.initializer({
             isNone = Ember.isNone;
 
         /**
+         * @mixin sortablearray
+         *
+         * @description
          * Implements sorting in arraycontrollers
          *
          * You should define on the ArrayController:

@@ -26,6 +26,9 @@ Ember.Application.initializer({
         var get = Ember.get,
             set = Ember.set;
 
+        /**
+         * @mixin tablayout
+         */
         var mixin = Mixin('tablayout', {
             init: function() {
                 if(get(this, 'items.content').length >= 0 && !Ember.isEmpty(get(this, 'items.content')[0])) {

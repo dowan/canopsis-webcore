@@ -26,6 +26,9 @@ Ember.Application.initializer({
 
         var set = Ember.set;
 
+        /**
+         * @mixin minimizebutton
+         */
         var mixin = Mixin('minimizebutton', {
             init: function() {
                 this._super();

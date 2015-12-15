@@ -28,6 +28,9 @@ Ember.Application.initializer({
             set = Ember.set,
             isNone = Ember.isNone;
 
+        /**
+         * @mixin listlinedetail
+         */
         var mixin = Mixin('listlinedetail', {
 
             partials: {

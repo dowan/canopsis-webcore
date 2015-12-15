@@ -30,7 +30,7 @@ Ember.Application.initializer({
             isNone = Ember.isNone;
 
         /**
-         * @mixin MetricConsumerMixin
+         * @mixin MetricConsumer
          * @augments Mixin
          * Provide Metric fetching mecanism to widgets.
          */

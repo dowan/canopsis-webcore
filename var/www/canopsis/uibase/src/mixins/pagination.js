@@ -29,13 +29,16 @@ Ember.Application.initializer({
 
 
         /**
-          Implements pagination in ArrayControllers
-
-          You should define on the ArrayController:
-              - the `findOptions` property
-              - the `findItems()` method
-
-        */
+         * @mixin pagination
+         *
+         * @description
+         * Implements pagination in ArrayControllers
+         *
+         * You should define on the ArrayController:
+         *     - the `findOptions` property
+         *     - the `findItems()` method
+         *
+         */
         var mixin = Mixin('pagination', {
             partials: {
                 subHeader: ['itemsperpage'],
