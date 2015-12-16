@@ -23,8 +23,8 @@ Ember.Application.initializer({
         'WidgetFactory',
         'TimeWindowUtils',
         'EventConsumer',
-        'MetricConsumer',
-        'HumanReadableHelper'
+        'MetricConsumer'
+        // 'HumanReadableHelper'
     ],
     initialize: function(container, application) {
         var WidgetFactory = container.lookupFactory('factory:widget'),

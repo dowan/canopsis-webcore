@@ -28,17 +28,22 @@ require.config({
 
         'jquery': 'canopsis/core/lib/wrappers/jquery',
         'handlebars': 'canopsis/core/lib/externals/handlebars/handlebars',
+        "ehbs" : 'canopsis/core/lib/externals/requirejs-ember-handlebars/ehbs',
         'ember-template-compiler': 'canopsis/core/lib/externals/min/ember-template-compiler',
         'ember-lib': 'canopsis/core/lib/externals/min/ember.debug',
         'ember-data-lib': 'canopsis/core/lib/externals/min/ember-data'
     },
     shim: {
         'ember-lib': {
-            deps: ['jquery', 'ember-template-compiler', 'handlebars']
+            deps: ['jquery', 'ember-template-compiler', 'handlebars'],
+            exports: 'Ember'
         },
         'ember-data-lib': {
             deps: ['ember-lib']
         }
+    },
+    ehbs : {
+        ember : 'ember-lib'
     }
 });
 

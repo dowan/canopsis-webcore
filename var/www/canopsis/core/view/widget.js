@@ -178,9 +178,14 @@ define([
                     console.group('set controller for widget', widget);
 
                     var controller = this.instantiateCorrectController(widget);
+
+                    var widgetTemplate = get(widget, "xtype");
+
+                    if(widgetTemplate === 'text') widgetTemplate = 'textwidget';
+
                     this.setProperties({
                         'controller': controller,
-                        'templateName': get(widget, "xtype")
+                        'templateName': widgetTemplate
                     });
 
                     widget.set('controller', controller);

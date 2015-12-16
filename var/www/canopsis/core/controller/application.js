@@ -23,7 +23,23 @@ define([
 
     Ember.Application.initializer({
         name: 'ApplicationController',
-        after: ['PartialslotAbleController', 'UserprofilestatusmenuMixin', 'RequirejsmocksmanagerMixin', 'ScreentoolstatusmenuMixin', 'DocumentationMixin', 'SchemamanagerMixin', 'ConsolemanagerMixin', 'LoadingindicatorMixin', 'PromisemanagerMixin', 'NotificationsMixin', 'FormsUtils', 'DataUtils', 'DebugUtils', 'HashUtils', 'NotificationUtils'],
+        after: ['PartialslotAbleController',
+                'UserprofilestatusmenuMixin',
+                'RequirejsmocksmanagerMixin',
+                'ScreentoolstatusmenuMixin',
+                'DocumentationMixin',
+                'SchemamanagerMixin',
+                'ConsolemanagerMixin',
+                'LoadingindicatorMixin',
+                'PromisemanagerMixin',
+                'NotificationsMixin',
+                'FormsUtils',
+                'DataUtils',
+                'DebugUtils',
+                'HashUtils',
+                'NotificationUtils',
+                'LoginController',
+                'RecordinfopopupController'],
         initialize: function(container, application) {
             var PartialslotAbleController = container.lookupFactory('controller:partialslot-able');
 
