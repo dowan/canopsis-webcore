@@ -72,8 +72,11 @@ Ember.Application.initializer({
                         component.send('renderChart');
                     });
                 }
-                ctrl.on('onDestroyView', this, this.willDestroyElement);
-                ctrl.on('onInsertView', this, this.didInsertElement);
+
+                ctrl.on('onDestroy', this, this.willDestroyElement);
+                if(isNone(get(ctrl, 'initializer'))) {
+                    ctrl.on('onInsert', this, this.didInsertElement);
+                }
                 ctrl.on('onRerender', this, this.onRerender);
                 console.groupEnd();
 
@@ -90,8 +93,8 @@ Ember.Application.initializer({
                     timecontainer.unbind('plotselected');
                     graphcontainer.unbind('toggleserie');
                 }
-                ctrl.off('onDestroyView',this, this.willDestroyElement);
-                ctrl.off('onInsertView',this, this.didInsertElement);
+                ctrl.off('onDestroy', this, this.willDestroyElement);
+                //ctrl.off('onInsert', this, this.didInsertElement);
                 ctrl.off('onRerender', this, this.onRerender);
             },
 
@@ -356,15 +359,15 @@ Ember.Application.initializer({
                 var me = this;
 
                 var replace = false;
-                var from = get(this, 'lastRefresh');
+                //var from = get(this, 'lastRefresh');
                 var now = new Date().getTime();
                 var to = now - get(this, 'time_window_offset');
 
-                if(isNone(from)) {
-                    replace = true;
-                    from = to - get(this, 'timenav_window') - get(this, 'time_window_offset');
-                }
-
+                //if(isNone(from)) {
+                    //replace = true;
+                  var from = to - get(this, 'timenav_window') - get(this, 'time_window_offset');
+                //}
+                //alert('ohoh?');
                 console.log('refresh:', from, to, replace);
 
                 this.updateAxisLimits(from, to);
@@ -376,13 +379,12 @@ Ember.Application.initializer({
                 console.group('Load stylized metrics:');
                 this.fetchStylizedMetrics(from, to, replace);
                 console.groupEnd();
-
                 /*if(get(this, 'initializer')) {
-                    me.trigger('onDestroyView');
+                    me.trigger('onDestroy');
                 }*/
-                //set(this, 'initializer', true);
-                //me.trigger('onInsertView');
-                me.trigger('onRerender');
+                //me.trigger('onInsert');
+                set(this, 'initializer', true);
+                //me.trigger('onRerender');
             },
 
             updateAxisLimits: function(from, to) {
