@@ -19,7 +19,13 @@
 
 /** @module canopsis.frontend.uiv1-themes */
 
+require.config({
+    paths: {
+        'uiv1_themes_weather': 'canopsis/uiv1_themes/src/templates/weather',
+    }
+});
+
 define([
-    'canopsis/uiv1_themes/src/lib/loaders/mixins',
-    'canopsis/uiv1_themes/src/lib/loaders/templates'
+    'canopsis/uiv1_themes/src/mixins/uiv1weathertheme',
+    'ehbs!uiv1_themes_weather'
 ], function () {});
