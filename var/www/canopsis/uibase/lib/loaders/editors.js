@@ -65,7 +65,8 @@ var editors = [
     { name: 'editor-contextselector', template: 'canopsis/uibase/editors/contextselector.html' },
     { name: 'editor-slider', template: 'canopsis/uibase/editors/slider.html' },
     { name: 'editor-labelledlink', template: 'canopsis/uibase/editors/labelledlink.hbs' },
-    { name: 'editor-elementidselectorwithoptions', template: 'canopsis/uibase/editors/elementidselectorwithoptions.hbs' }
+    { name: 'editor-elementidselectorwithoptions', template: 'canopsis/uibase/editors/elementidselectorwithoptions.hbs' },
+    { name: 'editor-labelandviewid', template: 'canopsis/uibase/editors/labelandviewid.hbs' }
 ];
 
 loader.loadWithTemplates(editors);

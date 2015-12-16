@@ -57,8 +57,7 @@ Ember.Application.initializer({
                         set(item, 'isActive', false);
                     }
 
-
-                    viewId = item.value;
+                    viewId = item.value || '';
                     viewId = viewId.replace('.', '_');
                     if (uimaintabcollectionController.isViewDisplayable(viewId)) {
                         set(item, 'displayable', true);
