@@ -350,15 +350,10 @@ Ember.Application.initializer({
             findItems: function() {
                 var me = this;
 
-                var replace = false;
-                var from = get(this, 'lastRefresh');
+                var replace = true;
                 var now = new Date().getTime();
                 var to = now - get(this, 'time_window_offset');
-
-                if(isNone(from)) {
-                    replace = true;
-                    from = to - get(this, 'timenav_window') - get(this, 'time_window_offset');
-                }
+                var from = to - get(this, 'timenav_window') - get(this, 'time_window_offset');
 
                 console.log('refresh:', from, to, replace);
 
