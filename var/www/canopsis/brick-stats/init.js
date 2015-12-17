@@ -19,7 +19,7 @@
 
 require.config({
     paths: {
-        'statstable': 'canopsis/brick-stats/src/widgets/stats-table/template'
+        'statstable': 'canopsis/brick-stats/src/widgets/stats-table/statstable'
     }
 });
 

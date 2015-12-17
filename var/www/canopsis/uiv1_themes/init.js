@@ -21,7 +21,7 @@
 
 require.config({
     paths: {
-        'uiv1_themes_weather': 'canopsis/uiv1_themes/src/templates/weather',
+        'uiv1_themes_weather': 'canopsis/uiv1_themes/src/templates/uiv1_themes_weather',
     }
 });
 

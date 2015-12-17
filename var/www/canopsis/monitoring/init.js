@@ -26,18 +26,18 @@ require.config({
         'components/component-stateeditor': 'canopsis/monitoring/src/components/stateeditor/template',
         'components/component-eventselector': 'canopsis/monitoring/src/components/eventselector/template',
         'components/component-statemapping': 'canopsis/monitoring/src/components/statemapping/template',
-        'editor-metricselector': 'canopsis/monitoring/src/editors/metricselector',
-        'renderer-ack': 'canopsis/monitoring/src/renderers/ack',
-        'renderer-crecord-type': 'canopsis/monitoring/src/renderers/crecord-type',
-        'renderer-criticity': 'canopsis/monitoring/src/renderers/criticity',
-        'renderer-eventselector': 'canopsis/monitoring/src/renderers/eventselector',
-        'renderer-state': 'canopsis/monitoring/src/renderers/state',
-        'renderer-stateConnector': 'canopsis/monitoring/src/renderers/stateConnector',
-        'renderer-status': 'canopsis/monitoring/src/renderers/status',
-        'renderer-eventtype': 'canopsis/monitoring/src/renderers/eventtype',
-        'renderer-eventtimestamp': 'canopsis/monitoring/src/renderers/eventtimestamp',
+        'editor-metricselector': 'canopsis/monitoring/src/editors/editor-metricselector',
+        'renderer-ack': 'canopsis/monitoring/src/renderers/renderer-ack',
+        'renderer-crecord-type': 'canopsis/monitoring/src/renderers/renderer-crecord-type',
+        'renderer-criticity': 'canopsis/monitoring/src/renderers/renderer-criticity',
+        'renderer-eventselector': 'canopsis/monitoring/src/renderers/renderer-eventselector',
+        'renderer-state': 'canopsis/monitoring/src/renderers/renderer-state',
+        'renderer-stateConnector': 'canopsis/monitoring/src/renderers/renderer-stateConnector',
+        'renderer-status': 'canopsis/monitoring/src/renderers/renderer-status',
+        'renderer-eventtype': 'canopsis/monitoring/src/renderers/renderer-eventtype',
+        'renderer-eventtimestamp': 'canopsis/monitoring/src/renderers/renderer-eventtimestamp',
         'actionbutton-editurlfield': 'canopsis/monitoring/src/templates/actionbutton-editurlfield',
-        'weather': 'canopsis/monitoring/src/widgets/weather/template'
+        'weather': 'canopsis/monitoring/src/widgets/weather/weather'
     }
 });
 

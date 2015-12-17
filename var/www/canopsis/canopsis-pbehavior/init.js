@@ -21,7 +21,7 @@
 require.config({
     paths: {
         'components/component-periodicbehaviormanager': 'canopsis/canopsis-pbehavior/src/components/periodicbehaviormanager/template',
-        'renderer-periodicbehaviors': 'canopsis/canopsis-pbehavior/src/renderers/periodicbehaviors'
+        'renderer-periodicbehaviors': 'canopsis/canopsis-pbehavior/src/renderers/renderer-periodicbehaviors'
     }
 });
 

@@ -24,7 +24,7 @@ require.config({
         'bootstrap': 'canopsis/uibase/lib/externals/bootstrap/dist/js/bootstrap.min',
         'adminLTElib': 'canopsis/canopsis-ui/lib/adminlte/AdminLTE',
         'adminLTE': 'canopsis/canopsis-ui/src/wrappers/adminLTE',
-        'jobform': 'canopsis/canopsis-ui/src/forms/jobform/template'
+        'jobform': 'canopsis/canopsis-ui/src/forms/jobform/jobform'
     },
 
     shim: {
