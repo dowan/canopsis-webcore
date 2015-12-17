@@ -72,13 +72,14 @@ Ember.Application.initializer({
                         component.send('renderChart');
                     });
                 }
-
+                ctrl.on('onRenderer', this, this.onRenderer);
                 console.groupEnd();
 
                 this._super.apply(this, arguments);
             },
 
             willDestroyElement: function() {
+                var ctrl = get(this, 'controller');
                 var graphcontainer = this.$('.flotchart-plot-container .flotchart');
                 graphcontainer.unbind('plotselected');
 
@@ -87,6 +88,7 @@ Ember.Application.initializer({
                     timecontainer.unbind('plotselected');
                     graphcontainer.unbind('toggleserie');
                 }
+                ctrl.off('onRenderer', this, this.onRenderer);
             },
 
             setDefaultChartOptions: function() {
@@ -99,6 +101,16 @@ Ember.Application.initializer({
 
                 var chartOptions = {};
                 $.extend(chartOptions, get(ctrl, 'chartOptions'));
+
+                if(!get(ctrl, 'zooming')) {
+                    $.extend(chartOptions, {
+                        xaxis: {
+                            min: now - get(ctrl, 'time_window_offset') - get(ctrl, 'time_window'),
+                            max: now - get(ctrl, 'time_window_offset')
+                        }
+                    });
+                }
+
                 $.extend(chartOptions, {
                     zoom: {
                         interactive: false
@@ -116,11 +128,6 @@ Ember.Application.initializer({
                         hoverable: true,
                         clickable: true,
                         borderWidth: 2
-                    },
-
-                    xaxis: {
-                        min: now - get(ctrl, 'time_window_offset') - get(ctrl, 'time_window'),
-                        max: now - get(ctrl, 'time_window_offset')
                     },
 
                     yaxis: {},
@@ -231,10 +238,15 @@ Ember.Application.initializer({
             resetZoom: function() {
                 var ctrl = get(this, 'controller');
 
+                set(ctrl, 'zooming', false);
+
                 this.setDefaultChartOptions();
                 this.setDefaultTimenavOptions();
 
-                set(ctrl, 'zooming', false);
+            },
+
+            onRenderer: function() {
+                this.rerender();
             },
 
             actions: {
@@ -359,6 +371,8 @@ Ember.Application.initializer({
                 console.group('Load stylized metrics:');
                 this.fetchStylizedMetrics(from, to, replace);
                 console.groupEnd();
+
+                me.trigger('onRenderer');
             },
 
             updateAxisLimits: function(from, to) {
