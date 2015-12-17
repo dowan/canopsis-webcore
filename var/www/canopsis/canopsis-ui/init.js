@@ -23,7 +23,8 @@ require.config({
     paths: {
         'bootstrap': 'canopsis/uibase/lib/externals/bootstrap/dist/js/bootstrap.min',
         'adminLTElib': 'canopsis/canopsis-ui/lib/adminlte/AdminLTE',
-        'adminLTE': 'canopsis/canopsis-ui/src/wrappers/adminLTE'
+        'adminLTE': 'canopsis/canopsis-ui/src/wrappers/adminLTE',
+        'jobform': 'canopsis/canopsis-ui/src/forms/jobform/template'
     },
 
     shim: {
@@ -40,8 +41,9 @@ require.config({
 
 define([
     'canopsis/canopsis-ui/src/reopens/views/application',
-    'canopsis/canopsis-ui/src/loaders/forms',
-    'adminLTE'
-], function () {
-
-});
+    'adminLTE',
+    'canopsis/canopsis-ui/src/forms/jobform/controller',
+    'canopsis/canopsis-ui/src/forms/taskform/controller',
+    'canopsis/canopsis-ui/src/forms/scheduleform/controller',
+    'ehbs!jobform'
+], function () {});

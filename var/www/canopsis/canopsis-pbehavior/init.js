@@ -18,11 +18,19 @@
  */
 
 
+require.config({
+    paths: {
+        'components/component-periodicbehaviormanager': 'canopsis/canopsis-pbehavior/src/components/periodicbehaviormanager/template',
+        'renderer-periodicbehaviors': 'canopsis/canopsis-pbehavior/src/renderers/periodicbehaviors'
+    }
+});
+
 define([
-    'canopsis/canopsis-pbehavior/src/loaders/components',
-    'canopsis/canopsis-pbehavior/src/loaders/renderers',
     'canopsis/canopsis-pbehavior/src/adapters/pbehavior',
-    'canopsis/canopsis-pbehavior/src/serializers/pbehavior'
+    'canopsis/canopsis-pbehavior/src/serializers/pbehavior',
+    'ehbs!components/component-periodicbehaviormanager',
+    'canopsis/canopsis-pbehavior/src/components/periodicbehaviormanager/component',
+    'ehbs!renderer-periodicbehaviors'
 ], function () {
 
 });

@@ -19,20 +19,45 @@
 
 /** @module canopsis.frontend.canopsis-rights */
 
+require.config({
+    paths: {
+        'components/component-rightsselector': 'canopsis/canopsis-rights/src/components/rightsselector/template',
+        'components/component-rights-action': 'canopsis/canopsis-rights/src/components/rights-action/template',
+        'components/component-rightsrenderer': 'canopsis/canopsis-rights/src/components/rightsrenderer/template',
+        'components/component-right-checksum': 'canopsis/canopsis-rights/src/components/right-checksum/template',
+        'editor-rights': 'canopsis/canopsis-rights/src/editors/rights',
+        'viewrightsform': 'canopsis/canopsis-rights/src/forms/viewrightsform/template',
+        'renderer-rights': 'canopsis/canopsis-rights/src/renderers/rights',
+        'rightschecksumbuttons': 'canopsis/canopsis-rights/src/templates/rightschecksumbuttons',
+        'rightselector-itempartial': 'canopsis/canopsis-rights/src/templates/rightselector-itempartial',
+        'rightselector-selecteditempartial': 'canopsis/canopsis-rights/src/templates/rightselector-selecteditempartial',
+        'actionbutton-viewrights': 'canopsis/canopsis-rights/src/templates/actionbutton-viewrights'
+    }
+});
+
 define([
     'canopsis/canopsis-rights/src/objects/rightsregistry',
     'canopsis/canopsis-rights/src/utils/rightsflags',
-    'canopsis/canopsis-rights/src/loaders/components',
-    'canopsis/canopsis-rights/src/loaders/forms',
-    'canopsis/canopsis-rights/src/loaders/editors',
-    'canopsis/canopsis-rights/src/loaders/renderers',
-    'canopsis/canopsis-rights/src/loaders/templates',
     'canopsis/canopsis-rights/src/reopens/routes/application',
     'canopsis/canopsis-rights/src/reopens/routes/userview',
     'canopsis/canopsis-rights/src/reopens/widgets/uimaintabcollection',
     'canopsis/canopsis-rights/src/reopens/adapters/userview',
     'canopsis/canopsis-rights/src/reopens/mixins/crud',
-    'canopsis/canopsis-rights/src/reopens/mixins/showviewbutton'
-], function () {
-
-});
+    'canopsis/canopsis-rights/src/reopens/mixins/showviewbutton',
+    'ehbs!components/component-rightsselector',
+    'ehbs!components/component-rights-action',
+    'ehbs!components/component-rightsrenderer',
+    'ehbs!components/component-right-checksum',
+    'canopsis/canopsis-rights/src/components/rightsselector/component',
+    'canopsis/canopsis-rights/src/components/rights-action/component',
+    'canopsis/canopsis-rights/src/components/rightsrenderer/component',
+    'canopsis/canopsis-rights/src/components/right-checksum/component',
+    'ehbs!editor-rights',
+    'ehbs!viewrightsform',
+    'canopsis/canopsis-rights/src/forms/viewrightsform/controller',
+    'ehbs!renderer-rights',
+    'ehbs!rightschecksumbuttons',
+    'ehbs!rightselector-itempartial',
+    'ehbs!rightselector-selecteditempartial',
+    'ehbs!actionbutton-viewrights'
+], function () {});

@@ -19,7 +19,14 @@
 
 /** @module canopsis.frontend.userpreferences */
 
+require.config({
+    paths: {
+        'components/component-userpreferencesmanager': 'canopsis/userpreferences/src/components/userpreferencesmanager/template'
+    }
+});
+
 define([
-    'canopsis/userpreferences/src/lib/loaders/components',
-    'canopsis/userpreferences/src/mixins/userconfiguration'
+    'canopsis/userpreferences/src/mixins/userconfiguration',
+    'ehbs!components/component-userpreferencesmanager',
+    'canopsis/userpreferences/src/components/userpreferencesmanager/component'
 ], function () {});
