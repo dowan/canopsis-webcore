@@ -17,12 +17,16 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
+ require.config({
+    paths: {
 
-define([
+    }
+});
+
+ define([
     'canopsis/canopsis-backend-ui-connector/src/adapters/acl',
     'canopsis/canopsis-backend-ui-connector/src/adapters/action',
     'canopsis/canopsis-backend-ui-connector/src/adapters/application',
-    'canopsis/canopsis-backend-ui-connector/src/adapters/storage',
     'canopsis/canopsis-backend-ui-connector/src/adapters/baseadapter',
     'canopsis/canopsis-backend-ui-connector/src/adapters/cancel',
     'canopsis/canopsis-backend-ui-connector/src/adapters/context',
@@ -34,21 +38,23 @@ define([
     'canopsis/canopsis-backend-ui-connector/src/adapters/eventlog',
     'canopsis/canopsis-backend-ui-connector/src/adapters/filter',
     'canopsis/canopsis-backend-ui-connector/src/adapters/linklist',
-    'canopsis/canopsis-backend-ui-connector/src/adapters/entitylink',
     'canopsis/canopsis-backend-ui-connector/src/adapters/loggedaccount',
     'canopsis/canopsis-backend-ui-connector/src/adapters/pojo',
     'canopsis/canopsis-backend-ui-connector/src/adapters/schema',
-    'canopsis/canopsis-backend-ui-connector/src/adapters/userview',
-    'canopsis/canopsis-backend-ui-connector/src/adapters/userviewsimplemodel',
-    'canopsis/canopsis-backend-ui-connector/src/adapters/trap',
     'canopsis/canopsis-backend-ui-connector/src/adapters/seriev2',
     'canopsis/canopsis-backend-ui-connector/src/adapters/statsfilter',
-    'canopsis/canopsis-backend-ui-connector/src/serializers/ticket',
+    'canopsis/canopsis-backend-ui-connector/src/adapters/storage',
+    'canopsis/canopsis-backend-ui-connector/src/adapters/trap',
+    'canopsis/canopsis-backend-ui-connector/src/adapters/userview',
+    'canopsis/canopsis-backend-ui-connector/src/adapters/userviewsimplemodel',
     'canopsis/canopsis-backend-ui-connector/src/serializers/ctx',
-    'canopsis/canopsis-backend-ui-connector/src/serializers/ctxmetric',
     'canopsis/canopsis-backend-ui-connector/src/serializers/ctxcomponent',
+    'canopsis/canopsis-backend-ui-connector/src/serializers/ctxmetric',
     'canopsis/canopsis-backend-ui-connector/src/serializers/ctxresource',
     'canopsis/canopsis-backend-ui-connector/src/serializers/ctxselector',
     'canopsis/canopsis-backend-ui-connector/src/serializers/ctxtopology',
+    'canopsis/canopsis-backend-ui-connector/src/serializers/job',
     'canopsis/canopsis-backend-ui-connector/src/serializers/linklist',
+    'canopsis/canopsis-backend-ui-connector/src/serializers/task',
+    'canopsis/canopsis-backend-ui-connector/src/serializers/ticket'
 ], function () {});

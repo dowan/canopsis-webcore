@@ -17,20 +17,18 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-require.config({
+ require.config({
     paths: {
         'components/component-periodicbehaviormanager': 'canopsis/canopsis-pbehavior/src/components/periodicbehaviormanager/template',
-        'renderer-periodicbehaviors': 'canopsis/canopsis-pbehavior/src/renderers/renderer-periodicbehaviors'
+        'renderer-periodicbehaviors': 'canopsis/canopsis-pbehavior/src/renderers/renderer-periodicbehaviors',
+
     }
 });
 
-define([
+ define([
     'canopsis/canopsis-pbehavior/src/adapters/pbehavior',
-    'canopsis/canopsis-pbehavior/src/serializers/pbehavior',
-    'ehbs!components/component-periodicbehaviormanager',
     'canopsis/canopsis-pbehavior/src/components/periodicbehaviormanager/component',
-    'ehbs!renderer-periodicbehaviors'
-], function () {
-
-});
+    'ehbs!components/component-periodicbehaviormanager',
+    'ehbs!renderer-periodicbehaviors',
+    'canopsis/canopsis-pbehavior/src/serializers/pbehavior'
+], function () {});

@@ -21,21 +21,18 @@ require.config({
     paths: {
         'bootstrap': 'canopsis/uibase/lib/externals/bootstrap/dist/js/bootstrap.min',
         'adminLTElib': 'canopsis/canopsis-ui/lib/adminlte/AdminLTE',
-        'adminLTE': 'canopsis/canopsis-ui/src/wrappers/adminLTE'
     },
 
     shim: {
-        'adminLTE': {
-            deps: ['jquery', 'bootstrap']
-        },
-
         'adminLTElib': {
-            deps: ['jquery']
+            deps: ['jquery', 'bootstrap']
         }
     }
 });
 
 
 define([
-    'adminLTE',
+    'adminLTElib',
+    'link!canopsis/canopsis-ui/lib/adminlte/AdminLTE.css',
+    'link!canopsis/canopsis-ui/lib/adminlte/AdminLTE_extra.css',
 ], function () {});

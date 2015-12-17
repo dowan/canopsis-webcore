@@ -17,13 +17,14 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-require.config({
+ require.config({
     paths: {
-        'statstable': 'canopsis/brick-stats/src/widgets/stats-table/statstable'
+        'statstable': 'canopsis/brick-stats/src/widgets/stats-table/statstable',
+
     }
 });
 
-define([
-    'ehbs!statstable',
-    'canopsis/brick-stats/src/widgets/stats-table/controller'
-], function() {});
+ define([
+    'canopsis/brick-stats/src/widgets/stats-table/controller',
+    'ehbs!statstable'
+], function () {});

@@ -17,65 +17,62 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @module canopsis.frontend.monitoring */
-
-require.config({
+ require.config({
     paths: {
-        'components/component-cfiltereditor': 'canopsis/monitoring/src/components/cfiltereditor/template',
         'components/component-ack': 'canopsis/monitoring/src/components/ack/template',
-        'components/component-stateeditor': 'canopsis/monitoring/src/components/stateeditor/template',
+        'components/component-cfiltereditor': 'canopsis/monitoring/src/components/cfiltereditor/template',
         'components/component-eventselector': 'canopsis/monitoring/src/components/eventselector/template',
+        'components/component-stateeditor': 'canopsis/monitoring/src/components/stateeditor/template',
         'components/component-statemapping': 'canopsis/monitoring/src/components/statemapping/template',
         'editor-metricselector': 'canopsis/monitoring/src/editors/editor-metricselector',
         'renderer-ack': 'canopsis/monitoring/src/renderers/renderer-ack',
         'renderer-crecord-type': 'canopsis/monitoring/src/renderers/renderer-crecord-type',
         'renderer-criticity': 'canopsis/monitoring/src/renderers/renderer-criticity',
         'renderer-eventselector': 'canopsis/monitoring/src/renderers/renderer-eventselector',
+        'renderer-eventtimestamp': 'canopsis/monitoring/src/renderers/renderer-eventtimestamp',
+        'renderer-eventtype': 'canopsis/monitoring/src/renderers/renderer-eventtype',
         'renderer-state': 'canopsis/monitoring/src/renderers/renderer-state',
         'renderer-stateConnector': 'canopsis/monitoring/src/renderers/renderer-stateConnector',
         'renderer-status': 'canopsis/monitoring/src/renderers/renderer-status',
-        'renderer-eventtype': 'canopsis/monitoring/src/renderers/renderer-eventtype',
-        'renderer-eventtimestamp': 'canopsis/monitoring/src/renderers/renderer-eventtimestamp',
         'actionbutton-editurlfield': 'canopsis/monitoring/src/templates/actionbutton-editurlfield',
-        'weather': 'canopsis/monitoring/src/widgets/weather/weather'
+        'weather': 'canopsis/monitoring/src/widgets/weather/weather',
+
     }
 });
 
-define([
-    'ehbs!components/component-cfiltereditor',
+ define([
+    'canopsis/monitoring/src/components/ack/component',
     'ehbs!components/component-ack',
-    'ehbs!components/component-stateeditor',
+    'canopsis/monitoring/src/components/cfiltereditor/component',
+    'ehbs!components/component-cfiltereditor',
+    'canopsis/monitoring/src/components/eventselector/component',
     'ehbs!components/component-eventselector',
+    'canopsis/monitoring/src/components/stateeditor/component',
+    'ehbs!components/component-stateeditor',
+    'canopsis/monitoring/src/components/statemapping/component',
     'ehbs!components/component-statemapping',
     'ehbs!editor-metricselector',
+    'canopsis/monitoring/src/helpers/criticity',
+    'canopsis/monitoring/src/helpers/recordcanbeack',
+    'canopsis/monitoring/src/helpers/stateview',
+    'canopsis/monitoring/src/helpers/statusview',
+    'canopsis/monitoring/src/mixins/editurlfield',
+    'canopsis/monitoring/src/mixins/eventhistory',
+    'canopsis/monitoring/src/mixins/eventnavigation',
+    'canopsis/monitoring/src/mixins/history',
+    'canopsis/monitoring/src/mixins/infobutton',
+    'canopsis/monitoring/src/mixins/recordinfopopup',
+    'canopsis/monitoring/src/mixins/sendevent',
     'ehbs!renderer-ack',
     'ehbs!renderer-crecord-type',
     'ehbs!renderer-criticity',
     'ehbs!renderer-eventselector',
+    'ehbs!renderer-eventtimestamp',
+    'ehbs!renderer-eventtype',
     'ehbs!renderer-state',
     'ehbs!renderer-stateConnector',
     'ehbs!renderer-status',
-    'ehbs!renderer-eventtype',
-    'ehbs!renderer-eventtimestamp',
     'ehbs!actionbutton-editurlfield',
-    'ehbs!weather',
     'canopsis/monitoring/src/widgets/weather/controller',
-    'canopsis/monitoring/src/helpers/criticity',
-    'canopsis/monitoring/src/helpers/stateview',
-    'canopsis/monitoring/src/helpers/statusview',
-    'canopsis/monitoring/src/helpers/recordcanbeack',
-    'canopsis/monitoring/src/mixins/sendevent',
-    'canopsis/monitoring/src/mixins/recordinfopopup',
-    'canopsis/monitoring/src/mixins/history',
-    'canopsis/monitoring/src/mixins/eventnavigation',
-    'canopsis/monitoring/src/mixins/eventhistory',
-    'canopsis/monitoring/src/mixins/infobutton',
-    'canopsis/monitoring/src/mixins/editurlfield',
-    'canopsis/monitoring/src/components/cfiltereditor/component',
-    'canopsis/monitoring/src/components/ack/component',
-    'canopsis/monitoring/src/components/stateeditor/component',
-    'canopsis/monitoring/src/components/eventselector/component',
-    'canopsis/monitoring/src/components/statemapping/component'
-], function () {
-
-});
+    'ehbs!weather'
+], function () {});

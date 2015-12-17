@@ -17,51 +17,52 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @module canopsis.frontend.charts */
-
-require.config({
+ require.config({
     paths: {
+        'components/component-c3categorychart': 'canopsis/charts/src/components/c3categorychart/template',
+        'components/component-c3js': 'canopsis/charts/src/components/c3js/template',
         'components/component-flotchart': 'canopsis/charts/src/components/flotchart/template',
-        'components/component-serieitemeditor': 'canopsis/charts/src/components/serieitemeditor/template',
         'components/component-metricitemeditor': 'canopsis/charts/src/components/metricitemeditor/template',
         'components/component-metricselector': 'canopsis/charts/src/components/metricselector/template',
         'components/component-metricselector2': 'canopsis/charts/src/components/metricselector2/template',
         'components/component-selectedmetricheader': 'canopsis/charts/src/components/selectedmetricheader/template',
-        'components/component-c3categorychart': 'canopsis/charts/src/components/c3categorychart/template',
-        'components/component-c3js': 'canopsis/charts/src/components/c3js/template',
+        'components/component-serieitemeditor': 'canopsis/charts/src/components/serieitemeditor/template',
         'editor-metricitem': 'canopsis/charts/src/editors/editor-metricitem',
+        'editor-metricselector2': 'canopsis/charts/src/editors/editor-metricselector2',
         'editor-serieitem': 'canopsis/charts/src/editors/editor-serieitem',
         'titlebarbutton-resetzoom': 'canopsis/charts/src/templates/titlebarbutton-resetzoom',
+        'categorychart': 'canopsis/charts/src/widgets/categorychart/categorychart',
         'timegraph': 'canopsis/charts/src/widgets/timegraph/timegraph',
-        'categorychart': 'canopsis/charts/src/widgets/categorychart/categorychart'
+
     }
 });
 
-define([
-    'canopsis/charts/src/libwrappers/flotchart',
-    'canopsis/charts/src/components/metricselector/component',
-    'canopsis/charts/src/components/flotchart/component',
-    'canopsis/charts/src/components/serieitemeditor/component',
-    'canopsis/charts/src/components/metricitemeditor/component',
-    'canopsis/charts/src/components/metricselector2/component',
-    'canopsis/charts/src/components/selectedmetricheader/component',
+ define([
     'canopsis/charts/src/components/c3categorychart/component',
+    'ehbs!components/component-c3categorychart',
     'canopsis/charts/src/components/c3js/component',
-    'canopsis/charts/src/components/metricselector/component',
+    'ehbs!components/component-c3js',
     'canopsis/charts/src/components/flotchart/component',
-    'canopsis/charts/src/components/serieitemeditor/component',
+    'ehbs!components/component-flotchart',
     'canopsis/charts/src/components/metricitemeditor/component',
+    'ehbs!components/component-metricitemeditor',
     'canopsis/charts/src/components/metricselector/component',
+    'ehbs!components/component-metricselector',
     'canopsis/charts/src/components/metricselector2/component',
+    'ehbs!components/component-metricselector2',
     'canopsis/charts/src/components/selectedmetricheader/component',
-    'canopsis/charts/src/components/c3categorychart/component',
-    'canopsis/charts/src/components/c3js/component',
+    'ehbs!components/component-selectedmetricheader',
+    'canopsis/charts/src/components/serieitemeditor/component',
+    'ehbs!components/component-serieitemeditor',
     'ehbs!editor-metricitem',
+    'ehbs!editor-metricselector2',
     'ehbs!editor-serieitem',
+    'canopsis/charts/src/externals.conf',
+    'canopsis/charts/src/libwrappers/flotchart',
     'ehbs!titlebarbutton-resetzoom',
-    'ehbs!timegraph',
+    'canopsis/charts/src/utils/basechart',
     'ehbs!categorychart',
-    'canopsis/charts/src/widgets/timegraph/controller',
     'canopsis/charts/src/widgets/categorychart/controller',
-    'canopsis/charts/src/externals.conf'
+    'canopsis/charts/src/widgets/timegraph/controller',
+    'ehbs!timegraph'
 ], function () {});

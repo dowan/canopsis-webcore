@@ -15,18 +15,17 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-/** @module canopsis.frontend.userpreferences */
-
-require.config({
+ require.config({
     paths: {
-        'components/component-userpreferencesmanager': 'canopsis/userpreferences/src/components/userpreferencesmanager/template'
+        'components/component-userpreferencesmanager': 'canopsis/userpreferences/src/components/userpreferencesmanager/template',
+
     }
 });
 
-define([
-    'canopsis/userpreferences/src/mixins/userconfiguration',
+ define([
+    'canopsis/userpreferences/src/components/userpreferencesmanager/component',
     'ehbs!components/component-userpreferencesmanager',
-    'canopsis/userpreferences/src/components/userpreferencesmanager/component'
+    'canopsis/userpreferences/src/mixins/userconfiguration'
 ], function () {});

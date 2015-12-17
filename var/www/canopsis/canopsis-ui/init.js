@@ -17,34 +17,18 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @module canopsis.frontend.canopsis-ui */
-
-require.config({
+ require.config({
     paths: {
-        'bootstrap': 'canopsis/uibase/lib/externals/bootstrap/dist/js/bootstrap.min',
-        'adminLTElib': 'canopsis/canopsis-ui/lib/adminlte/AdminLTE',
-        'adminLTE': 'canopsis/canopsis-ui/src/wrappers/adminLTE',
-        'jobform': 'canopsis/canopsis-ui/src/forms/jobform/jobform'
-    },
+        'jobform': 'canopsis/canopsis-ui/src/forms/jobform/jobform',
 
-    shim: {
-        'adminLTE': {
-            deps: ['jquery', 'bootstrap']
-        },
-
-        'adminLTElib': {
-            deps: ['jquery']
-        }
     }
 });
 
-
-define([
-    'canopsis/canopsis-ui/src/reopens/views/application',
-    'adminLTE',
-    'canopsis/canopsis-ui/src/forms/jobform/controller',
-    'canopsis/canopsis-ui/src/forms/taskform/controller',
-    'canopsis/canopsis-ui/src/forms/scheduleform/controller',
+ define([
     'canopsis/canopsis-ui/src/externals.conf',
-    'ehbs!jobform'
+    'canopsis/canopsis-ui/src/forms/jobform/controller',
+    'ehbs!jobform',
+    'canopsis/canopsis-ui/src/forms/scheduleform/controller',
+    'canopsis/canopsis-ui/src/forms/taskform/controller',
+    'canopsis/canopsis-ui/src/reopens/views/application'
 ], function () {});
