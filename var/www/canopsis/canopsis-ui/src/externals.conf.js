@@ -17,19 +17,25 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([
-    'canopsis/uibase/src/widgets/topology/layout/force',
-    'canopsis/uibase/src/widgets/topology/layout/cluster',
-    'canopsis/uibase/src/widgets/topology/layout/tree',
-    'canopsis/uibase/src/widgets/topology/layout/pack',
-    'canopsis/uibase/src/widgets/topology/layout/partition'
-], function(ForceLayout, ClusterLayout, TreeLayout, PackLayout, PartitionLayout) {
+require.config({
+    paths: {
+        'bootstrap': 'canopsis/uibase/lib/externals/bootstrap/dist/js/bootstrap.min',
+        'adminLTElib': 'canopsis/canopsis-ui/lib/adminlte/AdminLTE',
+        'adminLTE': 'canopsis/canopsis-ui/src/wrappers/adminLTE'
+    },
 
-    var LayoutMixin = Ember.Mixin.create({
-        viewMixins: [
-            ForceLayout, ClusterLayout, TreeLayout, PackLayout, PartitionLayout
-        ]
-    });
+    shim: {
+        'adminLTE': {
+            deps: ['jquery', 'bootstrap']
+        },
 
-    return LayoutMixin;
+        'adminLTElib': {
+            deps: ['jquery']
+        }
+    }
 });
+
+
+define([
+    'adminLTE',
+], function () {});

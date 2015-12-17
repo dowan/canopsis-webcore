@@ -45,5 +45,6 @@ define([
     'canopsis/canopsis-ui/src/forms/jobform/controller',
     'canopsis/canopsis-ui/src/forms/taskform/controller',
     'canopsis/canopsis-ui/src/forms/scheduleform/controller',
+    'canopsis/canopsis-ui/src/externals.conf',
     'ehbs!jobform'
 ], function () {});
