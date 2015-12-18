@@ -471,7 +471,8 @@ Ember.Application.initializer({
                     }
 
                     var template = get(me, 'config.metric_template');
-                    if (template === "") {
+
+                    if (template === "" || isNone(template)) {
                         template = "{{component}} - {{resource}} - {{metric}}";
                     }
 
