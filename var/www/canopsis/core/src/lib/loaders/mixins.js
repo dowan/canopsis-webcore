@@ -17,15 +17,9 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['canopsis/core/view/partialslot'], function(PartialslotView) {
+var mixins = [
+    { name: 'validation', url: 'canopsis/core/src/mixins/validation', classes: ["action"]},
+    { name: 'criticitylevels', url: 'canopsis/core/src/mixins/criticitylevels', classes: ['widget']},
+];
 
-    /**
-     * Helper to display a partial slot in widgets or components.
-     * @param slotName {string}
-     *
-     * @author Gwenael Pluchon <info@gwenp.fr>
-     */
-    Ember.Handlebars.helper('partialslot', PartialslotView);
-});
-
-
+loader.loadWithTemplates(mixins);

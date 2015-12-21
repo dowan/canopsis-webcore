@@ -21,9 +21,9 @@
 define([
 	'canopsis/canopsisConfiguration',
     'canopsis/enabled',
-	'canopsis/core/lib/externals/ember-qunit-builds/ember-qunit.amd',
-    'link!canopsis/core/lib/externals/qunit/qunit/qunit.css',
-    'app/lib/wrappers/console'
+	'canopsis/core/src/lib/externals/ember-qunit-builds/ember-qunit.amd',
+    'link!canopsis/core/src/lib/externals/qunit/qunit/qunit.css',
+    'canopsis/core/src/lib/wrappers/console'
 ], function(canopsisConfiguration, enabled) {
     if (!canopsisConfiguration.DEBUG) {
         console.tags = {

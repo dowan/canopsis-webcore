@@ -17,9 +17,13 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['canopsis/core/view/validationtextarea'], function(ValidationtextareaView) {
 
-    Ember.Handlebars.helper('component-validationtextarea', ValidationtextareaView);
-});
+//TODO implement auto check for mvct file existence and require them automatically
 
+var components = [
+    { name: 'components/component-editor', url: 'canopsis/core/src/components/editor/component', template: 'canopsis/core/src/components/editor/template.html' },
+    { name: 'components/component-renderer', url: 'canopsis/core/src/components/renderer/component', template: 'canopsis/core/src/components/renderer/template.html' },
+    { name: 'components/component-wrapper', url: 'canopsis/core/src/components/wrapper/component', template: 'canopsis/core/src/components/wrapper/template.html' }
+];
 
+loader.loadWithTemplates(components);

@@ -17,9 +17,9 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-var mixins = [
-    { name: 'validation', url: 'canopsis/core/mixins/validation', classes: ["action"]},
-    { name: 'criticitylevels', url: 'canopsis/core/mixins/criticitylevels', classes: ['widget']},
-];
+define(['canopsis/core/src/view/validationtextarea'], function(ValidationtextareaView) {
 
-loader.loadWithTemplates(mixins);
+    Ember.Handlebars.helper('component-validationtextarea', ValidationtextareaView);
+});
+
+

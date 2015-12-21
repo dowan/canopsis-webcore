@@ -18,7 +18,7 @@
  */
 
 define([
-    'app/lib/wrappers/console'
+    'canopsis/core/src/lib/wrappers/console'
 ], function() {
 
 });

@@ -17,13 +17,44 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-//TODO implement auto check for mvct file existence and require them automatically
-
-var components = [
-    { name: 'components/component-editor', url: 'canopsis/core/components/editor/component', template: 'canopsis/core/components/editor/template.html' },
-    { name: 'components/component-renderer', url: 'canopsis/core/components/renderer/component', template: 'canopsis/core/components/renderer/template.html' },
-    { name: 'components/component-wrapper', url: 'canopsis/core/components/wrapper/component', template: 'canopsis/core/components/wrapper/template.html' }
+var utilsFiles = [
+    'forms',
+    'routes',
+    'data',
+    'notification',
+    'hash',
+    'dates',
+    'indexes',
+    'filterObject',
+    'widgetSelectors',
+    'dom',
+    'event',
+    'drag',
+    'timewindow'
 ];
 
-loader.loadWithTemplates(components);
+var deps = [];
+
+for (var i = 0, l = utilsFiles.length; i < l; i++) {
+    deps.push('canopsis/core/src/lib/utils/' + utilsFiles[i]);
+}
+
+define(deps, function() {
+    var utils = {};
+
+    console.tags.add('loader');
+
+    console.group("Begin load utils", arguments);
+
+    for (var i = 0, l = arguments.length; i < l; i++) {
+        var utilName = utilsFiles[i];
+        console.log("load util", utilName);
+        utils[utilName] = arguments[i];
+    }
+
+    console.groupEnd();
+
+    console.tags.remove('loader');
+
+    return utils;
+});

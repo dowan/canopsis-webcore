@@ -18,15 +18,15 @@
  */
 
 var helpers = [
-    { name:'formview', url:'canopsis/core/lib/helpers/formview' },
-    { name:'getfield', url:'canopsis/core/lib/helpers/getfield' },
-    { name:'i18n', url:'canopsis/core/lib/helpers/i18n' },
-    { name:'log', url:'canopsis/core/lib/helpers/log' },
-    { name:'partialslot', url:'canopsis/core/lib/helpers/partialslot' },
-    { name:'renderwidget', url:'canopsis/core/lib/helpers/renderwidget' },
-    { name:'validationtextarea', url:'canopsis/core/lib/helpers/validationtextarea' },
-    { name:'validationtextfield', url:'canopsis/core/lib/helpers/validationtextfield' },
-    { name:'widgetslot', url:'canopsis/core/lib/helpers/widgetslot' },
+    { name:'formview', url:'canopsis/core/src/lib/helpers/formview' },
+    { name:'getfield', url:'canopsis/core/src/lib/helpers/getfield' },
+    { name:'i18n', url:'canopsis/core/src/lib/helpers/i18n' },
+    { name:'log', url:'canopsis/core/src/lib/helpers/log' },
+    { name:'partialslot', url:'canopsis/core/src/lib/helpers/partialslot' },
+    { name:'renderwidget', url:'canopsis/core/src/lib/helpers/renderwidget' },
+    { name:'validationtextarea', url:'canopsis/core/src/lib/helpers/validationtextarea' },
+    { name:'validationtextfield', url:'canopsis/core/src/lib/helpers/validationtextfield' },
+    { name:'widgetslot', url:'canopsis/core/src/lib/helpers/widgetslot' },
 ];
 
 loader.loadWithTemplates(helpers);

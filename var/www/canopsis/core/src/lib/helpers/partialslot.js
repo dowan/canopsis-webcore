@@ -17,44 +17,15 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-var utilsFiles = [
-    'forms',
-    'routes',
-    'data',
-    'notification',
-    'hash',
-    'dates',
-    'indexes',
-    'filterObject',
-    'widgetSelectors',
-    'dom',
-    'event',
-    'drag',
-    'timewindow'
-];
+define(['canopsis/core/src/view/partialslot'], function(PartialslotView) {
 
-var deps = [];
-
-for (var i = 0, l = utilsFiles.length; i < l; i++) {
-    deps.push('canopsis/core/lib/utils/' + utilsFiles[i]);
-}
-
-define(deps, function() {
-    var utils = {};
-
-    console.tags.add('loader');
-
-    console.group("Begin load utils", arguments);
-
-    for (var i = 0, l = arguments.length; i < l; i++) {
-        var utilName = utilsFiles[i];
-        console.log("load util", utilName);
-        utils[utilName] = arguments[i];
-    }
-
-    console.groupEnd();
-
-    console.tags.remove('loader');
-
-    return utils;
+    /**
+     * Helper to display a partial slot in widgets or components.
+     * @param slotName {string}
+     *
+     * @author Gwenael Pluchon <info@gwenp.fr>
+     */
+    Ember.Handlebars.helper('partialslot', PartialslotView);
 });
+
+

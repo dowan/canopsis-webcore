@@ -17,12 +17,36 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-var forms = [
-    { name: 'modelform', url: 'canopsis/core/forms/modelform/controller', template: 'canopsis/core/forms/modelform/template.html' },
-    { name: 'widgetform', url: 'canopsis/core/forms/widgetform/controller', template: 'canopsis/core/forms/widgetform/template.html' },
-    // { name: 'arrayitemform', url: 'canopsis/core/forms/arrayitemform/controller', template: 'canopsis/core/forms/arrayitemform/template.html' },
-    { name: 'confirmform', url: 'canopsis/core/forms/confirmform/controller', template: 'canopsis/core/forms/confirmform/template.html' },
-    { name: 'viewtreeform', url: 'canopsis/core/forms/viewtreeform/controller', template: 'canopsis/core/forms/viewtreeform/template.html' }
+var validatorsArray = [
+    'mail',
+    'rights',
+    'required',
+    'validate',
+    'number',
+    'minItems',
+    'maxItems'
 ];
 
-loader.loadWithTemplates(forms);
+var deps = [];
+
+for (var i = 0; i < validatorsArray.length; i++) {
+    var validatorUrl = 'canopsis/core/src/validators/' + validatorsArray[i] + '/validator';
+    deps.push(validatorUrl);
+}
+
+define(deps, function() {
+
+    var validators = {};
+    console.log("Begin load validators", arguments);
+
+    for (var i = 0, l = arguments.length; i < l; i++) {
+        var validatorName = validatorsArray[i];
+        console.log("load validator", validatorName);
+        validators[validatorName] = arguments[i];
+    }
+
+    Ember.validators = validators;
+
+    return validators;
+
+});

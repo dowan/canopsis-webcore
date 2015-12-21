@@ -17,36 +17,9 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-var validatorsArray = [
-    'mail',
-    'rights',
-    'required',
-    'validate',
-    'number',
-    'minItems',
-    'maxItems'
-];
+define(['canopsis/core/src/view/validationtextfield'], function(ValidationtextfieldView) {
 
-var deps = [];
-
-for (var i = 0; i < validatorsArray.length; i++) {
-    var validatorUrl = 'canopsis/core/validators/' + validatorsArray[i] + '/validator';
-    deps.push(validatorUrl);
-}
-
-define(deps, function() {
-
-    var validators = {};
-    console.log("Begin load validators", arguments);
-
-    for (var i = 0, l = arguments.length; i < l; i++) {
-        var validatorName = validatorsArray[i];
-        console.log("load validator", validatorName);
-        validators[validatorName] = arguments[i];
-    }
-
-    Ember.validators = validators;
-
-    return validators;
-
+    // Ember.Handlebars.helper('validationtextfield', ValidationtextfieldView);
 });
+
+
