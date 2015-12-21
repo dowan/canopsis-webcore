@@ -20,7 +20,7 @@
 
 Ember.Application.initializer({
     name: 'WidgetController',
-    after: ['PartialslotAbleController', 'WidgetsUtils', 'RoutesUtils', 'FormsUtils', 'DebugUtils', 'DataUtils', 'SchemasRegistry', 'WidgetsRegistry'],
+    after: ['PartialslotAbleController', 'WidgetsUtils', 'RoutesUtils', 'FormsUtils', 'DebugUtils', 'DataUtils', 'WidgetsRegistry'],
     initialize: function(container, application) {
         var PartialslotAbleController = container.lookupFactory('controller:partialslot-able');
 
@@ -29,7 +29,7 @@ Ember.Application.initializer({
         var formsUtils = container.lookupFactory('utility:forms');
         var debugUtils = container.lookupFactory('utility:debug');
         var dataUtils = container.lookupFactory('utility:data');
-        var schemasregistry = container.lookupFactory('registry:schemas');
+        var schemasregistry = window.schemasRegistry;
         var WidgetsRegistry = container.lookupFactory('registry:widgets');
         var get = Ember.get,
             set = Ember.set,

@@ -33,7 +33,6 @@ require.config({
 
 define([
     'canopsis/core/lib/loaders/utils',
-    'canopsis/core/lib/registries',
     'canopsis/core/lib/wrappersmanager',
     'canopsis/core/lib/indexesregistry',
     'canopsis/core/lib/actionsregistry',
@@ -78,7 +77,6 @@ define([
     'canopsis/core/lib/utilityclass',
     'canopsis/core/lib/mixinsregistry',
     'canopsis/core/lib/searchmethodsregistry',
-    'canopsis/core/lib/schemasregistry',
     'canopsis/core/lib/wrappers/console',
     'canopsis/core/mixins/consolemanager',
     'canopsis/core/mixins/inspectablearray',

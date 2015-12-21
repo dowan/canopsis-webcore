@@ -20,11 +20,11 @@
 
 Ember.Application.initializer({
     name:'InspectableItemMixin',
-    after: ['MixinFactory', 'SchemasRegistry', 'NotificationUtils'],
+    after: ['MixinFactory', 'NotificationUtils'],
     initialize: function(container, application) {
         var Mixin = container.lookupFactory('factory:mixin');
 
-        var Schemasregistry = container.lookupFactory('registry:schemas');
+        var Schemasregistry = window.schemasRegistry;
         var notificationUtils = container.lookupFactory('utility:notification');
 
         var get = Ember.get,

@@ -19,10 +19,9 @@
 
 Ember.Application.initializer({
     name: 'component-serieitemeditor',
-    after: 'SchemasRegistry',
     initialize: function(container, application) {
 
-        var schemasregistry = container.lookupFactory('registry:schemas');
+        var schemasregistry = window.schemasRegistry;
 
 
         var get = Ember.get,

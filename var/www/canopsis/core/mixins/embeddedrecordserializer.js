@@ -19,11 +19,11 @@
 
 Ember.Application.initializer({
     name: 'EmbeddedRecordSerializerMixin',
-    after: ['MixinFactory', 'SchemasRegistry', 'DataUtils', 'HashUtils'],
+    after: ['MixinFactory', 'DataUtils', 'HashUtils'],
     initialize: function(container, application) {
         var Mixin = container.lookupFactory('factory:mixin');
 
-        var schemasregistry = container.lookupFactory('registry:schemas');
+        var schemasregistry = window.schemasRegistry;
 
         var hashUtils = container.lookupFactory('utility:hash');
         var dataUtils = container.lookupFactory('utility:data');

@@ -18,7 +18,7 @@
  */
 
 Ember.Application.initializer({
-    name:"component-validationtextfield",
+    name: 'component-validationtextfield',
     after: 'ValidationFieldMixin',
     initialize: function(container, application) {
         var ValidationFieldMixin = container.lookupFactory('mixin:validation-field');

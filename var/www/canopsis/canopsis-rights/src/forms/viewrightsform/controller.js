@@ -19,7 +19,7 @@
 
 Ember.Application.initializer({
     name: 'ViewrightsForm',
-    after: ['FormFactory', 'SchemasRegistry', 'FormsUtils', 'DataUtils'],
+    after: ['FormFactory', 'FormsUtils', 'DataUtils'],
     initialize: function(container, application) {
 
         var FormFactory = container.lookupFactory('factory:form');

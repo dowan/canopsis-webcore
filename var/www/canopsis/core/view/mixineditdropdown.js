@@ -19,9 +19,8 @@
 
 Ember.Application.initializer({
     name: 'MixineditdropdownView',
-    after: 'SchemasRegistry',
     initialize: function(container, application) {
-        var schemasRegistry = container.lookupFactory('registry:schemas');
+        var schemasRegistry = window.schemasRegistry;
 
         var set = Ember.set,
             get = Ember.get,

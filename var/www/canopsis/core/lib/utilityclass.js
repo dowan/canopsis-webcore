@@ -17,33 +17,30 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([], function() {
+Ember.Application.initializer({
+    name: 'UtilityClass',
+    initialize: function(container, application) {
 
-    var set = Ember.set,
-        get = Ember.get;
+        var set = Ember.set,
+            get = Ember.get;
 
-    /**
-     * Class for handling utility objects in canopsis
-     * Allow hooks on canopsis utility features
-     *
-     * @class Utility
-     * @memberOf canopsis.frontend.core
-     * @extends Ember.Object
-     */
-    var Utility = Ember.Object.extend({
+        /**
+         * Class for handling utility objects in canopsis
+         * Allow hooks on canopsis utility features
+         *
+         * @class Utility
+         * @memberOf canopsis.frontend.core
+         * @extends Ember.Object
+         */
+        var Utility = Ember.Object.extend({
 
-        init: function() {
-            this._super();
-            console.log('Registering utility object ' + get(this, 'name'));
-        }
+            init: function() {
+                this._super();
+                console.log('Registering utility object ' + get(this, 'name'));
+            }
 
-    });
+        });
 
-    Ember.Application.initializer({
-        name: 'UtilityClass',
-        initialize: function(container, application) {
-            application.register('class:utility', Utility);
-        }
-    });
-    return Utility;
+        application.register('class:utility', Utility);
+    }
 });

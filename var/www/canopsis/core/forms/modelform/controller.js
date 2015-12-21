@@ -21,10 +21,10 @@
 
 Ember.Application.initializer({
     name: 'ModelForm',
-    after: ['FormFactory', 'InspectableItemMixin', 'ValidationMixin', 'SchemasRegistry', 'SlugUtils'],
+    after: ['FormFactory', 'InspectableItemMixin', 'ValidationMixin', 'SlugUtils'],
     initialize: function(container, application) {
         var FormFactory = container.lookupFactory('factory:form');
-        var schemasRegistry = container.lookupFactory('registry:schemas');
+        var schemasRegistry = window.schemasRegistry;
         var InspectableitemMixin = container.lookupFactory('mixin:inspectable-item');
         var ValidationMixin = container.lookupFactory('mixin:validation');
         var slugUtils = container.lookupFactory('utility:slug');

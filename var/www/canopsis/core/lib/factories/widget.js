@@ -19,10 +19,10 @@
 
 Ember.Application.initializer({
     name: 'WidgetFactory',
-    after: ['WidgetsRegistry', 'SchemasRegistry', 'WidgetController', 'NotificationUtils', 'SchemasLoader'],
+    after: ['WidgetsRegistry', 'WidgetController', 'NotificationUtils', 'SchemasLoader'],
     initialize: function(container, application) {
         var WidgetsRegistry = container.lookupFactory('registry:widgets'),
-            schemasregistry = container.lookupFactory('registry:schemas'),
+            schemasregistry = window.schemasRegistry,
             WidgetController = container.lookupFactory('controller:widget'),
             notificationUtils = container.lookupFactory('utility:notification'),
 

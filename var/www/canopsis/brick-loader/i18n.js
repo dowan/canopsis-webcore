@@ -23,7 +23,6 @@ define([
     'canopsis/canopsisConfiguration'
 ], function(conf) {
 
-
     var i18n = {
 
         name: 'i18n',

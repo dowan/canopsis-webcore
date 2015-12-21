@@ -19,12 +19,12 @@
 
 Ember.Application.initializer({
     name: 'UserviewController',
-    after: ['FormsUtils', 'HashUtils', 'SchemasRegistry', 'InspectableItemMixin'],
+    after: ['FormsUtils', 'HashUtils', 'InspectableItemMixin'],
     initialize: function(container, application) {
 
         var formUtils = container.lookupFactory('utility:forms');
         var hashUtils = container.lookupFactory('utility:hash');
-        var schemasregistry = container.lookupFactory('registry:schemas');
+        var schemasregistry = window.schemasRegistry;
         var InspectableItem = container.lookupFactory('mixin:inspectable-item');
 
         var get = Ember.get,

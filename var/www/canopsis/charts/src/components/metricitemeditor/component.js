@@ -19,10 +19,9 @@
 
 Ember.Application.initializer({
     name: 'component-metricitemeditor',
-    after: 'SchemasRegistry',
     initialize: function(container, application) {
 
-        var schemaregistry = container.lookupFactory('registry:schemas');
+        var schemaregistry = window.schemasRegistry;
 
         var get = Ember.get,
             set = Ember.set;

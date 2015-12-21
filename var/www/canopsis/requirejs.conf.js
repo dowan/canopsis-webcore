@@ -29,7 +29,8 @@ require.config({
         "ehbs" : 'canopsis/brick-loader/externals/requirejs-ember-handlebars/ehbs',
         'ember-template-compiler': 'canopsis/brick-loader/externals/ember-template-compiler',
         'ember-lib': 'canopsis/brick-loader/externals/ember.debug',
-        'ember-data-lib': 'canopsis/brick-loader/externals/ember-data'
+        'ember-data-lib': 'canopsis/brick-loader/externals/ember-data',
+        'schemasregistry': 'canopsis/brick-loader/schemasregistry'
     },
     shim: {
         'ember-lib': {
@@ -38,6 +39,9 @@ require.config({
         },
         'ember-data-lib': {
             deps: ['ember-lib']
+        },
+        'schemasregistry': {
+            deps: ['ember-lib', 'ember-data-lib']
         }
     },
     ehbs : {
@@ -89,7 +93,8 @@ define(['canopsis/enabled',
         'canopsis/canopsisConfiguration',
         'canopsis/brick-loader/i18n',
         'canopsis/brick-loader/loader',
-        'ember-data-lib'], function(enabled, canopsisConfiguration, i18n) {
+        'ember-data-lib',
+        'schemasregistry'], function(enabled, canopsisConfiguration, i18n) {
 
     window.canopsisConfiguration = canopsisConfiguration;
 

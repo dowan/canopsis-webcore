@@ -19,8 +19,7 @@
 
 define([
     'canopsis/canopsis-backend-ui-connector/src/adapters/schema',
-    'canopsis/core/lib/schemasregistry'
-], function (SchemaAdapter, schemasRegistry) {
+], function (SchemaAdapter) {
     function compare(a,b) {
       if (a.id < b.id) {
          return -1;

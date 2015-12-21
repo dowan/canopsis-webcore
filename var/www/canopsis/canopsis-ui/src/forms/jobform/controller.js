@@ -19,9 +19,9 @@
 
 Ember.Application.initializer({
     name: 'JobForm',
-    after: ['FormFactory', 'SchemasRegistry', 'FormsUtils', 'HashUtils', 'DataUtils'],
+    after: ['FormFactory', 'FormsUtils', 'HashUtils', 'DataUtils'],
     initialize: function(container, application) {
-        var schemasRegistry = container.lookupFactory('registry:schemas');
+        var schemasRegistry = window.schemasRegistry;
         var formsUtils = container.lookupFactory('utility:forms');
         var hashUtils = container.lookupFactory('utility:hash');
         var dataUtils = container.lookupFactory('utility:data');

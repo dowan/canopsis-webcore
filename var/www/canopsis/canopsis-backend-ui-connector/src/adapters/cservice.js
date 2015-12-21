@@ -19,7 +19,7 @@
 
 Ember.Application.initializer({
     name: 'CserviceAdapter',
-    after: ['SchemasRegistry', 'ApplicationAdapter'],
+    after: ['ApplicationAdapter'],
     initialize: function(container, application) {
         var ApplicationAdapter = container.lookupFactory('adapter:application');
 
@@ -34,7 +34,7 @@ Ember.Application.initializer({
             }
         });
 
-        var schemasregistry = container.lookupFactory('registry:schemas');
+        var schemasregistry = window.schemasRegistry;
 
         for(var sname in schemasregistry.all) {
             var schema = schemasregistry.getByName(sname);

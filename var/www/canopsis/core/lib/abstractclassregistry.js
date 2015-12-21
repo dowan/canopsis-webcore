@@ -17,120 +17,106 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([
-    'canopsis/core/lib/registries'
-], function(registries) {
+Ember.Application.initializer({
+    name: 'AbstractClassRegistry',
+    initialize: function(container, application) {
 
-    var get = Ember.get,
-        set = Ember.set,
-        isNone = Ember.isNone;
-        isArray = Ember.isArray;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
+            isArray = Ember.isArray;
 
-    //TODO manage element with add and remove methods
-
-    /**
-     * Abstract class to provide a common API to every registry
-     *
-     * @class AbstractClassRegistry
-     * @memberOf canopsis.frontend.core
-     * @constructor
-     */
-    var AbstractClassRegistry = Ember.Object.extend({
-        init: function() {
-            this._super.apply(this, arguments);
-
-            //put the initialized registry into the registry list
-            var name = get(this, 'name');
-            registries[name] = this;
-        },
+        //TODO manage element with add and remove methods
 
         /**
-         * The name of the registry
-         * @property name
-         * @type {string}
-         */
-        name: 'unnamed registry',
-
-        all: [],
-        byClass: {},
-
-        /**
-         * Aims to provide a way to inspect and display items
+         * Abstract class to provide a common API to every registry
          *
-         * @property tableColumns
+         * @class AbstractClassRegistry
+         * @memberOf canopsis.frontend.core
+         * @constructor
          */
-        tableColumns: [{title: 'name', name: 'name'}],
+        var AbstractClassRegistry = Ember.Object.extend({
 
-        /**
-         * Appends the item into the "all" array, and into the corresponding class arrays in the "byClass" dict
-         *
-         * @method add
-         * @param {object} item the item to add
-         * @param {string} name the name of the item to add
-         * @param {array} classes classes of the item
-         */
-        add: function(item, name, classes) {
-            if(isNone(name)) {
-                name = get(item, 'name');
-            } else {
-                set(item, 'name', name);
-            }
+            /**
+             * The name of the registry
+             * @property name
+             * @type {string}
+             */
+            name: 'unnamed registry',
 
-            if(isNone(classes)) {
-                classes = get(item, 'classes');
-            } else {
-                set(item, 'classes', classes);
-            }
+            all: [],
+            byClass: {},
 
-            console.log('registering item', get(item, 'name'), 'into registry', name, 'with classes', classes);
-            this.all.pushObject(item);
+            /**
+             * Aims to provide a way to inspect and display items
+             *
+             * @property tableColumns
+             */
+            tableColumns: [{title: 'name', name: 'name'}],
 
-            if(isArray(classes)) {
-                for (var i = 0, l = classes.length; i < l; i++) {
-                    if(isNone(this.byClass[classes[i]])) {
-                        this.byClass[classes[i]] = Ember.A();
+            /**
+             * Appends the item into the "all" array, and into the corresponding class arrays in the "byClass" dict
+             *
+             * @method add
+             * @param {object} item the item to add
+             * @param {string} name the name of the item to add
+             * @param {array} classes classes of the item
+             */
+            add: function(item, name, classes) {
+                if(isNone(name)) {
+                    name = get(item, 'name');
+                } else {
+                    set(item, 'name', name);
+                }
+
+                if(isNone(classes)) {
+                    classes = get(item, 'classes');
+                } else {
+                    set(item, 'classes', classes);
+                }
+
+                console.log('registering item', get(item, 'name'), 'into registry', name, 'with classes', classes);
+                this.all.pushObject(item);
+
+                if(isArray(classes)) {
+                    for (var i = 0, l = classes.length; i < l; i++) {
+                        if(isNone(this.byClass[classes[i]])) {
+                            this.byClass[classes[i]] = Ember.A();
+                        }
+
+                        this.byClass[classes[i]].pushObject(item);
                     }
-
-                    this.byClass[classes[i]].pushObject(item);
                 }
-            }
-        },
+            },
 
-        /**
-         * Get an item by its name. Implemented because all must be migrated from an array to a dict
-         *
-         * @method getByName
-         * @param {string} name the name of the item to get
-         * @return {object} the object with the specified name
-         */
-        getByName: function(name) {
-            for (var i = 0, l = this.all.length; i < l; i++) {
-                if(get(this.all[i], 'name') === name) {
-                    return this.all[i];
+            /**
+             * Get an item by its name. Implemented because all must be migrated from an array to a dict
+             *
+             * @method getByName
+             * @param {string} name the name of the item to get
+             * @return {object} the object with the specified name
+             */
+            getByName: function(name) {
+                for (var i = 0, l = this.all.length; i < l; i++) {
+                    if(get(this.all[i], 'name') === name) {
+                        return this.all[i];
+                    }
                 }
+            },
+
+            /**
+             * Get a list of item that are registered in the specified class
+             *
+             * @method getByClassName
+             * @param {string} name the name of the class
+             * @return {array} the array of items that are defined with the specified class name
+             */
+            getByClassName: function(name) {
+                return get(this.byClass, name);
             }
-        },
-
-        /**
-         * Get a list of item that are registered in the specified class
-         *
-         * @method getByClassName
-         * @param {string} name the name of the class
-         * @return {array} the array of items that are defined with the specified class name
-         */
-        getByClassName: function(name) {
-            return get(this.byClass, name);
-        }
-    });
+        });
 
 
-    Ember.Application.initializer({
-        name: 'AbstractClassRegistry',
-        initialize: function(container, application) {
-            application.register('registry:abstractclass', AbstractClassRegistry);
-        }
-    });
-
-
-    return AbstractClassRegistry;
+        application.register('registry:abstractclass', AbstractClassRegistry);
+    }
 });
