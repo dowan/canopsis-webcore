@@ -18,8 +18,8 @@
  */
 
 var mixins = [
-    { name: 'validation', url: 'app/mixins/validation', classes: ["action"]},
-    { name: 'criticitylevels', url: 'app/mixins/criticitylevels', classes: ['widget']},
+    { name: 'validation', url: 'canopsis/core/mixins/validation', classes: ["action"]},
+    { name: 'criticitylevels', url: 'canopsis/core/mixins/criticitylevels', classes: ['widget']},
 ];
 
 loader.loadWithTemplates(mixins);

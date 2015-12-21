@@ -18,7 +18,7 @@
  */
 
 define([
-    'app/lib/abstractclassregistry'
+    'canopsis/core/lib/abstractclassregistry'
 ], function(Abstractclassregistry) {
 
     /**

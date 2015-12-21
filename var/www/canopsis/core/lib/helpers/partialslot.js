@@ -17,7 +17,7 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['app/view/partialslot'], function(PartialslotView) {
+define(['canopsis/core/view/partialslot'], function(PartialslotView) {
 
     /**
      * Helper to display a partial slot in widgets or components.

@@ -21,8 +21,6 @@ require.config({
     waitSeconds: 30,
     baseUrl: '/static/',
     paths: {
-        'app': 'canopsis/core',
-
         'text': 'canopsis/brick-loader/externals/requirejs-text/text',
         'link': 'canopsis/brick-loader/externals/requirejs-link/link',
 
@@ -194,7 +192,7 @@ define(['canopsis/enabled',
                 deps.push('text!canopsis/'+ currentPlugin +'/bower.json');
             }
         }
-        deps.push('text!app/bower.json');
+        deps.push('text!canopsis/core/bower.json');
 
         if(window.environment) {
             deps.push('canopsis/environment.' + window.environment);
@@ -221,7 +219,7 @@ define(['canopsis/enabled',
                 }
             }
 
-            initFiles.push('app/init');
+            initFiles.push('canopsis/core/init');
 
             require(initFiles, function() {
 

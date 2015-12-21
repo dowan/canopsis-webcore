@@ -18,7 +18,7 @@
  */
 
 define([
-    'app/lib/registries'
+    'canopsis/core/lib/registries'
 ], function(registries) {
 
     var get = Ember.get,

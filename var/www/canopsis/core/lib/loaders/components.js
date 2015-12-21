@@ -21,9 +21,9 @@
 //TODO implement auto check for mvct file existence and require them automatically
 
 var components = [
-    { name: 'components/component-editor', url: 'app/components/editor/component', template: 'app/components/editor/template.html' },
-    { name: 'components/component-renderer', url: 'app/components/renderer/component', template: 'app/components/renderer/template.html' },
-    { name: 'components/component-wrapper', url: 'app/components/wrapper/component', template: 'app/components/wrapper/template.html' }
+    { name: 'components/component-editor', url: 'canopsis/core/components/editor/component', template: 'canopsis/core/components/editor/template.html' },
+    { name: 'components/component-renderer', url: 'canopsis/core/components/renderer/component', template: 'canopsis/core/components/renderer/template.html' },
+    { name: 'components/component-wrapper', url: 'canopsis/core/components/wrapper/component', template: 'canopsis/core/components/wrapper/template.html' }
 ];
 
 loader.loadWithTemplates(components);

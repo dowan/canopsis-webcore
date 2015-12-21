@@ -17,9 +17,7 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([
-    'canopsis/canopsisConfiguration'
-], function(canopsisConfiguration) {
+define([], function() {
 
     /**
      * @class PartialslotView

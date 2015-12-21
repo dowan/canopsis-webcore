@@ -36,7 +36,7 @@ var utilsFiles = [
 var deps = [];
 
 for (var i = 0, l = utilsFiles.length; i < l; i++) {
-    deps.push('app/lib/utils/' + utilsFiles[i]);
+    deps.push('canopsis/core/lib/utils/' + utilsFiles[i]);
 }
 
 define(deps, function() {

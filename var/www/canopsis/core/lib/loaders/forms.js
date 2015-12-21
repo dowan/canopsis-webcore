@@ -18,11 +18,11 @@
  */
 
 var forms = [
-    { name: 'modelform', url: 'app/forms/modelform/controller', template: 'app/forms/modelform/template.html' },
-    { name: 'widgetform', url: 'app/forms/widgetform/controller', template: 'app/forms/widgetform/template.html' },
-    // { name: 'arrayitemform', url: 'app/forms/arrayitemform/controller', template: 'app/forms/arrayitemform/template.html' },
-    { name: 'confirmform', url: 'app/forms/confirmform/controller', template: 'app/forms/confirmform/template.html' },
-    { name: 'viewtreeform', url: 'app/forms/viewtreeform/controller', template: 'app/forms/viewtreeform/template.html' }
+    { name: 'modelform', url: 'canopsis/core/forms/modelform/controller', template: 'canopsis/core/forms/modelform/template.html' },
+    { name: 'widgetform', url: 'canopsis/core/forms/widgetform/controller', template: 'canopsis/core/forms/widgetform/template.html' },
+    // { name: 'arrayitemform', url: 'canopsis/core/forms/arrayitemform/controller', template: 'canopsis/core/forms/arrayitemform/template.html' },
+    { name: 'confirmform', url: 'canopsis/core/forms/confirmform/controller', template: 'canopsis/core/forms/confirmform/template.html' },
+    { name: 'viewtreeform', url: 'canopsis/core/forms/viewtreeform/controller', template: 'canopsis/core/forms/viewtreeform/template.html' }
 ];
 
 loader.loadWithTemplates(forms);

@@ -18,15 +18,15 @@
  */
 
 var helpers = [
-    { name:'formview', url:'app/lib/helpers/formview' },
-    { name:'getfield', url:'app/lib/helpers/getfield' },
-    { name:'i18n', url:'app/lib/helpers/i18n' },
-    { name:'log', url:'app/lib/helpers/log' },
-    { name:'partialslot', url:'app/lib/helpers/partialslot' },
-    { name:'renderwidget', url:'app/lib/helpers/renderwidget' },
-    { name:'validationtextarea', url:'app/lib/helpers/validationtextarea' },
-    { name:'validationtextfield', url:'app/lib/helpers/validationtextfield' },
-    { name:'widgetslot', url:'app/lib/helpers/widgetslot' },
+    { name:'formview', url:'canopsis/core/lib/helpers/formview' },
+    { name:'getfield', url:'canopsis/core/lib/helpers/getfield' },
+    { name:'i18n', url:'canopsis/core/lib/helpers/i18n' },
+    { name:'log', url:'canopsis/core/lib/helpers/log' },
+    { name:'partialslot', url:'canopsis/core/lib/helpers/partialslot' },
+    { name:'renderwidget', url:'canopsis/core/lib/helpers/renderwidget' },
+    { name:'validationtextarea', url:'canopsis/core/lib/helpers/validationtextarea' },
+    { name:'validationtextfield', url:'canopsis/core/lib/helpers/validationtextfield' },
+    { name:'widgetslot', url:'canopsis/core/lib/helpers/widgetslot' },
 ];
 
 loader.loadWithTemplates(helpers);

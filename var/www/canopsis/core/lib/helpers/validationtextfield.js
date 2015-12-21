@@ -17,7 +17,7 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['app/view/validationtextfield'], function(ValidationtextfieldView) {
+define(['canopsis/core/view/validationtextfield'], function(ValidationtextfieldView) {
 
     // Ember.Handlebars.helper('validationtextfield', ValidationtextfieldView);
 });

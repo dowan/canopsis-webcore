@@ -30,7 +30,7 @@ var validatorsArray = [
 var deps = [];
 
 for (var i = 0; i < validatorsArray.length; i++) {
-    var validatorUrl = 'app/validators/' + validatorsArray[i] + '/validator';
+    var validatorUrl = 'canopsis/core/validators/' + validatorsArray[i] + '/validator';
     deps.push(validatorUrl);
 }
 
