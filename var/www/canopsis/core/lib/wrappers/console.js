@@ -20,12 +20,13 @@
  */
 
 
-var deps = ['canopsis/canopsisConfiguration',];
+var deps = [];
 if (!isIE) {
     deps.push('canopsis/core/lib/externals/console.js/console');
 }
 
-define(deps, function(conf) {
+define(deps, function() {
+    conf = canopsisConfiguration;
 
     delete console.init;
 

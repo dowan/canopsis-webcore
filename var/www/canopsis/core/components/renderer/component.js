@@ -17,126 +17,122 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([
-    'canopsis/canopsisConfiguration'
-], function(canopsisConfiguration) {
 
-    Ember.Application.initializer({
-        name:"component-renderer",
-        after: 'DebugUtils',
-        initialize: function(container, application) {
-            var debugUtils = container.lookupFactory('utility:debug');
+Ember.Application.initializer({
+    name: 'component-renderer',
+    after: 'DebugUtils',
+    initialize: function(container, application) {
+        var debugUtils = container.lookupFactory('utility:debug');
 
-            var get = Ember.get,
-                set = Ember.set,
-                isNone = Ember.isNone;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
+
+        /**
+         * Component displaying the correct renderer for an attribute.
+         * It is possible to specify the renderer type to use. If not specified, it will try to get the correct type on its own.
+         *
+         * @class RendererComponent
+         */
+        var component = Ember.Component.extend({
+            /**
+             * @method init
+             */
+            init: function() {
+                var record = get(this, 'record'),
+                    attrName = get(this, 'attrName');
+
+                if(!isNone(attrName)) {
+                    console.group('Fetch attribute from record');
+
+                    console.log('record:', record);
+                    console.log('attrName:', attrName);
+
+                    if(!isNone(record)) {
+                        var attr = get(record, 'constructor.attributes.' + attrName),
+                            value = get(record, attrName);
+
+                        console.log('attr:', attr);
+                        console.log('value:', value);
+
+                        var role;
+                        if (!isNone(attr)) {
+                            role = get(attr, 'options.role');
+                        }
+
+                        if(!isNone(role)) {
+                            var renderer = 'renderer-' + role;
+
+                            if(!isNone(Ember.TEMPLATES[renderer])) {
+                                console.log('rendererType:', renderer);
+                                set(this, 'rendererType', renderer);
+                            }
+                        }
+
+                        set(this, 'attr', attr);
+                        set(this, 'value', value);
+                    }
+
+                    console.groupEnd();
+                }
+
+                this._super.apply(this, arguments);
+            },
 
             /**
-             * Component displaying the correct renderer for an attribute.
-             * It is possible to specify the renderer type to use. If not specified, it will try to get the correct type on its own.
-             *
-             * @class RendererComponent
+             * @property runtimeConfiguration
+             * @see {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
              */
-            var component = Ember.Component.extend({
+            canopsisConfiguration: canopsisConfiguration,
+
+            /**
+             * @property debug
+             * @type boolean
+             */
+            debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
+
+            actions: {
                 /**
-                 * @method init
+                 * @event inspect
                  */
-                init: function() {
-                    var record = get(this, 'record'),
-                        attrName = get(this, 'attrName');
-
-                    if(!isNone(attrName)) {
-                        console.group('Fetch attribute from record');
-
-                        console.log('record:', record);
-                        console.log('attrName:', attrName);
-
-                        if(!isNone(record)) {
-                            var attr = get(record, 'constructor.attributes.' + attrName),
-                                value = get(record, attrName);
-
-                            console.log('attr:', attr);
-                            console.log('value:', value);
-
-                            var role;
-                            if (!isNone(attr)) {
-                                role = get(attr, 'options.role');
-                            }
-
-                            if(!isNone(role)) {
-                                var renderer = 'renderer-' + role;
-
-                                if(!isNone(Ember.TEMPLATES[renderer])) {
-                                    console.log('rendererType:', renderer);
-                                    set(this, 'rendererType', renderer);
-                                }
-                            }
-
-                            set(this, 'attr', attr);
-                            set(this, 'value', value);
-                        }
-
-                        console.groupEnd();
-                    }
-
-                    this._super.apply(this, arguments);
+                inspect: function() {
+                    debugUtils.inspectObject(this);
                 },
 
                 /**
-                 * @property runtimeConfiguration
-                 * @see {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
+                 * @event do
+                 * @param action
                  */
-                canopsisConfiguration: canopsisConfiguration,
-
-                /**
-                 * @property debug
-                 * @type boolean
-                 */
-                debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
-
-                actions: {
-                    /**
-                     * @event inspect
-                     */
-                    inspect: function() {
-                        debugUtils.inspectObject(this);
-                    },
-
-                    /**
-                     * @event do
-                     * @param action
-                     */
-                    do: function(action) {
-                        var params = [];
-                        for (var i = 1, l = arguments.length; i < l; i++) {
-                            params.push(arguments[i]);
-                        }
-
-                        get(this, 'parentView.controller').send(action, params);
+                do: function(action) {
+                    var params = [];
+                    for (var i = 1, l = arguments.length; i < l; i++) {
+                        params.push(arguments[i]);
                     }
-                },
 
-                /**
-                 * @property tagName
-                 * @type string
-                 */
-                tagName: 'span',
+                    get(this, 'parentView.controller').send(action, params);
+                }
+            },
 
-                /**
-                 * @property attr
-                 */
-                attr: function() {
-                    var shown_columns = get(this, 'shown_columns');
-                    for (var i = 0, l = shown_columns.length; i < l; i++) {
-                        if(shown_columns[i].field === get(this, 'field')) {
-                            return shown_columns[i];
-                        }
+            /**
+             * @property tagName
+             * @type string
+             */
+            tagName: 'span',
+
+            /**
+             * @property attr
+             */
+            attr: function() {
+                var shown_columns = get(this, 'shown_columns');
+                for (var i = 0, l = shown_columns.length; i < l; i++) {
+                    if(shown_columns[i].field === get(this, 'field')) {
+                        return shown_columns[i];
                     }
-                }.property('shown_columns')
-            });
+                }
+            }.property('shown_columns')
+        });
 
-            application.register('component:component-renderer', component);
-        }
-    });
+        application.register('component:component-renderer', component);
+    }
 });

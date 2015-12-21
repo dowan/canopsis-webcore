@@ -17,577 +17,573 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([
-    'canopsis/canopsisConfiguration',
-], function(canopsisConfiguration) {
 
-    Ember.Application.initializer({
-        name: 'WidgetController',
-        after: ['PartialslotAbleController', 'WidgetsUtils', 'RoutesUtils', 'FormsUtils', 'DebugUtils', 'DataUtils', 'SchemasRegistry', 'WidgetsRegistry'],
-        initialize: function(container, application) {
-            var PartialslotAbleController = container.lookupFactory('controller:partialslot-able');
+Ember.Application.initializer({
+    name: 'WidgetController',
+    after: ['PartialslotAbleController', 'WidgetsUtils', 'RoutesUtils', 'FormsUtils', 'DebugUtils', 'DataUtils', 'SchemasRegistry', 'WidgetsRegistry'],
+    initialize: function(container, application) {
+        var PartialslotAbleController = container.lookupFactory('controller:partialslot-able');
 
-            var widgetUtils = container.lookupFactory('utility:widgets');
-            var routesUtils = container.lookupFactory('utility:routes');
-            var formsUtils = container.lookupFactory('utility:forms');
-            var debugUtils = container.lookupFactory('utility:debug');
-            var dataUtils = container.lookupFactory('utility:data');
-            var schemasregistry = container.lookupFactory('registry:schemas');
-            var WidgetsRegistry = container.lookupFactory('registry:widgets');
-            var get = Ember.get,
-                set = Ember.set,
-                isNone = Ember.isNone;
+        var widgetUtils = container.lookupFactory('utility:widgets');
+        var routesUtils = container.lookupFactory('utility:routes');
+        var formsUtils = container.lookupFactory('utility:forms');
+        var debugUtils = container.lookupFactory('utility:debug');
+        var dataUtils = container.lookupFactory('utility:data');
+        var schemasregistry = container.lookupFactory('registry:schemas');
+        var WidgetsRegistry = container.lookupFactory('registry:widgets');
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
+
+        /**
+         * @class WidgetController
+         * @extends PartialslotAbleController
+         * @constructor
+         */
+        var controller = PartialslotAbleController.extend({
+            needs: ['application', 'login'],
+
+            partials: {
+                titlebarsbuttons : ['titlebarbutton-duplicate', 'titlebarbutton-moveup','titlebarbutton-movedown', 'titlebarbutton-widgeterrors']
+            },
 
             /**
-             * @class WidgetController
-             * @extends PartialslotAbleController
-             * @constructor
+             * This is useful mostly for debug, to know that a printend object is a widget
+             *
+             * @property abstractType
+             * @type string
              */
-            var controller = PartialslotAbleController.extend({
-                needs: ['application', 'login'],
+            abstractType: 'widget',
 
-                partials: {
-                    titlebarsbuttons : ['titlebarbutton-duplicate', 'titlebarbutton-moveup','titlebarbutton-movedown', 'titlebarbutton-widgeterrors']
+            /**
+             * @property canopsisConfiguration
+             * @type Object
+             */
+            canopsisConfiguration: canopsisConfiguration,
+
+            /**
+             * true is the Frontend is in debug mode
+             *
+             * @property debug
+             * @type boolean
+             */
+            debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
+
+            /**
+             * @property editMode
+             * @type boolean
+             */
+            editMode : Ember.computed.alias('controllers.application.editMode'),
+
+            /**
+             * Alias for content
+             *
+             * @property config
+             * @deprecated
+             * @type DS.Model
+             */
+            config: Ember.computed.alias('content'),
+
+            /**
+             * @method init
+             */
+            init: function () {
+
+                set(this, 'userParams', {});
+
+                console.log('widget init');
+
+                var viewId = get(widgetUtils.getParentViewForWidget(this), 'content.id');
+                var container = routesUtils.getCurrentRouteController().container;
+                var store = DS.Store.create({
+                    container: container
+                });
+
+                console.debug('View id for current widget is ', viewId);
+                this.setProperties({
+                    'model.controllerInstance': this,
+                    'viewId': viewId,
+                    'viewController': widgetUtils.getParentViewForWidget(this),
+                    'isOnMainView': get(widgetUtils.getParentViewForWidget(this), 'isMainView'),
+                    'container': container,
+                    'widgetDataStore': store
+                });
+
+                //User preference are called just before the refresh to ensure
+                //refresh takes care of user information and widget general preference is overriden
+                //All widget may not have this mixin, so it's existance is tested
+                if (!isNone(this.loadUserConfiguration)) {
+                    this.loadUserConfiguration();
+                }
+
+                this._super();
+
+                console.debug('user configuration loaded for widget ' + get(this, 'title'));
+                this.refreshContent();
+            },
+
+
+            /**
+             * @method mixinsOptionsReady
+             */
+            mixinsOptionsReady: function () {
+                //can be overriden to trigger action when mixins options ready.
+            },
+
+            /**
+             * Adds mixins view to the current widget controller
+             *
+             * @method addMixinView
+             * @param viewMixin
+             */
+            addMixinView: function (viewMixin) {
+                var viewMixins = get(this, 'viewMixins');
+                if (isNone(viewMixins)) {
+                    viewMixins = [];
+                    set(this, 'viewMixins', viewMixins);
+                }
+                viewMixins.push(viewMixin);
+            },
+
+            /**
+             * @method updateInterval
+             * @param interval
+             */
+            updateInterval: function (interval) {
+                console.warn('This method should be overriden for current widget', get(this, 'id'), interval);
+            },
+
+            /**
+             * @method stopRefresh
+             */
+            stopRefresh: function () {
+                set(this, 'isRefreshable', false);
+            },
+
+            /**
+             * @method startRefresh
+             */
+            startRefresh: function () {
+                this.setProperties({
+                    'isRefreshable': true,
+                    'lastRefresh': null
+                });
+            },
+
+            /**
+             * @method isRollbackable
+             */
+            isRollbackable: function() {
+                if(get(this, 'isDirty') && get(this, 'dirtyType') === 'updated' && get(this, 'rollbackable') === true) {
+                    return true;
+                }
+
+                return false;
+            }.property('isDirty', 'dirtyType', 'rollbackable'),
+
+
+            actions: {
+
+                /**
+                 * Show debug info in console and put widget var in window.$E
+                 *
+                 * @event inspect
+                 * @param object
+                 */
+                inspect: function (object) {
+                    debugUtils.inspectObject(object);
                 },
 
                 /**
-                 * This is useful mostly for debug, to know that a printend object is a widget
-                 *
-                 * @property abstractType
-                 * @type string
+                 * @event do
+                 * @param action
                  */
-                abstractType: 'widget',
+                do: function(action) {
+                    var params = [];
 
-                /**
-                 * @property canopsisConfiguration
-                 * @type Object
-                 */
-                canopsisConfiguration: canopsisConfiguration,
-
-                /**
-                 * true is the Frontend is in debug mode
-                 *
-                 * @property debug
-                 * @type boolean
-                 */
-                debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
-
-                /**
-                 * @property editMode
-                 * @type boolean
-                 */
-                editMode : Ember.computed.alias('controllers.application.editMode'),
-
-                /**
-                 * Alias for content
-                 *
-                 * @property config
-                 * @deprecated
-                 * @type DS.Model
-                 */
-                config: Ember.computed.alias('content'),
-
-                /**
-                 * @method init
-                 */
-                init: function () {
-
-                    set(this, 'userParams', {});
-
-                    console.log('widget init');
-
-                    var viewId = get(widgetUtils.getParentViewForWidget(this), 'content.id');
-                    var container = routesUtils.getCurrentRouteController().container;
-                    var store = DS.Store.create({
-                        container: container
-                    });
-
-                    console.debug('View id for current widget is ', viewId);
-                    this.setProperties({
-                        'model.controllerInstance': this,
-                        'viewId': viewId,
-                        'viewController': widgetUtils.getParentViewForWidget(this),
-                        'isOnMainView': get(widgetUtils.getParentViewForWidget(this), 'isMainView'),
-                        'container': container,
-                        'widgetDataStore': store
-                    });
-
-                    //User preference are called just before the refresh to ensure
-                    //refresh takes care of user information and widget general preference is overriden
-                    //All widget may not have this mixin, so it's existance is tested
-                    if (!isNone(this.loadUserConfiguration)) {
-                        this.loadUserConfiguration();
+                    for (var i = 1, l = arguments.length; i < l; i++) {
+                        params.push(arguments[i]);
                     }
 
-                    this._super();
-
-                    console.debug('user configuration loaded for widget ' + get(this, 'title'));
-                    this.refreshContent();
-                },
-
-
-                /**
-                 * @method mixinsOptionsReady
-                 */
-                mixinsOptionsReady: function () {
-                    //can be overriden to trigger action when mixins options ready.
+                    this.send(action, params);
                 },
 
                 /**
-                 * Adds mixins view to the current widget controller
-                 *
-                 * @method addMixinView
-                 * @param viewMixin
+                 * @event creationForm
+                 * @param itemType
                  */
-                addMixinView: function (viewMixin) {
-                    var viewMixins = get(this, 'viewMixins');
-                    if (isNone(viewMixins)) {
-                        viewMixins = [];
-                        set(this, 'viewMixins', viewMixins);
-                    }
-                    viewMixins.push(viewMixin);
+                creationForm: function(itemType) {
+                    formsUtils.addRecord(itemType);
                 },
 
                 /**
-                 * @method updateInterval
-                 * @param interval
+                 * @event rollback
+                 * @param widget
                  */
-                updateInterval: function (interval) {
-                    console.warn('This method should be overriden for current widget', get(this, 'id'), interval);
+                rollback: function(widget){
+                    console.log('rollback changes', arguments);
+                    set(widget, 'volatile', {});
+                    widget.rollback();
+                    set(widget, 'rollbackable', false);
                 },
 
                 /**
-                 * @method stopRefresh
+                 * @event editWidget
+                 * @param widget
                  */
-                stopRefresh: function () {
-                    set(this, 'isRefreshable', false);
-                },
+                editWidget: function (widget) {
+                    console.info('edit widget', widget);
 
-                /**
-                 * @method startRefresh
-                 */
-                startRefresh: function () {
-                    this.setProperties({
-                        'isRefreshable': true,
-                        'lastRefresh': null
-                    });
-                },
+                    var widgetTitle = get(widget, 'title') || '';
+                    var widgetType = get(widget, 'xtype') || '';
 
-                /**
-                 * @method isRollbackable
-                 */
-                isRollbackable: function() {
-                    if(get(this, 'isDirty') && get(this, 'dirtyType') === 'updated' && get(this, 'rollbackable') === true) {
-                        return true;
-                    }
+                    var widgetWizard = formsUtils.showNew(
+                        'modelform',
+                        widget,
+                        { title: __('Edit widget') + ' ' + widgetType + ' ' + widgetTitle}
+                    );
+                    console.log('widgetWizard', widgetWizard);
 
-                    return false;
-                }.property('isDirty', 'dirtyType', 'rollbackable'),
+                    var widgetController = this;
 
+                    widgetWizard.submit.done(function() {
+                        console.log('record going to be saved', widget);
 
-                actions: {
-
-                    /**
-                     * Show debug info in console and put widget var in window.$E
-                     *
-                     * @event inspect
-                     * @param object
-                     */
-                    inspect: function (object) {
-                        debugUtils.inspectObject(object);
-                    },
-
-                    /**
-                     * @event do
-                     * @param action
-                     */
-                    do: function(action) {
-                        var params = [];
-
-                        for (var i = 1, l = arguments.length; i < l; i++) {
-                            params.push(arguments[i]);
+                        if(!get(widget, 'widgetId')) {
+                            set(widget, 'widgetId', get(widget,'id'));
                         }
 
-                        this.send(action, params);
-                    },
+                        var userview = get(widgetController, 'viewController').get('content');
 
-                    /**
-                     * @event creationForm
-                     * @param itemType
-                     */
-                    creationForm: function(itemType) {
-                        formsUtils.addRecord(itemType);
-                    },
+                        userview.save().then(function(){
+                            get(widgetController, 'viewController').send('refresh');
+                            console.log('triggering refresh', userview);
+                        });
+                    });
+                },
 
-                    /**
-                     * @event rollback
-                     * @param widget
-                     */
-                    rollback: function(widget){
-                        console.log('rollback changes', arguments);
-                        set(widget, 'volatile', {});
-                        widget.rollback();
-                        set(widget, 'rollbackable', false);
-                    },
+                /**
+                 * @event editMixin
+                 * @param widget
+                 * @param mixinName
+                 */
+                editMixin: function (widget, mixinName) {
+                    console.info('edit mixin', widget, mixinName);
 
-                    /**
-                     * @event editWidget
-                     * @param widget
-                     */
-                    editWidget: function (widget) {
-                        console.info('edit widget', widget);
+                    var mixinDict = get(widget, 'mixins').findBy('name', mixinName),
+                        mixinModelInstance = dataUtils.getStore().createRecord(mixinName, mixinDict);
 
-                        var widgetTitle = get(widget, 'title') || '';
-                        var widgetType = get(widget, 'xtype') || '';
+                    var mixinForm = formsUtils.showNew('modelform', mixinModelInstance, { title: __('Edit mixin'), inspectedItemType: mixinName });
 
-                        var widgetWizard = formsUtils.showNew(
-                            'modelform',
-                            widget,
-                            { title: __('Edit widget') + ' ' + widgetType + ' ' + widgetTitle}
-                        );
-                        console.log('widgetWizard', widgetWizard);
+                    var mixinObject = get(widget, 'mixins').findBy('name', mixinName);
 
-                        var widgetController = this;
+                    if(isNone(mixinObject)) {
+                        mixinObject = get(widget, 'mixins').pushObject({name: mixinName});
+                    }
 
-                        widgetWizard.submit.done(function() {
-                            console.log('record going to be saved', widget);
+                    console.log('mixinObject', mixinObject);
 
-                            if(!get(widget, 'widgetId')) {
-                                set(widget, 'widgetId', get(widget,'id'));
-                            }
+                    var widgetController = this;
+
+                    mixinForm.submit.done(function() {
+                        var referenceModel = schemasregistry.getByName(mixinName).EmberModel;
+                        var modelAttributes = get(referenceModel, 'attributes');
+
+                        console.log('attributes', modelAttributes);
+
+                        modelAttributes.forEach(function(property) {
+                            console.log('each', arguments);
+                            var propertyValue = get(mixinModelInstance, property.name);
+                            console.log('mixinObject', mixinObject);
+
+                            set(mixinObject, property.name, propertyValue);
 
                             var userview = get(widgetController, 'viewController').get('content');
-
                             userview.save().then(function(){
                                 get(widgetController, 'viewController').send('refresh');
                                 console.log('triggering refresh', userview);
                             });
                         });
-                    },
-
-                    /**
-                     * @event editMixin
-                     * @param widget
-                     * @param mixinName
-                     */
-                    editMixin: function (widget, mixinName) {
-                        console.info('edit mixin', widget, mixinName);
-
-                        var mixinDict = get(widget, 'mixins').findBy('name', mixinName),
-                            mixinModelInstance = dataUtils.getStore().createRecord(mixinName, mixinDict);
-
-                        var mixinForm = formsUtils.showNew('modelform', mixinModelInstance, { title: __('Edit mixin'), inspectedItemType: mixinName });
-
-                        var mixinObject = get(widget, 'mixins').findBy('name', mixinName);
-
-                        if(isNone(mixinObject)) {
-                            mixinObject = get(widget, 'mixins').pushObject({name: mixinName});
-                        }
-
-                        console.log('mixinObject', mixinObject);
-
-                        var widgetController = this;
-
-                        mixinForm.submit.done(function() {
-                            var referenceModel = schemasregistry.getByName(mixinName).EmberModel;
-                            var modelAttributes = get(referenceModel, 'attributes');
-
-                            console.log('attributes', modelAttributes);
-
-                            modelAttributes.forEach(function(property) {
-                                console.log('each', arguments);
-                                var propertyValue = get(mixinModelInstance, property.name);
-                                console.log('mixinObject', mixinObject);
-
-                                set(mixinObject, property.name, propertyValue);
-
-                                var userview = get(widgetController, 'viewController').get('content');
-                                userview.save().then(function(){
-                                    get(widgetController, 'viewController').send('refresh');
-                                    console.log('triggering refresh', userview);
-                                });
-                            });
-                        });
-                    },
-
-                    /**
-                     * @event removeWidget
-                     * @param widget
-                     */
-                    removeWidget: function (widget) {
-
-                        var widgetController = this;
-
-                        var confirmform = formsUtils.showNew('confirmform', {}, {
-                            title: __('Delete this widget ?')
-                        });
-
-                        confirmform.submit.then(function(form) {
-
-
-                            console.group('remove widget', widget);
-                            console.log('parent container', widgetController);
-
-                            var itemsContent = get(widgetController, 'content.items.content');
-
-                            for (var i = 0, l = itemsContent.length; i < l; i++) {
-                                console.log(get(widgetController, 'content.items.content')[i]);
-
-                                if (get(itemsContent[i], 'widget') === widget) {
-                                    itemsContent.removeAt(i);
-                                    console.log('deleteRecord ok');
-                                    break;
-                                }
-                            }
-
-                            var userview = get(widgetController, 'viewController.content');
-
-                            userview.save();
-
-                            console.groupEnd();
-                        });
-                    },
-
-                    /**
-                     * Moves the widget under the next one, if any
-                     *
-                     * @event movedown
-                     * @param widgetwrapper
-                     */
-                    movedown: function(widgetwrapper) {
-                        console.group('movedown', widgetwrapper);
-
-                        try{
-                            console.log('context', this);
-
-                            var foundElementIndex,
-                                nextElementIndex,
-                                itemsContent = get(this, 'content.items.content');
-
-                            for (var i = 0, l = itemsContent.length; i < l; i++) {
-
-                                if (foundElementIndex !== undefined && nextElementIndex === undefined) {
-                                    nextElementIndex = i;
-                                    console.log('next element found');
-                                }
-
-                                if (itemsContent[i] === widgetwrapper) {
-                                    foundElementIndex = i;
-                                    console.log('searched element found');
-                                }
-                            }
-
-                            if (foundElementIndex !== undefined && nextElementIndex !== undefined) {
-                                //swap objects
-                                var array = itemsContent;
-                                console.log('swap objects', array);
-
-                                var tempObject = array.objectAt(foundElementIndex);
-
-                                array.insertAt(foundElementIndex, array.objectAt(nextElementIndex));
-                                array.insertAt(nextElementIndex, tempObject);
-                                array.replace(foundElementIndex + 2, 2);
-
-                                console.log('new array', array);
-                                set(this, 'content.items.content', array);
-
-                                var widgetController = this,
-                                    userview = get(this, 'viewController.content');
-
-                                userview.save();
-                            }
-                        } catch (e) {
-                            console.error(e.stack, e.message);
-                        }
-                        console.groupEnd();
-                    },
-
-                    /**
-                     * Moves the widget above the previous one, if any
-                     *
-                     * @event moveup
-                     * @param widgetwrapper
-                     */
-                    moveup: function(widgetwrapper) {
-                        console.group('moveup', widgetwrapper);
-
-                        try{
-                            console.log('context', this);
-
-                            var foundElementIndex,
-                                nextElementIndex,
-                                itemsContent = get(this, 'content.items.content');
-
-                            for (var i = itemsContent.length; i >= 0 ; i--) {
-
-                                if (foundElementIndex !== undefined && nextElementIndex === undefined) {
-                                    nextElementIndex = i;
-                                    console.log('next element found');
-                                }
-
-                                if (itemsContent[i] === widgetwrapper) {
-                                    foundElementIndex = i;
-                                    console.log('searched element found');
-                                }
-                            }
-
-                            console.log('indexes to swap', foundElementIndex, nextElementIndex);
-
-                            if (foundElementIndex !== undefined && nextElementIndex !== undefined) {
-                                //swap objects
-                                var array = get(this, 'content.items.content');
-                                console.log('swap objects', array);
-
-                                var tempObject = array.objectAt(foundElementIndex);
-
-                                array.insertAt(foundElementIndex, array.objectAt(nextElementIndex));
-                                array.insertAt(nextElementIndex, tempObject);
-                                array.replace(nextElementIndex + 2, 2);
-
-                                console.log('new array', array);
-                                set(this, 'content.items.content', array);
-
-                                var widgetController = this,
-                                    userview = get(widgetUtils.getParentViewForWidget(this), 'content');
-
-                                userview.save();
-                            }
-                        } catch (e) {
-                            console.error(e.stack, e.message);
-                        }
-                        console.groupEnd();
-                    }
-                },
-
-
-                /**
-                 * @property itemController
-                 * @type string
-                 */
-                itemController: function() {
-                    if(get(this, 'itemType')) {
-                        return get(this, 'itemType').capitalize();
-                    }
-                }.property('itemType'),
-
-                /**
-                 * @method refreshContent
-                 */
-                refreshContent: function() {
-
-                    console.log('refreshContent', get(this, 'xtype'));
-
-                    this._super();
-                    this.findItems();
-
-                    this.setProperties({
-                        'lastRefresh': new Date().getTime(),
-                        'lastRefreshControlDelay': true
                     });
                 },
 
                 /**
-                 * @method findItems
+                 * @event removeWidget
+                 * @param widget
                  */
-                findItems: function() {
-                    console.warn('findItems not implemented', this);
-                },
+                removeWidget: function (widget) {
 
-                /**
-                 * @method extractItems
-                 * @param queryResult
-                 */
-                extractItems: function(queryResult) {
-                    console.log('extractItems', queryResult);
+                    var widgetController = this;
 
-                    this._super(queryResult);
-                    set(this, 'widgetData', queryResult);
-                },
+                    var confirmform = formsUtils.showNew('confirmform', {}, {
+                        title: __('Delete this widget ?')
+                    });
 
-                /**
-                 * @property availableTitlebarButtons
-                 * @type array
-                 */
-                availableTitlebarButtons: function(){
-                    var buttons = get(this, '_partials.titlebarsbuttons');
+                    confirmform.submit.then(function(form) {
 
-                    if(buttons === undefined) {
-                        return Ember.A();
-                    }
 
-                    var res = Ember.A();
+                        console.group('remove widget', widget);
+                        console.log('parent container', widgetController);
 
-                    for (var i = 0, l = buttons.length; i < l; i++) {
-                        var currentButton = buttons[i];
+                        var itemsContent = get(widgetController, 'content.items.content');
 
-                        if(Ember.TEMPLATES[currentButton] !== undefined) {
-                            res.pushObject(currentButton);
-                        } else {
-                            //TODO manage this with utils.problems
-                            console.warn('template not found', currentButton);
-                        }
-                    }
+                        for (var i = 0, l = itemsContent.length; i < l; i++) {
+                            console.log(get(widgetController, 'content.items.content')[i]);
 
-                    return res;
-                }.property()
-            });
-
-            application.reopen({
-                register: function (name, object) {
-
-                    if(name.split(':')[0] === 'widget') {
-                        var widgetName = name.split(':')[1];
-                        var initializerName = widgetName.capitalize() + 'Serializer';
-                        var widgetSerializerName = name.split(':')[1];
-                        var widgetModel = schemasregistry.getByName(widgetSerializerName).EmberModel;
-
-                        Ember.Application.initializer({
-                            name: initializerName,
-                            after: 'WidgetSerializer',
-                            initialize: function(container, application) {
-                                var WidgetSerializer = container.lookupFactory('serializer:widget');
-                                application.register('serializer:' + widgetSerializerName, WidgetSerializer.extend());
+                            if (get(itemsContent[i], 'widget') === widget) {
+                                itemsContent.removeAt(i);
+                                console.log('deleteRecord ok');
+                                break;
                             }
+                        }
+
+                        var userview = get(widgetController, 'viewController.content');
+
+                        userview.save();
+
+                        console.groupEnd();
+                    });
+                },
+
+                /**
+                 * Moves the widget under the next one, if any
+                 *
+                 * @event movedown
+                 * @param widgetwrapper
+                 */
+                movedown: function(widgetwrapper) {
+                    console.group('movedown', widgetwrapper);
+
+                    try{
+                        console.log('context', this);
+
+                        var foundElementIndex,
+                            nextElementIndex,
+                            itemsContent = get(this, 'content.items.content');
+
+                        for (var i = 0, l = itemsContent.length; i < l; i++) {
+
+                            if (foundElementIndex !== undefined && nextElementIndex === undefined) {
+                                nextElementIndex = i;
+                                console.log('next element found');
+                            }
+
+                            if (itemsContent[i] === widgetwrapper) {
+                                foundElementIndex = i;
+                                console.log('searched element found');
+                            }
+                        }
+
+                        if (foundElementIndex !== undefined && nextElementIndex !== undefined) {
+                            //swap objects
+                            var array = itemsContent;
+                            console.log('swap objects', array);
+
+                            var tempObject = array.objectAt(foundElementIndex);
+
+                            array.insertAt(foundElementIndex, array.objectAt(nextElementIndex));
+                            array.insertAt(nextElementIndex, tempObject);
+                            array.replace(foundElementIndex + 2, 2);
+
+                            console.log('new array', array);
+                            set(this, 'content.items.content', array);
+
+                            var widgetController = this,
+                                userview = get(this, 'viewController.content');
+
+                            userview.save();
+                        }
+                    } catch (e) {
+                        console.error(e.stack, e.message);
+                    }
+                    console.groupEnd();
+                },
+
+                /**
+                 * Moves the widget above the previous one, if any
+                 *
+                 * @event moveup
+                 * @param widgetwrapper
+                 */
+                moveup: function(widgetwrapper) {
+                    console.group('moveup', widgetwrapper);
+
+                    try{
+                        console.log('context', this);
+
+                        var foundElementIndex,
+                            nextElementIndex,
+                            itemsContent = get(this, 'content.items.content');
+
+                        for (var i = itemsContent.length; i >= 0 ; i--) {
+
+                            if (foundElementIndex !== undefined && nextElementIndex === undefined) {
+                                nextElementIndex = i;
+                                console.log('next element found');
+                            }
+
+                            if (itemsContent[i] === widgetwrapper) {
+                                foundElementIndex = i;
+                                console.log('searched element found');
+                            }
+                        }
+
+                        console.log('indexes to swap', foundElementIndex, nextElementIndex);
+
+                        if (foundElementIndex !== undefined && nextElementIndex !== undefined) {
+                            //swap objects
+                            var array = get(this, 'content.items.content');
+                            console.log('swap objects', array);
+
+                            var tempObject = array.objectAt(foundElementIndex);
+
+                            array.insertAt(foundElementIndex, array.objectAt(nextElementIndex));
+                            array.insertAt(nextElementIndex, tempObject);
+                            array.replace(nextElementIndex + 2, 2);
+
+                            console.log('new array', array);
+                            set(this, 'content.items.content', array);
+
+                            var widgetController = this,
+                                userview = get(widgetUtils.getParentViewForWidget(this), 'content');
+
+                            userview.save();
+                        }
+                    } catch (e) {
+                        console.error(e.stack, e.message);
+                    }
+                    console.groupEnd();
+                }
+            },
+
+
+            /**
+             * @property itemController
+             * @type string
+             */
+            itemController: function() {
+                if(get(this, 'itemType')) {
+                    return get(this, 'itemType').capitalize();
+                }
+            }.property('itemType'),
+
+            /**
+             * @method refreshContent
+             */
+            refreshContent: function() {
+
+                console.log('refreshContent', get(this, 'xtype'));
+
+                this._super();
+                this.findItems();
+
+                this.setProperties({
+                    'lastRefresh': new Date().getTime(),
+                    'lastRefreshControlDelay': true
+                });
+            },
+
+            /**
+             * @method findItems
+             */
+            findItems: function() {
+                console.warn('findItems not implemented', this);
+            },
+
+            /**
+             * @method extractItems
+             * @param queryResult
+             */
+            extractItems: function(queryResult) {
+                console.log('extractItems', queryResult);
+
+                this._super(queryResult);
+                set(this, 'widgetData', queryResult);
+            },
+
+            /**
+             * @property availableTitlebarButtons
+             * @type array
+             */
+            availableTitlebarButtons: function(){
+                var buttons = get(this, '_partials.titlebarsbuttons');
+
+                if(buttons === undefined) {
+                    return Ember.A();
+                }
+
+                var res = Ember.A();
+
+                for (var i = 0, l = buttons.length; i < l; i++) {
+                    var currentButton = buttons[i];
+
+                    if(Ember.TEMPLATES[currentButton] !== undefined) {
+                        res.pushObject(currentButton);
+                    } else {
+                        //TODO manage this with utils.problems
+                        console.warn('template not found', currentButton);
+                    }
+                }
+
+                return res;
+            }.property()
+        });
+
+        application.reopen({
+            register: function (name, object) {
+
+                if(name.split(':')[0] === 'widget') {
+                    var widgetName = name.split(':')[1];
+                    var initializerName = widgetName.capitalize() + 'Serializer';
+                    var widgetSerializerName = name.split(':')[1];
+                    var widgetModel = schemasregistry.getByName(widgetSerializerName).EmberModel;
+
+                    Ember.Application.initializer({
+                        name: initializerName,
+                        after: 'WidgetSerializer',
+                        initialize: function(container, application) {
+                            var WidgetSerializer = container.lookupFactory('serializer:widget');
+                            application.register('serializer:' + widgetSerializerName, WidgetSerializer.extend());
+                        }
+                    });
+
+                    if (isNone(widgetModel)) {
+                        notificationUtils.error('No model found for the widget ' + widgetName + '. There might be no schema concerning this widget on the database');
+                    } else {
+
+                        var capitalizedWidgetName = widgetName.camelize().capitalize();
+                        var metadataDict = widgetModel.proto().metadata;
+
+                        var registryEntry = Ember.Object.create({
+                            name: widgetName,
+                            EmberClass: object
                         });
 
-                        if (isNone(widgetModel)) {
-                            notificationUtils.error('No model found for the widget ' + widgetName + '. There might be no schema concerning this widget on the database');
-                        } else {
-
-                            var capitalizedWidgetName = widgetName.camelize().capitalize();
-                            var metadataDict = widgetModel.proto().metadata;
-
-                            var registryEntry = Ember.Object.create({
-                                name: widgetName,
-                                EmberClass: object
-                            });
-
-                            if(!isNone(metadataDict)) {
-                                if(metadataDict.icon) {
-                                    registryEntry.set('icon', metadataDict.icon);
-                                }
-                                if(metadataDict.classes) {
-                                    var classes = metadataDict.classes;
-                                    for (var j = 0, lj = classes.length; j < lj; j++) {
-                                        var currentClass = classes[j];
-                                        if(!Ember.isArray(get( WidgetsRegistry.byClass, currentClass))) {
-                                            set(WidgetsRegistry.byClass, currentClass, Ember.A());
-                                        }
-
-                                        get(WidgetsRegistry.byClass, currentClass).pushObject(registryEntry);
+                        if(!isNone(metadataDict)) {
+                            if(metadataDict.icon) {
+                                registryEntry.set('icon', metadataDict.icon);
+                            }
+                            if(metadataDict.classes) {
+                                var classes = metadataDict.classes;
+                                for (var j = 0, lj = classes.length; j < lj; j++) {
+                                    var currentClass = classes[j];
+                                    if(!Ember.isArray(get( WidgetsRegistry.byClass, currentClass))) {
+                                        set(WidgetsRegistry.byClass, currentClass, Ember.A());
                                     }
+
+                                    get(WidgetsRegistry.byClass, currentClass).pushObject(registryEntry);
                                 }
                             }
-
-                            WidgetsRegistry.all.pushObject(registryEntry);
                         }
+
+                        WidgetsRegistry.all.pushObject(registryEntry);
                     }
-
-                    return this._super.apply(this, arguments);
                 }
-            });
 
-            application.register('controller:widget', controller);
-        }
-    });
+                return this._super.apply(this, arguments);
+            }
+        });
+
+        application.register('controller:widget', controller);
+    }
 });

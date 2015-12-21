@@ -19,18 +19,26 @@
 
 /** @module canopsis.frontend.core */
 
+var JSONSelect;
+
 require.config({
     paths: {
         'css3-mediaqueries': 'canopsis/core/lib/externals/min/css3-mediaqueries',
         'math': 'canopsis/core/lib/externals/mathjs/dist/math',
         'hashes': 'canopsis/core/lib/externals/jshashes/hashes',
 
-        //TODO move this in uibase
-        'jsonselect': 'canopsis/core/lib/wrappers/jsonselect'
+        'jsonselect': 'canopsis/core/lib/externals/jsonselect/src/jsonselect'
     }
 });
 
 define([
+    'app/lib/loaders/utils',
+    'app/lib/registries',
+    'app/lib/wrappersmanager',
+    'app/lib/indexesregistry',
+    'app/lib/actionsregistry',
+    'app/lib/formsregistry',
+    'app/lib/loaders/components',
     'app/controller/application',
     'app/controller/formwrapper',
     'app/controller/login',
@@ -56,6 +64,7 @@ define([
     'app/lib/requirejsmocksmanager',
     'app/lib/utils/actions',
     'app/lib/utils/data',
+    'app/lib/utils/dates',
     'app/lib/utils/forms',
     'app/lib/helpers/widgetslot',
     'app/lib/utils/routes',
@@ -71,8 +80,6 @@ define([
     'app/lib/searchmethodsregistry',
     'app/lib/schemasregistry',
     'app/lib/wrappers/console',
-    'app/lib/wrappers/ionicons',
-    'app/lib/wrappers/mousetrap',
     'app/mixins/consolemanager',
     'app/mixins/inspectablearray',
     'app/mixins/inspectableitem',
@@ -115,12 +122,11 @@ define([
     'app/view/widgetslot',
     'canopsis/runtime.conf',
     'css3-mediaqueries',
-    'jsonselect',
     'math',
-    'app/lib/utils/hash'
-], function(Canopsis) {
-
-    window.getCanopsis = function () {
-        return Canopsis;
-    };
+    'app/lib/utils/hash',
+    'app/lib/externals/mousetrap/mousetrap.min',
+    'jsonselect',
+    'app/lib/externals/jquery-resize/jquery.ba-resize.min',
+    'link!canopsis/core/lib/externals/ionicons/css/ionicons.min.css',
+], function() {
 });

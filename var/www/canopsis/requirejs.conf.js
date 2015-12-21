@@ -26,7 +26,7 @@ require.config({
         'text': 'canopsis/core/lib/externals/requirejs-text/text',
         'link': 'canopsis/core/lib/externals/requirejs-link/link',
 
-        'jquery': 'canopsis/core/lib/wrappers/jquery',
+        'jquery': 'canopsis/core/lib/externals/jquery/dist/jquery',
         'handlebars': 'canopsis/core/lib/externals/handlebars/handlebars',
         "ehbs" : 'canopsis/core/lib/externals/requirejs-ember-handlebars/ehbs',
         'ember-template-compiler': 'canopsis/core/lib/externals/min/ember-template-compiler',
@@ -87,7 +87,13 @@ setModuleInfo = function (modules, showmodules) {
     }
 };
 
-define(['canopsis/enabled', 'canopsis/canopsisConfiguration', 'app/lib/utils/i18n', 'app/lib/objects/loader', 'ember-data-lib'], function(enabled, canopsisConfiguration, i18n) {
+define(['canopsis/enabled',
+        'canopsis/canopsisConfiguration',
+        'app/lib/utils/i18n',
+        'app/lib/objects/loader',
+        'ember-data-lib'], function(enabled, canopsisConfiguration, i18n) {
+
+    window.canopsisConfiguration = canopsisConfiguration;
 
     var get = Ember.get;
 

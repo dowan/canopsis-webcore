@@ -3083,6 +3083,7 @@ enifed("ember-application/system/application",
 
         graph.topsort(function (vertex) {
           var initializer = vertex.value;
+            if(!initializer) debugger;
                     initializer(container, namespace);
         });
       },

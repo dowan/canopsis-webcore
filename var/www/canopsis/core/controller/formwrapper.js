@@ -17,45 +17,41 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([
-    'canopsis/canopsisConfiguration'
-], function(canopsisConfiguration) {
 
-    Ember.Application.initializer({
-        name: 'FormwrapperController',
-        initialize: function(container, application) {
-            var get = Ember.get;
+Ember.Application.initializer({
+    name: 'FormwrapperController',
+    initialize: function(container, application) {
+        var get = Ember.get;
 
-            var eventedController = Ember.Controller.extend(Ember.Evented);
+        var eventedController = Ember.Controller.extend(Ember.Evented);
+
+        /**
+         * @class FormwrapperController
+         * @constructor
+         */
+        var controller = eventedController.extend({
+            // used only here
+            config: canopsisConfiguration,
 
             /**
-             * @class FormwrapperController
-             * @constructor
+             * @property debug
+             * @type boolean
+             *
+             * @description See {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
              */
-            var controller = eventedController.extend({
-                // used only here
-                config: canopsisConfiguration,
+            debug: Ember.computed.alias('config.DEBUG'),
 
+            actions: {
                 /**
-                 * @property debug
-                 * @type boolean
-                 *
-                 * @description See {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
+                 * @event show
                  */
-                debug: Ember.computed.alias('config.DEBUG'),
-
-                actions: {
-                    /**
-                     * @event show
-                     */
-                    show: function() {
-                        console.log("FormwrapperController show", this, get(this, 'widgetwrapperView'));
-                        get(this, 'widgetwrapperView').showPopup();
-                    }
+                show: function() {
+                    console.log("FormwrapperController show", this, get(this, 'widgetwrapperView'));
+                    get(this, 'widgetwrapperView').showPopup();
                 }
-            });
+            }
+        });
 
-            application.register('controller:formwrapper', controller);
-        }
-    });
+        application.register('controller:formwrapper', controller);
+    }
 });
