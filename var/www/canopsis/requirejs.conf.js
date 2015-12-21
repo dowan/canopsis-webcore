@@ -23,15 +23,15 @@ require.config({
     paths: {
         'app': 'canopsis/core',
 
-        'text': 'canopsis/core/lib/externals/requirejs-text/text',
-        'link': 'canopsis/core/lib/externals/requirejs-link/link',
+        'text': 'canopsis/brick-loader/externals/requirejs-text/text',
+        'link': 'canopsis/brick-loader/externals/requirejs-link/link',
 
-        'jquery': 'canopsis/core/lib/externals/jquery/dist/jquery',
-        'handlebars': 'canopsis/core/lib/externals/handlebars/handlebars',
-        "ehbs" : 'canopsis/core/lib/externals/requirejs-ember-handlebars/ehbs',
-        'ember-template-compiler': 'canopsis/core/lib/externals/min/ember-template-compiler',
-        'ember-lib': 'canopsis/core/lib/externals/min/ember.debug',
-        'ember-data-lib': 'canopsis/core/lib/externals/min/ember-data'
+        'jquery': 'canopsis/brick-loader/externals/jquery/dist/jquery',
+        'handlebars': 'canopsis/brick-loader/externals/handlebars/handlebars',
+        "ehbs" : 'canopsis/brick-loader/externals/requirejs-ember-handlebars/ehbs',
+        'ember-template-compiler': 'canopsis/brick-loader/externals/ember-template-compiler',
+        'ember-lib': 'canopsis/brick-loader/externals/ember.debug',
+        'ember-data-lib': 'canopsis/brick-loader/externals/ember-data'
     },
     shim: {
         'ember-lib': {
@@ -89,8 +89,8 @@ setModuleInfo = function (modules, showmodules) {
 
 define(['canopsis/enabled',
         'canopsis/canopsisConfiguration',
-        'app/lib/utils/i18n',
-        'app/lib/objects/loader',
+        'canopsis/brick-loader/i18n',
+        'canopsis/brick-loader/loader',
         'ember-data-lib'], function(enabled, canopsisConfiguration, i18n) {
 
     window.canopsisConfiguration = canopsisConfiguration;
@@ -202,7 +202,7 @@ define(['canopsis/enabled',
             deps.push('canopsis/environment.production');
         }
 
-        deps.push('app/lib/wrappers/extend');
+        deps.push('canopsis/brick-loader/extend');
         deps.push('link');
 
         require(deps, function() {
@@ -229,7 +229,7 @@ define(['canopsis/enabled',
                 window.appShouldNowBeLoaded = true;
 
                 setLoadingInfo('Fetching application starting point', 'fa-plug');
-                require(['app/application'], function(Application) {
+                require(['canopsis/brick-loader/application'], function(Application) {
                     setLoadingInfo('Initializing user interface', 'fa-desktop');
 
                 });

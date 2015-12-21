@@ -22,7 +22,6 @@ var utilsFiles = [
     'routes',
     'data',
     'notification',
-    'i18n',
     'hash',
     'dates',
     'indexes',
