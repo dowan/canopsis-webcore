@@ -19,20 +19,23 @@
  * @module canopsis-frontend-core
  */
 
-define([], function() {
+Ember.Application.initializer({
+    name: 'RequiredValidator',
+    initialize: function(container, application) {
 
-    function requiredValidator(attr, valideStruct) {
-        console.log("requiredValidator :attr = ",attr) ;
-        if (attr.model.options.required !== undefined && attr.model.options.required === true  && (attr.value === undefined || attr.value === ""  || attr.value === null)) {
-            valideStruct.valid = false;
-            valideStruct.error = " Field can't be empty";
-        } else {
-            valideStruct.valid = true;
-            valideStruct.error = "";
+        function requiredValidator(attr, valideStruct) {
+            console.log("requiredValidator :attr = ",attr) ;
+            if (attr.model.options.required !== undefined && attr.model.options.required === true  && (attr.value === undefined || attr.value === ""  || attr.value === null)) {
+                valideStruct.valid = false;
+                valideStruct.error = " Field can't be empty";
+            } else {
+                valideStruct.valid = true;
+                valideStruct.error = "";
+            }
+
+            return valideStruct;
         }
 
-        return valideStruct;
+        application.register('validator:required', requiredValidator);
     }
-
-    return requiredValidator;
 });

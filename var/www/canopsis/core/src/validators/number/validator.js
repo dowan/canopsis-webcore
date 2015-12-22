@@ -15,22 +15,23 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([], function() {
+Ember.Application.initializer({
+    name: 'NumberValidator',
+    initialize: function(container, application) {
 
-    function numberValidator(attr, valideStruct) {
-        if ( Ember.isEmpty(attr.value) || !isNaN( attr.value )  ) {
-            valideStruct.valid = true ;
-        } else {
-            valideStruct.valid = false ;
-            valideStruct.error = "value should be a number";
+        function numberValidator(attr, valideStruct) {
+            if ( Ember.isEmpty(attr.value) || !isNaN( attr.value )  ) {
+                valideStruct.valid = true ;
+            } else {
+                valideStruct.valid = false ;
+                valideStruct.error = "value should be a number";
+            }
+
+            return valideStruct;
         }
 
-        return valideStruct;
+        application.register('validator:number', numberValidator);
     }
-
-    return numberValidator;
 });

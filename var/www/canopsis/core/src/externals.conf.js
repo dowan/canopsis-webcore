@@ -17,23 +17,27 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
+var JSONSelect;
 
-Ember.Application.initializer({
-    name: 'MaxItemsValidator',
-    initialize: function(container, application) {
+require.config({
+    paths: {
+        'css3-mediaqueries': 'canopsis/core/externals/min/css3-mediaqueries',
+        'math': 'canopsis/core/externals/mathjs/dist/math',
+        'hashes': 'canopsis/core/externals/jshashes/hashes',
 
-        function maxItemsValidator(attr, valideStruct) {
-            var maxItemsModelOption = attr.model.options.maxItems;
-
-            if(attr.value.length <= maxItemsModelOption){
-                valideStruct.valid = true ;
-            } else {
-                valideStruct.valid = false ;
-                valideStruct.error = "There can be at most " + maxItemsModelOption + " item(s).";
-            }
-            return valideStruct;
-        }
-
-        application.register('validator:max-items', maxItemsValidator);
+        'jsonselect': 'canopsis/core/externals/jsonselect/src/jsonselect'
     }
 });
+
+define([
+    'math',
+    'canopsis/runtime.conf',
+    'css3-mediaqueries',
+    'canopsis/core/src/lib/utils/hash',
+    'canopsis/core/externals/mousetrap/mousetrap.min',
+    'jsonselect',
+    'canopsis/core/externals/jquery-resize/jquery.ba-resize.min',
+    'link!canopsis/core/externals/ionicons/css/ionicons.min.css',
+], function(math) {
+    window.math = math;
+})

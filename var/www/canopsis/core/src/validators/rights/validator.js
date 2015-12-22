@@ -19,13 +19,17 @@
  * @module canopsis-frontend-core
  */
 
-define([], function() {
-    // TODO : determine if relevant
-    function rightsValidator(attr, valideStruct) {
-        void (attr);
-          valideStruct.valid = true;
-        return valideStruct;
-    }
+Ember.Application.initializer({
+    name: 'RightsValidator',
+    initialize: function(container, application) {
 
-    return rightsValidator;
+        // TODO : determine if relevant
+        function rightsValidator(attr, valideStruct) {
+            void (attr);
+              valideStruct.valid = true;
+            return valideStruct;
+        }
+
+        application.register('validator:rights', rightsValidator);
+    }
 });

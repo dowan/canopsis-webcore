@@ -15,24 +15,26 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([], function() {
 
-    function minItemsValidator(attr, valideStruct) {
-        var minItemsModelOption = attr.model.options.minItems;
+Ember.Application.initializer({
+    name: 'MinItemsValidator',
+    initialize: function(container, application) {
 
-        if(attr.value.length >= minItemsModelOption){
-            valideStruct.valid = true ;
-        } else {
-            valideStruct.valid = false ;
-            valideStruct.error = "Must have at least " + minItemsModelOption + " item(s).";
+        function minItemsValidator(attr, valideStruct) {
+            var minItemsModelOption = attr.model.options.minItems;
+
+            if(attr.value.length >= minItemsModelOption){
+                valideStruct.valid = true ;
+            } else {
+                valideStruct.valid = false ;
+                valideStruct.error = "Must have at least " + minItemsModelOption + " item(s).";
+            }
+
+            return valideStruct;
         }
 
-        return valideStruct;
+        application.register('validator:min-items', minItemsValidator);
     }
-
-    return minItemsValidator;
 });

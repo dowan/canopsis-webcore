@@ -104,6 +104,7 @@ Ember.Application.initializer({
                 }
             }
         });
+
         application.register('mixin:validation-field', mixin);
     }
 });

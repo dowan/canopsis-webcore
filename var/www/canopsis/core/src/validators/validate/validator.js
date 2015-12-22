@@ -19,83 +19,87 @@
  * @module canopsis-frontend-core
  */
 
-define([], function() {
+Ember.Application.initializer({
+    name: 'Validator',
+    initialize: function(container, application) {
 
-    var get = Ember.get;
+        var get = Ember.get;
 
-    /**
-     * TODO : Add validators to crecord.attributes
-     * Scan attr's options in order to retrieve all needed validators (Ember.validators)
-     * @return validators : array of validators
-     */
-    function GetValidators(attr) {
-        console.log("attr = ", attr);
-        var options = get(attr, 'model.options');
-        var validators = [];
+        /**
+         * TODO : Add validators to crecord.attributes
+         * Scan attr's options in order to retrieve all needed validators (Ember.validators)
+         * @return validators : array of validators
+         */
+        function GetValidators(attr) {
+            console.log("attr = ", attr);
+            var options = get(attr, 'model.options');
+            var validators = [];
 
-        var validatorName = get(attr, 'model.type');
-        var validator = Ember.validators[validatorName];
-        if (validator !== undefined) {
-            console.log("pushed : ", validatorName);
-            validators.push(Ember.validators[validatorName]);
-        }
+            var validatorName = get(attr, 'model.type');
+            var validator = Ember.validators[validatorName];
+            if (validator !== undefined) {
+                console.log("pushed : ", validatorName);
+                validators.push(Ember.validators[validatorName]);
+            }
 
-        if (options !== undefined) {
+            if (options !== undefined) {
 
-            for (var key in options) {
-                if ( options.hasOwnProperty( key ) ) {
-                    var keyValidatorName = (key === "role")? options[key] : key;
-                    var keyValidator = Ember.validators[keyValidatorName];
+                for (var key in options) {
+                    if ( options.hasOwnProperty( key ) ) {
+                        var keyValidatorName = (key === "role")? options[key] : key;
+                        var keyValidator = Ember.validators[keyValidatorName];
 
-                    if (keyValidator !== undefined) {
+                        if (keyValidator !== undefined) {
 
-                        console.log("pushed : ", keyValidatorName);
-                        validators.push(Ember.validators[keyValidatorName]);
+                            console.log("pushed : ", keyValidatorName);
+                            validators.push(Ember.validators[keyValidatorName]);
+                        }
                     }
                 }
             }
+
+            return validators;
         }
 
-        return validators;
-    }
-    /**
-     * Create struct (not really needed)
-     */
-    function makeStruct(attributes) {
+        /**
+         * Create struct (not really needed)
+         */
+        function makeStruct(attributes) {
 
-        var names = attributes.split(' ');
-        var count = names.length;
-        function constructor() {
+            var names = attributes.split(' ');
+            var count = names.length;
+            function constructor() {
 
-            for (var i = 0; i < count; i++) {
-                this[names[i]] = arguments[i];
+                for (var i = 0; i < count; i++) {
+                    this[names[i]] = arguments[i];
+                }
             }
+            return constructor;
         }
-        return constructor;
-    }
 
-    /**
-    * Check attr's value with all needed validators
-    * @return valideStruct : struct containing result of validation(boolean) and message(string) .
-    */
-    function Validator(attr) {
+        /**
+         * Check attr's value with all needed validators
+         * @return valideStruct : struct containing result of validation(boolean) and message(string) .
+         */
+        function Validator(attr) {
 
-        var errorMessage = "";
-        var valideStruct = makeStruct("valid error");
-        var toReturn = new valideStruct(true, errorMessage);
+            var errorMessage = "";
+            var valideStruct = makeStruct("valid error");
+            var toReturn = new valideStruct(true, errorMessage);
 
-        var validators = GetValidators(attr);
+            var validators = GetValidators(attr);
 
-        for (var i = 0; i < validators.length; i++) {
-            validator = validators[i];
-            toReturn = validator(attr, toReturn);
+            for (var i = 0; i < validators.length; i++) {
+                validator = validators[i];
+                toReturn = validator(attr, toReturn);
 
-            if (toReturn.valid === false) {
-                return toReturn;
+                if (toReturn.valid === false) {
+                    return toReturn;
+                }
             }
+            return toReturn;
         }
-        return toReturn;
-    }
 
-    return Validator;
+        application.register('validator:main', Validator);
+    }
 });

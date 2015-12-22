@@ -15,33 +15,34 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
- *
- * @module canopsis-frontend-core
  */
 
-define([], function() {
+Ember.Application.initializer({
+    name: 'MailValidator',
+    initialize: function(container, application) {
 
-    function mailValidator(attr, valideStruct) {
-        var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        function mailValidator(attr, valideStruct) {
+            var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-        if (Ember.isBlank(attr.value)) {
-            if(attr.model.required) {
-                valideStruct.valid = false;
-                valideStruct.error = 'Mail is required';
+            if (Ember.isBlank(attr.value)) {
+                if(attr.model.required) {
+                    valideStruct.valid = false;
+                    valideStruct.error = 'Mail is required';
+                }
+                else {
+                    valideStruct.valid = true;
+                }
             }
-            else {
-                valideStruct.valid = true;
+            else if (regex.test(attr.value)) {
+                valideStruct.valid = true ;
+            } else {
+                valideStruct.valid = false ;
+                valideStruct.error = "Mail's format should be: X@Y.Z";
             }
-        }
-        else if (regex.test(attr.value)) {
-            valideStruct.valid = true ;
-        } else {
-            valideStruct.valid = false ;
-            valideStruct.error = "Mail's format should be: X@Y.Z";
+
+            return valideStruct;
         }
 
-        return valideStruct;
+        application.register('validator:mail', mailValidator);
     }
-
-  return mailValidator;
 });
