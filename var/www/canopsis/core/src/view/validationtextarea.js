@@ -27,6 +27,5 @@ Ember.Application.initializer({
         var component = Ember.TextArea.extend(ValidationFieldMixin, {});
         application.register('component:component-validationtextarea', component);
         Ember.Handlebars.helper('component-validationtextarea', component);
-
     }
 });

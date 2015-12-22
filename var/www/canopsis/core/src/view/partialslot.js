@@ -17,54 +17,49 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([], function() {
-
-    /**
-     * @class PartialslotView
-     * @extends Ember.View
-     * @constructor
-     */
-    var view = Ember.View.extend({
+Ember.Application.initializer({
+    name: 'PartialslotView',
+    initialize: function(container, application) {
         /**
-         * @property canopsisConfiguration
-         * @see {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
+         * @class PartialslotView
+         * @extends Ember.View
+         * @constructor
          */
-        canopsisConfiguration: canopsisConfiguration,
+        var view = Ember.View.extend({
+            /**
+             * @property canopsisConfiguration
+             * @see {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
+             */
+            canopsisConfiguration: canopsisConfiguration,
 
-        /**
-         * @property showPartialslots
-         * @see {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
-         * @type boolean
-         */
-        showPartialslots: Ember.computed.alias('canopsisConfiguration.showPartialslots'),
+            /**
+             * @property showPartialslots
+             * @see {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
+             * @type boolean
+             */
+            showPartialslots: Ember.computed.alias('canopsisConfiguration.showPartialslots'),
 
-        /**
-         * @property templateName
-         * @type string
-         */
-        templateName: 'partialslot',
+            /**
+             * @property templateName
+             * @type string
+             */
+            templateName: 'partialslot',
 
-        /**
-         * @property tagName
-         * @type string
-         */
-        tagName: 'span',
+            /**
+             * @property tagName
+             * @type string
+             */
+            tagName: 'span',
 
-        /**
-         * @property slot
-         * @type string
-         * @required
-         */
-        slot: Ember.required()
-    });
+            /**
+             * @property slot
+             * @type string
+             * @required
+             */
+            slot: Ember.required()
+        });
 
-
-    Ember.Application.initializer({
-        name: 'PartialslotView',
-        initialize: function(container, application) {
-            application.register('view:partialslot', view);
-        }
-    });
-
-    return view;
+        application.register('view:partialslot', view);
+        Ember.Handlebars.helper('partialslot', view);
+    }
 });

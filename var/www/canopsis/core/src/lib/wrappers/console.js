@@ -22,7 +22,7 @@
 
 var deps = [];
 if (!isIE) {
-    deps.push('canopsis/core/src/lib/externals/console.js/console');
+    deps.push('canopsis/core/externals/console.js/console');
 }
 
 define(deps, function() {
