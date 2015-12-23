@@ -19,7 +19,7 @@
 
 
 Ember.Application.initializer({
-    name:"component-colpick",
+    name: 'component-colpick',
     initialize: function(container, application) {
         var get = Ember.get,
             set = Ember.set;

@@ -33,7 +33,8 @@ Ember.Application.initializer({
          * Handlebars helper used to humanize variables using ValuesUtility
          */
         var helper = function(value, options) {
-            var val = value;
+            var val = value,
+                ret;
 
             if (isNone(options)) {
                 options = value;

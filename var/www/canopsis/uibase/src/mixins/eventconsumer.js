@@ -69,7 +69,8 @@ Ember.Application.initializer({
              * Called by ``fetchEvents()`` method.
              */
             onEvents: function(events, labelsByRk) {
-                ;
+                void(events);
+                void(labelsByRk);
             }
         });
 

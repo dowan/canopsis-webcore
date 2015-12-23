@@ -25,9 +25,7 @@ Ember.Application.initializer({
             serie = container.lookup('controller:serie'),
             perfdata = container.lookup('controller:perfdata');
 
-        var get = Ember.get,
-            set = Ember.set,
-            isNone = Ember.isNone;
+        var get = Ember.get;
 
         /**
          * @mixin MetricConsumer
@@ -105,7 +103,7 @@ Ember.Application.initializer({
              * Called by ``fetchMetrics()`` and ``aggregateMetrics()`` methods.
              */
             onMetrics: function(metrics) {
-                ;
+                void(metrics);
             },
 
             /**
@@ -126,7 +124,7 @@ Ember.Application.initializer({
                     })
                 };
 
-                var promise = new Ember.RSVP.Promise(function(resolve, reject) {
+                new Ember.RSVP.Promise(function(resolve, reject) {
                     store.findQuery('serie', query).then(function(result) {
                         if(get(result, 'meta.success') !== true) {
                             console.error('Series fetching failed:', get(result, 'content'));
@@ -158,7 +156,7 @@ Ember.Application.initializer({
                         }
                     }, function() {
                         console.log('Series request failed:', arguments);
-                        reject(arguments)
+                        reject(arguments);
                     });
                 });
             },
@@ -171,7 +169,7 @@ Ember.Application.initializer({
              * Called by ``fetchSeries()`` method.
              */
             onSeries: function(series) {
-                ;
+                void(series);
             }
         });
 

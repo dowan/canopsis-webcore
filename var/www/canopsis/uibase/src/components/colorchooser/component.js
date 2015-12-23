@@ -19,7 +19,7 @@
 
 
 Ember.Application.initializer({
-    name:"component-colorchooser",
+    name: 'component-colorchooser',
     initialize: function(container, application) {
 
         /**
