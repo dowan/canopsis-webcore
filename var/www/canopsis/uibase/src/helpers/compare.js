@@ -16,15 +16,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
+
 Ember.Application.initializer({
     name: 'Compare',
     initialize: function(container, application) {
+
         var set = Ember.set,
             isNone = Ember.isNone;
 
         var compare = function(lvalue, rvalue, options) {
             if (arguments.length < 3)
-                throw new Error('Handlerbars Helper 'compare' needs 2 parameters');
+                throw new Error('Handlerbars Helper \'compare\' needs 2 parameters');
 
             var operator = options.hash.operator || "==";
 
