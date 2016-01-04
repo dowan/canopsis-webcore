@@ -22,11 +22,10 @@ Ember.Application.initializer({
     after: ['FormsUtils', 'MixinFactory', 'DataUtils', 'NotificationUtils'],
     initialize: function(container, application) {
 
-        var Mixin = container.lookupFactory('factory:mixin');
-        var formsUtils = container.lookupFactory('utility:forms');
-        var dataUtils = container.lookupFactory('utility:data');
-        var MixinFactory = container.lookupFactory('factory:mixin');
-        var notificationUtils = container.lookupFactory('utility:notification');
+        var Mixin = container.lookupFactory('factory:mixin'),
+            formsUtils = container.lookupFactory('utility:forms'),
+            dataUtils = container.lookupFactory('utility:data'),
+            notificationUtils = container.lookupFactory('utility:notification');
 
         var get = Ember.get,
             set = Ember.set,
@@ -40,7 +39,7 @@ Ember.Application.initializer({
          * A filter is a combination of a cfilter and a title.
          * Custom cfilter allow perform selelection on a list with custom filter information.
         */
-        var mixin = MixinFactory('customfilterlist', {
+        var mixin = Mixin('customfilterlist', {
             partials: {
                 subHeader: ['customfilters']
             },

@@ -32,6 +32,9 @@ Ember.Application.initializer({
             MetricConsumer = container.lookupFactory('mixin:metricconsumer'),
             TimeWindowUtils = container.lookupFactory('utility:timewindow');
 
+        var Handlebars = window.Handlebars,
+            __ = Ember.String.loc;
+
         var get = Ember.get,
             set = Ember.set,
             isNone = Ember.isNone;

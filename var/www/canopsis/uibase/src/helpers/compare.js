@@ -20,15 +20,15 @@
 Ember.Application.initializer({
     name: 'Compare',
     initialize: function(container, application) {
+        void(application);
 
-        var set = Ember.set,
-            isNone = Ember.isNone;
+        var Handlebars = window.Handlebars;
 
         var compare = function(lvalue, rvalue, options) {
             if (arguments.length < 3)
-                throw new Error('Handlerbars Helper \'compare\' needs 2 parameters');
+                throw new Error('Handlebars Helper \'compare\' needs 2 parameters');
 
-            var operator = options.hash.operator || "==";
+            var operator = options.hash.operator || '==';
 
             var operators = {
                 '==':       function(l,r) { return l == r; },
@@ -42,7 +42,7 @@ Ember.Application.initializer({
             };
 
             if (!operators[operator])
-                throw new Error('Handlerbars Helper "compare" doesn\'t know the operator '+ operator);
+                throw new Error('Handlebars Helper "compare" doesn\'t know the operator '+ operator);
 
             var result = operators[operator](lvalue,rvalue);
 

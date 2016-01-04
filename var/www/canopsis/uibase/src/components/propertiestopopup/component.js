@@ -23,7 +23,8 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var get = Ember.get,
             set = Ember.set,
-            isNone = Ember.isNone;
+            isNone = Ember.isNone,
+            json2html = window.json2html;
 
         /**
          * @component propertiestopopup
