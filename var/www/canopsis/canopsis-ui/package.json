@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "rm -Rf tmp/build && broccoli build tmp/build && cp tmp/build . -RT",
-    "lint": "eslint .",
+    "lint": "eslint src",
     "doc": "./node_modules/canopsis-ui-toolbelt/scripts/buildDoc"
   },
   "repository": {

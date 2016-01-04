@@ -364,7 +364,6 @@
     'ehbs!editor-typedvalue',
     'ehbs!editor-userpreference',
     'ehbs!editor-widgetstree',
-    'canopsis/uibase/src/externals.conf',
     'canopsis/uibase/src/helpers/color',
     'canopsis/uibase/src/helpers/compare',
     'canopsis/uibase/src/helpers/eventtype',
@@ -511,5 +510,6 @@
     'canopsis/uibase/src/widgets/uimaintabcollection/controller',
     'ehbs!uimaintabcollection',
     'canopsis/uibase/src/widgets/widgetcontainer/controller',
-    'ehbs!widgetcontainer'
+    'ehbs!widgetcontainer',
+    'canopsis/uibase/requirejs-modules/externals.conf'
 ], function () {});
