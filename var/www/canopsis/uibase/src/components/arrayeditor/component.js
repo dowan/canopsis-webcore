@@ -30,9 +30,19 @@ Ember.Application.initializer({
          * @component arrayeditor
          */
         var component = Ember.Component.extend(ValidationFieldMixin, {
+            /**
+             * @property valueRefPath
+             */
             valueRefPath: 'content.value',
+
+            /**
+             * @property valuePath
+             */
             valuePath: 'value',
 
+            /**
+             * @method init
+             */
             init: function() {
                 this._super.apply(this, arguments);
 
@@ -59,10 +69,9 @@ Ember.Application.initializer({
                 });
             },
 
-            didInsertElement: function() {
-
-            },
-
+            /**
+             * @property itemEditorType
+             */
             itemEditorType: function(){
                 var type = get(this, 'content.model.options.items.type');
                 var role = get(this, 'content.model.options.items.role');
@@ -83,7 +92,10 @@ Ember.Application.initializer({
             }.property('content.model.options.items.type', 'content.model.options.items.role'),
 
             /**
-             * Generates a virtual attribute that will be used to manipulate the array item data
+             * @method generateVirtualAttribute
+             * @argument itemIndex
+             * @returns {object} virtual attribute
+             * @description Generates a virtual attribute that will be used to manipulate the array item data
              */
             generateVirtualAttribute: function(itemIndex) {
                 var values = get(this, 'value');
@@ -122,12 +134,19 @@ Ember.Application.initializer({
                 return currentGeneratedAttr;
             },
 
+            /**
+             * @method contentChanged
+             */
             contentChanged: function() {
                 console.log('recompute contentAttributeArray');
             },
 
             actions: {
-
+                /**
+                 * @method actions_move
+                 * @argument direction
+                 * @argument item
+                 */
                 move: function (direction, item) {
 
                     var array = get(this, 'arrayAttributes');
@@ -149,6 +168,9 @@ Ember.Application.initializer({
 
                 },
 
+                /**
+                 * @method actions_addItem
+                 */
                 addItem: function() {
                     console.log('addItem', get(this, 'value'));
 
@@ -176,6 +198,11 @@ Ember.Application.initializer({
 
                     this.validate();
                 },
+
+                /**
+                 * @method actions_removeItem
+                 * @argument item
+                 */
                 removeItem: function(item) {
                     console.log('removeItem', get(this, 'value'));
 
@@ -188,6 +215,12 @@ Ember.Application.initializer({
                     this.validate();
                 }
             },
+
+            /**
+             * @method moveItem
+             * @argument oldIndex
+             * @argument newIndex
+             */
             moveItem: function(oldIndex, newIndex) {
                 console.log('moveItem', arguments);
                 // get(this, 'arrayAttributes').moveElement(oldIndex, newIndex);

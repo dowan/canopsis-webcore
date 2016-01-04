@@ -31,6 +31,7 @@ require.config({
 
 define([
     'math',
+    'hashes',
     'canopsis/runtime.conf',
     'css3-mediaqueries',
     'canopsis/core/src/lib/utils/hash',
@@ -38,6 +39,7 @@ define([
     'jsonselect',
     'canopsis/core/externals/jquery-resize/jquery.ba-resize.min',
     'link!canopsis/core/externals/ionicons/css/ionicons.min.css',
-], function(math) {
+], function(math, Hashes) {
     window.math = math;
+    window.Hashes = Hashes;
 })

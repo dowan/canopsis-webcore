@@ -29,6 +29,11 @@ Ember.Application.initializer({
          */
         var component = Ember.Component.extend({
             actions: {
+                /**
+                 * @method actions_doAction
+                 * @argument action
+                 * @argument {array} params
+                 */
                 doAction: function (actionName, param) {
                     actionsUtils.doAction(actionName, param);
                 }

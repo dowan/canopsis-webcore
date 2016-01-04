@@ -28,6 +28,9 @@ Ember.Application.initializer({
          */
         var component = Ember.Component.extend({
 
+            /**
+             * @method init
+             */
             init: function() {
                 this._super();
                 //default value on load
@@ -41,14 +44,27 @@ Ember.Application.initializer({
                 }
             },
 
+            /**
+             * @property selectedAction
+             */
             selectedAction: 'pass',
+
+            /**
+             * @property availableactions
+             */
             availableactions: ['pass','drop','override','remove', 'execjob'],
 
+            /**
+             * @property isOverride
+             */
             isOverride: function () {
                 console.log('isOverride', get(this, 'selectedAction'), get(this, 'selectedAction') === 'override');
                 return get(this, 'selectedAction') === 'override';
             }.property('selectedAction'),
 
+            /**
+             * @property isRoute
+             */
             isRoute: function () {
                 //not used yet
                 return false;
@@ -56,17 +72,26 @@ Ember.Application.initializer({
                 //return this.get('selectedAction') === 'route';
             }.property('selectedAction'),
 
+            /**
+             * @property isRemove
+             */
             isRemove: function () {
                 console.log('isRemove', get(this, 'selectedAction'), get(this, 'selectedAction') === 'remove');
                 return get(this, 'selectedAction') === 'remove';
             }.property('selectedAction'),
 
+            /**
+             * @property isExecJob
+             */
             isExecJob: function(){
                 console.log('isExecJob', get(this, 'selectedAction'), get(this, 'selectedAction') === 'execjob');
                 return get(this, 'selectedAction') === 'execjob';
             }.property('selectedAction'),
 
             actions : {
+                /**
+                 * @method actions_addAction
+                 */
                 addAction: function () {
                     var action = {
                         type: get(this, 'selectedAction')
@@ -90,6 +115,10 @@ Ember.Application.initializer({
                     set(this, 'content', get(this, 'contentUnprepared'));
                 },
 
+                /**
+                 * @method actions_deleteAction
+                 * @argument action
+                 */
                 deleteAction: function (action) {
                     console.log('Removing action', action);
                     get(this, 'contentUnprepared').removeObject(action);

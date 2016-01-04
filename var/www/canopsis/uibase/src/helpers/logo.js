@@ -17,7 +17,7 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([], function() {
+(function(){
 
     var folderPath = '/static/canopsis/media/images/';
 
@@ -58,4 +58,4 @@ define([], function() {
         return '<img alt="Source" src="'+ logoPath + '"/>';
     });
 
-});
+})();

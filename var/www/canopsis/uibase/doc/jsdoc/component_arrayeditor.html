@@ -43,12 +43,89 @@
                     <td>
                     </td>
                     <td>
-                        <a href="#~generateVirtualAttribute">generateVirtualAttribute<span class="signature">()</span><span class="type-signature"></span></a>
+                        <a href="#~actions_addItem">actions_addItem<span class="signature">()</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~actions_move">actions_move<span class="signature">(direction, item)</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~actions_removeItem">actions_removeItem<span class="signature">(item)</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~contentChanged">contentChanged<span class="signature">()</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~generateVirtualAttribute">generateVirtualAttribute<span class="signature">(itemIndex)</span><span class="type-signature"> &rarr; {object}</span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~init">init<span class="signature">()</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~moveItem">moveItem<span class="signature">(oldIndex, newIndex)</span><span class="type-signature"></span></a>
                     </td>
                 </tr>
             
         </table>
     
+    
+    <h4>Properties</h4>
+    <table style="margin-left:30px;">
+     
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~itemEditorType">itemEditorType<span class="type-signature"></span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~valuePath">valuePath<span class="type-signature"></span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~valueRefPath">valueRefPath<span class="type-signature"></span></a>
+            </td>
+        </tr>
+    
+    </table>
     
     <hr/>
     <div class="container-overview">
@@ -70,6 +147,325 @@
     
 
     
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="~itemEditorType"><a name="~itemEditorType"></a><span class="type-signature">(inner) </span>itemEditorType<span class="type-signature"></span></h4>
+
+
+
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>itemEditorType</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_arrayeditor_component.js.html">components/arrayeditor/component.js</a>, <a href="components_arrayeditor_component.js.html#line75">line 75</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~valuePath"><a name="~valuePath"></a><span class="type-signature">(inner) </span>valuePath<span class="type-signature"></span></h4>
+
+
+
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>valuePath</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_arrayeditor_component.js.html">components/arrayeditor/component.js</a>, <a href="components_arrayeditor_component.js.html#line41">line 41</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~valueRefPath"><a name="~valueRefPath"></a><span class="type-signature">(inner) </span>valueRefPath<span class="type-signature"></span></h4>
+
+
+
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>valueRefPath</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_arrayeditor_component.js.html">components/arrayeditor/component.js</a>, <a href="components_arrayeditor_component.js.html#line36">line 36</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
 
     
         <h3 class="subsection-title">Methods</h3>
@@ -79,15 +475,11 @@
 
     
 
-    <h4 class="name" id="~generateVirtualAttribute"><a name="~generateVirtualAttribute"></a><span class="type-signature">(inner) </span>generateVirtualAttribute<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="~actions_addItem"><a name="~actions_addItem"></a><span class="type-signature">(inner) </span>actions_addItem<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
-
-<div class="description">
-    Generates a virtual attribute that will be used to manipulate the array item data
-</div>
 
 
 
@@ -130,7 +522,713 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_arrayeditor_component.js.html">components/arrayeditor/component.js</a>, <a href="components_arrayeditor_component.js.html#line88">line 88</a>
+        <a href="components_arrayeditor_component.js.html">components/arrayeditor/component.js</a>, <a href="components_arrayeditor_component.js.html#line171">line 171</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~actions_move"><a name="~actions_move"></a><span class="type-signature">(inner) </span>actions_move<span class="signature">(direction, item)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>direction</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>item</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_arrayeditor_component.js.html">components/arrayeditor/component.js</a>, <a href="components_arrayeditor_component.js.html#line145">line 145</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~actions_removeItem"><a name="~actions_removeItem"></a><span class="type-signature">(inner) </span>actions_removeItem<span class="signature">(item)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>item</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_arrayeditor_component.js.html">components/arrayeditor/component.js</a>, <a href="components_arrayeditor_component.js.html#line202">line 202</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~contentChanged"><a name="~contentChanged"></a><span class="type-signature">(inner) </span>contentChanged<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_arrayeditor_component.js.html">components/arrayeditor/component.js</a>, <a href="components_arrayeditor_component.js.html#line137">line 137</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~generateVirtualAttribute"><a name="~generateVirtualAttribute"></a><span class="type-signature">(inner) </span>generateVirtualAttribute<span class="signature">(itemIndex)</span><span class="type-signature"> &rarr; {object}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Generates a virtual attribute that will be used to manipulate the array item data
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>itemIndex</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_arrayeditor_component.js.html">components/arrayeditor/component.js</a>, <a href="components_arrayeditor_component.js.html#line94">line 94</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    virtual attribute
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~init"><a name="~init"></a><span class="type-signature">(inner) </span>init<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_arrayeditor_component.js.html">components/arrayeditor/component.js</a>, <a href="components_arrayeditor_component.js.html#line43">line 43</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~moveItem"><a name="~moveItem"></a><span class="type-signature">(inner) </span>moveItem<span class="signature">(oldIndex, newIndex)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>oldIndex</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>newIndex</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_arrayeditor_component.js.html">components/arrayeditor/component.js</a>, <a href="components_arrayeditor_component.js.html#line219">line 219</a>
     </li></ul></dd>
     
 
@@ -178,7 +1276,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Dec 23 2015 10:44:51 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Mon Jan 04 2016 15:41:59 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

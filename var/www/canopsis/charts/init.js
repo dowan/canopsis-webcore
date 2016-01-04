@@ -60,7 +60,6 @@
     'canopsis/charts/src/externals.conf',
     'canopsis/charts/src/libwrappers/flotchart',
     'ehbs!titlebarbutton-resetzoom',
-    'canopsis/charts/src/utils/basechart',
     'ehbs!categorychart',
     'canopsis/charts/src/widgets/categorychart/controller',
     'canopsis/charts/src/widgets/timegraph/controller',

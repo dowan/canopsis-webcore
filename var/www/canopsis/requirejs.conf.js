@@ -207,6 +207,7 @@ define(['canopsis/enabled',
 
         deps.push('canopsis/brick-loader/extend');
         deps.push('link');
+        deps.push('canopsis/brick-loader/schemasloader');
 
         require(deps, function() {
             var initFiles = [];

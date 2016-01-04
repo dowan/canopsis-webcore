@@ -96,7 +96,6 @@ Ember.Application.initializer({
 
                 set(this, 'acktooltip', acktooltip);
 
-
                 if(value && value.isCancel) {
                     set(this, 'ackcolor', '');
                     set(this, 'acktitle', __('Cancelled'));

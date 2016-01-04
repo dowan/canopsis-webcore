@@ -32,8 +32,16 @@ Ember.Application.initializer({
          * @component arrayclassifiedcrecordselector
          */
         var component = Classifiedcrecordselector.extend({
+
+            /**
+             * @property multiselect
+             */
             multiselect: true,
 
+            /**
+             * @method setInitialContent
+             * @argument initialContent
+             */
             setInitialContent: function(initialContent) {
                 var valueKey = get(this, 'valueKey');
 
@@ -50,6 +58,9 @@ Ember.Application.initializer({
                 }
             },
 
+            /**
+             * @method selectionChanged
+             */
             selectionChanged: function(){
                 this._super();
                 //additional code ensuring single item selection and use of possible custom valueKey.
@@ -83,6 +94,10 @@ Ember.Application.initializer({
 
             }.observes('selectionUnprepared', 'selectionUnprepared.@each'),
 
+            /**
+             * @method extractItems
+             * @arguments items
+             */
             extractItems: function(items) {
                 var valueKey = get(this, 'valueKey');
                 var initialContent = get(this, 'content');
@@ -104,6 +119,7 @@ Ember.Application.initializer({
                 }
             }
         });
+
         application.register('component:component-arrayclassifiedcrecordselector', component);
     }
 });
