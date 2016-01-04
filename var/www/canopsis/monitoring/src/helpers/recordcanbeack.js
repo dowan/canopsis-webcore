@@ -18,9 +18,10 @@
  */
 
 Ember.Handlebars.helper('recordcanbeack', function(crecord) {
+
     console.debug('in recordcanbeack. record status is', Ember.get(crecord, 'status'));
-    recordcanbeack = Ember.get(crecord, 'status') !== 0 && Ember.get(crecord, 'status') !== 2;
+    var recordcanbeack = Ember.get(crecord, 'status') !== 0 && Ember.get(crecord, 'status') !== 2;
     Ember.set(crecord, 'recordcanbeack', recordcanbeack);
 
-    return "";
+    return '';
 });

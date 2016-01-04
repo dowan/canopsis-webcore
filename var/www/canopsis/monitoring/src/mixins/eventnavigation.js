@@ -22,11 +22,6 @@ Ember.Application.initializer({
     after: ['MixinFactory', 'FormsUtils', 'HashUtils'],
     initialize: function(container, application) {
         var Mixin = container.lookupFactory('factory:mixin');
-        var formsUtils = container.lookupFactory('utility:forms');
-        var hashUtils = container.lookupFactory('utility:hash');
-
-        var get = Ember.get,
-            set = Ember.set;
 
         /**
          * @mixin eventnavigation

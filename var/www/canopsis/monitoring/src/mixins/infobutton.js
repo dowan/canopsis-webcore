@@ -23,16 +23,13 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var Mixin = container.lookupFactory('factory:mixin');
 
-        var get = Ember.get,
-            set = Ember.set;
-
         /**
          * @mixin infobutton
          */
         var mixin = Mixin('infobutton', {
             partials: {
                 itemactionbuttons: ['actionbutton-info']
-            },
+            }
         });
 
         application.register('mixin:infobutton', mixin);

@@ -105,7 +105,7 @@ define([
                         mfilter = JSON.parse(cfilter_serialized);
                     } catch (e) {
                         console.error('unable to parse serialized filter');
-                        mfilter = { "$or": {}};
+                        mfilter = { '$or': {}};
                     }
 
                     console.log('deserializeCfilter', cfilter_serialized, clauses.length);
@@ -260,7 +260,7 @@ define([
                             }
 
                             // if(get(this, 'onlyAllowRegisteredIndexes') === true) {
-                                set(field, 'finalized', true);
+                            set(field, 'finalized', true);
                             // }
 
                             if (j === clause.and.length -1) {
@@ -614,7 +614,6 @@ define([
                         console.log('removeAndClause');
 
                         var currentClause;
-                        var deletedClauseIndex;
                         var clauses = get(this, 'clauses');
                         var eraseSuccessors = false;
 

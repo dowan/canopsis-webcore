@@ -21,13 +21,8 @@ Ember.Application.initializer({
     name: 'EventhistoryMixin',
     after: ['MixinFactory', 'FormsUtils', 'HashUtils'],
     initialize: function(container, application) {
-        var formsUtils = container.lookupFactory('utility:forms');
-        var hashUtils = container.lookupFactory('utility:hash');
 
         var Mixin = container.lookupFactory('factory:mixin');
-
-        var get = Ember.get,
-            set = Ember.set;
 
         /**
          * @mixin eventhistory

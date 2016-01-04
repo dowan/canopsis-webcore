@@ -53,11 +53,11 @@ Ember.Application.initializer({
                     info: get(this, 'info'),
                     minor: get(this, 'minor'),
                     major: get(this, 'major'),
-                    critical: get(this, 'critical'),
+                    critical: get(this, 'critical')
                 };
                 console.log('statemapping', content);
                 set(this, 'content', content);
-            }.observes('critical', 'major', 'minor', 'info'),
+            }.observes('critical', 'major', 'minor', 'info')
 
         });
 

@@ -24,8 +24,7 @@ Ember.Application.initializer({
         var Mixin = container.lookupFactory('factory:mixin');
         var formsUtils = container.lookupFactory('utility:forms');
 
-        var get = Ember.get,
-            set = Ember.set;
+        var get = Ember.get;
 
         /**
          * @mixin editurlfield
@@ -33,7 +32,7 @@ Ember.Application.initializer({
         var mixin = Mixin('editurlfield', {
 
             partials: {
-                actionToolbarButtons: ['actionbutton-editurlfield'],
+                actionToolbarButtons: ['actionbutton-editurlfield']
             },
 
             actions: {
@@ -41,9 +40,8 @@ Ember.Application.initializer({
                  * @method actions-editUrlField
                  */
                 editUrlField: function () {
-                    formsUtils.editSchemaRecord('linklistfieldsurl', get(this, "container"));
+                    formsUtils.editSchemaRecord('linklistfieldsurl', get(this, 'container'));
                 }
-
             }
         });
 

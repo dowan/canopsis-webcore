@@ -21,12 +21,14 @@ Ember.Application.initializer({
     name: 'StatusViewHelper',
     after: 'DatesUtils',
     initialize: function(container, application) {
+        void(application);
+
         var datesUtils = container.lookupFactory('utility:dates');
 
         var get = Ember.get,
             set = Ember.set,
             isNone = Ember.isNone,
-             __ = Ember.String.loc;
+            __ = Ember.String.loc;
 
 
         Ember.Handlebars.helper('statusview', function(status, crecord) {
@@ -44,7 +46,7 @@ Ember.Application.initializer({
                 1: 'On going',
                 2: 'Stealthy',
                 3: 'Bagot',
-                4: 'Cancelled',
+                4: 'Cancelled'
             };
 
             if (isNone(status)) {
@@ -77,7 +79,7 @@ Ember.Application.initializer({
                 }
 
             }
-            return "";
+            return '';
         });
     }
 });

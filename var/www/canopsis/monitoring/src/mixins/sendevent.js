@@ -28,7 +28,8 @@ Ember.Application.initializer({
 
         var get = Ember.get,
             set = Ember.set,
-            isNone = Ember.isNone;
+            isNone = Ember.isNone,
+            __ = Ember.String.loc;
 
         /**
          * @mixin sendevent
@@ -139,6 +140,8 @@ Ember.Application.initializer({
                 console.log('safe_mode', safe_mode);
 
                 return new Ember.RSVP.Promise(function(resolve, reject) {
+                    void(reject);
+
                     var post_events = [];
                     for(var i = 0; i < crecords.length; i++) {
                         console.log('Event:', get(record, 'author'), get(record, 'output'));
@@ -147,7 +150,7 @@ Ember.Application.initializer({
                         post_event.author = get(record, 'author');
                         post_event.output = get(record, 'output');
 
-                        if(!!get(record, 'ticket')) {
+                        if(get(record, 'ticket')) {
                             post_event.ticket = get(record, 'ticket');
                         }
 
@@ -162,6 +165,8 @@ Ember.Application.initializer({
                     $.post('/event', {
                         event: JSON.stringify(post_events)
                     }).then(function(data) {
+                        void(data);
+
                         Ember.run(function () {
 
                             record.rollback();
@@ -254,9 +259,9 @@ Ember.Application.initializer({
 
             /**
              * @method getDisplayRecord
-             * @argument event_type
-             * @argument crecord
-             * @return record
+             * @argument event_type
+             * @argument crecord
+             * @return record
              */
             getDisplayRecord: function(event_type, crecord) {
                 var store = get(this, 'widgetDataStore');
@@ -394,6 +399,8 @@ Ember.Application.initializer({
 
                 declareticket: {
                     extract: function(record, crecord, formRecord) {
+                        void(formRecord);
+
                         record.ref_rk = get(crecord, 'id');
                         record.state = 0;
                         record.state_type = 1;
@@ -504,10 +511,15 @@ Ember.Application.initializer({
 
                 recovery: {
                     extract: function(record, crecord, formRecord) {
+                        void(formRecord);
+                        void(record);
+
                         set(crecord, 'state', 0);
                     },
 
                     filter: function(record) {
+                        void(record);
+
                         return false;
                     },
 
@@ -516,9 +528,11 @@ Ember.Application.initializer({
                         this.submitEvents([record], record, 'recovery');
                     },
 
-                     transform: function(crecord, record) {
+                    transform: function(crecord, record) {
+                        void(crecord);
+                        void(record);
                         //TODO
-                     }
+                    }
                 },
 
                 uncancel: {
@@ -528,7 +542,7 @@ Ember.Application.initializer({
                         record.state = 0;
                         record.cancel = 0;
                         if (formRecord !== undefined) {
-                            output = get(formRecord, 'output');
+                            var output = get(formRecord, 'output');
                             if (! output) {
                                 output = ' ';
                             }
@@ -617,12 +631,15 @@ Ember.Application.initializer({
 
                 user: {
                     extract: function(record, crecord, formRecord) {
+                        void(formRecord);
 
                         record.output = get(crecord, 'output');
                         record.display_name = get(this, 'login.firstname') + ' ' + get(this, 'login.lastname');
                     },
 
                     filter: function(crecords) {
+                        void(crecords);
+
                         return false;
                     },
 
@@ -642,6 +659,7 @@ Ember.Application.initializer({
 
                 comment: {
                     extract: function(record, crecord, formRecord) {
+                        void(formRecord);
 
                         record.referer = get(crecord, 'referer');
                         record.output = get(crecord, 'output');
@@ -649,6 +667,8 @@ Ember.Application.initializer({
                     },
 
                     filter: function(crecords) {
+                        void(crecords);
+
                         return false;
                     },
 

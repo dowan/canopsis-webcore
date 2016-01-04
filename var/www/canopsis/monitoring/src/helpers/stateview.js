@@ -18,12 +18,14 @@
  */
 
 Ember.Handlebars.helper('stateview', function(state) {
+    var __ = Ember.String.loc;
+
 
     var statelist = {
         0: {color: 'green', text: 'Info'},
         1: {color: 'yellow', text: 'Minor'},
         2: {color: 'orange', text: 'Major'},
-        3: {color: 'red', text: 'Critical'},
+        3: {color: 'red', text: 'Critical'}
     };
 
     var stateSelection = statelist[state];

@@ -25,7 +25,7 @@ Ember.Application.initializer({
         var Mixin = container.lookupFactory('factory:mixin');
 
         /**
-         * @mixin history
+         * @mixin history
          * @description Implements history collection finder
          */
         var mixin = Mixin('history', {

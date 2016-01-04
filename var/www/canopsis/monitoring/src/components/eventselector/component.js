@@ -29,10 +29,10 @@ Ember.Application.initializer({
         var component = Ember.Component.extend({
             init: function() {
                 this._super();
-                this.set("componentDataStore", DS.Store.create({
-                    container: this.get("container")
+                this.set('componentDataStore', DS.Store.create({
+                    container: this.get('container')
                 }));
-                console.log("Event selector init");
+                console.log('Event selector init');
 
                 this.set('selectedEvents', []);
 
@@ -64,7 +64,7 @@ Ember.Application.initializer({
                 }
 
                 var eventselectorController = this;
-                var query = get(this, "componentDataStore").findQuery(
+                var query = get(this, 'componentDataStore').findQuery(
                     'event',
                     {
                         filter: JSON.stringify({_id: {'$in': rks}}),
@@ -128,7 +128,7 @@ Ember.Application.initializer({
                     }
                 }
 
-                var query = get(this, "componentDataStore").findQuery(
+                var query = get(this, 'componentDataStore').findQuery(
                     'event',
                     {
                         filter: JSON.stringify(filter),
@@ -141,7 +141,7 @@ Ember.Application.initializer({
                     function (data) {
                         console.log('Fetched data from events', data.content);
                         that.set('events', data.content);
-                });
+                    });
 
                 void (query);
 
@@ -180,8 +180,7 @@ Ember.Application.initializer({
                             }
                             selectedRks.push({
                                 rk: get(selectedEvents[i], 'id'),
-                                label: label,
-
+                                label: label
                             });
 
                         } else {

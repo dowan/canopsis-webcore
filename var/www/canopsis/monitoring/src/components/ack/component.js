@@ -46,13 +46,13 @@ Ember.Application.initializer({
                 var ticketNumber = get(crecord, 'record.ticket');
                 var ticketDate = get(crecord, 'record.ticket_date');
 
-                ticketNumberHtml = '';
+                var ticketNumberHtml = '';
                 //Generate ticket declared html information
                 if (!isNone(ticketNumber) && !isNone(ticketDate)) {
                     ticketNumberHtml = [
                         '<b>' + __('Ticket number') + '</b><br/>',
                         datesUtils.timestamp2String(ticketDate) +' <br/> ',
-                        '<i>' + ticketNumber +'</i><br/> ',
+                        '<i>' + ticketNumber +'</i><br/> '
                     ].join('');
                 }
 
@@ -64,7 +64,7 @@ Ember.Application.initializer({
                         datesUtils.timestamp2String(ticket_declared_date) +' <br/> ',
                         __('By') +' : ' + ticket_declared_author +' <br/><br/> ',
                         ticketNumberHtml,
-                        "</center>"
+                        '</center>'
                     ].join('');
                     set(this, 'tickettooltip', tickettooltip);
 
@@ -72,11 +72,10 @@ Ember.Application.initializer({
 
                     //When no ticket declared, then ticket date was saved.
                     console.debug('ticket date is ', get(crecord, 'record.ticket_date'));
-                    var date = datesUtils.timestamp2String(get(crecord, 'record.ticket_date'));
 
                     tickettooltip = ['<center>',
                         ticketNumberHtml,
-                        "</center>"
+                        '</center>'
                     ].join('');
                     set(this, 'tickettooltip', tickettooltip);
                 }
@@ -91,7 +90,7 @@ Ember.Application.initializer({
                     ts +' <br/> ',
                     __('By') +' : ' + author +' <br/><br/> ',
                     '<i>'+__('Comment') +' </i> : <br/>' + comment,
-                    "</center>"].join('');
+                    '</center>'].join('');
 
                 console.log('ack value', value);
 
@@ -99,11 +98,11 @@ Ember.Application.initializer({
 
 
                 if(value && value.isCancel) {
-                    set(this, 'ackcolor', "");
-                    set(this, 'acktitle', __("Cancelled"));
+                    set(this, 'ackcolor', '');
+                    set(this, 'acktitle', __('Cancelled'));
                 } else {
-                    set(this, 'ackcolor', "bg-purple");
-                    set(this, 'acktitle', __("Acknowleged"));
+                    set(this, 'ackcolor', 'bg-purple');
+                    set(this, 'acktitle', __('Acknowleged'));
                 }
             }
         });

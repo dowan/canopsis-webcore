@@ -25,7 +25,8 @@ Ember.Application.initializer({
 
         var get = Ember.get,
             set = Ember.set,
-            isNone = Ember.isNone;
+            isNone = Ember.isNone,
+            Handlebars = window.Handlebars;
 
         /**
          * @widget weather
@@ -51,8 +52,7 @@ Ember.Application.initializer({
 
                     var filter_pattern = get(this, 'model.filter_pattern');
 
-                    var weatherController = this;
-
+                    // var weatherController = this;
                     // set(weatherController, 'controllers.application.isLoading', get(weatherController, 'controllers.application.isLoading') + 1);
 
                     transition.promise.then(function(routeInfos){
@@ -191,8 +191,6 @@ Ember.Application.initializer({
                     sub_weathers = [],
                     ack_count = 0,
                     computedState = 0,
-                    timestamp = 0,
-                    previous_state_change_ts = 0,
                     rksLabels = get(this, 'rksLabels');
 
                 for (var i = 0, l = data.length; i < l; i++) {

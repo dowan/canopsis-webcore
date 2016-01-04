@@ -55,7 +55,7 @@ Ember.Application.initializer({
             /**
              * @method rendererFor
              * @argument attribute
-             * @return {string} the renderer name
+             * @return {string} the renderer name
              */
             rendererFor: function(attribute) {
                 var clickableColumn = get(this, 'mixinOptions.recordinfopopup.clickable_column');
