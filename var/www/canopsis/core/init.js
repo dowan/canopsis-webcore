@@ -47,7 +47,6 @@
     'canopsis/core/src/controller/serie',
     'canopsis/core/src/controller/userview',
     'canopsis/core/src/controller/widget',
-    'canopsis/core/src/externals.conf',
     'ehbs!confirmform',
     'canopsis/core/src/forms/confirmform/controller',
     'canopsis/core/src/forms/modelform/controller',

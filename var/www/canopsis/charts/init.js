@@ -57,7 +57,6 @@
     'ehbs!editor-metricitem',
     'ehbs!editor-metricselector2',
     'ehbs!editor-serieitem',
-    'canopsis/charts/src/externals.conf',
     'canopsis/charts/src/libwrappers/flotchart',
     'ehbs!titlebarbutton-resetzoom',
     'ehbs!categorychart',
