@@ -62,5 +62,6 @@
     'ehbs!categorychart',
     'canopsis/charts/src/widgets/categorychart/controller',
     'canopsis/charts/src/widgets/timegraph/controller',
-    'ehbs!timegraph'
+    'ehbs!timegraph',
+    'canopsis/charts/requirejs-modules/externals.conf'
 ], function () {});

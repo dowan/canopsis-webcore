@@ -149,5 +149,6 @@
     'canopsis/core/src/view/validationtextarea',
     'canopsis/core/src/view/validationtextfield',
     'canopsis/core/src/view/widget',
-    'canopsis/core/src/view/widgetslot'
+    'canopsis/core/src/view/widgetslot',
+    'canopsis/core/requirejs-modules/externals.conf'
 ], function () {});
