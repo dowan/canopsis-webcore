@@ -30,12 +30,12 @@ Ember.Application.initializer({
 
             buildURL: function(type, id) {
                 void(id);
-                return "/event";
+                return '/event';
             },
 
             findQuery: function(store, type, query) {
 
-                var url = "/rest/events";
+                var url = '/rest/events';
 
                 if (query.skip !== undefined){
                     query.start = query.skip;

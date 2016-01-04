@@ -28,7 +28,7 @@ Ember.Application.initializer({
          */
         var adapter = ApplicationAdapter.extend({
             buildURL: function(type, id) {
-                return '/' + type + (!!id ? "/" + id : "");
+                return '/' + type + (id ? '/' + id : '');
             },
 
             find: function (type, id) {

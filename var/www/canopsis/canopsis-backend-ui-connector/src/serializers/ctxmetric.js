@@ -20,7 +20,7 @@
 Ember.Application.initializer({
     name: 'CtxmetricSerializer',
     after: 'ContextSerializer',
-   initialize: function(container, application) {
+    initialize: function(container, application) {
         var CtxSerializer = container.lookupFactory('serializer:context');
 
         /**

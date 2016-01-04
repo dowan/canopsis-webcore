@@ -23,10 +23,6 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var ApplicationAdapter = container.lookupFactory('adapter:application');
 
-        var get = Ember.get,
-            set = Ember.set,
-            isNone = Ember.isNone;
-
         /**
          * @adapter action
          */

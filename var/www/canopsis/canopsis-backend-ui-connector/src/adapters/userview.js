@@ -28,9 +28,9 @@ Ember.Application.initializer({
          */
         var adapter = ApplicationAdapter.extend({
             buildURL: function(type) {
-                type = "view";
+                void(type);
 
-                return this._super.apply(this, arguments);
+                return this._super('view');
             }
         });
 

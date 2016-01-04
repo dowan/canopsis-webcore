@@ -5,9 +5,6 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var BaseAdapter = container.lookupFactory('adapter:base');
 
-        var isNone = Ember.isNone,
-            get = Ember.get;
-
         /**
          * @adapter linklist
          */
@@ -17,8 +14,7 @@ Ember.Application.initializer({
                 void(id);
 
                 return '/linklist';
-            },
-
+            }
         });
 
         application.register('adapter:linklist', adapter);
