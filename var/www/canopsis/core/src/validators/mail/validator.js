@@ -23,9 +23,8 @@ Ember.Application.initializer({
 
         function mailValidator(attr, valideStruct) {
             var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
             if (Ember.isBlank(attr.value)) {
-                if(attr.model.required) {
+                if(attr.model.options.required) {
                     valideStruct.valid = false;
                     valideStruct.error = 'Mail is required';
                 }

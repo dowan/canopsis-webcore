@@ -36,7 +36,8 @@ Ember.Application.initializer({
             var validators = [];
 
             var validatorName = get(attr, 'model.type');
-            var validator = Ember.validators[validatorName];
+            var validator = container.lookupFactory('validator:' + validatorName);
+
             if (validator !== undefined) {
                 console.log("pushed : ", validatorName);
                 validators.push(Ember.validators[validatorName]);
@@ -46,13 +47,13 @@ Ember.Application.initializer({
 
                 for (var key in options) {
                     if ( options.hasOwnProperty( key ) ) {
-                        var keyValidatorName = (key === "role")? options[key] : key;
-                        var keyValidator = Ember.validators[keyValidatorName];
 
-                        if (keyValidator !== undefined) {
+                        if(key === 'role' || key === 'type') {
+                            var keyValidator = container.lookupFactory('validator:' + options[key]);
 
-                            console.log("pushed : ", keyValidatorName);
-                            validators.push(Ember.validators[keyValidatorName]);
+                            if (keyValidator !== undefined) {
+                                validators.push(keyValidator);
+                            }
                         }
                     }
                 }
@@ -91,12 +92,14 @@ Ember.Application.initializer({
 
             for (var i = 0; i < validators.length; i++) {
                 validator = validators[i];
+                // alert(JSON.stringify(attr));
                 toReturn = validator(attr, toReturn);
 
                 if (toReturn.valid === false) {
                     return toReturn;
                 }
             }
+            // alert(JSON.stringify(toReturn));
             return toReturn;
         }
 

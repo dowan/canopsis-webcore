@@ -85,7 +85,9 @@ Ember.Application.initializer({
                 if(FCValidation !== undefined) {
 
                     var attr = get(this, 'attr') ;
-                    var valideStruct =  Ember.validators.validate(attr);
+                    var validator = container.lookupFactory('validator:main');
+                    var valideStruct = validator(attr);
+
 
                     console.log('valideStruct',valideStruct);
 
