@@ -48,4 +48,4 @@ define(['canopsis/canopsis-backend-ui-connector/src/adapters/application'], func
     });
 
     return adapter;
-});
+})

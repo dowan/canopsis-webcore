@@ -24,6 +24,9 @@ Ember.Application.initializer({
         var ApplicationAdapter = container.lookupFactory('adapter:application');
         var modelsolve = container.lookupFactory('utility:modelsolve');
 
+        var isNone = Ember.isNone,
+            get = Ember.get;
+
         /**
          * @adapter entitylink
          */
@@ -43,13 +46,14 @@ Ember.Application.initializer({
                 var url = this.buildURL(type, null);
 
                 console.log('findQuery', query);
+                var me = this;
                 return new Ember.RSVP.Promise(function(resolve, reject) {
                     var funcres = modelsolve.gen_resolve(resolve);
                     var funcrej = modelsolve.gen_reject(reject);
                     $.post(url, query).then(funcres, funcrej);
                 });
 
-            }
+            },
         });
 
         application.register('adapter:entitylink', adapter);

@@ -23,15 +23,15 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var ApplicationAdapter = container.lookupFactory('adapter:application');
 
-        var isNone = Ember.isNone;
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone;
 
         /**
          * @adapter loggedaccount
          */
         var adapter = ApplicationAdapter.extend({
             buildURL: function(type, id) {
-                void(id);
-
                 return '/account/me';
             },
 
@@ -40,15 +40,14 @@ Ember.Application.initializer({
             },
 
             updateRecord: function(store, type, record) {
-                var me = this;
+                var me = this,
+                    id = get(record, '_id');
 
                 if (isNone(type) || isNone(type.typeKey)) {
                     console.error('Error while retrieving typeKey from type is it is none.');
                 }
 
                 return new Ember.RSVP.Promise(function(resolve, reject) {
-                    void(reject);
-
                     var hash = me.serialize(record, {includeId: true});
                     var url = '/account/user';
 
@@ -90,10 +89,10 @@ Ember.Application.initializer({
                     'GET',
                     { data: {username: username} }
                 );
-            }
+            },
         });
 
 
-        application.register('adapter:loggedaccount', adapter);
+       application.register('adapter:loggedaccount', adapter);
     }
 });

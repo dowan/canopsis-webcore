@@ -25,6 +25,7 @@ Ember.Application.initializer({
         var ApplicationAdapter = container.lookupFactory('adapter:application');
 
         var get = Ember.get,
+            set = Ember.set,
             isNone = Ember.isNone;
 
         /**
@@ -48,18 +49,18 @@ Ember.Application.initializer({
             buildURL: function(type, id, record_or_records, method) {
                 console.log('buildURL', arguments);
 
-                if(type === 'account') {
-                    type = 'user';
+                if(type === "account") {
+                    type = "user";
                 }
 
                 if(method === 'GET') {
-                    return ('/rest/default_rights/' + type + (id ? '/' + id : ''));
-                } else if(type === 'action' && (method === 'POST' || method === 'PUT')) {
-                    return ('/rest/default_rights/' + type + (id ? '/' + id : ''));
+                    return ('/rest/default_rights/' + type + (!!id ? '/' + id : ''));
+                } else if(type === "action" && (method === "POST" || method === "PUT")) {
+                    return ('/rest/default_rights/' + type + (!!id ? '/' + id : ''));
                 } else if(method === 'DELETE') {
-                    return ('/account/delete/' + type + (id ? '/' + id : ''));
+                    return ('/account/delete/' + type + (!!id ? '/' + id : ''));
                 } else {
-                    return ('/account/' + type + (id ? '/' + id : ''));
+                    return ('/account/' + type + (!!id ? '/' + id : ''));
                 }
             },
 
@@ -149,7 +150,7 @@ Ember.Application.initializer({
                 if (isNone(type) || isNone(type.typeKey)) {
                     console.error('Error while retrieving typeKey from type is it is none.');
                 }
-                return this.ajax(this.buildURL(type.typeKey, id, record, 'DELETE'), 'DELETE');
+                return this.ajax(this.buildURL(type.typeKey, id, record, 'DELETE'), "DELETE");
             }
         });
 

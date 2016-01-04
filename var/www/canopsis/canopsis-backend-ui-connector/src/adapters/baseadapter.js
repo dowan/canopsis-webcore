@@ -50,6 +50,7 @@ Ember.Application.initializer({
                 var url = this.buildURL(type, null);
 
                 console.log('findQuery', query);
+                var me = this;
                 return this.ajax(url, 'POST', {data: query});
             },
 
@@ -84,10 +85,12 @@ Ember.Application.initializer({
              */
             deleteRecord: function(store, type, record) {
                 var id = get(record, 'id');
+                var data = { ids: id};
                 var url = this.buildURL(type.typeKey, id);
 
                 return this.ajax(url, 'DELETE', {data: {ids: [id]}});
-            }
+            },
+
         });
 
         application.register('adapter:base', adapter);
