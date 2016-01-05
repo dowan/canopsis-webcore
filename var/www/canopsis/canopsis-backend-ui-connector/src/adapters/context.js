@@ -24,7 +24,8 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var ApplicationAdapter = container.lookupFactory('adapter:application');
 
-        var isNone = Ember.isNone;
+        var isNone = Ember.isNone,
+            get = Ember.get;
 
         /**
          * @adapter context
@@ -49,9 +50,7 @@ Ember.Application.initializer({
                 return this.updateRecord(store, type, record);
             },
 
-            updateRecord: function(store, type, record) {
-
-                var id = get(record, 'id');
+            updateRecord: function(store, type, snapshot) {
 
                 var data = {};
                 var serializer = store.serializerFor(type.modelName);
@@ -67,7 +66,7 @@ Ember.Application.initializer({
                     context: data
                 };
 
-                return this.ajax(url, "PUT", {data: query});
+                return this.ajax(url, 'PUT', {data: query});
             },
 
             deleteRecord: function(store, type, record) {
@@ -83,7 +82,7 @@ Ember.Application.initializer({
                 void(store);
                 var url = this.buildURL();
 
-                if(typeof (query.filter) !== "string") {
+                if(typeof (query.filter) !== 'string') {
                     query._filter = query.filter;
                 }
                 else {

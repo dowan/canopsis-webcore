@@ -48,7 +48,7 @@ Ember.Application.initializer({
             buildURL: function(type, id) {
                 var url = '/storage';
 
-                url += '/' + get(this, 'protocol')
+                url += '/' + get(this, 'protocol');
                 url += '/' + get(this, 'data_type');
 
                 if (!isNone(type)) {
@@ -82,7 +82,7 @@ Ember.Application.initializer({
                     element: data
                 };
 
-                return this.ajax(url, "PUT", {data: query});
+                return this.ajax(url, 'PUT', {data: query});
             },
 
             deleteRecord: function(store, type, record) {

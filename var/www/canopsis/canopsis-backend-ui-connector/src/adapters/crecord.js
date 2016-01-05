@@ -31,11 +31,11 @@ Ember.Application.initializer({
             buildURL: function(type, id) {
                 void(id);
 
-                return "/rest/object/" + type;
+                return '/rest/object/' + type;
             },
 
             findQuery: function(store, type, query) {
-                var url = "/rest/object";
+                var url = '/rest/object';
 
                 console.log('findQuery', arguments);
 
