@@ -1,4 +1,4 @@
-#  Canopsis Brick
+# Uibase Canopsis Brick
 
 ## Description
 
