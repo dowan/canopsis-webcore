@@ -19,5 +19,6 @@
 
  define([
     'canopsis/core/tests/defaultViews',
-    'canopsis/core/tests/embeddedrecordserializer'
+    'canopsis/core/tests/embeddedrecordserializer',
+    'canopsis/core/tests/viewCreation'
 ], function () {});
