@@ -17,12 +17,12 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-function stubEndpointForHttpRequest(url, json, response) {
+window.stubEndpointForHttpRequest = function(url, json, response) {
 
     var options = {
         url: url,
         dataType: 'json',
-        responseText: json,
+        responseText: 'json'
     };
 
     if (response) {
@@ -30,7 +30,7 @@ function stubEndpointForHttpRequest(url, json, response) {
     }
 
     $.mockjax(options);
-}
+};
 
 define([
     'canopsis/tests/externals/jquery-mockjax/dist/jquery.mockjax.min'
