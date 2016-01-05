@@ -17,26 +17,25 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @module canopsis.frontend.tests */
-
-function stubEndpointForHttpRequest(url, json, response) {
-
-    var options = {
-        url: url,
-        dataType: 'json',
-        responseText: json,
-    };
-
-    if (response) {
-        options.response = response;
-    }
-
-    $.mockjax(options);
-}
-
 define([
-    'canopsis/tests/externals/jquery-mockjax/dist/jquery.mockjax.min'
-], function () {
-    $.mockjaxSettings.logging = false;
-    $.mockjaxSettings.responseTime = 0;
+    'canopsis/enabled',
+], function (enabledBricksUtil) {
+
+    window.startCanopsisTests = function (application) {
+        application.setupForTesting();
+
+        application.injectTestHelpers();
+
+        window.App = application;
+
+        console.log('Starting automated tests');
+        enabledBricksUtil.getEnabledModules(function(enabledBricks) {
+            var bricksTestMainList = [];
+            for (var i = 0, l = enabledBricks.length; i < l; i++) {
+                bricksTestMainList.pushObject('canopsis/' + enabledBricks[i] + '/init.test');
+            }
+
+            require(bricksTestMainList);
+        });
+    };
 });

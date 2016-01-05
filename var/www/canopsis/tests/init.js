@@ -17,42 +17,14 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @module canopsis.frontend.tests */
+ require.config({
+    paths: {
 
-
-define([
-    'canopsis/enabled',
-    'canopsis/tests/testhelpers/ajax-stub'
-], function (enabledBricksUtil) {
-
-    window.startCanopsisTests = function (application) {
-        application.setupForTesting();
-
-        Ember.Test.registerAsyncHelper('waitForElement', function(app, element) {
-            return Ember.Test.promise(function(resolve) {
-                Ember.Test.adapter.asyncStart();
-                var interval = setInterval(function(){
-                    if($(element).length>0){
-                        clearInterval(interval);
-                        Ember.Test.adapter.asyncEnd();
-                        Ember.run(null, resolve, true);
-                    }
-                }, 100);
-            });
-        });
-
-        application.injectTestHelpers();
-
-        window.App = application;
-
-        console.log('Starting automated tests');
-        enabledBricksUtil.getEnabledModules(function(enabledBricks) {
-            var bricksTestMainList = [];
-            for (var i = 0, l = enabledBricks.length; i < l; i++) {
-                bricksTestMainList.pushObject('canopsis/' + enabledBricks[i] + '/init.test');
-            }
-
-            require(bricksTestMainList);
-        });
-    };
+    }
 });
+
+ define([
+    'canopsis/tests/src/testhelpers/ajax-stub',
+    'canopsis/tests/src/testhelpers/waitForElement',
+    'canopsis/tests/requirejs-modules/test-initializer'
+], function () {});
