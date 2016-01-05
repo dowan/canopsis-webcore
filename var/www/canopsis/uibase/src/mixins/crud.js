@@ -58,6 +58,9 @@ Ember.Application.initializer({
                 footer: []
             },
 
+            /**
+             * @method mixinsOptionsReady
+             */
             mixinsOptionsReady: function () {
                 this._super();
 

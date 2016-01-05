@@ -48,7 +48,7 @@ console = {
             var line_number = file_location_split[1] + ":" + file_location_split[2];
 
             var selectedTags = console.tags._selectedTags;
-            var selectedTagsContainsFilename = selectedTags.contains(filename);
+            var selectedTagsContainsFilename = (selectedTags ? selectedTags.contains(filename): false);
 
             if (selectedTags !== undefined && selectedTags !== null && selectedTagsContainsFilename) {
                 return null;

@@ -26,8 +26,8 @@ define([
 ], function (enabledBricksUtil) {
 
     window.startCanopsisTests = function (application) {
-        application.setupForTesting();
-        application.injectTestHelpers();
+        // application.setupForTesting();
+        // application.injectTestHelpers();
 
         window.App = application;
 
@@ -35,12 +35,8 @@ define([
         enabledBricksUtil.getEnabledModules(function(enabledBricks) {
             var bricksTestMainList = [];
             for (var i = 0, l = enabledBricks.length; i < l; i++) {
-                if(enabledBricks[i] !== 'core') {
-                    bricksTestMainList.pushObject('canopsis/' + enabledBricks[i] + '/init.test');
-                }
+                bricksTestMainList.pushObject('canopsis/' + enabledBricks[i] + '/init.test');
             }
-
-            bricksTestMainList.pushObject('app/init.test');
 
             require(bricksTestMainList);
         });

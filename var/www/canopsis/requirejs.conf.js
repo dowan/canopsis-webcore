@@ -207,7 +207,6 @@ define(['canopsis/enabled',
 
         deps.push('canopsis/brick-loader/extend');
         deps.push('link');
-        deps.push('canopsis/brick-loader/schemasloader');
 
         require(deps, function() {
             var initFiles = [];
@@ -226,16 +225,17 @@ define(['canopsis/enabled',
             }
 
             initFiles.push('canopsis/core/init');
+            require(['canopsis/brick-loader/schemasloader'], function() {
+                require(initFiles, function() {
 
-            require(initFiles, function() {
+                    //This flag allow to prevent too early application requirement. @see "app/application" module
+                    window.appShouldNowBeLoaded = true;
 
-                //This flag allow to prevent too early application requirement. @see "app/application" module
-                window.appShouldNowBeLoaded = true;
+                    setLoadingInfo('Fetching application starting point', 'fa-plug');
+                    require(['canopsis/brick-loader/application'], function(Application) {
+                        setLoadingInfo('Initializing user interface', 'fa-desktop');
 
-                setLoadingInfo('Fetching application starting point', 'fa-plug');
-                require(['canopsis/brick-loader/application'], function(Application) {
-                    setLoadingInfo('Initializing user interface', 'fa-desktop');
-
+                    });
                 });
             });
         });

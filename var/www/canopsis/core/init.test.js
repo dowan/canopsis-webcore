@@ -18,7 +18,7 @@
  */
 
 define([
-    'app/tests/embeddedrecordserializer'
+    'canopsis/core/tests/embeddedrecordserializer'
 ], function () {
 
 });
