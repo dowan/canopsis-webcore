@@ -26,8 +26,8 @@ define([
 ], function (enabledBricksUtil) {
 
     window.startCanopsisTests = function (application) {
-        // application.setupForTesting();
-        // application.injectTestHelpers();
+        application.setupForTesting();
+        application.injectTestHelpers();
 
         window.App = application;
 

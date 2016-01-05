@@ -17,8 +17,7 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([
+ define([
+    'canopsis/core/tests/defaultViews',
     'canopsis/core/tests/embeddedrecordserializer'
-], function () {
-
-});
+], function () {});

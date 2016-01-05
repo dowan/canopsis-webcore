@@ -18,7 +18,7 @@
  */
 
 Ember.Application.initializer({
-    name: 'component-rrule',
+    name: 'component-ical',
     initialize: function(container, application) {
 
         var get = Ember.get,
