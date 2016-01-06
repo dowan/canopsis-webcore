@@ -21,6 +21,7 @@ Ember.Application.initializer({
     name: 'component-cfiltereditor',
     after: 'IndexesRegistry',
     initialize: function(container, application) {
+        var Canopsis = {};
         var indexesregistry = container.lookupFactory('registry:indexes');
         var get = Ember.get,
             set = Ember.set,
