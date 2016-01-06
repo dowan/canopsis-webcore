@@ -1,4 +1,4 @@
-#  Canopsis Brick
+# Core Canopsis Brick
 
 ## Description
 

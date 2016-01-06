@@ -25,13 +25,13 @@
         <ul class="nav nav-tabs">
                 <li>
                     {{#if controller.userCanShowEditionMenu}}
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <a class="dropdown-toggle cog-menu" data-toggle="dropdown" href="#">
                             <h4> <i class="fa fa-gear"></i> <span class="caret"></span></h4>
                         </a>
                         <ul class="dropdown-menu">
                             {{#if controller.userCanEditView}}
                                 <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="#" {{action 'toggleEditMode'}}>
+                                    <a role="menuitem" class="btn-toggle-edit-mode" tabindex="-1" href="#" {{action 'toggleEditMode'}}>
                                         <i class="fa fa-pencil"></i>
                                         {{#if controller.editMode}}
                                             {{tr 'Leave edition mode'}}
@@ -43,21 +43,21 @@
                             {{/if}}
                             {{#if controller.userCanCreateView}}
                                 <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" {{action 'importView'}}>
+                                    <a role="menuitem" class="btn-import-view" tabindex="-1" {{action 'importView'}}>
                                         <i class="fa fa-upload"></i>
                                         {{tr 'Import a view'}}
                                     </a>
                                 </li>
                             {{/if}}
                             <li role="presentation">
-                                <a role="menuitem" tabindex="-1" {{action 'exportCurrentView'}}>
+                                <a role="menuitem" class="btn-export-view" tabindex="-1" {{action 'exportCurrentView'}}>
                                     <i class="fa fa-download"></i>
                                     {{tr 'Export current view'}}
                                 </a>
                             </li>
                             {{#if controller.userCanCreateView}}
                                 <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="#" {{action 'addNewView'}}>
+                                    <a role="menuitem" class="btn-add-view" tabindex="-1" href="#" {{action 'addNewView'}}>
                                         <i class="fa fa-plus"></i>
                                         {{tr 'Add a view'}}
                                     </a>
@@ -65,7 +65,7 @@
                             {{/if}}
                             <li role="presentation" class="divider"></li>
                             <li role="presentation">
-                                <a role="menuitem" tabindex="-1" href="#" {{action 'showView' 'view.userviews'}}>
+                                <a role="menuitem" class="btn-manage-views" tabindex="-1" href="#" {{action 'showView' 'view.userviews'}}>
                                     <i class="fa fa-wrench"></i> {{tr 'Manage views'}}
                                 </a>
                             </li>

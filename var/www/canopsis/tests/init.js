@@ -26,5 +26,7 @@
  define([
     'canopsis/tests/src/testhelpers/ajax-stub',
     'canopsis/tests/src/testhelpers/waitForElement',
+    'canopsis/tests/src/testhelpers/waitForElementRemoval',
+    'canopsis/tests/src/testhelpers/waitMilliseconds',
     'canopsis/tests/requirejs-modules/test-initializer'
 ], function () {});

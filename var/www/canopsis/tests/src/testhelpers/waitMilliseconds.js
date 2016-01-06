@@ -17,9 +17,13 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
- define([
-    'canopsis/core/tests/defaultViews',
-    'canopsis/core/tests/embeddedrecordserializer',
-    'canopsis/core/tests/viewCreation',
-    'canopsis/core/tests/widgetReorder'
-], function () {});
+Ember.Test.registerAsyncHelper('waitMilliseconds', function(app, milliseconds) {
+    return Ember.Test.promise(function(resolve) {
+        Ember.Test.adapter.asyncStart();
+        var interval = setInterval(function(){
+            clearInterval(interval);
+            Ember.Test.adapter.asyncEnd();
+            Ember.run(null, resolve, true);
+        }, milliseconds);
+    });
+});
