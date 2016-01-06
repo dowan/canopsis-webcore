@@ -3,7 +3,7 @@ module('widget reorder');
 test('Creating two widgets and reorder them', function() {
     visit('/userview/view.event');
 
-    expect(3);
+    expect(4);
 
     click('.nav-tabs-custom .cog-menu');
     click('.nav-tabs-custom .btn-add-view');
@@ -41,6 +41,9 @@ test('Creating two widgets and reorder them', function() {
                 equal(find('.box-title').text(), "< Untitled weather widget >< Untitled text widget >", 'A weather widget, then a text widget');
                 click('.btn-move-up:last');
                 waitMilliseconds(500).then(function() {
+                    equal(find('.box-title').text(), "< Untitled text widget >< Untitled weather widget >", 'A text widget, then a weather widget');
+                    click('.btn-move-up:first');
+                    click('.btn-move-down:last');
                     equal(find('.box-title').text(), "< Untitled text widget >< Untitled weather widget >", 'A text widget, then a weather widget');
                 });
             });
