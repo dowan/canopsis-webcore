@@ -24,7 +24,7 @@
                 <button {{bind-attr class=":btn :btn-default :btn-sm operator.active:active"}} {{action "setActiveOperator" operator}}>{{operator.display}}</button>
             {{/each}}
         {{/if}}
-        <button type="button" class="btn btn-primary btn-sm" {{action "addUserFilter"}} data-col="all">
+        <button type="button" class="btn btn-primary btn-sm btn-add-customfilter" {{action "addUserFilter"}} data-col="all">
             <i class="fa fa-plus"></i> {{tr 'Add filter'}}
         </button>
     </div>

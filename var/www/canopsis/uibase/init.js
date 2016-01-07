@@ -213,8 +213,7 @@
         'topology': 'canopsis/uibase/src/widgets/topology/topology',
         'uiactionbutton': 'canopsis/uibase/src/widgets/uiactionbutton/uiactionbutton',
         'uimaintabcollection': 'canopsis/uibase/src/widgets/uimaintabcollection/uimaintabcollection',
-        'widgetcontainer': 'canopsis/uibase/src/widgets/widgetcontainer/widgetcontainer',
-
+        'widgetcontainer': 'canopsis/uibase/src/widgets/widgetcontainer/widgetcontainer'
     }
 });
 

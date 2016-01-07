@@ -144,6 +144,7 @@ define([
     };
 
     window.__ = i18n._;
+    window.i18n = i18n;
 
     i18n.getUserLanguage();
     i18n.downloadDefinitions();
