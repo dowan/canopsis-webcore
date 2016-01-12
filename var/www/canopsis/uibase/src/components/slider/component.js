@@ -66,7 +66,7 @@ Ember.Application.initializer({
                     step: step,
                     prefix: '',
                     onChange: function (data) {
-                        set(sliderComponent, 'content', get(data, 'fromNumber'));
+                        set(sliderComponent, 'content', get(data, 'from'));
                     }
                 });
 

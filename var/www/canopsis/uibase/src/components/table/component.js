@@ -124,8 +124,6 @@ Ember.Application.initializer({
                     }
                 } catch(err) {
                     console.warn('extractItems not updated:', err);
-
-
                 }
             },
 
