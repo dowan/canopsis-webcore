@@ -35,3 +35,42 @@ You can see enabled bricks
 ## Usage
 
 See [Howto](https://git.canopsis.net/canopsis-ui-bricks/uibase/blob/master/doc/index.rst)
+
+## Continuous Integration
+
+Tested on commit : [ERROR : The brick is not in a dedicated git repository].
+
+| Target | Status | Log |
+| ------ | ------ | --- |
+| Lint   | :ok: OK |  |
+
+## Code Notes
+
+### TODOS
+
+| File   | Note   |
+|--------|--------|
+| src/editors/editor-elementidselectorwithoptions.hbs | manage search in a dynamic way, as an editor property binding to a search method |
+| src/mixins/responsivelist.js | check if still used |
+| src/mixins/arraysearch.js | these checks should be asserts |
+| src/widgets/list/controller.js | add an error in displayedErrors array, to warn the user that the data cannot be displayed |
+| src/widgets/list/controller.js | check if useless or not |
+| src/components/elementidselectorwithoptions/component.js | put this on a dedicated util |
+| src/components/elementidselectorwithoptions/component.js | manage default values |
+| src/components/elementidselectorwithoptions/component.js | stop using polymorphicTypeKey, use sourceMappingKeys instead |
+| src/components/classifieditemselector/component.js | fuzzy search |
+| src/components/classifieditemselector/component.js | hover effect |
+| src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
+| src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
+| src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
+| src/components/colpick/component.js | check to destroy colpick |
+
+
+### FIXMES
+
+| File   | Note   |
+|--------|--------|
+| src/mixins/responsivelist.js | undefined |
+| src/widgets/uimaintabcollection/controller.js |: the factory "widgetbase" is a hack to make the canopsis rights reopen work. But it make the view "app_header" not working without the canopsis-rights brick |
+| src/components/classifiedcrecordselector/component.js | is store destroyed? |
+
