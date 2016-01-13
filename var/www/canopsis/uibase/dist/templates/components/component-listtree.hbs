@@ -1,0 +1,14 @@
+<ul class="jsonUl">
+    <span class="label label-primary">{{content.label}}</span>
+    &nbsp;<span class="glyphicon glyphicon-arrow-right" style="display:inline"></span>
+    {{#each child in content.clauses}}
+        {{component-draggablebutton content=child label=child.property}}
+    {{/each}}
+
+    {{#each child in content.conditions}}
+        <li class="jsonLi">
+            {{component-listtree content=child}}
+        </li>
+    {{/each}}
+</ul>
+

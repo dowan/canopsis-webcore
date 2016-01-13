@@ -1,4 +1,4 @@
-# Hemes Canopsis Brick
+# Uiv1_themes Canopsis Brick
 
 ## Description
 
@@ -35,3 +35,21 @@ You can see enabled bricks
 ## Usage
 
 See [Howto](https://git.canopsis.net/canopsis-ui-bricks/uiv1_themes/blob/master/doc/index.rst)
+
+## Continuous Integration
+
+Tested on commit : [ERROR : The brick is not in a dedicated git repository].
+
+| Target | Status | Log |
+| ------ | ------ | --- |
+| Lint   | :ok: OK |  |
+
+## Code Notes
+
+### TODOS
+
+
+
+### FIXMES
+
+

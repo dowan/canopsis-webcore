@@ -17,19 +17,19 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([
-    'canopsis/uibase/src/widgets/topology/layout/force',
-    'canopsis/uibase/src/widgets/topology/layout/cluster',
-    'canopsis/uibase/src/widgets/topology/layout/tree',
-    'canopsis/uibase/src/widgets/topology/layout/pack',
-    'canopsis/uibase/src/widgets/topology/layout/partition'
-], function(ForceLayout, ClusterLayout, TreeLayout, PackLayout, PartitionLayout) {
+// define([
+//     'canopsis/uibase/src/widgets/topology/layout/force',
+//     'canopsis/uibase/src/widgets/topology/layout/cluster',
+//     'canopsis/uibase/src/widgets/topology/layout/tree',
+//     'canopsis/uibase/src/widgets/topology/layout/pack',
+//     'canopsis/uibase/src/widgets/topology/layout/partition'
+// ], function(ForceLayout, ClusterLayout, TreeLayout, PackLayout, PartitionLayout) {
 
-    var LayoutMixin = Ember.Mixin.create({
-        viewMixins: [
-            ForceLayout, ClusterLayout, TreeLayout, PackLayout, PartitionLayout
-        ]
-    });
+//     var LayoutMixin = Ember.Mixin.create({
+//         viewMixins: [
+//             ForceLayout, ClusterLayout, TreeLayout, PackLayout, PartitionLayout
+//         ]
+//     });
 
-    return LayoutMixin;
-});
+//     return LayoutMixin;
+// });

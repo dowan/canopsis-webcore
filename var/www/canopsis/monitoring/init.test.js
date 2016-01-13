@@ -17,8 +17,6 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([
-    // 'canopsis/monitoring/tests/ackworkflow'
-], function () {
-
-});
+ define([
+    'canopsis/monitoring/tests/ackworkflow'
+], function () {});

@@ -17,9 +17,9 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([], function() {
+// define([], function() {
 
-    var PackLayout = Ember.Mixin.create({});
+//     var PackLayout = Ember.Mixin.create({});
 
-    return PackLayout;
-});
+//     return PackLayout;
+// });

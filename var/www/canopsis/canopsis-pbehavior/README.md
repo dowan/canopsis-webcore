@@ -1,4 +1,4 @@
-# Is-pbehavior Canopsis Brick
+# Canopsis-pbehavior Canopsis Brick
 
 ## Description
 
@@ -35,3 +35,21 @@ You can see enabled bricks
 ## Usage
 
 See [Howto](https://git.canopsis.net/canopsis-ui-bricks/canopsis-pbehavior/blob/master/doc/index.rst)
+
+## Continuous Integration
+
+Tested on commit : [ERROR : The brick is not in a dedicated git repository].
+
+| Target | Status | Log |
+| ------ | ------ | --- |
+| Lint   | :negative_squared_cross_mark: ERROR | <br>/home/gwen/programmation/canopsis/sources/webcore/var/www/canopsis/canopsis-pbehavior/src/adapters/pbehavior.js<br>  27:13  error  "get" is defined but never used  no-unused-vars<br>  28:13  error  "set" is defined but never used  no-unused-vars<br>  50:27  error  Strings must use singlequote     quotes<br><br>/home/gwen/programmation/canopsis/sources/webcore/var/www/canopsis/canopsis-pbehavior/src/components/periodicbehaviormanager/component.js<br>  21:10  error  Strings must use singlequote                             quotes<br>  28:13  error  Expected indentation of 8 space characters but found 12  indent<br>  28:13  error  "__" is not defined                                      no-undef<br>  86:42  error  "__" is not defined                                      no-undef<br>  87:40  error  "__" is not defined                                      no-undef<br>  88:40  error  "__" is not defined                                      no-undef<br>  89:43  error  "__" is not defined                                      no-undef<br>  90:44  error  "__" is not defined                                      no-undef<br><br>✖ 11 problems (11 errors, 0 warnings)<br><br> |
+
+## Code Notes
+
+### TODOS
+
+
+
+### FIXMES
+
+

@@ -1,4 +1,4 @@
-# Is-vevent Canopsis Brick
+# Canopsis-vevent Canopsis Brick
 
 ## Description
 
@@ -35,3 +35,21 @@ You can see enabled bricks
 ## Usage
 
 See [Howto](https://git.canopsis.net/canopsis-ui-bricks/canopsis-vevent/blob/master/doc/index.rst)
+
+## Continuous Integration
+
+Tested on commit : [ERROR : The brick is not in a dedicated git repository].
+
+| Target | Status | Log |
+| ------ | ------ | --- |
+| Lint   | :negative_squared_cross_mark: ERROR | <br>/home/gwen/programmation/canopsis/sources/webcore/var/www/canopsis/canopsis-vevent/src/adapters/vevent.js<br>  27:13  error  "set" is defined but never used  no-unused-vars<br><br>/home/gwen/programmation/canopsis/sources/webcore/var/www/canopsis/canopsis-vevent/src/serializers/vevent.js<br>  24:9   error  "ContextSerializer" is not defined  no-undef<br>  26:26  error  "ContextSerializer" is not defined  no-undef<br><br>✖ 3 problems (3 errors, 0 warnings)<br><br> |
+
+## Code Notes
+
+### TODOS
+
+
+
+### FIXMES
+
+

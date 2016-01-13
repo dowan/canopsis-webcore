@@ -1,4 +1,4 @@
-# Is-backend-ui-connector Canopsis Brick
+# Canopsis-backend-ui-connector Canopsis Brick
 
 ## Description
 
@@ -35,3 +35,26 @@ You can see enabled bricks
 ## Usage
 
 See [Howto](https://git.canopsis.net/canopsis-ui-bricks/canopsis-backend-ui-connector/blob/master/doc/index.rst)
+
+## Continuous Integration
+
+Tested on commit : [ERROR : The brick is not in a dedicated git repository].
+
+| Target | Status | Log |
+| ------ | ------ | --- |
+| Lint   | :ok: OK |  |
+
+## Code Notes
+
+### TODOS
+
+| File   | Note   |
+|--------|--------|
+| src/serializers/ctx.js |: autodetect xtype |
+| src/adapters/schema.js | make this asyncronous |
+| src/adapters/cservice.js |: do not use userPreferencesModelName |
+
+
+### FIXMES
+
+

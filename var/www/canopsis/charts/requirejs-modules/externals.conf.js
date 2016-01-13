@@ -16,126 +16,246 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
-
-require.config({
-    paths: {
-        'flotchart': 'canopsis/charts/lib/externals/flot/jquery.flot',
-        'flotchart-canvas': 'canopsis/charts/lib/externals/flot/jquery.flot.canvas',
-        'flotchart-categories': 'canopsis/charts/lib/externals/flot/jquery.flot.categories',
-        'flotchart-crosshair': 'canopsis/charts/lib/externals/flot/jquery.flot.crosshair',
-        'flotchart-errorbars': 'canopsis/charts/lib/externals/flot/jquery.flot.errorbars',
-        'flotchart-fillbetween': 'canopsis/charts/lib/externals/flot/jquery.flot.fillbetween',
-        'flotchart-image': 'canopsis/charts/lib/externals/flot/jquery.flot.image',
-        'flotchart-navigate': 'canopsis/charts/lib/externals/flot/jquery.flot.navigate',
-        'flotchart-pie': 'canopsis/charts/lib/externals/flot/jquery.flot.pie',
-        'flotchart-resize': 'canopsis/charts/lib/externals/flot/jquery.flot.resize',
-        'flotchart-selection': 'canopsis/charts/lib/externals/flot/jquery.flot.selection',
-        'flotchart-stack': 'canopsis/charts/lib/externals/flot/jquery.flot.stack',
-        'flotchart-symbol': 'canopsis/charts/lib/externals/flot/jquery.flot.symbol',
-        'flotchart-threshold': 'canopsis/charts/lib/externals/flot/jquery.flot.threshold',
-        'flotchart-time': 'canopsis/charts/lib/externals/flot/jquery.flot.time',
-        'flotchart-valuelabel': 'canopsis/charts/lib/externals/flot-plugins/custom/jquery.flot.valuelabel',
-        'flotchart-tooltip': 'canopsis/charts/lib/externals/flot.tooltip/js/jquery.flot.tooltip',
-        'flotchart-chartvalues': 'canopsis/charts/lib/externals/flot-plugins/custom/jquery.flot.chartvalues',
-        'd3': 'canopsis/uibase/lib/externals/d3/d3'
-    },
-
-    shim: {
-        'flotchart': {
-            deps: ['jquery'],
+if(window.bricks.charts.envMode === "production") {
+    require.config({
+        paths: {
+            'flotchart': 'canopsis/charts/lib/externals/flot/jquery.flot',
+            'flotchart-canvas': 'canopsis/charts/lib/externals/flot/jquery.flot.canvas',
+            'flotchart-categories': 'canopsis/charts/lib/externals/flot/jquery.flot.categories',
+            'flotchart-crosshair': 'canopsis/charts/lib/externals/flot/jquery.flot.crosshair',
+            'flotchart-errorbars': 'canopsis/charts/lib/externals/flot/jquery.flot.errorbars',
+            'flotchart-fillbetween': 'canopsis/charts/lib/externals/flot/jquery.flot.fillbetween',
+            'flotchart-image': 'canopsis/charts/lib/externals/flot/jquery.flot.image',
+            'flotchart-navigate': 'canopsis/charts/lib/externals/flot/jquery.flot.navigate',
+            'flotchart-pie': 'canopsis/charts/lib/externals/flot/jquery.flot.pie',
+            'flotchart-resize': 'canopsis/charts/lib/externals/flot/jquery.flot.resize',
+            'flotchart-selection': 'canopsis/charts/lib/externals/flot/jquery.flot.selection',
+            'flotchart-stack': 'canopsis/charts/lib/externals/flot/jquery.flot.stack',
+            'flotchart-symbol': 'canopsis/charts/lib/externals/flot/jquery.flot.symbol',
+            'flotchart-threshold': 'canopsis/charts/lib/externals/flot/jquery.flot.threshold',
+            'flotchart-time': 'canopsis/charts/lib/externals/flot/jquery.flot.time',
+            'flotchart-valuelabel': 'canopsis/charts/lib/externals/flot-plugins/custom/jquery.flot.valuelabel',
+            'flotchart-tooltip': 'canopsis/charts/lib/externals/flot.tooltip/js/jquery.flot.tooltip',
+            'flotchart-chartvalues': 'canopsis/charts/lib/externals/flot-plugins/custom/jquery.flot.chartvalues'
         },
 
-        'flotchart-canvas': {
-            deps: ['jquery', 'flotchart']
-        },
+        shim: {
+            'flotchart': {
+                deps: ['jquery'],
+            },
 
-        'flotchart-categories': {
-            deps: ['jquery', 'flotchart']
-        },
+            'flotchart-canvas': {
+                deps: ['jquery', 'flotchart']
+            },
 
-        'flotchart-crosshair': {
-            deps: ['jquery', 'flotchart']
-        },
+            'flotchart-categories': {
+                deps: ['jquery', 'flotchart']
+            },
 
-        'flotchart-errorbars': {
-            deps: ['jquery', 'flotchart']
-        },
+            'flotchart-crosshair': {
+                deps: ['jquery', 'flotchart']
+            },
 
-        'flotchart-fillbetween': {
-            deps: ['jquery', 'flotchart']
-        },
+            'flotchart-errorbars': {
+                deps: ['jquery', 'flotchart']
+            },
 
-        'flotchart-image': {
-            deps: ['jquery', 'flotchart']
-        },
+            'flotchart-fillbetween': {
+                deps: ['jquery', 'flotchart']
+            },
 
-        'flotchart-navigate': {
-            deps: ['jquery', 'flotchart']
-        },
+            'flotchart-image': {
+                deps: ['jquery', 'flotchart']
+            },
 
-        'flotchart-pie': {
-            deps: ['jquery', 'flotchart']
-        },
+            'flotchart-navigate': {
+                deps: ['jquery', 'flotchart']
+            },
 
-        'flotchart-resize': {
-            deps: ['jquery', 'flotchart']
-        },
+            'flotchart-pie': {
+                deps: ['jquery', 'flotchart']
+            },
 
-        'flotchart-selection': {
-            deps: ['jquery', 'flotchart']
-        },
+            'flotchart-resize': {
+                deps: ['jquery', 'flotchart']
+            },
 
-        'flotchart-stack': {
-            deps: ['jquery', 'flotchart']
-        },
+            'flotchart-selection': {
+                deps: ['jquery', 'flotchart']
+            },
 
-        'flotchart-symbol': {
-            deps: ['jquery', 'flotchart']
-        },
+            'flotchart-stack': {
+                deps: ['jquery', 'flotchart']
+            },
 
-        'flotchart-threshold': {
-            deps: ['jquery', 'flotchart']
-        },
+            'flotchart-symbol': {
+                deps: ['jquery', 'flotchart']
+            },
 
-        'flotchart-time': {
-            deps: ['jquery', 'flotchart']
-        },
+            'flotchart-threshold': {
+                deps: ['jquery', 'flotchart']
+            },
 
-        'flotchart-valuelabel': {
-            deps: ['jquery', 'flotchart']
-        },
+            'flotchart-time': {
+                deps: ['jquery', 'flotchart']
+            },
 
-        'flotchart-tooltip': {
-            deps: ['jquery', 'flotchart']
-        },
+            'flotchart-valuelabel': {
+                deps: ['jquery', 'flotchart']
+            },
 
-        'flotchart-chartvalues': {
-            deps: ['jquery', 'flotchart']
+            'flotchart-tooltip': {
+                deps: ['jquery', 'flotchart']
+            },
+
+            'flotchart-chartvalues': {
+                deps: ['jquery', 'flotchart']
+            }
         }
-    }
-});
+    });
 
-define([
-    'canopsis/charts/src/libwrappers/flotchart',
-    'canopsis/charts/lib/externals/c3/c3',
-    'link!canopsis/charts/lib/externals/c3/c3.css',
-    'jquery',
-    'flotchart',
-    'flotchart-canvas',
-    'flotchart-categories',
-    'flotchart-crosshair',
-    'flotchart-errorbars',
-    'flotchart-fillbetween',
-    'flotchart-image',
-//    'flotchart-navigate',
-    'flotchart-pie',
-    'flotchart-resize',
-    'flotchart-selection',
-    'flotchart-stack',
-    'flotchart-symbol',
-    'flotchart-threshold',
-    'flotchart-time',
-    'flotchart-valuelabel',
-    'flotchart-tooltip',
-    'flotchart-chartvalues'
-], function () {});
+    define([
+        'canopsis/charts/src/libwrappers/flotchart',
+        'canopsis/charts/lib/externals/c3/c3.min',
+        'link!canopsis/charts/lib/externals/c3/c3.min.css',
+        'flotchart',
+        'flotchart-canvas',
+        'flotchart-categories',
+        'flotchart-crosshair',
+        'flotchart-errorbars',
+        'flotchart-fillbetween',
+        'flotchart-image',
+    //    'flotchart-navigate',
+        'flotchart-pie',
+        'flotchart-resize',
+        'flotchart-selection',
+        'flotchart-stack',
+        'flotchart-symbol',
+        'flotchart-threshold',
+        'flotchart-time',
+        'flotchart-valuelabel',
+        'flotchart-tooltip',
+        'flotchart-chartvalues'
+    ], function () {});
+} else {
+    require.config({
+        paths: {
+            'flotchart': 'canopsis/charts/lib/externals/flot/jquery.flot',
+            'flotchart-canvas': 'canopsis/charts/lib/externals/flot/jquery.flot.canvas',
+            'flotchart-categories': 'canopsis/charts/lib/externals/flot/jquery.flot.categories',
+            'flotchart-crosshair': 'canopsis/charts/lib/externals/flot/jquery.flot.crosshair',
+            'flotchart-errorbars': 'canopsis/charts/lib/externals/flot/jquery.flot.errorbars',
+            'flotchart-fillbetween': 'canopsis/charts/lib/externals/flot/jquery.flot.fillbetween',
+            'flotchart-image': 'canopsis/charts/lib/externals/flot/jquery.flot.image',
+            'flotchart-navigate': 'canopsis/charts/lib/externals/flot/jquery.flot.navigate',
+            'flotchart-pie': 'canopsis/charts/lib/externals/flot/jquery.flot.pie',
+            'flotchart-resize': 'canopsis/charts/lib/externals/flot/jquery.flot.resize',
+            'flotchart-selection': 'canopsis/charts/lib/externals/flot/jquery.flot.selection',
+            'flotchart-stack': 'canopsis/charts/lib/externals/flot/jquery.flot.stack',
+            'flotchart-symbol': 'canopsis/charts/lib/externals/flot/jquery.flot.symbol',
+            'flotchart-threshold': 'canopsis/charts/lib/externals/flot/jquery.flot.threshold',
+            'flotchart-time': 'canopsis/charts/lib/externals/flot/jquery.flot.time',
+            'flotchart-valuelabel': 'canopsis/charts/lib/externals/flot-plugins/custom/jquery.flot.valuelabel',
+            'flotchart-tooltip': 'canopsis/charts/lib/externals/flot.tooltip/js/jquery.flot.tooltip',
+            'flotchart-chartvalues': 'canopsis/charts/lib/externals/flot-plugins/custom/jquery.flot.chartvalues',
+        },
+
+        shim: {
+            'flotchart': {
+                deps: ['jquery'],
+            },
+
+            'flotchart-canvas': {
+                deps: ['jquery', 'flotchart']
+            },
+
+            'flotchart-categories': {
+                deps: ['jquery', 'flotchart']
+            },
+
+            'flotchart-crosshair': {
+                deps: ['jquery', 'flotchart']
+            },
+
+            'flotchart-errorbars': {
+                deps: ['jquery', 'flotchart']
+            },
+
+            'flotchart-fillbetween': {
+                deps: ['jquery', 'flotchart']
+            },
+
+            'flotchart-image': {
+                deps: ['jquery', 'flotchart']
+            },
+
+            'flotchart-navigate': {
+                deps: ['jquery', 'flotchart']
+            },
+
+            'flotchart-pie': {
+                deps: ['jquery', 'flotchart']
+            },
+
+            'flotchart-resize': {
+                deps: ['jquery', 'flotchart']
+            },
+
+            'flotchart-selection': {
+                deps: ['jquery', 'flotchart']
+            },
+
+            'flotchart-stack': {
+                deps: ['jquery', 'flotchart']
+            },
+
+            'flotchart-symbol': {
+                deps: ['jquery', 'flotchart']
+            },
+
+            'flotchart-threshold': {
+                deps: ['jquery', 'flotchart']
+            },
+
+            'flotchart-time': {
+                deps: ['jquery', 'flotchart']
+            },
+
+            'flotchart-valuelabel': {
+                deps: ['jquery', 'flotchart']
+            },
+
+            'flotchart-tooltip': {
+                deps: ['jquery', 'flotchart']
+            },
+
+            'flotchart-chartvalues': {
+                deps: ['jquery', 'flotchart']
+            }
+        }
+    });
+
+    define([
+        'canopsis/charts/src/libwrappers/flotchart',
+        'canopsis/charts/lib/externals/c3/c3',
+        'link!canopsis/charts/lib/externals/c3/c3.css',
+        'flotchart',
+        'flotchart-canvas',
+        'flotchart-categories',
+        'flotchart-crosshair',
+        'flotchart-errorbars',
+        'flotchart-fillbetween',
+        'flotchart-image',
+    //    'flotchart-navigate',
+        'flotchart-pie',
+        'flotchart-resize',
+        'flotchart-selection',
+        'flotchart-stack',
+        'flotchart-symbol',
+        'flotchart-threshold',
+        'flotchart-time',
+        'flotchart-valuelabel',
+        'flotchart-tooltip',
+        'flotchart-chartvalues'
+    ], function () {});
+}

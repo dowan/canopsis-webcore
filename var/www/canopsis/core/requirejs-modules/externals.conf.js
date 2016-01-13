@@ -18,28 +18,52 @@
  */
 
 var JSONSelect;
+if(window.bricks.core.envMode === "production") {
+    require.config({
+        paths: {
+            'css3-mediaqueries': 'canopsis/core/externals/min/css3-mediaqueries',
+            'math': 'canopsis/core/externals/mathjs/dist/math.min',
+            'hashes': 'canopsis/core/externals/jshashes/hashes.min',
 
-require.config({
-    paths: {
-        'css3-mediaqueries': 'canopsis/core/externals/min/css3-mediaqueries',
-        'math': 'canopsis/core/externals/mathjs/dist/math',
-        'hashes': 'canopsis/core/externals/jshashes/hashes',
+            'jsonselect': 'canopsis/core/externals/jsonselect/src/jsonselect'
+        }
+    });
 
-        'jsonselect': 'canopsis/core/externals/jsonselect/src/jsonselect'
-    }
-});
+    define([
+        'math',
+        'hashes',
+        'canopsis/runtime.conf',
+        'css3-mediaqueries',
+        'canopsis/core/externals/mousetrap/mousetrap.min',
+        'jsonselect',
+        'canopsis/core/externals/jquery-resize/jquery.ba-resize.min',
+        'link!canopsis/core/externals/ionicons/css/ionicons.min.css',
+    ], function(math, Hashes) {
+        window.math = math;
+        window.Hashes = Hashes;
+    });
+} else {
+    require.config({
+        paths: {
+            'css3-mediaqueries': 'canopsis/core/externals/min/css3-mediaqueries',
+            'math': 'canopsis/core/externals/mathjs/dist/math',
+            'hashes': 'canopsis/core/externals/jshashes/hashes',
 
-define([
-    'math',
-    'hashes',
-    'canopsis/runtime.conf',
-    'css3-mediaqueries',
-    'canopsis/core/src/lib/utils/hash',
-    'canopsis/core/externals/mousetrap/mousetrap.min',
-    'jsonselect',
-    'canopsis/core/externals/jquery-resize/jquery.ba-resize.min',
-    'link!canopsis/core/externals/ionicons/css/ionicons.min.css',
-], function(math, Hashes) {
-    window.math = math;
-    window.Hashes = Hashes;
-})
+            'jsonselect': 'canopsis/core/externals/jsonselect/src/jsonselect'
+        }
+    });
+
+    define([
+        'math',
+        'hashes',
+        'canopsis/runtime.conf',
+        'css3-mediaqueries',
+        'canopsis/core/externals/mousetrap/mousetrap.min',
+        'jsonselect',
+        'canopsis/core/externals/jquery-resize/jquery.ba-resize.min',
+        'link!canopsis/core/externals/ionicons/css/ionicons.min.css',
+    ], function(math, Hashes) {
+        window.math = math;
+        window.Hashes = Hashes;
+    });
+}

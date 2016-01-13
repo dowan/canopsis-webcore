@@ -17,9 +17,9 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([], function() {
+// define([], function() {
 
-    var TreeLayout = Ember.Mixin.create({});
+//     var TreeLayout = Ember.Mixin.create({});
 
-    return TreeLayout;
-});
+//     return TreeLayout;
+// });

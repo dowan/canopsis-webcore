@@ -1,0 +1,36 @@
+<div class="flotchart-container">
+    <div class="flotchart-plot-container">
+        {{component-flotchart
+            options=controller.chartOptions
+            series=controller.dataSeries
+            human=controller.human_readable
+        }}
+    </div>
+
+    {{#if controller.timenav}}
+        <div class="flotchart-preview-container">
+            <p><strong>Time navigation:</strong></p>
+
+            {{component-flotchart
+                options=controller.timenavOptions
+                series=controller.dataSeries
+                human=controller.human_readable
+            }}
+        </div>
+    {{/if}}
+
+    <div class="flotchart-legend-container">
+    </div>
+
+    <div class="pull-right">
+        {{#if controller.timenav}}
+            <button type="button" class="btn btn-info btn-sm pull-right" {{action "stepForward" target=view}}>
+                <i class="fa fa-step-forward"></i>
+            </button>
+
+            <button type="button" class="btn btn-info btn-sm pull-right" {{action "stepBack" target=view}}>
+                <i class="fa fa-step-backward"></i>
+            </button>
+        {{/if}}
+    </div>
+</div>
