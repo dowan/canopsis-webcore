@@ -21,7 +21,6 @@
     "test",
     "tests"
   ],
-  "envMode": "production",
+  "envMode": "development",
   "dependencies": {}
-
 }
