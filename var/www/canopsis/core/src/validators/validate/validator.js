@@ -39,9 +39,9 @@ Ember.Application.initializer({
             var validator = container.lookupFactory('validator:' + validatorName);
 
             if (validator !== undefined) {
-                console.log("pushed : ", validatorName);
                 validators.push(Ember.validators[validatorName]);
             }
+
 
             if (options !== undefined) {
 
@@ -57,6 +57,11 @@ Ember.Application.initializer({
                         }
                     }
                 }
+            }
+
+            if(get(options, 'required')) {
+                validator = container.lookupFactory('validator:required');
+                validators.push(validator);
             }
 
             return validators;
