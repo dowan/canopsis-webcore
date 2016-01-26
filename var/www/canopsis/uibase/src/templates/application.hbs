@@ -163,11 +163,12 @@
             <div class="content">
                 {{outlet}}
             </div>
-        </section>
 
+        </section>
         {{#if footerUserview}}
             {{render "userview" footerUserview}}
         {{/if}}
+        <div style="clear:both"></div>
     </aside>
 </div>
 {{partialslot slot=controller._partials.indicators}}
