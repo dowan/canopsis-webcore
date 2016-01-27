@@ -80,4 +80,5 @@
 
     //declaring helper this way allow it to be used as simple function somewhere else.
     Ember.Handlebars.helper('json2html', helper);
+    window.json2html = helper;
 })();
