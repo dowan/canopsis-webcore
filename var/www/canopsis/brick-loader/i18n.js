@@ -131,8 +131,19 @@ define([
                         i18n.lang = data.data[0].ui_language;
                         console.log('Lang initialization succeed, default language for application is set to ' + i18n.lang.toUpperCase());
                     } else {
-                        console.warn('Lang data fetch failed, default language for application is set to EN', data);
-                        i18n.lang = 'en';
+                        $.ajax({
+                            url: '/rest/object/frontend/cservice.frontend',
+                            success: function(data) {
+                                if (data.success && data.data && data.data.length && data.data[0].ui_language) {
+                                    i18n.lang = data.data[0].ui_language;
+                                } else {
+                                    console.warn('Lang data fetch failed, default language for application is set to EN', data);
+                                    i18n.lang = 'en';
+                                }
+
+                            },
+                            async: false
+                        });
                     }
                 },
                 async: false
