@@ -97,9 +97,11 @@ Ember.Application.initializer({
 
             partials: {
                 buttons: ["formbutton-cancel", "formbutton-next"]
-            },
+            }
         }, formOptions);
 
         application.register('form:taskform', form);
+
+        Ember.TEMPLATES['taskform'] = Ember.TEMPLATES['modelform'];
     }
 });

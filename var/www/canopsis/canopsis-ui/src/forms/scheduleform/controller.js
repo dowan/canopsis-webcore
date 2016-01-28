@@ -43,5 +43,7 @@ Ember.Application.initializer({
         }, formOptions);
 
         application.register('form:scheduleform', form);
+
+        Ember.TEMPLATES['scheduleform'] = Ember.TEMPLATES['modelform'];
     }
 });
