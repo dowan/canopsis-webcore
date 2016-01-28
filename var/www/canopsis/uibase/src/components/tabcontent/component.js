@@ -30,8 +30,9 @@ Ember.Application.initializer({
         var component = Ember.Component.extend({
             tabContainer: Ember.computed.alias('parentView.parentView'),
             classNames: ['tab-pane'],
-            attributeBindings: ['role'],
+            attributeBindings: ['role', 'data-ref'],
             'role': 'tab',
+            'data-ref': Ember.computed.alias('ref'),
 
             init: function() {
                 set(this, 'elementId', get(this, 'tabContainer.elementId') + '-' + get(this, 'ref'));

@@ -28,9 +28,11 @@ Ember.Application.initializer({
          */
         var component = Ember.Component.extend({
             tagName: 'li',
-            attributeBindings: ['data-toggle', 'role', 'href'],
+            attributeBindings: ['data-toggle', 'role', 'data-ref'],
             'data-toggle': 'tab',
             'role': 'tab',
+
+            'data-ref': Ember.computed.alias('ref'),
 
             href: function() {
                 var id = get(this, 'tabContainer.elementId');
