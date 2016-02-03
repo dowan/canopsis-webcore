@@ -19,7 +19,7 @@ Then, you need to import specific schemas
 
     $ su - canopsis
     $ cp $CANOPSIS_PATH/var/www/canopsis/uibase/schemas/* $CANOPSIS_PATH/etc/schema.d
-    $ schema2db update
+    $ schema2db
 
 Then, you need to enable the brick
 
@@ -42,7 +42,7 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 
 | Target | Status | Log |
 | ------ | ------ | --- |
-| Lint   | :ok: OK |  |
+| Lint   | :negative_squared_cross_mark: ERROR | <br>/home/gwen/programmation/canopsis/sources/webcore/var/www/canopsis/uibase/src/widgets/widgetcontainer/controller.js<br>  100:57  error  Irregular whitespace not allowed  no-irregular-whitespace<br><br>✖ 1 problem (1 error, 0 warnings)<br><br> |
 
 ## Code Notes
 
@@ -74,3 +74,8 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 | src/widgets/uimaintabcollection/controller.js |: the factory "widgetbase" is a hack to make the canopsis rights reopen work. But it make the view "app_header" not working without the canopsis-rights brick |
 | src/components/classifiedcrecordselector/component.js | is store destroyed? |
 
+
+## Additional info
+
+Minified version : 203 files (size: 1,1M)
+Development version : 302 files (size: 1,7M)

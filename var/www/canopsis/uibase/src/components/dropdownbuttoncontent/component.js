@@ -34,6 +34,23 @@ Ember.Application.initializer({
             classNameBindings: ['dropdownContentMenu'],
 
             /**
+             * @property align
+             * @type string
+             * @description the alignment of the content container. must be "right" or "left"
+             */
+            align:'left',
+
+            init: function() {
+                var align = get(this, 'align');
+
+                this._super();
+
+                if(align === 'right') {
+                    get(this, 'classNames').pushObject('dropdown-menu-right');
+                }
+            },
+
+            /**
              * Method for defining a boolean value on dropdownContentMenu
              * thanks to opened attribute
              * @method dropdownMenu

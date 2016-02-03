@@ -88,6 +88,22 @@ Ember.Application.initializer({
                 this.trigger('refreshChilds');
 
                 return this._super();
+            },
+
+            actions: {
+                /**
+                 * @method actions-callAction
+                 * @description Call an action on the specified target. If the target is a model, this method actually send the action to the target's controller
+                 * @param {object} target the target of the action
+                 * @param actionName {string} the action name to call
+                 */
+                callAction: function(target, actionName) {
+                    if(get(target, 'controller')) {
+                        target = get(target, 'controller');
+                    }
+
+                    target.send(actionName);
+                }
             }
         });
 
