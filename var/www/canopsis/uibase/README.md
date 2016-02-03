@@ -73,9 +73,3 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 | src/mixins/responsivelist.js | undefined |
 | src/widgets/uimaintabcollection/controller.js |: the factory "widgetbase" is a hack to make the canopsis rights reopen work. But it make the view "app_header" not working without the canopsis-rights brick |
 | src/components/classifiedcrecordselector/component.js | is store destroyed? |
-
-
-## Additional info
-
-Minified version : 203 files (size: 1,1M)
-Development version : 302 files (size: 1,7M)

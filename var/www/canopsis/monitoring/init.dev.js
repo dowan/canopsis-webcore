@@ -52,6 +52,8 @@
     'canopsis/monitoring/src/components/statemapping/component',
     'ehbs!components/component-statemapping',
     'ehbs!editor-metricselector',
+    'canopsis/monitoring/src/forms/ack/controller',
+    'canopsis/monitoring/src/forms/ticket/controller',
     'canopsis/monitoring/src/helpers/criticity',
     'canopsis/monitoring/src/helpers/recordcanbeack',
     'canopsis/monitoring/src/helpers/stateview',

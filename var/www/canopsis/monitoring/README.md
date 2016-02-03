@@ -19,7 +19,7 @@ Then, you need to import specific schemas
 
     $ su - canopsis
     $ cp $CANOPSIS_PATH/var/www/canopsis/monitoring/schemas/* $CANOPSIS_PATH/etc/schema.d
-    $ schema2db update
+    $ schema2db
 
 Then, you need to enable the brick
 
@@ -42,7 +42,7 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 
 | Target | Status | Log |
 | ------ | ------ | --- |
-| Lint   | :ok: OK |  |
+| Lint   | :negative_squared_cross_mark: ERROR | <br>/home/gwen/programmation/canopsis/sources/webcore/var/www/canopsis/monitoring/src/forms/ack/controller.js<br>  34:121  error  Missing semicolon  semi<br><br>✖ 1 problem (1 error, 0 warnings)<br><br> |
 
 ## Code Notes
 
@@ -59,4 +59,3 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 | File   | Note   |
 |--------|--------|
 | src/components/cfiltereditor/component.js | Canopsis object is not accessible anymore |
-

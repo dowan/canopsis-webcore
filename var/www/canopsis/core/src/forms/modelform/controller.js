@@ -49,12 +49,16 @@ Ember.Application.initializer({
             needs: ['application'],
 
             partials: {
-                buttons: ["formbutton-submit"],
                 debugButtons: ['formbutton-inspectform']
             },
 
             validationFields: Ember.computed(function() {return Ember.A();}),
             ArrayFields: Ember.A(),
+
+            init: function() {
+                this._super();
+                this.set('partials.buttons', ['formbutton-submit']);
+            },
 
             filterUserPreferenceCategory: function (category, keyFilters) {
                 var keys = get(category, 'keys');
