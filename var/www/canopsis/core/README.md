@@ -19,7 +19,7 @@ Then, you need to import specific schemas
 
     $ su - canopsis
     $ cp $CANOPSIS_PATH/var/www/canopsis/core/schemas/* $CANOPSIS_PATH/etc/schema.d
-    $ schema2db update
+    $ schema2db
 
 Then, you need to enable the brick
 
@@ -90,3 +90,8 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 | src/forms/widgetform/controller.js | this works when "xtype" is "widget" |
 | src/components/editor/component.js | auto-detect if we need standalone mode or not, stop using a variable, for a better comprehension |
 
+
+## Additional info
+
+Minified version : 10 files (size: 264K)
+Development version : 119 files (size: 732K)
