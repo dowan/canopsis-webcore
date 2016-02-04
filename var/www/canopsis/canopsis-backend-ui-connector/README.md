@@ -19,7 +19,7 @@ Then, you need to import specific schemas
 
     $ su - canopsis
     $ cp $CANOPSIS_PATH/var/www/canopsis/canopsis-backend-ui-connector/schemas/* $CANOPSIS_PATH/etc/schema.d
-    $ schema2db update
+    $ schema2db
 
 Then, you need to enable the brick
 
@@ -58,3 +58,8 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 ### FIXMES
 
 
+
+## Additional info
+
+Minified version : 3 files (size: 48K)
+Development version : 33 files (size: 156K)
