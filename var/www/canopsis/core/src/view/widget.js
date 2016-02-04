@@ -29,6 +29,7 @@ Ember.Application.initializer({
 
         var get = Ember.get,
             set = Ember.set,
+            isNone = Ember.isNone,
             widgetsregistry;
 
         function computeMixinsArray(view, widget) {
@@ -53,7 +54,8 @@ Ember.Application.initializer({
 
                     mixinOptions[currentName] = mixinsNames[i];
 
-                    var currentClass = mixinsregistry.getByName(currentName).EmberClass;
+                    var currentClass = mixinsregistry.getByName(currentName);
+
                     console.log('find mixin', currentName, currentClass);
 
                     //merge mixin's userpreferences into the userpref model
@@ -74,7 +76,7 @@ Ember.Application.initializer({
                     }
 
                     if(currentClass) {
-                        mixinArray.pushObject(currentClass);
+                        mixinArray.pushObject(currentClass.EmberClass);
                     } else {
                         get(view, 'displayedErrors').pushObject('mixin not found : ' + currentName);
                         console.error('mixin not found', currentName);
