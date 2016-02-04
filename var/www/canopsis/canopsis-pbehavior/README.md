@@ -19,7 +19,7 @@ Then, you need to import specific schemas
 
     $ su - canopsis
     $ cp $CANOPSIS_PATH/var/www/canopsis/canopsis-pbehavior/schemas/* $CANOPSIS_PATH/etc/schema.d
-    $ schema2db update
+    $ schema2db
 
 Then, you need to enable the brick
 
@@ -53,3 +53,8 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 ### FIXMES
 
 
+
+## Additional info
+
+Minified version : 5 files (size: 28K)
+Development version : 5 files (size: 44K)
