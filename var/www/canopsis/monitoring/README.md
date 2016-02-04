@@ -59,3 +59,9 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 | File   | Note   |
 |--------|--------|
 | src/components/cfiltereditor/component.js | Canopsis object is not accessible anymore |
+
+
+## Additional info
+
+Minified version : 20 files (size: 160K)
+Development version : 36 files (size: 288K)
