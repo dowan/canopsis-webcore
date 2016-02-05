@@ -22,10 +22,9 @@ Ember.Application.initializer({
     initialize: function(container, application) {
 
         /**
-         * @component Dropdownbuttontitle
-         *
-         * @description
-         * Component for defining the title of the dropdownbutton
+         * @description Component for defining the title of the dropdownbutton
+         * @class Dropdownbuttontitle component
+         * @memberOf canopsis.frontend.uibase
          */
         var component = Ember.Component.extend({
             name: undefined,

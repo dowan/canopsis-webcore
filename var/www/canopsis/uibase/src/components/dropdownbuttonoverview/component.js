@@ -24,16 +24,21 @@ Ember.Application.initializer({
         var get = Ember.get;
 
         /**
-         * @component Dropdownbuttonoverview
-         *
-         * @description
-         * Component for seeing the chosen color in the dropdownbutton
+         * @description Component for seeing the chosen color in the dropdownbutton
+         * @class Dropdownbuttonoverview component
+         * @memberOf canopsis.frontend.uibase
          */
         var component = Ember.Component.extend({
             classNames: ['dropdownbuttonoverview', 'dropdownbuttonoverview-default', 'overview'],
 
             //update background color of the overview
             attributeBindings: ['style'],
+
+            /**
+             * @description return the css style with the right background color
+             * @method style
+             * @return {String}
+             */
             style: function() {
                 var code = get(this, 'color');
                 return 'background-color:' + code;

@@ -24,16 +24,20 @@ Ember.Application.initializer({
         var get = Ember.get;
 
         /**
-         * @class Dropdownbuttonheader
          *
-         * @description
-         * Component that contains the title and optional other components
-         * for dropdownbutton
+         * @description Component that contains the title and optional other components for dropdownbutton
+         * @class Dropdownbuttonheader component
+         * @memberOf canopsis.frontend.uibase
          */
         var component = Ember.Component.extend({
             tagName: 'a',
             classNameBindings: ['classAttribute'],
 
+            /**
+             * @description Add/Remove a class in the dropdownbutton when the content is opened/closed
+             * @method  classAttribute
+             * @return {String} res
+             */
             classAttribute: function() {
                 var opened = get(this, 'parentView.opened'),
                     res = 'btn btn-secondary dropdown-toggle opening';
@@ -49,7 +53,7 @@ Ember.Application.initializer({
             'aria-expanded': 'true',
 
              /**
-              * method calling toggle method on click
+              * @description method calling toggle method on click
               * @method click
               */
             click: function(){
@@ -57,7 +61,7 @@ Ember.Application.initializer({
             },
 
             /**
-             * Method to switch boolean value of opened attribute
+             * @description Method to switch boolean value of opened attribute
              * @method toggle
              */
             toggle: function(){

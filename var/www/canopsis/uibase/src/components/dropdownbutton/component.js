@@ -24,21 +24,28 @@ Ember.Application.initializer({
         var set = Ember.set;
 
         /**
-         * @component Dropdownbutton
-         *
-         * @description
-         * Global component for dropdownbutton
+         * @description Global component for dropdownbutton
+         * @class dropdownbutton component
+         * @memberOf canopsis.frontend.uibase
          */
         var component = Ember.Component.extend({
             classNames: ['dropdown'],
             opened: false,
 
             actions: {
+                /**
+                 * @description show/hide content by setting the right variable
+                 * @method actions_hideContent
+                 */
                 hideContent: function() {
                     set(this, 'opened', false);
                 }
             },
 
+            /**
+             * @description Manage the visibility of the content thanks to mouse events
+             * @method didInsertElement
+             */
             didInsertElement: function() {
                 var component = this;
                 this.$().parents('td').css('overflow-x', 'visible').css('overflow-y', 'visible');

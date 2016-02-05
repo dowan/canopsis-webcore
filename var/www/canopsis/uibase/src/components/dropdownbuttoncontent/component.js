@@ -24,10 +24,9 @@ Ember.Application.initializer({
         var get = Ember.get;
 
         /**
-         * @component Dropdownbuttoncontent
-         *
-         * @description
-         * Component for switching between display and hide of the content
+         * @description Component for switching between display and hide of the content
+         * @class dropdownbuttoncontent component
+         * @memberOf canopsis.frontend.uibase
          */
         var component = Ember.Component.extend({
             classNames: ['dropdownbuttoncontent'],
@@ -40,6 +39,10 @@ Ember.Application.initializer({
              */
             align:'left',
 
+            /**
+             * @description Initiate the component
+             * @method init
+             */
             init: function() {
                 var align = get(this, 'align');
 
@@ -51,9 +54,8 @@ Ember.Application.initializer({
             },
 
             /**
-             * Method for defining a boolean value on dropdownContentMenu
-             * thanks to opened attribute
-             * @method dropdownMenu
+             * @description Method for defining a boolean value on dropdownContentMenu thanks to opened attribute
+             * @method dropdownContentMenu
              * @return {boolean}
              */
             dropdownContentMenu: function(){
