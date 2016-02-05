@@ -23,10 +23,9 @@ Ember.Application.initializer({
     initialize: function(container, application) {
 
         /**
-         * @component Colorchooser
-         *
-         * @description
-         * Component to wrap colpick component
+         * @description Component to wrap colpick component
+         * @class Colorchooser component
+         * @memberOf canopsis.frontend.uibase
          */
         var component = Ember.Component.extend({});
 
