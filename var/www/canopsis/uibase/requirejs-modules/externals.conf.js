@@ -27,8 +27,6 @@ if(window.bricks.uibase.envMode === "production") {
             'summernote': 'canopsis/uibase/lib/externals/summernote/dist/summernote',
             'ember-summernote': 'canopsis/uibase/lib/externals/ember-summernote/lib/component',
             'daterangepicker': 'canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker',
-            'rrule': 'canopsis/uibase/lib/externals/rrule/lib/rrule',
-            'nlp': 'canopsis/uibase/lib/externals/rrule/lib/nlp',
             'underscore' : 'canopsis/uibase/libwrappers/underscore',
 
             'moment': 'canopsis/uibase/lib/externals/moment/min/moment-with-locales.min',
@@ -37,12 +35,6 @@ if(window.bricks.uibase.envMode === "production") {
             'd3': 'canopsis/uibase/lib/externals/d3/d3.min'
         },
         shim: {
-            'rrule': {
-                deps: ['jquery', 'underscore']
-            },
-            'nlp': {
-                'deps': ['jquery', 'rrule', 'underscore']
-            },
             'bootstrap': {
                 deps: ['jquery']
             },
@@ -70,7 +62,6 @@ if(window.bricks.uibase.envMode === "production") {
         'ember-summernote',
         'canopsis/uibase/lib/externals/underscore/underscore-min',
         'underscore',
-        'nlp',
         'bootstrap',
         'canopsis/uibase/lib/externals/ion.rangeslider/js/ion.rangeSlider.min',
         'link!canopsis/uibase/lib/externals/ion.rangeslider/css/ion.rangeSlider.css',
@@ -95,7 +86,6 @@ if(window.bricks.uibase.envMode === "production") {
 
         require(['ember-jsoneditor-lib'], function() {});
 
-        require(['rrule'], function () {});
     });
 } else {
         require.config({
@@ -107,8 +97,6 @@ if(window.bricks.uibase.envMode === "production") {
             'summernote': 'canopsis/uibase/lib/externals/summernote/dist/summernote',
             'ember-summernote': 'canopsis/uibase/lib/externals/ember-summernote/lib/component',
             'daterangepicker': 'canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker',
-            'rrule': 'canopsis/uibase/lib/externals/rrule/lib/rrule',
-            'nlp': 'canopsis/uibase/lib/externals/rrule/lib/nlp',
             'underscore' : 'canopsis/uibase/libwrappers/underscore',
 
             'moment': 'canopsis/uibase/lib/externals/moment/min/moment-with-locales.min',
@@ -117,12 +105,6 @@ if(window.bricks.uibase.envMode === "production") {
             'd3': 'canopsis/uibase/lib/externals/d3/d3'
         },
         shim: {
-            'rrule': {
-                deps: ['jquery', 'underscore']
-            },
-            'nlp': {
-                'deps': ['jquery', 'rrule', 'underscore']
-            },
             'bootstrap': {
                 deps: ['jquery']
             },
@@ -150,7 +132,6 @@ if(window.bricks.uibase.envMode === "production") {
         'ember-summernote',
         'canopsis/uibase/lib/externals/underscore/underscore',
         'underscore',
-        'nlp',
         'bootstrap',
         'canopsis/uibase/lib/externals/ion.rangeslider/js/ion.rangeSlider.min',
         'link!canopsis/uibase/lib/externals/ion.rangeslider/css/ion.rangeSlider.css',
@@ -175,6 +156,5 @@ if(window.bricks.uibase.envMode === "production") {
 
         require(['ember-jsoneditor-lib'], function() {});
 
-        require(['rrule'], function () {});
     });
 }

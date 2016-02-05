@@ -42,7 +42,7 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 
 | Target | Status | Log |
 | ------ | ------ | --- |
-| Lint   | :negative_squared_cross_mark: ERROR | <br>/home/gwen/programmation/canopsis/sources/webcore/var/www/canopsis/uibase/src/widgets/widgetcontainer/controller.js<br>  100:57  error  Irregular whitespace not allowed  no-irregular-whitespace<br><br>✖ 1 problem (1 error, 0 warnings)<br><br> |
+| Lint   | :negative_squared_cross_mark: ERROR |  |
 
 ## Code Notes
 
@@ -50,11 +50,9 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 
 | File   | Note   |
 |--------|--------|
-| src/editors/editor-elementidselectorwithoptions.hbs | manage search in a dynamic way, as an editor property binding to a search method |
-| src/mixins/responsivelist.js | check if still used |
-| src/mixins/arraysearch.js | these checks should be asserts |
 | src/widgets/list/controller.js | add an error in displayedErrors array, to warn the user that the data cannot be displayed |
 | src/widgets/list/controller.js | check if useless or not |
+| src/components/colpick/component.js | check to destroy colpick |
 | src/components/elementidselectorwithoptions/component.js | put this on a dedicated util |
 | src/components/elementidselectorwithoptions/component.js | manage default values |
 | src/components/elementidselectorwithoptions/component.js | stop using polymorphicTypeKey, use sourceMappingKeys instead |
@@ -63,19 +61,15 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 | src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
 | src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
 | src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
-| src/components/colpick/component.js | check to destroy colpick |
+| src/mixins/arraysearch.js | these checks should be asserts |
+| src/mixins/responsivelist.js | check if still used |
+| src/editors/editor-elementidselectorwithoptions.hbs | manage search in a dynamic way, as an editor property binding to a search method |
 
 
 ### FIXMES
 
 | File   | Note   |
 |--------|--------|
-| src/mixins/responsivelist.js | undefined |
 | src/widgets/uimaintabcollection/controller.js |: the factory "widgetbase" is a hack to make the canopsis rights reopen work. But it make the view "app_header" not working without the canopsis-rights brick |
 | src/components/classifiedcrecordselector/component.js | is store destroyed? |
-
-
-## Additional info
-
-Minified version : 203 files (size: 1,1M)
-Development version : 302 files (size: 1,7M)
+| src/mixins/responsivelist.js | undefined |
