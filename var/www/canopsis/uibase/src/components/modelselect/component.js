@@ -26,8 +26,14 @@ Ember.Application.initializer({
 
         /**
          * @component modelselect
+         * @description displays a combo box with model instances, and allows to bind a value when a change occurs on the combo box.
          */
         var component = Ember.Component.extend({
+            /**
+             * @property model
+             * @type string
+             * @description Computed property. The model type, capitalized.
+             */
             model: function() {
                 var model = get(this, 'content.model.options.model');
 
@@ -37,6 +43,10 @@ Ember.Application.initializer({
                 return typekey;
             }.property('content.model.options.model'),
 
+            /**
+             * @method newModelSelected
+             * @description event triggered when selectedModel changes. Assigns content.value to the model id.
+             */
             newModelSelected: function() {
                 var model = get(this, 'selectedModel');
                 console.log('Select record:', model);
@@ -44,6 +54,10 @@ Ember.Application.initializer({
                 set(this, 'content.value', get(model, 'id'));
             }.observes('selectedModel'),
 
+            /**
+             * @property availableModels
+             * @description Computed property (dependant on the "model" property). list of available model instances.
+             */
             availableModels: function() {
                 var store = get(this, 'componentDataStore');
                 var model = get(this, 'model');
@@ -51,6 +65,9 @@ Ember.Application.initializer({
                 return store.findAll(model.dasherize());
             }.property('model'),
 
+            /**
+             * @method init
+             */
             init: function() {
                 this._super.apply(this, arguments);
 
