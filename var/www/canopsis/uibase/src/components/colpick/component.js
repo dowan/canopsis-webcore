@@ -24,7 +24,7 @@ Ember.Application.initializer({
             set = Ember.set;
 
         /**
-         * Component for choosing a color
+         * @description Component for choosing a color
          * It let to choose between a colorpicker
          * and a display of several ranges
          *
@@ -34,7 +34,7 @@ Ember.Application.initializer({
         var component = Ember.Component.extend({
             classNames: ['colorSelector dropdown-toggle'],
             /**
-             * instantiate component and load data
+             * @description instantiate component and load data
              * @method init
              */
             init: function() {
@@ -46,7 +46,7 @@ Ember.Application.initializer({
             },
 
             /**
-             * set the chosen color and update css in function
+             * @description set the chosen color and update css in function
              * @method didInsertElement
              */
             didInsertElement: function() {
@@ -57,7 +57,7 @@ Ember.Application.initializer({
                     layout:'hex',
                     submit:0,
                     /**
-                     * Set the new hexa code color on change (selection of an other color)
+                     * @description Set the new hexa code color on change (selection of an other color)
                      * @method onChange
                      * @param hsb not used
                      * @param {string} hex hexa code color
@@ -127,8 +127,8 @@ Ember.Application.initializer({
             },
             actions: {
                 /**
-                 * Change the color with the new chosen color
-                 * @method changeColor : action to update css for ranges and set the chosen color
+                 * @description Change the color with the new chosen color
+                 * @method actions_changeColor
                  * @param {object} color
                  * @param {object} range
                  */
@@ -152,7 +152,7 @@ Ember.Application.initializer({
             },
 
             /**
-             * Destroy each event handled before in the component
+             * @description Destroy each event handled before in the component
              * @method willDestroyElement
              */
             willDestroyElement: function() {
