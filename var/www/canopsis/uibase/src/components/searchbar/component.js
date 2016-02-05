@@ -18,16 +18,15 @@
  */
 
 Ember.Application.initializer({
-    name: 'component-searchbar',
+    name:"component-searchbar",
     initialize: function(container, application) {
-        var get = Ember.get;
+        var get = Ember.get,
+            set = Ember.set;
 
 
         /**
          * @component searchbar
-         *
-         * @description
-         * Search bar component
+         * @description Search bar component
          *
          * Includes 3 tabs :
          *  - All : allow selection of every field
@@ -37,10 +36,23 @@ Ember.Application.initializer({
          * This component is a WIP, it only supports basic search at the moment
          */
         var component = Ember.Component.extend({
+            /**
+             * @property showSearchOptions
+             * @type boolean
+             */
             showSearchOptions: false,
-            tagName: 'span',
+
+            /**
+             * @property tagName
+             * @type string
+             */
+             tagName: 'span',
 
             actions: {
+                /**
+                 * @method actions_searchInputAction
+                 * @description Action to handle search input changes
+                 */
                 searchInputAction: function() {
                     var searchPhrase = get(this, 'value');
                     console.log('searchItems', this, this.controller, searchPhrase);
@@ -48,6 +60,10 @@ Ember.Application.initializer({
                     get(this, 'controller').target.set('searchCriterion', searchPhrase);
                 },
 
+                /**
+                 * @method actions_clearSearch
+                 * @description Action to handle search form clear.
+                 */
                 clearSearch: function () {
                     console.log('clear search field');
                     //clear text field
@@ -61,30 +77,60 @@ Ember.Application.initializer({
 
             },
 
+            /**
+             * @property tabAllId
+             * @type string
+             * @description Computed property. generated id for the DOM element. It allows to handle children elements by their DOM ids without having id collision while several identical components are present on the DOM.
+             */
             tabAllId: function() {
                 console.log('tabAllId');
 
                 return get(this, 'elementId') + 'TabAll';
             }.property('elementId'),
 
+            /**
+             * @property tabIndexedId
+             * @type string
+             * @description Computed property. generated id for the DOM element. It allows to handle children elements by their DOM ids without having id collision while several identical components are present on the DOM.
+             */
             tabIndexedId: function() {
                 return get(this, 'elementId') + 'TabIndexed';
             }.property('elementId'),
 
+            /**
+             * @property tabFilterId
+             * @type string
+             * @description Computed property. generated id for the DOM element. It allows to handle children elements by their DOM ids without having id collision while several identical components are present on the DOM.
+             */
             tabFilterId: function() {
                 return get(this, 'elementId') + 'TabFilter';
             }.property('elementId'),
 
+            /**
+             * @property tabAllHref
+             * @type string
+             * @description Computed property. generated href for the "all" link.
+             */
             tabAllHref: function() {
-                return '#' + get(this, 'elementId') + 'TabAll';
+                return "#" + get(this, 'elementId') + 'TabAll';
             }.property('elementId'),
 
+            /**
+             * @property tabIndexedHref
+             * @type string
+             * @description Computed property. generated href for the "indexed" link.
+             */
             tabIndexedHref: function() {
-                return '#' + get(this, 'elementId') + 'TabIndexed';
+                return "#" + get(this, 'elementId') + 'TabIndexed';
             }.property('elementId'),
 
+            /**
+             * @property tabFilterHref
+             * @type string
+             * @description Computed property. generated href for the "filter" link.
+             */
             tabFilterHref: function() {
-                return '#' + get(this, 'elementId') + 'TabFilter';
+                return "#" + get(this, 'elementId') + 'TabFilter';
             }.property('elementId')
         });
 
