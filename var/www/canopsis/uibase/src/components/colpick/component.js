@@ -17,7 +17,6 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 Ember.Application.initializer({
     name: 'component-colpick',
     initialize: function(container, application) {
@@ -25,12 +24,12 @@ Ember.Application.initializer({
             set = Ember.set;
 
         /**
-         * @component colpick
-         *
-         * @description
-         * Component for choosing a color.
+         * Component for choosing a color
          * It let to choose between a colorpicker
          * and a display of several ranges
+         *
+         * @class eventcategories component
+         * @memberOf canopsis.frontend.uibase
          */
         var component = Ember.Component.extend({
             classNames: ['colorSelector dropdown-toggle'],
@@ -58,9 +57,10 @@ Ember.Application.initializer({
                     layout:'hex',
                     submit:0,
                     /**
+                     * Set the new hexa code color on change (selection of an other color)
                      * @method onChange
-                     * @param hsb : not used
-                     * @param {string} hexa code color
+                     * @param hsb not used
+                     * @param {string} hex hexa code color
                      */
                     onChange: function(hsb,hex) {
                         void(hsb);
@@ -102,7 +102,7 @@ Ember.Application.initializer({
                 }
 
                 /*
-                 *switch display between colorPicker and colorGrid
+                 * switch display between colorPicker and colorGrid
                  */
                 component.$('.colorGrid').hide();
                 component.$('#colorPicker').addClass('activeColor');
@@ -125,13 +125,13 @@ Ember.Application.initializer({
 
                 this._super();
             },
-
-            /**
-             * @method changeColor : action to update css for ranges and set the chosen color
-             * @param {object} color
-             * @param {object} range
-             */
             actions: {
+                /**
+                 * Change the color with the new chosen color
+                 * @method changeColor : action to update css for ranges and set the chosen color
+                 * @param {object} color
+                 * @param {object} range
+                 */
                 changeColor: function(color, ranges){
                     var component = this;
                     var currentColor = color;
@@ -152,6 +152,7 @@ Ember.Application.initializer({
             },
 
             /**
+             * Destroy each event handled before in the component
              * @method willDestroyElement
              */
             willDestroyElement: function() {
