@@ -26,8 +26,16 @@ Ember.Application.initializer({
 
         /**
          * @component actionbutton
+         * @description shows a button that triggers an action. This component requires a nested "yield" template.
          */
         var component = Ember.Component.extend({
+            /**
+             * @property action
+             * @type string
+             * @description the action name. It must be an action handled by the "action" utility
+             */
+            action: undefined,
+
             actions: {
                 /**
                  * @method actions_doAction
