@@ -23,6 +23,26 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         /**
          * @component tabs
+         * @description Base component of a tab component composition. To be used jointly with the following components : "tabscontentgroup", "tabsheadergroup", "tabcontent", "tabheader"
+         * @example
+         *   {{#component-tabs}}
+         *       {{#component-tabsheadergroup}}
+         *           {{component-tabheader ref="filter" label="Filter"}}
+         *           {{component-tabheader ref="output" label="Generated filter"}}
+         *           {{component-tabheader ref="result" label="Result"}}
+         *       {{/component-tabsheadergroup}}
+         *       {{#component-tabscontentgroup}}
+         *           {{#component-tabcontent ref="filter" active=true}}
+         *               filter
+         *           {{/component-tabcontent}}
+         *           {{#component-tabcontent ref="output"}}
+         *               output
+         *           {{/component-tabcontent}}
+         *           {{#component-tabcontent ref="result"}}
+         *               result
+         *           {{/component-tabcontent}}
+         *       {{/component-tabscontentgroup}}
+         *   {{/component-tabs}}
          */
         var component = Ember.Component.extend({});
 
