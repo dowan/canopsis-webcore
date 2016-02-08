@@ -29,6 +29,7 @@ Ember.Application.initializer({
             isNone = Ember.isNone,
             Handlebars = window.Handlebars;
 
+        //FIXME on "src/templates/actionbutton-info.hbs", the component is used with the "linkInfoPattern" property. This property does not seems relevant anymore.
         /**
          * @component linklist
          *
@@ -39,13 +40,31 @@ Ember.Application.initializer({
         var component = Ember.Component.extend({
 
             //events link that may exist in the entitylink payload where to look for labelled urls
+            /**
+             * @property link_types
+             * @type array
+             * @default
+             */
             link_types: ['computed_links', 'event_links'],
 
+            /**
+             * @property links
+             * @type array
+             * @description the links to be displayed on the dropdown. Links are objects that must contains an "url" and a "label" properties.
+             */
+            links: undefined,
+
+            /**
+             * @method init
+             */
             init: function() {
                 this._super();
                 set(this, 'links', Ember.A());
             },
 
+            /**
+             * @method didInsertElement
+             */
             didInsertElement: function () {
                 //allow display for button onclick menu display.
                 //otherwise the menu is locked into the table td element.
@@ -54,12 +73,15 @@ Ember.Application.initializer({
                 this.loadLinks();
             },
 
+            /**
+             * @method linksFromApi
+             * @description Query the entity link storage in order to find a link list from an event.
+             * @param evt
+             */
             linksFromApi: function (evt) {
-                /**
-                Query the entity link storage in order to find a link list from an event.
-                **/
                 var linklistComponent = this;
 
+                //TODO use the container defined in the initializer
                 var adapter = dataUtils.getEmberApplicationSingleton().__container__.lookup('adapter:entitylink');
 
                 console.log('event', evt);
@@ -103,22 +125,25 @@ Ember.Application.initializer({
                 });
             },
 
+            /**
+             * @method compute_url
+             * @description computes the template url
+             * @param {object} context
+             * @param {string} template
+             */
             compute_url: function(context, template) {
-
                 var compiledUrl = Handlebars.compile(template)(context);
                 console.log('handlebars url', compiledUrl, context);
                 return compiledUrl;
-
             },
 
 
+            /**
+             * @method loadLinks
+             * @description Initialization of the api query from an event.
+             * Data are cached, when already fetched, they are not reloaded.
+             */
             loadLinks: function() {
-
-                /**
-                Initialization of the api query from an event.
-                Data are cached, when already fetched, they are not reloaded.
-                **/
-
                 if (!get(this, 'loaded')) {
 
                     var evt = get(this, 'record').toJson();
@@ -129,9 +154,7 @@ Ember.Application.initializer({
                 } else {
                     console.log('Links already loaded');
                 }
-
             }
-
         });
 
         application.register('component:component-linklist', component);

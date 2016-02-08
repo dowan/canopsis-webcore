@@ -42,7 +42,7 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 
 | Target | Status | Log |
 | ------ | ------ | --- |
-| Lint   | :negative_squared_cross_mark: ERROR | <br>/home/gwen/programmation/canopsis/sources/webcore/var/www/canopsis/uibase/src/widgets/widgetcontainer/controller.js<br>  100:57  error  Irregular whitespace not allowed  no-irregular-whitespace<br><br>✖ 1 problem (1 error, 0 warnings)<br><br> |
+| Lint   | :negative_squared_cross_mark: ERROR | <br>/home/gwen/programmation/canopsis/sources/webcore/var/www/canopsis/uibase/src/components/searchbar/component.js<br>   21:10  error  Strings must use singlequote                              quotes<br>   24:13  error  "set" is defined but never used                           no-unused-vars<br>   49:14  error  Expected indentation of 12 space characters but found 13  indent<br>  115:24  error  Strings must use singlequote                              quotes<br>  124:24  error  Strings must use singlequote                              quotes<br>  133:24  error  Strings must use singlequote                              quotes<br><br>/home/gwen/programmation/canopsis/sources/webcore/var/www/canopsis/uibase/src/widgets/widgetcontainer/controller.js<br>  100:57  error  Irregular whitespace not allowed  no-irregular-whitespace<br><br>✖ 7 problems (7 errors, 0 warnings)<br><br> |
 
 ## Code Notes
 
@@ -63,6 +63,7 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 | src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
 | src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
 | src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
+| src/components/linklist/component.js | use the container defined in the initializer |
 | src/components/colpick/component.js | check to destroy colpick |
 
 
@@ -72,6 +73,8 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 |--------|--------|
 | src/mixins/responsivelist.js | undefined |
 | src/widgets/uimaintabcollection/controller.js |: the factory "widgetbase" is a hack to make the canopsis rights reopen work. But it make the view "app_header" not working without the canopsis-rights brick |
+| src/components/dateinterval/component.js | destroy the Jquery plugin at willDestroyElement, and check for possible undestroyed event bindings |
+| src/components/linklist/component.js | on "src/templates/actionbutton-info.hbs", the component is used with the "linkInfoPattern" property. This property does not seems relevant anymore. |
 | src/components/classifiedcrecordselector/component.js | is store destroyed? |
 
 
