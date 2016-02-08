@@ -28,10 +28,13 @@ Ember.Application.initializer({
          * It let to choose between a colorpicker
          * and a display of several ranges
          *
-         * @class eventcategories component
-         * @memberOf canopsis.frontend.uibase
+         * @component colpick
          */
         var component = Ember.Component.extend({
+            /**
+             * @property classNames {Array}
+             * @default
+             */
             classNames: ['colorSelector dropdown-toggle'],
             /**
              * @description instantiate component and load data

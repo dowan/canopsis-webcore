@@ -25,11 +25,18 @@ Ember.Application.initializer({
 
         /**
          * @description Global component for dropdownbutton
-         * @class dropdownbutton component
-         * @memberOf canopsis.frontend.uibase
+         * @component dropdownbutton
          */
         var component = Ember.Component.extend({
+            /**
+             * @property classNames {Array}
+             * @default
+             */
             classNames: ['dropdown'],
+            /**
+             * @property opened {Boolean}
+             * @default
+             */
             opened: false,
 
             actions: {

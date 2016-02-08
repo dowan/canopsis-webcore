@@ -25,16 +25,22 @@ Ember.Application.initializer({
 
         /**
          * @description Component for switching between display and hide of the content
-         * @class dropdownbuttoncontent component
-         * @memberOf canopsis.frontend.uibase
+         * @component dropdownbuttoncontent
          */
         var component = Ember.Component.extend({
+            /**
+             * @property classNames {Array}
+             * @default
+             */
             classNames: ['dropdownbuttoncontent'],
+            /**
+             * @property classNameBindings {Array}
+             * @default
+             */
             classNameBindings: ['dropdownContentMenu'],
 
             /**
-             * @property align
-             * @type string
+             * @property align {String}
              * @description the alignment of the content container. must be "right" or "left"
              */
             align:'left',

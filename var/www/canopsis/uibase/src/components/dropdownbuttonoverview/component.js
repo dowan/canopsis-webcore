@@ -25,10 +25,13 @@ Ember.Application.initializer({
 
         /**
          * @description Component for seeing the chosen color in the dropdownbutton
-         * @class Dropdownbuttonoverview component
-         * @memberOf canopsis.frontend.uibase
+         * @component Dropdownbuttonoverview
          */
         var component = Ember.Component.extend({
+            /**
+             * @property classNames {Array}
+             * @default
+             */
             classNames: ['dropdownbuttonoverview', 'dropdownbuttonoverview-default', 'overview'],
 
             //update background color of the overview

@@ -26,11 +26,18 @@ Ember.Application.initializer({
         /**
          *
          * @description Component that contains the title and optional other components for dropdownbutton
-         * @class Dropdownbuttonheader component
-         * @memberOf canopsis.frontend.uibase
+         * @component Dropdownbuttonheader
          */
         var component = Ember.Component.extend({
+            /**
+             * @property tagName {String}
+             * @default
+             */
             tagName: 'a',
+            /**
+             * @property classNameBindings {Array}
+             * @default
+             */
             classNameBindings: ['classAttribute'],
 
             /**
