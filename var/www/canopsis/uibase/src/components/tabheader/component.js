@@ -25,21 +25,60 @@ Ember.Application.initializer({
 
         /**
          * @component tabheader
+         * @description tabs subcomponent. Can be used to display tabs, and handle their content. See the "tabs" component for more information.
          */
         var component = Ember.Component.extend({
+            /**
+             * @property tagName
+             * @type string
+             * @default
+             */
             tagName: 'li',
+
+            /**
+             * @property attributeBindings
+             * @type array
+             * @default
+             */
             attributeBindings: ['data-toggle', 'role', 'data-ref'],
+
+            /**
+             * @property data-toggle
+             * @type string
+             * @default
+             */
             'data-toggle': 'tab',
+
+            /**
+             * @property role
+             * @type string
+             * @default
+             */
             'role': 'tab',
 
+            /**
+             * @property data-ref
+             * @type string
+             * @default Ember.computed.alias('ref')
+             */
             'data-ref': Ember.computed.alias('ref'),
 
+            /**
+             * @property href
+             * @type string
+             * @description Computed property to generate the anchor link for the tab header label. Dependent on the tabContainer id and the ref property
+             */
             href: function() {
                 var id = get(this, 'tabContainer.elementId');
                 return '#' + id + '-' + get(this, 'ref');
             }.property('tabContainer', 'ref'),
 
-
+            /**
+             * @property tabContainer
+             * @type Ember.Component
+             * @default Ember.computed.alias('parentView.parentView')
+             * @description the root "tabs" component
+             */
             tabContainer: Ember.computed.alias('parentView.parentView')
         });
 

@@ -24,8 +24,14 @@ Ember.Application.initializer({
 
         /**
          * @component tabscontentgroup
+         * @description tabs subcomponent. Can be used to display tabs, and handle their content. See the "tabs" component for more information.
          */
         var component = Ember.Component.extend({
+            /**
+             * @property classNames
+             * @type array
+             * @default
+             */
             classNames: ['tab-content']
         });
 

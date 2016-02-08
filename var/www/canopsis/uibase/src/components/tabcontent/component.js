@@ -26,14 +26,57 @@ Ember.Application.initializer({
 
         /**
          * @component tabscontent
+         * @description tabs subcomponent. Can be used to display tabs, and handle their content. See the "tabs" component for more information.
          */
         var component = Ember.Component.extend({
+            /**
+             * @property tabContainer
+             * @type Ember.Component
+             * @default Ember.computed.alias('parentView.parentView')
+             * @description the root "tabs" component
+             */
             tabContainer: Ember.computed.alias('parentView.parentView'),
+
+            /**
+             * @property classNames
+             * @type array
+             * @default
+             */
             classNames: ['tab-pane'],
+
+            /**
+             * @property attributeBindings
+             * @type array
+             * @default
+             */
             attributeBindings: ['role', 'data-ref'],
+
+            /**
+             * @property role
+             * @type string
+             * @default
+             */
             'role': 'tab',
+
+            /**
+             * @property data-ref
+             * @type string
+             * @default Ember.computed.alias('ref')
+             */
             'data-ref': Ember.computed.alias('ref'),
 
+            /**
+             * @property active
+             * @type boolean
+             * @description whether the tab is active by default or not
+             * @default
+             */
+            active: false,
+
+            /**
+             * @method init
+             * @description assign elementId accordingly to parent tab container elementId, and check if the content must be displayed
+             */
             init: function() {
                 set(this, 'elementId', get(this, 'tabContainer.elementId') + '-' + get(this, 'ref'));
                 if(get(this, 'active') && get(this, 'active') === true) {
