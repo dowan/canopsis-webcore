@@ -55,7 +55,7 @@ Ember.Application.initializer({
              * @type string
              * @description the property of data elements that will be used as an identifier
              */
-             valueField: undefined,
+            valueField: undefined,
 
             /**
              * @property labelField
@@ -72,11 +72,10 @@ Ember.Application.initializer({
             /**
              * @property isLoading
              * @type boolean
-             * @description true if the data is loading, false if it's already done, or if an error happened.
+             * @description true if the data is loading, false if it's already done, or if an error happened.
              * @default
              */
             isLoading: true,
-
 
             /**
              * @method init
@@ -150,7 +149,7 @@ Ember.Application.initializer({
             /**
              * @property filteredElements
              * @type array
-             * @description computed property, dependant on "content" and "searchcriterion". Filters all the results to display only those that matches the search input content, if any.
+             * @description computed property, dependant on "content" and "searchcriterion". Filters all the results to display only those that matches the search input content, if any.
              */
             filteredElements: function() {
                 var component = this;

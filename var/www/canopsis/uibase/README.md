@@ -42,7 +42,7 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 
 | Target | Status | Log |
 | ------ | ------ | --- |
-| Lint   | :negative_squared_cross_mark: ERROR | <br>/home/gwen/programmation/canopsis/sources/webcore/var/www/canopsis/uibase/src/components/searchbar/component.js<br>   21:10  error  Strings must use singlequote                              quotes<br>   24:13  error  "set" is defined but never used                           no-unused-vars<br>   49:14  error  Expected indentation of 12 space characters but found 13  indent<br>  115:24  error  Strings must use singlequote                              quotes<br>  124:24  error  Strings must use singlequote                              quotes<br>  133:24  error  Strings must use singlequote                              quotes<br><br>/home/gwen/programmation/canopsis/sources/webcore/var/www/canopsis/uibase/src/widgets/widgetcontainer/controller.js<br>  100:57  error  Irregular whitespace not allowed  no-irregular-whitespace<br><br>✖ 7 problems (7 errors, 0 warnings)<br><br> |
+| Lint   | :ok: OK |  |
 
 ## Code Notes
 
@@ -81,4 +81,4 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 ## Additional info
 
 Minified version : 203 files (size: 1,1M)
-Development version : 302 files (size: 1,7M)
+Development version : 302 files (size: 1,8M)

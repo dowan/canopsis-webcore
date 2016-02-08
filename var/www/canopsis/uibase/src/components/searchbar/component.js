@@ -18,10 +18,9 @@
  */
 
 Ember.Application.initializer({
-    name:"component-searchbar",
+    name: 'component-searchbar',
     initialize: function(container, application) {
-        var get = Ember.get,
-            set = Ember.set;
+        var get = Ember.get;
 
 
         /**
@@ -46,7 +45,7 @@ Ember.Application.initializer({
              * @property tagName
              * @type string
              */
-             tagName: 'span',
+            tagName: 'span',
 
             actions: {
                 /**
@@ -112,7 +111,7 @@ Ember.Application.initializer({
              * @description Computed property. generated href for the "all" link.
              */
             tabAllHref: function() {
-                return "#" + get(this, 'elementId') + 'TabAll';
+                return '#' + get(this, 'elementId') + 'TabAll';
             }.property('elementId'),
 
             /**
@@ -121,7 +120,7 @@ Ember.Application.initializer({
              * @description Computed property. generated href for the "indexed" link.
              */
             tabIndexedHref: function() {
-                return "#" + get(this, 'elementId') + 'TabIndexed';
+                return '#' + get(this, 'elementId') + 'TabIndexed';
             }.property('elementId'),
 
             /**
@@ -130,7 +129,7 @@ Ember.Application.initializer({
              * @description Computed property. generated href for the "filter" link.
              */
             tabFilterHref: function() {
-                return "#" + get(this, 'elementId') + 'TabFilter';
+                return '#' + get(this, 'elementId') + 'TabFilter';
             }.property('elementId')
         });
 

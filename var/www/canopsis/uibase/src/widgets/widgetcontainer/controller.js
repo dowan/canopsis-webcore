@@ -97,7 +97,7 @@ Ember.Application.initializer({
                  * @param {object} target the target of the action
                  * @param actionName {string} the action name to call
                  */
-                callAction: function(target, actionName) {
+                callAction: function(target, actionName) {
                     if(get(target, 'controller')) {
                         target = get(target, 'controller');
                     }
