@@ -198,7 +198,7 @@ Ember.Application.initializer({
              * Generates and displays a form for givent record type
              */
             getEventForm: function(event_type, record, crecords, formType) {
-                formType = formType ||' modelform';
+                formType = formType || 'modelform';
 
                 var wizard = formsUtils.showNew(formType, record, {
                     title: __('Add event type: ') + event_type,
