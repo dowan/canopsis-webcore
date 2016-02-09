@@ -24,13 +24,15 @@ Ember.Application.initializer({
             set = Ember.set,
             isNone = Ember.isNone;
 
+        //TODO component-wrapper does not seems to be used anymore, check if it's possible to remove this component
         /**
-         * @class WrapperComponent
+         * @component wrapper
          */
         var component = Ember.Component.extend({
             /**
              * @property tagName
              * @type string
+             * @default
              */
             tagName: 'span',
 

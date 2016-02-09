@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: AbstractClassRegistry</title>
+    <title>JSDoc: Component: editor</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -18,7 +18,7 @@
 <div id="main">
 
 
-    <h1 class="page-title">Class: AbstractClassRegistry</h1>
+    <h1 class="page-title">Component: editor</h1>
 
     
 
@@ -28,6 +28,10 @@
 <section>
 
 <header>
+    
+        
+            
+        
     
 </header>
 
@@ -41,7 +45,7 @@
                     <td>
                     </td>
                     <td>
-                        <a href="#~add">add<span class="signature">(item, name, classes)</span><span class="type-signature"></span></a>
+                        <a href="#~actions_inspect">actions_inspect<span class="signature">()</span><span class="type-signature"></span></a>
                     </td>
                 </tr>
             
@@ -49,7 +53,7 @@
                     <td>
                     </td>
                     <td>
-                        <a href="#~getByClassName">getByClassName<span class="signature">(name)</span><span class="type-signature"> &rarr; {array}</span></a>
+                        <a href="#~init">init<span class="signature">()</span><span class="type-signature"></span></a>
                     </td>
                 </tr>
             
@@ -57,7 +61,7 @@
                     <td>
                     </td>
                     <td>
-                        <a href="#~getByName">getByName<span class="signature">(name)</span><span class="type-signature"> &rarr; {object}</span></a>
+                        <a href="#~onValueChange">onValueChange<span class="signature">()</span><span class="type-signature"></span></a>
                     </td>
                 </tr>
             
@@ -71,7 +75,7 @@
             <td>
             </td>
             <td>
-                <a href="#~name">name<span class="type-signature"> :string</span></a>
+                <a href="#~attr">attr<span class="type-signature"></span></a>
             </td>
         </tr>
     
@@ -79,7 +83,47 @@
             <td>
             </td>
             <td>
-                <a href="#~tableColumns">tableColumns<span class="type-signature"></span></a>
+                <a href="#~canopsisConfiguration">canopsisConfiguration<span class="type-signature"> :object</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~content">content<span class="type-signature"> :object</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~debug">debug<span class="type-signature"> :boolean</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~description">description<span class="type-signature"> :string</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~editorType">editorType<span class="type-signature"> :string</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~tagName">tagName<span class="type-signature"> :string</span></a>
             </td>
         </tr>
     
@@ -89,10 +133,25 @@
     <div class="container-overview">
     
         
-            <div class="description">Abstract class to provide a common API to every registry</div>
+            <div class="description">Component displaying the correct editor for an attribute.
+It is possible to specify the editor type to use. If not specified, it will try to get the correct type on its own.</div>
         
 
         
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <dl class="details">
@@ -124,7 +183,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_abstractclassregistry.js.html">lib/abstractclassregistry.js</a>, <a href="lib_abstractclassregistry.js.html#line38">line 38</a>
+        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line31">line 31</a>
     </li></ul></dd>
     
 
@@ -134,6 +193,25 @@
 
     
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>{{component-editor attr=item editorType=itemEditorType}}</code></pre>
+
 
 
         
@@ -155,13 +233,485 @@
 
         
             
-<h4 class="name" id="~name"><a name="~name"></a><span class="type-signature">(inner) </span>name<span class="type-signature"> :string</span></h4>
+<h4 class="name" id="~attr"><a name="~attr"></a><span class="type-signature">(inner) </span>attr<span class="type-signature"></span></h4>
+
+
+
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>attr</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>Ember.computed.alias('content')</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line168">line 168</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~canopsisConfiguration"><a name="~canopsisConfiguration"></a><span class="type-signature">(inner) </span>canopsisConfiguration<span class="type-signature"> :object</span></h4>
 
 
 
 
 <div class="description">
-    The name of the registry
+    the canopsis frontend configuration object
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>canopsisConfiguration</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line52">line 52</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~content"><a name="~content"></a><span class="type-signature">(inner) </span>content<span class="type-signature"> :object</span></h4>
+
+
+
+
+<div class="description">
+    the attribute which information is displayed and that can be edited with the editor.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>content</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line67">line 67</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~debug"><a name="~debug"></a><span class="type-signature">(inner) </span>debug<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+<div class="description">
+    whether the UI is in debug mode or not
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>debug</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>Ember.computed.alias('canopsisConfiguration.DEBUG')</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line60">line 60</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~description"><a name="~description"></a><span class="type-signature">(inner) </span>description<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    Computed property, binded to the description of the attribute
 </div>
 
 
@@ -206,7 +756,7 @@
 
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>description</code></td>
             
 
             <td class="type">
@@ -256,7 +806,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_abstractclassregistry.js.html">lib/abstractclassregistry.js</a>, <a href="lib_abstractclassregistry.js.html#line45">line 45</a>
+        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line110">line 110</a>
     </li></ul></dd>
     
 
@@ -274,16 +824,26 @@
 
         
             
-<h4 class="name" id="~tableColumns"><a name="~tableColumns"></a><span class="type-signature">(inner) </span>tableColumns<span class="type-signature"></span></h4>
+<h4 class="name" id="~editorType"><a name="~editorType"></a><span class="type-signature">(inner) </span>editorType<span class="type-signature"> :string</span></h4>
 
 
 
 
 <div class="description">
-    Aims to provide a way to inspect and display items
+    finds the correct template name for the editor
 </div>
 
 
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
 
 
 
@@ -315,7 +875,7 @@
 
         <tr>
             
-                <td class="name"><code>tableColumns</code></td>
+                <td class="name"><code>editorType</code></td>
             
 
             <td class="type">
@@ -365,7 +925,127 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_abstractclassregistry.js.html">lib/abstractclassregistry.js</a>, <a href="lib_abstractclassregistry.js.html#line55">line 55</a>
+        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line120">line 120</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~tagName"><a name="~tagName"></a><span class="type-signature">(inner) </span>tagName<span class="type-signature"> :string</span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tagName</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>span</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line45">line 45</a>
     </li></ul></dd>
     
 
@@ -392,14 +1072,14 @@
 
     
 
-    <h4 class="name" id="~add"><a name="~add"></a><span class="type-signature">(inner) </span>add<span class="signature">(item, name, classes)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="~actions_inspect"><a name="~actions_inspect"></a><span class="type-signature">(inner) </span>actions_inspect<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Appends the item into the "all" array, and into the corresponding class arrays in the "byClass" dict
+    inspects the object in the console (see debugUtils for more info)
 </div>
 
 
@@ -408,101 +1088,6 @@
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>item</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">the item to add</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">the name of the item to add</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>classes</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">array</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">classes of the item</td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -538,7 +1123,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_abstractclassregistry.js.html">lib/abstractclassregistry.js</a>, <a href="lib_abstractclassregistry.js.html#line57">line 57</a>
+        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line96">line 96</a>
     </li></ul></dd>
     
 
@@ -569,14 +1154,14 @@
 
     
 
-    <h4 class="name" id="~getByClassName"><a name="~getByClassName"></a><span class="type-signature">(inner) </span>getByClassName<span class="signature">(name)</span><span class="type-signature"> &rarr; {array}</span></h4>
+    <h4 class="name" id="~init"><a name="~init"></a><span class="type-signature">(inner) </span>init<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Get a list of item that are registered in the specified class
+    binds the "onValueChange" observer
 </div>
 
 
@@ -585,55 +1170,6 @@
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">the name of the class</td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -669,7 +1205,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_abstractclassregistry.js.html">lib/abstractclassregistry.js</a>, <a href="lib_abstractclassregistry.js.html#line107">line 107</a>
+        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line69">line 69</a>
     </li></ul></dd>
     
 
@@ -692,28 +1228,6 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    the array of items that are defined with the specified class name
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">array</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -722,14 +1236,14 @@
 
     
 
-    <h4 class="name" id="~getByName"><a name="~getByName"></a><span class="type-signature">(inner) </span>getByName<span class="signature">(name)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="~onValueChange"><a name="~onValueChange"></a><span class="type-signature">(inner) </span>onValueChange<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Get an item by its name. Implemented because all must be migrated from an array to a dict
+    Triggered automatically when "attr.value" change
 </div>
 
 
@@ -738,55 +1252,6 @@
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">the name of the item to get</td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -822,7 +1287,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_abstractclassregistry.js.html">lib/abstractclassregistry.js</a>, <a href="lib_abstractclassregistry.js.html#line92">line 92</a>
+        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line86">line 86</a>
     </li></ul></dd>
     
 
@@ -845,28 +1310,6 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    the object with the specified name
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">object</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -909,7 +1352,7 @@ It aims to handle request metadata (total, errors, ...)</a></li></ul>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Feb 09 2016 09:40:48 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Feb 09 2016 09:40:49 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

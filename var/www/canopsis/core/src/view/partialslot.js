@@ -26,16 +26,18 @@ Ember.Application.initializer({
          * @constructor
          */
         var view = Ember.View.extend({
+
             /**
              * @property canopsisConfiguration
-             * @see {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
+             * @type object
+             * @description the canopsis frontend configuration object
              */
             canopsisConfiguration: canopsisConfiguration,
 
             /**
              * @property showPartialslots
-             * @see {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
              * @type boolean
+             * @default Ember.computed.alias('canopsisConfiguration.showPartialslots')
              */
             showPartialslots: Ember.computed.alias('canopsisConfiguration.showPartialslots'),
 

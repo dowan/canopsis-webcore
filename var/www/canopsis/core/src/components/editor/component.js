@@ -29,32 +29,46 @@ Ember.Application.initializer({
             isNone = Ember.isNone;
 
         /**
-         * Component displaying the correct editor for an attribute.
+         * @component editor
+         *
+         * @description Component displaying the correct editor for an attribute.
          * It is possible to specify the editor type to use. If not specified, it will try to get the correct type on its own.
          *
-         * @class EditorComponent
+         * @example {{component-editor attr=item editorType=itemEditorType}}
          */
         var component = Ember.Component.extend({
             /**
              * @property tagName
              * @type string
+             * @default
              */
             tagName: 'span',
 
             /**
-             * @property runtimeConfiguration
-             * @see {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
+             * @property canopsisConfiguration
+             * @type object
+             * @description the canopsis frontend configuration object
              */
             canopsisConfiguration: canopsisConfiguration,
 
             /**
              * @property debug
+             * @description whether the UI is in debug mode or not
              * @type boolean
+             * @default Ember.computed.alias('canopsisConfiguration.DEBUG')
              */
             debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
 
             /**
+             * @property content
+             * @type object
+             * @description the attribute which information is displayed and that can be edited with the editor.
+             */
+            content: undefined,
+
+            /**
              * @method init
+             * @description binds the "onValueChange" observer
              */
             init: function() {
                 console.log('init editor compo');
@@ -68,17 +82,21 @@ Ember.Application.initializer({
                 this._super();
             },
 
+            //TODO check if still used
             /**
              * @method onValueChange
              *
-             * Triggered automatically when "attr.value" change
+             * @description Triggered automatically when "attr.value" change
              */
             onValueChange: function () {
-                alert('value change');
                 set(this, 'value', get(this, 'attr.value'));
             },
 
             actions: {
+                /**
+                 * @method actions_inspect
+                 * @description inspects the object in the console (see debugUtils for more info)
+                 */
                 inspect: function() {
                     debugUtils.inspectObject(get(this, 'content'));
                 }
@@ -86,6 +104,7 @@ Ember.Application.initializer({
 
             /**
              * @property description
+             * @description Computed property, binded to the description of the attribute
              * @type string
              */
             description: function () {
@@ -94,6 +113,8 @@ Ember.Application.initializer({
 
             /**
              * @property editorType
+             * @description finds the correct template name for the editor
+             * @return {string} the template name found, or "editor-defaultpropertyeditor" if nothing is suitable for the attribute
              * @type string
              */
             editorType: function() {
@@ -142,6 +163,7 @@ Ember.Application.initializer({
 
             /**
              * @property attr
+             * @default Ember.computed.alias('content')
              */
             attr: Ember.computed.alias('content')
         });

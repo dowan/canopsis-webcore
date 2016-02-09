@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Modelform</title>
+    <title>JSDoc: Component: renderer</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -18,7 +18,7 @@
 <div id="main">
 
 
-    <h1 class="page-title">Class: Modelform</h1>
+    <h1 class="page-title">Component: renderer</h1>
 
     
 
@@ -37,6 +37,36 @@
 
 <article>
     
+        <h3 class="subsection-title">Index</h3>
+        <h4>Methods</h4>
+        <table style="margin-left:30px;">
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~actions_do">actions_do<span class="signature">(action)</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~actions_inspect">actions_inspect<span class="signature">()</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~init">init<span class="signature">()</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+        </table>
+    
     
     <h4>Properties</h4>
     <table style="margin-left:30px;">
@@ -45,7 +75,7 @@
             <td>
             </td>
             <td>
-                <a href="#~categories">categories<span class="type-signature"> :Array</span></a>
+                <a href="#~attr">attr<span class="type-signature"></span></a>
             </td>
         </tr>
     
@@ -53,7 +83,23 @@
             <td>
             </td>
             <td>
-                <a href="#~inspectedItemType">inspectedItemType<span class="type-signature"> :string</span></a>
+                <a href="#~canopsisConfiguration">canopsisConfiguration<span class="type-signature"> :object</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~debug">debug<span class="type-signature"> :boolean</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~tagName">tagName<span class="type-signature"> :string</span></a>
             </td>
         </tr>
     
@@ -63,7 +109,8 @@
     <div class="container-overview">
     
         
-            <div class="description">Generic form which dynamically generates its content by reading a model's schema</div>
+            <div class="description">Component displaying the correct renderer for an attribute.
+It is possible to specify the renderer type to use. If not specified, it will try to get the correct type on its own.</div>
         
 
         
@@ -112,7 +159,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_modelform_controller.js.html">forms/modelform/controller.js</a>, <a href="forms_modelform_controller.js.html#line44">line 44</a>
+        <a href="components_renderer_component.js.html">components/renderer/component.js</a>, <a href="components_renderer_component.js.html#line32">line 32</a>
     </li></ul></dd>
     
 
@@ -137,6 +184,11 @@
 
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>{{component-renderer attr=attr record=controller.formContext value=attr.value}}</code></pre>
+
+
 
         
     
@@ -157,22 +209,16 @@
 
         
             
-<h4 class="name" id="~categories"><a name="~categories"></a><span class="type-signature">(inner) </span>categories<span class="type-signature"> :Array</span></h4>
+<h4 class="name" id="~attr"><a name="~attr"></a><span class="type-signature">(inner) </span>attr<span class="type-signature"></span></h4>
 
 
 
 
+<div class="description">
+    the rendered attribute
+</div>
 
 
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">Array</span>
-
-
-        </li>
-    </ul>
 
 
 
@@ -204,7 +250,7 @@
 
         <tr>
             
-                <td class="name"><code>categories</code></td>
+                <td class="name"><code>attr</code></td>
             
 
             <td class="type">
@@ -254,7 +300,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_modelform_controller.js.html">forms/modelform/controller.js</a>, <a href="forms_modelform_controller.js.html#line94">line 94</a>
+        <a href="components_renderer_component.js.html">components/renderer/component.js</a>, <a href="components_renderer_component.js.html#line135">line 135</a>
     </li></ul></dd>
     
 
@@ -272,15 +318,253 @@
 
         
             
-<h4 class="name" id="~inspectedItemType"><a name="~inspectedItemType"></a><span class="type-signature">(inner) </span>inspectedItemType<span class="type-signature"> :string</span></h4>
+<h4 class="name" id="~canopsisConfiguration"><a name="~canopsisConfiguration"></a><span class="type-signature">(inner) </span>canopsisConfiguration<span class="type-signature"> :object</span></h4>
 
 
 
 
 <div class="description">
-    Used to dynamically create form editors and assign values to the edited model.
-To force editing as a specific model type, override this property.
+    the canopsis frontend configuration object
 </div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>canopsisConfiguration</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_renderer_component.js.html">components/renderer/component.js</a>, <a href="components_renderer_component.js.html#line89">line 89</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~debug"><a name="~debug"></a><span class="type-signature">(inner) </span>debug<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+<div class="description">
+    whether the UI is in debug mode or not
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>debug</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>Ember.computed.alias('canopsisConfiguration.DEBUG')</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_renderer_component.js.html">components/renderer/component.js</a>, <a href="components_renderer_component.js.html#line97">line 97</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~tagName"><a name="~tagName"></a><span class="type-signature">(inner) </span>tagName<span class="type-signature"> :string</span></h4>
+
+
+
 
 
 
@@ -324,7 +608,7 @@ To force editing as a specific model type, override this property.
 
         <tr>
             
-                <td class="name"><code>inspectedItemType</code></td>
+                <td class="name"><code>tagName</code></td>
             
 
             <td class="type">
@@ -370,11 +654,16 @@ To force editing as a specific model type, override this property.
     
 
     
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>span</li>
+        </ul></dd>
+    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_modelform_controller.js.html">forms/modelform/controller.js</a>, <a href="forms_modelform_controller.js.html#line146">line 146</a>
+        <a href="components_renderer_component.js.html">components/renderer/component.js</a>, <a href="components_renderer_component.js.html#line128">line 128</a>
     </li></ul></dd>
     
 
@@ -393,6 +682,301 @@ To force editing as a specific model type, override this property.
         
     
 
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="~actions_do"><a name="~actions_do"></a><span class="type-signature">(inner) </span>actions_do<span class="signature">(action)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    sends an action to the parent controller. Every parameter after the first one is bubbled to the parent controller action
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>action</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_renderer_component.js.html">components/renderer/component.js</a>, <a href="components_renderer_component.js.html#line108">line 108</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~actions_inspect"><a name="~actions_inspect"></a><span class="type-signature">(inner) </span>actions_inspect<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    inspects the object in the console (see debugUtils for more info)
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_renderer_component.js.html">components/renderer/component.js</a>, <a href="components_renderer_component.js.html#line100">line 100</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~init"><a name="~init"></a><span class="type-signature">(inner) </span>init<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_renderer_component.js.html">components/renderer/component.js</a>, <a href="components_renderer_component.js.html#line40">line 40</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
     
 
     

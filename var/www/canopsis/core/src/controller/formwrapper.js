@@ -29,14 +29,19 @@ Ember.Application.initializer({
          * @constructor
          */
         var controller = eventedController.extend({
-            // used only here
+
+            /**
+             * @property config
+             * @type object
+             * @description the canopsis frontend configuration object
+             */
             config: canopsisConfiguration,
 
             /**
              * @property debug
+             * @description whether the UI is in debug mode or not
              * @type boolean
-             *
-             * @description See {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
+             * @default Ember.computed.alias('canopsisConfiguration.DEBUG')
              */
             debug: Ember.computed.alias('config.DEBUG'),
 

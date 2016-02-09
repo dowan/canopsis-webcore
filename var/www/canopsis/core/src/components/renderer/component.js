@@ -30,10 +30,11 @@ Ember.Application.initializer({
 
 
         /**
-         * Component displaying the correct renderer for an attribute.
+         * @component renderer
+         * @description Component displaying the correct renderer for an attribute.
          * It is possible to specify the renderer type to use. If not specified, it will try to get the correct type on its own.
          *
-         * @class RendererComponent
+         * @example {{component-renderer attr=attr record=controller.formContext value=attr.value}}
          */
         var component = Ember.Component.extend({
             /**
@@ -81,28 +82,33 @@ Ember.Application.initializer({
             },
 
             /**
-             * @property runtimeConfiguration
-             * @see {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
+             * @property canopsisConfiguration
+             * @type object
+             * @description the canopsis frontend configuration object
              */
             canopsisConfiguration: canopsisConfiguration,
 
             /**
              * @property debug
+             * @description whether the UI is in debug mode or not
              * @type boolean
+             * @default Ember.computed.alias('canopsisConfiguration.DEBUG')
              */
             debug: Ember.computed.alias('canopsisConfiguration.DEBUG'),
 
             actions: {
                 /**
-                 * @event inspect
+                 * @method actions_inspect
+                 * @description inspects the object in the console (see debugUtils for more info)
                  */
                 inspect: function() {
                     debugUtils.inspectObject(this);
                 },
 
                 /**
-                 * @event do
-                 * @param action
+                 * @method actions_do
+                 * @param {string} action
+                 * @description sends an action to the parent controller. Every parameter after the first one is bubbled to the parent controller action
                  */
                 do: function(action) {
                     var params = [];
@@ -117,11 +123,14 @@ Ember.Application.initializer({
             /**
              * @property tagName
              * @type string
+             * @default
              */
             tagName: 'span',
 
+            //TODO check why there is a property dependant on "shown_columns" in here. As it is a List Widget property, it does not seems relevant at all.
             /**
              * @property attr
+             * @description the rendered attribute
              */
             attr: function() {
                 var shown_columns = get(this, 'shown_columns');
