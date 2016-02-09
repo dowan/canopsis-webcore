@@ -30,6 +30,8 @@
 <header>
     
         
+            
+        
     
 </header>
 
@@ -73,7 +75,7 @@
             <td>
             </td>
             <td>
-                <a href="#~availableactions">availableactions<span class="type-signature"></span></a>
+                <a href="#~availableactions">availableactions<span class="type-signature"> :array</span></a>
             </td>
         </tr>
     
@@ -81,7 +83,7 @@
             <td>
             </td>
             <td>
-                <a href="#~isExecJob">isExecJob<span class="type-signature"></span></a>
+                <a href="#~isExecJob">isExecJob<span class="type-signature"> :boolean</span></a>
             </td>
         </tr>
     
@@ -89,7 +91,7 @@
             <td>
             </td>
             <td>
-                <a href="#~isOverride">isOverride<span class="type-signature"></span></a>
+                <a href="#~isOverride">isOverride<span class="type-signature"> :boolean</span></a>
             </td>
         </tr>
     
@@ -97,7 +99,7 @@
             <td>
             </td>
             <td>
-                <a href="#~isRemove">isRemove<span class="type-signature"></span></a>
+                <a href="#~isRemove">isRemove<span class="type-signature"> :boolean</span></a>
             </td>
         </tr>
     
@@ -105,7 +107,7 @@
             <td>
             </td>
             <td>
-                <a href="#~isRoute">isRoute<span class="type-signature"></span></a>
+                <a href="#~isRoute">isRoute<span class="type-signature"> :boolean</span></a>
             </td>
         </tr>
     
@@ -113,7 +115,7 @@
             <td>
             </td>
             <td>
-                <a href="#~selectedAction">selectedAction<span class="type-signature"></span></a>
+                <a href="#~selectedAction">selectedAction<span class="type-signature"> :string</span></a>
             </td>
         </tr>
     
@@ -123,6 +125,80 @@
     <div class="container-overview">
     
         
+            <div class="description">A component to handle actions for the filter engine</div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line26">line 26</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         
     
@@ -143,12 +219,26 @@
 
         
             
-<h4 class="name" id="~availableactions"><a name="~availableactions"></a><span class="type-signature">(inner) </span>availableactions<span class="type-signature"></span></h4>
+<h4 class="name" id="~availableactions"><a name="~availableactions"></a><span class="type-signature">(inner) </span>availableactions<span class="type-signature"> :array</span></h4>
 
 
 
 
+<div class="description">
+    A list of all available actions
+</div>
 
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">array</span>
+
+
+        </li>
+    </ul>
 
 
 
@@ -226,11 +316,16 @@
     
 
     
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li class="object-value"><pre class="prettyprint"><code>["pass","drop","override","remove","execjob"]</code></pre></li>
+        </ul></dd>
+    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line55">line 55</a>
+        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line62">line 62</a>
     </li></ul></dd>
     
 
@@ -248,12 +343,26 @@
 
         
             
-<h4 class="name" id="~isExecJob"><a name="~isExecJob"></a><span class="type-signature">(inner) </span>isExecJob<span class="type-signature"></span></h4>
+<h4 class="name" id="~isExecJob"><a name="~isExecJob"></a><span class="type-signature">(inner) </span>isExecJob<span class="type-signature"> :boolean</span></h4>
 
 
 
 
+<div class="description">
+    Computed property, dependent on the "selectedAction" property
+</div>
 
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
 
 
 
@@ -335,7 +444,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line86">line 86</a>
+        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line101">line 101</a>
     </li></ul></dd>
     
 
@@ -353,12 +462,26 @@
 
         
             
-<h4 class="name" id="~isOverride"><a name="~isOverride"></a><span class="type-signature">(inner) </span>isOverride<span class="type-signature"></span></h4>
+<h4 class="name" id="~isOverride"><a name="~isOverride"></a><span class="type-signature">(inner) </span>isOverride<span class="type-signature"> :boolean</span></h4>
 
 
 
 
+<div class="description">
+    Computed property, dependent on the "selectedAction" property
+</div>
 
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
 
 
 
@@ -440,7 +563,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line60">line 60</a>
+        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line69">line 69</a>
     </li></ul></dd>
     
 
@@ -458,12 +581,26 @@
 
         
             
-<h4 class="name" id="~isRemove"><a name="~isRemove"></a><span class="type-signature">(inner) </span>isRemove<span class="type-signature"></span></h4>
+<h4 class="name" id="~isRemove"><a name="~isRemove"></a><span class="type-signature">(inner) </span>isRemove<span class="type-signature"> :boolean</span></h4>
 
 
 
 
+<div class="description">
+    Computed property, dependent on the "selectedAction" property
+</div>
 
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
 
 
 
@@ -545,7 +682,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line78">line 78</a>
+        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line91">line 91</a>
     </li></ul></dd>
     
 
@@ -563,12 +700,26 @@
 
         
             
-<h4 class="name" id="~isRoute"><a name="~isRoute"></a><span class="type-signature">(inner) </span>isRoute<span class="type-signature"></span></h4>
+<h4 class="name" id="~isRoute"><a name="~isRoute"></a><span class="type-signature">(inner) </span>isRoute<span class="type-signature"> :boolean</span></h4>
 
 
 
 
+<div class="description">
+    Computed property, dependent on the "selectedAction" property
+</div>
 
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
 
 
 
@@ -650,7 +801,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line68">line 68</a>
+        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line79">line 79</a>
     </li></ul></dd>
     
 
@@ -668,12 +819,26 @@
 
         
             
-<h4 class="name" id="~selectedAction"><a name="~selectedAction"></a><span class="type-signature">(inner) </span>selectedAction<span class="type-signature"></span></h4>
+<h4 class="name" id="~selectedAction"><a name="~selectedAction"></a><span class="type-signature">(inner) </span>selectedAction<span class="type-signature"> :string</span></h4>
 
 
 
 
+<div class="description">
+    The action selected on the component combobox
+</div>
 
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
 
 
 
@@ -751,11 +916,16 @@
     
 
     
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>pass</li>
+        </ul></dd>
+    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line50">line 50</a>
+        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line54">line 54</a>
     </li></ul></dd>
     
 
@@ -829,7 +999,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line92">line 92</a>
+        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line107">line 107</a>
     </li></ul></dd>
     
 
@@ -951,7 +1121,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line118">line 118</a>
+        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line133">line 133</a>
     </li></ul></dd>
     
 
@@ -1029,7 +1199,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line31">line 31</a>
+        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line32">line 32</a>
     </li></ul></dd>
     
 
@@ -1077,7 +1247,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Feb 09 2016 09:38:54 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Feb 09 2016 10:59:44 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

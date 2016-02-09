@@ -29,9 +29,13 @@ Ember.Application.initializer({
 
         /**
          * @component mixinselector
+         * @description A mixin selector. Fills a classifieditemselector with data from the mixins registry
          */
         var component = Ember.Component.extend({
 
+            /**
+             * @method init
+             */
             init: function() {
                 this._super.apply(this, arguments);
 
@@ -53,13 +57,36 @@ Ember.Application.initializer({
                 set(this, 'selectionPrepared', content);
             },
 
-
-            /*
-             * Compute a structure with classified item each time the 'items' property changed
+            /**
+             * @property classifiedItems
+             * @description The mixins registry
+             * @type MixinsRegistry
+             * @default mixinsRegistry
              */
             classifiedItems: mixinsRegistry,
+
+            /**
+             * @property selectionPrepared
+             * @description Contains the selection managed by the classifieditemselector
+             */
+            selectionPrepared: undefined,
+
+            /**
+             * @property content
+             * @description Contains the user selection, extracted from the classifieditemselector that can be used outside of the component
+             */
+            content: undefined,
+
+            /**
+             * @property selectionUnprepared
+             * @default Ember.computed.alias('content')
+             */
             selectionUnprepared: Ember.computed.alias('content'),
 
+            /**
+             * @method recomputeSelection
+             * @description recalculates the selection and update the "content" property
+             */
             recomputeSelection: function() {
                 var selection = get(this, 'selectionPrepared');
                 console.log('recomputeSelection', selection, get(this, 'selectionPrepared'));
@@ -89,9 +116,18 @@ Ember.Application.initializer({
             },
 
             actions: {
+                /**
+                 * @method actions_selectItem
+                 * @description Calls the recomputeSelection method when the user selects an item
+                 */
                 selectItem: function() {
                     this.recomputeSelection();
                 },
+
+                /**
+                 * @method actions_selectItem
+                 * @description Calls the recomputeSelection method when the user unselects an item
+                 */
                 unselectItem: function(){
                     this.recomputeSelection();
                 }

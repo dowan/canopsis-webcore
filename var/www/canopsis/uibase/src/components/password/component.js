@@ -29,9 +29,25 @@ Ember.Application.initializer({
 
         /**
          * @component password
+         * @description A simple password input component, that automatically converts the typed password to a hash, using "sha1" or "md5"
          */
         var component = Ember.Component.extend({
+            /**
+             * @property method
+             * @description the hash method to be used to convert the password
+             */
+            method: undefined,
 
+            /**
+             * @property content
+             * @description the hash of the password
+             * @type string
+             */
+            content: undefined,
+
+            /**
+             * @method init
+             */
             init: function () {
                 this._super.apply(this, arguments);
 
@@ -44,6 +60,10 @@ Ember.Application.initializer({
                 }
             },
 
+            /**
+             * @method onUpdate
+             * @description observes the password property
+             */
             onUpdate: function () {
                 var pass = get(this, 'password');
                 var method_name = get(this, 'method');

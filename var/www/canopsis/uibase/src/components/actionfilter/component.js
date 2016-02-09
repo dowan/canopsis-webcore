@@ -25,6 +25,7 @@ Ember.Application.initializer({
 
         /**
          * @component actionfilter
+         * @description A component to handle actions for the filter engine
          */
         var component = Ember.Component.extend({
 
@@ -46,16 +47,24 @@ Ember.Application.initializer({
 
             /**
              * @property selectedAction
+             * @description The action selected on the component combobox
+             * @type string
+             * @default
              */
             selectedAction: 'pass',
 
             /**
              * @property availableactions
+             * @description A list of all available actions
+             * @type array
+             * @default
              */
             availableactions: ['pass','drop','override','remove', 'execjob'],
 
             /**
              * @property isOverride
+             * @type boolean
+             * @description Computed property, dependent on the "selectedAction" property
              */
             isOverride: function () {
                 console.log('isOverride', get(this, 'selectedAction'), get(this, 'selectedAction') === 'override');
@@ -64,9 +73,11 @@ Ember.Application.initializer({
 
             /**
              * @property isRoute
+             * @type boolean
+             * @description Computed property, dependent on the "selectedAction" property
              */
             isRoute: function () {
-                //not used yet
+                //TODO not used yet
                 return false;
                 //console.log('isRoute', this.get('selectedAction'), this.get('selectedAction') === 'route');
                 //return this.get('selectedAction') === 'route';
@@ -74,6 +85,8 @@ Ember.Application.initializer({
 
             /**
              * @property isRemove
+             * @type boolean
+             * @description Computed property, dependent on the "selectedAction" property
              */
             isRemove: function () {
                 console.log('isRemove', get(this, 'selectedAction'), get(this, 'selectedAction') === 'remove');
@@ -82,6 +95,8 @@ Ember.Application.initializer({
 
             /**
              * @property isExecJob
+             * @type boolean
+             * @description Computed property, dependent on the "selectedAction" property
              */
             isExecJob: function(){
                 console.log('isExecJob', get(this, 'selectedAction'), get(this, 'selectedAction') === 'execjob');

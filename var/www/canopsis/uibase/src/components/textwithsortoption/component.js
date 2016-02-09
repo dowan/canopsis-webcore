@@ -27,11 +27,41 @@ Ember.Application.initializer({
 
         /**
          * @component textwithsortoption
+         * @description displays a combobox with two choices for letting the user choose a sort direction (Ascending, descending), alongside a text input
          */
         var component = Ember.Component.extend({
 
+            /**
+             * @property directionTypes
+             * @type array
+             * @description the directions to display in the combobox
+             * @default
+             */
             directionTypes: ['ASC', 'DESC'],
 
+            /**
+             * @property property
+             * @description the text displayed in the text input
+             * @type string
+             */
+            property: undefined,
+
+            /**
+             * @property direction
+             * @description the direction displayed in the combobox
+             * @type string
+             */
+            direction: undefined,
+
+            /**
+             * @property content
+             * @type object
+             */
+            content: undefined,
+
+            /**
+             * @method init
+             */
             init: function () {
                 this._super.apply(this, arguments);
                 if (!isNone(this.get('content'))) {
@@ -40,6 +70,10 @@ Ember.Application.initializer({
                 }
             },
 
+            /**
+             * @method onUpdate
+             * @description manage changes propagation
+             */
             onUpdate: function() {
                 this.set('content', {
                     property: get(this, 'property'),
