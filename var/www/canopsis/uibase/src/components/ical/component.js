@@ -28,7 +28,100 @@ Ember.Application.initializer({
             RRule = window.RRule;
 
         /**
+         * @description Manage Ical format
          * @component ical
+         * @example
+         * <div class="well">
+         *  <center>
+         *       <h1>{{title}}</h1>
+         *   </center>
+         *   <form class="form-horizontal" role="form">
+         *
+         *       <div class="form-group">
+         *           <label class="col-sm-2 control-label">
+         *               {{#component-tooltip content=helpFrequency}}
+         *                   {{tr 'Frequency'}}
+         *               {{/component-tooltip}}
+         *           </label>
+         *           <div class="col-sm-10">
+         *
+         *               {{view Ember.Select
+         *                   class="form-control"
+         *                   content=frequencyForm
+         *                   optionValuePath="content.value"
+         *                   optionLabelPath="content.label"
+         *                   value=frequencySelection
+         *               }}
+         *
+         *           </div>
+         *       </div>
+         *
+         *       <div class="form-group">
+         *           <label class="col-sm-2 control-label">
+         *               {{#component-tooltip content=helpRepetitionCount}}
+         *                   {{tr 'Repetition count'}}
+         *               {{/component-tooltip}}
+         *           </label>
+         *           <div class="col-sm-10">
+         *               {{input class="form-control" value=repetitionCount}}
+         *           </div>
+         *       </div>
+         *
+         *       <div class="form-group">
+         *           <label class="col-sm-2 control-label">
+         *               {{#component-tooltip content=helpRepetitionInterval}}
+         *                   {{tr 'Repetition interval'}}
+         *               {{/component-tooltip}}
+         *           </label>
+         *           <div class="col-sm-10">
+         *               {{input class="form-control" value=repetitionInterval}}
+         *           </div>
+         *       </div>
+         *
+         *       <div class="form-group">
+         *           <label class="col-sm-2 control-label">
+         *               {{#component-tooltip content=helpStartDate}}
+         *                   {{tr 'Start date'}}
+         *               {{/component-tooltip}}
+         *           </label>
+         *           <div class="col-sm-10">
+         *               {{component-datetimepicker content=startDate}}
+         *           </div>
+         *       </div>
+         *
+         *       <div class="form-group">
+         *           <label class="col-sm-2 control-label">
+         *               {{#component-tooltip content=helpStopDate}}
+         *                   {{tr 'Stop date'}}
+         *               {{/component-tooltip}}
+         *           </label>
+         *           <div class="col-sm-10">
+         *               {{component-datetimepicker content=stopDate}}
+         *           </div>
+         *       </div>
+         *
+         *       <center>
+         *           <button class="btn btn-default" {{action "addRule"}}>{{tr 'Add rule'}}</button>
+         *       </center>
+         *
+         *  </form>
+         *
+         *   <hr />
+         *
+         *
+         *   <ul class="list-group">
+         *       {{#each rule in rules}}
+         *           <li  class="list-group-item list-group-item-success">
+         *               <button {{action "removeRule" rule}} class="btn btn-default">
+         *                   <span class="glyphicon glyphicon-minus"></span>
+         *                    {{tr 'Remove'}}
+         *               </button>
+         *               {{rule.value}}
+         *           </li>
+         *       {{/each}}
+         *   </ul>
+         * </div>
+         *
          */
         var component = Ember.Component.extend({
 
@@ -50,7 +143,8 @@ Ember.Application.initializer({
                 {value: RRule.SECONDLY, label: __('Secondly')}
             ],
 
-            /*//not used yet
+            /*
+            //not used yet
             months: [
                 {id: 1, label: __('jan')},
                 {id: 2, label: __('feb')},
@@ -74,6 +168,10 @@ Ember.Application.initializer({
             }),
             */
 
+            /**
+             * @description Initialize the component
+             * @method init
+             */
             init: function() {
                 this._super();
 
@@ -107,16 +205,22 @@ Ember.Application.initializer({
                 }
                 this.updateContent();
 
-
             },
 
             actions: {
-
+                /**
+                 * @description remove a rule
+                 * @method actions_removeRule
+                 */
                 removeRule: function (rule) {
                     get(this, 'rules').removeObject(rule);
                     this.updateContent();
                 },
 
+                /**
+                 * @description Add a rule
+                 * @method actions_addRule
+                 */
                 addRule: function () {
 
                     //Generating rrule options
@@ -158,6 +262,10 @@ Ember.Application.initializer({
                 }
             },
 
+            /**
+             * @description Update the component with new rules
+             * @method actions_updateContent
+             */
             updateContent: function () {
                 var content = [];
                 var rules = get(this,'rules');
@@ -170,6 +278,10 @@ Ember.Application.initializer({
                 set(this, 'content', content);
             },
 
+            /**
+             * @description Simply display the component
+             * @method actions_didInsertElement
+             */
             didInsertElement:function () {
                 console.log('recurrence input loaded', this.$());
             }

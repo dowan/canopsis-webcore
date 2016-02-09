@@ -24,7 +24,20 @@ Ember.Application.initializer({
 
         /**
          * @description Component to wrap colpick component
-         * @component Colorchooser
+         * @component colorchooser
+         * @example
+         * {{#component-dropdownbutton}}
+		 * 	{{#component-dropdownbuttonheader}}
+		 *		{{#component-dropdownbuttontitle}}
+		 *			Colors &nbsp;
+		 *			<i class="fa fa-caret-square-o-down"></i>
+		 *			{{component-dropdownbuttonoverview color=content}}
+		 *		{{/component-dropdownbuttontitle}}
+		 *	{{/component-dropdownbuttonheader}}
+		 *	{{#component-dropdownbuttoncontent}}
+		 *		{{component-colpick value=content}}
+		 *	{{/component-dropdownbuttoncontent}}
+		 * {{/component-dropdownbutton}}
          */
         var component = Ember.Component.extend({});
 

@@ -31,8 +31,52 @@ Ember.Application.initializer({
         isNone = Ember.isNone,
         __ = Ember.String.loc;
 
+    /**
+     * @description Component for instantiate C3 charts
+     * @component c3categorychart
+     * @example
+     * {{#if parentController.options.allow_user_display}}
+     *   {{#component-dropdownbutton}}
+     *       {{#component-dropdownbuttonheader}}
+     *           {{#component-dropdownbuttontitle}}
+     *               {{#component-tooltip content="Display"}}
+     *                   <i class="fa fa-eye"></i>
+     *               {{/component-tooltip}}
+     *           {{/component-dropdownbuttontitle}}
+     *       {{/component-dropdownbuttonheader}}
+     *       {{#component-dropdownbuttoncontent}}
+     *           <ul class="list-group">
+     *               <li class="list-group-item pointer" {{action "transform" "gauge"}}>
+     *                   <i class="fa fa-tachometer"></i> {{tr "gauge"}}
+     *               </li>
+     *               <li class="list-group-item pointer" {{action "transform" "pie"}}>
+     *                   <i class="fa fa-pie-chart"></i> {{tr "pie"}}
+     *               </li>
+     *               <li class="list-group-item pointer" {{action "transform" "donut"}}>
+     *                   <i class="fa fa-dot-circle-o"></i> {{tr "donut"}}
+     *               </li>
+     *               <li class="list-group-item pointer" {{action "transform" "progressbar"}}>
+     *                   <i class="fa fa-battery-three-quarters"></i> {{tr "progressbar"}}
+     *               </li>
+     *               <li class="list-group-item pointer" {{action "transform" "bar"}}>
+     *                   <i class="fa fa-bar-chart"></i> {{tr "bar"}}
+     *               </li>
+     *           </ul>
+     *       {{/component-dropdownbuttoncontent}}
+     *   {{/component-dropdownbutton}}
+     *   {{/if}}
+     *
+     *   <div {{bind-attr id="uuid"}}></div>
+     *
+     *   {{#unless chart}}
+     *       <h2 class="text-center">No data</h2>
+     *   {{/unless}}
+     */
     var component = Ember.Component.extend({
-
+        /**
+         * @description instantiate component
+         * @method init
+         */
         init: function() {
             this._super();
             Ember.setProperties(this, {
@@ -41,6 +85,10 @@ Ember.Application.initializer({
             });
         },
 
+        /**
+         * @description Destroy each event handled before in the component
+         * @method willDestroyElement
+         */
         willDestroyElement: function() {
             var chart = get(this, 'chart');
             if (!isNone(chart)) {
@@ -48,7 +96,11 @@ Ember.Application.initializer({
             }
         },
 
-
+        /**
+         * @description Define correctly the maxValue
+         * @method maxValue
+         * @returns {Integer} maxValue
+         */
         maxValue: function () {
 
             /**
@@ -69,11 +121,12 @@ Ember.Application.initializer({
 
         }.property('parentController.options.max_value'),
 
+        /**
+         * @description Compute all series values sum
+         * @method seriesSum
+         * @returns {Integer} sum
+         */
         seriesSum: function () {
-
-            /**
-            Compute all series values sum
-            **/
 
             var sum = 0,
                 series = get(this, 'seriesWithComputedNames');
@@ -84,10 +137,12 @@ Ember.Application.initializer({
 
         }.property('series'),
 
+        /**
+         * @description Get the list of each distinct serie name.
+         * @method seriesNames
+         * @returns {Array} seriesNames
+         */
         seriesNames: function () {
-            /**
-            Get the list of each distinct serie name.
-            **/
 
             var seriesNames = [];
             var series = get(this, 'c3series');
@@ -100,12 +155,12 @@ Ember.Application.initializer({
         }.property('series'),
 
 
-
+        /**
+         * @description Generate a new array for series with metric names computed from user template.
+         * @method seriesWithComputedNames
+         * @returns {Array} namedSeries
+         */
         seriesWithComputedNames: function () {
-
-            /**
-            Generate a new array for series with metric names computed from user template.
-            **/
 
             var context = ['type', 'connector','connector_name', 'component','resource', 'metric'],
                 seriesWithMeta = $.extend(true, [], get(this, 'series')),
@@ -151,11 +206,13 @@ Ember.Application.initializer({
 
         }.property(),
 
+        /**
+         * @description Generate chart required values to be displayed
+         * @method c3series
+         * @returns {Array} series
+         */
         c3series: function () {
 
-            /**
-            Generate chart required values to be displayed
-            **/
             console.log('chart series is now', get(this, 'series'));
 
             var restValue = get(this, 'maxValue') - get(this, 'seriesSum'),
@@ -177,11 +234,12 @@ Ember.Application.initializer({
 
         }.property('series'),
 
+        /**
+         * @description Compute the color dict for nice chart display from options
+         * @method colors
+         * @returns {Object} colors
+         */
         colors: function () {
-
-            /**
-            Compute the color dict for nice chart display from options
-            **/
 
             var seriesNames = get(this, 'seriesNames');
 
@@ -196,19 +254,20 @@ Ember.Application.initializer({
 
         }.property('seriesNames'),
 
-
+        /**
+         * @description Tells the component is inserted into the dom
+         * @method didInsertElement
+         */
         didInsertElement: function () {
-            /**
-            Tells the component is inserted into the dom
-            **/
+
             set(this, 'domready', true);
         },
 
+        /**
+         * @decription Uses series and chart options to insert a C3js chart element in the dom
+         * @method generateChart
+         */
         generateChart: function () {
-
-            /**
-            Uses series and chart options to insert a C3js chart element in the dom
-            **/
 
             if(isNone(get(this, 'domready'))) {
                 console.log('Dom is not ready for category chart, cannot draw');
@@ -329,11 +388,12 @@ Ember.Application.initializer({
 
         },
 
+        /**
+         * @description Update the chart display with new values. Insert a new chart if it does not exists yet.
+         * @method update
+         */
         update: function () {
-            /**
-            Update the chart display with new values.
-            Insert a new chart if it does not exists yet.
-            **/
+
             var chart = get(this, 'chart');
 
             if (isNone(chart)) {
@@ -359,6 +419,10 @@ Ember.Application.initializer({
         }.observes('series', 'ready', 'parentController.options'),
 
         actions: {
+            /**
+             * @description Remove the actual chart to replace it by a new one
+             * @method actions_transform
+             */
             transform: function (type) {
                 get(this, 'chart').destroy();
                 set(this, 'parentController.options.display', type);

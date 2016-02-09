@@ -24,11 +24,23 @@ Ember.Application.initializer({
             set = Ember.set,
             isNone = Ember.isNone;
 
+        /**
+         * @description Generic c3 component to instantiate a c3 chart
+         * @component c3jsComponent
+         */
         var component = Ember.Component.extend({
+            /**
+             * @description Display the created chart
+             * @method didInsertElement
+             */
             didInsertElement: function() {
                 this.renderChart();
             },
 
+            /**
+             * @description refresh the chart with the new data series
+             * @method renderChart
+             */
             renderChart: function() {
                 var series = get(this, 'series'),
                     chart = get(this, 'chart');
@@ -43,6 +55,10 @@ Ember.Application.initializer({
                 set(this, 'chart', chart);
             }.observes('series'),
 
+            /**
+             * @description remove the existing chart
+             * @method willDestroyElement
+             */
             willDestroyElement: function() {
                 var chart = get(this, 'chart');
 

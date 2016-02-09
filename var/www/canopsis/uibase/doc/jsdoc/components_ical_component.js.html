@@ -57,7 +57,100 @@ Ember.Application.initializer({
             RRule = window.RRule;
 
         /**
+         * @description Manage Ical format
          * @component ical
+         * @example
+         * &lt;div class="well">
+         *  &lt;center>
+         *       &lt;h1>{{title}}&lt;/h1>
+         *   &lt;/center>
+         *   &lt;form class="form-horizontal" role="form">
+         *
+         *       &lt;div class="form-group">
+         *           &lt;label class="col-sm-2 control-label">
+         *               {{#component-tooltip content=helpFrequency}}
+         *                   {{tr 'Frequency'}}
+         *               {{/component-tooltip}}
+         *           &lt;/label>
+         *           &lt;div class="col-sm-10">
+         *
+         *               {{view Ember.Select
+         *                   class="form-control"
+         *                   content=frequencyForm
+         *                   optionValuePath="content.value"
+         *                   optionLabelPath="content.label"
+         *                   value=frequencySelection
+         *               }}
+         *
+         *           &lt;/div>
+         *       &lt;/div>
+         *
+         *       &lt;div class="form-group">
+         *           &lt;label class="col-sm-2 control-label">
+         *               {{#component-tooltip content=helpRepetitionCount}}
+         *                   {{tr 'Repetition count'}}
+         *               {{/component-tooltip}}
+         *           &lt;/label>
+         *           &lt;div class="col-sm-10">
+         *               {{input class="form-control" value=repetitionCount}}
+         *           &lt;/div>
+         *       &lt;/div>
+         *
+         *       &lt;div class="form-group">
+         *           &lt;label class="col-sm-2 control-label">
+         *               {{#component-tooltip content=helpRepetitionInterval}}
+         *                   {{tr 'Repetition interval'}}
+         *               {{/component-tooltip}}
+         *           &lt;/label>
+         *           &lt;div class="col-sm-10">
+         *               {{input class="form-control" value=repetitionInterval}}
+         *           &lt;/div>
+         *       &lt;/div>
+         *
+         *       &lt;div class="form-group">
+         *           &lt;label class="col-sm-2 control-label">
+         *               {{#component-tooltip content=helpStartDate}}
+         *                   {{tr 'Start date'}}
+         *               {{/component-tooltip}}
+         *           &lt;/label>
+         *           &lt;div class="col-sm-10">
+         *               {{component-datetimepicker content=startDate}}
+         *           &lt;/div>
+         *       &lt;/div>
+         *
+         *       &lt;div class="form-group">
+         *           &lt;label class="col-sm-2 control-label">
+         *               {{#component-tooltip content=helpStopDate}}
+         *                   {{tr 'Stop date'}}
+         *               {{/component-tooltip}}
+         *           &lt;/label>
+         *           &lt;div class="col-sm-10">
+         *               {{component-datetimepicker content=stopDate}}
+         *           &lt;/div>
+         *       &lt;/div>
+         *
+         *       &lt;center>
+         *           &lt;button class="btn btn-default" {{action "addRule"}}>{{tr 'Add rule'}}&lt;/button>
+         *       &lt;/center>
+         *
+         *  &lt;/form>
+         *
+         *   &lt;hr />
+         *
+         *
+         *   &lt;ul class="list-group">
+         *       {{#each rule in rules}}
+         *           &lt;li  class="list-group-item list-group-item-success">
+         *               &lt;button {{action "removeRule" rule}} class="btn btn-default">
+         *                   &lt;span class="glyphicon glyphicon-minus">&lt;/span>
+         *                    {{tr 'Remove'}}
+         *               &lt;/button>
+         *               {{rule.value}}
+         *           &lt;/li>
+         *       {{/each}}
+         *   &lt;/ul>
+         * &lt;/div>
+         *
          */
         var component = Ember.Component.extend({
 
@@ -79,7 +172,8 @@ Ember.Application.initializer({
                 {value: RRule.SECONDLY, label: __('Secondly')}
             ],
 
-            /*//not used yet
+            /*
+            //not used yet
             months: [
                 {id: 1, label: __('jan')},
                 {id: 2, label: __('feb')},
@@ -103,6 +197,10 @@ Ember.Application.initializer({
             }),
             */
 
+            /**
+             * @description Initialize the component
+             * @method init
+             */
             init: function() {
                 this._super();
 
@@ -136,16 +234,22 @@ Ember.Application.initializer({
                 }
                 this.updateContent();
 
-
             },
 
             actions: {
-
+                /**
+                 * @description remove a rule
+                 * @method actions_removeRule
+                 */
                 removeRule: function (rule) {
                     get(this, 'rules').removeObject(rule);
                     this.updateContent();
                 },
 
+                /**
+                 * @description Add a rule
+                 * @method actions_addRule
+                 */
                 addRule: function () {
 
                     //Generating rrule options
@@ -187,6 +291,10 @@ Ember.Application.initializer({
                 }
             },
 
+            /**
+             * @description Update the component with new rules
+             * @method actions_updateContent
+             */
             updateContent: function () {
                 var content = [];
                 var rules = get(this,'rules');
@@ -199,6 +307,10 @@ Ember.Application.initializer({
                 set(this, 'content', content);
             },
 
+            /**
+             * @description Simply display the component
+             * @method actions_didInsertElement
+             */
             didInsertElement:function () {
                 console.log('recurrence input loaded', this.$());
             }
@@ -216,13 +328,13 @@ Ember.Application.initializer({
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Widgets</h3><ul><li><a href="widget_List.html">List</a></li><li><a href="widget_TextWidget.html">TextWidget</a></li><li><a href="widget_Uiactionbutton.html">Uiactionbutton</a></li><li><a href="widget_Uimaintabcollection.html">Uimaintabcollection</a></li><li><a href="widget_Widgetcontainer.html">Widgetcontainer</a></li></ul><h3>Components</h3><ul><li><a href="component_actionbutton.html">actionbutton</a></li><li><a href="component_actionfilter.html">actionfilter</a></li><li><a href="component_arrayclassifiedcrecordselector.html">arrayclassifiedcrecordselector</a></li><li><a href="component_arrayeditor.html">arrayeditor</a></li><li><a href="component_classifiedcrecordselector.html">classifiedcrecordselector</a></li><li><a href="component_classifieditemselector.html">classifieditemselector</a></li><li><a href="component_Colorchooser.html">Colorchooser</a></li><li><a href="component_colpick.html">colpick</a></li><li><a href="component_contextselector.html">contextselector</a></li><li><a href="component_dateinterval.html">dateinterval</a></li><li><a href="component_dictclassifiedcrecordselector.html">dictclassifiedcrecordselector</a></li><li><a href="component_draggablebutton.html">draggablebutton</a></li><li><a href="component_dropdownbutton.html">dropdownbutton</a></li><li><a href="component_dropdownbuttoncontent.html">dropdownbuttoncontent</a></li><li><a href="component_Dropdownbuttonheader.html">Dropdownbuttonheader</a></li><li><a href="component_Dropdownbuttonoverview.html">Dropdownbuttonoverview</a></li><li><a href="component_Dropdownbuttontitle.html">Dropdownbuttontitle</a></li><li><a href="component_elementidselectorwithoptions.html">elementidselectorwithoptions</a></li><li><a href="component_eventkey.html">eventkey</a></li><li><a href="component_filefield.html">filefield</a></li><li><a href="component_filterclause.html">filterclause</a></li><li><a href="component_formulaeditor.html">formulaeditor</a></li><li><a href="component_ical.html">ical</a></li><li><a href="component_labelledlink.html">labelledlink</a></li><li><a href="component_linklist.html">linklist</a></li><li><a href="component_listtree.html">listtree</a></li><li><a href="component_miniform.html">miniform</a></li><li><a href="component_miniformcontent.html">miniformcontent</a></li><li><a href="component_miniformheader.html">miniformheader</a></li><li><a href="component_miniformheaderbuttons.html">miniformheaderbuttons</a></li><li><a href="component_miniformtitle.html">miniformtitle</a></li><li><a href="component_mixinselector.html">mixinselector</a></li><li><a href="component_modelselect.html">modelselect</a></li><li><a href="component_password.html">password</a></li><li><a href="component_propertiestopopup.html">propertiestopopup</a></li><li><a href="component_restobjectcombo.html">restobjectcombo</a></li><li><a href="component_rrule.html">rrule</a></li><li><a href="component_searchbar.html">searchbar</a></li><li><a href="component_sessioneditor.html">sessioneditor</a></li><li><a href="component_simpledicteditor.html">simpledicteditor</a></li><li><a href="component_slider.html">slider</a></li><li><a href="component_stringclassifiedcrecordselector.html">stringclassifiedcrecordselector</a></li><li><a href="component_tabheader.html">tabheader</a></li><li><a href="component_table.html">table</a></li><li><a href="component_tabs.html">tabs</a></li><li><a href="component_tabscontent.html">tabscontent</a></li><li><a href="component_tabscontentgroup.html">tabscontentgroup</a></li><li><a href="component_tabsheadergroup.html">tabsheadergroup</a></li><li><a href="component_textwithsortoption.html">textwithsortoption</a></li><li><a href="component_timestamptooltiped.html">timestamptooltiped</a></li><li><a href="component_typedvalue.html">typedvalue</a></li></ul><h3>Events</h3><ul><li><a href="module-crud.html#~event:add">add</a></li><li><a href="module-crud.html#~event:duplicate">duplicate</a></li><li><a href="module-crud.html#~event:edit">edit</a></li><li><a href="module-List.html#~event:isAllSelectedChanged">isAllSelectedChanged</a></li><li><a href="module-crud.html#~event:remove">remove</a></li><li><a href="module-crud.html#~event:removeSelection">removeSelection</a></li><li><a href="module-List.html#~event:rollbackableChanged">rollbackableChanged</a></li><li><a href="module-List.html#~event:widgetDataChanged">widgetDataChanged</a></li></ul><h3>Mixins</h3><ul><li><a href="module-arraysearch.html">arraysearch</a></li><li><a href="module-background.html">background</a></li><li><a href="module-crud.html">crud</a></li><li><a href="module-customfilterlist.html">customfilterlist</a></li><li><a href="module-downtime.html">downtime</a></li><li><a href="module-draggablecolumns.html">draggablecolumns</a></li><li><a href="module-EventConsumerMixin.html">EventConsumerMixin</a></li><li><a href="module-Gridlayout.html">Gridlayout</a></li><li><a href="module-horizontallayout.html">horizontallayout</a></li><li><a href="module-lightlayout.html">lightlayout</a></li><li><a href="module-listlinedetail.html">listlinedetail</a></li><li><a href="module-MetricConsumer.html">MetricConsumer</a></li><li><a href="module-MetricFilterable.html">MetricFilterable</a></li><li><a href="module-minimizebutton.html">minimizebutton</a></li><li><a href="module-pagination.html">pagination</a></li><li><a href="module-periodicrefresh.html">periodicrefresh</a></li><li><a href="module-responsivelist.html">responsivelist</a></li><li><a href="module-showviewbutton.html">showviewbutton</a></li><li><a href="module-sortablearray.html">sortablearray</a></li><li><a href="module-tablayout.html">tablayout</a></li><li><a href="module-verticallayout.html">verticallayout</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Widgets</h3><ul><li><a href="widget_List.html">List</a></li><li><a href="widget_TextWidget.html">TextWidget</a></li><li><a href="widget_Uiactionbutton.html">Uiactionbutton</a></li><li><a href="widget_Uimaintabcollection.html">Uimaintabcollection</a></li><li><a href="widget_Widgetcontainer.html">Widgetcontainer</a></li></ul><h3>Components</h3><ul><li><a href="component_actionbutton.html">actionbutton</a></li><li><a href="component_actionfilter.html">actionfilter</a></li><li><a href="component_arrayclassifiedcrecordselector.html">arrayclassifiedcrecordselector</a></li><li><a href="component_arrayeditor.html">arrayeditor</a></li><li><a href="component_classifiedcrecordselector.html">classifiedcrecordselector</a></li><li><a href="component_classifieditemselector.html">classifieditemselector</a></li><li><a href="component_colorchooser.html">colorchooser</a></li><li><a href="component_colpick.html">colpick</a></li><li><a href="component_contextselector.html">contextselector</a></li><li><a href="component_dateinterval.html">dateinterval</a></li><li><a href="component_dictclassifiedcrecordselector.html">dictclassifiedcrecordselector</a></li><li><a href="component_draggablebutton.html">draggablebutton</a></li><li><a href="component_dropdownbutton.html">dropdownbutton</a></li><li><a href="component_dropdownbuttoncontent.html">dropdownbuttoncontent</a></li><li><a href="component_Dropdownbuttonheader.html">Dropdownbuttonheader</a></li><li><a href="component_Dropdownbuttonoverview.html">Dropdownbuttonoverview</a></li><li><a href="component_Dropdownbuttontitle.html">Dropdownbuttontitle</a></li><li><a href="component_elementidselectorwithoptions.html">elementidselectorwithoptions</a></li><li><a href="component_eventkey.html">eventkey</a></li><li><a href="component_filefield.html">filefield</a></li><li><a href="component_filterclause.html">filterclause</a></li><li><a href="component_formulaeditor.html">formulaeditor</a></li><li><a href="component_ical.html">ical</a></li><li><a href="component_labelledlink.html">labelledlink</a></li><li><a href="component_linklist.html">linklist</a></li><li><a href="component_listtree.html">listtree</a></li><li><a href="component_miniform.html">miniform</a></li><li><a href="component_miniformcontent.html">miniformcontent</a></li><li><a href="component_miniformheader.html">miniformheader</a></li><li><a href="component_miniformheaderbuttons.html">miniformheaderbuttons</a></li><li><a href="component_miniformtitle.html">miniformtitle</a></li><li><a href="component_mixinselector.html">mixinselector</a></li><li><a href="component_modelselect.html">modelselect</a></li><li><a href="component_password.html">password</a></li><li><a href="component_propertiestopopup.html">propertiestopopup</a></li><li><a href="component_restobjectcombo.html">restobjectcombo</a></li><li><a href="component_rrule.html">rrule</a></li><li><a href="component_searchbar.html">searchbar</a></li><li><a href="component_sessioneditor.html">sessioneditor</a></li><li><a href="component_simpledicteditor.html">simpledicteditor</a></li><li><a href="component_slider.html">slider</a></li><li><a href="component_stringclassifiedcrecordselector.html">stringclassifiedcrecordselector</a></li><li><a href="component_tabheader.html">tabheader</a></li><li><a href="component_table.html">table</a></li><li><a href="component_tabs.html">tabs</a></li><li><a href="component_tabscontent.html">tabscontent</a></li><li><a href="component_tabscontentgroup.html">tabscontentgroup</a></li><li><a href="component_tabsheadergroup.html">tabsheadergroup</a></li><li><a href="component_textwithsortoption.html">textwithsortoption</a></li><li><a href="component_timestamptooltiped.html">timestamptooltiped</a></li><li><a href="component_typedvalue.html">typedvalue</a></li></ul><h3>Events</h3><ul><li><a href="module-crud.html#~event:add">add</a></li><li><a href="module-crud.html#~event:duplicate">duplicate</a></li><li><a href="module-crud.html#~event:edit">edit</a></li><li><a href="module-List.html#~event:isAllSelectedChanged">isAllSelectedChanged</a></li><li><a href="module-crud.html#~event:remove">remove</a></li><li><a href="module-crud.html#~event:removeSelection">removeSelection</a></li><li><a href="module-List.html#~event:rollbackableChanged">rollbackableChanged</a></li><li><a href="module-List.html#~event:widgetDataChanged">widgetDataChanged</a></li></ul><h3>Mixins</h3><ul><li><a href="module-arraysearch.html">arraysearch</a></li><li><a href="module-background.html">background</a></li><li><a href="module-crud.html">crud</a></li><li><a href="module-customfilterlist.html">customfilterlist</a></li><li><a href="module-downtime.html">downtime</a></li><li><a href="module-draggablecolumns.html">draggablecolumns</a></li><li><a href="module-EventConsumerMixin.html">EventConsumerMixin</a></li><li><a href="module-Gridlayout.html">Gridlayout</a></li><li><a href="module-horizontallayout.html">horizontallayout</a></li><li><a href="module-lightlayout.html">lightlayout</a></li><li><a href="module-listlinedetail.html">listlinedetail</a></li><li><a href="module-MetricConsumer.html">MetricConsumer</a></li><li><a href="module-MetricFilterable.html">MetricFilterable</a></li><li><a href="module-minimizebutton.html">minimizebutton</a></li><li><a href="module-pagination.html">pagination</a></li><li><a href="module-periodicrefresh.html">periodicrefresh</a></li><li><a href="module-responsivelist.html">responsivelist</a></li><li><a href="module-showviewbutton.html">showviewbutton</a></li><li><a href="module-sortablearray.html">sortablearray</a></li><li><a href="module-tablayout.html">tablayout</a></li><li><a href="module-verticallayout.html">verticallayout</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Feb 09 2016 16:19:29 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Feb 09 2016 16:22:26 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>
