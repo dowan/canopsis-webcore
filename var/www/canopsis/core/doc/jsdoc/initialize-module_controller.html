@@ -248,6 +248,14 @@ Tells the backend the user is logging in<span class="signature">()</span><span c
             <td>
             </td>
             <td>
+                <a href="#~config">config<span class="type-signature"> :object</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
                 <a href="#~confirmation">confirmation<span class="type-signature"> :boolean</span></a>
             </td>
         </tr>
@@ -347,7 +355,7 @@ Tells the backend the user is logging in<span class="signature">()</span><span c
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line31">line 31</a>
+        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line37">line 37</a>
     </li></ul></dd>
     
 
@@ -362,6 +370,17 @@ Tells the backend the user is logging in<span class="signature">()</span><span c
         
     
     </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li>Ember.ObjectController</li>
+    </ul>
+
 
     
 
@@ -1195,6 +1214,125 @@ Caution: FormController#submit is NOT FormController#_actions#submit
 
         
             
+<h4 class="name" id="~config"><a name="~config"></a><span class="type-signature">(inner) </span>config<span class="type-signature"> :object</span></h4>
+
+
+
+
+<div class="description">
+    the canopsis frontend configuration object
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line38">line 38</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
 <h4 class="name" id="~confirmation"><a name="~confirmation"></a><span class="type-signature">(inner) </span>confirmation<span class="type-signature"> :boolean</span></h4>
 
 
@@ -1421,6 +1559,130 @@ Caution: FormController#submit is NOT FormController#_actions#submit
 
 
 <div class="description">
+    whether the UI is in debug mode or not
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>debug</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>Ember.computed.alias('canopsisConfiguration.DEBUG')</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line46">line 46</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~debug"><a name="~debug"></a><span class="type-signature">(inner) </span>debug<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+<div class="description">
     true is the Frontend is in debug mode
 </div>
 
@@ -1517,125 +1779,6 @@ Caution: FormController#submit is NOT FormController#_actions#submit
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line69">line 69</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~debug"><a name="~debug"></a><span class="type-signature">(inner) </span>debug<span class="type-signature"> :boolean</span></h4>
-
-
-
-
-<div class="description">
-    See {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">boolean</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>debug</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line41">line 41</a>
     </li></ul></dd>
     
 
@@ -2889,84 +3032,6 @@ Caution: FormController#submit is NOT FormController#_actions#submit
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line46">line 46</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~init"><a name="~init"></a><span class="type-signature">(inner) </span>init<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
         <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line86">line 86</a>
     </li></ul></dd>
     
@@ -3046,6 +3111,84 @@ Caution: FormController#submit is NOT FormController#_actions#submit
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line88">line 88</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~init"><a name="~init"></a><span class="type-signature">(inner) </span>init<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line46">line 46</a>
     </li></ul></dd>
     
 
@@ -3395,7 +3538,7 @@ Caution: FormController#submit is NOT FormController#_actions#submit
 
 
 <div class="description">
-    recompute the "_partials" object. See {{#crossLink "PartialslotAbleController/_partials:property"}}{{/crossLink}}
+    recompute the "_partials" object. See "PartialslotAbleController#_partials" property"
 </div>
 
 
@@ -5612,7 +5755,7 @@ If there is a parent form, its abort action is also called
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line44">line 44</a>
+        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line49">line 49</a>
     </li></ul></dd>
     
 
@@ -6032,6 +6175,5944 @@ Tells the backend the user is logging in<span class="signature">()</span><span c
             </td>
             <td>
                 <a href="#~config">config<span class="type-signature"> :DS.Model</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~config">config<span class="type-signature"> :object</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~confirmation">confirmation<span class="type-signature"> :boolean</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~content">content<span class="type-signature"></span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~debug">debug<span class="type-signature"> :boolean</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~debug">debug<span class="type-signature"> :boolean</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~editMode">editMode<span class="type-signature"> :boolean</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~itemController">itemController<span class="type-signature"> :string</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~mixinOptions">mixinOptions<span class="type-signature"> :Object</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~title">title<span class="type-signature"></span></a>
+            </td>
+        </tr>
+    
+    </table>
+    
+    <hr/>
+    <div class="container-overview">
+    
+        
+            <div class="description">Default is to display all fields of a given model if they are referenced into category list (in model)
+options: is an object that can hold a set dictionnary of values to override
+  - filters: is a list of keys to filter the fields that can be displayed
+  - override_labels is an object that helps translate fields to display in form
+  - callback, witch is called once form sent
+  - plain ajax contains information that will be used insted of ember data mechanism</div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line85">line 85</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=".submit"><a name=".submit"></a><span class="type-signature">(static) </span>submit<span class="type-signature"> :$.Deferred</span></h4>
+
+
+
+
+<div class="description">
+    Deferred to help manage form callbacks. You can implement :
+ - done
+ - always
+ - fail
+
+with the form :
+myForm.submit.done(function(){ [code here] })
+
+Caution: FormController#submit is NOT FormController#_actions#submit
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">$.Deferred</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>submit</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line121">line 121</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~_partials"><a name="~_partials"></a><span class="type-signature">(inner) </span>_partials<span class="type-signature"> :Object</span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_partials</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_partialslotable.js.html">controller/partialslotable.js</a>, <a href="controller_partialslotable.js.html#line89">line 89</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~abstractType"><a name="~abstractType"></a><span class="type-signature">(inner) </span>abstractType<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    This is useful mostly for debug, to know that a printend object is a widget
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>abstractType</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line55">line 55</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~authkey"><a name="~authkey"></a><span class="type-signature">(inner) </span>authkey<span class="type-signature"></span></h4>
+
+
+
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>authkey</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line63">line 63</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~availableTitlebarButtons"><a name="~availableTitlebarButtons"></a><span class="type-signature">(inner) </span>availableTitlebarButtons<span class="type-signature"> :array</span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">array</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>availableTitlebarButtons</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line507">line 507</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~canopsisConfiguration"><a name="~canopsisConfiguration"></a><span class="type-signature">(inner) </span>canopsisConfiguration<span class="type-signature"> :Object</span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>canopsisConfiguration</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line61">line 61</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~config"><a name="~config"></a><span class="type-signature">(inner) </span>config<span class="type-signature"> :DS.Model</span></h4>
+
+
+
+
+<div class="description">
+    Alias for content
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">DS.Model</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd class="yes-def tag-deprecated"><ul class="dummy"><li>Yes</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line84">line 84</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~config"><a name="~config"></a><span class="type-signature">(inner) </span>config<span class="type-signature"> :object</span></h4>
+
+
+
+
+<div class="description">
+    the canopsis frontend configuration object
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line38">line 38</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~confirmation"><a name="~confirmation"></a><span class="type-signature">(inner) </span>confirmation<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>confirmation</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line103">line 103</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~content"><a name="~content"></a><span class="type-signature">(inner) </span>content<span class="type-signature"></span></h4>
+
+
+
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>content</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line42">line 42</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~debug"><a name="~debug"></a><span class="type-signature">(inner) </span>debug<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+<div class="description">
+    whether the UI is in debug mode or not
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>debug</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>Ember.computed.alias('canopsisConfiguration.DEBUG')</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line46">line 46</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~debug"><a name="~debug"></a><span class="type-signature">(inner) </span>debug<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+<div class="description">
+    true is the Frontend is in debug mode
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>debug</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line69">line 69</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~editMode"><a name="~editMode"></a><span class="type-signature">(inner) </span>editMode<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>editMode</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line75">line 75</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~itemController"><a name="~itemController"></a><span class="type-signature">(inner) </span>itemController<span class="type-signature"> :string</span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>itemController</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line463">line 463</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~mixinOptions"><a name="~mixinOptions"></a><span class="type-signature">(inner) </span>mixinOptions<span class="type-signature"> :Object</span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>mixinOptions</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_partialslotable.js.html">controller/partialslotable.js</a>, <a href="controller_partialslotable.js.html#line95">line 95</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~title"><a name="~title"></a><span class="type-signature">(inner) </span>title<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    The title of the form, usually displayed in the formwrapper header
+</div>
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>title</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line219">line 219</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="~addMixinView"><a name="~addMixinView"></a><span class="type-signature">(inner) </span>addMixinView<span class="signature">(viewMixin)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Adds mixins view to the current widget controller
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>viewMixin</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line132">line 132</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~authkeyChanged"><a name="~authkeyChanged"></a><span class="type-signature">(inner) </span>authkeyChanged<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line71">line 71</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~cleanRecord"><a name="~cleanRecord"></a><span class="type-signature">(inner) </span>cleanRecord<span class="signature">(recordJSON)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>recordJSON</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_userview.js.html">controller/userview.js</a>, <a href="controller_userview.js.html#line129">line 129</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the cleaned record
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~copyWidget"><a name="~copyWidget"></a><span class="type-signature">(inner) </span>copyWidget<span class="signature">(self, widgetwrapperModel, containerModel)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>self</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">UserviewController</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>widgetwrapperModel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Widgetwrapper</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>containerModel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">ContainerWidget</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_userview.js.html">controller/userview.js</a>, <a href="controller_userview.js.html#line100">line 100</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~extractItems"><a name="~extractItems"></a><span class="type-signature">(inner) </span>extractItems<span class="signature">(queryResult)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>queryResult</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line492">line 492</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~findItems"><a name="~findItems"></a><span class="type-signature">(inner) </span>findItems<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line485">line 485</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~init"><a name="~init"></a><span class="type-signature">(inner) </span>init<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line86">line 86</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~init"><a name="~init"></a><span class="type-signature">(inner) </span>init<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line88">line 88</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~init"><a name="~init"></a><span class="type-signature">(inner) </span>init<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line46">line 46</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~isRollbackable"><a name="~isRollbackable"></a><span class="type-signature">(inner) </span>isRollbackable<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line172">line 172</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~mergeMixinPartials"><a name="~mergeMixinPartials"></a><span class="type-signature">(inner) </span>mergeMixinPartials<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_partialslotable.js.html">controller/partialslotable.js</a>, <a href="controller_partialslotable.js.html#line127">line 127</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~mixinsOptionsReady"><a name="~mixinsOptionsReady"></a><span class="type-signature">(inner) </span>mixinsOptionsReady<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line125">line 125</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~refreshContent"><a name="~refreshContent"></a><span class="type-signature">(inner) </span>refreshContent<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line469">line 469</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~refreshPartialsList"><a name="~refreshPartialsList"></a><span class="type-signature">(inner) </span>refreshPartialsList<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    recompute the "_partials" object. See "PartialslotAbleController#_partials" property"
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_partialslotable.js.html">controller/partialslotable.js</a>, <a href="controller_partialslotable.js.html#line98">line 98</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~sessionStartTellsthebackendtheuserisloggingin"><a name="~sessionStartTellsthebackendtheuserisloggingin"></a><span class="type-signature">(inner) </span>sessionStart
+Tells the backend the user is logging in<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line79">line 79</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~startRefresh"><a name="~startRefresh"></a><span class="type-signature">(inner) </span>startRefresh<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line162">line 162</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~stopRefresh"><a name="~stopRefresh"></a><span class="type-signature">(inner) </span>stopRefresh<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line155">line 155</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~updateInterval"><a name="~updateInterval"></a><span class="type-signature">(inner) </span>updateInterval<span class="signature">(interval)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>interval</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line147">line 147</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+        <h3 class="subsection-title">Events</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="~event:abort"><a name="~event:abort"></a>abort</h4>
+
+    
+
+
+
+<div class="description">
+    Action triggered when the form is aborted.
+If there is a parent form, its abort action is also called
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line174">line 174</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~event:creationForm"><a name="~event:creationForm"></a>creationForm</h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>itemType</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line210">line 210</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~event:do"><a name="~event:do"></a>do</h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>action</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line196">line 196</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~event:duplicateWidgetAndContent"><a name="~event:duplicateWidgetAndContent"></a>duplicateWidgetAndContent</h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>widgetwrapperModel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WidgetWrapper</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>containerModel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">ContainerWidget</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_userview.js.html">controller/userview.js</a>, <a href="controller_userview.js.html#line77">line 77</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~event:editMixin"><a name="~event:editMixin"></a>editMixin</h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>widget</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>mixinName</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line264">line 264</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~event:editWidget"><a name="~event:editWidget"></a>editWidget</h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>widget</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line229">line 229</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~event:insertWidget"><a name="~event:insertWidget"></a>insertWidget</h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>containerController</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">ContainerWidget</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Pop up a widget chooser form, and when the form sequence is over, inserts the widget into the container specified as first parameter</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_userview.js.html">controller/userview.js</a>, <a href="controller_userview.js.html#line47">line 47</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~event:inspect"><a name="~event:inspect"></a>inspect</h4>
+
+    
+
+
+
+<div class="description">
+    Show debug info in console and put widget var in window.$E
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>object</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line186">line 186</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~event:inspectForm"><a name="~event:inspectForm"></a>inspectForm</h4>
+
+    
+
+
+
+<div class="description">
+    Inspect form in console and put it in the global $E variable
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line190">line 190</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~event:movedown"><a name="~event:movedown"></a>movedown</h4>
+
+    
+
+
+
+<div class="description">
+    Moves the widget under the next one, if any
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>widgetwrapper</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line347">line 347</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~event:moveup"><a name="~event:moveup"></a>moveup</h4>
+
+    
+
+
+
+<div class="description">
+    Moves the widget above the previous one, if any
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>widgetwrapper</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line401">line 401</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~event:previousForm"><a name="~event:previousForm"></a>previousForm</h4>
+
+    
+
+
+
+<div class="description">
+    rollback to the previous form (if applicable)
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line124">line 124</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~event:refreshView"><a name="~event:refreshView"></a>refreshView</h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_userview.js.html">controller/userview.js</a>, <a href="controller_userview.js.html#line89">line 89</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~event:removeWidget"><a name="~event:removeWidget"></a>removeWidget</h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>widget</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line309">line 309</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~event:rollback"><a name="~event:rollback"></a>rollback</h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>widget</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line218">line 218</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~event:show"><a name="~event:show"></a>show</h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line49">line 49</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~event:show"><a name="~event:show"></a>show</h4>
+
+    
+
+
+
+<div class="description">
+    Action triggered when the form is shown.
+By default it is used to reinitialize the "submit" deferred
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line136">line 136</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~event:submit"><a name="~event:submit"></a>submit</h4>
+
+    
+
+
+
+<div class="description">
+    Action triggered when the form is submit.
+If there is a parent form, its submit action is also called
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line148">line 148</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+</header>
+
+<article>
+    
+        <h3 class="subsection-title">Index</h3>
+        <h4>Methods</h4>
+        <table style="margin-left:30px;">
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~addMixinView">addMixinView<span class="signature">(viewMixin)</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~authkeyChanged">authkeyChanged<span class="signature">()</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~cleanRecord">cleanRecord<span class="signature">(recordJSON)</span><span class="type-signature"> &rarr; {Object}</span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~copyWidget">copyWidget<span class="signature">(self, widgetwrapperModel, containerModel)</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~extractItems">extractItems<span class="signature">(queryResult)</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~findItems">findItems<span class="signature">()</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~init">init<span class="signature">()</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~init">init<span class="signature">()</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~init">init<span class="signature">()</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~isRollbackable">isRollbackable<span class="signature">()</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~mergeMixinPartials">mergeMixinPartials<span class="signature">()</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~mixinsOptionsReady">mixinsOptionsReady<span class="signature">()</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~refreshContent">refreshContent<span class="signature">()</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~refreshPartialsList">refreshPartialsList<span class="signature">()</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~sessionStartTellsthebackendtheuserisloggingin">sessionStart
+Tells the backend the user is logging in<span class="signature">()</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~startRefresh">startRefresh<span class="signature">()</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~stopRefresh">stopRefresh<span class="signature">()</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="#~updateInterval">updateInterval<span class="signature">(interval)</span><span class="type-signature"></span></a>
+                    </td>
+                </tr>
+            
+        </table>
+    
+    
+    <h4>Properties</h4>
+    <table style="margin-left:30px;">
+     
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#.submit">submit<span class="type-signature"> :$.Deferred</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~_partials">_partials<span class="type-signature"> :Object</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~abstractType">abstractType<span class="type-signature"> :string</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~authkey">authkey<span class="type-signature"></span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~availableTitlebarButtons">availableTitlebarButtons<span class="type-signature"> :array</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~canopsisConfiguration">canopsisConfiguration<span class="type-signature"> :Object</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~config">config<span class="type-signature"> :DS.Model</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~config">config<span class="type-signature"> :object</span></a>
             </td>
         </tr>
     
@@ -6999,6 +13080,125 @@ Caution: FormController#submit is NOT FormController#_actions#submit
 
         
             
+<h4 class="name" id="~config"><a name="~config"></a><span class="type-signature">(inner) </span>config<span class="type-signature"> :object</span></h4>
+
+
+
+
+<div class="description">
+    the canopsis frontend configuration object
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line38">line 38</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
 <h4 class="name" id="~confirmation"><a name="~confirmation"></a><span class="type-signature">(inner) </span>confirmation<span class="type-signature"> :boolean</span></h4>
 
 
@@ -7225,6 +13425,130 @@ Caution: FormController#submit is NOT FormController#_actions#submit
 
 
 <div class="description">
+    whether the UI is in debug mode or not
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>debug</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>Ember.computed.alias('canopsisConfiguration.DEBUG')</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line46">line 46</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~debug"><a name="~debug"></a><span class="type-signature">(inner) </span>debug<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+<div class="description">
     true is the Frontend is in debug mode
 </div>
 
@@ -7321,125 +13645,6 @@ Caution: FormController#submit is NOT FormController#_actions#submit
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line69">line 69</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~debug"><a name="~debug"></a><span class="type-signature">(inner) </span>debug<span class="type-signature"> :boolean</span></h4>
-
-
-
-
-<div class="description">
-    See {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">boolean</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>debug</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line41">line 41</a>
     </li></ul></dd>
     
 
@@ -8693,84 +14898,6 @@ Caution: FormController#submit is NOT FormController#_actions#submit
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line46">line 46</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~init"><a name="~init"></a><span class="type-signature">(inner) </span>init<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
         <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line86">line 86</a>
     </li></ul></dd>
     
@@ -8850,6 +14977,84 @@ Caution: FormController#submit is NOT FormController#_actions#submit
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line88">line 88</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~init"><a name="~init"></a><span class="type-signature">(inner) </span>init<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line46">line 46</a>
     </li></ul></dd>
     
 
@@ -9199,7 +15404,7 @@ Caution: FormController#submit is NOT FormController#_actions#submit
 
 
 <div class="description">
-    recompute the "_partials" object. See {{#crossLink "PartialslotAbleController/_partials:property"}}{{/crossLink}}
+    recompute the "_partials" object. See "PartialslotAbleController#_partials" property"
 </div>
 
 
@@ -11416,7 +17621,7 @@ If there is a parent form, its abort action is also called
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line44">line 44</a>
+        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line49">line 49</a>
     </li></ul></dd>
     
 
@@ -11843,6 +18048,14 @@ Tells the backend the user is logging in<span class="signature">()</span><span c
             <td>
             </td>
             <td>
+                <a href="#~config">config<span class="type-signature"> :object</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
                 <a href="#~confirmation">confirmation<span class="type-signature"> :boolean</span></a>
             </td>
         </tr>
@@ -11909,13 +18122,6 @@ Tells the backend the user is logging in<span class="signature">()</span><span c
     <div class="container-overview">
     
         
-            <div class="description">Default is to display all fields of a given model if they are referenced into category list (in model)
-options: is an object that can hold a set dictionnary of values to override
-  - filters: is a list of keys to filter the fields that can be displayed
-  - override_labels is an object that helps translate fields to display in form
-  - callback, witch is called once form sent
-  - plain ajax contains information that will be used insted of ember data mechanism</div>
-        
 
         
 
@@ -11949,7 +18155,7 @@ options: is an object that can hold a set dictionnary of values to override
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line85">line 85</a>
+        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line31">line 31</a>
     </li></ul></dd>
     
 
@@ -12797,233 +19003,13 @@ Caution: FormController#submit is NOT FormController#_actions#submit
 
         
             
-<h4 class="name" id="~confirmation"><a name="~confirmation"></a><span class="type-signature">(inner) </span>confirmation<span class="type-signature"> :boolean</span></h4>
-
-
-
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">boolean</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>confirmation</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line103">line 103</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~content"><a name="~content"></a><span class="type-signature">(inner) </span>content<span class="type-signature"></span></h4>
-
-
-
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>content</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line42">line 42</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~debug"><a name="~debug"></a><span class="type-signature">(inner) </span>debug<span class="type-signature"> :boolean</span></h4>
+<h4 class="name" id="~config"><a name="~config"></a><span class="type-signature">(inner) </span>config<span class="type-signature"> :object</span></h4>
 
 
 
 
 <div class="description">
-    true is the Frontend is in debug mode
+    the canopsis frontend configuration object
 </div>
 
 
@@ -13032,5468 +19018,7 @@ Caution: FormController#submit is NOT FormController#_actions#submit
     <ul>
         <li>
             
-<span class="param-type">boolean</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>debug</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line69">line 69</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~debug"><a name="~debug"></a><span class="type-signature">(inner) </span>debug<span class="type-signature"> :boolean</span></h4>
-
-
-
-
-<div class="description">
-    See {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">boolean</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>debug</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line41">line 41</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~editMode"><a name="~editMode"></a><span class="type-signature">(inner) </span>editMode<span class="type-signature"> :boolean</span></h4>
-
-
-
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">boolean</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>editMode</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line75">line 75</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~itemController"><a name="~itemController"></a><span class="type-signature">(inner) </span>itemController<span class="type-signature"> :string</span></h4>
-
-
-
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">string</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>itemController</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line463">line 463</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~mixinOptions"><a name="~mixinOptions"></a><span class="type-signature">(inner) </span>mixinOptions<span class="type-signature"> :Object</span></h4>
-
-
-
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">Object</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>mixinOptions</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_partialslotable.js.html">controller/partialslotable.js</a>, <a href="controller_partialslotable.js.html#line95">line 95</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~title"><a name="~title"></a><span class="type-signature">(inner) </span>title<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    The title of the form, usually displayed in the formwrapper header
-</div>
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>title</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line219">line 219</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id="~addMixinView"><a name="~addMixinView"></a><span class="type-signature">(inner) </span>addMixinView<span class="signature">(viewMixin)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    Adds mixins view to the current widget controller
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>viewMixin</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line132">line 132</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~authkeyChanged"><a name="~authkeyChanged"></a><span class="type-signature">(inner) </span>authkeyChanged<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line71">line 71</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~cleanRecord"><a name="~cleanRecord"></a><span class="type-signature">(inner) </span>cleanRecord<span class="signature">(recordJSON)</span><span class="type-signature"> &rarr; {Object}</span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>recordJSON</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_userview.js.html">controller/userview.js</a>, <a href="controller_userview.js.html#line129">line 129</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    the cleaned record
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~copyWidget"><a name="~copyWidget"></a><span class="type-signature">(inner) </span>copyWidget<span class="signature">(self, widgetwrapperModel, containerModel)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>self</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">UserviewController</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>widgetwrapperModel</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Widgetwrapper</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>containerModel</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">ContainerWidget</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_userview.js.html">controller/userview.js</a>, <a href="controller_userview.js.html#line100">line 100</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~extractItems"><a name="~extractItems"></a><span class="type-signature">(inner) </span>extractItems<span class="signature">(queryResult)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>queryResult</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line492">line 492</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~findItems"><a name="~findItems"></a><span class="type-signature">(inner) </span>findItems<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line485">line 485</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~init"><a name="~init"></a><span class="type-signature">(inner) </span>init<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line46">line 46</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~init"><a name="~init"></a><span class="type-signature">(inner) </span>init<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line86">line 86</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~init"><a name="~init"></a><span class="type-signature">(inner) </span>init<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line88">line 88</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~isRollbackable"><a name="~isRollbackable"></a><span class="type-signature">(inner) </span>isRollbackable<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line172">line 172</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~mergeMixinPartials"><a name="~mergeMixinPartials"></a><span class="type-signature">(inner) </span>mergeMixinPartials<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_partialslotable.js.html">controller/partialslotable.js</a>, <a href="controller_partialslotable.js.html#line127">line 127</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~mixinsOptionsReady"><a name="~mixinsOptionsReady"></a><span class="type-signature">(inner) </span>mixinsOptionsReady<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line125">line 125</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~refreshContent"><a name="~refreshContent"></a><span class="type-signature">(inner) </span>refreshContent<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line469">line 469</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~refreshPartialsList"><a name="~refreshPartialsList"></a><span class="type-signature">(inner) </span>refreshPartialsList<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    recompute the "_partials" object. See {{#crossLink "PartialslotAbleController/_partials:property"}}{{/crossLink}}
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_partialslotable.js.html">controller/partialslotable.js</a>, <a href="controller_partialslotable.js.html#line98">line 98</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~sessionStartTellsthebackendtheuserisloggingin"><a name="~sessionStartTellsthebackendtheuserisloggingin"></a><span class="type-signature">(inner) </span>sessionStart
-Tells the backend the user is logging in<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line79">line 79</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~startRefresh"><a name="~startRefresh"></a><span class="type-signature">(inner) </span>startRefresh<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line162">line 162</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~stopRefresh"><a name="~stopRefresh"></a><span class="type-signature">(inner) </span>stopRefresh<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line155">line 155</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~updateInterval"><a name="~updateInterval"></a><span class="type-signature">(inner) </span>updateInterval<span class="signature">(interval)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>interval</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line147">line 147</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-
-    
-
-    
-        <h3 class="subsection-title">Events</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id="~event:abort"><a name="~event:abort"></a>abort</h4>
-
-    
-
-
-
-<div class="description">
-    Action triggered when the form is aborted.
-If there is a parent form, its abort action is also called
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line174">line 174</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~event:creationForm"><a name="~event:creationForm"></a>creationForm</h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>itemType</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line210">line 210</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~event:do"><a name="~event:do"></a>do</h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>action</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line196">line 196</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~event:duplicateWidgetAndContent"><a name="~event:duplicateWidgetAndContent"></a>duplicateWidgetAndContent</h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>widgetwrapperModel</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">WidgetWrapper</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>containerModel</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">ContainerWidget</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_userview.js.html">controller/userview.js</a>, <a href="controller_userview.js.html#line77">line 77</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~event:editMixin"><a name="~event:editMixin"></a>editMixin</h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>widget</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>mixinName</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line264">line 264</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~event:editWidget"><a name="~event:editWidget"></a>editWidget</h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>widget</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line229">line 229</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~event:insertWidget"><a name="~event:insertWidget"></a>insertWidget</h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>containerController</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">ContainerWidget</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Pop up a widget chooser form, and when the form sequence is over, inserts the widget into the container specified as first parameter</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_userview.js.html">controller/userview.js</a>, <a href="controller_userview.js.html#line47">line 47</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~event:inspect"><a name="~event:inspect"></a>inspect</h4>
-
-    
-
-
-
-<div class="description">
-    Show debug info in console and put widget var in window.$E
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>object</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line186">line 186</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~event:inspectForm"><a name="~event:inspectForm"></a>inspectForm</h4>
-
-    
-
-
-
-<div class="description">
-    Inspect form in console and put it in the global $E variable
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line190">line 190</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~event:movedown"><a name="~event:movedown"></a>movedown</h4>
-
-    
-
-
-
-<div class="description">
-    Moves the widget under the next one, if any
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>widgetwrapper</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line347">line 347</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~event:moveup"><a name="~event:moveup"></a>moveup</h4>
-
-    
-
-
-
-<div class="description">
-    Moves the widget above the previous one, if any
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>widgetwrapper</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line401">line 401</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~event:previousForm"><a name="~event:previousForm"></a>previousForm</h4>
-
-    
-
-
-
-<div class="description">
-    rollback to the previous form (if applicable)
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line124">line 124</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~event:refreshView"><a name="~event:refreshView"></a>refreshView</h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_userview.js.html">controller/userview.js</a>, <a href="controller_userview.js.html#line89">line 89</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~event:removeWidget"><a name="~event:removeWidget"></a>removeWidget</h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>widget</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line309">line 309</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~event:rollback"><a name="~event:rollback"></a>rollback</h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>widget</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line218">line 218</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~event:show"><a name="~event:show"></a>show</h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line44">line 44</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~event:show"><a name="~event:show"></a>show</h4>
-
-    
-
-
-
-<div class="description">
-    Action triggered when the form is shown.
-By default it is used to reinitialize the "submit" deferred
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line136">line 136</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~event:submit"><a name="~event:submit"></a>submit</h4>
-
-    
-
-
-
-<div class="description">
-    Action triggered when the form is submit.
-If there is a parent form, its submit action is also called
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line148">line 148</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-</article>
-
-</section>
-
-
-
-
-
-
-
-<section>
-
-<header>
-    
-</header>
-
-<article>
-    
-        <h3 class="subsection-title">Index</h3>
-        <h4>Methods</h4>
-        <table style="margin-left:30px;">
-            
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="#~addMixinView">addMixinView<span class="signature">(viewMixin)</span><span class="type-signature"></span></a>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="#~authkeyChanged">authkeyChanged<span class="signature">()</span><span class="type-signature"></span></a>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="#~cleanRecord">cleanRecord<span class="signature">(recordJSON)</span><span class="type-signature"> &rarr; {Object}</span></a>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="#~copyWidget">copyWidget<span class="signature">(self, widgetwrapperModel, containerModel)</span><span class="type-signature"></span></a>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="#~extractItems">extractItems<span class="signature">(queryResult)</span><span class="type-signature"></span></a>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="#~findItems">findItems<span class="signature">()</span><span class="type-signature"></span></a>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="#~init">init<span class="signature">()</span><span class="type-signature"></span></a>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="#~init">init<span class="signature">()</span><span class="type-signature"></span></a>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="#~init">init<span class="signature">()</span><span class="type-signature"></span></a>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="#~isRollbackable">isRollbackable<span class="signature">()</span><span class="type-signature"></span></a>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="#~mergeMixinPartials">mergeMixinPartials<span class="signature">()</span><span class="type-signature"></span></a>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="#~mixinsOptionsReady">mixinsOptionsReady<span class="signature">()</span><span class="type-signature"></span></a>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="#~refreshContent">refreshContent<span class="signature">()</span><span class="type-signature"></span></a>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="#~refreshPartialsList">refreshPartialsList<span class="signature">()</span><span class="type-signature"></span></a>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="#~sessionStartTellsthebackendtheuserisloggingin">sessionStart
-Tells the backend the user is logging in<span class="signature">()</span><span class="type-signature"></span></a>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="#~startRefresh">startRefresh<span class="signature">()</span><span class="type-signature"></span></a>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="#~stopRefresh">stopRefresh<span class="signature">()</span><span class="type-signature"></span></a>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="#~updateInterval">updateInterval<span class="signature">(interval)</span><span class="type-signature"></span></a>
-                    </td>
-                </tr>
-            
-        </table>
-    
-    
-    <h4>Properties</h4>
-    <table style="margin-left:30px;">
-     
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="#.submit">submit<span class="type-signature"> :$.Deferred</span></a>
-            </td>
-        </tr>
-    
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="#~_partials">_partials<span class="type-signature"> :Object</span></a>
-            </td>
-        </tr>
-    
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="#~abstractType">abstractType<span class="type-signature"> :string</span></a>
-            </td>
-        </tr>
-    
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="#~authkey">authkey<span class="type-signature"></span></a>
-            </td>
-        </tr>
-    
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="#~availableTitlebarButtons">availableTitlebarButtons<span class="type-signature"> :array</span></a>
-            </td>
-        </tr>
-    
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="#~canopsisConfiguration">canopsisConfiguration<span class="type-signature"> :Object</span></a>
-            </td>
-        </tr>
-    
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="#~config">config<span class="type-signature"> :DS.Model</span></a>
-            </td>
-        </tr>
-    
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="#~confirmation">confirmation<span class="type-signature"> :boolean</span></a>
-            </td>
-        </tr>
-    
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="#~content">content<span class="type-signature"></span></a>
-            </td>
-        </tr>
-    
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="#~debug">debug<span class="type-signature"> :boolean</span></a>
-            </td>
-        </tr>
-    
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="#~debug">debug<span class="type-signature"> :boolean</span></a>
-            </td>
-        </tr>
-    
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="#~editMode">editMode<span class="type-signature"> :boolean</span></a>
-            </td>
-        </tr>
-    
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="#~itemController">itemController<span class="type-signature"> :string</span></a>
-            </td>
-        </tr>
-    
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="#~mixinOptions">mixinOptions<span class="type-signature"> :Object</span></a>
-            </td>
-        </tr>
-    
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="#~title">title<span class="type-signature"></span></a>
-            </td>
-        </tr>
-    
-    </table>
-    
-    <hr/>
-    <div class="container-overview">
-    
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line37">line 37</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li>Ember.ObjectController</li>
-    </ul>
-
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id=".submit"><a name=".submit"></a><span class="type-signature">(static) </span>submit<span class="type-signature"> :$.Deferred</span></h4>
-
-
-
-
-<div class="description">
-    Deferred to help manage form callbacks. You can implement :
- - done
- - always
- - fail
-
-with the form :
-myForm.submit.done(function(){ [code here] })
-
-Caution: FormController#submit is NOT FormController#_actions#submit
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">$.Deferred</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>submit</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line121">line 121</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~_partials"><a name="~_partials"></a><span class="type-signature">(inner) </span>_partials<span class="type-signature"> :Object</span></h4>
-
-
-
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">Object</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>_partials</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_partialslotable.js.html">controller/partialslotable.js</a>, <a href="controller_partialslotable.js.html#line89">line 89</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~abstractType"><a name="~abstractType"></a><span class="type-signature">(inner) </span>abstractType<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
-    This is useful mostly for debug, to know that a printend object is a widget
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">string</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>abstractType</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line55">line 55</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~authkey"><a name="~authkey"></a><span class="type-signature">(inner) </span>authkey<span class="type-signature"></span></h4>
-
-
-
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>authkey</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line63">line 63</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~availableTitlebarButtons"><a name="~availableTitlebarButtons"></a><span class="type-signature">(inner) </span>availableTitlebarButtons<span class="type-signature"> :array</span></h4>
-
-
-
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">array</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>availableTitlebarButtons</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line507">line 507</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~canopsisConfiguration"><a name="~canopsisConfiguration"></a><span class="type-signature">(inner) </span>canopsisConfiguration<span class="type-signature"> :Object</span></h4>
-
-
-
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">Object</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>canopsisConfiguration</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line61">line 61</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~config"><a name="~config"></a><span class="type-signature">(inner) </span>config<span class="type-signature"> :DS.Model</span></h4>
-
-
-
-
-<div class="description">
-    Alias for content
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">DS.Model</span>
+<span class="param-type">object</span>
 
 
         </li>
@@ -18567,8 +19092,6 @@ Caution: FormController#submit is NOT FormController#_actions#submit
     
 
     
-        <dt class="important tag-deprecated">Deprecated:</dt><dd class="yes-def tag-deprecated"><ul class="dummy"><li>Yes</li></ul></dd>
-    
 
     
 
@@ -18581,7 +19104,7 @@ Caution: FormController#submit is NOT FormController#_actions#submit
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line84">line 84</a>
+        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line38">line 38</a>
     </li></ul></dd>
     
 
@@ -18825,6 +19348,130 @@ Caution: FormController#submit is NOT FormController#_actions#submit
 
 
 <div class="description">
+    whether the UI is in debug mode or not
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>debug</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>Ember.computed.alias('canopsisConfiguration.DEBUG')</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line46">line 46</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~debug"><a name="~debug"></a><span class="type-signature">(inner) </span>debug<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+<div class="description">
     true is the Frontend is in debug mode
 </div>
 
@@ -18921,125 +19568,6 @@ Caution: FormController#submit is NOT FormController#_actions#submit
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line69">line 69</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~debug"><a name="~debug"></a><span class="type-signature">(inner) </span>debug<span class="type-signature"> :boolean</span></h4>
-
-
-
-
-<div class="description">
-    See {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">boolean</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>debug</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line41">line 41</a>
     </li></ul></dd>
     
 
@@ -20293,84 +20821,6 @@ Caution: FormController#submit is NOT FormController#_actions#submit
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line46">line 46</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~init"><a name="~init"></a><span class="type-signature">(inner) </span>init<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
         <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line86">line 86</a>
     </li></ul></dd>
     
@@ -20450,6 +20900,84 @@ Caution: FormController#submit is NOT FormController#_actions#submit
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line88">line 88</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~init"><a name="~init"></a><span class="type-signature">(inner) </span>init<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line46">line 46</a>
     </li></ul></dd>
     
 
@@ -20799,7 +21327,7 @@ Caution: FormController#submit is NOT FormController#_actions#submit
 
 
 <div class="description">
-    recompute the "_partials" object. See {{#crossLink "PartialslotAbleController/_partials:property"}}{{/crossLink}}
+    recompute the "_partials" object. See "PartialslotAbleController#_partials" property"
 </div>
 
 
@@ -23016,7 +23544,7 @@ If there is a parent form, its abort action is also called
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line44">line 44</a>
+        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line49">line 49</a>
     </li></ul></dd>
     
 
@@ -23436,6 +23964,14 @@ Tells the backend the user is logging in<span class="signature">()</span><span c
             </td>
             <td>
                 <a href="#~config">config<span class="type-signature"> :DS.Model</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~config">config<span class="type-signature"> :object</span></a>
             </td>
         </tr>
     
@@ -24401,6 +24937,125 @@ Caution: FormController#submit is NOT FormController#_actions#submit
 
         
             
+<h4 class="name" id="~config"><a name="~config"></a><span class="type-signature">(inner) </span>config<span class="type-signature"> :object</span></h4>
+
+
+
+
+<div class="description">
+    the canopsis frontend configuration object
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line38">line 38</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
 <h4 class="name" id="~confirmation"><a name="~confirmation"></a><span class="type-signature">(inner) </span>confirmation<span class="type-signature"> :boolean</span></h4>
 
 
@@ -24627,6 +25282,130 @@ Caution: FormController#submit is NOT FormController#_actions#submit
 
 
 <div class="description">
+    whether the UI is in debug mode or not
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>debug</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>Ember.computed.alias('canopsisConfiguration.DEBUG')</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line46">line 46</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~debug"><a name="~debug"></a><span class="type-signature">(inner) </span>debug<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+<div class="description">
     true is the Frontend is in debug mode
 </div>
 
@@ -24723,125 +25502,6 @@ Caution: FormController#submit is NOT FormController#_actions#submit
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line69">line 69</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~debug"><a name="~debug"></a><span class="type-signature">(inner) </span>debug<span class="type-signature"> :boolean</span></h4>
-
-
-
-
-<div class="description">
-    See {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">boolean</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>debug</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line41">line 41</a>
     </li></ul></dd>
     
 
@@ -26095,84 +26755,6 @@ Caution: FormController#submit is NOT FormController#_actions#submit
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line46">line 46</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~init"><a name="~init"></a><span class="type-signature">(inner) </span>init<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
         <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line86">line 86</a>
     </li></ul></dd>
     
@@ -26252,6 +26834,84 @@ Caution: FormController#submit is NOT FormController#_actions#submit
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line88">line 88</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~init"><a name="~init"></a><span class="type-signature">(inner) </span>init<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line46">line 46</a>
     </li></ul></dd>
     
 
@@ -26601,7 +27261,7 @@ Caution: FormController#submit is NOT FormController#_actions#submit
 
 
 <div class="description">
-    recompute the "_partials" object. See {{#crossLink "PartialslotAbleController/_partials:property"}}{{/crossLink}}
+    recompute the "_partials" object. See "PartialslotAbleController#_partials" property"
 </div>
 
 
@@ -28818,7 +29478,7 @@ If there is a parent form, its abort action is also called
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line44">line 44</a>
+        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line49">line 49</a>
     </li></ul></dd>
     
 
@@ -29238,6 +29898,14 @@ Tells the backend the user is logging in<span class="signature">()</span><span c
             </td>
             <td>
                 <a href="#~config">config<span class="type-signature"> :DS.Model</span></a>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="#~config">config<span class="type-signature"> :object</span></a>
             </td>
         </tr>
     
@@ -30203,6 +30871,125 @@ Caution: FormController#submit is NOT FormController#_actions#submit
 
         
             
+<h4 class="name" id="~config"><a name="~config"></a><span class="type-signature">(inner) </span>config<span class="type-signature"> :object</span></h4>
+
+
+
+
+<div class="description">
+    the canopsis frontend configuration object
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line38">line 38</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
 <h4 class="name" id="~confirmation"><a name="~confirmation"></a><span class="type-signature">(inner) </span>confirmation<span class="type-signature"> :boolean</span></h4>
 
 
@@ -30429,6 +31216,130 @@ Caution: FormController#submit is NOT FormController#_actions#submit
 
 
 <div class="description">
+    whether the UI is in debug mode or not
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>debug</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>Ember.computed.alias('canopsisConfiguration.DEBUG')</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line46">line 46</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~debug"><a name="~debug"></a><span class="type-signature">(inner) </span>debug<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+<div class="description">
     true is the Frontend is in debug mode
 </div>
 
@@ -30525,125 +31436,6 @@ Caution: FormController#submit is NOT FormController#_actions#submit
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line69">line 69</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="~debug"><a name="~debug"></a><span class="type-signature">(inner) </span>debug<span class="type-signature"> :boolean</span></h4>
-
-
-
-
-<div class="description">
-    See {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">boolean</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>debug</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line41">line 41</a>
     </li></ul></dd>
     
 
@@ -31897,84 +32689,6 @@ Caution: FormController#submit is NOT FormController#_actions#submit
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line46">line 46</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~init"><a name="~init"></a><span class="type-signature">(inner) </span>init<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
         <a href="controller_widget.js.html">controller/widget.js</a>, <a href="controller_widget.js.html#line86">line 86</a>
     </li></ul></dd>
     
@@ -32054,6 +32768,84 @@ Caution: FormController#submit is NOT FormController#_actions#submit
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="controller_form.js.html">controller/form.js</a>, <a href="controller_form.js.html#line88">line 88</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~init"><a name="~init"></a><span class="type-signature">(inner) </span>init<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controller_login.js.html">controller/login.js</a>, <a href="controller_login.js.html#line46">line 46</a>
     </li></ul></dd>
     
 
@@ -32403,7 +33195,7 @@ Caution: FormController#submit is NOT FormController#_actions#submit
 
 
 <div class="description">
-    recompute the "_partials" object. See {{#crossLink "PartialslotAbleController/_partials:property"}}{{/crossLink}}
+    recompute the "_partials" object. See "PartialslotAbleController#_partials" property"
 </div>
 
 
@@ -34620,7 +35412,7 @@ If there is a parent form, its abort action is also called
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line44">line 44</a>
+        <a href="controller_formwrapper.js.html">controller/formwrapper.js</a>, <a href="controller_formwrapper.js.html#line49">line 49</a>
     </li></ul></dd>
     
 
@@ -34824,12 +35616,12 @@ If there is a parent form, its submit action is also called
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="canopsis.frontend.core.module_AbstractClassRegistry.html">AbstractClassRegistry</a></li><li><a href="canopsis.frontend.core.module_ActionsRegistry.html">ActionsRegistry</a></li><li><a href="canopsis.frontend.core.module_EditorRegistry.html">EditorRegistry</a></li><li><a href="canopsis.frontend.core.module_FormsRegistry.html">FormsRegistry</a></li><li><a href="canopsis.frontend.core.module_IndexesRegistry.html">IndexesRegistry</a></li><li><a href="canopsis.frontend.core.module_InflectionsRegistry.html">InflectionsRegistry</a></li><li><a href="canopsis.frontend.core.module_MixinsRegistry.html">MixinsRegistry</a></li><li><a href="canopsis.frontend.core.module_RenderersRegistry.html">RenderersRegistry</a></li><li><a href="canopsis.frontend.core.module_RequirejsMockManager.html">RequirejsMockManager</a></li><li><a href="canopsis.frontend.core.module_TemplatesRegistry.html">TemplatesRegistry</a></li><li><a href="canopsis.frontend.core.module_Utility.html">Utility</a></li><li><a href="canopsis.frontend.core.module_WidgetsRegistry.html">WidgetsRegistry</a></li><li><a href="canopsis.frontend.core.module_wrappersManager.html">wrappersManager</a></li><li><a href="initialize-module_ApplicationControllerDict.html">ApplicationControllerDict</a></li><li><a href="initialize-module_controller.html">controller</a></li><li><a href="initialize-module_route.html">route</a></li><li><a href="initialize-module_view.html">view</a></li><li><a href="module-ConsolemanagerMixin.html">ConsolemanagerMixin</a></li><li><a href="module-DocumentationMixin.html">DocumentationMixin</a></li><li><a href="module-EditorComponent.html">EditorComponent</a></li><li><a href="module-LoadingindicatorMixin.html">LoadingindicatorMixin</a></li><li><a href="module-Modelform.html">Modelform</a></li><li><a href="module-NotificationsMixin.html">NotificationsMixin</a></li><li><a href="module-PromisemanagerMixin.html">PromisemanagerMixin</a></li><li><a href="module-RendererComponent.html">RendererComponent</a></li><li><a href="module-RequirejsmocksmanagerMixin.html">RequirejsmocksmanagerMixin</a></li><li><a href="module-RoutesUtils.html">RoutesUtils</a></li><li><a href="module-SchemamanagerMixin.html">SchemamanagerMixin</a></li><li><a href="module-ScreentoolstatusmenuMixin.html">ScreentoolstatusmenuMixin</a></li><li><a href="module-SearchMethodsRegistry.html">SearchMethodsRegistry</a></li><li><a href="module-SlugUtils.html">SlugUtils</a></li><li><a href="module-TimeWindowUtility.html">TimeWindowUtility</a></li><li><a href="module-UserprofilestatusmenuMixin.html">UserprofilestatusmenuMixin</a></li><li><a href="module-WrapperComponent.html">WrapperComponent</a></li></ul><h3>Events</h3><ul><li><a href="initialize-module_route.html#~event:displayLiveReportingDisplayapopupallowingcustomertosetviewtimeparametersthatwillaffectallwidgetdataselection.">displayLiveReporting
+    <h2><a href="index.html">Home</a></h2><h3>Components</h3><ul><li><a href="component_editor.html">editor</a></li><li><a href="component_renderer.html">renderer</a></li><li><a href="component_wrapper.html">wrapper</a></li></ul><h3>Classes</h3><ul><li><a href="canopsis.frontend.core.module_AbstractClassRegistry.html">AbstractClassRegistry</a></li><li><a href="canopsis.frontend.core.module_ActionsRegistry.html">ActionsRegistry</a></li><li><a href="canopsis.frontend.core.module_EditorRegistry.html">EditorRegistry</a></li><li><a href="canopsis.frontend.core.module_FormsRegistry.html">FormsRegistry</a></li><li><a href="canopsis.frontend.core.module_IndexesRegistry.html">IndexesRegistry</a></li><li><a href="canopsis.frontend.core.module_InflectionsRegistry.html">InflectionsRegistry</a></li><li><a href="canopsis.frontend.core.module_MixinsRegistry.html">MixinsRegistry</a></li><li><a href="canopsis.frontend.core.module_RenderersRegistry.html">RenderersRegistry</a></li><li><a href="canopsis.frontend.core.module_RequirejsMockManager.html">RequirejsMockManager</a></li><li><a href="canopsis.frontend.core.module_TemplatesRegistry.html">TemplatesRegistry</a></li><li><a href="canopsis.frontend.core.module_Utility.html">Utility</a></li><li><a href="canopsis.frontend.core.module_WidgetsRegistry.html">WidgetsRegistry</a></li><li><a href="initialize-module_ApplicationControllerDict.html">ApplicationControllerDict</a></li><li><a href="initialize-module_controller.html">controller</a></li><li><a href="initialize-module_route.html">route</a></li><li><a href="initialize-module_view.html">view</a></li><li><a href="module-ConsolemanagerMixin.html">ConsolemanagerMixin</a></li><li><a href="module-DocumentationMixin.html">DocumentationMixin</a></li><li><a href="module-LoadingindicatorMixin.html">LoadingindicatorMixin</a></li><li><a href="module-Modelform.html">Modelform</a></li><li><a href="module-NotificationsMixin.html">NotificationsMixin</a></li><li><a href="module-PromisemanagerMixin.html">PromisemanagerMixin</a></li><li><a href="module-RequirejsmocksmanagerMixin.html">RequirejsmocksmanagerMixin</a></li><li><a href="module-RoutesUtils.html">RoutesUtils</a></li><li><a href="module-SchemamanagerMixin.html">SchemamanagerMixin</a></li><li><a href="module-ScreentoolstatusmenuMixin.html">ScreentoolstatusmenuMixin</a></li><li><a href="module-SearchMethodsRegistry.html">SearchMethodsRegistry</a></li><li><a href="module-SlugUtils.html">SlugUtils</a></li><li><a href="module-TimeWindowUtility.html">TimeWindowUtility</a></li><li><a href="module-UserprofilestatusmenuMixin.html">UserprofilestatusmenuMixin</a></li></ul><h3>Events</h3><ul><li><a href="initialize-module_route.html#~event:displayLiveReportingDisplayapopupallowingcustomertosetviewtimeparametersthatwillaffectallwidgetdataselection.">displayLiveReporting
 
 Display a pop up allowing customer to set view time
 parameters that will affect all widget data selection.</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:editConfigShowsaformtoeditthefrontendconfiguration">editConfig
 
-Shows a form to edit the frontend configuration</a></li><li><a href="initialize-module_controller.html#~event:abort">abort</a></li><li><a href="module-RequirejsmocksmanagerMixin.html#~event:addMock">addMock</a></li><li><a href="module-SchemamanagerMixin.html#~event:addModelInstance">addModelInstance</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:addNewView">addNewView</a></li><li><a href="module-ScreentoolstatusmenuMixin.html#~event:changeScreenSize">changeScreenSize</a></li><li><a href="initialize-module_controller.html#~event:creationForm">creationForm</a></li><li><a href="module-RequirejsmocksmanagerMixin.html#~event:deleteMock">deleteMock</a></li><li><a href="initialize-module_controller.html#~event:do">do</a></li><li><a href="initialize-module_controller.html#~event:duplicateWidgetAndContent">duplicateWidgetAndContent</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:editAuthConfiguration">editAuthConfiguration</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:editDataclean">editDataclean</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:editEnabledPlugins">editEnabledPlugins</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:editEventSettings">editEventSettings</a></li><li><a href="initialize-module_controller.html#~event:editMixin">editMixin</a></li><li><a href="module-RequirejsmocksmanagerMixin.html#~event:editMock">editMock</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:editTicketJob">editTicketJob</a></li><li><a href="initialize-module_controller.html#~event:editWidget">editWidget</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:importView">importView</a></li><li><a href="initialize-module_controller.html#~event:insertWidget">insertWidget</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:inspect">inspect</a></li><li><a href="initialize-module_controller.html#~event:inspectForm">inspectForm</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:logout">logout</a></li><li><a href="initialize-module_controller.html#~event:movedown">movedown</a></li><li><a href="initialize-module_controller.html#~event:moveup">moveup</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:openTab">openTab</a></li><li><a href="initialize-module_controller.html#~event:previousForm">previousForm</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:prompt">prompt</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:promptReloadApplication">promptReloadApplication</a></li><li><a href="initialize-module_controller.html#~event:refreshView">refreshView</a></li><li><a href="initialize-module_controller.html#~event:removeWidget">removeWidget</a></li><li><a href="initialize-module_controller.html#~event:rollback">rollback</a></li><li><a href="initialize-module_controller.html#~event:show">show</a></li><li><a href="module-ConsolemanagerMixin.html#~event:showConsoleSettings">showConsoleSettings</a></li><li><a href="initialize-module_route.html#~event:showEditFormWithController">showEditFormWithController</a></li><li><a href="module-UserprofilestatusmenuMixin.html#~event:showUserProfile">showUserProfile</a></li><li><a href="initialize-module_route.html#~event:showView">showView</a></li><li><a href="initialize-module_controller.html#~event:submit">submit</a></li><li><a href="initialize-module_route.html#~event:exportCurrentViewExportsthecurrentlyopenedview">exportCurrentView
+Shows a form to edit the frontend configuration</a></li><li><a href="initialize-module_controller.html#~event:abort">abort</a></li><li><a href="module-RequirejsmocksmanagerMixin.html#~event:addMock">addMock</a></li><li><a href="module-SchemamanagerMixin.html#~event:addModelInstance">addModelInstance</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:addNewView">addNewView</a></li><li><a href="module-ScreentoolstatusmenuMixin.html#~event:changeScreenSize">changeScreenSize</a></li><li><a href="initialize-module_controller.html#~event:creationForm">creationForm</a></li><li><a href="module-RequirejsmocksmanagerMixin.html#~event:deleteMock">deleteMock</a></li><li><a href="initialize-module_controller.html#~event:do">do</a></li><li><a href="initialize-module_controller.html#~event:duplicateWidgetAndContent">duplicateWidgetAndContent</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:editAuthConfiguration">editAuthConfiguration</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:editDataclean">editDataclean</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:editEnabledPlugins">editEnabledPlugins</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:editEventSettings">editEventSettings</a></li><li><a href="initialize-module_controller.html#~event:editMixin">editMixin</a></li><li><a href="module-RequirejsmocksmanagerMixin.html#~event:editMock">editMock</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:editTicketJob">editTicketJob</a></li><li><a href="initialize-module_controller.html#~event:editWidget">editWidget</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:importView">importView</a></li><li><a href="initialize-module_controller.html#~event:insertWidget">insertWidget</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:inspect">inspect</a></li><li><a href="initialize-module_controller.html#~event:inspectForm">inspectForm</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:logout">logout</a></li><li><a href="initialize-module_controller.html#~event:movedown">movedown</a></li><li><a href="initialize-module_controller.html#~event:moveup">moveup</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:openTab">openTab</a></li><li><a href="initialize-module_controller.html#~event:previousForm">previousForm</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:prompt">prompt</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:promptReloadApplication">promptReloadApplication</a></li><li><a href="initialize-module_view.html#~event:refreshView">refreshView</a></li><li><a href="initialize-module_controller.html#~event:removeWidget">removeWidget</a></li><li><a href="initialize-module_controller.html#~event:rollback">rollback</a></li><li><a href="initialize-module_controller.html#~event:show">show</a></li><li><a href="module-ConsolemanagerMixin.html#~event:showConsoleSettings">showConsoleSettings</a></li><li><a href="initialize-module_route.html#~event:showEditFormWithController">showEditFormWithController</a></li><li><a href="module-UserprofilestatusmenuMixin.html#~event:showUserProfile">showUserProfile</a></li><li><a href="initialize-module_route.html#~event:showView">showView</a></li><li><a href="initialize-module_controller.html#~event:submit">submit</a></li><li><a href="initialize-module_route.html#~event:exportCurrentViewExportsthecurrentlyopenedview">exportCurrentView
 
 Exports the currently opened view</a></li><li><a href="initialize-module_route.html#~event:refreshRefreshesthecurrentlyopenedview">refresh
 
@@ -34847,7 +35639,7 @@ It aims to handle request metadata (total, errors, ...)</a></li></ul>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Dec 22 2015 15:12:34 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Feb 09 2016 09:40:48 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

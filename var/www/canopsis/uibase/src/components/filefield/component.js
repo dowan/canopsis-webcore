@@ -22,16 +22,40 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var isEmpty = Ember.isEmpty;
 
+
+        //TODO check if all the component property are still used, and refactor if needed
         /**
-         * @component FileField
+         * @component filefield
          *
-         * @description
-         * Subclass Ember.TextField to allow file uploading.
+         * @description an input for files
+         * @extend Ember.TextField
          */
         var component = Ember.TextField.extend(Ember.Evented, {
+            /**
+             * @property type
+             * @type string
+             * @default
+             */
             type: 'file',
+
+            /**
+             * @property attributeBindings
+             * @type array
+             * @default
+             */
             attributeBindings: ['multiple'],
+
+            /**
+             * @property multiple
+             * @type boolean
+             * @default
+             */
             multiple: false,
+
+            /**
+             * @method change
+             * @param {event} e
+             */
             change: function(e) {
                 var input = e.target;
 

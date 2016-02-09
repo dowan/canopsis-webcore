@@ -89,7 +89,8 @@ Ember.Application.initializer({
 
             /**
              * @property runtimeConfiguration
-             * @see {{#crossLink "CanopsisConfiguration"}}{{/crossLink}}
+             * @type object
+             * @description the canopsis frontend configuration object
              */
             runtimeConfiguration: canopsisConfiguration,
 
@@ -121,7 +122,7 @@ Ember.Application.initializer({
             /**
              * @property enginesviews
              * @type Array
-             * @static
+             * @default
              * @description used to feed the left menu "Engines"
              */
             enginesviews: [
@@ -190,7 +191,7 @@ Ember.Application.initializer({
 
             /**
              * @method didSaveView
-             * @descriptions method triggered when an userview is saved
+             * @description method triggered when an userview is saved
              */
             didSaveView: function(userview) {
                 this.transitionToRoute("/userview/" + get(userview, 'id'));
@@ -232,7 +233,7 @@ Ember.Application.initializer({
 
                 /**
                  * @event prompt
-                 * @descriptions Shows a popup with a message
+                 * @description Shows a popup with a message
                  * @param {String} message
                  */
                 prompt:function (message) {
@@ -243,7 +244,7 @@ Ember.Application.initializer({
 
                 /**
                  * @event promptReloadApplication
-                 * @descriptions Shows a popup with a message
+                 * @description Shows a popup with a message
                  * @param {String} title
                  * @param {String} location the location to redirect the user when he accepts to get redirected. Defaults to "/index.html"
                  */
@@ -267,7 +268,7 @@ Ember.Application.initializer({
 
                 /**
                  * @event editEventSettings
-                 * @descriptions Shows a Modelform with event settings
+                 * @description Shows a Modelform with event settings
                  */
                 editEventSettings: function () {
                     formsUtils.editSchemaRecord('statusmanagement', get(this, "container"));
@@ -275,7 +276,7 @@ Ember.Application.initializer({
 
                 /**
                  * @event editDataclean
-                 * @descriptions Shows a Modelform to edit data cleaner options
+                 * @description Shows a Modelform to edit data cleaner options
                  */
                 editDataclean: function () {
                     formsUtils.editSchemaRecord('datacleaner', get(this, "container"));
@@ -284,7 +285,7 @@ Ember.Application.initializer({
 
                  /**
                  * @event editEnabledPlugins
-                 * @descriptions Shows a form to edit the canopsis UI enabled plugins
+                 * @description Shows a form to edit the canopsis UI enabled plugins
                  */
                 editEnabledPlugins: function() {
                     formsUtils.editSchemaRecord('enabledmodules', get(this, "container"));
@@ -292,7 +293,7 @@ Ember.Application.initializer({
 
                 /**
                  * @event editTicketJob
-                 * @descriptions Shows a form to edit the tickets configuration
+                 * @description Shows a form to edit the tickets configuration
                  */
                 editTicketJob: function() {
                     console.group('editTicketJob');
@@ -330,7 +331,7 @@ Ember.Application.initializer({
 
                 /**
                  * @event addNewView
-                 * @descriptions Shows a form to create a new userview
+                 * @description Shows a form to create a new userview
                  */
                 addNewView: function () {
                     var type = 'userview';
@@ -373,7 +374,7 @@ Ember.Application.initializer({
 
                 /**
                  * @event importView
-                 * @descriptions Shows a file upload window, and then import the selected view
+                 * @description Shows a file upload window, and then import the selected view
                  */
                 importView: function () {
                     var applicationController = this;
@@ -392,7 +393,7 @@ Ember.Application.initializer({
 
                 /**
                  * @event openTab
-                 * @descriptions Change frontend route to a new url
+                 * @description Change frontend route to a new url
                  * @param {string} url the new url to go to
                  */
                 openTab: function(url) {
@@ -401,7 +402,7 @@ Ember.Application.initializer({
 
                 /**
                  * @event logout
-                 * @descriptions close the user session and go back to the login screen
+                 * @description close the user session and go back to the login screen
                  */
                 logout: function() {
                     get(this, 'controllers.login').setProperties({

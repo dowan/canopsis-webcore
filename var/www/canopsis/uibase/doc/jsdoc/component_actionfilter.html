@@ -30,6 +30,8 @@
 <header>
     
         
+            
+        
     
 </header>
 
@@ -73,7 +75,7 @@
             <td>
             </td>
             <td>
-                <a href="#~availableactions">availableactions<span class="type-signature"></span></a>
+                <a href="#~availableactions">availableactions<span class="type-signature"> :array</span></a>
             </td>
         </tr>
     
@@ -81,7 +83,7 @@
             <td>
             </td>
             <td>
-                <a href="#~isExecJob">isExecJob<span class="type-signature"></span></a>
+                <a href="#~isExecJob">isExecJob<span class="type-signature"> :boolean</span></a>
             </td>
         </tr>
     
@@ -89,7 +91,7 @@
             <td>
             </td>
             <td>
-                <a href="#~isOverride">isOverride<span class="type-signature"></span></a>
+                <a href="#~isOverride">isOverride<span class="type-signature"> :boolean</span></a>
             </td>
         </tr>
     
@@ -97,7 +99,7 @@
             <td>
             </td>
             <td>
-                <a href="#~isRemove">isRemove<span class="type-signature"></span></a>
+                <a href="#~isRemove">isRemove<span class="type-signature"> :boolean</span></a>
             </td>
         </tr>
     
@@ -105,7 +107,7 @@
             <td>
             </td>
             <td>
-                <a href="#~isRoute">isRoute<span class="type-signature"></span></a>
+                <a href="#~isRoute">isRoute<span class="type-signature"> :boolean</span></a>
             </td>
         </tr>
     
@@ -113,7 +115,7 @@
             <td>
             </td>
             <td>
-                <a href="#~selectedAction">selectedAction<span class="type-signature"></span></a>
+                <a href="#~selectedAction">selectedAction<span class="type-signature"> :string</span></a>
             </td>
         </tr>
     
@@ -123,6 +125,80 @@
     <div class="container-overview">
     
         
+            <div class="description">A component to handle actions for the filter engine</div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line26">line 26</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         
     
@@ -143,12 +219,26 @@
 
         
             
-<h4 class="name" id="~availableactions"><a name="~availableactions"></a><span class="type-signature">(inner) </span>availableactions<span class="type-signature"></span></h4>
+<h4 class="name" id="~availableactions"><a name="~availableactions"></a><span class="type-signature">(inner) </span>availableactions<span class="type-signature"> :array</span></h4>
 
 
 
 
+<div class="description">
+    A list of all available actions
+</div>
 
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">array</span>
+
+
+        </li>
+    </ul>
 
 
 
@@ -226,11 +316,16 @@
     
 
     
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li class="object-value"><pre class="prettyprint"><code>["pass","drop","override","remove","execjob"]</code></pre></li>
+        </ul></dd>
+    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line55">line 55</a>
+        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line62">line 62</a>
     </li></ul></dd>
     
 
@@ -248,12 +343,26 @@
 
         
             
-<h4 class="name" id="~isExecJob"><a name="~isExecJob"></a><span class="type-signature">(inner) </span>isExecJob<span class="type-signature"></span></h4>
+<h4 class="name" id="~isExecJob"><a name="~isExecJob"></a><span class="type-signature">(inner) </span>isExecJob<span class="type-signature"> :boolean</span></h4>
 
 
 
 
+<div class="description">
+    Computed property, dependent on the "selectedAction" property
+</div>
 
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
 
 
 
@@ -335,7 +444,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line86">line 86</a>
+        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line101">line 101</a>
     </li></ul></dd>
     
 
@@ -353,12 +462,26 @@
 
         
             
-<h4 class="name" id="~isOverride"><a name="~isOverride"></a><span class="type-signature">(inner) </span>isOverride<span class="type-signature"></span></h4>
+<h4 class="name" id="~isOverride"><a name="~isOverride"></a><span class="type-signature">(inner) </span>isOverride<span class="type-signature"> :boolean</span></h4>
 
 
 
 
+<div class="description">
+    Computed property, dependent on the "selectedAction" property
+</div>
 
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
 
 
 
@@ -440,7 +563,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line60">line 60</a>
+        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line69">line 69</a>
     </li></ul></dd>
     
 
@@ -458,12 +581,26 @@
 
         
             
-<h4 class="name" id="~isRemove"><a name="~isRemove"></a><span class="type-signature">(inner) </span>isRemove<span class="type-signature"></span></h4>
+<h4 class="name" id="~isRemove"><a name="~isRemove"></a><span class="type-signature">(inner) </span>isRemove<span class="type-signature"> :boolean</span></h4>
 
 
 
 
+<div class="description">
+    Computed property, dependent on the "selectedAction" property
+</div>
 
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
 
 
 
@@ -545,7 +682,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line78">line 78</a>
+        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line91">line 91</a>
     </li></ul></dd>
     
 
@@ -563,12 +700,26 @@
 
         
             
-<h4 class="name" id="~isRoute"><a name="~isRoute"></a><span class="type-signature">(inner) </span>isRoute<span class="type-signature"></span></h4>
+<h4 class="name" id="~isRoute"><a name="~isRoute"></a><span class="type-signature">(inner) </span>isRoute<span class="type-signature"> :boolean</span></h4>
 
 
 
 
+<div class="description">
+    Computed property, dependent on the "selectedAction" property
+</div>
 
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
 
 
 
@@ -650,7 +801,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line68">line 68</a>
+        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line79">line 79</a>
     </li></ul></dd>
     
 
@@ -668,12 +819,26 @@
 
         
             
-<h4 class="name" id="~selectedAction"><a name="~selectedAction"></a><span class="type-signature">(inner) </span>selectedAction<span class="type-signature"></span></h4>
+<h4 class="name" id="~selectedAction"><a name="~selectedAction"></a><span class="type-signature">(inner) </span>selectedAction<span class="type-signature"> :string</span></h4>
 
 
 
 
+<div class="description">
+    The action selected on the component combobox
+</div>
 
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
 
 
 
@@ -751,11 +916,16 @@
     
 
     
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>pass</li>
+        </ul></dd>
+    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line50">line 50</a>
+        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line54">line 54</a>
     </li></ul></dd>
     
 
@@ -829,7 +999,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line92">line 92</a>
+        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line107">line 107</a>
     </li></ul></dd>
     
 
@@ -951,7 +1121,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line118">line 118</a>
+        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line133">line 133</a>
     </li></ul></dd>
     
 
@@ -1029,7 +1199,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line31">line 31</a>
+        <a href="components_actionfilter_component.js.html">components/actionfilter/component.js</a>, <a href="components_actionfilter_component.js.html#line32">line 32</a>
     </li></ul></dd>
     
 
@@ -1071,13 +1241,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Widgets</h3><ul><li><a href="widget_List.html">List</a></li><li><a href="widget_TextWidget.html">TextWidget</a></li><li><a href="widget_Uiactionbutton.html">Uiactionbutton</a></li><li><a href="widget_Uimaintabcollection.html">Uimaintabcollection</a></li><li><a href="widget_Widgetcontainer.html">Widgetcontainer</a></li></ul><h3>Components</h3><ul><li><a href="component_actionbutton.html">actionbutton</a></li><li><a href="component_actionfilter.html">actionfilter</a></li><li><a href="component_arrayclassifiedcrecordselector.html">arrayclassifiedcrecordselector</a></li><li><a href="component_arrayeditor.html">arrayeditor</a></li><li><a href="component_classifiedcrecordselector.html">classifiedcrecordselector</a></li><li><a href="component_classifieditemselector.html">classifieditemselector</a></li><li><a href="component_contextselector.html">contextselector</a></li><li><a href="component_dateinterval.html">dateinterval</a></li><li><a href="component_dictclassifiedcrecordselector.html">dictclassifiedcrecordselector</a></li><li><a href="component_draggablebutton.html">draggablebutton</a></li><li><a href="component_elementidselectorwithoptions.html">elementidselectorwithoptions</a></li><li><a href="component_eventkey.html">eventkey</a></li><li><a href="component_FileField.html">FileField</a></li><li><a href="component_filterclause.html">filterclause</a></li><li><a href="component_formulaeditor.html">formulaeditor</a></li><li><a href="component_ical.html">ical</a></li><li><a href="component_labelledlink.html">labelledlink</a></li><li><a href="component_linklist.html">linklist</a></li><li><a href="component_listtree.html">listtree</a></li><li><a href="component_miniform.html">miniform</a></li><li><a href="component_miniformcontent.html">miniformcontent</a></li><li><a href="component_miniformheader.html">miniformheader</a></li><li><a href="component_miniformheaderbuttons.html">miniformheaderbuttons</a></li><li><a href="component_miniformtitle.html">miniformtitle</a></li><li><a href="component_mixinselector.html">mixinselector</a></li><li><a href="component_modelselect.html">modelselect</a></li><li><a href="component_password.html">password</a></li><li><a href="component_propertiestopopup.html">propertiestopopup</a></li><li><a href="component_restobjectcombo.html">restobjectcombo</a></li><li><a href="component_rrule.html">rrule</a></li><li><a href="component_searchbar.html">searchbar</a></li><li><a href="component_sessioneditor.html">sessioneditor</a></li><li><a href="component_simpledicteditor.html">simpledicteditor</a></li><li><a href="component_slider.html">slider</a></li><li><a href="component_stringclassifiedcrecordselector.html">stringclassifiedcrecordselector</a></li><li><a href="component_tabheader.html">tabheader</a></li><li><a href="component_table.html">table</a></li><li><a href="component_tabs.html">tabs</a></li><li><a href="component_tabscontent.html">tabscontent</a></li><li><a href="component_tabscontentgroup.html">tabscontentgroup</a></li><li><a href="component_tabsheadergroup.html">tabsheadergroup</a></li><li><a href="component_textwithsortoption.html">textwithsortoption</a></li><li><a href="component_timestamptooltiped.html">timestamptooltiped</a></li><li><a href="component_typedvalue.html">typedvalue</a></li></ul><h3>Classes</h3><ul><li><a href="canopsis.frontend.uibase.module_Colorchooser%2520component.html">Colorchooser component</a></li><li><a href="canopsis.frontend.uibase.module_dropdownbutton%2520component.html">dropdownbutton component</a></li><li><a href="canopsis.frontend.uibase.module_dropdownbuttoncontent%2520component.html">dropdownbuttoncontent component</a></li><li><a href="canopsis.frontend.uibase.module_Dropdownbuttonheader%2520component.html">Dropdownbuttonheader component</a></li><li><a href="canopsis.frontend.uibase.module_Dropdownbuttonoverview%2520component.html">Dropdownbuttonoverview component</a></li><li><a href="canopsis.frontend.uibase.module_Dropdownbuttontitle%2520component.html">Dropdownbuttontitle component</a></li><li><a href="canopsis.frontend.uibase.module_eventcategories%2520component.html">eventcategories component</a></li></ul><h3>Events</h3><ul><li><a href="module-crud.html#~event:add">add</a></li><li><a href="module-crud.html#~event:duplicate">duplicate</a></li><li><a href="module-crud.html#~event:edit">edit</a></li><li><a href="module-List.html#~event:isAllSelectedChanged">isAllSelectedChanged</a></li><li><a href="module-crud.html#~event:remove">remove</a></li><li><a href="module-crud.html#~event:removeSelection">removeSelection</a></li><li><a href="module-List.html#~event:rollbackableChanged">rollbackableChanged</a></li><li><a href="module-List.html#~event:widgetDataChanged">widgetDataChanged</a></li></ul><h3>Mixins</h3><ul><li><a href="module-arraysearch.html">arraysearch</a></li><li><a href="module-background.html">background</a></li><li><a href="module-crud.html">crud</a></li><li><a href="module-customfilterlist.html">customfilterlist</a></li><li><a href="module-downtime.html">downtime</a></li><li><a href="module-draggablecolumns.html">draggablecolumns</a></li><li><a href="module-EventConsumerMixin.html">EventConsumerMixin</a></li><li><a href="module-Gridlayout.html">Gridlayout</a></li><li><a href="module-horizontallayout.html">horizontallayout</a></li><li><a href="module-lightlayout.html">lightlayout</a></li><li><a href="module-listlinedetail.html">listlinedetail</a></li><li><a href="module-MetricConsumer.html">MetricConsumer</a></li><li><a href="module-MetricFilterable.html">MetricFilterable</a></li><li><a href="module-minimizebutton.html">minimizebutton</a></li><li><a href="module-pagination.html">pagination</a></li><li><a href="module-periodicrefresh.html">periodicrefresh</a></li><li><a href="module-responsivelist.html">responsivelist</a></li><li><a href="module-showviewbutton.html">showviewbutton</a></li><li><a href="module-sortablearray.html">sortablearray</a></li><li><a href="module-tablayout.html">tablayout</a></li><li><a href="module-verticallayout.html">verticallayout</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Widgets</h3><ul><li><a href="widget_List.html">List</a></li><li><a href="widget_TextWidget.html">TextWidget</a></li><li><a href="widget_Uiactionbutton.html">Uiactionbutton</a></li><li><a href="widget_Uimaintabcollection.html">Uimaintabcollection</a></li><li><a href="widget_Widgetcontainer.html">Widgetcontainer</a></li></ul><h3>Components</h3><ul><li><a href="component_actionbutton.html">actionbutton</a></li><li><a href="component_actionfilter.html">actionfilter</a></li><li><a href="component_arrayclassifiedcrecordselector.html">arrayclassifiedcrecordselector</a></li><li><a href="component_arrayeditor.html">arrayeditor</a></li><li><a href="component_classifiedcrecordselector.html">classifiedcrecordselector</a></li><li><a href="component_classifieditemselector.html">classifieditemselector</a></li><li><a href="component_Colorchooser.html">Colorchooser</a></li><li><a href="component_colpick.html">colpick</a></li><li><a href="component_contextselector.html">contextselector</a></li><li><a href="component_dateinterval.html">dateinterval</a></li><li><a href="component_dictclassifiedcrecordselector.html">dictclassifiedcrecordselector</a></li><li><a href="component_draggablebutton.html">draggablebutton</a></li><li><a href="component_dropdownbutton.html">dropdownbutton</a></li><li><a href="component_dropdownbuttoncontent.html">dropdownbuttoncontent</a></li><li><a href="component_Dropdownbuttonheader.html">Dropdownbuttonheader</a></li><li><a href="component_Dropdownbuttonoverview.html">Dropdownbuttonoverview</a></li><li><a href="component_Dropdownbuttontitle.html">Dropdownbuttontitle</a></li><li><a href="component_elementidselectorwithoptions.html">elementidselectorwithoptions</a></li><li><a href="component_eventkey.html">eventkey</a></li><li><a href="component_filefield.html">filefield</a></li><li><a href="component_filterclause.html">filterclause</a></li><li><a href="component_formulaeditor.html">formulaeditor</a></li><li><a href="component_ical.html">ical</a></li><li><a href="component_labelledlink.html">labelledlink</a></li><li><a href="component_linklist.html">linklist</a></li><li><a href="component_listtree.html">listtree</a></li><li><a href="component_miniform.html">miniform</a></li><li><a href="component_miniformcontent.html">miniformcontent</a></li><li><a href="component_miniformheader.html">miniformheader</a></li><li><a href="component_miniformheaderbuttons.html">miniformheaderbuttons</a></li><li><a href="component_miniformtitle.html">miniformtitle</a></li><li><a href="component_mixinselector.html">mixinselector</a></li><li><a href="component_modelselect.html">modelselect</a></li><li><a href="component_password.html">password</a></li><li><a href="component_propertiestopopup.html">propertiestopopup</a></li><li><a href="component_restobjectcombo.html">restobjectcombo</a></li><li><a href="component_rrule.html">rrule</a></li><li><a href="component_searchbar.html">searchbar</a></li><li><a href="component_sessioneditor.html">sessioneditor</a></li><li><a href="component_simpledicteditor.html">simpledicteditor</a></li><li><a href="component_slider.html">slider</a></li><li><a href="component_stringclassifiedcrecordselector.html">stringclassifiedcrecordselector</a></li><li><a href="component_tabheader.html">tabheader</a></li><li><a href="component_table.html">table</a></li><li><a href="component_tabs.html">tabs</a></li><li><a href="component_tabscontent.html">tabscontent</a></li><li><a href="component_tabscontentgroup.html">tabscontentgroup</a></li><li><a href="component_tabsheadergroup.html">tabsheadergroup</a></li><li><a href="component_textwithsortoption.html">textwithsortoption</a></li><li><a href="component_timestamptooltiped.html">timestamptooltiped</a></li><li><a href="component_typedvalue.html">typedvalue</a></li></ul><h3>Events</h3><ul><li><a href="module-crud.html#~event:add">add</a></li><li><a href="module-crud.html#~event:duplicate">duplicate</a></li><li><a href="module-crud.html#~event:edit">edit</a></li><li><a href="module-List.html#~event:isAllSelectedChanged">isAllSelectedChanged</a></li><li><a href="module-crud.html#~event:remove">remove</a></li><li><a href="module-crud.html#~event:removeSelection">removeSelection</a></li><li><a href="module-List.html#~event:rollbackableChanged">rollbackableChanged</a></li><li><a href="module-List.html#~event:widgetDataChanged">widgetDataChanged</a></li></ul><h3>Mixins</h3><ul><li><a href="module-arraysearch.html">arraysearch</a></li><li><a href="module-background.html">background</a></li><li><a href="module-crud.html">crud</a></li><li><a href="module-customfilterlist.html">customfilterlist</a></li><li><a href="module-downtime.html">downtime</a></li><li><a href="module-draggablecolumns.html">draggablecolumns</a></li><li><a href="module-EventConsumerMixin.html">EventConsumerMixin</a></li><li><a href="module-Gridlayout.html">Gridlayout</a></li><li><a href="module-horizontallayout.html">horizontallayout</a></li><li><a href="module-lightlayout.html">lightlayout</a></li><li><a href="module-listlinedetail.html">listlinedetail</a></li><li><a href="module-MetricConsumer.html">MetricConsumer</a></li><li><a href="module-MetricFilterable.html">MetricFilterable</a></li><li><a href="module-minimizebutton.html">minimizebutton</a></li><li><a href="module-pagination.html">pagination</a></li><li><a href="module-periodicrefresh.html">periodicrefresh</a></li><li><a href="module-responsivelist.html">responsivelist</a></li><li><a href="module-showviewbutton.html">showviewbutton</a></li><li><a href="module-sortablearray.html">sortablearray</a></li><li><a href="module-tablayout.html">tablayout</a></li><li><a href="module-verticallayout.html">verticallayout</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Mon Feb 08 2016 13:45:51 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Feb 09 2016 11:12:29 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

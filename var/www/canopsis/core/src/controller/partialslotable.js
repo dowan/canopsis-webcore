@@ -97,7 +97,7 @@ Ember.Application.initializer({
 
             /**
              * @method refreshPartialsList
-             * @description recompute the "_partials" object. See {{#crossLink "PartialslotAbleController/_partials:property"}}{{/crossLink}}
+             * @description recompute the "_partials" object. See "PartialslotAbleController#_partials" property"
              */
             refreshPartialsList: function() {
                 console.log('refreshPartialsList', get(this, 'partials'));

@@ -24,10 +24,31 @@ Ember.Application.initializer({
 
         /**
          * @component labelledlink
+         * @description displays two inputs, to edit an url, with a link associated to it
          */
         var component = Ember.Component.extend({
+            /**
+             * @property label_placeholder
+             * @description the placeholder for the label input
+             * @type string
+             * @default __('label')
+             */
             label_placeholder: __('label'),
-            url_placeholder: __('url')
+
+            /**
+             * @property url_placeholder
+             * @description the placeholder for the url input
+             * @type string
+             * @default __('url')
+             */
+            url_placeholder: __('url'),
+
+            /**
+             * @property content
+             * @description an object that must have an "url" property, and a "label" property
+             * @type object
+             */
+            content: undefined
         });
 
         application.register('component:component-labelledlink', component);

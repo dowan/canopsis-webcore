@@ -42,7 +42,7 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 
 | Target | Status | Log |
 | ------ | ------ | --- |
-| Lint   | :ok: OK |  |
+| Lint   | :negative_squared_cross_mark: ERROR | <br>/home/gwen/programmation/canopsis/sources/webcore/var/www/canopsis/uibase/src/components/textwithsortoption/component.js<br>  37:15  error  Irregular whitespace not allowed  no-irregular-whitespace<br><br>✖ 1 problem (1 error, 0 warnings)<br><br> |
 
 ## Code Notes
 
@@ -58,12 +58,14 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 | src/components/elementidselectorwithoptions/component.js | put this on a dedicated util |
 | src/components/elementidselectorwithoptions/component.js | manage default values |
 | src/components/elementidselectorwithoptions/component.js | stop using polymorphicTypeKey, use sourceMappingKeys instead |
+| src/components/actionfilter/component.js | not used yet |
 | src/components/classifieditemselector/component.js | fuzzy search |
 | src/components/classifieditemselector/component.js | hover effect |
 | src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
 | src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
 | src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
 | src/components/linklist/component.js | use the container defined in the initializer |
+| src/components/filefield/component.js | check if all the component property are still used, and refactor if needed |
 | src/components/colpick/component.js | check to destroy colpick |
 
 
