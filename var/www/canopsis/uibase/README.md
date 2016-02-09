@@ -64,6 +64,7 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 | src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
 | src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
 | src/components/linklist/component.js | use the container defined in the initializer |
+| src/components/filefield/component.js | check if all the component property are still used, and refactor if needed |
 | src/components/colpick/component.js | check to destroy colpick |
 
 
