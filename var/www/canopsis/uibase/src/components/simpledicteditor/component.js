@@ -26,9 +26,21 @@ Ember.Application.initializer({
 
         /**
          * @component simpledicteditor
+         * @description A simple key-value editor. Keys and values can only be edited as strings
          */
         var component = Ember.Component.extend({
+            /**
+             * @property content
+             * @type object
+             * @description the edited dictionnary
+             */
+            content: undefined,
+
             actions: {
+                /**
+                 * @method actions_addKey
+                 * @description Adds the key to the edited dictionnary
+                 */
                 addKey: function() {
                     var newValue = get(this, 'newValue');
                     var newKey = get(this, 'newKey');
@@ -45,9 +57,18 @@ Ember.Application.initializer({
                         set(this, 'newValue');
                     }
                 },
+
+                /**
+                 * @method actions_select
+                 */
                 select: function() {
                     console.warn('select', arguments);
                 },
+                /**
+                 * @method actions_removeKey
+                 * @param {string} keyToDelete
+                 * @description Removes the key to the edited dictionnary
+                 */
                 removeKey: function(keyToDelete) {
                     delete this.content[keyToDelete];
 
@@ -55,11 +76,17 @@ Ember.Application.initializer({
                 }
             },
 
+            /**
+             * @method didInsertElement
+             */
             didInsertElement: function() {
                 this._super.apply(this);
                 this.contentChanged();
             },
 
+            /**
+             * @method contentChanged
+             */
             contentChanged: function(){
                 var buffer = Ember.A();
                 var content = get(this, 'content');
@@ -82,6 +109,7 @@ Ember.Application.initializer({
                 }
             }
         });
+
         application.register('component:component-simpledicteditor', component);
     }
 });

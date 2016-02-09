@@ -28,15 +28,18 @@ Ember.Application.initializer({
 
         /**
          * @component arrayeditor
+         * @description Base component for arrays. Tries to find the appropriate editor for array elements, and display an editable list of these editors.
          */
         var component = Ember.Component.extend(ValidationFieldMixin, {
             /**
              * @property valueRefPath
+             * @default
              */
             valueRefPath: 'content.value',
 
             /**
              * @property valuePath
+             * @default
              */
             valuePath: 'value',
 
@@ -71,6 +74,9 @@ Ember.Application.initializer({
 
             /**
              * @property itemEditorType
+             * @description Computed property, dependent on "content.model.options.items.type" and "content.model.options.items.role". Editor name for array elements. The name is found with the usual logic (using role and type), but on the "items" key of the attribute
+             * @type string
+             * @default editor-defaultpropertyeditor
              */
             itemEditorType: function(){
                 var type = get(this, 'content.model.options.items.type');
@@ -93,7 +99,7 @@ Ember.Application.initializer({
 
             /**
              * @method generateVirtualAttribute
-             * @argument itemIndex
+             * @argument {integer} itemIndex
              * @returns {object} virtual attribute
              * @description Generates a virtual attribute that will be used to manipulate the array item data
              */
@@ -144,8 +150,8 @@ Ember.Application.initializer({
             actions: {
                 /**
                  * @method actions_move
-                 * @argument direction
-                 * @argument item
+                 * @argument {string} direction. "up" or "down".
+                 * @argument {integer} item. The item index to move
                  */
                 move: function (direction, item) {
 
@@ -218,8 +224,8 @@ Ember.Application.initializer({
 
             /**
              * @method moveItem
-             * @argument oldIndex
-             * @argument newIndex
+             * @argument {integer} oldIndex
+             * @argument {integer} newIndex
              */
             moveItem: function(oldIndex, newIndex) {
                 console.log('moveItem', arguments);
