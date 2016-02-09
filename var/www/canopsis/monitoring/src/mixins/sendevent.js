@@ -162,6 +162,7 @@ Ember.Application.initializer({
                         }
                     }
 
+                    //TODO use an adapter for this
                     $.post('/event', {
                         event: JSON.stringify(post_events)
                     }).then(function(data) {
