@@ -1,4 +1,33 @@
-/*
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/ack/component.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+
+    <h1 class="page-title">Source: components/ack/component.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
  * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
  *
  * This file is part of Canopsis.
@@ -14,7 +43,7 @@
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+ * along with Canopsis. If not, see &lt;http://www.gnu.org/licenses/>.
  */
 
 Ember.Application.initializer({
@@ -85,55 +114,55 @@ Ember.Application.initializer({
 
                 var ticketNumberHtml = '';
                 //Generate ticket declared html information
-                if (!isNone(ticketNumber) && !isNone(ticketDate)) {
+                if (!isNone(ticketNumber) &amp;&amp; !isNone(ticketDate)) {
                     ticketNumberHtml = [
-                        '<b>' + __('Ticket number') + '</b><br/>',
-                        datesUtils.timestamp2String(ticketDate) +' <br/> ',
-                        '<i>' + ticketNumber +'</i><br/> '
+                        '&lt;b>' + __('Ticket number') + '&lt;/b>&lt;br/>',
+                        datesUtils.timestamp2String(ticketDate) +' &lt;br/> ',
+                        '&lt;i>' + ticketNumber +'&lt;/i>&lt;br/> '
                     ].join('');
                 }
 
                 var tickettooltip = '';
                 //Generate html display for ticket declared and ticket number when possible
-                if(!isNone(ticket_declared_date) && !isNone(ticket_declared_author)) {
-                    tickettooltip = ['<center>',
-                        '<b>' + __('Ticket declared') + '</b><br/>',
-                        datesUtils.timestamp2String(ticket_declared_date) +' <br/> ',
-                        __('By') +' : ' + ticket_declared_author +' <br/><br/> ',
+                if(!isNone(ticket_declared_date) &amp;&amp; !isNone(ticket_declared_author)) {
+                    tickettooltip = ['&lt;center>',
+                        '&lt;b>' + __('Ticket declared') + '&lt;/b>&lt;br/>',
+                        datesUtils.timestamp2String(ticket_declared_date) +' &lt;br/> ',
+                        __('By') +' : ' + ticket_declared_author +' &lt;br/>&lt;br/> ',
                         ticketNumberHtml,
-                        '</center>'
+                        '&lt;/center>'
                     ].join('');
                     set(this, 'tickettooltip', tickettooltip);
 
-                } else if (!isNone(ticketNumber) && !isNone(ticketDate)) {
+                } else if (!isNone(ticketNumber) &amp;&amp; !isNone(ticketDate)) {
 
                     //When no ticket declared, then ticket date was saved.
                     console.debug('ticket date is ', get(crecord, 'record.ticket_date'));
 
-                    tickettooltip = ['<center>',
+                    tickettooltip = ['&lt;center>',
                         ticketNumberHtml,
-                        '</center>'
+                        '&lt;/center>'
                     ].join('');
                     set(this, 'tickettooltip', tickettooltip);
                 }
 
-                var ts = value && value.timestamp ? datesUtils.timestamp2String(value.timestamp): '';
-                var author = value && value.author ? value.author: '';
-                var comment =  value && value.comment ? value.comment: '';
+                var ts = value &amp;&amp; value.timestamp ? datesUtils.timestamp2String(value.timestamp): '';
+                var author = value &amp;&amp; value.author ? value.author: '';
+                var comment =  value &amp;&amp; value.comment ? value.comment: '';
 
-                var acktooltip = ['<center>',
-                    '<b>' + __('Ack') + '</b><br/>',
-                    '<i>' + __('Date') + '</i> : <br/>',
-                    ts +' <br/> ',
-                    __('By') +' : ' + author +' <br/><br/> ',
-                    '<i>'+__('Comment') +' </i> : <br/>' + comment,
-                    '</center>'].join('');
+                var acktooltip = ['&lt;center>',
+                    '&lt;b>' + __('Ack') + '&lt;/b>&lt;br/>',
+                    '&lt;i>' + __('Date') + '&lt;/i> : &lt;br/>',
+                    ts +' &lt;br/> ',
+                    __('By') +' : ' + author +' &lt;br/>&lt;br/> ',
+                    '&lt;i>'+__('Comment') +' &lt;/i> : &lt;br/>' + comment,
+                    '&lt;/center>'].join('');
 
                 console.log('ack value', value);
 
                 set(this, 'acktooltip', acktooltip);
 
-                if(value && value.isCancel) {
+                if(value &amp;&amp; value.isCancel) {
                     set(this, 'ackcolor', '');
                     set(this, 'acktitle', __('Cancelled'));
                 } else {
@@ -146,3 +175,26 @@ Ember.Application.initializer({
         application.register('component:component-ack', component);
     }
 });
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Widgets</h3><ul><li><a href="widget_weather.html">weather</a></li></ul><h3>Components</h3><ul><li><a href="component_stateeditor.html">stateeditor</a></li><li><a href="component_statemapping.html">statemapping</a></li></ul><h3>Mixins</h3><ul><li><a href="module-editurlfield.html">editurlfield</a></li><li><a href="module-eventhistory.html">eventhistory</a></li><li><a href="module-eventnavigation.html">eventnavigation</a></li><li><a href="module-history.html">history</a></li><li><a href="module-infobutton.html">infobutton</a></li><li><a href="module-recordinfopopup.html">recordinfopopup</a></li><li><a href="module-sendevent.html">sendevent</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Feb 10 2016 16:13:24 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

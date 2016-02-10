@@ -88,6 +88,12 @@ Ember.Application.initializer({
                 }
 
                 query = get(this, 'metrics');
+                if(get(this, 'appliedDynamicProperties') && get(this, 'appliedDynamicProperties') !== {}) {
+                    query = JSON.stringify(query);
+                    var context = get(this, 'appliedDynamicProperties');
+                    query = Handlebars.compile(query)(context);
+                    query = JSON.parse(query);
+                }
                 if (!isNone(query) && query.length) {
                     this.aggregateMetrics(
                         query,
@@ -229,7 +235,6 @@ Ember.Application.initializer({
              */
             makeTemplate: function() {
                 var template = undefined;
-
                 try {
                     template = Handlebars.compile(get(this, 'html'));
                 }
@@ -251,6 +256,10 @@ Ember.Application.initializer({
 
                 var template = get(this, 'template'),
                     context = get(this, 'context');
+
+                var appliedDynamicProperties = get(this, 'appliedDynamicProperties') || {};
+                $.extend(context, appliedDynamicProperties);
+
 
                 set(this, 'rendered', new Ember.Handlebars.SafeString(template(context)));
             }

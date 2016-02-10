@@ -50,6 +50,7 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 
 | File   | Note   |
 |--------|--------|
+| src/mixins/sendevent.js | use an adapter for this |
 | src/mixins/sendevent.js | refactor into sub classes |
 | src/widgets/weather/controller.js | avoid using 0 as limit. A better practivce should be used, like limiting to 1000 and display a warning if payload.length > 1000 |
 
@@ -64,4 +65,4 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 ## Additional info
 
 Minified version : 20 files (size: 160K)
-Development version : 36 files (size: 288K)
+Development version : 36 files (size: 292K)

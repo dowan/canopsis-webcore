@@ -57,7 +57,8 @@ Ember.Application.initializer({
 
         var get = Ember.get,
             set = Ember.set,
-            isNone = Ember.isNone;
+            isNone = Ember.isNone,
+            __ = Ember.String.loc;
 
         /**
          * @mixin sendevent
@@ -168,6 +169,8 @@ Ember.Application.initializer({
                 console.log('safe_mode', safe_mode);
 
                 return new Ember.RSVP.Promise(function(resolve, reject) {
+                    void(reject);
+
                     var post_events = [];
                     for(var i = 0; i &lt; crecords.length; i++) {
                         console.log('Event:', get(record, 'author'), get(record, 'output'));
@@ -176,7 +179,7 @@ Ember.Application.initializer({
                         post_event.author = get(record, 'author');
                         post_event.output = get(record, 'output');
 
-                        if(!!get(record, 'ticket')) {
+                        if(get(record, 'ticket')) {
                             post_event.ticket = get(record, 'ticket');
                         }
 
@@ -188,9 +191,12 @@ Ember.Application.initializer({
                         }
                     }
 
+                    //TODO use an adapter for this
                     $.post('/event', {
                         event: JSON.stringify(post_events)
                     }).then(function(data) {
+                        void(data);
+
                         Ember.run(function () {
 
                             record.rollback();
@@ -221,16 +227,15 @@ Ember.Application.initializer({
              * @description
              * Generates and displays a form for givent record type
              */
-            getEventForm: function(event_type, record, crecords, formbuttons) {
-                var wizard = formsUtils.showNew('modelform', record, {
+            getEventForm: function(event_type, record, crecords, formType) {
+                formType = formType || 'modelform';
+
+                var wizard = formsUtils.showNew(formType, record, {
                     title: __('Add event type: ') + event_type,
                     override_labels: {
                         output: 'comment'
                     },
-                    onePageDisplay: true,
-                    partials: {
-                        buttons: formbuttons
-                    }
+                    onePageDisplay: true
                 });
 
                 var me = this;
@@ -283,9 +288,9 @@ Ember.Application.initializer({
 
             /**
              * @method getDisplayRecord
-             * @argument event_type
-             * @argument crecord
-             * @return record
+             * @argument event_type
+             * @argument crecord
+             * @return record
              */
             getDisplayRecord: function(event_type, crecord) {
                 var store = get(this, 'widgetDataStore');
@@ -352,13 +357,7 @@ Ember.Application.initializer({
                     handle: function(crecords) {
                         var record = this.getDisplayRecord('ack', crecords[0]);
 
-                        var formbuttons = [
-                            'formbutton-cancel',
-                            'formbutton-ack',
-                            'formbutton-ackandproblem'
-                        ];
-
-                        this.getEventForm('ack', record, crecords, formbuttons);
+                        this.getEventForm('ack', record, crecords, 'ackform');
                     },
 
                     transform: function(crecord, record) {
@@ -396,12 +395,7 @@ Ember.Application.initializer({
                     handle: function(crecords) {
                         var record = this.getDisplayRecord('ackremove', crecords[0]);
 
-                        var formbuttons = [
-                            'formbutton-cancel',
-                            'formbutton-submit'
-                        ];
-
-                        this.getEventForm('ackremove', record, crecords, formbuttons);
+                        this.getEventForm('ackremove', record, crecords);
 
                     },
 
@@ -423,6 +417,8 @@ Ember.Application.initializer({
 
                 declareticket: {
                     extract: function(record, crecord, formRecord) {
+                        void(formRecord);
+
                         record.ref_rk = get(crecord, 'id');
                         record.state = 0;
                         record.state_type = 1;
@@ -436,13 +432,8 @@ Ember.Application.initializer({
 
                     handle: function(crecords) {
                         var record = this.getDisplayRecord('declareticket', crecords[0]);
-
-                        var formbuttons = [
-                            'formbutton-cancel',
-                            'formbutton-incident'
-                        ];
-
-                        this.getEventForm('declareticket', record, crecords, formbuttons);
+                        alert('ticketform');
+                        this.getEventForm('declareticket', record, crecords, 'ticketform');
                     },
 
                     transform: function(crecord, record) {
@@ -474,12 +465,7 @@ Ember.Application.initializer({
                     handle: function(crecords) {
                         var record = this.getDisplayRecord('assocticket', crecords[0]);
 
-                        var formbuttons = [
-                            'formbutton-cancel',
-                            'formbutton-submit'
-                        ];
-
-                        this.getEventForm('assocticket', record, crecords, formbuttons);
+                        this.getEventForm('assocticket', record, crecords);
                     },
 
                     transform: function(crecord, record) {
@@ -508,12 +494,7 @@ Ember.Application.initializer({
                     handle: function(crecords) {
                         var record = this.getDisplayRecord('cancel', crecords[0]);
 
-                        var formbuttons = [
-                            'formbutton-cancel',
-                            'formbutton-submit'
-                        ];
-
-                        this.getEventForm('cancel', record, crecords, formbuttons);
+                        this.getEventForm('cancel', record, crecords);
                     },
 
                     transform: function(crecord, record) {
@@ -533,10 +514,15 @@ Ember.Application.initializer({
 
                 recovery: {
                     extract: function(record, crecord, formRecord) {
+                        void(formRecord);
+                        void(record);
+
                         set(crecord, 'state', 0);
                     },
 
                     filter: function(record) {
+                        void(record);
+
                         return false;
                     },
 
@@ -545,9 +531,11 @@ Ember.Application.initializer({
                         this.submitEvents([record], record, 'recovery');
                     },
 
-                     transform: function(crecord, record) {
+                    transform: function(crecord, record) {
+                        void(crecord);
+                        void(record);
                         //TODO
-                     }
+                    }
                 },
 
                 uncancel: {
@@ -557,7 +545,7 @@ Ember.Application.initializer({
                         record.state = 0;
                         record.cancel = 0;
                         if (formRecord !== undefined) {
-                            output = get(formRecord, 'output');
+                            var output = get(formRecord, 'output');
                             if (! output) {
                                 output = ' ';
                             }
@@ -573,12 +561,7 @@ Ember.Application.initializer({
 
                         var record = this.getDisplayRecord('uncancel', crecords[0]);
 
-                        var formbuttons = [
-                            'formbutton-cancel',
-                            'formbutton-submit'
-                        ];
-
-                        this.getEventForm('uncancel', record, crecords, formbuttons);
+                        this.getEventForm('uncancel', record, crecords);
                     },
 
                     transform: function(crecord, record) {
@@ -621,12 +604,7 @@ Ember.Application.initializer({
                     handle: function(crecords) {
                         var record = this.getDisplayRecord('changestate', crecords[0]);
 
-                        var formbuttons = [
-                            'formbutton-cancel',
-                            'formbutton-submit'
-                        ];
-
-                        this.getEventForm('changestate', record, crecords, formbuttons);
+                        this.getEventForm('changestate', record, crecords);
                     },
 
 
@@ -646,12 +624,15 @@ Ember.Application.initializer({
 
                 user: {
                     extract: function(record, crecord, formRecord) {
+                        void(formRecord);
 
                         record.output = get(crecord, 'output');
                         record.display_name = get(this, 'login.firstname') + ' ' + get(this, 'login.lastname');
                     },
 
                     filter: function(crecords) {
+                        void(crecords);
+
                         return false;
                     },
 
@@ -671,6 +652,7 @@ Ember.Application.initializer({
 
                 comment: {
                     extract: function(record, crecord, formRecord) {
+                        void(formRecord);
 
                         record.referer = get(crecord, 'referer');
                         record.output = get(crecord, 'output');
@@ -678,6 +660,8 @@ Ember.Application.initializer({
                     },
 
                     filter: function(crecords) {
+                        void(crecords);
+
                         return false;
                     },
 
@@ -788,13 +772,13 @@ Ember.Application.initializer({
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Widgets</h3><ul><li><a href="widget_weather.html">weather</a></li></ul><h3>Mixins</h3><ul><li><a href="module-editurlfield.html">editurlfield</a></li><li><a href="module-eventhistory.html">eventhistory</a></li><li><a href="module-eventnavigation.html">eventnavigation</a></li><li><a href="module-history.html">history</a></li><li><a href="module-infobutton.html">infobutton</a></li><li><a href="module-recordinfopopup.html">recordinfopopup</a></li><li><a href="module-sendevent.html">sendevent</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Widgets</h3><ul><li><a href="widget_weather.html">weather</a></li></ul><h3>Components</h3><ul><li><a href="component_stateeditor.html">stateeditor</a></li><li><a href="component_statemapping.html">statemapping</a></li></ul><h3>Mixins</h3><ul><li><a href="module-editurlfield.html">editurlfield</a></li><li><a href="module-eventhistory.html">eventhistory</a></li><li><a href="module-eventnavigation.html">eventnavigation</a></li><li><a href="module-history.html">history</a></li><li><a href="module-infobutton.html">infobutton</a></li><li><a href="module-recordinfopopup.html">recordinfopopup</a></li><li><a href="module-sendevent.html">sendevent</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Dec 15 2015 13:52:04 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Feb 10 2016 16:13:24 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

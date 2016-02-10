@@ -39,7 +39,7 @@ Ember.Application.initializer({
 
             partials: {
                 buttons: ["formbutton-previous", "formbutton-cancel", "formbutton-submit"]
-            },
+            }
         }, formOptions);
 
         application.register('form:scheduleform', form);

@@ -21,8 +21,14 @@ Ember.Application.initializer({
             isNone = Ember.isNone,
             __ = Ember.String.loc;
 
+        /**
+         * @component statemapping
+         */
         var component = Ember.Component.extend({
-
+            /**
+             * @property placeholder
+             * @default __('write template')
+             */
             placeholder: __('write template'),
 
             /**
