@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/elementidselectorwithoptions/component.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+
+    <h1 class="page-title">Source: components/elementidselectorwithoptions/component.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see &lt;http://www.gnu.org/licenses/>.
+ */
+
+Ember.Application.initializer({
+    name: 'component-elementidselectorwithoptions',
+    after: ['SearchmethodsRegistry', 'HashUtils'],
+    initialize: function(container, application) {
+        var searchmethodsRegistry = container.lookupFactory('registry:searchmethods');
+
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone,
+            __ = Ember.String.loc;
+
+        /**
+         * @component elementidselectorwithoptions
+         */
+        var component = Ember.Component.extend({
+            additionnalSelectionButtons: ['removeitembutton'],
+
+            searchMethod: function () {
+                var searchMethodKey = get(this, 'content.model.options.source.searchMethod');
+                return searchmethodsRegistry.getByName(searchMethodKey);
+            }.property('content.model.options.source.searchMethod'),
+
+            helpModal: function () {
+                return get(this, 'searchMethod.help');
+            }.property('searchMethod'),
+
+            /**
+             * Columns available on the "avaiable data" table. This computed property gets the list of columns defined on the schema, and add a special column with the add button
+             * @property availableDataColumns
+             * @type array
+             */
+            availableDataColumns: function() {
+                var columns = get(this, 'content.model.options.source.columns');
+                var result = Ember.A();
+
+                for (var i = 0; i &lt; columns.length; i++) {
+                    var currentColumn = columns[i];
+                    var title = get(currentColumn, 'title'),
+                        name = get(currentColumn, 'name');
+
+                    result.pushObject({
+                        title: __(title),
+                        name: name
+                    });
+                }
+
+                result.pushObject({
+                    action: 'select',
+                    actionAll: (get(this, 'multiselect') === true ? 'selectAll' : undefined),
+                    title: new Ember.Handlebars.SafeString('&lt;span class="glyphicon glyphicon-plus-sign">&lt;/span>'),
+                    style: 'text-align: center;'
+                });
+
+                return result;
+            }.property('content.model.options.source.columns'),
+
+            init: function() {
+                if (isNone(get(this, 'selectedData'))) {
+                    set(this, 'selectedData', []);
+                }
+
+                if (isNone(get(this, 'searchPhrase'))) {
+                    set(this, 'searchPhrase', null);
+                }
+
+                if (isNone(get(this, 'multiselect'))) {
+                    set(this, 'multiselect', true);
+                }
+
+                set(this, 'listedAvailableItems', []);
+
+                this._super.apply(this, arguments);
+
+                var store = DS.Store.create({
+                    container: this.get('container')
+                });
+
+                set(this, 'componentDataStore', store);
+
+                var query = {filter: {_id: undefined}}, me = this;
+
+                if (!isNone(get(this,'content'))) {
+                    if (get(this, 'multiselect') === true) {
+                        var content = get(this, 'content') || [];
+                        query.filter._id = {'$in': content};
+                    }
+                    else {
+                        query.filter._id = get(this, 'content');
+                    }
+
+                    var dataSchema = get(this, 'content.model.options.source.schema');
+
+                    store.findQuery(dataSchema, query).then(function(result) {
+                        var listedAvailableItems = get(result, 'content') || [];
+
+                        console.log('Received data:', l, content, listedAvailableItems);
+
+                        for(var i = 0, l = listedAvailableItems.length; i &lt; l; i++) {
+                            listedAvailableItems.pushObject(listedAvailableItems[i]);
+                        }
+
+                        set(me, 'listedAvailableItems', listedAvailableItems);
+                    });
+                }
+            },
+
+            //WARNING duplication
+            //TODO put this on a dedicated util
+            rendererFor: function(attribute) {
+                var type = get(attribute, 'type');
+                var role = get(attribute, 'options.role');
+                if(get(attribute, 'model.options.role')) {
+                    role = get(attribute, 'model.options.role');
+                }
+                var subRole = get(attribute, 'options.items.role');
+                if(role === 'array' &amp;&amp; !isNone(subRole)) {
+                    role = subRole;
+                }
+
+                var rendererName;
+                if (role) {
+                    rendererName = 'renderer-' + role;
+                } else {
+                    rendererName = 'renderer-' + type;
+                }
+
+                if (Ember.TEMPLATES[rendererName] === undefined) {
+                    rendererName = undefined;
+                }
+
+                return rendererName;
+            },
+
+            /**
+             * @property selectedItemHeaderRendererType
+             * The renderer type for the selected elements' header renderer
+             */
+            selectedItemHeaderRendererType: function () {
+                return this.rendererFor(get(this, 'selectedItemHeaderRendererAttr'));
+            }.property('selectedItemHeaderRendererAttr'),
+
+            /**
+             * @property selectedItemHeaderRendererAttr
+             * The attribute for the selected elements' header renderer
+             */
+            selectedItemHeaderRendererAttr: function () {
+                var attr = {
+                    type: get(this, 'content.model.options.items.type'),
+                    options: get(this, 'content.model.options.items')
+                };
+
+                return attr;
+            }.property(),
+
+            actions: {
+                select: function(element) {
+                    var selected = get(this, 'content.value') || [];
+
+                    if (selected.indexOf(element) &lt; 0) {
+                        console.log('Select element:', element);
+
+
+                        var polymorphicTypeKey = get(this, 'content.model.options.items.polymorphicTypeKey');
+
+                        //TODO manage default values
+                        var insertedElement = {};
+
+                        var typeKeyName = get(this, 'content.model.options.items.typeKeyName');
+                        var typeKeyValue;
+
+                        //TODO stop using polymorphicTypeKey, use sourceMappingKeys instead
+                        if(polymorphicTypeKey) {
+                            typeKeyValue = get(element, polymorphicTypeKey);
+                        } else {
+                            var modelName = get(this, 'content.model.options.items.model');
+                            if(modelName) {
+                                typeKeyValue = get(this, 'content.model.options.items.model');
+                            }
+                        }
+
+                        if(typeKeyValue &amp;&amp; typeKeyName) {
+                            insertedElement[typeKeyName] = typeKeyValue;
+                        }
+
+                        //Manage mapping : take properties from the available element and put them in the generated object
+                        var sourceMappingKeys = get(this, 'content.model.options.sourceMappingKeys');
+
+                        for (var i = 0; i &lt; sourceMappingKeys.length; i++) {
+                            var currentMappingOptions = sourceMappingKeys[i];
+                            insertedElement[currentMappingOptions.objectKey] = get(element, currentMappingOptions.sourceItemKey);
+                        }
+
+                        if (get(this, 'multiselect') === true) {
+                            selected.pushObject(insertedElement);
+                        }
+                        else {
+                            selected = [insertedElement];
+                        }
+                    }
+
+                    set(this, 'content.value', selected);
+                },
+
+                unselect: function(element) {
+                    console.error('unselect', element);
+                    var selected = get(this, 'content.value');
+
+                    var idx = selected.indexOf(element);
+
+                    if (idx >= 0) {
+                        console.log('Unselect element:', element);
+                        selected.removeAt(idx);
+                    }
+
+                    set(this, 'content.value', selected);
+                },
+
+                selectAll: function() {
+                    if (get(this, 'multiselect') === true) {
+                        var listedAvailableItems = get(this, 'listedAvailableItems');
+
+                        if(listedAvailableItems.length) {
+                            for (var i = 0, l = listedAvailableItems.length; i &lt; l; i++) {
+                                this.send('select', listedAvailableItems[i]);
+                            }
+                        }
+                    }
+                },
+
+                unselectAll: function() {
+                    set(this, 'selectedData', []);
+                },
+
+                search: function(search) {
+                    if(search) {
+                        var searchMethod = get(this, 'searchMethod');
+
+                        if(searchMethod) {
+                            var mfilter = searchMethod.buildFilter(search);
+                            set(this, 'searchPhrase', mfilter);
+                        }
+                    }
+                    else {
+                        set(this, 'searchPhrase', null);
+                    }
+                }
+            }
+        });
+        application.register('component:component-elementidselectorwithoptions', component);
+    }
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Widgets</h3><ul><li><a href="widget_List.html">List</a></li><li><a href="widget_TextWidget.html">TextWidget</a></li><li><a href="widget_Uiactionbutton.html">Uiactionbutton</a></li><li><a href="widget_Uimaintabcollection.html">Uimaintabcollection</a></li><li><a href="widget_Widgetcontainer.html">Widgetcontainer</a></li></ul><h3>Components</h3><ul><li><a href="component_actionbutton.html">actionbutton</a></li><li><a href="component_actionfilter.html">actionfilter</a></li><li><a href="component_arrayclassifiedcrecordselector.html">arrayclassifiedcrecordselector</a></li><li><a href="component_arrayeditor.html">arrayeditor</a></li><li><a href="component_classifiedcrecordselector.html">classifiedcrecordselector</a></li><li><a href="component_classifieditemselector.html">classifieditemselector</a></li><li><a href="component_colorchooser.html">colorchooser</a></li><li><a href="component_colpick.html">colpick</a></li><li><a href="component_contextselector.html">contextselector</a></li><li><a href="component_dateinterval.html">dateinterval</a></li><li><a href="component_dictclassifiedcrecordselector.html">dictclassifiedcrecordselector</a></li><li><a href="component_draggablebutton.html">draggablebutton</a></li><li><a href="component_dropdownbutton.html">dropdownbutton</a></li><li><a href="component_dropdownbuttoncontent.html">dropdownbuttoncontent</a></li><li><a href="component_Dropdownbuttonheader.html">Dropdownbuttonheader</a></li><li><a href="component_Dropdownbuttonoverview.html">Dropdownbuttonoverview</a></li><li><a href="component_Dropdownbuttontitle.html">Dropdownbuttontitle</a></li><li><a href="component_elementidselectorwithoptions.html">elementidselectorwithoptions</a></li><li><a href="component_eventkey.html">eventkey</a></li><li><a href="component_filefield.html">filefield</a></li><li><a href="component_filterclause.html">filterclause</a></li><li><a href="component_formulaeditor.html">formulaeditor</a></li><li><a href="component_ical.html">ical</a></li><li><a href="component_labelledlink.html">labelledlink</a></li><li><a href="component_linklist.html">linklist</a></li><li><a href="component_listtree.html">listtree</a></li><li><a href="component_miniform.html">miniform</a></li><li><a href="component_miniformcontent.html">miniformcontent</a></li><li><a href="component_miniformheader.html">miniformheader</a></li><li><a href="component_miniformheaderbuttons.html">miniformheaderbuttons</a></li><li><a href="component_miniformtitle.html">miniformtitle</a></li><li><a href="component_mixinselector.html">mixinselector</a></li><li><a href="component_modelselect.html">modelselect</a></li><li><a href="component_password.html">password</a></li><li><a href="component_propertiestopopup.html">propertiestopopup</a></li><li><a href="component_restobjectcombo.html">restobjectcombo</a></li><li><a href="component_rrule.html">rrule</a></li><li><a href="component_searchbar.html">searchbar</a></li><li><a href="component_sessioneditor.html">sessioneditor</a></li><li><a href="component_simpledicteditor.html">simpledicteditor</a></li><li><a href="component_slider.html">slider</a></li><li><a href="component_stringclassifiedcrecordselector.html">stringclassifiedcrecordselector</a></li><li><a href="component_tabheader.html">tabheader</a></li><li><a href="component_table.html">table</a></li><li><a href="component_tabs.html">tabs</a></li><li><a href="component_tabscontent.html">tabscontent</a></li><li><a href="component_tabscontentgroup.html">tabscontentgroup</a></li><li><a href="component_tabsheadergroup.html">tabsheadergroup</a></li><li><a href="component_textwithsortoption.html">textwithsortoption</a></li><li><a href="component_timestamptooltiped.html">timestamptooltiped</a></li><li><a href="component_typedvalue.html">typedvalue</a></li></ul><h3>Events</h3><ul><li><a href="module-crud.html#~event:add">add</a></li><li><a href="module-crud.html#~event:duplicate">duplicate</a></li><li><a href="module-crud.html#~event:edit">edit</a></li><li><a href="module-List.html#~event:isAllSelectedChanged">isAllSelectedChanged</a></li><li><a href="module-crud.html#~event:remove">remove</a></li><li><a href="module-crud.html#~event:removeSelection">removeSelection</a></li><li><a href="module-List.html#~event:rollbackableChanged">rollbackableChanged</a></li><li><a href="module-List.html#~event:widgetDataChanged">widgetDataChanged</a></li></ul><h3>Mixins</h3><ul><li><a href="module-arraysearch.html">arraysearch</a></li><li><a href="module-background.html">background</a></li><li><a href="module-crud.html">crud</a></li><li><a href="module-customfilterlist.html">customfilterlist</a></li><li><a href="module-downtime.html">downtime</a></li><li><a href="module-draggablecolumns.html">draggablecolumns</a></li><li><a href="module-EventConsumerMixin.html">EventConsumerMixin</a></li><li><a href="module-Gridlayout.html">Gridlayout</a></li><li><a href="module-horizontallayout.html">horizontallayout</a></li><li><a href="module-lightlayout.html">lightlayout</a></li><li><a href="module-listlinedetail.html">listlinedetail</a></li><li><a href="module-MetricConsumer.html">MetricConsumer</a></li><li><a href="module-MetricFilterable.html">MetricFilterable</a></li><li><a href="module-minimizebutton.html">minimizebutton</a></li><li><a href="module-pagination.html">pagination</a></li><li><a href="module-periodicrefresh.html">periodicrefresh</a></li><li><a href="module-responsivelist.html">responsivelist</a></li><li><a href="module-showviewbutton.html">showviewbutton</a></li><li><a href="module-sortablearray.html">sortablearray</a></li><li><a href="module-tablayout.html">tablayout</a></li><li><a href="module-verticallayout.html">verticallayout</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Feb 11 2016 10:20:16 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{{#each template in templates}}
+    <button  data-hint={{ unbound template.template.label}}
+        {{action 'modify' template.template }}
+        {{bind-attr class='template.template.CSSclass'}} >
+        {{glyphicon template.template.template.icon}}
+    </button>
+{{/each}}

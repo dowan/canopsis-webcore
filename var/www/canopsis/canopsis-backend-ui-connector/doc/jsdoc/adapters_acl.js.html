@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: adapters/acl.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+
+    <h1 class="page-title">Source: adapters/acl.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see &lt;http://www.gnu.org/licenses/>.
+ */
+
+Ember.Application.initializer({
+    name: 'AclAdapters',
+    after: 'ApplicationAdapter',
+    initialize: function(container, application) {
+
+        var ApplicationAdapter = container.lookupFactory('adapter:application');
+
+        var get = Ember.get,
+            isNone = Ember.isNone;
+
+        /**
+         * @adapter role
+         * @adapter group
+         * @adapter account
+         * @adapter user
+         * @adapter right
+         * @adapter profile
+         */
+        var adapter = ApplicationAdapter.extend({
+
+            /**
+             * @method buildURL
+             * @argument type
+             * @argument id
+             * @argument record_or_records
+             * @argument method
+             * @return {string} the url of the query
+             */
+            buildURL: function(type, id, record_or_records, method) {
+                console.log('buildURL', arguments);
+
+                if(type === 'account') {
+                    type = 'user';
+                }
+
+                if(method === 'GET') {
+                    return ('/rest/default_rights/' + type + (id ? '/' + id : ''));
+                } else if(type === 'action' &amp;&amp; (method === 'POST' || method === 'PUT')) {
+                    return ('/rest/default_rights/' + type + (id ? '/' + id : ''));
+                } else if(method === 'DELETE') {
+                    return ('/account/delete/' + type + (id ? '/' + id : ''));
+                } else {
+                    return ('/account/' + type + (id ? '/' + id : ''));
+                }
+            },
+
+            /**
+             * @method find
+             */
+            find: function(store, type, id, record) {
+                if (isNone(type) || isNone(type.typeKey)) {
+                    console.error('Error while retrieving typeKey from type is it is none.');
+                }
+                return this.ajax(this.buildURL(type.typeKey, id, record, 'GET'), 'GET');
+            },
+
+            /**
+             * @method findMany
+             */
+            findMany: function(store, type, ids, records) {
+                if (isNone(type) || isNone(type.typeKey)) {
+                    console.error('Error while retrieving typeKey from type is it is none.');
+                }
+                return this.ajax(this.buildURL(type.typeKey, ids, records, 'GET'), 'GET', { data: { ids: ids } });
+            },
+
+            /**
+             * @method findQuery
+             */
+            findQuery: function(store, type, query) {
+                if (isNone(type) || isNone(type.typeKey)) {
+                    console.error('Error while retrieving typeKey from type is it is none.');
+                }
+                return this.ajax(this.buildURL(type.typeKey, undefined, undefined, 'GET'), 'GET', { data: query });
+            },
+
+            /**
+             * @method createRecord
+             */
+            createRecord: function(store, type, record) {
+                var me = this;
+                if (isNone(type) || isNone(type.typeKey)) {
+                    console.error('Error while retrieving typeKey from type is it is none.');
+                }
+
+                return new Ember.RSVP.Promise(function(resolve, reject) {
+                    var url = me.buildURL(type.typeKey, undefined, record, 'POST');
+                    var hash = me.serialize(record, {includeId: true});
+
+                    var data = {};
+                    data[type.typeKey] = JSON.stringify(hash);
+
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: data
+                    }).then(resolve, reject);
+                });
+            },
+
+            /**
+             * @method updateRecord
+             */
+            updateRecord: function(store, type, record) {
+                var me = this;
+                if (isNone(type) || isNone(type.typeKey)) {
+                    console.error('Error while retrieving typeKey from type is it is none.');
+                }
+
+                return new Ember.RSVP.Promise(function(resolve, reject) {
+                    var url = me.buildURL(type.typeKey, undefined, record, 'POST');
+                    var hash = me.serialize(record, {includeId: true});
+
+                    var data = {};
+                    data[type.typeKey] = JSON.stringify(hash);
+
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: data
+                    }).then(resolve, reject);
+                });
+            },
+
+            /**
+             * @method deleteRecord
+             */
+            deleteRecord: function(store, type, record) {
+                var id = get(record, 'id');
+                if (isNone(type) || isNone(type.typeKey)) {
+                    console.error('Error while retrieving typeKey from type is it is none.');
+                }
+                return this.ajax(this.buildURL(type.typeKey, id, record, 'DELETE'), 'DELETE');
+            }
+        });
+
+        application.register('adapter:role', adapter);
+        application.register('adapter:group', adapter);
+        application.register('adapter:account', adapter);
+        application.register('adapter:user', adapter);
+        application.register('adapter:right', adapter);
+        application.register('adapter:profile', adapter);
+    }
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Adapters</h3><ul><li><a href="adapter_action.html">action</a></li><li><a href="adapter_baseadapter.html">baseadapter</a></li><li><a href="adapter_cancel.html">cancel</a></li><li><a href="adapter_context.html">context</a></li><li><a href="adapter_crecord.html">crecord</a></li><li><a href="adapter_cservice.html">cservice</a></li><li><a href="adapter_entitylink.html">entitylink</a></li><li><a href="adapter_eue.html">eue</a></li><li><a href="adapter_event.html">event</a></li><li><a href="adapter_eventlog.html">eventlog</a></li><li><a href="adapter_filter.html">filter</a></li><li><a href="adapter_linklist.html">linklist</a></li><li><a href="adapter_loggedaccount.html">loggedaccount</a></li><li><a href="adapter_pojo.html">pojo</a></li><li><a href="adapter_profile.html">profile</a></li><li><a href="adapter_Serie2.html">Serie2</a></li><li><a href="adapter_StatsFilter.html">StatsFilter</a></li><li><a href="adapter_Storage.html">Storage</a></li><li><a href="adapter_StorageCompositeAdapter.html">StorageCompositeAdapter</a></li><li><a href="adapter_StorageDefaultAdapter.html">StorageDefaultAdapter</a></li><li><a href="adapter_StorageFileAdapter.html">StorageFileAdapter</a></li><li><a href="adapter_StoragePeriodicAdapter.html">StoragePeriodicAdapter</a></li><li><a href="adapter_StorageTimedAdapter.html">StorageTimedAdapter</a></li><li><a href="adapter_trap.html">trap</a></li><li><a href="adapter_userview.html">userview</a></li><li><a href="adapter_userviewsimplemodel.html">userviewsimplemodel</a></li></ul><h3>Serializers</h3><ul><li><a href="serializer_ctx.html">ctx</a></li><li><a href="serializer_ctxcomponent.html">ctxcomponent</a></li><li><a href="serializer_ctxmetric.html">ctxmetric</a></li><li><a href="serializer_ctxresource.html">ctxresource</a></li><li><a href="serializer_ctxselector.html">ctxselector</a></li><li><a href="serializer_ctxtopology.html">ctxtopology</a></li><li><a href="serializer_job.html">job</a></li><li><a href="serializer_taskmail.html">taskmail</a></li><li><a href="serializer_ticket.html">ticket</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Feb 11 2016 12:02:29 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

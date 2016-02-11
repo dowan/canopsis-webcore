@@ -121,5 +121,7 @@ define(['ember-lib', 'ember-data-lib'], function () {
         SHOWMODULES: false,
     };
 
+    window.canopsisConfiguration = canopsisConfiguration;
+
     return canopsisConfiguration;
 });

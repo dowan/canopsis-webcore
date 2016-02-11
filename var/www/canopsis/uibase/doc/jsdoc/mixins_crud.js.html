@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: mixins/crud.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+
+    <h1 class="page-title">Source: mixins/crud.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see &lt;http://www.gnu.org/licenses/>.
+ */
+
+
+Ember.Application.initializer({
+    name: 'CrudMixin',
+    after: ['MixinFactory', 'FormsUtils', 'HashUtils', 'DataUtils'],
+    initialize: function(container, application) {
+        var Mixin = container.lookupFactory('factory:mixin');
+
+        var formsUtils = container.lookupFactory('utility:forms');
+        var hashUtils = container.lookupFactory('utility:hash');
+        var dataUtils = container.lookupFactory('utility:data');
+
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone,
+            __ = Ember.String.loc;
+
+        /**
+         * @mixin crud
+         *
+         * @description
+         * Implement CRUD handling for widgets that manages collections
+         *
+         * Useful in lists for example, where it adds buttons to CRUD list elements.
+         *
+         * This mixin add buttons on the widget :
+         *   - a "create" button, showing a form to create and insert a new element
+         *   - a "delete" button, allowing to delete the currently selected item
+         *   - an "edit" button, to show an edition form for the currently selected item
+         *   - a "duplicate" button, that allows to copy the selected item, and to show directly an edition form to make modifications on it.
+         *
+         */
+        var mixin = Mixin('crud', {
+            partials: {
+                selectionToolbarButtons: [],
+                actionToolbarButtons: [],
+                itemactionbuttons: [],
+                header: [],
+                subHeader: [],
+                footer: []
+            },
+
+            /**
+             * @method mixinsOptionsReady
+             */
+            mixinsOptionsReady: function () {
+                this._super();
+
+                if (!get(this, 'mixinOptions.crud.hideRemove')) {
+                    get(this,'partials.selectionToolbarButtons').pushObject('actionbutton-removeselection');
+                    get(this,'partials.itemactionbuttons').pushObject('actionbutton-duplicate');
+                    get(this,'partials.itemactionbuttons').pushObject('actionbutton-remove');
+                }
+                if (!get(this, 'mixinOptions.crud.hideEdit')) {
+                    get(this,'partials.itemactionbuttons').pushObject('actionbutton-edit');
+                }
+                if (!get(this, 'mixinOptions.crud.hideCreate')) {
+                    get(this,'partials.actionToolbarButtons').pushObject('actionbutton-create');
+                }
+
+                set(this, 'itemsPerPagePropositionSelected', get(this, 'itemsPerPage'));
+            },
+
+            /**
+             * @property userCanReadRecord
+             * @type Boolean
+             * @description Whether the user can read the records handled by the mixin
+             */
+            userCanReadRecord: true,
+
+            /**
+             * @property userCanCreateRecord
+             * @type Boolean
+             * @description Whether the user can read the records handled by the mixin
+             */
+            userCanCreateRecord: true,
+
+            /**
+             * @property userCanUpdateRecord
+             * @type Boolean
+             * @description Whether the user can update the records handled by the mixin
+             */
+            userCanUpdateRecord: true,
+
+            /**
+             * @property userCanDeleteRecord
+             * @type Boolean
+             * @description Whether the user can delete the records handled by the mixin
+             */
+            userCanDeleteRecord: true,
+
+            onRecordReady: function(record) {
+                void(record);
+                this._super.apply(this, arguments);
+            },
+
+            actions: {
+                /**
+                 * @event add
+                 * @param {string} recordType
+                 */
+                add: function (recordType) {
+                    this._super.apply(this, arguments);
+
+                    console.log('add', recordType);
+
+                    var record = get(this, 'widgetDataStore').createRecord(recordType, {
+                        crecord_type: recordType
+                    });
+
+                    var formoptions = {
+                        title: 'Add ' + recordType
+                    };
+
+                    showEditFormAndSaveRecord(this, record, formoptions);
+                },
+
+                /**
+                 * @event duplicate
+                 * @param {DS.Model} record
+                 */
+                duplicate: function (record) {
+                    var store = dataUtils.getStore(),
+                        recordJson = dataUtils.cleanJSONIds(record.serialize()),
+                        recordType = record.constructor.typeKey,
+                        payload = {};
+
+                    payload[recordType] = recordJson;
+
+                    store.pushPayload(recordType, payload);
+
+                    var newRecord = store.getById(recordType, recordJson.id);
+
+                    var formoptions = {
+                        title: 'Duplicate ' + recordType,
+                        inspectedItemType: recordType
+                    };
+
+                    showEditFormAndSaveRecord(this, newRecord, formoptions);
+                },
+
+
+                /**
+                 * @event edit
+                 * @param {DS.Model} record
+                 * @param {boolean} noconfirm
+                 */
+                edit: function (record) {
+                    console.log('edit', record);
+
+                    var extraoptions = get(this, 'mixinOptions.crud.formoptions'),
+                        formclass = get(this, 'mixinOptions.crud.form');
+                    var formoptions = {
+                        title: 'Edit ' + get(record, 'crecord_type'),
+                        inspectedItemType: get(this, 'listed_crecord_type')
+                    };
+
+                    if(!isNone(extraoptions)) {
+                        $.extend(formoptions, extraoptions);
+                    }
+
+                    if(isNone(formclass)) {
+                        formclass = 'modelform';
+                    }
+
+                    console.log('open form:', formclass, formoptions);
+
+                    var ctrl = this;
+                    var recordWizard = formsUtils.showNew(formclass, record, formoptions);
+
+                    recordWizard.submit.then(function(form) {
+                        console.log('record going to be saved', record, form);
+
+                        record = get(form, 'formContext');
+
+                        record.save();
+
+                        ctrl.trigger('refresh');
+                    });
+                },
+
+                /**
+                 * @event remove
+                 * @param {DS.Model} record
+                 * @param {boolean} noconfirm
+                 */
+                remove: function(record, noconfirm) {
+                    console.info('removing record', record);
+
+                    if (noconfirm) {
+                        record.deleteRecord();
+                        record.save();
+                    } else {
+                        var confirmform = formsUtils.showNew('confirmform', {}, {
+                            title: __('Delete this record ?')
+                        });
+
+                        confirmform.submit.then(function(form) {
+                            void(form);
+
+                            record.deleteRecord();
+                            record.save();
+                        });
+                    }
+                },
+
+                /**
+                 * @event removeSelection
+                 */
+                removeSelection: function() {
+                    var confirmform = formsUtils.showNew('confirmform', {}, {
+                        title: __('Delete these records ?')
+                    });
+                    var crudController = this;
+                    confirmform.submit.then(function(form) {
+                        void(form);
+
+                        var selected = crudController.get('widgetData').filterBy('isSelected', true);
+                        console.log('remove action', selected);
+
+                        for (var i = 0, l = selected.length; i &lt; l; i++) {
+                            var currentSelectedRecord = selected[i];
+                            crudController.send('remove', currentSelectedRecord, true);
+                        }
+                    });
+
+                }
+            }
+        });
+
+        /**
+         * @method showEditFormAndSaveRecord
+         * @private
+         * @param {This} self
+         * @param {DS.Model} record the record to edit
+         * @param {string} recordType
+         *
+         * Display an edition form for the record passed as first parameter, and make the changes persistant when the user saves the form.
+         */
+        function showEditFormAndSaveRecord(self, record, formoptions) {
+            self.onRecordReady(record);
+
+            console.log('temp record', record, formsUtils);
+
+            var extraoptions = get(self, 'mixinOptions.crud.formoptions'),
+                formclass = get(self, 'mixinOptions.crud.form');
+
+            if(!isNone(extraoptions)) {
+                $.extend(formoptions, extraoptions);
+            }
+
+            if(isNone(formclass)) {
+                formclass = 'modelform';
+            }
+
+            console.log('open form:', formclass, formoptions);
+
+            var recordWizard = formsUtils.showNew(formclass, record, formoptions);
+
+            var ctrl = self;
+
+            recordWizard.submit.then(function(form) {
+                console.log('record going to be saved', record, form);
+
+                //Dirty hack to make acl routes work
+                if(get(record, 'crecord_type') === 'group') {
+                    set(record, 'id', hashUtils.generateId('group'));
+                }
+                if(get(record, 'crecord_type') === 'profile') {
+                    console.error('set id for profile', record);
+                    set(record, 'id', hashUtils.generateId('profile'));
+                }
+
+                record = get(form, 'formContext');
+                record.save().then(function() {
+                    ctrl.refreshContent();
+                });
+            });
+        }
+
+        application.register('mixin:crud', mixin);
+    }
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Widgets</h3><ul><li><a href="widget_List.html">List</a></li><li><a href="widget_TextWidget.html">TextWidget</a></li><li><a href="widget_Uiactionbutton.html">Uiactionbutton</a></li><li><a href="widget_Uimaintabcollection.html">Uimaintabcollection</a></li><li><a href="widget_Widgetcontainer.html">Widgetcontainer</a></li></ul><h3>Components</h3><ul><li><a href="component_actionbutton.html">actionbutton</a></li><li><a href="component_actionfilter.html">actionfilter</a></li><li><a href="component_arrayclassifiedcrecordselector.html">arrayclassifiedcrecordselector</a></li><li><a href="component_arrayeditor.html">arrayeditor</a></li><li><a href="component_classifiedcrecordselector.html">classifiedcrecordselector</a></li><li><a href="component_classifieditemselector.html">classifieditemselector</a></li><li><a href="component_colorchooser.html">colorchooser</a></li><li><a href="component_colpick.html">colpick</a></li><li><a href="component_contextselector.html">contextselector</a></li><li><a href="component_dateinterval.html">dateinterval</a></li><li><a href="component_dictclassifiedcrecordselector.html">dictclassifiedcrecordselector</a></li><li><a href="component_draggablebutton.html">draggablebutton</a></li><li><a href="component_dropdownbutton.html">dropdownbutton</a></li><li><a href="component_dropdownbuttoncontent.html">dropdownbuttoncontent</a></li><li><a href="component_Dropdownbuttonheader.html">Dropdownbuttonheader</a></li><li><a href="component_Dropdownbuttonoverview.html">Dropdownbuttonoverview</a></li><li><a href="component_Dropdownbuttontitle.html">Dropdownbuttontitle</a></li><li><a href="component_elementidselectorwithoptions.html">elementidselectorwithoptions</a></li><li><a href="component_eventkey.html">eventkey</a></li><li><a href="component_filefield.html">filefield</a></li><li><a href="component_filterclause.html">filterclause</a></li><li><a href="component_formulaeditor.html">formulaeditor</a></li><li><a href="component_ical.html">ical</a></li><li><a href="component_labelledlink.html">labelledlink</a></li><li><a href="component_linklist.html">linklist</a></li><li><a href="component_listtree.html">listtree</a></li><li><a href="component_miniform.html">miniform</a></li><li><a href="component_miniformcontent.html">miniformcontent</a></li><li><a href="component_miniformheader.html">miniformheader</a></li><li><a href="component_miniformheaderbuttons.html">miniformheaderbuttons</a></li><li><a href="component_miniformtitle.html">miniformtitle</a></li><li><a href="component_mixinselector.html">mixinselector</a></li><li><a href="component_modelselect.html">modelselect</a></li><li><a href="component_password.html">password</a></li><li><a href="component_propertiestopopup.html">propertiestopopup</a></li><li><a href="component_restobjectcombo.html">restobjectcombo</a></li><li><a href="component_rrule.html">rrule</a></li><li><a href="component_searchbar.html">searchbar</a></li><li><a href="component_sessioneditor.html">sessioneditor</a></li><li><a href="component_simpledicteditor.html">simpledicteditor</a></li><li><a href="component_slider.html">slider</a></li><li><a href="component_stringclassifiedcrecordselector.html">stringclassifiedcrecordselector</a></li><li><a href="component_tabheader.html">tabheader</a></li><li><a href="component_table.html">table</a></li><li><a href="component_tabs.html">tabs</a></li><li><a href="component_tabscontent.html">tabscontent</a></li><li><a href="component_tabscontentgroup.html">tabscontentgroup</a></li><li><a href="component_tabsheadergroup.html">tabsheadergroup</a></li><li><a href="component_textwithsortoption.html">textwithsortoption</a></li><li><a href="component_timestamptooltiped.html">timestamptooltiped</a></li><li><a href="component_typedvalue.html">typedvalue</a></li></ul><h3>Events</h3><ul><li><a href="module-crud.html#~event:add">add</a></li><li><a href="module-crud.html#~event:duplicate">duplicate</a></li><li><a href="module-crud.html#~event:edit">edit</a></li><li><a href="module-List.html#~event:isAllSelectedChanged">isAllSelectedChanged</a></li><li><a href="module-crud.html#~event:remove">remove</a></li><li><a href="module-crud.html#~event:removeSelection">removeSelection</a></li><li><a href="module-List.html#~event:rollbackableChanged">rollbackableChanged</a></li><li><a href="module-List.html#~event:widgetDataChanged">widgetDataChanged</a></li></ul><h3>Mixins</h3><ul><li><a href="module-arraysearch.html">arraysearch</a></li><li><a href="module-background.html">background</a></li><li><a href="module-crud.html">crud</a></li><li><a href="module-customfilterlist.html">customfilterlist</a></li><li><a href="module-downtime.html">downtime</a></li><li><a href="module-draggablecolumns.html">draggablecolumns</a></li><li><a href="module-EventConsumerMixin.html">EventConsumerMixin</a></li><li><a href="module-Gridlayout.html">Gridlayout</a></li><li><a href="module-horizontallayout.html">horizontallayout</a></li><li><a href="module-lightlayout.html">lightlayout</a></li><li><a href="module-listlinedetail.html">listlinedetail</a></li><li><a href="module-MetricConsumer.html">MetricConsumer</a></li><li><a href="module-MetricFilterable.html">MetricFilterable</a></li><li><a href="module-minimizebutton.html">minimizebutton</a></li><li><a href="module-pagination.html">pagination</a></li><li><a href="module-periodicrefresh.html">periodicrefresh</a></li><li><a href="module-responsivelist.html">responsivelist</a></li><li><a href="module-showviewbutton.html">showviewbutton</a></li><li><a href="module-sortablearray.html">sortablearray</a></li><li><a href="module-tablayout.html">tablayout</a></li><li><a href="module-verticallayout.html">verticallayout</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Feb 11 2016 10:20:16 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
