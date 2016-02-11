@@ -51,7 +51,6 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 | File   | Note   |
 |--------|--------|
 | src/serializers/ctx.js |: autodetect xtype |
-| src/adapters/schema.js | make this asyncronous |
 | src/adapters/cservice.js |: do not use userPreferencesModelName |
 
 
@@ -61,5 +60,5 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 
 ## Additional info
 
-Minified version : 3 files (size: 48K)
-Development version : 33 files (size: 156K)
+Minified version : 3 files (size: 40K)
+Development version : 31 files (size: 148K)

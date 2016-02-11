@@ -17,7 +17,7 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(['canopsis/canopsis-backend-ui-connector/src/adapters/application'], function (ApplicationAdapter) {
+define(['canopsis/canopsis-backend-ui-connector/requirejs-modules/adapters/application'], function (ApplicationAdapter) {
     var shemasLimit = 200;
 
     /**

@@ -18,7 +18,7 @@
  */
 
 define([
-    'canopsis/canopsis-backend-ui-connector/src/adapters/schema',
+    'canopsis/canopsis-backend-ui-connector/requirejs-modules/adapters/schema',
 ], function (SchemaAdapter) {
     function compare(a,b) {
       if (a.id < b.id) {

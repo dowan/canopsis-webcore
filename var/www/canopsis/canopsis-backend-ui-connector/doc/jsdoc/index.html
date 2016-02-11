@@ -42,18 +42,54 @@
 
 
     <section>
-        <article><h1>Is-backend-ui-connector Canopsis Brick</h1><h2>Description</h2><p>Provides adapters to communicate with Canopsis backend</p>
+        <article><h1>Canopsis-backend-ui-connector Canopsis Brick</h1><h2>Description</h2><p>Provides adapters to communicate with Canopsis backend</p>
 <h2>Screenshots</h2><h2>Installation</h2><p>You need to clone the git repository and copy directory to Canopsis path</p>
 <pre class="prettyprint source"><code>$ git clone https://git.canopsis.net/canopsis-ui-bricks/canopsis-backend-ui-connector.git
 $ cp -r canopsis-backend-ui-connector $CANOPSIS_PATH/var/www/canopsis</code></pre><p>Then, you need to import specific schemas</p>
 <pre class="prettyprint source"><code>$ su - canopsis
 $ cp $CANOPSIS_PATH/var/www/canopsis/canopsis-backend-ui-connector/schemas/* $CANOPSIS_PATH/etc/schema.d
-$ schema2db update</code></pre><p>Then, you need to enable the brick</p>
+$ schema2db</code></pre><p>Then, you need to enable the brick</p>
 <pre class="prettyprint source"><code>$ su - canopsis
 $ webmodulemanager enable canopsis-backend-ui-connector</code></pre><p>You can see enabled bricks</p>
 <pre class="prettyprint source"><code>$ su - canopsis
 $ webmodulemanager list
-[u'core', u'uibase', u'monitoring', ..., **u'canopsis-backend-ui-connector'**]</code></pre><h2>Usage</h2><p>See <a href="https://git.canopsis.net/canopsis-ui-bricks/canopsis-backend-ui-connector/blob/master/doc/index.rst">Howto</a></p></article>
+[u'core', u'uibase', u'monitoring', ..., **u'canopsis-backend-ui-connector'**]</code></pre><h2>Usage</h2><p>See <a href="https://git.canopsis.net/canopsis-ui-bricks/canopsis-backend-ui-connector/blob/master/doc/index.rst">Howto</a></p>
+<h2>Continuous Integration</h2><p>Tested on commit : [ERROR : The brick is not in a dedicated git repository].</p>
+<table>
+<thead>
+<tr>
+<th>Target</th>
+<th>Status</th>
+<th>Log</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lint</td>
+<td>:ok: OK</td>
+</tr>
+</tbody>
+</table>
+<h2>Code Notes</h2><h3>TODOS</h3><table>
+<thead>
+<tr>
+<th>File</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>src/serializers/ctx.js</td>
+<td>: autodetect xtype</td>
+</tr>
+<tr>
+<td>src/adapters/cservice.js</td>
+<td>: do not use userPreferencesModelName</td>
+</tr>
+</tbody>
+</table>
+<h3>FIXMES</h3><h2>Additional info</h2><p>Minified version : 3 files (size: 40K)
+Development version : 31 files (size: 148K)</p></article>
     </section>
 
 
@@ -64,13 +100,13 @@ $ webmodulemanager list
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Adapters</h3><ul><li><a href="adapter_action.html">action</a></li><li><a href="adapter_application.html">application</a></li><li><a href="adapter_baseadapter.html">baseadapter</a></li><li><a href="adapter_cancel.html">cancel</a></li><li><a href="adapter_context.html">context</a></li><li><a href="adapter_crecord.html">crecord</a></li><li><a href="adapter_cservice.html">cservice</a></li><li><a href="adapter_entitylink.html">entitylink</a></li><li><a href="adapter_eue.html">eue</a></li><li><a href="adapter_event.html">event</a></li><li><a href="adapter_eventlog.html">eventlog</a></li><li><a href="adapter_filter.html">filter</a></li><li><a href="adapter_linklist.html">linklist</a></li><li><a href="adapter_loggedaccount.html">loggedaccount</a></li><li><a href="adapter_pojo.html">pojo</a></li><li><a href="adapter_profile.html">profile</a></li><li><a href="adapter_schema.html">schema</a></li><li><a href="adapter_Serie2.html">Serie2</a></li><li><a href="adapter_StatsFilter.html">StatsFilter</a></li><li><a href="adapter_Storage.html">Storage</a></li><li><a href="adapter_StorageCompositeAdapter.html">StorageCompositeAdapter</a></li><li><a href="adapter_StorageDefaultAdapter.html">StorageDefaultAdapter</a></li><li><a href="adapter_StorageFileAdapter.html">StorageFileAdapter</a></li><li><a href="adapter_StoragePeriodicAdapter.html">StoragePeriodicAdapter</a></li><li><a href="adapter_StorageTimedAdapter.html">StorageTimedAdapter</a></li><li><a href="adapter_trap.html">trap</a></li><li><a href="adapter_userview.html">userview</a></li><li><a href="adapter_userviewsimplemodel.html">userviewsimplemodel</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Adapters</h3><ul><li><a href="adapter_action.html">action</a></li><li><a href="adapter_baseadapter.html">baseadapter</a></li><li><a href="adapter_cancel.html">cancel</a></li><li><a href="adapter_context.html">context</a></li><li><a href="adapter_crecord.html">crecord</a></li><li><a href="adapter_cservice.html">cservice</a></li><li><a href="adapter_entitylink.html">entitylink</a></li><li><a href="adapter_eue.html">eue</a></li><li><a href="adapter_event.html">event</a></li><li><a href="adapter_eventlog.html">eventlog</a></li><li><a href="adapter_filter.html">filter</a></li><li><a href="adapter_linklist.html">linklist</a></li><li><a href="adapter_loggedaccount.html">loggedaccount</a></li><li><a href="adapter_pojo.html">pojo</a></li><li><a href="adapter_profile.html">profile</a></li><li><a href="adapter_Serie2.html">Serie2</a></li><li><a href="adapter_StatsFilter.html">StatsFilter</a></li><li><a href="adapter_Storage.html">Storage</a></li><li><a href="adapter_StorageCompositeAdapter.html">StorageCompositeAdapter</a></li><li><a href="adapter_StorageDefaultAdapter.html">StorageDefaultAdapter</a></li><li><a href="adapter_StorageFileAdapter.html">StorageFileAdapter</a></li><li><a href="adapter_StoragePeriodicAdapter.html">StoragePeriodicAdapter</a></li><li><a href="adapter_StorageTimedAdapter.html">StorageTimedAdapter</a></li><li><a href="adapter_trap.html">trap</a></li><li><a href="adapter_userview.html">userview</a></li><li><a href="adapter_userviewsimplemodel.html">userviewsimplemodel</a></li></ul><h3>Serializers</h3><ul><li><a href="serializer_ctx.html">ctx</a></li><li><a href="serializer_ctxcomponent.html">ctxcomponent</a></li><li><a href="serializer_ctxmetric.html">ctxmetric</a></li><li><a href="serializer_ctxresource.html">ctxresource</a></li><li><a href="serializer_ctxselector.html">ctxselector</a></li><li><a href="serializer_ctxtopology.html">ctxtopology</a></li><li><a href="serializer_job.html">job</a></li><li><a href="serializer_taskmail.html">taskmail</a></li><li><a href="serializer_ticket.html">ticket</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Dec 15 2015 11:46:27 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Feb 11 2016 10:56:03 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

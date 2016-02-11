@@ -53,7 +53,8 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var ApplicationAdapter = container.lookupFactory('adapter:application');
 
-        var isNone = Ember.isNone;
+        var isNone = Ember.isNone,
+            get = Ember.get;
 
         /**
          * @adapter context
@@ -78,9 +79,7 @@ Ember.Application.initializer({
                 return this.updateRecord(store, type, record);
             },
 
-            updateRecord: function(store, type, record) {
-
-                var id = get(record, 'id');
+            updateRecord: function(store, type, snapshot) {
 
                 var data = {};
                 var serializer = store.serializerFor(type.modelName);
@@ -96,7 +95,7 @@ Ember.Application.initializer({
                     context: data
                 };
 
-                return this.ajax(url, "PUT", {data: query});
+                return this.ajax(url, 'PUT', {data: query});
             },
 
             deleteRecord: function(store, type, record) {
@@ -112,7 +111,7 @@ Ember.Application.initializer({
                 void(store);
                 var url = this.buildURL();
 
-                if(typeof (query.filter) !== "string") {
+                if(typeof (query.filter) !== 'string') {
                     query._filter = query.filter;
                 }
                 else {
@@ -200,13 +199,13 @@ Ember.Application.initializer({
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Adapters</h3><ul><li><a href="adapter_action.html">action</a></li><li><a href="adapter_application.html">application</a></li><li><a href="adapter_baseadapter.html">baseadapter</a></li><li><a href="adapter_cancel.html">cancel</a></li><li><a href="adapter_context.html">context</a></li><li><a href="adapter_crecord.html">crecord</a></li><li><a href="adapter_cservice.html">cservice</a></li><li><a href="adapter_entitylink.html">entitylink</a></li><li><a href="adapter_eue.html">eue</a></li><li><a href="adapter_event.html">event</a></li><li><a href="adapter_eventlog.html">eventlog</a></li><li><a href="adapter_filter.html">filter</a></li><li><a href="adapter_linklist.html">linklist</a></li><li><a href="adapter_loggedaccount.html">loggedaccount</a></li><li><a href="adapter_pojo.html">pojo</a></li><li><a href="adapter_profile.html">profile</a></li><li><a href="adapter_schema.html">schema</a></li><li><a href="adapter_Serie2.html">Serie2</a></li><li><a href="adapter_StatsFilter.html">StatsFilter</a></li><li><a href="adapter_Storage.html">Storage</a></li><li><a href="adapter_StorageCompositeAdapter.html">StorageCompositeAdapter</a></li><li><a href="adapter_StorageDefaultAdapter.html">StorageDefaultAdapter</a></li><li><a href="adapter_StorageFileAdapter.html">StorageFileAdapter</a></li><li><a href="adapter_StoragePeriodicAdapter.html">StoragePeriodicAdapter</a></li><li><a href="adapter_StorageTimedAdapter.html">StorageTimedAdapter</a></li><li><a href="adapter_trap.html">trap</a></li><li><a href="adapter_userview.html">userview</a></li><li><a href="adapter_userviewsimplemodel.html">userviewsimplemodel</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Adapters</h3><ul><li><a href="adapter_action.html">action</a></li><li><a href="adapter_baseadapter.html">baseadapter</a></li><li><a href="adapter_cancel.html">cancel</a></li><li><a href="adapter_context.html">context</a></li><li><a href="adapter_crecord.html">crecord</a></li><li><a href="adapter_cservice.html">cservice</a></li><li><a href="adapter_entitylink.html">entitylink</a></li><li><a href="adapter_eue.html">eue</a></li><li><a href="adapter_event.html">event</a></li><li><a href="adapter_eventlog.html">eventlog</a></li><li><a href="adapter_filter.html">filter</a></li><li><a href="adapter_linklist.html">linklist</a></li><li><a href="adapter_loggedaccount.html">loggedaccount</a></li><li><a href="adapter_pojo.html">pojo</a></li><li><a href="adapter_profile.html">profile</a></li><li><a href="adapter_Serie2.html">Serie2</a></li><li><a href="adapter_StatsFilter.html">StatsFilter</a></li><li><a href="adapter_Storage.html">Storage</a></li><li><a href="adapter_StorageCompositeAdapter.html">StorageCompositeAdapter</a></li><li><a href="adapter_StorageDefaultAdapter.html">StorageDefaultAdapter</a></li><li><a href="adapter_StorageFileAdapter.html">StorageFileAdapter</a></li><li><a href="adapter_StoragePeriodicAdapter.html">StoragePeriodicAdapter</a></li><li><a href="adapter_StorageTimedAdapter.html">StorageTimedAdapter</a></li><li><a href="adapter_trap.html">trap</a></li><li><a href="adapter_userview.html">userview</a></li><li><a href="adapter_userviewsimplemodel.html">userviewsimplemodel</a></li></ul><h3>Serializers</h3><ul><li><a href="serializer_ctx.html">ctx</a></li><li><a href="serializer_ctxcomponent.html">ctxcomponent</a></li><li><a href="serializer_ctxmetric.html">ctxmetric</a></li><li><a href="serializer_ctxresource.html">ctxresource</a></li><li><a href="serializer_ctxselector.html">ctxselector</a></li><li><a href="serializer_ctxtopology.html">ctxtopology</a></li><li><a href="serializer_job.html">job</a></li><li><a href="serializer_taskmail.html">taskmail</a></li><li><a href="serializer_ticket.html">ticket</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Dec 15 2015 11:46:27 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Feb 11 2016 10:56:03 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

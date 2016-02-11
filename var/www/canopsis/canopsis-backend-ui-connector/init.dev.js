@@ -26,7 +26,6 @@
  define([
     'canopsis/canopsis-backend-ui-connector/src/adapters/acl',
     'canopsis/canopsis-backend-ui-connector/src/adapters/action',
-    'canopsis/canopsis-backend-ui-connector/src/adapters/application',
     'canopsis/canopsis-backend-ui-connector/src/adapters/baseadapter',
     'canopsis/canopsis-backend-ui-connector/src/adapters/cancel',
     'canopsis/canopsis-backend-ui-connector/src/adapters/context',
@@ -40,7 +39,6 @@
     'canopsis/canopsis-backend-ui-connector/src/adapters/linklist',
     'canopsis/canopsis-backend-ui-connector/src/adapters/loggedaccount',
     'canopsis/canopsis-backend-ui-connector/src/adapters/pojo',
-    'canopsis/canopsis-backend-ui-connector/src/adapters/schema',
     'canopsis/canopsis-backend-ui-connector/src/adapters/seriev2',
     'canopsis/canopsis-backend-ui-connector/src/adapters/statsfilter',
     'canopsis/canopsis-backend-ui-connector/src/adapters/storage',
@@ -56,5 +54,7 @@
     'canopsis/canopsis-backend-ui-connector/src/serializers/job',
     'canopsis/canopsis-backend-ui-connector/src/serializers/linklist',
     'canopsis/canopsis-backend-ui-connector/src/serializers/task',
-    'canopsis/canopsis-backend-ui-connector/src/serializers/ticket'
+    'canopsis/canopsis-backend-ui-connector/src/serializers/ticket',
+    'canopsis/canopsis-backend-ui-connector/requirejs-modules/adapters/application',
+    'canopsis/canopsis-backend-ui-connector/requirejs-modules/adapters/schema'
 ], function () {});
