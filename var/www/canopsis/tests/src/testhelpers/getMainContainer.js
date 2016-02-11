@@ -17,17 +17,14 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
- require.config({
-    paths: {
-
-    }
+/**
+ * @class TestHelpers
+ */
+/**
+ * @method getMainContainer
+ * @description returns the main application container
+ * @returns {Ember.Container} the main application container
+ */
+Ember.Test.registerAsyncHelper('getMainContainer', function() {
+    return window.$A.__container__;
 });
-
- define([
-    'canopsis/tests/src/testhelpers/ajax-stub',
-    'canopsis/tests/src/testhelpers/getMainContainer',
-    'canopsis/tests/src/testhelpers/waitForElement',
-    'canopsis/tests/src/testhelpers/waitForElementRemoval',
-    'canopsis/tests/src/testhelpers/waitMilliseconds',
-    'canopsis/tests/requirejs-modules/test-initializer'
-], function () {});

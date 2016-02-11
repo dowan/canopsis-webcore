@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: waitForElementRemoval.js</title>
+    <title>JSDoc: Source: getMainContainer.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -18,7 +18,7 @@
 <div id="main">
 
 
-    <h1 class="page-title">Source: waitForElementRemoval.js</h1>
+    <h1 class="page-title">Source: getMainContainer.js</h1>
 
     
 
@@ -49,25 +49,13 @@
 /**
  * @class TestHelpers
  */
-/** @method waitForElementRemoval
- * @argument {jQuerySelector} element A jquery selector that match an element present in the DOM
- * @description returns a promise that allows to wait until a specified element is not present anymore on the DOM
- * @returns Ember.Test.promise
- * @example waitForElementRemoval('.modal-backdrop').then(function() {
-    // code here will be executed when the element with the class "modal-backdrop" is not on the DOM
-});
+/**
+ * @method getMainContainer
+ * @description returns the main application container
+ * @returns {Ember.Container} the main application container
  */
-Ember.Test.registerAsyncHelper('waitForElementRemoval', function(app, element) {
-    return Ember.Test.promise(function(resolve) {
-        Ember.Test.adapter.asyncStart();
-        var interval = setInterval(function(){
-            if($(element).length===0){
-                clearInterval(interval);
-                Ember.Test.adapter.asyncEnd();
-                Ember.run(null, resolve, true);
-            }
-        }, 100);
-    });
+Ember.Test.registerAsyncHelper('getMainContainer', function() {
+    return window.$A.__container__;
 });
 </code></pre>
         </article>
