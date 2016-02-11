@@ -79,7 +79,28 @@ Ember.Application.initializer({
              * @default Ember.computed.alias('parentView.parentView')
              * @description the root "tabs" component
              */
-            tabContainer: Ember.computed.alias('parentView.parentView')
+            tabContainer: Ember.computed.alias('parentView.parentView'),
+
+            /**
+             * @property active
+             * @description whether the tab header must be active or not
+             * @type boolean
+             * @default
+             */
+            active: false,
+
+             /**
+             * @method init
+             * @description check if tab must be assigned an "active" class
+             */
+            init: function() {
+                if(get(this, 'active') && get(this, 'active') === true) {
+                    get(this, 'classNames').pushObject('active');
+                } else {
+                    get(this, 'classNames').removeObject('active');
+                }
+                this._super();
+            }
         });
 
         application.register('component:component-tabheader', component);

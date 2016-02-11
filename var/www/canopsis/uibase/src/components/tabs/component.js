@@ -27,7 +27,7 @@ Ember.Application.initializer({
          * @example
          *   {{#component-tabs}}
          *       {{#component-tabsheadergroup}}
-         *           {{component-tabheader ref="filter" label="Filter"}}
+         *           {{component-tabheader ref="filter" label="Filter" active=true}}
          *           {{component-tabheader ref="output" label="Generated filter"}}
          *           {{component-tabheader ref="result" label="Result"}}
          *       {{/component-tabsheadergroup}}

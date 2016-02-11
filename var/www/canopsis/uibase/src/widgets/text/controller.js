@@ -257,7 +257,7 @@ Ember.Application.initializer({
                 var template = get(this, 'template'),
                     context = get(this, 'context');
 
-                var appliedDynamicProperties = get(this, 'appliedDynamicProperties') || {};
+                var appliedDynamicProperties = get(this, 'appliedDynamicProperties') || {};
                 $.extend(context, appliedDynamicProperties);
 
 

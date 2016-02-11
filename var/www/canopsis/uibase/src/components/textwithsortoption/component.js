@@ -34,7 +34,7 @@ Ember.Application.initializer({
             /**
              * @property directionTypes
              * @type array
-             * @description the directions to display in the combobox
+             * @description the directions to display in the combobox
              * @default
              */
             directionTypes: ['ASC', 'DESC'],
