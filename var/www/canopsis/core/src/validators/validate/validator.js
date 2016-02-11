@@ -39,7 +39,7 @@ Ember.Application.initializer({
             var validator = container.lookupFactory('validator:' + validatorName);
 
             if (validator !== undefined) {
-                validators.push(Ember.validators[validatorName]);
+                validators.push(validator);
             }
 
 
