@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: adapters/loggedaccount.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+
+    <h1 class="page-title">Source: adapters/loggedaccount.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see &lt;http://www.gnu.org/licenses/>.
+ */
+
+Ember.Application.initializer({
+    name: 'LoggedAccountAdapter',
+    after: 'ApplicationAdapter',
+    initialize: function(container, application) {
+        var ApplicationAdapter = container.lookupFactory('adapter:application');
+
+        var isNone = Ember.isNone;
+
+        /**
+         * @adapter loggedaccount
+         */
+        var adapter = ApplicationAdapter.extend({
+            buildURL: function(type, id) {
+                void(type);
+                void(id);
+
+                return '/account/me';
+            },
+
+            find: function () {
+                return this.ajax('/account/me', 'GET', {});
+            },
+
+            updateRecord: function(store, type, record) {
+                var me = this;
+
+                if (isNone(type) || isNone(type.typeKey)) {
+                    console.error('Error while retrieving typeKey from type is it is none.');
+                }
+
+                return new Ember.RSVP.Promise(function(resolve, reject) {
+                    void(reject);
+
+                    var hash = me.serialize(record, {includeId: true});
+                    var url = '/account/user';
+
+                    var payload = JSON.stringify({
+                        user: hash
+                    });
+
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: payload
+                    });
+                });
+            },
+
+            keepAlive: function (username) {
+
+                /**
+                 * @method that tells the backend the user is still connected
+                 * called periodically
+                 */
+
+                this.ajax(
+                    '/keepalive',
+                    'GET',
+                    { data: {username: username} }
+                );
+            },
+
+            sessionStart: function (username) {
+
+                /**
+                 * @method called at application statup
+                 * allow user session start information to be registered
+                 */
+
+                this.ajax(
+                    '/sessionstart',
+                    'GET',
+                    { data: {username: username} }
+                );
+            }
+        });
+
+
+        application.register('adapter:loggedaccount', adapter);
+    }
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Adapters</h3><ul><li><a href="adapter_action.html">action</a></li><li><a href="adapter_baseadapter.html">baseadapter</a></li><li><a href="adapter_cancel.html">cancel</a></li><li><a href="adapter_context.html">context</a></li><li><a href="adapter_crecord.html">crecord</a></li><li><a href="adapter_cservice.html">cservice</a></li><li><a href="adapter_entitylink.html">entitylink</a></li><li><a href="adapter_eue.html">eue</a></li><li><a href="adapter_event.html">event</a></li><li><a href="adapter_eventlog.html">eventlog</a></li><li><a href="adapter_filter.html">filter</a></li><li><a href="adapter_linklist.html">linklist</a></li><li><a href="adapter_loggedaccount.html">loggedaccount</a></li><li><a href="adapter_pojo.html">pojo</a></li><li><a href="adapter_profile.html">profile</a></li><li><a href="adapter_Serie2.html">Serie2</a></li><li><a href="adapter_StatsFilter.html">StatsFilter</a></li><li><a href="adapter_Storage.html">Storage</a></li><li><a href="adapter_StorageCompositeAdapter.html">StorageCompositeAdapter</a></li><li><a href="adapter_StorageDefaultAdapter.html">StorageDefaultAdapter</a></li><li><a href="adapter_StorageFileAdapter.html">StorageFileAdapter</a></li><li><a href="adapter_StoragePeriodicAdapter.html">StoragePeriodicAdapter</a></li><li><a href="adapter_StorageTimedAdapter.html">StorageTimedAdapter</a></li><li><a href="adapter_trap.html">trap</a></li><li><a href="adapter_userview.html">userview</a></li><li><a href="adapter_userviewsimplemodel.html">userviewsimplemodel</a></li></ul><h3>Serializers</h3><ul><li><a href="serializer_ctx.html">ctx</a></li><li><a href="serializer_ctxcomponent.html">ctxcomponent</a></li><li><a href="serializer_ctxmetric.html">ctxmetric</a></li><li><a href="serializer_ctxresource.html">ctxresource</a></li><li><a href="serializer_ctxselector.html">ctxselector</a></li><li><a href="serializer_ctxtopology.html">ctxtopology</a></li><li><a href="serializer_job.html">job</a></li><li><a href="serializer_taskmail.html">taskmail</a></li><li><a href="serializer_ticket.html">ticket</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Feb 11 2016 12:02:29 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

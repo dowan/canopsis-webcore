@@ -15,4 +15,4 @@ pyperfstore2/*.egg*
 *~
 
 var/www/canopsis/brick-calendar/
-
+var/www/canopsis/brick-timechart/
