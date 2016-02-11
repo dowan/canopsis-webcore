@@ -116,7 +116,7 @@ if(window.bricks.charts.envMode === "production") {
 
     define([
         'canopsis/charts/src/libwrappers/flotchart',
-        'canopsis/charts/lib/externals/c3/c3.min',
+        'canopsis/charts/lib/externals/c3/c3',
         'link!canopsis/charts/lib/externals/c3/c3.min.css',
         'flotchart',
         'flotchart-canvas',
