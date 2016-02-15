@@ -1,0 +1,14 @@
+{
+  "name": "monitoring",
+  "version": "0.0.0",
+  "authors": [
+    "Team Canopsis <maintainers@canopsis.org>"
+  ],
+  "description": "Monitoring-related features for Canopsis",
+  "main": "init.js",
+  "moduleType": [
+    "amd"
+  ],
+  "license": "GNU Affero General Public License",
+  "homepage": "http://www.canopsis.org/"
+}
