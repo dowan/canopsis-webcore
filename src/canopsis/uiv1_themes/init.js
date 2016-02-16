@@ -17,11 +17,15 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @module canopsis.frontend.uiv1-themes */
+ require.config({
+    paths: {
+        'uiv1_themes_weather': 'canopsis/uiv1_themes/dist/templates/uiv1_themes_weather',
 
-define([
-    'canopsis/uiv1_themes/lib/loaders/mixins',
-    'canopsis/uiv1_themes/lib/loaders/templates'
-], function () {
-
+    }
 });
+
+ define([
+    'link!canopsis/uiv1_themes/dist/brick.min.css',
+    'ehbs!uiv1_themes_weather',
+    'canopsis/uiv1_themes/dist/brick.min'
+], function () {});

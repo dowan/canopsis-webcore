@@ -19,44 +19,5 @@
 
 
 define([
-    'canopsis/commit',
-    'app/lib/loaders/utils',
-    'app/lib/registries',
-    'app/lib/wrappersmanager',
-    'app/lib/formsregistry',
-    'app/lib/indexesregistry',
-    'app/lib/actionsregistry',
-    'app/lib/loaders/helpers',
-    'app/lib/loaders/components',
-    'canopsis/canopsisConfiguration',
-], function(commit,
-        utils,
-        registries,
-        wrappersRegistry,
-        formsRegistry,
-        indexesRegistry,
-        actionsRegistry,
-        helpers,
-        templates,
-        components,
-        canopsisConfiguration) {
-
-    var Canopsis = {};
-
-    Canopsis.registries = registries;
-    Canopsis.tooltips = {};
-    Canopsis.utils = utils;
-    Canopsis.wrappers = wrappersRegistry;
-    Canopsis.actions = actionsRegistry;
-    Canopsis.indexes = indexesRegistry;
-    Canopsis.forms = formsRegistry;
-    Canopsis.helpers = helpers;
-    Canopsis.templates = templates;
-    Canopsis.components = components;
-    Canopsis.commit = commit;
-    Canopsis.conf = canopsisConfiguration;
-
-    console.log('Canopsis configuration', Canopsis.conf);
-
-    return Canopsis;
-});
+    'canopsis/commit'
+], function(commit) {});

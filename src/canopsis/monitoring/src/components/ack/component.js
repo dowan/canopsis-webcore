@@ -85,7 +85,7 @@ Ember.Application.initializer({
 
                 var ticketNumberHtml = '';
                 //Generate ticket declared html information
-                if (!isNone(ticketNumber) && ticketNumber !== '' && !isNone(ticketDate)) {
+                if (!isNone(ticketNumber) && !isNone(ticketDate)) {
                     ticketNumberHtml = [
                         '<b>' + __('Ticket number') + '</b><br/>',
                         datesUtils.timestamp2String(ticketDate) +' <br/> ',
@@ -105,7 +105,7 @@ Ember.Application.initializer({
                     ].join('');
                     set(this, 'tickettooltip', tickettooltip);
 
-                } else if (!isNone(ticketNumber) && ticketNumber !== '' && !isNone(ticketDate)) {
+                } else if (!isNone(ticketNumber) && !isNone(ticketDate)) {
 
                     //When no ticket declared, then ticket date was saved.
                     console.debug('ticket date is ', get(crecord, 'record.ticket_date'));

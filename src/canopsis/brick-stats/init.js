@@ -17,6 +17,15 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define([
-    'canopsis/brick-stats/loaders/widgets'
-], function() {});
+ require.config({
+    paths: {
+        'statstable': 'canopsis/brick-stats/dist/templates/statstable',
+
+    }
+});
+
+ define([
+    'link!canopsis/brick-stats/dist/brick.min.css',
+    'ehbs!statstable',
+    'canopsis/brick-stats/dist/brick.min'
+], function () {});

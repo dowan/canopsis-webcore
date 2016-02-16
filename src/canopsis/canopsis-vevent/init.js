@@ -17,11 +17,13 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @module canopsis.frontend.canopsis-vevent */
+ require.config({
+    paths: {
 
-define([
-    'canopsis/canopsis-vevent/adapters/vevent',
-    'canopsis/canopsis-vevent/serializers/vevent'
-], function () {
-
+    }
 });
+
+ define([
+    'link!canopsis/canopsis-vevent/dist/brick.min.css',
+    'canopsis/canopsis-vevent/dist/brick.min'
+], function () {});

@@ -17,32 +17,14 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @module canopsis.frontend.tests */
+ require.config({
+    paths: {
 
-
-define([
-    'canopsis/enabled',
-    'canopsis/tests/testhelpers/ajax-stub'
-], function (enabledBricksUtil) {
-
-    window.startCanopsisTests = function (application) {
-        application.setupForTesting();
-        application.injectTestHelpers();
-
-        window.App = application;
-
-        console.log('Starting automated tests');
-        enabledBricksUtil.getEnabledModules(function(enabledBricks) {
-            var bricksTestMainList = [];
-            for (var i = 0, l = enabledBricks.length; i < l; i++) {
-                if(enabledBricks[i] !== 'core') {
-                    bricksTestMainList.pushObject('canopsis/' + enabledBricks[i] + '/init.test');
-                }
-            }
-
-            bricksTestMainList.pushObject('app/init.test');
-
-            require(bricksTestMainList);
-        });
-    };
+    }
 });
+
+ define([
+    'link!canopsis/tests/dist/brick.min.css',
+    'canopsis/tests/requirejs-modules/test-initializer',
+    'canopsis/tests/dist/brick.min'
+], function () {});
