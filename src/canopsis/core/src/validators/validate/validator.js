@@ -57,12 +57,13 @@ Ember.Application.initializer({
                         }
                     }
                 }
+
+                if(get(options, 'required')) {
+                    validator = container.lookupFactory('validator:required');
+                    validators.push(validator);
+                }
             }
 
-            if(get(options, 'required')) {
-                validator = container.lookupFactory('validator:required');
-                validators.push(validator);
-            }
 
             return validators;
         }
