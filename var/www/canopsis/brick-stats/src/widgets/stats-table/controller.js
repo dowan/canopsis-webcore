@@ -106,28 +106,20 @@ Ember.Application.initializer({
                 set(this, 'series', []);
 
                 /* find metric IDs */
-                var store = get(this, 'widgetDataStore'),
-                    me = this;
-
-                store.findQuery('ctxmetric', {
+                var me = this,
+                    query = {
                     filter: this.getMetricFilter()
-                }).then(function(result) {
-                    var metric_ids = [];
+                };
 
-                    get(result, 'content').forEach(function(ctx) {
-                        metric_ids.push(get(ctx, 'id'));
-                    });
-
-                    if (metric_ids.length > 0) {
-                        me.aggregateMetrics(
-                            metric_ids,
-                            from, to,
-                            'last',
-                            /* aggregation interval: the whole timewindow for only one point */
-                            to - from
-                        );
-                    }
-                });
+                if (!isNone(query) && query.length) {
+                    me.aggregateMetrics(
+                        query,
+                        from, to,
+                        'last',
+                        /* aggregation interval: the whole timewindow for only one point */
+                        to - from
+                    );
+                }
             },
 
             onMetrics: function(metrics) {

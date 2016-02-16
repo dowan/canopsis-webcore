@@ -30,75 +30,159 @@ Ember.Application.initializer({
         /**
          * @mixin MetricConsumer
          * @augments Mixin
-         * Provide Metric fetching mecanism to widgets.
+         * @description Provide Metric fetching mecanism to widgets.
          */
         var mixin = MixinFactory('metricconsumer', {
+
             /**
-             * @method aggregateMetrics
-             * @memberOf MetricConsumerMixin
-             * @param {array} metrics - Metric IDs to aggregate
-             * @param {number} from - Beginning of time window
-             * @param {number} to - End of time window
-             * @param {string} method - Aggregation method
-             * @param {number} interval - Aggregation interval in seconds
+             * @description returns metrics relative to a given filter
+             * @method findMetrics
+             * @param {object} mfilter
              * @returns Promise
              */
-            aggregateMetrics: function(metrics, from, to, method, interval) {
+            findMetrics: function(mfilter) {
+                var store = get(this, 'widgetDataStore'),
+                    query = {filter: mfilter};
+                return store.findQuery('ctxmetric', query);
+            },
+
+            /**
+             * @method aggregateMetrics
+             * @param {object} mfilter Filter used to get metrics
+             * @param {number} from Beginning of time window
+             * @param {number} to End of time window
+             * @param {string} method Aggregation method
+             * @param {number} interval Aggregation interval in seconds
+             * @returns Promise
+             */
+            aggregateMetrics: function(mfilter, from, to, method, interval) {
                 var me = this;
 
                 return new Ember.RSVP.Promise(function(resolve, reject) {
-                    var promise = perfdata.aggregateMany(metrics, from, to, method, interval);
 
-                    promise.then(function(result) {
-                        if (get(result, 'success') === true) {
-                            me.onMetrics(get(result, 'data'));
-                            resolve(result);
-                        }
-                        else {
-                            console.error('Metric aggregation failed:', get(result, 'data'));
-                            reject(result);
-                        }
-                    }, function() {
-                        console.error('Metric aggregation request failed:', arguments);
-                        reject(arguments);
-                    });
+                    if (typeof mfilter === 'object') {
+                        // Get metrics with the given filter parameter
+                        me.findMetrics(mfilter).then(function (result){
+                            /**
+                             * @property {array} metrics List of metrics used to request perfdata
+                             */
+                            var metrics = [],
+                                content = get(result, 'content'),
+                                total = get(result, 'meta.total');
+
+                            console.log('Received data:', total, content, metrics);
+
+                            for(var i = 0; i < total; i++) {
+                                metrics.pushObject(content[i].id);
+                            }
+
+                            // Get perdata with metrics found above
+                            var promise = perfdata.aggregateMany(metrics, from, to, method, interval);
+
+                            promise.then(function(result) {
+                                if (get(result, 'success') === true) {
+                                    me.onMetrics(get(result, 'data'));
+                                    resolve(result);
+                                }
+                                else {
+                                    console.error('Metric aggregation failed:', get(result, 'data'));
+                                    reject(result);
+                                }
+                            }, function() {
+                                console.error('Metric aggregation request failed:', arguments);
+                                reject(arguments);
+                            });
+                        });
+                    }
+                    else {
+                        // Get perdata with metrics found above
+                        var promise = perfdata.aggregateMany(mfilter, from, to, method, interval);
+
+                        promise.then(function(result) {
+                            if (get(result, 'success') === true) {
+                                me.onMetrics(get(result, 'data'));
+                                resolve(result);
+                            }
+                            else {
+                                console.error('Metric aggregation failed:', get(result, 'data'));
+                                reject(result);
+                            }
+                        }, function() {
+                            console.error('Metric aggregation request failed:', arguments);
+                            reject(arguments);
+                        });
+                    }
                 });
             },
 
             /**
              * @method fetchMetrics
-             * @memberOf MetricConsumerMixin
-             * @param {array} metrics - Metric IDs to fetch
+             * @param {object} mfilter Filter used to get metrics
              * @param {number} from - Beginning of time window
              * @param {number} to - End of time window
              * @returns Promise
              */
-            fetchMetrics: function(metrics, from, to) {
+            fetchMetrics: function(mfilter, from, to) {
                 var me = this;
 
                 return new Ember.RSVP.Promise(function(resolve, reject) {
-                    var promise = perfdata.fetchMany(metrics, from, to);
 
-                    promise.then(function(result) {
-                        if (get(result, 'success') === true) {
-                            me.onMetrics(get(result, 'data'));
-                            resolve(result);
-                        }
-                        else {
-                            console.error('Metrics fetching failed:', get(result, 'data'));
-                            reject(result);
-                        }
-                    }, function() {
-                        console.error('Metric fetch request failed:', arguments);
-                        reject(arguments);
-                    });
+                    if (typeof mfilter === 'object') {
+                        // Get metrics with the given filter parameter
+                        me.findMetrics(mfilter).then(function (result){
+                            /**
+                             * @property {array} metrics List of metrics used to request perfdata
+                             */
+                            var metrics = [],
+                                content = get(result, 'content'),
+                                total = get(result, 'meta.total');
+
+                            console.log('Received data:', total, content, metrics);
+
+                            for(var i = 0; i < total; i++) {
+                                metrics.pushObject(content[i]);
+                            }
+                            // Get perdata with metrics found above
+                            var promise = perfdata.fetchMany(metrics, from, to);
+
+                            promise.then(function(result) {
+                                if (get(result, 'success') === true) {
+                                    me.onMetrics(get(result, 'data'));
+                                    resolve(result);
+                                }
+                                else {
+                                    console.error('Metrics fetching failed:', get(result, 'data'));
+                                    reject(result);
+                                }
+                            }, function() {
+                                console.error('Metric fetch request failed:', arguments);
+                                reject(arguments);
+                            });
+                        });
+                    }
+                    else {
+                        var promise = perfdata.fetchMany(metrics, from, to);
+
+                        promise.then(function(result) {
+                            if (get(result, 'success') === true) {
+                                me.onMetrics(get(result, 'data'));
+                                resolve(result);
+                            }
+                            else {
+                                console.error('Metrics fetching failed:', get(result, 'data'));
+                                reject(result);
+                            }
+                        }, function() {
+                            console.error('Metric fetch request failed:', arguments);
+                            reject(arguments);
+                        });
+                    }
                 });
             },
 
             /**
              * @abstract
              * @method onMetrics
-             * @memberOf MetricConsumerMixin
              * @param {array} metrics - Metrics fetched from PerfDataController
              * Called by ``fetchMetrics()`` and ``aggregateMetrics()`` methods.
              */
@@ -108,7 +192,6 @@ Ember.Application.initializer({
 
             /**
              * @method fetchSeries
-             * @memberOf MetricConsumerMixin
              * @param {array} series - Series name to fetch
              * @param {number} from - Beginning of time window
              * @param {number} to - End of time window
@@ -164,7 +247,6 @@ Ember.Application.initializer({
             /**
              * @abstract
              * @method onSeries
-             * @memberOf MetricConsumerMixin
              * @param {array} series - Series fetched from SerieController
              * Called by ``fetchSeries()`` method.
              */

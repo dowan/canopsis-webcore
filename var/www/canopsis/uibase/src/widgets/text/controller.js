@@ -88,12 +88,12 @@ Ember.Application.initializer({
                 }
 
                 query = get(this, 'metrics');
-                if(get(this, 'appliedDynamicProperties') && get(this, 'appliedDynamicProperties') !== {}) {
+                /*if(get(this, 'appliedDynamicProperties') && get(this, 'appliedDynamicProperties') !== {}) {
                     query = JSON.stringify(query);
                     var context = get(this, 'appliedDynamicProperties');
                     query = Handlebars.compile(query)(context);
                     query = JSON.parse(query);
-                }
+                }*/ 
                 if (!isNone(query) && query.length) {
                     this.aggregateMetrics(
                         query,
