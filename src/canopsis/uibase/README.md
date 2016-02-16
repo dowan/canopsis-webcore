@@ -82,5 +82,5 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 
 ## Additional info
 
-Minified version : 203 files (size: 1,1M)
-Development version : 302 files (size: 1,8M)
+Minified version : 202 files (size: 1,1M)
+Development version : 301 files (size: 1,7M)

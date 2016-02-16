@@ -19,6 +19,7 @@
 
  require.config({
     paths: {
+        'application': 'canopsis/canopsis-ui/dist/templates/application',
         'jobform': 'canopsis/canopsis-ui/dist/templates/jobform',
 
     }
@@ -26,6 +27,7 @@
 
  define([
     'link!canopsis/canopsis-ui/dist/brick.min.css',
+    'ehbs!application',
     'ehbs!jobform',
     'canopsis/canopsis-ui/requirejs-modules/externals.conf',
     'canopsis/canopsis-ui/dist/brick.min'
