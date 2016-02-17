@@ -206,6 +206,18 @@ define([
 
                     console.log('Api schema data', payload);
                     schemasLoader.__schemas__ = payload.data;
+                    $.merge(schemasLoader.__schemas__, window.schemasToLoad);
+
+                    function compare(a,b) {
+                      if (a._id < b._id)
+                        return -1;
+                      else if (a._id > b._id)
+                        return 1;
+                      else
+                        return 0;
+                    }
+
+                    schemasLoader.__schemas__.sort(compare);
                 } else {
                     console.error('Unable to load schemas from API');
                 }

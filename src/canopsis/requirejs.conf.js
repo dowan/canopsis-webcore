@@ -16,6 +16,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
+
+window.schemasToLoad = [];
+
 require.config({
     waitSeconds: 30,
     baseUrl: '/static/',
@@ -240,6 +243,7 @@ require(['text!canopsis/brick-loader/bower.json'], function(loaderManifest) {
 
             require(deps, function() {
                 var initFiles = [];
+                var schemasInitFiles = [];
                 window.bricks = {};
 
                 for (var i = 0, l = enabledPlugins.length; i < l; i++) {
@@ -255,22 +259,26 @@ require(['text!canopsis/brick-loader/bower.json'], function(loaderManifest) {
                         brickMainModule = 'canopsis/' + currentPlugin + '/' + 'init.js';
                     }
 
+                    schemasInitFiles.push('canopsis/' + currentPlugin + '/' + 'init.schemas');
+
                     //remove the .js extension
                     brickMainModule = brickMainModule.slice(0, -3);
 
                     initFiles.push(brickMainModule);
                 }
 
-                require(['canopsis/brick-loader/schemasloader'], function() {
-                    require(initFiles, function() {
+                require(schemasInitFiles, function() {
+                    require(['canopsis/brick-loader/schemasloader'], function() {
+                        require(initFiles, function() {
 
-                        //This flag allow to prevent too early application requirement. @see "app/application" module
-                        window.appShouldNowBeLoaded = true;
+                            //This flag allow to prevent too early application requirement. @see "app/application" module
+                            window.appShouldNowBeLoaded = true;
 
-                        setLoadingInfo('Fetching application starting point', 'fa-plug');
-                        require(['canopsis/brick-loader/application'], function(Application) {
-                            setLoadingInfo('Initializing user interface', 'fa-desktop');
+                            setLoadingInfo('Fetching application starting point', 'fa-plug');
+                            require(['canopsis/brick-loader/application'], function(Application) {
+                                setLoadingInfo('Initializing user interface', 'fa-desktop');
 
+                            });
                         });
                     });
                 });

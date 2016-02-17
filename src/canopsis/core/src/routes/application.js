@@ -120,7 +120,6 @@ Ember.Application.initializer({
                 var store = DS.Store.create({ container: get(this, "container") });
                 var footerPromise = store.find('userview', 'view.app_footer');
                 var headerPromise = store.find('userview', 'view.app_header');
-                var devtoolsPromise = store.find('userview', 'view.app_devtools');
                 var frontendConfigPromise = store.find('frontend', 'cservice.frontend');
                 var ticketPromise = store.find('ticket', 'cservice.ticket');
                 var appController = route.controllerFor('application');
@@ -154,9 +153,6 @@ Ember.Application.initializer({
                     appController.footerUserview = queryResults;
                 });
 
-                devtoolsPromise.then(function(queryResults) {
-                    appController.devtoolsUserview = queryResults;
-                });
 
                 var superPromise = this._super(transition);
 
@@ -164,7 +160,6 @@ Ember.Application.initializer({
                     superPromise,
                     footerPromise,
                     headerPromise,
-                    devtoolsPromise,
                     frontendConfigPromise,
                     ticketPromise,
                 ]);
