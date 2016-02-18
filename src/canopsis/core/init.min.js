@@ -40,5 +40,6 @@
     'ehbs!viewtreeform',
     'ehbs!widgetform',
     'canopsis/core/requirejs-modules/externals.conf',
+    'canopsis/core/requirejs-modules/i18n',
     'canopsis/core/dist/brick.min'
 ], function () {});

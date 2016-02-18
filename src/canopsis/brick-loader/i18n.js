@@ -73,55 +73,7 @@ define([
             }
         },
 
-        uploadDefinitions: function () {
-
-            $.ajax({
-                url: '/rest/object/i18n',
-                type: 'POST',
-                data: JSON.stringify({
-                    id: 'translations',
-                    todo: i18n.todo,
-                    crecord_type: 'i18n'
-                }),
-                success: function(data) {
-                    if (data.success) {
-                        console.log('Upload lang upload complete');
-                    }
-                },
-                async: false
-            });
-        },
-
-        downloadDefinitions: function () {
-
-            $.ajax({
-                url: '/i18n/' + i18n.lang,
-                success: function(data) {
-                    if (data.success) {
-                        i18n.translations[i18n.lang] = data.data[0];
-                    }
-                },
-                async: false
-            }).fail(function () {
-                console.log('initialization case. translation is now ready');
-            });
-
-            if (conf.DEBUG && conf.TRANSLATE) {
-                $.ajax({
-                    url: '/rest/object/i18n',
-                    success: function(data) {
-                        if (data.success && data.data && data.data.length) {
-                            for (var item in data.data[0].todo) {
-                                i18n.todo[item] = data.data[0].todo[item];
-                            }
-                            console.log('Loaded pending translation');
-                        }
-                    },
-                }).fail(function () {
-                    console.warn('Error on load pending translation');
-                });
-            }
-        },
+        uploadDefinitions: function () {},
 
         getUserLanguage: function(){
             $.ajax({
@@ -158,7 +110,6 @@ define([
     window.i18n = i18n;
 
     i18n.getUserLanguage();
-    i18n.downloadDefinitions();
 
     if (conf.DEBUG && conf.TRANSLATE) {
         Ember.run(function(){

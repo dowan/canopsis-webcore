@@ -150,5 +150,6 @@
     'canopsis/core/src/view/validationtextfield',
     'canopsis/core/src/view/widget',
     'canopsis/core/src/view/widgetslot',
-    'canopsis/core/requirejs-modules/externals.conf'
+    'canopsis/core/requirejs-modules/externals.conf',
+    'canopsis/core/requirejs-modules/i18n'
 ], function () {});
