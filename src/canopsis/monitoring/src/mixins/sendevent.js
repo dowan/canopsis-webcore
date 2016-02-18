@@ -403,7 +403,6 @@ Ember.Application.initializer({
 
                     handle: function(crecords) {
                         var record = this.getDisplayRecord('declareticket', crecords[0]);
-                        alert('ticketform');
                         this.getEventForm('declareticket', record, crecords, 'ticketform');
                     },
 
