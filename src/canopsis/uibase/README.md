@@ -53,6 +53,7 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 | src/editors/editor-elementidselectorwithoptions.hbs | manage search in a dynamic way, as an editor property binding to a search method |
 | src/mixins/responsivelist.js | check if still used |
 | src/mixins/arraysearch.js | these checks should be asserts |
+| src/mixins/minimizebutton.js | remove this file |
 | src/widgets/list/controller.js | add an error in displayedErrors array, to warn the user that the data cannot be displayed |
 | src/widgets/list/controller.js | check if useless or not |
 | src/components/elementidselectorwithoptions/component.js | put this on a dedicated util |
@@ -83,4 +84,4 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 ## Additional info
 
 Minified version : 202 files (size: 1,1M)
-Development version : 301 files (size: 1,7M)
+Development version : 301 files (size: 1,8M)
