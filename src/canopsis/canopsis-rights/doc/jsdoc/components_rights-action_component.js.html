@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: objects/rightsregistry.js</title>
+    <title>JSDoc: Source: components/rights-action/component.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -18,7 +18,7 @@
 <div id="main">
 
 
-    <h1 class="page-title">Source: objects/rightsregistry.js</h1>
+    <h1 class="page-title">Source: components/rights-action/component.js</h1>
 
     
 
@@ -47,25 +47,44 @@
  */
 
 Ember.Application.initializer({
-    name: 'RightsRegistry',
-    after: 'AbstractClassRegistry',
+    name: 'component-rights-action',
+    after: 'RightsRegistry',
     initialize: function(container, application) {
-        AbstractClassRegistry = container.lookupFactory('registry:abstractclass');
+        var rightsRegistry = container.lookupFactory('registry:rights');
+
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone,
+            __ = Ember.String.loc;
 
         /**
-         * @class rightsRegistry
-         * @extends Abstractclassregistry
-         * @memberOf canopsis.frontend.canopsis-rights
-         * @static
-         * @description List all rights
+         * @component right-action
+         * @description Display a right properly, to embed into a right list
          */
-        var rightsRegistry = AbstractClassRegistry.create({
-            name: 'rights',
+        var component = Ember.Component.extend({
+            /**
+             * @property value
+             * @description the right value
+             * @type string
+             */
+            value: undefined,
 
-            tableColumns: [{title: 'name', name: 'name'}, {title: 'description', name: 'description'}]
+            /**
+             * @property description
+             * @description Computed property, dependant on "value". the right description
+             * @type string
+             */
+            description: function() {
+                var value = get(this, 'value');
+                //FIXME don't use _data, it might lead to unpredictable behaviours!
+                var action = rightsRegistry.getByName(value);
+                if(action &amp;&amp; action._data) {
+                    return action._data.desc;
+                }
+            }.property('value')
         });
 
-        application.register('registry:rights', rightsRegistry);
+        application.register('component:component-rights-action', component);
     }
 });
 </code></pre>
