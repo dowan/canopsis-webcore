@@ -61,7 +61,7 @@
             "items": {
                 "type": "string"
             },
-            "role": "cmetric"
+            "role": "querybuilder"
         },
         "events": {
             "type": "array",
