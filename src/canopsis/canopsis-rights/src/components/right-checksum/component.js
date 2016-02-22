@@ -28,8 +28,55 @@ Ember.Application.initializer({
             isNone = Ember.isNone,
             __ = Ember.String.loc;
 
-
+        /**
+         * @component right-checksum
+         * @description display buttons to edit rights checksums ("read/write", "chmod", etc...)
+         */
         var component = Ember.Component.extend({
+            /**
+             * @property right
+             * @description the right on which the checksum is edited
+             * @type object
+             */
+            right: undefined,
+
+            /**
+             * @property checksum1flag
+             * @description The first binary flag (at the right side) of the checksum
+             * @type boolean
+             */
+            checksum1flag: undefined,
+
+            /**
+             * @property checksum2flag
+             * @description The second binary flag of the checksum
+             * @type boolean
+             */
+            checksum2flag: undefined,
+
+            /**
+             * @property checksum4flag
+             * @description The third binary flag of the checksum
+             * @type boolean
+             */
+            checksum4flag: undefined,
+
+            /**
+             * @property checksum8flag
+             * @description The fourth binary flag of the checksum
+             * @type boolean
+             */
+            checksum8flag: undefined,
+
+            //TODO not used anymore? check and delete this property if possible
+            /**
+             * @property computedNumericChecksum
+             */
+            computedNumericChecksum: undefined,
+
+            /**
+             * @method init
+             */
             init: function() {
                 var right = get(this, 'right');
 
@@ -68,23 +115,44 @@ Ember.Application.initializer({
                 this.recomputeNumericChecksum();
             },
 
+            /**
+             * @property checksumType
+             * @description computed property, dependant on "right.name". Retreives the checksum type, based on the right. Values can be either "RW", "CRUD", or by default they are considered as boolean (no flags used)
+             * @type string
+             */
             checksumType: function() {
                 var value = get(this, 'right.name');
                 var action = rightsRegistry.getByName(value);
+                //FIXME don't use "_data"!
                 if(action && action._data) {
                     return action._data.type;
                 }
             }.property('right.name'),
 
+            /**
+             * @property checksumIsRW
+             * @description computed property, dependant on "checksumType". True if the checksum type is "RW"
+             * @type boolean
+             */
             checksumIsRW: function() {
                 return get(this, 'checksumType') === 'RW';
             }.property('checksumType'),
 
+            /**
+             * @property checksumIsCRUD
+             * @description computed property, dependant on "checksumType". True if the checksum type is "CRUD"
+             * @type boolean
+             */
             checksumIsCRUD: function() {
                 return get(this, 'checksumType') === 'CRUD';
             }.property('checksumType'),
 
             actions: {
+                /**
+                 * @method actions_toggleRightChecksum
+                 * @description Action handling checksum edition
+                 * @param flagNumber {integer} the flag to toggle
+                 */
                 toggleRightChecksum: function(flagNumber) {
                     var right = get(this, 'right');
 
@@ -106,6 +174,10 @@ Ember.Application.initializer({
                 }
             },
 
+            /**
+             * @property checksum8Class
+             * @description Computed property, dependant on "checksum8flag". Css class for the fourth checksum
+             */
             checksum8Class: function() {
                 if(get(this, 'checksum8flag')) {
                     return 'btn btn-xs btn-success active';
@@ -114,6 +186,10 @@ Ember.Application.initializer({
                 }
             }.property('checksum8flag'),
 
+            /**
+             * @property checksum4Class
+             * @description Computed property, dependant on "checksum4flag". Css class for the third checksum
+             */
             checksum4Class: function() {
                 if(get(this, 'checksum4flag')) {
                     return 'btn btn-xs btn-success active';
@@ -122,6 +198,10 @@ Ember.Application.initializer({
                 }
             }.property('checksum4flag'),
 
+            /**
+             * @property checksum2Class
+             * @description Computed property, dependant on "checksum2flag". Css class for the second checksum
+             */
             checksum2Class: function() {
                 if(get(this, 'checksum2flag')) {
                     return 'btn btn-xs btn-success active';
@@ -130,6 +210,10 @@ Ember.Application.initializer({
                 }
             }.property('checksum2flag'),
 
+            /**
+             * @property checksum1Class
+             * @description Computed property, dependant on "checksum1flag". Css class for the first checksum
+             */
             checksum1Class: function() {
                 if(get(this, 'checksum1flag')) {
                     return 'btn btn-xs btn-success active';
@@ -138,6 +222,10 @@ Ember.Application.initializer({
                 }
             }.property('checksum1flag'),
 
+            /**
+             * @method recomputeNumericChecksum
+             * @description Observer, dependant on "checksum8flag", "checksum4flag", "checksum2flag", "checksum1flag". assign the computed checksum into the "right" object
+             */
             recomputeNumericChecksum: function() {
                 var checksum8flag = get(this, 'checksum8flag'),
                     checksum4flag = get(this, 'checksum4flag'),
