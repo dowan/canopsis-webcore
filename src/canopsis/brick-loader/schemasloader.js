@@ -206,6 +206,15 @@ define([
 
                     console.log('Api schema data', payload);
                     schemasLoader.__schemas__ = payload.data;
+                    //Merge frontend & backend schemas, priorizing frontend
+                    for (var i = 0; i < window.schemasToLoad.length; i++) {
+                        for (var j = 0; j < schemasLoader.__schemas__.length; j++) {
+                            if(schemasLoader.__schemas__[j]._id === window.schemasToLoad[i]._id) {
+                                data.splice(j, 1);
+                                j--;
+                            }
+                        }
+                    }
                     $.merge(schemasLoader.__schemas__, window.schemasToLoad);
 
                     function compare(a,b) {
