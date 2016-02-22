@@ -30,6 +30,8 @@ Ember.Application.initializer({
         /**
          * @component mixinselector
          * @description A mixin selector. Fills a classifieditemselector with data from the mixins registry
+         *
+         * ![Component preview](../screenshots/component-mixinselector.png)
          */
         var component = Ember.Component.extend({
 

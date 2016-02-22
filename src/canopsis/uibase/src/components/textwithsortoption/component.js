@@ -28,6 +28,8 @@ Ember.Application.initializer({
         /**
          * @component textwithsortoption
          * @description displays a combobox with two choices for letting the user choose a sort direction (Ascending, descending), alongside a text input
+         *
+         * ![Component preview](../screenshots/component-textwithsortoption.png)
          */
         var component = Ember.Component.extend({
 

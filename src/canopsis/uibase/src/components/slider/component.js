@@ -27,7 +27,9 @@ Ember.Application.initializer({
 
         /**
          * @component slider
-         * @description displays an editable slider based on the ionRangeSlider library that allows to edit a numeric value
+         * @description Displays an editable slider based on the ionRangeSlider library that allows to edit a numeric value
+         *
+         * ![Slider preview](../screenshots/component-slider.png)
          * @example {{component-slider content=view.charge options=view.optionsCharge}}
          */
         var component = Ember.Component.extend({
@@ -42,10 +44,7 @@ Ember.Application.initializer({
              * @property options
              * @type object
              * @description an option dictionnary for the slider.
-             * Options are :
-             * - min (integer)
-             * - max (integer)
-             * - step (integer)
+             * Options are : min (integer), max (integer), step (integer)
              */
             options: undefined,
 
