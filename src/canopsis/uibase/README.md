@@ -38,7 +38,7 @@ See [Howto](https://git.canopsis.net/canopsis-ui-bricks/uibase/blob/master/doc/i
 
 ## Continuous Integration
 
-Tested on commit : [ERROR : The brick is not in a dedicated git repository].
+Tested on commit : 2229af4.
 
 | Target | Status | Log |
 | ------ | ------ | --- |

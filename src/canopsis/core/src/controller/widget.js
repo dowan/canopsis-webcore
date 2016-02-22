@@ -535,6 +535,7 @@ Ember.Application.initializer({
                     var widgetName = name.split(':')[1];
                     var initializerName = widgetName.capitalize() + 'Serializer';
                     var widgetSerializerName = name.split(':')[1];
+                    if(schemasregistry.getByName(widgetSerializerName) === undefined) debugger;
                     var widgetModel = schemasregistry.getByName(widgetSerializerName).EmberModel;
 
                     Ember.Application.initializer({
