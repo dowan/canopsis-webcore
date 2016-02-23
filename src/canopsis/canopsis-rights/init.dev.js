@@ -51,6 +51,7 @@
     'canopsis/canopsis-rights/src/reopens/adapters/userview',
     'canopsis/canopsis-rights/src/reopens/controllers/application',
     'canopsis/canopsis-rights/src/reopens/mixins/crud',
+    'canopsis/canopsis-rights/src/reopens/mixins/documentation',
     'canopsis/canopsis-rights/src/reopens/mixins/showviewbutton',
     'canopsis/canopsis-rights/src/reopens/routes/application',
     'canopsis/canopsis-rights/src/reopens/routes/userview',
