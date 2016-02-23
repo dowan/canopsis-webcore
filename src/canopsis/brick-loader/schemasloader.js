@@ -18,7 +18,7 @@
  */
 
 define([
-    'canopsis/canopsis-backend-ui-connector/requirejs-modules/adapters/schema',
+    window.config.schemasAdapter,
 ], function (SchemaAdapter) {
     function compare(a,b) {
       if (a.id < b.id) {
