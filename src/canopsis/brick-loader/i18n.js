@@ -73,43 +73,13 @@ define([
             }
         },
 
-        uploadDefinitions: function () {},
-
-        getUserLanguage: function(){
-            $.ajax({
-                url: '/account/me',
-                success: function(data) {
-                    if (data.success && data.data && data.data.length && data.data[0].ui_language) {
-                        i18n.lang = data.data[0].ui_language;
-                        console.log('Lang initialization succeed, default language for application is set to ' + i18n.lang.toUpperCase());
-                    } else {
-                        $.ajax({
-                            url: '/rest/object/frontend/cservice.frontend',
-                            success: function(data) {
-                                if (data.success && data.data && data.data.length && data.data[0].ui_language) {
-                                    i18n.lang = data.data[0].ui_language;
-                                } else {
-                                    console.warn('Lang data fetch failed, default language for application is set to EN', data);
-                                    i18n.lang = 'en';
-                                }
-
-                            },
-                            async: false
-                        });
-                    }
-                },
-                async: false
-            }).fail(function () {
-                console.error('Lang initialization failed, default language for application is set to EN');
-                i18n.uploadDefinitions();
-            });
-        }
+        uploadDefinitions: function () {}
     };
 
     window.__ = i18n._;
     window.i18n = i18n;
 
-    i18n.getUserLanguage();
+    i18n.lang = conf.getUserLanguage();
 
     if (conf.DEBUG && conf.TRANSLATE) {
         Ember.run(function(){

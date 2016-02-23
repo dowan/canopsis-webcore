@@ -122,12 +122,11 @@ require(['text!canopsis/brick-loader/bower.json'], function(loaderManifest) {
         }
     };
 
-    require(['canopsis/enabled',
-            'canopsis/canopsisConfiguration',
+    require(['canopsis/canopsisConfiguration',
             'canopsis/brick-loader/i18n',
             'canopsis/brick-loader/loader',
             'ember-data-lib',
-            'schemasregistry'], function(enabled, canopsisConfiguration, i18n) {
+            'schemasregistry'], function(canopsisConfiguration, i18n) {
 
         require([
             'text!canopsis/brick-loader/i18n/' + i18n.lang + '.json'
@@ -146,70 +145,7 @@ require(['text!canopsis/brick-loader/bower.json'], function(loaderManifest) {
 
             canopsisConfiguration.EmberIsLoaded = true;
 
-
-            DS.ArrayTransform = DS.Transform.extend({
-                deserialize: function(serialized) {
-                    if (Ember.typeOf(serialized) === 'array') {
-                        return serialized;
-                    }
-
-                    return [];
-                },
-
-                serialize: function(deserialized) {
-                    var type = Ember.typeOf(deserialized);
-
-                    if (type === 'array') {
-                        return deserialized;
-                    }
-                    else if (type === 'string') {
-                        return deserialized.split(',').map(function(item) {
-                            return jQuery.trim(item);
-                        });
-                    }
-
-                    return [];
-                }
-            });
-
-            DS.IntegerTransform = DS.Transform.extend({
-                deserialize: function(serialized) {
-                    if (typeof serialized === "number") {
-                        return serialized;
-                    } else {
-                        // console.warn("deserialized value is not a number as it is supposed to be", arguments);
-                        return 0;
-                    }
-                },
-
-                serialize: function(deserialized) {
-                    return Ember.isEmpty(deserialized) ? null : Number(deserialized);
-                }
-            });
-
-            DS.ObjectTransform = DS.Transform.extend({
-                deserialize: function(serialized) {
-                    if (Ember.typeOf(serialized) === 'object') {
-                        return Ember.Object.create(serialized);
-                    }
-
-                    return Ember.Object.create({});
-                },
-
-                serialize: function(deserialized) {
-                    var type = Ember.typeOf(deserialized);
-
-                    if (type === 'object' || type === 'instance') {
-                        return Ember.Object.create(deserialized);
-                    } else {
-                        console.warn("bad format", type, deserialized);
-                    }
-
-                    return null;
-                }
-            });
-
-            enabled.getEnabledModules(function (enabledPlugins) {
+            canopsisConfiguration.getEnabledModules(function (enabledPlugins) {
 
                 if (enabledPlugins.length === 0) {
                     alert('No module loaded in Canopsis UI. Cannot go beyond');
