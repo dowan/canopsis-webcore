@@ -72,6 +72,13 @@ Ember.Application.initializer({
             },
 
             /**
+             * @property canAddCustomFiltersInUserPreferences
+             * @type boolean
+             * @description whether it is possible or not to add custom filters stored in userpreferences
+             */
+            canAddCustomFiltersInUserPreferences: true,
+
+            /**
             * Builds the list of active filters
             *
             * @param filterlist : a list of filter that contains
