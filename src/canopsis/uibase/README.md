@@ -38,7 +38,7 @@ See [Howto](https://git.canopsis.net/canopsis-ui-bricks/uibase/blob/master/doc/i
 
 ## Continuous Integration
 
-Tested on commit : 2229af4.
+Tested on commit : 9192db7.
 
 | Target | Status | Log |
 | ------ | ------ | --- |

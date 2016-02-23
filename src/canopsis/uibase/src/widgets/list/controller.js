@@ -42,6 +42,23 @@ Ember.Application.initializer({
 
         /**
          * @widget List
+         *
+         * @description
+         * # Overview
+         *
+         * Displays a list of records. This widget can be enhanced with a wide range of mixins, to provide additionnal content management features such as :
+         * - filtering
+         * - content display
+         * - data edition
+         * - monitoring related features
+         * - and so on
+         *
+         * # Basic usage
+         *
+         * By default, the widget is able to display a paginated listing of all records found for a specified type (see the "listed_crecord_type" property on the schema).
+         * For all of this records, it will show a configurable list of columns (see the "displayed_columns" schema property).
+         *
+         * For each displayed column of each listed record, the widget will try to find a correct and fancy way to display the value. It will thus try to find a correct renderer to display the data key.
          */
         var widget = WidgetFactory('list', {
             css :'table table-striped table-bordered table-hover dataTable sortable',
