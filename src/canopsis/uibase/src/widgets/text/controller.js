@@ -130,7 +130,7 @@ Ember.Application.initializer({
                     var label = labelsByRk[rk];
 
                     if (!isNone(label)) {
-                        set(context, 'event.' + label, evt);
+                        set(context, 'event.' + label, evt._data);
                     }
                     else {
                         console.warn('No label found for event, will not be rendered:', rk);

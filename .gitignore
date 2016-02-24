@@ -14,5 +14,8 @@ pyperfstore2/*.egg*
 #####################
 *~
 
-var/www/canopsis/brick-calendar/
-var/www/canopsis/brick-timechart/
+src/canopsis/brick-calendar/
+src/canopsis/brick-timechart/
+src/canopsis/brick-rrule-editor/
+src/canopsis/brick-timechart/
+src/canopsis/brick-querybuilder/
