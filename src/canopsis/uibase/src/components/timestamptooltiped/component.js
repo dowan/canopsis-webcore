@@ -28,6 +28,18 @@ Ember.Application.initializer({
 
         /**
          * @component timestamptooltiped
+         * @description Displays a timestamp with a tooltip that shows the elapsed time between the timestamp and now
+         *
+         * ![Component preview](../screenshots/component-timestamptooltiped.png)
+         *
+         * @example {{component-timestamptooltiped
+         *     optionaltimestamp=value
+         *     eventstate=record.state
+         *     maintimestamp=record.timestamp
+         *     maintitle="Last event publication"
+         *     hidedata=attr.options.hideDate
+         *     agoformat=attr.options.canDisplayAgo
+         * }}
          */
         var component = Ember.Component.extend({
             showMainTimestamp :function () {

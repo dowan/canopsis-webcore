@@ -51,7 +51,9 @@
 </ul>
 <h1>Basic usage</h1><p>By default, the widget is able to display a paginated listing of all records found for a specified type (see the &quot;listed_crecord_type&quot; property on the schema).
 For all of this records, it will show a configurable list of columns (see the &quot;displayed_columns&quot; schema property).</p>
-<p>For each displayed column of each listed record, the widget will try to find a correct and fancy way to display the value. It will thus try to find a correct renderer to display the data key.</p></div>
+<p>For each displayed column of each listed record, the widget will try to find a correct and fancy way to display the value. It will thus try to find a correct renderer to display the data key.</p>
+<h1>Screenshots</h1><p><img src="../screenshots/widget-list-simple.png" alt="Simple list">
+<img src="../screenshots/widget-list-events.png" alt="Event view"></p></div>
     
 
     <h3 class="subsection-title index"><img src="icons/book_open.png" alt="index" /> Index</h3>
@@ -178,8 +180,7 @@ For all of this records, it will show a configurable list of columns (see the &q
                                 <td>
                                 </td>
                                 <td>
-                                    <a href="#~computeFilterFragmentsListComputesthelistofdifferentfilterfragmentsusedtocreateaproperquery"><img src="icons/picture_empty.png" alt="method" /> computeFilterFragmentsList
-Computes the list of different filter fragments used to create a proper query<span class="signature">()</span><span class="type-signature"> &rarr; {Array}</span></a>
+                                    <a href="#~computeFilterFragmentsList"><img src="icons/picture_empty.png" alt="method" /> computeFilterFragmentsList<span class="signature">()</span><span class="type-signature"> &rarr; {Array}</span></a>
                                 </td>
                             </tr>
                         
@@ -227,6 +228,14 @@ Computes the list of different filter fragments used to create a proper query<sp
                                 <td>
                                 </td>
                                 <td>
+                                    <a href="#~isAllSelectedChanged"><img src="icons/picture_empty.png" alt="method" /> isAllSelectedChanged<span class="signature">()</span><span class="type-signature"></span></a>
+                                </td>
+                            </tr>
+                        
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
                                     <a href="#~redenrerFor"><img src="icons/picture_empty.png" alt="method" /> redenrerFor<span class="signature">(attribute)</span><span class="type-signature"></span></a>
                                 </td>
                             </tr>
@@ -235,8 +244,15 @@ Computes the list of different filter fragments used to create a proper query<sp
                                 <td>
                                 </td>
                                 <td>
-                                    <a href="#~updateIntervalManageshowtimefilterissettothewidget"><img src="icons/picture_empty.png" alt="method" /> updateInterval
-Manages how time filter is set to the widget<span class="signature">(interval)</span><span class="type-signature"></span></a>
+                                    <a href="#~rollbackableChanged"><img src="icons/picture_empty.png" alt="method" /> rollbackableChanged<span class="signature">()</span><span class="type-signature"></span></a>
+                                </td>
+                            </tr>
+                        
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <a href="#~updateInterval"><img src="icons/picture_empty.png" alt="method" /> updateInterval<span class="signature">(interval)</span><span class="type-signature"></span></a>
                                 </td>
                             </tr>
                         
@@ -334,12 +350,16 @@ Manages how time filter is set to the widget<span class="signature">(interval)</
             
                 
 
-    <div class="view-source"><a href="src_widgets_list_controller.js.html#line297">view source</a></div>
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line306">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~attributesKeysDict"><a name="~attributesKeysDict" href="#~attributesKeysDict"><img src="icons/stop.png" alt="property" /> attributesKeysDict<span class="type-signature"></span></a></h4>
     
 
+    
+    <div class="description">
+        <p>Computed property dependant on &quot;attributesKeys&quot;</p>
+    </div>
     
     <div class="foldable-details">
         
@@ -386,7 +406,7 @@ Manages how time filter is set to the widget<span class="signature">(interval)</
             
                 
 
-    <div class="view-source"><a href="src_widgets_list_controller.js.html#line77">view source</a></div>
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line83">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~dynamicTemplateName"><a name="~dynamicTemplateName" href="#~dynamicTemplateName"><img src="icons/stop.png" alt="property" /> dynamicTemplateName<span class="type-signature"></span></a></h4>
@@ -438,7 +458,7 @@ Manages how time filter is set to the widget<span class="signature">(interval)</
             
                 
 
-    <div class="view-source"><a href="src_widgets_list_controller.js.html#line220">view source</a></div>
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line228">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~historyMixinFindOptions"><a name="~historyMixinFindOptions" href="#~historyMixinFindOptions"><img src="icons/stop.png" alt="property" /> historyMixinFindOptions<span class="type-signature"></span></a></h4>
@@ -490,7 +510,7 @@ Manages how time filter is set to the widget<span class="signature">(interval)</
             
                 
 
-    <div class="view-source"><a href="src_widgets_list_controller.js.html#line226">view source</a></div>
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line234">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~inspectedDataArray"><a name="~inspectedDataArray" href="#~inspectedDataArray"><img src="icons/stop.png" alt="property" /> inspectedDataArray<span class="type-signature"></span></a></h4>
@@ -542,7 +562,7 @@ Manages how time filter is set to the widget<span class="signature">(interval)</
             
                 
 
-    <div class="view-source"><a href="src_widgets_list_controller.js.html#line197">view source</a></div>
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line204">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~itemType"><a name="~itemType" href="#~itemType"><img src="icons/stop.png" alt="property" /> itemType<span class="type-signature"></span></a></h4>
@@ -594,7 +614,7 @@ Manages how time filter is set to the widget<span class="signature">(interval)</
             
                 
 
-    <div class="view-source"><a href="src_widgets_list_controller.js.html#line83">view source</a></div>
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line89">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~listlineControllerClass"><a name="~listlineControllerClass" href="#~listlineControllerClass"><img src="icons/stop.png" alt="property" /> listlineControllerClass<span class="type-signature"></span></a></h4>
@@ -653,7 +673,7 @@ Manages how time filter is set to the widget<span class="signature">(interval)</
             
                 
 
-    <div class="view-source"><a href="src_widgets_list_controller.js.html#line232">view source</a></div>
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line240">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~paginationMixinFindOptions"><a name="~paginationMixinFindOptions" href="#~paginationMixinFindOptions"><img src="icons/stop.png" alt="property" /> paginationMixinFindOptions<span class="type-signature"></span></a></h4>
@@ -705,7 +725,7 @@ Manages how time filter is set to the widget<span class="signature">(interval)</
             
                 
 
-    <div class="view-source"><a href="src_widgets_list_controller.js.html#line93">view source</a></div>
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line99">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~rights"><a name="~rights" href="#~rights"><img src="icons/stop.png" alt="property" /> rights<span class="type-signature"></span></a></h4>
@@ -757,7 +777,7 @@ Manages how time filter is set to the widget<span class="signature">(interval)</
             
                 
 
-    <div class="view-source"><a href="src_widgets_list_controller.js.html#line98">view source</a></div>
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line104">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~safeMode"><a name="~safeMode" href="#~safeMode"><img src="icons/stop.png" alt="property" /> safeMode<span class="type-signature"></span></a></h4>
@@ -809,7 +829,7 @@ Manages how time filter is set to the widget<span class="signature">(interval)</
             
                 
 
-    <div class="view-source"><a href="src_widgets_list_controller.js.html#line347">view source</a></div>
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line356">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~shown_columns"><a name="~shown_columns" href="#~shown_columns"><img src="icons/stop.png" alt="property" /> shown_columns<span class="type-signature"></span></a></h4>
@@ -861,12 +881,17 @@ Manages how time filter is set to the widget<span class="signature">(interval)</
             
                 
 
-    <div class="view-source"><a href="src_widgets_list_controller.js.html#line72">view source</a></div>
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line78">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~standardListDisplay"><a name="~standardListDisplay" href="#~standardListDisplay"><img src="icons/stop.png" alt="property" /> standardListDisplay<span class="type-signature"></span></a></h4>
     
 
+    
+    <div class="description">
+        <p>Whether to display the list as the regular table or not.
+Used with mixin that fill the partial slot &quot;alternativeListDisplay&quot;, this can help to provide alternative displays</p>
+    </div>
     
     <div class="foldable-details">
         
@@ -913,7 +938,7 @@ Manages how time filter is set to the widget<span class="signature">(interval)</
             
                 
 
-    <div class="view-source"><a href="src_widgets_list_controller.js.html#line88">view source</a></div>
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line94">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~user"><a name="~user" href="#~user"><img src="icons/stop.png" alt="property" /> user<span class="type-signature"></span></a></h4>
@@ -965,7 +990,7 @@ Manages how time filter is set to the widget<span class="signature">(interval)</
             
                 
 
-    <div class="view-source"><a href="src_widgets_list_controller.js.html#line237">view source</a></div>
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line245">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~widgetDataMetas"><a name="~widgetDataMetas" href="#~widgetDataMetas"><img src="icons/stop.png" alt="property" /> widgetDataMetas<span class="type-signature"></span></a></h4>
@@ -1024,18 +1049,21 @@ Manages how time filter is set to the widget<span class="signature">(interval)</
             
                 
 
-    <div class="view-source"><a href="src_widgets_list_controller.js.html#line442">view source</a></div>
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line451">view source</a></div>
 
 <div class="detailed-listing-item">
     
         
 
-        <h4 class="name" id="~computeFilterFragmentsListComputesthelistofdifferentfilterfragmentsusedtocreateaproperquery"><a name="~computeFilterFragmentsListComputesthelistofdifferentfilterfragmentsusedtocreateaproperquery" href="#~computeFilterFragmentsListComputesthelistofdifferentfilterfragmentsusedtocreateaproperquery"><img src="icons/picture_empty.png" alt="method" /> computeFilterFragmentsList
-Computes the list of different filter fragments used to create a proper query<span class="signature">()</span><span class="type-signature"> &rarr; {Array}</span></a></h4>
+        <h4 class="name" id="~computeFilterFragmentsList"><a name="~computeFilterFragmentsList" href="#~computeFilterFragmentsList"><img src="icons/picture_empty.png" alt="method" /> computeFilterFragmentsList<span class="signature">()</span><span class="type-signature"> &rarr; {Array}</span></a></h4>
 
         
     
 
+    
+    <div class="description">
+        <p>Computes the list of different filter fragments used to create a proper query</p>
+    </div>
     
     <div class="foldable-details">
         
@@ -1125,7 +1153,7 @@ Computes the list of different filter fragments used to create a proper query<sp
             
                 
 
-    <div class="view-source"><a href="src_widgets_list_controller.js.html#line458">view source</a></div>
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line467">view source</a></div>
 
 <div class="detailed-listing-item">
     
@@ -1200,7 +1228,7 @@ Computes the list of different filter fragments used to create a proper query<sp
             
                 
 
-    <div class="view-source"><a href="src_widgets_list_controller.js.html#line239">view source</a></div>
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line247">view source</a></div>
 
 <div class="detailed-listing-item">
     
@@ -1275,7 +1303,7 @@ Computes the list of different filter fragments used to create a proper query<sp
             
                 
 
-    <div class="view-source"><a href="src_widgets_list_controller.js.html#line126">view source</a></div>
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line133">view source</a></div>
 
 <div class="detailed-listing-item">
     
@@ -1376,7 +1404,7 @@ Computes the list of different filter fragments used to create a proper query<sp
             
                 
 
-    <div class="view-source"><a href="src_widgets_list_controller.js.html#line185">view source</a></div>
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line188">view source</a></div>
 
 <div class="detailed-listing-item">
     
@@ -1387,6 +1415,10 @@ Computes the list of different filter fragments used to create a proper query<sp
         
     
 
+    
+    <div class="description">
+        <p>Manages how time filter is get from the widget for refresh purposes</p>
+    </div>
     
     <div class="foldable-details">
         
@@ -1451,7 +1483,7 @@ Computes the list of different filter fragments used to create a proper query<sp
             
                 
 
-    <div class="view-source"><a href="src_widgets_list_controller.js.html#line100">view source</a></div>
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line106">view source</a></div>
 
 <div class="detailed-listing-item">
     
@@ -1526,7 +1558,86 @@ Computes the list of different filter fragments used to create a proper query<sp
             
                 
 
-    <div class="view-source"><a href="src_widgets_list_controller.js.html#line315">view source</a></div>
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line214">view source</a></div>
+
+<div class="detailed-listing-item">
+    
+        
+
+        <h4 class="name" id="~isAllSelectedChanged"><a name="~isAllSelectedChanged" href="#~isAllSelectedChanged"><img src="icons/picture_empty.png" alt="method" /> isAllSelectedChanged<span class="signature">()</span><span class="type-signature"></span></a></h4>
+
+        
+    
+
+    
+    <div class="description">
+        <p>Observer on &quot;isAllSelected&quot;. Automatically select every record when the header checkbox is clicked</p>
+    </div>
+    
+    <div class="foldable-details">
+        
+
+        
+
+        
+
+        
+
+        
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+    </div>
+</div>
+
+            
+                
+
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line324">view source</a></div>
 
 <div class="detailed-listing-item">
     
@@ -1627,18 +1738,100 @@ Computes the list of different filter fragments used to create a proper query<sp
             
                 
 
-    <div class="view-source"><a href="src_widgets_list_controller.js.html#line170">view source</a></div>
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line122">view source</a></div>
 
 <div class="detailed-listing-item">
     
         
 
-        <h4 class="name" id="~updateIntervalManageshowtimefilterissettothewidget"><a name="~updateIntervalManageshowtimefilterissettothewidget" href="#~updateIntervalManageshowtimefilterissettothewidget"><img src="icons/picture_empty.png" alt="method" /> updateInterval
-Manages how time filter is set to the widget<span class="signature">(interval)</span><span class="type-signature"></span></a></h4>
+        <h4 class="name" id="~rollbackableChanged"><a name="~rollbackableChanged" href="#~rollbackableChanged"><img src="icons/picture_empty.png" alt="method" /> rollbackableChanged<span class="signature">()</span><span class="type-signature"></span></a></h4>
 
         
     
 
+    
+    <div class="description">
+        <p>observes if the model is rollbackable</p>
+    </div>
+    
+    <div class="foldable-details">
+        
+
+        
+
+        
+
+        
+
+        
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+    </div>
+</div>
+
+            
+                
+
+    <div class="view-source"><a href="src_widgets_list_controller.js.html#line177">view source</a></div>
+
+<div class="detailed-listing-item">
+    
+        
+
+        <h4 class="name" id="~updateInterval"><a name="~updateInterval" href="#~updateInterval"><img src="icons/picture_empty.png" alt="method" /> updateInterval<span class="signature">(interval)</span><span class="type-signature"></span></a></h4>
+
+        
+    
+
+    
+    <div class="description">
+        <p>Manages how time filter is set to the widget</p>
+    </div>
     
     <div class="foldable-details">
         
@@ -1742,152 +1935,6 @@ Manages how time filter is set to the widget<span class="signature">(interval)</
     
         
 
-        <h4 class="name" id="~event:isAllSelectedChanged"><a name="~event:isAllSelectedChanged" href="#~event:isAllSelectedChanged"><img src="icons/picture_empty.png" alt="method" /> isAllSelectedChanged</a></h4>
-
-        
-    
-
-    
-    <div class="foldable-details">
-        
-
-        
-
-        
-
-        
-
-        
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-    </div>
-</div>
-
-        
-            
-
-<div class="detailed-listing-item">
-    
-        
-
-        <h4 class="name" id="~event:rollbackableChanged"><a name="~event:rollbackableChanged" href="#~event:rollbackableChanged"><img src="icons/picture_empty.png" alt="method" /> rollbackableChanged</a></h4>
-
-        
-    
-
-    
-    <div class="foldable-details">
-        
-
-        
-
-        
-
-        
-
-        
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-    </div>
-</div>
-
-        
-            
-
-<div class="detailed-listing-item">
-    
-        
-
         <h4 class="name" id="~event:widgetDataChanged"><a name="~event:widgetDataChanged" href="#~event:widgetDataChanged"><img src="icons/picture_empty.png" alt="method" /> widgetDataChanged</a></h4>
 
         
@@ -1969,7 +2016,7 @@ Manages how time filter is set to the widget<span class="signature">(interval)</
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Feb 24 2016 09:50:30 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Feb 24 2016 15:38:59 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

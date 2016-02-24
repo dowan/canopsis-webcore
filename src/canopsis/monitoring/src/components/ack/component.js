@@ -29,7 +29,14 @@ Ember.Application.initializer({
             isNone = Ember.isNone,
             __ = Ember.String.loc;
 
-
+        /**
+         * @component ack
+         * @description Displays informations on a given ack
+         *
+         * ![Component preview](../screenshots/component-ack.png)
+         *
+         * @example {{component-ack crecord=this value=value}}
+         */
         var component = Ember.Component.extend({
             /**
              * @property crecord
