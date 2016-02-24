@@ -46,6 +46,12 @@ Ember.Application.initializer({
         /**
          * @widget TextWidget
          * @augments Widget
+         * @description Displays a text cell, with custom content. The content of the widget can be customized with HTML and Handlebars
+         * It is also possible to display information about events and perfdata.
+         * # Screenshots
+         *
+         * ![Simple text](../screenshots/widget-text-simple.png)
+         * ![Event custom html](../screenshots/widget-text-customhtml1.png)
          */
         var widget = WidgetFactory('text', {
             /**
@@ -231,7 +237,7 @@ Ember.Application.initializer({
 
             /**
              * @method makeTemplate
-             * Make sure template has been compiled.
+             * @description Make sure template has been compiled.
              */
             makeTemplate: function() {
                 var template = undefined;
@@ -244,12 +250,13 @@ Ember.Application.initializer({
                     };
                 }
 
+                //FIXME do not assign a property when returning a value is as easy, and won't bring possible side-effects!
                 set(this, 'template', template);
             },
 
             /**
              * @method renderTemplate
-             * Render compiled template property with context property into the rendered property.
+             * @description Render compiled template property with context property into the rendered property.
              */
             renderTemplate: function() {
                 this.makeTemplate();
