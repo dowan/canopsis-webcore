@@ -41,7 +41,8 @@
 
 <article>
     
-        <div class="description">Displays buttons to change an event state. There are 4 states (info, minor, major, critical). The button corresponding to the event's current state is not displayed.</div>
+        <div class="description"><p>Displays buttons to change an event state. There are 4 states (info, minor, major, critical). The button corresponding to the event's current state is not displayed.</p>
+<p><img src="../screenshots/component-changestate.png" alt="Component preview"></p></div>
     
 
     <h3 class="subsection-title index"><img src="icons/book_open.png" alt="index" /> Index</h3>
@@ -235,6 +236,11 @@
         
 
         
+            <h5>Example</h5>
+            
+    <pre class="prettyprint"><code>{{component-stateeditor content=attr.value title=attr.field showAll=attr.model.options.showAll}}</code></pre>
+
+        
     </div>
 </div>
 
@@ -258,7 +264,7 @@
             
                 
 
-    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line45">view source</a></div>
+    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line49">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~content"><a name="~content" href="#~content"><img src="icons/stop.png" alt="property" /> content<span class="type-signature"> :integer</span></a></h4>
@@ -266,7 +272,7 @@
 
     
     <div class="description">
-        the event' state.
+        <p>the event' state.</p>
     </div>
     
     <div class="foldable-details">
@@ -314,7 +320,7 @@
             
                 
 
-    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line90">view source</a></div>
+    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line94">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~isCritical"><a name="~isCritical" href="#~isCritical"><img src="icons/stop.png" alt="property" /> isCritical<span class="type-signature"> :boolean</span></a></h4>
@@ -322,7 +328,7 @@
 
     
     <div class="description">
-        Computed property dependent on "content". Returns true if the event' state is critical.
+        <p>Computed property dependent on &quot;content&quot;. Returns true if the event' state is critical.</p>
     </div>
     
     <div class="foldable-details">
@@ -370,7 +376,7 @@
             
                 
 
-    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line63">view source</a></div>
+    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line67">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~isInfo"><a name="~isInfo" href="#~isInfo"><img src="icons/stop.png" alt="property" /> isInfo<span class="type-signature"> :boolean</span></a></h4>
@@ -378,7 +384,7 @@
 
     
     <div class="description">
-        Computed property dependent on "content". Returns true if the event' state is info.
+        <p>Computed property dependent on &quot;content&quot;. Returns true if the event' state is info.</p>
     </div>
     
     <div class="foldable-details">
@@ -426,7 +432,7 @@
             
                 
 
-    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line81">view source</a></div>
+    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line85">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~isMajor"><a name="~isMajor" href="#~isMajor"><img src="icons/stop.png" alt="property" /> isMajor<span class="type-signature"> :boolean</span></a></h4>
@@ -434,7 +440,7 @@
 
     
     <div class="description">
-        Computed property dependent on "content". Returns true if the event' state is major.
+        <p>Computed property dependent on &quot;content&quot;. Returns true if the event' state is major.</p>
     </div>
     
     <div class="foldable-details">
@@ -482,7 +488,7 @@
             
                 
 
-    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line72">view source</a></div>
+    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line76">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~isMinor"><a name="~isMinor" href="#~isMinor"><img src="icons/stop.png" alt="property" /> isMinor<span class="type-signature"> :boolean</span></a></h4>
@@ -490,7 +496,7 @@
 
     
     <div class="description">
-        Computed property dependent on "content". Returns true if the event' state is minor.
+        <p>Computed property dependent on &quot;content&quot;. Returns true if the event' state is minor.</p>
     </div>
     
     <div class="foldable-details">
@@ -538,7 +544,7 @@
             
                 
 
-    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line38">view source</a></div>
+    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line42">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~previousContent"><a name="~previousContent" href="#~previousContent"><img src="icons/stop.png" alt="property" /> previousContent<span class="type-signature"> :integer</span></a></h4>
@@ -546,7 +552,7 @@
 
     
     <div class="description">
-        A backup of the initial event' state.
+        <p>A backup of the initial event' state.</p>
     </div>
     
     <div class="foldable-details">
@@ -594,7 +600,7 @@
             
                 
 
-    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line139">view source</a></div>
+    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line143">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~previousIsCritical"><a name="~previousIsCritical" href="#~previousIsCritical"><img src="icons/stop.png" alt="property" /> previousIsCritical<span class="type-signature"> :boolean</span></a></h4>
@@ -602,7 +608,7 @@
 
     
     <div class="description">
-        Computed property dependent on "previousContent". is "True" if the event's previous state is critical.
+        <p>Computed property dependent on &quot;previousContent&quot;. is &quot;True&quot; if the event's previous state is critical.</p>
     </div>
     
     <div class="foldable-details">
@@ -650,7 +656,7 @@
             
                 
 
-    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line112">view source</a></div>
+    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line116">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~previousIsInfo"><a name="~previousIsInfo" href="#~previousIsInfo"><img src="icons/stop.png" alt="property" /> previousIsInfo<span class="type-signature"> :boolean</span></a></h4>
@@ -658,7 +664,7 @@
 
     
     <div class="description">
-        Computed property dependent on "previousContent". is "True" if the event's previous state is info.
+        <p>Computed property dependent on &quot;previousContent&quot;. is &quot;True&quot; if the event's previous state is info.</p>
     </div>
     
     <div class="foldable-details">
@@ -706,7 +712,7 @@
             
                 
 
-    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line130">view source</a></div>
+    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line134">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~previousIsMajor"><a name="~previousIsMajor" href="#~previousIsMajor"><img src="icons/stop.png" alt="property" /> previousIsMajor<span class="type-signature"> :boolean</span></a></h4>
@@ -714,7 +720,7 @@
 
     
     <div class="description">
-        Computed property dependent on "previousContent". is "True" if the event's previous state is major.
+        <p>Computed property dependent on &quot;previousContent&quot;. is &quot;True&quot; if the event's previous state is major.</p>
     </div>
     
     <div class="foldable-details">
@@ -762,7 +768,7 @@
             
                 
 
-    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line121">view source</a></div>
+    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line125">view source</a></div>
 
 <div class="detailed-listing-item">
     <h4 class="name" id="~previousIsMinor"><a name="~previousIsMinor" href="#~previousIsMinor"><img src="icons/stop.png" alt="property" /> previousIsMinor<span class="type-signature"> :boolean</span></a></h4>
@@ -770,7 +776,7 @@
 
     
     <div class="description">
-        Computed property dependent on "previousContent". is "True" if the event's previous state is minor.
+        <p>Computed property dependent on &quot;previousContent&quot;. is &quot;True&quot; if the event's previous state is minor.</p>
     </div>
     
     <div class="foldable-details">
@@ -825,7 +831,7 @@
             
                 
 
-    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line145">view source</a></div>
+    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line149">view source</a></div>
 
 <div class="detailed-listing-item">
     
@@ -838,7 +844,7 @@
 
     
     <div class="description">
-        changes the state of the event.
+        <p>changes the state of the event.</p>
     </div>
     
     <div class="foldable-details">
@@ -935,7 +941,7 @@
             
                 
 
-    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line46">view source</a></div>
+    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line50">view source</a></div>
 
 <div class="detailed-listing-item">
     
@@ -1010,7 +1016,7 @@
             
                 
 
-    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line94">view source</a></div>
+    <div class="view-source"><a href="src_components_stateeditor_component.js.html#line98">view source</a></div>
 
 <div class="detailed-listing-item">
     
@@ -1023,7 +1029,7 @@
 
     
     <div class="description">
-        Returns true if the event' state is the state specified in the method parameter.
+        <p>Returns true if the event' state is the state specified in the method parameter.</p>
     </div>
     
     <div class="foldable-details">
@@ -1058,7 +1064,7 @@
 
             
 
-            <span class="description last">the state to check</span>
+            <span class="description last"><p>the state to check</p></span>
         </li>
 
     
@@ -1117,7 +1123,7 @@
                 
 <div class="returns-details">
 	<div class="param-desc">
-	    boolean
+	    <p>boolean</p>
 	</div>
 	
 
@@ -1149,7 +1155,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Feb 24 2016 09:46:42 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Feb 24 2016 11:44:46 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

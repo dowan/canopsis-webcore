@@ -28,6 +28,10 @@ Ember.Application.initializer({
         /**
          * @component stateeditor
          * @description Displays buttons to change an event state. There are 4 states (info, minor, major, critical). The button corresponding to the event's current state is not displayed.
+         *
+         * ![Component preview](../screenshots/component-changestate.png)
+         *
+         * @example {{component-stateeditor content=attr.value title=attr.field showAll=attr.model.options.showAll}}
          */
         var component = Ember.Component.extend({
             /**
@@ -152,6 +156,7 @@ Ember.Application.initializer({
                 }
             }
         });
+
         application.register('component:component-stateeditor', component);
     }
 });
