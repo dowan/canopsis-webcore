@@ -19,91 +19,6 @@
 
 define(['ember-lib', 'ember-data-lib'], function () {
 
-    var get = Ember.get;
-
-    Ember.Object.reopen({
-        toJson: function() {
-            return JSON.parse(JSON.stringify(this));
-        },
-        json: function() {
-            return JSON.parse(JSON.stringify(this));
-        }.property()
-    });
-
-    var controllerDict = {
-        init: function() {
-            if(get(this, 'isGenerated')) {
-                console.error('Ember is Instantiating a generated controller for "' + get(this, '_debugContainerKey') + '". This practice is not encouraged, as it might also be an underlying requireJS problem.', this);
-            }
-            this._super.apply(this, arguments);
-        }
-    };
-
-    Ember.Controller.reopen(controllerDict);
-    Ember.ArrayController.reopen(controllerDict);
-    Ember.ObjectController.reopen(controllerDict);
-
-    DS.ArrayTransform = DS.Transform.extend({
-        deserialize: function(serialized) {
-            if (Ember.typeOf(serialized) === 'array') {
-                return serialized;
-            }
-
-            return [];
-        },
-
-        serialize: function(deserialized) {
-            var type = Ember.typeOf(deserialized);
-
-            if (type === 'array') {
-                return deserialized;
-            } else if (type === 'string') {
-                return deserialized.split(',').map(function(item) {
-                    return jQuery.trim(item);
-                });
-            }
-
-            return [];
-        }
-    });
-
-    DS.IntegerTransform = DS.Transform.extend({
-        deserialize: function(serialized) {
-            if (typeof serialized === "number") {
-                return serialized;
-            } else {
-                // console.warn("deserialized value is not a number as it is supposed to be", arguments);
-                return 0;
-            }
-        },
-
-        serialize: function(deserialized) {
-            return Ember.isEmpty(deserialized) ? null : Number(deserialized);
-        }
-    });
-
-    DS.ObjectTransform = DS.Transform.extend({
-        deserialize: function(serialized) {
-            if (Ember.typeOf(serialized) === 'object') {
-                return Ember.Object.create(serialized);
-            }
-
-            return Ember.Object.create({});
-        },
-
-        serialize: function(deserialized) {
-            var type = Ember.typeOf(deserialized);
-
-            if (type === 'object' || type === 'instance') {
-                return Ember.Object.create(deserialized);
-            } else {
-                console.warn("bad format", type, deserialized);
-            }
-
-            return null;
-        }
-    });
-
     /*
      * Here is the canopsis UI main configuration file.
      * It is possible to add properies and values that are reachable
@@ -119,6 +34,49 @@ define(['ember-lib', 'ember-data-lib'], function () {
         SHOW_TRANSLATIONS: false,
         TITLE: 'Canopsis Sakura',
         SHOWMODULES: false,
+        getUserLanguage: function(){
+            var language = 'en';
+
+            $.ajax({
+                url: '/account/me',
+                success: function(data) {
+                    if (data.success && data.data && data.data.length && data.data[0].ui_language) {
+                        language = data.data[0].ui_language;
+                        console.log('Lang initialization succeed, default language for application is set to ' + language.toUpperCase());
+                    } else {
+                        $.ajax({
+                            url: '/rest/object/frontend/cservice.frontend',
+                            success: function(data) {
+                                if (data.success && data.data && data.data.length && data.data[0].ui_language) {
+                                    language = data.data[0].ui_language;
+                                } else {
+                                    console.warn('Lang data fetch failed, default language for application is set to EN', data);
+                                    language = 'en';
+                                }
+
+                            },
+                            async: false
+                        });
+                    }
+                },
+                async: false
+            }).fail(function () {
+                console.error('Lang initialization failed, default language for application is set to EN');
+                i18n.uploadDefinitions();
+            });
+
+            return language;
+        },
+        getEnabledModules: function (callback) {
+            $.get('/rest/object/enabledmodules', function (data) {
+                if (data.success === true && data.total === 1) {
+                    callback(data.data[0].enabled);
+                } else {
+                    console.error('Could not load module information.');
+                }
+
+            });
+        }
     };
 
     window.canopsisConfiguration = canopsisConfiguration;

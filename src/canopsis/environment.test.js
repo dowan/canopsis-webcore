@@ -38,7 +38,7 @@ define([
         console.warn = function(){};
     }
 
-    enabled.getEnabledModules(function (enabledPlugins) {
+    canopsisConfiguration.getEnabledModules(function (enabledPlugins) {
         if ($.inArray('tests', enabledPlugins) === -1) {
             alert('Module tests not registed, tests cannot work');
         }

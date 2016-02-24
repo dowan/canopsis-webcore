@@ -38,11 +38,11 @@ See [Howto](https://git.canopsis.net/canopsis-ui-bricks/uibase/blob/master/doc/i
 
 ## Continuous Integration
 
-Tested on commit : [ERROR : The brick is not in a dedicated git repository].
+Tested on commit : ac0336c.
 
 | Target | Status | Log |
 | ------ | ------ | --- |
-| Lint   | :ok: OK |  |
+| Lint   | :negative_squared_cross_mark: ERROR | <br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/uibase/src/components/contextselector/component.js<br>  172:17  error  Expected indentation of 20 space characters but found 16  indent<br>  173:21  error  Expected indentation of 24 space characters but found 20  indent<br>  174:17  error  Expected indentation of 20 space characters but found 16  indent<br>  175:21  error  Expected indentation of 24 space characters but found 20  indent<br>  176:17  error  Expected indentation of 20 space characters but found 16  indent<br>  177:21  error  Expected indentation of 24 space characters but found 20  indent<br>  187:17  error  Expected indentation of 20 space characters but found 16  indent<br>  188:21  error  Expected indentation of 24 space characters but found 20  indent<br>  199:17  error  Expected indentation of 20 space characters but found 16  indent<br>  200:21  error  Expected indentation of 24 space characters but found 20  indent<br><br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/uibase/src/components/typedvalue/component.js<br>  92:17  error  Expected indentation of 20 space characters but found 16  indent<br>  93:17  error  Expected indentation of 20 space characters but found 16  indent<br><br>✖ 12 problems (12 errors, 0 warnings)<br><br> |
 
 ## Code Notes
 
@@ -50,24 +50,24 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 
 | File   | Note   |
 |--------|--------|
-| src/mixins/minimizebutton.js | remove this file |
-| src/mixins/arraysearch.js | these checks should be asserts |
-| src/mixins/responsivelist.js | check if still used |
 | src/editors/editor-elementidselectorwithoptions.hbs | manage search in a dynamic way, as an editor property binding to a search method |
+| src/mixins/responsivelist.js | check if still used |
+| src/mixins/arraysearch.js | these checks should be asserts |
+| src/mixins/minimizebutton.js | remove this file |
 | src/widgets/list/controller.js | add an error in displayedErrors array, to warn the user that the data cannot be displayed |
 | src/widgets/list/controller.js | check if useless or not |
-| src/components/colpick/component.js | check to destroy colpick |
-| src/components/actionfilter/component.js | not used yet |
 | src/components/elementidselectorwithoptions/component.js | put this on a dedicated util |
 | src/components/elementidselectorwithoptions/component.js | manage default values |
 | src/components/elementidselectorwithoptions/component.js | stop using polymorphicTypeKey, use sourceMappingKeys instead |
+| src/components/actionfilter/component.js | not used yet |
 | src/components/classifieditemselector/component.js | fuzzy search |
 | src/components/classifieditemselector/component.js | hover effect |
 | src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
 | src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
 | src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
-| src/components/filefield/component.js | check if all the component property are still used, and refactor if needed |
 | src/components/linklist/component.js | use the container defined in the initializer |
+| src/components/filefield/component.js | check if all the component property are still used, and refactor if needed |
+| src/components/colpick/component.js | check to destroy colpick |
 
 
 ### FIXMES
@@ -76,9 +76,9 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 |--------|--------|
 | src/mixins/responsivelist.js | undefined |
 | src/widgets/uimaintabcollection/controller.js |: the factory "widgetbase" is a hack to make the canopsis rights reopen work. But it make the view "app_header" not working without the canopsis-rights brick |
-| src/components/classifiedcrecordselector/component.js | is store destroyed? |
 | src/components/dateinterval/component.js | destroy the Jquery plugin at willDestroyElement, and check for possible undestroyed event bindings |
 | src/components/linklist/component.js | on "src/templates/actionbutton-info.hbs", the component is used with the "linkInfoPattern" property. This property does not seems relevant anymore. |
+| src/components/classifiedcrecordselector/component.js | is store destroyed? |
 
 
 ## Additional info
