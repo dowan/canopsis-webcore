@@ -47,6 +47,7 @@ Ember.Application.initializer({
          *   - an "edit" button, to show an edition form for the currently selected item
          *   - a "duplicate" button, that allows to copy the selected item, and to show directly an edition form to make modifications on it.
          *
+         * ![preview](../screenshots/mixin-crud.png)
          */
         var mixin = Mixin('crud', {
             partials: {

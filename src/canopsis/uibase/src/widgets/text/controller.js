@@ -249,9 +249,7 @@ Ember.Application.initializer({
                         return '<i>Impossible to render template:</i> ' + err;
                     };
                 }
-
-                //FIXME do not assign a property when returning a value is as easy, and won't bring possible side-effects!
-                set(this, 'template', template);
+                return template;
             },
 
             /**
@@ -259,16 +257,15 @@ Ember.Application.initializer({
              * @description Render compiled template property with context property into the rendered property.
              */
             renderTemplate: function() {
-                this.makeTemplate();
+                var template = this.makeTemplate();
 
-                var template = get(this, 'template'),
-                    context = get(this, 'context');
+                var context = get(this, 'context');
 
                 var appliedDynamicProperties = get(this, 'appliedDynamicProperties') || {};
                 $.extend(context, appliedDynamicProperties);
 
 
-                set(this, 'rendered', new Ember.Handlebars.SafeString(template(context)));
+                set(this, 'renderedTemplate', new Ember.Handlebars.SafeString(template(context)));
             }
         }, widgetOptions);
 

@@ -28,6 +28,9 @@ Ember.Application.initializer({
 
         /**
          * @mixin tablayout
+         * @description Mixin for containerwidget that displays children into tabs
+         *
+         * ![Mixin preview](../screenshots/mixin-tablayout.png)
          */
         var mixin = Mixin('tablayout', {
             init: function() {

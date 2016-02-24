@@ -58,8 +58,13 @@ Ember.Application.initializer({
 
         /**
          * @mixin background
+         * @description Allows to change the background color of widgets
+         * ![Preview](../screenshots/mixin-background.png)
          */
         var mixin = Mixin('background', {
+            /**
+             * @method init
+             */
             init: function() {
                 this._super();
                 this.addMixinView(viewMixin);
