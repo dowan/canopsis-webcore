@@ -48,7 +48,6 @@ Tested on commit : 6732d6b.
 | src/editors/editor-elementidselectorwithoptions.hbs | make this doc viewable on the generated doc |
 | src/mixins/responsivelist.js | check if still used |
 | src/mixins/arraysearch.js | these checks should be asserts |
-| src/mixins/minimizebutton.js | remove this file |
 | src/widgets/list/controller.js | add an error in displayedErrors array, to warn the user that the data cannot be displayed |
 | src/widgets/list/controller.js | check if useless or not |
 | src/components/elementidselectorwithoptions/component.js | put this on a dedicated util |
@@ -78,5 +77,5 @@ Tested on commit : 6732d6b.
 
 ## Additional info
 
-Minified version : 202 files (size: 1,1M)
-Development version : 301 files (size: 1,8M)
+Minified version : 182 files (size: 1000K)
+Development version : 263 files (size: 1,6M)

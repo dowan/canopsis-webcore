@@ -21,10 +21,8 @@
     paths: {
         'components/component-editor': 'canopsis/core/src/components/editor/template',
         'components/component-renderer': 'canopsis/core/src/components/renderer/template',
-        'components/component-wrapper': 'canopsis/core/src/components/wrapper/template',
         'confirmform': 'canopsis/core/src/forms/confirmform/confirmform',
         'modelform': 'canopsis/core/src/forms/modelform/modelform',
-        'viewtreeform': 'canopsis/core/src/forms/viewtreeform/viewtreeform',
         'widgetform': 'canopsis/core/src/forms/widgetform/widgetform',
 
     }
@@ -35,8 +33,6 @@
     'ehbs!components/component-editor',
     'canopsis/core/src/components/renderer/component',
     'ehbs!components/component-renderer',
-    'canopsis/core/src/components/wrapper/component',
-    'ehbs!components/component-wrapper',
     'canopsis/core/src/controller/application',
     'canopsis/core/src/controller/form',
     'canopsis/core/src/controller/formwrapper',
@@ -51,8 +47,6 @@
     'canopsis/core/src/forms/confirmform/controller',
     'canopsis/core/src/forms/modelform/controller',
     'ehbs!modelform',
-    'canopsis/core/src/forms/viewtreeform/controller',
-    'ehbs!viewtreeform',
     'canopsis/core/src/forms/widgetform/controller',
     'ehbs!widgetform',
     'canopsis/core/src/lib/abstractclassregistry',

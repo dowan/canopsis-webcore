@@ -58,7 +58,7 @@ Ember.Application.initializer({
 
         /**
          * @mixin background
-         * @description Allows to change the background color of widgets
+         * @description Allows to change the background color or image of widgets.
          * ![Preview](../screenshots/mixin-background.png)
          */
         var mixin = Mixin('background', {
