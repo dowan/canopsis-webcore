@@ -25,8 +25,93 @@ Ember.Application.initializer({
             isNone = Ember.isNone,
             __ = Ember.String.loc;
 
-
+        /**
+         * @component eventSelector
+         * @description Displays an interface to search and select events
+         *
+         * ![Component preview](../screenshots/component-eventselector.png)
+         */
         var component = Ember.Component.extend({
+            /**
+             * @property component
+             * @type string
+             * @description The value of the component input that is used to search for events
+             */
+            component: undefined,
+
+            /**
+             * @property resource
+             * @type string
+             * @description The value of the resource input that is used to search for events
+             */
+            resource: undefined,
+
+            /**
+             * @property componentDataStore
+             * @type DS.Store
+             * @description the store where searched events are disposed
+             */
+            componentDataStore: undefined,
+
+            /**
+             * @property content
+             */
+            content: undefined,
+
+            /**
+             * @property events
+             */
+            events: undefined,
+
+            /**
+             * @property labelled
+             */
+            labelled: undefined,
+
+            /**
+             * @property saveLabelsDone
+             * @type boolean
+             * @description Assigned to true when the labels have been saved
+             */
+            saveLabelsDone: undefined,
+
+            /**
+             * @property search_component
+             */
+            search_component: undefined,
+
+            /**
+             * @property search_resource
+             */
+            search_resource: undefined,
+
+            /**
+             * @property selectedEvents
+             */
+            selectedEvents: undefined,
+
+            /**
+             * @property selectors
+             * @type boolean
+             * @description When true, the search is only done on selector-based events
+             */
+            selectors: undefined,
+
+            /**
+             * @property topologies
+             * @type boolean
+             * @description When true, the search is only done on topology-based events
+             */
+            topologies: undefined,
+
+            /**
+             * @property type_label
+             */
+            type_label: undefined,
+
+            /**
+             * @method init
+             */
             init: function() {
                 this._super();
                 this.set('componentDataStore', DS.Store.create({
@@ -45,6 +130,9 @@ Ember.Application.initializer({
                 }
             },
 
+            /**
+             * @method initializeEvents
+             */
             initializeEvents: function () {
 
                 var rks = [];
@@ -90,6 +178,9 @@ Ember.Application.initializer({
                 void (query);
             },
 
+            /**
+             * @method findEvents
+             */
             findEvents: function() {
 
                 var filter = {};
@@ -147,16 +238,28 @@ Ember.Application.initializer({
 
             }.observes('component', 'resource'),
 
+            /**
+             * @method setSelector
+             * @description Observer on "selectors". This observer is triggered when the user clicks on the "Selectors" checkbox. Refreshes the list of found events to filter only selectors
+             */
             setSelector: function() {
                 this.set('topologies', false);
                 this.findEvents();
             }.observes('selectors'),
 
+            /**
+             * @method setTopologies
+             * @description Observer on "topologies". This observer is triggered when the user clicks on the "Topologies" checkbox. Refreshes the list of found events to filter only topologies
+             */
             setTopologies: function() {
                 this.set('selectors', false);
                 this.findEvents();
             }.observes('topologies'),
 
+            /**
+             * @method getSelectedRks
+             * @returns {array} A list of selected event routing keys
+             */
             getSelectedRks: function() {
 
                 var selectedRks = [];
@@ -192,7 +295,10 @@ Ember.Application.initializer({
             },
 
             actions: {
-
+                /**
+                 * @method actions_saveLabels
+                 * @description persists the label values into the computed result
+                 */
                 saveLabels: function () {
                     set(this, 'content', this.getSelectedRks());
                     set(this, 'saveLabelsDone', true);
@@ -202,6 +308,11 @@ Ember.Application.initializer({
                     }, 3000);
                 },
 
+                /**
+                 * @method actions_add
+                 * @param event
+                 * @description Action triggered when the user adds an event from the selection
+                 */
                 add: function (event) {
                     console.log('Adding event', event);
                     get(this, 'selectedEvents').pushObject(event);
@@ -213,6 +324,11 @@ Ember.Application.initializer({
                     }
                 },
 
+                /**
+                 * @method actions_delete
+                 * @param event
+                 * @description Action triggered when the user removes an event from the selection
+                 */
                 delete: function (event) {
                     console.log('Rk to delete', event.id);
                     get(this, 'selectedEvents').removeObject(event);

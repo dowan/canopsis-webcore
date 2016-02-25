@@ -31,6 +31,9 @@ Ember.Application.initializer({
 
         /**
          * @widget Uimaintabcollection
+         * @description displays a list of tabs to navigate through a list of views, as well as buttons that allows the user to control the currently shown view, and to create views.
+         *
+         * ![Widget preview](../screenshots/widget-uimaintabcollection.png)
          */
         var widget = WidgetController.extend({
             needs: ['application', 'login'],
