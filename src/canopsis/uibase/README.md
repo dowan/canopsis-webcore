@@ -32,7 +32,7 @@ See [Howto](https://git.canopsis.net/canopsis-ui-bricks/uibase/blob/master/doc/i
 
 ## Continuous Integration
 
-Tested on commit : 6732d6b.
+Tested on commit : 94fbf41.
 
 | Target | Status | Log |
 | ------ | ------ | --- |
@@ -78,4 +78,4 @@ Tested on commit : 6732d6b.
 ## Additional info
 
 Minified version : 182 files (size: 1000K)
-Development version : 263 files (size: 1,6M)
+Development version : 264 files (size: 1,6M)

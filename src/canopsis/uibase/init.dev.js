@@ -333,6 +333,7 @@
     'canopsis/uibase/src/helpers/color',
     'canopsis/uibase/src/helpers/compare',
     'canopsis/uibase/src/helpers/eventtype',
+    'canopsis/uibase/src/helpers/glyphicon',
     'canopsis/uibase/src/helpers/humanreadable',
     'canopsis/uibase/src/helpers/interval2html',
     'canopsis/uibase/src/helpers/json2html',
