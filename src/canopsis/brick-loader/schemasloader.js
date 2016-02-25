@@ -18,7 +18,7 @@
  */
 
 define([
-    'canopsis/canopsis-backend-ui-connector/requirejs-modules/adapters/schema',
+    window.config.schemasAdapter,
 ], function (SchemaAdapter) {
     function compare(a,b) {
       if (a.id < b.id) {
@@ -88,7 +88,7 @@ define([
 
             var parentModel = this.getParentModelForModelId(schemaId);
             if(parentModel === undefined){
-                alert(schemaId);
+                console.error(schemaId, 'parent was not found');
             }
             var modelDict = this.generateSchemaModelDict(schema, parentModel, schemaId);
 

@@ -67,6 +67,10 @@ Ember.Application.initializer({
 
         /**
          * @widget Widgetcontainer
+         * @description A widget which contains other widgets.
+         * Layouts are configurable through mixins. Without any layout mixin assigned, it won't display children widgets
+         *
+         * ![Mixin preview](../screenshots/mixin-horizontallayout.png)
          */
         var widget = WidgetFactory('widgetcontainer', {
 
@@ -80,6 +84,7 @@ Ember.Application.initializer({
 
             /**
              * @method refreshContent
+             * @description Bubbles the refresh event to children widgets
              * @return {superReturnType}
              */
             refreshContent: function() {

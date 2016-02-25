@@ -73,92 +73,13 @@ define([
             }
         },
 
-        uploadDefinitions: function () {
-
-            $.ajax({
-                url: '/rest/object/i18n',
-                type: 'POST',
-                data: JSON.stringify({
-                    id: 'translations',
-                    todo: i18n.todo,
-                    crecord_type: 'i18n'
-                }),
-                success: function(data) {
-                    if (data.success) {
-                        console.log('Upload lang upload complete');
-                    }
-                },
-                async: false
-            });
-        },
-
-        downloadDefinitions: function () {
-
-            $.ajax({
-                url: '/i18n/' + i18n.lang,
-                success: function(data) {
-                    if (data.success) {
-                        i18n.translations[i18n.lang] = data.data[0];
-                    }
-                },
-                async: false
-            }).fail(function () {
-                console.log('initialization case. translation is now ready');
-            });
-
-            if (conf.DEBUG && conf.TRANSLATE) {
-                $.ajax({
-                    url: '/rest/object/i18n',
-                    success: function(data) {
-                        if (data.success && data.data && data.data.length) {
-                            for (var item in data.data[0].todo) {
-                                i18n.todo[item] = data.data[0].todo[item];
-                            }
-                            console.log('Loaded pending translation');
-                        }
-                    },
-                }).fail(function () {
-                    console.warn('Error on load pending translation');
-                });
-            }
-        },
-
-        getUserLanguage: function(){
-            $.ajax({
-                url: '/account/me',
-                success: function(data) {
-                    if (data.success && data.data && data.data.length && data.data[0].ui_language) {
-                        i18n.lang = data.data[0].ui_language;
-                        console.log('Lang initialization succeed, default language for application is set to ' + i18n.lang.toUpperCase());
-                    } else {
-                        $.ajax({
-                            url: '/rest/object/frontend/cservice.frontend',
-                            success: function(data) {
-                                if (data.success && data.data && data.data.length && data.data[0].ui_language) {
-                                    i18n.lang = data.data[0].ui_language;
-                                } else {
-                                    console.warn('Lang data fetch failed, default language for application is set to EN', data);
-                                    i18n.lang = 'en';
-                                }
-
-                            },
-                            async: false
-                        });
-                    }
-                },
-                async: false
-            }).fail(function () {
-                console.error('Lang initialization failed, default language for application is set to EN');
-                i18n.uploadDefinitions();
-            });
-        }
+        uploadDefinitions: function () {}
     };
 
     window.__ = i18n._;
     window.i18n = i18n;
 
-    i18n.getUserLanguage();
-    i18n.downloadDefinitions();
+    i18n.lang = conf.getUserLanguage();
 
     if (conf.DEBUG && conf.TRANSLATE) {
         Ember.run(function(){

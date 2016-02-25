@@ -31,6 +31,9 @@ Ember.Application.initializer({
 
         /**
          * @mixin showviewbutton
+         * @description Displays on the list (of userviews) buttons that redirect to userviews
+         *
+         * ![Mixin preview](../screenshots/mixin-showviewbutton.png)
          */
         var mixin = Mixin('showviewbutton', {
             partials: {

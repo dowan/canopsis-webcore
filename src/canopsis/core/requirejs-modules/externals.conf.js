@@ -32,7 +32,6 @@ if(window.bricks.core.envMode === "production") {
     define([
         'math',
         'hashes',
-        'canopsis/runtime.conf',
         'css3-mediaqueries',
         'canopsis/core/externals/mousetrap/mousetrap.min',
         'jsonselect',
@@ -56,7 +55,6 @@ if(window.bricks.core.envMode === "production") {
     define([
         'math',
         'hashes',
-        'canopsis/runtime.conf',
         'css3-mediaqueries',
         'canopsis/core/externals/mousetrap/mousetrap.min',
         'jsonselect',

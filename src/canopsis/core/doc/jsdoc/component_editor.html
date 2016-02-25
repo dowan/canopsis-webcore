@@ -17,6 +17,12 @@
 
 <div id="main">
 
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Schemas</h3><ul><li><a href="schema_containerwidget.html"><img src="icons/table.png" alt="schema"/> containerwidget</a></li><li><a href="schema_criticitylevels.html"><img src="icons/table.png" alt="schema"/> criticitylevels</a></li><li><a href="schema_curve.html"><img src="icons/table.png" alt="schema"/> curve</a></li><li><a href="schema_jsruntimeconfiguration.html"><img src="icons/table.png" alt="schema"/> jsruntimeconfiguration</a></li><li><a href="schema_livereporting.html"><img src="icons/table.png" alt="schema"/> livereporting</a></li><li><a href="schema_loggedaccount.html"><img src="icons/table.png" alt="schema"/> loggedaccount</a></li><li><a href="schema_mixin.html"><img src="icons/table.png" alt="schema"/> mixin</a></li><li><a href="schema_notification.html"><img src="icons/table.png" alt="schema"/> notification</a></li><li><a href="schema_serie.html"><img src="icons/table.png" alt="schema"/> serie</a></li><li><a href="schema_userview.html"><img src="icons/table.png" alt="schema"/> userview</a></li><li><a href="schema_wgraph.html"><img src="icons/table.png" alt="schema"/> wgraph</a></li><li><a href="schema_widget.html"><img src="icons/table.png" alt="schema"/> widget</a></li><li><a href="schema_widgetwrapper.html"><img src="icons/table.png" alt="schema"/> widgetwrapper</a></li></ul><h3>Components</h3><ul><li><a href="component_editor.html"><img src="icons/package.png" alt="component"/> editor</a></li><li><a href="component_renderer.html"><img src="icons/package.png" alt="component"/> renderer</a></li></ul><h3>Classes</h3><ul><li><a href="canopsis.frontend.core.module_AbstractClassRegistry.html">AbstractClassRegistry</a></li><li><a href="canopsis.frontend.core.module_ActionsRegistry.html">ActionsRegistry</a></li><li><a href="canopsis.frontend.core.module_EditorRegistry.html">EditorRegistry</a></li><li><a href="canopsis.frontend.core.module_FormsRegistry.html">FormsRegistry</a></li><li><a href="canopsis.frontend.core.module_IndexesRegistry.html">IndexesRegistry</a></li><li><a href="canopsis.frontend.core.module_InflectionsRegistry.html">InflectionsRegistry</a></li><li><a href="canopsis.frontend.core.module_MixinsRegistry.html">MixinsRegistry</a></li><li><a href="canopsis.frontend.core.module_RenderersRegistry.html">RenderersRegistry</a></li><li><a href="canopsis.frontend.core.module_RequirejsMockManager.html">RequirejsMockManager</a></li><li><a href="canopsis.frontend.core.module_TemplatesRegistry.html">TemplatesRegistry</a></li><li><a href="canopsis.frontend.core.module_Utility.html">Utility</a></li><li><a href="canopsis.frontend.core.module_WidgetsRegistry.html">WidgetsRegistry</a></li><li><a href="initialize-module_ApplicationControllerDict.html">ApplicationControllerDict</a></li><li><a href="initialize-module_controller.html">controller</a></li><li><a href="initialize-module_route.html">route</a></li><li><a href="initialize-module_view.html">view</a></li><li><a href="module-ConsolemanagerMixin.html">ConsolemanagerMixin</a></li><li><a href="module-DocumentationMixin.html">DocumentationMixin</a></li><li><a href="module-LoadingindicatorMixin.html">LoadingindicatorMixin</a></li><li><a href="module-Modelform.html">Modelform</a></li><li><a href="module-NotificationsMixin.html">NotificationsMixin</a></li><li><a href="module-PromisemanagerMixin.html">PromisemanagerMixin</a></li><li><a href="module-RequirejsmocksmanagerMixin.html">RequirejsmocksmanagerMixin</a></li><li><a href="module-RoutesUtils.html">RoutesUtils</a></li><li><a href="module-SchemamanagerMixin.html">SchemamanagerMixin</a></li><li><a href="module-ScreentoolstatusmenuMixin.html">ScreentoolstatusmenuMixin</a></li><li><a href="module-SearchMethodsRegistry.html">SearchMethodsRegistry</a></li><li><a href="module-SlugUtils.html">SlugUtils</a></li><li><a href="module-TimeWindowUtility.html">TimeWindowUtility</a></li><li><a href="module-UserprofilestatusmenuMixin.html">UserprofilestatusmenuMixin</a></li></ul><h3>Mixins</h3><ul><li><a href="module-mixin.html"><img src="icons/brick.png" alt="mixin"/> mixin</a></li><li><a href="module-This mixin should be used with serializers
+It aims to handle request metadata (total, errors, ...).html"><img src="icons/brick.png" alt="mixin"/> This mixin should be used with serializers
+It aims to handle request metadata (total, errors, ...)</a></li></ul>
+</nav>
+
 
     <h1 class="page-title">Component: editor</h1>
 
@@ -37,123 +43,130 @@
 
 <article>
     
-        <h3 class="subsection-title">Index</h3>
-        <h4>Methods</h4>
-        <table style="margin-left:30px;">
-            
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="#~actions_inspect">actions_inspect<span class="signature">()</span><span class="type-signature"></span></a>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="#~init">init<span class="signature">()</span><span class="type-signature"></span></a>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="#~onValueChange">onValueChange<span class="signature">()</span><span class="type-signature"></span></a>
-                    </td>
-                </tr>
-            
-        </table>
+        <div class="description"><p>Component displaying the correct editor for an attribute.
+It is possible to specify the editor type to use. If not specified, it will try to get the correct type on its own.</p></div>
     
-    
-    <h4>Properties</h4>
-    <table style="margin-left:30px;">
-     
-        <tr>
-            <td>
+
+    <h3 class="subsection-title index"><img src="icons/book_open.png" alt="index" /> Index</h3>
+    <div class="index listing">
+        <table><tr>
+            <td class="properties">
+                <h4>Properties</h4>
+                
+                <table style="margin-left:30px;">
+                 
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <a href="#~attr"><img src="icons/stop.png" alt="property" /> attr<span class="type-signature"></span></a>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <a href="#~canopsisConfiguration"><img src="icons/stop.png" alt="property" /> canopsisConfiguration<span class="type-signature"> :object</span></a>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <a href="#~content"><img src="icons/stop.png" alt="property" /> content<span class="type-signature"> :object</span></a>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <a href="#~debug"><img src="icons/stop.png" alt="property" /> debug<span class="type-signature"> :boolean</span></a>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <a href="#~description"><img src="icons/stop.png" alt="property" /> description<span class="type-signature"> :string</span></a>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <a href="#~editorType"><img src="icons/stop.png" alt="property" /> editorType<span class="type-signature"> :string</span></a>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <a href="#~tagName"><img src="icons/stop.png" alt="property" /> tagName<span class="type-signature"> :string</span></a>
+                        </td>
+                    </tr>
+                
+                </table>
+                
             </td>
-            <td>
-                <a href="#~attr">attr<span class="type-signature"></span></a>
+            <td class="methods">
+                <h4>Methods</h4>
+                
+                    <table style="margin-left:30px;">
+                        
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <a href="#~actions_inspect"><img src="icons/picture_empty.png" alt="method" /> actions_inspect<span class="signature">()</span><span class="type-signature"></span></a>
+                                </td>
+                            </tr>
+                        
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <a href="#~init"><img src="icons/picture_empty.png" alt="method" /> init<span class="signature">()</span><span class="type-signature"></span></a>
+                                </td>
+                            </tr>
+                        
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <a href="#~onValueChange"><img src="icons/picture_empty.png" alt="method" /> onValueChange<span class="signature">()</span><span class="type-signature"></span></a>
+                                </td>
+                            </tr>
+                        
+                    </table>
+                
             </td>
-        </tr>
-    
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="#~canopsisConfiguration">canopsisConfiguration<span class="type-signature"> :object</span></a>
-            </td>
-        </tr>
-    
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="#~content">content<span class="type-signature"> :object</span></a>
-            </td>
-        </tr>
-    
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="#~debug">debug<span class="type-signature"> :boolean</span></a>
-            </td>
-        </tr>
-    
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="#~description">description<span class="type-signature"> :string</span></a>
-            </td>
-        </tr>
-    
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="#~editorType">editorType<span class="type-signature"> :string</span></a>
-            </td>
-        </tr>
-    
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="#~tagName">tagName<span class="type-signature"> :string</span></a>
-            </td>
-        </tr>
-    
-    </table>
-    
-    <hr/>
+        </tr></table>
+    </div>
     <div class="container-overview">
     
         
-            <div class="description">Component displaying the correct editor for an attribute.
-It is possible to specify the editor type to use. If not specified, it will try to get the correct type on its own.</div>
-        
-
-        
             
 
+<div class="detailed-listing-item">
+    
 
+    
+    <div class="foldable-details">
+        
 
+        
 
+        
 
+        
 
-
-
-
-
-
-
-
-
-
+        
 <dl class="details">
 
     
@@ -181,13 +194,6 @@ It is possible to specify the editor type to use. If not specified, it will try 
     
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line31">line 31</a>
-    </li></ul></dd>
-    
-
-    
 
     
 
@@ -195,24 +201,26 @@ It is possible to specify the editor type to use. If not specified, it will try 
 </dl>
 
 
+        
 
+        
 
+        
 
+        
 
+        
 
+        
 
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
+        
+            <h5>Example</h5>
+            
     <pre class="prettyprint"><code>{{component-editor attr=item editorType=itemEditorType}}</code></pre>
 
-
+        
+    </div>
+</div>
 
         
     
@@ -229,68 +237,20 @@ It is possible to specify the editor type to use. If not specified, it will try 
     
 
     
-        <h3 class="subsection-title">Members</h3>
-
-        
+        <h3 class="subsection-title">Properties</h3>
+        <div class="detailed-listing properties">
             
-<h4 class="name" id="~attr"><a name="~attr"></a><span class="type-signature">(inner) </span>attr<span class="type-signature"></span></h4>
+                
 
+    <div class="view-source"><a href="src_components_editor_component.js.html#line168">view source</a></div>
 
-
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
+<div class="detailed-listing-item">
+    <h4 class="name" id="~attr"><a name="~attr" href="#~attr"><img src="icons/stop.png" alt="property" /> attr<span class="type-signature"></span></a></h4>
     
 
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
     
-
-        <tr>
-            
-                <td class="name"><code>attr</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
+    <div class="foldable-details">
+        
 <dl class="details">
 
     
@@ -323,13 +283,6 @@ It is possible to specify the editor type to use. If not specified, it will try 
     
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line168">line 168</a>
-    </li></ul></dd>
-    
-
-    
 
     
 
@@ -337,84 +290,28 @@ It is possible to specify the editor type to use. If not specified, it will try 
 </dl>
 
 
-
-
-
+        
 
         
-            
-<h4 class="name" id="~canopsisConfiguration"><a name="~canopsisConfiguration"></a><span class="type-signature">(inner) </span>canopsisConfiguration<span class="type-signature"> :object</span></h4>
-
-
-
-
-<div class="description">
-    the canopsis frontend configuration object
+    </div>
 </div>
 
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
             
-<span class="param-type">object</span>
+                
 
+    <div class="view-source"><a href="src_components_editor_component.js.html#line52">view source</a></div>
 
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
+<div class="detailed-listing-item">
+    <h4 class="name" id="~canopsisConfiguration"><a name="~canopsisConfiguration" href="#~canopsisConfiguration"><img src="icons/stop.png" alt="property" /> canopsisConfiguration<span class="type-signature"> :object</span></a></h4>
     
 
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
     
-
-        <tr>
-            
-                <td class="name"><code>canopsisConfiguration</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
+    <div class="description">
+        <p>the canopsis frontend configuration object</p>
+    </div>
     
-    </tbody>
-</table>
-
-
-
-
+    <div class="foldable-details">
+        
 <dl class="details">
 
     
@@ -442,13 +339,6 @@ It is possible to specify the editor type to use. If not specified, it will try 
     
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line52">line 52</a>
-    </li></ul></dd>
-    
-
-    
 
     
 
@@ -456,84 +346,28 @@ It is possible to specify the editor type to use. If not specified, it will try 
 </dl>
 
 
-
-
-
+        
 
         
-            
-<h4 class="name" id="~content"><a name="~content"></a><span class="type-signature">(inner) </span>content<span class="type-signature"> :object</span></h4>
-
-
-
-
-<div class="description">
-    the attribute which information is displayed and that can be edited with the editor.
+    </div>
 </div>
 
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
             
-<span class="param-type">object</span>
+                
 
+    <div class="view-source"><a href="src_components_editor_component.js.html#line67">view source</a></div>
 
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
+<div class="detailed-listing-item">
+    <h4 class="name" id="~content"><a name="~content" href="#~content"><img src="icons/stop.png" alt="property" /> content<span class="type-signature"> :object</span></a></h4>
     
 
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
     
-
-        <tr>
-            
-                <td class="name"><code>content</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
+    <div class="description">
+        <p>the attribute which information is displayed and that can be edited with the editor.</p>
+    </div>
     
-    </tbody>
-</table>
-
-
-
-
+    <div class="foldable-details">
+        
 <dl class="details">
 
     
@@ -561,13 +395,6 @@ It is possible to specify the editor type to use. If not specified, it will try 
     
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line67">line 67</a>
-    </li></ul></dd>
-    
-
-    
 
     
 
@@ -575,84 +402,28 @@ It is possible to specify the editor type to use. If not specified, it will try 
 </dl>
 
 
-
-
-
+        
 
         
-            
-<h4 class="name" id="~debug"><a name="~debug"></a><span class="type-signature">(inner) </span>debug<span class="type-signature"> :boolean</span></h4>
-
-
-
-
-<div class="description">
-    whether the UI is in debug mode or not
+    </div>
 </div>
 
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
             
-<span class="param-type">boolean</span>
+                
 
+    <div class="view-source"><a href="src_components_editor_component.js.html#line60">view source</a></div>
 
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
+<div class="detailed-listing-item">
+    <h4 class="name" id="~debug"><a name="~debug" href="#~debug"><img src="icons/stop.png" alt="property" /> debug<span class="type-signature"> :boolean</span></a></h4>
     
 
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
     
-
-        <tr>
-            
-                <td class="name"><code>debug</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
+    <div class="description">
+        <p>whether the UI is in debug mode or not</p>
+    </div>
     
-    </tbody>
-</table>
-
-
-
-
+    <div class="foldable-details">
+        
 <dl class="details">
 
     
@@ -685,13 +456,6 @@ It is possible to specify the editor type to use. If not specified, it will try 
     
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line60">line 60</a>
-    </li></ul></dd>
-    
-
-    
 
     
 
@@ -699,84 +463,28 @@ It is possible to specify the editor type to use. If not specified, it will try 
 </dl>
 
 
-
-
-
+        
 
         
-            
-<h4 class="name" id="~description"><a name="~description"></a><span class="type-signature">(inner) </span>description<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
-    Computed property, binded to the description of the attribute
+    </div>
 </div>
 
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
             
-<span class="param-type">string</span>
+                
 
+    <div class="view-source"><a href="src_components_editor_component.js.html#line110">view source</a></div>
 
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
+<div class="detailed-listing-item">
+    <h4 class="name" id="~description"><a name="~description" href="#~description"><img src="icons/stop.png" alt="property" /> description<span class="type-signature"> :string</span></a></h4>
     
 
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
     
-
-        <tr>
-            
-                <td class="name"><code>description</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
+    <div class="description">
+        <p>Computed property, binded to the description of the attribute</p>
+    </div>
     
-    </tbody>
-</table>
-
-
-
-
+    <div class="foldable-details">
+        
 <dl class="details">
 
     
@@ -804,13 +512,6 @@ It is possible to specify the editor type to use. If not specified, it will try 
     
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line110">line 110</a>
-    </li></ul></dd>
-    
-
-    
 
     
 
@@ -818,84 +519,28 @@ It is possible to specify the editor type to use. If not specified, it will try 
 </dl>
 
 
-
-
-
+        
 
         
-            
-<h4 class="name" id="~editorType"><a name="~editorType"></a><span class="type-signature">(inner) </span>editorType<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
-    finds the correct template name for the editor
+    </div>
 </div>
 
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
             
-<span class="param-type">string</span>
+                
 
+    <div class="view-source"><a href="src_components_editor_component.js.html#line120">view source</a></div>
 
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
+<div class="detailed-listing-item">
+    <h4 class="name" id="~editorType"><a name="~editorType" href="#~editorType"><img src="icons/stop.png" alt="property" /> editorType<span class="type-signature"> :string</span></a></h4>
     
 
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
     
-
-        <tr>
-            
-                <td class="name"><code>editorType</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
+    <div class="description">
+        <p>finds the correct template name for the editor</p>
+    </div>
     
-    </tbody>
-</table>
-
-
-
-
+    <div class="foldable-details">
+        
 <dl class="details">
 
     
@@ -923,13 +568,6 @@ It is possible to specify the editor type to use. If not specified, it will try 
     
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line120">line 120</a>
-    </li></ul></dd>
-    
-
-    
 
     
 
@@ -937,80 +575,24 @@ It is possible to specify the editor type to use. If not specified, it will try 
 </dl>
 
 
-
-
-
+        
 
         
+    </div>
+</div>
+
             
-<h4 class="name" id="~tagName"><a name="~tagName"></a><span class="type-signature">(inner) </span>tagName<span class="type-signature"> :string</span></h4>
+                
 
+    <div class="view-source"><a href="src_components_editor_component.js.html#line45">view source</a></div>
 
-
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">string</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
+<div class="detailed-listing-item">
+    <h4 class="name" id="~tagName"><a name="~tagName" href="#~tagName"><img src="icons/stop.png" alt="property" /> tagName<span class="type-signature"> :string</span></a></h4>
     
 
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
     
-
-        <tr>
-            
-                <td class="name"><code>tagName</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
+    <div class="foldable-details">
+        
 <dl class="details">
 
     
@@ -1043,13 +625,6 @@ It is possible to specify the editor type to use. If not specified, it will try 
     
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line45">line 45</a>
-    </li></ul></dd>
-    
-
-    
 
     
 
@@ -1057,43 +632,48 @@ It is possible to specify the editor type to use. If not specified, it will try 
 </dl>
 
 
-
-
-
+        
 
         
+    </div>
+</div>
+
+            
+        </div>
     
 
     
         <h3 class="subsection-title">Methods</h3>
+        <div class="detailed-listing methods">
+            
+                
+
+    <div class="view-source"><a href="src_components_editor_component.js.html#line96">view source</a></div>
+
+<div class="detailed-listing-item">
+    
+        
+
+        <h4 class="name" id="~actions_inspect"><a name="~actions_inspect" href="#~actions_inspect"><img src="icons/picture_empty.png" alt="method" /> actions_inspect<span class="signature">()</span><span class="type-signature"></span></a></h4>
 
         
-            
-
     
 
-    <h4 class="name" id="~actions_inspect"><a name="~actions_inspect"></a><span class="type-signature">(inner) </span>actions_inspect<span class="signature">()</span><span class="type-signature"></span></h4>
-
     
+    <div class="description">
+        <p>inspects the object in the console (see debugUtils for more info)</p>
+    </div>
+    
+    <div class="foldable-details">
+        
 
+        
 
+        
 
-<div class="description">
-    inspects the object in the console (see debugUtils for more info)
-</div>
+        
 
-
-
-
-
-
-
-
-
-
-
-
-
+        
 <dl class="details">
 
     
@@ -1121,13 +701,6 @@ It is possible to specify the editor type to use. If not specified, it will try 
     
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line96">line 96</a>
-    </li></ul></dd>
-    
-
-    
 
     
 
@@ -1135,47 +708,51 @@ It is possible to specify the editor type to use. If not specified, it will try 
 </dl>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
 
         
-            
 
-    
+        
 
-    <h4 class="name" id="~init"><a name="~init"></a><span class="type-signature">(inner) </span>init<span class="signature">()</span><span class="type-signature"></span></h4>
+        
 
-    
+        
 
+        
 
-
-<div class="description">
-    binds the "onValueChange" observer
+        
+    </div>
 </div>
 
+            
+                
 
+    <div class="view-source"><a href="src_components_editor_component.js.html#line69">view source</a></div>
 
+<div class="detailed-listing-item">
+    
+        
 
+        <h4 class="name" id="~init"><a name="~init" href="#~init"><img src="icons/picture_empty.png" alt="method" /> init<span class="signature">()</span><span class="type-signature"></span></a></h4>
 
+        
+    
 
+    
+    <div class="description">
+        <p>binds the &quot;onValueChange&quot; observer</p>
+    </div>
+    
+    <div class="foldable-details">
+        
 
+        
 
+        
 
+        
 
-
-
-
+        
 <dl class="details">
 
     
@@ -1203,13 +780,6 @@ It is possible to specify the editor type to use. If not specified, it will try 
     
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line69">line 69</a>
-    </li></ul></dd>
-    
-
-    
 
     
 
@@ -1217,47 +787,51 @@ It is possible to specify the editor type to use. If not specified, it will try 
 </dl>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
 
         
-            
 
-    
+        
 
-    <h4 class="name" id="~onValueChange"><a name="~onValueChange"></a><span class="type-signature">(inner) </span>onValueChange<span class="signature">()</span><span class="type-signature"></span></h4>
+        
 
-    
+        
 
+        
 
-
-<div class="description">
-    Triggered automatically when "attr.value" change
+        
+    </div>
 </div>
 
+            
+                
 
+    <div class="view-source"><a href="src_components_editor_component.js.html#line86">view source</a></div>
 
+<div class="detailed-listing-item">
+    
+        
 
+        <h4 class="name" id="~onValueChange"><a name="~onValueChange" href="#~onValueChange"><img src="icons/picture_empty.png" alt="method" /> onValueChange<span class="signature">()</span><span class="type-signature"></span></a></h4>
 
+        
+    
 
+    
+    <div class="description">
+        <p>Triggered automatically when &quot;attr.value&quot; change</p>
+    </div>
+    
+    <div class="foldable-details">
+        
 
+        
 
+        
 
+        
 
-
-
-
+        
 <dl class="details">
 
     
@@ -1285,13 +859,6 @@ It is possible to specify the editor type to use. If not specified, it will try 
     
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_editor_component.js.html">components/editor/component.js</a>, <a href="components_editor_component.js.html#line86">line 86</a>
-    </li></ul></dd>
-    
-
-    
 
     
 
@@ -1299,21 +866,24 @@ It is possible to specify the editor type to use. If not specified, it will try 
 </dl>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
 
         
+
+        
+
+        
+
+        
+
+        
+
+        
+    </div>
+</div>
+
+            
+        </div>
     
 
     
@@ -1328,31 +898,11 @@ It is possible to specify the editor type to use. If not specified, it will try 
 
 </div>
 
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Components</h3><ul><li><a href="component_editor.html">editor</a></li><li><a href="component_renderer.html">renderer</a></li><li><a href="component_wrapper.html">wrapper</a></li></ul><h3>Classes</h3><ul><li><a href="canopsis.frontend.core.module_AbstractClassRegistry.html">AbstractClassRegistry</a></li><li><a href="canopsis.frontend.core.module_ActionsRegistry.html">ActionsRegistry</a></li><li><a href="canopsis.frontend.core.module_EditorRegistry.html">EditorRegistry</a></li><li><a href="canopsis.frontend.core.module_FormsRegistry.html">FormsRegistry</a></li><li><a href="canopsis.frontend.core.module_IndexesRegistry.html">IndexesRegistry</a></li><li><a href="canopsis.frontend.core.module_InflectionsRegistry.html">InflectionsRegistry</a></li><li><a href="canopsis.frontend.core.module_MixinsRegistry.html">MixinsRegistry</a></li><li><a href="canopsis.frontend.core.module_RenderersRegistry.html">RenderersRegistry</a></li><li><a href="canopsis.frontend.core.module_RequirejsMockManager.html">RequirejsMockManager</a></li><li><a href="canopsis.frontend.core.module_TemplatesRegistry.html">TemplatesRegistry</a></li><li><a href="canopsis.frontend.core.module_Utility.html">Utility</a></li><li><a href="canopsis.frontend.core.module_WidgetsRegistry.html">WidgetsRegistry</a></li><li><a href="initialize-module_ApplicationControllerDict.html">ApplicationControllerDict</a></li><li><a href="initialize-module_controller.html">controller</a></li><li><a href="initialize-module_route.html">route</a></li><li><a href="initialize-module_view.html">view</a></li><li><a href="module-ConsolemanagerMixin.html">ConsolemanagerMixin</a></li><li><a href="module-DocumentationMixin.html">DocumentationMixin</a></li><li><a href="module-LoadingindicatorMixin.html">LoadingindicatorMixin</a></li><li><a href="module-Modelform.html">Modelform</a></li><li><a href="module-NotificationsMixin.html">NotificationsMixin</a></li><li><a href="module-PromisemanagerMixin.html">PromisemanagerMixin</a></li><li><a href="module-RequirejsmocksmanagerMixin.html">RequirejsmocksmanagerMixin</a></li><li><a href="module-RoutesUtils.html">RoutesUtils</a></li><li><a href="module-SchemamanagerMixin.html">SchemamanagerMixin</a></li><li><a href="module-ScreentoolstatusmenuMixin.html">ScreentoolstatusmenuMixin</a></li><li><a href="module-SearchMethodsRegistry.html">SearchMethodsRegistry</a></li><li><a href="module-SlugUtils.html">SlugUtils</a></li><li><a href="module-TimeWindowUtility.html">TimeWindowUtility</a></li><li><a href="module-UserprofilestatusmenuMixin.html">UserprofilestatusmenuMixin</a></li></ul><h3>Events</h3><ul><li><a href="initialize-module_route.html#~event:displayLiveReportingDisplayapopupallowingcustomertosetviewtimeparametersthatwillaffectallwidgetdataselection.">displayLiveReporting
-
-Display a pop up allowing customer to set view time
-parameters that will affect all widget data selection.</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:editConfigShowsaformtoeditthefrontendconfiguration">editConfig
-
-Shows a form to edit the frontend configuration</a></li><li><a href="initialize-module_controller.html#~event:abort">abort</a></li><li><a href="module-RequirejsmocksmanagerMixin.html#~event:addMock">addMock</a></li><li><a href="module-SchemamanagerMixin.html#~event:addModelInstance">addModelInstance</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:addNewView">addNewView</a></li><li><a href="module-ScreentoolstatusmenuMixin.html#~event:changeScreenSize">changeScreenSize</a></li><li><a href="initialize-module_controller.html#~event:creationForm">creationForm</a></li><li><a href="module-RequirejsmocksmanagerMixin.html#~event:deleteMock">deleteMock</a></li><li><a href="initialize-module_controller.html#~event:do">do</a></li><li><a href="initialize-module_controller.html#~event:duplicateWidgetAndContent">duplicateWidgetAndContent</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:editAuthConfiguration">editAuthConfiguration</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:editDataclean">editDataclean</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:editEnabledPlugins">editEnabledPlugins</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:editEventSettings">editEventSettings</a></li><li><a href="initialize-module_controller.html#~event:editMixin">editMixin</a></li><li><a href="module-RequirejsmocksmanagerMixin.html#~event:editMock">editMock</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:editTicketJob">editTicketJob</a></li><li><a href="initialize-module_controller.html#~event:editWidget">editWidget</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:importView">importView</a></li><li><a href="initialize-module_controller.html#~event:insertWidget">insertWidget</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:inspect">inspect</a></li><li><a href="initialize-module_controller.html#~event:inspectForm">inspectForm</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:logout">logout</a></li><li><a href="initialize-module_controller.html#~event:movedown">movedown</a></li><li><a href="initialize-module_controller.html#~event:moveup">moveup</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:openTab">openTab</a></li><li><a href="initialize-module_controller.html#~event:previousForm">previousForm</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:prompt">prompt</a></li><li><a href="initialize-module_ApplicationControllerDict.html#~event:promptReloadApplication">promptReloadApplication</a></li><li><a href="initialize-module_view.html#~event:refreshView">refreshView</a></li><li><a href="initialize-module_controller.html#~event:removeWidget">removeWidget</a></li><li><a href="initialize-module_controller.html#~event:rollback">rollback</a></li><li><a href="initialize-module_controller.html#~event:show">show</a></li><li><a href="module-ConsolemanagerMixin.html#~event:showConsoleSettings">showConsoleSettings</a></li><li><a href="initialize-module_route.html#~event:showEditFormWithController">showEditFormWithController</a></li><li><a href="module-UserprofilestatusmenuMixin.html#~event:showUserProfile">showUserProfile</a></li><li><a href="initialize-module_route.html#~event:showView">showView</a></li><li><a href="initialize-module_controller.html#~event:submit">submit</a></li><li><a href="initialize-module_route.html#~event:exportCurrentViewExportsthecurrentlyopenedview">exportCurrentView
-
-Exports the currently opened view</a></li><li><a href="initialize-module_route.html#~event:refreshRefreshesthecurrentlyopenedview">refresh
-
-Refreshes the currently opened view</a></li><li><a href="initialize-module_route.html#~event:stopLiveReportingclearsthelivereportinginterval,endingthelivereportingmode">stopLiveReporting
-clears the live reporting interval, ending the live reporting mode</a></li><li><a href="initialize-module_route.html#~event:toggleDevToolsshoworhidedeveloppertools">toggleDevTools
-
-show or hide developper tools</a></li><li><a href="initialize-module_route.html#~event:toggleEditModeTogglestheeditionmodeforthecurrentlyopenedview">toggleEditMode
-
-Toggles the edition mode for the currently opened view</a></li><li><a href="initialize-module_route.html#~event:toggleFullscreenTogglefullscreenandregularmode,bytogglingApplicationcontroller#fullscreenModeboolean.Therestoftheimplementationisonhandlebarstemplates(applicationanduserview)">toggleFullscreen
-Toggle fullscreen and regular mode, by toggling Applicationcontroller#fullscreenMode boolean.
-The rest of the implementation is on handlebars templates (application and userview)</a></li></ul><h3>Mixins</h3><ul><li><a href="initialize-module_mixin.html">mixin</a></li><li><a href="This%2520mixin%2520should%2520be%2520used%2520with%2520serializers%250AIt%2520aims%2520to%2520handle%2520request%2520metadata%2520(total,%2520errors,%2520...)module_.html">This mixin should be used with serializers
-It aims to handle request metadata (total, errors, ...)</a></li></ul>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Feb 09 2016 09:40:49 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Feb 25 2016 10:39:19 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

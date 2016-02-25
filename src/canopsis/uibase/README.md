@@ -15,12 +15,6 @@ You need to clone the git repository and copy directory to Canopsis path
     $ git clone https://git.canopsis.net/canopsis-ui-bricks/uibase.git
     $ cp -r uibase $CANOPSIS_PATH/var/www/canopsis
 
-Then, you need to import specific schemas
-
-    $ su - canopsis
-    $ cp $CANOPSIS_PATH/var/www/canopsis/uibase/schemas/* $CANOPSIS_PATH/etc/schema.d
-    $ schema2db
-
 Then, you need to enable the brick
 
     $ su - canopsis
@@ -38,11 +32,11 @@ See [Howto](https://git.canopsis.net/canopsis-ui-bricks/uibase/blob/master/doc/i
 
 ## Continuous Integration
 
-Tested on commit : 9192db7.
+Tested on commit : 6732d6b.
 
 | Target | Status | Log |
 | ------ | ------ | --- |
-| Lint   | :ok: OK |  |
+| Lint   | :negative_squared_cross_mark: ERROR | <br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/uibase/src/components/contextselector/component.js<br>  172:17  error  Expected indentation of 20 space characters but found 16  indent<br>  173:21  error  Expected indentation of 24 space characters but found 20  indent<br>  174:17  error  Expected indentation of 20 space characters but found 16  indent<br>  175:21  error  Expected indentation of 24 space characters but found 20  indent<br>  176:17  error  Expected indentation of 20 space characters but found 16  indent<br>  177:21  error  Expected indentation of 24 space characters but found 20  indent<br>  187:17  error  Expected indentation of 20 space characters but found 16  indent<br>  188:21  error  Expected indentation of 24 space characters but found 20  indent<br>  199:17  error  Expected indentation of 20 space characters but found 16  indent<br>  200:21  error  Expected indentation of 24 space characters but found 20  indent<br><br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/uibase/src/components/typedvalue/component.js<br>  92:17  error  Expected indentation of 20 space characters but found 16  indent<br>  93:17  error  Expected indentation of 20 space characters but found 16  indent<br><br>✖ 12 problems (12 errors, 0 warnings)<br><br> |
 
 ## Code Notes
 
@@ -51,9 +45,9 @@ Tested on commit : 9192db7.
 | File   | Note   |
 |--------|--------|
 | src/editors/editor-elementidselectorwithoptions.hbs | manage search in a dynamic way, as an editor property binding to a search method |
+| src/editors/editor-elementidselectorwithoptions.hbs | make this doc viewable on the generated doc |
 | src/mixins/responsivelist.js | check if still used |
 | src/mixins/arraysearch.js | these checks should be asserts |
-| src/mixins/minimizebutton.js | remove this file |
 | src/widgets/list/controller.js | add an error in displayedErrors array, to warn the user that the data cannot be displayed |
 | src/widgets/list/controller.js | check if useless or not |
 | src/components/elementidselectorwithoptions/component.js | put this on a dedicated util |
@@ -83,5 +77,5 @@ Tested on commit : 9192db7.
 
 ## Additional info
 
-Minified version : 202 files (size: 1,1M)
-Development version : 301 files (size: 1,8M)
+Minified version : 182 files (size: 1000K)
+Development version : 263 files (size: 1,6M)
