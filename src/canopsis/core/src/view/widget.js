@@ -232,7 +232,7 @@ Ember.Application.initializer({
 
                 widgetControllerInstance.mixinsOptionsReady();
 
-                var mixinsName = widget._data.mixins;
+                var mixinsName = get(widget, 'mixins');
 
                 if (mixinsName) {
                     for (var i = 0, l = mixinsName.length; i < l ; i++ ){
