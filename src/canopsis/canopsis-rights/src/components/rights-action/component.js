@@ -28,11 +28,26 @@ Ember.Application.initializer({
             isNone = Ember.isNone,
             __ = Ember.String.loc;
 
-
+        /**
+         * @component right-action
+         * @description Display a right properly, to embed into a right list
+         */
         var component = Ember.Component.extend({
+            /**
+             * @property value
+             * @description the right value
+             * @type string
+             */
+            value: undefined,
+
+            /**
+             * @property description
+             * @description Computed property, dependant on "value". the right description
+             * @type string
+             */
             description: function() {
                 var value = get(this, 'value');
-
+                //FIXME don't use _data, it might lead to unpredictable behaviours!
                 var action = rightsRegistry.getByName(value);
                 if(action && action._data) {
                     return action._data.desc;

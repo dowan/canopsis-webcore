@@ -33,6 +33,9 @@ Ember.Application.initializer({
         /**
          * @component dateinterval
          * @description component to display a date interval selector. It uses the Jquery daterangepicker plugin, and is mostly intended to be used in forms.
+         *
+         * ![Component preview](../screenshots/component-dateinterval.png)
+         *
          * @example {{component-dateinterval content=attr.value}}
          */
         var component = Ember.Component.extend({

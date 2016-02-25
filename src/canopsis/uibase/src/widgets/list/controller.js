@@ -42,6 +42,29 @@ Ember.Application.initializer({
 
         /**
          * @widget List
+         *
+         * @description
+         *
+         * # Overview
+         *
+         * Displays a list of records. This widget can be enhanced with a wide range of mixins, to provide additionnal content management features such as :
+         * - filtering
+         * - content display
+         * - data edition
+         * - monitoring related features
+         * - and so on
+         *
+         * # Basic usage
+         *
+         * By default, the widget is able to display a paginated listing of all records found for a specified type (see the "listed_crecord_type" property on the schema).
+         * For all of this records, it will show a configurable list of columns (see the "displayed_columns" schema property).
+         *
+         * For each displayed column of each listed record, the widget will try to find a correct and fancy way to display the value. It will thus try to find a correct renderer to display the data key.
+         *
+         * # Screenshots
+         *
+         * ![Simple list](../screenshots/widget-list-simple.png)
+         * ![Event view](../screenshots/widget-list-events.png)
          */
         var widget = WidgetFactory('list', {
             css :'table table-striped table-bordered table-hover dataTable sortable',
@@ -49,7 +72,7 @@ Ember.Application.initializer({
 
             /**
              * @property standardListDisplay
-             * Whether to display the list as the regular table or not.
+             * @description Whether to display the list as the regular table or not.
              * Used with mixin that fill the partial slot "alternativeListDisplay", this can help to provide alternative displays
              */
             standardListDisplay: true,
@@ -97,7 +120,8 @@ Ember.Application.initializer({
             },
 
             /**
-             * @event rollbackableChanged
+             * @method rollbackableChanged
+             * @description observes if the model is rollbackable
              */
             rollbackableChanged: function() {
                 var list = this;
@@ -152,7 +176,7 @@ Ember.Application.initializer({
 
             /**
              * @method updateInterval
-             * Manages how time filter is set to the widget
+             * @description Manages how time filter is set to the widget
              * @argument interval
              */
             updateInterval: function (interval){
@@ -162,8 +186,8 @@ Ember.Application.initializer({
             },
 
             /**
-             * @methode getTimeInterval
-             * Manages how time filter is get from the widget for refresh purposes
+             * @method getTimeInterval
+             * @description Manages how time filter is get from the widget for refresh purposes
              */
             getTimeInterval: function () {
                 var interval = get(this, 'timeIntervalFilter');
@@ -188,7 +212,8 @@ Ember.Application.initializer({
             }.property('listed_crecord_type'),
 
             /**
-             * @event isAllSelectedChanged
+             * @method isAllSelectedChanged
+             * @description Observer on "isAllSelected". Automatically select every record when the header checkbox is clicked
              */
             isAllSelectedChanged: function(){
                 get(this, 'widgetData').content.setEach('isSelected', get(this, 'isAllSelected'));
@@ -276,6 +301,7 @@ Ember.Application.initializer({
 
             /**
              * @property attributesKeysDict
+             * @description Computed property dependant on "attributesKeys"
              */
             attributesKeysDict: function() {
                 var res = {};
@@ -424,7 +450,7 @@ Ember.Application.initializer({
 
             /**
              * @method computeFilterFragmentsList
-             * Computes the list of different filter fragments used to create a proper query
+             * @description Computes the list of different filter fragments used to create a proper query
              * @returns {Array} the list of fragments
              */
             computeFilterFragmentsList: function() {

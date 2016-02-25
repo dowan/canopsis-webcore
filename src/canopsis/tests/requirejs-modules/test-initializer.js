@@ -18,8 +18,8 @@
  */
 
 define([
-    'canopsis/enabled',
-], function (enabledBricksUtil) {
+    'canopsis/canopsisConfiguration',
+], function (canopsisConfiguration) {
 
     window.startCanopsisTests = function (application) {
         application.setupForTesting();
@@ -29,7 +29,7 @@ define([
         window.App = application;
 
         console.log('Starting automated tests');
-        enabledBricksUtil.getEnabledModules(function(enabledBricks) {
+        canopsisConfiguration.getEnabledModules(function(enabledBricks) {
             var bricksTestMainList = [];
             for (var i = 0, l = enabledBricks.length; i < l; i++) {
                 bricksTestMainList.pushObject('canopsis/' + enabledBricks[i] + '/init.test');

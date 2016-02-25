@@ -16,6 +16,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
+
+window.schemasToLoad = [];
+
 require.config({
     waitSeconds: 30,
     baseUrl: '/static/',
@@ -119,158 +122,111 @@ require(['text!canopsis/brick-loader/bower.json'], function(loaderManifest) {
         }
     };
 
-    require(['canopsis/enabled',
-            'canopsis/canopsisConfiguration',
+    require(['canopsis/canopsisConfiguration',
             'canopsis/brick-loader/i18n',
             'canopsis/brick-loader/loader',
             'ember-data-lib',
-            'schemasregistry'], function(enabled, canopsisConfiguration, i18n) {
+            'schemasregistry'], function(canopsisConfiguration, i18n) {
 
-        window.canopsisConfiguration = canopsisConfiguration;
+        require([
+            'text!canopsis/brick-loader/i18n/' + i18n.lang + '.json'
+        ], function (langFile) {
+            var langFile = JSON.parse(langFile);
+            var langKeys = Em.keys(langFile);
 
-        var get = Ember.get;
-
-        canopsisConfiguration.EmberIsLoaded = true;
-
-
-        DS.ArrayTransform = DS.Transform.extend({
-            deserialize: function(serialized) {
-                if (Ember.typeOf(serialized) === 'array') {
-                    return serialized;
-                }
-
-                return [];
-            },
-
-            serialize: function(deserialized) {
-                var type = Ember.typeOf(deserialized);
-
-                if (type === 'array') {
-                    return deserialized;
-                }
-                else if (type === 'string') {
-                    return deserialized.split(',').map(function(item) {
-                        return jQuery.trim(item);
-                    });
-                }
-
-                return [];
-            }
-        });
-
-        DS.IntegerTransform = DS.Transform.extend({
-            deserialize: function(serialized) {
-                if (typeof serialized === "number") {
-                    return serialized;
-                } else {
-                    // console.warn("deserialized value is not a number as it is supposed to be", arguments);
-                    return 0;
-                }
-            },
-
-            serialize: function(deserialized) {
-                return Ember.isEmpty(deserialized) ? null : Number(deserialized);
-            }
-        });
-
-        DS.ObjectTransform = DS.Transform.extend({
-            deserialize: function(serialized) {
-                if (Ember.typeOf(serialized) === 'object') {
-                    return Ember.Object.create(serialized);
-                }
-
-                return Ember.Object.create({});
-            },
-
-            serialize: function(deserialized) {
-                var type = Ember.typeOf(deserialized);
-
-                if (type === 'object' || type === 'instance') {
-                    return Ember.Object.create(deserialized);
-                } else {
-                    console.warn("bad format", type, deserialized);
-                }
-
-                return null;
-            }
-        });
-
-        enabled.getEnabledModules(function (enabledPlugins) {
-
-            if (enabledPlugins.length === 0) {
-                alert('No module loaded in Canopsis UI. Cannot go beyond');
+            i18n.translations[i18n.lang] = {};
+            for (var i = 0; i < langKeys.length; i++) {
+                i18n.translations[i18n.lang][langKeys[i]] = langFile[langKeys[i]];
             }
 
-            setLoadingInfo('Fetching frontend bricks', 'fa-cubes');
-            setModuleInfo(enabledPlugins, canopsisConfiguration.SHOWMODULES);
-            var language = i18n.lang;
-            console.log('i18n language:', language.toUpperCase(), 'translations:', i18n.translations);
+            window.canopsisConfiguration = canopsisConfiguration;
 
-            if(!language) {
-                language = 'en';
-            }
+            var get = Ember.get;
 
-            var loc = Ember.String.loc;
-            Ember.String.loc = function (fieldToTranslate) {
-                i18n._(fieldToTranslate, true);
-                return loc(fieldToTranslate);
-            };
+            canopsisConfiguration.EmberIsLoaded = true;
 
-            Ember.STRINGS = i18n.translations[language] || {};
+            canopsisConfiguration.getEnabledModules(function (enabledPlugins) {
 
-            var deps = [];
-
-            for (var i = 0; i < enabledPlugins.length; i++) {
-                var currentPlugin = enabledPlugins[i];
-
-                if(currentPlugin !== 'core') {
-                    deps.push('text!canopsis/'+ currentPlugin +'/bower.json');
+                if (enabledPlugins.length === 0) {
+                    alert('No module loaded in Canopsis UI. Cannot go beyond');
                 }
-            }
-            deps.push('text!canopsis/core/bower.json');
 
-            if(window.environment) {
-                deps.push('canopsis/environment.' + window.environment);
-            } else {
-                deps.push('canopsis/environment.production');
-            }
+                setLoadingInfo('Fetching frontend bricks', 'fa-cubes');
+                setModuleInfo(enabledPlugins, canopsisConfiguration.SHOWMODULES);
+                var language = i18n.lang;
+                console.log('i18n language:', language.toUpperCase(), 'translations:', i18n.translations);
 
-            deps.push('canopsis/brick-loader/extend');
-            deps.push('link');
+                if(!language) {
+                    language = 'en';
+                }
 
-            require(deps, function() {
-                var initFiles = [];
-                window.bricks = {};
+                var loc = Ember.String.loc;
+                Ember.String.loc = function (fieldToTranslate) {
+                    i18n._(fieldToTranslate, true);
+                    return loc(fieldToTranslate);
+                };
 
-                for (var i = 0, l = enabledPlugins.length; i < l; i++) {
+                Ember.STRINGS = i18n.translations[language] || {};
+
+                var deps = [];
+
+                for (var i = 0; i < enabledPlugins.length; i++) {
                     var currentPlugin = enabledPlugins[i];
-                    var brickManifest = JSON.parse(arguments[i]);
 
-                    window.bricks[brickManifest.name] = brickManifest;
+                    if(currentPlugin !== 'core') {
+                        deps.push('text!canopsis/'+ currentPlugin +'/bower.json');
+                    }
+                }
+                deps.push('text!canopsis/core/bower.json');
 
-                    if(window.environment === 'debug') {
-                        brickMainModule = 'canopsis/' + currentPlugin + '/' + 'init.dev.js';
-                        brickManifest.envMode = 'development';
-                    } else {
-                        brickMainModule = 'canopsis/' + currentPlugin + '/' + 'init.js';
+                if(window.environment) {
+                    deps.push('canopsis/environment.' + window.environment);
+                } else {
+                    deps.push('canopsis/environment.production');
+                }
+
+                deps.push('canopsis/brick-loader/extend');
+                deps.push('link');
+
+                require(deps, function() {
+                    var initFiles = [];
+                    var schemasInitFiles = [];
+                    window.bricks = {};
+
+                    for (var i = 0, l = enabledPlugins.length; i < l; i++) {
+                        var currentPlugin = enabledPlugins[i];
+                        var brickManifest = JSON.parse(arguments[i]);
+
+                        window.bricks[brickManifest.name] = brickManifest;
+
+                        if(window.environment === 'debug') {
+                            brickMainModule = 'canopsis/' + currentPlugin + '/' + 'init.dev.js';
+                            brickManifest.envMode = 'development';
+                        } else {
+                            brickMainModule = 'canopsis/' + currentPlugin + '/' + 'init.js';
+                        }
+
+                        schemasInitFiles.push('canopsis/' + currentPlugin + '/' + 'init.schemas');
+                        //remove the .js extension
+                        brickMainModule = brickMainModule.slice(0, -3);
+
+
+                        initFiles.push(brickMainModule);
                     }
 
-                    //remove the .js extension
-                    brickMainModule = brickMainModule.slice(0, -3);
+                    require(schemasInitFiles, function() {
+                        require(['canopsis/brick-loader/schemasloader'], function() {
+                            require(initFiles, function() {
 
-                    initFiles.push(brickMainModule);
-                }
+                                //This flag allow to prevent too early application requirement. @see "app/application" module
+                                window.appShouldNowBeLoaded = true;
 
-                require(['canopsis/brick-loader/schemasloader'], function() {
-                    require(initFiles, function() {
+                                setLoadingInfo('Fetching application starting point', 'fa-plug');
+                                require(['canopsis/brick-loader/application'], function(Application) {
+                                    setLoadingInfo('Initializing user interface', 'fa-desktop');
 
-                        //This flag allow to prevent too early application requirement. @see "app/application" module
-                        window.appShouldNowBeLoaded = true;
-
-                        setLoadingInfo('Fetching application starting point', 'fa-plug');
-                        require(['canopsis/brick-loader/application'], function(Application) {
-                            setLoadingInfo('Initializing user interface', 'fa-desktop');
-
+                                });
+                            });
                         });
                     });
                 });
@@ -278,4 +234,3 @@ require(['text!canopsis/brick-loader/bower.json'], function(loaderManifest) {
         });
     });
 });
-

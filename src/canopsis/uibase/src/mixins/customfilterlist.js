@@ -38,7 +38,9 @@ Ember.Application.initializer({
          * Implements Custom filter management for list
          * A filter is a combination of a cfilter and a title.
          * Custom cfilter allow perform selelection on a list with custom filter information.
-        */
+         *
+         * ![Mixin preview](../screenshots/mixin-customfilterlist.png)
+         */
         var mixin = Mixin('customfilterlist', {
             partials: {
                 subHeader: ['customfilters']
@@ -70,6 +72,13 @@ Ember.Application.initializer({
                 ]);
 
             },
+
+            /**
+             * @property canAddCustomFiltersInUserPreferences
+             * @type boolean
+             * @description whether it is possible or not to add custom filters stored in userpreferences
+             */
+            canAddCustomFiltersInUserPreferences: true,
 
             /**
             * Builds the list of active filters

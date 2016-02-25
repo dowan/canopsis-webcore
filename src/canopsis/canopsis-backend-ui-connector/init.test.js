@@ -18,5 +18,4 @@
  */
 
  define([
-    'canopsis/canopsis-backend-ui-connector/tests/userviewadapter'
 ], function () {});

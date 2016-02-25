@@ -18,7 +18,7 @@
  */
 
 Ember.Application.initializer({
-    name:'DocumentationMixin',
+    name: 'DocumentationMixin',
     after: 'MixinFactory',
     initialize: function(container, application) {
         var Mixin = container.lookupFactory('factory:mixin');
@@ -31,10 +31,18 @@ Ember.Application.initializer({
          * @static
          */
         var mixin = Mixin('Documentation', {
+            /**
+             * @property showDocumentationButton
+             * @type boolean
+             * @description whether to show or not the documentation button. The property value must be assigned before object constructor call, or else it will be ignored
+             */
+            showDocumentationButton: true,
+
             init: function() {
                 this.partials.statusbar.pushObject('documentation');
+
                 this._super();
-            },
+            }
         });
 
         application.register('mixin:documentation', mixin);

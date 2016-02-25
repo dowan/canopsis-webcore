@@ -29,6 +29,8 @@ Ember.Application.initializer({
         /**
          * @component arrayeditor
          * @description Base component for arrays. Tries to find the appropriate editor for array elements, and display an editable list of these editors.
+         *
+         * ![Component preview](../screenshots/component-arrayeditor.png)
          */
         var component = Ember.Component.extend(ValidationFieldMixin, {
             /**

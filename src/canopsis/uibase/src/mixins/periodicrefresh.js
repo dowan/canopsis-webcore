@@ -92,7 +92,6 @@ Ember.Application.initializer({
                 if (get(this, 'mixinOptions.periodicrefresh.refreshInterval') < 10 || isNone(get(this, 'mixinOptions.periodicrefresh.refreshInterval'))) {
                     set(this, 'mixinOptions.periodicrefresh.refreshInterval', 10);
                 }
-
             }
         });
 

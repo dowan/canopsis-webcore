@@ -27,16 +27,32 @@ Ember.Application.initializer({
 
         /**
          * @component slider
+         * @description Displays an editable slider based on the ionRangeSlider library that allows to edit a numeric value
+         *
+         * ![Slider preview](../screenshots/component-slider.png)
+         * @example {{component-slider content=view.charge options=view.optionsCharge}}
          */
         var component = Ember.Component.extend({
+            /**
+             * @property content
+             * @type integer
+             * @description the numeric value to edit
+             */
+            content: undefined,
 
-            init: function() {
-                this._super();
+            /**
+             * @property options
+             * @type object
+             * @description an option dictionnary for the slider.
+             * Options are : min (integer), max (integer), step (integer)
+             */
+            options: undefined,
 
-            },
-
-            didInsertElement: function (){
-
+            /**
+             * @method didInsertElement
+             * @description enable the ionRangeSlider
+             */
+            didInsertElement: function () {
                 var sliderComponent = this;
 
                 var options = get(this, 'options');
@@ -89,8 +105,8 @@ Ember.Application.initializer({
                             setTimeout(mockFrom, 500);
                         }
                     }
-
                 };
+
                 //as from feature doesn t work on this slider...
                 mockFrom();
             }

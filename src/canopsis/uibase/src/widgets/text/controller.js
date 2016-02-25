@@ -46,6 +46,12 @@ Ember.Application.initializer({
         /**
          * @widget TextWidget
          * @augments Widget
+         * @description Displays a text cell, with custom content. The content of the widget can be customized with HTML and Handlebars
+         * It is also possible to display information about events and perfdata.
+         * # Screenshots
+         *
+         * ![Simple text](../screenshots/widget-text-simple.png)
+         * ![Event custom html](../screenshots/widget-text-customhtml1.png)
          */
         var widget = WidgetFactory('text', {
             /**
@@ -130,7 +136,7 @@ Ember.Application.initializer({
                     var label = labelsByRk[rk];
 
                     if (!isNone(label)) {
-                        set(context, 'event.' + label, evt);
+                        set(context, 'event.' + label, evt._data);
                     }
                     else {
                         console.warn('No label found for event, will not be rendered:', rk);
@@ -231,7 +237,7 @@ Ember.Application.initializer({
 
             /**
              * @method makeTemplate
-             * Make sure template has been compiled.
+             * @description Make sure template has been compiled.
              */
             makeTemplate: function() {
                 var template = undefined;
@@ -243,25 +249,23 @@ Ember.Application.initializer({
                         return '<i>Impossible to render template:</i> ' + err;
                     };
                 }
-
-                set(this, 'template', template);
+                return template;
             },
 
             /**
              * @method renderTemplate
-             * Render compiled template property with context property into the rendered property.
+             * @description Render compiled template property with context property into the rendered property.
              */
             renderTemplate: function() {
-                this.makeTemplate();
+                var template = this.makeTemplate();
 
-                var template = get(this, 'template'),
-                    context = get(this, 'context');
+                var context = get(this, 'context');
 
                 var appliedDynamicProperties = get(this, 'appliedDynamicProperties') || {};
                 $.extend(context, appliedDynamicProperties);
 
 
-                set(this, 'rendered', new Ember.Handlebars.SafeString(template(context)));
+                set(this, 'renderedTemplate', new Ember.Handlebars.SafeString(template(context)));
             }
         }, widgetOptions);
 

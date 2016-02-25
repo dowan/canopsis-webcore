@@ -18,7 +18,7 @@
  */
 
 define([
-    'canopsis/canopsis-backend-ui-connector/requirejs-modules/adapters/schema',
+    window.config.schemasAdapter,
 ], function (SchemaAdapter) {
     function compare(a,b) {
       if (a.id < b.id) {
@@ -88,7 +88,7 @@ define([
 
             var parentModel = this.getParentModelForModelId(schemaId);
             if(parentModel === undefined){
-                alert(schemaId);
+                console.error(schemaId, 'parent was not found');
             }
             var modelDict = this.generateSchemaModelDict(schema, parentModel, schemaId);
 
@@ -206,6 +206,27 @@ define([
 
                     console.log('Api schema data', payload);
                     schemasLoader.__schemas__ = payload.data;
+                    //Merge frontend & backend schemas, priorizing frontend
+                    for (var i = 0; i < window.schemasToLoad.length; i++) {
+                        for (var j = 0; j < schemasLoader.__schemas__.length; j++) {
+                            if(schemasLoader.__schemas__[j]._id === window.schemasToLoad[i]._id) {
+                                schemasLoader.__schemas__.splice(j, 1);
+                                j--;
+                            }
+                        }
+                    }
+                    $.merge(schemasLoader.__schemas__, window.schemasToLoad);
+
+                    function compare(a,b) {
+                      if (a._id < b._id)
+                        return -1;
+                      else if (a._id > b._id)
+                        return 1;
+                      else
+                        return 0;
+                    }
+
+                    schemasLoader.__schemas__.sort(compare);
                 } else {
                     console.error('Unable to load schemas from API');
                 }

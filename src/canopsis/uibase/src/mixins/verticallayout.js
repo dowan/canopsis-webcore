@@ -26,6 +26,9 @@ Ember.Application.initializer({
 
         /**
          * @mixin verticallayout
+         * @description Mixin for containerwidget that displays children vertically
+         *
+         * ![Mixin preview](../screenshots/mixin-verticallayout.png)
          */
         var mixin = Mixin('verticallayout', {
             partials: {
