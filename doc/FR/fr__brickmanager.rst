@@ -26,7 +26,7 @@ Contents
 Description
 -----------
 
-The webmodulemanager tool provides an API to manage bricks :
+The brickmanager tool provides an API to manage bricks :
 
 It should provides the following commands :
 
