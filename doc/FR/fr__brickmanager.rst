@@ -35,4 +35,4 @@ It should provides the following commands :
 - uninstall : Uninstalls a brick
 - enable : Enables a brick (to make the frontend actually load it)
 - disable : Disables a brick (to make the frontend stop loading it)
-- list : List enable bricks
+- list : List enabled bricks
