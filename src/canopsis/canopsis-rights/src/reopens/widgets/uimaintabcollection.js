@@ -61,7 +61,7 @@ Ember.Application.initializer({
                 return false;
             }.property(),
 
-             userCanEditView: function() {
+            userCanEditView: function() {
                 if(get(this, 'loggedaccountId') === "root") {
                     return true;
                 }
