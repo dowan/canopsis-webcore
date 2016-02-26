@@ -239,6 +239,7 @@ Ember.Application.initializer({
                 }
 
                 set(this.controllerFor('application'), 'currentViewId', get(model, 'id'));
+                set(this.controllerFor('application'), 'currentViewModel', model);
 
                 var app = this.controllerFor('application');
 

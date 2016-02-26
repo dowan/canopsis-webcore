@@ -39,6 +39,7 @@ Ember.Application.initializer({
             needs: ['application', 'login'],
 
             currentViewId: Ember.computed.alias('controllers.application.currentViewId'),
+            currentViewModel: Ember.computed.alias('controllers.application.currentViewModel'),
 
             tagName: 'span',
 

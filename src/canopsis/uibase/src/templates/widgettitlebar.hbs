@@ -1,7 +1,7 @@
 <div class="box-header">
     <div class="pull-right">
-        {{partialslot slot=controller._partials.titlebarsbuttons minified=true class="btn-group" tagName="span"}}
-        {{partialslot slot=widget.controller._partials.titlebarbuttons minified=true class="btn-group" tagName="span"}}
+        {{partialslot slot=this.widget.controller._partials.titlebarsbuttons minified=true class="btn-group" tagName="span" widget=widget}}
+        {{partialslot slot=widget.controller._partials.titlebarbuttons minified=true class="btn-group" tagName="span" widget=widget}}
             {{#if controller.editMode}}
                 {{view "mixineditdropdown" isGridLayout=controller.isGridLayout mixins=widget.mixins wrappermixins=this.mixins class="btn-group"}}
             {{/if}}

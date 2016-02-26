@@ -81,6 +81,20 @@ Ember.Application.initializer({
             },
 
             /**
+             * @property currentViewModel
+             * @type DS.Model
+             * @description The model of the userview currently opened
+             */
+            currentViewModel: undefined,
+
+            /**
+             * @property currentViewId
+             * @type DS.Model
+             * @description The id of the userview currently opened
+             */
+            currentViewId: undefined,
+
+            /**
              * @property editMode
              * @type {boolean}
              * @description Whether the current view is editable or not

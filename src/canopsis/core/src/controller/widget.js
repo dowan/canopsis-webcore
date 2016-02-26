@@ -252,7 +252,7 @@ Ember.Application.initializer({
                             set(widget, 'widgetId', get(widget,'id'));
                         }
 
-                        var userview = get(widgetController, 'viewController').get('content');
+                        var userview = get(widget, 'controller.viewController').get('content');
 
                         userview.save().then(function(){
                             get(widgetController, 'viewController').send('refresh');
