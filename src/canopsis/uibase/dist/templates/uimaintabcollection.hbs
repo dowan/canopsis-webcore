@@ -1,5 +1,13 @@
 {{#with controllers.application.currentViewId as currentViewId}}
     <div class="btn-group pull-right" style="margin-top:5px; margin-bottom:5px">
+            {{!partialslot slot=currentViewModel._partials.titlebarsbuttons minified=true class="btn-group" tagName="span"}}
+            {{partialslot slot=controller.currentViewModel.containerwidget.controller._partials.titlebarsbuttons minified=true class="btn-group" tagName="span" widget=controller.currentViewModel.containerwidget isMainContainerWidget=true buttonsColorClass="btn-default" buttonsColorSize="btn-sm"}}
+        {{#if controller.editMode}}
+            {{#with controller.currentViewModel.containerwidget as widget}}
+                {{view "mixineditdropdown" isGridLayout=currentViewModel.containerwidget.isGridLayout mixins=controller.currentViewModel.containerwidget.mixins class="btn-group" buttonsColorClass="btn-default" buttonsColorSize="btn-sm"}}
+            {{/with}}
+        {{/if}}
+
         {{#if controllers.application.interval}}
             <div>
                 <button class="btn btn-default btn-sm btn-warning" {{action 'stopLiveReporting'}} >
@@ -10,14 +18,6 @@
         {{/if}}
         <button class="btn btn-default btn-sm" {{action 'displayLiveReporting' this}} >
             <span class="glyphicon glyphicon-time"></span>
-        </button>
-
-        <button class="btn btn-default btn-sm" {{action 'toggleFullscreen' this}} >
-            <span class="glyphicon glyphicon-fullscreen"></span>
-        </button>
-
-        <button class="btn btn-default btn-sm" {{action 'refresh'}} >
-            <span class="glyphicon glyphicon-refresh"></span>
         </button>
     </div>
 

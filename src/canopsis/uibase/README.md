@@ -77,5 +77,5 @@ Tested on commit : 94fbf41.
 
 ## Additional info
 
-Minified version : 182 files (size: 1000K)
+Minified version : 184 files (size: 1008K)
 Development version : 268 files (size: 1,6M)

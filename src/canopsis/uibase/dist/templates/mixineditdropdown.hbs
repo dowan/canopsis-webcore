@@ -1,8 +1,8 @@
-<button type="button" class="btn btn-info btn-xs" {{action 'editWidget' widget}}>
+<button type="button" {{bind-attr class=":btn view.buttonsColorClass view.buttonsColorClass::btn-info view.buttonsColorSize view.buttonsColorSize::btn-xs"}} {{action 'editWidget' widget}}>
     <span class="glyphicon glyphicon-edit"></span>
 </button>
 {{#if view.hasEditableMixins}}
-    <button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+    <button type="button" {{bind-attr class=":btn view.buttonsColorClass view.buttonsColorClass::btn-info view.buttonsColorSize view.buttonsColorSize::btn-xs :dropdown-toggle"}} data-toggle="dropdown" aria-expanded="false">
         <span class="caret"></span>
         <span class="sr-only">Toggle Dropdown</span>
     </button>
