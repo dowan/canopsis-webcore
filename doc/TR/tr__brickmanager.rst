@@ -26,5 +26,5 @@ Contents
 Description
 -----------
 
-- The webmodulemanager tool must save its configuration in files, to make the webcore loadable via a static web server if needed (installed bricks in bower.json, enabled bricks in a dedicated json file)
+- The brickmanager tool must save its configuration in files, to make the webcore loadable via a static web server if needed (installed bricks in bower.json, enabled bricks in a dedicated json file)
 - It must use Bower to install bricks, and store the installed bricks in the bower manifest.
