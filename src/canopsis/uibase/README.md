@@ -15,6 +15,12 @@ You need to clone the git repository and copy directory to Canopsis path
     $ git clone https://git.canopsis.net/canopsis-ui-bricks/uibase.git
     $ cp -r uibase $CANOPSIS_PATH/var/www/canopsis
 
+Then, you need to import specific schemas
+
+    $ su - canopsis
+    $ cp $CANOPSIS_PATH/var/www/canopsis/uibase/schemas/* $CANOPSIS_PATH/etc/schema.d
+    $ schema2db
+
 Then, you need to enable the brick
 
     $ su - canopsis
@@ -32,11 +38,11 @@ See [Howto](https://git.canopsis.net/canopsis-ui-bricks/uibase/blob/master/doc/i
 
 ## Continuous Integration
 
-Tested on commit : 94fbf41.
+Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 
 | Target | Status | Log |
 | ------ | ------ | --- |
-| Lint   | :negative_squared_cross_mark: ERROR | <br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/uibase/src/components/contextselector/component.js<br>  172:17  error  Expected indentation of 20 space characters but found 16  indent<br>  173:21  error  Expected indentation of 24 space characters but found 20  indent<br>  174:17  error  Expected indentation of 20 space characters but found 16  indent<br>  175:21  error  Expected indentation of 24 space characters but found 20  indent<br>  176:17  error  Expected indentation of 20 space characters but found 16  indent<br>  177:21  error  Expected indentation of 24 space characters but found 20  indent<br>  187:17  error  Expected indentation of 20 space characters but found 16  indent<br>  188:21  error  Expected indentation of 24 space characters but found 20  indent<br>  199:17  error  Expected indentation of 20 space characters but found 16  indent<br>  200:21  error  Expected indentation of 24 space characters but found 20  indent<br><br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/uibase/src/components/typedvalue/component.js<br>  92:17  error  Expected indentation of 20 space characters but found 16  indent<br>  93:17  error  Expected indentation of 20 space characters but found 16  indent<br><br>✖ 12 problems (12 errors, 0 warnings)<br><br> |
+| Lint   | :negative_squared_cross_mark: ERROR | <br>/home/capensis/sources/canopsis/sources/webcore/src/canopsis/uibase/src/components/contextselector/component.js<br>  172:17  error  Expected indentation of 20 space characters but found 16  indent<br>  173:21  error  Expected indentation of 24 space characters but found 20  indent<br>  174:17  error  Expected indentation of 20 space characters but found 16  indent<br>  175:21  error  Expected indentation of 24 space characters but found 20  indent<br>  176:17  error  Expected indentation of 20 space characters but found 16  indent<br>  177:21  error  Expected indentation of 24 space characters but found 20  indent<br>  187:17  error  Expected indentation of 20 space characters but found 16  indent<br>  188:21  error  Expected indentation of 24 space characters but found 20  indent<br>  199:17  error  Expected indentation of 20 space characters but found 16  indent<br>  200:21  error  Expected indentation of 24 space characters but found 20  indent<br><br>/home/capensis/sources/canopsis/sources/webcore/src/canopsis/uibase/src/components/typedvalue/component.js<br>  92:17  error  Expected indentation of 20 space characters but found 16  indent<br>  93:17  error  Expected indentation of 20 space characters but found 16  indent<br><br>✖ 12 problems (12 errors, 0 warnings)<br><br> |
 
 ## Code Notes
 
@@ -44,24 +50,24 @@ Tested on commit : 94fbf41.
 
 | File   | Note   |
 |--------|--------|
+| src/mixins/arraysearch.js | these checks should be asserts |
+| src/mixins/responsivelist.js | check if still used |
 | src/editors/editor-elementidselectorwithoptions.hbs | manage search in a dynamic way, as an editor property binding to a search method |
 | src/editors/editor-elementidselectorwithoptions.hbs | make this doc viewable on the generated doc |
-| src/mixins/responsivelist.js | check if still used |
-| src/mixins/arraysearch.js | these checks should be asserts |
 | src/widgets/list/controller.js | add an error in displayedErrors array, to warn the user that the data cannot be displayed |
 | src/widgets/list/controller.js | check if useless or not |
+| src/components/colpick/component.js | check to destroy colpick |
+| src/components/actionfilter/component.js | not used yet |
 | src/components/elementidselectorwithoptions/component.js | put this on a dedicated util |
 | src/components/elementidselectorwithoptions/component.js | manage default values |
 | src/components/elementidselectorwithoptions/component.js | stop using polymorphicTypeKey, use sourceMappingKeys instead |
-| src/components/actionfilter/component.js | not used yet |
 | src/components/classifieditemselector/component.js | fuzzy search |
 | src/components/classifieditemselector/component.js | hover effect |
 | src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
 | src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
 | src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
-| src/components/linklist/component.js | use the container defined in the initializer |
 | src/components/filefield/component.js | check if all the component property are still used, and refactor if needed |
-| src/components/colpick/component.js | check to destroy colpick |
+| src/components/linklist/component.js | use the container defined in the initializer |
 
 
 ### FIXMES
@@ -70,9 +76,9 @@ Tested on commit : 94fbf41.
 |--------|--------|
 | src/mixins/responsivelist.js | undefined |
 | src/widgets/uimaintabcollection/controller.js |: the factory "widgetbase" is a hack to make the canopsis rights reopen work. But it make the view "app_header" not working without the canopsis-rights brick |
+| src/components/classifiedcrecordselector/component.js | is store destroyed? |
 | src/components/dateinterval/component.js | destroy the Jquery plugin at willDestroyElement, and check for possible undestroyed event bindings |
 | src/components/linklist/component.js | on "src/templates/actionbutton-info.hbs", the component is used with the "linkInfoPattern" property. This property does not seems relevant anymore. |
-| src/components/classifiedcrecordselector/component.js | is store destroyed? |
 
 
 ## Additional info
