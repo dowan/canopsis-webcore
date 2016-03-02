@@ -15,8 +15,8 @@ test('Test app_footer', function() {
 
     andThen(function() {
         equal(
-            find('.tab-content img:first')[0].src,
-            'http://localhost:8082/static/canopsis/media/sakura.png',
+            find('.tab-content img:first')[0].src.indexOf('static/canopsis/media/sakura.png') !== -1,
+            true,
             'Canopsis logo is present'
         );
     });
