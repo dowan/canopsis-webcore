@@ -36,7 +36,8 @@ if(window.bricks.charts.envMode === "production") {
             'flotchart-time': 'canopsis/charts/lib/externals/flot/jquery.flot.time',
             'flotchart-valuelabel': 'canopsis/charts/lib/externals/flot-plugins/custom/jquery.flot.valuelabel',
             'flotchart-tooltip': 'canopsis/charts/lib/externals/flot.tooltip/js/jquery.flot.tooltip',
-            'flotchart-chartvalues': 'canopsis/charts/lib/externals/flot-plugins/custom/jquery.flot.chartvalues'
+            'flotchart-chartvalues': 'canopsis/charts/lib/externals/flot-plugins/custom/jquery.flot.chartvalues',
+            'c3': 'canopsis/charts/lib/externals/c3/c3.min'
         },
 
         shim: {
@@ -116,7 +117,7 @@ if(window.bricks.charts.envMode === "production") {
 
     define([
         'canopsis/charts/src/libwrappers/flotchart',
-        'canopsis/charts/lib/externals/c3/c3.min',
+        'c3',
         'link!canopsis/charts/lib/externals/c3/c3.min.css',
         'flotchart',
         'flotchart-canvas',
@@ -136,7 +137,9 @@ if(window.bricks.charts.envMode === "production") {
         'flotchart-valuelabel',
         'flotchart-tooltip',
         'flotchart-chartvalues'
-    ], function () {});
+    ], function (flotchart, c3) {
+        window.c3 = c3;
+    });
 } else {
     require.config({
         paths: {
@@ -158,6 +161,7 @@ if(window.bricks.charts.envMode === "production") {
             'flotchart-valuelabel': 'canopsis/charts/lib/externals/flot-plugins/custom/jquery.flot.valuelabel',
             'flotchart-tooltip': 'canopsis/charts/lib/externals/flot.tooltip/js/jquery.flot.tooltip',
             'flotchart-chartvalues': 'canopsis/charts/lib/externals/flot-plugins/custom/jquery.flot.chartvalues',
+            'c3': 'canopsis/charts/lib/externals/c3/c3.min'
         },
 
         shim: {
@@ -237,7 +241,7 @@ if(window.bricks.charts.envMode === "production") {
 
     define([
         'canopsis/charts/src/libwrappers/flotchart',
-        'canopsis/charts/lib/externals/c3/c3',
+        'c3',
         'link!canopsis/charts/lib/externals/c3/c3.css',
         'flotchart',
         'flotchart-canvas',
@@ -257,5 +261,7 @@ if(window.bricks.charts.envMode === "production") {
         'flotchart-valuelabel',
         'flotchart-tooltip',
         'flotchart-chartvalues'
-    ], function () {});
+    ], function (flotchart, c3) {
+        window.c3 = c3;
+    });
 }
