@@ -210,21 +210,29 @@ require(['text!canopsis/brick-loader/bower.json'], function(loaderManifest) {
                         //remove the .js extension
                         brickMainModule = brickMainModule.slice(0, -3);
 
-
                         initFiles.push(brickMainModule);
                     }
 
                     require(schemasInitFiles, function() {
                         require(['canopsis/brick-loader/schemasloader'], function() {
                             require(initFiles, function() {
+                                var testDeps = [];
+                                if(window.environment === 'test') {
+                                    for (var i = 0, l = enabledPlugins.length; i < l; i++) {
+                                        var currentPlugin = enabledPlugins[i];
+                                        testDeps.push('canopsis/' + currentPlugin + '/' + 'init.test');
+                                    }
+                                }
 
-                                //This flag allow to prevent too early application requirement. @see "app/application" module
-                                window.appShouldNowBeLoaded = true;
+                                require(testDeps, function() {
+                                    //This flag allow to prevent too early application requirement. @see "app/application" module
+                                    window.appShouldNowBeLoaded = true;
 
-                                setLoadingInfo('Fetching application starting point', 'fa-plug');
-                                require(['canopsis/brick-loader/application'], function(Application) {
-                                    setLoadingInfo('Initializing user interface', 'fa-desktop');
+                                    setLoadingInfo('Fetching application starting point', 'fa-plug');
+                                    require(['canopsis/brick-loader/application'], function(Application) {
+                                        setLoadingInfo('Initializing user interface', 'fa-desktop');
 
+                                    });
                                 });
                             });
                         });

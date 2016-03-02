@@ -2,8 +2,21 @@
   "routes": {
     "/en/static": "src",
     "/static": "src",
-    "/rest": "mocks/defaults/rest",
     "/account/me": "mocks/defaults/account/me"
+  },
+  "proxies": {
+    "/rest": {
+      "target": "http://localhost:8082"
+    },
+    "/autologin": {
+      "target": "http://localhost:8082"
+    },
+    "/perfdata": {
+      "target": "http://localhost:8082"
+    },
+    "/sessionstart": {
+      "target": "http://localhost:8082"
+    }
   },
   "test_page": "en/static/canopsis/index.test.html"
 }

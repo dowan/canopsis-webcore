@@ -21,9 +21,14 @@
 
         <!-- qunit must be availalbe before ember qunit loads -->
         <script type="text/javascript" src="core/externals/qunit/qunit/qunit.js"></script>
+        <script type="text/javascript" src="brick-loader/externals/jquery/dist/jquery.min.js"></script>
         <script type="application/javascript">
             //TODO put this in canopsisConfiguration?
             window.environment = 'test';
+            $.ajax({
+              url: "http://localhost:7357/autologin/16b177b4-dfc7-11e5-a502-54ee7509220f",
+              async: false
+            });
             QUnit.config.autostart = false;
         </script>
 

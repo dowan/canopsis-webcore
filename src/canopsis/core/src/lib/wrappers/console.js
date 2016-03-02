@@ -21,7 +21,7 @@
 
 
 var deps = [];
-if (!isIE) {
+if (!isIE && window.environment !== 'test') {
     deps.push('canopsis/core/externals/console.js/console');
 }
 
