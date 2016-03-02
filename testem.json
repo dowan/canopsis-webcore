@@ -1,0 +1,9 @@
+{
+  "routes": {
+    "/en/static": "src",
+    "/static": "src",
+    "/rest": "mocks/defaults/rest",
+    "/account/me": "mocks/defaults/account/me"
+  },
+  "test_page": "en/static/canopsis/index.test.html"
+}
