@@ -197,6 +197,9 @@ define([
             var adapter = SchemaAdapter.create();
 
             var successFunction = function(payload) {
+                if(typeof payload === "string") {
+                    payload = JSON.parse(payload);
+                }
                 if (payload.success) {
                     if(payload.total === 0) {
                         console.warn('No schemas was imported from the backend, you might have nothing in your database, or a communication problem with the server');
