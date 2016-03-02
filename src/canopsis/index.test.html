@@ -26,7 +26,13 @@
             //TODO put this in canopsisConfiguration?
             window.environment = 'test';
             $.ajax({
-              url: "http://localhost:7357/autologin/16b177b4-dfc7-11e5-a502-54ee7509220f",
+              url: "test-settings.json",
+              success: function(data) {
+                $.ajax({
+                    url: "http://localhost:7357/autologin/" + data.authkey,
+                    async: false
+                });
+              },
               async: false
             });
             QUnit.config.autostart = false;

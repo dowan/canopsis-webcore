@@ -1,8 +1,7 @@
 {
   "routes": {
     "/en/static": "src",
-    "/static": "src",
-    "/account/me": "mocks/defaults/account/me"
+    "/static": "src"
   },
   "proxies": {
     "/rest": {
@@ -15,6 +14,9 @@
       "target": "http://localhost:8082"
     },
     "/sessionstart": {
+      "target": "http://localhost:8082"
+    },
+    "/account": {
       "target": "http://localhost:8082"
     }
   },
