@@ -81,6 +81,8 @@ Ember.Application.initializer({
 
                             if(get(weatherController, 'use_labels')) {
                                 set(list, 'dirtyMessage', rkLabel);
+                            } else {
+                                set(list, 'dirtyMessage', '');
                             }
 
                             set(list, 'volatile.forced_filter', compiledFilterPattern);
