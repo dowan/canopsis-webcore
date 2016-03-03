@@ -47,6 +47,7 @@ Ember.Application.initializer({
 
             actions: {
                 goToInfo: function(element) {
+                    var weatherController = this;
                     console.log('goToInfo', element);
                     var transition = this.transitionToRoute('/userview/' + get(this, 'config.destination_view'));
 
@@ -73,6 +74,13 @@ Ember.Application.initializer({
                         if(compiledFilterPattern !== '') {
                             if(!get(list, 'volatile')) {
                                 set(list, 'volatile', {});
+                            }
+
+                            var rksLabels = get(weatherController, 'rksLabels');
+                            var rkLabel = rksLabels[element.rk];
+
+                            if(get(weatherController, 'use_labels')) {
+                                set(list, 'dirtyMessage', rkLabel);
                             }
 
                             set(list, 'volatile.forced_filter', compiledFilterPattern);

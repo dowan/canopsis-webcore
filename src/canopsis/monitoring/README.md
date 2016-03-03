@@ -15,12 +15,6 @@ You need to clone the git repository and copy directory to Canopsis path
     $ git clone https://git.canopsis.net/canopsis-ui-bricks/monitoring.git
     $ cp -r monitoring $CANOPSIS_PATH/var/www/canopsis
 
-Then, you need to import specific schemas
-
-    $ su - canopsis
-    $ cp $CANOPSIS_PATH/var/www/canopsis/monitoring/schemas/* $CANOPSIS_PATH/etc/schema.d
-    $ schema2db
-
 Then, you need to enable the brick
 
     $ su - canopsis
@@ -38,7 +32,7 @@ See [Howto](https://git.canopsis.net/canopsis-ui-bricks/monitoring/blob/master/d
 
 ## Continuous Integration
 
-Tested on commit : [ERROR : The brick is not in a dedicated git repository].
+Tested on commit : d3b3112.
 
 | Target | Status | Log |
 | ------ | ------ | --- |

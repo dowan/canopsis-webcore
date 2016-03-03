@@ -15,7 +15,7 @@
             {{#if widget.rollbackable}}
                 {{#if widget.isDirty}}
                     <button type="button" class="btn btn-small btn-danger btn-xs" {{action 'rollback' widget}}>
-                        <i class="fa fa-undo"></i>
+                        {{widget.dirtyMessage}} <i class="fa fa-undo"></i>
                     </button>
                 {{/if}}
             {{/if}}
