@@ -58,9 +58,10 @@ if(window.bricks.uibase.envMode === "production") {
     define([
         'd3',
         'jsoneditorlib',
+        'moment',
         'link!canopsis/uibase/lib/externals/jsoneditor/jsoneditor.min.css',
         'link!canopsis/uibase/lib/externals/fontawesome/css/font-awesome.min.css',
-        'link!canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker-bs3.css',
+        'link!canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker.css',
         'canopsis/uibase/lib/externals/stacktable/stacktable',
         'link!canopsis/uibase/lib/externals/stacktable/stacktable.css',
         'daterangepicker',
@@ -89,9 +90,10 @@ if(window.bricks.uibase.envMode === "production") {
         'canopsis/uibase/lib/externals/eonasdan-bootstrap-datetimepicker/lib/js/bootstrap-datetimepicker.min',
         'canopsis/uibase/lib/externals/iCheck/icheck',
         'link!canopsis/uibase/lib/externals/iCheck/skins/all.css'
-    ], function (d3, jsoneditor) {
+    ], function (d3, jsoneditor, moment) {
         window.d3 = d3;
         window.jsoneditor = { JSONEditor: jsoneditor };
+        window.moment = moment;
 
         require(['ember-jsoneditor-lib'], function() {});
 
@@ -138,9 +140,10 @@ if(window.bricks.uibase.envMode === "production") {
     define([
         'd3',
         'jsoneditorlib',
+        'moment',
         'link!canopsis/uibase/lib/externals/jsoneditor/jsoneditor.css',
         'link!canopsis/uibase/lib/externals/fontawesome/css/font-awesome.min.css',
-        'link!canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker-bs3.css',
+        'link!canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker.css',
         'canopsis/uibase/lib/externals/stacktable/stacktable',
         'link!canopsis/uibase/lib/externals/stacktable/stacktable.css',
         'daterangepicker',
@@ -169,9 +172,10 @@ if(window.bricks.uibase.envMode === "production") {
         'canopsis/uibase/lib/externals/eonasdan-bootstrap-datetimepicker/lib/js/bootstrap-datetimepicker.min',
         'canopsis/uibase/lib/externals/iCheck/icheck',
         'link!canopsis/uibase/lib/externals/iCheck/skins/all.css'
-    ], function (d3, jsoneditor) {
+    ], function (d3, jsoneditor, moment) {
         window.d3 = d3;
         window.jsoneditor = { JSONEditor: jsoneditor };
+        window.moment = moment;
 
         require(['ember-jsoneditor-lib'], function() {});
 
