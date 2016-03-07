@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "main": "init.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "testem ci . -t \"en/static/canopsis/index.test.html?module=core\"",
     "compile": "rm -Rf tmp/build && broccoli build tmp/build && cp tmp/build . -RT",
     "lint": "eslint src",
     "doc": "./node_modules/canopsis-ui-toolbelt/scripts/buildDoc",
@@ -28,7 +28,6 @@
     "pre-commit": "^1.1.1"
   },
   "pre-commit": [
-    "lint",
-    "doc"
+    "lint"
   ]
 }

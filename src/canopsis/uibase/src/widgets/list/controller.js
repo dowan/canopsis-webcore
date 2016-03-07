@@ -263,33 +263,36 @@ Ember.Application.initializer({
 
                 var findParams = this.computeFindParams();
 
-                get(this, 'widgetDataStore').findQuery(itemType, findParams).then(function(queryResults) {
-                    //retreive the metas of the records
-                    var listed_crecord_type = get(me, 'listed_crecord_type');
-                    var crecordTypeMetadata = get(me, 'widgetDataStore').metadataFor(listed_crecord_type);
-                    console.log('crecordTypeMetadata', crecordTypeMetadata);
-
-                    Ember.setProperties(me, {
-                        widgetDataMetas: crecordTypeMetadata,
-                        loaded: true
-                    });
-
-                    me.extractItems.apply(me, [queryResults]);
-
-                    for(var i = 0, l = queryResults.content.length; i < l; i++) {
-                        //This value reset spiner display for record in flight status
-                        queryResults.content[i].set('pendingOperation', false);
+                if(isNone(container.lookupFactory('model:' + itemType))) {
+                    if(get(this, 'content.displayedErrors') === undefined) {
+                        set(this, 'content.displayedErrors', Ember.A());
                     }
 
+                    get(this, 'content.displayedErrors').pushObject('No model was found for '+ itemType);
+                    set(this, 'loaded', true);
                     appController.removeConcurrentLoading('list-data');
-                }).catch(function (promiseProxy) {
-                    console.warn('Catching error', promiseProxy);
-                    //TODO add an error in displayedErrors array, to warn the user that the data cannot be displayed
-                    var message = 'There seems to be an error with listed data, or maybe selected record type is not in widget list schema.';
-                    console.error(message);
-                    get(this, 'content.displayedErrors').pushObject(message);
-                    set(me, 'dataError', promiseProxy);
-                });
+                } else {
+                    get(this, 'widgetDataStore').findQuery(itemType, findParams).then(function(queryResults) {
+                        //retreive the metas of the records
+                        var listed_crecord_type = get(me, 'listed_crecord_type');
+                        var crecordTypeMetadata = get(me, 'widgetDataStore').metadataFor(listed_crecord_type);
+                        console.log('crecordTypeMetadata', crecordTypeMetadata);
+
+                        Ember.setProperties(me, {
+                            widgetDataMetas: crecordTypeMetadata,
+                            loaded: true
+                        });
+
+                        me.extractItems.apply(me, [queryResults]);
+
+                        for(var i = 0, l = queryResults.content.length; i < l; i++) {
+                            //This value reset spiner display for record in flight status
+                            queryResults.content[i].set('pendingOperation', false);
+                        }
+
+                        appController.removeConcurrentLoading('list-data');
+                    });
+                }
             },
 
             /**
