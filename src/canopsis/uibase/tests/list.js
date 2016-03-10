@@ -14,16 +14,3 @@ test('Simple list creation', function() {
         click('.form .btn-submit');
     });
 });
-
-test('Test app_footer', function() {
-
-    visit('/userview/view.app_footer');
-
-    andThen(function() {
-        equal(
-            find('.tab-content img:first')[0].src.indexOf('static/canopsis/media/sakura.png') !== -1,
-            true,
-            'Canopsis logo is present'
-        );
-    });
-});

@@ -32,11 +32,18 @@ See [Howto](https://git.canopsis.net/canopsis-ui-bricks/uibase/blob/master/doc/i
 
 ## Continuous Integration
 
-Tested on commit : d3b3112.
+### Tests
+
+The last build was not a full build. Please use the "full-compile" npm script to make test results show up here.
+
+### Lint
+
+Tested on commit : 1b864f1.
 
 | Target | Status | Log |
 | ------ | ------ | --- |
 | Lint   | :negative_squared_cross_mark: ERROR | <br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/uibase/src/components/contextselector/component.js<br>  172:17  error  Expected indentation of 20 space characters but found 16  indent<br>  173:21  error  Expected indentation of 24 space characters but found 20  indent<br>  174:17  error  Expected indentation of 20 space characters but found 16  indent<br>  175:21  error  Expected indentation of 24 space characters but found 20  indent<br>  176:17  error  Expected indentation of 20 space characters but found 16  indent<br>  177:21  error  Expected indentation of 24 space characters but found 20  indent<br>  187:17  error  Expected indentation of 20 space characters but found 16  indent<br>  188:21  error  Expected indentation of 24 space characters but found 20  indent<br>  199:17  error  Expected indentation of 20 space characters but found 16  indent<br>  200:21  error  Expected indentation of 24 space characters but found 20  indent<br><br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/uibase/src/components/typedvalue/component.js<br>  92:17  error  Expected indentation of 20 space characters but found 16  indent<br>  93:17  error  Expected indentation of 20 space characters but found 16  indent<br><br>✖ 12 problems (12 errors, 0 warnings)<br><br> |
+
 
 ## Code Notes
 
@@ -76,5 +83,5 @@ Tested on commit : d3b3112.
 
 ## Additional info
 
-Minified version : 182 files (size: 1000K)
+Minified version : 182 files (size: 996K)
 Development version : 266 files (size: 1,6M)

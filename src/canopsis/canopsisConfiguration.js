@@ -50,7 +50,10 @@ define(['ember-lib', 'ember-data-lib'], function () {
                                 if (data.success && data.data && data.data.length && data.data[0].ui_language) {
                                     language = data.data[0].ui_language;
                                 } else {
-                                    console.warn('Lang data fetch failed, default language for application is set to EN', data);
+                                    //FIXME Turning off warning for test environment. This removal is not supposed to be here.
+                                    if(environment !== 'test') {
+                                        console.warn('Lang data fetch failed, default language for application is set to EN', data);
+                                    }
                                     language = 'en';
                                 }
 
