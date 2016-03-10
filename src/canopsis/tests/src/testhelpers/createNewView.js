@@ -17,18 +17,20 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
- require.config({
-    paths: {
+/**
+ * @class TestHelpers
+ */
+/**
+ * @method createNewView
+ */
+Ember.Test.registerAsyncHelper('createNewView', function(title) {
+    title = title || 'test';
 
-    }
+    click('.nav-tabs-custom a.dropdown-toggle');
+    click('.nav-tabs-custom .fa.fa-plus');
+
+    waitForElement('input[name=crecord_name]').then(function(){
+        fillIn('input[name=crecord_name]', title);
+        click('.modal-dialog .btn-primary');
+    });
 });
-
- define([
-    'canopsis/tests/src/testhelpers/ajax-stub',
-    'canopsis/tests/src/testhelpers/createNewView',
-    'canopsis/tests/src/testhelpers/getMainContainer',
-    'canopsis/tests/src/testhelpers/waitForElement',
-    'canopsis/tests/src/testhelpers/waitForElementRemoval',
-    'canopsis/tests/src/testhelpers/waitMilliseconds',
-    'canopsis/tests/requirejs-modules/test-initializer'
-], function () {});
