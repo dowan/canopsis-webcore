@@ -32,11 +32,11 @@ See [Howto](https://git.canopsis.net/canopsis-ui-bricks/tests/blob/master/doc/in
 
 ## Continuous Integration
 
-Tested on commit : c91ba4f.
+Tested on commit : 52391e0.
 
 | Target | Status | Log |
 | ------ | ------ | --- |
-| Lint   | :negative_squared_cross_mark: ERROR | <br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/tests/src/testhelpers/createNewView.js<br>  29:5  error  "click" is not defined           no-undef<br>  30:5  error  "click" is not defined           no-undef<br>  32:5  error  "waitForElement" is not defined  no-undef<br>  33:9  error  "fillIn" is not defined          no-undef<br>  34:9  error  "click" is not defined           no-undef<br><br>✖ 5 problems (5 errors, 0 warnings)<br><br> |
+| Lint   | :negative_squared_cross_mark: ERROR | <br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/tests/src/testhelpers/activateEditMode.js<br>  30:9  error  "click" is not defined  no-undef<br>  31:9  error  "click" is not defined  no-undef<br><br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/tests/src/testhelpers/createNewView.js<br>  28:5  error  "click" is not defined           no-undef<br>  29:5  error  "click" is not defined           no-undef<br>  31:5  error  "waitForElement" is not defined  no-undef<br>  32:9  error  "fillIn" is not defined          no-undef<br>  33:9  error  "click" is not defined           no-undef<br><br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/tests/src/testhelpers/deactivateEditMode.js<br>  30:9  error  "click" is not defined  no-undef<br>  31:9  error  "click" is not defined  no-undef<br><br>✖ 9 problems (9 errors, 0 warnings)<br><br> |
 
 ## Code Notes
 
@@ -51,4 +51,4 @@ Tested on commit : c91ba4f.
 ## Additional info
 
 Minified version : 3 files (size: 20K)
-Development version : 6 files (size: 32K)
+Development version : 8 files (size: 40K)

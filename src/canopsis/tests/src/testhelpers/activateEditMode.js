@@ -17,20 +17,17 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
- require.config({
-    paths: {
 
+/**
+ * @class TestHelpers
+ */
+/**
+ * @method activateEditMode
+ * @description activates the edit mode for the current view
+ */
+Ember.Test.registerAsyncHelper('activateEditMode', function() {
+    if(find('.btn-add-widget').length === 0) {
+        click('.main-tabs a.dropdown-toggle');
+        click('.main-tabs .fa.fa-pencil');
     }
 });
-
- define([
-    'canopsis/tests/src/testhelpers/activateEditMode',
-    'canopsis/tests/src/testhelpers/ajax-stub',
-    'canopsis/tests/src/testhelpers/createNewView',
-    'canopsis/tests/src/testhelpers/deactivateEditMode',
-    'canopsis/tests/src/testhelpers/getMainContainer',
-    'canopsis/tests/src/testhelpers/waitForElement',
-    'canopsis/tests/src/testhelpers/waitForElementRemoval',
-    'canopsis/tests/src/testhelpers/waitMilliseconds',
-    'canopsis/tests/requirejs-modules/test-initializer'
-], function () {});
