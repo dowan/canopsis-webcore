@@ -9,6 +9,12 @@ module.exports = {
     "/rest": {
       "target": "http://localhost:8082"
     },
+    "/context": {
+      "target": "http://localhost:8082"
+    },
+    "/keepalive": {
+      "target": "http://localhost:8082"
+    },
     "/autologin": {
       "target": "http://localhost:8082"
     },

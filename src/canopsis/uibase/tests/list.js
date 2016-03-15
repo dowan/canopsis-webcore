@@ -1,10 +1,13 @@
 module('uibase');
 
 test('Simple list creation', function() {
-    createNewView('list test');
+    expect(1);
 
-    click('.nav-tabs-custom .cog-menu');
-    click('.nav-tabs-custom .btn-toggle-edit-mode');
+    visit('/userview/view.event');
+
+    createNewView('list_test');
+
+    activateEditMode();
     click('.btn-add-widget');
 
     waitForElement('.form .ember-text-field').then(function(){
@@ -12,5 +15,9 @@ test('Simple list creation', function() {
         click('.form .panel-default:first a');
         click('.form .list-group-item a');
         click('.form .btn-submit');
+
+        waitMilliseconds(1000).then(function(){
+            equal(find('.table-responsive').length, 1, 'there is one table in the view');
+        });
     });
 });

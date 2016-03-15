@@ -38,7 +38,7 @@ The last build was not a full build. Please use the "full-compile" npm script to
 
 ### Lint
 
-Tested on commit : 98ca841.
+Tested on commit : bd43b0f.
 
 | Target | Status | Log |
 | ------ | ------ | --- |
@@ -75,6 +75,7 @@ Tested on commit : 98ca841.
 | File   | Note   |
 |--------|--------|
 | src/mixins/responsivelist.js | undefined |
+| src/mixins/periodicrefresh.js | periodicrefresh deactivated in testing mode because it throws global failures |
 | src/widgets/uimaintabcollection/controller.js |: the factory "widgetbase" is a hack to make the canopsis rights reopen work. But it make the view "app_header" not working without the canopsis-rights brick |
 | src/components/dateinterval/component.js | destroy the Jquery plugin at willDestroyElement, and check for possible undestroyed event bindings |
 | src/components/linklist/component.js | on "src/templates/actionbutton-info.hbs", the component is used with the "linkInfoPattern" property. This property does not seems relevant anymore. |
