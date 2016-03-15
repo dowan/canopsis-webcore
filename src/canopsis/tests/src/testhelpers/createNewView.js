@@ -25,13 +25,11 @@
  */
 Ember.Test.registerAsyncHelper('createNewView', function(title) {
     title = title || 'test';
-    waitForElement('.nav-tabs-custom').then(function() {
-        click('.nav-tabs-custom a.dropdown-toggle');
-        click('.nav-tabs-custom .fa.fa-plus');
+    click('.cog-menu');
+    click('.nav-tabs-custom .fa.fa-plus');
 
-        waitForElement('input[name=crecord_name]').then(function(){
-            fillIn('input[name=crecord_name]', title);
-            click('.modal-dialog .btn-primary');
-        });
+    waitForElement('input[name=crecord_name]').then(function(){
+        fillIn('input[name=crecord_name]', title);
+        click('.modal-dialog .btn-primary');
     });
 });
