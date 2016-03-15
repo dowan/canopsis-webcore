@@ -11,8 +11,8 @@ test('Creating a view with an empty text widget', function() {
     waitForElement('input[name=crecord_name]').then(function(){
         fillIn('input[name=crecord_name]', 'test');
         click('.modal-dialog .btn-primary');
-
     });
+
     activateEditMode();
     click('.btn-add-widget');
 

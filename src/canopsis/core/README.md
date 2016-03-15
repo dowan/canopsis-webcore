@@ -34,17 +34,11 @@ See [Howto](https://git.canopsis.net/canopsis-ui-bricks/core/blob/master/doc/ind
 
 ### Tests
 
-| Browser | Test name | Status | Log |
-| ------ | ------ | ------ | --- |
-| Firefox 39.0 | core: Test app_header | :ok: OK | [] |
-| Firefox 39.0 | core: Test app_footer | :ok: OK | [] |
-| Chrome 43.0 | core: Test app_header | :ok: OK | [] |
-| Chrome 43.0 | core: Test app_footer | :ok: OK | [] |
+The last build was not a full build. Please use the "full-compile" npm script to make test results show up here.
 
+### Lint
 
-### Lint
-
-Tested on commit : 94fbf41.
+Tested on commit : 78dc6dd.
 
 | Target | Status | Log |
 | ------ | ------ | --- |
