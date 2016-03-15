@@ -1,0 +1,119 @@
+#! /usr/bin/env node
+
+var sc = require('subcommander');
+var execSync = require('sync-exec');
+var fs = require('fs');
+
+sc.command('help', {
+    desc: 'Reset default configuration',
+    callback: function () {
+      sc.usage();
+    }
+});
+
+sc.command('init', {
+    desc: 'Reset default configuration',
+    callback: function () {
+      init();
+    }
+});
+
+sc.command('list', {
+    desc: 'List enabled bricks',
+    abbr: 'l',
+    callback: function () {
+      list();
+    }
+});
+
+sc.command('enable', {
+    desc: 'Enables a brick',
+    abbr: 'e',
+    callback: function (options) {
+      enableBrick(options[0]);
+    }
+});
+
+sc.command('disable', {
+    desc: 'Disables a brick',
+    abbr: 'd',
+    callback: function (options) {
+      disableBrick(options[0]);
+    }
+});
+
+sc.command('install', {
+    desc: 'Installs a brick',
+    abbr: 'i',
+    callback: function (options) {
+      installBrick(options[0]);
+    }
+});
+
+sc.command('uninstall', {
+    desc: 'Uninstalls a brick',
+    abbr: 'u',
+    callback: function (options) {
+      uninstallBrick(options[0]);
+    }
+});
+
+sc.parse();
+
+function in_array(needle, haystack){
+    var found = 0;
+    for (var i=0, len=haystack.length;i<len;i++) {
+      if (haystack[i] == needle) return i;
+        found++;
+    }
+    return -1;
+}
+
+function enableBrick(brickName) {
+  var contents = JSON.parse(fs.readFileSync('src/canopsis/enabled-bricks.json').toString());
+  if(in_array(brickName, contents) !== -1) {
+    console.log('brick '+ brickName +' already enabled');
+  } else {
+    contents.push(brickName);
+    execSync('cp -r src/canopsis/'+ brickName +'/doc/jsdoc doc/api/bricks-documentation/' + brickName);
+    fs.writeFileSync('src/canopsis/enabled-bricks.json', JSON.stringify(contents), 'utf8');
+    fs.writeFileSync('doc/api/config.js', 'window.bricks = \''+ JSON.stringify(contents) + '\'', 'utf8');
+  }
+}
+
+function disableBrick(brickName) {
+  var contents = JSON.parse(fs.readFileSync('src/canopsis/enabled-bricks.json').toString());
+  if(in_array(brickName, contents) !== -1) {
+    var index = contents.indexOf(brickName);
+    contents.splice(index, 1);
+    execSync('rm -r doc/api/bricks-documentation/' + brickName);
+    fs.writeFileSync('src/canopsis/enabled-bricks.json', JSON.stringify(contents), 'utf8');
+    fs.writeFileSync('doc/api/config.js', 'window.bricks = \'' + JSON.stringify(contents) + '\'', 'utf8');
+  } else {
+    console.log('brick '+ brickName +' is not enabled');
+  }
+}
+
+function installBrick(brickName) {
+  execSync('bower install --save https://git.canopsis.net/canopsis-ui-bricks/' + brickName + '.git');
+}
+
+function uninstallBrick(brickName) {
+  disableBrick(brickName);
+  execSync('bower uninstall --save ' + brickName);
+}
+
+function list() {
+  var contents = JSON.parse(fs.readFileSync('src/canopsis/enabled-bricks.json').toString());
+  console.log(contents);
+}
+
+function init() {
+  var contents = ["core", "monitoring", "uiv1_themes", "charts", "canopsis-ui", "canopsis-backend-ui-connector", "uibase", "userpreferences", "canopsis-rights", "canopsis-vevent", "brick-stats", "canopsis-pbehavior"];
+  for (var i = 0; i < contents.length; i++) {
+    enableBrick(contents[i]);
+  }
+
+  fs.writeFileSync('src/canopsis/enabled-bricks.json', JSON.stringify(contents), 'utf8');
+  fs.writeFileSync('doc/api/config.js', 'window.bricks = \''+ JSON.stringify(contents) + '\'', 'utf8');
+}
