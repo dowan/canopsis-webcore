@@ -46,8 +46,18 @@ sc.command('install', {
     desc: 'Installs a brick',
     abbr: 'i',
     callback: function (options) {
-      installBrick(options[0]);
+      console.error(JSON.stringify(options));
+      if(options[0]) {
+        installBrick('https://git.canopsis.net/canopsis-ui-bricks/' + options[0] + '.git');
+      } else {
+        if(options.folder) {
+          installBrick(options.folder);
+        }
+      }
     }
+}).option('folder', {
+  abbr: 'f',
+  desc: 'install using a local folder, or a local or distant archive file'
 });
 
 sc.command('uninstall', {
@@ -94,8 +104,8 @@ function disableBrick(brickName) {
   }
 }
 
-function installBrick(brickName) {
-  execSync('bower install --save https://git.canopsis.net/canopsis-ui-bricks/' + brickName + '.git');
+function installBrick(brickUrl) {
+  execSync('bower install --save ' + brickUrl);
 }
 
 function uninstallBrick(brickName) {
