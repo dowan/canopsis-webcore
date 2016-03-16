@@ -82,7 +82,7 @@ Ember.Application.initializer({
 
                     var job;
                     for (var i = 0, l = availableJobs.length; i < l; i++) {
-                        if(availableJobs[i].name === jobName) {
+                        if(availableJobs[i].value === jobName) {
                             job = availableJobs[i];
                         }
                     }
