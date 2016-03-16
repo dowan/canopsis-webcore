@@ -18,4 +18,5 @@
  */
 
  define([
+    'canopsis/canopsis-rights/tests/account'
 ], function () {});

@@ -19,33 +19,47 @@
 
  require.config({
     paths: {
-        'actionbutton-viewrights': 'canopsis/canopsis-rights/dist/templates/actionbutton-viewrights',
-        'components/component-right-checksum': 'canopsis/canopsis-rights/dist/templates/components/component-right-checksum',
-        'components/component-rights-action': 'canopsis/canopsis-rights/dist/templates/components/component-rights-action',
-        'components/component-rightsrenderer': 'canopsis/canopsis-rights/dist/templates/components/component-rightsrenderer',
-        'components/component-rightsselector': 'canopsis/canopsis-rights/dist/templates/components/component-rightsselector',
-        'editor-rights': 'canopsis/canopsis-rights/dist/templates/editor-rights',
-        'renderer-rights': 'canopsis/canopsis-rights/dist/templates/renderer-rights',
-        'rightschecksumbuttons': 'canopsis/canopsis-rights/dist/templates/rightschecksumbuttons',
-        'rightselector-itempartial': 'canopsis/canopsis-rights/dist/templates/rightselector-itempartial',
-        'rightselector-selecteditempartial': 'canopsis/canopsis-rights/dist/templates/rightselector-selecteditempartial',
-        'viewrightsform': 'canopsis/canopsis-rights/dist/templates/viewrightsform',
+        'components/component-right-checksum': 'canopsis/canopsis-rights/src/components/right-checksum/template',
+        'components/component-rights-action': 'canopsis/canopsis-rights/src/components/rights-action/template',
+        'components/component-rightsrenderer': 'canopsis/canopsis-rights/src/components/rightsrenderer/template',
+        'components/component-rightsselector': 'canopsis/canopsis-rights/src/components/rightsselector/template',
+        'editor-rights': 'canopsis/canopsis-rights/src/editors/editor-rights',
+        'viewrightsform': 'canopsis/canopsis-rights/src/forms/viewrightsform/viewrightsform',
+        'renderer-rights': 'canopsis/canopsis-rights/src/renderers/renderer-rights',
+        'actionbutton-viewrights': 'canopsis/canopsis-rights/src/templates/actionbutton-viewrights',
+        'rightschecksumbuttons': 'canopsis/canopsis-rights/src/templates/rightschecksumbuttons',
+        'rightselector-itempartial': 'canopsis/canopsis-rights/src/templates/rightselector-itempartial',
+        'rightselector-selecteditempartial': 'canopsis/canopsis-rights/src/templates/rightselector-selecteditempartial',
 
     }
 });
 
  define([
-    'link!canopsis/canopsis-rights/dist/brick.min.css',
-    'ehbs!actionbutton-viewrights',
+    'canopsis/canopsis-rights/src/components/right-checksum/component',
     'ehbs!components/component-right-checksum',
+    'canopsis/canopsis-rights/src/components/rights-action/component',
     'ehbs!components/component-rights-action',
+    'canopsis/canopsis-rights/src/components/rightsrenderer/component',
     'ehbs!components/component-rightsrenderer',
+    'canopsis/canopsis-rights/src/components/rightsselector/component',
     'ehbs!components/component-rightsselector',
     'ehbs!editor-rights',
+    'canopsis/canopsis-rights/src/forms/viewrightsform/controller',
+    'ehbs!viewrightsform',
+    'canopsis/canopsis-rights/src/objects/rightsregistry',
     'ehbs!renderer-rights',
+    'canopsis/canopsis-rights/src/reopens/adapters/userview',
+    'canopsis/canopsis-rights/src/reopens/controllers/application',
+    'canopsis/canopsis-rights/src/reopens/mixins/crud',
+    'canopsis/canopsis-rights/src/reopens/mixins/customfilterlist',
+    'canopsis/canopsis-rights/src/reopens/mixins/documentation',
+    'canopsis/canopsis-rights/src/reopens/mixins/showviewbutton',
+    'canopsis/canopsis-rights/src/reopens/routes/application',
+    'canopsis/canopsis-rights/src/reopens/routes/userview',
+    'canopsis/canopsis-rights/src/reopens/widgets/uimaintabcollection',
+    'ehbs!actionbutton-viewrights',
     'ehbs!rightschecksumbuttons',
     'ehbs!rightselector-itempartial',
     'ehbs!rightselector-selecteditempartial',
-    'ehbs!viewrightsform',
-    'canopsis/canopsis-rights/dist/brick.min'
+    'canopsis/canopsis-rights/src/utils/rightsflags'
 ], function () {});
