@@ -50,17 +50,27 @@ Ember.Application.initializer({
                 }));
 
                 var job_types = [];
-                console.log('availableJobs CP', get(this, 'schemas'));
+
                 for(var sname in get(this, 'schemas')) {
                     if(sname.indexOf('task') === 0 && sname.length > 4) {
-                        job_types.pushObject({
-                            name: sname.slice(4),
-                            value: sname
-                        });
+                        var name = sname.slice(4);
+                        var right = get(this, 'loggedaccountController.record.rights.models_' + sname + '.checksum');
+
+                        if(right) {
+                            name = name.charAt(0).toUpperCase() + name.slice(1);
+
+                            var icon = get(this, 'schemas.' + sname + 'schema.metadata.icon');
+
+                            job_types.pushObject({
+                                name: name,
+                                value: sname,
+                                icon: icon || 'fa fa-cogs'
+                            });
+                        }
                     }
                 }
 
-                set(this, 'availableJobs', { all : job_types, byClass: {}});
+                set(this, 'availableJobs', job_types);
             },
 
             actions: {
@@ -68,7 +78,7 @@ Ember.Application.initializer({
                     console.group('selectJob', this, jobName);
 
                     var context;
-                    var availableJobs = get(this, 'availableJobs.all');
+                    var availableJobs = get(this, 'availableJobs');
 
                     var job;
                     for (var i = 0, l = availableJobs.length; i < l; i++) {
