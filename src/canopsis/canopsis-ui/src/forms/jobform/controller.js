@@ -59,7 +59,7 @@ Ember.Application.initializer({
                         if(right) {
                             name = name.charAt(0).toUpperCase() + name.slice(1);
 
-                            var icon = get(this, 'schemas.' + sname + 'schema.metadata.icon');
+                            var icon = get(this, 'schemas.' + sname + '.schema.metadata.icon');
 
                             job_types.pushObject({
                                 name: name,
