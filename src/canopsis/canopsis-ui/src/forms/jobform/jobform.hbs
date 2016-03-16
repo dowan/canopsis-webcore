@@ -2,20 +2,8 @@
     <div>parent form: {{controller.formParent}}</div>
 {{/if}}
 
-<button class="btn btn-default" {{action 'selectItem' 'mail'}} >
-    <span class="fa fa-envelope"></span> {{tr 'Mail'}}
-</button>
-
-<button class="btn btn-default" {{action 'selectItem' 'file'}} >
-    <span class="fa fa-file-code-o"></span> {{tr 'File'}}
-</button>
-
-<button class="btn btn-default" {{action 'selectItem' 'dataclean'}} >
-    <span class="fa fa-database"></span> {{tr 'Data clean'}}
-</button>
-
-{{#if loggedaccountController.record.rights.actionbutton_canediturlfield.checksum}}
-    <button class="btn btn-default" {{action 'selectItem' 'linklist'}} >
-        <i class="fa fa-list"></i> {{tr 'Link list'}}
+{{#each job in availableJobs}}
+    <button class="btn btn-default" {{action 'selectItem' job.value}}>
+        <span {{bind-attr class="job.icon"}}></span> {{tr job.name}}
     </button>
-{{/if}}
+{{/each}}
