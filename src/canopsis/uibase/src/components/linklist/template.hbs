@@ -8,7 +8,7 @@
             <ul class="dropdown-menu" role="menu" style="right:0; left:auto">
                 {{#each linkInformation in links}}
                     <li>
-                        <a target="_blank" {{bind-attr href=linkInformation.url}}>{{linkInformation.label}}</a>
+                        <a target="_blank" {{bind-attr href=linkInformation.url}}>{{tr linkInformation.label}}</a>
                     </li>
                 {{/each}}
             </ul>
