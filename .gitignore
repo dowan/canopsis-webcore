@@ -25,4 +25,4 @@ src/canopsis/brick-*
 # Node 
 #####################
 node_modules
-/bower.json
+bower.json
