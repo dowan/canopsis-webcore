@@ -1,20 +1,19 @@
-module('view creation');
+module('core');
 
 test('Creating a view with an empty text widget', function() {
     visit('/userview/view.event');
 
     expect(2);
 
-    click('.nav-tabs-custom a.dropdown-toggle');
-    click('.nav-tabs-custom .fa.fa-plus');
+    click('.main-tabs a.dropdown-toggle');
+    click('.main-tabs .fa.fa-plus');
 
     waitForElement('input[name=crecord_name]').then(function(){
         fillIn('input[name=crecord_name]', 'test');
         click('.modal-dialog .btn-primary');
 
     });
-    click('.nav-tabs-custom a.dropdown-toggle');
-    click('.nav-tabs-custom .fa.fa-pencil');
+    activateEditMode();
     click('.btn-add-widget');
 
     waitForElement('.modal-dialog .ember-text-field').then(function(){
