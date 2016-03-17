@@ -41,11 +41,6 @@ app.use('/rest/object/ticket/cservice.ticket', function(req, res){
   res.end(fs.readFileSync('mocks/defaults/rest/object/ticket/cservice.ticket').toString());
 });
 
-app.use('/rest/object/enabledmodules', function(req, res){
-  res.setHeader('Content-Type', 'application/json');
-  res.end(fs.readFileSync('mocks/defaults/rest/object/enabledmodules').toString());
-});
-
 app.use('/rest/object/authconfiguration/cservice.authconfiguration', function(req, res){
   res.setHeader('Content-Type', 'application/json');
   res.end(fs.readFileSync('mocks/defaults/rest/object/authconfiguration/cservice.authconfiguration').toString());
