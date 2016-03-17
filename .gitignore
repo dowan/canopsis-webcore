@@ -1,5 +1,6 @@
 build
 
+src/canopsis/enabled-bricks.json
 #####################
 # Python files
 #####################
