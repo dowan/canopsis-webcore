@@ -68,9 +68,9 @@ define(['ember-lib', 'ember-data-lib'], function () {
             return language;
         },
         getEnabledModules: function (callback) {
-            $.get('/rest/object/enabledmodules', function (data) {
-                if (data.success === true && data.total === 1) {
-                    callback(data.data[0].enabled);
+            $.get('enabled-bricks.json', function (data) {
+                if (data) {
+                    callback(data);
                 } else {
                     console.error('Could not load module information.');
                 }
