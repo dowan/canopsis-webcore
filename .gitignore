@@ -20,6 +20,14 @@ src/canopsis/brick-timechart/
 src/canopsis/brick-rrule-editor/
 src/canopsis/brick-timechart/
 src/canopsis/brick-querybuilder/
+src/canopsis/brick-piechart/
+src/canopsis/brick-topology/
+src/canopsis/brick-legacy/
+src/canopsis/brick-circularindicator/
+src/canopsis/brick-tileprogressbar
+src/canopsis/brick-forecast/
+src/canopsis/brick-map/
+src/canopsis/brick-view-variables/
 
 #####################
 # Node 
