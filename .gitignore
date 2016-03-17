@@ -1,6 +1,5 @@
 build
 
-src/canopsis/enabled-bricks.json
 #####################
 # Python files
 #####################
@@ -15,11 +14,12 @@ pyperfstore2/*.egg*
 #####################
 *~
 
-src/canopsis/brick-calendar/
-src/canopsis/brick-timechart/
-src/canopsis/brick-rrule-editor/
-src/canopsis/brick-timechart/
-src/canopsis/brick-querybuilder/
+#####################
+# External bricks
+#####################
+
+src/canopsis/enabled-bricks.json
+src/canopsis/brick-*
 
 #####################
 # Node 
