@@ -1,5 +1,6 @@
 build
 
+src/canopsis/enabled-bricks.json
 #####################
 # Python files
 #####################
@@ -19,3 +20,9 @@ src/canopsis/brick-timechart/
 src/canopsis/brick-rrule-editor/
 src/canopsis/brick-timechart/
 src/canopsis/brick-querybuilder/
+
+#####################
+# Node 
+#####################
+node_modules
+/bower.json
