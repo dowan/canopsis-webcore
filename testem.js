@@ -12,6 +12,9 @@ module.exports = {
     "/context": {
       "target": "http://localhost:8082"
     },
+     "/entitylink": {
+      "target": "http://localhost:8082"
+    },
     "/keepalive": {
       "target": "http://localhost:8082"
     },
