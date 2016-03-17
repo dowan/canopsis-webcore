@@ -18,5 +18,6 @@
  */
 
  define([
-    'canopsis/canopsis-rights/tests/account'
+    'canopsis/canopsis-rights/tests/account',
+    'canopsis/canopsis-rights/tests/role'
 ], function () {});
