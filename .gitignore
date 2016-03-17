@@ -25,3 +25,4 @@ src/canopsis/brick-querybuilder/
 # Node 
 #####################
 node_modules
+/bower.json
