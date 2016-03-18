@@ -32,6 +32,7 @@
     'canopsis/canopsis-ui/src/forms/taskform/controller',
     'canopsis/canopsis-ui/src/reopens/routes/application',
     'canopsis/canopsis-ui/src/reopens/views/application',
+    'link!canopsis/canopsis-ui/src/style.css',
     'ehbs!application',
     'canopsis/canopsis-ui/requirejs-modules/externals.conf'
 ], function () {});

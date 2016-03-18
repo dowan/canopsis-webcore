@@ -84,7 +84,13 @@ Ember.Application.initializer({
             didInsertElement : function() {
                 console.log("inserted view", this);
                 this.registerHooks();
+
+                $('#loading').remove();
+                $('#loadingInfo').remove();
+                $('#moduleList').remove();
+
                 return this._super.apply(this, arguments);
+
             },
 
             /**
