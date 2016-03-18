@@ -118,15 +118,8 @@ Ember.Application.initializer({
                 var route = this;
 
                 var store = DS.Store.create({ container: get(this, "container") });
-                var footerPromise = store.find('userview', 'view.app_footer');
-                var headerPromise = store.find('userview', 'view.app_header');
                 var frontendConfigPromise = store.find('frontend', 'cservice.frontend');
-                var ticketPromise = store.find('ticket', 'cservice.ticket');
                 var appController = route.controllerFor('application');
-
-                ticketPromise.then(function(queryResults) {
-                    appController.ticketConfig = queryResults;
-                });
 
                 frontendConfigPromise.then(function(queryResults) {
                     console.log('frontend config found');
@@ -142,27 +135,16 @@ Ember.Application.initializer({
 
                         bindKey(currentKeybinding.label, currentKeybinding.value);
                     }
-
                 });
-
-                headerPromise.then(function(queryResults) {
-                    appController.headerUserview = queryResults;
-                });
-
-                footerPromise.then(function(queryResults) {
-                    appController.footerUserview = queryResults;
-                });
-
 
                 var superPromise = this._super(transition);
 
                 set(this, 'promiseArray', [
                     superPromise,
-                    footerPromise,
-                    headerPromise,
                     frontendConfigPromise,
-                    ticketPromise,
                 ]);
+
+                this.buildBeforeModelPromises();
 
                 set(this, 'store', store);
 
@@ -186,6 +168,10 @@ Ember.Application.initializer({
                 get(this, 'promiseArray').pushObject(authpromise);
 
                 return Ember.RSVP.Promise.all(get(this, 'promiseArray'));
+            },
+
+            buildBeforeModelPromises: function() {
+                // return this._super();
             },
 
             /**

@@ -30,6 +30,7 @@
     'ehbs!jobform',
     'canopsis/canopsis-ui/src/forms/scheduleform/controller',
     'canopsis/canopsis-ui/src/forms/taskform/controller',
+    'canopsis/canopsis-ui/src/reopens/routes/application',
     'canopsis/canopsis-ui/src/reopens/views/application',
     'ehbs!application',
     'canopsis/canopsis-ui/requirejs-modules/externals.conf'
