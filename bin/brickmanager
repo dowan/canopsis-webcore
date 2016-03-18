@@ -110,7 +110,7 @@ function disableBrick(brickName) {
 }
 
 function installBrick(brickUrl) {
-  execSync('bower install --save ' + brickUrl);
+  execSync('bower install --production --save ' + brickUrl);
 }
 
 function uninstallBrick(brickName) {
