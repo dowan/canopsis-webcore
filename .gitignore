@@ -1,28 +1,21 @@
-build
-
-#####################
-# Python files
-#####################
-*.egg
-*.egg-info
-*.pyc
-pyperfstore/*.egg*
-pyperfstore2/*.egg*
-
-#####################
-# Temp files
-#####################
-*~
-
-#####################
-# External bricks
-#####################
+#######################
+# Configuration files
+#######################
 
 src/canopsis/enabled-bricks.json
+src/canopsis/test-settings.json
+
+#######################
+# External bricks
+#######################
+
 src/canopsis/brick-*
+doc/api/bricks-documentation/brick-*
+doc/api/config.js
 
 #####################
 # Node 
 #####################
+
 node_modules
 /bower.json
