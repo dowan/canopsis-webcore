@@ -21,6 +21,12 @@ app.use('/rest/object/frontend/cservice.frontend', function(req, res){
   res.end(fs.readFileSync('mocks/defaults/rest/object/frontend/cservice.frontend').toString());
 });
 
+app.use('/rest/object/view/view.404', function(req, res){
+  res.setHeader('Content-Type', 'application/json');
+  res.end(fs.readFileSync('mocks/defaults/rest/object/view/view.404').toString());
+});
+
+
 app.use('/rest/object/view/view.app_footer', function(req, res){
   res.setHeader('Content-Type', 'application/json');
   res.end(fs.readFileSync('mocks/defaults/rest/object/view/view.app_footer').toString());
@@ -35,6 +41,12 @@ app.use('/rest/object/view/view.event', function(req, res){
   res.setHeader('Content-Type', 'application/json');
   res.end(fs.readFileSync('mocks/defaults/rest/object/view/view.event').toString());
 });
+
+app.use('/rest/object/view/view.todos', function(req, res){
+  res.setHeader('Content-Type', 'application/json');
+  res.end(fs.readFileSync('mocks/defaults/rest/object/view/view.todos').toString());
+});
+
 
 app.use('/rest/object/ticket/cservice.ticket', function(req, res){
   res.setHeader('Content-Type', 'application/json');
