@@ -18,6 +18,5 @@
  */
 
  define([
-    'canopsis/uibase/tests/list',
-    'canopsis/uibase/tests/text'
+    'canopsis/uibase/tests/list'
 ], function () {});

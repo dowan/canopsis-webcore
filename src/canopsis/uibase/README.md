@@ -38,7 +38,7 @@ The last build was not a full build. Please use the "full-compile" npm script to
 
 ### Lint
 
-Tested on commit : bd43b0f.
+Tested on commit : 9c2c40f.
 
 | Target | Status | Log |
 | ------ | ------ | --- |
