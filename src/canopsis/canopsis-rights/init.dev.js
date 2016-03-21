@@ -55,6 +55,7 @@
     'canopsis/canopsis-rights/src/reopens/mixins/documentation',
     'canopsis/canopsis-rights/src/reopens/mixins/showviewbutton',
     'canopsis/canopsis-rights/src/reopens/routes/application',
+    'canopsis/canopsis-rights/src/reopens/routes/authenticated',
     'canopsis/canopsis-rights/src/reopens/routes/userview',
     'canopsis/canopsis-rights/src/reopens/widgets/uimaintabcollection',
     'ehbs!actionbutton-viewrights',
