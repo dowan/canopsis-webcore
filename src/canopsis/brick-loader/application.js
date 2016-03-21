@@ -156,5 +156,10 @@ define([], function() {
         window.startCanopsisTests(Application);
     }
 
+    if(Ember.TEMPLATES.application === undefined) {
+        var tpl = Ember.Handlebars.compile('{{outlet "recordinfopopup"}}{{outlet "formwrapper"}}{{outlet}}');
+        Ember.TEMPLATES['application'] = tpl;
+    }
+
     return Application;
 });
