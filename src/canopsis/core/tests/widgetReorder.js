@@ -1,4 +1,11 @@
-module('core');
+module('core', {
+  beforeEach: function() {
+    $('.modal-backdrop').remove();
+  },
+  afterEach: function() {
+    $('.modal-backdrop').remove();
+  }
+});
 
 test('Creating two widgets and reorder them', function() {
     visit('/userview/view.event');

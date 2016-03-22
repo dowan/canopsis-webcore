@@ -1,4 +1,11 @@
-module('canopsis-rights');
+module('canopsis-rights', {
+  beforeEach: function() {
+    $('.modal-backdrop').remove();
+  },
+  afterEach: function() {
+    $('.modal-backdrop').remove();
+  }
+});
 
 test('Test role creation', function() {
     expect(2);

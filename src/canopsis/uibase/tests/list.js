@@ -1,4 +1,11 @@
-module('uibase');
+module('uibase', {
+  beforeEach: function() {
+    $('.modal-backdrop').remove();
+  },
+  afterEach: function() {
+    $('.modal-backdrop').remove();
+  }
+});
 
 test('Simple list creation', function() {
     expect(1);

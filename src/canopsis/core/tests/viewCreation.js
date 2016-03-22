@@ -1,4 +1,11 @@
-module('core');
+module('core', {
+  beforeEach: function() {
+    $('.modal-backdrop').remove();
+  },
+  afterEach: function() {
+    $('.modal-backdrop').remove();
+  }
+});
 
 test('Creating a view with an empty text widget', function() {
     visit('/userview/view.event');
