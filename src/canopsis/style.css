@@ -243,25 +243,6 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
     display: block;
 }
 
-.canopsis-toolbar {
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-.canopsis-icon {
-    display: inline-block;
-    margin: auto;
-    width: 48px;
-    height: 48px;
-}
-
-.canopsis-divicon {
-    display: block;
-    margin: auto;
-    width: 48px;
-    height: 48px;
-}
-
 .pointer {
     cursor: pointer;
 }
@@ -287,11 +268,6 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
     width:50%;
     left:25%;
     margin-top:30px;
-}
-
-.consolePanel{
-    background-color:#eee;
-    position:absolute;
 }
 
 .cell
@@ -658,26 +634,6 @@ i.abstractType > i.widget {
     border: 1px solid #57962F;
 }
 
-.placeddiv, .debugmenu {
-    z-index: 10000;
-}
-
-.debugmenu {
-    position:fixed;
-    left:0;
-    width: 100%;
-    height:300px;
-    border-bottom:4px solid green;
-    display:none;
-    background: white;
-}
-
-.webconsole {
-    overflow: auto;
-    height:258px;
-    background: #292429;
-}
-
 .time-tooltip {
     position: absolute;
     display: none;
@@ -845,32 +801,9 @@ table.dataTableConnector {
     }
 }
 
-
 .widget.list th {
     padding: 4px;
 }
-
-.circliful {
-    position: relative;
-}
-
-.circle-text, .circle-info, .circle-text-half, .circle-info-half {
-    width: 100%;
-    position: absolute;
-    text-align: center;
-    display: inline-block;
-}
-
-.circle-info, .circle-info-half {
-    color: #999;
-}
-
-.circliful .fa {
-    margin: -10px 3px 0 3px;
-    position: relative;
-    bottom: 4px;
-}
-
 
 .richtexteditor .editor {
     overflow: auto;
