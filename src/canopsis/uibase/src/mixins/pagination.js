@@ -86,13 +86,25 @@ Ember.Application.initializer({
 
             actions: {
                 prevPage: function() {
-                    if (get(this, 'currentPage') > 1) {
-                        set(this, 'currentPage', get(this, 'currentPage') - 1);
+                    var currentPage = get(this, 'currentPage');
+
+                    if(typeof currentPage === 'string') {
+                        currentPage = parseInt(currentPage, 10);
+                    }
+
+                    if (currentPage > 1) {
+                        set(this, 'currentPage', currentPage - 1);
                     }
                 },
                 nextPage: function() {
-                    if (get(this, 'currentPage') < get(this, 'totalPages')) {
-                        set(this, 'currentPage', get(this, 'currentPage') + 1);
+                    var currentPage = get(this, 'currentPage');
+
+                    if(typeof currentPage === 'string') {
+                        currentPage = parseInt(currentPage, 10);
+                    }
+
+                    if (currentPage < get(this, 'totalPages')) {
+                        set(this, 'currentPage', currentPage + 1);
                     }
                 },
                 firstPage: function() {
