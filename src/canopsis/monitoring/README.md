@@ -32,7 +32,7 @@ See [Howto](https://git.canopsis.net/canopsis-ui-bricks/monitoring/blob/master/d
 
 ## Continuous Integration
 
-Tested on commit : bcca831.
+Tested on commit : 1ce0a98.
 
 | Target | Status | Log |
 | ------ | ------ | --- |
@@ -58,5 +58,5 @@ Tested on commit : bcca831.
 
 ## Additional info
 
-Minified version : 26 files (size: 192K)
-Development version : 47 files (size: 352K)
+Minified version : 26 files (size: 196K)
+Development version : 48 files (size: 356K)

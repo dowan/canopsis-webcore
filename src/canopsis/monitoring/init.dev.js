@@ -91,6 +91,7 @@
     'ehbs!renderer-stateConnector',
     'ehbs!renderer-status',
     'canopsis/monitoring/src/reopens/routes/application',
+    'link!canopsis/monitoring/src/style.css',
     'ehbs!actionbutton-editurlfield',
     'canopsis/monitoring/src/widgets/weather/controller',
     'ehbs!weather'
