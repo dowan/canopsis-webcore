@@ -8,6 +8,8 @@ module('core', {
 });
 
 test('Creating two widgets and reorder them', function() {
+    $('.modal-backdrop').remove();
+
     visit('/userview/view.event');
 
     expect(4);
