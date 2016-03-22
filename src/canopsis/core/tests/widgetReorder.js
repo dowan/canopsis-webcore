@@ -18,11 +18,9 @@ test('Creating two widgets and reorder them', function() {
 
     click('.btn-add-widget');
 
-    console.error('1');
 
     waitForElement('.form .ember-text-field').then(function(){
         fillIn('.form .ember-text-field', 'text');
-        console.error('2');
 
         click('.form .panel-default:first a');
         click('.form .list-group-item a');
@@ -31,7 +29,6 @@ test('Creating two widgets and reorder them', function() {
 
         waitForElementRemoval('.modal-backdrop').then(function() {
             click('.btn-add-widget');
-            console.error('3');
 
             waitForElement('.form .ember-text-field').then(function(){
                 fillIn('.form .ember-text-field', 'text');
@@ -39,18 +36,15 @@ test('Creating two widgets and reorder them', function() {
                 click('.form .list-group-item a');
                 fillIn('input[name=title]', 'widget2');
                 click('.form .btn-submit');
-                console.error('4');
 
                 waitForElementRemoval('.modal-backdrop').then(function() {
                     equal(find('.box-title').text(), "widget1widget2", 'widget1 then widget2');
-                    console.error('5');
 
                     click('.btn-move-down:first');
                     equal(find('.box-title').text(), "widget2widget1", 'widget2 then widget1');
                     click('.btn-move-up:last');
                     waitMilliseconds(500).then(function() {
                         equal(find('.box-title').text(), "widget1widget2", 'widget1 then widget2');
-                        console.error('6');
 
                         click('.btn-move-up:first');
                         click('.btn-move-down:last');
