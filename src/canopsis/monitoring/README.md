@@ -32,7 +32,7 @@ See [Howto](https://git.canopsis.net/canopsis-ui-bricks/monitoring/blob/master/d
 
 ## Continuous Integration
 
-Tested on commit : 1ce0a98.
+Tested on commit : 327b939.
 
 | Target | Status | Log |
 | ------ | ------ | --- |

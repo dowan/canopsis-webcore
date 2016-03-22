@@ -173,19 +173,9 @@ html {
     margin-left: 0 !important;
 }
 
-.canopsisDraggable:hover {
-    box-shadow: 0px 0px 10px #888888;
-    cursor:pointer;
-}
-
 .emphasis{
     font-weight:bold !important;
     text-decoration: underline !important;
-}
-
-
-.weatherminsize {
-    min-height: 100px;
 }
 
 .noyscroll{
@@ -447,10 +437,6 @@ table.sortable th {
     padding: 7px !important;
 }
 
-.canopsis-toolbar {
-    margin:0 !important;
-}
-
 .table>thead:first-child>tr:first-child>th {
     padding-left: 3px;
     padding-right: 3px;
@@ -509,27 +495,6 @@ table.dataTable {
     font-size:90%;
 }
 
-.table-striped > tbody > tr > td.overflowed {
-    background: linear-gradient(to left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
-    background-image: url('/static/canopsis/media/images/ellipsis.png');
-    background-position: bottom right;
-    background-repeat: no-repeat;
-    overflow: hidden;
-}
-.table-striped > tbody > tr:nth-child(odd) > td.overflowed {
-    background: linear-gradient(to left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) #f3f4f5;
-    background-image: url('/static/canopsis/media/images/ellipsis.png');
-    background-position: bottom right;
-    background-repeat: no-repeat;
-}
-
-table.table tr:hover > td.overflowed {
-    background: linear-gradient(to left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) #E2E2E2;
-    background-image: url('/static/canopsis/media/images/ellipsis.png');
-    background-position: bottom right;
-    background-repeat: no-repeat;
-}
-
 td >.renderer {
     overflow: hidden;
     display: inline-block;
@@ -567,71 +532,6 @@ table.dataTable tbody th, table.dataTable tbody td {
     text-align: left;
     cursor: auto;
     font-weight: initial;
-}
-
-.logger {
-    overflow-x: hidden;
-    overflow-y: scroll;
-}
-
-tr.logline {
-    font-family: Courier New, Courier, Prestige, monospace;
-    background-color: #292429;
-    color: white;
-    font-size: 9pt;
-    border-bottom: 1px solid #0F0E0F;
-    vertical-align: top;
-}
-
-.logauthor {
-    background-color: #0F0E0F;
-    color: #524F52;
-    text-align: right;
-    border: 0;
-    padding-right: 4px;
-}
-
-.logcontent {
-    border: 0;
-    padding-left: 4px;
-}
-
-.logger table {
-    width: 100%;
-    background: #524F52;
-}
-
-.logger tr {
-    height:16px;
-}
-
-td.logline {
-    white-space: nowrap;
-}
-
-tr.logline i {
-    margin-left: 4px;
-    margin-right: 4px;
-}
-
-tr.logline i.block {
-    color: white;
-    font-weight: bold;
-}
-
-tr.logline i.block.object {
-    background-color: #356687;
-    border: 1px solid #0D71B6;
-}
-
-tr.logline i.block.widget {
-    background-color: #64874D;
-    border: 1px solid #57962F;
-}
-
-i.abstractType > i.widget {
-    background-color: #64874D;
-    border: 1px solid #57962F;
 }
 
 .time-tooltip {
@@ -673,10 +573,6 @@ table.dataTableConnector {
 
 .grouped-cell-label {
     background-color: #CCCCCC;
-}
-
-.left-side {
-    z-index: 1039;
 }
 
 /*.loadtooltip {

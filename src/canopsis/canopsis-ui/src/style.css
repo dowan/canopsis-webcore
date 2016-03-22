@@ -20,3 +20,16 @@ body {
     width: 48px;
     height: 48px;
 }
+
+.canopsis-toolbar {
+    margin:0 !important;
+}
+
+.canopsisDraggable:hover {
+    box-shadow: 0px 0px 10px #888888;
+    cursor:pointer;
+}
+
+.left-side {
+    z-index: 1039;
+}

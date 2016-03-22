@@ -88,3 +88,7 @@
     background-color :#932ab6 !important;
     color: #eee;
 }
+
+.weatherminsize {
+    min-height: 100px;
+}
