@@ -111,12 +111,12 @@ function disableBrick(brickName) {
 }
 
 function installBrick(brickUrl) {
-  execSync('bower install --save ' + brickUrl);
+  execSync('bower install --config.interactive=false --save ' + brickUrl);
 }
 
 function uninstallBrick(brickName) {
   disableBrick(brickName);
-  execSync('bower uninstall --save ' + brickName);
+  execSync('bower uninstall --config.interactive=false --save ' + brickName);
 }
 
 function list() {
