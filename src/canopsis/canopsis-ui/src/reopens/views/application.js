@@ -31,9 +31,6 @@ Ember.Application.initializer({
             didInsertElement: function() {
                 console.log('main template rendered, trigger $ documentready');
 
-                $('#loading').remove();
-                $('#loadingInfo').remove();
-                $('#moduleList').remove();
                 $("[data-toggle='offcanvas']").click(function(e) {
                     e.preventDefault();
 

@@ -31,12 +31,20 @@
  */
 Ember.Test.registerAsyncHelper('waitForElement', function(app, element) {
     return Ember.Test.promise(function(resolve) {
+        var count = 0;
         Ember.Test.adapter.asyncStart();
         var interval = setInterval(function(){
             if($(element).length>0){
                 clearInterval(interval);
                 Ember.Test.adapter.asyncEnd();
                 Ember.run(null, resolve, true);
+            } else {
+                count++;
+                if(count >= 1000) {
+                    clearInterval(interval);
+                    Ember.Test.adapter.asyncEnd();
+                    console.error('element', element, 'not found');
+                }
             }
         }, 100);
     });

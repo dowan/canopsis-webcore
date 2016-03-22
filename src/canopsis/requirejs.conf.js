@@ -121,117 +121,124 @@ require(['text!canopsis/brick-loader/bower.json'], function(loaderManifest) {
             $('#moduleList').append(title + modules.join('<br />'));
         }
     };
+    require(['ember-lib'], function() {
 
-    require(['canopsis/canopsisConfiguration',
-            'canopsis/brick-loader/i18n',
-            'canopsis/brick-loader/loader',
-            'ember-data-lib',
-            'schemasregistry'], function(canopsisConfiguration, i18n) {
+        if(window.environment === 'test') {
+            Ember.deprecate = function() {};
+            Ember.warn = function() {};
+        }
 
-        require([
-            'text!canopsis/brick-loader/i18n/' + i18n.lang + '.json'
-        ], function (langFile) {
-            var langFile = JSON.parse(langFile);
-            var langKeys = Em.keys(langFile);
+        require(['canopsis/canopsisConfiguration',
+                'canopsis/brick-loader/i18n',
+                'canopsis/brick-loader/loader',
+                'ember-data-lib',
+                'schemasregistry'], function(canopsisConfiguration, i18n) {
 
-            i18n.translations[i18n.lang] = {};
-            for (var i = 0; i < langKeys.length; i++) {
-                i18n.translations[i18n.lang][langKeys[i]] = langFile[langKeys[i]];
-            }
 
-            window.canopsisConfiguration = canopsisConfiguration;
+            require([
+                'text!canopsis/brick-loader/i18n/' + i18n.lang + '.json'
+            ], function (langFile) {
+                var langFile = JSON.parse(langFile);
+                var langKeys = Em.keys(langFile);
 
-            var get = Ember.get;
-
-            canopsisConfiguration.EmberIsLoaded = true;
-
-            canopsisConfiguration.getEnabledModules(function (enabledPlugins) {
-
-                if (enabledPlugins.length === 0) {
-                    alert('No module loaded in Canopsis UI. Cannot go beyond');
+                i18n.translations[i18n.lang] = {};
+                for (var i = 0; i < langKeys.length; i++) {
+                    i18n.translations[i18n.lang][langKeys[i]] = langFile[langKeys[i]];
                 }
 
-                setLoadingInfo('Fetching frontend bricks', 'fa-cubes');
-                setModuleInfo(enabledPlugins, canopsisConfiguration.SHOWMODULES);
-                var language = i18n.lang;
-                console.log('i18n language:', language.toUpperCase(), 'translations:', i18n.translations);
+                window.canopsisConfiguration = canopsisConfiguration;
 
-                if(!language) {
-                    language = 'en';
-                }
+                var get = Ember.get;
 
-                var loc = Ember.String.loc;
-                Ember.String.loc = function (fieldToTranslate) {
-                    i18n._(fieldToTranslate, true);
-                    return loc(fieldToTranslate);
-                };
+                canopsisConfiguration.EmberIsLoaded = true;
 
-                Ember.STRINGS = i18n.translations[language] || {};
+                canopsisConfiguration.getEnabledModules(function (enabledPlugins) {
 
-                var deps = [];
-
-                for (var i = 0; i < enabledPlugins.length; i++) {
-                    var currentPlugin = enabledPlugins[i];
-
-                    if(currentPlugin !== 'core') {
-                        deps.push('text!canopsis/'+ currentPlugin +'/bower.json');
+                    if (enabledPlugins.length === 0) {
+                        alert('No module loaded in Canopsis UI. Cannot go beyond');
                     }
-                }
-                deps.push('text!canopsis/core/bower.json');
 
-                if(window.environment) {
-                    deps.push('canopsis/environment.' + window.environment);
-                } else {
-                    deps.push('canopsis/environment.production');
-                }
+                    setLoadingInfo('Fetching frontend bricks', 'fa-cubes');
+                    setModuleInfo(enabledPlugins, canopsisConfiguration.SHOWMODULES);
+                    var language = i18n.lang;
 
-                deps.push('canopsis/brick-loader/extend');
-                deps.push('link');
+                    if(!language) {
+                        language = 'en';
+                    }
 
-                require(deps, function() {
-                    var initFiles = [];
-                    var schemasInitFiles = [];
-                    window.bricks = {};
+                    var loc = Ember.String.loc;
+                    Ember.String.loc = function (fieldToTranslate) {
+                        i18n._(fieldToTranslate, true);
+                        return loc(fieldToTranslate);
+                    };
 
-                    for (var i = 0, l = enabledPlugins.length; i < l; i++) {
+                    Ember.STRINGS = i18n.translations[language] || {};
+
+                    var deps = [];
+
+                    for (var i = 0; i < enabledPlugins.length; i++) {
                         var currentPlugin = enabledPlugins[i];
-                        var brickManifest = JSON.parse(arguments[i]);
 
-                        window.bricks[brickManifest.name] = brickManifest;
+                        if(currentPlugin !== 'core') {
+                            deps.push('text!canopsis/'+ currentPlugin +'/bower.json');
+                        }
+                    }
+                    deps.push('text!canopsis/core/bower.json');
 
-                        if(window.environment === 'debug') {
-                            brickMainModule = 'canopsis/' + currentPlugin + '/' + 'init.dev.js';
-                            brickManifest.envMode = 'development';
-                        } else {
-                            brickMainModule = 'canopsis/' + currentPlugin + '/' + 'init.js';
+                    if(window.environment) {
+                        deps.push('canopsis/environment.' + window.environment);
+                    } else {
+                        deps.push('canopsis/environment.production');
+                    }
+
+                    deps.push('canopsis/brick-loader/extend');
+                    deps.push('link');
+
+                    require(deps, function() {
+                        var initFiles = [];
+                        var schemasInitFiles = [];
+                        window.bricks = {};
+
+                        for (var i = 0, l = enabledPlugins.length; i < l; i++) {
+                            var currentPlugin = enabledPlugins[i];
+                            var brickManifest = JSON.parse(arguments[i]);
+
+                            window.bricks[brickManifest.name] = brickManifest;
+
+                            if(window.environment === 'debug') {
+                                brickMainModule = 'canopsis/' + currentPlugin + '/' + 'init.dev.js';
+                                brickManifest.envMode = 'development';
+                            } else {
+                                brickMainModule = 'canopsis/' + currentPlugin + '/' + 'init.js';
+                            }
+
+                            schemasInitFiles.push('canopsis/' + currentPlugin + '/' + 'init.schemas');
+                            //remove the .js extension
+                            brickMainModule = brickMainModule.slice(0, -3);
+
+                            initFiles.push(brickMainModule);
                         }
 
-                        schemasInitFiles.push('canopsis/' + currentPlugin + '/' + 'init.schemas');
-                        //remove the .js extension
-                        brickMainModule = brickMainModule.slice(0, -3);
-
-                        initFiles.push(brickMainModule);
-                    }
-
-                    require(schemasInitFiles, function() {
-                        require(['canopsis/brick-loader/schemasloader'], function() {
-                            require(initFiles, function() {
-                                var testDeps = [];
-                                if(window.environment === 'test') {
-                                    for (var i = 0, l = enabledPlugins.length; i < l; i++) {
-                                        var currentPlugin = enabledPlugins[i];
-                                        testDeps.push('canopsis/' + currentPlugin + '/' + 'init.test');
+                        require(schemasInitFiles, function() {
+                            require(['canopsis/brick-loader/schemasloader'], function() {
+                                require(initFiles, function() {
+                                    var testDeps = [];
+                                    if(window.environment === 'test') {
+                                        for (var i = 0, l = enabledPlugins.length; i < l; i++) {
+                                            var currentPlugin = enabledPlugins[i];
+                                            testDeps.push('canopsis/' + currentPlugin + '/' + 'init.test');
+                                        }
                                     }
-                                }
 
-                                require(testDeps, function() {
-                                    //This flag allow to prevent too early application requirement. @see "app/application" module
-                                    window.appShouldNowBeLoaded = true;
+                                    require(testDeps, function() {
+                                        //This flag allow to prevent too early application requirement. @see "app/application" module
+                                        window.appShouldNowBeLoaded = true;
 
-                                    setLoadingInfo('Fetching application starting point', 'fa-plug');
-                                    require(['canopsis/brick-loader/application'], function(Application) {
-                                        setLoadingInfo('Initializing user interface', 'fa-desktop');
+                                        setLoadingInfo('Fetching application starting point', 'fa-plug');
+                                        require(['canopsis/brick-loader/application'], function(Application) {
+                                            setLoadingInfo('Initializing user interface', 'fa-desktop');
 
+                                        });
                                     });
                                 });
                             });

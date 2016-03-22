@@ -173,45 +173,9 @@ html {
     margin-left: 0 !important;
 }
 
-/*used in weather widget at least*/
-.eventLikeGreen {
-    background-color :#00a65a !important;
-    color: #eee;
-}
-
-.eventLikeYellow {
-    background-color : #ffe000 !important;
-    color: #333;
-}
-
-.eventLikeOrange {
-    background-color :#ff9900 !important;
-    color: #333;
-}
-
-.eventLikeRed {
-    background-color :#cf0000 !important;
-    color: #eee;
-}
-
-.eventLikePurple {
-    background-color :#932ab6 !important;
-    color: #eee;
-}
-
-.canopsisDraggable:hover {
-    box-shadow: 0px 0px 10px #888888;
-    cursor:pointer;
-}
-
 .emphasis{
     font-weight:bold !important;
     text-decoration: underline !important;
-}
-
-
-.weatherminsize {
-    min-height: 100px;
 }
 
 .noyscroll{
@@ -269,49 +233,6 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
     display: block;
 }
 
-.canopsis-toolbar {
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-.canopsis-icon {
-    display: inline-block;
-    margin: auto;
-    width: 48px;
-    height: 48px;
-}
-
-.canopsis-divicon {
-    display: block;
-    margin: auto;
-    width: 48px;
-    height: 48px;
-}
-
-.canopsis-state-ok {
-    background-image: url('/static/canopsis/media/images/states/0.png') !important;
-}
-
-.canopsis-state-warning {
-    background-image: url('/static/canopsis/media/images/states/1.png') !important;
-}
-
-.canopsis-state-critical {
-    background-image: url('/static/canopsis/media/images/states/2.png') !important;
-}
-
-.canopsis-state-unknown {
-    background-image: url('/static/canopsis/media/images/states/3.png') !important;
-}
-
-.canopsis-enabled {
-    background-image: url('/static/canopsis/media/images/bullet_green.png') !important;
-}
-
-.canopsis-disabled {
-    background-image: url('/static/canopsis/media/images/bullet_red.png') !important;
-}
-
 .pointer {
     cursor: pointer;
 }
@@ -337,50 +258,6 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
     width:50%;
     left:25%;
     margin-top:30px;
-}
-
-.consolePanel{
-    background-color:#eee;
-    position:absolute;
-}
-
-.OK{
-    background-color: #59d43e;
-    margin:1px;
-    padding:3px;
-    text-align: center;
-    border : 2px solid white;
-    font :  12px serif ;
-    color:white;
-    width:20%;
-    height:50%;
-    float:left;
-}
-
-.Warning{
-    background-color: #FF9900 ;
-    margin:1px;
-    padding:3px 3px 3px 3px;
-    text-align: center;
-    border : 2px solid white;
-    font :  12px serif ;
-    color:white;
-    width:20%;
-    height:50%;
-    float:left;
-}
-
-.Alert{
-    background-color: #FF0000;
-    margin:1px;
-    padding:3px;
-    text-align: center;
-    border : 2px solid white;
-    font :  12px serif ;
-    color:white;
-    width:20%;
-    height:50%;
-    float:left;
 }
 
 .cell
@@ -448,7 +325,6 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
 .ember-select {
     width:100%;
 }
-
 
 .dataTables_filter {
     margin-top:5px;
@@ -561,10 +437,6 @@ table.sortable th {
     padding: 7px !important;
 }
 
-.canopsis-toolbar {
-    margin:0 !important;
-}
-
 .table>thead:first-child>tr:first-child>th {
     padding-left: 3px;
     padding-right: 3px;
@@ -623,27 +495,6 @@ table.dataTable {
     font-size:90%;
 }
 
-.table-striped > tbody > tr > td.overflowed {
-    background: linear-gradient(to left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
-    background-image: url('/static/canopsis/media/images/ellipsis.png');
-    background-position: bottom right;
-    background-repeat: no-repeat;
-    overflow: hidden;
-}
-.table-striped > tbody > tr:nth-child(odd) > td.overflowed {
-    background: linear-gradient(to left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) #f3f4f5;
-    background-image: url('/static/canopsis/media/images/ellipsis.png');
-    background-position: bottom right;
-    background-repeat: no-repeat;
-}
-
-table.table tr:hover > td.overflowed {
-    background: linear-gradient(to left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) #E2E2E2;
-    background-image: url('/static/canopsis/media/images/ellipsis.png');
-    background-position: bottom right;
-    background-repeat: no-repeat;
-}
-
 td >.renderer {
     overflow: hidden;
     display: inline-block;
@@ -677,97 +528,10 @@ table.dataTable tbody th, table.dataTable tbody td {
     width:400px;
 }
 
-
-
 .subitems {
     text-align: left;
     cursor: auto;
     font-weight: initial;
-}
-
-.logger {
-    overflow-x: hidden;
-    overflow-y: scroll;
-}
-
-tr.logline {
-    font-family: Courier New, Courier, Prestige, monospace;
-    background-color: #292429;
-    color: white;
-    font-size: 9pt;
-    border-bottom: 1px solid #0F0E0F;
-    vertical-align: top;
-}
-
-.logauthor {
-    background-color: #0F0E0F;
-    color: #524F52;
-    text-align: right;
-    border: 0;
-    padding-right: 4px;
-}
-
-.logcontent {
-    border: 0;
-    padding-left: 4px;
-}
-
-.logger table {
-    width: 100%;
-    background: #524F52;
-}
-
-.logger tr {
-    height:16px;
-}
-
-td.logline {
-    white-space: nowrap;
-}
-
-tr.logline i {
-    margin-left: 4px;
-    margin-right: 4px;
-}
-
-tr.logline i.block {
-    color: white;
-    font-weight: bold;
-}
-
-tr.logline i.block.object {
-    background-color: #356687;
-    border: 1px solid #0D71B6;
-}
-
-tr.logline i.block.widget {
-    background-color: #64874D;
-    border: 1px solid #57962F;
-}
-
-i.abstractType > i.widget {
-    background-color: #64874D;
-    border: 1px solid #57962F;
-}
-
-.placeddiv, .debugmenu {
-    z-index: 10000;
-}
-
-.debugmenu {
-    position:fixed;
-    left:0;
-    width: 100%;
-    height:300px;
-    border-bottom:4px solid green;
-    display:none;
-    background: white;
-}
-
-.webconsole {
-    overflow: auto;
-    height:258px;
-    background: #292429;
 }
 
 .time-tooltip {
@@ -809,10 +573,6 @@ table.dataTableConnector {
 
 .grouped-cell-label {
     background-color: #CCCCCC;
-}
-
-.left-side {
-    z-index: 1039;
 }
 
 /*.loadtooltip {
@@ -937,32 +697,9 @@ table.dataTableConnector {
     }
 }
 
-
 .widget.list th {
     padding: 4px;
 }
-
-.circliful {
-    position: relative;
-}
-
-.circle-text, .circle-info, .circle-text-half, .circle-info-half {
-    width: 100%;
-    position: absolute;
-    text-align: center;
-    display: inline-block;
-}
-
-.circle-info, .circle-info-half {
-    color: #999;
-}
-
-.circliful .fa {
-    margin: -10px 3px 0 3px;
-    position: relative;
-    bottom: 4px;
-}
-
 
 .richtexteditor .editor {
     overflow: auto;

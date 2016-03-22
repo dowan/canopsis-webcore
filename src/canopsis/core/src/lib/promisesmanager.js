@@ -41,11 +41,11 @@ Ember.Application.initializer({
 
             handlePromise: function(promise) {
                 var me = this;
-                Ember.run.schedule('sync', this, function() {
+                // Ember.run.schedule('sync', this, function() {
                     me.all.pushObject(promise);
                     me.pending.pushObject(promise);
                     set(me, 'pendingCount', me.pendingCount + 1);
-                });
+                // });
             },
 
             promiseSuccess: function(promise) {
@@ -59,11 +59,11 @@ Ember.Application.initializer({
                 } else {
                     console.error('promise failed', promise, new Error().stack);
                     var me = this;
-                    Ember.run.schedule('sync', this, function() {
+                    // Ember.run.schedule('sync', this, function() {
                         console.error('promise failed', promise);
                         get(me, 'errors').pushObject(promise);
                         set(me, 'errorsCount', me.errorsCount + 1);
-                    });
+                    // });
                 }
             },
 

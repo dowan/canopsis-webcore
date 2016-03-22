@@ -1,4 +1,11 @@
-module('default views');
+module('default views', {
+  beforeEach: function() {
+    $('.modal-backdrop').remove();
+  },
+  afterEach: function() {
+    $('.modal-backdrop').remove();
+  }
+});
 
 test('Test app_header', function() {
 

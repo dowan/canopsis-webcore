@@ -38,9 +38,7 @@ The last build was not a full build. Please use the "full-compile" npm script to
 
 ### Lint
 
-
-Tested on commit : b7f4ff9.
-
+Tested on commit : 38b2aa5.
 
 | Target | Status | Log |
 | ------ | ------ | --- |
@@ -57,7 +55,6 @@ Tested on commit : b7f4ff9.
 | src/editors/editor-elementidselectorwithoptions.hbs | make this doc viewable on the generated doc |
 | src/mixins/responsivelist.js | check if still used |
 | src/mixins/arraysearch.js | these checks should be asserts |
-| src/widgets/list/controller.js | add an error in displayedErrors array, to warn the user that the data cannot be displayed |
 | src/widgets/list/controller.js | check if useless or not |
 | src/components/elementidselectorwithoptions/component.js | put this on a dedicated util |
 | src/components/elementidselectorwithoptions/component.js | manage default values |
@@ -78,6 +75,7 @@ Tested on commit : b7f4ff9.
 | File   | Note   |
 |--------|--------|
 | src/mixins/responsivelist.js | undefined |
+| src/mixins/periodicrefresh.js | periodicrefresh deactivated in testing mode because it throws global failures |
 | src/widgets/uimaintabcollection/controller.js |: the factory "widgetbase" is a hack to make the canopsis rights reopen work. But it make the view "app_header" not working without the canopsis-rights brick |
 | src/components/dateinterval/component.js | destroy the Jquery plugin at willDestroyElement, and check for possible undestroyed event bindings |
 | src/components/linklist/component.js | on "src/templates/actionbutton-info.hbs", the component is used with the "linkInfoPattern" property. This property does not seems relevant anymore. |
@@ -86,5 +84,5 @@ Tested on commit : b7f4ff9.
 
 ## Additional info
 
-Minified version : 184 files (size: 1008K)
-Development version : 268 files (size: 1,6M)
+Minified version : 182 files (size: 1004K)
+Development version : 267 files (size: 1,6M)

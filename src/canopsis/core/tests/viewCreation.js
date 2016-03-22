@@ -1,4 +1,11 @@
-module('core');
+module('core', {
+  beforeEach: function() {
+    $('.modal-backdrop').remove();
+  },
+  afterEach: function() {
+    $('.modal-backdrop').remove();
+  }
+});
 
 test('Creating a view with an empty text widget', function() {
     visit('/userview/view.event');
@@ -11,8 +18,8 @@ test('Creating a view with an empty text widget', function() {
     waitForElement('input[name=crecord_name]').then(function(){
         fillIn('input[name=crecord_name]', 'test');
         click('.modal-dialog .btn-primary');
-
     });
+
     activateEditMode();
     click('.btn-add-widget');
 

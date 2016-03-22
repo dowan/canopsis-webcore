@@ -252,7 +252,7 @@ Here is a test file example :
 
 .. code-block:: javascript
 
-   module('view creation');
+   module('core'); //This must be the brick name
 
    test('Creating a view with an empty text widget', function() {
        visit('/userview/view.event');

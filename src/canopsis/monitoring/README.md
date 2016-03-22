@@ -15,12 +15,6 @@ You need to clone the git repository and copy directory to Canopsis path
     $ git clone https://git.canopsis.net/canopsis-ui-bricks/monitoring.git
     $ cp -r monitoring $CANOPSIS_PATH/var/www/canopsis
 
-Then, you need to import specific schemas
-
-    $ su - canopsis
-    $ cp $CANOPSIS_PATH/var/www/canopsis/monitoring/schemas/* $CANOPSIS_PATH/etc/schema.d
-    $ schema2db
-
 Then, you need to enable the brick
 
     $ su - canopsis
@@ -38,11 +32,11 @@ See [Howto](https://git.canopsis.net/canopsis-ui-bricks/monitoring/blob/master/d
 
 ## Continuous Integration
 
-Tested on commit : [ERROR : The brick is not in a dedicated git repository].
+Tested on commit : 327b939.
 
 | Target | Status | Log |
 | ------ | ------ | --- |
-| Lint   | :negative_squared_cross_mark: ERROR | <br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/monitoring/src/forms/ack/controller.js<br>  34:121  error  Missing semicolon  semi<br><br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/monitoring/src/helpers/criticity.js<br>  37:9  error  Expected indentation of 12 space characters but found 8  indent<br>  38:9  error  Expected indentation of 12 space characters but found 8  indent<br>  39:9  error  Expected indentation of 12 space characters but found 8  indent<br>  40:9  error  Expected indentation of 12 space characters but found 8  indent<br>  48:5  error  Expected indentation of 8 space characters but found 4   indent<br>  49:5  error  Expected indentation of 8 space characters but found 4   indent<br>  50:5  error  Expected indentation of 8 space characters but found 4   indent<br>  51:5  error  Expected indentation of 8 space characters but found 4   indent<br>  52:5  error  Expected indentation of 8 space characters but found 4   indent<br><br>✖ 10 problems (10 errors, 0 warnings)<br><br> |
+| Lint   | :negative_squared_cross_mark: ERROR | <br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/monitoring/src/forms/ack/controller.js<br>  34:121  error  Missing semicolon  semi<br><br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/monitoring/src/helpers/criticity.js<br>  37:9  error  Expected indentation of 12 space characters but found 8  indent<br>  38:9  error  Expected indentation of 12 space characters but found 8  indent<br>  39:9  error  Expected indentation of 12 space characters but found 8  indent<br>  40:9  error  Expected indentation of 12 space characters but found 8  indent<br>  48:5  error  Expected indentation of 8 space characters but found 4   indent<br>  49:5  error  Expected indentation of 8 space characters but found 4   indent<br>  50:5  error  Expected indentation of 8 space characters but found 4   indent<br>  51:5  error  Expected indentation of 8 space characters but found 4   indent<br>  52:5  error  Expected indentation of 8 space characters but found 4   indent<br><br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/monitoring/src/reopens/routes/application.js<br>  27:13  error  "set" is defined but never used  no-unused-vars<br><br>✖ 11 problems (11 errors, 0 warnings)<br><br> |
 
 ## Code Notes
 
@@ -64,5 +58,5 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 
 ## Additional info
 
-Minified version : 24 files (size: 184K)
-Development version : 44 files (size: 332K)
+Minified version : 26 files (size: 196K)
+Development version : 48 files (size: 356K)

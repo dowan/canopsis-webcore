@@ -26,6 +26,8 @@
  define([
     'canopsis/tests/src/testhelpers/activateEditMode',
     'canopsis/tests/src/testhelpers/ajax-stub',
+    'canopsis/tests/src/testhelpers/changeEditorForKey',
+    'canopsis/tests/src/testhelpers/createNewView',
     'canopsis/tests/src/testhelpers/deactivateEditMode',
     'canopsis/tests/src/testhelpers/getMainContainer',
     'canopsis/tests/src/testhelpers/waitForElement',
