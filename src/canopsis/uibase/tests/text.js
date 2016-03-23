@@ -1,7 +1,16 @@
-module('uibase');
+module('uibase', {
+  beforeEach: function() {
+    $('.modal-backdrop').remove();
+  },
+  afterEach: function() {
+    $('.modal-backdrop').remove();
+  }
+});
 
 test('Simple text creation', function() {
     expect(1);
+
+    visit('/userview/view.event');
 
     createNewView('text_test');
 

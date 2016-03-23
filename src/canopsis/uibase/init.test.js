@@ -18,6 +18,8 @@
  */
 
  define([
+    'canopsis/uibase/tests/horizontallayout',
     'canopsis/uibase/tests/list',
-    'canopsis/uibase/tests/text'
+    'canopsis/uibase/tests/text',
+    'canopsis/uibase/tests/verticallayout'
 ], function () {});
