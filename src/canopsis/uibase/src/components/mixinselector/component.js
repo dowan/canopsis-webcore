@@ -51,6 +51,12 @@ Ember.Application.initializer({
 
                 if(content) {
                     for (var i = 0, l = content.length; i < l; i++) {
+                        var mixinSchema = window.schemasRegistry.getByName(content[i].name);
+
+                        if(mixinSchema && mixinSchema.modelDict && mixinSchema.modelDict.metadata && mixinSchema.modelDict.metadata.description) {
+                            content[i].description = mixinSchema.modelDict.metadata.description;
+                        }
+
                         if(typeof content[i] === 'string') {
                             content[i] = { name: content[i] };
                         }

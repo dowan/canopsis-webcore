@@ -95,5 +95,5 @@ Tested on commit : 78dc6dd.
 
 ## Additional info
 
-Minified version : 8 files (size: 252K)
+Minified version : 8 files (size: 256K)
 Development version : 115 files (size: 704K)
