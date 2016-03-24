@@ -38,7 +38,7 @@ The last build was not a full build. Please use the "full-compile" npm script to
 
 ### Lint
 
-Tested on commit : 327b939.
+Tested on commit : 1974a55.
 
 | Target | Status | Log |
 | ------ | ------ | --- |
@@ -84,5 +84,5 @@ Tested on commit : 327b939.
 
 ## Additional info
 
-Minified version : 182 files (size: 1004K)
-Development version : 267 files (size: 1,6M)
+Minified version : 183 files (size: 1008K)
+Development version : 268 files (size: 1,6M)

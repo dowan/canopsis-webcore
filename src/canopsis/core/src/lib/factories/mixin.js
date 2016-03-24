@@ -49,7 +49,7 @@ Ember.Application.initializer({
                 EmberClass: mixin
             });
 
-            mixinsRegistry.all.push(registryEntry);
+            mixinsRegistry.add(registryEntry, name);
 
             console.groupEnd();
             console.tags.remove('factory');

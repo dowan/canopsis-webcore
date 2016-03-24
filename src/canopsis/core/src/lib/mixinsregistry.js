@@ -31,7 +31,18 @@ Ember.Application.initializer({
          * @extends Abstractclassregistry
          * @static
          */
-        var registry = Abstractclassregistry.create({
+        var registry = Abstractclassregistry.extend({
+            add: function(item, name, classes) {
+                var mixinSchema = window.schemasRegistry.getByName(name);
+                if(mixinSchema && mixinSchema.modelDict && mixinSchema.modelDict.metadata && mixinSchema.modelDict.metadata.description) {
+                    item.description = mixinSchema.modelDict.metadata.description;
+                }
+
+                return this._super(item, name, classes);
+            }
+        });
+
+        var mixinsRegistry = registry.create({
             name: 'mixins',
 
             all: [],
@@ -39,6 +50,6 @@ Ember.Application.initializer({
             tableColumns: [{title: 'name', name: 'name'}]
         });
 
-        application.register('registry:mixins', registry);
+        application.register('registry:mixins', mixinsRegistry);
     }
 });
