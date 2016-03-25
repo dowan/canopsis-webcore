@@ -20,7 +20,12 @@
  require.config({
     paths: {
         'application': 'canopsis/canopsis-ui/dist/templates/application',
+        'components/component-rrule': 'canopsis/canopsis-ui/dist/templates/components/component-rrule',
+        'components/component-rruleeditor': 'canopsis/canopsis-ui/dist/templates/components/component-rruleeditor',
+        'editor-rrule': 'canopsis/canopsis-ui/dist/templates/editor-rrule',
+        'editor-rruleeditor': 'canopsis/canopsis-ui/dist/templates/editor-rruleeditor',
         'jobform': 'canopsis/canopsis-ui/dist/templates/jobform',
+        'renderer-rrule': 'canopsis/canopsis-ui/dist/templates/renderer-rrule',
 
     }
 });
@@ -28,7 +33,12 @@
  define([
     'link!canopsis/canopsis-ui/dist/brick.min.css',
     'ehbs!application',
+    'ehbs!components/component-rrule',
+    'ehbs!components/component-rruleeditor',
+    'ehbs!editor-rrule',
+    'ehbs!editor-rruleeditor',
     'ehbs!jobform',
+    'ehbs!renderer-rrule',
     'canopsis/canopsis-ui/requirejs-modules/externals.conf',
     'canopsis/canopsis-ui/dist/brick.min'
 ], function () {});
