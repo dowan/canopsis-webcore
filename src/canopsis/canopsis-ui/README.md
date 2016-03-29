@@ -38,7 +38,7 @@ The last build was not a full build. Please use the "full-compile" npm script to
 
 ### Lint
 
-Tested on commit : 327b939.
+Tested on commit : 1974a55.
 
 | Target | Status | Log |
 | ------ | ------ | --- |
@@ -52,6 +52,7 @@ Tested on commit : 327b939.
 | File   | Note   |
 |--------|--------|
 | src/reopens/views/application.js | uncomment while ready |
+| src/components/rruleeditor/component.js | move this in utils, somewhere ... |
 
 
 ### FIXMES
@@ -60,5 +61,5 @@ Tested on commit : 327b939.
 
 ## Additional info
 
-Minified version : 5 files (size: 48K)
-Development version : 8 files (size: 84K)
+Minified version : 10 files (size: 88K)
+Development version : 15 files (size: 156K)
