@@ -19,17 +19,29 @@
 
  require.config({
     paths: {
+        'components/component-rrule': 'canopsis/canopsis-ui/src/components/rrule/template',
+        'components/component-rruleeditor': 'canopsis/canopsis-ui/src/components/rruleeditor/template',
+        'editor-rrule': 'canopsis/canopsis-ui/src/editors/editor-rrule',
+        'editor-rruleeditor': 'canopsis/canopsis-ui/src/editors/editor-rruleeditor',
         'jobform': 'canopsis/canopsis-ui/src/forms/jobform/jobform',
+        'renderer-rrule': 'canopsis/canopsis-ui/src/renderers/renderer-rrule',
         'application': 'canopsis/canopsis-ui/src/templates/application',
 
     }
 });
 
  define([
+    'canopsis/canopsis-ui/src/components/rrule/component',
+    'ehbs!components/component-rrule',
+    'canopsis/canopsis-ui/src/components/rruleeditor/component',
+    'ehbs!components/component-rruleeditor',
+    'ehbs!editor-rrule',
+    'ehbs!editor-rruleeditor',
     'canopsis/canopsis-ui/src/forms/jobform/controller',
     'ehbs!jobform',
     'canopsis/canopsis-ui/src/forms/scheduleform/controller',
     'canopsis/canopsis-ui/src/forms/taskform/controller',
+    'ehbs!renderer-rrule',
     'canopsis/canopsis-ui/src/reopens/routes/application',
     'canopsis/canopsis-ui/src/reopens/views/application',
     'link!canopsis/canopsis-ui/src/style.css',

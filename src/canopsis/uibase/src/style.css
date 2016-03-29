@@ -57,6 +57,7 @@
     margin: 0% 1.5% 0% 1.5%;
     float: left;
 }
+
 .colorBtn{
     display: inline-block;
     padding: 6px 12px;
@@ -162,7 +163,6 @@ div .customcolor{
     -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
     box-shadow: 0 6px 12px rgba(0,0,0,.175);
 }
-
 
 /*Avoids double scroll bar in main page*/
 #applicationdiv > div{
@@ -393,7 +393,6 @@ table.dataTable>thead>tr>th {
 .modal {
     right: auto !important;
 }
-
 
 .modal-dialog {
     margin-right: 0;
