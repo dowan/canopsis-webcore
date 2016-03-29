@@ -286,6 +286,6 @@ Ember.Application.initializer({
                 console.log('recurrence input loaded', this.$());
             }
         });
-        application.register('component:component-rrule', component);
+        application.register('component:component-rrulebak', component);
     }
 });

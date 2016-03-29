@@ -33,3 +33,7 @@ body {
 .left-side {
     z-index: 1039;
 }
+
+.rrule-form {
+    padding-top: 10px;
+}
