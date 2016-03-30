@@ -87,11 +87,11 @@ function in_array(needle, haystack){
 
 function enableBrick(brickName) {
   var contents = JSON.parse(fs.readFileSync('src/canopsis/enabled-bricks.json').toString());
+  execSync('cp -r src/canopsis/'+ brickName +'/doc/jsdoc doc/api/bricks-documentation/' + brickName);
   if(in_array(brickName, contents) !== -1) {
     console.log('brick '+ brickName +' already enabled');
   } else {
     contents.push(brickName);
-    execSync('cp -r src/canopsis/'+ brickName +'/doc/jsdoc doc/api/bricks-documentation/' + brickName);
     fs.writeFileSync('src/canopsis/enabled-bricks.json', JSON.stringify(contents), 'utf8');
     fs.writeFileSync('doc/api/config.js', 'window.bricks = \''+ JSON.stringify(contents) + '\'', 'utf8');
   }

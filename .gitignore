@@ -18,4 +18,4 @@ doc/api/config.js
 #####################
 
 node_modules
-/bower.json
+bower.json
