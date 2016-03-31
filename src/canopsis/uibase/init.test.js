@@ -18,5 +18,7 @@
  */
 
  define([
+    'canopsis/uibase/tests/arraysearchmixin',
+    'canopsis/uibase/tests/gridlayout',
     'canopsis/uibase/tests/list'
 ], function () {});

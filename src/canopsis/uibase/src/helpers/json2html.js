@@ -59,7 +59,6 @@
                 html +=  '&nbsp;<span class="glyphicon glyphicon-arrow-right" style="display:inline"></span><span class="label label-warning">'+ object +'</span>' ;
             }
             return html;
-
         }
 
         var html = parseJson(json);
