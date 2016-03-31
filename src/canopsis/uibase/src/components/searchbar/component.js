@@ -68,7 +68,7 @@ Ember.Application.initializer({
                     //clear text field
                     this.set('value', '');
                     //set search field
-                    this.controller.target.set('searchFieldValue', '');
+                    get(this, 'controller').target.set('searchFieldValue', '');
                     //trigger search
                     this.send('searchInputAction', '');
 
