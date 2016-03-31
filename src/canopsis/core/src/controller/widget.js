@@ -271,8 +271,11 @@ Ember.Application.initializer({
                     console.info('edit mixin', widget, mixinName);
 
                     var mixinDict = get(widget, 'mixins').findBy('name', mixinName);
-                    //change the mixin id to avoid errors after widget duplication
-                    mixinDict.id = hashUtils.generateId('mixin');
+
+                    if(!Ember.isNone(mixinDict)) {
+                        mixinDict.id = hashUtils.generateId('mixin');
+                    }
+
                     var mixinModelInstance = dataUtils.getStore().createRecord(mixinName, mixinDict);
 
                     var mixinForm = formsUtils.showNew('modelform', mixinModelInstance, { title: __('Edit mixin'), inspectedItemType: mixinName });
