@@ -72,13 +72,14 @@ Ember.Application.initializer({
                         component.send('renderChart');
                     });
                 }
-
+                ctrl.on('onRenderer', this, this.onRenderer);
                 console.groupEnd();
 
                 this._super.apply(this, arguments);
             },
 
             willDestroyElement: function() {
+                var ctrl = get(this, 'controller');
                 var graphcontainer = this.$('.flotchart-plot-container .flotchart');
                 graphcontainer.unbind('plotselected');
 
@@ -87,6 +88,7 @@ Ember.Application.initializer({
                     timecontainer.unbind('plotselected');
                     graphcontainer.unbind('toggleserie');
                 }
+                ctrl.off('onRenderer', this, this.onRenderer);
             },
 
             setDefaultChartOptions: function() {
@@ -94,10 +96,21 @@ Ember.Application.initializer({
                 var now = +new Date();
 
                 var ctrl = get(this, 'controller');
-                var config = get(ctrl, 'config');
+                var config = get(ctrl, 'config'),
+                    template = get(ctrl,'model.metric_template');
 
                 var chartOptions = {};
                 $.extend(chartOptions, get(ctrl, 'chartOptions'));
+
+                if(!get(ctrl, 'zooming')) {
+                    $.extend(chartOptions, {
+                        xaxis: {
+                            min: now - get(ctrl, 'time_window_offset') - get(ctrl, 'time_window'),
+                            max: now - get(ctrl, 'time_window_offset')
+                        }
+                    });
+                }
+
                 $.extend(chartOptions, {
                     zoom: {
                         interactive: false
@@ -115,11 +128,6 @@ Ember.Application.initializer({
                         hoverable: true,
                         clickable: true,
                         borderWidth: 2
-                    },
-
-                    xaxis: {
-                        min: now - get(ctrl, 'time_window_offset') - get(ctrl, 'time_window'),
-                        max: now - get(ctrl, 'time_window_offset')
                     },
 
                     yaxis: {},
@@ -230,10 +238,15 @@ Ember.Application.initializer({
             resetZoom: function() {
                 var ctrl = get(this, 'controller');
 
+                set(ctrl, 'zooming', false);
+
                 this.setDefaultChartOptions();
                 this.setDefaultTimenavOptions();
 
-                set(ctrl, 'zooming', false);
+            },
+
+            onRenderer: function() {
+                this.rerender();
             },
 
             actions: {
@@ -277,10 +290,6 @@ Ember.Application.initializer({
             }
         });
 
-        /**
-         * @widget Timegraph
-         * @augments Widget
-         */
         var widget = WidgetFactory('timegraph', {
             needs: ['serie', 'perfdata'],
 
@@ -341,15 +350,10 @@ Ember.Application.initializer({
             findItems: function() {
                 var me = this;
 
-                var replace = false;
-                var from = get(this, 'lastRefresh');
+                var replace = true;
                 var now = new Date().getTime();
                 var to = now - get(this, 'time_window_offset');
-
-                if(isNone(from)) {
-                    replace = true;
-                    from = to - get(this, 'timenav_window') - get(this, 'time_window_offset');
-                }
+                var from = to - get(this, 'timenav_window') - get(this, 'time_window_offset');
 
                 console.log('refresh:', from, to, replace);
 
@@ -362,6 +366,8 @@ Ember.Application.initializer({
                 console.group('Load stylized metrics:');
                 this.fetchStylizedMetrics(from, to, replace);
                 console.groupEnd();
+
+                me.trigger('onRenderer');
             },
 
             updateAxisLimits: function(from, to) {
@@ -431,12 +437,54 @@ Ember.Application.initializer({
             },
 
             fetchStylizedMetrics: function(from, to, replace) {
+
                 var store = get(this, 'widgetDataStore'),
                     stylizedmetrics = get(this, 'config.metrics'),
                     series = [],
                     seriesById = {},
                     curveIds = [],
                     me = this;
+
+                var contextMetric = ['type', 'connector','connector_name', 'component','resource', 'metric'],
+                    namedMetrics = [],
+                    j,
+                    tmpl;
+
+                /**
+                 * Compile template for metric labels with the context given above (contextMetric)
+                 * @method tmpl
+                 * @param {object} metric Related metric to template with
+                 * @return {array} label
+                 */
+                tmpl = function(metric) {
+                    console.log('metric tmpl', metric);
+                    //debugger;
+                    var serie = metric.id;
+                    var seriesInfo = serie.split('/'),
+                        templateContext = {};
+                    var lengthSeriesInfo = seriesInfo.length;
+
+                    //Build template context
+                    for (j=0; j<lengthSeriesInfo; j++) {
+                        //+1 is for preceding /
+                        templateContext[contextMetric[j]] = seriesInfo[j + 1];
+                    }
+
+                    var template = get(me, 'config.metric_template');
+
+                    if (template === "" || isNone(template)) {
+                        template = "{{component}} - {{resource}} - {{metric}}";
+                    }
+
+                    try {
+                        serie = Handlebars.compile(template)(templateContext);
+                    } catch (err) {
+                        console.log('could not proceed template feed', err);
+                    }
+
+                    var label = namedMetrics.pushObject(serie);
+                    return label;
+                };
 
                 var fetchDone = function(curveIds) {
                     curveIds = JSON.stringify(curveIds);
@@ -484,11 +532,12 @@ Ember.Application.initializer({
                         for(i = 0, l = stylizedmetrics.length; i < l; i++) {
                             var metricId = get(stylizedmetrics[i], 'metric');
                             var metricInfo = metricsById[metricId];
-
+                            console.log('mectric info', metricInfo);
+                            //debugger;
                             var serieconf = Ember.Object.create({
                                 id: metricId,
                                 virtual: true,
-                                crecord_name: get(metricInfo, 'name'),
+                                crecord_name: tmpl(metricInfo),
                                 metrics: [metricId],
                                 aggregate_method: 'none',
                                 unit: get(stylizedmetrics[i], 'unit')
@@ -727,6 +776,8 @@ Ember.Application.initializer({
                         }
                     }
                 }
+
+                delete oldSeries;
 
                 var series = Ember.A();
                 var serieIds = Object.keys(chartSeries);

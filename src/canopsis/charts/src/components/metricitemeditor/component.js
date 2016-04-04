@@ -19,9 +19,10 @@
 
 Ember.Application.initializer({
     name: 'component-metricitemeditor',
+    after: 'SchemasRegistry',
     initialize: function(container, application) {
 
-        var schemaregistry = window.schemasRegistry;
+        var schemaregistry = container.lookupFactory('registry:schemas');
 
         var get = Ember.get,
             set = Ember.set;
@@ -32,7 +33,8 @@ Ember.Application.initializer({
                 this._super(arguments);
 
                 set(this, "componentDataStore", DS.Store.create({
-                    container: get(this, "container")
+                    container: get(this, "container"),
+                    'parentController.chartComponent': this
                 }));
 
                 var modelname = 'stylizedmetric';
