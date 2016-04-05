@@ -4,8 +4,9 @@
   "version": "0.0.1",
   "main": "init.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cd ../../../ && testem -t \"en/static/canopsis/index.test.html?module=charts\" -f testem-toolbelt.js",
     "compile": "rm -Rf tmp/build && broccoli build tmp/build && cp tmp/build . -RT",
+    "full-compile": "rm -Rf tmp/build && broccoli build tmp/build full-build && cp tmp/build . -RT",
     "lint": "eslint src",
     "doc": "./node_modules/canopsis-ui-toolbelt/scripts/buildDoc",
     "minify": "node node_modules/canopsis-ui-toolbelt/scripts/minify.js"
@@ -28,7 +29,6 @@
     "pre-commit": "^1.1.1"
   },
   "pre-commit": [
-    "lint",
-    "doc"
+    "lint"
   ]
 }
