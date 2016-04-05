@@ -17,11 +17,11 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-window.bricks.charts.schemasArray = ["text!canopsis/charts/schemas/categorychartitem.json","text!canopsis/charts/schemas/stylizedmetric.json","text!canopsis/charts/schemas/stylizedserie.json","text!canopsis/charts/schemas/widget.categorychart.json","text!canopsis/charts/schemas/widget.timegraph.json"];
+window.bricks['charts'].schemasArray = ["text!canopsis/charts/schemas/categorychartitem.json","text!canopsis/charts/schemas/stylizedmetric.json","text!canopsis/charts/schemas/stylizedserie.json","text!canopsis/charts/schemas/widget.categorychart.json","text!canopsis/charts/schemas/widget.timegraph.json"];
 
-define(window.bricks.charts.schemasArray, function () {
+define(window.bricks['charts'].schemasArray, function () {
     for (var i = 0; i < arguments.length; i++) {
-        var schemaName = window.bricks.charts.schemasArray[i];
+        var schemaName = window.bricks['charts'].schemasArray[i];
         var urlPrefix = 'canopsis/charts/schemas/';
 
         //remove "text!" and the brick schema folder prefix
