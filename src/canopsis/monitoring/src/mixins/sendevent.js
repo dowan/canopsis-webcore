@@ -44,6 +44,7 @@ Ember.Application.initializer({
             init: function (){
                 this._super();
                 set(this, 'login', get(this, 'controllers.login.record'));
+		var fastackmsg = get(this, 'content.mixins').findBy('name', 'fastackmsg');
             },
 
             partials: {
@@ -346,6 +347,52 @@ Ember.Application.initializer({
                         crecord.set('ack_remove', undefined);
                     }
                 },
+
+                fastack: {
+                    extract: function(record, crecord, formRecord) {
+                        record.ref_rk = get(crecord, 'id');
+                        record.state = 0;
+                        record.state_type = 1;
+                        record.id = this.getRoutingKey(record);
+                        record.ticket = 'ticket';
+                        record.output = get(record, 'output');
+                    },
+
+                    filter: function(record) {
+                        var BAGOT = 3,
+                            OFF = 0;
+                        return (get(record, 'state') && !get(record, 'ack.isAck') && !get(record, 'ack.isCancel')
+                            || (get(record, 'state') === OFF && get(record, 'status') === BAGOT));
+                    },
+
+                    handle: function(crecords) {
+                        var record = this.getDisplayRecord('ack', crecords[0]);
+			console.log("TuX", this)
+                    	var fastackmsg = get(this, 'mixinOptions.sendevent.fastackmsg');
+
+			
+			console.log("TuX", fastackmsg)
+                        
+			record.set('output', fastackmsg)
+			this.submitEvents(crecords, record, 'ack');
+                    },
+
+                    transform: function(crecord, record) {
+                        console.log('transform method for ack -> crecords', crecord, 'record', record);
+                        crecord.set('ack', {
+                            comment: record.output,
+                            timestamp: datesUtils.getNow(),
+                            author: record.author,
+                            isAck: true
+                        });
+                        if(!isNone(record.ticket)) {
+                            crecord.set('ticket', record.ticket);
+                            crecord.set('ticket_date', datesUtils.getNow());
+                        }
+                        crecord.set('ack_remove', undefined);
+                    }
+                },
+
 
                 ackremove: {
                     extract: function(record, crecord, formRecord) {
