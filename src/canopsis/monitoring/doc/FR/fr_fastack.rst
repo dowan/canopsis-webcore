@@ -44,13 +44,26 @@ Normal ACK et Fast ACK right is both needed if you want to display the Fast ACK 
 An event in Canopsis is the representation of asynchronously incoming data, sent by
 a :ref:`connector <FR__Connector>`.
 
-Event Acknowledgment
-~~~~~~~~~~~~~~~~~~~~
+Functionnal test
+----------------
 
-An ``ack`` event **MUST** contain:
+Case: Normal case
+~~~~~~~~~~~~~~~~~
+- Login on  canopsis with root
+- Go to events page
+- On each line you will see button with check (ACK) and **underline check (Fast ACK)**
+- **CTRL + E (Edit mode)**
+- On the event list go to **sendevent mixin options**
+- Inside the form change **fastackmsg** message
+- Click on the **underline check (Fast ACK)**
+- You should see a purple badge with
+    - Actual date
+    - root owner
+    - Previously configured message    
+- You shouldn't see a blue badge with ticket number
 
- - an author 
- - a message "auto ACK""
- - a reference to the :ref:`check event <FR__Event__Check>` to acknowledge
+Case: On manager account assign right ACK without Fast ACK 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. _FR__Event__Ackremove:
+Case: On manager account assign right Fast ACK without Fast ACK 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
