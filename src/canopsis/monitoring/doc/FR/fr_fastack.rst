@@ -49,9 +49,9 @@ Functionnal test
 
 Case: Normal case
 ~~~~~~~~~~~~~~~~~
-- Login on  canopsis with root
+- Login on  canopsis with root/root
 - Go to events page
-- On each line you will see button with check (ACK) and **underline check (Fast ACK)**
+- On each line you shouldn't see button with either check (ACK) or **underline check (Fast ACK)**
 - **CTRL + E (Edit mode)**
 - On the event list go to **sendevent mixin options**
 - Inside the form change **fastackmsg** message
@@ -64,6 +64,27 @@ Case: Normal case
 
 Case: On manager account assign right ACK without Fast ACK 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Login on  canopsis with root/root
+- Go to profiles = permissions
+- Edit "Manager" role
+- Add rights on view_event (read/write)
+- Add "ack" right
+- Remove "fastack" right 
+- Save
+- Login on canopsis with canopsis/canopsis
+- Go to events page
+- On each line you should see button with check (ACK) but you shouldn't see the **underline check (Fast ACK)**
+
 
 Case: On manager account assign right Fast ACK without Fast ACK 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Login on canopsis with root/root
+- Go to profiles = permissions
+- Edit "Manager" role
+- Add rights on view_event (read/write)
+- Remove "ack" right
+- Add "fastack" right 
+- Save
+- Login on canopsis with canopsis/canopsis
+- Go to events page
+- On each line you shouldn't see button with either check (ACK) or **underline check (Fast ACK)**
