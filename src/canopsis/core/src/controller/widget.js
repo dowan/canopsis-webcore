@@ -19,7 +19,7 @@
 
 Ember.Application.initializer({
     name: 'WidgetController',
-    after: ['PartialslotAbleController', 'WidgetsUtils', 'RoutesUtils', 'FormsUtils', 'DebugUtils', 'DataUtils', 'WidgetsRegistry'],
+    after: ['PartialslotAbleController', 'WidgetsUtils', 'RoutesUtils', 'FormsUtils', 'DebugUtils', 'DataUtils', 'HashUtils', 'WidgetsRegistry'],
     initialize: function(container, application) {
         var PartialslotAbleController = container.lookupFactory('controller:partialslot-able');
 
@@ -28,6 +28,7 @@ Ember.Application.initializer({
         var formsUtils = container.lookupFactory('utility:forms');
         var debugUtils = container.lookupFactory('utility:debug');
         var dataUtils = container.lookupFactory('utility:data');
+        var hashUtils = container.lookupFactory('utility:hash');
         var schemasregistry = window.schemasRegistry;
         var WidgetsRegistry = container.lookupFactory('registry:widgets');
         var get = Ember.get,
@@ -269,8 +270,13 @@ Ember.Application.initializer({
                 editMixin: function (widget, mixinName) {
                     console.info('edit mixin', widget, mixinName);
 
-                    var mixinDict = get(widget, 'mixins').findBy('name', mixinName),
-                        mixinModelInstance = dataUtils.getStore().createRecord(mixinName, mixinDict);
+                    var mixinDict = get(widget, 'mixins').findBy('name', mixinName);
+
+                    if(!Ember.isNone(mixinDict)) {
+                        mixinDict.id = hashUtils.generateId('mixin');
+                    }
+
+                    var mixinModelInstance = dataUtils.getStore().createRecord(mixinName, mixinDict);
 
                     var mixinForm = formsUtils.showNew('modelform', mixinModelInstance, { title: __('Edit mixin'), inspectedItemType: mixinName });
 

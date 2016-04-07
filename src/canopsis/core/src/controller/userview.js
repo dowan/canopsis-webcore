@@ -109,6 +109,9 @@ Ember.Application.initializer({
             var duplicatedWrapper = self.store.createRecord('widgetwrapper', widgetwrapperJson);
 
             var widgetJson = cleanRecord(widgetwrapperModel.get('widget').toJSON());
+            var mixins = Ember.copy(get(widgetJson, 'mixins'));
+            set(mixins, 'id', '')
+            set(mixins, '_id', '');
 
             var duplicatedWidget = self.store.createRecord(widgetJson.xtype, widgetJson);
 
