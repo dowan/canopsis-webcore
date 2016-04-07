@@ -32,12 +32,14 @@ Description
 
 Fast ack will have the exact same features of Normal ACK :ref:`ACK <FR__Ack>`.
 
-The puporse grant the ability to ack an event without filling the popup information. 
+The purpose of this feature is designed to put an acknowlegdement on event without having to fill any form.* to ack an event without filling the popup information. 
 
-The Fast ACK feature will can be acces throught a button near the normal ACK button. 
-When Fast ACK button is click the will produce and ack with no ticket and a configured message.
+The new button isdisplay on the left of the Slow ACK Button
 
-Like normal ack, fast ack will have a right on it. To grant acces to thie feature you will need to fist grand acces to normal ack then to fast ack.
+The Fast ACK feature can be acces throught a button near the normal ACK button. 
+
+Like Normal ACK, Fast ACK feature have a right on it. 
+Normal ACK et Fast ACK right is both needed if you want to display the Fast ACK Button
 
 An event in Canopsis is the representation of asynchronously incoming data, sent by
 a :ref:`connector <FR__Connector>`.
