@@ -17,7 +17,7 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-window.bricks['monitoring'].schemasArray = ["text!canopsis/monitoring/schemas/mixin.recordinfopopup.json","text!canopsis/monitoring/schemas/widget.weather.json","text!canopsis/monitoring/schemas/mixin.sendevent.json"];
+window.bricks['monitoring'].schemasArray = ["text!canopsis/monitoring/schemas/mixin.recordinfopopup.json","text!canopsis/monitoring/schemas/mixin.sendevent.json","text!canopsis/monitoring/schemas/widget.weather.json"];
 
 define(window.bricks['monitoring'].schemasArray, function () {
     for (var i = 0; i < arguments.length; i++) {

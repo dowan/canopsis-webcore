@@ -11,6 +11,13 @@
         {{else}}
             {{recordcanbeack this}}
             {{#if this.recordcanbeack}}
+    			{{#if controller.rights.actionbutton_fastack.checksum}}
+					{{#component-tooltip content="Fast Ack"}}
+						<button class="btn btn-default btn-xs" {{action 'sendEvent' 'fastack' this}} >
+							<span class="glyphicon glyphicon-saved"></span>
+						</button>
+					{{/component-tooltip}}
+            	{{/if}}
                 {{#component-tooltip content="Ack"}}
                     <button class="btn btn-default btn-xs" {{action 'sendEvent' 'ack' this}} >
                         <span class="glyphicon glyphicon-ok"></span>
