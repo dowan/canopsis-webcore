@@ -9,9 +9,7 @@ This document describes the Fast Ack UI Button
 References
 ==========
 
- - :ref:`FR::Architecture <FR__Architecture>`
- - :ref:`FR::Engine <FR__Engine>`
- - :ref:`TR::Package <TR__Package>`
+ - :ref:`FR::FastACk <FastACk>`
 
 Updates
 =======
@@ -27,24 +25,37 @@ Contents
 Description
 -----------
 
-This Button will produce an ack event configured in its :ref:`FastACk <FR__FastACK>`.
+This feature procude a configured ack event. 
 
-ACK Configuration:
+This ack event will have :
+ - No ticket number
+ - Preconfigured message (Mixins Options)
+ - Event ID ref
 
-It **MUST** contains:
+Files modification
+------------------
 
- - a sender, composed of:
- - an message that will be **auto ACK**
- - an event ref
- 
-List of file modified to add this feature :
- - ACK Template ( uibase => template => ack )
+- ACK Template ( uibase => template => ack )
+Add an small button with the icon glyphicon-saved. It has sendevent fastack action assign
+This button need the right fastack to be displayed
+
  - ACK Selection template ( uibase => template => ackselection )
+Add an small button with the icon glyphicon-saved. It has sendevent fastack action assign
+This button need the right fastack to be displayed
+
  - Mixin send event ( monitoring => mixins => sendevent )
+fastack event_processors is the exact copy of the ack event_processors.
+The handle code of the fastack event_processors have been modified:
+   - Remove the popup form function
+   - Add "fastackmsg" mixin option retrieving
+   - Set output with the value of fastackmsg
+   - Submit select events for processing
+
  - JSON Right list
- - Init Schema file of Monitoring UI Brick
- - Add mixin.sendevent.json in UI Brick
- 
+Add the right actionbutton_fastack inside the json
+    
+ - Add mixin.sendevent.json inside Monitoring Brick
+ Mixin option of the sendevent with the param fastackmsg.
  
 Case: OK
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
