@@ -376,6 +376,7 @@
     'ehbs!renderer-timestamp',
     'ehbs!renderer-translator',
     'link!canopsis/uibase/src/style.css',
+    'canopsis/uibase/src/template',
     'ehbs!actionbutton-ack',
     'ehbs!actionbutton-ackselection',
     'ehbs!actionbutton-cancel',
