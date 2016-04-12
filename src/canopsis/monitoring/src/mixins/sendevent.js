@@ -44,7 +44,6 @@ Ember.Application.initializer({
             init: function (){
                 this._super();
                 set(this, 'login', get(this, 'controllers.login.record'));
-        var fastackmsg = get(this, 'content.mixins').findBy('name', 'fastackmsg');
             },
 
             partials: {
@@ -308,6 +307,13 @@ Ember.Application.initializer({
              */
             event_processors: {
                 ack: {
+                    /**
+                     * @method ack_extract
+                     * @param record
+                     * @param crecords
+                     * @param formRecord
+                     * @description:
+                     */
                     extract: function(record, crecord, formRecord) {
                         record.ref_rk = get(crecord, 'id');
                         record.state = 0;
@@ -319,6 +325,11 @@ Ember.Application.initializer({
                         }
                     },
 
+                    /**
+                     * @method ack_filter
+                     * @param record
+                     * @description:
+                     */
                     filter: function(record) {
                         var BAGOT = 3,
                             OFF = 0;
@@ -326,12 +337,23 @@ Ember.Application.initializer({
                             || (get(record, 'state') === OFF && get(record, 'status') === BAGOT));
                     },
 
+                    /**
+                     * @method ack_handle
+                     * @param crecords
+                     * @description:
+                     */
                     handle: function(crecords) {
                         var record = this.getDisplayRecord('ack', crecords[0]);
 
                         this.getEventForm('ack', record, crecords, 'ackform');
                     },
 
+                    /**
+                     * @method ack_transform
+                     * @param crecords
+                     * @param record
+                     * @description:
+                     */
                     transform: function(crecord, record) {
                         console.log('transform method for ack -> crecords', crecord, 'record', record);
                         crecord.set('ack', {
@@ -349,6 +371,13 @@ Ember.Application.initializer({
                 },
 
                 fastack: {
+                    /**
+                     * @method fastack_extract
+                     * @param record
+                     * @param crecords
+                     * @param formRecord
+                     * @description:
+                     */
                     extract: function(record, crecord, formRecord) {
                         record.ref_rk = get(crecord, 'id');
                         record.state = 0;
@@ -358,6 +387,11 @@ Ember.Application.initializer({
                         record.output = get(record, 'output');
                     },
 
+                    /**
+                     * @method fastack_filter
+                     * @param record
+                     * @description:
+                     */
                     filter: function(record) {
                         var BAGOT = 3,
                             OFF = 0;
@@ -365,6 +399,11 @@ Ember.Application.initializer({
                             || (get(record, 'state') === OFF && get(record, 'status') === BAGOT));
                     },
 
+                    /**
+                     * @method fastack_handle
+                     * @param crecords
+                     * @description:
+                     */
                     handle: function(crecords) {
                         var record = this.getDisplayRecord('ack', crecords[0]);
                         var fastackmsg = get(this, 'mixinOptions.sendevent.fastackmsg');
@@ -373,6 +412,12 @@ Ember.Application.initializer({
                         this.submitEvents(crecords, record, 'ack');
                     },
 
+                    /**
+                     * @method fastack_transform
+                     * @param crecords
+                     * @param record
+                     * @description:
+                     */
                     transform: function(crecord, record) {
                         console.log('transform method for ack -> crecords', crecord, 'record', record);
                         crecord.set('ack', {
