@@ -44,7 +44,7 @@ Ember.Application.initializer({
             init: function (){
                 this._super();
                 set(this, 'login', get(this, 'controllers.login.record'));
-		var fastackmsg = get(this, 'content.mixins').findBy('name', 'fastackmsg');
+        var fastackmsg = get(this, 'content.mixins').findBy('name', 'fastackmsg');
             },
 
             partials: {
@@ -367,14 +367,10 @@ Ember.Application.initializer({
 
                     handle: function(crecords) {
                         var record = this.getDisplayRecord('ack', crecords[0]);
-			console.log("TuX", this)
-                    	var fastackmsg = get(this, 'mixinOptions.sendevent.fastackmsg');
+                        var fastackmsg = get(this, 'mixinOptions.sendevent.fastackmsg');
 
-			
-			console.log("TuX", fastackmsg)
-                        
-			record.set('output', fastackmsg)
-			this.submitEvents(crecords, record, 'ack');
+                        record.set('output', fastackmsg)
+                        this.submitEvents(crecords, record, 'ack');
                     },
 
                     transform: function(crecord, record) {
