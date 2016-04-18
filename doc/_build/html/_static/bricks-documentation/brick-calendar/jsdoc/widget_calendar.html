@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Widget: calendar</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <script src="../../doc-config.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+<div id="main">
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Widgets</h3><ul><li><a href="widget_calendar.html"><img src="icons/application_view_gallery.png" alt="widget"/> calendar</a></li></ul><h3>Schemas</h3><ul><li><a href="schema_calendar.html"><img src="icons/table.png" alt="schema"/> calendar</a></li><li><a href="schema_calendarday.html"><img src="icons/table.png" alt="schema"/> calendarday</a></li><li><a href="schema_calendarevent.html"><img src="icons/table.png" alt="schema"/> calendarevent</a></li><li><a href="schema_calendarsourcepbehavior.html"><img src="icons/table.png" alt="schema"/> calendarsourcepbehavior</a></li><li><a href="schema_calendarsourceuserevents.html"><img src="icons/table.png" alt="schema"/> calendarsourceuserevents</a></li><li><a href="schema_eventcategories.html"><img src="icons/table.png" alt="schema"/> eventcategories</a></li></ul><h3>Adapters</h3><ul><li><a href="adapter_calendardata.html"><img src="icons/disconnect.png" alt="adapter"/> calendardata</a></li><li><a href="adapter_calendarday.html"><img src="icons/disconnect.png" alt="adapter"/> calendarday</a></li></ul><h3>Classes</h3><ul><li><a href="canopsis.frontend.brick-calendar.module_eventcategories%2520component.html">eventcategories component</a></li><li><a href="canopsis.frontend.brick-calendar.module_viewMixin.html">viewMixin</a></li></ul><h3>Mixins</h3><ul><li><a href="module-calendarsourceeventlog.html"><img src="icons/brick.png" alt="mixin"/> calendarsourceeventlog</a></li><li><a href="module-calendarsourcepbehavior.html"><img src="icons/brick.png" alt="mixin"/> calendarsourcepbehavior</a></li><li><a href="module-calendarsourceuserevents.html"><img src="icons/brick.png" alt="mixin"/> calendarsourceuserevents</a></li></ul>
+</nav>
+
+
+    <h1 class="page-title">Widget: calendar</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+</header>
+
+<article>
+    
+        <div class="description"><p>This widget allows to display events, with or without reccurence rules, on a calendar.</p></div>
+    
+
+    <h3 class="subsection-title index"><img src="icons/book_open.png" alt="index" /> Index</h3>
+    <div class="index listing">
+        <table><tr>
+            <td class="properties">
+                <h4>Properties</h4>
+                
+            </td>
+            <td class="methods">
+                <h4>Methods</h4>
+                
+                    <table style="margin-left:30px;">
+                        
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <a href="#~getDateCalendarView"><img src="icons/picture_empty.png" alt="method" /> getDateCalendarView<span class="signature">()</span><span class="type-signature"></span></a>
+                                </td>
+                            </tr>
+                        
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <a href="#~isReadyWidget"><img src="icons/picture_empty.png" alt="method" /> isReadyWidget<span class="signature">(action)</span><span class="type-signature"></span></a>
+                                </td>
+                            </tr>
+                        
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <a href="#~onSourceLoad"><img src="icons/picture_empty.png" alt="method" /> onSourceLoad<span class="signature">(promises, methods, category)</span><span class="type-signature"></span></a>
+                                </td>
+                            </tr>
+                        
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <a href="#~refreshContent"><img src="icons/picture_empty.png" alt="method" /> refreshContent<span class="signature">()</span><span class="type-signature"></span></a>
+                                </td>
+                            </tr>
+                        
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <a href="#~showUserMessage"><img src="icons/picture_empty.png" alt="method" /> showUserMessage<span class="signature">(message, level)</span><span class="type-signature"></span></a>
+                                </td>
+                            </tr>
+                        
+                    </table>
+                
+            </td>
+        </tr></table>
+    </div>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>This widget allows to display events, with or without reccurence rules, on a calendar.</p></div>
+        
+
+        
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="mixes">Mixes In:</dt>
+
+        <dd class="mixes"><ul>
+        
+            <li>UserConfigurationMixin</li>
+        
+        </ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+        <div class="detailed-listing methods">
+            
+                
+
+    <div class="view-source"><a href="src_widgets_calendar_controller.js.html#line91">view source</a></div>
+
+<div class="detailed-listing-item">
+    
+        
+
+        <h4 class="name" id="~getDateCalendarView"><a name="~getDateCalendarView" href="#~getDateCalendarView"><img src="icons/picture_empty.png" alt="method" /> getDateCalendarView<span class="signature">()</span><span class="type-signature"></span></a></h4>
+
+        
+    
+
+    
+    <div class="description">
+        <p>set date view with the actual month if undefined</p>
+    </div>
+    
+    <div class="foldable-details">
+        
+
+        
+
+        
+
+        
+
+        
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+    </div>
+</div>
+
+            
+                
+
+    <div class="view-source"><a href="src_widgets_calendar_controller.js.html#line71">view source</a></div>
+
+<div class="detailed-listing-item">
+    
+        
+
+        <h4 class="name" id="~isReadyWidget"><a name="~isReadyWidget" href="#~isReadyWidget"><img src="icons/picture_empty.png" alt="method" /> isReadyWidget<span class="signature">(action)</span><span class="type-signature"></span></a></h4>
+
+        
+    
+
+    
+    <div class="description">
+        <p>If refreshContent and DidInsertElement are done, gotoDate is called</p>
+    </div>
+    
+    <div class="foldable-details">
+        
+
+        
+
+        
+
+        
+            <h5>Parameters:</h5>
+            
+
+<ul class="params">
+    
+
+        <li>
+            <span class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </span>
+            
+                <span class="name">action</span>
+            
+
+
+            
+
+            
+
+            <span class="description last"><p>done method: This method will be set to ready</p></span>
+        </li>
+
+    
+</ul>
+
+        
+
+        
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+    </div>
+</div>
+
+            
+                
+
+    <div class="view-source"><a href="src_widgets_calendar_controller.js.html#line108">view source</a></div>
+
+<div class="detailed-listing-item">
+    
+        
+
+        <h4 class="name" id="~onSourceLoad"><a name="~onSourceLoad" href="#~onSourceLoad"><img src="icons/picture_empty.png" alt="method" /> onSourceLoad<span class="signature">(promises, methods, category)</span><span class="type-signature"></span></a></h4>
+
+        
+    
+
+    
+    <div class="description">
+        <p>call all methods in parameters when promises given are done (query to the backend are finished)</p>
+    </div>
+    
+    <div class="foldable-details">
+        
+
+        
+
+        
+
+        
+            <h5>Parameters:</h5>
+            
+
+<ul class="params">
+    
+
+        <li>
+            <span class="type">
+            
+                
+<span class="param-type">promise</span>
+
+
+            
+            </span>
+            
+                <span class="name">promises</span>
+            
+
+
+            
+
+            
+
+            <span class="description last"><p>Array of promises</p></span>
+        </li>
+
+    
+
+        <li>
+            <span class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </span>
+            
+                <span class="name">methods</span>
+            
+
+
+            
+
+            
+
+            <span class="description last"><p>Array of methods</p></span>
+        </li>
+
+    
+
+        <li>
+            <span class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </span>
+            
+                <span class="name">category</span>
+            
+
+
+            
+
+            
+
+            <span class="description last"><p>could be et userEvent category or a behavior (optional)</p></span>
+        </li>
+
+    
+</ul>
+
+        
+
+        
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+    </div>
+</div>
+
+            
+                
+
+    <div class="view-source"><a href="src_widgets_calendar_controller.js.html#line61">view source</a></div>
+
+<div class="detailed-listing-item">
+    
+        
+
+        <h4 class="name" id="~refreshContent"><a name="~refreshContent" href="#~refreshContent"><img src="icons/picture_empty.png" alt="method" /> refreshContent<span class="signature">()</span><span class="type-signature"></span></a></h4>
+
+        
+    
+
+    
+    <div class="description">
+        <p>Set the reload to true in order to redraw events
+extend the native refreshContent method</p>
+    </div>
+    
+    <div class="foldable-details">
+        
+
+        
+
+        
+
+        
+
+        
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+    </div>
+</div>
+
+            
+                
+
+    <div class="view-source"><a href="src_widgets_calendar_controller.js.html#line130">view source</a></div>
+
+<div class="detailed-listing-item">
+    
+        
+
+        <h4 class="name" id="~showUserMessage"><a name="~showUserMessage" href="#~showUserMessage"><img src="icons/picture_empty.png" alt="method" /> showUserMessage<span class="signature">(message, level)</span><span class="type-signature"></span></a></h4>
+
+        
+    
+
+    
+    <div class="description">
+        <p>inform the user about the last action made</p>
+    </div>
+    
+    <div class="foldable-details">
+        
+
+        
+
+        
+
+        
+            <h5>Parameters:</h5>
+            
+
+<ul class="params">
+    
+
+        <li>
+            <span class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </span>
+            
+                <span class="name">message</span>
+            
+
+
+            
+
+            
+
+            <span class="description last"><p>information about the action to inform</p></span>
+        </li>
+
+    
+
+        <li>
+            <span class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </span>
+            
+                <span class="name">level</span>
+            
+
+
+            
+
+            
+
+            <span class="description last"><p>indicate the information level (for Bootstrap color element)</p></span>
+        </li>
+
+    
+</ul>
+
+        
+
+        
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+    </div>
+</div>
+
+            
+        </div>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Apr 14 2016 16:26:18 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

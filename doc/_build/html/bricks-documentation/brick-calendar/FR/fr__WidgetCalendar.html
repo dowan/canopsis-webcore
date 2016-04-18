@@ -1,0 +1,524 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Canopsis Widget Calendar &mdash; canopsis Sakura documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="canopsis Sakura documentation" href="../../../index.html"/>
+        <link rel="up" title="Functionnal requirements" href="../FRs.html"/>
+        <link rel="next" title="Technical Requirements" href="../TRs.html"/>
+        <link rel="prev" title="Functionnal requirements" href="../FRs.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> canopsis
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                Sakura
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Calendar Canopsis Brick</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../FRs.html">Functionnal requirements</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="">Canopsis Widget Calendar</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#updates">Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../TRs.html">Technical Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../EDs.html">Exploitation Documents</a></li>
+<li class="toctree-l2"><a class="reference external" href="../../_static/bricks-documentation/brick-calendar/jsdoc/index.html#http://">Api documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../canopsis-ui/index.html">Canopsis-ui Canopsis Brick</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../core/index.html">Core Canopsis Brick</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../uibase/index.html">Uibase Canopsis Brick</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">canopsis</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Calendar Canopsis Brick</a> &raquo;</li>
+      
+          <li><a href="../FRs.html">Functionnal requirements</a> &raquo;</li>
+      
+    <li>Canopsis Widget Calendar</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/bricks-documentation/brick-calendar/FR/fr__WidgetCalendar.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="canopsis-widget-calendar">
+<span id="fr-calendarwidget"></span><h1><a class="toc-backref" href="#id5">Canopsis Widget Calendar</a><a class="headerlink" href="#canopsis-widget-calendar" title="Permalink to this headline">¶</a></h1>
+<p>This document describes the widget calendar feature, from backend to frontend.</p>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#canopsis-widget-calendar" id="id5">Canopsis Widget Calendar</a><ul>
+<li><a class="reference internal" href="#references" id="id6">References</a></li>
+<li><a class="reference internal" href="#updates" id="id7">Updates</a></li>
+<li><a class="reference internal" href="#id1" id="id8">Contents</a><ul>
+<li><a class="reference internal" href="#description" id="id9">Description</a></li>
+<li><a class="reference internal" href="#multiple-views" id="id10">Multiple views</a></li>
+<li><a class="reference internal" href="#multiple-sources" id="id11">Multiple sources</a></li>
+<li><a class="reference internal" href="#backend" id="id12">Backend</a></li>
+<li><a class="reference internal" href="#frontend" id="id13">Frontend</a></li>
+<li><a class="reference internal" href="#improvements" id="id14">Improvements</a></li>
+<li><a class="reference internal" href="#functional-tests" id="id15">Functional tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="references">
+<h2><a class="toc-backref" href="#id6">References</a><a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>List of referenced functional requirements...</p>
+<ul>
+<li><table class="first docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ref:</th><td class="field-body"><cite>vevent &lt;fr__vevent.rst&gt;</cite></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><table class="first docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ref:</th><td class="field-body"><cite>periodic behaviors &lt;fr__periodic_behaviors.rst&gt;</cite></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><table class="first docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ref:</th><td class="field-body"><cite>events &lt;fr__events_log.rst&gt;</cite></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><table class="first docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ref:</th><td class="field-body"><cite>manager &lt;fr__mananger.rst&gt;</cite></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><table class="first docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ref:</th><td class="field-body"><cite>webservice &lt;fr__webservice.rst&gt;</cite></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</div>
+<div class="section" id="updates">
+<h2><a class="toc-backref" href="#id7">Updates</a><a class="headerlink" href="#updates" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Author(s)</th>
+<th class="head">Date</th>
+<th class="head">Version</th>
+<th class="head">Summary</th>
+<th class="head">Accepted by</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Florent Demeulenaere</td>
+<td>21/10/2015</td>
+<td>0.5</td>
+<td>grammar corrections</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>Florent Demeulenaere</td>
+<td>21/10/2015</td>
+<td>0.4</td>
+<td>update functionnal test</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>Florent Demeulenaere</td>
+<td>2015/10/13</td>
+<td>0.3</td>
+<td>Functional tests</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>Florent Demeulenaere</td>
+<td>2015/10/13</td>
+<td>0.2</td>
+<td>Update contents</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>Florent Demeulenaere</td>
+<td>2015/10/12</td>
+<td>0.1</td>
+<td>Document creation</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id1">
+<h2><a class="toc-backref" href="#id8">Contents</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="description">
+<span id="fr-title-desc"></span><h3><a class="toc-backref" href="#id9">Description</a><a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h3>
+<p>The widget calendar provides the ability to view several event sources on a calendar. It could be an event log, a pbehavior or a user event created on the calendar.</p>
+<p>The user can filter every events on the widget.</p>
+<p>The user can select an arbitrary period to display informations. It can be by monthly, by weekly or daily.</p>
+<p>If the user edit the widget, he can:</p>
+<ul class="simple">
+<li>Create filters for events log</li>
+<li>Resize the calendar</li>
+<li>Choose different event colors and a title.</li>
+</ul>
+<p>Once the widget is correctly installed, you <em>should</em> have a view like this:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../../_images/calendar_overview.png"><img alt="final view of the widget" src="../../../_images/calendar_overview.png" style="width: 600px; height: 400px;" /></a>
+</div>
+</div>
+<div class="section" id="multiple-views">
+<h3><a class="toc-backref" href="#id10">Multiple views</a><a class="headerlink" href="#multiple-views" title="Permalink to this headline">¶</a></h3>
+<p>This widget has to display events according to several views.
+These views are:
+- month
+- week
+- day</p>
+</div>
+<div class="section" id="multiple-sources">
+<h3><a class="toc-backref" href="#id11">Multiple sources</a><a class="headerlink" href="#multiple-sources" title="Permalink to this headline">¶</a></h3>
+<p>The calendar let the user display multiple event sources. Each event source can be filtered. For the event log source, Only the event count per day is displayed. available source are:
+- events log
+- user events
+- periodic behaviors</p>
+</div>
+<div class="section" id="backend">
+<h3><a class="toc-backref" href="#id12">Backend</a><a class="headerlink" href="#backend" title="Permalink to this headline">¶</a></h3>
+<p>The backend is different for each event source.</p>
+<div class="section" id="the-user-events">
+<h4>The user events<a class="headerlink" href="#the-user-events" title="Permalink to this headline">¶</a></h4>
+<p>This source needs its own manager who lets the user create, update, delete and read events.
+It also need a webservice which will provide a single route with distinct verbs for each method of the manager.
+user events inherits vevents that is why the user event manager and webservice inherits vevent manager and webservice. User events are stored in vevent storage.</p>
+</div>
+<div class="section" id="the-periodic-behaviors">
+<h4>The periodic behaviors<a class="headerlink" href="#the-periodic-behaviors" title="Permalink to this headline">¶</a></h4>
+<p>Periodic behaviors have always an implementation so the periodic behavior source uses the existing webservice and manager to get the pbehaviors on the calendar.
+However, the calendar widget require to implement a new periodic behavior route in order to get only events related to the selected view (month/week/day).</p>
+</div>
+<div class="section" id="the-events-log">
+<h4>The events log<a class="headerlink" href="#the-events-log" title="Permalink to this headline">¶</a></h4>
+<p>Events log are often numerous. The query to database to get all events log could be too long in case of production use. That is why only the event log count per day is return from the backend.
+Events log have always an implementation so events log source just require a new event route to get the events log count per day.</p>
+</div>
+</div>
+<div class="section" id="frontend">
+<h3><a class="toc-backref" href="#id13">Frontend</a><a class="headerlink" href="#frontend" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="the-widget">
+<h4>The widget<a class="headerlink" href="#the-widget" title="Permalink to this headline">¶</a></h4>
+<p>Of course, this feature requires a frontend widget. The widget is composed of a controller, a template and a view. it has to display a calendar with all options related to requirements.</p>
+</div>
+<div class="section" id="the-different-sources">
+<h4>The different sources<a class="headerlink" href="#the-different-sources" title="Permalink to this headline">¶</a></h4>
+<p>To implement this widget in a dynamic way, each source is implemented in a mixin. Each mixin has to be independant.</p>
+</div>
+<div class="section" id="id2">
+<h4>The user events<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>User events are a completly new event source in Canopsis, that is why it requires more elements to be usable. As the periodic behaviors, user events can be filtered so a component, an adapter and an editor have to be created for categories creation.
+An adapter for user event is also required in order to query the backend for this event source.</p>
+<p>On click on the user events, the user can update or delete the event.</p>
+</div>
+<div class="section" id="id3">
+<h4>The periodic behaviors<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<p>In addition to the mixins, periodic behaviors need a new route in the existing adapter.</p>
+<p>The user can template the display of periodic behaviors on the calendar by editing the calendarsourcepbehavior configuration mixin.</p>
+<p>On click on the periodic behaviors, The user can see more information about the event. These information are customizable in the mixin configuration.</p>
+</div>
+<div class="section" id="id4">
+<h4>The events log<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<p>In addition to the mixins, events log need a new route in the existing adapter.</p>
+<p>On click on the events log count, the user is redirected on a view which contains all related events log.</p>
+</div>
+</div>
+<div class="section" id="improvements">
+<h3><a class="toc-backref" href="#id14">Improvements</a><a class="headerlink" href="#improvements" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Afterwards, the widget calendar will let the user to add external event sources by giving ICS link.</li>
+<li>The user will be able to create recursive events on the calendar by giving an rrule.</li>
+</ul>
+</div>
+<div class="section" id="functional-tests">
+<h3><a class="toc-backref" href="#id15">Functional tests</a><a class="headerlink" href="#functional-tests" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="test-environnement">
+<h4>Test environnement<a class="headerlink" href="#test-environnement" title="Permalink to this headline">¶</a></h4>
+<p>The widget calendar <strong>has to</strong> be used with these mixins:</p>
+<ul class="simple">
+<li>customfilterlist</li>
+<li>calendarsourceuserevents</li>
+<li>calendarsourceeventslog</li>
+<li>calendarsourcepbehavior</li>
+</ul>
+</div>
+<div class="section" id="user-events-tests">
+<h4>User events Tests<a class="headerlink" href="#user-events-tests" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="event-category-creation">
+<h5>Event category creation<a class="headerlink" href="#event-category-creation" title="Permalink to this headline">¶</a></h5>
+<p>On click on the <em>calendar options</em> button you should see <em>Categories</em> button which gives that form:</p>
+<div class="figure">
+<img alt="../../../_images/category_creation.png" src="../../../_images/category_creation.png" />
+</div>
+<p>If you add an additional category to the list, you <em>should</em> see the related category button in the calendar options after saving the form.
+If you remove a category, you <em>should</em> see the related button disappear in the calendar options after saving.</p>
+</div>
+<div class="section" id="user-events-crud">
+<h5>User events CRUD<a class="headerlink" href="#user-events-crud" title="Permalink to this headline">¶</a></h5>
+<p><em>This section is only available when there is a minimum of one category created.</em></p>
+<p>You can create an event by clicking on the <em>Add event</em> button on the calendar options. You should see the following form:</p>
+<div class="figure">
+<img alt="../../../_images/userevent_creation.png" src="../../../_images/userevent_creation.png" />
+</div>
+<p>You can also create an event by selecting a time range directly on the calendar. In this case, dtstart and dtend <em>should</em> be already filled.</p>
+<p>Then you need to fill the blank fields and after saving, if you click on the related category on the calendar options (to display the right category), you should see the event displayed on the calendar.</p>
+<p>On click on a user event, on the calendar, you can see this window:</p>
+<div class="figure">
+<img alt="../../../_images/crud_event.png" src="../../../_images/crud_event.png" />
+</div>
+<p>On click on the <em>remove</em> button, the relative event <em>should</em> directly be removed from the calendar.</p>
+<p>On click on the <em>update</em> button you <em>should</em> see this forms:</p>
+<div class="figure">
+<img alt="../../../_images/update_event.png" src="../../../_images/update_event.png" />
+</div>
+<p>When you finish modifying one or several fields, save this form and you <em>should</em> directly see the modification on the calendar.</p>
+</div>
+</div>
+<div class="section" id="periodic-behaviors-tests">
+<h4>Periodic behaviors tests<a class="headerlink" href="#periodic-behaviors-tests" title="Permalink to this headline">¶</a></h4>
+<p><em>This section is only available if some periodic behaviors are</em> <strong>correctly</strong> <em>created thanks to the widget list..</em></p>
+<p>First of all, if the periodic behaviors are correctly brought on the calendar, you <em>should</em> see several filters related to the different behaviors in the calendar options.</p>
+<p>On click on one of them, you <em>should</em> see related periodic behaviors appear on the calendar.</p>
+<p>You can template information displayed in the mixin calendarsourcepbehavior configuration.
+If you switch to the edit mode (press ctrl+E) you can access to this configuration and see this form:</p>
+<div class="figure">
+<img alt="../../../_images/pbehavior_conf1.png" src="../../../_images/pbehavior_conf1.png" />
+</div>
+<p>Both fields works with the same keywords:</p>
+<ul class="simple">
+<li>{{component}} : Entity related to the event</li>
+<li>{{start}}     : Start of the selected event</li>
+<li>{{end}}       : End of the selected event</li>
+<li>{{behavior}}  : Linked behavior</li>
+</ul>
+<p>Here you can test the template and save.
+Then, on click on a periodic behavior on the calendar, you <em>should</em> have something like this:</p>
+<div class="figure">
+<img alt="../../../_images/recordinfopopup.png" src="../../../_images/recordinfopopup.png" />
+</div>
+</div>
+<div class="section" id="events-log-tests">
+<h4>Events log tests<a class="headerlink" href="#events-log-tests" title="Permalink to this headline">¶</a></h4>
+<p><em>This section is only available if some events log are created before. in order to do that, please refer to</em> <a class="reference external" href="https://git.canopsis.net/eregnier/scenario">this repository</a> <em>and run the event_log scenario following the repository instructions.</em></p>
+<p>Events log are displayed thanks to the customfilterlist mixin. So if you do not have any filter, you first need to create one in order to display events log on the calendar by clicking on the filter.</p>
+<p>On click on one event log on the calendar, the widget <em>should</em> redirect the user to a view that let see related events log detail, so you have to get a view like this:</p>
+<div class="figure">
+<img alt="../../../_images/event_log_view.png" src="../../../_images/event_log_view.png" />
+</div>
+</div>
+<div class="section" id="userpreferences-tests">
+<h4>Userpreferences Tests<a class="headerlink" href="#userpreferences-tests" title="Permalink to this headline">¶</a></h4>
+<p>In order to have the most comfortable use of this widget, several user preferences are configured.</p>
+<p>Testing userprefences is quite simple. you have to create categories, select filters to display (whatever the chosen event source) or create a filter on the customfilterlist mixin and then check if the widget modifications are always in the widget after refreshing Canopsis.</p>
+</div>
+<div class="section" id="global-test">
+<h4>Global Test<a class="headerlink" href="#global-test" title="Permalink to this headline">¶</a></h4>
+<p>There is an existing global test you can do to consolidate the widget use.</p>
+<p>For that, you can create several widgets on the same Canopsis view and check all the previous tests.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../TRs.html" class="btn btn-neutral float-right" title="Technical Requirements" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../FRs.html" class="btn btn-neutral" title="Functionnal requirements" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, capensis.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'Sakura',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

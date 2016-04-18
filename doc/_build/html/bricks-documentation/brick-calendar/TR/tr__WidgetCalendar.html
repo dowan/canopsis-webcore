@@ -1,0 +1,951 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Canopsis Widget Calendar &mdash; canopsis Sakura documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="canopsis Sakura documentation" href="../../../index.html"/>
+        <link rel="up" title="Technical Requirements" href="../TRs.html"/>
+        <link rel="next" title="Exploitation Documents" href="../EDs.html"/>
+        <link rel="prev" title="Technical Requirements" href="../TRs.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> canopsis
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                Sakura
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Calendar Canopsis Brick</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../FRs.html">Functionnal requirements</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../TRs.html">Technical Requirements</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="">Canopsis Widget Calendar</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#updates">Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Contents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#technical-tests">Technical Tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../EDs.html">Exploitation Documents</a></li>
+<li class="toctree-l2"><a class="reference external" href="../../_static/bricks-documentation/brick-calendar/jsdoc/index.html#http://">Api documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../canopsis-ui/index.html">Canopsis-ui Canopsis Brick</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../core/index.html">Core Canopsis Brick</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../uibase/index.html">Uibase Canopsis Brick</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">canopsis</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Calendar Canopsis Brick</a> &raquo;</li>
+      
+          <li><a href="../TRs.html">Technical Requirements</a> &raquo;</li>
+      
+    <li>Canopsis Widget Calendar</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/bricks-documentation/brick-calendar/TR/tr__WidgetCalendar.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="canopsis-widget-calendar">
+<span id="tr-calendarwidget"></span><h1><a class="toc-backref" href="#id6">Canopsis Widget Calendar</a><a class="headerlink" href="#canopsis-widget-calendar" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#canopsis-widget-calendar" id="id6">Canopsis Widget Calendar</a><ul>
+<li><a class="reference internal" href="#references" id="id7">References</a></li>
+<li><a class="reference internal" href="#updates" id="id8">Updates</a></li>
+<li><a class="reference internal" href="#description" id="id9">Description</a></li>
+<li><a class="reference internal" href="#id1" id="id10">Contents</a></li>
+<li><a class="reference internal" href="#technical-tests" id="id11">Technical Tests</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="references">
+<h2><a class="toc-backref" href="#id7">References</a><a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>List of referenced functional and technical requirements.</p>
+<ul class="simple">
+<li><a class="reference external" href="FR__WidgetCalendar">FR::WidgetCalendar.rst</a></li>
+<li>ref: tr__vevent.rst</li>
+<li>ref: tr__periodic_behaviors.rst</li>
+<li>ref: tr__eventlog.rst</li>
+</ul>
+</div>
+<div class="section" id="updates">
+<h2><a class="toc-backref" href="#id8">Updates</a><a class="headerlink" href="#updates" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Author(s)</th>
+<th class="head">Date</th>
+<th class="head">Version</th>
+<th class="head">Summary</th>
+<th class="head">Accepted by</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Florent Demeulenaere</td>
+<td>21/10/2015</td>
+<td>0.4</td>
+<td>update technical test</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>Florent Demeulenaere</td>
+<td>14/10/2015</td>
+<td>0.3</td>
+<td>format template, update contents</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>Florent Demeulenaere</td>
+<td>23/09/2015</td>
+<td>0.2</td>
+<td>widget calendar TR</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>Florent Demeulenaere</td>
+<td>18/08/2015</td>
+<td>0.1</td>
+<td>Document creation</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="description">
+<h2><a class="toc-backref" href="#id9">Description</a><a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>The calendar widget provides the ability to view several event sources on a calendar. It could be an event log, a pbehavior or a user event created on the calendar.</p>
+<p>The user can filter events on the widget by creating and selecting filters thanks to a mixin on the top of the widget, or thanks to the calendar options menu.</p>
+</div>
+<div class="section" id="id1">
+<h2><a class="toc-backref" href="#id10">Contents</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>The frontend calendar part is implemented thanks to the JQuery plugin <a class="reference external" href="http://fullcalendar.io//">fullcalendar</a></p>
+<div class="section" id="widget-main-description">
+<h3>Widget main description<a class="headerlink" href="#widget-main-description" title="Permalink to this headline">¶</a></h3>
+<p>The widget is composed of a controller, a template and a view.</p>
+<p>The controller loads the view, and the needful mixins (Userconfiguration, Recordinfopopup, ..). The controller has methods used in several event sources and methods that let the user configure the entire widget (change the calendar width).</p>
+<p>The view creates the calendar thanks to the fullcalendar plugin. It triggers javascript events in order to use view methods directly in the related event sources mixins.</p>
+<p>The template renders the view, mainly composed of the calendar options (in a dropdown-component) an a calendar.</p>
+</div>
+<div class="section" id="a-event-source-mixin-plugable-to-the-widget-calendar">
+<h3>A event source mixin plugable to the widget calendar<a class="headerlink" href="#a-event-source-mixin-plugable-to-the-widget-calendar" title="Permalink to this headline">¶</a></h3>
+<p>Several points are always implemented for a new event source&#8217;s mixin:</p>
+<ul class="simple">
+<li>Some instructions could be inserted in the setEventcategories method in order to execute code related to the event source before the user interaction.</li>
+<li>A render method to render event after a refresh or after a view change</li>
+<li>A remove method to remove selected events (by a category, a behavior, etc.)</li>
+<li>A reDraw method to draw events on the calendar</li>
+<li>A load method to query event information</li>
+<li>A get method to format events for fullcalendar</li>
+</ul>
+</div>
+<div class="section" id="events-log-mixin">
+<h3>Events log mixin<a class="headerlink" href="#events-log-mixin" title="Permalink to this headline">¶</a></h3>
+<p>The widget can display events log. The user can select several events by filtering them thanks to the customfilterlist mixin. On click on one of them, the user is redirected to the related view.</p>
+<div class="section" id="software-architecture">
+<h4>Software architecture<a class="headerlink" href="#software-architecture" title="Permalink to this headline">¶</a></h4>
+<p>The widget has to display counts of events log. But there are numerous. That&#8217;s why there are filtered before transmit them on the widget. To do that, the widget will query the API with two filters: the view timezone of the calendar, and the filter created by the user and selected on the widget. This query let us get several events log to display on the calendar.
+The filters are managed thanks to the customfilterlist mixin which already have labels, useful for the user selection on the widget.</p>
+<p>The aim is only to get the count of events log displayed on the calendar, and then, on clic on the count, the user is redirected on a description of the event.</p>
+</div>
+<div class="section" id="technical-guide">
+<h4>Technical guide<a class="headerlink" href="#technical-guide" title="Permalink to this headline">¶</a></h4>
+<p>The API lets you get events log with the query made by the two filters descripted above. So it can be possible to filter events log with a period of time and with a user filter created thanks to the customfilterlist mixin.</p>
+</div>
+</div>
+<div class="section" id="periodic-behaviors-mixin">
+<h3>Periodic behaviors mixin<a class="headerlink" href="#periodic-behaviors-mixin" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id2">
+<h4>Software architecture<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>On click on a button, the user can show/hide pbehaviors on the calendar. Pbehaviors are filtered by behaviors which are buttons on the calendar options.</p>
+<p>During the widget calendar load, pbehaviors are query (with the calendar view filter, ie: only this month). there are formated for the fullcalendar and set in one button by behavior. the templatable display of these events are headed by some keys in the related schema and actions described in the event source mixin.</p>
+</div>
+<div class="section" id="id3">
+<h4>Technical guide<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<p>The pbehavior&#8217;s API related to the calendar let filters events by a chosen timerange. It could be a month, a week or a day.</p>
+</div>
+</div>
+<div class="section" id="user-events-vevent-calendar">
+<h3>User events (vevent.calendar)<a class="headerlink" href="#user-events-vevent-calendar" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id4">
+<h4>Software architecture<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<p>In this widget, users can create their own events, but they can also update and remove these events. a user event is attached to a category also created by the user.</p>
+<p>Categories need their own schema, editors and even a component for display the list on a Ember select list. They are query at the beginning of the mixin load in order to render each related button. There is an object in the mixin that link categories and their events.</p>
+<p>user event are stored in vevent collection, mainly because user events inherits from vevents.</p>
+</div>
+<div class="section" id="id5">
+<h4>Technical guide<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<p>The user events API lets you get events filtered by a time period (month/week/day).</p>
+<p>This also lets you filter events by categories when you want to display them. Categories are an other filter applied to the query to get user events.</p>
+</div>
+</div>
+</div>
+<div class="section" id="technical-tests">
+<h2><a class="toc-backref" href="#id11">Technical Tests</a><a class="headerlink" href="#technical-tests" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="frontend">
+<h3>Frontend<a class="headerlink" href="#frontend" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="widget-controller">
+<h4>widget.controller<a class="headerlink" href="#widget-controller" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * Set the reload to true in order to redraw events</span>
+<span class="cm"> * extend the native refreshContent method</span>
+<span class="cm"> * @method refreshContent</span>
+<span class="cm"> */</span>
+<span class="nx">refreshContent</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * If refreshContent and DidInsertElement are done, gotoDate is called</span>
+<span class="cm"> * @method isReadyWidget</span>
+<span class="cm"> * @param {string} action done method: This method will be set to ready</span>
+<span class="cm"> */</span>
+<span class="nx">isReadyWidget</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">action</span><span class="p">)</span> <span class="p">{}</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     * Synchronize selected calendar width to the widget</span>
+<span class="cm">     * @method getCalendarWidth</span>
+<span class="cm">     */</span>
+    <span class="nx">getCalendarWidth</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{}</span>
+
+    <span class="cm">/**</span>
+<span class="cm"> * Set date view with the actual month if undefined</span>
+<span class="cm"> * @method getDateCalendarView</span>
+<span class="cm"> */</span>
+    <span class="nx">getDateCalendarView</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{}</span>
+
+    <span class="cm">/**</span>
+<span class="cm"> * Call all methods in parameters when promises given are done (query to the backend are finished)</span>
+<span class="cm"> * @method onSourceLoad</span>
+<span class="cm"> * @param {promise} promises Array of promises</span>
+<span class="cm"> * @param {array} methods Array of methods</span>
+<span class="cm"> * @param {string} category could be et userEvent category or a behavior (optional)</span>
+<span class="cm"> */</span>
+<span class="nx">onSourceLoad</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">promises</span><span class="p">,</span> <span class="nx">methods</span><span class="p">,</span> <span class="nx">category</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * inform the user about the last action made</span>
+<span class="cm"> * @method showUserMessage</span>
+<span class="cm"> * @param {string} message information about the action to inform</span>
+<span class="cm"> * @param {string} level indicate the information level (for Bootstrap color element)</span>
+<span class="cm"> */</span>
+<span class="nx">showUserMessage</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">message</span><span class="p">,</span> <span class="nx">level</span><span class="p">)</span> <span class="p">{}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="widget-view">
+<h4>widget.view<a class="headerlink" href="#widget-view" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * call the fullcalendar gotoDate method with the given date</span>
+<span class="cm"> * @method goToDate</span>
+<span class="cm"> * @param {number} date timestamp which represents the date to switch on</span>
+<span class="cm"> */</span>
+<span class="nx">goToDate</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Add a new fullcalendar eventSource</span>
+<span class="cm"> * @method addEventCalendar</span>
+<span class="cm"> * @param {array} calendarTab eventSource as an array formated for fullCalendar</span>
+<span class="cm"> */</span>
+<span class="nx">addEventCalendar</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">calendarTab</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * remove a old fullcalendar eventSource</span>
+<span class="cm"> * @method removeEventCalendar</span>
+<span class="cm"> * @param {array} calendarTab eventSource as an array formated for fullCalendar</span>
+<span class="cm"> */</span>
+<span class="nx">removeEventCalendar</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">calendarTab</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Remove only one selected event from the fullcalendar, getting it from the controller</span>
+<span class="cm"> * @method removeUserEvent</span>
+<span class="cm"> */</span>
+<span class="nx">removeUserEvent</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Create the fullcalendar at the beginning and catch every changed view</span>
+<span class="cm"> * @method didInsertElement</span>
+<span class="cm"> */</span>
+<span class="nx">didInsertElement</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Let the user to create an event by selecting a time range on the calendar</span>
+<span class="cm"> * @method select</span>
+<span class="cm"> * @param {date} start started date given by the selection</span>
+<span class="cm"> * @param {date} end ended date given by the selection</span>
+<span class="cm"> */</span>
+<span class="nx">select</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="nx">end</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Refresh each source event after</span>
+<span class="cm"> * @method viewRender</span>
+<span class="cm"> * @param {CalendarView} month current view to refresh</span>
+<span class="cm"> * @param {calendar} calendar the concerned calendar element</span>
+<span class="cm"> */</span>
+<span class="nx">viewRender</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">month</span><span class="p">,</span> <span class="nx">calendar</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Describes actions to do when a user click is handled on an event</span>
+<span class="cm"> * @method eventClick</span>
+<span class="cm"> * @param {object} calEvent Event catched by the click</span>
+<span class="cm"> * @param {object} jsEvent Javascript event catched by the click</span>
+<span class="cm"> */</span>
+<span class="nx">eventClick</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">calEvent</span><span class="p">,</span> <span class="nx">jsEvent</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Disable all triggered actions and destroy all view&#39;s objects</span>
+<span class="cm"> * @method willDestroyElement</span>
+<span class="cm"> */</span>
+<span class="nx">willDestroyElement</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="components-eventcategories-component">
+<h4>components.eventcategories.component<a class="headerlink" href="#components-eventcategories-component" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-javascript"><div class="highlight"><pre>    <span class="cm">/**</span>
+<span class="cm">     * build url to query database</span>
+<span class="cm">     * @method buildURL</span>
+<span class="cm">     * @param {string} type unused</span>
+<span class="cm">     * @param {string} id unused</span>
+<span class="cm">     * @param {object} record unused</span>
+<span class="cm">     * @return {string} url</span>
+<span class="cm">     */</span>
+    <span class="nx">buildURL</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">record</span><span class="p">)</span> <span class="p">{}</span>
+
+    <span class="cm">/**</span>
+<span class="cm"> * Ember method to query database</span>
+<span class="cm"> * @method findQuery</span>
+<span class="cm"> * @param {string} type used for buildURL</span>
+<span class="cm"> * @param {string} store store to query</span>
+<span class="cm"> * @param {object} query mongoDB query</span>
+<span class="cm"> * @return {array} list of events</span>
+<span class="cm"> */</span>
+<span class="nx">findQuery</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">query</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Ember method to query database</span>
+<span class="cm"> * @method findQuery</span>
+<span class="cm"> * @param {string} type used for buildURL</span>
+<span class="cm"> * @param {string} store store to query</span>
+<span class="cm"> * @param {object} record record to create</span>
+<span class="cm"> * @return {boolean} success or fail</span>
+<span class="cm"> */</span>
+<span class="nx">createRecord</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">record</span><span class="p">)</span> <span class="p">{}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="mixins-calendarsourceeventslog">
+<h4>mixins.calendarsourceeventslog<a class="headerlink" href="#mixins-calendarsourceeventslog" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-javascript"><div class="highlight"><pre>    <span class="cm">/**</span>
+<span class="cm"> * Rerender events log when the calendar view is refreshed</span>
+<span class="cm"> * @method renderEventLog</span>
+<span class="cm"> */</span>
+<span class="nx">renderEventLog</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{}</span>
+
+    <span class="cm">/**</span>
+<span class="cm"> * Give a formated filter to apply to the redirection</span>
+<span class="cm"> * @method formatFilterForWidgetList</span>
+<span class="cm"> * @param {number} start timestamp</span>
+<span class="cm"> * @return {string} filter</span>
+<span class="cm"> */</span>
+<span class="nx">formatFilterForWidgetList</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">start</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Redirect to the event-history view, with given eventlog and filter</span>
+<span class="cm"> * @method goToInfo</span>
+<span class="cm"> * @param {String} filter selected filter</span>
+<span class="cm"> * @param {Object} element element concerned by the filter</span>
+<span class="cm"> */</span>
+<span class="nx">goToInfo</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">filter</span><span class="p">,</span> <span class="nx">element</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * This method is called every time the selected filter is changed.</span>
+<span class="cm"> * Get the user filter created thanks to the customfilterlist mixin (method computeFilterFragmentList).</span>
+<span class="cm"> * Then, call loadEventsLog method to query events related to this filter.</span>
+<span class="cm"> * @method getMixinFilter</span>
+<span class="cm"> */</span>
+<span class="nx">getMixinFilter</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Remove eventlog from calendar</span>
+<span class="cm"> * @method removeEventLog</span>
+<span class="cm"> */</span>
+<span class="nx">removeEventLog</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Display current eventlog on the fullcalendar</span>
+<span class="cm"> * @method reDrawEventLog</span>
+<span class="cm"> * @param {controller} controller</span>
+<span class="cm"> */</span>
+<span class="nx">reDrawEventLog</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">controller</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Get eventlog from calendarday collection</span>
+<span class="cm"> * @method loadEventsLog</span>
+<span class="cm"> * @return {promise} promise</span>
+<span class="cm"> */</span>
+<span class="nx">loadEventsLog</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Override the mixin&#39;s computeFilterFragmentsList method</span>
+<span class="cm"> * @method computeFilterFragmentsList</span>
+<span class="cm"> * @return {Array}</span>
+<span class="cm"> */</span>
+<span class="nx">computeFilterFragmentsList</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Format the eventLog count for fullCalendar</span>
+<span class="cm"> * @method getEventsLogCount</span>
+<span class="cm"> * @param {number} count: integer that represents the count of events log relative to the given</span>
+<span class="cm"> * @param {object} date: object that contains a &#39;begin&#39; timestamp attribute and a &#39;end&#39; timestamp attribute</span>
+<span class="cm"> * @return {object}</span>
+<span class="cm"> */</span>
+<span class="nx">getEventsLogCount</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">count</span><span class="p">,</span> <span class="nx">date</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Redirect on the description view with relative event and filter</span>
+<span class="cm"> * @method onClickeventlog</span>
+<span class="cm"> * @param {object} calEvent fullcalendar event</span>
+<span class="cm"> * @param {object} jsEvent Javascript catched event</span>
+<span class="cm"> */</span>
+<span class="nx">onClickeventlog</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">calEvent</span><span class="p">,</span> <span class="nx">jsEvent</span><span class="p">)</span> <span class="p">{}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="mixins-calendarsourcepbehavior">
+<h4>mixins.calendarsourcepbehavior<a class="headerlink" href="#mixins-calendarsourcepbehavior" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-javascript"><div class="highlight"><pre>    <span class="cm">/**</span>
+<span class="cm"> * Call methods after the mixins load</span>
+<span class="cm"> * @method mixinsOptionsReady</span>
+<span class="cm"> */</span>
+<span class="nx">mixinsOptionsReady</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Rerender periodic behaviors when the calendar view is refreshed</span>
+<span class="cm"> * @method renderBehaviors</span>
+<span class="cm"> */</span>
+<span class="nx">renderBehaviors</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Synchronize selected pbehavior colors to the relatives button</span>
+<span class="cm"> * @method pBehaviorColor</span>
+<span class="cm"> * @return {string} background style used in the template</span>
+<span class="cm"> */</span>
+<span class="nx">pBehaviorColor</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Remove the event source relative to the given behavior</span>
+<span class="cm"> * @method removePbehavior</span>
+<span class="cm"> * @param {string/object} behavior could be a string or an object containing fields relative to the event source</span>
+<span class="cm"> */</span>
+<span class="nx">removePbehavior</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">behavior</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Display on the fullcalendar an event source just loaded from database</span>
+<span class="cm"> * @method reDrawPbehavior</span>
+<span class="cm"> * @param {class} controller widget controller</span>
+<span class="cm"> * @param {string/object} behavior could be a string or an object containing fields relative to the event source</span>
+<span class="cm"> */</span>
+<span class="nx">reDrawPbehavior</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">controller</span><span class="p">,</span> <span class="nx">behavior</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Load behaviors in order to display button on the calendar options and set user preferences</span>
+<span class="cm"> * @method loadBehaviors</span>
+<span class="cm"> */</span>
+<span class="nx">loadBehaviors</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Get pbehavior relative to the given behavior from default_pbehavior collection</span>
+<span class="cm"> * @method loadPbehavior</span>
+<span class="cm"> * @param {string/object} behavior could be a string or an object containing fields relative to the event source</span>
+<span class="cm"> * @return {promise}</span>
+<span class="cm"> */</span>
+<span class="nx">loadPbehavior</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">behavior</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Get a list of dates relatives to a given rrule</span>
+<span class="cm"> * if no rrule, it is a list of one date</span>
+<span class="cm"> * @method getDatesFromRrule</span>
+<span class="cm"> * @param {string} rrule</span>
+<span class="cm"> * @param {number} dtstart</span>
+<span class="cm"> * @return {array}</span>
+<span class="cm"> */</span>
+<span class="nx">getDatesFromRrule</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">rrule</span><span class="p">,</span> <span class="nx">dtstart</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Format pbehaviors for fullcalendar</span>
+<span class="cm"> * @method getPBehavior</span>
+<span class="cm"> * @param {number} eventStart Number pbehavior&#39;s beginning</span>
+<span class="cm"> * @param {number} duration Number pbehavior&#39;s duration</span>
+<span class="cm"> * @param {string} source String component&#39;s name concern by the pbehavior</span>
+<span class="cm"> * @param {string} behavior String of behavior(s)</span>
+<span class="cm"> */</span>
+<span class="nx">getPBehavior</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">eventStart</span><span class="p">,</span> <span class="nx">duration</span><span class="p">,</span> <span class="nx">source</span><span class="p">,</span> <span class="nx">behavior</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Display the recordinfopopup relative to the selected event</span>
+<span class="cm"> * @method onClickpbehavior</span>
+<span class="cm"> * @param {object} calEvent selected fullcalendar event</span>
+<span class="cm"> * @param {object} jsEvent Javascript catched event</span>
+<span class="cm"> */</span>
+<span class="nx">onClickpbehavior</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">calEvent</span><span class="p">,</span> <span class="nx">jsEvent</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Show/hide pbehaviors in the calendar</span>
+<span class="cm"> * @method showPbehavior</span>
+<span class="cm"> * @param {object} behavior selected behavior</span>
+<span class="cm"> */</span>
+<span class="nx">showBehavior</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">behavior</span><span class="p">)</span> <span class="p">{}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="mixins-calendarsourceuserevents">
+<h4>mixins.calendarsourceuserevents<a class="headerlink" href="#mixins-calendarsourceuserevents" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-javascript"><div class="highlight"><pre>    <span class="cm">/**</span>
+<span class="cm"> * Call methods after the mixins load</span>
+<span class="cm"> * @method mixinsOptionsReady</span>
+<span class="cm"> */</span>
+<span class="nx">mixinsOptionsReady</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Rerender user events when the calendar view is refreshed</span>
+<span class="cm"> * @method renderUserEvents</span>
+<span class="cm"> */</span>
+<span class="nx">renderUserEvents</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * get categories from database and set them on the controller</span>
+<span class="cm"> * @method setEventCategories</span>
+<span class="cm"> * @param {controller} caller controller scope if needful</span>
+<span class="cm"> */</span>
+<span class="nx">setEventcategories</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">caller</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Remove the event source relative to the given category</span>
+<span class="cm"> * @method removeUserEvents</span>
+<span class="cm"> * @param {string/object} category could be a string or an object containing fields relative to the event source</span>
+<span class="cm"> */</span>
+<span class="nx">removeUserEvents</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">category</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Display on the fullcalendar an event source just loaded from database</span>
+<span class="cm"> * @method reDrawUserEvents</span>
+<span class="cm"> * @param {class} controller widget controller</span>
+<span class="cm"> * @param {string/object} category could be a string or an object containing fields relative to the event source</span>
+<span class="cm"> */</span>
+<span class="nx">reDrawUserEvents</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">controller</span><span class="p">,</span> <span class="nx">category</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Get user events from calendardata collection</span>
+<span class="cm"> * @method loadUserEvents</span>
+<span class="cm"> * @param {string} category category to load</span>
+<span class="cm"> */</span>
+<span class="nx">loadUserEvents</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">category</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Format the calendar event for fullCalendar</span>
+<span class="cm"> * @method getCalendarEvent</span>
+<span class="cm"> * @param {object} cevent object that contains event to format</span>
+<span class="cm"> * @return {object}</span>
+<span class="cm"> */</span>
+<span class="nx">getCalendarEvent</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">cevent</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Create an user event from the selected time range in the calendar</span>
+<span class="cm"> * @method createSelectedEvent</span>
+<span class="cm"> * @param {Number} start started timestamp given by the user selection</span>
+<span class="cm"> * @param {Number} end ended timestamp given by the user selection</span>
+<span class="cm"> */</span>
+<span class="nx">createSelectedEvent</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="nx">end</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Set selected event and display edition choice</span>
+<span class="cm"> * @method onClickuserevent</span>
+<span class="cm"> * @param {object} calEvent fullcalendar event</span>
+<span class="cm"> * @param {object} jsEvent Javascript catched event</span>
+<span class="cm"> * @param {view} view view scope</span>
+<span class="cm"> */</span>
+<span class="nx">onClickuserevent</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">calEvent</span><span class="p">,</span> <span class="nx">jsEvent</span><span class="p">,</span> <span class="nx">view</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Create an user event from the &quot;add event&quot; form in the widget</span>
+<span class="cm"> * @method createEvent</span>
+<span class="cm"> */</span>
+<span class="nx">createEvent</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Remove the selected event</span>
+<span class="cm"> * @method removeEvent</span>
+<span class="cm"> */</span>
+<span class="nx">removeEvent</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Update one or several field(s) of the selected event</span>
+<span class="cm"> * @method updateEvent</span>
+<span class="cm"> */</span>
+<span class="nx">updateEvent</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Show/hide user events by clicking on the relatives category</span>
+<span class="cm"> * @method showUserEvents</span>
+<span class="cm"> */</span>
+<span class="nx">showUserEvents</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">category</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * open a form to edit eventcategories</span>
+<span class="cm"> * @method editCategories</span>
+<span class="cm"> */</span>
+<span class="nx">editCategories</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="backend">
+<h3>Backend<a class="headerlink" href="#backend" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="ccalendar-manager">
+<h4>ccalendar.manager<a class="headerlink" href="#ccalendar-manager" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">_get_vevent_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vevent</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get information from a vevent.</span>
+
+<span class="sd">        :param Event vevent: vevent from where get information</span>
+<span class="sd">        :return: vevent information in a dictionary</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+<span class="k">def</span> <span class="nf">_get_document_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">):</span>
+<span class="sd">&quot;&quot;&quot;Get properties from a document.</span>
+
+<span class="sd">:param dict document: document from where get properties.</span>
+<span class="sd">:return: document properties in a dictionary.</span>
+<span class="sd">:rtype: dict</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="webcore-services-calendar">
+<h4>webcore.services.calendar<a class="headerlink" href="#webcore-services-calendar" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="nd">@route</span><span class="p">(</span><span class="n">ws</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">get</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;calendar&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get_by_uids</span><span class="p">(</span>
+            <span class="n">uids</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">with_count</span><span class="o">=</span><span class="bp">False</span>
+        <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Get documents by uids.</span>
+
+<span class="sd">            :param list uids: list of document uids.</span>
+<span class="sd">            :param int limit: max number of elements to get.</span>
+<span class="sd">            :param int skip: first element index among searched list.</span>
+<span class="sd">            :param sort: contains a list of couples of field (name, ASC/DESC)</span>
+<span class="sd">                or field name which denots an implicitelly ASC order.</span>
+<span class="sd">            :type sort: list of {(str, {ASC, DESC}}), or str}</span>
+<span class="sd">            :param dict projection: key names to keep from elements.</span>
+<span class="sd">            :param bool with_count: If True (False by default), add count to the</span>
+<span class="sd">                result.</span>
+<span class="sd">            :return: documents where uids are in uids.</span>
+<span class="sd">            :rtype: list</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
+    <span class="nd">@route</span><span class="p">(</span>
+    <span class="n">ws</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">post</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;calendar&#39;</span><span class="p">,</span>
+    <span class="n">payload</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;eventcategories&#39;</span><span class="p">,</span> <span class="s">&#39;output&#39;</span><span class="p">,</span> <span class="s">&#39;dtstart&#39;</span><span class="p">,</span> <span class="s">&#39;dtend&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="nd">@route</span><span class="p">(</span>
+    <span class="n">ws</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">put</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;calendar&#39;</span><span class="p">,</span>
+    <span class="n">payload</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;eventcategories&#39;</span><span class="p">,</span> <span class="s">&#39;output&#39;</span><span class="p">,</span> <span class="s">&#39;dtstart&#39;</span><span class="p">,</span> <span class="s">&#39;dtend&#39;</span><span class="p">,</span> <span class="s">&#39;uid&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">put</span><span class="p">(</span>
+    <span class="n">eventcategories</span><span class="p">,</span>
+    <span class="n">output</span><span class="p">,</span>
+    <span class="n">dtstart</span><span class="p">,</span>
+    <span class="n">dtend</span><span class="p">,</span>
+    <span class="n">uid</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">source</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">info</span><span class="o">=</span><span class="bp">None</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Add calendar events (and optionally data) related to input source.</span>
+
+<span class="sd">    :param str source: calendardata source if not None.</span>
+<span class="sd">    :param dict info: calendar event info.</span>
+<span class="sd">    :param str eventcategories: eventcategories of the event.</span>
+<span class="sd">    :param str output: description of the event.</span>
+<span class="sd">    :param int dtstart: beginning date.</span>
+<span class="sd">    :param int dtend: ending date.</span>
+<span class="sd">    :return: new documents.</span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<span class="nd">@route</span><span class="p">(</span><span class="n">ws</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;ids&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">calendar</span><span class="p">(</span><span class="n">ids</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Delete a event with the id. We can delete several events with an array of ids</span>
+
+<span class="sd">    :param list ids: list of ids to delete</span>
+<span class="sd">    :return: True if the remove is ok</span>
+<span class="sd">    :rtype: boolean</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<span class="nd">@route</span><span class="p">(</span>
+    <span class="n">ws</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">get</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;calendar/values&#39;</span><span class="p">,</span>
+    <span class="n">payload</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;query&#39;</span><span class="p">,</span> <span class="s">&#39;source&#39;</span><span class="p">,</span> <span class="s">&#39;dtstart&#39;</span><span class="p">,</span> <span class="s">&#39;dtend&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">values</span><span class="p">(</span>
+    <span class="n">query</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">sources</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dtstart</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dtend</span><span class="o">=</span><span class="bp">None</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get source vevent document values.</span>
+
+<span class="sd">    :param list sources: sources from where get values. If None, use all</span>
+<span class="sd">        sources.</span>
+<span class="sd">    :param int dtstart: vevent dtstart (default 0).</span>
+<span class="sd">    :param int dtend: vevent dtend (default sys.maxsize).</span>
+<span class="sd">    :param dict query: vevent information if given.</span>
+<span class="sd">    :param int limit: max number of elements to get.</span>
+<span class="sd">    :param int skip: first element index among searched list.</span>
+<span class="sd">    :param sort: contains a list of couples of field (name, ASC/DESC)</span>
+<span class="sd">        or field name which denots an implicitelly ASC order.</span>
+<span class="sd">    :type sort: list of {(str, {ASC, DESC}}), or str}</span>
+<span class="sd">    :param dict projection: key names to keep from elements.</span>
+<span class="sd">    :param bool with_count: If True (False by default), add count to the</span>
+<span class="sd">        result.</span>
+<span class="sd">    :return: matchable documents.</span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="webcore-services-pbehavior">
+<h4>webcore.services.pbehavior<a class="headerlink" href="#webcore-services-pbehavior" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="nd">@route</span><span class="p">(</span>
+    <span class="n">ws</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+    <span class="n">payload</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;behaviors&#39;</span><span class="p">,</span> <span class="s">&#39;start&#39;</span><span class="p">,</span> <span class="s">&#39;end&#39;</span><span class="p">],</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&#39;pbehavior/calendar&#39;</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">find_pbehavior</span><span class="p">(</span><span class="n">behaviors</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get pbehavior which are between a starting and a ending date. They are filtered by behavior</span>
+
+<span class="sd">    :param string behaviors: behavior to filter the query (optionnal)</span>
+<span class="sd">    :param timestamp start: begin of the filtered period</span>
+<span class="sd">    :param timestamp end: end of the filtered period</span>
+<span class="sd">    :return: matchable events</span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="webcore-services-event">
+<h4>webcore.services.event<a class="headerlink" href="#webcore-services-event" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@route</span><span class="p">(</span><span class="n">ws</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">get</span><span class="p">,</span>
+       <span class="n">name</span><span class="o">=</span><span class="s">&#39;eventslog/count&#39;</span><span class="p">,</span>
+       <span class="n">payload</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;tstart&#39;</span><span class="p">,</span> <span class="s">&#39;tstop&#39;</span><span class="p">,</span> <span class="s">&#39;limit&#39;</span><span class="p">,</span> <span class="s">&#39;select&#39;</span><span class="p">]</span>
+       <span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_event_count_per_day</span><span class="p">(</span><span class="n">tstart</span><span class="p">,</span> <span class="n">tstop</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">select</span><span class="o">=</span><span class="p">{}):</span>
+    <span class="sd">&quot;&quot;&quot; get eventslog log count for each days in a given period</span>
+<span class="sd">        :param tstart: timestamp of the begin period</span>
+<span class="sd">        :param tstop: timestamp of the end period</span>
+<span class="sd">        :param limit: limit the count number per day</span>
+<span class="sd">        :param select: filter for eventslog collection</span>
+<span class="sd">        :return: list in which each item contains an interval and the</span>
+<span class="sd">        related count</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="event-eventslogmanager">
+<h4>event.eventslogmanager<a class="headerlink" href="#event-eventslogmanager" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="k">def</span> <span class="nf">get_eventlog_count_by_period</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">tstart</span><span class="p">,</span> <span class="n">tstop</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="p">{}</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get an eventlog count for each interval found in the given period and</span>
+<span class="sd">       with a given filter.</span>
+<span class="sd">       This period is given by tstart and tstop.</span>
+<span class="sd">       Counts can be limited thanks to the &#39;limit&#39; parameter.</span>
+
+<span class="sd">       :param start: begin interval timestamp</span>
+<span class="sd">       :param stop: end interval timestamp</span>
+<span class="sd">       :param limit: number that limits the max count returned</span>
+<span class="sd">       :param query: filter for events_log collection</span>
+<span class="sd">       :return: list in which each item contains an interval and the</span>
+<span class="sd">       related count</span>
+<span class="sd">       :rtype: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../EDs.html" class="btn btn-neutral float-right" title="Exploitation Documents" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../TRs.html" class="btn btn-neutral" title="Technical Requirements" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, capensis.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'Sakura',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

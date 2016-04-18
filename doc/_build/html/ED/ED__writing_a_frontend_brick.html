@@ -1,0 +1,499 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Writing a frontend brick &mdash; canopsis Sakura documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="canopsis Sakura documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> canopsis
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                Sakura
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../bricks-documentation/brick-calendar/index.html">Calendar Canopsis Brick</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bricks-documentation/canopsis-ui/index.html">Canopsis-ui Canopsis Brick</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bricks-documentation/core/index.html">Core Canopsis Brick</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bricks-documentation/uibase/index.html">Uibase Canopsis Brick</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">canopsis</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>Writing a frontend brick</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/ED/ED__writing_a_frontend_brick.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="writing-a-frontend-brick">
+<span id="ed-title"></span><h1><a class="toc-backref" href="#id2">Writing a frontend brick</a><a class="headerlink" href="#writing-a-frontend-brick" title="Permalink to this headline">¶</a></h1>
+<p>This guide will cover the process of brick creation, and show how it is possible to add features to the frontend, while preserving the initial frontend codebase, as the brick is assimilable to a self-contained plugin.</p>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#writing-a-frontend-brick" id="id2">Writing a frontend brick</a><ul>
+<li><a class="reference internal" href="#references" id="id3">References</a></li>
+<li><a class="reference internal" href="#updates" id="id4">Updates</a></li>
+<li><a class="reference internal" href="#id1" id="id5">Contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="references">
+<h2><a class="toc-backref" href="#id3">References</a><a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>List of referenced functional requirements...</p>
+<ul class="simple">
+<li><em class="xref std std-ref">FR::Title</em></li>
+<li><em class="xref std std-ref">TR::Title</em></li>
+</ul>
+</div>
+<div class="section" id="updates">
+<h2><a class="toc-backref" href="#id4">Updates</a><a class="headerlink" href="#updates" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Author(s)</th>
+<th class="head">Date</th>
+<th class="head">Version</th>
+<th class="head">Summary</th>
+<th class="head">Accepted by</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Gwenael Pluchon</td>
+<td>2016/02/16</td>
+<td>1.0</td>
+<td>First draft</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id1">
+<h2><a class="toc-backref" href="#id5">Contents</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="brick-creation">
+<span id="ed-title-desc"></span><h3>Brick creation<a class="headerlink" href="#brick-creation" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="creating-the-brick">
+<h4>Creating the brick<a class="headerlink" href="#creating-the-brick" title="Permalink to this headline">¶</a></h4>
+<p>A boilerplate brick has been created in a git repository to help developers to kickstart this step.</p>
+<p>Currently, the repository is available at <a class="reference external" href="https://github.com/gwenaelp/brick-boilerplate">https://github.com/gwenaelp/brick-boilerplate</a>.</p>
+<p>Bricks usually have to be contained in a dedicated repository, to provide a better packaging and delivery process. Thus, you will have to fork this brick into a repository.</p>
+<p>Then, clone your brick into the frontend source directory.</p>
+</div>
+<div class="section" id="initializing-the-project">
+<h4>Initializing the project<a class="headerlink" href="#initializing-the-project" title="Permalink to this headline">¶</a></h4>
+<p>To help maintaining bricks, the use of a tool (canopsis-ui-toolbelt) is advised. It has to be installed only on development environments, inside the brick.</p>
+<p>To install canopsis-ui-toolbelt, go into the brick folder, and execute the following command :</p>
+<div class="highlight-bash"><div class="highlight"><pre>npm install
+</pre></div>
+</div>
+<p>npm will take care to install the tooling and its dependencies at the right place.</p>
+<p>To complete the brick initialization step, it is require to reconfigure the brick manifest (located into the <cite>manifest.json</cite> file).</p>
+<p>The manifest have several options, but few are really required to start a project. To see how to configure a manifest in depth, please refer the  <a class="reference external" href="https://git.canopsis.net/canopsis/canopsis-ui-toolbelt#manifest">canopsis-ui-toolbelt documentation</a>.</p>
+<p>The only options that are relevant at this steps are :</p>
+<ul class="simple">
+<li>name : The name of the brick. It is the same as the repository and the brick folder names</li>
+<li>description : A short description of the brick purpose</li>
+<li>repository : repository information, in the format as npm&#8217;s package.json</li>
+<li>author : Your name</li>
+<li>license : The license under which you want to release the brick</li>
+</ul>
+<p>Once you have changed these options to fit your needs, you have to regenerate some files using the tooling :</p>
+<div class="highlight-bash"><div class="highlight"><pre>npm run compile
+</pre></div>
+</div>
+<p>This command is supposed to take care to regenerate files that are automatically handled by the tooling. These files are those located in the root directory, except the <cite>manifest.json</cite> file.</p>
+<p>This compilation step will take care to propagate the modifications done into the manifest file, into :</p>
+<ul class="simple">
+<li>README.md</li>
+<li>package.json</li>
+<li>bower.json</li>
+<li>and so on, and so forth...</li>
+</ul>
+</div>
+<div class="section" id="folder-hierarchy">
+<h4>Folder hierarchy<a class="headerlink" href="#folder-hierarchy" title="Permalink to this headline">¶</a></h4>
+<p>Now that the brick is set up, let&#8217;s have a look on the folder hierarchy.</p>
+<ul class="simple">
+<li>the src folder contains most of the source code.</li>
+<li>the requirejs-modules folder can contain code that uses requirejs. It is mostly used to manage javascript libraries.</li>
+<li>the dist folder contains a compiled version of the source code.</li>
+<li>the doc folder contains the documentation (API, user guides, ...).</li>
+<li>the tests folder contains tests scenarios, whether they are functionnal tests or unit tests.</li>
+<li>the externals folder can contain external libraries, such as jquery plugins for instance.</li>
+<li>the schemas folder can contain Json schemas, that will be used as models in the frontend application.</li>
+</ul>
+</div>
+<div class="section" id="environments">
+<h4>Environments<a class="headerlink" href="#environments" title="Permalink to this headline">¶</a></h4>
+<p>Bricks manifests can contain an &#8220;envMode&#8221; property. This property can take two values : &#8220;production&#8221; or &#8220;development&#8221;. If this property is not assigned into the manifest, it is considered that the brick is in production mode.</p>
+<ul class="simple">
+<li>Production mode have to be used when the brick is ready to be deployed, and it is assumed that is is stable. The minified version of the code will be executed.</li>
+<li>Development mode is used while editing brick code. The non-minified source code will be executed. This mode is more ressource-consuming, but it allows to help developers to debug their brick.</li>
+</ul>
+</div>
+<div class="section" id="starting-to-code">
+<h4>Starting to code<a class="headerlink" href="#starting-to-code" title="Permalink to this headline">¶</a></h4>
+<p>Once that everything is set up, you can start implementing features into the brick.</p>
+<p>To add some code, you just have to create code files into the src folder.</p>
+<p>The brick system supports at the moment :</p>
+<ul class="simple">
+<li>Javascript files (.js)</li>
+<li>Css files (.css)</li>
+<li>Handlebars files (.hbs). Note that for handlebars files, the file name corresponds to the template name, except for components.</li>
+</ul>
+<p>Except for components (see the dedicated part), you can manage your source folder hierarchy however you want. However, it is advised to keep this folder tied to this hierarchy :</p>
+<ul class="simple">
+<li>adapters</li>
+<li>components</li>
+<li>controllers</li>
+<li>forms</li>
+<li>mixins</li>
+<li>serializers</li>
+<li>templates</li>
+<li>views</li>
+<li>widgets</li>
+<li>...</li>
+</ul>
+<p>Note that for components, the following directory structure must be respected :</p>
+<ul>
+<li><dl class="first docutils">
+<dt>src</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>components</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>&lt;componentName&gt;</dt>
+<dd><ul class="first last simple">
+<li>component.js</li>
+<li>template.hbs</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Note that when you add or remove files to the source folder, the tests folder, or the requirejs-modules folder, it is mandatory to re-run the <cite>npm run compile</cite> command, to re-generate application entry points (<cite>init.js</cite>, <cite>init.test.js</cite>, ...).</p>
+</div>
+<div class="section" id="writing-javascript-code">
+<h4>Writing javascript code<a class="headerlink" href="#writing-javascript-code" title="Permalink to this headline">¶</a></h4>
+<p>Javascript code must be contained into Ember initializers, to be able to manage dependency injection properly :</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">Ember</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">initializer</span><span class="p">({</span>
+  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;MyObjectInitializer&#39;</span><span class="p">,</span>
+  <span class="nx">after</span><span class="o">:</span> <span class="s1">&#39;InheritedObjectInitializer&#39;</span>
+  <span class="nx">initialize</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">container</span><span class="p">,</span> <span class="nx">application</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">InheritedObject</span> <span class="o">=</span> <span class="nx">container</span><span class="p">.</span><span class="nx">lookupFactory</span><span class="p">(</span><span class="s1">&#39;object:inherited-object&#39;</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">MyObject</span> <span class="o">=</span> <span class="nx">InheritedObject</span><span class="p">.</span><span class="nx">extend</span><span class="p">({});</span>
+
+    <span class="nx">application</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="s1">&#39;object:my-object&#39;</span><span class="p">,</span> <span class="nx">MyObject</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">As of now, we will assume that our code is always wrapped into an initializer. Examples will not show the initializer wrapping to preserve code clarity and conciseness.</p>
+</div>
+</div>
+<div class="section" id="writing-components">
+<h4>Writing components<a class="headerlink" href="#writing-components" title="Permalink to this headline">¶</a></h4>
+<p>Components are elements that can be called directly from handlebars template, and data is directly binded to them through templates :</p>
+<div class="highlight-handlebars"><div class="highlight"><pre>{{component-checkbox checked=checkedValue class=&quot;toggle&quot;}}
+</pre></div>
+</div>
+<p>For a complete guide about writing components, please refer to Ember guides :
+<a class="reference external" href="https://guides.emberjs.com/v1.11.0/components/">https://guides.emberjs.com/v1.11.0/components/</a></p>
+</div>
+<div class="section" id="writing-editors-and-renderers">
+<h4>Writing editors and renderers<a class="headerlink" href="#writing-editors-and-renderers" title="Permalink to this headline">¶</a></h4>
+<p>Editors and renderers elements that shows up on the interface when it&#8217;s needed to display or edit data in a nifty way. They usually calls components from the template when it&#8217;s needed to provide some javascript function calls.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Editors usually appears on forms, and renderers on list cells.</p>
+</div>
+<p>The data that is supposed to be handled by editors and renderers is schema&#8217;s properties.</p>
+<p>To find the suitable editor for a data, The frontend internal logic is the following :</p>
+<ul class="simple">
+<li>If the property contains a role, find (by looking for the template &#8220;editor-&lt;role&gt;.hbs&#8221;) if an editor is available.</li>
+<li>Then, if no editor is found, it tries to find the editor for the data type (with the same logic as above)</li>
+<li>Finally, if nothing is found, it falls back to a default input.</li>
+</ul>
+<p>The logic is the same for renderers.</p>
+<div class="section" id="naming-conventions">
+<h5>Naming conventions<a class="headerlink" href="#naming-conventions" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li>Editors templates must start with &#8220;editor-&#8221; (&#8220;editor-boolean.hbs&#8221; for instance)</li>
+<li>Renderers templates must start with &#8220;renderer-&#8221; (&#8220;renderer-boolean.hbs&#8221; for instance)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="writing-widgets">
+<h4>Writing widgets<a class="headerlink" href="#writing-widgets" title="Permalink to this headline">¶</a></h4>
+<p>Widgets are the elements that are displayed on userviews. Basically, an userview is a set of widgets that are saved into it, with their configuration.</p>
+<p>Widgets are composed by :</p>
+<ul class="simple">
+<li>A controller</li>
+<li>A schema (that generates a model)</li>
+<li>A template</li>
+<li>Eventually, a view mixin (that is applied to the view, to allow injecting code on the widget view)</li>
+</ul>
+<p>So here, the MVC pattern is in use. It is advised to try to stick to it and :</p>
+<ul class="simple">
+<li>Write the data handling logic into the controller.</li>
+<li>Describe the widget editable properties into the schema.</li>
+<li>Use the template to do the layout.</li>
+<li>Interact with the template within the view mixin.</li>
+</ul>
+</div>
+<div class="section" id="writing-adapters">
+<h4>Writing adapters<a class="headerlink" href="#writing-adapters" title="Permalink to this headline">¶</a></h4>
+<p>Adapters are objects dedicated to contains all the logic to interact with a dedicated backend API. There should be no backend-specific code elsewhere on the code base, making the application compatible with different backends by enabling some other adapters.</p>
+<p>To see more information about writing adapters, please refer to the <a class="reference external" href="https://guides.emberjs.com/v1.11.0/models/customizing-adapters/">Ember Adapter guide</a>.</p>
+</div>
+<div class="section" id="writing-mixins">
+<h4>Writing mixins<a class="headerlink" href="#writing-mixins" title="Permalink to this headline">¶</a></h4>
+<p>Mixins are initially present to encourage code reuse : They can be added at the runtime to classes to enrich the classes algorithms.</p>
+<p>In the frontend, mixin internals have been pushed further. They can be applied to widgets directly from the view edition mode, and be delivered with a schema to provide persistant settings that are configurable through a form.</p>
+<p>If a mixin is provided with a schema, they must have the same name.</p>
+</div>
+<div class="section" id="importing-and-using-external-js-libraries">
+<h4>Importing and using external JS libraries<a class="headerlink" href="#importing-and-using-external-js-libraries" title="Permalink to this headline">¶</a></h4>
+</div>
+</div>
+<div class="section" id="testing">
+<h3>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h3>
+<p>Tests have to be written in the &#8220;tests&#8221; brick folder.</p>
+<p>Here is a test file example :</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;core&#39;</span><span class="p">);</span> <span class="c1">//This must be the brick name</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">&#39;Creating a view with an empty text widget&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">visit</span><span class="p">(</span><span class="s1">&#39;/userview/view.event&#39;</span><span class="p">);</span>
+
+    <span class="nx">expect</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span> <span class="c1">//We have 2 assertions in our test</span>
+
+    <span class="nx">click</span><span class="p">(</span><span class="s1">&#39;.nav-tabs-custom a.dropdown-toggle&#39;</span><span class="p">);</span>
+    <span class="nx">click</span><span class="p">(</span><span class="s1">&#39;.nav-tabs-custom .fa.fa-plus&#39;</span><span class="p">);</span>
+
+    <span class="nx">waitForElement</span><span class="p">(</span><span class="s1">&#39;input[name=crecord_name]&#39;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">fillIn</span><span class="p">(</span><span class="s1">&#39;input[name=crecord_name]&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">);</span>
+        <span class="nx">click</span><span class="p">(</span><span class="s1">&#39;.modal-dialog .btn-primary&#39;</span><span class="p">);</span>
+    <span class="p">});</span>
+    <span class="nx">click</span><span class="p">(</span><span class="s1">&#39;.nav-tabs-custom a.dropdown-toggle&#39;</span><span class="p">);</span>
+    <span class="nx">click</span><span class="p">(</span><span class="s1">&#39;.nav-tabs-custom .fa.fa-pencil&#39;</span><span class="p">);</span>
+    <span class="nx">click</span><span class="p">(</span><span class="s1">&#39;.btn-add-widget&#39;</span><span class="p">);</span>
+
+    <span class="nx">waitForElement</span><span class="p">(</span><span class="s1">&#39;.modal-dialog .ember-text-field&#39;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">equal</span><span class="p">(</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.box-title&#39;</span><span class="p">).</span><span class="nx">length</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;No widget on the view&#39;</span><span class="p">);</span>
+        <span class="nx">fillIn</span><span class="p">(</span><span class="s1">&#39;.modal-dialog .ember-text-field&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">);</span>
+        <span class="nx">click</span><span class="p">(</span><span class="s1">&#39;.modal-dialog .panel-default:first a&#39;</span><span class="p">);</span>
+        <span class="nx">click</span><span class="p">(</span><span class="s1">&#39;.modal-dialog .list-group-item a&#39;</span><span class="p">);</span>
+        <span class="nx">click</span><span class="p">(</span><span class="s1">&#39;.modal-dialog .btn-primary&#39;</span><span class="p">);</span>
+        <span class="nx">click</span><span class="p">(</span><span class="s1">&#39;.modal-dialog .btn-primary&#39;</span><span class="p">);</span>
+        <span class="nx">waitForElement</span><span class="p">(</span><span class="s1">&#39;.box-title&#39;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+            <span class="nx">equal</span><span class="p">(</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.box-title&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(),</span> <span class="s2">&quot;&lt; Untitled text widget &gt;&quot;</span><span class="p">,</span> <span class="s1">&#39;an untitled text widget is present&#39;</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>When adding a test file, the brick file generation step have to be run to modify the testing entry point of the brick (&#8220;init.test.js&#8221;).</p>
+<p>More information about available test helpers is available at :</p>
+<ul class="simple">
+<li><a class="reference external" href="https://guides.emberjs.com/v1.11.0/testing/test-helpers/">Ember Test guide</a></li>
+<li>&#8220;Tests&#8221; brick documentation</li>
+</ul>
+</div>
+<div class="section" id="brick-delivery">
+<h3>Brick delivery<a class="headerlink" href="#brick-delivery" title="Permalink to this headline">¶</a></h3>
+<p>Once the brick has been written, it is important to perform several checks and manipulations to ensure the brick is ready to be shipped to client installations.</p>
+<ul class="simple">
+<li>Set the environment to &#8220;production&#8221; (&#8220;envMode&#8221;: &#8220;production&#8221;)</li>
+<li>Run the minification toolchain on the brick (npm run minify)</li>
+<li>Recompile all the automatically generated brick files (npm run compile)</li>
+<li>Ensure test suites are all green</li>
+<li>Run the doc compilation (npm run doc)</li>
+<li>Ensure the brick lint is OK (npm run lint)</li>
+</ul>
+<p>Once these steps has been completed, commit the brick to it&#8217;s upstream repository.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, capensis.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'Sakura',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

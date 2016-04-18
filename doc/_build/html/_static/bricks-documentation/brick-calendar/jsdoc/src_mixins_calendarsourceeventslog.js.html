@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: src/mixins/calendarsourceeventslog.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <script src="../../doc-config.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+<div id="main">
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Widgets</h3><ul><li><a href="widget_calendar.html"><img src="icons/application_view_gallery.png" alt="widget"/> calendar</a></li></ul><h3>Schemas</h3><ul><li><a href="schema_calendar.html"><img src="icons/table.png" alt="schema"/> calendar</a></li><li><a href="schema_calendarday.html"><img src="icons/table.png" alt="schema"/> calendarday</a></li><li><a href="schema_calendarevent.html"><img src="icons/table.png" alt="schema"/> calendarevent</a></li><li><a href="schema_calendarsourcepbehavior.html"><img src="icons/table.png" alt="schema"/> calendarsourcepbehavior</a></li><li><a href="schema_calendarsourceuserevents.html"><img src="icons/table.png" alt="schema"/> calendarsourceuserevents</a></li><li><a href="schema_eventcategories.html"><img src="icons/table.png" alt="schema"/> eventcategories</a></li></ul><h3>Adapters</h3><ul><li><a href="adapter_calendardata.html"><img src="icons/disconnect.png" alt="adapter"/> calendardata</a></li><li><a href="adapter_calendarday.html"><img src="icons/disconnect.png" alt="adapter"/> calendarday</a></li></ul><h3>Classes</h3><ul><li><a href="canopsis.frontend.brick-calendar.module_eventcategories%2520component.html">eventcategories component</a></li><li><a href="canopsis.frontend.brick-calendar.module_viewMixin.html">viewMixin</a></li></ul><h3>Mixins</h3><ul><li><a href="module-calendarsourceeventlog.html"><img src="icons/brick.png" alt="mixin"/> calendarsourceeventlog</a></li><li><a href="module-calendarsourcepbehavior.html"><img src="icons/brick.png" alt="mixin"/> calendarsourcepbehavior</a></li><li><a href="module-calendarsourceuserevents.html"><img src="icons/brick.png" alt="mixin"/> calendarsourceuserevents</a></li></ul>
+</nav>
+
+
+    <h1 class="page-title">Source: src/mixins/calendarsourceeventslog.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see &lt;http://www.gnu.org/licenses/>.
+ */
+
+
+Ember.Application.initializer({
+    name:'CalendarSourceEventsLogMixin',
+    after: ['EventUtils', 'CustomfilterlistMixin'],
+    initialize: function(container, application) {
+        var eventUtil = container.lookupFactory('utility:event');
+        var Mixin = container.lookupFactory('factory:mixin');
+
+        var get = Ember.get,
+            set = Ember.set,
+            isNone = Ember.isNone,
+            moment = window.moment;
+
+        /**
+         * This is the calendar source eventlog mixin.
+         * This mixin is only available for the widget calendar
+         *
+         * @mixin calendarsourceeventlog
+         */
+        var mixin = Mixin('calendarsourceeventslog', {
+            init: function() {
+                this._super();
+
+                //TODO REMOVE!! --- Actually needful to get the customfilterlist
+                set(this, 'rights', {list_filters: {checksum: true}});
+                set(this, 'elEvents', []);
+            },
+
+            /**
+             * Rerender events log when the calendar view is refreshed
+             * @method renderEventLog
+             */
+            renderEventLog: function () {
+                var controller = this;
+
+                if (!isNone(get(controller, 'model.selected_filter.filter'))) {
+                    controller.removeEventLog();
+                    controller.getMixinFilter();
+                }
+            },
+
+            /**
+             * Give a formated filter to apply to the redirection
+             * @method formatFilterForWidgetList
+             * @param {number} start timestamp
+             * @return {string} filter
+             */
+            formatFilterForWidgetList: function (start) {
+
+                var startDay = moment(start).startOf('day');
+                var endDay = moment(start).startOf('day').add(1, 'd');
+
+                //TODO @fdemeulenaere create a property on the mixin dict, in order to comment it, and notify the presence of this property to future readers
+                var description = get(this, 'descriptionFilter');
+
+                var query;
+                if (isNone(description)) {
+                    query = {};
+                }
+                else {
+                    query = JSON.parse(description);
+                }
+
+                var filter = JSON.stringify({
+                    '$and': [
+                        query,
+                        {
+                            'timestamp': {
+                                '$gte': parseInt(startDay.format('X')),
+                                '$lte': parseInt(endDay.format('X'))
+                            }
+                        }
+                    ]
+                });
+
+                return filter;
+            },
+
+            /**
+             * Redirect to the event-history view, with given eventlog and filter
+             * @method goToInfo
+             * @param {String} filter selected filter
+             * @param {Object} element element concerned by the filter
+             */
+            goToInfo: function (filter, element) {
+
+                var transition = this.transitionToRoute('/userview/view.event-history');
+
+                eventUtil.applyVolatileFilter(transition, element, filter);
+
+            },
+
+            /**
+             * This method is called every time the selected filter is changed.
+             * Get the user filter created thanks to the customfilterlist mixin (method computeFilterFragmentList).
+             * Then, call loadEventsLog method to query events related to this filter.
+             * @method getMixinFilter
+             */
+            getMixinFilter: function() {
+                this._super();
+                var controller = this;
+
+                controller.getDateCalendarView();
+                this.computeFilterFragmentsList();
+
+                if (!isNone(get(controller, 'titleFilter'))) {
+                    var promises = [controller.loadEventsLog()];
+                    controller.onSourceLoad(promises, ['reDrawEventLog']);
+                }
+
+            }.observes('model.selected_filter'),
+
+            /**
+             * Remove eventlog from calendar
+             * @method removeEventLog
+             */
+            removeEventLog: function () {
+                var controller = this;
+                var elEvents = get(controller, 'elEvents');
+                controller.trigger('removeEventCalendar', elEvents[0]);
+                elEvents = [];
+                set(controller, 'elEvents', elEvents);
+            },
+
+            /**
+             * Display current eventlog on the fullcalendar
+             * @method reDrawEventLog
+             * @param {controller} controller
+             */
+            reDrawEventLog: function (controller) {
+                var elEvents = get(controller, 'elEvents');
+                controller.trigger('addEventCalendar', elEvents[0]);
+            },
+
+            /**
+             * Get eventlog from calendarday collection
+             * @method loadEventsLog
+             * @return {promise} promise
+             */
+            loadEventsLog: function(){
+                var controller = this;
+                var store = get(controller, 'widgetDataStore'),
+                    elEvents = get(controller, 'elEvents');
+
+                controller.getDateCalendarView();
+
+                var mongoQuery = get(controller, 'descriptionFilter');
+
+                var eventsLogParams = {};
+                if (mongoQuery === '' || isNone(mongoQuery)) {
+                    eventsLogParams = {
+                        tstart: get(controller, 'calendarStart'),
+                        tstop: get(controller, 'calendarEnd'),
+                        limit: 100
+                    };
+                } else {
+                    eventsLogParams = {
+                        tstart: get(controller, 'calendarStart'),
+                        tstop: get(controller, 'calendarEnd'),
+                        limit: 100,
+                        select: mongoQuery
+                    };
+                }
+
+                var promise = store.findQuery('calendarday', eventsLogParams).then(function (result) {
+                    var contentsCount = get(result, 'content');
+                    var countlength = contentsCount.length,
+                        calendarTab = [];
+
+                    for (var i = 0; i &lt; countlength; i++) {
+                        var count = get(contentsCount[i], 'count');
+                        var date = get(contentsCount[i], 'date');
+
+                        if(count !== 0) {
+                            var formated_eventsLogCount = controller.getEventsLogCount(count, date);
+                            calendarTab.pushObject(formated_eventsLogCount);
+                        }
+                    }
+
+                    var color = get(controller, 'bgcolor_eventlog');
+                    var textColor = get(controller, 'textcolor_eventlog');
+                    elEvents.pushObject({
+                        name: get(controller, 'titleFilter'),
+                        events: calendarTab,
+                        color: color,
+                        textColor: textColor
+                    });
+                    set(controller, 'elEvents', elEvents);
+
+                });
+
+                return promise;
+            },
+
+            /**
+             * Override the mixin's computeFilterFragmentsList method
+             * @method computeFilterFragmentsList
+             * @return {Array}
+             */
+            computeFilterFragmentsList: function() {
+                var controller = this;
+                var elEvents = get(controller, 'elEvents');
+                var filter = get(this, 'model.selected_filter');
+
+                console.log('the selected_filter', filter);
+                // if no filter is selected, we return []
+                if (!isNone(filter)) {
+                    // if there already is the eventlog source displayed, we return the same filter
+                    if (!isNone(elEvents[0]) &amp;&amp; get(filter, 'title') === elEvents[0].name) {
+                        set(controller, 'titleFilter', get(filter, 'title'));
+                        set(controller, 'descriptionFilter', get(filter, 'filter'));
+                        return [get(filter, 'filter')];
+                    }
+                    // if not, we have to remove the old source before
+                    else {
+                        controller.removeEventLog();
+                        set(controller, 'titleFilter', get(filter, 'title'));
+                        set(controller, 'descriptionFilter', get(filter, 'filter'));
+                        return [get(filter, 'filter')];
+                    }
+                }
+                else {
+                    return [];
+                }
+            },
+
+            /**
+             * Format the eventLog count for fullCalendar
+             * @method getEventsLogCount
+             * @param {number} count: integer that represents the count of events log relative to the given
+             * @param {object} date: object that contains a 'begin' timestamp attribute and a 'end' timestamp attribute
+             * @return {object}
+             */
+            getEventsLogCount: function (count, date) {
+                var title = '';
+                if ( count > 100) {
+                    title = [' ', get(this, 'titleFilter'), ': more than 100'].join('');
+                }
+                else {
+                    title = [' ', get(this, 'titleFilter'), ': x' + count].join('');
+                }
+                return {
+                    type: 'eventlog',
+                    title: title,
+                    start: moment(get(date, 'begin')*1000).format(),
+                    end: moment(get(date, 'end')*1000).format(),
+                    allDay: true
+                };
+            },
+
+            actions: {
+                /**
+                 * Redirect on the description view with relative event and filter
+                 * @method onClickeventlog
+                 * @param {object} calEvent fullcalendar event
+                 * @param {object} jsEvent Javascript catched event
+                 */
+                onClickeventlog: function (calEvent, jsEvent) {
+                    void(jsEvent);
+                    var filter = this.formatFilterForWidgetList(calEvent.start);
+                    this.goToInfo(filter, calEvent);
+                }
+            }
+
+        });
+
+        application.register('mixin:calendarsourceeventslog', mixin);
+    }
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Apr 14 2016 16:26:18 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
