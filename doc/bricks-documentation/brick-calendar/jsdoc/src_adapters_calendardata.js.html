@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: src/adapters/calendardata.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <script src="../../doc-config.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+<div id="main">
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Widgets</h3><ul><li><a href="widget_calendar.html"><img src="icons/application_view_gallery.png" alt="widget"/> calendar</a></li></ul><h3>Schemas</h3><ul><li><a href="schema_calendar.html"><img src="icons/table.png" alt="schema"/> calendar</a></li><li><a href="schema_calendarday.html"><img src="icons/table.png" alt="schema"/> calendarday</a></li><li><a href="schema_calendarevent.html"><img src="icons/table.png" alt="schema"/> calendarevent</a></li><li><a href="schema_calendarsourcepbehavior.html"><img src="icons/table.png" alt="schema"/> calendarsourcepbehavior</a></li><li><a href="schema_calendarsourceuserevents.html"><img src="icons/table.png" alt="schema"/> calendarsourceuserevents</a></li><li><a href="schema_eventcategories.html"><img src="icons/table.png" alt="schema"/> eventcategories</a></li></ul><h3>Adapters</h3><ul><li><a href="adapter_calendardata.html"><img src="icons/disconnect.png" alt="adapter"/> calendardata</a></li><li><a href="adapter_calendarday.html"><img src="icons/disconnect.png" alt="adapter"/> calendarday</a></li></ul><h3>Classes</h3><ul><li><a href="canopsis.frontend.brick-calendar.module_eventcategories%2520component.html">eventcategories component</a></li><li><a href="canopsis.frontend.brick-calendar.module_viewMixin.html">viewMixin</a></li></ul><h3>Mixins</h3><ul><li><a href="module-calendarsourceeventlog.html"><img src="icons/brick.png" alt="mixin"/> calendarsourceeventlog</a></li><li><a href="module-calendarsourcepbehavior.html"><img src="icons/brick.png" alt="mixin"/> calendarsourcepbehavior</a></li><li><a href="module-calendarsourceuserevents.html"><img src="icons/brick.png" alt="mixin"/> calendarsourceuserevents</a></li></ul>
+</nav>
+
+
+    <h1 class="page-title">Source: src/adapters/calendardata.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright (c) 2015 "Capensis" [http://www.capensis.com]
+ *
+ * This file is part of Canopsis.
+ *
+ * Canopsis is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Canopsis is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Canopsis. If not, see &lt;http://www.gnu.org/licenses/>.
+ */
+
+Ember.Application.initializer({
+    name: 'CalendarData',
+    after: ['BaseAdapter'],
+    initialize: function(container, application) {
+        var BaseAdapter = container.lookupFactory('adapter:base');
+
+        /**
+         * @adapter calendardata
+         * @memberOf canopsis.frontend.brick-calendar
+         */
+        var adapter = BaseAdapter.extend({
+
+            /**
+             * build url to query database
+             * @method buildURL
+             * @param {string} type unused
+             * @param {string} id unused
+             * @param {object} record unused
+             * @return {string} url
+             */
+            buildURL: function(type, id, record) {
+                void(type);
+                void(record);
+
+                var result = '/calendar';
+
+                return result;
+            },
+
+            /**
+             * Ember method to query database
+             * @method findQuery
+             * @param {string} type used for buildURL
+             * @param {string} store store to query
+             * @param {object} query mongoDB query
+             * @return {array} list of events
+             */
+            findQuery: function(store, type, query) {
+                var url = this.buildURL(type, null);
+                url = url.concat('/values');
+
+                return this.ajax(url, 'GET', {data: query});
+            },
+
+            /**
+             * Ember method to query database
+             * @method findQuery
+             * @param {string} type used for buildURL
+             * @param {string} store store to query
+             * @param {object} record record to create
+             * @return {boolean} success or fail
+             */
+            createRecord: function(store, type, record) {
+                var url = this.buildURL(type, null);
+
+                return this.ajax(url, 'PUT', {data: record});
+            }
+        });
+
+        application.register('adapter:calendardata', adapter);
+    }
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Fri Apr 15 2016 12:54:07 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

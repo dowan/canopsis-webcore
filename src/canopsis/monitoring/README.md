@@ -12,18 +12,19 @@ Monitoring-related features for Canopsis
 
 You need to clone the git repository and copy directory to Canopsis path
 
-    $ git clone https://git.canopsis.net/canopsis-ui-bricks/monitoring.git
-    $ cp -r monitoring $CANOPSIS_PATH/var/www/canopsis
+    $ su - canopsis 
+    $ cd var/www
+    $ ./bin/brickmanager install monitoring
 
 Then, you need to enable the brick
 
-    $ su - canopsis
-    $ webmodulemanager enable monitoring
+    $ ./bin/brickmanager enable monitoring
 
 You can see enabled bricks
 
     $ su - canopsis
-    $ webmodulemanager list
+    $ cd var/www
+    $ ./bin/brickmanager list
     [u'core', u'uibase', u'monitoring', ..., **u'monitoring'**]
 
 ## Usage
@@ -38,7 +39,7 @@ The last build was not a full build. Please use the "full-compile" npm script to
 
 ### Lint
 
-Tested on commit : 9fa8258.
+Tested on commit : 60420c1.
 
 | Target | Status | Log |
 | ------ | ------ | --- |

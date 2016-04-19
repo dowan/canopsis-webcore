@@ -12,18 +12,19 @@ Core UI brick. Provides the base application layer for the Canopsis UI
 
 You need to clone the git repository and copy directory to Canopsis path
 
-    $ git clone https://git.canopsis.net/canopsis-ui-bricks/core.git
-    $ cp -r core $CANOPSIS_PATH/var/www/canopsis
+    $ su - canopsis 
+    $ cd var/www
+    $ ./bin/brickmanager install core
 
 Then, you need to enable the brick
 
-    $ su - canopsis
-    $ webmodulemanager enable core
+    $ ./bin/brickmanager enable core
 
 You can see enabled bricks
 
     $ su - canopsis
-    $ webmodulemanager list
+    $ cd var/www
+    $ ./bin/brickmanager list
     [u'core', u'uibase', u'monitoring', ..., **u'core'**]
 
 ## Usage
@@ -38,7 +39,7 @@ The last build was not a full build. Please use the "full-compile" npm script to
 
 ### Lint
 
-Tested on commit : 78dc6dd.
+Tested on commit : 60420c1.
 
 | Target | Status | Log |
 | ------ | ------ | --- |

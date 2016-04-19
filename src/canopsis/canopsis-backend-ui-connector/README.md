@@ -15,12 +15,6 @@ You need to clone the git repository and copy directory to Canopsis path
     $ git clone https://git.canopsis.net/canopsis-ui-bricks/canopsis-backend-ui-connector.git
     $ cp -r canopsis-backend-ui-connector $CANOPSIS_PATH/var/www/canopsis
 
-Then, you need to import specific schemas
-
-    $ su - canopsis
-    $ cp $CANOPSIS_PATH/var/www/canopsis/canopsis-backend-ui-connector/schemas/* $CANOPSIS_PATH/etc/schema.d
-    $ schema2db
-
 Then, you need to enable the brick
 
     $ su - canopsis
@@ -38,11 +32,18 @@ See [Howto](https://git.canopsis.net/canopsis-ui-bricks/canopsis-backend-ui-conn
 
 ## Continuous Integration
 
-Tested on commit : [ERROR : The brick is not in a dedicated git repository].
+### Tests
+
+The last build was not a full build. Please use the "full-compile" npm script to make test results show up here.
+
+### Lint
+
+Tested on commit : 60420c1.
 
 | Target | Status | Log |
 | ------ | ------ | --- |
 | Lint   | :ok: OK |  |
+
 
 ## Code Notes
 

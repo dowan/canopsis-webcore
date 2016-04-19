@@ -7,5 +7,6 @@
   "repository": {
     "type": "git",
     "url": "https://git.canopsis.net/canopsis/canopsis-webcore.git"
-  }
+  },
+  "envMode": "production"
 }

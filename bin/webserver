@@ -59,3 +59,4 @@ app.use('/rest/object/authconfiguration/cservice.authconfiguration', function(re
 });
 
 app.listen(8080);
+console.log('serving files on port 8080...');
