@@ -87,7 +87,7 @@ function in_array(needle, haystack){
 
 function enableBrick(brickName) {
   var contents = JSON.parse(fs.readFileSync('src/canopsis/enabled-bricks.json').toString());
-  execSync('cp -r src/canopsis/'+ brickName +'/doc doc/bricks-documentation/' + brickName);
+  execSync('cp -r src/canopsis/'+ brickName +'/doc/* doc/bricks-documentation/' + brickName);
   if(in_array(brickName, contents) !== -1) {
     console.log('brick '+ brickName +' already enabled');
   } else {
