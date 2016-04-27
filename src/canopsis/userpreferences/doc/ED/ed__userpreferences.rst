@@ -1,4 +1,4 @@
-.. _TR__userpreferences:
+.. _ED__userpreferences:
 
 ===========================
 User preferences
