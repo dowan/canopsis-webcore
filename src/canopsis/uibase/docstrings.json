@@ -1,0 +1,5245 @@
+{
+    "components": [
+        {
+            "name": "actionbutton",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "actionbutton",
+                "description": "<p>shows a button that triggers an action. This component requires a nested &quot;yield&quot; template.</p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "action",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>the action name. It must be an action handled by the &quot;action&quot; utility</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                }
+            ],
+            "functions": [
+                {
+                    "name": "actions_doAction",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [
+                        {
+                            "name": "action",
+                            "type": "",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        },
+                        {
+                            "name": "params",
+                            "type": "array",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "actionfilter",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "actionfilter",
+                "description": "<p>A component to handle actions for the filter engine</p>",
+                "parameters": [],
+                "examples": []
+            },
+            "functions": [
+                {
+                    "name": "init",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "actions_addAction",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "actions_deleteAction",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [
+                        {
+                            "name": "action",
+                            "type": "",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                }
+            ],
+            "properties": [
+                {
+                    "name": "selectedAction",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>The action selected on the component combobox</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "availableactions",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>A list of all available actions</p>",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "isOverride",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property, dependent on the &quot;selectedAction&quot; property</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "isRoute",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property, dependent on the &quot;selectedAction&quot; property</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "isRemove",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property, dependent on the &quot;selectedAction&quot; property</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "isExecJob",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property, dependent on the &quot;selectedAction&quot; property</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "arrayclassifiedcrecordselector",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "arrayclassifiedcrecordselector",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "multiselect",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                }
+            ],
+            "functions": [
+                {
+                    "name": "setInitialContent",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [
+                        {
+                            "name": "initialContent",
+                            "type": "",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                },
+                {
+                    "name": "selectionChanged",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "extractItems",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "arrayeditor",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "arrayeditor",
+                "description": "<p>Base component for arrays. Tries to find the appropriate editor for array elements, and display an editable list of these editors.</p>\n<p><img src=\"../screenshots/component-arrayeditor.png\" alt=\"Component preview\"></p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "valueRefPath",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "valuePath",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "itemEditorType",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property, dependent on &quot;content.model.options.items.type&quot; and &quot;content.model.options.items.role&quot;. Editor name for array elements. The name is found with the usual logic (using role and type), but on the &quot;items&quot; key of the attribute</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                }
+            ],
+            "functions": [
+                {
+                    "name": "init",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "generateVirtualAttribute",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Generates a virtual attribute that will be used to manipulate the array item data</p>",
+                    "parameters": [
+                        {
+                            "name": "itemIndex",
+                            "type": "integer",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": [],
+                    "returns": {
+                        "type": "object",
+                        "description": "<p>virtual attribute</p>"
+                    }
+                },
+                {
+                    "name": "contentChanged",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "actions_move",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [
+                        {
+                            "name": "direction.",
+                            "type": "string",
+                            "description": "<p>&quot;up&quot; or &quot;down&quot;.</p>",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        },
+                        {
+                            "name": "item.",
+                            "type": "integer",
+                            "description": "<p>The item index to move</p>",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                },
+                {
+                    "name": "actions_addItem",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "actions_removeItem",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [
+                        {
+                            "name": "item",
+                            "type": "",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                },
+                {
+                    "name": "moveItem",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [
+                        {
+                            "name": "oldIndex",
+                            "type": "integer",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        },
+                        {
+                            "name": "newIndex",
+                            "type": "integer",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "classifiedcrecordselector",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "classifiedcrecordselector",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "classifieditemselector",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "classifieditemselector",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "colorchooser",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "colorchooser",
+                "description": "<p>Component to wrap colpick component</p>",
+                "parameters": [],
+                "examples": [
+                    "{{#component-dropdownbutton}}\n\t{{#component-dropdownbuttonheader}}\n\t\t{{#component-dropdownbuttontitle}}\n\t\t\tColors &nbsp;\n\t\t\t<i class=\"fa fa-caret-square-o-down\"></i>\n\t\t\t{{component-dropdownbuttonoverview color=content}}\n\t\t{{/component-dropdownbuttontitle}}\n\t{{/component-dropdownbuttonheader}}\n\t{{#component-dropdownbuttoncontent}}\n\t\t{{component-colpick value=content}}\n\t{{/component-dropdownbuttoncontent}}\n{{/component-dropdownbutton}}"
+                ]
+            }
+        },
+        {
+            "name": "colpick",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "colpick",
+                "description": "<p>Component for choosing a color\nIt let to choose between a colorpicker\nand a display of several ranges</p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "classNames",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                }
+            ],
+            "functions": [
+                {
+                    "name": "init",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>instantiate component and load data</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "didInsertElement",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>set the chosen color and update css in function</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "onChange",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Set the new hexa code color on change (selection of an other color)</p>",
+                    "parameters": [
+                        {
+                            "name": "hsb",
+                            "type": "",
+                            "description": "<p>not used</p>",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        },
+                        {
+                            "name": "hex",
+                            "type": "string",
+                            "description": "<p>hexa code color</p>",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                },
+                {
+                    "name": "actions_changeColor",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Change the color with the new chosen color</p>",
+                    "parameters": [
+                        {
+                            "name": "color",
+                            "type": "object",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        },
+                        {
+                            "name": "range",
+                            "type": "object",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                },
+                {
+                    "name": "willDestroyElement",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Destroy each event handled before in the component</p>",
+                    "parameters": [],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "contextselector",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "contextselector",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "dateinterval",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "dateinterval",
+                "description": "<p>component to display a date interval selector. It uses the Jquery daterangepicker plugin, and is mostly intended to be used in forms.</p>\n<p><img src=\"../screenshots/component-dateinterval.png\" alt=\"Component preview\"></p>",
+                "parameters": [],
+                "examples": [
+                    "{{component-dateinterval content=attr.value}}"
+                ]
+            },
+            "functions": [
+                {
+                    "name": "init",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>generates a random id for a div belonging to the component</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "didInsertElement",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>initializes the daterangepicker Jquery plugin</p>",
+                    "parameters": [],
+                    "examples": []
+                }
+            ],
+            "properties": [
+                {
+                    "name": "id",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>the id of the div containing the daterangepicker plugin</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "label",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "dictclassifiedcrecordselector",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "dictclassifiedcrecordselector",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "dropdownbutton",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "dropdownbutton",
+                "description": "<p>Global component for dropdownbutton</p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "classNames",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "opened",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                }
+            ],
+            "functions": [
+                {
+                    "name": "actions_hideContent",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>show/hide content by setting the right variable</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "didInsertElement",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Manage the visibility of the content thanks to mouse events</p>",
+                    "parameters": [],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "dropdownbuttoncontent",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "dropdownbuttoncontent",
+                "description": "<p>Component for switching between display and hide of the content</p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "classNames",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "classNameBindings",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "align",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>the alignment of the content container. must be &quot;right&quot; or &quot;left&quot;</p>",
+                    "type": ""
+                }
+            ],
+            "functions": [
+                {
+                    "name": "init",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Initiate the component</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "dropdownContentMenu",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Method for defining a boolean value on dropdownContentMenu thanks to opened attribute</p>",
+                    "parameters": [],
+                    "examples": [],
+                    "returns": {
+                        "type": "boolean",
+                        "description": ""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Dropdownbuttonheader",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "Dropdownbuttonheader",
+                "description": "<p>Component that contains the title and optional other components for dropdownbutton</p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "tagName",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "classNameBindings",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                }
+            ],
+            "functions": [
+                {
+                    "name": "classAttribute",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Add/Remove a class in the dropdownbutton when the content is opened/closed</p>",
+                    "parameters": [],
+                    "examples": [],
+                    "returns": {
+                        "type": "String",
+                        "description": "<p>res</p>"
+                    }
+                },
+                {
+                    "name": "click",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>method calling toggle method on click</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "toggle",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Method to switch boolean value of opened attribute</p>",
+                    "parameters": [],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "Dropdownbuttonoverview",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "Dropdownbuttonoverview",
+                "description": "<p>Component for seeing the chosen color in the dropdownbutton</p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "classNames",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                }
+            ],
+            "functions": [
+                {
+                    "name": "style",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>return the css style with the right background color</p>",
+                    "parameters": [],
+                    "examples": [],
+                    "returns": {
+                        "type": "String",
+                        "description": ""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Dropdownbuttontitle",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "Dropdownbuttontitle",
+                "description": "<p>Component for defining the title of the dropdownbutton</p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "name",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "classNames",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                }
+            ]
+        },
+        {
+            "name": "elementidselectorwithoptions",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "elementidselectorwithoptions",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "availableDataColumns",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Columns available on the &quot;avaiable data&quot; table. This computed property gets the list of columns defined on the schema, and add a special column with the add button</p>",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "selectedItemHeaderRendererType",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "selectedItemHeaderRendererAttr",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                }
+            ]
+        },
+        {
+            "name": "eventkey",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "eventkey",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "filefield",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "filefield",
+                "description": "<p>an input for files</p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "type",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "attributeBindings",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "multiple",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                }
+            ],
+            "functions": [
+                {
+                    "name": "change",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [
+                        {
+                            "name": "e",
+                            "type": "event",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "filterclause",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "filterclause",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "formulaeditor",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "formulaeditor",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "ical",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "ical",
+                "description": "<p>Manage Ical format</p>",
+                "parameters": [],
+                "examples": [
+                    "<div class=\"well\">\n <center>\n      <h1>{{title}}</h1>\n  </center>\n  <form class=\"form-horizontal\" role=\"form\">\n\n      <div class=\"form-group\">\n          <label class=\"col-sm-2 control-label\">\n              {{#component-tooltip content=helpFrequency}}\n                  {{tr 'Frequency'}}\n              {{/component-tooltip}}\n          </label>\n          <div class=\"col-sm-10\">\n\n              {{view Ember.Select\n                  class=\"form-control\"\n                  content=frequencyForm\n                  optionValuePath=\"content.value\"\n                  optionLabelPath=\"content.label\"\n                  value=frequencySelection\n              }}\n\n          </div>\n      </div>\n\n      <div class=\"form-group\">\n          <label class=\"col-sm-2 control-label\">\n              {{#component-tooltip content=helpRepetitionCount}}\n                  {{tr 'Repetition count'}}\n              {{/component-tooltip}}\n          </label>\n          <div class=\"col-sm-10\">\n              {{input class=\"form-control\" value=repetitionCount}}\n          </div>\n      </div>\n\n      <div class=\"form-group\">\n          <label class=\"col-sm-2 control-label\">\n              {{#component-tooltip content=helpRepetitionInterval}}\n                  {{tr 'Repetition interval'}}\n              {{/component-tooltip}}\n          </label>\n          <div class=\"col-sm-10\">\n              {{input class=\"form-control\" value=repetitionInterval}}\n          </div>\n      </div>\n\n      <div class=\"form-group\">\n          <label class=\"col-sm-2 control-label\">\n              {{#component-tooltip content=helpStartDate}}\n                  {{tr 'Start date'}}\n              {{/component-tooltip}}\n          </label>\n          <div class=\"col-sm-10\">\n              {{component-datetimepicker content=startDate}}\n          </div>\n      </div>\n\n      <div class=\"form-group\">\n          <label class=\"col-sm-2 control-label\">\n              {{#component-tooltip content=helpStopDate}}\n                  {{tr 'Stop date'}}\n              {{/component-tooltip}}\n          </label>\n          <div class=\"col-sm-10\">\n              {{component-datetimepicker content=stopDate}}\n          </div>\n      </div>\n\n      <center>\n          <button class=\"btn btn-default\" {{action \"addRule\"}}>{{tr 'Add rule'}}</button>\n      </center>\n\n </form>\n\n  <hr />\n\n\n  <ul class=\"list-group\">\n      {{#each rule in rules}}\n          <li  class=\"list-group-item list-group-item-success\">\n              <button {{action \"removeRule\" rule}} class=\"btn btn-default\">\n                  <span class=\"glyphicon glyphicon-minus\"></span>\n                   {{tr 'Remove'}}\n              </button>\n              {{rule.value}}\n          </li>\n      {{/each}}\n  </ul>\n</div>"
+                ]
+            },
+            "functions": [
+                {
+                    "name": "init",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Initialize the component</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "actions_removeRule",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>remove a rule</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "actions_addRule",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Add a rule</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "actions_updateContent",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Update the component with new rules</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "actions_didInsertElement",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Simply display the component</p>",
+                    "parameters": [],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "labelledlink",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "labelledlink",
+                "description": "<p>displays two inputs, to edit an url, with a link associated to it</p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "label_placeholder",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>the placeholder for the label input</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "url_placeholder",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>the placeholder for the url input</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "content",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>an object that must have an &quot;url&quot; property, and a &quot;label&quot; property</p>",
+                    "type": {
+                        "names": [
+                            "object"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "linklist",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "linklist",
+                "description": "<p>This component loads labelled links information from entity link backend and make them\navailable in the link list button.</p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "link_types",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "links",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>the links to be displayed on the dropdown. Links are objects that must contains an &quot;url&quot; and a &quot;label&quot; properties.</p>",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                }
+            ],
+            "functions": [
+                {
+                    "name": "init",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "didInsertElement",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "linksFromApi",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Query the entity link storage in order to find a link list from an event.</p>",
+                    "parameters": [
+                        {
+                            "name": "evt",
+                            "type": "",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                },
+                {
+                    "name": "compute_url",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>computes the template url</p>",
+                    "parameters": [
+                        {
+                            "name": "context",
+                            "type": "object",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        },
+                        {
+                            "name": "template",
+                            "type": "string",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                },
+                {
+                    "name": "loadLinks",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Initialization of the api query from an event.\nData are cached, when already fetched, they are not reloaded.</p>",
+                    "parameters": [],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "mixinselector",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "mixinselector",
+                "description": "<p>A mixin selector. Fills a classifieditemselector with data from the mixins registry</p>\n<p><img src=\"../screenshots/component-mixinselector.png\" alt=\"Component preview\"></p>",
+                "parameters": [],
+                "examples": []
+            },
+            "functions": [
+                {
+                    "name": "init",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "recomputeSelection",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>recalculates the selection and update the &quot;content&quot; property</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "actions_selectItem",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Calls the recomputeSelection method when the user selects an item</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "actions_selectItem",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Calls the recomputeSelection method when the user unselects an item</p>",
+                    "parameters": [],
+                    "examples": []
+                }
+            ],
+            "properties": [
+                {
+                    "name": "classifiedItems",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>The mixins registry</p>",
+                    "type": {
+                        "names": [
+                            "MixinsRegistry"
+                        ]
+                    }
+                },
+                {
+                    "name": "selectionPrepared",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Contains the selection managed by the classifieditemselector</p>",
+                    "type": ""
+                },
+                {
+                    "name": "content",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Contains the user selection, extracted from the classifieditemselector that can be used outside of the component</p>",
+                    "type": ""
+                },
+                {
+                    "name": "selectionUnprepared",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                }
+            ]
+        },
+        {
+            "name": "modelselect",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "modelselect",
+                "description": "<p>displays a combo box with model instances, and allows to bind a value when a change occurs on the combo box.</p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "model",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property. The model type, capitalized.</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "availableModels",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property (dependant on the &quot;model&quot; property). list of available model instances.</p>",
+                    "type": ""
+                }
+            ],
+            "functions": [
+                {
+                    "name": "newModelSelected",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>event triggered when selectedModel changes. Assigns content.value to the model id.</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "init",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "password",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "password",
+                "description": "<p>A simple password input component, that automatically converts the typed password to a hash, using &quot;sha1&quot; or &quot;md5&quot;</p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "method",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>the hash method to be used to convert the password</p>",
+                    "type": ""
+                },
+                {
+                    "name": "content",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>the hash of the password</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                }
+            ],
+            "functions": [
+                {
+                    "name": "init",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "onUpdate",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>observes the password property</p>",
+                    "parameters": [],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "propertiestopopup",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "propertiestopopup",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "restobjectcombo",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "restobjectcombo",
+                "description": "<p>Finds data with a specified adapter, and displays a combobox with found elements on it, with a search input to filter fetched results</p>",
+                "parameters": [],
+                "examples": [
+                    "{{component-restobjectcombo\n     attr=attr\n     selectedValue=attr.value.value\n     schemaType=\"userviewsimplemodel\"\n     valueField=\"id\"\n     labelField=\"crecord_name\"\n     valuePath=\"attr.value.value\"\n}}"
+                ]
+            },
+            "properties": [
+                {
+                    "name": "schemaType",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>the schema name of the handle data set. Must be a name of a model registered in the ui</p>",
+                    "type": ""
+                },
+                {
+                    "name": "selectedValue",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>the value selected on the combobox. Is is the property of the selected object that is defined in the &quot;valueField&quot; property</p>",
+                    "type": ""
+                },
+                {
+                    "name": "valueField",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>the property of data elements that will be used as an identifier</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "labelField",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>the property of data elements that will be used as a label</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "valuePath",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "isLoading",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>true if the data is loading, false if it's already done, or if an error happened.</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "filteredElements",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>computed property, dependant on &quot;content&quot; and &quot;searchcriterion&quot;. Filters all the results to display only those that matches the search input content, if any.</p>",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                }
+            ],
+            "functions": [
+                {
+                    "name": "init",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>initialize the store</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "destroy",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>delete the store</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "categorizeElements",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>transforms the list of fetched elements into a categorized structure of elements, with a label and a value properties</p>",
+                    "parameters": [
+                        {
+                            "name": "elements",
+                            "type": "array",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                },
+                {
+                    "name": "didInsertElement",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>fetch the data, and bin events to handle selection change</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "willDestroyElement",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>unbind the selection change event</p>",
+                    "parameters": [],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "searchbar",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "searchbar",
+                "description": "<p>Search bar component</p>\n<p>Includes 3 tabs :</p>\n<ul>\n<li>All : allow selection of every field</li>\n<li>Indexed : only for indexed fields</li>\n<li>filter : cfilter embedding</li>\n</ul>\n<p>This component is a WIP, it only supports basic search at the moment</p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "showSearchOptions",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "tagName",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "tabAllId",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property. generated id for the DOM element. It allows to handle children elements by their DOM ids without having id collision while several identical components are present on the DOM.</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "tabIndexedId",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property. generated id for the DOM element. It allows to handle children elements by their DOM ids without having id collision while several identical components are present on the DOM.</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "tabFilterId",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property. generated id for the DOM element. It allows to handle children elements by their DOM ids without having id collision while several identical components are present on the DOM.</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "tabAllHref",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property. generated href for the &quot;all&quot; link.</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "tabIndexedHref",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property. generated href for the &quot;indexed&quot; link.</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "tabFilterHref",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property. generated href for the &quot;filter&quot; link.</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                }
+            ],
+            "functions": [
+                {
+                    "name": "actions_searchInputAction",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Action to handle search input changes</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "actions_clearSearch",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Action to handle search form clear.</p>",
+                    "parameters": [],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "simpledicteditor",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "simpledicteditor",
+                "description": "<p>A simple key-value editor. Keys and values can only be edited as strings</p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "content",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>the edited dictionnary</p>",
+                    "type": {
+                        "names": [
+                            "object"
+                        ]
+                    }
+                }
+            ],
+            "functions": [
+                {
+                    "name": "actions_addKey",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Adds the key to the edited dictionnary</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "actions_select",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "actions_removeKey",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Removes the key to the edited dictionnary</p>",
+                    "parameters": [
+                        {
+                            "name": "keyToDelete",
+                            "type": "string",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                },
+                {
+                    "name": "didInsertElement",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "contentChanged",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "slider",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "slider",
+                "description": "<p>Displays an editable slider based on the ionRangeSlider library that allows to edit a numeric value</p>\n<p><img src=\"../screenshots/component-slider.png\" alt=\"Slider preview\"></p>",
+                "parameters": [],
+                "examples": [
+                    "{{component-slider content=view.charge options=view.optionsCharge}}"
+                ]
+            },
+            "properties": [
+                {
+                    "name": "content",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>the numeric value to edit</p>",
+                    "type": {
+                        "names": [
+                            "integer"
+                        ]
+                    }
+                },
+                {
+                    "name": "options",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>an option dictionnary for the slider.\nOptions are : min (integer), max (integer), step (integer)</p>",
+                    "type": {
+                        "names": [
+                            "object"
+                        ]
+                    }
+                }
+            ],
+            "functions": [
+                {
+                    "name": "didInsertElement",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>enable the ionRangeSlider</p>",
+                    "parameters": [],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "stringclassifiedcrecordselector",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "stringclassifiedcrecordselector",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "tabscontent",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "tabscontent",
+                "description": "<p>tabs subcomponent. Can be used to display tabs, and handle their content. See the &quot;tabs&quot; component for more information.</p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "tabContainer",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>the root &quot;tabs&quot; component</p>",
+                    "type": {
+                        "names": [
+                            "Ember.Component"
+                        ]
+                    }
+                },
+                {
+                    "name": "classNames",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "attributeBindings",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "role",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "\"data-ref\"",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "active",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>whether the tab is active by default or not</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                }
+            ],
+            "functions": [
+                {
+                    "name": "init",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>assign elementId accordingly to parent tab container elementId, and check if the content must be displayed</p>",
+                    "parameters": [],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "tabheader",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "tabheader",
+                "description": "<p>tabs subcomponent. Can be used to display tabs, and handle their content. See the &quot;tabs&quot; component for more information.</p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "tagName",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "attributeBindings",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "\"data-toggle\"",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "role",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "\"data-ref\"",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "href",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property to generate the anchor link for the tab header label. Dependent on the tabContainer id and the ref property</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "tabContainer",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>the root &quot;tabs&quot; component</p>",
+                    "type": {
+                        "names": [
+                            "Ember.Component"
+                        ]
+                    }
+                },
+                {
+                    "name": "active",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>whether the tab header must be active or not</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                }
+            ],
+            "functions": [
+                {
+                    "name": "init",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>check if tab must be assigned an &quot;active&quot; class</p>",
+                    "parameters": [],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "table",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "table",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "tabs",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "tabs",
+                "description": "<p>Base component of a tab component composition. To be used jointly with the following components : &quot;tabscontentgroup&quot;, &quot;tabsheadergroup&quot;, &quot;tabcontent&quot;, &quot;tabheader&quot;</p>",
+                "parameters": [],
+                "examples": [
+                    "{{#component-tabs}}\n      {{#component-tabsheadergroup}}\n          {{component-tabheader ref=\"filter\" label=\"Filter\" active=true}}\n          {{component-tabheader ref=\"output\" label=\"Generated filter\"}}\n          {{component-tabheader ref=\"result\" label=\"Result\"}}\n      {{/component-tabsheadergroup}}\n      {{#component-tabscontentgroup}}\n          {{#component-tabcontent ref=\"filter\" active=true}}\n              filter\n          {{/component-tabcontent}}\n          {{#component-tabcontent ref=\"output\"}}\n              output\n          {{/component-tabcontent}}\n          {{#component-tabcontent ref=\"result\"}}\n              result\n          {{/component-tabcontent}}\n      {{/component-tabscontentgroup}}\n  {{/component-tabs}}"
+                ]
+            }
+        },
+        {
+            "name": "tabscontentgroup",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "tabscontentgroup",
+                "description": "<p>tabs subcomponent. Can be used to display tabs, and handle their content. See the &quot;tabs&quot; component for more information.</p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "classNames",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "tabsheadergroup",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "tabsheadergroup",
+                "description": "<p>tabs subcomponent. Can be used to display tabs, and handle their content. See the &quot;tabs&quot; component for more information.</p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "tagName",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "classNames",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "textwithsortoption",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "textwithsortoption",
+                "description": "<p>displays a combobox with two choices for letting the user choose a sort direction (Ascending, descending), alongside a text input</p>\n<p><img src=\"../screenshots/component-textwithsortoption.png\" alt=\"Component preview\"></p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "directionTypes",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>the directions to display in the combobox</p>",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "property",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>the text displayed in the text input</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "direction",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>the direction displayed in the combobox</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "content",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "object"
+                        ]
+                    }
+                }
+            ],
+            "functions": [
+                {
+                    "name": "init",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "onUpdate",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>manage changes propagation</p>",
+                    "parameters": [],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "timestamptooltiped",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "timestamptooltiped",
+                "description": "<p>Displays a timestamp with a tooltip that shows the elapsed time between the timestamp and now</p>\n<p><img src=\"../screenshots/component-timestamptooltiped.png\" alt=\"Component preview\"></p>",
+                "parameters": [],
+                "examples": [
+                    "{{component-timestamptooltiped\n    optionaltimestamp=value\n    eventstate=record.state\n    maintimestamp=record.timestamp\n    maintitle=\"Last event publication\"\n    hidedata=attr.options.hideDate\n    agoformat=attr.options.canDisplayAgo\n}}"
+                ]
+            }
+        },
+        {
+            "name": "typedvalue",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "typedvalue",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        }
+    ],
+    "functions": [
+        {
+            "name": "HumanReadableHelper",
+            "access": "",
+            "virtual": false,
+            "description": "",
+            "parameters": [
+                {
+                    "name": "value",
+                    "type": "object",
+                    "description": "<p>Value with unit to humanize</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                }
+            ],
+            "examples": [],
+            "returns": {
+                "type": "string",
+                "description": "<p>Humanized value.\nHandlebars helper used to humanize variables using ValuesUtility</p>"
+            }
+        },
+        {
+            "name": "getEntitiesFromServer",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Get entities from a foreign server.</p>",
+            "parameters": [
+                {
+                    "name": "entityIds",
+                    "type": "",
+                    "description": "<p>list of entity ids from where get entities.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                },
+                {
+                    "name": "success",
+                    "type": "",
+                    "description": "<p>handler to request success.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                },
+                {
+                    "name": "failure",
+                    "type": "",
+                    "description": "<p>handler to request failure.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                }
+            ],
+            "examples": []
+        },
+        {
+            "name": "_addGraph",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Add a graph and all its related elements into this records.</p>",
+            "parameters": [
+                {
+                    "name": "graph",
+                    "type": "",
+                    "description": "<p>graph to add with all inner elements.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                }
+            ],
+            "examples": []
+        },
+        {
+            "name": "findItems",
+            "access": "",
+            "virtual": false,
+            "description": "<p>display nodes in the widget</p>",
+            "parameters": [],
+            "examples": []
+        },
+        {
+            "name": "deleteRecords",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Delete record(s).</p>",
+            "parameters": [
+                {
+                    "name": "records",
+                    "type": "",
+                    "description": "<p>record(s) to delete.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                },
+                {
+                    "name": "success",
+                    "type": "",
+                    "description": "<p>fired if deleting successed.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                },
+                {
+                    "name": "failure",
+                    "type": "",
+                    "description": "<p>fired if deleting failed.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                },
+                {
+                    "name": "context",
+                    "type": "",
+                    "description": "<p>success/failure execution context.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                }
+            ],
+            "examples": []
+        },
+        {
+            "name": "select",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Select input record(s) in order to get detail informations.</p>",
+            "parameters": [
+                {
+                    "name": "records",
+                    "type": "",
+                    "description": "<p>record(s) to select.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                }
+            ],
+            "examples": []
+        },
+        {
+            "name": "unselect",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Unselect input record(s) in order to get detail informations.</p>",
+            "parameters": [
+                {
+                    "name": "records",
+                    "type": "",
+                    "description": "<p>record(s) to unselect.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                }
+            ],
+            "examples": []
+        },
+        {
+            "name": "saveRecords",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Save records.</p>",
+            "parameters": [
+                {
+                    "name": "records",
+                    "type": "",
+                    "description": "<p>records to save.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                }
+            ],
+            "examples": []
+        },
+        {
+            "name": "newRecord",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Convert input elt to a record, or returns it if already a record.</p>",
+            "parameters": [
+                {
+                    "name": "elt",
+                    "type": "",
+                    "description": "<p>element to convert. If undefined, get default vertice element.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                },
+                {
+                    "name": "edit",
+                    "type": "",
+                    "description": "<p>edit record with a form if true.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                },
+                {
+                    "name": "success",
+                    "type": "",
+                    "description": "<p>edition success callback. Takes record in parameter.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                },
+                {
+                    "name": "failure",
+                    "type": "",
+                    "description": "<p>edition failure callback. Takes record in parameter.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                }
+            ],
+            "examples": []
+        },
+        {
+            "name": "editRecord",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Edit a record.</p>",
+            "parameters": [
+                {
+                    "name": "record",
+                    "type": "",
+                    "description": "<p>record to edit. Can be a record id.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                },
+                {
+                    "name": "success",
+                    "type": "",
+                    "description": "<p>edition success callback. Takes record in parameter.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                },
+                {
+                    "name": "failure",
+                    "type": "",
+                    "description": "<p>edition failure callback. Takes record in parameter.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                }
+            ],
+            "examples": []
+        },
+        {
+            "name": "updateModel",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Update the view model related to model records.</p>",
+            "parameters": [],
+            "examples": []
+        },
+        {
+            "name": "weaveLinks",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Weave edge links from a d3 elt.</p>",
+            "parameters": [
+                {
+                    "name": "edge",
+                    "type": "",
+                    "description": "<p>d3 graph edge.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                }
+            ],
+            "examples": []
+        },
+        {
+            "name": "refreshSelectedShapes",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Refresh the view related to selected data.</p>",
+            "parameters": [],
+            "examples": []
+        },
+        {
+            "name": "refreshLockedShapes",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Refresh the view related to locked data.</p>",
+            "parameters": [],
+            "examples": []
+        },
+        {
+            "name": "showToolBox",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Show tool box related to input shape.</p>",
+            "parameters": [],
+            "examples": []
+        },
+        {
+            "name": "destroyToolBox",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Destroy toolbox.</p>",
+            "parameters": [],
+            "examples": []
+        },
+        {
+            "name": "removeTmpLink",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Remove tmp link</p>",
+            "parameters": [],
+            "examples": []
+        },
+        {
+            "name": "lock",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Lock shapes related to input data.</p>",
+            "parameters": [
+                {
+                    "name": "data",
+                    "type": "",
+                    "description": "<p>data to lock.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                },
+                {
+                    "name": "enable",
+                    "type": "",
+                    "description": "<p>if true, lock input data shapes.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                }
+            ],
+            "examples": []
+        },
+        {
+            "name": "addNodes",
+            "access": "",
+            "virtual": false,
+            "description": "<p>called when adding nodes.</p>",
+            "parameters": [],
+            "examples": []
+        },
+        {
+            "name": "delNodes",
+            "access": "",
+            "virtual": false,
+            "description": "<p>called during node deletion.</p>",
+            "parameters": [],
+            "examples": []
+        },
+        {
+            "name": "updateNodes",
+            "access": "",
+            "virtual": false,
+            "description": "<p>called during node updating.</p>",
+            "parameters": [],
+            "examples": []
+        },
+        {
+            "name": "addLinks",
+            "access": "",
+            "virtual": false,
+            "description": "<p>called during link addition.</p>",
+            "parameters": [],
+            "examples": []
+        },
+        {
+            "name": "delLinks",
+            "access": "",
+            "virtual": false,
+            "description": "<p>called during link deletion.</p>",
+            "parameters": [],
+            "examples": []
+        },
+        {
+            "name": "updateLinks",
+            "access": "",
+            "virtual": false,
+            "description": "<p>called during link updating.</p>",
+            "parameters": [],
+            "examples": []
+        },
+        {
+            "name": "checkTargetLink",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Check if a shape is a good target for a new link.</p>",
+            "parameters": [
+                {
+                    "name": "shape",
+                    "type": "",
+                    "description": "<p>target shape.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                }
+            ],
+            "examples": []
+        },
+        {
+            "name": "getNode",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Get a node from a record and register it in this.shapesById and nodes.\nIf node does not exist, create it.</p>",
+            "parameters": [
+                {
+                    "name": "record",
+                    "type": "",
+                    "description": "<p>source record.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                }
+            ],
+            "examples": [],
+            "returns": {
+                "type": "",
+                "description": "<p>record node.</p>"
+            }
+        },
+        {
+            "name": "addLink",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Add a link.</p>",
+            "parameters": [
+                {
+                    "name": "source",
+                    "type": "",
+                    "description": "<p>source link.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                },
+                {
+                    "name": "target",
+                    "type": "",
+                    "description": "<p>optional target link.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                },
+                {
+                    "name": "edit",
+                    "type": "",
+                    "description": "<p>enable link properties edition.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                },
+                {
+                    "name": "success",
+                    "type": "",
+                    "description": "<p>edition success callback. Takes record in parameter.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                },
+                {
+                    "name": "failure",
+                    "type": "",
+                    "description": "<p>edition failure callback. Takes record in parameter.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                },
+                {
+                    "name": "callback",
+                    "type": "",
+                    "description": "<p>execution context.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                }
+            ],
+            "examples": [],
+            "returns": {
+                "type": "",
+                "description": "<p>new edge node.</p>"
+            }
+        },
+        {
+            "name": "newToolBoxItem",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Create a new toolbox item with a name, a symbol and a transformation.</p>",
+            "parameters": [
+                {
+                    "name": "name",
+                    "type": "",
+                    "description": "<p>toolbox item name</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                },
+                {
+                    "name": "symbol",
+                    "type": "",
+                    "description": "<p>see d3.svg.symbol().type().</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                },
+                {
+                    "name": "transform",
+                    "type": "",
+                    "description": "<p>transformation attribute.</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                }
+            ],
+            "examples": []
+        },
+        {
+            "name": "getToolBoxItems",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Get toolbox names by node.</p>",
+            "parameters": [],
+            "examples": []
+        }
+    ],
+    "properties": [
+        {
+            "name": "invisibleCellsCount",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Indicates the number of invisible cells to generate in the stackedcolumns view, to prevent some draggableColumnsMixin bugs</p>",
+            "type": ""
+        },
+        {
+            "name": "actions",
+            "access": "",
+            "virtual": false,
+            "description": "<p>Show only d3 elements where entity names correspond to input filter.</p>",
+            "type": ""
+        }
+    ],
+    "widgets": [
+        {
+            "name": "List",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "List",
+                "description": "<h1>Overview</h1><p>Displays a list of records. This widget can be enhanced with a wide range of mixins, to provide additionnal content management features such as :</p>\n<ul>\n<li>filtering</li>\n<li>content display</li>\n<li>data edition</li>\n<li>monitoring related features</li>\n<li>and so on</li>\n</ul>\n<h1>Basic usage</h1><p>By default, the widget is able to display a paginated listing of all records found for a specified type (see the &quot;listed_crecord_type&quot; property on the schema).\nFor all of this records, it will show a configurable list of columns (see the &quot;displayed_columns&quot; schema property).</p>\n<p>For each displayed column of each listed record, the widget will try to find a correct and fancy way to display the value. It will thus try to find a correct renderer to display the data key.</p>\n<h1>Screenshots</h1><p><img src=\"../screenshots/widget-list-simple.png\" alt=\"Simple list\">\n<img src=\"../screenshots/widget-list-events.png\" alt=\"Event view\"></p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "standardListDisplay",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Whether to display the list as the regular table or not.\nUsed with mixin that fill the partial slot &quot;alternativeListDisplay&quot;, this can help to provide alternative displays</p>",
+                    "type": ""
+                },
+                {
+                    "name": "dynamicTemplateName",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "listlineControllerClass",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "user",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "rights",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "safeMode",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "itemType",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "historyMixinFindOptions",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "inspectedDataArray",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "paginationMixinFindOptions",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "widgetDataMetas",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "attributesKeysDict",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property dependant on &quot;attributesKeys&quot;</p>",
+                    "type": ""
+                },
+                {
+                    "name": "shown_columns",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                }
+            ],
+            "functions": [
+                {
+                    "name": "init",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "rollbackableChanged",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>observes if the model is rollbackable</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "generateListlineTemplate",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [
+                        {
+                            "name": "shown_columns",
+                            "type": "",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                },
+                {
+                    "name": "updateInterval",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Manages how time filter is set to the widget</p>",
+                    "parameters": [
+                        {
+                            "name": "interval",
+                            "type": "",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                },
+                {
+                    "name": "getTimeInterval",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Manages how time filter is get from the widget for refresh purposes</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "isAllSelectedChanged",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Observer on &quot;isAllSelected&quot;. Automatically select every record when the header checkbox is clicked</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "findItems",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "redenrerFor",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [
+                        {
+                            "name": "attribute",
+                            "type": "",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                },
+                {
+                    "name": "computeFilterFragmentsList",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computes the list of different filter fragments used to create a proper query</p>",
+                    "parameters": [],
+                    "examples": [],
+                    "returns": {
+                        "type": "Array",
+                        "description": "<p>the list of fragments</p>"
+                    }
+                },
+                {
+                    "name": "computeFindParams",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                }
+            ],
+            "events": [
+                {
+                    "name": "widgetDataChanged",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "TextWidget",
+            "description": "",
+            "extends": [
+                "Widget"
+            ],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "TextWidget",
+                "description": "<p>Displays a text cell, with custom content. The content of the widget can be customized with HTML and Handlebars\nIt is also possible to display information about events and perfdata.</p>\n<h1>Screenshots</h1><p><img src=\"../screenshots/widget-text-simple.png\" alt=\"Simple text\">\n<img src=\"../screenshots/widget-text-customhtml1.png\" alt=\"Event custom html\"></p>",
+                "parameters": [],
+                "examples": []
+            },
+            "functions": [
+                {
+                    "name": "findItems",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "onEvents",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [
+                        {
+                            "name": "events",
+                            "type": "",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        },
+                        {
+                            "name": "labelsByRk",
+                            "type": "",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                },
+                {
+                    "name": "onMetrics",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [
+                        {
+                            "name": "metrics",
+                            "type": "",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                },
+                {
+                    "name": "onSeries",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [
+                        {
+                            "name": "series",
+                            "type": "",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                },
+                {
+                    "name": "makeTemplate",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Make sure template has been compiled.</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "renderTemplate",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Render compiled template property with context property into the rendered property.</p>",
+                    "parameters": [],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "Uimaintabcollection",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "Uimaintabcollection",
+                "description": "<p>displays a list of tabs to navigate through a list of views, as well as buttons that allows the user to control the currently shown view, and to create views.</p>\n<p><img src=\"../screenshots/widget-uimaintabcollection.png\" alt=\"Widget preview\"></p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "userCanShowEditionMenu",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "userCanEditView",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "userCanCreateView",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "preparedTabs",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                }
+            ],
+            "functions": [
+                {
+                    "name": "isViewDisplayable",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [
+                        {
+                            "name": "viewId",
+                            "type": "",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                },
+                {
+                    "name": "actions_do",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [
+                        {
+                            "name": "action",
+                            "type": "",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        },
+                        {
+                            "name": "params",
+                            "type": "array",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                },
+                {
+                    "name": "actions_showViewOptions",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                }
+            ]
+        }
+    ],
+    "editors": [
+        {
+            "name": "editor-actionfilter",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-actionfilter",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-array",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-array",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-arrayclassifiedcrecordselector",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-arrayclassifiedcrecordselector",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-boolean",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-boolean",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-color",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-color",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-contextselector",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-contextselector",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-dateinterval",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-dateinterval",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-defaultpropertyeditor",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-defaultpropertyeditor",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-dictclassifiedcrecordselector",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-dictclassifiedcrecordselector",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-duration",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-duration",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-durationWithUnits",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-durationWithUnits",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-error",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-error",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-eventkey",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-eventkey",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-integer",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-integer",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-json",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-json",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-labelandviewid",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-labelandviewid",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-labelledlink",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-labelledlink",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-mail",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-mail",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-mixins",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-mixins",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-modelselect",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-modelselect",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-password",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-password",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-passwordmd5",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-passwordmd5",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-passwordsha1",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-passwordsha1",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-restobject",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-restobject",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-richtext",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-richtext",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-separator",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-separator",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-serieformula",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-serieformula",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-simpledict",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-simpledict",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-simplelist",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-simplelist",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-slider",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-slider",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-sortable",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-sortable",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-source",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-source",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-state",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-state",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-stringclassifiedcrecordselector",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-stringclassifiedcrecordselector",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-stringpair",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-stringpair",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-tags",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-tags",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-textarea",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-textarea",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-timestamp",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-timestamp",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-typedvalue",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-typedvalue",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-userpreference",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-userpreference",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        }
+    ],
+    "renderers": [
+        {
+            "name": "renderer-actionfilter",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "renderer-actionfilter",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "renderer-boolean",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "renderer-boolean",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "renderer-color",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "renderer-color",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "renderer-conf",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "renderer-conf",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "renderer-labelledlink",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "renderer-labelledlink",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "renderer-mail",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "renderer-mail",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "renderer-object",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "renderer-object",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "renderer-percent",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "renderer-percent",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "renderer-recordinfopopup",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "renderer-recordinfopopup",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "renderer-richtext",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "renderer-richtext",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "renderer-source",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "renderer-source",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "renderer-subprocess",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "renderer-subprocess",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "renderer-tags",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "renderer-tags",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "renderer-timestamp",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "renderer-timestamp",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "renderer-translator",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "renderer-translator",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        }
+    ],
+    "schemas": [
+        {
+            "name": "schema-arraysearch",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-arraysearch",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "searchable_columns",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>List of columns to allow search on</p>",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "schema-background",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-background",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "backgroundcolor",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "imageUrl",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "position",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "repeat",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "size",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "schema-canvas",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-canvas",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "title",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "xtype",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "items",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "schema-crud",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-crud",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "hideEdit",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "hideCreate",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "hideRemove",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "form",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Form class to use for creation/edition</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "formoptions",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Extra options for form class</p>",
+                    "type": {
+                        "names": [
+                            "object"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "schema-customfilter",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-customfilter",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "filter",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "title",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "schema-customfilterlist",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-customfilterlist",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "filters",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "user_filters",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "default_filter",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "additional_filter",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "selected_filter",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "object"
+                        ]
+                    }
+                },
+                {
+                    "name": "can_mix_filters",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "schema-draggablecolumns",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-draggablecolumns",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "user_displayed_columns",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "schema-euewi",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-euewi",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "listed_crecord_type",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "refreshableWidget",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "item_actions",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "default_column_sort",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "object"
+                        ]
+                    }
+                },
+                {
+                    "name": "record_template",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "display_record_field",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "displayed_columns",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "selection_toolbar",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "actions_toolbar",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "mixins",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "xtype",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "itemsPerPage",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "integer"
+                        ]
+                    }
+                },
+                {
+                    "name": "contentTruncatedLength",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>The max length displayed in rich text columns</p>",
+                    "type": {
+                        "names": [
+                            "integer"
+                        ]
+                    }
+                },
+                {
+                    "name": "cloaking",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "filters",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "default_filter",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "maximized_column_index",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>The most important column of the table. This column will be stretch to the max for the table to occupy the whole allocated space.</p>",
+                    "type": {
+                        "names": [
+                            "integer"
+                        ]
+                    }
+                },
+                {
+                    "name": "step_template",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "schema-gridlayout",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-gridlayout",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "forcelegacy",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p><br/><i class=\"fa fa-warning\"></i> BEWARE, force children widgets to use parent values (position reset) values if checked</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "columnXS",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Width of the widget in columns unit  for small definition screens</p>",
+                    "type": {
+                        "names": [
+                            "integer"
+                        ]
+                    }
+                },
+                {
+                    "name": "columnMD",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Width of the widget in columns unit for medium definition screens</p>",
+                    "type": {
+                        "names": [
+                            "integer"
+                        ]
+                    }
+                },
+                {
+                    "name": "columnLG",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Width of the widget in columns unit for large definition screens</p>",
+                    "type": {
+                        "names": [
+                            "integer"
+                        ]
+                    }
+                },
+                {
+                    "name": "offset",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Columns number to skip before placing the widget</p>",
+                    "type": {
+                        "names": [
+                            "integer"
+                        ]
+                    }
+                },
+                {
+                    "name": "hiddenXS",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Hidden on small resolutions</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "hiddenMD",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Hidden on medium resolutions</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "hiddenLG",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Hidden on large resolutions</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "schema-horizontallayout",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-horizontallayout",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "cellCssClass",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "schema-jobmanager",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-jobmanager",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "schema-list",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-list",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "listed_crecord_type",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "default_column_sort",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "object"
+                        ]
+                    }
+                },
+                {
+                    "name": "displayed_columns",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "user_displayed_columns",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "xtype",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "contentTruncatedLength",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>The max length displayed in rich text columns</p>",
+                    "type": {
+                        "names": [
+                            "integer"
+                        ]
+                    }
+                },
+                {
+                    "name": "columnsOrder",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "useRenderers",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Whether the renderer system must be used on the list. The renderer system makes the list takes more time to render, but with a more understandable content.</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "schema-listlinedetail",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-listlinedetail",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "template",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "schema-pagination",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-pagination",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "itemsPerPage",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "integer"
+                        ]
+                    }
+                },
+                {
+                    "name": "defaultItemsPerPage",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>The number of elements to display on a page</p>",
+                    "type": {
+                        "names": [
+                            "integer"
+                        ]
+                    }
+                },
+                {
+                    "name": "customItemsPerPage",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>List of number allowing user to select custom items per page</p>",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "schema-periodicrefresh",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-periodicrefresh",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "refreshInterval",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Refresh interval, in seconds</p>",
+                    "type": {
+                        "names": [
+                            "integer"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "schema-rangecolor",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-rangecolor",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "name",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "colors",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "schema-responsivelist",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-responsivelist",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "stackableColumnsPriority",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Sorted list of columns to stack when there is not enough space to display every shown column</p>",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "schema-sortablearray",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-sortablearray",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "user_sortedAttribute",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "schema-text",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-text",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "title",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "html",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Variables: <ul><li>Event: <code>{{event.label.*}}</code></li><li>Serie: <code>{{serie.name}}</code></li><li>Metric: <code>{{metric.component[.resource].name}}</code></li><li>Interval: <code>{{from}} {{to}}</code></li></ul></p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "time_window",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "number"
+                        ]
+                    }
+                },
+                {
+                    "name": "time_window_offset",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "number"
+                        ]
+                    }
+                },
+                {
+                    "name": "series",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Series to provide to template</p>",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "metrics",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Metrics to provide to template</p>",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "events",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Labelled events to provide to template</p>",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "mixins",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "schema-topology",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-topology",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "crecord_type",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "graph_type",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "width",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "integer"
+                        ]
+                    }
+                },
+                {
+                    "name": "height",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "integer"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "schema-uimaintabcollection",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-uimaintabcollection",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "tabs",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "schema-widgetcontainer",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-widgetcontainer",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "xtype",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "title",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "widgetslotTemplate",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "mixins",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "items",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                }
+            ]
+        }
+    ]
+}
