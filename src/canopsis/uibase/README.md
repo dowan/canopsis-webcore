@@ -2,13 +2,13 @@
 
 ## Index
 
-- [Description](#Description)
-- [Content](#Content)
-- [Installation](#Installation)
-- [Usage](#Usage)
-- [Continuous-Integration](#Continuous-Integration)
-- [Code-Notes](#Code-Notes)
-- [Additional-info](#Additional-info)
+- [description](#description)
+- [content](#content)
+- [installation](#installation)
+- [usage](#usage)
+- [continuous-integration](#continuous-integration)
+- [code-notes](#code-notes)
+- [additional-info](#additional-info)
 
 ## Description
 
