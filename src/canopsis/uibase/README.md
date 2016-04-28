@@ -2,13 +2,13 @@
 
 ## Index
 
-- [Description](#description)
-- [Content](#content)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Continuous-Integration](#continuous-integration)
-- [Code-Notes](#code-notes)
-- [Additional-info](#additional-info)
+- [Description](#Description)
+- [Content](#Content)
+- [Installation](#Installation)
+- [Usage](#Usage)
+- [Continuous-Integration](#Continuous-Integration)
+- [Code-Notes](#Code-Notes)
+- [Additional-info](#Additional-info)
 
 ## Description
 
@@ -18,48 +18,48 @@ Base UI application layer for Canopsis frontend
 
 ### Components
 
-actionbutton
-actionfilter
-arrayclassifiedcrecordselector
-arrayeditor
-classifiedcrecordselector
-classifieditemselector
-colorchooser
-colpick
-contextselector
-dateinterval
-dictclassifiedcrecordselector
-dropdownbutton
-dropdownbuttoncontent
-Dropdownbuttonheader
-Dropdownbuttonoverview
-Dropdownbuttontitle
-elementidselectorwithoptions
-eventkey
-filefield
-filterclause
-formulaeditor
-ical
-labelledlink
-linklist
-mixinselector
-modelselect
-password
-propertiestopopup
-restobjectcombo
-searchbar
-simpledicteditor
-slider
-stringclassifiedcrecordselector
-tabscontent
-tabheader
-table
-tabs
-tabscontentgroup
-tabsheadergroup
-textwithsortoption
-timestamptooltiped
-typedvalue
+ - actionbutton
+ - actionfilter
+ - arrayclassifiedcrecordselector
+ - arrayeditor
+ - classifiedcrecordselector
+ - classifieditemselector
+ - colorchooser
+ - colpick
+ - contextselector
+ - dateinterval
+ - dictclassifiedcrecordselector
+ - dropdownbutton
+ - dropdownbuttoncontent
+ - Dropdownbuttonheader
+ - Dropdownbuttonoverview
+ - Dropdownbuttontitle
+ - elementidselectorwithoptions
+ - eventkey
+ - filefield
+ - filterclause
+ - formulaeditor
+ - ical
+ - labelledlink
+ - linklist
+ - mixinselector
+ - modelselect
+ - password
+ - propertiestopopup
+ - restobjectcombo
+ - searchbar
+ - simpledicteditor
+ - slider
+ - stringclassifiedcrecordselector
+ - tabscontent
+ - tabheader
+ - table
+ - tabs
+ - tabscontentgroup
+ - tabsheadergroup
+ - textwithsortoption
+ - timestamptooltiped
+ - typedvalue
 
 
 ### Adapters
@@ -68,91 +68,91 @@ typedvalue
 
 ### Renderers
 
-renderer-actionfilter
-renderer-boolean
-renderer-color
-renderer-conf
-renderer-labelledlink
-renderer-mail
-renderer-object
-renderer-percent
-renderer-recordinfopopup
-renderer-richtext
-renderer-source
-renderer-subprocess
-renderer-tags
-renderer-timestamp
-renderer-translator
+ - renderer-actionfilter
+ - renderer-boolean
+ - renderer-color
+ - renderer-conf
+ - renderer-labelledlink
+ - renderer-mail
+ - renderer-object
+ - renderer-percent
+ - renderer-recordinfopopup
+ - renderer-richtext
+ - renderer-source
+ - renderer-subprocess
+ - renderer-tags
+ - renderer-timestamp
+ - renderer-translator
 
 
 ### Editors
 
-editor-actionfilter
-editor-array
-editor-arrayclassifiedcrecordselector
-editor-boolean
-editor-color
-editor-contextselector
-editor-dateinterval
-editor-defaultpropertyeditor
-editor-dictclassifiedcrecordselector
-editor-duration
-editor-durationWithUnits
-editor-error
-editor-eventkey
-editor-integer
-editor-json
-editor-labelandviewid
-editor-labelledlink
-editor-mail
-editor-mixins
-editor-modelselect
-editor-password
-editor-passwordmd5
-editor-passwordsha1
-editor-restobject
-editor-richtext
-editor-separator
-editor-serieformula
-editor-simpledict
-editor-simplelist
-editor-slider
-editor-sortable
-editor-source
-editor-state
-editor-stringclassifiedcrecordselector
-editor-stringpair
-editor-tags
-editor-textarea
-editor-timestamp
-editor-typedvalue
-editor-userpreference
+ - editor-actionfilter
+ - editor-array
+ - editor-arrayclassifiedcrecordselector
+ - editor-boolean
+ - editor-color
+ - editor-contextselector
+ - editor-dateinterval
+ - editor-defaultpropertyeditor
+ - editor-dictclassifiedcrecordselector
+ - editor-duration
+ - editor-durationWithUnits
+ - editor-error
+ - editor-eventkey
+ - editor-integer
+ - editor-json
+ - editor-labelandviewid
+ - editor-labelledlink
+ - editor-mail
+ - editor-mixins
+ - editor-modelselect
+ - editor-password
+ - editor-passwordmd5
+ - editor-passwordsha1
+ - editor-restobject
+ - editor-richtext
+ - editor-separator
+ - editor-serieformula
+ - editor-simpledict
+ - editor-simplelist
+ - editor-slider
+ - editor-sortable
+ - editor-source
+ - editor-state
+ - editor-stringclassifiedcrecordselector
+ - editor-stringpair
+ - editor-tags
+ - editor-textarea
+ - editor-timestamp
+ - editor-typedvalue
+ - editor-userpreference
 
 
 ### Schemas
 
-schema-arraysearch
-schema-background
-schema-canvas
-schema-crud
-schema-customfilter
-schema-customfilterlist
-schema-draggablecolumns
-schema-euewi
-schema-gridlayout
-schema-horizontallayout
-schema-jobmanager
-schema-list
-schema-listlinedetail
-schema-pagination
-schema-periodicrefresh
-schema-rangecolor
-schema-responsivelist
-schema-sortablearray
-schema-text
-schema-topology
-schema-uimaintabcollection
-schema-widgetcontainer
+ - schema-arraysearch
+ - schema-background
+ - schema-canvas
+ - schema-crud
+ - schema-customfilter
+ - schema-customfilterlist
+ - schema-draggablecolumns
+ - schema-euewi
+ - schema-gridlayout
+ - schema-horizontallayout
+ - schema-jobmanager
+ - schema-list
+ - schema-listlinedetail
+ - schema-pagination
+ - schema-periodicrefresh
+ - schema-rangecolor
+ - schema-responsivelist
+ - schema-sortablearray
+ - schema-text
+ - schema-topology
+ - schema-uimaintabcollection
+ - schema-widgetcontainer
 
 
 ### Serializers
@@ -165,9 +165,9 @@ schema-widgetcontainer
 
 ### Widgets
 
-List
-TextWidget
-Uimaintabcollection
+ - List
+ - TextWidget
+ - Uimaintabcollection
 
 
 ## Screenshots
