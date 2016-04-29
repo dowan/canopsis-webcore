@@ -2,13 +2,13 @@
 
 ## Index
 
-- [description](#description)
-- [content](#content)
-- [installation](#installation)
-- [usage](#usage)
-- [continuous-integration](#continuous-integration)
-- [code-notes](#code-notes)
-- [additional-info](#additional-info)
+- [Description](#description)
+- [Content](#content)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Continuous-integration](#continuous-integration)
+- [Code-notes](#code-notes)
+- [Additional-info](#additional-info)
 
 ## Description
 
@@ -16,7 +16,7 @@ Base UI application layer for Canopsis frontend
 
 ## Content
 
-### Components
+### components
 
  - actionbutton
  - actionfilter
@@ -61,31 +61,50 @@ Base UI application layer for Canopsis frontend
  - timestamptooltiped
  - typedvalue
 
+### functions
 
-### Adapters
+ - HumanReadableHelper
+ - getEntitiesFromServer
+ - _addGraph
+ - findItems
+ - deleteRecords
+ - select
+ - unselect
+ - saveRecords
+ - newRecord
+ - editRecord
+ - updateModel
+ - weaveLinks
+ - refreshSelectedShapes
+ - refreshLockedShapes
+ - showToolBox
+ - destroyToolBox
+ - removeTmpLink
+ - lock
+ - addNodes
+ - delNodes
+ - updateNodes
+ - addLinks
+ - delLinks
+ - updateLinks
+ - checkTargetLink
+ - getNode
+ - addLink
+ - newToolBoxItem
+ - getToolBoxItems
 
+### properties
 
+ - invisibleCellsCount
+ - actions
 
-### Renderers
+### widgets
 
- - renderer-actionfilter
- - renderer-boolean
- - renderer-color
- - renderer-conf
- - renderer-labelledlink
- - renderer-mail
- - renderer-object
- - renderer-percent
- - renderer-recordinfopopup
- - renderer-richtext
- - renderer-source
- - renderer-subprocess
- - renderer-tags
- - renderer-timestamp
- - renderer-translator
+ - List
+ - TextWidget
+ - Uimaintabcollection
 
-
-### Editors
+### editors
 
  - editor-actionfilter
  - editor-array
@@ -128,8 +147,25 @@ Base UI application layer for Canopsis frontend
  - editor-typedvalue
  - editor-userpreference
 
+### renderers
 
-### Schemas
+ - renderer-actionfilter
+ - renderer-boolean
+ - renderer-color
+ - renderer-conf
+ - renderer-labelledlink
+ - renderer-mail
+ - renderer-object
+ - renderer-percent
+ - renderer-recordinfopopup
+ - renderer-richtext
+ - renderer-source
+ - renderer-subprocess
+ - renderer-tags
+ - renderer-timestamp
+ - renderer-translator
+
+### schemas
 
  - schema-arraysearch
  - schema-background
@@ -154,20 +190,6 @@ Base UI application layer for Canopsis frontend
  - schema-uimaintabcollection
  - schema-widgetcontainer
 
-
-### Serializers
-
-
-
-### Mixins
-
-
-
-### Widgets
-
- - List
- - TextWidget
- - Uimaintabcollection
 
 
 ## Screenshots
@@ -205,7 +227,7 @@ The last build was not a full build. Please use the "full-compile" npm script to
 
 ### Lint
 
-Tested on commit : d79d22f.
+Tested on commit : a5bf5a7.
 
 | Target | Status | Log |
 | ------ | ------ | --- |
