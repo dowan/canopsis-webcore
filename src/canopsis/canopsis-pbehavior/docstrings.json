@@ -1,0 +1,18 @@
+{
+    "adapters": [
+        {
+            "name": "pbehavior",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "pbehavior",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        }
+    ]
+}

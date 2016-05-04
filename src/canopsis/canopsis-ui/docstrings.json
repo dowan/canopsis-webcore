@@ -1,0 +1,393 @@
+{
+    "components": [
+        {
+            "name": "rrule",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "rrule",
+                "description": "<p>A rrule component to display rrules</p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "rruleValue",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "rruleTooltip",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "rruleText",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                }
+            ]
+        },
+        {
+            "name": "rruleeditor",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "rruleeditor",
+                "description": "<p>A rrule editor component to write rrules</p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "rruleValue",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "rruleText",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "rruleHuman",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "tempRule",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "freq",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "frequencyList",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "dtstart",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "until",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "count",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "interval",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "wkst",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "wkStartList",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "byweekday",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "byweekdayList",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "byWeekDayChange",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "bymonth",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "bymonthList",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "bymonthChange",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "bysetposInput",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "bymonthdayInput",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "byyeardayInput",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "byweeknoInput",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "byhourInput",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "byminuteInput",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "bysecondInput",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "bysetpos",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "bymonthday",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "byyearday",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "byhour",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "byweekno",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "byminute",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "bysecond",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                }
+            ],
+            "functions": [
+                {
+                    "name": "init",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Rruleeditor init load rrule if given, set &quot;input&quot;\nand load the rule in tempRule attribut</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "didInsertElement",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>contains Rrule-editor initialisation and data binding</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "watchRruleText",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Observe and update rruleValue according to RruleText typed value</p>",
+                    "parameters": [
+                        {
+                            "name": "_obj",
+                            "type": "Object",
+                            "description": "<p>Emberjs obj returned by Ember observer</p>",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        },
+                        {
+                            "name": "name",
+                            "type": "String",
+                            "description": "<p>Name of var observed by Ember observer</p>",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                },
+                {
+                    "name": "updateRrule",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Observe and update rruleValue according to component form's</p>",
+                    "parameters": [
+                        {
+                            "name": "_obj",
+                            "type": "Object",
+                            "description": "<p>Emberjs obj returned by Ember observer</p>",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        },
+                        {
+                            "name": "name",
+                            "type": "String",
+                            "description": "<p>Name of var observed by Ember observer</p>",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                }
+            ]
+        }
+    ],
+    "functions": [
+        {
+            "name": "humanReadableRrule",
+            "access": "private",
+            "virtual": false,
+            "description": "",
+            "parameters": [
+                {
+                    "name": "correctly",
+                    "type": "String",
+                    "description": "<p>formated rrule</p>",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                }
+            ],
+            "examples": [],
+            "returns": {
+                "type": "",
+                "description": "<p>human readable rrule or error message</p>"
+            }
+        },
+        {
+            "name": "buildBeforeModelPromises",
+            "access": "",
+            "virtual": false,
+            "description": "",
+            "parameters": [
+                {
+                    "name": "transition",
+                    "type": "Transition",
+                    "description": "",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                }
+            ],
+            "examples": [],
+            "returns": {
+                "type": "Promise",
+                "description": "<p>Feed the ApplicationController with ticket options.</p>"
+            }
+        }
+    ]
+}
