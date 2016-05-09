@@ -25,11 +25,9 @@ Ember.Application.initializer({
         var promisesmanager = container.lookupFactory('registry:promises');
 
         /**
-         * Mixin allowing to show promises on the status bar
+         * @mixin PromisemanagerMixin
          *
-         * @class PromisemanagerMixin
-         * @extensionfor ApplicationController
-         * @static
+         * @description Mixin allowing to show promises on the status bar
          */
         var mixin = Mixin('promisemanager', {
             promises: promisesmanager,

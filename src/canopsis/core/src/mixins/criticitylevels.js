@@ -29,13 +29,14 @@ Ember.Application.initializer({
             isNone = Ember.isNone;
 
         /**
-          Implements criticity levels in ArrayControllers
-
-          You should define on the ArrayController:
-              - the `findOptions` property
-              - the `findItems()` method
-
-        */
+         * @mixin criticitylevels
+         * @description Implements criticity levels in ArrayControllers
+         *
+         * You should define on the ArrayController:
+         *    - the `findOptions` property
+         *    - the `findItems()` method
+         *
+         */
         var mixin = Mixin('criticitylevels', {
 
             init:function () {

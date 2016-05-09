@@ -23,6 +23,9 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var Mixin = container.lookupFactory('factory:mixin');
 
+        /**
+         * @mixin hashSerializer
+         */
         var mixin = Mixin('hashSerializer', {
             serializeIntoHash: function(hash, type, record, method, options) {
                 void (type);

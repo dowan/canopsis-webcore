@@ -31,9 +31,10 @@ Ember.Application.initializer({
             set = Ember.set;
 
         /**
-         * Implements Validation in form
+         * @mixin validation
+         *
+         * @description Implements Validation in form
          * You should define on the validationFields
-         * @mixin
          */
         var mixin = Mixin('validation', {
 

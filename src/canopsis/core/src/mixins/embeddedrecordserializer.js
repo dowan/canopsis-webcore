@@ -38,6 +38,9 @@ Ember.Application.initializer({
         }
 
         /**
+         * @mixin embeddedRecordSerializer
+         * @description
+         *
          * Test routine, every widget should implement this, as userview and widgetwrapper
          *
          * var c = getCanopsis();

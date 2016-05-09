@@ -33,11 +33,9 @@ Ember.Application.initializer({
             isNone = Ember.isNone;
 
        /**
-         * Mixin allowing to manage the current user profile, adding a button into the app status bar
+         * @mixin UserprofilestatusmenuMixin
          *
-         * @class UserprofilestatusmenuMixin
-         * @extensionfor ApplicationController
-         * @static
+         * @description Mixin allowing to manage the current user profile, adding a button into the app status bar
          */
         var mixin = Mixin('Userprofilestatusmenu', {
 

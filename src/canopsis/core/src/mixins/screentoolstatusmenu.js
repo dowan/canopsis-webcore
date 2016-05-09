@@ -24,11 +24,9 @@ Ember.Application.initializer({
         var Mixin = container.lookupFactory('factory:mixin');
 
         /**
-         * Mixin allowing to virtually resize the screen, adding a dedicated statusbar button into the app statusbar only in debug mode
+         * @mixin ScreentoolstatusmenuMixin
          *
-         * @class ScreentoolstatusmenuMixin
-         * @extensionfor ApplicationController
-         * @static
+         * @description Mixin allowing to virtually resize the screen, adding a dedicated statusbar button into the app statusbar only in debug mode
          */
         var mixin = Mixin('Screentoolstatusmenu', {
 

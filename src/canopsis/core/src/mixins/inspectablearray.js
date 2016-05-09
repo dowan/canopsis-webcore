@@ -23,6 +23,9 @@ Ember.Application.initializer({
     initialize: function(container, application) {
         var Mixin = container.lookupFactory('factory:mixin');
 
+        /**
+         * @mixin InspectableArray
+         */
         var mixin = Mixin('InspectableArray', {
             attributesKeys: function() {
                 var attributes = [];

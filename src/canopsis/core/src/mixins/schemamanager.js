@@ -36,11 +36,9 @@ Ember.Application.initializer({
 
 
         /**
-         * Mixin allowing to create schemas from the status bar in debug mode
+         * @mixin SchemamanagerMixin
          *
-         * @class SchemamanagerMixin
-         * @extensionfor ApplicationController
-         * @static
+         * @description Mixin allowing to create schemas from the status bar in debug mode
          */
         var mixin = Mixin('schemamanager', {
             configuration: canopsisConfiguration,

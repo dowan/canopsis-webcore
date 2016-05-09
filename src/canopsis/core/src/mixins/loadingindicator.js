@@ -29,11 +29,9 @@ Ember.Application.initializer({
 
 
         /**
-         * Mixin showing a loading indicator when there is an action that takes time. Used on the Application controller.
+         * @mixin LoadingindicatorMixin
          *
-         * @class LoadingindicatorMixin
-         * @extensionfor ApplicationController
-         * @static
+         * @description Mixin showing a loading indicator when there is an action that takes time. Used on the Application controller.
          */
         var mixin = Mixin('loadingindicator', {
             /**

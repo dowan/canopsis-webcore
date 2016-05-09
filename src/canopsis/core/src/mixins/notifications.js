@@ -29,11 +29,9 @@ Ember.Application.initializer({
             assert = Ember.assert;
 
         /**
-         * Mixin handling frontend-wide notifications. Used on the Application controller
+         * @mixin NotificationsMixin
          *
-         * @class NotificationsMixin
-         * @extensionfor ApplicationController
-         * @static
+         * @description Mixin handling frontend-wide notifications. Used on the Application controller
          */
         var mixin = Mixin('notifications', {
             init: function() {

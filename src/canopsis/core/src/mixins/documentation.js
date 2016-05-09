@@ -24,11 +24,8 @@ Ember.Application.initializer({
         var Mixin = container.lookupFactory('factory:mixin');
 
         /**
-         * Put a "view documentation button on the status bar"
-         *
-         * @class DocumentationMixin
-         * @extensionfor ApplicationController
-         * @static
+         * @mixin documentation
+         * @description Put a "view documentation button on the status bar"
          */
         var mixin = Mixin('Documentation', {
             /**

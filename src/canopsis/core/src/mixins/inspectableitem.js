@@ -32,10 +32,11 @@ Ember.Application.initializer({
 
 
         /**
+         * @mixin inspectableItem
+         * @description
          * Provides an "attributes" property, dependant on content, to iterate on model's attributes, with the value and schema's properties
          *
          * Warning :the parent controller MUST have attributesKeys property!
-         * @mixin
          */
 
         var mixin = Mixin('inspectableItem', {

@@ -26,11 +26,9 @@ Ember.Application.initializer({
         var requirejsmocksmanager = container.lookupFactory('registry:mocks');
 
         /**
-         * Mixin allowing to mock js code from inside the UI, adding a dedicated statusbar button into the app statusbar only in debug mode
+         * @mixin RequirejsmocksmanagerMixin
          *
-         * @class RequirejsmocksmanagerMixin
-         * @extensionfor ApplicationController
-         * @static
+         * @description Mixin allowing to mock js code from inside the UI, adding a dedicated statusbar button into the app statusbar only in debug mode
          */
         var mixin = Mixin('Requirejsmocksmanager', {
 

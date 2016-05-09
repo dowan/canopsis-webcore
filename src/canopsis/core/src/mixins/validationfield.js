@@ -32,7 +32,8 @@ Ember.Application.initializer({
 
 
         /**
-         * Use Component-> validators -> validate (Ember.validators["validate"]) for validation
+         * @mixin validationField
+         * @description Use Component-> validators -> validate (Ember.validators["validate"]) for validation
          */
         var mixin = Mixin('validationField', {
             attr : "",

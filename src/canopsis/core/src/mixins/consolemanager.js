@@ -33,9 +33,9 @@ Ember.Application.initializer({
 
         //TODO move this to development brick
         /**
-         * Mixin allowing console and various js runtime settings
+         * @description Mixin allowing console and various js runtime settings
          *
-         * @class ConsolemanagerMixin
+         * @mixin ConsolemanagerMixin
          * @extensionfor ApplicationController
          * @static
          */

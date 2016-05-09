@@ -26,7 +26,8 @@ Ember.Application.initializer({
         var isNone = Ember.isNone;
 
         /**
-         * @mixin This mixin should be used with serializers
+         * @mixin metaSerializer
+         * @description This mixin should be used with serializers
          * It aims to handle request metadata (total, errors, ...)
          */
         var mixin = Mixin('metaSerializer', {
