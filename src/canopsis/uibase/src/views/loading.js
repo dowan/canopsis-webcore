@@ -28,7 +28,7 @@ Ember.Application.initializer({
         var view = Ember.View.extend({
             didInsertElement: function() {
                 var view = this;
-                setTimeout(function(){ view.$('.loading-indicator').show(); }, 400);
+                setTimeout(function(){ view.$('.loading-indicator').show(); }, 1500);
             }
         });
 
