@@ -41,3 +41,13 @@ Dependencies
 
 - codemirror
 - parserlib
+
+Planning
+^^^^^^^^
+
+1/ From 2 hours to 2 days, depending if codemirror is integrated properly or not
+2/ 3 hours
+3/ 2 hours
+
+Brick management : 2h
+Documentation : 2h
