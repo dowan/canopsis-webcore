@@ -51,3 +51,4 @@ Planning
 
 Brick management : 2h
 Documentation : 2h
+Testing: 4h

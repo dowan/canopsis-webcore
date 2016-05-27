@@ -19,8 +19,10 @@
 
  require.config({
     paths: {
+        'components/component-codeeditor': 'canopsis/canopsis-ui/src/components/codeeditor/template',
         'components/component-rrule': 'canopsis/canopsis-ui/src/components/rrule/template',
         'components/component-rruleeditor': 'canopsis/canopsis-ui/src/components/rruleeditor/template',
+        'editor-code': 'canopsis/canopsis-ui/src/editors/editor-code',
         'editor-rrule': 'canopsis/canopsis-ui/src/editors/editor-rrule',
         'editor-rruleeditor': 'canopsis/canopsis-ui/src/editors/editor-rruleeditor',
         'jobform': 'canopsis/canopsis-ui/src/forms/jobform/jobform',
@@ -31,10 +33,13 @@
 });
 
  define([
+    'canopsis/canopsis-ui/src/components/codeeditor/component',
+    'ehbs!components/component-codeeditor',
     'canopsis/canopsis-ui/src/components/rrule/component',
     'ehbs!components/component-rrule',
     'canopsis/canopsis-ui/src/components/rruleeditor/component',
     'ehbs!components/component-rruleeditor',
+    'ehbs!editor-code',
     'ehbs!editor-rrule',
     'ehbs!editor-rruleeditor',
     'canopsis/canopsis-ui/src/forms/jobform/controller',

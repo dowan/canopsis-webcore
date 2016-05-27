@@ -20,8 +20,10 @@
  require.config({
     paths: {
         'application': 'canopsis/canopsis-ui/dist/templates/application',
+        'components/component-codeeditor': 'canopsis/canopsis-ui/dist/templates/components/component-codeeditor',
         'components/component-rrule': 'canopsis/canopsis-ui/dist/templates/components/component-rrule',
         'components/component-rruleeditor': 'canopsis/canopsis-ui/dist/templates/components/component-rruleeditor',
+        'editor-code': 'canopsis/canopsis-ui/dist/templates/editor-code',
         'editor-rrule': 'canopsis/canopsis-ui/dist/templates/editor-rrule',
         'editor-rruleeditor': 'canopsis/canopsis-ui/dist/templates/editor-rruleeditor',
         'jobform': 'canopsis/canopsis-ui/dist/templates/jobform',
@@ -33,8 +35,10 @@
  define([
     'link!canopsis/canopsis-ui/dist/brick.min.css',
     'ehbs!application',
+    'ehbs!components/component-codeeditor',
     'ehbs!components/component-rrule',
     'ehbs!components/component-rruleeditor',
+    'ehbs!editor-code',
     'ehbs!editor-rrule',
     'ehbs!editor-rruleeditor',
     'ehbs!jobform',

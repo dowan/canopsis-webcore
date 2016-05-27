@@ -135,6 +135,10 @@ Ember.Application.initializer({
 
                         bindKey(currentKeybinding.label, currentKeybinding.value);
                     }
+
+                    var customCss = get(queryResults, 'custom_css');
+
+                    $("head").append("<style type=\"text/css\" id=\"customCss\">" + customCss + "</style>");
                 });
 
                 var superPromise = this._super(transition);

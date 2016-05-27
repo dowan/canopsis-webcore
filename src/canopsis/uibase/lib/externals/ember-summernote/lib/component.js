@@ -19,7 +19,7 @@
 
 define([
     'summernote',
-    'codemirror',
+    'canopsis/uibase/lib/externals/codemirror/lib/codemirror',
     'summernote',
     // 'link!canopsis/uibase/lib/externals/summernote/summernote-bs3.css'
     'link!canopsis/uibase/lib/externals/summernote/dist/summernote.css',

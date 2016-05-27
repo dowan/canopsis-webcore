@@ -23,7 +23,6 @@ if(window.bricks.uibase.envMode === "production") {
             'bootstrap': 'canopsis/uibase/lib/externals/bootstrap/dist/js/bootstrap.min',
             'datetimepicker': 'canopsis/uibase/libwrappers/datetimepicker',
             'icheck': 'canopsis/uibase/lib/externals/iCheck/icheck.min',
-            'codemirror': 'canopsis/uibase/lib/externals/codemirror/lib/codemirror',
             'summernote': 'canopsis/uibase/lib/externals/summernote/dist/summernote',
             'ember-summernote': 'canopsis/uibase/lib/externals/ember-summernote/lib/component',
             'daterangepicker': 'canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker',
@@ -34,7 +33,7 @@ if(window.bricks.uibase.envMode === "production") {
             'moment': 'canopsis/uibase/lib/externals/moment/min/moment-with-locales.min',
             'jsoneditorlib': 'canopsis/uibase/lib/externals/jsoneditor/jsoneditor.min',
             'ember-jsoneditor-lib': 'canopsis/uibase/lib/externals/ember-jsoneditor/ember-jsoneditor',
-            'd3': 'canopsis/uibase/lib/externals/d3/d3.min'
+            'd3': 'canopsis/uibase/lib/externals/d3/d3.min',
         },
         shim: {
             'rrule': {
@@ -52,12 +51,19 @@ if(window.bricks.uibase.envMode === "production") {
             'icheck': {
                 deps: ['jquery']
             }
-        }
+        },
+        // packages: [{
+        //     name: "codemirror",
+        //     location: "canopsis/uibase/lib/externals/codemirror",
+        //     main: "lib/codemirror"
+        // }]
     });
 
     define([
         'd3',
         'jsoneditorlib',
+        'canopsis/uibase/lib/externals/codemirror/lib/codemirror',
+        'canopsis/uibase/lib/externals/codemirror/mode/css/css',
         'link!canopsis/uibase/lib/externals/jsoneditor/jsoneditor.min.css',
         'link!canopsis/uibase/lib/externals/fontawesome/css/font-awesome.min.css',
         'link!canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker-bs3.css',
@@ -80,7 +86,6 @@ if(window.bricks.uibase.envMode === "production") {
         'canopsis/uibase/lib/externals/ember-tooltip/lib/component',
         'canopsis/uibase/lib/externals/ember-durationcombo/lib/component',
         'link!canopsis/uibase/lib/externals/bootstrap/dist/css/bootstrap.min.css',
-        'codemirror',
         'link!canopsis/uibase/lib/externals/codemirror/theme/ambiance.css',
         'link!canopsis/uibase/lib/externals/codemirror/lib/codemirror.css',
         'canopsis/uibase/lib/externals/colpick/js/colpick',
@@ -89,9 +94,10 @@ if(window.bricks.uibase.envMode === "production") {
         'canopsis/uibase/lib/externals/eonasdan-bootstrap-datetimepicker/lib/js/bootstrap-datetimepicker.min',
         'canopsis/uibase/lib/externals/iCheck/icheck',
         'link!canopsis/uibase/lib/externals/iCheck/skins/all.css'
-    ], function (d3, jsoneditor) {
+    ], function (d3, jsoneditor, codemirror) {
         window.d3 = d3;
         window.jsoneditor = { JSONEditor: jsoneditor };
+        window.CodeMirror = codemirror;
 
         require(['ember-jsoneditor-lib'], function() {});
 
@@ -103,7 +109,6 @@ if(window.bricks.uibase.envMode === "production") {
             'bootstrap': 'canopsis/uibase/lib/externals/bootstrap/dist/js/bootstrap.min',
             'datetimepicker': 'canopsis/uibase/libwrappers/datetimepicker',
             'icheck': 'canopsis/uibase/lib/externals/iCheck/icheck',
-            'codemirror': 'canopsis/uibase/lib/externals/codemirror/lib/codemirror',
             'summernote': 'canopsis/uibase/lib/externals/summernote/dist/summernote',
             'ember-summernote': 'canopsis/uibase/lib/externals/ember-summernote/lib/component',
             'daterangepicker': 'canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker',
@@ -132,12 +137,19 @@ if(window.bricks.uibase.envMode === "production") {
             'icheck': {
                 deps: ['jquery']
             }
-        }
+        },
+        // packages: [{
+        //     name: "codemirror",
+        //     location: "canopsis/uibase/lib/externals/codemirror",
+        //     main: "lib/codemirror"
+        // }]
     });
 
     define([
         'd3',
         'jsoneditorlib',
+        'canopsis/uibase/lib/externals/codemirror/lib/codemirror',
+        'canopsis/uibase/lib/externals/codemirror/mode/css/css',
         'link!canopsis/uibase/lib/externals/jsoneditor/jsoneditor.css',
         'link!canopsis/uibase/lib/externals/fontawesome/css/font-awesome.min.css',
         'link!canopsis/uibase/lib/externals/bootstrap-daterangepicker/daterangepicker-bs3.css',
@@ -160,7 +172,6 @@ if(window.bricks.uibase.envMode === "production") {
         'canopsis/uibase/lib/externals/ember-tooltip/lib/component',
         'canopsis/uibase/lib/externals/ember-durationcombo/lib/component',
         'link!canopsis/uibase/lib/externals/bootstrap/dist/css/bootstrap.min.css',
-        'codemirror',
         'link!canopsis/uibase/lib/externals/codemirror/theme/ambiance.css',
         'link!canopsis/uibase/lib/externals/codemirror/lib/codemirror.css',
         'canopsis/uibase/lib/externals/colpick/js/colpick',
@@ -169,9 +180,10 @@ if(window.bricks.uibase.envMode === "production") {
         'canopsis/uibase/lib/externals/eonasdan-bootstrap-datetimepicker/lib/js/bootstrap-datetimepicker.min',
         'canopsis/uibase/lib/externals/iCheck/icheck',
         'link!canopsis/uibase/lib/externals/iCheck/skins/all.css'
-    ], function (d3, jsoneditor) {
+    ], function (d3, jsoneditor, codemirror) {
         window.d3 = d3;
         window.jsoneditor = { JSONEditor: jsoneditor };
+        window.CodeMirror = codemirror;
 
         require(['ember-jsoneditor-lib'], function() {});
 
