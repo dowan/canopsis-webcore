@@ -30,10 +30,12 @@ Ember.Application.initializer({
          */
         var component = Ember.Component.extend({
             didInsertElement: function() {
+                var language = get(this, 'language') || undefined;
+
                 var component = this;
                 var editor = CodeMirror.fromTextArea(this.$('.codemirror')[0], {
                     lineNumbers: true,
-                    mode: "css"
+                    mode: language
                 });
 
                 editor.setValue(get(component, 'content'));
