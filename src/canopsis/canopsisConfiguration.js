@@ -73,6 +73,10 @@ define(['ember-lib', 'ember-data-lib'], function () {
         getEnabledModules: function (callback) {
             $.get('enabled-bricks.json', function (data) {
                 if (data) {
+                    if (typeof data === "string") {
+                        data = JSON.parse(data);
+                    }
+
                     callback(data);
                 } else {
                     console.error('Could not load module information.');
