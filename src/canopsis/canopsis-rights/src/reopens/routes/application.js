@@ -54,6 +54,7 @@ Ember.Application.initializer({
                 rightsPromise.then(function(queryResults) {
                     for (var i = 0, l = queryResults.content.length; i < l; i++) {
                         var right = queryResults.content[i];
+                        console.error(get(right, 'currentState'));
                         rightsRegistry.add(right, get(right, 'crecord_name'));
                     }
                     store.destroy();

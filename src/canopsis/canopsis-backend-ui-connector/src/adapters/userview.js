@@ -27,8 +27,21 @@ Ember.Application.initializer({
          * @adapter userview
          */
         var adapter = ApplicationAdapter.extend({
-            buildURL: function(type, id) {
+            buildURL: function(type, id, arg3, method) {
+                if(method === 'DELETE') {
+                    return '/userview/' + id;
+                }
+
                 return this._super('view', id);
+            },
+
+            /**
+             * @method deleteRecord
+             */
+            deleteRecord: function(store, type, record) {
+                var id = Ember.get(record, 'id');
+
+                return this.ajax(this.buildURL('userview', id, undefined, 'DELETE'), 'DELETE');
             }
         });
 

@@ -80,29 +80,6 @@ Ember.Application.initializer({
                 }
 
                 return this._super.apply(this, arguments);
-            },
-
-            /**
-             * @method deleteRecord
-             * @param {DS.Store} store
-             * @param {DS.Model} type
-             * @param {DS.Model} userview
-             * @return {Promise} promise
-             *
-             * Manage right deletion when the user deletes the userview.
-             */
-            deleteRecord: function(store, type, userview) {
-                rightsRegistry = dataUtils.getEmberApplicationSingleton().__container__.lookupFactory('registry:rights');
-
-                formattedViewId = get(userview, 'id').replace('.', '_');
-                var right = rightsRegistry.getByName(formattedViewId);
-                console.log('deleteRecord', formattedViewId, rightsRegistry, right);
-                right.deleteRecord();
-                right.save();
-
-                //TODO delete user right in payload
-
-                return this._super.apply(this, arguments);
             }
         });
     }
