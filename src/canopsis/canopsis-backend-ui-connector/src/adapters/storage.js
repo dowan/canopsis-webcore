@@ -40,7 +40,7 @@ Ember.Application.initializer({
             protocol: 'storage',
 
             /**
-             * @property {string} data_type - Backend storage data-type (default, timed, periodic, composite, ...)
+             * @property {string} data_type - Backend storage data-type (default, timed, periodical, composite, ...)
              * @memberof StorageAdapter
              */
             data_type: 'default',
@@ -155,11 +155,11 @@ Ember.Application.initializer({
         }));
 
         /**
-         * @adapter StoragePeriodicAdapter
+         * @adapter StoragePeriodicalAdapter
          * @augments StorageAdapter
          */
-        application.register('adapter:storage-periodic', adapter.extend({
-            data_type: 'periodic'
+        application.register('adapter:storage-periodical', adapter.extend({
+            data_type: 'periodical'
         }));
 
         /**
