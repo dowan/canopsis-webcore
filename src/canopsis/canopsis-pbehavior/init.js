@@ -19,15 +19,18 @@
 
  require.config({
     paths: {
-        'components/component-periodicbehaviormanager': 'canopsis/canopsis-pbehavior/dist/templates/components/component-periodicbehaviormanager',
-        'renderer-periodicbehaviors': 'canopsis/canopsis-pbehavior/dist/templates/renderer-periodicbehaviors',
+        'components/component-periodicbehaviormanager': 'canopsis/canopsis-pbehavior/src/components/periodicbehaviormanager/template',
+        'renderer-periodicbehaviors': 'canopsis/canopsis-pbehavior/src/renderers/renderer-periodicbehaviors',
 
     }
 });
 
- define([
-    'link!canopsis/canopsis-pbehavior/dist/brick.min.css',
+define([
+    'canopsis/canopsis-pbehavior/src/adapters/pbehavior',
+    'canopsis/canopsis-pbehavior/src/components/periodicbehaviormanager/component',
     'ehbs!components/component-periodicbehaviormanager',
     'ehbs!renderer-periodicbehaviors',
-    'canopsis/canopsis-pbehavior/dist/brick.min'
-], function () {});
+    'canopsis/canopsis-pbehavior/src/serializers/pbehavior'
+], function () {
+    
+});

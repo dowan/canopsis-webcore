@@ -23,7 +23,9 @@
     }
 });
 
- define([
-    'link!canopsis/canopsis-vevent/dist/brick.min.css',
-    'canopsis/canopsis-vevent/dist/brick.min'
-], function () {});
+define([
+    'canopsis/canopsis-vevent/src/adapters/vevent',
+    'canopsis/canopsis-vevent/src/serializers/vevent'
+], function () {
+    
+});

@@ -19,13 +19,14 @@
 
  require.config({
     paths: {
-        'statstable': 'canopsis/brick-stats/dist/templates/statstable',
+        'statstable': 'canopsis/brick-stats/src/widgets/stats-table/statstable',
 
     }
 });
 
- define([
-    'link!canopsis/brick-stats/dist/brick.min.css',
-    'ehbs!statstable',
-    'canopsis/brick-stats/dist/brick.min'
-], function () {});
+define([
+    'canopsis/brick-stats/src/widgets/stats-table/controller',
+    'ehbs!statstable'
+], function () {
+    
+});

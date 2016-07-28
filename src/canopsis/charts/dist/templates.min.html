@@ -1,0 +1,233 @@
+<script type="text/x-handlebars" data-template-name="components/component-c3categorychart">{{#if parentController.options.allow_user_display}}
+	{{#component-dropdownbutton}}
+		{{#component-dropdownbuttonheader}}
+			{{#component-dropdownbuttontitle}}
+				{{#component-tooltip content="Display"}}
+					<i class="fa fa-eye"></i>
+				{{/component-tooltip}}
+			{{/component-dropdownbuttontitle}}
+		{{/component-dropdownbuttonheader}}
+		{{#component-dropdownbuttoncontent}}
+			<ul class="list-group">
+			  	<li class="list-group-item pointer" {{action "transform" "gauge"}}>
+			  		<i class="fa fa-tachometer"></i> {{tr "gauge"}}
+			  	</li>
+			  	<li class="list-group-item pointer" {{action "transform" "pie"}}>
+			  		<i class="fa fa-pie-chart"></i> {{tr "pie"}}
+			  	</li>
+			  	<li class="list-group-item pointer" {{action "transform" "donut"}}>
+			  		<i class="fa fa-dot-circle-o"></i> {{tr "donut"}}
+			  	</li>
+			  	<li class="list-group-item pointer" {{action "transform" "progressbar"}}>
+			  		<i class="fa fa-battery-three-quarters"></i> {{tr "progressbar"}}
+			  	</li>
+			  	<li class="list-group-item pointer" {{action "transform" "bar"}}>
+			  		<i class="fa fa-bar-chart"></i> {{tr "bar"}}
+			  	</li>
+			</ul>
+		{{/component-dropdownbuttoncontent}}
+	{{/component-dropdownbutton}}
+{{/if}}
+
+<div {{bind-attr id="uuid"}}></div>
+
+{{#unless chart}}
+	<h2 class="text-center">No data</h2>
+{{/unless}}
+</script>
+<script type="text/x-handlebars" data-template-name="components/component-c3js"></script>
+<script type="text/x-handlebars" data-template-name="components/component-flotchart"></script>
+<script type="text/x-handlebars" data-template-name="components/component-metricitemeditor"><p><b>{{tr "Metric"}}</b></p>
+
+{{component-metricselector
+    content=item.metric.value
+    multiselect=false
+}}
+
+<p><b>{{tr "Curve"}}</b></p>
+
+{{component-stringclassifiedcrecordselector
+    content=item.curve.value
+    crecordtype="curve"
+    modelfilter='{}'
+    selection=item.curve.value
+    valueKey="id"
+}}
+
+<p>{{tr "Metric's unit"}} :</p>
+<p>{{input value=item.unit.value class="form-control"}}</p>
+
+<p>{{tr "Choose metric's color"}} :</p>
+<p>{{input type="color" value=item.color.value class="form-control"}}</p>
+
+<p>{{tr "Choose axes"}} :</p>
+<p>
+    X : {{input type="number" value=item.xaxis.value}} - 
+    Y : {{input type="number" value=item.yaxis.value}}
+</p>
+</script>
+<script type="text/x-handlebars" data-template-name="components/component-metricselector"><fieldset>
+    <div style="float: right;">
+        {{#component-tooltip content=helpModal.content htmlEnabled=true noTranslation=true}}
+            <i class="fa fa-info-circle"></i>
+        {{/component-tooltip}}
+        {{tr 'Search'}}: {{input action="search"}}
+
+    </div>
+
+    <b>{{tr 'Available'}}:</b>
+
+    {{component-table items=metrics model="ctxmetric" modelfilter=metricSearch columns=select_cols targetObject=this queryStartOffsetKeyword="start"}}
+
+    <hr/>
+
+    <b>Selected:</b>
+    {{component-table items=selectedMetrics columns=unselect_cols targetObject=this queryStartOffsetKeyword="start"}}
+</fieldset>
+</script>
+<script type="text/x-handlebars" data-template-name="components/component-metricselector2"><b>{{tr 'Available'}}:</b>
+<div style="float: right;">
+    {{#component-tooltip content=helpModal.content htmlEnabled=true noTranslation=true}}
+        <i class="fa fa-info-circle"></i>
+    {{/component-tooltip}}
+    {{tr 'Search'}}: {{input action="search"}}
+
+</div>
+
+{{component-table items=metrics model="ctxmetric" modelfilter=metricSearch columns=select_cols targetObject=this queryStartOffsetKeyword="start"}}
+
+<hr/>
+<b>Selected:</b>
+
+{{#each selectionItem in content.value}}
+    {{#component-miniform style="margin-bottom:0"}}
+        {{#component-miniformheader}}
+            {{#component-miniformheaderbuttons}}
+                <button class="btn btn-default btn-xs" {{action 'unselect' selectionItem target=this}} >
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+            {{/component-miniformheaderbuttons}}
+            {{#component-miniformtitle}}
+                {{component-selectedmetricheader rk=selectionItem.metric}}
+            {{/component-miniformtitle}}
+        {{/component-miniformheader}}
+        {{#component-miniformcontent}}
+            <table>
+                <tr>
+                    <td>Color</td>
+                    <td>{{input value=selectionItem.color type='color'}}</td>
+                </tr>
+                <tr>
+                    <td>Label</td>
+                    <td>{{input value=selectionItem.label}}</td>
+                </tr>
+                <tr>
+                    <td>X-axis</td>
+                    <td>{{input value=selectionItem.xaxis type="number"}}</td>
+                </tr>
+                <tr>
+                    <td>Y-axis</td>
+                    <td>{{input value=selectionItem.xaxis type="number"}}</td>
+                </tr>
+                <tr>
+                    <td>Unit</td>
+                    <td>{{input value=selectionItem.unit}}</td>
+                </tr>
+            </table>
+            {{!component-editor editorType='editor-color' value=selectionItem.color mode='standalone'}}
+        {{/component-miniformcontent}}
+    {{/component-miniform}}
+{{/each}}
+</script>
+<script type="text/x-handlebars" data-template-name="components/component-selectedmetricheader"><span style='float:left; margin-top:10px; margin-bottom:10px; margin-right:10px;'>
+    {{{logo connectorType}}}
+</span>
+<span>
+    {{component}} - {{resource}}<br/>
+    <small>
+        {{metricName}}
+    </small>
+</span>
+</script>
+<script type="text/x-handlebars" data-template-name="components/component-serieitemeditor"><p><b>{{tr "Serie"}}</b></p>
+
+{{component-stringclassifiedcrecordselector
+    content=item.serie.value
+    crecordtype="serie"
+    modelfilter='{}'
+    selection=item.serie.value
+    valueKey="id"
+}}
+
+<p><b>{{tr "Curves"}}</b></p>
+
+{{component-stringclassifiedcrecordselector
+    content=item.curve.value
+    crecordtype="curve"
+    modelfilter='{}'
+    selection=item.curve.value
+    valueKey="id"
+}}
+
+<p>{{tr "Choose serie's color"}} :</p>
+<p>{{input type="color" value=item.color.value class="form-control"}}</p>
+
+<p>{{tr "Choose axes"}} :</p>
+<p>
+    X : {{input type="number" value=item.xaxis.value}} - 
+    Y : {{input type="number" value=item.yaxis.value}}
+</p>
+</script>
+<script type="text/x-handlebars" data-template-name="editor-metricitem">{{component-metricitemeditor content=attr}}
+</script>
+<script type="text/x-handlebars" data-template-name="editor-metricselector2">{{component-metricselector2 content=attr}}
+</script>
+<script type="text/x-handlebars" data-template-name="editor-serieitem">{{component-serieitemeditor content=attr}}
+</script>
+<script type="text/x-handlebars" data-template-name="titlebarbutton-resetzoom">{{#if widget.controller.zooming}}
+	<button type="button" class="btn btn-info btn-xs pull-right" {{action "resetZoom" target=widget.controller}}>
+	    <i class="fa fa-undo"></i>
+	</button>
+{{/if}}
+</script>
+<script type="text/x-handlebars" data-template-name="categorychart">{{component-c3categorychart
+    parentController=controller
+}}
+</script>
+<script type="text/x-handlebars" data-template-name="timegraph"><div class="flotchart-container">
+    <div class="flotchart-plot-container">
+        {{component-flotchart
+            options=controller.chartOptions
+            series=controller.dataSeries
+            human=controller.human_readable
+        }}
+    </div>
+
+    {{#if controller.timenav}}
+        <div class="flotchart-preview-container">
+            <p><strong>Time navigation:</strong></p>
+
+            {{component-flotchart
+                options=controller.timenavOptions
+                series=controller.dataSeries
+                human=controller.human_readable
+            }}
+        </div>
+    {{/if}}
+
+    <div class="flotchart-legend-container">
+    </div>
+
+    <div class="pull-right">
+        {{#if controller.timenav}}
+            <button type="button" class="btn btn-info btn-sm pull-right" {{action "stepForward" target=view}}>
+                <i class="fa fa-step-forward"></i>
+            </button>
+
+            <button type="button" class="btn btn-info btn-sm pull-right" {{action "stepBack" target=view}}>
+                <i class="fa fa-step-backward"></i>
+            </button>
+        {{/if}}
+    </div>
+</div>
+</script>

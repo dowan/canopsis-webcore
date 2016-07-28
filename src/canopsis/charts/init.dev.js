@@ -64,4 +64,7 @@
     'canopsis/charts/src/widgets/timegraph/controller',
     'ehbs!timegraph',
     'canopsis/charts/requirejs-modules/externals.conf'
-], function () {});
+], function () {
+    
+});
+

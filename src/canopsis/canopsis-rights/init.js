@@ -34,7 +34,7 @@
     }
 });
 
- define([
+define([
     'canopsis/canopsis-rights/src/components/right-checksum/component',
     'ehbs!components/component-right-checksum',
     'canopsis/canopsis-rights/src/components/rights-action/component',
@@ -63,4 +63,6 @@
     'ehbs!rightselector-itempartial',
     'ehbs!rightselector-selecteditempartial',
     'canopsis/canopsis-rights/src/utils/rightsflags'
-], function () {});
+], function () {
+    
+});

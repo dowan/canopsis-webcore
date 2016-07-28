@@ -376,7 +376,6 @@
     'ehbs!renderer-timestamp',
     'ehbs!renderer-translator',
     'link!canopsis/uibase/src/style.css',
-    'canopsis/uibase/src/template',
     'ehbs!actionbutton-ack',
     'ehbs!actionbutton-ackselection',
     'ehbs!actionbutton-cancel',
@@ -474,4 +473,11 @@
     'canopsis/uibase/src/widgets/widgetcontainer/controller',
     'ehbs!widgetcontainer',
     'canopsis/uibase/requirejs-modules/externals.conf'
-], function () {});
+], function (templates) {
+    templates = $(templates).filter('script');
+for (var i = 0, l = templates.length; i < l; i++) {
+var tpl = $(templates[i]);
+Ember.TEMPLATES[tpl.attr('data-template-name')] = Ember.Handlebars.compile(tpl.text());
+};
+});
+

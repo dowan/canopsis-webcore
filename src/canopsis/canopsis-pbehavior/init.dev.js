@@ -31,4 +31,7 @@
     'ehbs!components/component-periodicbehaviormanager',
     'ehbs!renderer-periodicbehaviors',
     'canopsis/canopsis-pbehavior/src/serializers/pbehavior'
-], function () {});
+], function () {
+    
+});
+

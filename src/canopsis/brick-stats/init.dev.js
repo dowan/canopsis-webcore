@@ -27,4 +27,7 @@
  define([
     'canopsis/brick-stats/src/widgets/stats-table/controller',
     'ehbs!statstable'
-], function () {});
+], function () {
+    
+});
+

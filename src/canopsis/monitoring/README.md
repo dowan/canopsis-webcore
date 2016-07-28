@@ -1,8 +1,22 @@
 # Monitoring Canopsis Brick
 
+## Index
+
+- [Description](#description)
+- [Content](#content)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Continuous-integration](#continuous-integration)
+- [Code-notes](#code-notes)
+- [Additional-info](#additional-info)
+
 ## Description
 
 Monitoring-related features for Canopsis
+
+## Content
+
+
 
 ## Screenshots
 
@@ -12,25 +26,26 @@ Monitoring-related features for Canopsis
 
 You need to clone the git repository and copy directory to Canopsis path
 
-    $ git clone https://git.canopsis.net/canopsis-ui-bricks/monitoring.git
-    $ cp -r monitoring $CANOPSIS_PATH/var/www/canopsis
+    $ su - canopsis 
+    $ cd var/www
+    $ ./bin/brickmanager install monitoring
 
 Then, you need to enable the brick
 
-    $ su - canopsis
-    $ webmodulemanager enable monitoring
+    $ ./bin/brickmanager enable monitoring
 
 You can see enabled bricks
 
     $ su - canopsis
-    $ webmodulemanager list
+    $ cd var/www
+    $ ./bin/brickmanager list
     [u'core', u'uibase', u'monitoring', ..., **u'monitoring'**]
 
 ## Usage
 
 See [Howto](https://git.canopsis.net/canopsis-ui-bricks/monitoring/blob/master/doc/index.rst)
 
-## Continuous Integration
+## Continuous-Integration
 
 ### Tests
 
@@ -38,14 +53,14 @@ The last build was not a full build. Please use the "full-compile" npm script to
 
 ### Lint
 
-Tested on commit : eedf7d2.
+Tested on commit : 5277306.
 
 | Target | Status | Log |
 | ------ | ------ | --- |
-| Lint   | :negative_squared_cross_mark: ERROR |  |
+| Lint   | :negative_squared_cross_mark: ERROR | <br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/monitoring/src/forms/ack/controller.js<br>  34:121  error  Missing semicolon  semi<br><br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/monitoring/src/helpers/criticity.js<br>  37:9  error  Expected indentation of 12 space characters but found 8  indent<br>  38:9  error  Expected indentation of 12 space characters but found 8  indent<br>  39:9  error  Expected indentation of 12 space characters but found 8  indent<br>  40:9  error  Expected indentation of 12 space characters but found 8  indent<br>  48:5  error  Expected indentation of 8 space characters but found 4   indent<br>  49:5  error  Expected indentation of 8 space characters but found 4   indent<br>  50:5  error  Expected indentation of 8 space characters but found 4   indent<br>  51:5  error  Expected indentation of 8 space characters but found 4   indent<br>  52:5  error  Expected indentation of 8 space characters but found 4   indent<br><br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/monitoring/src/mixins/sendevent.js<br>  381:56  error  "formRecord" is defined but never used  no-unused-vars<br>  411:57  error  Missing semicolon                       semi<br><br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/monitoring/src/reopens/routes/application.js<br>  27:13  error  "set" is defined but never used  no-unused-vars<br><br>✖ 13 problems (13 errors, 0 warnings)<br><br> |
 
 
-## Code Notes
+## Code-Notes
 
 ### TODOS
 
@@ -63,7 +78,7 @@ Tested on commit : eedf7d2.
 | src/components/cfiltereditor/component.js | Canopsis object is not accessible anymore |
 
 
-## Additional info
+## Additional-info
 
-Minified version : 26 files (size: 196K)
+Minified version : 4 files (size: 120K)
 Development version : 48 files (size: 360K)

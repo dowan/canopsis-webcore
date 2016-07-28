@@ -47,4 +47,11 @@
     'link!canopsis/canopsis-ui/src/style.css',
     'ehbs!application',
     'canopsis/canopsis-ui/requirejs-modules/externals.conf'
-], function () {});
+], function (templates) {
+    templates = $(templates).filter('script');
+for (var i = 0, l = templates.length; i < l; i++) {
+var tpl = $(templates[i]);
+Ember.TEMPLATES[tpl.attr('data-template-name')] = Ember.Handlebars.compile(tpl.text());
+};
+});
+

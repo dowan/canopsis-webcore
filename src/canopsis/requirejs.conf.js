@@ -208,11 +208,14 @@ require(['text!canopsis/brick-loader/bower.json'], function(loaderManifest) {
                             if(window.environment === 'debug') {
                                 brickMainModule = 'canopsis/' + currentPlugin + '/' + 'init.dev.js';
                                 brickManifest.envMode = 'development';
+
+                                schemasInitFiles.push('canopsis/' + currentPlugin + '/' + 'init.schemas');
                             } else {
                                 brickMainModule = 'canopsis/' + currentPlugin + '/' + 'init.js';
+
+                                schemasInitFiles.push('canopsis/' + currentPlugin + '/' + 'init.schemas.min');
                             }
 
-                            schemasInitFiles.push('canopsis/' + currentPlugin + '/' + 'init.schemas');
                             //remove the .js extension
                             brickMainModule = brickMainModule.slice(0, -3);
 

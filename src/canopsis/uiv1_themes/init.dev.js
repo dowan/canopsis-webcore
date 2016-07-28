@@ -27,4 +27,7 @@
  define([
     'canopsis/uiv1_themes/src/mixins/uiv1weathertheme',
     'ehbs!uiv1_themes_weather'
-], function () {});
+], function () {
+    
+});
+

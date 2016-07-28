@@ -1,0 +1,126 @@
+{
+    "widgets": [
+        {
+            "name": "Statstable",
+            "description": "",
+            "extends": [
+                "Widget"
+            ],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "Statstable",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        }
+    ],
+    "schemas": [
+        {
+            "name": "schema-statstable",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-statstable",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "title",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "metric_filter",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Metric Filter: <code>co:&lt;regex&gt;</code>, <code>re:&lt;regex&gt;</code>, <code>me:&lt;regex&gt;</code></p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "show_user",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Enable/disable user statistics</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "show_event",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Enable/disable event statistics</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "show_advanced",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Enable/disable advanced statistics</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "time_window",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "number"
+                        ]
+                    }
+                },
+                {
+                    "name": "time_window_offset",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "number"
+                        ]
+                    }
+                },
+                {
+                    "name": "mixins",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}
