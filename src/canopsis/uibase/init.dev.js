@@ -41,6 +41,7 @@
         'components/component-filterclause': 'canopsis/uibase/src/components/filterclause/template',
         'components/component-formulaeditor': 'canopsis/uibase/src/components/formulaeditor/template',
         'components/component-ical': 'canopsis/uibase/src/components/ical/template',
+        'components/component-if_equal_component': 'canopsis/uibase/src/components/if_equal_component/template',
         'components/component-labelledlink': 'canopsis/uibase/src/components/labelledlink/template',
         'components/component-linklist': 'canopsis/uibase/src/components/linklist/template',
         'components/component-mixinselector': 'canopsis/uibase/src/components/mixinselector/template',
@@ -248,6 +249,8 @@
     'ehbs!components/component-formulaeditor',
     'canopsis/uibase/src/components/ical/component',
     'ehbs!components/component-ical',
+    'canopsis/uibase/src/components/if_equal_component/component',
+    'ehbs!components/component-if_equal_component',
     'canopsis/uibase/src/components/labelledlink/component',
     'ehbs!components/component-labelledlink',
     'canopsis/uibase/src/components/linklist/component',
@@ -376,7 +379,6 @@
     'ehbs!renderer-timestamp',
     'ehbs!renderer-translator',
     'link!canopsis/uibase/src/style.css',
-    'canopsis/uibase/src/template',
     'ehbs!actionbutton-ack',
     'ehbs!actionbutton-ackselection',
     'ehbs!actionbutton-cancel',
@@ -474,4 +476,11 @@
     'canopsis/uibase/src/widgets/widgetcontainer/controller',
     'ehbs!widgetcontainer',
     'canopsis/uibase/requirejs-modules/externals.conf'
-], function () {});
+], function (templates) {
+    templates = $(templates).filter('script');
+for (var i = 0, l = templates.length; i < l; i++) {
+var tpl = $(templates[i]);
+Ember.TEMPLATES[tpl.attr('data-template-name')] = Ember.Handlebars.compile(tpl.text());
+};
+});
+
