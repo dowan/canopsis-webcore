@@ -476,11 +476,4 @@
     'canopsis/uibase/src/widgets/widgetcontainer/controller',
     'ehbs!widgetcontainer',
     'canopsis/uibase/requirejs-modules/externals.conf'
-], function (templates) {
-    templates = $(templates).filter('script');
-for (var i = 0, l = templates.length; i < l; i++) {
-var tpl = $(templates[i]);
-Ember.TEMPLATES[tpl.attr('data-template-name')] = Ember.Handlebars.compile(tpl.text());
-};
-});
-
+], function () {});

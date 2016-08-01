@@ -203,7 +203,7 @@
     }
 });
 
-define(['text!canopsis/uibase/dist/templates.min.html',
+ define([
     'link!canopsis/uibase/dist/brick.min.css',
     'ehbs!actionbutton-ack',
     'ehbs!actionbutton-ackselection',
@@ -387,10 +387,4 @@ define(['text!canopsis/uibase/dist/templates.min.html',
     'ehbs!widgettitlebar',
     'canopsis/uibase/requirejs-modules/externals.conf',
     'canopsis/uibase/dist/brick.min'
-], function (templates) {
-    templates = $(templates).filter('script');
-for (var i = 0, l = templates.length; i < l; i++) {
-var tpl = $(templates[i]);
-Ember.TEMPLATES[tpl.attr('data-template-name')] = Ember.Handlebars.compile(tpl.text());
-};
-});
+], function () {});
