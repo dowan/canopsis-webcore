@@ -53,7 +53,7 @@ The last build was not a full build. Please use the "full-compile" npm script to
 
 ### Lint
 
-Tested on commit : [ERROR : The brick is not in a dedicated git repository].
+Tested on commit : 16a2ca8.
 
 | Target | Status | Log |
 | ------ | ------ | --- |
@@ -99,5 +99,5 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 
 ## Additional-info
 
-Minified version : 4 files (size: 388K)
+Minified version : 184 files (size: 1012K)
 Development version : 270 files (size: 1,6M)
