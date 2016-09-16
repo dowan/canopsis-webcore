@@ -69,7 +69,6 @@ Ember.Application.initializer({
         /**
          * @class ApplicationController
          * @extends PartialslotAbleController
-         * @constructor
          * @description Main application controller
          */
         var ApplicationControllerDict = {

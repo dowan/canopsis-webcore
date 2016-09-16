@@ -36,7 +36,6 @@ Ember.Application.initializer({
         /**
          * @class UserviewController
          * @extends Ember.ObjectController
-         * @constructor
          * @uses InspectableItemMixin
          * @uses Ember.Evented
          */

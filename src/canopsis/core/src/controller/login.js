@@ -31,9 +31,7 @@ Ember.Application.initializer({
         /**
          * @class LoginController
          * @extends Ember.ObjectController
-         * @constructor
          */
-
         var controller = Ember.ObjectController.extend({
 
             /**

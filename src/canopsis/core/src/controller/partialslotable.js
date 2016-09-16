@@ -75,7 +75,6 @@ Ember.Application.initializer({
         /**
          * @class PartialslotAbleController
          * @extends Ember.ObjectController
-         * @constructor
          * @description Abstract class to manage partial slots and mixin with models, as used in Canopsis
          */
         var controller = Ember.ObjectController.extend({

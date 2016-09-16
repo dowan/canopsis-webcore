@@ -38,7 +38,58 @@ Ember.Application.initializer({
         /**
          * @class WidgetController
          * @extends PartialslotAbleController
-         * @constructor
+         * @description
+         *
+         * Base class for widgets.
+         * Widgets are elements that can be added into views. Widgets can display random information and data, or other widgets.
+         * In the last case, widgets should inherit from the ContainerWidget class.
+         *
+         * ![Widget UML](../images/widget_uml.png)
+         *
+         *
+         * ![View edit mode](../images/viewEditMode.png)
+         *
+         * To manage widgets from the interface, toggle the edition mode with the key shortcut "ctrl+e" by default, or via the view menu (1). You will see buttons appear into the view.
+         *
+         * - "Insert widget" button (2). Once clicked, a form will then appear to help you configure the new widget.
+         * - "Duplicate widget" button (3).
+         * - "Move widget" buttons (4). These buttons helps to move the widget inside their container. They can't move a widget from one container to another one.
+         * - "Delete widget" button (7).
+         * - Widget edition (5). Clicking the button leads to the widget edition form. The dropdown button on the right (6) appears to edit applied customizable mixins, if any.
+         *
+         * Mixins
+         * ------
+         *
+         * Mixins can provide additional features to any kind of class, but widgets can handle them in a more powerful way. Mixins can be added to a widget from the UI, on the widget edition form.
+         * If a mixin have a dedicated schema, its options can be edited into the mixin edition form, accessible from the dropdown button at the right side of the widget edition form.
+         *
+         * To assign a schema to a mixin, all you just have to do is to create a schema in a file named "mixin.**mixin-name**.json"
+         *
+         * Mixins can add templates parts into widgets. A concrete example would be a widget that add buttons into the header of a widget. This can be achieved with partialslots.
+         *
+         * Be aware that mixins constructors can not be used when a mixin is applied to a widget. This is due to the fact that mixins options are applied to the widget right after its creation. ```onMixinsApplied``` is a method that can be used to replace the default constructor method on mixins.
+         *
+         * Partialslots
+         * ------------
+         *
+         * Partialslots are stored in an object in the widget controller.
+         * each slot is a property of that object, and contains an array of templates.
+         *
+         * partial slots have to be declared on the widget template, like the following :
+         *
+         * ```
+         * {{partialslot slot=controller._partials.headerMenu}}
+         * ```
+         *
+         * Then, on a mixin, it is possible to add templates bits (like menu items for instance), on that slot, by doing the following:
+         *
+         * ```
+         *  mixinsOptionsReady: function () {
+         *        this._super();
+         *
+         *        Ember.get(this,'partials.headerMenu').pushObject('menuItem-mixinMenu');
+         *  }
+         * ```
          */
         var controller = PartialslotAbleController.extend({
             needs: ['application', 'login'],
@@ -76,11 +127,11 @@ Ember.Application.initializer({
             editMode : Ember.computed.alias('controllers.application.editMode'),
 
             /**
-             * Alias for content
-             *
              * @property config
-             * @deprecated
              * @type DS.Model
+             *
+             * @deprecated
+             * @description Alias for content
              */
             config: Ember.computed.alias('content'),
 
@@ -131,9 +182,9 @@ Ember.Application.initializer({
             },
 
             /**
-             * Adds mixins view to the current widget controller
-             *
              * @method addMixinView
+             *
+             * @description Adds mixins view to the current widget controller
              * @param viewMixin
              */
             addMixinView: function (viewMixin) {

@@ -73,7 +73,6 @@ Ember.Application.initializer({
         });
         /**
          * @class FormController
-         * @constructor
          * @description
          * Default is to display all fields of a given model if they are referenced into category list (in model)
          * options: is an object that can hold a set dictionnary of values to override

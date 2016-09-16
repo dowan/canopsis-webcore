@@ -26,7 +26,6 @@ Ember.Application.initializer({
 
         /**
          * @class FormwrapperController
-         * @constructor
          */
         var controller = eventedController.extend({
 
