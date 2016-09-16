@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: tmp/jsdocsrc/schemas/widgetpreferences.js</title>
+    <title>JSDoc: Source: src/adapters/application.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -22,7 +22,7 @@
 </nav>
 
 
-    <h1 class="page-title">Source: tmp/jsdocsrc/schemas/widgetpreferences.js</h1>
+    <h1 class="page-title">Source: src/adapters/application.js</h1>
 
     
 
@@ -31,32 +31,32 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/** 
- * @schema widgetpreferences
+            <pre class="prettyprint source linenums"><code>//TODO move ApplicationAdapter from requirejsmodules to here
+
+/**
+ * @adapter Application
+ * @description Main adapter for Canopsis. This adapter is used by default.
+ *
+ * > Note that the current adapters design is not yet clean. There should be one adapter per data source, not one per data type.
+ *
  */
- var schema = Ember.Object.create({
-	/** 
-	 * @property user
-	 * @type string 
-*/
-user: undefined,
-	/** 
-	 * @property widget_id
-	 * @type string 
-*/
-widget_id: undefined,
-	/** 
-	 * @property preferences_level
-	 * @type string 
-*/
-preferences_level: undefined,
-	/** 
-	 * @property widget_preferences
-	 * @type array 
-*/
-widget_preferences: undefined,
-});
-</code></pre>
+         /**
+         * @method ajax
+         * Override allowing to use the promisemanager
+         */
+         /**
+         * @method buildURL
+         * @argument type
+         * @argument id
+         * @description builds the url for any kind of request. Override this on your adapter if you need to make queries to specific urls.
+         * @return {string} the url of the query
+         */
+        /**
+         * @method createRecord
+         */
+        /**
+         * @method updateRecord
+         */</code></pre>
         </article>
     </section>
 

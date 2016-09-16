@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Adapter: baseadapter</title>
+    <title>JSDoc: Adapter: Application</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -22,7 +22,7 @@
 </nav>
 
 
-    <h1 class="page-title">Adapter: baseadapter</h1>
+    <h1 class="page-title">Adapter: Application</h1>
 
     
 
@@ -34,10 +34,17 @@
 <header>
     
         
+            
+        
     
 </header>
 
 <article>
+    
+        <div class="description"><p>Main adapter for Canopsis. This adapter is used by default.</p>
+<blockquote>
+<p>Note that the current adapters design is not yet clean. There should be one adapter per data source, not one per data type.</p>
+</blockquote></div>
     
 
     <h3 class="subsection-title index"><img src="icons/book_open.png" alt="index" /> Index</h3>
@@ -51,6 +58,15 @@
                 <h4>Methods</h4>
                 
                     <table style="margin-left:30px;">
+                        
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <a href="#~ajaxOverrideallowingtousethepromisemanager"><img src="icons/picture_empty.png" alt="method" /> ajax
+Override allowing to use the promisemanager<span class="signature">()</span><span class="type-signature"></span></a>
+                                </td>
+                            </tr>
                         
                             <tr>
                                 <td>
@@ -72,22 +88,6 @@
                                 <td>
                                 </td>
                                 <td>
-                                    <a href="#~deleteRecord"><img src="icons/picture_empty.png" alt="method" /> deleteRecord<span class="signature">()</span><span class="type-signature"></span></a>
-                                </td>
-                            </tr>
-                        
-                            <tr>
-                                <td>
-                                </td>
-                                <td>
-                                    <a href="#~findQuery"><img src="icons/picture_empty.png" alt="method" /> findQuery<span class="signature">()</span><span class="type-signature"></span></a>
-                                </td>
-                            </tr>
-                        
-                            <tr>
-                                <td>
-                                </td>
-                                <td>
                                     <a href="#~updateRecord"><img src="icons/picture_empty.png" alt="method" /> updateRecord<span class="signature">()</span><span class="type-signature"></span></a>
                                 </td>
                             </tr>
@@ -99,6 +99,73 @@
     </div>
     <div class="container-overview">
     
+        
+            
+
+<div class="detailed-listing-item">
+    
+
+    
+    <div class="foldable-details">
+        
+
+        
+
+        
+
+        
+
+        
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+    </div>
+</div>
+
         
     
     </div>
@@ -121,7 +188,83 @@
             
                 
 
-    <div class="view-source"><a href="src_adapters_baseadapter.js.html#line34">view source</a></div>
+    <div class="view-source"><a href="src_adapters_application.js.html#line10">view source</a></div>
+
+<div class="detailed-listing-item">
+    
+        
+
+        <h4 class="name" id="~ajaxOverrideallowingtousethepromisemanager"><a name="~ajaxOverrideallowingtousethepromisemanager" href="#~ajaxOverrideallowingtousethepromisemanager"><img src="icons/picture_empty.png" alt="method" /> ajax
+Override allowing to use the promisemanager<span class="signature">()</span><span class="type-signature"></span></a></h4>
+
+        
+    
+
+    
+    <div class="foldable-details">
+        
+
+        
+
+        
+
+        
+
+        
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+    </div>
+</div>
+
+            
+                
+
+    <div class="view-source"><a href="src_adapters_application.js.html#line14">view source</a></div>
 
 <div class="detailed-listing-item">
     
@@ -132,6 +275,10 @@
         
     
 
+    
+    <div class="description">
+        <p>builds the url for any kind of request. Override this on your adapter if you need to make queries to specific urls.</p>
+    </div>
     
     <div class="foldable-details">
         
@@ -265,7 +412,7 @@
             
                 
 
-    <div class="view-source"><a href="src_adapters_baseadapter.js.html#line56">view source</a></div>
+    <div class="view-source"><a href="src_adapters_application.js.html#line21">view source</a></div>
 
 <div class="detailed-listing-item">
     
@@ -340,157 +487,7 @@
             
                 
 
-    <div class="view-source"><a href="src_adapters_baseadapter.js.html#line82">view source</a></div>
-
-<div class="detailed-listing-item">
-    
-        
-
-        <h4 class="name" id="~deleteRecord"><a name="~deleteRecord" href="#~deleteRecord"><img src="icons/picture_empty.png" alt="method" /> deleteRecord<span class="signature">()</span><span class="type-signature"></span></a></h4>
-
-        
-    
-
-    
-    <div class="foldable-details">
-        
-
-        
-
-        
-
-        
-
-        
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-    </div>
-</div>
-
-            
-                
-
-    <div class="view-source"><a href="src_adapters_baseadapter.js.html#line46">view source</a></div>
-
-<div class="detailed-listing-item">
-    
-        
-
-        <h4 class="name" id="~findQuery"><a name="~findQuery" href="#~findQuery"><img src="icons/picture_empty.png" alt="method" /> findQuery<span class="signature">()</span><span class="type-signature"></span></a></h4>
-
-        
-    
-
-    
-    <div class="foldable-details">
-        
-
-        
-
-        
-
-        
-
-        
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-    </div>
-</div>
-
-            
-                
-
-    <div class="view-source"><a href="src_adapters_baseadapter.js.html#line75">view source</a></div>
+    <div class="view-source"><a href="src_adapters_application.js.html#line24">view source</a></div>
 
 <div class="detailed-listing-item">
     
