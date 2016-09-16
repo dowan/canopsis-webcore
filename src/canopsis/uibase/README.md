@@ -1,8 +1,196 @@
 # Uibase Canopsis Brick
 
+## Index
+
+- [Description](#description)
+- [Content](#content)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Continuous-integration](#continuous-integration)
+- [Code-notes](#code-notes)
+- [Additional-info](#additional-info)
+
 ## Description
 
 Base UI application layer for Canopsis frontend
+
+## Content
+
+### components
+
+ - actionbutton
+ - actionfilter
+ - arrayclassifiedcrecordselector
+ - arrayeditor
+ - classifiedcrecordselector
+ - classifieditemselector
+ - colorchooser
+ - colpick
+ - contextselector
+ - dateinterval
+ - dictclassifiedcrecordselector
+ - dropdownbutton
+ - dropdownbuttoncontent
+ - Dropdownbuttonheader
+ - Dropdownbuttonoverview
+ - Dropdownbuttontitle
+ - elementidselectorwithoptions
+ - eventkey
+ - filefield
+ - filterclause
+ - formulaeditor
+ - ical
+ - labelledlink
+ - linklist
+ - mixinselector
+ - modelselect
+ - password
+ - propertiestopopup
+ - restobjectcombo
+ - searchbar
+ - simpledicteditor
+ - slider
+ - stringclassifiedcrecordselector
+ - tabscontent
+ - tabheader
+ - table
+ - tabs
+ - tabscontentgroup
+ - tabsheadergroup
+ - textwithsortoption
+ - timestamptooltiped
+ - typedvalue
+
+### functions
+
+ - HumanReadableHelper
+ - getEntitiesFromServer
+ - _addGraph
+ - findItems
+ - deleteRecords
+ - select
+ - unselect
+ - saveRecords
+ - newRecord
+ - editRecord
+ - updateModel
+ - weaveLinks
+ - refreshSelectedShapes
+ - refreshLockedShapes
+ - showToolBox
+ - destroyToolBox
+ - removeTmpLink
+ - lock
+ - addNodes
+ - delNodes
+ - updateNodes
+ - addLinks
+ - delLinks
+ - updateLinks
+ - checkTargetLink
+ - getNode
+ - addLink
+ - newToolBoxItem
+ - getToolBoxItems
+
+### properties
+
+ - invisibleCellsCount
+ - actions
+
+### widgets
+
+ - List
+ - TextWidget
+ - Uimaintabcollection
+
+### editors
+
+ - editor-actionfilter
+ - editor-array
+ - editor-arrayclassifiedcrecordselector
+ - editor-boolean
+ - editor-color
+ - editor-contextselector
+ - editor-dateinterval
+ - editor-defaultpropertyeditor
+ - editor-dictclassifiedcrecordselector
+ - editor-duration
+ - editor-durationWithUnits
+ - editor-error
+ - editor-eventkey
+ - editor-integer
+ - editor-json
+ - editor-labelandviewid
+ - editor-labelledlink
+ - editor-mail
+ - editor-mixins
+ - editor-modelselect
+ - editor-password
+ - editor-passwordmd5
+ - editor-passwordsha1
+ - editor-restobject
+ - editor-richtext
+ - editor-separator
+ - editor-serieformula
+ - editor-simpledict
+ - editor-simplelist
+ - editor-slider
+ - editor-sortable
+ - editor-source
+ - editor-state
+ - editor-stringclassifiedcrecordselector
+ - editor-stringpair
+ - editor-tags
+ - editor-textarea
+ - editor-timestamp
+ - editor-typedvalue
+ - editor-userpreference
+
+### renderers
+
+ - renderer-actionfilter
+ - renderer-boolean
+ - renderer-color
+ - renderer-conf
+ - renderer-labelledlink
+ - renderer-mail
+ - renderer-object
+ - renderer-percent
+ - renderer-recordinfopopup
+ - renderer-richtext
+ - renderer-source
+ - renderer-subprocess
+ - renderer-tags
+ - renderer-timestamp
+ - renderer-translator
+
+### schemas
+
+ - schema-arraysearch
+ - schema-background
+ - schema-canvas
+ - schema-crud
+ - schema-customfilter
+ - schema-customfilterlist
+ - schema-draggablecolumns
+ - schema-euewi
+ - schema-gridlayout
+ - schema-horizontallayout
+ - schema-jobmanager
+ - schema-list
+ - schema-listlinedetail
+ - schema-pagination
+ - schema-periodicrefresh
+ - schema-rangecolor
+ - schema-responsivelist
+ - schema-sortablearray
+ - schema-text
+ - schema-topology
+ - schema-uimaintabcollection
+ - schema-widgetcontainer
+
+
 
 ## Screenshots
 
@@ -31,7 +219,7 @@ You can see enabled bricks
 
 See [Howto](https://git.canopsis.net/canopsis-ui-bricks/uibase/blob/master/doc/index.rst)
 
-## Continuous Integration
+## Continuous-Integration
 
 ### Tests
 
@@ -39,14 +227,14 @@ The last build was not a full build. Please use the "full-compile" npm script to
 
 ### Lint
 
-Tested on commit : 60420c1.
+Tested on commit : 3ca8f05.
 
 | Target | Status | Log |
 | ------ | ------ | --- |
-| Lint   | :negative_squared_cross_mark: ERROR | <br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/uibase/src/components/contextselector/component.js<br>  172:17  error  Expected indentation of 20 space characters but found 16  indent<br>  173:21  error  Expected indentation of 24 space characters but found 20  indent<br>  174:17  error  Expected indentation of 20 space characters but found 16  indent<br>  175:21  error  Expected indentation of 24 space characters but found 20  indent<br>  176:17  error  Expected indentation of 20 space characters but found 16  indent<br>  177:21  error  Expected indentation of 24 space characters but found 20  indent<br>  187:17  error  Expected indentation of 20 space characters but found 16  indent<br>  188:21  error  Expected indentation of 24 space characters but found 20  indent<br>  199:17  error  Expected indentation of 20 space characters but found 16  indent<br>  200:21  error  Expected indentation of 24 space characters but found 20  indent<br><br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/uibase/src/components/typedvalue/component.js<br>  92:17  error  Expected indentation of 20 space characters but found 16  indent<br>  93:17  error  Expected indentation of 20 space characters but found 16  indent<br><br>✖ 12 problems (12 errors, 0 warnings)<br><br> |
+| Lint   | :negative_squared_cross_mark: ERROR | <br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/uibase/src/components/contextselector/component.js<br>  172:17  error  Expected indentation of 20 space characters but found 16  indent<br>  173:21  error  Expected indentation of 24 space characters but found 20  indent<br>  174:17  error  Expected indentation of 20 space characters but found 16  indent<br>  175:21  error  Expected indentation of 24 space characters but found 20  indent<br>  176:17  error  Expected indentation of 20 space characters but found 16  indent<br>  177:21  error  Expected indentation of 24 space characters but found 20  indent<br>  187:17  error  Expected indentation of 20 space characters but found 16  indent<br>  188:21  error  Expected indentation of 24 space characters but found 20  indent<br>  199:17  error  Expected indentation of 20 space characters but found 16  indent<br>  200:21  error  Expected indentation of 24 space characters but found 20  indent<br><br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/uibase/src/components/typedvalue/component.js<br>  92:17  error  Expected indentation of 20 space characters but found 16  indent<br>  93:17  error  Expected indentation of 20 space characters but found 16  indent<br><br>✖ 12 problems (12 errors, 0 warnings)<br><br> |
 
 
-## Code Notes
+## Code-Notes
 
 ### TODOS
 
@@ -83,7 +271,7 @@ Tested on commit : 60420c1.
 | src/components/classifiedcrecordselector/component.js | is store destroyed? |
 
 
-## Additional info
+## Additional-info
 
 Minified version : 183 files (size: 1008K)
 Development version : 268 files (size: 1,6M)

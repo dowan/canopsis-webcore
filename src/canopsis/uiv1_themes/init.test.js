@@ -18,4 +18,5 @@
  */
 
  define([
+    'canopsis/uiv1_themes/tests/weather_theme'
 ], function () {});

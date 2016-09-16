@@ -1,0 +1,910 @@
+{
+    "components": [
+        {
+            "name": "ack",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "ack",
+                "description": "<p>Displays informations on a given ack</p>\n<p><img src=\"../screenshots/component-ack.png\" alt=\"Component preview\"></p>",
+                "parameters": [],
+                "examples": [
+                    "{{component-ack crecord=this value=value}}"
+                ]
+            },
+            "properties": [
+                {
+                    "name": "crecord",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "object"
+                        ]
+                    }
+                },
+                {
+                    "name": "value",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "object"
+                        ]
+                    }
+                },
+                {
+                    "name": "tickettooltip",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "acktooltip",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "ackcolor",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "acktitle",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                }
+            ],
+            "functions": [
+                {
+                    "name": "init",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "eventSelector",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "eventSelector",
+                "description": "<p>Displays an interface to search and select events</p>\n<p><img src=\"../screenshots/component-eventselector.png\" alt=\"Component preview\"></p>",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "component",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>The value of the component input that is used to search for events</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "resource",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>The value of the resource input that is used to search for events</p>",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "componentDataStore",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>the store where searched events are disposed</p>",
+                    "type": {
+                        "names": [
+                            "DS.Store"
+                        ]
+                    }
+                },
+                {
+                    "name": "content",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "events",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "labelled",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "saveLabelsDone",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Assigned to true when the labels have been saved</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "search_component",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "search_resource",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "selectedEvents",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "selectors",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>When true, the search is only done on selector-based events</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "topologies",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>When true, the search is only done on topology-based events</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "type_label",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                }
+            ],
+            "functions": [
+                {
+                    "name": "init",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "initializeEvents",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "findEvents",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "setSelector",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Observer on &quot;selectors&quot;. This observer is triggered when the user clicks on the &quot;Selectors&quot; checkbox. Refreshes the list of found events to filter only selectors</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "setTopologies",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Observer on &quot;topologies&quot;. This observer is triggered when the user clicks on the &quot;Topologies&quot; checkbox. Refreshes the list of found events to filter only topologies</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "getSelectedRks",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": [],
+                    "returns": {
+                        "type": "array",
+                        "description": "<p>A list of selected event routing keys</p>"
+                    }
+                },
+                {
+                    "name": "actions_saveLabels",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>persists the label values into the computed result</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "actions_add",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Action triggered when the user adds an event from the selection</p>",
+                    "parameters": [
+                        {
+                            "name": "event",
+                            "type": "",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                },
+                {
+                    "name": "actions_delete",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Action triggered when the user removes an event from the selection</p>",
+                    "parameters": [
+                        {
+                            "name": "event",
+                            "type": "",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "stateeditor",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "stateeditor",
+                "description": "<p>Displays buttons to change an event state. There are 4 states (info, minor, major, critical). The button corresponding to the event's current state is not displayed.</p>\n<p><img src=\"../screenshots/component-changestate.png\" alt=\"Component preview\"></p>",
+                "parameters": [],
+                "examples": [
+                    "{{component-stateeditor content=attr.value title=attr.field showAll=attr.model.options.showAll}}"
+                ]
+            },
+            "properties": [
+                {
+                    "name": "previousContent",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>A backup of the initial event' state.</p>",
+                    "type": {
+                        "names": [
+                            "integer"
+                        ]
+                    }
+                },
+                {
+                    "name": "content",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>the event' state.</p>",
+                    "type": {
+                        "names": [
+                            "integer"
+                        ]
+                    }
+                },
+                {
+                    "name": "isInfo",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property dependent on &quot;content&quot;. Returns true if the event' state is info.</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "isMinor",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property dependent on &quot;content&quot;. Returns true if the event' state is minor.</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "isMajor",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property dependent on &quot;content&quot;. Returns true if the event' state is major.</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "isCritical",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property dependent on &quot;content&quot;. Returns true if the event' state is critical.</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "previousIsInfo",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property dependent on &quot;previousContent&quot;. is &quot;True&quot; if the event's previous state is info.</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "previousIsMinor",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property dependent on &quot;previousContent&quot;. is &quot;True&quot; if the event's previous state is minor.</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "previousIsMajor",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property dependent on &quot;previousContent&quot;. is &quot;True&quot; if the event's previous state is major.</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "previousIsCritical",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Computed property dependent on &quot;previousContent&quot;. is &quot;True&quot; if the event's previous state is critical.</p>",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                }
+            ],
+            "functions": [
+                {
+                    "name": "init",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "previousIs",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Returns true if the event' state is the state specified in the method parameter.</p>",
+                    "parameters": [
+                        {
+                            "name": "state",
+                            "type": "integer",
+                            "description": "<p>the state to check</p>",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": [],
+                    "returns": {
+                        "type": "",
+                        "description": "<p>boolean</p>"
+                    }
+                },
+                {
+                    "name": "actions_setState",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>changes the state of the event.</p>",
+                    "parameters": [
+                        {
+                            "name": "state",
+                            "type": "integer",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                }
+            ]
+        },
+        {
+            "name": "statemapping",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "statemapping",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "placeholder",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "didInsertElement",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Load data into the component when data are received on init</p>",
+                    "type": ""
+                },
+                {
+                    "name": "updateContent",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Generate the content value from component inputs</p>",
+                    "type": ""
+                }
+            ]
+        }
+    ],
+    "functions": [
+        {
+            "name": "buildBeforeModelPromises",
+            "access": "",
+            "virtual": false,
+            "description": "",
+            "parameters": [
+                {
+                    "name": "transition",
+                    "type": "Transition",
+                    "description": "",
+                    "default": "",
+                    "optional": "",
+                    "nullable": ""
+                }
+            ],
+            "examples": [],
+            "returns": {
+                "type": "Promise",
+                "description": "<p>Feed the ApplicationController with ticket options.</p>"
+            }
+        }
+    ],
+    "widgets": [
+        {
+            "name": "weather",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "weather",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "functions": [
+                {
+                    "name": "init",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "class_icon",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>generate weather class depending on status</p>",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "class_background",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>generate weather class depending on status</p>",
+                    "parameters": [
+                        {
+                            "name": "status",
+                            "type": "",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": [],
+                    "returns": {
+                        "type": "string",
+                        "description": "<p>the class to be applied to the div HTML element</p>"
+                    }
+                },
+                {
+                    "name": "fetchStates",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                },
+                {
+                    "name": "computeWeather",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [
+                        {
+                            "name": "data",
+                            "type": "",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                },
+                {
+                    "name": "generateSelectorFilter",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [
+                        {
+                            "name": "event",
+                            "type": "",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        },
+                        {
+                            "name": "subweatherDict",
+                            "type": "",
+                            "description": "",
+                            "default": "",
+                            "optional": "",
+                            "nullable": ""
+                        }
+                    ],
+                    "examples": []
+                },
+                {
+                    "name": "refreshContent",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "parameters": [],
+                    "examples": []
+                }
+            ],
+            "properties": [
+                {
+                    "name": "title",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>generate and refresh the title</p>",
+                    "type": ""
+                },
+                {
+                    "name": "icon",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": ""
+                },
+                {
+                    "name": "background",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>generate and refresh background property for widget weather display</p>",
+                    "type": ""
+                }
+            ]
+        }
+    ],
+    "editors": [
+        {
+            "name": "editor-cfilter",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-cfilter",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-cfilterwithproperties",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-cfilterwithproperties",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-cmetric",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-cmetric",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "editor-eventselector",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "editor-eventselector",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        }
+    ],
+    "renderers": [
+        {
+            "name": "renderer-cfilter",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "renderer-cfilter",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        },
+        {
+            "name": "renderer-cfilterwithproperties",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "renderer-cfilterwithproperties",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        }
+    ],
+    "schemas": [
+        {
+            "name": "schema-recordinfopopup",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-recordinfopopup",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "popup_template",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "clickable_column",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "schema-weather",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "schema-weather",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            },
+            "properties": [
+                {
+                    "name": "title",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "use_labels",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "destination_view",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "event_selection",
+                    "access": "",
+                    "virtual": false,
+                    "description": "<p>Choose events to include in selector computation, and associate them a label</p>",
+                    "type": {
+                        "names": [
+                            "array"
+                        ]
+                    }
+                },
+                {
+                    "name": "filter_pattern",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "string"
+                        ]
+                    }
+                },
+                {
+                    "name": "show_output",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                },
+                {
+                    "name": "show_title",
+                    "access": "",
+                    "virtual": false,
+                    "description": "",
+                    "type": {
+                        "names": [
+                            "boolean"
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}

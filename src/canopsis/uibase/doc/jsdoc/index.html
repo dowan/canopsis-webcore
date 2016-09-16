@@ -46,7 +46,183 @@
 
 
     <section>
-        <article><h1>Uibase Canopsis Brick</h1><h2>Description</h2><p>Base UI application layer for Canopsis frontend</p>
+        <article><h1>Uibase Canopsis Brick</h1><h2>Index</h2><ul>
+<li><a href="#description">Description</a></li>
+<li><a href="#content">Content</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#continuous-integration">Continuous-integration</a></li>
+<li><a href="#code-notes">Code-notes</a></li>
+<li><a href="#additional-info">Additional-info</a></li>
+</ul>
+<h2>Description</h2><p>Base UI application layer for Canopsis frontend</p>
+<h2>Content</h2><h3>components</h3><ul>
+<li>actionbutton</li>
+<li>actionfilter</li>
+<li>arrayclassifiedcrecordselector</li>
+<li>arrayeditor</li>
+<li>classifiedcrecordselector</li>
+<li>classifieditemselector</li>
+<li>colorchooser</li>
+<li>colpick</li>
+<li>contextselector</li>
+<li>dateinterval</li>
+<li>dictclassifiedcrecordselector</li>
+<li>dropdownbutton</li>
+<li>dropdownbuttoncontent</li>
+<li>Dropdownbuttonheader</li>
+<li>Dropdownbuttonoverview</li>
+<li>Dropdownbuttontitle</li>
+<li>elementidselectorwithoptions</li>
+<li>eventkey</li>
+<li>filefield</li>
+<li>filterclause</li>
+<li>formulaeditor</li>
+<li>ical</li>
+<li>labelledlink</li>
+<li>linklist</li>
+<li>mixinselector</li>
+<li>modelselect</li>
+<li>password</li>
+<li>propertiestopopup</li>
+<li>restobjectcombo</li>
+<li>searchbar</li>
+<li>simpledicteditor</li>
+<li>slider</li>
+<li>stringclassifiedcrecordselector</li>
+<li>tabscontent</li>
+<li>tabheader</li>
+<li>table</li>
+<li>tabs</li>
+<li>tabscontentgroup</li>
+<li>tabsheadergroup</li>
+<li>textwithsortoption</li>
+<li>timestamptooltiped</li>
+<li>typedvalue</li>
+</ul>
+<h3>functions</h3><ul>
+<li>HumanReadableHelper</li>
+<li>getEntitiesFromServer</li>
+<li>_addGraph</li>
+<li>findItems</li>
+<li>deleteRecords</li>
+<li>select</li>
+<li>unselect</li>
+<li>saveRecords</li>
+<li>newRecord</li>
+<li>editRecord</li>
+<li>updateModel</li>
+<li>weaveLinks</li>
+<li>refreshSelectedShapes</li>
+<li>refreshLockedShapes</li>
+<li>showToolBox</li>
+<li>destroyToolBox</li>
+<li>removeTmpLink</li>
+<li>lock</li>
+<li>addNodes</li>
+<li>delNodes</li>
+<li>updateNodes</li>
+<li>addLinks</li>
+<li>delLinks</li>
+<li>updateLinks</li>
+<li>checkTargetLink</li>
+<li>getNode</li>
+<li>addLink</li>
+<li>newToolBoxItem</li>
+<li>getToolBoxItems</li>
+</ul>
+<h3>properties</h3><ul>
+<li>invisibleCellsCount</li>
+<li>actions</li>
+</ul>
+<h3>widgets</h3><ul>
+<li>List</li>
+<li>TextWidget</li>
+<li>Uimaintabcollection</li>
+</ul>
+<h3>editors</h3><ul>
+<li>editor-actionfilter</li>
+<li>editor-array</li>
+<li>editor-arrayclassifiedcrecordselector</li>
+<li>editor-boolean</li>
+<li>editor-color</li>
+<li>editor-contextselector</li>
+<li>editor-dateinterval</li>
+<li>editor-defaultpropertyeditor</li>
+<li>editor-dictclassifiedcrecordselector</li>
+<li>editor-duration</li>
+<li>editor-durationWithUnits</li>
+<li>editor-error</li>
+<li>editor-eventkey</li>
+<li>editor-integer</li>
+<li>editor-json</li>
+<li>editor-labelandviewid</li>
+<li>editor-labelledlink</li>
+<li>editor-mail</li>
+<li>editor-mixins</li>
+<li>editor-modelselect</li>
+<li>editor-password</li>
+<li>editor-passwordmd5</li>
+<li>editor-passwordsha1</li>
+<li>editor-restobject</li>
+<li>editor-richtext</li>
+<li>editor-separator</li>
+<li>editor-serieformula</li>
+<li>editor-simpledict</li>
+<li>editor-simplelist</li>
+<li>editor-slider</li>
+<li>editor-sortable</li>
+<li>editor-source</li>
+<li>editor-state</li>
+<li>editor-stringclassifiedcrecordselector</li>
+<li>editor-stringpair</li>
+<li>editor-tags</li>
+<li>editor-textarea</li>
+<li>editor-timestamp</li>
+<li>editor-typedvalue</li>
+<li>editor-userpreference</li>
+</ul>
+<h3>renderers</h3><ul>
+<li>renderer-actionfilter</li>
+<li>renderer-boolean</li>
+<li>renderer-color</li>
+<li>renderer-conf</li>
+<li>renderer-labelledlink</li>
+<li>renderer-mail</li>
+<li>renderer-object</li>
+<li>renderer-percent</li>
+<li>renderer-recordinfopopup</li>
+<li>renderer-richtext</li>
+<li>renderer-source</li>
+<li>renderer-subprocess</li>
+<li>renderer-tags</li>
+<li>renderer-timestamp</li>
+<li>renderer-translator</li>
+</ul>
+<h3>schemas</h3><ul>
+<li>schema-arraysearch</li>
+<li>schema-background</li>
+<li>schema-canvas</li>
+<li>schema-crud</li>
+<li>schema-customfilter</li>
+<li>schema-customfilterlist</li>
+<li>schema-draggablecolumns</li>
+<li>schema-euewi</li>
+<li>schema-gridlayout</li>
+<li>schema-horizontallayout</li>
+<li>schema-jobmanager</li>
+<li>schema-list</li>
+<li>schema-listlinedetail</li>
+<li>schema-pagination</li>
+<li>schema-periodicrefresh</li>
+<li>schema-rangecolor</li>
+<li>schema-responsivelist</li>
+<li>schema-sortablearray</li>
+<li>schema-text</li>
+<li>schema-topology</li>
+<li>schema-uimaintabcollection</li>
+<li>schema-widgetcontainer</li>
+</ul>
 <h2>Screenshots</h2><h2>Installation</h2><p>You need to clone the git repository and copy directory to Canopsis path</p>
 <pre class="prettyprint source"><code>$ su - canopsis 
 $ cd var/www
@@ -56,8 +232,8 @@ $ ./bin/brickmanager install uibase</code></pre><p>Then, you need to enable the 
 $ cd var/www
 $ ./bin/brickmanager list
 [u'core', u'uibase', u'monitoring', ..., **u'uibase'**]</code></pre><h2>Usage</h2><p>See <a href="https://git.canopsis.net/canopsis-ui-bricks/uibase/blob/master/doc/index.rst">Howto</a></p>
-<h2>Continuous Integration</h2><h3>Tests</h3><p>The last build was not a full build. Please use the &quot;full-compile&quot; npm script to make test results show up here.</p>
-<h3>Lint</h3><p>Tested on commit : 60420c1.</p>
+<h2>Continuous-Integration</h2><h3>Tests</h3><p>The last build was not a full build. Please use the &quot;full-compile&quot; npm script to make test results show up here.</p>
+<h3>Lint</h3><p>Tested on commit : 3ca8f05.</p>
 <table>
 <thead>
 <tr>
@@ -74,7 +250,7 @@ $ ./bin/brickmanager list
 </tr>
 </tbody>
 </table>
-<h2>Code Notes</h2><h3>TODOS</h3><table>
+<h2>Code-Notes</h2><h3>TODOS</h3><table>
 <thead>
 <tr>
 <th>File</th>
@@ -186,7 +362,7 @@ $ ./bin/brickmanager list
 </tr>
 </tbody>
 </table>
-<h2>Additional info</h2><p>Minified version : 183 files (size: 1008K)
+<h2>Additional-info</h2><p>Minified version : 183 files (size: 1008K)
 Development version : 268 files (size: 1,6M)</p></article>
     </section>
 
@@ -201,7 +377,7 @@ Development version : 268 files (size: 1,6M)</p></article>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Apr 19 2016 10:51:09 GMT+0200 (CEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed May 04 2016 15:09:46 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

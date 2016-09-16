@@ -9,7 +9,7 @@
  */
          /**
          * @method ajax
-         * Override allowing to use the promisemanager
+         * @description Override allowing to use the promisemanager
          */
          /**
          * @method buildURL

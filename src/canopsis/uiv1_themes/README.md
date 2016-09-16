@@ -1,8 +1,22 @@
 # Uiv1_themes Canopsis Brick
 
+## Index
+
+- [Description](#description)
+- [Content](#content)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Continuous-integration](#continuous-integration)
+- [Code-notes](#code-notes)
+- [Additional-info](#additional-info)
+
 ## Description
 
 Provides legacy themes for widgets
+
+## Content
+
+
 
 ## Screenshots
 
@@ -31,7 +45,7 @@ You can see enabled bricks
 
 See [Howto](https://git.canopsis.net/canopsis-ui-bricks/uiv1_themes/blob/master/doc/index.rst)
 
-## Continuous Integration
+## Continuous-Integration
 
 ### Tests
 
@@ -39,14 +53,14 @@ The last build was not a full build. Please use the "full-compile" npm script to
 
 ### Lint
 
-Tested on commit : 60420c1.
+Tested on commit : 3ca8f05.
 
 | Target | Status | Log |
 | ------ | ------ | --- |
-| Lint   | :ok: OK |  |
+| Lint   | :ok: OK |  |
 
 
-## Code Notes
+## Code-Notes
 
 ### TODOS
 
@@ -56,7 +70,7 @@ Tested on commit : 60420c1.
 
 
 
-## Additional info
+## Additional-info
 
-Minified version : 4 files (size: 20K)
+Minified version : 4 files (size: 24K)
 Development version : 2 files (size: 20K)

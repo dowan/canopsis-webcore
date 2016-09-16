@@ -7,4 +7,5 @@ Canopsis Frontend documentation
    :glob:
 
    bricks-documentation/**/index
+   EDs
 

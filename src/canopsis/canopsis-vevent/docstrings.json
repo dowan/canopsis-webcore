@@ -1,0 +1,18 @@
+{
+    "adapters": [
+        {
+            "name": "vevent",
+            "description": "",
+            "extends": [],
+            "access": "",
+            "virtual": false,
+            "fires": "",
+            "constructor": {
+                "name": "vevent",
+                "description": "",
+                "parameters": [],
+                "examples": []
+            }
+        }
+    ]
+}
