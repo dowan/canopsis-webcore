@@ -6,6 +6,10 @@
  *
  * > Note that the current adapters design is not yet clean. There should be one adapter per data source, not one per data type.
  *
+ * Adapters should follow this hierarchy : 
+ *
+ * ![Adapters UML](../images/adapters_uml.png)
+ *
  */
          /**
          * @method ajax
