@@ -26,6 +26,7 @@
  define([
     'canopsis/canopsis-backend-ui-connector/src/adapters/acl',
     'canopsis/canopsis-backend-ui-connector/src/adapters/action',
+    'canopsis/canopsis-backend-ui-connector/src/adapters/alarm',
     'canopsis/canopsis-backend-ui-connector/src/adapters/baseadapter',
     'canopsis/canopsis-backend-ui-connector/src/adapters/cancel',
     'canopsis/canopsis-backend-ui-connector/src/adapters/context',
@@ -57,4 +58,7 @@
     'canopsis/canopsis-backend-ui-connector/src/serializers/ticket',
     'canopsis/canopsis-backend-ui-connector/requirejs-modules/adapters/application',
     'canopsis/canopsis-backend-ui-connector/requirejs-modules/adapters/schema'
-], function () {});
+], function () {
+    
+});
+

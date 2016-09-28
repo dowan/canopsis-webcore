@@ -1,8 +1,22 @@
 # Canopsis-backend-ui-connector Canopsis Brick
 
+## Index
+
+- [Description](#description)
+- [Content](#content)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Continuous-integration](#continuous-integration)
+- [Code-notes](#code-notes)
+- [Additional-info](#additional-info)
+
 ## Description
 
 Provides adapters to communicate with Canopsis backend
+
+## Content
+
+
 
 ## Screenshots
 
@@ -12,39 +26,41 @@ Provides adapters to communicate with Canopsis backend
 
 You need to clone the git repository and copy directory to Canopsis path
 
-    $ git clone https://git.canopsis.net/canopsis-ui-bricks/canopsis-backend-ui-connector.git
-    $ cp -r canopsis-backend-ui-connector $CANOPSIS_PATH/var/www/canopsis
-
-Then, you need to import specific schemas
-
-    $ su - canopsis
-    $ cp $CANOPSIS_PATH/var/www/canopsis/canopsis-backend-ui-connector/schemas/* $CANOPSIS_PATH/etc/schema.d
-    $ schema2db
+    $ su - canopsis 
+    $ cd var/www
+    $ ./bin/brickmanager install canopsis-backend-ui-connector
 
 Then, you need to enable the brick
 
-    $ su - canopsis
-    $ webmodulemanager enable canopsis-backend-ui-connector
+    $ ./bin/brickmanager enable canopsis-backend-ui-connector
 
 You can see enabled bricks
 
     $ su - canopsis
-    $ webmodulemanager list
+    $ cd var/www
+    $ ./bin/brickmanager list
     [u'core', u'uibase', u'monitoring', ..., **u'canopsis-backend-ui-connector'**]
 
 ## Usage
 
 See [Howto](https://git.canopsis.net/canopsis-ui-bricks/canopsis-backend-ui-connector/blob/master/doc/index.rst)
 
-## Continuous Integration
+## Continuous-Integration
+
+### Tests
+
+The last build was not a full build. Please use the "full-compile" npm script to make test results show up here.
+
+### Lint
 
 Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 
 | Target | Status | Log |
 | ------ | ------ | --- |
-| Lint   | :ok: OK |  |
+| Lint   | :negative_squared_cross_mark: ERROR |  |
 
-## Code Notes
+
+## Code-Notes
 
 ### TODOS
 
@@ -58,7 +74,7 @@ Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 
 
 
-## Additional info
+## Additional-info
 
-Minified version : 3 files (size: 36K)
-Development version : 31 files (size: 148K)
+Minified version : 4 files (size: 44K)
+Development version : 32 files (size: 152K)

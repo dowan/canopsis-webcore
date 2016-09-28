@@ -17,18 +17,29 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
- require.config({
-    paths: {
+Ember.Application.initializer({
+    name: 'AlarmAdapter',
+    after: 'ApplicationAdapter',
+    initialize: function(container, application) {
+        var ApplicationAdapter = container.lookupFactory('adapter:application');
 
+        /**
+         * @adapter alarm
+         */
+        var adapter = ApplicationAdapter.extend({
+
+            buildURL: function(type, id) {
+                void(id);
+                return '/alerts/alarms';
+            },
+
+            findQuery: function(store, type, query) {
+                var url = this.buildURL;
+
+                return this.ajax(url, 'GET', { data: query });
+            }
+        });
+
+        application.register('adapter:alarm', adapter);
     }
 });
-
-define(['text!canopsis/canopsis-backend-ui-connector/dist/templates.min.html',
-    'link!canopsis/canopsis-backend-ui-connector/dist/brick.min.css',
-    'canopsis/canopsis-backend-ui-connector/requirejs-modules/adapters/application',
-    'canopsis/canopsis-backend-ui-connector/requirejs-modules/adapters/schema',
-    'canopsis/canopsis-backend-ui-connector/dist/brick.min'
-], function () {
-    
-});
-
