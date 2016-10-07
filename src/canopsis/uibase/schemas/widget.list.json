@@ -19,6 +19,7 @@
 			"enum": [
 				"action",
 				"account",
+                                "alarm",
 				"consolidation",
 				"ctxmetric",
 				"curve",
