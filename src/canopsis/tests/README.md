@@ -1,8 +1,22 @@
 # Tests Canopsis Brick
 
+## Index
+
+- [Description](#description)
+- [Content](#content)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Continuous-integration](#continuous-integration)
+- [Code-notes](#code-notes)
+- [Additional-info](#additional-info)
+
 ## Description
 
 Test tools for Canopsis
+
+## Content
+
+
 
 ## Screenshots
 
@@ -12,33 +26,41 @@ Test tools for Canopsis
 
 You need to clone the git repository and copy directory to Canopsis path
 
-    $ git clone https://git.canopsis.net/canopsis-ui-bricks/tests.git
-    $ cp -r tests $CANOPSIS_PATH/var/www/canopsis
+    $ su - canopsis 
+    $ cd var/www
+    $ ./bin/brickmanager install tests
 
 Then, you need to enable the brick
 
-    $ su - canopsis
-    $ webmodulemanager enable tests
+    $ ./bin/brickmanager enable tests
 
 You can see enabled bricks
 
     $ su - canopsis
-    $ webmodulemanager list
+    $ cd var/www
+    $ ./bin/brickmanager list
     [u'core', u'uibase', u'monitoring', ..., **u'tests'**]
 
 ## Usage
 
 See [Howto](https://git.canopsis.net/canopsis-ui-bricks/tests/blob/master/doc/index.rst)
 
-## Continuous Integration
+## Continuous-Integration
 
-Tested on commit : 0274f0d.
+### Tests
+
+The last build was not a full build. Please use the "full-compile" npm script to make test results show up here.
+
+### Lint
+
+Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 
 | Target | Status | Log |
 | ------ | ------ | --- |
-| Lint   | :negative_squared_cross_mark: ERROR | <br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/tests/src/testhelpers/activateEditMode.js<br>  30:9  error  "click" is not defined  no-undef<br>  31:9  error  "click" is not defined  no-undef<br><br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/tests/src/testhelpers/changeEditorForKey.js<br>  35:9   error  "click" is not defined                  no-undef<br>  36:9   error  "waitForElement" is not defined         no-undef<br>  37:13  error  "click" is not defined                  no-undef<br>  38:13  error  "fillIn" is not defined                 no-undef<br>  39:13  error  "fillIn" is not defined                 no-undef<br>  40:13  error  "click" is not defined                  no-undef<br>  41:13  error  "click" is not defined                  no-undef<br>  43:13  error  "waitForElementRemoval" is not defined  no-undef<br><br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/tests/src/testhelpers/createNewView.js<br>  28:5  error  "click" is not defined           no-undef<br>  29:5  error  "click" is not defined           no-undef<br>  31:5  error  "waitForElement" is not defined  no-undef<br>  32:9  error  "fillIn" is not defined          no-undef<br>  33:9  error  "click" is not defined           no-undef<br><br>/home/gwen/programmation/canopsis/sources/webcore/src/canopsis/tests/src/testhelpers/deactivateEditMode.js<br>  30:9  error  "click" is not defined  no-undef<br>  31:9  error  "click" is not defined  no-undef<br><br>✖ 17 problems (17 errors, 0 warnings)<br><br> |
+| Lint   | :negative_squared_cross_mark: ERROR |  |
 
-## Code Notes
+
+## Code-Notes
 
 ### TODOS
 
@@ -48,7 +70,7 @@ Tested on commit : 0274f0d.
 
 
 
-## Additional info
+## Additional-info
 
-Minified version : 3 files (size: 20K)
+Minified version : 4 files (size: 20K)
 Development version : 9 files (size: 44K)

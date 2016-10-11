@@ -23,8 +23,17 @@
     }
 });
 
- define([
-    'link!canopsis/tests/dist/brick.min.css',
-    'canopsis/tests/requirejs-modules/test-initializer',
-    'canopsis/tests/dist/brick.min'
-], function () {});
+define([
+    'canopsis/tests/src/testhelpers/activateEditMode',
+    'canopsis/tests/src/testhelpers/ajax-stub',
+    'canopsis/tests/src/testhelpers/changeEditorForKey',
+    'canopsis/tests/src/testhelpers/createNewView',
+    'canopsis/tests/src/testhelpers/deactivateEditMode',
+    'canopsis/tests/src/testhelpers/getMainContainer',
+    'canopsis/tests/src/testhelpers/waitForElement',
+    'canopsis/tests/src/testhelpers/waitForElementRemoval',
+    'canopsis/tests/src/testhelpers/waitMilliseconds',
+    'canopsis/tests/requirejs-modules/test-initializer'
+], function () {
+    
+});

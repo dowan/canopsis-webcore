@@ -53,7 +53,7 @@ The last build was not a full build. Please use the "full-compile" npm script to
 
 ### Lint
 
-Tested on commit : a005aca.
+Tested on commit : [ERROR : The brick is not in a dedicated git repository].
 
 | Target | Status | Log |
 | ------ | ------ | --- |
@@ -66,35 +66,35 @@ Tested on commit : a005aca.
 
 | File   | Note   |
 |--------|--------|
-| src/editors/editor-elementidselectorwithoptions.hbs | manage search in a dynamic way, as an editor property binding to a search method |
-| src/editors/editor-elementidselectorwithoptions.hbs | make this doc viewable on the generated doc |
-| src/widgets/list/controller.js | check if useless or not |
-| src/mixins/responsivelist.js | check if still used |
-| src/mixins/arraysearch.js | these checks should be asserts |
-| src/components/colpick/component.js | check to destroy colpick |
-| src/components/filefield/component.js | check if all the component property are still used, and refactor if needed |
-| src/components/linklist/component.js | use the container defined in the initializer |
-| src/components/elementidselectorwithoptions/component.js | put this on a dedicated util |
-| src/components/elementidselectorwithoptions/component.js | manage default values |
-| src/components/elementidselectorwithoptions/component.js | stop using polymorphicTypeKey, use sourceMappingKeys instead |
 | src/components/classifieditemselector/component.js | fuzzy search |
 | src/components/classifieditemselector/component.js | hover effect |
 | src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
 | src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
 | src/components/classifieditemselector/component.js | use searchmethodsregistry instead of plain old static code |
+| src/components/filefield/component.js | check if all the component property are still used, and refactor if needed |
 | src/components/actionfilter/component.js | not used yet |
+| src/components/linklist/component.js | use the container defined in the initializer |
+| src/components/colpick/component.js | check to destroy colpick |
+| src/components/elementidselectorwithoptions/component.js | put this on a dedicated util |
+| src/components/elementidselectorwithoptions/component.js | manage default values |
+| src/components/elementidselectorwithoptions/component.js | stop using polymorphicTypeKey, use sourceMappingKeys instead |
+| src/widgets/list/controller.js | check if useless or not |
+| src/mixins/arraysearch.js | these checks should be asserts |
+| src/mixins/responsivelist.js | check if still used |
+| src/editors/editor-elementidselectorwithoptions.hbs | manage search in a dynamic way, as an editor property binding to a search method |
+| src/editors/editor-elementidselectorwithoptions.hbs | make this doc viewable on the generated doc |
 
 
 ### FIXMES
 
 | File   | Note   |
 |--------|--------|
-| src/widgets/uimaintabcollection/controller.js |: the factory "widgetbase" is a hack to make the canopsis rights reopen work. But it make the view "app_header" not working without the canopsis-rights brick |
-| src/mixins/responsivelist.js | undefined |
-| src/mixins/periodicrefresh.js | periodicrefresh deactivated in testing mode because it throws global failures |
+| src/components/classifiedcrecordselector/component.js | is store destroyed? |
 | src/components/linklist/component.js | on "src/templates/actionbutton-info.hbs", the component is used with the "linkInfoPattern" property. This property does not seems relevant anymore. |
 | src/components/dateinterval/component.js | destroy the Jquery plugin at willDestroyElement, and check for possible undestroyed event bindings |
-| src/components/classifiedcrecordselector/component.js | is store destroyed? |
+| src/widgets/uimaintabcollection/controller.js |: the factory "widgetbase" is a hack to make the canopsis rights reopen work. But it make the view "app_header" not working without the canopsis-rights brick |
+| src/mixins/periodicrefresh.js | periodicrefresh deactivated in testing mode because it throws global failures |
+| src/mixins/responsivelist.js | undefined |
 
 
 ## Additional-info

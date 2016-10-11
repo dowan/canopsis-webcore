@@ -63,4 +63,7 @@
     'ehbs!rightselector-itempartial',
     'ehbs!rightselector-selecteditempartial',
     'canopsis/canopsis-rights/src/utils/rightsflags'
-], function () {});
+], function () {
+    
+});
+

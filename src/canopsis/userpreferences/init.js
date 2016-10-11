@@ -19,13 +19,15 @@
 
  require.config({
     paths: {
-        'components/component-userpreferencesmanager': 'canopsis/userpreferences/dist/templates/components/component-userpreferencesmanager',
+        'components/component-userpreferencesmanager': 'canopsis/userpreferences/src/components/userpreferencesmanager/template',
 
     }
 });
 
- define([
-    'link!canopsis/userpreferences/dist/brick.min.css',
+define([
+    'canopsis/userpreferences/src/components/userpreferencesmanager/component',
     'ehbs!components/component-userpreferencesmanager',
-    'canopsis/userpreferences/dist/brick.min'
-], function () {});
+    'canopsis/userpreferences/src/mixins/userconfiguration'
+], function () {
+    
+});

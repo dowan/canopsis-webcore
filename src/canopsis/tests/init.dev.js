@@ -34,4 +34,7 @@
     'canopsis/tests/src/testhelpers/waitForElementRemoval',
     'canopsis/tests/src/testhelpers/waitMilliseconds',
     'canopsis/tests/requirejs-modules/test-initializer'
-], function () {});
+], function () {
+    
+});
+

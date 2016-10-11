@@ -19,13 +19,14 @@
 
  require.config({
     paths: {
-        'uiv1_themes_weather': 'canopsis/uiv1_themes/dist/templates/uiv1_themes_weather',
+        'uiv1_themes_weather': 'canopsis/uiv1_themes/src/templates/uiv1_themes_weather',
 
     }
 });
 
- define([
-    'link!canopsis/uiv1_themes/dist/brick.min.css',
-    'ehbs!uiv1_themes_weather',
-    'canopsis/uiv1_themes/dist/brick.min'
-], function () {});
+define([
+    'canopsis/uiv1_themes/src/mixins/uiv1weathertheme',
+    'ehbs!uiv1_themes_weather'
+], function () {
+    
+});

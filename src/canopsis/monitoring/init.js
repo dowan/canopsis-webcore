@@ -19,57 +19,17 @@
 
  require.config({
     paths: {
-        'actionbutton-editurlfield': 'canopsis/monitoring/dist/templates/actionbutton-editurlfield',
-        'components/component-ack': 'canopsis/monitoring/dist/templates/components/component-ack',
-        'components/component-cfiltereditor': 'canopsis/monitoring/dist/templates/components/component-cfiltereditor',
-        'components/component-eventselector': 'canopsis/monitoring/dist/templates/components/component-eventselector',
-        'components/component-stateeditor': 'canopsis/monitoring/dist/templates/components/component-stateeditor',
-        'components/component-statemapping': 'canopsis/monitoring/dist/templates/components/component-statemapping',
-        'editor-cfilter': 'canopsis/monitoring/dist/templates/editor-cfilter',
-        'editor-cfilterwithproperties': 'canopsis/monitoring/dist/templates/editor-cfilterwithproperties',
-        'editor-cmetric': 'canopsis/monitoring/dist/templates/editor-cmetric',
-        'editor-eventselector': 'canopsis/monitoring/dist/templates/editor-eventselector',
-        'editor-metricselector': 'canopsis/monitoring/dist/templates/editor-metricselector',
-        'renderer-ack': 'canopsis/monitoring/dist/templates/renderer-ack',
-        'renderer-cfilter': 'canopsis/monitoring/dist/templates/renderer-cfilter',
-        'renderer-cfilterwithproperties': 'canopsis/monitoring/dist/templates/renderer-cfilterwithproperties',
-        'renderer-crecord-type': 'canopsis/monitoring/dist/templates/renderer-crecord-type',
-        'renderer-criticity': 'canopsis/monitoring/dist/templates/renderer-criticity',
-        'renderer-eventselector': 'canopsis/monitoring/dist/templates/renderer-eventselector',
-        'renderer-eventtimestamp': 'canopsis/monitoring/dist/templates/renderer-eventtimestamp',
-        'renderer-eventtype': 'canopsis/monitoring/dist/templates/renderer-eventtype',
-        'renderer-state': 'canopsis/monitoring/dist/templates/renderer-state',
-        'renderer-stateConnector': 'canopsis/monitoring/dist/templates/renderer-stateConnector',
-        'renderer-status': 'canopsis/monitoring/dist/templates/renderer-status',
-        'weather': 'canopsis/monitoring/dist/templates/weather',
 
     }
 });
 
- define([
+define(['text!canopsis/monitoring/dist/templates.min.html',
     'link!canopsis/monitoring/dist/brick.min.css',
-    'ehbs!actionbutton-editurlfield',
-    'ehbs!components/component-ack',
-    'ehbs!components/component-cfiltereditor',
-    'ehbs!components/component-eventselector',
-    'ehbs!components/component-stateeditor',
-    'ehbs!components/component-statemapping',
-    'ehbs!editor-cfilter',
-    'ehbs!editor-cfilterwithproperties',
-    'ehbs!editor-cmetric',
-    'ehbs!editor-eventselector',
-    'ehbs!editor-metricselector',
-    'ehbs!renderer-ack',
-    'ehbs!renderer-cfilter',
-    'ehbs!renderer-cfilterwithproperties',
-    'ehbs!renderer-crecord-type',
-    'ehbs!renderer-criticity',
-    'ehbs!renderer-eventselector',
-    'ehbs!renderer-eventtimestamp',
-    'ehbs!renderer-eventtype',
-    'ehbs!renderer-state',
-    'ehbs!renderer-stateConnector',
-    'ehbs!renderer-status',
-    'ehbs!weather',
     'canopsis/monitoring/dist/brick.min'
-], function () {});
+], function (templates) {
+    templates = $(templates).filter('script');
+for (var i = 0, l = templates.length; i < l; i++) {
+var tpl = $(templates[i]);
+Ember.TEMPLATES[tpl.attr('data-template-name')] = Ember.Handlebars.compile(tpl.text());
+};
+});

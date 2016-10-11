@@ -28,4 +28,7 @@
     'canopsis/userpreferences/src/components/userpreferencesmanager/component',
     'ehbs!components/component-userpreferencesmanager',
     'canopsis/userpreferences/src/mixins/userconfiguration'
-], function () {});
+], function () {
+    
+});
+

@@ -37,7 +37,7 @@
     }
 });
 
- define([
+define([
     'canopsis/charts/src/components/c3categorychart/component',
     'ehbs!components/component-c3categorychart',
     'canopsis/charts/src/components/c3js/component',
@@ -64,4 +64,6 @@
     'canopsis/charts/src/widgets/timegraph/controller',
     'ehbs!timegraph',
     'canopsis/charts/requirejs-modules/externals.conf'
-], function () {});
+], function () {
+    
+});
