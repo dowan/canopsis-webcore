@@ -69,9 +69,15 @@ define([
 
           for (var k = 0, lk = this.generatedModels.length; k < lk; k++) {
             var currentModel = this.generatedModels[k];
-
-            currentModel.model.reopen(currentModel.modelDict);
-            registerSchema(currentModel.modelDict, currentModel.model, currentModel.schema, currentModel.name);
+            
+            //FIXME find a way to register all models only once 
+            try {
+                console.log(currentModel);
+                currentModel.model.reopen(currentModel.modelDict);
+                registerSchema(currentModel.modelDict, currentModel.model, currentModel.schema, currentModel.name);
+            } catch (e){
+                console.warn(e);
+            }
           }
 
           console.log('generatedModels', this.generatedModels);
