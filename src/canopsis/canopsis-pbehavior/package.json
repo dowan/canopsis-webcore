@@ -6,7 +6,7 @@
   "scripts": {
     "test": "cd ../../../ && testem -t \"en/static/canopsis/index.test.html?module=canopsis-pbehavior\" -f testem-toolbelt.js",
     "compile": "rm -Rf tmp/build && broccoli build tmp/build && cp tmp/build . -RT",
-    "full-compile": "rm -Rf tmp/build && broccoli build tmp/build full-build && cp tmp/build . -RT",
+    "full-compile": "node node_modules/canopsis-ui-toolbelt/scripts/minify.js && rm -Rf tmp/build && broccoli build tmp/build full-build && cp tmp/build . -RT",
     "lint": "eslint src",
     "doc": "./node_modules/canopsis-ui-toolbelt/scripts/buildDoc",
     "minify": "node node_modules/canopsis-ui-toolbelt/scripts/minify.js"
@@ -30,5 +30,8 @@
   },
   "pre-commit": [
     "lint"
-  ]
+  ],
+   "dependencies": {
+    "broccoli-cli": "^1.0.0"
+  }
 }

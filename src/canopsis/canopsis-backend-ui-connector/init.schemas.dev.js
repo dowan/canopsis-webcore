@@ -17,7 +17,7 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-window.bricks['canopsis-backend-ui-connector'].schemasArray = ["text!canopsis/canopsis-backend-ui-connector/schemas/crecord.curve.json","text!canopsis/canopsis-backend-ui-connector/schemas/crecord.rangecolor.json","text!canopsis/canopsis-backend-ui-connector/schemas/crecord.serie.json","text!canopsis/canopsis-backend-ui-connector/schemas/crecord.widgetpreferences.json"];
+window.bricks['canopsis-backend-ui-connector'].schemasArray = ["text!canopsis/canopsis-backend-ui-connector/schemas/crecord.widgetpreferences.json"];
 
 define(window.bricks['canopsis-backend-ui-connector'].schemasArray, function () {
     for (var i = 0; i < arguments.length; i++) {

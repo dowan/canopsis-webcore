@@ -49,7 +49,7 @@ See [Howto](https://git.canopsis.net/canopsis-ui-bricks/core/blob/master/doc/ind
 
 ### Tests
 
-The last build was not a full build. Please use the "full-compile" npm script to make test results show up here.
+
 
 ### Lint
 

@@ -16,7 +16,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
+if(!window.config) {
+    window.config = {};
+}
 
+window.config.schemasAdapter = 'canopsis/canopsis-backend-ui-connector/requirejs-modules/adapters/schema';
 define([
     window.config.schemasAdapter,
 ], function (SchemaAdapter) {

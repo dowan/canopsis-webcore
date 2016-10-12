@@ -17,7 +17,7 @@
  * along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
  */
 
-window.bricks['core'].schemasArray = ["text!canopsis/core/schemas/crecord.curve.json","text!canopsis/core/schemas/crecord.loggedaccount.json","text!canopsis/core/schemas/crecord.serie.json","text!canopsis/core/schemas/crecord.userview.json","text!canopsis/core/schemas/crecord.userviewsimplemodel.json","text!canopsis/core/schemas/jsruntimeconfiguration.json","text!canopsis/core/schemas/livereporting.json","text!canopsis/core/schemas/mixin.criticitylevels.json","text!canopsis/core/schemas/mixin.json","text!canopsis/core/schemas/notification.json","text!canopsis/core/schemas/widget.containerwidget.json","text!canopsis/core/schemas/widget.json","text!canopsis/core/schemas/widget.wgraph.json","text!canopsis/core/schemas/widgetwrapper.json"];
+window.bricks['core'].schemasArray = ["text!canopsis/core/schemas/crecord.loggedaccount.json","text!canopsis/core/schemas/crecord.userview.json","text!canopsis/core/schemas/crecord.userviewsimplemodel.json","text!canopsis/core/schemas/jsruntimeconfiguration.json","text!canopsis/core/schemas/livereporting.json","text!canopsis/core/schemas/mixin.criticitylevels.json","text!canopsis/core/schemas/mixin.json","text!canopsis/core/schemas/notification.json","text!canopsis/core/schemas/widget.containerwidget.json","text!canopsis/core/schemas/widget.json","text!canopsis/core/schemas/widget.wgraph.json","text!canopsis/core/schemas/widgetwrapper.json"];
 
 define(window.bricks['core'].schemasArray, function () {
     for (var i = 0; i < arguments.length; i++) {
