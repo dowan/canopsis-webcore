@@ -82,6 +82,7 @@ Ember.Application.initializer({
             },
 
             findItems: function() {
+                //TODO: clean this try/catch
                 try {
                     var me = this;
 
